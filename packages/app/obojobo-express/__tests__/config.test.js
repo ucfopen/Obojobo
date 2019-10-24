@@ -4,7 +4,6 @@ let logger
 
 describe('config', () => {
 	beforeEach(() => {
-
 		delete process.env.NODE_ENV
 		jest.resetModules()
 		jest.mock('../logger')
@@ -112,7 +111,7 @@ describe('config', () => {
 	test('processes json env variables by expanding them when found', () => {
 		const fs = require('fs')
 		const mockDBConfig = {
-			development: { ENV: 'DB_CONFIG_JSON'}
+			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
@@ -129,7 +128,7 @@ describe('config', () => {
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
-			test: { ENV: 'DB_CONFIG_JSON'}
+			test: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
@@ -142,7 +141,9 @@ describe('config', () => {
 		expect(config).not.toHaveProperty('db.port', 999)
 
 		expect(logger.error).toHaveBeenCalledTimes(2)
-		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV DB_CONFIG_JSON to be valid JSON, but it did not parse')
+		expect(logger.error).toHaveBeenCalledWith(
+			'Error: Expected ENV DB_CONFIG_JSON to be valid JSON, but it did not parse'
+		)
 		delete process.env.DB_CONFIG_JSON
 	})
 
@@ -150,7 +151,7 @@ describe('config', () => {
 		process.env.DB_PORT = 'mock-port'
 		const fs = require('fs')
 		const mockDBConfig = {
-			development: { ENV: 'DB_CONFIG_JSON'}
+			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
@@ -164,5 +165,90 @@ describe('config', () => {
 		expect(config).toHaveProperty('db.port', 'mock-port')
 		delete process.env.DB_CONFIG_JSON
 		delete process.env.DB_PORT
+	})
+
+	test('config top level values can not be changed', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			config.db = {}
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot assign to read only property 'db' of object '#<Object>'"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('config nested values can not be changed', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			config.db.host = 'my-hijacked-database'
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot assign to read only property 'host' of object '#<Object>'"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('custom configs cant be added', () => {
+		const config = oboRequire('config')
+		expect(config).not.toHaveProperty('custom')
+
+		const changeConfigValue = () => {
+			config.custom = 'test'
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot add property custom, object is not extensible"`
+		)
+
+		// make sure it didn't change
+		expect(config).not.toHaveProperty('custom')
+	})
+
+	test('config values cant be deleted', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			delete config.db
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot delete property 'db' of #<Object>"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('config nested values cant be deleted', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			delete config.db.host
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot delete property 'host' of #<Object>"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
 	})
 })

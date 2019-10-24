@@ -1,12 +1,12 @@
 import Common from 'Common'
-
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import FocusUtil from '../../viewer/util/focus-util'
+import { startHeartBeat } from '../../viewer/util/stop-viewer'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
-const { OboModel } = Common.models
+const { debounce } = Common.util
 
 const DEFAULT_CONTEXT = 'practice'
 
@@ -15,6 +15,23 @@ class NavStore extends Store {
 		let item
 		let oldNavTargetId
 		super('navstore')
+
+		// create a debounced state change function
+		// to handle multiple simultaneous events
+		// that occur like when someone clicks outside
+		// the nav (causing a close) ON a nav toggle button
+		this.updateOpenState = debounce(1, newOpen => {
+			if (newOpen === this.state.open) return
+
+			const action = newOpen ? 'nav:open' : 'nav:close'
+			APIUtil.postEvent({
+				draftId: this.state.draftId,
+				action: action,
+				eventVersion: '1.0.0',
+				visitId: this.state.visitId
+			})
+			this.setAndTrigger({ open: newOpen })
+		})
 
 		Dispatcher.on(
 			{
@@ -34,7 +51,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:gotoPath',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -55,7 +72,7 @@ class NavStore extends Store {
 					const prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:prev',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -71,7 +88,7 @@ class NavStore extends Store {
 					const next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:next',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -86,7 +103,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:goto',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -99,7 +116,7 @@ class NavStore extends Store {
 				},
 				'nav:lock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:lock',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -108,7 +125,7 @@ class NavStore extends Store {
 				},
 				'nav:unlock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:unlock',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -116,33 +133,13 @@ class NavStore extends Store {
 					this.setAndTrigger({ locked: false })
 				},
 				'nav:close': () => {
-					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
-						action: 'nav:close',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId
-					})
-					this.setAndTrigger({ open: false })
+					this.updateOpenState(false)
 				},
 				'nav:open': () => {
-					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
-						action: 'nav:open',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId
-					})
-					this.setAndTrigger({ open: true })
+					this.updateOpenState(true)
 				},
 				'nav:toggle': () => {
-					const updatedState = { open: !this.state.open }
-					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
-						action: 'nav:toggle',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId,
-						payload: updatedState
-					})
-					this.setAndTrigger(updatedState)
+					this.updateOpenState(!this.state.open)
 				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)
@@ -169,7 +166,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath, visitId, viewState = {}) {
+	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -179,16 +176,18 @@ class NavStore extends Store {
 			navTargetId: null,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
-					? viewState['nav:isLocked'].value
+					? Boolean(viewState['nav:isLocked'].value)
 					: false,
 			open:
 				viewState['nav:isOpen'] !== null && typeof viewState['nav:isOpen'] !== 'undefined'
-					? viewState['nav:isOpen'].value
+					? Boolean(viewState['nav:isOpen'].value)
 					: true,
 			context: DEFAULT_CONTEXT,
-			visitId
+			visitId,
+			draftId
 		}
 
+		startHeartBeat(this.state.draftId)
 		this.buildMenu(model)
 		NavUtil.gotoPath(startingPath)
 
@@ -284,7 +283,6 @@ class NavStore extends Store {
 				.concat(childNavItem.fullPath)
 				.filter(item => item !== '')
 
-			// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
 			childNavItem.fullFlatPath = [

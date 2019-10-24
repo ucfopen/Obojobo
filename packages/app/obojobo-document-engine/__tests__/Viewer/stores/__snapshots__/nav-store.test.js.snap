@@ -267,6 +267,7 @@ Object {
 exports[`NavStore init builds state locked state 1`] = `
 Object {
   "context": "practice",
+  "draftId": "mockDraftId",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
@@ -282,6 +283,7 @@ Object {
 exports[`NavStore init builds state open state 1`] = `
 Object {
   "context": "practice",
+  "draftId": "mockDraftId",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
@@ -297,6 +299,7 @@ Object {
 exports[`NavStore init builds state with basic options 1`] = `
 Object {
   "context": "practice",
+  "draftId": "mockDraftId",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
@@ -328,6 +331,7 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 3`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": "unchanged",
   "open": false,
 }
@@ -352,6 +356,7 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 6`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": "unchanged",
   "open": false,
 }
@@ -420,6 +425,7 @@ Array [
 
 exports[`NavStore nav:lock event fires and updates state 2`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": true,
   "open": "unchanged",
 }
@@ -461,6 +467,7 @@ Array [
 
 exports[`NavStore nav:open event fires and updates state 3`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": "unchanged",
   "open": true,
 }
@@ -528,12 +535,9 @@ Array [
 exports[`NavStore nav:toggle event fires and updates state 2`] = `
 Array [
   Object {
-    "action": "nav:toggle",
+    "action": "nav:open",
     "draftId": "mockDraftId",
     "eventVersion": "1.0.0",
-    "payload": Object {
-      "open": true,
-    },
     "visitId": undefined,
   },
 ]
@@ -541,6 +545,7 @@ Array [
 
 exports[`NavStore nav:toggle event fires and updates state 3`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": "unchanged",
   "open": true,
 }
@@ -565,6 +570,7 @@ Array [
 
 exports[`NavStore nav:unlock event fires and updates state 3`] = `
 Object {
+  "draftId": "mockDraftId",
   "locked": false,
   "open": "unchanged",
 }

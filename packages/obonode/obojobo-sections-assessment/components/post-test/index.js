@@ -52,21 +52,19 @@ class AssessmentPostTest extends React.Component {
 			attemptIds.push(attempt.attemptId)
 		})
 
-		return APIUtil
-			.reviewAttempt(attemptIds)
-			.then(result => {
-				attempts.forEach(attempt => {
-					attempt.state.questionModels = result[attempt.attemptId]
-				})
-
-				this.setState({
-					attempts,
-					isFetching: false
-				})
+		return APIUtil.reviewAttempt(attemptIds).then(result => {
+			attempts.forEach(attempt => {
+				attempt.state.questionModels = result[attempt.attemptId]
 			})
+
+			this.setState({
+				attempts,
+				isFetching: false
+			})
+		})
 	}
 
-	onClickResendScore(){
+	onClickResendScore() {
 		AssessmentUtil.resendLTIScore(this.props.model)
 	}
 
@@ -77,30 +75,23 @@ class AssessmentPostTest extends React.Component {
 			case 'never':
 				return false
 			case 'no-attempts-remaining':
-				return !AssessmentUtil.hasAttemptsRemaining(
-					assessmentState,
-					model
-				)
+				return !AssessmentUtil.hasAttemptsRemaining(assessmentState, model)
 		}
 	}
 
-	renderFullReview(){
+	renderFullReview() {
 		const showFullReview = this.isFullReviewAvailable(
 			this.props.model,
-			this.props.moduleData.assessmentState,
+			this.props.moduleData.assessmentState
 		)
 
 		return (
-			<FullReview
-				{...this.props}
-				showFullReview={showFullReview}
-				attempts={this.state.attempts}
-			/>
+			<FullReview {...this.props} showFullReview={showFullReview} attempts={this.state.attempts} />
 		)
 	}
 
-	renderScoreActionsPage(props){
-		if (!props.scoreAction.page){
+	renderScoreActionsPage(props) {
+		if (!props.scoreAction.page) {
 			return <p>{props.scoreAction.message}</p>
 		}
 
@@ -110,8 +101,9 @@ class AssessmentPostTest extends React.Component {
 		return <PageComponent model={pageModel} moduleData={props.moduleData} />
 	}
 
-	renderRecordedScore(assessmentScore, props){
-		if(assessmentScore === null || assessmentScore === undefined){
+	renderRecordedScore(assessmentScore, props) {
+		// eslint-disable-next-line no-undefined
+		if (assessmentScore === null || assessmentScore === undefined) {
 			return (
 				<div className="recorded-score is-null">
 					<h2>Recorded Score:</h2>
@@ -160,7 +152,7 @@ class AssessmentPostTest extends React.Component {
 					<h1 ref={this.h1Ref} tabIndex="-1">
 						{assessmentLabel} Overview
 					</h1>
-					{ this.renderRecordedScore(assessmentScore, props) }
+					{this.renderRecordedScore(assessmentScore, props)}
 					<LTIStatus
 						ref={this.ltiStatusRef}
 						ltiState={ltiState}
@@ -169,16 +161,11 @@ class AssessmentPostTest extends React.Component {
 						onClickResendScore={this.onClickResendScore}
 						assessmentScore={assessmentScore}
 					/>
-					<div className="score-actions-page pad">
-						{this.renderScoreActionsPage(props)}
-					</div>
+					<div className="score-actions-page pad">{this.renderScoreActionsPage(props)}</div>
 				</div>
 				<div className="attempt-history">
 					<h1>Attempt History:</h1>
-					{this.state.isFetching ?
-						<span>Loading...</span>
-						: this.renderFullReview()
-					}
+					{this.state.isFetching ? <span>Loading...</span> : this.renderFullReview()}
 				</div>
 			</div>
 		)

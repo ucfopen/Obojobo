@@ -51,8 +51,8 @@ describe('load balancer helper middleware', () => {
 		expect(req.connection.encrypted).toBe(true)
 	})
 
-	test('host is updated by x-host header', () => {
-		const { req } = mockArgs({ 'x-host': 'crazy_other_host' })
+	test('host is updated by X-Forwarded-Host header', () => {
+		const { req } = mockArgs({ 'x-forwarded-host': 'crazy_other_host' })
 		expect(req.headers.host).toBe('crazy_other_host')
 	})
 })

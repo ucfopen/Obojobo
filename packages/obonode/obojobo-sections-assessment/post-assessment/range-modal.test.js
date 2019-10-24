@@ -391,16 +391,30 @@ describe('Range Modal', () => {
 		expect(component.instance().state.type).toBe('range')
 
 		// check visibility
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(0)
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(1)
+		expect(
+			component.find({
+				id: 'editor--sections--assessment--post-assessment--range-modal--single-input'
+			}).length
+		).toBe(0)
+		expect(
+			component.find({ id: 'editor--sections--assessment--post-assessment--range-modal--min' })
+				.length
+		).toBe(1)
 
 		// switch radio to single
 		typeSingleRadio.simulate('change', { target: { value: 'single' } })
 		expect(component.instance().state.type).toBe('single')
 
 		// check visibility
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(1)
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(0)
+		expect(
+			component.find({
+				id: 'editor--sections--assessment--post-assessment--range-modal--single-input'
+			}).length
+		).toBe(1)
+		expect(
+			component.find({ id: 'editor--sections--assessment--post-assessment--range-modal--min' })
+				.length
+		).toBe(0)
 		expect(component.html()).toMatchSnapshot()
 
 		// switch radio back to range
@@ -409,8 +423,15 @@ describe('Range Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 
 		// check visibility
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(0)
-		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(1)
+		expect(
+			component.find({
+				id: 'editor--sections--assessment--post-assessment--range-modal--single-input'
+			}).length
+		).toBe(0)
+		expect(
+			component.find({ id: 'editor--sections--assessment--post-assessment--range-modal--min' })
+				.length
+		).toBe(1)
 	})
 
 	test('RangeModal component changes single score', () => {
@@ -422,7 +443,7 @@ describe('Range Modal', () => {
 		expect(singleInput.props().id).toContain('range-modal--single-input')
 
 		// update
-		singleInput.simulate('change', { target: { value: '75', type:  'number'} })
+		singleInput.simulate('change', { target: { value: '75', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -456,7 +477,7 @@ describe('Range Modal', () => {
 		expect(minRangeInput.props().id).toContain('range-modal--min')
 
 		// update
-		minRangeInput.simulate('change', { target: { value: '100', type:  'number' } })
+		minRangeInput.simulate('change', { target: { value: '100', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

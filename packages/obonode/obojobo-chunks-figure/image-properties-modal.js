@@ -1,6 +1,6 @@
 import './image-properties-modal.scss'
 
-import { debounce, isUrlUUID } from './utils'
+import { isUrlUUID } from './utils'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -8,6 +8,8 @@ import Image from './image'
 import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
+const { debounce } = Common.util
+
 const URL_UPDATE_DELAY = 750
 
 class ImageProperties extends React.Component {
@@ -21,7 +23,7 @@ class ImageProperties extends React.Component {
 			width: 100
 		}
 		this.inputRef = React.createRef()
-		this.state = {...defaultState, ...props.content}
+		this.state = { ...defaultState, ...props.content }
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}

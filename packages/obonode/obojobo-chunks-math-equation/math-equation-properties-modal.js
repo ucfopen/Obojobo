@@ -21,10 +21,10 @@ class MathEquationProperties extends React.Component {
 
 		this.inputRef = React.createRef()
 
-		this.state = ({
+		this.state = {
 			content: this.props.content,
 			error: ''
-		})
+		}
 	}
 
 	handleLatexChange(event) {
@@ -32,9 +32,10 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
+			error: '',
 			content: {
 				...this.state.content,
-				latex,
+				latex
 			}
 		})
 	}
@@ -44,11 +45,23 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				alt
 			}
-		})	
+		})
+	}
+
+	handleSizeChange(event) {
+		const size = event.target.value
+
+		this.setState({
+			...this.state,
+			content: {
+				...this.state.content,
+				size
+			}
+		})
 	}
 
 	handleLabelChange(event) {
@@ -56,7 +69,7 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				label
 			}
@@ -77,6 +90,21 @@ class MathEquationProperties extends React.Component {
 		return this.props.onConfirm(this.state.content)
 	}
 
+	getEquationHTML() {
+		let katexHtml = getLatexHtml(this.state.content.latex)
+		if (katexHtml.error) {
+			katexHtml = ''
+		} else {
+			katexHtml = katexHtml.html
+		}
+
+		if (katexHtml.length === 0) {
+			return null
+		} else {
+			return katexHtml
+		}
+	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -95,6 +123,7 @@ class MathEquationProperties extends React.Component {
 							value={this.state.content.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
 						/>
+						<span className="error">{this.state.error}</span>
 						<label>Alt:</label>
 						<input
 							type="text"
@@ -109,8 +138,28 @@ class MathEquationProperties extends React.Component {
 							value={this.state.content.label || ''}
 							onChange={this.handleLabelChange.bind(this)}
 						/>
+						<label>Size: (1 is the default font size)</label>
+						<input
+							type="number"
+							step="0.1"
+							min="0.5"
+							max="10"
+							id="obojobo-draft--chunks--math-equation--size"
+							value={this.state.content.size || 1}
+							onChange={this.handleSizeChange.bind(this)}
+						/>
 					</div>
-					<span>{this.state.error}</span>
+					<div className={'preview-container'}>
+						<span className="preview-title">Equation Preview</span>
+						<div className="katex-container">
+							<div
+								style={{ fontSize: this.state.content.size + 'em' }}
+								aria-hidden
+								className={'katex-preview'}
+								dangerouslySetInnerHTML={{ __html: this.getEquationHTML() }}
+							/>
+						</div>
+					</div>
 				</div>
 			</SimpleDialog>
 		)

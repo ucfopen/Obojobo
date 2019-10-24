@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoButtonModal renders 1`] = `
+<div
+  aria-labelledby="obojobo-draft--components--modal--modal--content"
+  className="obojobo-draft--components--modal--modal"
+  role="dialog"
+>
+  <div
+    className="content"
+    id="obojobo-draft--components--modal--modal--content"
+  />
+</div>
+`;
+
+exports[`NoButtonModal renders with children 1`] = `
+<div
+  aria-labelledby="obojobo-draft--components--modal--modal--content"
+  className="obojobo-draft--components--modal--modal"
+  role="dialog"
+>
+  <div
+    className="content"
+    id="obojobo-draft--components--modal--modal--content"
+  >
+    Oh No!
+  </div>
+</div>
+`;

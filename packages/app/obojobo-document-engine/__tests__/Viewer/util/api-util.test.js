@@ -3,7 +3,7 @@
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
 const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 let restoreConsole
 
 describe('apiutil', () => {
@@ -30,7 +30,7 @@ describe('apiutil', () => {
 	})
 
 	afterEach(() => {
-		restoreConsole();
+		restoreConsole()
 	})
 
 	beforeAll(() => {
@@ -113,24 +113,20 @@ describe('apiutil', () => {
 			eventVersion: 'eventVersion',
 			visitId: 'mockVisitId',
 			payload: 'mockPayload'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/events',
-					{
-						draftId: 'mockDraftId',
-						visitId: 'mockVisitId',
-						event: {
-							action: 'mockAction',
-							draft_id: 'mockDraftId',
-							actor_time: 'mockDate',
-							event_version: 'eventVersion',
-							visitId: 'mockVisitId',
-							payload: 'mockPayload'
-						},
-					}
-				)
+		}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: 'mockPayload'
+				}
 			})
+		})
 	})
 
 	test('postEvent provides a default payload', () => {
@@ -149,24 +145,20 @@ describe('apiutil', () => {
 			action: 'mockAction',
 			eventVersion: 'eventVersion',
 			visitId: 'mockVisitId'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/events',
-					{
-						draftId: 'mockDraftId',
-						visitId: 'mockVisitId',
-						event: {
-							action: 'mockAction',
-							draft_id: 'mockDraftId',
-							actor_time: 'mockDate',
-							event_version: 'eventVersion',
-							visitId: 'mockVisitId',
-							payload: {}
-						},
-					}
-				)
+		}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: {}
+				}
 			})
+		})
 	})
 
 	test('postEvent posts with the correct args', () => {
@@ -186,24 +178,20 @@ describe('apiutil', () => {
 			eventVersion: 'eventVersion',
 			visitId: 'mockVisitId',
 			payload: 'mockPayload'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/events',
-					{
-						draftId: 'mockDraftId',
-						visitId: 'mockVisitId',
-						event: {
-							action: 'mockAction',
-							draft_id: 'mockDraftId',
-							actor_time: 'mockDate',
-							event_version: 'eventVersion',
-							visitId: 'mockVisitId',
-							payload: 'mockPayload'
-						},
-					}
-				)
+		}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: 'mockPayload'
+				}
 			})
+		})
 	})
 
 	test('postEvent sends a postmessage when status is ok', () => {
@@ -223,13 +211,11 @@ describe('apiutil', () => {
 			eventVersion: 'eventVersion',
 			visitId: 'mockVisitId',
 			payload: 'mockPayload'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalled()
+		}).then(() => {
+			expect(post).toHaveBeenCalled()
 
-				expect(window.parent.postMessage)
-					.toHaveBeenCalledWith('mockValue', '*')
-			})
+			expect(window.parent.postMessage).toHaveBeenCalledWith('mockValue', '*')
+		})
 	})
 
 	test('postEvent skips a postmessage when status is not ok', () => {
@@ -249,12 +235,11 @@ describe('apiutil', () => {
 			eventVersion: 'eventVersion',
 			visitId: 'mockVisitId',
 			payload: 'mockPayload'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalled()
+		}).then(() => {
+			expect(post).toHaveBeenCalled()
 
-				expect(window.parent.postMessage).not.toHaveBeenCalledWith('mockValue', '*')
-			})
+			expect(window.parent.postMessage).not.toHaveBeenCalledWith('mockValue', '*')
+		})
 	})
 
 	test('postEvent doesnt send a postmessage when status is error', () => {
@@ -272,51 +257,40 @@ describe('apiutil', () => {
 			action: 'mockAction',
 			eventVersion: 'eventVersion',
 			payload: 'mockPayload'
+		}).then(() => {
+			expect(post).toHaveBeenCalled()
+			expect(window.parent.postMessage).not.toHaveBeenCalled()
 		})
-			.then(result => {
-				expect(post).toHaveBeenCalled()
-				expect(window.parent.postMessage).not.toHaveBeenCalled()
-			})
 	})
 
 	test('getDraft calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.getDraft('mockId')
-			.then(result => {
-				expect(get).toHaveBeenCalledWith(
-					'/api/drafts/mockId'
-				)
-				expect(result).toEqual(mockJsonResult)
-			})
+		return APIUtil.getDraft('mockId').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId')
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('getFullDraft calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.getFullDraft('mockId')
-			.then(result => {
-				expect(get).toHaveBeenCalledWith(
-					'/api/drafts/mockId/full'
-				)
-				expect(result).toEqual(mockJsonResult)
-			})
+		return APIUtil.getFullDraft('mockId').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId/full')
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('requestStart calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.requestStart('mockVisitId', 'mockDraftId')
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/visits/start',
-					{
-						draftId: 'mockDraftId',
-						visitId: 'mockVisitId'
-					}
-				)
-				expect(result).toEqual(mockJsonResult)
+		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/visits/start', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('startAttempt calls fetch', () => {
@@ -326,57 +300,45 @@ describe('apiutil', () => {
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/assessments/attempt/start',
-					{
-						assessmentId: 'mockAssessmentId',
-						draftId: 'mockDraftId',
-						visitId: 'mockVisitId'
-					}
-				)
-				expect(result).toEqual(mockJsonResult)
+		}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/start', {
+				assessmentId: 'mockAssessmentId',
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('resumeAttempt calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.resumeAttempt({attemptId: 999})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/assessments/attempt/999/resume',
-					{ attemptId: 999 }
-				)
-				expect(result).toEqual(mockJsonResult)
-			})
+		return APIUtil.resumeAttempt({ attemptId: 999 }).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/resume', { attemptId: 999 })
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('endAttempt calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' })
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/assessments/attempt/999/end',
-					{ visitId: 'mockVisitId'}
-				)
-				expect(result).toEqual(mockJsonResult)
+		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/end', {
+				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('reviewAttempt calls fetch', () => {
 		expect.hasAssertions()
 
-		return APIUtil.reviewAttempt('mockAttemptIds', {})
-			.then(result => {
-				expect(post).toHaveBeenCalledWith(
-					'/api/assessments/attempt/review',
-					{ attemptIds:'mockAttemptIds' }
-				)
-				expect(result).toEqual(mockJsonResult)
+		return APIUtil.reviewAttempt('mockAttemptIds', {}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
+				attemptIds: 'mockAttemptIds'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 
 	test('resendLTIAssessmentScore calls fetch', () => {
@@ -394,14 +356,11 @@ describe('apiutil', () => {
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
 		}).then(result => {
-			expect(post).toHaveBeenCalledWith(
-				'/api/lti/send-assessment-score',
-				{
-					draftId: 'mockDraftId',
-					assessmentId: 'mockAssessmentId',
-					visitId: 'mockVisitId'
-				}
-			)
+			expect(post).toHaveBeenCalledWith('/api/lti/send-assessment-score', {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId',
+				visitId: 'mockVisitId'
+			})
 
 			expect(result).toEqual(mockJsonResult)
 		})
@@ -421,13 +380,10 @@ describe('apiutil', () => {
 			draftId: 'mockDraftId',
 			visitId: 'mockVisitId'
 		}).then(result => {
-			expect(post).toHaveBeenCalledWith(
-				'/api/assessments/clear-preview-scores',
-				{
-					draftId: 'mockDraftId',
-					visitId: 'mockVisitId'
-				}
-			)
+			expect(post).toHaveBeenCalledWith('/api/assessments/clear-preview-scores', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
+			})
 
 			expect(result).toEqual(mockJsonResult)
 		})
@@ -459,10 +415,7 @@ describe('apiutil', () => {
 		})
 
 		return APIUtil.postDraft('mockDraftId', {}).then(result => {
-			expect(post).toHaveBeenCalledWith(
-				'/api/drafts/mockDraftId',
-				{}
-			)
+			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
 
 			expect(result).toEqual(mockJsonResult)
 		})
@@ -479,12 +432,9 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postDraft('mockDraftId', {}).then(result => {
-			expect(post).toHaveBeenCalledWith(
-				'/api/drafts/mockDraftId',
-				{}
-			)
-			expect(console.error).toHaveBeenCalledWith('mockError')
+		return APIUtil.postDraft('mockDraftId', {}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
+			expect(console.error).toHaveBeenCalledWith('mockError') //eslint-disable-line no-console
 		})
 	})
 
@@ -519,4 +469,12 @@ describe('apiutil', () => {
 		expect(response).toEqual({ mediaId: 'mockMediaId' })
 	})
 
+	test('getVisitSessionStatus calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getVisitSessionStatus('mock-draft-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/visits/mock-draft-id/status')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
 })

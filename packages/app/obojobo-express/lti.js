@@ -8,15 +8,15 @@ const uuid = require('uuid').v4
 
 const MINUTES_EXPIRED_LAUNCH = 300
 
-const ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH /*  */ = new Error('No outcome service found for launch')
-const ERROR_SCORE_IS_NULL /*                  */ = new Error('LTI score is null')
-const ERROR_PREVIEW_MODE /*                   */ = new Error('Preview mode is on')
-const ERROR_FATAL_REPLACE_RESULT_FAILED /*    */ = new Error('Replace result failed')
-const ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND /**/ = new Error('No assessment score found')
-const ERROR_FATAL_NO_SECRET_FOR_KEY /*        */ = new Error('No LTI secret found for key')
-const ERROR_FATAL_NO_LAUNCH_FOUND /*          */ = new Error('No launch found')
-const ERROR_FATAL_LAUNCH_EXPIRED /*           */ = new Error('Launch expired')
-const ERROR_FATAL_SCORE_IS_INVALID /*         */ = new Error('LTI score is invalid')
+const ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH /*  */ = 'No outcome service found for launch'
+const ERROR_SCORE_IS_NULL /*                  */ = 'LTI score is null'
+const ERROR_PREVIEW_MODE /*                   */ = 'Preview mode is on'
+const ERROR_FATAL_REPLACE_RESULT_FAILED /*    */ = 'Replace result failed'
+const ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND /**/ = 'No assessment score found'
+const ERROR_FATAL_NO_SECRET_FOR_KEY /*        */ = 'No LTI secret found for key'
+const ERROR_FATAL_NO_LAUNCH_FOUND /*          */ = 'No launch found'
+const ERROR_FATAL_LAUNCH_EXPIRED /*           */ = 'Launch expired'
+const ERROR_FATAL_SCORE_IS_INVALID /*         */ = 'LTI score is invalid'
 
 const STATUS_SUCCESS /*                             */ = 'success'
 const STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH /* */ =
@@ -181,7 +181,7 @@ const getLatestHighestAssessmentScoreRecord = (
 		)
 		.then(dbResult => {
 			if (!dbResult) {
-				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
+				throw Error(ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND)
 			}
 
 			result.id = dbResult.id
@@ -342,13 +342,7 @@ const getRequiredDataForReplaceResult = function(
 			}
 
 			logger.info(
-				`LTI found assessment score. Details: user:"${
-					result.assessmentScoreRecord.userId
-				}", draft:"${result.assessmentScoreRecord.draftId}", score:"${
-					result.assessmentScoreRecord.score
-				}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${
-					result.assessmentScoreRecord.attemptId
-				}", preview:"${result.assessmentScoreRecord.isPreview}"`,
+				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result.assessmentScoreRecord.score}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${result.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.isPreview}"`,
 				logId
 			)
 
@@ -380,7 +374,7 @@ const getRequiredDataForReplaceResult = function(
 			result.launch = ltiLaunch
 
 			if (result.scoreType === SCORE_TYPE_INVALID) {
-				throw ERROR_FATAL_SCORE_IS_INVALID
+				throw Error(ERROR_FATAL_SCORE_IS_INVALID)
 			}
 			if (ltiLaunch.error !== null) {
 				throw ltiLaunch.error
@@ -413,7 +407,7 @@ const getOutcomeServiceForLaunch = function(launch) {
 	try {
 		if (!launch || !launch.reqVars) {
 			result.type = OUTCOME_TYPE_UNKNOWN
-			result.error = ERROR_FATAL_NO_LAUNCH_FOUND
+			result.error = Error(ERROR_FATAL_NO_LAUNCH_FOUND)
 			return result
 		} else if (!launch.reqVars.lis_outcome_service_url) {
 			result.type = OUTCOME_TYPE_NO_OUTCOME
@@ -425,7 +419,7 @@ const getOutcomeServiceForLaunch = function(launch) {
 
 		const secret = findSecretForKey(launch.key)
 		if (!secret) {
-			result.error = ERROR_FATAL_NO_SECRET_FOR_KEY
+			result.error = Error(ERROR_FATAL_NO_SECRET_FOR_KEY)
 			return result
 		}
 
@@ -474,7 +468,7 @@ const retrieveLtiLaunch = function(userId, draftId, logId, resourceLinkId) {
 		.then(dbResult => {
 			if (!dbResult) {
 				logger.error(`LTI error attempting to retrieve launch`, logId)
-				result.error = ERROR_FATAL_NO_LAUNCH_FOUND
+				result.error = Error(ERROR_FATAL_NO_LAUNCH_FOUND)
 			} else {
 				result.id = dbResult.id
 				result.reqVars = dbResult.data
@@ -484,7 +478,7 @@ const retrieveLtiLaunch = function(userId, draftId, logId, resourceLinkId) {
 			}
 
 			if (isLaunchExpired(result.createdAt)) {
-				throw ERROR_FATAL_LAUNCH_EXPIRED
+				throw Error(ERROR_FATAL_LAUNCH_EXPIRED)
 			}
 
 			return result
@@ -519,8 +513,8 @@ const sendReplaceResultRequest = (outcomeService, score) => {
 
 	return new Promise((resolve, reject) => {
 		/* istanbul ignore next */
-		if(outcomeService.service_url === 'https://example.fake/outcomes/fake'){
-			logger.info("BYPASSING SEND DUE TO USING TEST SERVICE URL")
+		if (outcomeService.service_url === 'https://example.fake/outcomes/fake') {
+			logger.info('BYPASSING SEND DUE TO USING TEST SERVICE URL')
 			return resolve(true)
 		}
 		outcomeService.send_replace_result(score, (err, result) => {
@@ -612,7 +606,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 	}
 
 	// Handle errors
-	switch (error) {
+	switch (error.message) {
 		//
 		// Expected possible errors:
 		//
@@ -703,9 +697,7 @@ const sendHighestAssessmentScore = (
 	})
 
 	logger.info(
-		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${
-			draftDocument.draftId
-		}", assessmentId:"${assessmentId}"`,
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
 		logId
 	)
 
@@ -726,15 +718,15 @@ const sendHighestAssessmentScore = (
 			result.outcomeServiceURL = outcomeData.serviceURL
 
 			if (isPreview) {
-				throw ERROR_PREVIEW_MODE
+				throw Error(ERROR_PREVIEW_MODE)
 			}
 
 			if (requiredData.ltiScoreToSend === null) {
-				throw ERROR_SCORE_IS_NULL
+				throw Error(ERROR_SCORE_IS_NULL)
 			}
 
 			if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
-				throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
+				throw Error(ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH)
 			}
 
 			if (requiredData.error !== null) {
@@ -748,13 +740,7 @@ const sendHighestAssessmentScore = (
 			result.scoreSent = requiredData.ltiScoreToSend
 
 			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${
-					requiredData.assessmentScoreRecord.id
-				}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${
-					requiredData.assessmentScoreRecord.draftId
-				}", sourcedid:"${outcomeData.resultSourcedId}", url:"${
-					outcomeData.serviceURL
-				}" using key:"${requiredData.launch.key}"`,
+				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
 				logId
 			)
 
@@ -764,7 +750,7 @@ const sendHighestAssessmentScore = (
 			logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
 
 			if (ltiRequestResult !== true) {
-				throw ERROR_FATAL_REPLACE_RESULT_FAILED
+				throw Error(ERROR_FATAL_REPLACE_RESULT_FAILED)
 			}
 
 			result.status = STATUS_SUCCESS

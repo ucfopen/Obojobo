@@ -4,7 +4,14 @@ const createCaliperEvent = require('obojobo-express/routes/api/events/create_cal
 const insertEvent = require('obojobo-express/insert_event')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-const resumeAttempt = async (currentUser, currentVisit, currentDocument, attemptId, hostname, remoteAddress) => {
+const resumeAttempt = async (
+	currentUser,
+	currentVisit,
+	currentDocument,
+	attemptId,
+	hostname,
+	remoteAddress
+) => {
 	// @TODO: these used to be req and res objects from express
 	// are they needed for OboModel.yell() ?!?!
 	// see: attemptStart.getSendToClientPromises

@@ -103,11 +103,9 @@ var getChosen = (node, questionIds) => {
 
 var toStateObject = (root, questionIds) => {
 	const questions = getChosen(root, questionIds)
-	const questionObjects = questions
-		.map(q => ({ id: q.id, type: q.type }))
-		.filter(q => {
-			return q.id !== root.id
-		})
+	const questionObjects = questions.map(q => ({ id: q.id, type: q.type })).filter(q => {
+		return q.id !== root.id
+	})
 
 	return {
 		chosen: questionObjects
@@ -133,7 +131,7 @@ var selectAttemptRecords = async (db, limit, offset) => {
 
 var processAttemptRecords = async (db, limit, offset) => {
 	let updates = ''
-	console.log(`processing attempt records ${offset} - ${offset+limit}`)
+	console.log(`processing attempt records ${offset} - ${offset + limit}`)
 
 	// Retreive 500 attempts at a time
 	const records = await selectAttemptRecords(db, 500, offset)

@@ -4,9 +4,12 @@ import { mount } from 'enzyme'
 
 const mockedDebounce = jest.fn().mockImplementation((time, fn) => fn())
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
+	return (time, fn) => mockedDebounce(time, fn)
+})
+
 jest.mock('./utils', () => {
 	return {
-		debounce: (time, fn) => mockedDebounce(time, fn),
 		isUrlUUID: require.requireActual('./utils').isUrlUUID
 	}
 })
@@ -31,7 +34,9 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties component with allowedUploadTypes', () => {
-		const component = mount(<ImageProperties allowedUploadTypes=".mockType1,.mockType2" content={{ size: 'custom' }} />)
+		const component = mount(
+			<ImageProperties allowedUploadTypes=".mockType1,.mockType2" content={{ size: 'custom' }} />
+		)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -153,7 +158,14 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties custom height handles null values', () => {
-		const component = mount(<ImageProperties content={{ size: 'custom' }} height={null} width={null} onConfirm={jest.fn} />)
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+			/>
+		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-height')
 		input.simulate('change', { target: { value: null } })
@@ -161,7 +173,14 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties custom width handles null values', () => {
-		const component = mount(<ImageProperties content={{ size: 'custom' }} height={null} width={null} onConfirm={jest.fn} />)
+		const component = mount(
+			<ImageProperties
+				content={{ size: 'custom' }}
+				height={null}
+				width={null}
+				onConfirm={jest.fn}
+			/>
+		)
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-width')
 		input.simulate('change', { target: { value: null } })

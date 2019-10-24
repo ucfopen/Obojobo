@@ -85,11 +85,10 @@ describe('Draft Model', () => {
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return DraftModel.fetchById('whatever')
-			.catch(err => {
-				expect(err).toBeInstanceOf(Error)
-				expect(err.message).toBe('not found in db')
-			})
+		return DraftModel.fetchById('whatever').catch(err => {
+			expect(err).toBeInstanceOf(Error)
+			expect(err.message).toBe('not found in db')
+		})
 	})
 
 	test('createWithContent inserts a new draft', () => {
@@ -167,28 +166,26 @@ describe('Draft Model', () => {
 
 		db.one.mockResolvedValueOnce({ id })
 
-		return DraftModel.updateContent(id, jsonContent, xmlContent)
-			.then(resultId => {
-				expect(resultId).toBe(id)
-				expect(db.one).toBeCalledWith(
-					expect.any(String),
-					expect.objectContaining({
-						draftId: id,
-						jsonContent: jsonContent,
-						xmlContent: xmlContent
-					})
-				)
-			})
+		return DraftModel.updateContent(id, jsonContent, xmlContent).then(resultId => {
+			expect(resultId).toBe(id)
+			expect(db.one).toBeCalledWith(
+				expect.any(String),
+				expect.objectContaining({
+					draftId: id,
+					jsonContent: jsonContent,
+					xmlContent: xmlContent
+				})
+			)
+		})
 	})
 
 	test('updateContent fails as expected', () => {
 		expect.hasAssertions()
 		db.one.mockRejectedValueOnce('test error')
 
-		return DraftModel.updateContent(555, 'content')
-			.catch(err => {
-				expect(err).toBe('test error')
-			})
+		return DraftModel.updateContent(555, 'content').catch(err => {
+			expect(err).toBe('test error')
+		})
 	})
 
 	test('findDuplicateIds parses a single level draft with no duplications', () => {
@@ -340,7 +337,7 @@ describe('Draft Model', () => {
 	test('xmlDocument querries the database and returns xml content', () => {
 		expect.hasAssertions()
 
-		const mockQueryResult = {xml: 'mock-xml-content'}
+		const mockQueryResult = { xml: 'mock-xml-content' }
 		db.one.mockResolvedValueOnce(mockRawDraft)
 		db.oneOrNone.mockResolvedValueOnce(mockQueryResult)
 
@@ -354,7 +351,6 @@ describe('Draft Model', () => {
 	test('xmlDocument querries the database and returns void with no results', () => {
 		expect.hasAssertions()
 
-		const mockQueryResult = {xml: 'mock-xml-content'}
 		db.one.mockResolvedValueOnce(mockRawDraft)
 		db.oneOrNone.mockResolvedValueOnce(null)
 

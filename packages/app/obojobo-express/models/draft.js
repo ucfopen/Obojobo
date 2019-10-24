@@ -143,37 +143,36 @@ class Draft {
 	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
 		let newDraft
 
-		return db
-			.tx(transactionDb => {
-				// Create a draft first
-				return transactionDb
-					.one(
-						`
+		return db.tx(transactionDb => {
+			// Create a draft first
+			return transactionDb
+				.one(
+					`
 						INSERT INTO drafts
 							(user_id)
 						VALUES
 							($[userId])
 						RETURNING *`,
-						{ userId }
-					)
-					.then(newDraftResult => {
-						newDraft = newDraftResult
-						// Add content referencing the draft
-						return transactionDb.one(
-							`
+					{ userId }
+				)
+				.then(newDraftResult => {
+					newDraft = newDraftResult
+					// Add content referencing the draft
+					return transactionDb.one(
+						`
 							INSERT INTO drafts_content
 								(draft_id, content, xml)
 							VALUES
 								($[draftId], $[jsonContent], $[xmlContent])
 							RETURNING *`,
-							{ draftId: newDraft.id, jsonContent, xmlContent }
-						)
-					})
-					.then(newContentResult => {
-						newDraft.content = newContentResult
-						return newDraft
-					})
-			})
+						{ draftId: newDraft.id, jsonContent, xmlContent }
+					)
+				})
+				.then(newContentResult => {
+					newDraft.content = newContentResult
+					return newDraft
+				})
+		})
 	}
 
 	static updateContent(draftId, jsonContent, xmlContent) {
@@ -211,7 +210,7 @@ class Draft {
 		return this.root.toObject()
 	}
 
-	get xmlDocument(){
+	get xmlDocument() {
 		return db
 			.oneOrNone(
 				`
@@ -225,7 +224,7 @@ class Draft {
 				{ id: this.draftId }
 			)
 			.then(xml => {
-				if(xml) return xml.xml
+				if (xml) return xml.xml
 				return null
 			})
 	}

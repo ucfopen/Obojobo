@@ -1,19 +1,15 @@
 import Common from 'Common'
 import Viewer from 'Viewer'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import './polyfills'
-
-const debounce = function(ms, cb) {
-	clearTimeout(debounce.id)
-	return (debounce.id = setTimeout(cb, ms))
-}
-debounce.id = null
-
-// set up global event listeners
 const { Dispatcher } = Common.flux
+
+// get the visit and draft from the url
+const urlTokens = document.location.pathname.split('/')
+const visitId = urlTokens[4] ? urlTokens[4] : null
+const draftId = urlTokens[2] ? urlTokens[2] : null
+
 
 // Set up listeners for window for blur/focus
 const onFocus = function() {
@@ -39,7 +35,7 @@ if (ie) {
 window.__oboViewerRender = () => {
 	ReactDOM.render(
 		<div className="root">
-			<Viewer.components.ViewerApp />
+			<Viewer.components.ViewerApp visitId={visitId} draftId={draftId} />
 		</div>,
 		document.getElementById('viewer-app')
 	)

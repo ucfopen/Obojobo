@@ -48,12 +48,7 @@ const oboToSlate = node => {
 					'' + (node.content.choose || Infinity),
 					'Choose'
 				),
-				SelectParameter.helpers.oboToSlate(
-					'select',
-					node.content.select,
-					'Select',
-					SELECT_TYPES
-				)
+				SelectParameter.helpers.oboToSlate('select', node.content.select, 'Select', SELECT_TYPES)
 			]
 		}
 	]

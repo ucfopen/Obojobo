@@ -1,10 +1,20 @@
+/* eslint-disable no-undefined */
+/* eslint-disable no-console */
+
 import setProp from '../../../src/scripts/common/util/set-prop.js'
+import mockConsole from 'jest-mock-console'
 
 describe('setProp', () => {
 	let target
+	let restoreConsole
 
 	beforeEach(() => {
 		target = {}
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('sets default values when no attrs passed', () => {
@@ -74,12 +84,14 @@ describe('setProp', () => {
 
 	test('when transformFn throws an error, the default value is used', () => {
 		const transformFn = jest.fn()
-		transformFn.mockImplementation(x => {throw Error('mock-error')})
+		transformFn.mockImplementation(() => {
+			throw Error('mock-error')
+		})
 
 		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', transformFn)
 		expect(target).toEqual({
 			myProp: 'default-value'
 		})
-
+		expect(console.error).toHaveBeenCalledTimes(2)
 	})
 })

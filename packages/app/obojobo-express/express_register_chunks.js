@@ -36,4 +36,5 @@ module.exports = app => {
 	registerAssetVersions('viewer', '.css')
 	registerAssetVersions('editor', '.js')
 	registerAssetVersions('editor', '.css')
+	registerAssetVersions('draftmanager', '.js')
 }

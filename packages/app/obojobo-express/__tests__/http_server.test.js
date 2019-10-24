@@ -1,4 +1,4 @@
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 
 describe('http_server', () => {
 	let logger
@@ -59,11 +59,13 @@ describe('http_server', () => {
 		expect(http.createServer).toHaveBeenCalledWith({}, app)
 		expect(https.createServer).not.toHaveBeenCalled()
 		// eslint-disable-next-line no-console
-		expect(console.log).toHaveBeenCalledWith('Note: Logging and config options can be set using environment variables.')
+		expect(console.log).toHaveBeenCalledWith(
+			'Note: Logging and config options can be set using environment variables.'
+		)
 	})
 
 	test('startServer starts an https server when it receives a cert', () => {
-		const serverOptions = {cert: 'fake-cert', key: 'fake-key'}
+		const serverOptions = { cert: 'fake-cert', key: 'fake-key' }
 		const returnValue = httpServer(app, logger, 3000, serverOptions)
 
 		expect(returnValue).toBe(secureServer)
