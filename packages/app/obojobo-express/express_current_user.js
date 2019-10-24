@@ -13,6 +13,11 @@ const resetCurrentUser = req => {
 	req.currentUser = null
 }
 
+const resovleWithNewGuest = req => {
+	req.currentUser = new GuestUser()
+	return Promise.resolve(req.currentUser)
+}
+
 // returns a Promise!!!
 const getCurrentUser = (req, isRequired = false) => {
 	// return early if already verified
@@ -30,8 +35,7 @@ const getCurrentUser = (req, isRequired = false) => {
 			)
 			return Promise.reject(new Error('Login Required'))
 		}
-		req.currentUser = new GuestUser()
-		return Promise.resolve(req.currentUser)
+		return resovleWithNewGuest(req)
 	}
 
 	// fetch user from database using session data for the user id
@@ -43,8 +47,7 @@ const getCurrentUser = (req, isRequired = false) => {
 		.catch(err => {
 			logger.warn('getCurrentUser', err)
 			if (isRequired) return Promise.reject(new Error('Login Required'))
-			req.currentUser = new GuestUser()
-			return Promise.resolve(req.currentUser)
+			return resovleWithNewGuest(req)
 		})
 }
 

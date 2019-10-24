@@ -28,3 +28,15 @@ process.on('unhandledRejection', (reason, p) => {
 global.flushPromises = () => {
 	return new Promise(resolve => setImmediate(resolve))
 }
+
+const buildMockReactComponent = name => {
+	const MockComponent = () => name
+	MockComponent.displayName = name
+	return MockComponent
+}
+
+// helper to quickly create a standin mock react component with a name
+// : jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
+global.mockReactComponent = (target, name) => {
+	return buildMockReactComponent.call(target, name)
+}

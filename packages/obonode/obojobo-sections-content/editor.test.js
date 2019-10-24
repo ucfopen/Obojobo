@@ -1,42 +1,24 @@
-/* eslint no-undefined: 0 */
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import './editor'
-
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		registerModel: jest.fn()
+		registerEditorModel: jest.fn()
 	}
 }))
 
-describe('Sections/Content editor', () => {
-	test('registers model with expected values', () => {
-		const sectionsContentMock = Common.Registry.registerModel.mock.calls[0][1]
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
 
-		expect(sectionsContentMock.slateToObo()).toBe(undefined)
-		expect(sectionsContentMock.oboToSlate()).toBe(undefined)
+import Common from 'obojobo-document-engine/src/scripts/common/index'
 
-		expect(JSON.stringify(sectionsContentMock)).toEqual(
-			JSON.stringify({
-				name: 'Section Content',
-				ignore: true,
-				isInsertable: false,
-				slateToObo: () => {},
-				oboToSlate: () => {},
-				plugins: null,
-				getNavItem: () => ({
-					type: 'hidden',
-					showChildren: true
-				})
-			})
-		)
-	})
-	test('getNavItem returns expected object', () => {
-		const sectionsContentMock = Common.Registry.registerModel.mock.calls[0][1]
+describe('Conetent editor script', () => {
+	test('registers node', () => {
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		expect(sectionsContentMock.getNavItem()).toEqual({
-			showChildren: true,
-			type: 'hidden'
-		})
+		require('./editor')
+		const EditorRegistration = require('./editor-registration')
+
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
+
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })

@@ -1,13 +1,43 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
 import Question from './editor-component'
+
+jest.mock('obojobo-document-engine/src/scripts/common', () => ({
+	Registry: {
+		getItemForType: type => ({
+			slateToObo: () => ({
+				slateToOboReturnFor: type
+			}),
+			oboToSlate: type => ({
+				oboToSlateReturnFor: type
+			})
+		})
+	},
+	components: {
+		// eslint-disable-next-line react/display-name
+		Button: props => <button {...props}>{props.children}</button>
+	},
+	util: {
+		ModalUtil: {
+			hide: jest.fn(),
+			show: jest.fn()
+		}
+	},
+}))
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
+	props => <div>{props.children}</div>
+))
+
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 
 describe('Question Editor Node', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
 	test('Question builds the expected component', () => {
 		const component = renderer.create(
 			<Question
@@ -57,23 +87,20 @@ describe('Question Editor Node', () => {
 			<Question
 				node={{
 					data: {
-						get: () => ({
-							type: 'default'
-						})
+						get: () => ({ type: 'default' })
 					},
 					nodes: {
-						last: () => ({ type: SOLUTION_NODE })
+						last: () => ({ type: SOLUTION_NODE }),
+						get: () => ({ type: SOLUTION_NODE })
 					}
 				}}
 				editor={editor}
 			/>
 		)
-		const tree = component.html()
 
-		component.find('button').simulate('click')
+		component.find('Button').simulate('click')
 
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component adds Solution', () => {
@@ -107,7 +134,7 @@ describe('Question Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Question component allows you to change question type', () => {
+	test('Question component allows you to change set type', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -129,12 +156,18 @@ describe('Question Editor Node', () => {
 				editor={editor}
 			/>
 		)
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('change', { target: { checked: true } })
+
 		const tree = component.html()
 
 		component
-			.find('select')
+			.find('input')
 			.at(0)
-			.simulate('change', { target: { value: 'survey' } })
+			.simulate('change', { target: { checked: false } })
 
 		component.update()
 
@@ -148,6 +181,19 @@ describe('Question Editor Node', () => {
 		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(2, 'mock-mca-id', {
 			data: {
 				questionType: 'survey'
+			}
+		})
+
+		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(3, 'mock-id', {
+			data: {
+				content: {
+					type: 'default'
+				}
+			}
+		})
+		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(4, 'mock-mca-id', {
+			data: {
+				questionType: 'default'
 			}
 		})
 

@@ -12,13 +12,16 @@ class Assessment extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = this.props.node.data.get('content')
+		this.addRubric = this.addRubric.bind(this)
 	}
 
 	addRubric() {
-		const editor = this.props.editor
-
 		const newRubric = Block.create(emptyRubric)
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newRubric)
+		return this.props.editor.insertNodeByKey(
+			this.props.node.key,
+			this.props.node.nodes.size,
+			newRubric
+		)
 	}
 
 	render() {
@@ -27,7 +30,7 @@ class Assessment extends React.Component {
 			<div className={'obojobo-draft--sections--assessment'}>
 				{this.props.children}
 				{!hasRubric ? (
-					<Button className={'add-rubric'} onClick={() => this.addRubric()}>
+					<Button className={'add-rubric'} onClick={this.addRubric}>
 						{'Add Rubric'}
 					</Button>
 				) : null}

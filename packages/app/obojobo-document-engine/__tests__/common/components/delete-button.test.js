@@ -1,6 +1,10 @@
 import React from 'react'
 import DeleteButton from '../../../src/scripts/common/components/delete-button'
+import DeleteButtonBase from '../../../src/scripts/common/components/delete-button-base'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
+
+jest.mock('../../../src/scripts/common/page/focus')
 
 describe('DeleteButton', () => {
 	test('DeleteButton component', () => {
@@ -32,9 +36,17 @@ describe('DeleteButton', () => {
 	})
 
 	test('DeleteButton component with onClick', () => {
-		const component = renderer.create(<DeleteButton onClick={function() {}} />)
+		const component = renderer.create(<DeleteButton onClick={() => {}} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('DeleteButton calls focus callback with ref argument', () => {
+		const focus = require('../../../src/scripts/common/page/focus').default
+		const wrapper = mount(<DeleteButton focus={focus} />)
+		const inst = wrapper.find(DeleteButtonBase).instance()
+		inst.focus()
+		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef)
 	})
 })

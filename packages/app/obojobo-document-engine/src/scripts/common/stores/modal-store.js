@@ -1,6 +1,6 @@
-import Store from '../../common/flux/store'
-import Dispatcher from '../../common/flux/dispatcher'
-import focus from '../../common/page/focus'
+import Store from '../flux/store'
+import Dispatcher from '../flux/dispatcher'
+import focus from '../page/focus'
 
 class ModalStore extends Store {
 	constructor() {

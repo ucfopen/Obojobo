@@ -1,9 +1,17 @@
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		getItemForType: () => ({
-			slateToObo: jest.fn(),
-			oboToSlate: jest.fn()
+			slateToObo: args => ({mock: 'slateToObo', args}),
+			oboToSlate: args => ({mock: 'oboToSlate', args})
 		})
+	},
+	components:{
+		modal: {
+			SimpleDialog: () => 'SimpleDialog'
+		}
+	},
+	util: {
+		ModalUtil: {}
 	}
 }))
 

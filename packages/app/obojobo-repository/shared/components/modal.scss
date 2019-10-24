@@ -1,0 +1,52 @@
+@import '../../client/css/defaults';
+$z-index-above-all: 200;
+$duration-animation-default: 0.2s;
+
+@keyframes obojobo-draft--components--modal-container {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes obojobo-draft--components--modal-container--content {
+	0% {
+		transform: translate(-50%, -100%) scale(2, 2);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translate(-50%, -50%) scale(1, 1);
+		opacity: 1;
+	}
+}
+
+.repository--modal-overlay {
+	position: fixed;
+	overflow: scroll;
+	background: rgba(0, 0, 0, 0.7);
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	animation-duration: $duration-animation-default;
+	animation-name: obojobo-draft--components--modal-container;
+	z-index: $z-index-above-all;
+}
+
+.repository--modal {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	background-color: white;
+	padding: 20px;
+	transform: translate(-50%, -50%);
+	animation-duration: $duration-animation-default;
+	animation-name: obojobo-draft--components--modal-container--content;
+	font-family: $font-default;
+	-webkit-overflow-scrolling: touch;
+	outline: none;
+}

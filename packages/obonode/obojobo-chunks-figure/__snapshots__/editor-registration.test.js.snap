@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
+<Figure
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Figure",
+    }
+  }
+/>
+`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-center"
+  contentEditable={false}
+  data-placeholder="Type Your Caption Here"
+/>
+`;

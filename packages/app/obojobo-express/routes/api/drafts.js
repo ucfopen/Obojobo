@@ -15,8 +15,7 @@ const {
 	requireDraftId,
 	requireCanViewEditor,
 	requireCanCreateDrafts,
-	requireCanDeleteDrafts,
-	requireCurrentUser
+	requireCanDeleteDrafts
 } = oboRequire('express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -62,6 +61,36 @@ router
 		}
 	})
 
+// Get a complete Draft Document Tree (for editing)
+// mounted as /api/drafts/:draftId/full
+router
+	.route('/:draftId/raw')
+	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.get((req, res) => {
+		return db
+			.one(
+				`
+			SELECT
+				drafts.id AS id,
+				drafts.user_id as author,
+				drafts_content.id AS version,
+				drafts.created_at AS draft_created_at,
+				drafts_content.created_at AS content_created_at,
+				drafts_content.content AS content,
+				drafts_content.xml AS xml
+			FROM drafts
+			JOIN drafts_content
+				ON drafts.id = drafts_content.draft_id
+			WHERE drafts.id = $[id]
+				AND deleted = FALSE
+			ORDER BY content_created_at DESC
+			LIMIT 1
+			`,
+				{ id: req.params.draftId }
+			)
+			.then(res.success)
+	})
+
 // Get a Draft Document Tree (for viewing by a student)
 // mounted as /api/drafts/:draftId
 router
@@ -91,11 +120,9 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res) => {
+	.post((req, res, next) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -105,9 +132,7 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 
@@ -168,48 +193,7 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete((req, res) => {
-		return db
-			.none(
-				`
-			UPDATE drafts
-			SET deleted = TRUE
-			WHERE id = $[draftId]
-			AND user_id = $[userId]
-			`,
-				{
-					draftId: req.params.draftId,
-					userId: req.currentUser.id
-				}
-			)
-			.then(res.success)
-			.catch(res.unexpected)
-	})
-
-// List drafts
-// mounted as /api/drafts
-router
-	.route('/')
-	.get(requireCurrentUser)
-	.get((req, res) => {
-		return db
-			.any(
-				`
-			SELECT DISTINCT ON (draft_id)
-				draft_id AS "draftId",
-				id AS "latestVersion",
-				created_at AS "createdAt",
-				content->'content'->>'title' AS "title"
-			FROM drafts_content
-			WHERE draft_id IN (
-				SELECT id
-				FROM drafts
-				WHERE deleted = FALSE
-				AND user_id = $[userId]
-			)
-			ORDER BY draft_id, id desc
-		`,
-				{ userId: req.currentUser.id }
-			)
+		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

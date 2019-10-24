@@ -1,26 +1,23 @@
+import Common from 'obojobo-document-engine/src/scripts/common'
+
+const { OboModel } = Common.models
+
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-import {
-	getTriggersWithActionsAdded,
-	getTriggersWithActionsRemoved,
-	hasTriggerTypeWithActionType
-} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
-
-import Page from 'obojobo-pages-page/editor'
-import QuestionBank from 'obojobo-chunks-question-bank/editor'
-import Rubric from './components/rubric/editor'
-import ScoreActions from './post-assessment/editor-component'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
-
 const slateToObo = node => {
-	const content = node.data.get('content')
+	let Page
+	let QuestionBank
+	let Rubric
+	let ScoreActions
+	// Mix the model.content and the node.content to make sure that
+	// all settings are properly preserved
+	const model = OboModel.models[node.key]
+	const content = { ...node.data.get('content'), ...model.get('content') }
+
 	// Remove rubric if it has been deleted
 	delete content.rubric
 
@@ -28,38 +25,21 @@ const slateToObo = node => {
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case PAGE_NODE:
-				children.push(Page.helpers.slateToObo(child))
+				Page = Common.Registry.getItemForType(PAGE_NODE)
+				children.push(Page.slateToObo(child))
 				break
 			case QUESTION_BANK_NODE:
-				children.push(QuestionBank.helpers.slateToObo(child))
+				QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
+				children.push(QuestionBank.slateToObo(child))
 				break
 			case ACTIONS_NODE:
-				content.scoreActions = ScoreActions.helpers.slateToObo(child)
+				ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
+				content.scoreActions = ScoreActions.slateToObo(child)
 				break
 			case RUBRIC_NODE:
-				content.rubric = Rubric.helpers.slateToObo(child)
+				Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
+				content.rubric = Rubric.slateToObo(child)
 				break
-			case SETTINGS_NODE: {
-				content.attempts = child.nodes.get(0).text
-				content.review = child.nodes.get(1).data.get('current')
-				const shouldLockAssessment = child.nodes.get(2).data.get('checked')
-
-				if (shouldLockAssessment) {
-					content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
-						onNavEnter: { type: 'nav:lock' },
-						onEndAttempt: { type: 'nav:unlock' },
-						onNavExit: { type: 'nav:unlock' }
-					})
-				} else if (content.triggers) {
-					const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
-						onNavEnter: 'nav:lock',
-						onEndAttempt: 'nav:unlock',
-						onNavExit: 'nav:unlock'
-					})
-					content.triggers = updatedTriggers
-					if (content.triggers.length === 0) delete content.triggers
-				}
-			}
 		}
 	})
 
@@ -74,41 +54,23 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const content = node.get('content')
 
-	const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
-	const endAttemptUnlock =
-		hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-		hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
-
-	const nodes = [
-		{
-			object: 'block',
-			type: SETTINGS_NODE,
-			nodes: [
-				TextParameter.helpers.oboToSlate('attempts', content.attempts + '', 'Attempts'),
-				SelectParameter.helpers.oboToSlate('review', content.review, 'Review', [
-					'always',
-					'never',
-					'no-attempts-remaining'
-				]),
-				ToggleParameter.helpers.oboToSlate(
-					'assessment lock',
-					startAttemptLock && endAttemptUnlock,
-					'Lock Assessment on Start'
-				)
-			]
-		}
-	]
-
-	node.attributes.children.forEach(child => {
+	const nodes = node.attributes.children.map(child => {
 		if (child.type === PAGE_NODE) {
-			nodes.push(Page.helpers.oboToSlate(child))
+			const Page = Common.Registry.getItemForType(PAGE_NODE)
+			return Page.oboToSlate(child)
 		} else {
-			nodes.push(QuestionBank.helpers.oboToSlate(child))
+			const QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
+			return QuestionBank.oboToSlate(child)
 		}
 	})
 
-	nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
-	if (content.rubric) nodes.push(Rubric.helpers.oboToSlate(content.rubric))
+	const ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
+	nodes.push(ScoreActions.oboToSlate(content.scoreActions))
+
+	if (content.rubric) {
+		const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
+		nodes.push(Rubric.oboToSlate(content.rubric))
+	}
 
 	return {
 		object: 'block',

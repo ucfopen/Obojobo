@@ -1,19 +1,16 @@
 import { Block } from 'slate'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
-
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const TEXT_PARAMETER = 'oboeditor.text-parameter'
 const SELECT_PARAMETER = 'oboeditor.select-parameter'
-
-import emptyQuestion from 'obojobo-chunks-question/empty-node.json'
-
 const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
 
 const schema = {
@@ -33,7 +30,8 @@ const schema = {
 							})
 							return editor.insertNodeByKey(node.key, index, block)
 						}
-						const block = Block.create(emptyQuestion)
+						const Question = Common.Registry.getItemForType(QUESTION_NODE)
+						const block = Block.create(Question.insertJSON)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {

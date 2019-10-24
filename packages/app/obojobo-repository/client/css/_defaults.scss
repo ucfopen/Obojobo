@@ -1,0 +1,90 @@
+@import './media-queries';
+
+$border-color: #cccccc;
+$button-color: #76c7aa;
+$color-banner-bg: #e8e3eb;
+$color-action: #6714bd;
+$color-button-bg: lighten($color-action, 9%);
+$color-action-minor: desaturate(lighten($color-action, 30%), 40%);
+$color-error: #990000;
+$color-dangerous: #d40000;
+$color-text: #000000;
+$color-text-minor: lighten($color-text, 40%);
+$color-text-subheading: #a20e83;
+$color-bg: #ffffff;
+$color-shadow: rgba(0, 0, 0, 0.3);
+$color-highlight: #93c6ff;
+$color-bg2: #f4f4f4;
+$color-bg3: #131313;
+$color-action-bg: #f9f4ff;
+$color-correct: #38ae24;
+$color-incorrect: #c21f00;
+$color-alt-correct: #ffc802;
+$color-unchosen-correct: #808080;
+$color-transparent: rgba(0, 0, 0, 0);
+$color-browser-focus: #5991ca;
+$color-comment: #ffd400;
+$color-preview: #0d4fa7;
+$color-reward: #ffe65d;
+$color-reward-text: #947d00;
+$color-obojobo-blue: #0d4fa7;
+$color-preview: #af1b5c;
+
+$size-spacing-vertical-big: 40px;
+$size-spacing-vertical-half: $size-spacing-vertical-big / 2;
+$size-spacing-vertical-internal: $size-spacing-vertical-half / 2;
+
+$box-shadow-focus: 0 0 3px 3px $color-browser-focus;
+$box-shadow-overlay: 0 2px 2px $color-shadow;
+
+// default for obobjobo
+// in documents: headers, buttons, dialogs
+$font-default: 'Libre Franklin', Arial, sans-serif;
+
+// use for larger blocks of text
+// in a document: all content
+$font-text: 'Noto Serif', serif;
+// math or code text
+$font-monospace: 'Roboto Mono', monospace;
+$font-size: 14.25pt;
+
+$dimension-module-icon: 90px;
+$dimension-avatar-icon: 90px;
+
+@mixin text-input() {
+	box-sizing: border-box;
+	font-family: $font-monospace;
+	font-size: 0.8em;
+	padding: 0.4em;
+}
+
+@mixin with-bottom-border() {
+	position: relative;
+	padding-bottom: $size-spacing-vertical-internal;
+	margin-bottom: $size-spacing-vertical-half;
+
+	// border line between items
+	&::after {
+		position: absolute;
+		bottom: 0;
+		left: 8%;
+		margin: 0 auto;
+		border-bottom: 1px solid $border-color;
+		content: '';
+		display: block;
+		width: 84%;
+	}
+
+	// disable border line on last item
+	&:last-child::after {
+		display: none;
+	}
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font-family: $font-default;
+	font-size: 1.1em;
+}

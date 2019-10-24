@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rubric editor extractTextToFragment copies the current text 1`] = `
+Immutable.Record {
+  "data": Immutable.Map {},
+  "key": "0",
+  "nodes": Immutable.List [
+    Immutable.Record {
+      "data": Immutable.Map {},
+      "key": "1",
+      "nodes": Immutable.List [
+        Immutable.Record {
+          "data": Immutable.Map {
+            "indent": 0,
+          },
+          "key": "2",
+          "nodes": Immutable.List [
+            Immutable.Record {
+              "leaves": Immutable.List [
+                Immutable.Record {
+                  "marks": Immutable.Set [],
+                  "text": "selected text",
+                },
+              ],
+              "key": "3",
+            },
+          ],
+          "type": "ObojoboDraft.Chunks.Text.TextLine",
+        },
+      ],
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+  ],
+}
+`;
+
+exports[`Rubric editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
+<ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 2`] = `
+<ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 3`] = `
+<Mod
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders the rubric when passed 1`] = `
+<Rubric
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric",
+    }
+  }
+/>
+`;

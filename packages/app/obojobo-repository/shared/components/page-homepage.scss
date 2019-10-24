@@ -1,0 +1,650 @@
+/* stylelint-disable */
+@import '../../client/css/defaults';
+
+/* global element styles */
+a {
+	color: black;
+}
+
+a:hover {
+	color: #6b4b93;
+}
+
+/* Set a defined width for browsers that don't understand media queries */
+html {
+	min-width: 1105px;
+}
+
+@media (min-width: 1px) {
+	html {
+		min-width: 0;
+	}
+}
+
+body {
+	font-family: 'Source Sans Pro', Arial, sans;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+
+header {
+	height: 70px;
+	border-bottom: 1px solid #cccccc;
+	background: white;
+}
+
+header .header-container {
+	margin: 0 auto;
+	max-width: 1000px;
+	position: relative;
+}
+
+header .header-container .logo {
+	position: absolute;
+	top: 16px;
+	left: 20px;
+	font-size: 33px;
+	color: #0c59b0;
+	background-image: url('/images/obojobo-logo.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+	display: block;
+	height: 25px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 130px;
+}
+
+header .header-container .logo span {
+	visibility: hidden;
+}
+
+header .header-container nav {
+	position: absolute;
+	right: 20px;
+	top: 11px;
+}
+
+header .header-container nav > ul {
+	padding: 0;
+	margin: 0;
+}
+
+header .header-container nav > ul > li {
+	list-style-type: none;
+	display: inline-block;
+	position: relative;
+	padding: 0;
+	height: 50px;
+	border: 1px solid white;
+
+	/* line-height: 0; */
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+header .header-container nav > ul > li:first-child {
+	margin-left: 0;
+}
+
+header .header-container nav > ul > li:hover {
+	border: 1px solid gray;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+header .header-container nav > ul > li > a {
+	text-decoration: none;
+	padding: 0 1.5em;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: inline-block;
+	border-bottom: 1px solid white;
+	position: relative;
+	height: 100%;
+	line-height: 3em;
+}
+
+header .header-container nav > ul > li:hover > a {
+	z-index: 3;
+}
+
+header .header-container nav > ul > li > a:hover {
+	text-decoration: underline;
+	background: #ebe5f8;
+	z-index: 3;
+}
+
+header .header-container nav > ul > li > ul {
+	padding: 0;
+	margin: 0;
+	text-align: right;
+	position: absolute;
+	right: -1px;
+	display: none;
+	background: white;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+	border: 1px solid gray;
+	top: 47px;
+	z-index: 2;
+}
+
+header .header-container nav > ul > li:hover > ul {
+	display: block;
+}
+
+header .header-container nav > ul > li > ul > li {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+header .header-container nav > ul > li:first-child {
+	margin-left: 0;
+}
+
+header .header-container nav > ul > li > ul > li a {
+	padding: 1em 1.5em;
+	display: block;
+	text-decoration: none;
+}
+
+header .header-container nav > ul > li > ul > li a:hover {
+	background: #ebe5f8;
+	text-decoration: underline;
+}
+
+.hero {
+	background: url('/images/homepage/hero-bg.jpg') no-repeat center;
+	height: 658px;
+	width: 100%;
+	margin-bottom: 300px;
+}
+
+.hero .computers {
+	background: url('/images/homepage/hero-computer-new.png') no-repeat center 100px;
+	width: 933px;
+	height: 710px;
+	margin: 0 auto;
+	position: relative;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.hero .computers .ipad {
+	background: url('/images/homepage/hero-ipad.png') no-repeat;
+	width: 181px;
+	height: 279px;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: -12px;
+	right: -38px;
+}
+
+.hero h1 {
+	font-size: 54pt;
+	font-weight: 300;
+	letter-spacing: 0.03em;
+}
+
+.hero iframe {
+	margin-top: 126px;
+	width: 694px;
+	margin-right: 33px;
+	height: 390px;
+}
+
+.content {
+	overflow: hidden;
+	background: url('/images/homepage/dotted-line-coverup.png') no-repeat center top,
+		url('/images/homepage/dotted-line-coverup.png') no-repeat center bottom,
+		url('/images/homepage/dotted-line-bg.png') center center repeat-y;
+}
+
+.step {
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.step .step-items-container {
+	width: 366px;
+	margin: 0 auto;
+	padding-top: 75px;
+	padding-bottom: 20px;
+}
+
+.step .step-items-container h1 {
+	color: #2e70bb;
+	font-size: 28pt;
+	margin: 0 0 0.2em 0;
+	padding: 0;
+	line-height: 1em;
+}
+
+.step .step-items-container h2 {
+	font-weight: 300;
+	font-size: 16pt;
+	margin: -8px 0 0 0;
+	padding: 0;
+}
+
+/* top menu widths */
+header .header-container nav > ul > .about > ul {
+	width: 280px;
+}
+
+header .header-container nav > ul > .students > ul {
+	width: 230px;
+}
+
+header .header-container nav > ul > .instructors > ul {
+	width: 300px;
+}
+
+header .header-container nav > ul > .help > ul {
+	width: 230px;
+}
+
+/* steps */
+.step-1 {
+	text-align: right;
+	background: url('/images/homepage/thinking.png') center center no-repeat;
+}
+
+.step-1 .step-items-container {
+	padding-right: 670px;
+}
+
+.step-2 {
+	text-align: left;
+	background: #3b3b3b url('/images/homepage/build.png') center center no-repeat;
+}
+
+.step-2 .step-items-container {
+	padding-left: 650px;
+}
+
+.step-2 .step-items-container h1,
+.step-2 .step-items-container h2,
+.step-2 .step-items-container p {
+	color: white;
+}
+
+.step-3 {
+	text-align: right;
+	background: url('/images/homepage/xray.png') center center no-repeat;
+}
+
+.step-3 .step-items-container {
+	padding-right: 650px;
+}
+
+.step-4 {
+	text-align: left;
+	background: #acdfda url('/images/homepage/laptop.png') center center no-repeat;
+}
+
+.step-4 .step-items-container {
+	padding-left: 650px;
+}
+
+.step-4 .step-items-container h1 {
+	color: #cc4f69;
+}
+
+.step-5 {
+	text-align: right;
+	background: url('/images/homepage/analytics.png') center center no-repeat;
+}
+
+.step-5 .step-items-container {
+	padding-right: 650px;
+}
+
+.step-6 {
+	text-align: left;
+	background: #d9f3d9 url('/images/homepage/many.png') center center no-repeat;
+}
+
+.step-6 .step-items-container {
+	padding-left: 650px;
+	padding-top: 150px;
+}
+
+.repository--homepage footer {
+	font-size: 1em;
+	border: none;
+}
+
+/* responsive */
+@include mq($from: wide) {
+	.hero {
+		background-size: 100% 658px;
+	}
+}
+
+@include mq($from: desktop) {
+	.step .step-items-container {
+		width: 336px;
+	}
+
+	.step-1 {
+		background-size: 466px;
+	}
+
+	.step-2 {
+		background-size: 249px;
+	}
+
+	.step-3 {
+		background-size: 217px;
+	}
+
+	.step-4 {
+		background-size: 228px;
+	}
+
+	.step-5 {
+		background-size: 282px;
+	}
+
+	.step-6 {
+		background-size: 916px;
+	}
+
+	.step-1 .step-items-container {
+		padding-right: 610px;
+	}
+
+	.step-2 .step-items-container {
+		padding-left: 590px;
+	}
+
+	.step-3 .step-items-container {
+		padding-right: 590px;
+	}
+
+	.step-4 .step-items-container {
+		padding-left: 590px;
+	}
+
+	.step-5 .step-items-container {
+		padding-right: 580px;
+	}
+
+	.step-6 .step-items-container {
+		padding-left: 580px;
+		padding-top: 70px;
+	}
+}
+
+@include mq($until: desktop) {
+	.hero {
+		height: 560px;
+	}
+
+	.hero h1 {
+		font-size: 38pt;
+	}
+
+	.hero .computers {
+		width: 100%;
+		height: 610px;
+		background-size: 770px;
+	}
+
+	.hero .computers .ipad {
+		display: none;
+	}
+
+	.hero iframe {
+		margin-top: 121px;
+		width: 570px;
+		margin-right: 26px;
+		height: 321px;
+	}
+
+	.content {
+		background: transparent;
+	}
+
+	.step {
+		width: auto;
+	}
+
+	.step .step-items-container {
+		padding-top: 65px;
+		width: 350px;
+	}
+
+	.step .step-items-container h1 {
+		font-size: 24pt;
+	}
+
+	.step .step-items-container h2 {
+		font-size: 14pt;
+	}
+
+	.step-1,
+	.step-3,
+	.step-5 {
+		padding-left: 50%;
+		background-position: 80%;
+	}
+
+	.step-2,
+	.step-4,
+	.step-6 {
+		padding-right: 50%;
+		background-position: 20%;
+	}
+
+	.step-1 .step-items-container,
+	.step-3 .step-items-container,
+	.step-5 .step-items-container {
+		padding-left: 0;
+		margin-left: -350px;
+	}
+
+	.step-2 .step-items-container,
+	.step-4 .step-items-container,
+	.step-6 .step-items-container {
+		padding-left: 0;
+		margin-right: -350px;
+	}
+
+	.step-1 {
+		background-size: 363px;
+	}
+
+	.step-2 {
+		background-size: 194px;
+	}
+
+	.step-3 {
+		background-size: 169px;
+	}
+
+	.step-4 {
+		background-position: 10%;
+		background-size: 305px;
+	}
+
+	.step-5 {
+		background-size: 219px;
+	}
+
+	.step-6 {
+		background-size: 493px;
+	}
+}
+
+@include mq($until: tablet) {
+	header {
+		height: auto;
+	}
+
+	header .header-container .logo {
+		left: 50%;
+		margin-left: -62px;
+	}
+
+	header .header-container nav {
+		position: static;
+		margin: 0 auto;
+		padding-top: 60px;
+	}
+
+	header .header-container nav > ul > li:hover {
+		position: static;
+	}
+
+	header .header-container nav > ul > li > ul {
+		width: auto !important;
+		top: 108px;
+		left: 0;
+		right: 0;
+		text-align: center;
+	}
+
+	.hero {
+		height: 399px;
+	}
+
+	.hero h1 {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 600px;
+	}
+
+	.hero .computers {
+		width: 100%;
+		height: 440px;
+		background-size: 500px;
+	}
+
+	.hero iframe {
+		margin-top: 113px;
+		width: 370px;
+		margin-right: 16px;
+		height: 209px;
+	}
+
+	.step {
+		height: auto;
+		background-position: center 60px;
+	}
+
+	.step .step-items-container {
+		width: 100%;
+		padding: 20px 40px;
+		text-align: center;
+		padding-top: 300px;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		padding-bottom: 2em;
+	}
+
+	.step .step-items-container h1 {
+		font-size: 30pt;
+	}
+
+	.step .step-items-container h2 {
+		font-size: 17pt;
+		margin-bottom: 1.5em;
+	}
+
+	.step .step-items-container p {
+		text-align: justify;
+	}
+
+	.step-1,
+	.step-2,
+	.step-3,
+	.step-4,
+	.step-5,
+	.step-6 {
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.step-1 .step-items-container,
+	.step-2 .step-items-container,
+	.step-3 .step-items-container,
+	.step-4 .step-items-container,
+	.step-5 .step-items-container,
+	.step-6 .step-items-container {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.step-4 {
+		background-position: center 85px;
+	}
+
+	.step-5 {
+		background-position: center 30px;
+	}
+
+	.repository--homepage footer {
+		font-size: 0.8em;
+	}
+}
+
+@include mq($from: zero, $until: mobileL) {
+	.hero {
+		height: 215px;
+		margin-bottom: 170px;
+	}
+
+	.hero h1 {
+		font-size: 30pt;
+	}
+
+	.hero .computers {
+		height: 250px;
+		background-size: 310px;
+		background-position: center 30px;
+	}
+
+	.hero iframe {
+		margin-top: 38px;
+		width: 230px;
+		margin-right: 10px;
+		height: 129px;
+	}
+
+	header .header-container nav > ul > li > a {
+		font-size: 10pt;
+		padding: 0 1em;
+	}
+
+	header .header-container nav > ul > li > ul > li a {
+		font-size: 10pt;
+	}
+
+	.step .step-items-container h1 {
+		font-size: 18pt;
+		margin-bottom: 0.3em;
+	}
+
+	.step .step-items-container h2 {
+		font-size: 12pt;
+	}
+
+	.step-1 {
+		background-size: 259px;
+	}
+
+	.step-1 .step-items-container {
+		padding-top: 260px;
+	}
+
+	.step-6 .step-items-container {
+		padding-top: 250px;
+	}
+}

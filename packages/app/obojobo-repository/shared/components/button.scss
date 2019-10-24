@@ -1,0 +1,48 @@
+@import '../../client/css/defaults';
+
+.repository--button {
+	border: 0;
+	background: $color-button-bg;
+	color: white;
+	border-radius: 4px;
+	padding: 8px 18px;
+	font-weight: bold;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 11px;
+
+	&:hover {
+		background: $color-action;
+	}
+
+	&.close-button {
+		$size: 25px;
+
+		min-width: $size;
+		height: $size;
+		line-height: $size;
+		padding: 0;
+		border-radius: $size;
+		color: $color-action-minor;
+		background-color: white;
+		font-weight: 900;
+		font-size: 18px;
+
+		&:hover {
+			background-color: $color-action;
+			color: white;
+		}
+	}
+
+	&.secondary-button {
+		border: 1px solid $color-action;
+		background-color: white;
+		color: $color-action;
+
+		&:hover {
+			background-color: $color-action;
+			color: white;
+		}
+	}
+}

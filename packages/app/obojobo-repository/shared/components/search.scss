@@ -1,0 +1,62 @@
+@import '../../client/css/defaults';
+
+$search-input-height: 30px;
+
+.repository--nav--links--search {
+	position: relative;
+
+	input {
+		position: relative;
+
+		@include text-input;
+
+		z-index: 1;
+		background: none;
+		top: 0;
+		left: 0;
+		width: calc(100% - 2px);
+		line-height: $search-input-height;
+		border: solid 1px $border-color;
+		background-color: white;
+		border-radius: 3px;
+		height: $search-input-height;
+		padding-left: 23px;
+		padding-right: 10px;
+		outline: none;
+
+		&:active,
+		&:hover,
+		&:focus {
+			border-color: $color-action;
+		}
+
+		&.is-not-empty {
+			border-color: $color-action;
+			background-color: $color-action;
+			color: white;
+		}
+
+		&:focus {
+			outline-width: 0;
+		}
+
+		@include mq($from: zero, $until: tablet) {
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.repository--nav--links--search--icon {
+	position: absolute;
+	top: 2px;
+	left: 6px;
+	fill: $border-color;
+	height: calc(100% - 4px);
+	width: 14px;
+	z-index: 2;
+
+	svg {
+		height: 40%;
+	}
+}

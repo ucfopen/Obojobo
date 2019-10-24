@@ -2,9 +2,11 @@
 /* eslint-disable no-new */
 
 jest.mock('../../db')
+jest.mock('../../obo_events')
 const originalnow = Date.prototype.now
-const User = oboRequire('models/user')
-const db = oboRequire('db')
+const User = require('../../models/user')
+const db = require('../../db')
+const oboEvents = require('../../obo_events')
 
 describe('user model', () => {
 	beforeAll(() => {
@@ -131,8 +133,8 @@ describe('user model', () => {
 		expect(u.isGuest()).toBe(false)
 	})
 
-	test('saves or creates correctly', () => {
-		expect.assertions(4)
+	test('creates a new user', () => {
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce({ id: 3 })
 
@@ -148,11 +150,36 @@ describe('user model', () => {
 			expect(user.id).toBe(3)
 			expect(db.one).toHaveBeenCalledTimes(1)
 			expect(db.one.mock.calls[0]).toMatchSnapshot()
+			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_NEW_USER', user)
+		})
+	})
+
+	test('saves an existing user', () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce({ id: 10 })
+
+		const u = new User({
+			id: 10,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
+		return u.saveOrCreate().then(user => {
+			expect(user).toBeInstanceOf(User)
+			expect(user.id).toBe(10)
+			expect(db.one).toHaveBeenCalledTimes(1)
+			expect(db.one.mock.calls[0]).toMatchSnapshot()
+			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_UPDATE_USER', user)
 		})
 	})
 
 	test('fetches one from the database', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce({
 			id: 5,

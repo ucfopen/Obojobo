@@ -4,9 +4,13 @@
 	position: relative;
 
 	.button {
-		min-width: 10em;
+		min-width: 12em;
 		display: inline-block;
 		user-select: auto;
+
+		span[data-placeholder]::before {
+			min-width: 10em;
+		}
 	}
 
 	.trigger-box {
@@ -18,74 +22,49 @@
 		left: 50%;
 		transform: translate(-50%, 0);
 		font-family: $font-default;
-		box-shadow: 0 1px 1px $color-shadow;
-		padding: 1em;
 		box-sizing: border-box;
 		min-height: 2.5em;
-		z-index: 5;
-		background: $color-bg;
-		border: 1px solid lighten($color-action, 9%);
 		width: 25em;
+		background-color: $color-bg2;
+		box-shadow: $box-shadow-overlay;
+		z-index: $z-index-above-content;
 
 		@mixin point() {
 			content: ' ';
 			position: absolute;
 			left: 50%;
-			transform: translate(-50%, -110%) rotate(45deg);
+			transform: translate(-50%, -50%) rotate(45deg);
 			width: 1.72em;
 			height: 1.72em;
 			border-radius: $dimension-rounded-radius 0;
+			z-index: -1;
+		}
+
+		.box-border {
+			background-color: $color-bg2;
+			padding: 1em;
 		}
 
 		&::before {
-			$color-obo-border: lighten($color-action, 9%);
-
 			@include point();
 
-			background: $color-bg;
-			border-style: solid;
-			border-color: $color-obo-border;
-			border-width: 1px 0 0 1px;
+			background-color: $color-bg2;
+			box-shadow: -$box-shadow-overlay;
 		}
 
-		&::after {
-			@include point();
-		}
+		.trigger-list {
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
 
-		.trigger {
-			padding-left: 2em;
-			padding-right: 2em;
-			margin-bottom: 1em;
-			border: 1px solid lighten($color-action, 9%);
-			border-radius: 0.2em;
-			position: relative;
-			display: inline-block;
-			width: 80%;
-
-			.delete-button {
-				position: absolute;
-				right: 0;
-				top: 0;
-				transform: translate(50%, -50%);
-				z-index: 3;
-
-				button {
-					font-size: 1.2em;
-					padding: 0;
-					min-width: 1.4em;
-					border-radius: 50%;
-				}
-			}
-
-			> span {
-				display: inline;
-				padding: 0.5em;
+			.title {
+				font-weight: bold;
 			}
 		}
 
 		.obojobo-draft--components--button {
 			position: relative;
 			z-index: 1;
+			margin-top: 1em;
 		}
 	}
 }

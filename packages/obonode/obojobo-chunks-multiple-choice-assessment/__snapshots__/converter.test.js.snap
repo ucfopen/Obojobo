@@ -10,14 +10,6 @@ Object {
   "nodes": Array [
     Object {
       "nodes": Array [
-        undefined,
-        undefined,
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
-    },
-    Object {
-      "nodes": Array [
         Object {
           "data": Object {
             "current": undefined,
@@ -43,6 +35,14 @@ Object {
       ],
       "object": "block",
       "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
+    },
+    Object {
+      "nodes": Array [
+        undefined,
+        undefined,
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
     },
   ],
   "object": "block",

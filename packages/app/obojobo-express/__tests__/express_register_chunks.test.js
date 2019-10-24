@@ -3,6 +3,7 @@ jest.mock('express')
 jest.mock('../draft_node_store')
 jest.mock('path')
 jest.mock('obojobo-lib-utils')
+jest.mock('../logger')
 const realPath = require.requireActual('path')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const express = require('express')
@@ -39,8 +40,9 @@ describe('register chunks middleware', () => {
 		const middleware = oboRequire('express_register_chunks')
 
 		middleware(mockApp)
-		// 8 for assets, 1 each for express files
-		expect(mockApp.use).toHaveBeenCalledTimes(10)
+
+		// 8 js/css assets
+		expect(mockApp.use).toHaveBeenCalledTimes(8)
 	})
 
 	test('registers all middleware as expected', () => {

@@ -21,7 +21,6 @@ const ChoiceList = props => {
 
 	return (
 		<div>
-			<span className={'instructions'}>{'Pick all of the correct answers'} </span>
 			{props.children}
 			<Button className={'choice-button pad'} onClick={() => addChoice()}>
 				{'+ Add Choice'}

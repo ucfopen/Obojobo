@@ -3,7 +3,10 @@ const queryResultErrorCode = require('pg-promise').errors.queryResultErrorCode
 
 const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
+const functionsWithEvents = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 let mockArgs // array of mocked express middleware request arguments
+
+jest.mock('../obo_events')
 
 describe('api response middleware', () => {
 	beforeAll(() => {})
@@ -68,6 +71,43 @@ describe('api response middleware', () => {
 			res[method]()
 		})
 		expect(mockStatus.mock.calls).toEqual([[200], [404], [422], [500], [403], [401]])
+	})
+
+	test('some functions emit events', () => {
+		const oboEvents = require('../obo_events')
+		oboEvents.emit.mockReset()
+		const { res } = mockArgs
+
+		functionsWithEvents.forEach(method => {
+			res[method]()
+		})
+
+		expect(oboEvents.emit).toHaveBeenCalledTimes(functionsWithEvents.length)
+		expect(oboEvents.emit).toHaveBeenCalledWith('HTTP_BAD_INPUT', expect.any(Object))
+		expect(oboEvents.emit).toHaveBeenCalledWith('HTTP_NOT_AUTHORIZED', expect.any(Object))
+		expect(oboEvents.emit).toHaveBeenCalledWith('HTTP_REJECTED', expect.any(Object))
+		expect(oboEvents.emit).toHaveBeenCalledWith('HTTP_UNEXPECTED', expect.any(Object))
+		expect(oboEvents.emit).toHaveBeenCalledWith('HTTP_NOT_FOUND', expect.any(Object))
+	})
+
+	test('some functions do nothing if responseHandled is set', () => {
+		const { res } = mockArgs
+
+		res.responseHandled = true
+		functionsWithEvents.forEach(method => {
+			res[method]()
+			expect(res.send).not.toHaveBeenCalled()
+		})
+	})
+
+	test('some functions do nothing if headers are sent', () => {
+		const { res } = mockArgs
+
+		res.headersSent = true
+		functionsWithEvents.forEach(method => {
+			res[method]()
+			expect(res.send).not.toHaveBeenCalled()
+		})
 	})
 
 	test('success to pass the value object', () => {

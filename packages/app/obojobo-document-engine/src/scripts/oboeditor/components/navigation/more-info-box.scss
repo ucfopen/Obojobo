@@ -1,0 +1,193 @@
+@import '../../../../scss/includes';
+
+.more-info {
+	position: absolute;
+	z-index: 9999;
+	top: 0;
+	right: 0;
+
+	.more-info-button {
+		width: 1.7em;
+		height: 1.7em;
+		position: absolute;
+		right: -2em;
+		top: 0;
+		border: none;
+		background: none;
+		padding: 0;
+
+		svg {
+			stroke: $color-shadow;
+			fill: none;
+		}
+
+		&:hover {
+			svg {
+				fill: $color-obojobo-blue;
+				stroke: $color-bg2;
+			}
+		}
+
+		&.is-open {
+			svg {
+				fill: $color-obojobo-blue;
+				stroke: $color-bg2;
+			}
+		}
+	}
+
+	.more-info-box {
+		position: absolute;
+		top: -1em;
+		right: -28.5em;
+		background-color: $color-bg2;
+		z-index: $z-index-above-content;
+		box-shadow: $box-shadow-overlay;
+		width: 26em;
+
+		&::before {
+			position: absolute;
+			left: -0.5em;
+			top: 1em;
+			transform: rotate(45deg);
+			content: ' ';
+			width: 1em;
+			height: 1em;
+			// background: $color-shadow;
+			background: $color-bg2;
+			box-shadow: $box-shadow-overlay;
+		}
+
+		> .container {
+			background: $color-bg2;
+			position: relative;
+			padding: 0.5em;
+		}
+
+		.button {
+			font-size: 0.8em;
+		}
+
+		.properties {
+			background-color: $color-bg;
+			color: $color-text;
+			padding: 0.5em;
+			margin-bottom: 0.5em;
+
+			> div {
+				padding: 0.5em;
+				padding-right: 0;
+				min-height: 1.5em;
+				border-bottom: 1px solid $color-shadow;
+				position: relative;
+
+				label {
+					display: inline-block;
+					width: 5em;
+				}
+
+				input {
+					@include text-input();
+
+					width: 23em;
+
+					&.id-input {
+						width: 18.1em;
+					}
+				}
+
+				&.assessment-settings {
+					label {
+						width: 5em;
+					}
+
+					input {
+						width: 23em;
+					}
+				}
+
+				.button {
+					padding: 0.2em 0.5em;
+					color: $color-action;
+					background-color: $color-bg;
+					border-color: $color-action;
+					border-width: 2px;
+					height: 2.35em;
+				}
+
+				.xml-button {
+					position: absolute;
+					top: 0;
+					right: 0;
+				}
+
+				.triggers {
+					padding-right: 3.5em;
+					display: inline-block;
+
+					span {
+						padding-left: 0.5em;
+						font-weight: normal;
+					}
+				}
+
+				.trigger-button {
+					position: absolute;
+					top: 50%;
+					transform: translate(0, -50%);
+					right: 0;
+				}
+
+				.delete-page-button {
+					position: relative;
+					left: -0.5em;
+
+					.button {
+						border-color: $color-dangerous;
+						color: $color-dangerous;
+					}
+				}
+			}
+		}
+	}
+
+	&.content-node {
+		.more-info-box {
+			right: 2em;
+			top: 0.3em;
+
+			&::before {
+				right: -0.5em;
+				left: auto;
+			}
+		}
+
+		.more-info-button {
+			top: 2.2em;
+			right: 0.3em;
+		}
+	}
+
+	.select-item {
+		font-family: $font-default;
+		border-radius: $dimension-rounded-radius;
+		font-size: 0.7em;
+		background-color: $color-bg;
+		min-width: 26.3em;
+		padding: 0.7em 2em 0.7em 0.5em;
+		appearance: none;
+		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+		background-position: calc(100% - 1.5em) 1.1em, calc(100% - 1.1em) 1.1em,
+			calc(100% - 2.5em) 0.5em;
+		background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
+		background-repeat: no-repeat;
+	}
+
+	.obojobo-draft--components--slider {
+		margin-top: 0.3em;
+		margin-bottom: 0.3em;
+	}
+}

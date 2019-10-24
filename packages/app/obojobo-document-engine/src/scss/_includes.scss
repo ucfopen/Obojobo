@@ -1,4 +1,5 @@
 $color-action: #6714bd;
+$color-button-bg: lighten($color-action, 9%);
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
 $color-dangerous: #d40000;
@@ -31,8 +32,15 @@ $box-shadow-overlay: 0 2px 2px $color-shadow;
 
 $duration-animation-default: 0.2s;
 
+// default for obobjobo
+// in documents: headers, buttons, dialogs
 $font-default: 'Libre Franklin', Arial, sans-serif;
+
+// use for larger blocks of text
+// in a document: all content
 $font-text: 'Noto Serif', serif;
+
+// math or code text
 $font-monospace: 'Roboto Mono', monospace;
 
 $font-size: 14.25pt;
@@ -48,6 +56,8 @@ $dimension-rounded-radius: 0.25em;
 $dimension-header-padding: 1rem;
 $dimension-preview-banner: 3rem;
 $dimension-review-answer-flag-padding: 0.2em;
+
+$breakpoint-nav-small: 1000px; /* stylelint-disable-line unit-blacklist */
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;

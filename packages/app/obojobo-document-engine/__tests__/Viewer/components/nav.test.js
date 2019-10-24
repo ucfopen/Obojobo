@@ -373,12 +373,12 @@ describe('Nav', () => {
 	test('closes nav on mount if mobile', () => {
 		jest.useFakeTimers()
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: true})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
 
 		mount(<Nav {...props} />)
 		expect(NavUtil.close).not.toHaveBeenCalled()
-		jest.runAllTimers();
+		jest.runAllTimers()
 
 		expect(NavUtil.close).toHaveBeenCalled()
 	})
@@ -386,11 +386,11 @@ describe('Nav', () => {
 	test('doesnt close nav on mount if not mobile', () => {
 		jest.useFakeTimers()
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: false})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
 
 		mount(<Nav {...props} />)
-		jest.runAllTimers();
+		jest.runAllTimers()
 
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
@@ -398,7 +398,7 @@ describe('Nav', () => {
 	test('registers resize listener on mount', () => {
 		const spy = jest.spyOn(window, 'addEventListener')
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
+		const props = { navState: {} }
 
 		const component = mount(<Nav {...props} />)
 
@@ -407,8 +407,8 @@ describe('Nav', () => {
 
 	test('hideOrShowOnResize calls open when increasing to non-mobile size', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: true})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
 		window.innerWidth = 10 // small size on mount
 
 		// begin
@@ -417,7 +417,7 @@ describe('Nav', () => {
 
 		// increse width & no longer mobile
 		window.innerWidth = 20
-		window.matchMedia.mockReturnValueOnce({matches: false})
+		window.matchMedia.mockReturnValueOnce({ matches: false })
 
 		// execute resize listener
 		component.instance().hideOrShowOnResize()
@@ -427,8 +427,8 @@ describe('Nav', () => {
 
 	test('hideOrShowOnResize does nothing increasing in mobile size', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: true})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
 		window.innerWidth = 10 // small size on mount
 
 		// begin
@@ -437,7 +437,7 @@ describe('Nav', () => {
 
 		// increse width & no longer mobile
 		window.innerWidth = 20
-		window.matchMedia.mockReturnValueOnce({matches: true})
+		window.matchMedia.mockReturnValueOnce({ matches: true })
 
 		// execute resize listener
 		component.instance().hideOrShowOnResize()
@@ -445,11 +445,10 @@ describe('Nav', () => {
 		expect(NavUtil.open).not.toHaveBeenCalled()
 	})
 
-
 	test('hideOrShowOnResize calls close when decreasing to mobile size', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: false})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
 		window.innerWidth = 20 // larger size on mount
 
 		// begin
@@ -458,7 +457,7 @@ describe('Nav', () => {
 
 		// decrease ans is mobile
 		window.innerWidth = 10
-		window.matchMedia.mockReturnValueOnce({matches: true})
+		window.matchMedia.mockReturnValueOnce({ matches: true })
 
 		// execute resize listener
 		component.instance().hideOrShowOnResize()
@@ -468,8 +467,8 @@ describe('Nav', () => {
 
 	test('hideOrShowOnResize does nothing when decreasing to desktop size', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
-		window.matchMedia.mockReturnValueOnce({matches: false})
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
 		window.innerWidth = 20 // larger size on mount
 
 		// begin
@@ -478,7 +477,7 @@ describe('Nav', () => {
 
 		// decrease ans is mobile
 		window.innerWidth = 10
-		window.matchMedia.mockReturnValueOnce({matches: false})
+		window.matchMedia.mockReturnValueOnce({ matches: false })
 
 		// execute resize listener
 		component.instance().hideOrShowOnResize()
@@ -489,7 +488,7 @@ describe('Nav', () => {
 	test('removes listeners on unmount', () => {
 		const spy = jest.spyOn(window, 'removeEventListener')
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
+		const props = { navState: {} }
 
 		// begin
 		const component = mount(<Nav {...props} />)
@@ -505,7 +504,7 @@ describe('Nav', () => {
 	test('registers window click listeners', () => {
 		const spy = jest.spyOn(window, 'addEventListener')
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		const props = {navState: {}}
+		const props = { navState: {} }
 
 		// begin
 		mount(<Nav {...props} />)
@@ -515,45 +514,51 @@ describe('Nav', () => {
 
 	test('does nothing when clicked outside on desktop', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		window.matchMedia.mockReturnValueOnce({matches: false})
-		window.matchMedia.mockReturnValueOnce({matches: false})
-		const props = {navState: {}}
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		const props = { navState: {} }
 
 		// begin
 		const component = mount(<Nav {...props} />)
-		component.instance().selfRef = {current: {
-			contains: () => false
-		}}
+		component.instance().selfRef = {
+			current: {
+				contains: () => false
+			}
+		}
 		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
 	test('does nothing when clicked inside mobile', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		window.matchMedia.mockReturnValueOnce({matches: true})
-		window.matchMedia.mockReturnValueOnce({matches: true})
-		const props = {navState: {}}
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		const props = { navState: {} }
 
 		// begin
 		const component = mount(<Nav {...props} />)
-		component.instance().selfRef = {current: {
-			contains: () => true
-		}}
+		component.instance().selfRef = {
+			current: {
+				contains: () => true
+			}
+		}
 		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
 	test('closes when clicked outside on mobile', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		window.matchMedia.mockReturnValueOnce({matches: true})
-		window.matchMedia.mockReturnValueOnce({matches: true})
-		const props = {navState: {}}
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		const props = { navState: {} }
 
 		// begin
 		const component = mount(<Nav {...props} />)
-		component.instance().selfRef = {current: {
-			contains: () => false
-		}}
+		component.instance().selfRef = {
+			current: {
+				contains: () => false
+			}
+		}
 		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).toHaveBeenCalled()
 	})

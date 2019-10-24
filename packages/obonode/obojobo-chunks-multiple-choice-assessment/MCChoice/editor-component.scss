@@ -3,42 +3,36 @@
 .obojobo-draft--chunks--mc-assessment--mc-choice {
 	$color-border: transparentize($color-shadow, 0.25);
 
-	border: 1px solid $color-border;
-	padding-bottom: 1em;
+	border-bottom: 1px solid $color-border;
 
-	.obojobo-draft--components--button {
-		display: none;
-	}
-
-	&.is-selected {
-		border: 1px solid $color-action;
-
-		.obojobo-draft--components--button {
-			display: block;
-		}
+	&:hover {
+		background: none;
 	}
 
 	.correct-button {
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
-		position: relative;
-		top: 2.3em;
-		left: 0.5em;
+		position: absolute;
+		top: 1em;
+		left: 3em;
 		font-size: inherit;
 		background: transparent;
-		border: none;
+		border: 1px solid;
 		font-family: $correct-font;
+		border-radius: $dimension-rounded-radius;
+		padding: 0.1em;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
 	}
 
 	.add-feedback {
 		position: absolute;
-		bottom: 0;
-		right: 0;
-		font-size: 0.85em;
-		background-color: $color-bg2;
-		border: 1px solid transparentize($color-shadow, 0.2);
+		bottom: 0.5em;
+		right: 3em;
+		font-size: inherit;
+		border: 1px solid $color-action;
+		color: $color-action;
 		border-radius: $dimension-rounded-radius;
-		margin: 0.2em;
 	}
 
 	&.is-correct {
@@ -55,8 +49,9 @@
 
 	.delete-button {
 		position: absolute;
-		right: 0;
-		top: 0;
+		right: -2em;
+		left: auto;
+		top: 0.5em;
 		transform: translate(50%, -50%);
 		z-index: 3;
 
@@ -65,6 +60,10 @@
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
 		}
 	}
 }

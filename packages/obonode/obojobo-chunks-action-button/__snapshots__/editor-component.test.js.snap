@@ -1,71 +1,171 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ActionButton Editor Node ActionButton adds action 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div>Button Actions:</div><div class=\\"trigger\\"><span>mockType</span><span>mockValue</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\">+ Add New Action</button></div></div></div>"`;
-
-exports[`ActionButton Editor Node ActionButton builds the expected component 1`] = `
-<div
-  className="text-chunk obojobo-draft--chunks--action-button pad"
->
+exports[`ActionButton Editor Node builds the expected component 1`] = `
+<div>
   <div
-    className="obojobo-draft--components--button align-center"
+    className="text-chunk obojobo-draft--chunks--action-button pad"
   >
     <div
-      className="button"
-    />
+      className="obojobo-draft--components--button align-center"
+    >
+      <div
+        className="button"
+      />
+    </div>
   </div>
 </div>
 `;
 
-exports[`ActionButton Editor Node ActionButton builds the expected component when selected 1`] = `
-<div
-  className="text-chunk obojobo-draft--chunks--action-button pad"
->
+exports[`ActionButton Editor Node builds the expected component when selected 1`] = `
+<div>
   <div
-    className="obojobo-draft--components--button align-center"
+    className="text-chunk obojobo-draft--chunks--action-button pad"
   >
     <div
-      className="button"
-    />
-  </div>
-  <div
-    className="trigger-box"
-    contentEditable={false}
-  >
-    <div>
-      Button Actions:
+      className="obojobo-draft--components--button align-center"
+    >
+      <div
+        className="button"
+      />
     </div>
     <div
-      className="trigger"
+      className="trigger-box"
+      contentEditable={false}
     >
-      <span>
-        mockType
-      </span>
-      <span>
-        mockValue
-      </span>
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        className="box-border"
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <div
+          className="trigger-list"
         >
-          ×
-        </button>
+          <div
+            className="title"
+          >
+            When the button is clicked:
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Go to "undefined"
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Go to the previous page
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Go to the next page
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Open undefined
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Lock navigation
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Unlock navigation
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Toggle the navigation drawer
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Close the navigation menu
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Open the navigation menu
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Start an attempt for "undefined"
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              End an attempt for "undefined"
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Display a popup message
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Scroll to the top of the page
+            </span>
+          </div>
+          <div
+            className="trigger"
+          >
+            <span>
+              Focus on "undefined"
+            </span>
+          </div>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Edit Triggers
+          </button>
+        </div>
       </div>
     </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center add-action"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        + Add New Action
-      </button>
-    </div>
   </div>
 </div>
 `;
 
-exports[`ActionButton Editor Node ActionButton deletes an action 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div>Button Actions:</div><div class=\\"trigger\\"><span>mockType</span><span>mockValue</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\">+ Add New Action</button></div></div></div>"`;
+exports[`ActionButton Editor Node builds the expected component when selected 2`] = `
+Object {
+  "isFocused": true,
+  "isSelected": true,
+  "node": Object {
+    "data": Object {},
+  },
+}
+`;
+
+exports[`ActionButton Editor Node opens modal 1`] = `"<div><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"trigger-list\\"><div class=\\"title\\">When the button is clicked:</div><div class=\\"trigger\\"><span>Go to \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Go to the previous page</span></div><div class=\\"trigger\\"><span>Go to the next page</span></div><div class=\\"trigger\\"><span>Open undefined</span></div><div class=\\"trigger\\"><span>Lock navigation</span></div><div class=\\"trigger\\"><span>Unlock navigation</span></div><div class=\\"trigger\\"><span>Toggle the navigation drawer</span></div><div class=\\"trigger\\"><span>Close the navigation menu</span></div><div class=\\"trigger\\"><span>Open the navigation menu</span></div><div class=\\"trigger\\"><span>Start an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>End an attempt for \\"undefined\\"</span></div><div class=\\"trigger\\"><span>Display a popup message</span></div><div class=\\"trigger\\"><span>Scroll to the top of the page</span></div><div class=\\"trigger\\"><span>Focus on \\"undefined\\"</span></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\">Edit Triggers</button></div></div></div></div></div>"`;

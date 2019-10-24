@@ -1,8 +1,8 @@
 import Common from 'Common'
 
-import APIUtil from '../../viewer/util/api-util'
-import MediaUtil from '../../viewer/util/media-util'
-import NavStore from '../../viewer/stores/nav-store'
+import APIUtil from '../util/api-util'
+import MediaUtil from '../util/media-util'
+import NavStore from '../stores/nav-store'
 
 import { DEFAULT_ZOOM } from './media-store/media-constants'
 
