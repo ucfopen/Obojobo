@@ -66,8 +66,7 @@ export default class ViewerApp extends React.Component {
 			requestStatus: 'unknown',
 			isPreviewing: false,
 			lti: { outcomeServiceHostname: null },
-			viewSessionId: null,
-			hasError: false
+			viewSessionId: null
 		}
 		this.navTargetId = null
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
@@ -104,14 +103,6 @@ export default class ViewerApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 		FocusStore.onChange(this.onFocusStoreChange)
 		MediaStore.onChange(this.onMediaStoreChange)
-	}
-
-	componentDidCatch(error, info) {
-		this.setState({ hasError: true })
-		// eslint-disable-next-line no-console
-		console.log(error)
-		// eslint-disable-next-line no-console
-		console.log(info)
 	}
 
 	componentDidMount() {
@@ -537,7 +528,6 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
-		if (this.state.hasError) return <p>Something went wrong. Please try again.</p>
 		if (this.state.loading) return null
 
 		if (this.state.requestStatus === 'invalid') {
