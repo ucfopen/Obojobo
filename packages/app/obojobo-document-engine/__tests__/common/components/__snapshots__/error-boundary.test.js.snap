@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBoundary ErrorBoundary component 1`] = `
+<h1>
+  Mock Content
+</h1>
+`;
+
+exports[`ErrorBoundary ErrorBoundary handles error child component 1`] = `"<h1>Something went wrong. Please try again.</h1>"`;

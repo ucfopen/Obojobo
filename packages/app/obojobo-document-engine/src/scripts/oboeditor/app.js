@@ -12,6 +12,7 @@ debounce.id = null
 
 // set up global event listeners
 const { Dispatcher } = Common.flux
+const { ErrorBoundary } = Common.components
 
 // Set up listeners for window for blur/focus
 const onFocus = function() {
@@ -37,7 +38,9 @@ if (ie) {
 window.__oboEditorRender = (settings = {}) => {
 	ReactDOM.render(
 		<div className="root">
-			<Editor.components.EditorApp settings={settings} />
+			<ErrorBoundary>
+				<Editor.components.EditorApp settings={settings} />
+			</ErrorBoundary>
 		</div>,
 		document.getElementById('viewer-app')
 	)

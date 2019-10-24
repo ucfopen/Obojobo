@@ -7,6 +7,7 @@ import DeleteButton from './components/delete-button'
 import Dialog from './components/modal/dialog'
 import Dispatcher from './flux/dispatcher'
 import EditButton from './components/edit-button'
+import ErrorBoundary from './components/error-boundary'
 import ErrorDialog from './components/modal/error-dialog'
 import ErrorUtil from './util/error-util'
 import FluxStore from './flux/store'
@@ -63,6 +64,7 @@ export default {
 		EditButton,
 		Button,
 		ButtonBar,
+		ErrorBoundary,
 		MoreInfoButton,
 		Slider,
 		modal: {

@@ -4,6 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './polyfills'
 const { Dispatcher } = Common.flux
+const { ErrorBoundary } = Common.components
 
 // get the visit and draft from the url
 const urlTokens = document.location.pathname.split('/')
@@ -40,7 +41,9 @@ if (ie) {
 window.__oboViewerRender = () => {
 	ReactDOM.render(
 		<div className="root">
-			<Viewer.components.ViewerApp visitId={visitId} draftId={draftId} />
+			<ErrorBoundary>
+				<Viewer.components.ViewerApp visitId={visitId} draftId={draftId} />
+			</ErrorBoundary>
 		</div>,
 		document.getElementById('viewer-app')
 	)
