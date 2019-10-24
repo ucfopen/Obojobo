@@ -5,6 +5,8 @@
 	z-index: 9999;
 	top: 0;
 	right: 0;
+	font-family: $font-default;
+	font-weight: bold;
 
 	.more-info-button {
 		width: 1.7em;
@@ -15,6 +17,7 @@
 		border: none;
 		background: none;
 		padding: 0;
+		cursor: pointer;
 
 		svg {
 			stroke: $color-shadow;
@@ -39,11 +42,11 @@
 	.more-info-box {
 		position: absolute;
 		top: -1em;
-		right: -28.5em;
+		right: -30.5em;
 		background-color: $color-bg2;
 		z-index: $z-index-above-content;
 		box-shadow: $box-shadow-overlay;
-		width: 26em;
+		width: 28em;
 
 		&::before {
 			position: absolute;
@@ -83,7 +86,7 @@
 
 				label {
 					display: inline-block;
-					width: 5em;
+					width: 7em;
 				}
 
 				input {
