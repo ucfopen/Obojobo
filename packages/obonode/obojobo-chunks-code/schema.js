@@ -18,9 +18,7 @@ const schema = {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
-						const isAtEdge = index === node.nodes.size - 1 || index === 0
-						if (child.object === 'block' && isAtEdge) {
+						if (child.object === 'block') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
@@ -40,12 +38,17 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Chunks.Code.CodeLine': {
-			nodes: [
-				{
-					match: [{ object: 'text' }],
-					min: 1
+			nodes: [{ match: [{ object: 'text' }] }],
+			normalize: (editor, error) => {
+				const { child } = error
+				switch (error.code) {
+					case CHILD_TYPE_INVALID: {
+						if (child.object === 'block') {
+							return editor.unwrapNodeByKey(child.key)
+						}
+					}
 				}
-			]
+			}
 		}
 	}
 }

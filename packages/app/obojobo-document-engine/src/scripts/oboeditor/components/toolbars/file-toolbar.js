@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { Block } from 'slate'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
@@ -93,6 +94,10 @@ const FileToolbar = props => {
 	// insert actions on menu items
 	// note that `editor.current` needs to be evaluated at execution time of the action!
 	const editor = props.editorRef
+	const insertMenu = props.insertableItems.map(item => ({
+		name: item.name,
+		action: () => editor.current.insertBlock(Block.create(item.cloneBlankNode()))
+	}))
 	editMenu[0].action = () => editor.current.undo()
 	editMenu[1].action = () => editor.current.redo()
 	editMenu[2].action = () => editor.current.delete()
@@ -119,7 +124,7 @@ const FileToolbar = props => {
 			</div>
 			<ViewMenu draftId={props.draftId} switchMode={props.switchMode} onSave={props.onSave} />
 			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Insert" menu={props.insertableItems} />
+				<DropDownMenu name="Insert" menu={insertMenu} />
 			</div>
 			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">

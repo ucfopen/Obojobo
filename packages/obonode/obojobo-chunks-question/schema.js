@@ -31,9 +31,9 @@ const schema = {
 				{ match: [MCASSESSMENT_NODE], min: 1 },
 				{ match: [SOLUTION_NODE] }
 			],
-
 			normalize: (editor, error) => {
 				const { node, child, index } = error
+				console.log(error)
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
 						// If we are missing the last node,
