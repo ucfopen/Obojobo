@@ -2,7 +2,6 @@ import { mount, shallow } from 'enzyme'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import MCAssessment from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
@@ -33,7 +32,6 @@ const MCCHOICE_NODE_TYPE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const TYPE_PICK_ONE = 'pick-one'
 const TYPE_MULTI_CORRECT = 'pick-one-multiple-correct'
 const TYPE_PICK_ALL = 'pick-all'
-const ACTION_CHECK_ANSWER = 'question:checkAnswer'
 
 require('./viewer') // used to register this oboModel
 require('./MCChoice/viewer') // // dependency on Obojobo.Chunks.MCAssessment
@@ -1630,94 +1628,6 @@ describe('MCAssessment', () => {
 			parent,
 			'mockContext'
 		)
-	})
-
-	test('componentDidMount sets up the Dispatcher', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// short circuits sortIds
-		QuestionUtil.getData.mockReturnValueOnce(false)
-
-		mount(<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />)
-
-		expect(QuestionUtil.getData).toHaveBeenCalled()
-		expect(Dispatcher.on).toHaveBeenCalledWith(ACTION_CHECK_ANSWER, expect.any(Function))
-	})
-
-	test('componentWillUnmount removes the Dispatcher', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// short circuits sortIds
-		QuestionUtil.getData.mockReturnValueOnce(false)
-
-		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
-		)
-
-		component.unmount()
-
-		expect(Dispatcher.off).toHaveBeenCalledWith(ACTION_CHECK_ANSWER, expect.any(Function))
-	})
-
-	test('onCheckAnswer does nothing if this is not the correct question', () => {
-		const moduleData = {
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		QuestionUtil.getData.mockReturnValueOnce(false)
-
-		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
-		)
-		component.instance().onCheckAnswer({
-			value: {
-				id: 'mockDifferentId'
-			}
-		})
-
-		expect(QuestionUtil.setScore).not.toHaveBeenCalled()
-	})
-
-	test('onCheckAnswer calls QuestionUtil for the correct question', () => {
-		const moduleData = {
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		QuestionUtil.getData.mockReturnValueOnce(false)
-
-		// mock for calculateScore - score is 0
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
-
-		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
-		)
-		component.instance().onCheckAnswer({
-			value: {
-				id: 'parent'
-			}
-		})
-
-		expect(QuestionUtil.setScore).toHaveBeenCalledWith('parent', 0, 'mockContext')
 	})
 
 	test('componentDidUpdate calls sortIds', () => {
