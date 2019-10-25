@@ -16,6 +16,13 @@ class ErrorBoundary extends React.Component {
 
 	render() {
 		if (this.state.hasError) {
+			// Remove loading screen of the viewer
+			const loadingEl = document.getElementById('viewer-app-loading')
+			if (loadingEl && loadingEl.parentElement) {
+				document.getElementById('viewer-app').classList.add('is-loaded')
+				loadingEl.parentElement.removeChild(loadingEl)
+			}
+
 			return <h1>Something went wrong. Please try again.</h1>
 		}
 
