@@ -79,7 +79,10 @@ class Figure extends React.Component {
 			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 					<div className="container">
-						{hasAltText ? null : <div contentEditable={false}>Accessibility Warning: No Alt Text!</div>}
+						{hasAltText ? null : 
+							<div contentEditable={false} className="accessibility-warning">
+								Accessibility Warning: No Alt Text!
+							</div>}
 						<div className="figure-box" contentEditable={false}>
 							<Button 
 								className="delete-button" 

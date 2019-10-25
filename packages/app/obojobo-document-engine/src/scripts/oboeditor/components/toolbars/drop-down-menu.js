@@ -109,6 +109,19 @@ class DropMenu extends React.PureComponent {
 										}}
 									/>
 								)
+							case 'toggle-action':
+								return (
+									<button
+										key={item.name}
+										onClick={item.action}
+										disabled={item.disabled}
+										ref={item => {
+											this.menu.push(item)
+										}}>
+										{item.name}
+										{item.value ? <span>✔</span> : null}
+									</button>
+								)
 							default:
 								return (
 									<button

@@ -1,6 +1,10 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--figure {
+	.accessibility-warning {
+		font-family: $font-default;
+	}
+
 	.figure-box {
 		cursor: default;
 		position: relative;
@@ -43,7 +47,7 @@
 			button {
 				font-size: 1.2em;
 				padding: 0;
-				min-width: 1.4em;
+				min-width: 1.3em;
 				border-radius: 50%;
 			}
 		}

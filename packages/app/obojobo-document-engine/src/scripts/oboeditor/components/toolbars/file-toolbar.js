@@ -117,7 +117,12 @@ const FileToolbar = props => {
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Edit" menu={editMenu} />
 			</div>
-			<ViewMenu draftId={props.draftId} switchMode={props.switchMode} onSave={props.onSave} />
+			<ViewMenu 
+				draftId={props.draftId} 
+				switchMode={props.switchMode} 
+				onSave={props.onSave}
+				togglePlaceholders={props.togglePlaceholders}
+				showPlaceholders={props.showPlaceholders}/>
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Insert" menu={props.insertableItems} />
 			</div>

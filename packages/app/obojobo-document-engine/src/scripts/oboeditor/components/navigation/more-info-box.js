@@ -248,7 +248,7 @@ class MoreInfoBox extends React.Component {
 							</div>
 						)}
 					</div>
-					<div>
+					<div className="box-controls">
 						{this.state.error ? <p>{this.state.error}</p> : null}
 						<Button onClick={this.onSave} className="cancel-button">
 							Close

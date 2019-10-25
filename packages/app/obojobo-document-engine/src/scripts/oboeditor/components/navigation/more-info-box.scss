@@ -78,8 +78,8 @@
 			margin-bottom: 0.5em;
 
 			> div {
-				padding: 0.5em;
-				padding-right: 0;
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
 				min-height: 1.5em;
 				border-bottom: 1px solid $color-shadow;
 				position: relative;
@@ -92,10 +92,10 @@
 				input {
 					@include text-input();
 
-					width: 23em;
+					width: 23.7em;
 
 					&.id-input {
-						width: 18.1em;
+						width: 18.8em;
 					}
 				}
 
@@ -116,6 +116,11 @@
 					border-color: $color-action;
 					border-width: 2px;
 					height: 2.35em;
+
+					&:hover {
+						color: $color-bg;
+						background-color: $color-action;
+					}
 				}
 
 				.xml-button {
@@ -141,13 +146,21 @@
 					right: 0;
 				}
 
-				.delete-page-button {
-					position: relative;
-					left: -0.5em;
+				&.button-bar {
+					.obojobo-draft--components--button {
+						margin-right: 0.5em;
+					}
 
-					.button {
-						border-color: $color-dangerous;
-						color: $color-dangerous;
+					.delete-page-button {
+						.button {
+							border-color: $color-dangerous;
+							color: $color-dangerous;
+
+							&:hover {
+								color: $color-bg;
+								background-color: $color-dangerous;
+							}
+						}
 					}
 				}
 			}
@@ -169,6 +182,10 @@
 			top: 2.2em;
 			right: 0.3em;
 		}
+	}
+
+	.box-controls {
+		text-align: center;
 	}
 
 	.select-item {
