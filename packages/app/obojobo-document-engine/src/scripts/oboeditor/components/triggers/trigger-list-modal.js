@@ -124,7 +124,7 @@ class TriggerListModal extends React.Component {
 				return (
 					<div className="action-options">
 						<div>
-							<label>Node</label>
+							<label>Item Id</label>
 							<input 
 								className="input-item"
 								value={action.value.id}
@@ -189,14 +189,14 @@ class TriggerListModal extends React.Component {
 				return (
 					<div className="action-options">
 						<div>
-							<label>Node</label>
+							<label>Item Id</label>
 							<input 
 								className="input-item"
 								value={action.value.id}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}/>
 						</div>
 						<Slider
-							title="Fade Out Other Nodes"
+							title="Fade Out Other Items"
 							initialChecked={action.value.fade}
 							handleCheckChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}/>
 						<Slider
@@ -222,8 +222,8 @@ class TriggerListModal extends React.Component {
 								className="select-item"
 								value={trigger.type}
 								onChange={this.updateTriggerType.bind(this, triggerIndex)}>
-								<option value="onMount">This node is shown</option>
-								<option value="onUnmount">This node is hidden</option>
+								<option value="onMount">This item is shown</option>
+								<option value="onUnmount">This item is hidden</option>
 								<option value="onNavEnter">The student enters the page</option>
 								<option value="onNavExit">The student leaves the page</option>
 								<option value="onStartAttempt">An assessment attempt starts</option>
@@ -249,12 +249,12 @@ class TriggerListModal extends React.Component {
 										<option value="nav:unlock">Unlock navigation</option>
 										<option value="nav:open">Open the navigation menu</option>
 										<option value="nav:close">Close the navigation menu</option>
-										<option value="nav:toggle">Toggle the navigation drawer</option>
+										<option value="nav:toggle">Toggle the navigation menu</option>
 										<option value="assessment:startAttempt">Start an attempt for</option>
 										<option value="assessment:endAttempt">End an attempt for</option>
 										<option value="viewer:alert">Display a popup message</option>
 										<option value="viewer:scrollToTop">Scroll to the top of the page</option>
-										<option value="focus:component">Focus on a specific node</option>
+										<option value="focus:component">Focus on a specific item</option>
 									</select>
 									<button 
 										className="delete-button"

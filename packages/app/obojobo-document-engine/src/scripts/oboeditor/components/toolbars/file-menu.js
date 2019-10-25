@@ -107,9 +107,7 @@ class FileMenu extends React.PureComponent {
 				type: 'action',
 				action: () =>
 					this.props.onSave(this.props.draftId).then(result => {
-						if (result.status === 'ok') {
-							ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
-						} else {
+						if (result.status !== 'ok') {
 							ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
 						}
 					})

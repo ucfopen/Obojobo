@@ -98,6 +98,8 @@ class EditorNav extends React.PureComponent {
 			})
 		}
 
+		const noSubLinks = list.filter(item => item.type !== 'sub-link')
+
 		return list.map((item, index) => {
 			switch(item.type){
 				case 'heading':
@@ -114,7 +116,7 @@ class EditorNav extends React.PureComponent {
 							key={index}
 							index={index}
 							isSelected={this.state.navTargetId === item.id}
-							list={list}
+							list={noSubLinks}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
 							markUnsaved={this.props.markUnsaved}

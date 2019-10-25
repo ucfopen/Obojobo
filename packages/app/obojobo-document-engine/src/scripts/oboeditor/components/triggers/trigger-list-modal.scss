@@ -1,12 +1,12 @@
 @import '~styles/includes';
 
 .trigger-list-modal {
+	font-size: 0.85em;
 	background: $color-bg2;
 	padding: 1em;
 	width: 35em;
 	max-height: 60vh;
 	overflow: auto;
-	box-shadow: 1px 1px 5px $color-shadow inset;
 	border-radius: $dimension-rounded-radius;
 
 	.trigger {
@@ -91,6 +91,7 @@
 		min-width: 25.2em;
 		padding: 0.7em 2em 0.7em 0.5em;
 		margin-right: 2.2em;
+		margin-bottom: 1em;
 		appearance: none;
 		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 		background-image: linear-gradient(45deg, transparent 50%, gray 50%),

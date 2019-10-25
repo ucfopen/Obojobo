@@ -66,6 +66,43 @@ describe('Assessment Converter', () => {
 
 	})
 
+	test('slateToObo converts a Slate node to an OboNode with no model', () => {
+		const createSlateNode = triggersValue => ({
+			key: 'otherMockKey',
+			type: 'mockType',
+			data: {
+				get: () => ({
+					rubric: true,
+					triggers: triggersValue
+				})
+			},
+			nodes: [
+				{
+					type: PAGE_NODE
+				},
+				{
+					type: QUESTION_BANK_NODE
+				},
+				{
+					type: ACTIONS_NODE
+				},
+				{
+					type: RUBRIC_NODE
+				}
+			]
+		})
+
+		let slateNode = createSlateNode([])
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+
+		slateNode = createSlateNode(undefined)
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+
+		slateNode = createSlateNode([{ type: 'someTrigger' }])
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+
+	})
+
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const createOboNode = (hasRubric, triggers) => ({
 			id: 'mockKey',

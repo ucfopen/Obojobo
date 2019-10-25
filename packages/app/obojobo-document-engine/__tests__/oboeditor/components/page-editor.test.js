@@ -257,12 +257,58 @@ describe('PageEditor', () => {
 		Object {
 		  "editable": false,
 		  "saved": true,
+		  "showPlaceholders": false,
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
 		    "document": Immutable.Record {
 		      "data": Immutable.Map {},
 		      "key": "16",
+		      "nodes": Immutable.List [],
+		    },
+		    "selection": Immutable.Record {
+		      "anchor": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "focus": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "isFocused": false,
+		      "marks": null,
+		    },
+		  },
+		}
+	`)
+	})
+
+	test('togglePlaceholders changes the state', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const inst = component.instance()
+
+		inst.togglePlaceholders()
+
+		expect(component.state()).toMatchInlineSnapshot(`
+		Object {
+		  "editable": true,
+		  "saved": true,
+		  "showPlaceholders": true,
+		  "value": Immutable.Record {
+		    "data": Immutable.Map {},
+		    "decorations": Immutable.List [],
+		    "document": Immutable.Record {
+		      "data": Immutable.Map {},
+		      "key": "17",
 		      "nodes": Immutable.List [],
 		    },
 		    "selection": Immutable.Record {
@@ -301,12 +347,13 @@ describe('PageEditor', () => {
 		Object {
 		  "editable": true,
 		  "saved": false,
+		  "showPlaceholders": false,
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
 		    "document": Immutable.Record {
 		      "data": Immutable.Map {},
-		      "key": "17",
+		      "key": "18",
 		      "nodes": Immutable.List [],
 		    },
 		    "selection": Immutable.Record {

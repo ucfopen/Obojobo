@@ -109,7 +109,7 @@ class SubMenu extends React.Component {
 			<SimpleDialog cancelOk onConfirm={this.deletePage}>
 				{'Are you sure you want to delete ' +
 					item.label +
-					'? This will permanately delete all content in the page'}
+					'? This will permanently delete all content in the page'}
 			</SimpleDialog>
 		)
 	}

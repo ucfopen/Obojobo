@@ -68,37 +68,37 @@ const BasicMarks = {
 			name: 'Bold',
 			type: BOLD_MARK,
 			icon: BoldIcon,
-			action: editor => editor.toggleMark(BOLD_MARK)
+			action: editor => editor.toggleMark(BOLD_MARK).focus()
 		},
 		{
 			name: 'Italic',
 			type: ITALIC_MARK,
 			icon: ItalicIcon,
-			action: editor => editor.toggleMark(ITALIC_MARK)
+			action: editor => editor.toggleMark(ITALIC_MARK).focus()
 		},
 		{
 			name: 'Strikethrough',
 			type: STRIKE_MARK,
 			icon: StrikeIcon,
-			action: editor => editor.toggleMark(STRIKE_MARK)
+			action: editor => editor.toggleMark(STRIKE_MARK).focus()
 		},
 		{
 			name: 'Quote',
 			type: QUOTE_MARK,
 			icon: QuoteIcon,
-			action: editor => editor.toggleMark(QUOTE_MARK)
+			action: editor => editor.toggleMark(QUOTE_MARK).focus()
 		},
 		{
 			name: 'Monospace',
 			type: MONOSPACE_MARK,
 			icon: MonoIcon,
-			action: editor => editor.toggleMark(MONOSPACE_MARK)
+			action: editor => editor.toggleMark(MONOSPACE_MARK).focus()
 		},
 		{
 			name: 'Equation',
 			type: LATEX_MARK,
 			icon: LatexIcon,
-			action: editor => editor.toggleMark(LATEX_MARK)
+			action: editor => editor.toggleMark(LATEX_MARK).focus()
 		}
 	]
 }

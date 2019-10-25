@@ -16,7 +16,7 @@ const slateToObo = node => {
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
 	const model = OboModel.models[node.key]
-	const content = { ...node.data.get('content'), ...model.get('content') }
+	const content = model ? { ...node.data.get('content'), ...model.get('content') } : node.data.get('content')
 
 	// Remove rubric if it has been deleted
 	delete content.rubric

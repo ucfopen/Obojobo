@@ -87,11 +87,11 @@
 				label {
 					display: inline-block;
 					width: 7em;
+					min-height: 2em;
 				}
 
 				input {
 					@include text-input();
-
 					width: 23.7em;
 
 					&.id-input {
@@ -193,7 +193,7 @@
 		border-radius: $dimension-rounded-radius;
 		font-size: 0.7em;
 		background-color: $color-bg;
-		min-width: 26.3em;
+		min-width: 27em;
 		padding: 0.7em 2em 0.7em 0.5em;
 		appearance: none;
 		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after

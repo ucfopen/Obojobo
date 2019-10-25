@@ -57,7 +57,7 @@ const bulletsMenu = {
 	type: 'sub-menu',
 	menu: [
 		{
-			name: 'Bulletted List',
+			name: 'Bulleted List',
 			type: 'sub-menu',
 			menu: [
 				{ name: 'Disc', type: 'action', disabled: true },
