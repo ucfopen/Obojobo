@@ -153,14 +153,13 @@
 		}
 
 		min-height: 4em;
-		display: table;
+		display: flex;
 	}
 
 	.submit {
-		margin-left: 0;
-		margin-right: 0;
 		position: relative;
 		display: inline-block;
+		margin: auto 0;
 
 		button {
 			cursor: pointer;
@@ -179,7 +178,7 @@
 	}
 
 	.result-container {
-		display: table-cell;
+		display: flex;
 		position: relative;
 		vertical-align: middle;
 		padding-right: 1em;
@@ -208,11 +207,11 @@
 			color: $color-bg;
 			font-weight: bold;
 			box-sizing: border-box;
-			margin: 0;
 			display: inline-block;
 			border-radius: 9999px;
 			padding: 0.5em 1.5em;
 			font-size: 0.8em;
+			margin: auto;
 			transform: scale(0);
 			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
 			animation-delay: $duration-animation-default * 1.5;
