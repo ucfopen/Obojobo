@@ -15,6 +15,15 @@
 			opacity: 0;
 		}
 
+		&.is-selected {
+			border: 3px solid $color-action;
+
+			.obojobo-draft--components--button {
+				transition: opacity 0s;
+				opacity: 1;
+			}
+		}
+
 		&:hover {
 			border: 3px solid $color-action;
 

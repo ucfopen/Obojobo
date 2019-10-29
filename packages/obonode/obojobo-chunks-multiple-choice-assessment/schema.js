@@ -17,11 +17,7 @@ const schema = {
 		'ObojoboDraft.Chunks.MCAssessment': {
 			nodes: [
 				{
-					match: [{ type: SETTINGS_NODE }],
-					min: 1
-				},
-				{
-					match: [{ type: CHOICE_LIST_NODE }],
+					match: [{ type: MCCHOICE_NODE }],
 					min: 1
 				}
 			],
@@ -29,31 +25,18 @@ const schema = {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
-						if (index === 0) {
-							const block = Block.create({
-								type: SETTINGS_NODE
-							})
-							return editor.insertNodeByKey(node.key, index, block)
-						}
-
 						const block = Block.create({
-							type: CHOICE_LIST_NODE
+							type: MCCHOICE_NODE,
+							data: { content: { score: 0 } }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						if (index === 0) {
-							const block = Block.create({
-								type: SETTINGS_NODE
-							})
-							return editor.wrapBlockByKey(child.key, block)
-						}
-
 						const block = Block.create({
-							type: CHOICE_LIST_NODE
+							type: MCCHOICE_NODE,
+							data: { content: { score: 0 } }
 						})
 						return editor.wrapBlockByKey(child.key, block)
-
 					}
 				}
 			}

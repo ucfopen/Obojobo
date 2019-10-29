@@ -18,6 +18,18 @@
 	.mc-settings{
 		background-color: $color-bg2;
 		padding-bottom: 0.5em;
+		padding-left: 2.5em;
+		font-family: "Libre Franklin", Arial, sans-serif;
+
+		select {
+			margin-left: 0.5em;
+			min-width: 15em;
+		}
+
+		.obojobo-draft--components--slider {
+			position: absolute;
+			right: 4.7em;
+		}
 	}
 
 	// Work around for the tangled scss in MCAssessment

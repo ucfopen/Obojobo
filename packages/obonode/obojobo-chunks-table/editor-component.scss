@@ -78,4 +78,48 @@
 	.table-settings {
 		text-align: center;
 	}
+
+	.buttonbox-box {
+		position: absolute;
+		text-align: center;
+		border-radius: $dimension-rounded-radius;
+		font-size: 0.75em;
+		bottom: -4em;
+		left: 50%;
+		transform: translate(-50%, 0);
+		font-family: $font-default;
+		box-sizing: border-box;
+		background-color: $color-bg2;
+		box-shadow: $box-shadow-overlay;
+		z-index: 9;
+
+		@mixin point() {
+			content: ' ';
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, -50%) rotate(45deg);
+			width: 1.72em;
+			height: 1.72em;
+			border-radius: $dimension-rounded-radius 0;
+			z-index: -1;
+		}
+
+		.box-border {
+			background-color: $color-bg2;
+			padding: 1em;
+		}
+
+		&::before {
+			@include point();
+
+			background-color: $color-bg2;
+			box-shadow: -$box-shadow-overlay;
+		}
+
+		.obojobo-draft--components--button {
+			position: relative;
+			z-index: 1;
+			font-size: 1.2em
+		}
+	}
 }

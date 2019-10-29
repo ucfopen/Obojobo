@@ -6,7 +6,7 @@
 		"content": {
 			"header": true,
 			"textGroup": { "numRows": 1, "numCols": 2 },
-			"numCols": 1
+			"numCols": 2
 		}
 	},
 	"nodes":[

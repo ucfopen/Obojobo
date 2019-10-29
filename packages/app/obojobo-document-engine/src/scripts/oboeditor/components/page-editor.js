@@ -41,7 +41,7 @@ class PageEditor extends React.Component {
 			value: Value.fromJSON(json),
 			saved: true,
 			editable: true,
-			showPlaceholders: false
+			showPlaceholders: true
 		}
 
 		this.editorRef = React.createRef()

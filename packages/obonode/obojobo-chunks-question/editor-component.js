@@ -83,15 +83,15 @@ class Question extends React.Component {
 									value={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
-								<div className="question-type" contentEditable={false}>
+								<label className="question-type" contentEditable={false}>
 									<input
 										type="checkbox"
 										name="vehicle1"
 										value="Bike"
 										checked={content.type === 'survey'}
 										onChange={this.onSetType}/>
-									<label>Survey Only</label>
-								</div>
+									Survey Only
+								</label>
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
