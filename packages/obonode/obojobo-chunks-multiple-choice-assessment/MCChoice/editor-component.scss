@@ -9,30 +9,47 @@
 		background: none;
 	}
 
-	.correct-button {
+	.correct-button{
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
-		top: 1em;
+		top: 0.5em;
 		left: 3em;
-		font-size: inherit;
-		background: transparent;
-		border: 1px solid;
 		font-family: $correct-font;
-		border-radius: $dimension-rounded-radius;
-		padding: 0.1em;
-		padding-left: 0.5em;
-		padding-right: 0.5em;
+
+		.button {
+			padding: 0.2em 0.5em;
+			color: $color-correct;
+			background-color: $color-bg;
+			border-color: $color-correct;
+			border-width: 2px;
+			height: 2.35em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-correct;
+			}
+		}
+	}
+
+	&.is-not-correct {
+		.correct-button {
+			.button {
+				color: $color-incorrect;
+				border-color: $color-incorrect;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-incorrect;
+				}
+			}
+		}
 	}
 
 	.add-feedback {
 		position: absolute;
 		bottom: 0.5em;
 		right: 3em;
-		font-size: inherit;
-		border: 1px solid $color-action;
-		color: $color-action;
-		border-radius: $dimension-rounded-radius;
 	}
 
 	&.is-correct {

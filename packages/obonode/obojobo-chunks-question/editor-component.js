@@ -22,8 +22,8 @@ class Question extends React.Component {
 		const type = event.target.checked ? 'survey' : 'default'
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
-		const mcAssessmentNode = this.props.node.nodes.get(1)
-		const mcAssessmentData = mcAssessmentNode.data
+		const mcAssessmentNode = this.props.node.nodes.filter(node => node.type === MCASSESSMENT_NODE).get(0)
+		const mcAssessmentData = mcAssessmentNode.data.toJSON()
 
 		this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {

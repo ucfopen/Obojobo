@@ -46,6 +46,8 @@ class MCAssessment extends React.Component {
 	render() {
 		const questionType = this.props.node.data.get('questionType') || 'default'
 		const content = this.props.node.data.get('content')
+
+		console.log(this.props.node.data.toJSON())
 	
 		return (
 			<div
@@ -65,10 +67,12 @@ class MCAssessment extends React.Component {
 						initialChecked={content.shuffle}
 						handleCheckChange={this.changeShuffle.bind(this)}/>
 				</div>
-				{this.props.children}
-				<Button className={'choice-button pad'} onClick={this.addChoice.bind(this)}>
-					{'+ Add Choice'}
-				</Button>
+				<div>
+					{this.props.children}
+					<Button className={'choice-button pad'} onClick={this.addChoice.bind(this)}>
+						{'+ Add Choice'}
+					</Button>
+				</div>
 			</div>
 		)
 	}
