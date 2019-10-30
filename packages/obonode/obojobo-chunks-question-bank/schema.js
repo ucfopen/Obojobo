@@ -49,53 +49,7 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Chunks.QuestionBank.Settings': {
-			nodes: [
-				{
-					match: [{ type: TEXT_PARAMETER }],
-					min: 1,
-					max: 1
-				},
-				{
-					match: [{ type: SELECT_PARAMETER }],
-					min: 1,
-					max: 1
-				}
-			],
-			normalize: (editor, error) => {
-				const { node, child, index } = error
-				switch (error.code) {
-					case CHILD_MIN_INVALID: {
-						if (index === 0) {
-							const block = Block.create(
-								TextParameter.helpers.oboToSlate('choose', 'Infinity', 'Choose')
-							)
-							return editor.insertNodeByKey(node.key, index, block)
-						}
-						const block = Block.create(
-							SelectParameter.helpers.oboToSlate('select', 'sequential', 'Select', SELECT_TYPES)
-						)
-						return editor.insertNodeByKey(node.key, index, block)
-					}
-					case CHILD_TYPE_INVALID: {
-						if (index === 0) {
-							const block = Block.create(
-								TextParameter.helpers.oboToSlate('choose', 'Infinity', 'Choose')
-							)
-							return editor.withoutNormalizing(e => {
-								e.removeNodeByKey(child.key)
-								return e.insertNodeByKey(node.key, index, block)
-							})
-						}
-						const block = Block.create(
-							SelectParameter.helpers.oboToSlate('select', 'sequential', 'Select', SELECT_TYPES)
-						)
-						return editor.withoutNormalizing(e => {
-							e.removeNodeByKey(child.key)
-							return e.insertNodeByKey(node.key, index, block)
-						})
-					}
-				}
-			}
+			isVoid: true
 		}
 	}
 }
