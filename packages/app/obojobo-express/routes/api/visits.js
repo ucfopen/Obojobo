@@ -61,8 +61,18 @@ router
 			.catch(() => {
 				throw 'Unable to start visit, visitId is no longer valid'
 			})
-			.then(() =>
-				Promise.all([
+			.then(() => {
+				// error so the student starts a new view w/ newer version
+				// this check doesn't happen in preview mode so authors
+				// can reload the page to see changes easier
+				if (
+					req.currentVisit.is_preview === false &&
+					req.currentVisit.draft_content_id !== req.currentDocument.contentId
+				) {
+					throw new Error('Visit for older draft version!')
+				}
+
+				return Promise.all([
 					viewerState.get(
 						req.currentUser.id,
 						req.currentDocument.contentId,
@@ -70,19 +80,13 @@ router
 					),
 					getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
 				])
-			)
+			})
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
 				;[viewState, visitStartReturnExtensionsProps] = results
 
 				if (req.currentVisit.is_preview === false) {
-					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
-						// error so the student starts a new view w/ newer version
-						// this check doesn't happen in preview mode so authors
-						// can reload the page to see changes easier
-						throw new Error('Visit for older draft version!')
-					}
 					// load lti launch data
 					return ltiUtil.retrieveLtiLaunch(
 						req.currentUser.id,
