@@ -67,9 +67,21 @@ const oboToSlate = node => {
 	const ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
 	nodes.push(ScoreActions.oboToSlate(content.scoreActions))
 
+
+	const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
 	if (content.rubric) {
-		const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
 		nodes.push(Rubric.oboToSlate(content.rubric))
+	} else {
+		// Although highest rubrics do not use the rubric properties, 
+		// setting them allows the defaults to be avalible if/when a user switches to pass-fail
+		nodes.push(Rubric.oboToSlate({ 
+			type: 'highest',
+			passingAttemptScore: 100,
+			passedResult: 100,
+			failedResult: 0,
+			unableToPassResult: null,
+			mods: []
+		}))
 	}
 
 	return {

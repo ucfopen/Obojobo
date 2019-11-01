@@ -8,42 +8,8 @@ Object {
   },
   "key": "mockKey",
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Response Type",
-            "name": "responseType",
-            "options": Array [
-              "pick-one",
-              "pick-all",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": undefined,
-            "display": "Shuffle",
-            "name": "shuffle",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
-    },
-    Object {
-      "nodes": Array [
-        undefined,
-        undefined,
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
-    },
+    undefined,
+    undefined,
   ],
   "object": "block",
   "type": "mockType",
@@ -57,7 +23,6 @@ Object {
   ],
   "content": Object {
     "responseType": "pick-one",
-    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",
@@ -82,7 +47,6 @@ Object {
   ],
   "content": Object {
     "responseType": "pick-one-multiple-correct",
-    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",

@@ -79,7 +79,7 @@ describe('IFrame Editor Node', () => {
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()

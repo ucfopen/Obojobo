@@ -75,19 +75,12 @@ describe('Assessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-				Object {
-				  "mock-name-1": undefined,
-				  "mock-name-2": "mock-node-2-text",
-				  "mods": Array [
-				    Object {
-				      "attemptCondition": "mockParameter",
-				      "reward": "mockParameter",
-				    },
-				  ],
-				  "null": undefined,
-				  "type": "pass-fail",
-				}
-		`)
+		Object {
+		  "failedResult": undefined,
+		  "passedResult": undefined,
+		  "unableToPassResult": undefined,
+		}
+	`)
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with no mods', () => {
@@ -102,10 +95,12 @@ describe('Assessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-										Object {
-										  "type": "pass-fail",
-										}
-					`)
+		Object {
+		  "failedResult": undefined,
+		  "passedResult": undefined,
+		  "unableToPassResult": undefined,
+		}
+	`)
 	})
 
 	test('oboToSlate converts an OboComponent to a Slate node', () => {

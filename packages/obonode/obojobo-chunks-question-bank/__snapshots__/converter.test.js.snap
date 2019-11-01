@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`QuestionBank editor oboToSlate converts an OboNode to a Slate node 1`] = `
+exports[`QuestionBank converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
     "content": Object {
@@ -9,40 +9,13 @@ Object {
   },
   "nodes": Array [
     Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Choose",
-            "name": "choose",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "Infinity",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
+      "data": Object {
+        "content": Object {
+          "choose": 1,
+          "chooseAll": true,
         },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Select",
-            "name": "select",
-            "options": Array [
-              "sequential",
-              "random",
-              "random-unseen",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-      ],
+      },
+      "isVoid": true,
       "object": "block",
       "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
     },
@@ -54,40 +27,13 @@ Object {
       },
       "nodes": Array [
         Object {
-          "nodes": Array [
-            Object {
-              "data": Object {
-                "display": "Choose",
-                "name": "choose",
-              },
-              "nodes": Array [
-                Object {
-                  "leaves": Array [
-                    Object {
-                      "text": "1",
-                    },
-                  ],
-                  "object": "text",
-                },
-              ],
-              "object": "block",
-              "type": "oboeditor.text-parameter",
+          "data": Object {
+            "content": Object {
+              "choose": 1,
+              "chooseAll": false,
             },
-            Object {
-              "data": Object {
-                "current": undefined,
-                "display": "Select",
-                "name": "select",
-                "options": Array [
-                  "sequential",
-                  "random",
-                  "random-unseen",
-                ],
-              },
-              "object": "block",
-              "type": "oboeditor.select-parameter",
-            },
-          ],
+          },
+          "isVoid": true,
           "object": "block",
           "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
         },
@@ -103,21 +49,18 @@ Object {
 }
 `;
 
-exports[`QuestionBank editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`QuestionBank converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [
     Object {
       "children": Array [],
-      "content": Object {},
+      "content": undefined,
       "id": "mockKey",
       "type": "ObojoboDraft.Chunks.QuestionBank",
     },
     undefined,
   ],
-  "content": Object {
-    "choose": "mockText",
-    "select": false,
-  },
+  "content": Object {},
   "id": "mockKey",
   "type": "mockType",
 }

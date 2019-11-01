@@ -15,7 +15,7 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
-describe('QuestionBank editor', () => {
+describe('QuestionBank converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
@@ -37,13 +37,8 @@ describe('QuestionBank editor', () => {
 				},
 				{
 					type: SETTINGS_NODE,
-					nodes: {
-						first: () => ({ text: 'mockText' }),
-						last: () => ({
-							data: {
-								get: () => false
-							}
-						})
+					data: {
+						get: () => ({})
 					}
 				}
 			]

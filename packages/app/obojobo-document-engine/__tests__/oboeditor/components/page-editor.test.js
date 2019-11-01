@@ -257,7 +257,7 @@ describe('PageEditor', () => {
 		Object {
 		  "editable": false,
 		  "saved": true,
-		  "showPlaceholders": false,
+		  "showPlaceholders": true,
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
@@ -302,7 +302,7 @@ describe('PageEditor', () => {
 		Object {
 		  "editable": true,
 		  "saved": true,
-		  "showPlaceholders": true,
+		  "showPlaceholders": false,
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
@@ -347,7 +347,7 @@ describe('PageEditor', () => {
 		Object {
 		  "editable": true,
 		  "saved": false,
-		  "showPlaceholders": false,
+		  "showPlaceholders": true,
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],

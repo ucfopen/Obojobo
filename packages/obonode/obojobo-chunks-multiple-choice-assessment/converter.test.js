@@ -29,7 +29,8 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: 'NotADefinedNode'
+					type: 'NotADefinedNode',
+					data: () => ({})
 				}
 			]
 		}
@@ -49,31 +50,11 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: CHOICE_LIST_NODE,
-					nodes: [
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
 						}
-					]
-				},
-				{
-					type: SETTINGS_NODE,
-					nodes: {
-						first: () => ({
-							data: {
-								get: () => 'pick-one-multiple-correct'
-							}
-						}),
-						last: () => ({
-							data: {
-								get: () => false
-							}
-						})
 					}
 				}
 			]
@@ -94,47 +75,27 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: CHOICE_LIST_NODE,
-					nodes: [
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
-						},
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
-						},
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 0 }
-								}
-							}
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
 						}
-					]
+					}
 				},
 				{
-					type: SETTINGS_NODE,
-					nodes: {
-						first: () => ({
-							data: {
-								get: () => 'pick-one'
-							}
-						}),
-						last: () => ({
-							data: {
-								get: () => false
-							}
-						})
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
+						}
+					}
+				},
+				{
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 0 }
+						}
 					}
 				}
 			]

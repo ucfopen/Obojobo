@@ -140,7 +140,7 @@ Array [
 
 exports[`PageEditor PageEditor component 1`] = `
 <div
-  className="editor--page-editor  is-not-show-placeholders"
+  className="editor--page-editor  is-show-placeholders"
 >
   <div
     className="draft-toolbars"
@@ -419,7 +419,7 @@ exports[`PageEditor PageEditor component 1`] = `
 
 exports[`PageEditor PageEditor component changes pages 1`] = `
 <div
-  className="editor--page-editor  is-not-show-placeholders"
+  className="editor--page-editor  is-show-placeholders"
 >
   <div
     className="draft-toolbars"
@@ -698,7 +698,7 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
 
 exports[`PageEditor PageEditor component changes pages 2`] = `
 <div
-  className="editor--page-editor  is-not-show-placeholders"
+  className="editor--page-editor  is-show-placeholders"
 >
   <div
     className="draft-toolbars"
@@ -977,7 +977,7 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
 
 exports[`PageEditor PageEditor component with no page 1`] = `
 <div
-  className="editor--page-editor  is-not-show-placeholders"
+  className="editor--page-editor  is-show-placeholders"
 >
   <div
     className="draft-toolbars"

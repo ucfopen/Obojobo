@@ -6,8 +6,6 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
-const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
-
 const slateToObo = node => {
 	let content
 	const children = []
@@ -24,6 +22,7 @@ const slateToObo = node => {
 
 			case SETTINGS_NODE:
 				content = child.data.get('content') || {}
+				if (content.chooseAll) content.choose = Infinity
 				break
 		}
 	})
@@ -37,7 +36,7 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	const chooseAll = node.content.choose === 'all' || node.content.choose === 'Infinity' || node.content.choose === Infinity
+	const chooseAll = !node.content.choose || node.content.choose === 'all' || node.content.choose === 'Infinity' || node.content.choose === Infinity
 	const data = { content: { ...node.content, chooseAll } }
 
 	if (chooseAll) data.content.choose = 1

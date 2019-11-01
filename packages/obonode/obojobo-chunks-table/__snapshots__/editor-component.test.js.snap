@@ -14,15 +14,6 @@ exports[`Table Editor Node Table component 1`] = `
         <tbody />
       </table>
     </div>
-    <div
-      className="table-editor-buttons"
-    >
-      <button
-        onClick={[Function]}
-      >
-        Toggle Header
-      </button>
-    </div>
   </div>
 </div>
 `;

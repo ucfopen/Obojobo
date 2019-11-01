@@ -88,14 +88,19 @@
 					display: inline-block;
 					width: 7em;
 					min-height: 2em;
+
+					&.switch {
+						min-height: 1.1em;
+					}
 				}
 
 				input {
 					@include text-input();
-					width: 23.7em;
+					width: 22.7em;
 
 					&.id-input {
-						width: 18.8em;
+						width: 17.9em;
+						border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
 					}
 				}
 
@@ -115,7 +120,7 @@
 					background-color: $color-bg;
 					border-color: $color-action;
 					border-width: 2px;
-					height: 2.35em;
+					height: 2.5em;
 
 					&:hover {
 						color: $color-bg;

@@ -29,6 +29,9 @@
 		display: inline-block;
 		text-align: right;
 		min-width: 19em;
+		position: absolute;
+		top: 1.8em;
+		right: 2.5em;
 
 		select {
 			display: block;
@@ -37,7 +40,7 @@
 			font-size: 0.7em;
 			background-color: $color-bg;
 			min-width: 24em;
-			padding: 0.7em 2em 0.7em 0.5em;
+			padding: 0.7em 2.5em 0.7em 0.5em;
 			appearance: none;
 			//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
 			background-image: linear-gradient(45deg, transparent 50%, gray 50%),

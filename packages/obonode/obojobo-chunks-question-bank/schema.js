@@ -26,7 +26,14 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
-								type: SETTINGS_NODE
+								type: SETTINGS_NODE,
+								data: {
+									content: {
+										choose: 'all',
+										chooseAll: true,
+										select: 'sequential'
+									}
+								}
 							})
 							return editor.insertNodeByKey(node.key, index, block)
 						}
@@ -37,7 +44,14 @@ const schema = {
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
-								type: SETTINGS_NODE
+								type: SETTINGS_NODE,
+								data: {
+									content: {
+										choose: 'all',
+										chooseAll: true,
+										select: 'sequential'
+									}
+								}
 							})
 							return editor.wrapBlockByKey(child.key, block)
 						}

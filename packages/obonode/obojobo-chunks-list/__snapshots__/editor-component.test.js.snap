@@ -8,15 +8,20 @@ exports[`List Editor Node List component 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
-    <button
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
     >
-      Swap to Ordered
-    </button>
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Swap to Ordered
+      </button>
+    </div>
   </div>
 </div>
 `;
 
-exports[`List Editor Node List component toggles type 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Unordered</button></div></div>"`;
+exports[`List Editor Node List component toggles type 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Swap to Unordered</button></div></div></div>"`;
 
-exports[`List Editor Node List component toggles type from unordered to ordered 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Ordered</button></div></div>"`;
+exports[`List Editor Node List component toggles type from unordered to ordered 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Swap to Ordered</button></div></div></div>"`;

@@ -82,6 +82,16 @@ Object {
     Object {
       "oboToSlateReturnFor": "someScoreActions",
     },
+    Object {
+      "oboToSlateReturnFor": Object {
+        "failedResult": 0,
+        "mods": Array [],
+        "passedResult": 100,
+        "passingAttemptScore": 100,
+        "type": "highest",
+        "unableToPassResult": null,
+      },
+    },
   ],
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment",

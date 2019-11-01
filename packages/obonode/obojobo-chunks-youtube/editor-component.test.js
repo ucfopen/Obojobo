@@ -42,7 +42,7 @@ describe('YouTube Editor Node', () => {
 		)
 
 		// locate the edit button
-		const button = component.find('button')
+		const button = component.find('button').at(1)
 		expect(button.props().children).toBe('Edit')
 
 		// click it

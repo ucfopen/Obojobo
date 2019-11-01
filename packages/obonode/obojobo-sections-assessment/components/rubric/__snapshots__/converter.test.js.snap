@@ -5,6 +5,7 @@ Object {
   "data": Object {
     "content": Object {
       "failedResult": 0,
+      "failedType": "set-value",
       "mods": Array [
         Object {
           "attemptCondition": 1,
@@ -12,30 +13,13 @@ Object {
         },
       ],
       "passedResult": 100,
+      "passedType": "set-value",
       "passingAttemptScore": 0,
       "unableToPassResult": 0,
+      "unableToPassType": "set-value",
     },
   },
-  "nodes": Array [
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    Object {
-      "nodes": Array [
-        Object {
-          "nodes": Array [
-            "ActionsChildOboToSlate",
-            "ActionsChildOboToSlate",
-          ],
-          "object": "block",
-          "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
-    },
-  ],
+  "isVoid": true,
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
@@ -46,17 +30,15 @@ Object {
   "data": Object {
     "content": Object {
       "failedResult": 0,
+      "failedType": "set-value",
       "passedResult": 100,
+      "passedType": "set-value",
       "passingAttemptScore": 0,
       "unableToPassResult": 0,
+      "unableToPassType": "set-value",
     },
   },
-  "nodes": Array [
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-  ],
+  "isVoid": true,
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
