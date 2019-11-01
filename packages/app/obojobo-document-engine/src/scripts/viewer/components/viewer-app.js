@@ -25,7 +25,7 @@ const { DOMUtil, focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
-const { SimpleDialog } = Common.components.modal
+const { SimpleDialog, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 
@@ -34,6 +34,36 @@ Dispatcher.on('viewer:alert', payload =>
 		<SimpleDialog ok title={payload.value.title}>
 			{payload.value.message}
 		</SimpleDialog>
+	)
+)
+
+Dispatcher.on('viewer:displayImportableScore', payload =>
+	ModalUtil.show(
+		<Dialog
+			centered
+			buttons={[
+				{
+					value: 'Do Not Import',
+					onClick: () => {console.log('do not import clicked')}
+				},
+				{
+					value: `Import Score: ${payload.value.highestScore}%`,
+					onClick: () => {console.log('DO import clicked')}
+				}
+			]}
+			title='Import Previous Score?'
+			width='300'
+			// focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+		>
+			<p>
+				You have previously completed this module and your instructor is
+				allowing you to import your high score of <strong>{payload.value.highestScore}%</strong>
+			</p>
+			<p>
+				Would you like to use that score now or ignore it and begin the Assessment?
+			</p>
+
+		</Dialog>
 	)
 )
 
@@ -120,6 +150,7 @@ export default class ViewerApp extends React.Component {
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
 		let viewSessionId
+		let importableScore
 
 		Dispatcher.trigger('viewer:loading')
 
@@ -137,6 +168,7 @@ export default class ViewerApp extends React.Component {
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+				importableScore = visit.value.importableScore
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
@@ -176,10 +208,18 @@ export default class ViewerApp extends React.Component {
 						loading: false,
 						requestStatus: 'ok',
 						isPreviewing,
-						viewSessionId
+						viewSessionId,
+						importableScore
 					},
 					() => Dispatcher.trigger('viewer:loaded', true)
 				)
+
+				if(importableScore.assessmentId){
+					Dispatcher.trigger('viewer:displayImportableScore', {
+						value: importableScore
+					})
+				}
+
 			})
 			.catch(err => {
 				console.error(err) /* eslint-disable-line no-console */

@@ -51,6 +51,7 @@ router
 		let viewState
 		let visitStartReturnExtensionsProps
 		let launch
+		let importableScore
 
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
@@ -68,13 +69,20 @@ router
 						req.currentDocument.contentId,
 						req.currentVisit.resource_link_id
 					),
-					getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
+					getDraftAndStartVisitProps(req, res, req.currentDocument, visitId),
+					Promise.resolve({
+						highestScore: 100,
+						assessmentDate: new Date(),
+						assessmentId: '38d76964-782b-4d3d-a71f-31f1ab94f0e2',
+						courseName: 'Introduction to Making Introductions',
+						courseUrl: 'https://google.com'
+					})
 				])
 			)
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
-				;[viewState, visitStartReturnExtensionsProps] = results
+				;[viewState, visitStartReturnExtensionsProps, importableScore] = results
 
 				if (req.currentVisit.is_preview === false) {
 					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
@@ -137,6 +145,7 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
+					importableScore,
 					extensions: visitStartReturnExtensionsProps
 				})
 			})
