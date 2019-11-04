@@ -59,14 +59,29 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	init(attemptsByAssessment) {
+	init(extensions) {
+		const attemptsByAssessment = extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
+		const importableScore = extensions[':ObojoboDraft.Sections.Assessment:importableScore']
 		this.state = {
-			assessments: {}
+			assessments: {},
+			importableScore
 		}
 
-		// necessary?
+		if(this.state.importableScore){
+			this.displayScoreImportNotice(importableScore)
+		}
+
 		if (!attemptsByAssessment) return
 		this.updateAttempts(attemptsByAssessment)
+	}
+
+	displayScoreImportNotice(importableScore) {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Previous Score Import',
+				message: `Your instructor allows importing your previous high score (${importableScore.highestScore}%) for this module. The option to import will be shown when you start the Assessment.`
+			}
+		})
 	}
 
 	updateAttempts(attemptsByAssessment) {
@@ -150,14 +165,63 @@ class AssessmentStore extends Store {
 		})
 	}
 
+	displayPreAttemptImportScoreNotice(importableScore, onImport, onNotImport){
+		ModalUtil.show(
+			<Dialog
+				centered
+				buttons={[
+					{
+						value: 'Do Not Import',
+						onClick: onNotImport
+					},
+					{
+						value: `Import Score: ${importableScore.highestScore}%`,
+						onClick: onImport
+					}
+				]}
+				title='Import Previous Score?'
+				width='300'
+			>
+				<p>
+					You have previously completed this module and your instructor is
+					allowing you to import your high score of <strong>{importableScore.highestScore}%</strong>
+				</p>
+				<p>
+					Would you like to use that score now or ignore it and begin the Assessment?
+				</p>
+
+			</Dialog>
+		)
+	}
+
+	onImportScoreSelected(resolve, importSelected){
+		ModalUtil.hide()
+		resolve(importSelected)
+	}
+
 	tryStartAttempt(id) {
 		const model = OboModel.models[id]
 
-		return APIUtil.startAttempt({
-			draftId: model.getRoot().get('draftId'),
-			assessmentId: model.get('id'),
-			visitId: NavStore.getState().visitId
-		})
+		return new Promise((resolve, reject) => {
+				const onImport = this.onImportScoreSelected.bind(this, resolve, true)
+				const onNotImport = this.onImportScoreSelected.bind(this, resolve, false)
+				this.displayPreAttemptImportScoreNotice(this.state.importableScore, onImport, onNotImport)
+			})
+			.then(shouldImport => {
+				// check for importable score data?
+				console.log(shouldImport)
+			})
+			.then(() => {
+				// avoid starting an assessment for testing
+				throw 'ok man'
+			})
+			.then(() => {
+				return APIUtil.startAttempt({
+					draftId: model.getRoot().get('draftId'),
+					assessmentId: model.get('id'),
+					visitId: NavStore.getState().visitId
+				})
+			})
 			.then(res => {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {

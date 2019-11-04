@@ -37,36 +37,6 @@ Dispatcher.on('viewer:alert', payload =>
 	)
 )
 
-Dispatcher.on('viewer:displayImportableScore', payload =>
-	ModalUtil.show(
-		<Dialog
-			centered
-			buttons={[
-				{
-					value: 'Do Not Import',
-					onClick: () => {console.log('do not import clicked')}
-				},
-				{
-					value: `Import Score: ${payload.value.highestScore}%`,
-					onClick: () => {console.log('DO import clicked')}
-				}
-			]}
-			title='Import Previous Score?'
-			width='300'
-			// focusOnFirstElement={this.focusOnFirstElement.bind(this)}
-		>
-			<p>
-				You have previously completed this module and your instructor is
-				allowing you to import your high score of <strong>{payload.value.highestScore}%</strong>
-			</p>
-			<p>
-				Would you like to use that score now or ignore it and begin the Assessment?
-			</p>
-
-		</Dialog>
-	)
-)
-
 export default class ViewerApp extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
 
@@ -145,7 +115,7 @@ export default class ViewerApp extends React.Component {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
 		let visitIdFromApi
-		let attemptHistory
+		let extensions
 		let viewState
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
@@ -165,7 +135,7 @@ export default class ViewerApp extends React.Component {
 
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
-				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
+				extensions = visit.value.extensions
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 				importableScore = visit.value.importableScore
@@ -183,7 +153,7 @@ export default class ViewerApp extends React.Component {
 					visitIdFromApi,
 					viewState
 				)
-				AssessmentStore.init(attemptHistory)
+				AssessmentStore.init(extensions)
 
 				window.onbeforeunload = this.onBeforeWindowClose
 				window.onresize = this.onResize
@@ -213,13 +183,6 @@ export default class ViewerApp extends React.Component {
 					},
 					() => Dispatcher.trigger('viewer:loaded', true)
 				)
-
-				if(importableScore.assessmentId){
-					Dispatcher.trigger('viewer:displayImportableScore', {
-						value: importableScore
-					})
-				}
-
 			})
 			.catch(err => {
 				console.error(err) /* eslint-disable-line no-console */

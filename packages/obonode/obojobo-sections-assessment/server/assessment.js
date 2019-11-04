@@ -463,15 +463,24 @@ class Assessment extends DraftNode {
 				return Visit.fetchById(visitId)
 			})
 			.then(visit => {
-				return this.constructor.getAttempts(
+				const attempts = this.constructor.getAttempts(
 					currentUser.id,
 					draftId,
 					visit.is_preview,
 					visit.resource_link_id
 				)
+				const importableScore = Promise.resolve({
+					highestScore: 100,
+					assessmentDate: new Date(),
+					assessmentId: '38d76964-782b-4d3d-a71f-31f1ab94f0e2',
+					courseName: 'Introduction to Making Introductions',
+					courseUrl: 'https://google.com'
+				})
+				return Promise.all([attempts, importableScore])
 			})
-			.then(attempts => {
+			.then(([attempts, importableScore]) => {
 				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
+				extensionsProps[':ObojoboDraft.Sections.Assessment:importableScore'] = importableScore
 			})
 	}
 }
