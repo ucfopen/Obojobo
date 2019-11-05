@@ -160,7 +160,7 @@ module.exports = app => {
 			lti_version: 'LTI-1p0',
 			resource_link_id
 		}
-		renderLtiLaunch({ ...person, ...params }, method, endpoint, res)
+		renderLtiLaunch({ ...ltiContext, ...person, ...params }, method, endpoint, res)
 	})
 
 	ltiLearner

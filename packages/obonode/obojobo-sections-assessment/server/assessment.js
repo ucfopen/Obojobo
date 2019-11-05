@@ -3,10 +3,11 @@ const Visit = require('obojobo-express/models/visit')
 const db = require('obojobo-express/db')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
+const NODE_NAME = 'ObojoboDraft.Sections.Assessment'
 
 class Assessment extends DraftNode {
 	static get nodeName() {
-		return 'ObojoboDraft.Sections.Assessment'
+		return NODE_NAME
 	}
 
 	static getCompletedAssessmentAttemptHistory(
@@ -86,6 +87,63 @@ class Assessment extends DraftNode {
 		}
 
 		return complete
+	}
+
+	static getImportableScore(userId, draftContentId, isPreview){
+		/*
+			@TODO: here's how to get to lti launch data in order to return context title etc
+			SELECT
+				s.created_at,
+				s.assessment_id,
+				s.score,
+				s.attempt_id,
+				l.data ->> 'context_title' as context_title
+			FROM
+				assessment_scores as s
+			LEFT JOIN lti_assessment_scores as lti
+				ON lti.id = s.id
+			LEFT JOIN launches as l
+				ON l.id = lti.launch_id
+			WHERE
+				user_id = $[userId]
+				AND draft_content_id = $[draftContentId]
+				AND is_preview - $[isPreview]
+			ORDER BY
+				s.score DESC,
+				s.created_at DESC
+			LIMIT 1
+		*/
+		return db
+			.oneOrNone(`
+				SELECT
+					id
+					created_at,
+					assessment_id,
+					score,
+					attempt_id
+				FROM assessment_scores
+				WHERE
+					user_id = $[userId]
+					AND draft_content_id = $[draftContentId]
+					AND is_preview = $[isPreview]
+				ORDER BY
+					score DESC,
+					created_at DESC
+				LIMIT 1
+				`,
+				{
+					userId,
+					isPreview,
+					draftContentId
+				})
+			.then(result => ({
+				highestScore: result.score,
+				assessmentDate: result.created_at,
+				assessmentId: result.assessment_id,
+				attemptId: result.attempt_id,
+				// courseName: result.context_title,
+				// courseUrl: 'https://google.com'
+			}))
 	}
 
 	static getAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
@@ -451,37 +509,45 @@ class Assessment extends DraftNode {
 	}
 
 	onSendToClient(req, res) {
-		return this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res)
+		return this.yell(`${NODE_NAME}:sendToClient`, req, res)
 	}
 
-	onStartVisit(req, res, draftId, visitId, extensionsProps) {
-		let currentUser
+	onStartVisit(req, res, draftId, visitId, extensions) {
+		let visit
 		return req
 			.requireCurrentUser()
-			.then(user => {
-				currentUser = user
-				return Visit.fetchById(visitId)
+			.then(() => Visit.fetchById(visitId))
+			.then(currentVisit => {
+				visit = currentVisit
 			})
-			.then(visit => {
-				const attempts = this.constructor.getAttempts(
-					currentUser.id,
-					draftId,
-					visit.is_preview,
-					visit.resource_link_id
-				)
-				const importableScore = Promise.resolve({
-					highestScore: 100,
-					assessmentDate: new Date(),
-					assessmentId: '38d76964-782b-4d3d-a71f-31f1ab94f0e2',
-					courseName: 'Introduction to Making Introductions',
-					courseUrl: 'https://google.com'
+			.then(() => this.constructor.getAttempts(
+				req.currentUser.id,
+				draftId,
+				visit.is_preview,
+				visit.resource_link_id
+			))
+			.then(attemptHistory => {
+				extensions.push({
+					name: NODE_NAME,
+					attemptHistory
 				})
-				return Promise.all([attempts, importableScore])
-			})
-			.then(([attempts, importableScore]) => {
-				extensionsProps['ObojoboDraft.Sections.Assessment'] = {
-					attemptHistory: attempts,
-					importableScore
+
+				// if there's no attempt history
+				// find the highest importable score
+				if(attemptHistory.length === 0){
+					return this.constructor.getImportableScore(
+						req.currentUser.id,
+						visit.draft_content_id,
+						visit.is_preview
+					)
+					.then(importableScore => {
+						if(importableScore){
+							extensions.push({
+								name: NODE_NAME,
+								importableScore
+							})
+						}
+					})
 				}
 			})
 	}

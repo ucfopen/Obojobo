@@ -15,7 +15,9 @@ const {
 } = oboRequire('express_validators')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
-	const visitStartReturnExtensionsProps = {}
+	// trigger startVisit
+	// allows listeners to add objects the extensions array
+	const visitStartExtensions = []
 	return draftDocument
 		.yell(
 			'internal:startVisit',
@@ -23,11 +25,9 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 			res,
 			draftDocument.draftId,
 			visitId,
-			visitStartReturnExtensionsProps
+			visitStartExtensions
 		)
-		.then(() => {
-			return visitStartReturnExtensionsProps
-		})
+		.then(() => visitStartExtensions)
 }
 
 router
@@ -49,7 +49,7 @@ router
 	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
 	.post((req, res) => {
 		let viewState
-		let visitStartReturnExtensionsProps
+		let visitStartExtensions
 		let launch
 
 		const draftId = req.currentDocument.draftId
@@ -74,7 +74,7 @@ router
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
-				;[viewState, visitStartReturnExtensionsProps] = results
+				;[viewState, visitStartExtensions] = results
 
 				if (req.currentVisit.is_preview === false) {
 					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
@@ -137,7 +137,7 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartReturnExtensionsProps
+					extensions: visitStartExtensions
 				})
 			})
 			.catch(err => {

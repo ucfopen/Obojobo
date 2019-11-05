@@ -20,10 +20,7 @@ const shouldRespondWithJson = req => {
 }
 
 const camelizeOptions = {
-	deep: true,
-	stopPaths: [
-		'value.extensions'
-	]
+	deep: true
 }
 
 const camelize = o => camelcaseKeys(o, camelizeOptions)

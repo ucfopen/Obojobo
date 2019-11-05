@@ -60,21 +60,20 @@ class AssessmentStore extends Store {
 	}
 
 	init(extensions) {
-		const ext = extensions['ObojoboDraft.Sections.Assessment']
-		const attemptsByAssessment = ext.attemptHistory
-		const importableScore = ext.importableScore
+		const ext = {attemptHistory: [], importableScore: null}
+		const filteredExtArrays = extensions.filter(val => val.name === 'ObojoboDraft.Sections.Assessment')
+		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
 		this.state = {
 			assessments: {},
-			importableScore
+			importableScore: ext.importableScore
 		}
 
-		if(importableScore){
-			this.displayScoreImportNotice(importableScore)
-		}
+		this.updateAttempts(ext.attemptHistory)
 
-		if (!attemptsByAssessment) return
-		this.updateAttempts(attemptsByAssessment)
+		if(ext.importableScore){
+			this.displayScoreImportNotice(ext.importableScore)
+		}
 	}
 
 	displayScoreImportNotice(importableScore) {
@@ -84,6 +83,22 @@ class AssessmentStore extends Store {
 				message: `Your instructor allows importing your previous high score (${importableScore.highestScore}%) for this module. The option to import will be shown when you start the Assessment.`
 			}
 		})
+	}
+
+	displayUnfinishedAttemptNotice(unfinishedAttempt){
+		ModalUtil.show(
+			<SimpleDialog
+				ok
+				title="Resume Attempt"
+				onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
+			>
+				<p>
+					It looks like you were in the middle of an attempt. We&apos;ll resume where you left
+					off.
+				</p>
+			</SimpleDialog>,
+			true
+		)
 	}
 
 	updateAttempts(attemptsByAssessment) {
@@ -138,19 +153,7 @@ class AssessmentStore extends Store {
 		}
 
 		if (unfinishedAttempt) {
-			return ModalUtil.show(
-				<SimpleDialog
-					ok
-					title="Resume Attempt"
-					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
-				>
-					<p>
-						It looks like you were in the middle of an attempt. We&apos;ll resume where you left
-						off.
-					</p>
-				</SimpleDialog>,
-				true
-			)
+			this.displayUnfinishedAttemptNotice(unfinishedAttempt)
 		}
 	}
 
@@ -215,11 +218,10 @@ class AssessmentStore extends Store {
 			})
 			.then(shouldImport => {
 				// check for importable score data?
-				console.log(shouldImport)
-			})
-			.then(() => {
-				// avoid starting an assessment for testing
-				throw 'ok man'
+				if(shouldImport){
+					// avoid starting an assessment for testing
+					throw 'should import here...'
+				}
 			})
 			.then(() => {
 				const model = OboModel.models[id]
@@ -291,7 +293,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 				this.endAttempt(res.value, context)
-				return this.triggerChange()
+				this.triggerChange()
 			})
 			.catch(e => {
 				console.error(e) /* eslint-disable-line no-console */
@@ -317,6 +319,9 @@ class AssessmentStore extends Store {
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)
+
+		 // can no longer import now that we have a score
+		this.state.importableScore = null
 
 		assessment.current = null
 
@@ -376,7 +381,7 @@ class AssessmentStore extends Store {
 					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
 					res.value
 				)
-				return this.triggerChange()
+				this.triggerChange()
 			})
 			.catch(e => {
 				console.error(e) /* eslint-disable-line no-console */
