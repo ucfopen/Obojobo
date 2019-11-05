@@ -201,6 +201,10 @@
 			line-height: 1.5em;
 			vertical-align: middle;
 			margin-left: 1.25em;
+
+			@media only screen and (max-width: 640px) {
+				margin-left: 0;
+			}
 		}
 
 		.result {
@@ -321,7 +325,7 @@
 				font-weight: bold;
 				color: $color-solution-label-text;
 				margin-top: 1em;
-				margin-left: 2em;
+				margin-left: 2.5em;
 				margin-bottom: -1em;
 				display: block;
 				transform: scale(0.7);
@@ -384,11 +388,6 @@
 				width: 0;
 				height: 0;
 				overflow: hidden;
-			}
-
-			> div > .component[data-obo-component='true'] {
-				margin-left: -1em;
-				margin-right: -1em;
 			}
 
 			.obojobo-draft--pages--page {
