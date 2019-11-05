@@ -60,14 +60,16 @@ class AssessmentStore extends Store {
 	}
 
 	init(extensions) {
-		const attemptsByAssessment = extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
-		const importableScore = extensions[':ObojoboDraft.Sections.Assessment:importableScore']
+		const ext = extensions['ObojoboDraft.Sections.Assessment']
+		const attemptsByAssessment = ext.attemptHistory
+		const importableScore = ext.importableScore
+
 		this.state = {
 			assessments: {},
 			importableScore
 		}
 
-		if(this.state.importableScore){
+		if(importableScore){
 			this.displayScoreImportNotice(importableScore)
 		}
 
@@ -194,18 +196,22 @@ class AssessmentStore extends Store {
 		)
 	}
 
-	onImportScoreSelected(resolve, importSelected){
+	onImportScoreSelected(resolve, shouldImport){
 		ModalUtil.hide()
-		resolve(importSelected)
+		resolve(shouldImport)
 	}
 
 	tryStartAttempt(id) {
-		const model = OboModel.models[id]
-
 		return new Promise((resolve, reject) => {
-				const onImport = this.onImportScoreSelected.bind(this, resolve, true)
-				const onNotImport = this.onImportScoreSelected.bind(this, resolve, false)
-				this.displayPreAttemptImportScoreNotice(this.state.importableScore, onImport, onNotImport)
+				if(this.state.importableScore){
+					const onImport = this.onImportScoreSelected.bind(this, resolve, true)
+					const onNotImport = this.onImportScoreSelected.bind(this, resolve, false)
+					this.displayPreAttemptImportScoreNotice(this.state.importableScore, onImport, onNotImport)
+				}
+				else {
+					// no importable score, move on
+					resolve(false)
+				}
 			})
 			.then(shouldImport => {
 				// check for importable score data?
@@ -216,6 +222,8 @@ class AssessmentStore extends Store {
 				throw 'ok man'
 			})
 			.then(() => {
+				const model = OboModel.models[id]
+
 				return APIUtil.startAttempt({
 					draftId: model.getRoot().get('draftId'),
 					assessmentId: model.get('id'),

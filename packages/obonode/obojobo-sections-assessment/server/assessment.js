@@ -479,8 +479,10 @@ class Assessment extends DraftNode {
 				return Promise.all([attempts, importableScore])
 			})
 			.then(([attempts, importableScore]) => {
-				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
-				extensionsProps[':ObojoboDraft.Sections.Assessment:importableScore'] = importableScore
+				extensionsProps['ObojoboDraft.Sections.Assessment'] = {
+					attemptHistory: attempts,
+					importableScore
+				}
 			})
 	}
 }
