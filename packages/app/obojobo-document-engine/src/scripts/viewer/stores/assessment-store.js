@@ -80,7 +80,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
 				title: 'Previous Score Import',
-				message: `Your instructor allows importing your previous high score (${importableScore.highestScore}%) for this module. The option to import will be shown when you start the Assessment.`
+				message: `Your instructor allows importing your previous high score (${Math.round(importableScore.highestScore)}%) for this module. The option to import will be shown when you start the Assessment.`
 			}
 		})
 	}
@@ -171,6 +171,7 @@ class AssessmentStore extends Store {
 	}
 
 	displayPreAttemptImportScoreNotice(importableScore, onImport, onNotImport){
+		const roundedScore = Math.round(importableScore.highestScore)
 		ModalUtil.show(
 			<Dialog
 				centered
@@ -180,7 +181,7 @@ class AssessmentStore extends Store {
 						onClick: onNotImport
 					},
 					{
-						value: `Import Score: ${importableScore.highestScore}%`,
+						value: `Import Score: ${roundedScore}%`,
 						onClick: onImport
 					}
 				]}
@@ -189,7 +190,7 @@ class AssessmentStore extends Store {
 			>
 				<p>
 					You have previously completed this module and your instructor is
-					allowing you to import your high score of <strong>{importableScore.highestScore}%</strong>
+					allowing you to import your high score of <strong>{roundedScore}%</strong>
 				</p>
 				<p>
 					Would you like to use that score now or ignore it and begin the Assessment?

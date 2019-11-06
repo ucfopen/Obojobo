@@ -136,14 +136,18 @@ class Assessment extends DraftNode {
 					isPreview,
 					draftContentId
 				})
-			.then(result => ({
-				highestScore: result.score,
-				assessmentDate: result.created_at,
-				assessmentId: result.assessment_id,
-				attemptId: result.attempt_id,
-				// courseName: result.context_title,
-				// courseUrl: 'https://google.com'
-			}))
+			.then(result => {
+				if(result){
+					return {
+						highestScore: result.score,
+						assessmentDate: result.created_at,
+						assessmentId: result.assessment_id,
+						attemptId: result.attempt_id,
+						// courseName: result.context_title,
+						// courseUrl: 'https://google.com'
+					}
+				}
+			})
 	}
 
 	static getAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {

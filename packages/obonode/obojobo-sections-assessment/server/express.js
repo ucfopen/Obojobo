@@ -208,6 +208,15 @@ router
 			})
 	})
 
+router
+	.route('/api/assessments/:draftId/:assessmentId/import-score')
+	.post([requireCurrentUser, requireCurrentVisit, requireAssessmentId])
+	.post((req, res) => {
+
+
+		req.body.assessmentId
+	})
+
 // @TODO NOT USED
 // update getAttempt to take isPreview
 router
