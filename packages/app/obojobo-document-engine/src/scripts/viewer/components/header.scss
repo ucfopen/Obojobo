@@ -30,6 +30,11 @@
 		margin-left: 1rem;
 		font-weight: bold;
 		cursor: default;
+
+		@include mq($until: mobile) {
+			display: block;
+			margin-left: 0;
+		}
 	}
 
 	.viewer--components--logo {
