@@ -1,17 +1,18 @@
 const db = require('obojobo-express/db')
 const camelcaseKeys = require('camelcase-keys')
 // const draftNodeStore = oboRequire('draft_node_store')
-// const logger = require('../logger.js')
+const logger = require('obojobo-express/logger')
 // const oboEvents = oboRequire('obo_events')
 
 
 class AssessmentScore {
 	constructor(props) {
+		// set some defaults
 		this.isPreview = false
 		this.isImported = false
 		this.importedAssessmentScoreId = null
 
-		// expand all the visitProps onto this object
+		// expand all the props onto this object with camel case keys
 		props = camelcaseKeys(props)
 		for (const prop in props) {
 			this[prop] = props[prop]
@@ -34,12 +35,18 @@ class AssessmentScore {
 				return new AssessmentScore(result)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
+				logger.error('AssessmentScore fetchById Error', error.message)
 				return Promise.reject(error)
 			})
 	}
 
+	clone(){
+		const clone = Object.assign({}, this)
+		return new AssessmentScore(clone)
+	}
+
 	create(db = db){
+		if(this.id) throw 'E'
 		return db.one(`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
@@ -52,6 +59,18 @@ class AssessmentScore {
 			})
 	}
 
+	importAsNewScore(){
+		const newScore = this.clone()
+		console.log(newScore)
+
+		delete newScore.id
+		newScore.is_imported = true
+		newScore.imported_assessment_score_id = this.id
+		// dispatch an event?
+		// store a caliper event?
+		console.log(newScore)
+		return newScore.create()
+	}
 
 
 }

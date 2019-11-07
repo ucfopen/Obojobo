@@ -91,33 +91,10 @@ class Assessment extends DraftNode {
 	}
 
 	static getImportableScore(userId, draftContentId, isPreview){
-		/*
-			@TODO: here's how to get to lti launch data in order to return context title etc
-			SELECT
-				s.created_at,
-				s.assessment_id,
-				s.score,
-				s.attempt_id,
-				l.data ->> 'context_title' as context_title
-			FROM
-				assessment_scores as s
-			LEFT JOIN lti_assessment_scores as lti
-				ON lti.id = s.id
-			LEFT JOIN launches as l
-				ON l.id = lti.launch_id
-			WHERE
-				user_id = $[userId]
-				AND draft_content_id = $[draftContentId]
-				AND is_preview - $[isPreview]
-			ORDER BY
-				s.score DESC,
-				s.created_at DESC
-			LIMIT 1
-		*/
 		return db
 			.oneOrNone(`
 				SELECT
-					id
+					id,
 					created_at,
 					assessment_id,
 					score,
@@ -138,14 +115,14 @@ class Assessment extends DraftNode {
 					draftContentId
 				})
 			.then(result => {
+				console.log(result)
 				if(result){
 					return {
 						highestScore: result.score,
 						assessmentDate: result.created_at,
 						assessmentId: result.assessment_id,
 						attemptId: result.attempt_id,
-						// courseName: result.context_title,
-						// courseUrl: 'https://google.com'
+						assessmentScoreId: result.id
 					}
 				}
 			})
@@ -476,7 +453,7 @@ class Assessment extends DraftNode {
 					resourceLinkId
 				})
 
-				const q2 = ascore.create(dbTransaction)
+				const q2 = aScore.create(dbTransaction)
 
 				return dbTransaction.batch([q1, q2])
 			})

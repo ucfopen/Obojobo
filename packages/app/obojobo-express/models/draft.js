@@ -120,7 +120,7 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
+				logger.error('Draft fetchById Error', error.message)
 				return Promise.reject(error)
 			})
 	}

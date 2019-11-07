@@ -56,7 +56,7 @@ class DraftSummary {
 			.one(buildQueryWhere('drafts.id = $[id]'), { id })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
+				logger.error('DraftSummary fetchById Error', error.message)
 				return Promise.reject('Error Loading DraftSummary by id')
 			})
 	}

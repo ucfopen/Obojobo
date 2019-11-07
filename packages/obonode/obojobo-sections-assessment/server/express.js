@@ -7,6 +7,7 @@ const logger = require('obojobo-express/logger')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
+const AssessmentScore = require('./models/assessment-score')
 const { reviewAttempt } = require('./attempt-review')
 const { logAndRespondToUnexpected } = require('./util')
 const {
@@ -210,18 +211,34 @@ router
 
 router
 	.route('/api/assessments/:draftId/:assessmentId/import-score')
-	.post([requireCurrentUser, requireCurrentVisit, requireAssessmentId])
-	.post((req, res) => {
+	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAssessmentId])
+	.post(async (req, res) => {
+		try{
+			// load the AssessmentScore to import
+			const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
+console.log(originalScore.draftContentId, req.currentDocument.contentId)
+			// verify the user can import it
+			if(originalScore.userId !== req.currentUser.id) throw "Importable scores must be owned by the current user."
+			if(originalScore.draftId !== req.currentDocument.draftId) throw "Scores can only be imported for the same module"
+			if(originalScore.draftContentId !== req.currentDocument.contentId) throw "Scores can only be imported for the same version of a module"
 
-		const sqlGetColumns = require('../utils/sql-get-columns')
-		const getColumnsQuery = sqlGetColumns('assessment_scores', ['id', 'is_imported', 'imported_assessment_score_id'])
-		return db.one(getColumnsQuery)
-			.then(columns => {
-				return db.none(`
-					INSERT INTO assessment_scores (${columns}, )`)
-			})
+			// check that the student has no attempts for this resource_link yet
+			const attempts = await Assessment.getAttempts(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
 
-		req.body.assessmentId
+			console.log(attempts)
+			if(attempts.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
+
+			const importedScore = await originalScore.importAsNewScore()
+			return importedScore
+		} catch(e){
+			logAndRespondToUnexpected('Error importing score', res, req, e)
+		}
+
 	})
 
 // @TODO NOT USED

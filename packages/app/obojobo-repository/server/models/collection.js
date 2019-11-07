@@ -30,7 +30,7 @@ class RepositoryCollection {
 				return new RepositoryCollection(selectResult)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
+				logger.error('Collection fetchById Error', error.message)
 				return Promise.reject(error)
 			})
 	}

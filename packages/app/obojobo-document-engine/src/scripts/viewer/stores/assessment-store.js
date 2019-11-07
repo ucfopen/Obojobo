@@ -207,7 +207,7 @@ class AssessmentStore extends Store {
 
 	tryStartAttempt(id) {
 		return new Promise((resolve, reject) => {
-				if(this.state.importableScore){
+				if(this.state.importableScore && this.state.importableScore.assessmentId === id){
 					const onImport = this.onImportScoreSelected.bind(this, resolve, true)
 					const onNotImport = this.onImportScoreSelected.bind(this, resolve, false)
 					this.displayPreAttemptImportScoreNotice(this.state.importableScore, onImport, onNotImport)
@@ -219,10 +219,15 @@ class AssessmentStore extends Store {
 			})
 			.then(shouldImport => {
 				// check for importable score data?
-				if(shouldImport){
-					// avoid starting an assessment for testing
-					throw 'should import here...'
-				}
+				if(!shouldImport) return
+
+				const navState = NavStore.getState()
+				return APIUtil.importAttempt({
+					visitId: navState.visitId,
+					draftId: navState.draftId,
+					assessmentId: this.state.importableScore.assessmentId,
+					importedAssessmentScoreId: this.state.importableScore.assessmentScoreId
+				})
 			})
 			.then(() => {
 				const model = OboModel.models[id]

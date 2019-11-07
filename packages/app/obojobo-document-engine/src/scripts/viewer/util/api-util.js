@@ -58,7 +58,7 @@ const APIUtil = {
 			}
 		})
 	},
-	
+
 	postMultiPart(endpoint, formData = new FormData()) {
 		return fetch(endpoint, {
 			method: 'POST',
@@ -153,8 +153,8 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	postDraft(id, draftString, format='application/json') {
-		return APIUtil.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
+	postDraft(draftId, draftString, format='application/json') {
+		return APIUtil.postWithFormat(`/api/drafts/${draftId}`, draftString, format).then(processJsonResults)
 	},
 
 	createNewDraft() {
@@ -168,6 +168,13 @@ const APIUtil = {
 	getAllDrafts() {
 		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
 	},
+
+	importAttempt({draftId, assessmentId, visitId, importedAssessmentScoreId}) {
+		return APIUtil.post(`/api/assessments/${draftId}/${assessmentId}/import-score`, {
+			visitId,
+			importedAssessmentScoreId
+		}).then(processJsonResults)
+	}
 }
 
 export default APIUtil
