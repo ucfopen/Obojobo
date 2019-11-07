@@ -1,4 +1,5 @@
 const DraftNode = require('obojobo-express/models/draft_node')
+const AssessmentScore = require('./models/assessment-score')
 const Visit = require('obojobo-express/models/visit')
 const db = require('obojobo-express/db')
 const lti = require('obojobo-express/lti')
@@ -463,24 +464,19 @@ class Assessment extends DraftNode {
 					{ result: attemptScoreResult, attemptId: attemptId }
 				)
 
-				const q2 = dbTransaction.one(
-					`
-					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview)
-					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview])
-					RETURNING id
-				`,
-					{
-						userId,
-						draftId,
-						contentId,
-						assessmentId,
-						attemptId,
-						score: assessmentScoreDetails.assessmentModdedScore,
-						scoreDetails: assessmentScoreDetails,
-						isPreview,
-						resourceLinkId
-					}
-				)
+				const aScore = new AssessmentScore({
+					userId,
+					draftId,
+					contentId,
+					assessmentId,
+					attemptId,
+					score: assessmentScoreDetails.assessmentModdedScore,
+					scoreDetails: assessmentScoreDetails,
+					isPreview,
+					resourceLinkId
+				})
+
+				const q2 = ascore.create(dbTransaction)
 
 				return dbTransaction.batch([q1, q2])
 			})

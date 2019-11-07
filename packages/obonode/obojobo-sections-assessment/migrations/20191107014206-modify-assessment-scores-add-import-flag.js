@@ -16,14 +16,14 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db
-		.addColumn('attempts', 'imported_attempt_id', {
-			type: 'UUID',
-			notNull: false
+		.addColumn('assessment_scores', 'is_imported', {
+			type: 'boolean',
+			defaultValue: false
 		})
 };
 
 exports.down = function(db) {
-	return db.removeColumn('attempts', 'imported_attempt_id')
+	return db.removeColumn('assessment_scores', 'is_imported')
 };
 
 exports._meta = {

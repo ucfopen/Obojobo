@@ -17,22 +17,6 @@ const {
 	requireAssessmentId
 } = require('obojobo-express/express_validators')
 
-const sqlToSelectColumnNames = (table, exceptColumns) => {
-	const sqlExceptColumns = exceptColumns ?
-		`AND c.column_name NOT IN(${exceptColumns.map(n => `'${n}'`)})`
-		: ''
-
-	return `SELECT array_to_string(
-		ARRAY(
-			SELECT c.column_name::VARCHAR
-			FROM information_schema.columns As c
-			WHERE table_name = '${table}'
-			${sqlExceptColumns}
-		),
-		', '
-	) AS columns`
-}
-
 router
 	.route('/api/lti/state/draft/:draftId')
 	.get([requireCurrentDocument, requireCurrentVisit, requireCurrentUser])
@@ -229,6 +213,13 @@ router
 	.post([requireCurrentUser, requireCurrentVisit, requireAssessmentId])
 	.post((req, res) => {
 
+		const sqlGetColumns = require('../utils/sql-get-columns')
+		const getColumnsQuery = sqlGetColumns('assessment_scores', ['id', 'is_imported', 'imported_assessment_score_id'])
+		return db.one(getColumnsQuery)
+			.then(columns => {
+				return db.none(`
+					INSERT INTO assessment_scores (${columns}, )`)
+			})
 
 		req.body.assessmentId
 	})
