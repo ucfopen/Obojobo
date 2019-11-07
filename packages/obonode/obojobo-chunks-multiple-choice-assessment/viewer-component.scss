@@ -154,6 +154,11 @@
 
 		min-height: 4em;
 		display: table;
+
+		@media only screen and (max-width: 640px) {
+			text-align: center;
+			display: block;
+		}
 	}
 
 	.submit {
@@ -186,6 +191,11 @@
 		padding-top: 1em;
 		padding-bottom: 1em;
 		line-height: 1em;
+
+		@media only screen and (max-width: 640px) {
+			display: block;
+			padding-top: 0;
+		}
 
 		@include mq($until: mobile) {
 			display: block;

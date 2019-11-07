@@ -8,11 +8,11 @@
 		padding-left: 2em;
 
 		@include mq($until: desktop) {
-			padding-left: 1em;
+			padding-left: 3.5em;
 		}
 
 		@include mq($until: tablet) {
-			padding-left: 0.8em;
+			padding-left: 2.5em;
 		}
 	}
 }
