@@ -216,7 +216,7 @@ router
 		try{
 			// load the AssessmentScore to import
 			const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
-console.log(originalScore.draftContentId, req.currentDocument.contentId)
+
 			// verify the user can import it
 			if(originalScore.userId !== req.currentUser.id) throw "Importable scores must be owned by the current user."
 			if(originalScore.draftId !== req.currentDocument.draftId) throw "Scores can only be imported for the same module"
@@ -230,11 +230,10 @@ console.log(originalScore.draftContentId, req.currentDocument.contentId)
 				req.currentVisit.resource_link_id
 			)
 
-			console.log(attempts)
 			if(attempts.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
 
 			const importedScore = await originalScore.importAsNewScore()
-			return importedScore
+			res.success(importedScore)
 		} catch(e){
 			logAndRespondToUnexpected('Error importing score', res, req, e)
 		}

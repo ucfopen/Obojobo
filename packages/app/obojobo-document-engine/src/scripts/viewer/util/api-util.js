@@ -9,6 +9,7 @@ const processJsonResults = res => {
 }
 
 const APIUtil = {
+	processJsonResults,
 	get(endpoint, format) {
 		return fetch(endpoint, {
 			method: 'GET',
@@ -112,38 +113,8 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	startAttempt({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/assessments/attempt/start', {
-			draftId,
-			assessmentId,
-			visitId
-		}).then(processJsonResults)
-	},
-
-	resumeAttempt({ draftId, attemptId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/resume`, {
-			draftId,
-			attemptId,
-			visitId
-		}).then(processJsonResults)
-	},
-
-	endAttempt({ attemptId, draftId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
-			processJsonResults
-		)
-	},
-
 	reviewAttempt(attemptIds) {
 		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
-	},
-
-	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/lti/send-assessment-score', {
-			draftId,
-			assessmentId,
-			visitId
-		}).then(processJsonResults)
 	},
 
 	clearPreviewScores({ draftId, visitId }) {
@@ -169,12 +140,6 @@ const APIUtil = {
 		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
 	},
 
-	importAttempt({draftId, assessmentId, visitId, importedAssessmentScoreId}) {
-		return APIUtil.post(`/api/assessments/${draftId}/${assessmentId}/import-score`, {
-			visitId,
-			importedAssessmentScoreId
-		}).then(processJsonResults)
-	}
 }
 
 export default APIUtil

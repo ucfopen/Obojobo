@@ -90,44 +90,6 @@ class Assessment extends DraftNode {
 		return complete
 	}
 
-	static getImportableScore(userId, draftContentId, isPreview){
-		return db
-			.oneOrNone(`
-				SELECT
-					id,
-					created_at,
-					assessment_id,
-					score,
-					attempt_id
-				FROM assessment_scores
-				WHERE
-					user_id = $[userId]
-					AND draft_content_id = $[draftContentId]
-					AND is_preview = $[isPreview]
-				ORDER BY
-					score DESC,
-					created_at DESC
-				LIMIT 1
-				`,
-				{
-					userId,
-					isPreview,
-					draftContentId
-				})
-			.then(result => {
-				console.log(result)
-				if(result){
-					return {
-						highestScore: result.score,
-						assessmentDate: result.created_at,
-						assessmentId: result.assessment_id,
-						attemptId: result.attempt_id,
-						assessmentScoreId: result.id
-					}
-				}
-			})
-	}
-
 	static getAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
 		const assessments = {}
 
@@ -379,7 +341,7 @@ class Assessment extends DraftNode {
 	static insertNewAttempt(
 		userId,
 		draftId,
-		contentId,
+		draftContentId,
 		assessmentId,
 		state,
 		isPreview,
@@ -388,7 +350,7 @@ class Assessment extends DraftNode {
 		return db.one(
 			`
 				INSERT INTO attempts (user_id, draft_id, draft_content_id, assessment_id, state, is_preview, resource_link_id)
-				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[state], $[isPreview], $[resourceLinkId])
+				VALUES($[userId], $[draftId], $[draftContentId], $[assessmentId], $[state], $[isPreview], $[resourceLinkId])
 				RETURNING
 				id AS "attemptId",
 				created_at as "startTime",
@@ -400,7 +362,7 @@ class Assessment extends DraftNode {
 			{
 				userId,
 				draftId,
-				contentId,
+				draftContentId,
 				assessmentId,
 				state,
 				isPreview,
@@ -415,7 +377,7 @@ class Assessment extends DraftNode {
 		attemptId,
 		userId,
 		draftId,
-		contentId,
+		draftContentId,
 		attemptScoreResult,
 		assessmentScoreDetails,
 		isPreview,
@@ -444,7 +406,7 @@ class Assessment extends DraftNode {
 				const aScore = new AssessmentScore({
 					userId,
 					draftId,
-					contentId,
+					draftContentId,
 					assessmentId,
 					attemptId,
 					score: assessmentScoreDetails.assessmentModdedScore,
@@ -512,7 +474,7 @@ class Assessment extends DraftNode {
 				// if there's no attempt history
 				// find the highest importable score
 				if(attemptHistory.length === 0){
-					return this.constructor.getImportableScore(
+					return AssessmentScore.getImportableScore(
 						req.currentUser.id,
 						visit.draft_content_id,
 						visit.is_preview
@@ -521,7 +483,13 @@ class Assessment extends DraftNode {
 						if(importableScore){
 							extensions.push({
 								name: NODE_NAME,
-								importableScore
+								importableScore: {
+									highestScore: importableScore.score,
+									assessmentDate: importableScore.createdAt,
+									assessmentId: importableScore.assessmentId,
+									attemptId: importableScore.attemptId,
+									assessmentScoreId: importableScore.id
+								}
 							})
 						}
 					})

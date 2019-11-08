@@ -40,21 +40,53 @@ class AssessmentScore {
 			})
 	}
 
+	static getImportableScore(userId, draftContentId, isPreview){
+		return db
+			.oneOrNone(`
+				SELECT
+					id,
+					created_at,
+					assessment_id,
+					score,
+					attempt_id
+				FROM assessment_scores
+				WHERE
+					user_id = $[userId]
+					AND draft_content_id = $[draftContentId]
+					AND is_preview = $[isPreview]
+					AND is_imported = false
+				ORDER BY
+					score DESC,
+					created_at DESC
+				LIMIT 1
+				`,
+				{
+					userId,
+					isPreview,
+					draftContentId
+				})
+			.then(result => {
+				if(result){
+					return new AssessmentScore(result)
+				}
+			})
+	}
+
 	clone(){
 		const clone = Object.assign({}, this)
 		return new AssessmentScore(clone)
 	}
 
-	create(db = db){
+	create(theDb = db){
 		if(this.id) throw 'E'
-		return db.one(`
+		return theDb.one(`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
-				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview], $[isImported], $[importedAssessmentScoreId])
+				VALUES($[userId], $[draftId], $[draftContentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview], $[isImported], $[importedAssessmentScoreId])
 				RETURNING id
 			`, this)
-			.then(id => {
-				this.id = id
+			.then(result => {
+				this.id = result.id
 				return this
 			})
 	}
@@ -64,8 +96,8 @@ class AssessmentScore {
 		console.log(newScore)
 
 		delete newScore.id
-		newScore.is_imported = true
-		newScore.imported_assessment_score_id = this.id
+		newScore.isImported = true
+		newScore.importedAssessmentScoreId = this.id
 		// dispatch an event?
 		// store a caliper event?
 		console.log(newScore)
