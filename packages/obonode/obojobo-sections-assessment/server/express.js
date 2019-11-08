@@ -233,7 +233,16 @@ router
 			if(attempts.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
 
 			const importedScore = await originalScore.importAsNewScore()
-			res.success(importedScore)
+
+			const history = await Assessment.getCompletedAssessmentAttemptHistory(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.body.assessmentId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
+
+			res.success({history, importedScore})
 		} catch(e){
 			logAndRespondToUnexpected('Error importing score', res, req, e)
 		}
