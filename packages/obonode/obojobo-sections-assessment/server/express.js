@@ -1,7 +1,7 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const oboEvents = require('obojobo-express/obo_events')
 const db = require('obojobo-express/db')
-const Assessment = require('./assessment')
+const AssessmentModel = require('./models/assessment')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
 const { startAttempt } = require('./attempt-start')
@@ -17,19 +17,6 @@ const {
 	requireCurrentUser,
 	requireAssessmentId
 } = require('obojobo-express/express_validators')
-
-router
-	.route('/api/lti/state/draft/:draftId')
-	.get([requireCurrentDocument, requireCurrentVisit, requireCurrentUser])
-	.get((req, res) =>
-		lti
-			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
-				req.currentUser.id,
-				req.currentDocument.draftId,
-				req.currentVisit.resource_link_id
-			)
-			.then(res.success)
-	)
 
 router
 	.route('/api/lti/send-assessment-score')
@@ -108,79 +95,6 @@ router
 		res.send(questionModels)
 	})
 
-const deletePreviewScores = ({ transaction, userId, draftId, resourceLinkId }) => {
-	return transaction
-		.manyOrNone(
-			`
-			SELECT assessment_scores.id
-			FROM assessment_scores
-			JOIN attempts
-				ON attempts.id = assessment_scores.attempt_id
-			WHERE assessment_scores.user_id = $[userId]
-			AND assessment_scores.draft_id = $[draftId]
-			AND attempts.resource_link_id = $[resourceLinkId]
-			AND assessment_scores.is_preview = true
-		`,
-			{ userId, draftId, resourceLinkId }
-		)
-		.then(assessmentScoreIdsResult => {
-			const ids = assessmentScoreIdsResult.map(i => i.id)
-			if (ids.length < 1) return []
-
-			return [
-				transaction.none(
-					`
-					DELETE FROM lti_assessment_scores
-					WHERE assessment_score_id IN ($[ids:csv])
-				`,
-					{ ids }
-				),
-				transaction.none(
-					`
-					DELETE FROM assessment_scores
-					WHERE id IN ($[ids:csv])
-				`,
-					{ ids }
-				)
-			]
-		})
-}
-
-const deletePreviewAttempts = ({ transaction, userId, draftId, resourceLinkId }) => {
-	return transaction
-		.manyOrNone(
-			`
-			SELECT id
-			FROM attempts
-			WHERE user_id = $[userId]
-			AND draft_id = $[draftId]
-			AND resource_link_id = $[resourceLinkId]
-			AND is_preview = true
-		`,
-			{ userId, draftId, resourceLinkId }
-		)
-		.then(attemptIdsResult => {
-			const ids = attemptIdsResult.map(i => i.id)
-			if (ids.length < 1) return []
-
-			return [
-				transaction.none(
-					`
-					DELETE FROM attempts_question_responses
-					WHERE attempt_id IN ($[ids:csv])
-				`,
-					{ ids }
-				),
-				transaction.none(
-					`
-					DELETE FROM attempts
-					WHERE id IN ($[ids:csv])
-				`,
-					{ ids }
-				)
-			]
-		})
-}
 
 router
 	.route('/api/assessments/clear-preview-scores')
@@ -188,25 +102,15 @@ router
 	.post((req, res) => {
 		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
-		return db
-			.tx(transaction => {
-				const args = {
-					transaction,
-					userId: req.currentUser.id,
-					draftId: req.currentDocument.draftId,
-					resourceLinkId: req.currentVisit.resource_link_id
-				}
-
-				return Promise.all([deletePreviewScores(args), deletePreviewAttempts(args)]).then(
-					([scoreQueries, attemptQueries]) => {
-						return transaction.batch(scoreQueries.concat(attemptQueries))
-					}
-				)
-			})
-			.then(() => res.success())
-			.catch(error => {
-				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
-			})
+		return AssessmentModel.deletePreviewAttemptsAndScores(
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.currentVisit.resource_link_id
+			)
+				.then(() => res.success())
+				.catch(error => {
+					logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
+				})
 	})
 
 router
@@ -217,24 +121,32 @@ router
 			// load the AssessmentScore to import
 			const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
 
-			// verify the user can import it
+			// verify originalScore against current visit data
 			if(originalScore.userId !== req.currentUser.id) throw "Importable scores must be owned by the current user."
 			if(originalScore.draftId !== req.currentDocument.draftId) throw "Scores can only be imported for the same module"
 			if(originalScore.draftContentId !== req.currentDocument.contentId) throw "Scores can only be imported for the same version of a module"
 
 			// check that the student has no attempts for this resource_link yet
-			const attempts = await Assessment.getAttempts(
+			// @TODO: We don't need the full attemptHistory (lots of work) - optimize
+			const attemptHistory = await AssessmentModel.fetchAttemptHistory(
 				req.currentUser.id,
 				req.currentDocument.draftId,
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id
 			)
 
-			if(attempts.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
+			if(attemptHistory.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
 
-			const importedScore = await originalScore.importAsNewScore()
+			console.log(originalScore)
+			const originalAttempt = await AssessmentModel.fetchAttemptByID(originalScore.attemptId)
 
-			const history = await Assessment.getCompletedAssessmentAttemptHistory(
+			if(originalAttempt.userId !== req.currentUser.id) throw "Original attempt was not created by the current user"
+
+			console.log(originalAttempt)
+			const importedAttempt = await originalAttempt.importAsNewAttempt(req.currentVisit.resource_link_id)
+			const importedScore = await originalScore.importAsNewScore(importedAttempt.id, req.currentVisit.resource_link_id)
+
+			const history = await AssessmentModel.getCompletedAssessmentAttemptHistory(
 				req.currentUser.id,
 				req.currentDocument.draftId,
 				req.body.assessmentId,
@@ -249,57 +161,15 @@ router
 
 	})
 
-// @TODO NOT USED
-// update getAttempt to take isPreview
-router
-	.route('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
-	.get([requireCurrentUser, requireCurrentDocument, requireAttemptId, requireAssessmentId])
-	.get((req, res) => {
-		return Assessment.getAttempt(
-			req.currentUser.id,
-			req.currentDocument.draftId,
-			req.params.assessmentId,
-			req.params.attemptId
-		)
-			.then(res.success)
-			.catch(error => {
-				logAndRespondToUnexpected(
-					'Unexpected Error Loading attempt "${:attemptId}"',
-					res,
-					req,
-					error
-				)
-			})
-	})
-
 router
 	.route('/api/assessments/:draftId/attempts')
 	.get([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
 	.get((req, res) => {
-		return Assessment.getAttempts(
+		return AssessmentModel.fetchAttemptHistory(
 			req.currentUser.id,
 			req.currentDocument.draftId,
 			req.currentVisit.is_preview,
 			req.currentVisit.resource_link_id
-		)
-			.then(res.success)
-			.catch(error => {
-				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
-			})
-	})
-
-// @TODO NOT USED
-// update getAttempts to take isPreview
-router
-	.route('/api/assessment/:draftId/:assessmentId/attempts')
-	.get([requireCurrentDocument, requireCurrentUser, requireCurrentVisit, requireAssessmentId])
-	.get((req, res) => {
-		return Assessment.getAttempts(
-			req.currentUser.id,
-			req.currentDocument.draftId,
-			req.currentVisit.is_preview,
-			req.currentVisit.resource_link_id,
-			req.params.assessmentId
 		)
 			.then(res.success)
 			.catch(error => {

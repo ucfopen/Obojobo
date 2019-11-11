@@ -1,4 +1,4 @@
-const Assessment = require('../assessment')
+const AssessmentModel = require('../models/assessment')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('./insert-events')
 const logger = require('obojobo-express/logger')
@@ -14,36 +14,36 @@ const endAttempt = async (req, res) => {
 	)
 
 	// get this attempt from the db
-	const attempt = await Assessment.getAttempt(req.params.attemptId)
+	const attempt = await AssessmentModel.fetchAttemptByID(req.params.attemptId)
 
 	// ensure the attempt is for the current module & version
-	if(req.currentDocument.draftId !== attempt.draft_id || req.currentDocument.contentId !== attempt.draft_content_id) {
+	if(req.currentDocument.draftId !== attempt.draftId || req.currentDocument.contentId !== attempt.draftContentId) {
 		throw "Cannot end an attempt for a different module"
 	}
 
-	const attemptNumber = await Assessment.getAttemptNumber(
-		attempt.user_id,
-		attempt.draft_id,
+	const attemptNumber = await AssessmentModel.getAttemptNumber(
+		attempt.userId,
+		attempt.draftId,
 		req.params.attemptId
 	)
 	logSuccess('getAttempt')
 
 	// load the completed attempt history from the database
-	const attemptHistory = await Assessment.getCompletedAssessmentAttemptHistory(
+	const attemptHistory = await AssessmentModel.getCompletedAssessmentAttemptHistory(
 		req.currentUser.id,
-		attempt.draft_id,
-		attempt.assessment_id,
+		attempt.draftId,
+		attempt.assessmentId,
 		req.currentVisit.is_preview,
 		req.currentVisit.resource_link_id
 	)
 	logSuccess('getAttemptHistory')
 
 	// load all the responses for this attempt from the database
-	const responsesForAttempt = await Assessment.getResponsesForAttempt(req.params.attemptId)
-	logSuccess('getResponsesForAttempt')
+	const responsesForAttempt = await AssessmentModel.fetchResponsesForAttempt(req.params.attemptId)
+	logSuccess('fetchResponsesForAttempt')
 
 	// load the draft document to get the assessment model from the database
-	const assessmentModel = req.currentDocument.getChildNodeById(attempt.assessment_id)
+	const assessmentModel = req.currentDocument.getChildNodeById(attempt.assessmentId)
 
 	// Run the assessment, responses, and history through the score calculator
 	const calculatedScores = await getCalculatedScores(
@@ -57,11 +57,11 @@ const endAttempt = async (req, res) => {
 	logSuccess('getCalculatedScores')
 
 	// Save the results and complete this attempt
-	const assessmentScoreId = await Assessment.completeAttempt(
-		attempt.assessment_id,
+	const assessmentScoreId = await AssessmentModel.completeAttempt(
+		attempt.assessmentId,
 		req.params.attemptId,
 		req.currentUser.id,
-		attempt.draft_id,
+		attempt.draftId,
 		req.currentDocument.contentId,
 		calculatedScores.attempt,
 		calculatedScores.assessmentScoreDetails,
@@ -74,7 +74,7 @@ const endAttempt = async (req, res) => {
 	await insertEvents.insertAttemptEndEvents(
 		req.currentUser,
 		req.currentDocument,
-		attempt.assessment_id,
+		attempt.assessmentId,
 		req.params.attemptId,
 		attemptNumber,
 		req.currentVisit.is_preview,
@@ -87,7 +87,7 @@ const endAttempt = async (req, res) => {
 	const ltiRequest = await lti.sendHighestAssessmentScore(
 		req.currentUser.id,
 		req.currentDocument,
-		attempt.assessment_id,
+		attempt.assessmentId,
 		req.currentVisit.is_preview,
 		req.currentVisit.resource_link_id
 	)
@@ -97,7 +97,7 @@ const endAttempt = async (req, res) => {
 	await insertEvents.insertAttemptScoredEvents(
 		req.currentUser,
 		req.currentDocument,
-		attempt.assessment_id,
+		attempt.assessmentId,
 		assessmentScoreId,
 		req.params.attemptId,
 		attemptNumber,
@@ -117,12 +117,12 @@ const endAttempt = async (req, res) => {
 	logSuccess('sendLTIScore')
 
 	// return attempts
-	return await Assessment.getAttempts(
+	return await AssessmentModel.fetchAttemptHistory(
 		req.currentUser.id,
-		attempt.draft_id,
+		attempt.draftId,
 		req.currentVisit.is_preview,
 		req.currentVisit.resource_link_id,
-		attempt.assessment_id
+		attempt.assessmentId
 	)
 }
 

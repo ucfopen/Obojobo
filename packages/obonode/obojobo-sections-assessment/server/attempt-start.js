@@ -1,4 +1,5 @@
 const Assessment = require('./assessment')
+const AssessmentModel = require('./models/assessment')
 const VisitModel = require('obojobo-express/models/visit')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/insert_event')
@@ -29,7 +30,7 @@ const startAttempt = (req, res) => {
 	let currentDocument = null
 
 	return req
-		.requireCurrentUser()
+		.requireCurrentUser() // @TODO: this is redundant - handled in express router
 		.then(user => {
 			assessmentProperties.user = user
 			return VisitModel.fetchById(req.body.visitId)
@@ -38,7 +39,7 @@ const startAttempt = (req, res) => {
 			assessmentProperties.isPreview = visit.is_preview
 			assessmentProperties.resourceLinkId = visit.resource_link_id
 
-			return req.requireCurrentDocument()
+			return req.requireCurrentDocument() // @TODO: this is redundant - handled in express router
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
@@ -50,7 +51,7 @@ const startAttempt = (req, res) => {
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
 			assessmentProperties.questionBank = assessmentNode.children[1]
 
-			return Assessment.getCompletedAssessmentAttemptHistory(
+			return AssessmentModel.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
 				currentDocument.draftId,
 				req.body.assessmentId,
@@ -78,7 +79,7 @@ const startAttempt = (req, res) => {
 			)
 		})
 		.then(() => {
-			return Assessment.insertNewAttempt(
+			return AssessmentModel.createNewAttempt(
 				assessmentProperties.user.id,
 				currentDocument.draftId,
 				currentDocument.contentId,

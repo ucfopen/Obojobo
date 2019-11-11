@@ -14,6 +14,10 @@ const AssessmentAPIUtil = {
 			visitId
 		}).then(APIUtil.processJsonResults)
 	},
+	getAttemptHistory({ draftId, visitId }){
+		return APIUtil.get(`/api/assessments/${draftId}/attempts?visitId=${visitId}`)
+		.then(APIUtil.processJsonResults)
+	},
 	startAttempt({ draftId, assessmentId, visitId }) {
 		return APIUtil.post('/api/assessments/attempt/start', {
 			draftId,

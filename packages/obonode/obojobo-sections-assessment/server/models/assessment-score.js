@@ -72,14 +72,52 @@ class AssessmentScore {
 			})
 	}
 
+	static deletePreviewScores({ transaction, userId, draftId, resourceLinkId }) {
+		return transaction
+			.manyOrNone(
+				`
+				SELECT assessment_scores.id
+				FROM assessment_scores
+				JOIN attempts
+					ON attempts.id = assessment_scores.attempt_id
+				WHERE assessment_scores.user_id = $[userId]
+				AND assessment_scores.draft_id = $[draftId]
+				AND attempts.resource_link_id = $[resourceLinkId]
+				AND assessment_scores.is_preview = true
+			`,
+				{ userId, draftId, resourceLinkId }
+			)
+			.then(assessmentScoreIdsResult => {
+				const ids = assessmentScoreIdsResult.map(i => i.id)
+				if (ids.length < 1) return []
+
+				return [
+					transaction.none(
+						`
+						DELETE FROM lti_assessment_scores
+						WHERE assessment_score_id IN ($[ids:csv])
+					`,
+						{ ids }
+					),
+					transaction.none(
+						`
+						DELETE FROM assessment_scores
+						WHERE id IN ($[ids:csv])
+					`,
+						{ ids }
+					)
+				]
+			})
+	}
+
 	clone(){
 		const clone = Object.assign({}, this)
 		return new AssessmentScore(clone)
 	}
 
-	create(theDb = db){
+	create(dbOrTransaction = db){
 		if(this.id) throw 'E'
-		return theDb.one(`
+		return dbOrTransaction.one(`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
 				VALUES($[userId], $[draftId], $[draftContentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview], $[isImported], $[importedAssessmentScoreId])
@@ -91,19 +129,18 @@ class AssessmentScore {
 			})
 	}
 
-	importAsNewScore(){
+	importAsNewScore(attemptId, resourceLinkId){
 		const newScore = this.clone()
-		console.log(newScore)
-
 		delete newScore.id
+		newScore.attemptId = attemptId
 		newScore.isImported = true
-		newScore.importedAssessmentScoreId = this.id
+		newScore.importedAssessmentScoreId = this.id // use original item as imported id
+		newScore.resourceLinkId = resourceLinkId // update resourceLink
+		newScore.scoreDetails.attemptNumber = 1 // fix the attemptNumber
 		// dispatch an event?
 		// store a caliper event?
-		console.log(newScore)
 		return newScore.create()
 	}
-
 
 }
 

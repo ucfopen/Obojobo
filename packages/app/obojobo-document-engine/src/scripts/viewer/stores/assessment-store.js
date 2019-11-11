@@ -66,12 +66,13 @@ class AssessmentStore extends Store {
 
 		this.state = {
 			assessments: {},
+			importHasBeenUsed: false,
 			importableScore: ext.importableScore
 		}
 
 		this.updateAttempts(ext.attemptHistory)
 
-		if(ext.importableScore){
+		if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
 		}
 	}
@@ -128,7 +129,9 @@ class AssessmentStore extends Store {
 
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
-
+				if(attempt.isImported){
+					this.state.importHasBeenUsed = true
+				}
 				if (!attempt.isFinished) {
 					unfinishedAttempt = attempt
 				} else {
@@ -213,7 +216,19 @@ class AssessmentStore extends Store {
 			importedAssessmentScoreId: this.state.importableScore.assessmentScoreId
 		})
 		.then(result => {
-			console.log(result)
+			if(result.status === 'ok'){
+				this.state.importHasBeenUsed = true
+				// load new attempt history
+				return AssessmentAPI.getAttemptHistory({draftId, visitId})
+				.then(res => {
+					if (res.status === 'error') {
+						return ErrorUtil.errorResponse(res)
+					}
+
+					this.updateAttempts(res.value)
+					this.triggerChange()
+				})
+			}
 			return result
 		})
 	}
@@ -245,7 +260,22 @@ class AssessmentStore extends Store {
 		})
 	}
 
+	displayImportAlreadyUsed(importableScore) {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Score Already Imported',
+				message: 'You have already imported a score for this module in this course, no attempts remain.'
+			}
+		})
+	}
+
 	startAttemptWithImportScoreOption(assessmentId) {
+		// import has been used, do nothing
+		if(this.state.importHasBeenUsed === true){
+			this.displayImportAlreadyUsed()
+			return Promise.resolve()
+		}
+
 		return new Promise((resolve, reject) => {
 				if(this.state.importableScore && this.state.importableScore.assessmentId === assessmentId){
 					const onImport = this.onImportScoreNoticeChoice.bind(this, resolve, true)

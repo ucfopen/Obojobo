@@ -1,4 +1,4 @@
-const Assessment = require('./assessment')
+const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/insert_event')
@@ -17,8 +17,8 @@ const resumeAttempt = async (
 	// see: attemptStart.getSendToClientPromises
 	const req = {} // @TODO see if we can get rid of these
 	const res = {} // @TODO see if we can get rid of these
-	const attempt = await Assessment.getAttempt(attemptId)
-	const assessmentNode = currentDocument.getChildNodeById(attempt.assessment_id)
+	const attempt = await AssessmentModel.fetchAttemptByID(attemptId)
+	const assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
 
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 
@@ -55,6 +55,7 @@ const resumeAttempt = async (
 	})
 
 	// update response
+	// @TODO: why are we doing this?
 	attempt.attemptId = attempt.id
 	delete attempt.id
 	return attempt

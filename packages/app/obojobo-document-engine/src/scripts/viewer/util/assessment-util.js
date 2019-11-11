@@ -93,6 +93,7 @@ const AssessmentUtil = {
 	},
 
 	getAttemptsRemaining(state, model) {
+		if(state.importHasBeenUsed === true) return 0
 		return Math.max(
 			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
 			0
@@ -100,6 +101,7 @@ const AssessmentUtil = {
 	},
 
 	hasAttemptsRemaining(state, model) {
+		if(state.importHasBeenUsed === true) return false
 		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
 	},
 
