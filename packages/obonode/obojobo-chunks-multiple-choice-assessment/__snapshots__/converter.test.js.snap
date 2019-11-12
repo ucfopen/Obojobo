@@ -31,7 +31,9 @@ Object {
 
 exports[`MCAssessment Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
 Object {
-  "children": Array [],
+  "children": Array [
+    undefined,
+  ],
   "content": Object {},
   "id": "mockKey",
   "type": "mockType",

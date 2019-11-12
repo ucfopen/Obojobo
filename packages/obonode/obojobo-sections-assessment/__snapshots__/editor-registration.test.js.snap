@@ -36,25 +36,6 @@ Array [
 
 exports[`Assessment editor plugins.renderNode calls next 1`] = `undefined`;
 
-exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] = `
-<Settings
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
-    }
-  }
-/>
-`;
-
 exports[`Assessment editor plugins.renderNode renders the Assessment when passed 1`] = `
 <Assessment
   attributes={

@@ -139,6 +139,14 @@ describe('Question Editor Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
+		const mcAssess = { 
+			key: 'mock-mca-id', 
+			type: MCASSESSMENT_NODE, 
+			data: {
+				toJSON: () => ({})
+			} 
+		}
+
 		const component = mount(
 			<Question
 				node={{
@@ -150,7 +158,13 @@ describe('Question Editor Node', () => {
 					},
 					nodes: {
 						last: () => ({ type: BREAK_NODE }),
-						get: () => ({ key: 'mock-mca-id', type: MCASSESSMENT_NODE })
+						get: () => ({ key: 'mock-mca-id', type: MCASSESSMENT_NODE }),
+						filter: fn => {
+							fn({ type: MCASSESSMENT_NODE })
+							return {
+								get: () => mcAssess,
+							}
+						}
 					}
 				}}
 				editor={editor}

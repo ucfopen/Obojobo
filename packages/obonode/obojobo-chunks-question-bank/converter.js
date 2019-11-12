@@ -1,6 +1,4 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'

@@ -1,19 +1,18 @@
 import './editor-component.scss'
 
 import React from 'react'
-import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import ModProperties from './mod-properties'
-import emptyMod from './empty-mod.json'
-
+							
+const getParsedRange = Common.util.RangeParsing.getParsedRange
 const { Button } = Common.components
 const { ModalUtil } = Common.util
-const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 
 class Rubric extends React.Component {
 	changeRubricType(event) {
 		const type = event.target.value
+
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
@@ -56,8 +55,18 @@ class Rubric extends React.Component {
 		})
 	}
 
+	printRange(range) {
+		if(range.min === range.max) {
+			const attempt = range.min === '$last_attempt' ? 'the last attempt' : 'attempt ' + range.min
+			return (<span> If a student passes on {attempt} </span>)
+		}
+
+		if(range.min === '$last_attempt') range.min = 'the last attempt'
+		if(range.max === '$last_attempt') range.max = 'the last attempt'
+		return (<span> If a student passes on attempt {range.min} through {range.max} </span>)
+	}
+
 	render() {
-		console.log(this.props.node.toJSON())
 		const content = this.props.node.data.get('content')
 		const className = 'rubric pad ' + 'is-type-' + content.type
 
@@ -97,6 +106,7 @@ class Rubric extends React.Component {
 							<input 
 								type="number" 
 								value={content.passingAttemptScore}
+								onChange={this.changeScoreType.bind(this, "passingAttemptScore")}
 								onClick={event => event.stopPropagation()}/>
 							%
 						</label>
@@ -117,6 +127,7 @@ class Rubric extends React.Component {
 								type="number" 
 								value={content.passedResult}
 								onClick={event => event.stopPropagation()}
+								onChange={this.changeScoreType.bind(this, "passedResult")}
 								disabled={content.passedType !== 'set-value'}/>
 							%
 						</label>
@@ -138,7 +149,8 @@ class Rubric extends React.Component {
 								type="number"
 								value={content.failedResult}
 								onClick={event => event.stopPropagation()}
-								disabled={content.passedType !== 'set-value'}/>
+								onChange={this.changeScoreType.bind(this, "failedResult")}
+								disabled={content.failedType !== 'set-value'}/>
 							%
 						</label>
 					</div>
@@ -160,6 +172,7 @@ class Rubric extends React.Component {
 								type="number" 
 								value={content.unableToPassResult}
 								onClick={event => event.stopPropagation()}
+								onChange={this.changeScoreType.bind(this, "unableToPassResult")}
 								disabled={content.unableToPassType !== 'set-value'}/>
 							%
 						</label>
@@ -169,8 +182,18 @@ class Rubric extends React.Component {
 					<div className="title">Extra Credit & Penalties</div>
 					<Button onClick={this.showModModal.bind(this)}>Edit...</Button>
 					<ul>
-						<li><b><span className="reward">Add</span> 5%</b> If a student passes on attempts 1 to 2</li>
-						<li><b><span className="deduct">Deduct</span> 5%</b> If a student passes on the last attempt</li>
+						{content.mods.map((mod, index) => {
+							const range = getParsedRange(mod.attemptCondition + '')
+
+							return (
+								<li key={index}>
+									{ mod.reward < 0 ?
+										<b><span className="deduct">Deduct</span> {mod.reward}%</b> :
+										<b><span className="reward">Add</span> {mod.reward}%</b> }
+										{this.printRange(range)}
+								</li>
+							)
+						})}
 					</ul>
 				</div>
 			</div>

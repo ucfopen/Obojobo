@@ -53,8 +53,8 @@ describe('IFrame Editor Node', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('IFrame component edits properties', () => {
-		const change = {
+	test('IFrame component deletes self', () => {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -70,9 +70,32 @@ describe('IFrame Editor Node', () => {
 						})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
+				editor={editor}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
+
+		component.unmount()
+	})
+
+	test('IFrame component edits properties', () => {
+		const component = mount(
+			<IFrame
+				node={{
+					data: {
+						get: () => ({
+							controls: '',
+							border: false,
+							initialZoom: 1,
+							src: ''
+						})
+					}
 				}}
 			/>
 		)

@@ -43,7 +43,6 @@ class Settings extends React.Component {
 
 	render() {
 		const content = this.props.node.data.get('content')
-		console.log(this.props.node.toJSON())
 		
 		return (
 			<div className={'qb-settings'}>

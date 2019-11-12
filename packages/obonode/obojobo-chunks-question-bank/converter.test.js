@@ -38,7 +38,39 @@ describe('QuestionBank converter', () => {
 				{
 					type: SETTINGS_NODE,
 					data: {
-						get: () => ({})
+						get: () => ({ chooseAll: true })
+					}
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
+	test('slateToObo converts a Slate node to an OboNode without content', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			data: {
+				get: () => null
+			},
+			nodes: [
+				{
+					type: QUESTION_BANK_NODE,
+					key: 'mockKey',
+					data: {
+						get: () => null
+					},
+					nodes: []
+				},
+				{
+					type: QUESTION_NODE
+				},
+				{
+					type: SETTINGS_NODE,
+					data: {
+						get: () => null
 					}
 				}
 			]

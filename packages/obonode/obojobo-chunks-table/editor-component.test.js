@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import Table from './editor-component'
@@ -31,7 +31,7 @@ describe('Table Editor Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Table
 				node={{
 					data: {
@@ -58,9 +58,12 @@ describe('Table Editor Node', () => {
 					}
 				}}
 				editor={editor}
+				isSelected
 			/>
 		)
 		const tree = component.html()
+
+		console.log(tree)
 
 		component
 			.find('button')
@@ -70,6 +73,4 @@ describe('Table Editor Node', () => {
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
-
-
 })

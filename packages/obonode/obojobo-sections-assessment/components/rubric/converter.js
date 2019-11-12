@@ -6,6 +6,7 @@ const slateToObo = node => {
 	if(content.failedType !== 'set-value') content.failedResult = content.failedType
 	if(content.unableToPassType !== 'set-value') content.unableToPassResult = content.unableToPassType
 	if(content.unableToPassResult === 'no-value') content.unableToPassResult = null
+	if(content.mods === []) delete content.mods
 
 	return content
 }
@@ -49,6 +50,8 @@ const oboToSlate = node => {
 			node.unableToPassType = 'set-value'
 			break
 	}
+
+	if (!node.mods) node.mods = []
 
 	return {
 		object: 'block',

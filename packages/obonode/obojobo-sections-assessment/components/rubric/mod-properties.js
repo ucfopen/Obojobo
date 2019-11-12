@@ -8,8 +8,6 @@ class ModProperties extends React.Component {
 	constructor(props) {
 		super(props)
 
-		console.log(props)
-
 		const rewards = props.mods.filter(mod => mod.reward >= 0)
 		const penalties = props.mods.filter(mod => mod.reward < 0)
 
@@ -35,7 +33,7 @@ class ModProperties extends React.Component {
 					<h2>Rewards</h2>
 					<div>
 						<div>
-							Add +5% if a student passes on
+							Add <input type="number"/>% if a student passes on
 							<input type="radio" name="hello" value="fakjg" />
 							<input type="radio" name="hello" value="fakjg" />
 						</div>

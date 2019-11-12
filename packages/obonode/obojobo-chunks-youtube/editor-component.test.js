@@ -17,7 +17,7 @@ describe('YouTube Editor Node', () => {
 	beforeEach(() => {
 		const mockNodeDataGet = jest.fn().mockReturnValue({})
 		mockNode = { data: { get: mockNodeDataGet } }
-		editor = { setNodeByKey: jest.fn() }
+		editor = { setNodeByKey: jest.fn(), removeNodeByKey: jest.fn() }
 	})
 
 	test('YouTube builds the expected componen without a videoId', () => {
@@ -33,6 +33,20 @@ describe('YouTube Editor Node', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('YouTube component deletes self', () => {
+		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
+		const component = mount(
+			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
+		)
+
+		// locate the delete button
+		const button = component.find('button').at(0)
+
+		// click it
+		button.simulate('click')
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('YouTube component edits input', () => {
