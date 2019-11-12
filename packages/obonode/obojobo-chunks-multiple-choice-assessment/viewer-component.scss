@@ -155,7 +155,7 @@
 		min-height: 4em;
 		display: table;
 
-		@media only screen and (max-width: 640px) {
+		@include mq($until: tablet) {
 			text-align: center;
 			display: block;
 		}
@@ -192,7 +192,7 @@
 		padding-bottom: 1em;
 		line-height: 1em;
 
-		@media only screen and (max-width: 640px) {
+		@include mq($until: tablet) {
 			display: block;
 			padding-top: 0;
 		}
@@ -212,7 +212,7 @@
 			vertical-align: middle;
 			margin-left: 1.25em;
 
-			@media only screen and (max-width: 640px) {
+			@include mq($until: tablet) {
 				margin-left: 0;
 			}
 		}
