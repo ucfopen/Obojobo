@@ -8,7 +8,7 @@ const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const AssessmentScore = require('./models/assessment-score')
-const { reviewAttempt } = require('./attempt-review')
+const attemptReview = require('./attempt-review')
 const { logAndRespondToUnexpected } = require('./util')
 const {
 	requireCurrentDocument,
@@ -91,7 +91,7 @@ router
 	.route('/api/assessments/attempt/review')
 	.post([requireCurrentUser, requireAttemptId])
 	.post(async (req, res) => {
-		const questionModels = await reviewAttempt(req.body.attemptIds)
+		const questionModels = await attemptReview(req.body.attemptIds)
 		res.send(questionModels)
 	})
 

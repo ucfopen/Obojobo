@@ -533,7 +533,7 @@ describe('Assessment', () => {
 			}
 		])
 
-		return Assessment.getResponseHistory('mockUserId', 'mockDraftId').then(result => {
+		return Assessment.fetchResponseHistory('mockUserId', 'mockDraftId').then(result => {
 			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				userId: 'mockUserId',
 				draftId: 'mockDraftId',
@@ -565,7 +565,7 @@ describe('Assessment', () => {
 			}
 		])
 
-		return Assessment.getResponseHistory('mockUserId', 'mockDraftId').then(result => {
+		return Assessment.fetchResponseHistory('mockUserId', 'mockDraftId').then(result => {
 			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				userId: 'mockUserId',
 				draftId: 'mockDraftId',
@@ -605,7 +605,7 @@ describe('Assessment', () => {
 			}
 		])
 
-		return Assessment.getResponseHistory(
+		return Assessment.fetchResponseHistory(
 			'mockUserId',
 			'mockDraftId',
 			false,

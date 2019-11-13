@@ -4,14 +4,21 @@ const DraftModel = require('obojobo-express/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/logger')
 
-const getQuestionModelsFromAttempt = async attemptId => {
+const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
 	const attempt = await AssessmentModel.fetchAttemptByID(attemptId)
+	let draftDocument
 
-	// @TODO: memoize or cache this
-	const draftDocument = await DraftModel.fetchDraftByVersion(
-		attempt.draftId,
-		attempt.draftContentId
-	)
+	if(draftCache[attempt.draftContentId]){
+		// already loaded, get from cache
+		draftDocument = draftCache[attempt.draftContentId]
+	}
+	else {
+		draftDocument = await DraftModel.fetchDraftByVersion(
+			attempt.draftId,
+			attempt.draftContentId
+		)
+		draftCache[attempt.draftContentId] = draftDocument
+	}
 
 	const assessmentNode = draftDocument.getChildNodeById(attempt.assessmentId)
 
@@ -31,12 +38,14 @@ const getQuestionModelsFromAttempt = async attemptId => {
 	return attemptQuestionModelsMap
 }
 
-const reviewAttempt = async attemptIds => {
+const attemptReview = async attemptIds => {
 	try {
-		// aysnc, let's get all the attmpts
 		const promises = []
+		const draftCache = {} // a place to cache draftDocuments for reuse
+
+		// aysnc, let's get all the attmpts
 		for (const attemptId of attemptIds) {
-			promises.push(getQuestionModelsFromAttempt(attemptId))
+			promises.push(getQuestionModelsFromAttempt(attemptId, draftCache))
 		}
 		const results = await Promise.all(promises)
 		// now build an object
@@ -50,11 +59,9 @@ const reviewAttempt = async attemptIds => {
 
 		return questionModels
 	} catch (error) {
-		logger.error('reviewAttempt Error')
+		logger.error('attemptReview Error')
 		logger.error(error)
 	}
 }
 
-module.exports = {
-	reviewAttempt
-}
+module.exports = attemptReview

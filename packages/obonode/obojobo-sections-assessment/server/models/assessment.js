@@ -44,43 +44,6 @@ class AssessmentModel {
 		// @TODO: return hydrated Assessment objects
 	}
 
-	// get all attempts containing an array of responses
-	// { <attemptId>: [ {...question response...} ] }
-	static getResponseHistory(
-		userId,
-		draftId,
-		isPreview,
-		resourceLinkId,
-		optionalAssessmentId = null
-	) {
-		return db
-			.manyOrNone(
-				`
-				SELECT *
-				FROM attempts_question_responses
-				WHERE attempt_id IN (
-					SELECT id
-					FROM attempts
-					WHERE user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND resource_link_id = $[resourceLinkId]
-					AND is_preview = $[isPreview]
-					${optionalAssessmentId !== null ? "AND assessment_id = '" + optionalAssessmentId + "'" : ''}
-				) ORDER BY updated_at`,
-				{ userId, draftId, isPreview, resourceLinkId, optionalAssessmentId }
-			)
-			.then(result => {
-				const history = {}
-
-				result.forEach(row => {
-					if (!history[row.attempt_id]) history[row.attempt_id] = []
-					history[row.attempt_id].push(row)
-				})
-
-				return history
-			})
-	}
-
 	// Finish an attempt and write a new assessment score record
 	static completeAttempt(
 		assessmentId,
@@ -213,7 +176,6 @@ class AssessmentModel {
 				{ attemptId }
 			)
 			.then(result => {
-				console.log('results', attemptId, result)
 				return new AssessmentModel(result)
 			})
 			.catch(error => {
@@ -252,12 +214,22 @@ class AssessmentModel {
 	// get attempts for user and resour
 	static fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
 		const assessments = {}
+		const mapImportedToAttempt = {} // key is imported_attempt_id, value is attempt_id
+		const attemptIds = []
 		return AssessmentModel.fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId)
 			.then(attempts => {
-				console.log(attempts)
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
+					// collect an array of attemptIds from each attempt
+					// if it's imported, use the imported attempt id
+					attemptIds.push(attempt.is_imported ? attempt.imported_attempt_id : attempt.attempt_id)
+					// if imported, keep track of it so we know where to put the
+					// question responses
+					if(attempt.is_imported){
+						mapImportedToAttempt[attempt.imported_attempt_id] = attempt.attempt_id
+					}
+
 					const userAttempt = AssessmentModel.createUserAttempt(userId, draftId, attempt)
 
 					// create new assessment object if we don't have one yet
@@ -282,16 +254,7 @@ class AssessmentModel {
 					a.attempts = AssessmentModel.filterIncompleteAttempts(a.attempts)
 				}
 			})
-			.then(() =>
-				// now, get the response history for this user & draft
-				AssessmentModel.getResponseHistory(
-					userId,
-					draftId,
-					isPreview,
-					resourceLinkId,
-					optionalAssessmentId
-				)
-			)
+			.then(() => AssessmentModel.fetchResponsesForAttempts(attemptIds))
 			.then(responseHistory => {
 				// Goal: place the responses from history into the attempts created above
 				// history is keyed by attemptId
@@ -299,14 +262,17 @@ class AssessmentModel {
 				// and place our responses into the userAttempt objects in assessments
 				for (const attemptId in responseHistory) {
 					const responsesForAttempt = responseHistory[attemptId]
+					const responsesAreImported = Boolean(mapImportedToAttempt[attemptId])
 
 					// loop through responses in this attempt
 					responsesForAttempt.forEach(response => {
 						if (!assessments[response.assessment_id]) return
 
-						const attemptForResponse = assessments[response.assessment_id].attempts.find(
-							x => x.attemptId === response.attempt_id
-						)
+						// find the first userAttempt that matches
+						const attemptForResponse = assessments[response.assessment_id].attempts.find(attempt => {
+							const attemptIdToMatch = responsesAreImported ? attempt.importedAttemptId : attempt.attemptId
+							return attemptIdToMatch === response.attempt_id
+						})
 
 						if (!attemptForResponse) {
 							logger.warn(
@@ -318,8 +284,7 @@ class AssessmentModel {
 							return
 						}
 
-						// asessments.<assessmentId>.attempts
-						attemptForResponse.responses[response.question_id] = response.response
+						attemptForResponse.questionResponses.push({ questionId: response.question_id, response: response.response})
 					})
 				}
 			})
@@ -383,7 +348,7 @@ class AssessmentModel {
 			isFinished: attempt.completed_at !== null,
 			state: attempt.state,
 			questionScores: attempt.result ? attempt.result.questionScores : [],
-			responses: {},
+			questionResponses: [],
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseFloat(attempt.assessment_score),
 			assessmentScoreDetails: attempt.score_details,
@@ -429,6 +394,31 @@ class AssessmentModel {
 				ORDER BY updated_at`,
 			{ attemptId }
 		)
+	}
+
+	// get all attempts containing an array of responses
+	// { <attemptId>: [ {...question response...} ] }
+	static fetchResponsesForAttempts(attemptIds) {
+		if(attemptIds.length < 1) return []
+		return db
+			.manyOrNone(
+				`
+				SELECT *
+				FROM attempts_question_responses
+				WHERE attempt_id IN ($[attemptIds:csv])
+				ORDER BY updated_at`,
+				{ attemptIds }
+			)
+			.then(result => {
+				const history = {}
+
+				result.forEach(row => {
+					if (!history[row.attempt_id]) history[row.attempt_id] = []
+					history[row.attempt_id].push(row)
+				})
+
+				return history
+			})
 	}
 
 	static createNewAttempt(

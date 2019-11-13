@@ -113,10 +113,6 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	reviewAttempt(attemptIds) {
-		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
-	},
-
 	clearPreviewScores({ draftId, visitId }) {
 		return APIUtil.post('/api/assessments/clear-preview-scores', {
 			draftId,

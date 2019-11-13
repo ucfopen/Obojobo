@@ -4,10 +4,11 @@ import FullReview from '../full-review'
 import LTIStatus from './lti-status'
 import React from 'react'
 import Viewer from 'Viewer'
+import AssessmentApi from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
-const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
+const { AssessmentUtil, NavUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 
 class AssessmentPostTest extends React.Component {
@@ -52,15 +53,17 @@ class AssessmentPostTest extends React.Component {
 			attemptIds.push(attempt.attemptId)
 		})
 
-		return APIUtil.reviewAttempt(attemptIds).then(result => {
+		return AssessmentApi.reviewAttempt(attemptIds).then(result => {
 			attempts.forEach(attempt => {
-				attempt.state.questionModels = result[attempt.attemptId]
+				const attemptId = attempt.attemptId
+				attempt.state.questionModels = result[attemptId]
 			})
 
 			this.setState({
 				attempts,
 				isFetching: false
 			})
+
 		})
 	}
 

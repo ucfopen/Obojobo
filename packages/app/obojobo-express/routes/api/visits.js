@@ -11,7 +11,8 @@ const {
 	checkValidationRules,
 	requireVisitId,
 	requireCurrentUser,
-	requireCurrentDocument
+	requireCurrentDocument,
+	requireCurrentVisit
 } = oboRequire('express_validators')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
@@ -46,7 +47,7 @@ router
 // mounted as /api/visits/start
 router
 	.route('/start')
-	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
+	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, checkValidationRules])
 	.post((req, res) => {
 		let viewState
 		let visitStartExtensions
@@ -56,21 +57,14 @@ router
 		const visitId = req.body.visitId
 		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
 
-		return req
-			.getCurrentVisitFromRequest()
-			.catch(() => {
-				throw 'Unable to start visit, visitId is no longer valid'
-			})
-			.then(() =>
-				Promise.all([
-					viewerState.get(
-						req.currentUser.id,
-						req.currentDocument.contentId,
-						req.currentVisit.resource_link_id
-					),
-					getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
-				])
-			)
+		return Promise.all([
+				viewerState.get(
+					req.currentUser.id,
+					req.currentDocument.contentId,
+					req.currentVisit.resource_link_id
+				),
+				getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
+			])
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi

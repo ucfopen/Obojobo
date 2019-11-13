@@ -38,6 +38,10 @@ const AssessmentAPIUtil = {
 			visitId
 		}).then(APIUtil.processJsonResults)
 	},
+	reviewAttempt(attemptIds) {
+		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds })
+		.then(APIUtil.processJsonResults)
+	},
 }
 
 export default AssessmentAPIUtil

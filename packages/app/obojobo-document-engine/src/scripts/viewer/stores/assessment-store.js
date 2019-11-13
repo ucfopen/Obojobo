@@ -146,9 +146,13 @@ class AssessmentStore extends Store {
 				attempt.questionScores.forEach(score => {
 					scoreObject[score.id] = score
 				})
+				const responces = {}
+				attempt.questionResponses.forEach(resp => {
+					responces[resp.questionId] = resp.response
+				})
 				const stateToUpdate = {
 					scores: scoreObject,
-					responses: attempt.responses
+					responses: responces
 				}
 
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
