@@ -11,6 +11,13 @@ class AssessmentModel {
 		for (const prop in props) {
 			this[prop] = props[prop]
 		}
+
+		// establish some default values
+		this.result = this.result || { questionScores: [], attemptScore: null}
+		this.assessmentScore = parseFloat(this.assessmentScore)
+		this.attemptNumber = parseInt(this.attemptNumber, 10)
+		this.isFinished = this.isFinished !== null
+		this.questionResponses = []
 	}
 
 	static getCompletedAssessmentAttemptHistory(
@@ -109,19 +116,10 @@ class AssessmentModel {
 						PARTITION by ATT.assessment_id
 						ORDER BY ATT.completed_at, ATT.created_at
 					) AS "attempt_number",
-					ATT.id AS "attempt_id",
-					ATT.assessment_id,
-					ATT.created_at,
-					ATT.updated_at,
-					ATT.completed_at,
-					ATT.state,
-					ATT.result,
-					ATT.draft_content_id,
+					ATT.*,
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
-					SCO.score_details AS "score_details",
-					ATT.is_imported,
-					ATT.imported_attempt_id
+					SCO.score_details AS "score_details"
 				FROM attempts ATT
 				LEFT JOIN assessment_scores SCO
 					ON ATT.id = SCO.attempt_id
@@ -221,27 +219,26 @@ class AssessmentModel {
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
+					attempt = new AssessmentModel(attempt)
 					// collect an array of attemptIds from each attempt
 					// if it's imported, use the imported attempt id
-					attemptIds.push(attempt.is_imported ? attempt.imported_attempt_id : attempt.attempt_id)
+					attemptIds.push(attempt.isImported ? attempt.importedAttemptId : attempt.id)
 					// if imported, keep track of it so we know where to put the
 					// question responses
-					if(attempt.is_imported){
-						mapImportedToAttempt[attempt.imported_attempt_id] = attempt.attempt_id
+					if(attempt.isImported){
+						mapImportedToAttempt[attempt.importedAttemptId] = attempt.id
 					}
 
-					const userAttempt = AssessmentModel.createUserAttempt(userId, draftId, attempt)
-
 					// create new assessment object if we don't have one yet
-					if (!assessments[userAttempt.assessmentId]) {
-						assessments[userAttempt.assessmentId] = {
-							assessmentId: userAttempt.assessmentId,
+					if (!assessments[attempt.assessmentId]) {
+						assessments[attempt.assessmentId] = {
+							assessmentId: attempt.assessmentId,
 							attempts: []
 						}
 					}
 
 					// add attempt into our assessments object
-					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
+					assessments[attempt.assessmentId].attempts.push(attempt)
 				})
 
 				/*
@@ -270,7 +267,7 @@ class AssessmentModel {
 
 						// find the first userAttempt that matches
 						const attemptForResponse = assessments[response.assessment_id].attempts.find(attempt => {
-							const attemptIdToMatch = responsesAreImported ? attempt.importedAttemptId : attempt.attemptId
+							const attemptIdToMatch = responsesAreImported ? attempt.importedAttemptId : attempt.id
 							return attemptIdToMatch === response.attempt_id
 						})
 
@@ -331,30 +328,6 @@ class AssessmentModel {
 					ltiState: null
 				}
 			})
-	}
-
-	// @TODO: get rid of this - just use the standard AssessmentModel (need to update client side code)
-	static createUserAttempt(userId, draftId, attempt) {
-		return {
-			userId: userId,
-			draftId: draftId,
-			contentId: attempt.draft_content_id,
-			attemptId: attempt.attempt_id,
-			assessmentScoreId: attempt.assessment_score_id,
-			attemptNumber: parseInt(attempt.attempt_number, 10),
-			assessmentId: attempt.assessment_id,
-			startTime: attempt.created_at,
-			finishTime: attempt.completed_at,
-			isFinished: attempt.completed_at !== null,
-			state: attempt.state,
-			questionScores: attempt.result ? attempt.result.questionScores : [],
-			questionResponses: [],
-			attemptScore: attempt.result ? attempt.result.attemptScore : null,
-			assessmentScore: parseFloat(attempt.assessment_score),
-			assessmentScoreDetails: attempt.score_details,
-			isImported: attempt.is_imported,
-			importedAttemptId: attempt.imported_attempt_id
-		}
 	}
 
 	/*
