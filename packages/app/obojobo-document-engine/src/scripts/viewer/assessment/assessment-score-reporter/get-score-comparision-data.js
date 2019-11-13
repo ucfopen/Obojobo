@@ -13,8 +13,8 @@ const getScoreComparisionData = (allAttempts, attemptNumberToGenerateReportFor) 
 	const prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
 
 	return {
-		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,
-		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails
+		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.scoreDetails : null,
+		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].scoreDetails
 	}
 }
 

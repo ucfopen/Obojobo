@@ -120,7 +120,7 @@ class AssessmentStore extends Store {
 			assessments[assessId].lti = assessmentItem.ltiState
 			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
-				'attemptScore'
+				'result.attemptScore'
 			)
 			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
@@ -143,7 +143,7 @@ class AssessmentStore extends Store {
 		for (const assessment in assessments) {
 			assessments[assessment].attempts.forEach(attempt => {
 				const scoreObject = {}
-				attempt.questionScores.forEach(score => {
+				attempt.result.questionScores.forEach(score => {
 					scoreObject[score.id] = score
 				})
 				const responces = {}

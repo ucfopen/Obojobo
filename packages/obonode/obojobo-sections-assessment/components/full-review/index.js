@@ -30,24 +30,25 @@ class AssessmentReviewView extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
+
 		const scoreReporter = new AssessmentScoreReporter({
 			assessmentRubric: this.props.model.modelState.rubric.toObject(),
 			totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
 			allAttempts: attempts
 		})
 
-		const attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
-			const date = new Date(attempt.finishTime)
+		const attemptReviewComponent = (attempt, isAHighestScoringNonNullAttempt) => {
+			const date = new Date(attempt.completedAt)
 			const dateString = formatDate(date, 'M/D/YY [at] h:mma')
 			const machineDateString = formatDate(date)
 			const ariaDateString = formatDate(date, 'MMMM Do YYYY [at] h:mma')
-			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
-			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.questionScores)
+			const numCorrect = AssessmentUtil.getNumCorrect(attempt.result.questionScores)
+			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.result.questionScores)
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
 
-			let attemptScoreSummary = Math.round(attempt.attemptScore) + '%'
-			if (attempt.attemptScore !== attempt.assessmentScore) {
+			let attemptScoreSummary = Math.round(attempt.result.attemptScore) + '%'
+			if (attempt.result.attemptScore !== attempt.assessmentScore) {
 				attemptScoreSummary +=
 					' → ' +
 					(attempt.assessmentScore === null
@@ -94,7 +95,7 @@ class AssessmentReviewView extends React.Component {
 					<div
 						className={`review ${this.props.showFullReview ? 'is-full-review' : 'is-basic-review'}`}
 					>
-						{attempt.questionScores.map((scoreObj, index) => {
+						{attempt.result.questionScores.map((scoreObj, index) => {
 							const questionModel = OboModel.create(attempt.state.questionModels[scoreObj.id])
 							const QuestionComponent = questionModel.getComponentClass()
 
@@ -119,7 +120,7 @@ class AssessmentReviewView extends React.Component {
 			for (const i in attempts) {
 				const attempt = attempts[i]
 
-				if (context === `assessmentReview:${attempt.attemptId}`) {
+				if (context === `assessmentReview:${attempt.id}`) {
 					return parseInt(i, 10)
 				}
 			}
@@ -130,7 +131,7 @@ class AssessmentReviewView extends React.Component {
 		const attemptButtons = attempts.map((attempt, index) => {
 			return (
 				<Button
-					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}
+					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.id}`)}
 					key={index}
 					ariaLabel={'Attempt ' + attempt.attemptNumber}
 				>
@@ -142,7 +143,6 @@ class AssessmentReviewView extends React.Component {
 		attempts.forEach(attempt => {
 			attemptReviewComponents[`assessmentReview:${attempt.attemptId}`] = attemptReviewComponent(
 				attempt,
-				this.props.assessment,
 				highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null
 			)
 		})

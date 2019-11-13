@@ -50,13 +50,12 @@ class AssessmentPostTest extends React.Component {
 		)
 
 		attempts.forEach(attempt => {
-			attemptIds.push(attempt.attemptId)
+			attemptIds.push(attempt.id)
 		})
 
 		return AssessmentApi.reviewAttempt(attemptIds).then(result => {
 			attempts.forEach(attempt => {
-				const attemptId = attempt.attemptId
-				attempt.state.questionModels = result[attemptId]
+				attempt.state.questionModels = result[attempt.id]
 			})
 
 			this.setState({
@@ -128,7 +127,7 @@ class AssessmentPostTest extends React.Component {
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>
 				<span className="from-attempt">{`From attempt ${
-					highestAttempts[0].assessmentScoreDetails.attemptNumber
+					highestAttempts[0].scoreDetails.attemptNumber
 				}`}</span>
 			</div>
 		)

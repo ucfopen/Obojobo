@@ -19,7 +19,7 @@ class AssessmentScoreReporter {
 		}
 
 		const assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1]
-			.assessmentScoreDetails
+			.scoreDetails
 
 		return {
 			textItems: getTextItems(

@@ -49,11 +49,12 @@ const AssessmentUtil = {
 
 	getHighestAttemptsForModelByAttemptScore(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
 		if (!assessment) {
 			return []
 		}
 
-		return assessment.highestAttemptScoreAttempts
+		return assessment.highestAssessmentScoreAttempts
 	},
 
 	getAssessmentScoreForModel(state, model) {
@@ -76,7 +77,7 @@ const AssessmentUtil = {
 			return []
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].questionScores
+		return assessment.attempts[assessment.attempts.length - 1].result.questionScores
 	},
 
 	getCurrentAttemptForModel(state, model) {
@@ -193,24 +194,32 @@ const AssessmentUtil = {
 	findHighestAttempts(attempts, scoreProperty) {
 		if (attempts.length === 0) return []
 
-		const attemptsByScore = {}
-		let highestScore = -1
+		const splitProp = scoreProperty.split('.') // cache this for reuse below
+		let maxValue = -1
+		let attemptsWithMaxValue = [] // all attempts w/ max score
 
 		attempts.forEach(attempt => {
-			const score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+			// look up a nested object property using 'dot notation'
+			// EG: 'result.attemptScore' is split to ['result', 'attemptScore']
+			// then reduce runs over that array one at a time in order
+			// feeding in  `attempt` object
+			// iteration 1: o = attempt['result']
+			// iteration 2 o = o['attemptScore']
+			const propValue = splitProp.reduce((o, i) => o[i], attempt) || -1
 
-			if (score > highestScore) {
-				highestScore = score
+			// new max score, reset our results
+			if (propValue > maxValue) {
+				maxValue = propValue
+				attemptsWithMaxValue = []
 			}
 
-			if (!attemptsByScore[score]) {
-				attemptsByScore[score] = []
+			// keep this score
+			if(propValue === maxValue){
+				attemptsWithMaxValue.push(attempt)
 			}
-
-			attemptsByScore[score].push(attempt)
 		})
 
-		return attemptsByScore[highestScore]
+		return attemptsWithMaxValue
 	},
 
 	startAttempt(model) {
