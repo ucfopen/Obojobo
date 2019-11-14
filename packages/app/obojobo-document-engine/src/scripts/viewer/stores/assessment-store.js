@@ -60,17 +60,23 @@ class AssessmentStore extends Store {
 	}
 
 	init(extensions) {
-		const ext = {attemptHistory: [], importableScore: null}
+		const ext = {assessmentSummary: [], attemptHistory: [], importableScore: null}
 		const filteredExtArrays = extensions.filter(val => val.name === 'ObojoboDraft.Sections.Assessment')
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
 		this.state = {
 			assessments: {},
 			importHasBeenUsed: false,
-			importableScore: ext.importableScore
+			importableScore: ext.importableScore,
+			assessmentSummary: ext.assessmentSummary,
+			// attemptHistory
 		}
 
-		this.updateAttempts(ext.attemptHistory)
+		// Any unfinished attempts?
+		const unfinishedAttempt = ext.assessmentSummary.find(el => el.unfinishedAttemptId !== null)
+		if(unfinishedAttempt) this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
+
+		// this.updateAttempts([])
 
 		if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
@@ -86,12 +92,12 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	displayUnfinishedAttemptNotice(unfinishedAttempt){
+	displayUnfinishedAttemptNotice(unfinishedAttemptId){
 		ModalUtil.show(
 			<SimpleDialog
 				ok
 				title="Resume Attempt"
-				onConfirm={this.resumeAttemptWithAPICall.bind(this, unfinishedAttempt)}
+				onConfirm={this.resumeAttemptWithAPICall.bind(this, unfinishedAttemptId)}
 			>
 				<p>
 					It looks like you were in the middle of an attempt. We&apos;ll resume where you left
@@ -103,7 +109,7 @@ class AssessmentStore extends Store {
 	}
 
 	updateAttempts(attemptsByAssessment) {
-		let unfinishedAttempt = null
+
 		const assessments = this.state.assessments
 		let assessment
 
@@ -112,16 +118,20 @@ class AssessmentStore extends Store {
 			const attempts = assessmentItem.attempts
 
 			if (!assessments[assessId]) {
+				// @HERE
 				assessments[assessId] = getNewAssessmentObject(assessId)
 			} else {
 				assessments[assessId].attempts = []
 			}
 
+			// @HERE
 			assessments[assessId].lti = assessmentItem.ltiState
+			// @HERE
 			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
 				'result.attemptScore'
 			)
+			// @HERE
 			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
 				'assessmentScore'
@@ -130,13 +140,11 @@ class AssessmentStore extends Store {
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 				if(attempt.isImported){
+					// @HERE
 					this.state.importHasBeenUsed = true
 				}
-				if (!attempt.isFinished) {
-					unfinishedAttempt = attempt
-				} else {
-					assessment.attempts.push(attempt)
-				}
+					// @HERE
+				assessment.attempts.push(attempt)
 			})
 		})
 
@@ -158,19 +166,15 @@ class AssessmentStore extends Store {
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
 			})
 		}
-
-		if (unfinishedAttempt) {
-			this.displayUnfinishedAttemptNotice(unfinishedAttempt)
-		}
 	}
 
-	resumeAttemptWithAPICall(unfinishedAttempt) {
+	resumeAttemptWithAPICall(unfinishedAttemptId) {
 		ModalUtil.hide()
-
+		const navState = NavStore.getState()
 		return AssessmentAPI.resumeAttempt({
-			draftId: unfinishedAttempt.draftId,
-			attemptId: unfinishedAttempt.attemptId,
-			visitId: NavStore.getState().visitId
+			draftId: navState.draftId,
+			attemptId: unfinishedAttemptId,
+			visitId: navState.visitId
 		}).then(response => {
 			this.startAttempt(response.value)
 			this.triggerChange()

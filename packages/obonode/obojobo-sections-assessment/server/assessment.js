@@ -38,7 +38,14 @@ class Assessment extends DraftNode {
 			.then(attemptHistory => {
 				extensions.push({
 					name: NODE_NAME,
-					attemptHistory
+					assessmentSummary: [
+						{
+							assesessmentId: "my-assessment",
+							scores: [33, 100, 50],
+							unfinishedAttemptId: null,
+							importUsed: false
+						}
+					]
 				})
 
 				// if there's no attempt history

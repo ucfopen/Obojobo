@@ -96,14 +96,14 @@ const AssessmentUtil = {
 	getAttemptsRemaining(state, model) {
 		if(state.importHasBeenUsed === true) return 0
 		return Math.max(
-			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
+			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state),
 			0
 		)
 	},
 
 	hasAttemptsRemaining(state, model) {
 		if(state.importHasBeenUsed === true) return false
-		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
+		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state) > 0
 	},
 
 	getLTIStateForModel(state, model) {
@@ -174,13 +174,13 @@ const AssessmentUtil = {
 		return false
 	},
 
-	getNumberOfAttemptsCompletedForModel(state, model) {
-		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment || assessment.attempts.length === 0) {
-			return 0
+	getNumberOfAttemptsCompletedForModel(state) {
+		// currently assuming there's only one assessment per module!
+		if(state.assessmentSummary && state.assessmentSummary[0] && state.assessmentSummary[0].scores){
+			return state.assessmentSummary[0].scores.length
 		}
 
-		return assessment.attempts.length
+		return 0
 	},
 
 	getNumPossibleCorrect(questionScores) {
