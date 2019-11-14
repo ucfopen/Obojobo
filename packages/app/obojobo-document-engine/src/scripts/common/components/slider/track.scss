@@ -1,0 +1,15 @@
+@import '~styles/includes';
+
+.obojobo-draft--components--slider--track {
+	position: absolute;
+	transform: translate(0%, -50%);
+	height: 0.7em;
+	z-index: 1;
+	border-radius: $dimension-rounded-radius;
+	cursor: pointer;
+	background: $color-action;
+
+	.is-disabled {
+		background: $color-shadow;
+	}
+}

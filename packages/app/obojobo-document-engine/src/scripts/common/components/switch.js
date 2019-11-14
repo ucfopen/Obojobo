@@ -1,25 +1,25 @@
 import React from 'react'
 
-import './slider.scss'
+import './switch.scss'
 
 /* istanbul ignore next */
 const noOp = () => {}
 
-const Slider = ({ title = '', initialChecked = false, handleCheckChange = noOp }) => (
-	<div className="obojobo-draft--components--slider">
+const Switch = ({ title = '', initialChecked = false, handleCheckChange = noOp }) => (
+	<div className="obojobo-draft--components--switch">
 		<span contentEditable={false}>{title}</span>
 		<label className="switch">
 			<input
-				className="slider"
+				className="switch-slider"
 				type="checkbox"
 				checked={initialChecked}
 				onChange={event => {
 					handleCheckChange(event.target.checked)
 				}}
 			/>
-			<div className="slider round" />
+			<div className="switch-slider round" />
 		</label>
 	</div>
 )
 
-export default Slider
+export default Switch

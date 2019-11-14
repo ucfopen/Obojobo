@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
-const { Button, Slider } = Common.components
+const { Button, Switch } = Common.components
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
@@ -73,7 +73,7 @@ class TriggerListModal extends React.Component {
 	updateActionValue(triggerIndex, actionIndex, key, event) {
 		const value = {}
 		// If there is a target, event is actually an event
-		// If there is no target, event is a boolean produced by the Slider
+		// If there is no target, event is a boolean produced by the Switch
 		value[key] = (event.target ? event.target.value : event)
 
 		// Update triggers[triggerIndex].actions[actionIndex].value.key
@@ -179,7 +179,7 @@ class TriggerListModal extends React.Component {
 			case 'viewer:scrollToTop':
 				return (
 					<div className="action-options">
-						<Slider
+						<Switch
 							title="Animate Scroll"
 							initialChecked={action.value.animateScroll}
 							handleCheckChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'animateScroll')}/>
@@ -195,11 +195,11 @@ class TriggerListModal extends React.Component {
 								value={action.value.id}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}/>
 						</div>
-						<Slider
+						<Switch
 							title="Fade Out Other Items"
 							initialChecked={action.value.fade}
 							handleCheckChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}/>
-						<Slider
+						<Switch
 							title="Animate Scroll"
 							initialChecked={action.value.animateScroll}
 							handleCheckChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'animateScroll')}/>

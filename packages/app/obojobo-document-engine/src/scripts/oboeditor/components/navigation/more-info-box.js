@@ -7,7 +7,7 @@ import React from 'react'
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 
-const { Button, Slider } = Common.components
+const { Button, Switch } = Common.components
 const { ModalUtil } = Common.util
 
 // Expected Props:
@@ -69,7 +69,7 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
-	handleSliderChange(key, booleanValue) {
+	handleSwitchChange(key, booleanValue) {
 		const newContent = {}
 		newContent[key] = booleanValue
 
@@ -169,17 +169,17 @@ class MoreInfoBox extends React.Component {
 				)
 			case 'toggle':
 				return (
-					<Slider
+					<Switch
 						key={description.type}
 						title={description.description}
 						initialChecked={this.state.content[description.name]}
-						handleCheckChange={this.handleSliderChange.bind(this, description.name)}
+						handleCheckChange={this.handleSwitchChange.bind(this, description.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
 			case 'abstract-toggle':
 				return (
-					<Slider
+					<Switch
 						key={description.type}
 						title={description.description}
 						initialChecked={description.value(this.state.content)}

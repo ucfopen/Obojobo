@@ -1,6 +1,6 @@
 @import '~styles/includes';
 
-.obojobo-draft--components--slider {
+.obojobo-draft--components--switch {
 	position: relative;
 
 	> span {
@@ -20,8 +20,8 @@
 			opacity: 0;
 		}
 
-		.slider {
-			$color-slider-text: lighten($color-text, 20%);
+		.switch-slider {
+			$color-switch-text: lighten($color-text, 20%);
 
 			border: 1px solid $color-shadow;
 			position: absolute;
@@ -53,7 +53,7 @@
 			&::after {
 				content: 'OFF';
 				font-family: $font-default;
-				color: $color-slider-text;
+				color: $color-switch-text;
 				font-weight: bold;
 				display: block;
 				position: absolute;
@@ -64,21 +64,21 @@
 			}
 		}
 
-		input:checked + .slider {
+		input:checked + .switch-slider {
 			background-color: $color-obojobo-blue;
 		}
 
-		input:focus + .slider {
+		input:focus + .switch-slider {
 			box-shadow: 0 0 5px #2196f3;
 		}
 
-		input:checked + .slider::before {
+		input:checked + .switch-slider::before {
 			transform: translateX(1.6em);
 			background-color: $color-bg;
 			border: 1px solid $color-bg;
 		}
 
-		input:checked + .slider::after {
+		input:checked + .switch-slider::after {
 			content: 'ON';
 			color: $color-bg;
 			left: 37%;

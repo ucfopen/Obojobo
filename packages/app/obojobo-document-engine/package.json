@@ -55,6 +55,7 @@
 		"prop-types": "15.6.2",
 		"react": "16.10.1",
 		"react-codemirror2": "^6.0.0",
+		"react-compound-slider": "^2.4.0",
 		"react-dom": "16.10.1",
 		"react-idle-timer": "^4.2.9",
 		"react-transition-group": "^4.3.0",
