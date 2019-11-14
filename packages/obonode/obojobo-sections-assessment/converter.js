@@ -53,6 +53,7 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const content = node.get('content')
+	console.log(content)
 
 	const nodes = node.attributes.children.map(child => {
 		if (child.type === PAGE_NODE) {
@@ -70,6 +71,7 @@ const oboToSlate = node => {
 
 	const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
 	if (content.rubric) {
+		content.rubric.attempts = content.attempts
 		nodes.push(Rubric.oboToSlate(content.rubric))
 	} else {
 		// Although highest rubrics do not use the rubric properties, 

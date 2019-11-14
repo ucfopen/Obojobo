@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 import './editor-component.scss'
 
-const { Button, Slider } = Common.components
+const { Button, Switch } = Common.components
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 class MCAssessment extends React.Component {
@@ -60,7 +60,7 @@ class MCAssessment extends React.Component {
 							<option value="pick-all">Pick all correct answers</option>
 						</select>
 					</label>
-					<Slider
+					<Switch
 						title="Shuffle Choices"
 						initialChecked={content.shuffle}
 						handleCheckChange={this.changeShuffle.bind(this)}/>

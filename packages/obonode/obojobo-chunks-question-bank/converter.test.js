@@ -6,7 +6,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 		})
 	},
 	components: {
-		Slider: jest.fn()
+		Switch: jest.fn()
 	}
 }))
 

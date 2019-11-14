@@ -35,6 +35,10 @@ const getUpdatedHandles = (handles, updateKey, updateValue, reversed) => {
   return handles
 }
 
+const sortArray = (firstEl, secondEl) => {
+	return firstEl.key.localeCompare(secondEl.key)
+}
+
 
 // The custom mode4 function is adapted from the mode3 function from react-compound-slider,
 // with adjustments to allow for overlapping values
@@ -46,9 +50,11 @@ const mode4 = (curr, next, step, reversed, getValue) => {
 		const c = curr[i]
 		const n = next[i]
 
-		// make sure keys are in same order if not return curr
+		// make sure keys are in same order if not, sort them and rerun the mode
+		// This could result in a O(n^2logn) operation in worst case, but sliders should never have
+		// enough handles to bloat runtime
 		if (!n || n.key !== c.key) {
-			return curr
+			return mode4(curr.sort(sortArray), next.sort(sortArray), step, reversed, getValue)
 		// Identify which handle is being moved by finding the value that is different
 		} else if (n.val !== c.val) {
 			indexForMovingHandle = i
