@@ -14,9 +14,9 @@ class AssessmentModel {
 
 		// establish some default values
 		this.result = this.result || { questionScores: [], attemptScore: null}
-		this.assessmentScore = parseFloat(this.assessmentScore)
-		this.attemptNumber = parseInt(this.attemptNumber, 10)
-		this.isFinished = this.isFinished !== null
+		if(this.assessmentScore) this.assessmentScore = parseFloat(this.assessmentScore)
+		if(this.attemptNumber) this.attemptNumber = parseInt(this.attemptNumber, 10)
+		this.isFinished = this.isFinished != null
 		this.questionResponses = []
 	}
 

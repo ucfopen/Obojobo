@@ -17,6 +17,11 @@ class AssessmentScore {
 		for (const prop in props) {
 			this[prop] = props[prop]
 		}
+
+		// number format certain fields
+		this.id = parseInt(this.id, 10)
+		this.assessmentScoreId = parseInt(this.assessmentScoreId, 10)
+		if(this.score) this.score = parseFloat(this.score)
 	}
 
 	static fetchById(id) {

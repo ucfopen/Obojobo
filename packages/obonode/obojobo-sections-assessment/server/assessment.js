@@ -23,6 +23,7 @@ class Assessment extends DraftNode {
 
 	onStartVisit(req, res, draftId, visitId, extensions) {
 		let visit
+		let canImport = true // @TODO ask the visit if importing is enabled
 		return req
 			.requireCurrentUser()
 			.then(() => Visit.fetchById(visitId))
@@ -36,21 +37,44 @@ class Assessment extends DraftNode {
 				visit.resource_link_id
 			))
 			.then(attemptHistory => {
-				extensions.push({
-					name: NODE_NAME,
-					assessmentSummary: [
-						{
-							assesessmentId: "my-assessment",
-							scores: [33, 100, 50],
+				// @TODO: I'd be happier changing fetchAttemptHistory to return this exact object
+				// IF we can create a more efficient query to get this data
+
+				const map = new Map()
+				attemptHistory.forEach(i => {
+					// create new object for each assessment id
+					if(!map.has(i.assessmentId)) {
+						map.set(i.assessmentId, {
+							assessmentId: i.assessmentId,
+							scores: [],
 							unfinishedAttemptId: null,
 							importUsed: false
-						}
-					]
+						})
+					}
+
+					const current = map.get(i.assessmentId)
+
+					i.attempts.forEach(a => {
+						console.log(a)
+						current.scores.push(a.assessmentScore)
+						if(a.isFinished === false) current.unfinishedAttemptId = a.id
+						if(a.isImported === true) current.importUsed = true
+					})
 				})
+
+				const assessmentSummary = Array.from(map.values())
+
+				// only add extension if summary isn't empty
+				if(assessmentSummary.length){
+					extensions.push({
+						name: NODE_NAME,
+						assessmentSummary
+					})
+				}
 
 				// if there's no attempt history
 				// find the highest importable score
-				if(attemptHistory.length === 0){
+				if(canImport && attemptHistory.length === 0){
 					return AssessmentScore.getImportableScore(
 						req.currentUser.id,
 						visit.draft_content_id,
