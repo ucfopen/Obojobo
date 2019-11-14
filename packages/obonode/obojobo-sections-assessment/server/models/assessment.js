@@ -16,7 +16,7 @@ class AssessmentModel {
 		this.result = this.result || { questionScores: [], attemptScore: null}
 		if(this.assessmentScore) this.assessmentScore = parseFloat(this.assessmentScore)
 		if(this.attemptNumber) this.attemptNumber = parseInt(this.attemptNumber, 10)
-		this.isFinished = this.isFinished != null
+		this.isFinished = this.completedAt !== null
 		this.questionResponses = []
 	}
 

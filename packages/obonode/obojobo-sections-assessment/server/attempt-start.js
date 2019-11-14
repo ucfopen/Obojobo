@@ -13,53 +13,36 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
+	let attemptState
 	const assessmentProperties = {
-		user: null,
-		isPreview: null,
-		draftTree: null,
-		id: null,
-		node: null,
+		user: req.currentUser,
+		isPreview: req.currentVisit.is_preview,
+		draftTree: req.currentDocument,
+		id: req.body.assessmentId,
+		oboNode: null,
 		nodeChildrenIds: null,
 		questionBank: null,
 		attemptHistory: null,
 		numAttemptsTaken: null,
 		questionUsesMap: null,
-		resourceLinkId: null
+		resourceLinkId: req.currentVisit.resource_link_id
 	}
-	let attemptState
-	let currentDocument = null
 
-	return req
-		.requireCurrentUser() // @TODO: this is redundant - handled in express router
-		.then(user => {
-			assessmentProperties.user = user
-			return VisitModel.fetchById(req.body.visitId)
-		})
-		.then(visit => {
-			assessmentProperties.isPreview = visit.is_preview
-			assessmentProperties.resourceLinkId = visit.resource_link_id
+	// @TODO: make sure assessmentID is found
+	const assessmentNode = req.currentDocument.getChildNodeById(req.body.assessmentId)
+	assessmentProperties.oboNode = assessmentNode
+	assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+	assessmentProperties.questionBank = assessmentNode.children[1]
 
-			return req.requireCurrentDocument() // @TODO: this is redundant - handled in express router
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			const assessmentNode = currentDocument.getChildNodeById(req.body.assessmentId)
-
-			assessmentProperties.draftTree = currentDocument
-			assessmentProperties.id = req.body.assessmentId
-			assessmentProperties.oboNode = assessmentNode
-			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-			assessmentProperties.questionBank = assessmentNode.children[1]
-
-			return AssessmentModel.getCompletedAssessmentAttemptHistory(
-				assessmentProperties.user.id,
-				currentDocument.draftId,
-				req.body.assessmentId,
-				assessmentProperties.isPreview,
-				assessmentProperties.resourceLinkId
-			)
-		})
+	return AssessmentModel.getCompletedAssessmentAttemptHistory(
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.body.assessmentId,
+			req.currentVisit.is_preview,
+			req.currentVisit.resource_link_id
+		)
 		.then(attemptHistory => {
+			console.log('attemptHistory', attemptHistory.length, 'allowed attempts:', assessmentProperties.oboNode.node.content.attempts)
 			assessmentProperties.attemptHistory = attemptHistory
 			assessmentProperties.numAttemptsTaken = attemptHistory.length
 
@@ -73,22 +56,20 @@ const startAttempt = (req, res) => {
 			}
 
 			attemptState = getState(assessmentProperties)
-
-			return Promise.all(
-				getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
-			)
+			const toClientPromises = getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
+			return Promise.all(toClientPromises)
 		})
 		.then(() => {
 			return AssessmentModel.createNewAttempt(
-				assessmentProperties.user.id,
-				currentDocument.draftId,
-				currentDocument.contentId,
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentDocument.contentId,
 				req.body.assessmentId,
 				{
 					chosen: attemptState.chosen
 				},
-				assessmentProperties.isPreview,
-				assessmentProperties.resourceLinkId
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
 			)
 		})
 		.then(result => {
@@ -96,16 +77,14 @@ const startAttempt = (req, res) => {
 				assessmentProperties.oboNode.draftTree,
 				result.state.chosen
 			)
-
 			res.success(result)
-
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
-				assessmentProperties.user.id,
-				currentDocument,
+				req.currentUser.id,
+				req.currentDocument,
 				req.body.assessmentId,
-				assessmentProperties.isPreview,
+				req.currentVisit.is_preview,
 				req.hostname,
 				req.connection.remoteAddress,
 				req.body.visitId
