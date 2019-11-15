@@ -9,9 +9,24 @@ const VISUAL_MODE = 'visual'
 
 describe('ViewMenu', () => {
 	test('ViewMenu node', () => {
-		const component = shallow(<ViewMenu draftId="mock-id"/>)
+		const component = shallow(<ViewMenu draftId="mock-id" mode={JSON_MODE} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('ViewMenu node in XML_MODE', () => {
+		const save = jest.fn()
+		const switchMode = jest.fn()
+
+		const component = mount(
+			<ViewMenu draftId="mock-id" onSave={save} switchMode={switchMode} mode={XML_MODE} />
+		)
+
+		component
+			.find('button')
+			.at(4)
+			.simulate('click')
+		expect(switchMode).toHaveBeenCalledWith(VISUAL_MODE)
 	})
 
 	test('ViewMenu performs actions', () => {
@@ -19,12 +34,9 @@ describe('ViewMenu', () => {
 		const switchMode = jest.fn()
 
 		const component = mount(
-			<ViewMenu 
-				draftId="mock-id" 
-				onSave={save} 
-				switchMode={switchMode}/>
+			<ViewMenu draftId="mock-id" onSave={save} switchMode={switchMode} mode={VISUAL_MODE} />
 		)
-		
+
 		component
 			.find('button')
 			.at(2)
@@ -36,12 +48,6 @@ describe('ViewMenu', () => {
 			.at(3)
 			.simulate('click')
 		expect(switchMode).toHaveBeenCalledWith(XML_MODE)
-
-		component
-			.find('button')
-			.at(4)
-			.simulate('click')
-		expect(switchMode).toHaveBeenCalledWith(VISUAL_MODE)
 
 		component
 			.find('button')

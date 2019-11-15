@@ -13,7 +13,7 @@ import {
 	hasTriggerTypeWithActionType
 } from '../../../common/util/trigger-util'
 
-const { Prompt, SimpleDialog } = Common.components.modal
+const { Prompt, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
@@ -76,7 +76,6 @@ class SubMenu extends React.Component {
 		const newPage = generatePage()
 		newPage.content.title = this.isWhiteSpace(title) ? null : title
 		EditorUtil.addPage(newPage, afterPageId)
-		this.props.updateNavTargetId(newPage.id)
 	}
 
 	isWhiteSpace(str) {
@@ -106,11 +105,27 @@ class SubMenu extends React.Component {
 		const item = this.props.list[this.props.index]
 
 		ModalUtil.show(
-			<SimpleDialog cancelOk onConfirm={this.deletePage}>
+			<Dialog
+				centered
+				buttons={[
+					{
+						value: 'Cancel',
+						altAction: true,
+						onClick: ModalUtil.hide
+					},
+					{
+						value: 'Yes, Delete',
+						onClick: this.deletePage,
+						default: true,
+						isDangerous: true
+					}
+				]}
+				title={'Delete ' + item.label}
+			>
 				{'Are you sure you want to delete ' +
 					item.label +
 					'? This will permanently delete all content in the page'}
-			</SimpleDialog>
+			</Dialog>
 		)
 	}
 
