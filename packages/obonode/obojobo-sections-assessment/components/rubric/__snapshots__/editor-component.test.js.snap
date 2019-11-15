@@ -204,30 +204,7 @@ exports[`Rubric editor Rubric renders 1`] = `
         Edit...
       </button>
     </div>
-    <ul>
-      <li>
-        <b>
-          <span
-            className="reward"
-          >
-            Add
-          </span>
-           5%
-        </b>
-         If a student passes on attempts 1 to 2
-      </li>
-      <li>
-        <b>
-          <span
-            className="deduct"
-          >
-            Deduct
-          </span>
-           5%
-        </b>
-         If a student passes on the last attempt
-      </li>
-    </ul>
+    <ul />
   </div>
 </div>
 `;

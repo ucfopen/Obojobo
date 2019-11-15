@@ -104,13 +104,13 @@ describe('Assessment Converter', () => {
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const createOboNode = (hasRubric, triggers) => ({
+		const createOboNode = (rubric, triggers) => ({
 			id: 'mockKey',
 			get() {
 				return {
 					triggers,
 					scoreActions: 'someScoreActions',
-					rubric: hasRubric
+					rubric: rubric
 				}
 			},
 			attributes: {
@@ -125,7 +125,7 @@ describe('Assessment Converter', () => {
 
 		// startAttemptLock && endAttemptLock == false
 		// rubric exists
-		let oboNode = createOboNode(true, [])
+		let oboNode = createOboNode({}, [])
 		expect(Converter.oboToSlate(oboNode)).toMatchSnapshot()
 
 		// startAttemptLock && endAttemptLock == true

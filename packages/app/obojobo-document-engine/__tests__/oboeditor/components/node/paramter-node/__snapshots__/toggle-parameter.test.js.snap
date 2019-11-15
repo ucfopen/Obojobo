@@ -6,7 +6,7 @@ exports[`Toggle Parameter Node component with checkbox 1`] = `
   contentEditable={false}
 >
   <div
-    className="obojobo-draft--components--slider"
+    className="obojobo-draft--components--switch"
   >
     <span
       contentEditable={false}
@@ -18,19 +18,19 @@ exports[`Toggle Parameter Node component with checkbox 1`] = `
     >
       <input
         checked={false}
-        className="slider"
+        className="switch-slider"
         onChange={[Function]}
         type="checkbox"
       />
       <div
-        className="slider round"
+        className="switch-slider round"
       />
     </label>
   </div>
 </div>
 `;
 
-exports[`Toggle Parameter Node component with select changes value 1`] = `"<div class=\\"parameter-node\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">mockType</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div>"`;
+exports[`Toggle Parameter Node component with select changes value 1`] = `"<div class=\\"parameter-node\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--switch\\"><span contenteditable=\\"false\\">mockType</span><label class=\\"switch\\"><input class=\\"switch-slider\\" type=\\"checkbox\\"><div class=\\"switch-slider round\\"></div></label></div></div>"`;
 
 exports[`Toggle Parameter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

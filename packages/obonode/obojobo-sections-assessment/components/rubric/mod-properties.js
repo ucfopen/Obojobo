@@ -22,6 +22,7 @@ class ModProperties extends React.Component {
 	}
 
 	onChangeSlider(index, values) {
+		console.log(values)
 		const lowerVal = values[0] === this.props.attempts+1 ? "$last_attempt" : values[0]
 		const upperVal = values[1] === this.props.attempts+1 ? "$last_attempt" : values[1]
 		const attemptCondition = "[" + lowerVal + "," + upperVal + "]"
@@ -29,6 +30,51 @@ class ModProperties extends React.Component {
 			mods: prevState.mods.map(
 				(mod, listIndex) => (index === listIndex ? Object.assign(mod, { attemptCondition }) : mod)
 			)
+		}))
+	}
+
+	onChangeReward(index, event) {
+		const reward = event.target.value
+		this.setState(prevState => ({ 
+			mods: prevState.mods.map(
+				(mod, listIndex) => (index === listIndex ? Object.assign(mod, { reward }) : mod)
+			)
+		}))
+	}
+
+	onChangeLower(index, event) {
+		const lower = event.target.value
+		const range = getParsedRange(this.state.mods[index].attemptCondition)
+		const attemptCondition = "[" + lower + "," + range.max + "]"
+		this.setState(prevState => ({ 
+			mods: prevState.mods.map(
+				(mod, listIndex) => (index === listIndex ? Object.assign(mod, { attemptCondition }) : mod)
+			)
+		}))
+	}
+
+	onChangeUpper(index, event) {
+		const upper = event.target.value
+		const range = getParsedRange(this.state.mods[index].attemptCondition)
+		const attemptCondition = "[" + range.min + "," + upper + "]"
+		this.setState(prevState => ({ 
+			mods: prevState.mods.map(
+				(mod, listIndex) => (index === listIndex ? Object.assign(mod, { attemptCondition }) : mod)
+			)
+		}))
+	}
+
+	onAddMod() {
+		this.setState(prevState => ({
+			mods: [...prevState.mods, { reward: 0, attemptCondition: "[1,$last_attempt]"}]
+		}))
+	}
+
+	deleteMod(index) {
+		this.setState(prevState => ({
+			mods: prevState.mods.map(
+				(mod, listIndex) => (index === listIndex ? null : mod)
+			).filter(Boolean)
 		}))
 	}
 
@@ -48,26 +94,39 @@ class ModProperties extends React.Component {
 							// Otherwise, add one to the number of attempts to make a space for $last_attempt
 							const upperRange = this.props.attempts === 'unlimited' ? 20 : this.props.attempts + 1
 
-							const lowerVal = range.min === '$last_attempt' ? upperRange : parseInt(range.min, 10)
-							const upperVal = range.max === '$last_attempt' ? upperRange : parseInt(range.max, 10)
+							// safely wrap string values like $last_attempt as the highest value
+							const lower = parseInt(range.min, 10)
+							const lowerVal = isNaN(lower) ? upperRange : lower
+							const upper = parseInt(range.max, 10)
+							const upperVal = isNaN(upper) ? upperRange : upper
 
 							return (
 								<div key={index} className="mod">
+									<Button 
+										className="delete-button" 
+										onClick={this.deleteMod.bind(this,index)}>
+										×
+									</Button>
 									<label>When passing on attempt</label>
-									<Slider 
-										domain={[1, upperRange]}
-										values={[lowerVal, upperVal]}
-										step={1}
-										onChange={this.onChangeSlider.bind(this,index)}/>
-									<div className="slider-inputs">
-										<input type="text" value={range.min} className="min-input"/>
-										<input type="text" value={range.max} className="max-input"/>
+									<div className="slider-container">
+										<Slider 
+											domain={[1, upperRange]}
+											values={[lowerVal, upperVal]}
+											step={1}
+											onChange={this.onChangeSlider.bind(this,index)}/>
 									</div>
-									<label>Add <input type="number" value={mod.reward}/>%</label>
+									<div className="slider-inputs">
+										<input type="text" value={range.min} className="min-input" onChange={this.onChangeLower.bind(this,index)}/>
+										through
+										<input type="text" value={range.max} className="max-input" onChange={this.onChangeUpper.bind(this,index)}/>
+									</div>
+									<label className="add">
+										Add <input type="number" value={mod.reward} onChange={this.onChangeReward.bind(this,index)}/>%
+									</label>
 								</div>
 							)
 						})}
-						<Button>Add Mod</Button>
+						{this.state.mods.length < 20 ? <Button onClick={this.onAddMod.bind(this)}>Add Mod</Button>: null}
 					</div>
 				</div>
 			</SimpleDialog>

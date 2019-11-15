@@ -50,7 +50,7 @@ class Rubric extends React.Component {
 			data: {
 				content: {
 					...this.props.node.data.get('content'),
-					mods: [...content.rewards, ...content.penalties]
+					mods: content.mods
 				}
 			}
 		})
@@ -189,7 +189,7 @@ class Rubric extends React.Component {
 							return (
 								<li key={index}>
 									{ mod.reward < 0 ?
-										<b><span className="deduct">Deduct</span> {mod.reward}%</b> :
+										<b><span className="deduct">Deduct</span> {Math.abs(mod.reward)}%</b> :
 										<b><span className="reward">Add</span> {mod.reward}%</b> }
 										{this.printRange(range)}
 								</li>

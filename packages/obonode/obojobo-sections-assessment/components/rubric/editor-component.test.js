@@ -13,7 +13,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { mods: [] }
 						}
 					}
 				}}
@@ -34,7 +34,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { mods: [] }
 						}
 					}
 				}}
@@ -68,7 +68,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { }
+							return { mods: [] }
 						}
 					}
 				}}
@@ -98,7 +98,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { passedType: 'set-value' }
+							return { passedType: 'set-value', mods: [] }
 						}
 					}
 				}}
@@ -137,7 +137,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { failedType: 'set-value' }
+							return { failedType: 'set-value', mods: [] }
 						}
 					}
 				}}
@@ -176,7 +176,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { unableToPassType: 'set-value' }
+							return { unableToPassType: 'set-value', mods: [] }
 						}
 					}
 				}}
@@ -215,7 +215,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { unableToPassType: 'set-value' }
+							return { unableToPassType: 'set-value', mods: [] }
 						}
 					}
 				}}
@@ -241,7 +241,7 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { unableToPassType: 'set-value' }
+							return { unableToPassType: 'set-value', mods: [] }
 						}
 					}
 				}}
@@ -249,7 +249,7 @@ describe('Rubric editor', () => {
 			/>
 		)
 
-		component.instance().changeMods({ rewards: [], penalties: [] })
+		component.instance().changeMods({ mods: [] })
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})

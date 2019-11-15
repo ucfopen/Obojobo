@@ -4,7 +4,9 @@ exports[`Assessment Converter oboToSlate converts an OboNode to a Slate node 1`]
 Object {
   "data": Object {
     "content": Object {
-      "rubric": true,
+      "rubric": Object {
+        "attempts": undefined,
+      },
       "scoreActions": "someScoreActions",
       "triggers": Array [],
     },
@@ -25,7 +27,9 @@ Object {
       "oboToSlateReturnFor": "someScoreActions",
     },
     Object {
-      "oboToSlateReturnFor": true,
+      "oboToSlateReturnFor": Object {
+        "attempts": undefined,
+      },
     },
   ],
   "object": "block",

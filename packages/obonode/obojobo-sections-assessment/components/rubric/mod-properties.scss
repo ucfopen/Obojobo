@@ -27,19 +27,70 @@
 			padding: 0.5em;
 			text-align: start;
 			border: 1px solid $color-shadow;
+			position: relative;
+
+			label {
+				text-align: center;
+			}
+
+			input {
+				@include text-input();
+			}
+
+			.delete-button {
+				position: absolute;
+				top: 0;
+				right: 0;
+
+				button {
+					padding: 0;
+					padding-right: 0.3em;
+					font-weight: bold;
+					font-size: 1.3em;
+					min-width: 0;
+					background: none;
+					color: $color-shadow;
+					border: none;
+				}
+			}
+
+			.slider-container {
+				padding-left: 0.7em;
+				padding-right: 0.7em;
+			}
 
 			.slider-inputs {
 				position: relative;
 				height: 2em;
+				text-align: center;
+
+				input {
+					font-size: 0.6em;
+					top: 0;
+				}
 
 				.min-input {
-					position: absolute;
-					left: 0;
+					border-radius: 1.5em $dimension-rounded-radius $dimension-rounded-radius 1.5em;
+					padding-left: 1em;
+					width: 9em;
+					margin-right: 0.5em;
 				}
 
 				.max-input {
-					position: absolute;
-					right: 0;
+					border-radius: $dimension-rounded-radius 1.5em 1.5em $dimension-rounded-radius;
+					padding-right: 1em;
+					width: 9em;
+					text-align: right;
+					margin-left: 0.5em;
+				}
+			}
+
+			.add {
+				margin-top: 1em;
+
+				input {
+					width: 3.5em;
+					margin-left: 0.5em;
 				}
 			}
 		}

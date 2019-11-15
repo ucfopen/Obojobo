@@ -6,6 +6,7 @@ Object {
     "content": Object {
       "failedResult": "no_score",
       "failedType": "set-value",
+      "mods": Array [],
       "passedResult": 100,
       "passedType": "$attempt_score",
       "passingAttemptScore": 0,
@@ -25,6 +26,7 @@ Object {
     "content": Object {
       "failedResult": 0,
       "failedType": "no-score",
+      "mods": Array [],
       "passedResult": 100,
       "passedType": "$attempt_score",
       "passingAttemptScore": 0,
@@ -44,6 +46,7 @@ Object {
     "content": Object {
       "failedResult": 100,
       "failedType": "set-value",
+      "mods": Array [],
       "passedResult": 100,
       "passedType": "set-value",
       "passingAttemptScore": 0,
@@ -63,6 +66,7 @@ Object {
     "content": Object {
       "failedResult": 0,
       "failedType": "$attempt_score",
+      "mods": Array [],
       "passedResult": 100,
       "passedType": "$attempt_score",
       "passingAttemptScore": 0,

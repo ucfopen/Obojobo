@@ -26,7 +26,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
       </select>
     </label>
     <div
-      className="obojobo-draft--components--slider"
+      className="obojobo-draft--components--switch"
     >
       <span
         contentEditable={false}
@@ -38,12 +38,12 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
       >
         <input
           checked={false}
-          className="slider"
+          className="switch-slider"
           onChange={[Function]}
           type="checkbox"
         />
         <div
-          className="slider round"
+          className="switch-slider round"
         />
       </label>
     </div>
@@ -89,7 +89,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component wit
       </select>
     </label>
     <div
-      className="obojobo-draft--components--slider"
+      className="obojobo-draft--components--switch"
     >
       <span
         contentEditable={false}
@@ -101,12 +101,12 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component wit
       >
         <input
           checked={false}
-          className="slider"
+          className="switch-slider"
           onChange={[Function]}
           type="checkbox"
         />
         <div
-          className="slider round"
+          className="switch-slider round"
         />
       </label>
     </div>
