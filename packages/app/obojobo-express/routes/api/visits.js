@@ -55,7 +55,7 @@ router
 
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
-		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
+		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftContentId="${req.currentDocument.contentId}"`)
 
 		return Promise.all([
 				viewerState.get(

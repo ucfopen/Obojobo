@@ -218,6 +218,7 @@ class AssessmentModel {
 			.then(attempts => {
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
+				console.log('------------- ASS HIS ---------------')
 				attempts.forEach(attempt => {
 					attempt = new AssessmentModel(attempt)
 					// collect an array of attemptIds from each attempt
@@ -239,6 +240,7 @@ class AssessmentModel {
 
 					// add attempt into our assessments object
 					assessments[attempt.assessmentId].attempts.push(attempt)
+					console.log(attempt)
 				})
 
 				/*
@@ -250,9 +252,15 @@ class AssessmentModel {
 					const a = assessments[k]
 					a.attempts = AssessmentModel.filterIncompleteAttempts(a.attempts)
 				}
+
+				console.log('------------- ASS HIS END---------------')
 			})
 			.then(() => AssessmentModel.fetchResponsesForAttempts(attemptIds))
 			.then(responseHistory => {
+
+				console.log('------------- RESP HIS ---------------')
+				console.log(responseHistory)
+				console.log('------------- RESP HIS END---------------')
 				// Goal: place the responses from history into the attempts created above
 				// history is keyed by attemptId
 				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]

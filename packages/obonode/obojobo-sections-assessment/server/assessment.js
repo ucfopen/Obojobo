@@ -39,7 +39,8 @@ class Assessment extends DraftNode {
 			.then(attemptHistory => {
 				// @TODO: I'd be happier changing fetchAttemptHistory to return this exact object
 				// IF we can create a more efficient query to get this data
-
+				console.log(fetchAttemptHistory)
+				console.log('-----------------------------------')
 				const map = new Map()
 				attemptHistory.forEach(i => {
 					// create new object for each assessment id
