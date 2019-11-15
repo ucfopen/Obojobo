@@ -13,7 +13,14 @@ describe('Rubric editor', () => {
 				node={{
 					data: {
 						get: () => {
-							return { mods: [] }
+							return {
+								mods: [
+									{ reward: 3, attemptCondition: '$last_attempt' },
+									{ reward: 3, attemptCondition: '1' },
+									{ reward: -3, attemptCondition: '[1,$last_attempt' },
+									{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+								]
+							}
 						}
 					}
 				}}

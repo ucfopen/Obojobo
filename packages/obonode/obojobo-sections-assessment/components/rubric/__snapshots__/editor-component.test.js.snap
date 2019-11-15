@@ -48,7 +48,7 @@ exports[`Rubric editor Rubric renders 1`] = `
       Pass & Fail Rules
     </legend>
     <p>
-      In this mode, students must achieve a certian threshold on an attempt to pass.  The assessment scores will be set based on whether the student passes or fails
+      In this mode, students must achieve a certian threshold on an attempt to pass. The assessment scores will be set based on whether the student passes or fails
     </p>
     <div>
       <label>
@@ -204,7 +204,82 @@ exports[`Rubric editor Rubric renders 1`] = `
         Edit...
       </button>
     </div>
-    <ul />
+    <ul>
+      <li>
+        <b>
+          <span
+            className="reward"
+          >
+            Add
+          </span>
+           
+          3
+          %
+        </b>
+        <span>
+           If a student passes on 
+          the last attempt
+           
+        </span>
+      </li>
+      <li>
+        <b>
+          <span
+            className="reward"
+          >
+            Add
+          </span>
+           
+          3
+          %
+        </b>
+        <span>
+           If a student passes on 
+          attempt 1
+           
+        </span>
+      </li>
+      <li>
+        <b>
+          <span
+            className="deduct"
+          >
+            Deduct
+          </span>
+           
+          3
+          %
+        </b>
+        <span>
+           
+          If a student passes on attempt 
+          1
+           through 
+          the last attempt
+           
+        </span>
+      </li>
+      <li>
+        <b>
+          <span
+            className="deduct"
+          >
+            Deduct
+          </span>
+           
+          3
+          %
+        </b>
+        <span>
+           
+          If a student passes on attempt 
+          the last attempt
+           through 
+          5
+           
+        </span>
+      </li>
+    </ul>
   </div>
 </div>
 `;

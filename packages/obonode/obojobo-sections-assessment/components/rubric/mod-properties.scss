@@ -65,22 +65,17 @@
 				text-align: center;
 
 				input {
-					font-size: 0.6em;
 					top: 0;
 				}
 
 				.min-input {
-					border-radius: 1.5em $dimension-rounded-radius $dimension-rounded-radius 1.5em;
-					padding-left: 1em;
 					width: 9em;
+					text-align: right;
 					margin-right: 0.5em;
 				}
 
 				.max-input {
-					border-radius: $dimension-rounded-radius 1.5em 1.5em $dimension-rounded-radius;
-					padding-right: 1em;
 					width: 9em;
-					text-align: right;
 					margin-left: 0.5em;
 				}
 			}

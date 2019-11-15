@@ -11,7 +11,8 @@ describe('Assessment Converter', () => {
 				get: () => ({
 					passedType: '$attempt_score',
 					failedType: '$attempt_score',
-					unableToPassType: 'no-value'
+					unableToPassType: 'no-value',
+					mods: []
 				})
 			}
 		}
@@ -65,7 +66,8 @@ describe('Assessment Converter', () => {
 			passingAttemptScore: 0,
 			passedResult: '$attempt_score',
 			failedResult: '$attempt_score',
-			unableToPassResult: '$highest_attempt_score'
+			unableToPassResult: '$highest_attempt_score',
+			mods: []
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

@@ -6,22 +6,17 @@ import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
 import Track from './track'
 import Handle from './handle'
 import SliderRail from './slider-rail'
-import mode4 from './slider-utils'
+import SliderUtils from './slider-utils'
 
 class OboSlider extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.onUpdate = this.onUpdate.bind(this)
 		this.onChange = this.onChange.bind(this)
-	}
-	
-	onUpdate(update) {
-		this.setState({ update })
 	}
 
 	onChange(values) {
-		if(this.props.onChange) this.props.onChange(values)
+		this.props.onChange(values)
 		this.setState({ values })
 	}
 
@@ -29,16 +24,15 @@ class OboSlider extends React.Component {
 		return (
 			<div className="obojobo-draft--components--slider--slider">
 				<Slider
-					mode={mode4}
+					mode={SliderUtils.mode4}
 					step={this.props.step}
 					domain={this.props.domain}
 					onUpdate={this.props.onChange}
 					onChange={this.props.onChange}
 					className="slider-root"
-					values={this.props.values}>
-					<Rail>
-						{({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
-					</Rail>
+					values={this.props.values}
+				>
+					<Rail>{({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}</Rail>
 					<Handles>
 						{({ handles, getHandleProps }) => (
 							<div className="slider-handles">
@@ -57,12 +51,7 @@ class OboSlider extends React.Component {
 						{({ tracks, getTrackProps }) => (
 							<div className="slider-tracks">
 								{tracks.map(({ id, source, target }) => (
-									<Track
-										key={id}
-										source={source}
-										target={target}
-										getTrackProps={getTrackProps}
-									/>
+									<Track key={id} source={source} target={target} getTrackProps={getTrackProps} />
 								))}
 							</div>
 						)}
