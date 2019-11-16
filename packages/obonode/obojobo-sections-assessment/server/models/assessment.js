@@ -209,79 +209,67 @@ class AssessmentModel {
 			})
 	}
 
+
 	// get attempts for user and resour
 	static fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
-		const assessments = {}
-		const mapImportedToAttempt = {} // key is imported_attempt_id, value is attempt_id
-		const attemptIds = []
+		const assessments = new Map()
+		let attempts
 		return AssessmentModel.fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId)
-			.then(attempts => {
+			.then(resultAttempts => {
+				attempts = resultAttempts
+				const attemptIds = attempts.map(a => a.isImported ? a.importedAttemptId : a.id)
+				return AssessmentModel.fetchResponsesForAttempts(attemptIds)
+			})
+			.then(responseHistory => {
+				const attemptIdsThatUseImport = new Set()
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
-				console.log('------------- ASS HIS ---------------')
 				attempts.forEach(attempt => {
 					attempt = new AssessmentModel(attempt)
-					// collect an array of attemptIds from each attempt
-					// if it's imported, use the imported attempt id
-					attemptIds.push(attempt.isImported ? attempt.importedAttemptId : attempt.id)
 					// if imported, keep track of it so we know where to put the
 					// question responses
 					if(attempt.isImported){
-						mapImportedToAttempt[attempt.importedAttemptId] = attempt.id
+						attemptIdsThatUseImport.add(attempt.id)
 					}
 
 					// create new assessment object if we don't have one yet
-					if (!assessments[attempt.assessmentId]) {
-						assessments[attempt.assessmentId] = {
+					if (!assessments.has(attempt.assessmentId)) {
+						assessments.set(attempt.assessmentId, {
 							assessmentId: attempt.assessmentId,
 							attempts: []
-						}
+						})
 					}
 
 					// add attempt into our assessments object
-					assessments[attempt.assessmentId].attempts.push(attempt)
-					console.log(attempt)
+					assessments.get(attempt.assessmentId).attempts.push(attempt)
 				})
 
-				/*
-					Obojobo expects there to only be one incomplete attempt at max
-					It also expects that attempt to be the most recent
-					Filter out any incomplete attempts that don't meet those requirements
-				*/
-				for (const k in assessments) {
-					const a = assessments[k]
-					a.attempts = AssessmentModel.filterIncompleteAttempts(a.attempts)
-				}
+				assessments.forEach(a => {
+					a.attempts = AssessmentModel.removeAllButLastIncompleteAttempts(a.attempts)
+				})
 
-				console.log('------------- ASS HIS END---------------')
-			})
-			.then(() => AssessmentModel.fetchResponsesForAttempts(attemptIds))
-			.then(responseHistory => {
-
-				console.log('------------- RESP HIS ---------------')
-				console.log(responseHistory)
-				console.log('------------- RESP HIS END---------------')
 				// Goal: place the responses from history into the attempts created above
 				// history is keyed by attemptId
 				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]
 				// and place our responses into the userAttempt objects in assessments
-				for (const attemptId in responseHistory) {
-					const responsesForAttempt = responseHistory[attemptId]
-					const responsesAreImported = Boolean(mapImportedToAttempt[attemptId])
+
+				responseHistory.forEach((responses, attemptId) => {
+					const useImport = attemptIdsThatUseImport.has(attemptId)
 
 					// loop through responses in this attempt
-					responsesForAttempt.forEach(response => {
-						if (!assessments[response.assessment_id]) return
+					responses.forEach(response => {
+						if (!assessments.has(response.assessment_id)) return
 
 						// find the first userAttempt that matches
-						const attemptForResponse = assessments[response.assessment_id].attempts.find(attempt => {
-							const attemptIdToMatch = responsesAreImported ? attempt.importedAttemptId : attempt.id
+						const thisAssessment = assessments.get(response.assessment_id)
+						const attemptForResponse = thisAssessment.attempts.find(attempt => {
+							const attemptIdToMatch = useImport ? attempt.importedAttemptId : attempt.id
 							return attemptIdToMatch === response.attempt_id
 						})
 
 						if (!attemptForResponse) {
 							logger.warn(
-								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
+								`Couldn't find an attempt I was looking for (userid:'${userId}', draftId:'${draftId}', attemptId:'${attemptId}', '${
 									response.id
 								}', '${optionalAssessmentId}') - Shouldn't get here!`
 							)
@@ -291,7 +279,7 @@ class AssessmentModel {
 
 						attemptForResponse.questionResponses.push({ questionId: response.question_id, response: response.response})
 					})
-				}
+				})
 			})
 			.then(() =>
 				lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
@@ -302,7 +290,7 @@ class AssessmentModel {
 				)
 			)
 			.then(ltiStates => {
-				const assessmentsArr = Object.keys(assessments).map(k => assessments[k])
+				const assessmentsArr = Array.from(assessments.values())
 				assessmentsArr.forEach(assessmentItem => {
 					const ltiState = ltiStates[assessmentItem.assessmentId]
 
@@ -343,7 +331,7 @@ class AssessmentModel {
 	the last complete attempts' finishTime
 	This function assumes that attempts are all for the same assessment_id
 	*/
-	static filterIncompleteAttempts(attempts) {
+	static removeAllButLastIncompleteAttempts(attempts) {
 		const complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
 
 		const incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
@@ -391,11 +379,12 @@ class AssessmentModel {
 				{ attemptIds }
 			)
 			.then(result => {
-				const history = {}
+				const history = new Map()
+				// const history = {}
 
 				result.forEach(row => {
-					if (!history[row.attempt_id]) history[row.attempt_id] = []
-					history[row.attempt_id].push(row)
+					if (!history.has(row.attempt_id)) history.set(row.attempt_id, [])
+					history.get(row.attempt_id).push(row)
 				})
 
 				return history
