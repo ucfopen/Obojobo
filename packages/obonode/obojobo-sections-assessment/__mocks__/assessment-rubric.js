@@ -1,4 +1,4 @@
-const mockGetAssessmentScoreInfoForAttempt = jest.fn()
+const mockGetAssessmentScoreInfoForAttempt = jest.fn(() => 'mockAssessmentScoreDetails')
 
 class AssessmentRubric {
 	constructor() {

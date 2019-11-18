@@ -65,7 +65,8 @@ export default class ViewerApp extends React.Component {
 			loading: true,
 			requestStatus: 'unknown',
 			isPreviewing: false,
-			lti: { outcomeServiceHostname: null }
+			lti: { outcomeServiceHostname: null },
+			viewSessionId: null
 		}
 		this.navTargetId = null
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
@@ -90,7 +91,7 @@ export default class ViewerApp extends React.Component {
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
-		this.onWindowClose = this.onWindowClose.bind(this)
+		this.sendCloseEvent = this.sendCloseEvent.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
 		this.state = state
@@ -112,14 +113,11 @@ export default class ViewerApp extends React.Component {
 		let viewState
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
-
-		const urlTokens = document.location.pathname.split('/')
-		const visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
-		const draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
+		let viewSessionId
 
 		Dispatcher.trigger('viewer:loading')
 
-		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
+		APIUtil.requestStart(this.props.visitId, this.props.draftId)
 			.then(visit => {
 				QuestionStore.init()
 				ModalStore.init()
@@ -134,12 +132,13 @@ export default class ViewerApp extends React.Component {
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
-				return APIUtil.getDraft(draftIdFromUrl)
+				return APIUtil.getDraft(this.props.draftId)
 			})
 			.then(({ value: draftModel }) => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
+					OboModel.getRoot().get('draftId'),
 					model,
 					model.modelState.start,
 					window.location.pathname,
@@ -149,7 +148,6 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
-				window.onunload = this.onWindowClose
 				window.onresize = this.onResize.bind(this)
 
 				this.boundOnDelayResize = this.onDelayResize.bind(this)
@@ -171,7 +169,8 @@ export default class ViewerApp extends React.Component {
 						}),
 						loading: false,
 						requestStatus: 'ok',
-						isPreviewing
+						isPreviewing,
+						viewSessionId
 					},
 					() => Dispatcher.trigger('viewer:loaded', true)
 				)
@@ -239,6 +238,8 @@ export default class ViewerApp extends React.Component {
 				this.scrollToTop()
 			}
 		}
+
+		if (this.state.requestStatus === 'invalid') return
 
 		this.focusOnContentIfNavTargetChanging(prevState)
 		this.scrollToTopIfNavTargetChanging(prevState)
@@ -466,17 +467,26 @@ export default class ViewerApp extends React.Component {
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 
+		this.sendCloseEvent()
+
 		/* eslint-disable-next-line */
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose() {
-		APIUtil.postEvent({
+	sendCloseEvent() {
+		const body = {
 			draftId: this.state.model.get('draftId'),
-			action: 'viewer:close',
-			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId
-		})
+			visitId: this.state.navState.visitId,
+			event: {
+				action: 'viewer:close',
+				draft_id: this.state.model.get('draftId'),
+				actor_time: new Date().toISOString(),
+				event_version: '1.0.0',
+				visitId: this.state.navState.visitId
+			}
+		}
+
+		navigator.sendBeacon('/api/events', JSON.stringify(body))
 	}
 
 	clearPreviewScores() {
@@ -513,15 +523,16 @@ export default class ViewerApp extends React.Component {
 	}
 
 	renderRequestStatusError() {
+		const serviceName = this.state.lti.outcomeServiceHostname
+			? this.state.lti.outcomeServiceHostname
+			: 'the external system'
+
 		return (
 			<div className="viewer--viewer-app--visit-error">
-				{`There was a problem starting your visit. Please return to ${
-					this.state.lti.outcomeServiceHostname
-						? this.state.lti.outcomeServiceHostname
-						: 'the external system'
-				} and relaunch this module.`}
+				There was a problem starting your visit. Please return to {serviceName} and relaunch this
+				module.
 			</div>
-		) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+		)
 	}
 
 	render() {
@@ -618,7 +629,7 @@ export default class ViewerApp extends React.Component {
 				ref={this.idleTimerRef}
 				element={window}
 				timeout={IDLE_TIMEOUT_DURATION_MS}
-				idleAction={this.onIdle}
+				onIdle={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>
 				<div
@@ -637,7 +648,7 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
-							<span>You are previewing this module</span>
+							<span>Preview mode</span>
 							<div className="controls">
 								<span>Preview options:</span>
 								<button

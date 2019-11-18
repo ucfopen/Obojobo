@@ -18,7 +18,7 @@ const mockExpress = () => {
 			}
 
 			module.Router = () => {
-				const methods = ['all', 'get', 'post', 'delete', 'put']
+				const methods = ['all', 'get', 'post', 'delete', 'put', 'route', 'use']
 				const obj = {}
 				methods.forEach(m => {
 					obj[m] = mockRouterMethods[m] = jest.fn()

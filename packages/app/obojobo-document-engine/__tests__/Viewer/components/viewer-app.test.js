@@ -22,7 +22,7 @@ import ReactDOM from 'react-dom'
 import ViewerApp from 'obojobo-document-engine/src/scripts/viewer/components/viewer-app'
 import { mount } from 'enzyme'
 import testObject from 'obojobo-document-engine/test-object.json'
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
@@ -78,7 +78,7 @@ describe('ViewerApp', () => {
 	})
 
 	afterEach(() => {
-		restoreConsole();
+		restoreConsole()
 		isDOMFocusInsideNavSpy.mockRestore()
 	})
 
@@ -814,6 +814,8 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		global.navigator.sendBeacon = jest.fn()
+
 		setTimeout(() => {
 			component.update()
 			const spy = jest.spyOn(Dispatcher, 'trigger')
@@ -853,7 +855,9 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onWindowClose calls APIUtil', done => {
+	test('sendCloseEvent calls navigator.sendBeacon', done => {
+		global.navigator.sendBeacon = jest.fn()
+
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -861,9 +865,9 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			component.instance().onWindowClose()
+			component.instance().sendCloseEvent()
 
-			expect(APIUtil.postEvent).toHaveBeenCalled()
+			expect(navigator.sendBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()

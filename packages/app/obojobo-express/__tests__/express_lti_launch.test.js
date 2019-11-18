@@ -3,30 +3,35 @@ jest.mock('../models/user')
 jest.mock('../models/draft')
 jest.mock('../db')
 jest.mock('../logger')
+jest.mock('../config') // to prevent config object freezing
 
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
 const DraftDocument = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
+const config = oboRequire('config')
 const ltiLaunch = oboRequire('express_lti_launch')
+const sessionSave = jest.fn()
 
 // array of mocked express middleware request arguments
 const mockExpressArgs = withLtiData => {
 	const res = {}
-
+	const mockDocument = {
+		draftId: '999',
+		contentId: '12'
+	}
 	const req = {
-		session: {},
+		session: { save: sessionSave },
 		connection: { remoteAddress: '1.1.1.1' },
 		params: {
 			draftId: '999'
 		},
 		setCurrentUser: jest.fn(),
 		setCurrentDocument: jest.fn(),
-		requireCurrentDocument: jest.fn().mockResolvedValue({
-			draftId: '999',
-			contentId: '12'
-		}),
+		requireCurrentDocument: jest.fn().mockResolvedValue(),
+		currentDocument: mockDocument,
+		currentUser: new User({ id: 8 }),
 		hostname: 'dummyhost'
 	}
 
@@ -35,6 +40,7 @@ const mockExpressArgs = withLtiData => {
 	if (withLtiData) {
 		req.lti = {
 			body: {
+				custom_canvas_user_id: '90210',
 				lis_person_sourcedid: '2020',
 				lis_person_contact_email_primary: 'mann@internet.com',
 				lis_person_name_given: 'Hugh',
@@ -54,7 +60,13 @@ describe('lti launch middleware', () => {
 		insertEvent.mockResolvedValue()
 		db.one.mockReset()
 		db.one.mockResolvedValue({ id: 88 })
+		db.none.mockReset()
+		db.none.mockResolvedValue(null)
+		sessionSave.mockImplementation(cb => {
+			cb()
+		}) // session.save is successful
 		User.saveOrCreateCallback.mockReset()
+		User.clearSessionsForUserById.mockReset()
 		logger.error.mockReset()
 		DraftDocument.fetchById = jest.fn().mockResolvedValueOnce(
 			new DraftDocument({
@@ -63,7 +75,10 @@ describe('lti launch middleware', () => {
 			})
 		)
 	})
-	afterEach(() => {})
+	afterEach(() => {
+		// reset the usernameParam
+		config.lti.usernameParam = 'lis_person_sourcedid'
+	})
 
 	test('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
@@ -90,6 +105,7 @@ describe('lti launch middleware', () => {
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
 					ltiBody: {
+						custom_canvas_user_id: '90210',
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -97,7 +113,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					userId: 1
+					userId: 8
 				})
 			)
 
@@ -113,7 +129,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 1
+					userId: 8
 				})
 			)
 		})
@@ -136,6 +152,7 @@ describe('lti launch middleware', () => {
 				expect.objectContaining({
 					contentId: '12',
 					ltiBody: {
+						custom_canvas_user_id: '90210',
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -144,7 +161,7 @@ describe('lti launch middleware', () => {
 					},
 					draftId: '999',
 					ltiConsumerKey: undefined, //eslint-disable-line no-undefined
-					userId: 1
+					userId: 8
 				})
 			)
 
@@ -160,7 +177,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 1
+					userId: 8
 				})
 			)
 		})
@@ -235,6 +252,61 @@ describe('lti launch middleware', () => {
 		})
 	})
 
+	test('assignment allows a custom user id param', () => {
+		expect.assertions(2)
+		// change the config to use a different launch param
+		config.lti.usernameParam = 'custom_canvas_user_id'
+		const [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+			expect(req.setCurrentUser).toBeCalledWith(
+				expect.objectContaining({
+					username: '90210', // This comes from custom_canvas_user_id
+					email: 'mann@internet.com',
+					firstName: 'Hugh',
+					lastName: 'Mann',
+					roles: expect.any(Array)
+				})
+			)
+		})
+	})
+
+	test('assignment deletes previous sessions for current user', () => {
+		expect.assertions(2)
+		const [req, res, mockNext] = mockExpressArgs(true)
+		expect(User.clearSessionsForUserById).not.toHaveBeenCalled()
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(User.clearSessionsForUserById).toHaveBeenCalledWith(1)
+		})
+	})
+
+	test('assignment skips deleting previous sessions for current user when already logged in', () => {
+		expect.hasAssertions()
+		const [req, res, mockNext] = mockExpressArgs(true)
+		// make sure the current user matches the user found via saveOrCreate()
+		User.saveOrCreateCallback.mockImplementationOnce(createdUser => {
+			req.currentUser = createdUser
+		})
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(db.none).not.toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				currentUserId: 1
+			})
+		})
+	})
+
+	test('assignment handles session save failure', () => {
+		expect.hasAssertions()
+		sessionSave.mockImplementation(cb => {
+			cb('error')
+		}) // session.save error
+		const [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+			expect()
+			expect(mockNext).toHaveBeenCalledWith(expect.any(Error))
+		})
+	})
+
 	test('assignment sets the current draft', () => {
 		expect.assertions(1)
 
@@ -263,7 +335,6 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch creates a new user and calls req.setCurrentUser', () => {
 		expect.assertions(4)
 
-		const User = oboRequire('models/user')
 		let createdUser
 
 		User.saveOrCreateCallback.mockImplementationOnce(user => {

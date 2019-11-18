@@ -1,9 +1,19 @@
 const db = oboRequire('db')
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
+const config = oboRequire('config')
 const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const oboEvents = oboRequire('obo_events')
+
+const saveSessionPromise = req =>
+	new Promise((resolve, reject) => {
+		req.session.save(error => {
+			if (error) reject(error)
+			else resolve()
+		})
+	})
 
 const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let launchId = null
@@ -71,20 +81,39 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 	})
 }
 
+// creates / loads user based on lti launch data
+// clears all previous sesions created for this user
+// saves the current user id to the session
 const userFromLaunch = (req, ltiBody) => {
+	const usernameParam = config.lti.usernameParam
 	// Save/Create the user
 	const newUser = new User({
-		username: ltiBody.lis_person_sourcedid,
+		username: ltiBody[usernameParam],
 		email: ltiBody.lis_person_contact_email_primary,
 		firstName: ltiBody.lis_person_name_given,
 		lastName: ltiBody.lis_person_name_family,
 		roles: ltiBody.roles
 	})
 
-	return newUser.saveOrCreate().then(user => {
-		req.setCurrentUser(user)
-		return user
-	})
+	return newUser
+		.saveOrCreate()
+		.then(() => {
+			// if the user wasn't already logged in here
+			// invalidate all other sessions for this user
+			// prevents clearing the current session
+			// eslint-disable-next-line eqeqeq
+			if (!req.currentUser || req.currentUser.id != newUser.id) {
+				return User.clearSessionsForUserById(newUser.id)
+			}
+		})
+		.then(() => {
+			req.setCurrentUser(newUser)
+			return saveSessionPromise(req)
+		})
+		.then(() => {
+			oboEvents.emit('server:lti:user_launch', newUser)
+		})
+		.then(() => newUser)
 }
 
 // LTI launch detection (req.lti is created by express-ims-lti)
@@ -97,22 +126,13 @@ exports.assignment = (req, res, next) => {
 		return Promise.resolve()
 	}
 
-	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
-	// the actual redirect happens in the route, this just handles the lti launch
-	let currentUser = null
-	let currentDocument = null
-
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(launchUser => {
-			currentUser = launchUser
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
+		.then(() => req.requireCurrentDocument())
+		.then(() => {
 			return storeLtiLaunch(
-				currentDocument,
-				currentUser,
+				req.currentDocument,
+				req.currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
 				req.lti.consumer_key
@@ -124,7 +144,7 @@ exports.assignment = (req, res, next) => {
 				body: req.lti.body
 			}
 
-			return next()
+			next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)

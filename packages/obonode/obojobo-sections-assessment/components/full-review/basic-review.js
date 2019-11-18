@@ -1,11 +1,6 @@
 import React from 'react'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const { OboModel } = Common.models
-
-const basicReview = (moduleData, questionScore, index) => {
-	const questionModel = OboModel.models[questionScore.id]
+const basicReview = (questionModel, moduleData, questionScore, index) => {
 	const QuestionComponent = questionModel.getComponentClass()
 
 	let resultLabel

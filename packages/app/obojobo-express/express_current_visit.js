@@ -8,6 +8,12 @@ const getCurrentVisitFromRequest = req => {
 		return Promise.resolve()
 	}
 
+	// In certain cases, events are sent via `navigator.sendBeacon`.
+	// Request's headers cannot be set. Therefore, `req.body` is still in JSON fotmat
+	try {
+		req.body = JSON.parse(req.body)
+	} catch (e) {} // eslint-disable-line no-empty
+
 	// Figure out where the visitId is in this request
 	let visitId = null
 	if (req.body && req.body.event && req.body.event.visitId) {

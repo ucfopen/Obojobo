@@ -45,6 +45,7 @@ import focus from './page/focus'
 import isOrNot from './util/isornot'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
+import debounce from './util/debounce'
 
 export default {
 	Registry,
@@ -128,6 +129,7 @@ export default {
 		RangeParsing,
 		setProp,
 		cloneProps,
-		isOrNot
+		isOrNot,
+		debounce
 	}
 }

@@ -36,7 +36,7 @@ const requireCurrentUser = (req, res, next, permission = null) => {
 			next()
 		})
 		.catch(error => {
-			logger.error('Missing required current user.')
+			logger.error('Missing required current user or perms.')
 			logger.info(error)
 			res.notAuthorized()
 		})
@@ -57,7 +57,12 @@ exports.getCurrentUser = (req, res, next) => {
 
 // Valitator Middleware
 exports.requireDraftId = check('draftId', 'must be a valid UUID').isUUID()
+exports.requireAttemptId = check('attemptId', 'must be a valid UUID').isUUID()
 exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
+exports.requireAssessmentId = check('assessmentId', 'must not be empty')
+	.exists({ checkNull: true, checkFalsy: true })
+	.isString()
+
 exports.requireEvent = [
 	check('event.action', 'must not be empty')
 		.exists({ checkNull: true, checkFalsy: true })
@@ -72,8 +77,8 @@ exports.requireCanCreateDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canCreateDrafts')
 exports.requireCanDeleteDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canDeleteDrafts')
-exports.requireCanViewDrafts = (req, res, next) =>
-	requireCurrentUser(req, res, next, 'canViewDrafts')
+exports.requireCanPreviewDrafts = (req, res, next) =>
+	requireCurrentUser(req, res, next, 'canPreviewDrafts')
 
 exports.checkValidationRules = (req, res, next) => {
 	const errors = validationResult(req)

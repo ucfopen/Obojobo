@@ -12,7 +12,7 @@ describe('Slider', () => {
 	})
 
 	test('Slider renders correctly with a title', () => {
-		const component = renderer.create(<Slider title='mocktitle' />)
+		const component = renderer.create(<Slider title="mocktitle" />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -35,5 +35,4 @@ describe('Slider', () => {
 		expect(onChecked).toHaveBeenCalledTimes(1)
 		expect(onChecked).toHaveBeenCalledWith(true)
 	})
-
 })

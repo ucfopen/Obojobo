@@ -1,6 +1,8 @@
-@import '../../../../scss/includes';
+@import '~styles/includes';
 
 .obojobo-draft--components--modal--dialog {
+	max-width: 100vw;
+
 	.obojobo-draft--components--modal--modal > .content {
 		> .heading {
 			margin: 0;
@@ -11,10 +13,21 @@
 
 		> .dialog-content {
 			margin-bottom: 3em;
+
+			@include mq($until: tablet) {
+				margin-bottom: 2em;
+			}
+
+			@include mq($until: mobileLandscape) {
+				margin-bottom: 1.5em;
+			}
 		}
 
 		> .controls {
 			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
 			.obojobo-draft--components--button {
 				margin-left: 0.5em;

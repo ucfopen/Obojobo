@@ -10,7 +10,7 @@ const generateAssessment = () => {
 			attempts: 'unlimited',
 			scoreActions: [
 				{
-					'for': '[0,100]',
+					for: '[0,100]',
 					page: {
 						id: generateId(),
 						type: 'ObojoboDraft.Pages.Page',

@@ -30,7 +30,7 @@ exports[`MathEquation Editor Node MathEquation component 1`] = `
 </div>
 `;
 
-exports[`MathEquation Editor Node MathEquation component edits properties 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\"><div class=\\"non-editable-chunk\\"><div class=\\"katex-container\\"><span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base\\"><span class=\\"mord\\">1</span></span></span></span></span></div><div class=\\"equation-label\\">1.1</div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
+exports[`MathEquation Editor Node MathEquation component edits properties 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\"><div class=\\"non-editable-chunk\\"><div class=\\"katex-container\\" style=\\"font-size: 1em;\\"><span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"mord\\">1</span></span></span></span></span></div><div class=\\"equation-label\\">1.1</div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
 
 exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 <div
@@ -67,7 +67,12 @@ exports[`MathEquation Editor Node MathEquation component with label 1`] = `
       className="katex-container"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base\\"><span class=\\"mord\\">1</span></span></span></span></span>",
+          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"mord\\">1</span></span></span></span></span>",
+        }
+      }
+      style={
+        Object {
+          "fontSize": "1em",
         }
       }
     />

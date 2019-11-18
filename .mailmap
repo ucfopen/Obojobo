@@ -1,0 +1,20 @@
+#
+# This list is used by git-shortlog to fix a few botched name translations
+# in the git archive, either because the author's full name was messed up
+# and/or not always written the same way, making contributions from the
+# same person appearing not to be so.
+#
+
+Toan Vu <vutoan1245@users.noreply.github.com> <to238074@CDL215379.local>
+Toan Vu <vutoan1245@users.noreply.github.com> <vutoan1245@gmail.com>
+Ian Turgeon <iturgeon@gmail.com> <ian@ucf.edu>
+Ian Turgeon <iturgeon@gmail.com> <iturgeon@gmail.com>
+Samuel Belcastro <samuel.belcastro@ucf.edu> <sa119937@cdl215469.local>
+Samuel Belcastro <samuel.belcastro@ucf.edu> <belcastro.samuel@knights.ucf.edu>
+Samuel Belcastro <samuel.belcastro@ucf.edu> <samuel.belcastro@ucf.edu>
+Ralph Baird <ralph.baird@ucf.edu>
+Zachary Berry <zachberry@gmail.com> <zberry@cdl215312.local>
+Zachary Berry <zachberry@gmail.com> <zachary.berry@ucf.edu>
+Elli Howard <elise.howard@ucf.edu> <36134301+qwertynerd97@users.noreply.github.com>
+Ryan Eppers <ryan.eppers@ucf.edu> <ryaneppers@gmail.com>
+Sidney Packer <sidp@knights.ucf.edu> <si512833@cdl215378.local>

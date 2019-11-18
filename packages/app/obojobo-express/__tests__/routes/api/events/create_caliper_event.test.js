@@ -202,6 +202,35 @@ describe('Caliper event creator', () => {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
+	test('createAssessmentAttemptResumedEvent', () => {
+		const attemptResumed = caliperEvents.createAssessmentAttemptResumedEvent({
+			actor,
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			sessionIds,
+			extensions
+		})
+		expect(attemptResumed).toMatchSnapshot()
+	})
+
+	test('createAssessmentAttemptResumedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptResumedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				contentId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
 	test('createAssessmentAttemptSubmittedEvent', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
 			actor,
@@ -612,33 +641,6 @@ describe('Caliper event creator', () => {
 	test('createNavMenuShowedEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuShowedEvent({
-				actor: { type: 'bad' },
-				draftId,
-				contentId,
-				sessionIds,
-				extensions
-			})
-		).toThrow(
-			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
-		)
-	})
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
-	test('createNavMenuToggledEvent', () => {
-		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
-			actor,
-			draftId,
-			contentId,
-			sessionIds,
-			extensions
-		})
-		expect(createNavMenuToggledEvent).toMatchSnapshot()
-	})
-
-	test('createNavMenuToggledEvent - throws error given a bad actor', () => {
-		expect(() =>
-			caliperEvents.createNavMenuToggledEvent({
 				actor: { type: 'bad' },
 				draftId,
 				contentId,

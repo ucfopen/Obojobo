@@ -18,6 +18,135 @@ require('obojobo-chunks-text/viewer')
 require('obojobo-chunks-multiple-choice-assessment/viewer')
 require('obojobo-chunks-question-bank/viewer')
 
+const questionJSON = {
+	id: 'question',
+	type: 'ObojoboDraft.Chunks.Question',
+	content: {
+		title: 'Title',
+		solution: {
+			id: 'page-id',
+			type: 'ObojoboDraft.Pages.Page',
+			children: [
+				{
+					id: 'text-id',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {
+						textGroup: [
+							{
+								text: {
+									value: 'Example text'
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	},
+	children: [
+		{
+			id: 'mcassessment',
+			type: 'ObojoboDraft.Chunks.MCAssessment',
+			children: [
+				{
+					id: 'choice1',
+					type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+					content: {
+						score: 100
+					},
+					children: [
+						{
+							id: 'choice1-answer',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+							children: [
+								{
+									id: 'choice1-answer-text',
+									type: 'ObojoboDraft.Chunks.Text',
+									content: {
+										textGroup: [
+											{
+												text: {
+													value: 'Example Text'
+												}
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							id: 'choice1-feedback',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+							children: [
+								{
+									id: 'choice1-feedback-text',
+									type: 'ObojoboDraft.Chunks.Text',
+									content: {
+										textGroup: [
+											{
+												text: {
+													value: 'Example Text 2'
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					id: 'choice2',
+					type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+					content: {
+						score: 0
+					},
+					children: [
+						{
+							id: 'choice2-answer',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+							children: [
+								{
+									id: 'choice1-answer-text',
+									type: 'ObojoboDraft.Chunks.Text',
+									content: {
+										textGroup: [
+											{
+												text: {
+													value: 'Example Text 3'
+												}
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							id: 'choice2-feedback',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+							children: [
+								{
+									id: 'choice1-feedback-text',
+									type: 'ObojoboDraft.Chunks.Text',
+									content: {
+										textGroup: [
+											{
+												text: {
+													value: 'Example Text 4'
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
+
 const assessmentJSON = {
 	id: 'assessment',
 	type: 'ObojoboDraft.Sections.Assessment',
@@ -48,136 +177,7 @@ const assessmentJSON = {
 		{
 			id: 'QuestionBank',
 			type: 'ObojoboDraft.Chunks.QuestionBank',
-			children: [
-				{
-					id: 'question',
-					type: 'ObojoboDraft.Chunks.Question',
-					content: {
-						title: 'Title',
-						solution: {
-							id: 'page-id',
-							type: 'ObojoboDraft.Pages.Page',
-							children: [
-								{
-									id: 'text-id',
-									type: 'ObojoboDraft.Chunks.Text',
-									content: {
-										textGroup: [
-											{
-												text: {
-													value: 'Example text'
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					},
-					children: [
-						{
-							id: 'mcassessment',
-							type: 'ObojoboDraft.Chunks.MCAssessment',
-							children: [
-								{
-									id: 'choice1',
-									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-									content: {
-										score: 100
-									},
-									children: [
-										{
-											id: 'choice1-answer',
-											type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-											children: [
-												{
-													id: 'choice1-answer-text',
-													type: 'ObojoboDraft.Chunks.Text',
-													content: {
-														textGroup: [
-															{
-																text: {
-																	value: 'Example Text'
-																}
-															}
-														]
-													}
-												}
-											]
-										},
-										{
-											id: 'choice1-feedback',
-											type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-											children: [
-												{
-													id: 'choice1-feedback-text',
-													type: 'ObojoboDraft.Chunks.Text',
-													content: {
-														textGroup: [
-															{
-																text: {
-																	value: 'Example Text 2'
-																}
-															}
-														]
-													}
-												}
-											]
-										}
-									]
-								},
-								{
-									id: 'choice2',
-									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-									content: {
-										score: 0
-									},
-									children: [
-										{
-											id: 'choice2-answer',
-											type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-											children: [
-												{
-													id: 'choice1-answer-text',
-													type: 'ObojoboDraft.Chunks.Text',
-													content: {
-														textGroup: [
-															{
-																text: {
-																	value: 'Example Text 3'
-																}
-															}
-														]
-													}
-												}
-											]
-										},
-										{
-											id: 'choice2-feedback',
-											type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-											children: [
-												{
-													id: 'choice1-feedback-text',
-													type: 'ObojoboDraft.Chunks.Text',
-													content: {
-														textGroup: [
-															{
-																text: {
-																	value: 'Example Text 4'
-																}
-															}
-														]
-													}
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
-				}
-			]
+			children: [questionJSON]
 		}
 	]
 }
@@ -196,14 +196,16 @@ describe('FullReview', () => {
 			focusState: {}
 		}
 		const model = OboModel.create(assessmentJSON)
-
+		const attempts = []
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttempt' })
 		// mock attempts taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -226,7 +228,7 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([{ id: 'mockId' }])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId',
 				attemptNumber: 3,
@@ -235,14 +237,21 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			}
-		])
+		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -271,7 +280,7 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId',
 				attemptNumber: 3,
@@ -280,14 +289,21 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			}
-		])
+		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -312,7 +328,7 @@ describe('FullReview', () => {
 			{ id: 'highestMockAttemptId' }
 		])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId_1',
 				attemptNumber: 3,
@@ -321,16 +337,23 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			}
-		])
+		]
+
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
-			<FullReview model={model} moduleData={moduleData} showFullReview={true} />
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} showFullReview={true} />
 		)
+
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -351,7 +374,7 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId',
 				attemptNumber: 3,
@@ -360,10 +383,12 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: []
 			}
-		])
+		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -392,10 +417,13 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([mockAttempt])
+		const attempts = [mockAttempt]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
+
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -417,7 +445,7 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId',
 				attemptNumber: 3,
@@ -426,9 +454,14 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			},
 			{
 				attemptId: 'mockSecondAttemptId',
@@ -437,14 +470,22 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			}
-		])
+		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
-		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
+
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -473,7 +514,7 @@ describe('FullReview', () => {
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+		const attempts = [
 			{
 				attemptId: 'mockAttemptId',
 				attemptNumber: 3,
@@ -482,9 +523,14 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			},
 			{
 				attemptId: 'mockSecondAttemptId',
@@ -494,14 +540,22 @@ describe('FullReview', () => {
 				finishTime: '2018-06-05 20:28:11.228294+00',
 				questionScores: [
 					{
-						id: 'question'
+						id: 'questionId'
 					}
-				]
+				],
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
 			}
-		])
+		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
-		const component = mount(<FullReview model={model} moduleData={moduleData} />)
+		const component = mount(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
+
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setContext).toHaveBeenCalledWith('assessmentReview:mockAttemptId')
 

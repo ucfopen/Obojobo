@@ -40,11 +40,7 @@ describe('Select Parameter', () => {
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const slateNode = TextParameter.helpers.oboToSlate(
-			'oboName',
-			'someValue',
-			'someDisplay'
-		)
+		const slateNode = TextParameter.helpers.oboToSlate('oboName', 'someValue', 'someDisplay')
 
 		expect(slateNode).toMatchSnapshot()
 	})

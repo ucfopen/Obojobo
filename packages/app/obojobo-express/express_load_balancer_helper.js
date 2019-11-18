@@ -14,8 +14,8 @@ const resolveSecure = req => {
 
 const resovleHost = req => {
 	// if we're behind a load balancer or something
-	if (req.headers['x-host']) {
-		req.headers.host = req.headers['x-host']
+	if (req.headers['x-forwarded-host']) {
+		req.headers.host = req.headers['x-forwarded-host']
 	}
 }
 

@@ -55,8 +55,6 @@ describe('MathEquation', () => {
 			}
 		})
 
-		// Katex.renderToString.mockReturnValueOnce('mockLatexEquation')
-
 		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
@@ -74,8 +72,6 @@ describe('MathEquation', () => {
 				latex: 'y=\\frac{1}{x}'
 			}
 		})
-
-		// Katex.renderToString.mockReturnValueOnce('mockLatexEquation')
 
 		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()

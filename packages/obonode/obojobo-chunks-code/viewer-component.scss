@@ -1,10 +1,14 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--code {
+.obojobo-draft--chunks--code,
+.component[data-obo-component='true'] .obojobo-draft--chunks--code {
 	pre {
-		$font-size: 0.9em;
+		$font-size: 0.95em;
 
+		font-family: $font-monospace;
+		letter-spacing: -0.01em;
 		font-size: $font-size;
+		line-height: 1.4em;
 		margin-top: 0;
 		margin-bottom: 0;
 		overflow-x: auto;
@@ -13,6 +17,18 @@
 		box-sizing: border-box;
 		padding: $dimension-padding / 4 $dimension-padding / 3 / ($font-size / 1em);
 		tab-size: 2;
+
+		@include mq($until: desktop) {
+			font-size: $font-size * 0.9;
+		}
+
+		@include mq($until: tablet) {
+			font-size: $font-size * 0.8;
+		}
+
+		code {
+			font-family: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+		}
 	}
 
 	.text {

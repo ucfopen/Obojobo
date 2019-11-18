@@ -3,23 +3,39 @@
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
 const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 let restoreConsole
 
 describe('apiutil', () => {
+	let mockJsonResult
+	let post
+	let get
+
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
+		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
+		jest.spyOn(window.parent, 'postMessage')
+
+		mockJsonResult = {}
+		post = jest.spyOn(APIUtil, 'post')
+		post.mockResolvedValueOnce({
+			json: () => mockJsonResult
+		})
+
+		get = jest.spyOn(APIUtil, 'get')
+		get.mockResolvedValueOnce({
+			json: () => mockJsonResult
+		})
 	})
 
 	afterEach(() => {
-		restoreConsole();
+		restoreConsole()
 	})
 
 	beforeAll(() => {
 		global.fetch = jest.fn()
 		Date.prototype.toISOString = () => 'mockDate'
-		jest.spyOn(window.parent, 'postMessage')
 	})
 	afterAll(() => {
 		global.fetch = originalFetch
@@ -27,6 +43,7 @@ describe('apiutil', () => {
 	})
 
 	test('get fetches with the correct args', () => {
+		get.mockRestore() // disable our mock
 		APIUtil.get('mockEndpoint')
 
 		expect(fetch).toHaveBeenCalled()
@@ -44,6 +61,7 @@ describe('apiutil', () => {
 	})
 
 	test('post fetches with the correct args', () => {
+		post.mockRestore() // disable our mock
 		APIUtil.post('mockEndpoint', { arg: 'value' })
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
@@ -61,6 +79,7 @@ describe('apiutil', () => {
 	})
 
 	test('post fetches with blank body', () => {
+		post.mockRestore() // disable our mock
 		APIUtil.post('mockEndpoint')
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
@@ -78,54 +97,10 @@ describe('apiutil', () => {
 	})
 
 	test('postEvent fetches with the correct args', () => {
-		const obj = {
-			draftId: 'mockDraftId',
-			action: 'mockAction',
-			eventVersion: 'mockEventVersion',
-			visitId: 'mockVisitId'
-		}
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.postEvent(obj).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-
-			expect(calledEndpoint).toBe('/api/events')
-
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-
-			expect(JSON.parse(calledOptions.body)).toEqual({
-				event: {
-					action: 'mockAction',
-					actor_time: 'mockDate',
-					draft_id: 'mockDraftId',
-					event_version: 'mockEventVersion',
-					payload: {},
-					visitId: 'mockVisitId'
-				}
-			})
-		})
-	})
-
-	test('postEvent sends a postmessage when status is ok', () => {
-		expect.assertions(2)
-
-		fetch.mockResolvedValueOnce({
+		post.mockReset()
+		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
 				value: 'mockValue'
@@ -136,17 +111,141 @@ describe('apiutil', () => {
 			draftId: 'mockDraftId',
 			action: 'mockAction',
 			eventVersion: 'eventVersion',
+			visitId: 'mockVisitId',
 			payload: 'mockPayload'
 		}).then(() => {
-			expect(fetch).toHaveBeenCalled()
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: 'mockPayload'
+				}
+			})
+		})
+	})
+
+	test('postEvent provides a default payload', () => {
+		expect.hasAssertions()
+
+		post.mockReset()
+		post.mockResolvedValueOnce({
+			json: () => ({
+				status: 'ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			visitId: 'mockVisitId'
+		}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: {}
+				}
+			})
+		})
+	})
+
+	test('postEvent posts with the correct args', () => {
+		expect.hasAssertions()
+
+		post.mockReset()
+		post.mockResolvedValueOnce({
+			json: () => ({
+				status: 'ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			visitId: 'mockVisitId',
+			payload: 'mockPayload'
+		}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/events', {
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId',
+				event: {
+					action: 'mockAction',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockDate',
+					event_version: 'eventVersion',
+					visitId: 'mockVisitId',
+					payload: 'mockPayload'
+				}
+			})
+		})
+	})
+
+	test('postEvent sends a postmessage when status is ok', () => {
+		expect.hasAssertions()
+
+		post.mockReset()
+		post.mockResolvedValueOnce({
+			json: () => ({
+				status: 'ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			visitId: 'mockVisitId',
+			payload: 'mockPayload'
+		}).then(() => {
+			expect(post).toHaveBeenCalled()
+
 			expect(window.parent.postMessage).toHaveBeenCalledWith('mockValue', '*')
 		})
 	})
 
-	test('postEvent doesnt send a postmessage when status is error', () => {
-		expect.assertions(3)
+	test('postEvent skips a postmessage when status is not ok', () => {
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
+		post.mockReset()
+		post.mockResolvedValueOnce({
+			json: () => ({
+				status: 'not-ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			visitId: 'mockVisitId',
+			payload: 'mockPayload'
+		}).then(() => {
+			expect(post).toHaveBeenCalled()
+
+			expect(window.parent.postMessage).not.toHaveBeenCalledWith('mockValue', '*')
+		})
+	})
+
+	test('postEvent doesnt send a postmessage when status is error', () => {
+		expect.hasAssertions()
+
+		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'error',
 				value: 'mockValue'
@@ -159,162 +258,93 @@ describe('apiutil', () => {
 			eventVersion: 'eventVersion',
 			payload: 'mockPayload'
 		}).then(() => {
-			expect(fetch).toHaveBeenCalled()
+			expect(post).toHaveBeenCalled()
 			expect(window.parent.postMessage).not.toHaveBeenCalled()
-			// eslint-disable-next-line no-console
-			expect(console.error).toHaveBeenCalledWith('mockValue')
 		})
 	})
 
 	test('getDraft calls fetch', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.getDraft('mockId').then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/drafts/mockId')
-			expect(calledOptions).toEqual({
-				credentials: 'include',
-				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-				method: 'GET'
-			})
+		return APIUtil.getDraft('mockId').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId')
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('getFullDraft calls fetch', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.getFullDraft('mockId').then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/drafts/mockId/full')
-			expect(calledOptions).toEqual({
-				credentials: 'include',
-				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-				method: 'GET'
-			})
+		return APIUtil.getFullDraft('mockId').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId/full')
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('requestStart calls fetch', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/visits/start')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-
-			expect(JSON.parse(calledOptions.body)).toEqual({
+		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/visits/start', {
 				draftId: 'mockDraftId',
 				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('startAttempt calls fetch', () => {
-		expect.assertions(4)
-
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
+		expect.hasAssertions()
 
 		return APIUtil.startAttempt({
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		}).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/assessments/attempt/start')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-
-			expect(JSON.parse(calledOptions.body)).toEqual({
+		}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/start', {
 				assessmentId: 'mockAssessmentId',
 				draftId: 'mockDraftId',
 				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('resumeAttempt calls fetch', () => {
+		expect.hasAssertions()
+
+		return APIUtil.resumeAttempt({ attemptId: 999 }).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/resume', { attemptId: 999 })
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('endAttempt calls fetch', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-			expect(JSON.parse(calledOptions.body)).toEqual({
+		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/end', {
 				visitId: 'mockVisitId'
 			})
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('reviewAttempt calls fetch', () => {
+		expect.hasAssertions()
+
+		return APIUtil.reviewAttempt('mockAttemptIds', {}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
+				attemptIds: 'mockAttemptIds'
+			})
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('resendLTIAssessmentScore calls fetch', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
+		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
 				value: 'mockValue'
@@ -325,32 +355,21 @@ describe('apiutil', () => {
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		}).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/lti/sendAssessmentScore')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-			expect(JSON.parse(calledOptions.body)).toEqual({
-				assessmentId: 'mockAssessmentId',
+		}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/lti/send-assessment-score', {
 				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId',
 				visitId: 'mockVisitId'
 			})
+
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
-	test('clearPreviewScores calls fetch', () => {
-		expect.assertions(4)
+	test('clearPreviewScores calls post', () => {
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
+		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
 				value: 'mockValue'
@@ -360,31 +379,21 @@ describe('apiutil', () => {
 		return APIUtil.clearPreviewScores({
 			draftId: 'mockDraftId',
 			visitId: 'mockVisitId'
-		}).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-			expect(JSON.parse(calledOptions.body)).toEqual({
+		}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/assessments/clear-preview-scores', {
 				draftId: 'mockDraftId',
 				visitId: 'mockVisitId'
 			})
+
+			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('requestStart handles json parsing error', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
+		post.mockReset()
+		post.mockResolvedValueOnce({
 			json: () => {
 				throw 'json parsing error'
 			}
@@ -396,30 +405,36 @@ describe('apiutil', () => {
 	})
 
 	test('postDraft calls fetch', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
-		fetch.mockResolvedValueOnce({
+		post.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
 				value: 'mockValue'
 			})
 		})
 
-		return APIUtil.postDraft('mockDraftId', {}).then(() => {
-			expect(fetch).toHaveBeenCalled()
-			const calledEndpoint = fetch.mock.calls[0][0]
-			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/drafts/mockDraftId')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
+		return APIUtil.postDraft('mockDraftId', {}).then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
+
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('processJsonResults logs json value on error', () => {
+		expect.hasAssertions()
+
+		post.mockReset()
+		post.mockResolvedValueOnce({
+			json: () => ({
+				status: 'error',
+				value: 'mockError'
 			})
-			expect(JSON.parse(calledOptions.body)).toEqual({})
+		})
+
+		return APIUtil.postDraft('mockDraftId', {}).then(() => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
+			expect(console.error).toHaveBeenCalledWith('mockError') //eslint-disable-line no-console
 		})
 	})
 
@@ -452,5 +467,14 @@ describe('apiutil', () => {
 			method: 'POST'
 		})
 		expect(response).toEqual({ mediaId: 'mockMediaId' })
+	})
+
+	test('getVisitSessionStatus calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getVisitSessionStatus('mock-draft-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/visits/mock-draft-id/status')
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 })

@@ -5,9 +5,12 @@ import ImageProperties from './image-properties-modal'
 
 const mockedDebounce = jest.fn().mockImplementation((time, fn) => fn())
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
+	return (time, fn) => mockedDebounce(time, fn)
+})
+
 jest.mock('./utils', () => {
 	return {
-		debounce: (time, fn) => mockedDebounce(time, fn),
 		isUrlUUID: require.requireActual('./utils').isUrlUUID
 	}
 })
