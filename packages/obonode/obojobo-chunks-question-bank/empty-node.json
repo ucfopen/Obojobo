@@ -11,6 +11,18 @@
 	"nodes": [
 		{
 			"object":"block",
+			"type":"ObojoboDraft.Chunks.QuestionBank.Settings",
+			"isVoid":true,
+			"data":{
+				"content": {
+					"chooseAll":true,
+					"choose":"all",
+					"select":"sequential"
+				}
+			}
+		},
+		{
+			"object":"block",
 			"type":"ObojoboDraft.Chunks.Question",
 			"isVoid":false,
 			"data": {

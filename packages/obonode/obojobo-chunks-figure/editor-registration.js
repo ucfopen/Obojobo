@@ -24,7 +24,7 @@ const Figure = {
 
 			return (
 				<span
-					className={'placeholder align-center'}
+					className={'placeholder align-center required'}
 					contentEditable={false}
 					data-placeholder="Type Your Caption Here"
 				/>

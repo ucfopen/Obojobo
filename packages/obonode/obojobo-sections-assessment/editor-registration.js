@@ -3,13 +3,11 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import { Block } from 'slate'
 
 const UNIQUE_NAME = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 
 import Node from './editor-component'
-import Settings from './components/settings/editor-component'
 import Converter from './converter'
 import Schema from './schema'
 
@@ -33,8 +31,6 @@ const Assessment = {
 			switch (props.node.type) {
 				case UNIQUE_NAME:
 					return <Node {...props} {...props.attributes} />
-				case SETTINGS_NODE:
-					return <Settings {...props} {...props.attributes} />
 				default:
 					return next()
 			}

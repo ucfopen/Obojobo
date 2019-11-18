@@ -5,9 +5,6 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Assessment'))
-jest.mock('./components/settings/editor-component', () =>
-	global.mockReactComponent(this, 'Settings')
-)
 jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('slate-react')
@@ -17,7 +14,6 @@ import { Block } from 'slate'
 import Assessment from './editor-registration'
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
@@ -28,22 +24,6 @@ describe('Assessment editor', () => {
 			attributes: { dummy: 'dummyData' },
 			node: {
 				type: ASSESSMENT_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		expect(Assessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode renders Settings when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: SETTINGS_NODE,
 				data: {
 					get: () => {
 						return {}

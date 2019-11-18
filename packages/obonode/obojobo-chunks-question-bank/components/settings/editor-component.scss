@@ -1,9 +1,63 @@
 @import '~styles/includes';
 
 .qb-settings {
-	div {
-		display: inline;
-	}
+	font-size: 0.85em;
+	font-family: "Libre Franklin", Arial, sans-serif;
+	font-weight: bold;
 
-	text-align: center;
+	.choose {
+		display: inline-block;
+		border: none;
+		input[type="radio"] {
+			margin-right: 0.5em;
+		}
+
+		input[type="number"] {
+			@include text-input();
+			margin-left: 0.5em;
+			max-width: 5em;
+		}
+
+		span {
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+			font-weight: normal;
+		}
+	}
+	
+	.select {
+		display: inline-block;
+		text-align: right;
+		min-width: 19em;
+		position: absolute;
+		top: 1.8em;
+		right: 2.5em;
+
+		select {
+			display: block;
+			font-family: $font-default;
+			border-radius: $dimension-rounded-radius;
+			font-size: 0.7em;
+			background-color: $color-bg;
+			min-width: 24em;
+			padding: 0.7em 2.5em 0.7em 0.5em;
+			appearance: none;
+			//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+			background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+				linear-gradient(135deg, gray 50%, transparent 50%);
+			//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+			background-position: calc(100% - 1.5em) 1.1em, calc(100% - 1.1em) 1.1em,
+				calc(100% - 2.5em) 0.5em;
+			background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
+			background-repeat: no-repeat;
+			margin-top: 0.5em;
+			direction: rtl;
+			position: relative;
+			left: 3em;
+
+			option {
+				direction: rtl;
+			}
+		}
+	}
 }

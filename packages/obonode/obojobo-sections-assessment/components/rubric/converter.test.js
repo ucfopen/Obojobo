@@ -1,137 +1,109 @@
 /* eslint-disable no-undefined */
 
 import Converter from './converter'
-const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
-jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter',
-	() => ({
-		helpers: {
-			slateToObo: () => 'ActionsChild',
-			oboToSlate: () => 'ActionsChildOboToSlate'
-		}
-	})
-)
 
 describe('Assessment Converter', () => {
-	test('slateToObo converts a Slate node to an OboNode with content', () => {
+	test('slateToObo converts a Slate node to an OboNode without set values', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => null
-			},
-			nodes: [
-				// no nodes or text with get returning null
-				// creates `"null": undefined`
-				{
-					data: {
-						get: () => null
-					}
-				},
-				// no nodes or text with get returning a key
-				// creates `"mock-name-1": undefined`
-				{
-					data: {
-						get: () => 'mock-name-1'
-					}
-				},
-				// no nodes, has text and get returns a key
-				// creates "mock-name-2": "mock-node-2-text",
-				{
-					data: {
-						get: () => 'mock-name-2'
-					},
-					text: 'mock-node-2-text'
-				},
-				// no nodes, EMPTRY text, get returns a key
-				// is not added
-				{
-					data: {
-						get: () => 'mock-name-3'
-					},
-					text: ''
-				},
-				// list node
-				// creates mods array
-				{
-					type: MOD_LIST_NODE,
-					data: {
-						get: () => ({})
-					},
-					nodes: [
-						{
-							key: 'mockMod',
-							nodes: {
-								get: () => ({
-									text: 'mockParameter'
-								})
-							}
-						}
-					]
-				}
-			]
+				get: () => ({
+					passedType: '$attempt_score',
+					failedType: '$attempt_score',
+					unableToPassType: 'no-value',
+					mods: []
+				})
+			}
 		}
 
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-				Object {
-				  "mock-name-1": undefined,
-				  "mock-name-2": "mock-node-2-text",
-				  "mods": Array [
-				    Object {
-				      "attemptCondition": "mockParameter",
-				      "reward": "mockParameter",
-				    },
-				  ],
-				  "null": undefined,
-				  "type": "pass-fail",
-				}
-		`)
+		Object {
+		  "failedResult": "$attempt_score",
+		  "failedType": "$attempt_score",
+		  "passedResult": "$attempt_score",
+		  "passedType": "$attempt_score",
+		  "unableToPassResult": null,
+		  "unableToPassType": "no-value",
+		}
+	`)
 	})
 
-	test('slateToObo converts a Slate node to an OboNode with no mods', () => {
+	test('slateToObo converts a Slate node to an OboNode with set values', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => null
-			},
-			nodes: []
+				get: () => ({
+					passedType: 'set-value',
+					passedResult: '100',
+					failedType: 'set-value',
+					failedResult: '100',
+					unableToPassType: 'set-value',
+					unableToPassResult: '100'
+				})
+			}
 		}
+
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-										Object {
-										  "type": "pass-fail",
-										}
-					`)
+		Object {
+		  "failedResult": "100",
+		  "failedType": "set-value",
+		  "passedResult": "100",
+		  "passedType": "set-value",
+		  "unableToPassResult": "100",
+		  "unableToPassType": "set-value",
+		}
+	`)
 	})
 
-	test('oboToSlate converts an OboComponent to a Slate node', () => {
+	test('oboToSlate converts an OboComponent to a Slate node with special types', () => {
 		const oboNode = {
 			passingAttemptScore: 0,
-			passedResult: 100,
-			failedResult: 0,
-			unableToPassResult: 0,
-			mods: [
-				{
-					attemptCondition: 1,
-					reward: 10
-				}
-			]
+			passedResult: '$attempt_score',
+			failedResult: '$attempt_score',
+			unableToPassResult: '$highest_attempt_score',
+			mods: []
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboComponent to a Slate node without mods', () => {
+	test('oboToSlate converts an OboComponent to a Slate node with no-scores', () => {
+		const oboNode = {
+			passingAttemptScore: 0,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: 'no-score'
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('oboToSlate converts an OboComponent to a Slate node with no unableToPassResult', () => {
+		const oboNode = {
+			passingAttemptScore: 0,
+			passedResult: '$attempt_score',
+			failedResult: 'no_score',
+			unableToPassResult: null
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('oboToSlate converts an OboComponent to a Slate node with numerical values', () => {
 		const oboNode = {
 			passingAttemptScore: 0,
 			passedResult: 100,
-			failedResult: 0,
-			unableToPassResult: 0
+			failedResult: 100,
+			unableToPassResult: 100
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

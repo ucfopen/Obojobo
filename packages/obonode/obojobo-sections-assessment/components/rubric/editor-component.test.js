@@ -3,14 +3,24 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import Rubric from './editor-component'
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
 describe('Rubric editor', () => {
-	test('component renders', () => {
+	test('Rubric renders', () => {
 		const component = renderer.create(
 			<Rubric
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return {
+								mods: [
+									{ reward: 3, attemptCondition: '$last_attempt' },
+									{ reward: 3, attemptCondition: '1' },
+									{ reward: -3, attemptCondition: '[1,$last_attempt' },
+									{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+								]
+							}
 						}
 					}
 				}}
@@ -21,88 +31,233 @@ describe('Rubric editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('component adds child', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const props = {
-			node: {
-				data: {
-					get: () => ({})
-				},
-				nodes: { size: 0 }
-			},
-			editor: {
-				insertNodeByKey: jest.fn()
-			}
+	test('Rubric changes type', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Rubric {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('component adds child to existing mod list', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-		const props = {
-			node: {
-				data: {
-					get: () => ({})
-				},
-				nodes: {
-					size: 5,
-					get: jest.fn().mockReturnValueOnce({
-						key: 'mockModList',
-						nodes: { size: 0 }
-					})
-				}
-			},
-			editor: {
-				insertNodeByKey: jest.fn()
-			}
-		}
-
-		const component = mount(<Rubric {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('component deletes self', () => {
-		const props = {
-			node: {
-				data: {
-					get: () => {
-						return {}
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { mods: [] }
+						}
 					}
-				}
-			},
-			editor: {
-				removeNodeByKey: jest.fn()
-			}
+				}}
+				editor={editor}
+			/>
+		)
+		component
+			.find('input')
+			.at(0)
+			.simulate('click', { stopPropagation: jest.fn() })
+
+		component
+			.find('input')
+			.at(1)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(1)
+			.simulate('change', { target: { value: 'pass-fail' } })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('Rubric changes pass score', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Rubric {...props} />)
-		const tree = component.html()
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component
+			.find('input')
+			.at(2)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(2)
+			.simulate('change', { target: { value: 100 } })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('Rubric changes pass result', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { passedType: 'set-value', mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component
+			.find('select')
+			.at(0)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('select')
+			.at(0)
+			.simulate('change', { target: { value: '$attempt_score' } })
+
+		component
+			.find('input')
+			.at(3)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(3)
+			.simulate('change', { target: { value: 100 } })
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+	})
+
+	test('Rubric changes failed result', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { failedType: 'set-value', mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component
+			.find('select')
+			.at(1)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('select')
+			.at(1)
+			.simulate('change', { target: { value: '$attempt_score' } })
+
+		component
+			.find('input')
+			.at(4)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(4)
+			.simulate('change', { target: { value: 100 } })
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+	})
+
+	test('Rubric changes unable to pass result', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { unableToPassType: 'set-value', mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', { target: { value: '$highest_attempt_score' } })
+
+		component
+			.find('input')
+			.at(5)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(5)
+			.simulate('change', { target: { value: 100 } })
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+	})
+
+	test('Rubric opens mod dialog', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { unableToPassType: 'set-value', mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
 
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
-		expect(props.editor.removeNodeByKey).toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('Rubric changes mods', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Rubric
+				node={{
+					data: {
+						get: () => {
+							return { unableToPassType: 'set-value', mods: [] }
+						}
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component.instance().changeMods({ mods: [] })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

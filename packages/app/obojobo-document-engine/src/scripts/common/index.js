@@ -18,6 +18,7 @@ import ModalContainer from './components/modal-container'
 import ModalStore from './stores/modal-store'
 import ModalUtil from './util/modal-util'
 import MoreInfoButton from './components/more-info-button'
+import Slider from './components/slider/slider'
 import NonEditableChunk from './chunk/non-editable-chunk'
 import OboModel from './models/obo-model'
 import Prompt from './components/modal/prompt'
@@ -27,7 +28,7 @@ import { Registry } from './registry'
 import SimpleDialog from './components/modal/simple-dialog'
 import SimpleMessage from './components/modal/simple-message'
 import SingleInputBubble from './components/modal/bubble/single-input-bubble'
-import Slider from './components/slider'
+import Switch from './components/switch'
 import StyleRange from './text/style-range'
 import StyleType from './text/style-type'
 import StyleableText from './text/styleable-text'
@@ -65,7 +66,7 @@ export default {
 		Button,
 		ButtonBar,
 		MoreInfoButton,
-		Slider,
+		Switch,
 		modal: {
 			bubble: {
 				Bubble,
@@ -78,6 +79,9 @@ export default {
 			Dialog,
 			SimpleDialog,
 			ErrorDialog
+		},
+		slider: {
+			Slider
 		},
 		TextMenu,
 		ModalContainer,

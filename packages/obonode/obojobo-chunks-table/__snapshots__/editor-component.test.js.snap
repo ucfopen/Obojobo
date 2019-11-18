@@ -14,17 +14,8 @@ exports[`Table Editor Node Table component 1`] = `
         <tbody />
       </table>
     </div>
-    <div
-      className="table-editor-buttons"
-    >
-      <button
-        onClick={[Function]}
-      >
-        Toggle Header
-      </button>
-    </div>
   </div>
 </div>
 `;
 
-exports[`Table Editor Node Table component toggles header 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody></tbody></table></div><div class=\\"table-editor-buttons\\"><button>Toggle Header</button></div></div></div>"`;
+exports[`Table Editor Node Table component toggles header 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody></tbody></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button class=\\"button\\">Toggle Header</button></div></div></div></div></div>"`;

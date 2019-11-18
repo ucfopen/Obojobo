@@ -18,6 +18,20 @@
 	.mc-settings{
 		background-color: $color-bg2;
 		padding-bottom: 0.5em;
+		padding-left: 2.5em;
+		font-family: "Libre Franklin", Arial, sans-serif;
+		position: relative;
+
+		select {
+			margin-left: 0.5em;
+			min-width: 15em;
+		}
+
+		.obojobo-draft--components--switch {
+			position: absolute;
+			right: 4.3em;
+			top: 0.2em;
+		}
 	}
 
 	// Work around for the tangled scss in MCAssessment
@@ -33,7 +47,7 @@
 		}
 
 		.obojobo-draft--chunks--mc-assessment--mc-answer {
-			padding-bottom: 2em;
+			padding-bottom: 3em;
 			padding-top: 2.5em;
 			padding-left: 0;
 		}

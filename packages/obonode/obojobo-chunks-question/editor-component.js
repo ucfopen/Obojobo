@@ -22,8 +22,8 @@ class Question extends React.Component {
 		const type = event.target.checked ? 'survey' : 'default'
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
-		const mcAssessmentNode = this.props.node.nodes.get(1)
-		const mcAssessmentData = mcAssessmentNode.data
+		const mcAssessmentNode = this.props.node.nodes.filter(node => node.type === MCASSESSMENT_NODE).get(0)
+		const mcAssessmentData = mcAssessmentNode.data.toJSON()
 
 		this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
@@ -84,15 +84,15 @@ class Question extends React.Component {
 									value={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
-								<div className="question-type" contentEditable={false}>
+								<label className="question-type" contentEditable={false}>
 									<input
 										type="checkbox"
 										name="vehicle1"
 										value="Bike"
 										checked={content.type === 'survey'}
 										onChange={this.onSetType}/>
-									<label>Survey Only</label>
-								</div>
+									Survey Only
+								</label>
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (

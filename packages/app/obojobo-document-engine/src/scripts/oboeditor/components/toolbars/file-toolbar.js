@@ -58,7 +58,7 @@ const bulletsMenu = {
 	type: 'sub-menu',
 	menu: [
 		{
-			name: 'Bulletted List',
+			name: 'Bulleted List',
 			type: 'sub-menu',
 			menu: [
 				{ name: 'Disc', type: 'action', disabled: true },
@@ -122,7 +122,14 @@ const FileToolbar = props => {
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Edit" menu={editMenu} />
 			</div>
-			<ViewMenu draftId={props.draftId} switchMode={props.switchMode} onSave={props.onSave} />
+			<ViewMenu
+				draftId={props.draftId}
+				switchMode={props.switchMode}
+				onSave={props.onSave}
+				mode={props.mode}
+				togglePlaceholders={props.togglePlaceholders}
+				showPlaceholders={props.showPlaceholders}
+			/>
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Insert" menu={insertMenu} />
 			</div>

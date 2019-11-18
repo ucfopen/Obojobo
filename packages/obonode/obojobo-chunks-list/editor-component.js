@@ -1,7 +1,11 @@
 import './viewer-component.scss'
+import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+
+const { Button } = Common.components
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
@@ -47,7 +51,7 @@ class List extends React.Component {
 			<Node {...this.props}>
 				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
 					{this.props.children}
-					<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
+					<Button onClick={() => this.toggleType()}>{'Swap to ' + other}</Button>
 				</div>
 			</Node>
 		)

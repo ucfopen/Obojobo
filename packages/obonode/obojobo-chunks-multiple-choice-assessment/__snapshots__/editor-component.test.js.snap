@@ -3,11 +3,125 @@
 exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-mock-question-type"
-/>
+>
+  <div
+    className="mc-settings"
+    contentEditable={false}
+  >
+    <label>
+      Response Type
+      <select
+        onChange={[Function]}
+      >
+        <option
+          value="pick-one"
+        >
+          Pick one correct answer
+        </option>
+        <option
+          value="pick-all"
+        >
+          Pick all correct answers
+        </option>
+      </select>
+    </label>
+    <div
+      className="obojobo-draft--components--switch"
+    >
+      <span
+        contentEditable={false}
+      >
+        Shuffle Choices
+      </span>
+      <label
+        className="switch"
+      >
+        <input
+          checked={false}
+          className="switch-slider"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="switch-slider round"
+        />
+      </label>
+    </div>
+  </div>
+  <div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        + Add Choice
+      </button>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`MCAssessment Editor Node MCAssessment builds the expected component with defaults 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-default"
-/>
+>
+  <div
+    className="mc-settings"
+    contentEditable={false}
+  >
+    <label>
+      Response Type
+      <select
+        onChange={[Function]}
+      >
+        <option
+          value="pick-one"
+        >
+          Pick one correct answer
+        </option>
+        <option
+          value="pick-all"
+        >
+          Pick all correct answers
+        </option>
+      </select>
+    </label>
+    <div
+      className="obojobo-draft--components--switch"
+    >
+      <span
+        contentEditable={false}
+      >
+        Shuffle Choices
+      </span>
+      <label
+        className="switch"
+      >
+        <input
+          checked={false}
+          className="switch-slider"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="switch-slider round"
+        />
+      </label>
+    </div>
+  </div>
+  <div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        + Add Choice
+      </button>
+    </div>
+  </div>
+</div>
 `;

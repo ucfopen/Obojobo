@@ -96,9 +96,3 @@ exports[`EditorNav addPage hides the modal and calls EditorUtil 1`] = `undefined
 exports[`EditorNav addPage hides the modal and calls EditorUtil 2`] = `undefined`;
 
 exports[`EditorNav addPage hides the modal and calls EditorUtil 3`] = `undefined`;
-
-exports[`EditorNav updateNavTargetId changes the state 1`] = `
-Object {
-  "navTargetId": "mock-id",
-}
-`;

@@ -188,7 +188,7 @@ class Cell extends React.Component {
 	renderDropdown() {
 		return (
 			<div className="dropdown-cell" contentEditable={false}>
-					<button onClick={this.toggleOpen}>{(this.state.isOpen ? '▲' : '▼')}</button>
+					<button className={isOrNot(this.state.isOpen, 'open')} onClick={this.toggleOpen}>{'⌃'}</button>
 					<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
 						<button onClick={this.addRowAbove}>
 							Insert Row Above

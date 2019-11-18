@@ -27,7 +27,7 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
               Multiple Choice
             </option>
           </select>
-          <div
+          <label
             className="question-type"
             contentEditable={false}
           >
@@ -38,10 +38,8 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
               type="checkbox"
               value="Bike"
             />
-            <label>
-              Survey Only
-            </label>
-          </div>
+            Survey Only
+          </label>
         </div>
         <button
           className="add-solution"
@@ -61,9 +59,9 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><div class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\"><label>Survey Only</label></div></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\">Survey Only</label></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
 
-exports[`Question Editor Node Question component allows you to change set type 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><div class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\"><label>Survey Only</label></div></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component allows you to change set type 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\">Survey Only</label></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
 
 exports[`Question Editor Node Survey Question builds the expected component 1`] = `
 <div>
@@ -92,7 +90,7 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
               Multiple Choice
             </option>
           </select>
-          <div
+          <label
             className="question-type"
             contentEditable={false}
           >
@@ -103,10 +101,8 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
               type="checkbox"
               value="Bike"
             />
-            <label>
-              Survey Only
-            </label>
-          </div>
+            Survey Only
+          </label>
         </div>
         <button
           className="add-solution"

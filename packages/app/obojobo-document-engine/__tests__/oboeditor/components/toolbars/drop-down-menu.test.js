@@ -16,6 +16,16 @@ describe('Drop Down Menu', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('DropDownMenu node with toggle-action', () => {
+		const menu = [
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: true },
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: false },
+		]
+		const component = shallow(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('DropDownMenu node with sub-menu', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },

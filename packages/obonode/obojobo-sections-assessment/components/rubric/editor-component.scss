@@ -1,60 +1,134 @@
 @import '~styles/includes';
 
 .rubric {
-	$color-preview-hover: darken($color-preview, 9%);
+	$color-rubric: transparentize($color-preview, 0.95);
 
-	position: relative;
-	width: auto;
+	font-family: $font-default;
+	background: $color-rubric;
+	//border: 1px solid $color-preview;
+	padding-left: 3em;
+	padding-right: 3em;
+	padding-bottom: 2em;
+	padding-top: 0.1em;
 	border-radius: $dimension-rounded-radius;
-	border: 1px solid $color-preview;
-	padding: 2em 3em;
-	background: transparentize($color-preview, 0.95);
-	margin-bottom: 3em;
+	text-align: center;
 
-	.delete-button {
-		position: absolute;
-		right: 0;
-		top: 0;
-		transform: translate(50%, -50%);
-		z-index: 3;
+	.title {
+		font-size: 1.5em;
+		font-weight: bold;
+	}
 
-		.button {
-			font-size: 1.2em;
-			padding: 0;
-			min-width: 1.4em;
-			border-radius: 50%;
-			background-color: $color-preview;
+	.assessment-score {
+		text-align: left;
+		border: none;
+		margin-top: 0.5em;
+
+		legend {
+			font-weight: bold;
+		}
+
+		label {
+			display: block;
+
+			input {
+				margin-right: 1em; 
+			}
 		}
 	}
 
-	.parameter-node {
-		display: block;
-		padding-top: 0.5em;
+	.pass-fail {
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-shadow;
+		text-align: left;
+		margin: 0;
+
+		legend {
+			float: left;
+			width: 100%;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		div {
+			padding-bottom: 0.5em;
+			display: block;
+		}
 	}
 
-	.mod {
+	.mods {
+		border: 1px solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
+		margin-top: 1em;
 		position: relative;
-		width: auto;
-		border-bottom: 1px solid $color-preview;
+		min-height: 2.8em;
 
-		.delete-button {
-			transform: none;
+		.title {
+			font-weight: bold;
+			padding-top: 0.5em;
+			display: block;
+			font-size: 1.2rem;
+		}
+
+		.obojobo-draft--components--button {
+			position: absolute;
+			top: 0.3em;
+			right: 0.3em;
+
+			.button {
+				color: $color-action;
+				background-color: inherit;
+				border-color: $color-action;
+				border-width: 2px;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-action;
+				}
+			}
+		}
+
+		ul {
+			text-align: left;
+
+			.reward {
+				color: $color-correct
+			}
+
+			.deduct {
+				color: $color-incorrect
+			}
 		}
 	}
 
-	.add-button {
-		margin-top: 0.2em;
-
-		.button {
-			background-color: $color-preview;
+	&.is-type-highest {
+		.pass-fail,
+		.mods {
+			display: none;
 		}
 	}
 
-	.delete-button .button:hover {
-		background-color: $color-preview-hover;
+	&.is-type-pass-fail {
+		.pass-fail,
+		.mods {
+			display: block;
+		}
 	}
 
-	.add-button .button:hover {
-		background-color: $color-preview-hover;
+	.is-not-enabled {
+		display: none;
+	}
+
+	input[type="number"] {
+		@include text-input();
+
+		max-width: 3em;
+		margin-left: 0.5em;
+		margin-right: 0.2em;
+	}
+
+	select {
+		@include select-input();
+
+		margin-left: 0.5em;
 	}
 }

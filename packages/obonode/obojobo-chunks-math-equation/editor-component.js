@@ -31,7 +31,7 @@ class MathEquation extends React.Component {
 		return (
 			<div className="non-editable-chunk">
 				<div className="katex-display">
-					<span className="placeholder align-center">No Equation</span>
+					<span className="no-equation">No Equation (Click to edit)</span>
 				</div>
 			</div>
 		)
@@ -108,6 +108,7 @@ class MathEquation extends React.Component {
 							<input
 								value={content.size || 1}
 								type="number"
+								step="0.1"
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'size')}/>
 						</div>

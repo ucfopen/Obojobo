@@ -27,7 +27,7 @@
 		width: 25em;
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
-		z-index: $z-index-above-content;
+		z-index: 9;
 
 		@mixin point() {
 			content: ' ';

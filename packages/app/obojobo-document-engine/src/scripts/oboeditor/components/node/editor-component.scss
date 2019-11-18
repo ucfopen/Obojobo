@@ -10,6 +10,7 @@
 		left: 1em;
 		border: 2px dotted $color-shadow;
 		width: 0.1em;
+		user-select: none;
 
 		.top {
 			top: 0;
@@ -24,6 +25,10 @@
 		}
 	}
 
+	.more-info {
+		font-size: 0.9em;
+	}
+
 	.more-info-button {
 		width: 1.7em;
 		height: 1.7em;
@@ -33,24 +38,6 @@
 		border: none;
 		background: none;
 		padding: 0;
-
-		svg {
-			stroke: $color-shadow;
-			fill: none;
-		}
-
-		&:hover {
-			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
-			}
-		}
-
-		&.is-open {
-			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
-			}
-		}
+		cursor: pointer;
 	}
 }

@@ -16,7 +16,7 @@ const slateToObo = node => {
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
 	const model = OboModel.models[node.key]
-	const content = { ...node.data.get('content'), ...model.get('content') }
+	const content = model ? { ...node.data.get('content'), ...model.get('content') } : node.data.get('content')
 
 	// Remove rubric if it has been deleted
 	delete content.rubric
@@ -53,6 +53,7 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const content = node.get('content')
+	console.log(content)
 
 	const nodes = node.attributes.children.map(child => {
 		if (child.type === PAGE_NODE) {
@@ -67,9 +68,22 @@ const oboToSlate = node => {
 	const ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
 	nodes.push(ScoreActions.oboToSlate(content.scoreActions))
 
+
+	const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
 	if (content.rubric) {
-		const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
+		content.rubric.attempts = content.attempts
 		nodes.push(Rubric.oboToSlate(content.rubric))
+	} else {
+		// Although highest rubrics do not use the rubric properties, 
+		// setting them allows the defaults to be avalible if/when a user switches to pass-fail
+		nodes.push(Rubric.oboToSlate({ 
+			type: 'highest',
+			passingAttemptScore: 100,
+			passedResult: 100,
+			failedResult: 0,
+			unableToPassResult: null,
+			mods: []
+		}))
 	}
 
 	return {

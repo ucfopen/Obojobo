@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Slider Slider renders correctly when initialized on 1`] = `
+exports[`Switch Switch renders correctly when initialized on 1`] = `
 <div
-  className="obojobo-draft--components--slider"
+  className="obojobo-draft--components--switch"
 >
   <span
     contentEditable={false}
@@ -14,20 +14,20 @@ exports[`Slider Slider renders correctly when initialized on 1`] = `
   >
     <input
       checked={true}
-      className="slider"
+      className="switch-slider"
       onChange={[Function]}
       type="checkbox"
     />
     <div
-      className="slider round"
+      className="switch-slider round"
     />
   </label>
 </div>
 `;
 
-exports[`Slider Slider renders correctly with a title 1`] = `
+exports[`Switch Switch renders correctly with a title 1`] = `
 <div
-  className="obojobo-draft--components--slider"
+  className="obojobo-draft--components--switch"
 >
   <span
     contentEditable={false}
@@ -39,20 +39,20 @@ exports[`Slider Slider renders correctly with a title 1`] = `
   >
     <input
       checked={false}
-      className="slider"
+      className="switch-slider"
       onChange={[Function]}
       type="checkbox"
     />
     <div
-      className="slider round"
+      className="switch-slider round"
     />
   </label>
 </div>
 `;
 
-exports[`Slider Slider renders correctly with no options set 1`] = `
+exports[`Switch Switch renders correctly with no options set 1`] = `
 <div
-  className="obojobo-draft--components--slider"
+  className="obojobo-draft--components--switch"
 >
   <span
     contentEditable={false}
@@ -64,12 +64,12 @@ exports[`Slider Slider renders correctly with no options set 1`] = `
   >
     <input
       checked={false}
-      className="slider"
+      className="switch-slider"
       onChange={[Function]}
       type="checkbox"
     />
     <div
-      className="slider round"
+      className="switch-slider round"
     />
   </label>
 </div>

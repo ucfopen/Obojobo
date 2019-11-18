@@ -63,7 +63,9 @@ class Heading extends React.Component {
 		const dropText = text.slice(0, 15) || 'Your Heading'
 		return (
 			<div className={'dropdown-heading'} contentEditable={false}>
-				<button onClick={this.toggleLevelSelect}>{`Heading ${content.level}`}<span>{(this.state.isOpen ? '▲' : '▼')}</span></button>
+				<button onClick={this.toggleLevelSelect}>{`Heading ${content.level}`}
+					<span className={isOrNot(this.state.isOpen, 'open')}>{'⌃'}</span>
+				</button>
 				<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
 					<button onClick={() => this.handleLevelChange(1)}>
 						<h1>{dropText}</h1>

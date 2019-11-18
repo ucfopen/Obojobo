@@ -107,8 +107,9 @@ describe('BasicMarks', () => {
 
 	test('the action in each mark calls editor.toggleMark', () => {
 		const editor = {
-			toggleMark: jest.fn()
+			focus: jest.fn()
 		}
+		editor.toggleMark = jest.fn().mockReturnValue(editor)
 
 		BasicMarks.marks.forEach(mark => {
 			mark.action(editor)

@@ -12,8 +12,9 @@ describe('Content Toolbar', () => {
 
 	test('Toolbar node calls the action for a button', () => {
 		const editor = {
-			toggleMark: jest.fn()
+			focus: jest.fn()
 		}
+		editor.toggleMark = jest.fn().mockReturnValue(editor)
 
 		const component = shallow(<ContentToolbar editorRef={{ current: editor }}/>)
 		const tree = component.html()
