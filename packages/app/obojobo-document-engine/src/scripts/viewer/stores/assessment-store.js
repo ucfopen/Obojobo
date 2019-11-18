@@ -60,7 +60,7 @@ class AssessmentStore extends Store {
 	}
 
 	init(extensions) {
-		const ext = {assessmentSummary: [], attemptHistory: [], importableScore: null}
+		const ext = {assessmentSummary: [], importableScore: null}
 		const filteredExtArrays = extensions.filter(val => val.name === 'ObojoboDraft.Sections.Assessment')
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
@@ -69,7 +69,7 @@ class AssessmentStore extends Store {
 			importHasBeenUsed: false,
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
-			// attemptHistory
+			attemptHistory: null // not loaded yet
 		}
 
 		// Any unfinished attempts?
@@ -81,6 +81,8 @@ class AssessmentStore extends Store {
 		if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
 		}
+
+		this.getAttemptHistory()
 	}
 
 	displayScoreImportNotice(importableScore) {
@@ -214,6 +216,21 @@ class AssessmentStore extends Store {
 	onImportScoreNoticeChoice(resolve, shouldImport){
 		ModalUtil.hide()
 		resolve(shouldImport)
+	}
+
+	getAttemptHistory(){
+		const { draftId, visitId } = NavStore.getState()
+		this.state.attemptHistory = 'loading'
+		return AssessmentAPI.getAttemptHistory({draftId, visitId})
+		.then(res => {
+			if (res.status === 'error') {
+				return ErrorUtil.errorResponse(res)
+			}
+
+			this.updateAttempts(res.value)
+			this.state.attemptHistory = 'loaded'
+			this.triggerChange()
+		})
 	}
 
 	startImportScoresWithAPICall(draftId, visitId, assessmentId){

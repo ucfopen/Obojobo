@@ -17,8 +17,7 @@ class AssessmentReviewView extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-
-		NavUtil.setContext(`assessmentReview:${lastAttempt.attemptId}`)
+		NavUtil.setContext(`assessmentReview:${lastAttempt.id}`)
 	}
 
 	render() {
@@ -98,7 +97,6 @@ class AssessmentReviewView extends React.Component {
 						{attempt.result.questionScores.map((scoreObj, index) => {
 							const questionModel = OboModel.create(attempt.state.questionModels[scoreObj.id])
 							const QuestionComponent = questionModel.getComponentClass()
-
 							return this.props.showFullReview ? (
 								<QuestionComponent
 									model={questionModel}
@@ -140,8 +138,9 @@ class AssessmentReviewView extends React.Component {
 			)
 		})
 
+
 		attempts.forEach(attempt => {
-			attemptReviewComponents[`assessmentReview:${attempt.attemptId}`] = attemptReviewComponent(
+			attemptReviewComponents[`assessmentReview:${attempt.id}`] = attemptReviewComponent(
 				attempt,
 				highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null
 			)

@@ -15,6 +15,7 @@ const { ModalUtil } = Common.util
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil, FocusUtil } = Viewer.util
+const { AssessmentStore } = Viewer.stores
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -44,6 +45,9 @@ class Assessment extends React.Component {
 	}
 
 	static getCurrentStep(props) {
+		if(props.moduleData.assessmentState.attemptHistory === null){
+			AssessmentStore.getAttemptHistory()
+		}
 		const assessment = AssessmentUtil.getAssessmentForModel(
 			props.moduleData.assessmentState,
 			props.model

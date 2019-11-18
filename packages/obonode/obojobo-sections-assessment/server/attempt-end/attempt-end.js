@@ -39,7 +39,7 @@ const endAttempt = async (req, res) => {
 	logSuccess('getAttemptHistory')
 
 	// load all the responses for this attempt from the database
-	const responsesForAttempt = await AssessmentModel.fetchResponsesForAttempt(req.params.attemptId)
+	const responsesForAttempt = await AssessmentModel.fetchResponsesForAttempts([req.params.attemptId])
 	logSuccess('fetchResponsesForAttempt')
 
 	// load the draft document to get the assessment model from the database
@@ -52,7 +52,7 @@ const endAttempt = async (req, res) => {
 		assessmentModel,
 		attempt.state,
 		attemptHistory,
-		responsesForAttempt
+		Array.from(responsesForAttempt.values())
 	)
 	logSuccess('getCalculatedScores')
 
