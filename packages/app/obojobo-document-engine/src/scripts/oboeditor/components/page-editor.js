@@ -11,6 +11,7 @@ import { Editor } from 'slate-react'
 import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
+import FormatPlugin from '../plugins/format-plugin'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
@@ -91,6 +92,7 @@ class PageEditor extends React.Component {
 		const editorPlugins = [
 			EditorSchema,
 			ClipboardPlugin,
+			FormatPlugin,
 			hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
 		]
 

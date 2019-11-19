@@ -8,6 +8,8 @@ import Converter from './converter'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
+console.log(Converter)
+
 const Heading = {
 	name: HEADING_NODE,
 	menuLabel: 'Heading',

@@ -1,6 +1,8 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 const slateToObo = node => {
 	const textGroup = node.nodes.map(line => {
@@ -56,4 +58,10 @@ const oboToSlate = node => {
 	}
 }
 
-export default { slateToObo, oboToSlate }
+const switchType = {
+	'ObojoboDraft.Chunks.Heading': (level, node) => {
+		console.log(node, level)
+	}
+}
+
+export default { slateToObo, oboToSlate, switchType }

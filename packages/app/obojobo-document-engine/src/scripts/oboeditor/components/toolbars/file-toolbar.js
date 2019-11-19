@@ -26,20 +26,6 @@ const textMenu = {
 	}))
 }
 
-const paragraphMenu = {
-	name: 'Paragraph styles',
-	type: 'sub-menu',
-	menu: [
-		{ name: 'Normal Text', type: 'action', disabled: true },
-		{ name: 'Heading 1', type: 'action', disabled: true },
-		{ name: 'Heading 2', type: 'action', disabled: true },
-		{ name: 'Heading 3', type: 'action', disabled: true },
-		{ name: 'Heading 4', type: 'action', disabled: true },
-		{ name: 'Heading 5', type: 'action', disabled: true },
-		{ name: 'Heading 6', type: 'action', disabled: true }
-	]
-}
-
 const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
 
 const alignMenu = {
@@ -80,8 +66,6 @@ const bulletsMenu = {
 	]
 }
 
-const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
-
 const isCollapsed = selection => {
 	return selection.focus.key === selection.anchor.key && selection.focus.offset === selection.anchor.offset
 }
@@ -117,12 +101,29 @@ const FileToolbar = props => {
 		{ name: 'Delete', type: 'action', action: () => editor.current.delete(), disabled: isCollapsed(props.value.selection) },
 		{ name: 'Select all', type: 'action', action: () => editor.current.moveToRangeOfDocument().focus() }
 	]
+
+
+
+	const paragraphMenu = {
+		name: 'Paragraph styles',
+		type: 'sub-menu',
+		menu: [
+			{ name: 'Normal Text', type: 'action', action: () => editor.current.changeToText() },
+			{ name: 'Heading 1', type: 'action', disabled: true },
+			{ name: 'Heading 2', type: 'action', disabled: true },
+			{ name: 'Heading 3', type: 'action', disabled: true },
+			{ name: 'Heading 4', type: 'action', disabled: true },
+			{ name: 'Heading 5', type: 'action', disabled: true },
+			{ name: 'Heading 6', type: 'action', disabled: true }
+		]
+	}
 	textMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
 	})
 	alignMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
 	})
+	const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
 
 	const saved = props.saved ? 'saved' : ''
 	return (
