@@ -56,7 +56,6 @@ const endAttempt = async (req, res) => {
 	)
 	logSuccess('getCalculatedScores')
 
-
 	// Save the results and complete this attempt
 	const assessmentScoreId = await AssessmentModel.completeAttempt(
 		attempt.assessmentId,
@@ -117,14 +116,7 @@ const endAttempt = async (req, res) => {
 	)
 	logSuccess('sendLTIScore')
 
-	// return attempts
-	return await AssessmentModel.fetchAttemptHistory(
-		req.currentUser.id,
-		attempt.draftId,
-		req.currentVisit.is_preview,
-		req.currentVisit.resource_link_id,
-		attempt.assessmentId
-	)
+	return calculatedScores.assessmentScoreDetails
 }
 
 module.exports = endAttempt

@@ -100,15 +100,6 @@ const getGradebookStatus = (
 		return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
 	}
 
-	// if (
-	// 	requiredDataError !== null ||
-	// 	(outcomeDataError !== null && outcomeDataError !== ERROR_FATAL_NO_SECRET_FOR_KEY)
-	// ) {
-	// 	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
-	// }
-
-	// return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
-
 	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
 }
 
@@ -122,34 +113,20 @@ const getLatestHighestAssessmentScoreRecord = (
 	resourceLinkId,
 	isPreview = false
 ) => {
-	const result = {
-		id: null,
-		userId: null,
-		draftId: null,
-		contentId: null,
-		assessmentId: null,
-		attemptId: null,
-		score: null,
-		scoreDetails: null,
-		isPreview: null,
-		error: null
-	}
-
 	return db
 		.oneOrNone(
 			`
 				SELECT
 					T1.id,
-					T1.created_at,
-					T1.user_id,
-					T1.draft_id,
-					T1.draft_content_id,
-					T1.assessment_id,
-					T1.attempt_id,
+					T1.user_id as userId,
+					T1.draft_id as draftId,
+					T1.draft_content_id as contentId,
+					T1.assessment_id as assessmentId,
+					T1.attempt_id as attemptId,
 					T1.score,
-					T1.is_preview,
-					T1.score_details,
-					T1.resource_link_id
+					T1.score_details as scoreDetails,
+					T1.is_preview as isPreview,
+					T1.resource_link_id as resourceLinkId
 				FROM
 				(
 					SELECT
@@ -183,19 +160,7 @@ const getLatestHighestAssessmentScoreRecord = (
 			if (!dbResult) {
 				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
 			}
-
-			result.id = dbResult.id
-			result.userId = dbResult.user_id
-			result.draftId = dbResult.draft_id
-			result.contentId = dbResult.draft_content_id
-			result.assessmentId = dbResult.assessment_id
-			result.attemptId = dbResult.attempt_id
-			result.score = dbResult.score
-			result.scoreDetails = dbResult.score_details
-			result.isPreview = dbResult.is_preview
-			result.resourceLinkId = dbResult.resource_link_id
-
-			return result
+			return dbResult
 		})
 		.catch(e => {
 			logger.error('Error in getLatestHighestAssessmentScoreRecord')
@@ -234,14 +199,13 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 			`
 			SELECT
 				DISTINCT ON (T1.assessment_id)
-				T1.assessment_id,
-				T1.assessment_score_id,
-				T1.score_sent,
-				T1.lti_sent_date,
+				T1.assessment_id AS assessmentId,
+				T1.assessment_score_id AS assessmentScoreId,
+				T1.score_sent AS scoreSent,
+				T1.lti_sent_date AS sentDate,
 				T1.status,
-				T1.gradebook_status,
-				T1.status_details,
-				T1.lti_id
+				T1.gradebook_status AS gradebookStatus,
+				T1.status_details AS statusDetails
 			FROM
 			(
 				SELECT
@@ -275,22 +239,11 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 		.then(result => {
 			const ltiStatesByAssessmentId = {}
 
-			if (!result || !result.length || result.length === 0) {
-				return ltiStatesByAssessmentId
+			if (result && result.length) {
+				result.forEach(row => {
+					ltiStatesByAssessmentId[row.assessmentId] = row
+				})
 			}
-
-			result.forEach(row => {
-				ltiStatesByAssessmentId[row.assessment_id] = {
-					assessmentId: row.assessment_id,
-					assessmentScoreId: row.assessment_score_id,
-					scoreSent: row.score_sent,
-					sentDate: row.lti_sent_date,
-					status: row.status,
-					gradebookStatus: row.gradebook_status,
-					statusDetails: row.status_details
-				}
-			})
-
 			return ltiStatesByAssessmentId
 		})
 		.catch(e => {
