@@ -11,15 +11,14 @@ class AssessmentScoreReporter {
 		this.allAttempts = allAttempts
 	}
 
-	getReportFor(attemptNumberToGenerateReportFor) {
-		if (attemptNumberToGenerateReportFor === 0) {
+	getReportFor(attemptNumber) {
+		if (attemptNumber === 0) {
 			throw new Error(
-				'attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt'
+				'getReportFor parameter is not zero-indexed - Use "1" for first attempt'
 			)
 		}
 
-		const assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1]
-			.scoreDetails
+		const assessScoreInfoToReport = this.allAttempts[attemptNumber - 1].scoreDetails
 
 		return {
 			textItems: getTextItems(
@@ -27,7 +26,7 @@ class AssessmentScoreReporter {
 				getReportDisplayValuesForAttempt(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)
 			),
 			scoreChangeDescription: getScoreChangeDescription(
-				getScoreComparisionData(this.allAttempts, attemptNumberToGenerateReportFor)
+				getScoreComparisionData(this.allAttempts, attemptNumber)
 			)
 		}
 	}
