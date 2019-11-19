@@ -48,10 +48,7 @@ const EditorSchema = {
 							object: 'block',
 							type: TEXT_NODE
 						})
-						return editor.withoutNormalizing(c => {
-							c.removeNodeByKey(child.key)
-							return c.insertNodeByKey(node.key, index, block)
-						})
+						editor.wrapNodeByKey(node.key, block)
 					}
 				}
 			}

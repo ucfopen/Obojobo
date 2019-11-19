@@ -46,7 +46,7 @@ class _Registry {
 			insertJSON: EditorNode.json && EditorNode.json.emptyNode,
 			slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
 			oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
-			switchType: EditorNode.helpers && EditorNode.helpers.slateType,
+			switchType: EditorNode.helpers && EditorNode.helpers.switchType,
 			plugins: EditorNode.plugins,
 			getNavItem: EditorNode.getNavItem,
 			supportsChildren: EditorNode.supportsChildren || false,
@@ -80,6 +80,7 @@ class _Registry {
 				isInsertable: false,
 				slateToObo: null,
 				oboToSlate: null,
+				switchType: null,
 				plugins: null,
 				getPasteNode: node => node,
 				supportsChildren: false

@@ -1,3 +1,5 @@
+import { Block } from 'slate'
+
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -49,8 +51,15 @@ const oboToSlate = node => {
 }
 
 const switchType = {
-	'ObojoboDraft.Chunks.Text': node => {
-		console.log(node)
+	'ObojoboDraft.Chunks.Text': (editor, node) => {
+		editor.withoutNormalizing(() => {
+			editor.setNodeByKey(node.key, TEXT_LINE_NODE)
+
+			const block = Block.fromJSON({
+				object: 'block',
+				type: TEXT_NODE
+			})
+		})
 	}
 }
 
