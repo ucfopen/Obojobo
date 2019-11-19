@@ -21,7 +21,8 @@ class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false,
+			isFetchingEndAttempt: false,
+			isFetchingHistory: true,
 			currentStep: Assessment.getCurrentStep(props)
 		}
 		this.onEndAttempt = this.onEndAttempt.bind(this)
@@ -35,6 +36,13 @@ class Assessment extends React.Component {
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
+	componentDidMount() {
+		AssessmentStore.getAttemptHistory()
+		.then(() => {
+			this.setState({isFetchingHistory: false})
+		})
+	}
+
 	static focusOnContent() {
 		Dispatcher.trigger(FOCUS_ON_ASSESSMENT_CONTENT)
 	}
@@ -45,9 +53,6 @@ class Assessment extends React.Component {
 	}
 
 	static getCurrentStep(props) {
-		if(props.moduleData.assessmentState.attemptHistory === null){
-			AssessmentStore.getAttemptHistory()
-		}
 		const assessment = AssessmentUtil.getAssessmentForModel(
 			props.moduleData.assessmentState,
 			props.model
@@ -82,11 +87,11 @@ class Assessment extends React.Component {
 	}
 
 	onEndAttempt() {
-		this.setState({ isFetching: true })
+		this.setState({ isFetchingEndAttempt: true })
 	}
 
 	onAttemptEnded() {
-		this.setState({ isFetching: false })
+		this.setState({ isFetchingEndAttempt: false })
 	}
 
 	isAttemptComplete() {
@@ -107,7 +112,7 @@ class Assessment extends React.Component {
 
 	onClickSubmit() {
 		// disable multiple clicks
-		if (this.state.isFetching) return
+		if (this.state.isFetchingEndAttempt) return
 
 		if (!this.isAttemptComplete()) {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
@@ -162,6 +167,8 @@ class Assessment extends React.Component {
 	}
 
 	render() {
+		if(this.state.isFetchingHistory) return 'Loading...'
+
 		const childEl = (() => {
 			switch (this.state.curStep) {
 				case 'pre-test':
@@ -176,7 +183,7 @@ class Assessment extends React.Component {
 							moduleData={this.props.moduleData}
 							onClickSubmit={this.onClickSubmit}
 							isAttemptComplete={this.isAttemptComplete()}
-							isFetching={this.state.isFetching}
+							isFetching={this.state.isFetchingEndAttempt}
 						/>
 					)
 

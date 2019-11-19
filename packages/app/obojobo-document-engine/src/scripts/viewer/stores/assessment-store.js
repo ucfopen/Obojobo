@@ -80,8 +80,6 @@ class AssessmentStore extends Store {
 		if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
 		}
-
-		this.getAttemptHistory()
 	}
 
 	displayScoreImportNotice(importableScore) {
@@ -109,12 +107,32 @@ class AssessmentStore extends Store {
 		)
 	}
 
+	getAssessmentSummaryById(assessmentId){
+		// search for it in our summaries
+		let summary = this.state.assessmentSummary.find(s => s.assessmentId === assessmentId)
+
+		// if it's not found, we don't have one yet, make one
+		if(!summary){
+			summary = {
+				assessmentId: assessmentId,
+				importUsed: false,
+				scores: [],
+				unfinishedAttemptId: null
+			}
+
+			// make sure it's stored in the state
+			this.state.assessmentSummary[assessmentId] = summary
+		}
+
+		return summary
+	}
+
 	updateAttempts(attemptsByAssessment) {
 		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
 			const attempts = assessmentItem.attempts
-			const stateSummary = this.state.assessmentSummary.find(s => s.assessmentId === assessId)
+			const stateSummary = this.getAssessmentSummaryById(assessId)
 			let stateAssessment = this.state.assessments[assessId]
 
 			// initialize

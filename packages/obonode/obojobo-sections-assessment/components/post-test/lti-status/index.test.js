@@ -5,10 +5,10 @@ import Viewer from 'Viewer'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
+import LTINetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/lti-network-states'
+import LTIResyncStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/lti-resync-states'
 
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
-
-const { LTINetworkStates, LTIResyncStates } = Viewer.stores.assessmentStore
 
 const getLtiState = gradebookStatus => ({
 	state: {
