@@ -47,6 +47,7 @@ class _Registry {
 			slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
 			oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
 			plugins: EditorNode.plugins,
+			getPasteNode: EditorNode.getPasteNode,
 			getNavItem: EditorNode.getNavItem,
 			supportsChildren: EditorNode.supportsChildren || false,
 			ignore: EditorNode.ignore || false
