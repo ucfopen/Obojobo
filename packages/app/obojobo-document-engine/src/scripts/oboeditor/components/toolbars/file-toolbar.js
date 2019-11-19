@@ -109,16 +109,17 @@ const FileToolbar = props => {
 		type: 'sub-menu',
 		menu: [
 			{ name: 'Normal Text', type: 'action', action: () => editor.current.changeToText() },
-			{ name: 'Heading 1', type: 'action', disabled: true },
-			{ name: 'Heading 2', type: 'action', disabled: true },
-			{ name: 'Heading 3', type: 'action', disabled: true },
-			{ name: 'Heading 4', type: 'action', disabled: true },
-			{ name: 'Heading 5', type: 'action', disabled: true },
-			{ name: 'Heading 6', type: 'action', disabled: true }
+			{ name: 'Heading 1', type: 'action', action: () => editor.current.changeToHeading(1) },
+			{ name: 'Heading 2', type: 'action', action: () => editor.current.changeToHeading(2) },
+			{ name: 'Heading 3', type: 'action', action: () => editor.current.changeToHeading(3) },
+			{ name: 'Heading 4', type: 'action', action: () => editor.current.changeToHeading(4) },
+			{ name: 'Heading 5', type: 'action', action: () => editor.current.changeToHeading(5) },
+			{ name: 'Heading 6', type: 'action', action: () => editor.current.changeToHeading(6) }
 		]
 	}
 	textMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
+		i.disabled = isCollapsed(props.value.selection)
 	})
 	alignMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
@@ -151,7 +152,7 @@ const FileToolbar = props => {
 			</div>
 			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Format" menu={formatMenu} disabled={isCollapsed(props.value.selection)}/>
+					<DropDownMenu name="Format" menu={formatMenu} />
 				</div>
 			) : null}
 			<div className={'saved-message ' + saved}>Saved!</div>

@@ -56,7 +56,6 @@ class Question extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.node.toJSON())
 		const content = this.props.node.data.get('content')
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		let questionType

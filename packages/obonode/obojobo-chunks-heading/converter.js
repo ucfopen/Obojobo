@@ -52,14 +52,11 @@ const oboToSlate = node => {
 
 const switchType = {
 	'ObojoboDraft.Chunks.Text': (editor, node) => {
-		editor.withoutNormalizing(() => {
-			editor.setNodeByKey(node.key, TEXT_LINE_NODE)
+		editor.setNodeByKey(node.key, TEXT_NODE)
+	},
 
-			const block = Block.fromJSON({
-				object: 'block',
-				type: TEXT_NODE
-			})
-		})
+	'ObojoboDraft.Chunks.Heading': (editor, node, level) => {
+		editor.setNodeByKey(node.key, { data: { content: {...node.data.get('content'), level }}})
 	}
 }
 

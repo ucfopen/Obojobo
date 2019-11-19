@@ -129,6 +129,12 @@ Array [
   },
   Object {
     "commands": Object {
+      "changeToHeading": [Function],
+      "changeToText": [Function],
+    },
+  },
+  Object {
+    "commands": Object {
       "markUnsaved": [Function],
       "toggleEditable": [Function],
     },
