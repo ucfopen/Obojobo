@@ -126,9 +126,13 @@ class AssessmentPostTest extends React.Component {
 					{Math.round(assessmentScore)}
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>
-				<span className="from-attempt">{`From attempt ${
-					highestAttempts[0].scoreDetails.attemptNumber
-				}`}</span>
+				{ props.moduleData.assessmentState.importHasBeenUsed
+					? <span className="from-attempt">Imported Score</span>
+					: <span className="from-attempt">{`From attempt ${
+							highestAttempts[0].scoreDetails.attemptNumber
+						}`}</span>
+				}
+
 			</div>
 		)
 	}

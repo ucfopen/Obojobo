@@ -71,7 +71,10 @@ class AssessmentReviewView extends React.Component {
 								</h4>
 								<div className="attempt-info-content">
 									<div>
-										Submitted{' '}
+										{ attempt.isImported
+											? 'Imported '
+											: 'Submitted '
+										}
 										<time dateTime={machineDateString} aria-hidden="true">
 											{dateString}
 										</time>

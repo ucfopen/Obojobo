@@ -69,14 +69,13 @@ class AssessmentStore extends Store {
 			importHasBeenUsed: false,
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
-			attemptHistory: null // not loaded yet
+			attemptHistoryLoadState: 'none' // not loaded yet
 		}
 
 		// Any unfinished attempts?
 		const unfinishedAttempt = ext.assessmentSummary.find(el => el.unfinishedAttemptId !== null)
 		if(unfinishedAttempt) this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
 
-		// this.updateAttempts([])
 
 		if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
@@ -115,6 +114,7 @@ class AssessmentStore extends Store {
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
 			const attempts = assessmentItem.attempts
+			const stateSummary = this.state.assessmentSummary.find(s => s.assessmentId === assessId)
 			let stateAssessment = this.state.assessments[assessId]
 
 			// initialize
@@ -139,17 +139,30 @@ class AssessmentStore extends Store {
 				'assessmentScore'
 			)
 
+			stateSummary.scores = []
 			// copy attempts to state
 			// + check to see if import has been used
 			attempts.forEach(attempt => {
 				if(attempt.isImported){
 					this.state.importHasBeenUsed = true
+					stateSummary.importUsed = true
 				}
-				this.state.assessments[attempt.assessmentId].attempts.push(attempt)
+
+				if(!attempt.isFinished){
+					stateSummary.unfinishedAttemptId = attempt.id
+				}
+
+				stateAssessment.attempts.push(attempt)
+				stateSummary.scores.push(attempt.assessmentScore)
 			})
+
+			// can no longer import now that we have a score
+			// @TODO: this won't support multiple attempts per module yet
+			if(stateSummary.scores.length) this.state.importableScore = null
 		})
 
 		// UPDATE QUESTION STORE
+		// @TODO: endAttempt calls  QuestionUtil.hideQuestion and QuestionUtil.clearResponse, then we do this. is it needed?
 		for (const assessment in this.state.assessments) {
 			this.state.assessments[assessment].attempts.forEach(attempt => {
 				const qState = {
@@ -220,7 +233,7 @@ class AssessmentStore extends Store {
 
 	getAttemptHistory(){
 		const { draftId, visitId } = NavStore.getState()
-		this.state.attemptHistory = 'loading'
+		this.state.attemptHistoryLoadState = 'loading'
 		return AssessmentAPI.getAttemptHistory({draftId, visitId})
 		.then(res => {
 			if (res.status === 'error') {
@@ -228,7 +241,7 @@ class AssessmentStore extends Store {
 			}
 
 			this.updateAttempts(res.value)
-			this.state.attemptHistory = 'loaded'
+			this.state.attemptHistoryLoadState = 'loaded'
 			this.triggerChange()
 		})
 	}
@@ -380,18 +393,17 @@ class AssessmentStore extends Store {
 		const assessment = this.state.assessments[assessId]
 		const model = OboModel.models[assessId]
 
+		// flip all questions back over
 		assessment.current.state.chosen.forEach(question => {
 			if (question.type === QUESTION_NODE_TYPE) {
 				QuestionUtil.hideQuestion(question.id, context)
 			}
 		})
 
+		// clear responses for each question in this assessment
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)
-
-		 // can no longer import now that we have a score
-		this.state.importableScore = null
 
 		assessment.current = null
 
