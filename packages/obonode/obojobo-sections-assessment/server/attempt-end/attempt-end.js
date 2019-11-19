@@ -52,9 +52,10 @@ const endAttempt = async (req, res) => {
 		assessmentModel,
 		attempt.state,
 		attemptHistory,
-		Array.from(responsesForAttempt.values())
+		responsesForAttempt.values().next().value // return the first result
 	)
 	logSuccess('getCalculatedScores')
+
 
 	// Save the results and complete this attempt
 	const assessmentScoreId = await AssessmentModel.completeAttempt(

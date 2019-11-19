@@ -6,6 +6,8 @@ const AssessmentScore = require('./assessment-score')
 
 // if the attempt is imported, return the importedAttemptId, otherwise return this attempt's id
 const attemptIdOrImportedId = attempt => attempt.isImported ? attempt.importedAttemptId : attempt.id
+const sortByAttemptNumber = (a, b) => a.attemptNumber - b.attemptNumber
+
 
 class AssessmentModel {
 	constructor(props) {
@@ -313,26 +315,10 @@ class AssessmentModel {
 	This function assumes that attempts are all for the same assessment_id
 	*/
 	static removeAllButLastIncompleteAttempts(attempts) {
-		const complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
-
-		const incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
-
-		// no completed, return the latest incomplete
-		if (!complete.length && incomplete.length) {
-			const newestIncomplete = incomplete[incomplete.length - 1]
-			return [newestIncomplete]
-		}
-
-		if (incomplete.length) {
-			// If the last incomplete was created AFTER the last completed at date then include it too
-			const newestIncomplete = incomplete[incomplete.length - 1]
-			const newestComplete = complete[complete.length - 1]
-			if (newestIncomplete.startTime > newestComplete.finishTime) {
-				complete.push(newestIncomplete)
-			}
-		}
-
-		return complete
+		attempts = attempts.sort(sortByAttemptNumber)
+		const complete = attempts.filter(r => r.isFinished)
+		const incomplete = attempts.filter(r => !r.isFinished)
+		return complete.concat(incomplete.slice(-1))
 	}
 
 	// get all attempts containing an array of responses

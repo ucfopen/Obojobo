@@ -39,13 +39,11 @@ class Assessment extends DraftNode {
 			.then(attemptHistory => {
 				// @TODO: I'd be happier changing fetchAttemptHistory to return this exact object
 				// IF we can create a more efficient query to get this data
-				console.log(attemptHistory)
-				console.log('-----------------------------------')
-				const map = new Map()
+				const assessmentSummary = new Map()
 				attemptHistory.forEach(i => {
 					// create new object for each assessment id
-					if(!map.has(i.assessmentId)) {
-						map.set(i.assessmentId, {
+					if(!assessmentSummary.has(i.assessmentId)) {
+						assessmentSummary.set(i.assessmentId, {
 							assessmentId: i.assessmentId,
 							scores: [],
 							unfinishedAttemptId: null,
@@ -53,23 +51,20 @@ class Assessment extends DraftNode {
 						})
 					}
 
-					const current = map.get(i.assessmentId)
+					const current = assessmentSummary.get(i.assessmentId)
 
 					i.attempts.forEach(a => {
-						console.log(a)
 						current.scores.push(a.assessmentScore)
 						if(a.isFinished === false) current.unfinishedAttemptId = a.id
 						if(a.isImported === true) current.importUsed = true
 					})
 				})
 
-				const assessmentSummary = Array.from(map.values())
-
 				// only add extension if summary isn't empty
-				if(assessmentSummary.length){
+				if(assessmentSummary.size){
 					extensions.push({
 						name: NODE_NAME,
-						assessmentSummary
+						assessmentSummary: Array.from(assessmentSummary.values())
 					})
 				}
 

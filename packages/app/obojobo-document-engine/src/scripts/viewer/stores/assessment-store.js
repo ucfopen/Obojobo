@@ -111,61 +111,61 @@ class AssessmentStore extends Store {
 	}
 
 	updateAttempts(attemptsByAssessment) {
-
-		const assessments = this.state.assessments
-		let assessment
-
+		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
 			const attempts = assessmentItem.attempts
+			let stateAssessment = this.state.assessments[assessId]
 
-			if (!assessments[assessId]) {
-				// @HERE
-				assessments[assessId] = getNewAssessmentObject(assessId)
+			// initialize
+			if (!stateAssessment) {
+				stateAssessment = this.state.assessments[assessId] = getNewAssessmentObject(assessId)
 			} else {
-				assessments[assessId].attempts = []
+				stateAssessment.attempts = []
 			}
 
-			// @HERE
-			assessments[assessId].lti = assessmentItem.ltiState
-			// @HERE
-			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
+			// copy ltiState into our state
+			stateAssessment.lti = assessmentItem.ltiState
+
+			// find highest attemptScore
+			stateAssessment.highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
 				'result.attemptScore'
 			)
-			// @HERE
-			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
+
+			// find highest assessmentScore
+			stateAssessment.highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
 				'assessmentScore'
 			)
 
+			// copy attempts to state
+			// + check to see if import has been used
 			attempts.forEach(attempt => {
-				assessment = assessments[attempt.assessmentId]
 				if(attempt.isImported){
-					// @HERE
 					this.state.importHasBeenUsed = true
 				}
-					// @HERE
-				assessment.attempts.push(attempt)
+				this.state.assessments[attempt.assessmentId].attempts.push(attempt)
 			})
 		})
 
-		for (const assessment in assessments) {
-			assessments[assessment].attempts.forEach(attempt => {
-				const scoreObject = {}
-				attempt.result.questionScores.forEach(score => {
-					scoreObject[score.id] = score
-				})
-				const responces = {}
-				attempt.questionResponses.forEach(resp => {
-					responces[resp.questionId] = resp.response
-				})
-				const stateToUpdate = {
-					scores: scoreObject,
-					responses: responces
+		// UPDATE QUESTION STORE
+		for (const assessment in this.state.assessments) {
+			this.state.assessments[assessment].attempts.forEach(attempt => {
+				const qState = {
+					scores: {},
+					responses: {}
 				}
 
-				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+				attempt.result.questionScores.forEach(score => {
+					qState.scores[score.id] = score
+				})
+
+				attempt.questionResponses.forEach(resp => {
+					qState.responses[resp.questionId] = resp.response
+				})
+
+				QuestionStore.updateStateByContext(qState, `assessmentReview:${attempt.id}`)
 			})
 		}
 	}
