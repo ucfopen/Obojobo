@@ -82,13 +82,24 @@ const bulletsMenu = {
 
 const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
 
-// Build all the menu objects outside of the render function to prevent re-rendering children
-const editMenu = [
-	{ name: 'Undo', type: 'action' },
-	{ name: 'Redo', type: 'action' },
-	{ name: 'Delete', type: 'action' },
-	{ name: 'Select all', type: 'action' }
-]
+const isCollapsed = selection => {
+	return selection.focus.key === selection.anchor.key && selection.focus.offset === selection.anchor.offset
+}
+
+const insertDisabled = (name, value) => {
+	// If the selected area spans across multiple blocks, the selection is deleted before
+	// inserting, colapsing it down to the type of the first block
+	const firstType = value.blocks.get(0).type
+	if(firstType === 'ObojoboDraft.Chunks.Table.Cell') return true
+
+	if(value.fragment.filterDescendants(node => node.type === 'ObojoboDraft.Chunks.Question')) {
+		if(name === 'Question' || name === 'Question Bank') return true
+
+		return false
+	}
+
+	return false
+}
 
 const FileToolbar = props => {
 	// insert actions on menu items
@@ -96,12 +107,16 @@ const FileToolbar = props => {
 	const editor = props.editorRef
 	const insertMenu = props.insertableItems.map(item => ({
 		name: item.name,
-		action: () => editor.current.insertBlock(Block.create(item.cloneBlankNode()))
+		action: () => editor.current.insertBlock(Block.create(item.cloneBlankNode())),
+		disabled: insertDisabled(item.name, props.value)
 	}))
-	editMenu[0].action = () => editor.current.undo()
-	editMenu[1].action = () => editor.current.redo()
-	editMenu[2].action = () => editor.current.delete()
-	editMenu[3].action = () => editor.current.moveToRangeOfDocument().focus()
+
+	const editMenu = [
+		{ name: 'Undo', type: 'action', action: () => editor.current.undo() },
+		{ name: 'Redo', type: 'action', action: () => editor.current.redo() },
+		{ name: 'Delete', type: 'action', action: () => editor.current.delete(), disabled: isCollapsed(props.value.selection) },
+		{ name: 'Select all', type: 'action', action: () => editor.current.moveToRangeOfDocument().focus() }
+	]
 	textMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
 	})
@@ -135,7 +150,7 @@ const FileToolbar = props => {
 			</div>
 			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Format" menu={formatMenu} />
+					<DropDownMenu name="Format" menu={formatMenu} disabled={isCollapsed(props.value.selection)}/>
 				</div>
 			) : null}
 			<div className={'saved-message ' + saved}>Saved!</div>

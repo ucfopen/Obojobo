@@ -180,6 +180,7 @@ class PageEditor extends React.Component {
 						insertableItems={this.props.insertableItems}
 						togglePlaceholders={this.togglePlaceholders}
 						showPlaceholders={this.state.showPlaceholders}
+						value={this.state.value}
 					/>
 					<ContentToolbar editorRef={this.editorRef} />
 				</div>
