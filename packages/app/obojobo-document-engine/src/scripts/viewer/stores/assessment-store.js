@@ -54,7 +54,7 @@ class AssessmentStore extends Store {
 
 		this.state = {
 			assessments: {},
-			importHasBeenUsed: false, // @TODO: this will need to be altered to support multiple assessments
+			importHasBeenUsed: false, // @TODO: this will need to be updated to support multiple assessments
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
 			attemptHistoryLoadState: 'none' // not loaded yet
@@ -96,7 +96,7 @@ class AssessmentStore extends Store {
 	}
 
 	// get an assessment summary from the state object
-	getAssessmentSummaryById(assessmentId, createIfMissing = true){
+	getAssessmentSummaryById(assessmentId, createIfMissing = false){
 		// search for it in our summaries
 		let summary = this.state.assessmentSummary.find(s => s.assessmentId === assessmentId)
 
@@ -116,7 +116,7 @@ class AssessmentStore extends Store {
 		return summary
 	}
 
-	getAssessmentById(assessmentId, createIfMissing = true){
+	getAssessmentById(assessmentId, createIfMissing = false){
 		let assessment = this.state.assessments[assessmentId]
 
 		if (!stateAssessment && createIfMissing) {
@@ -144,8 +144,8 @@ class AssessmentStore extends Store {
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
 			const attempts = assessmentItem.attempts
-			const stateSummary = this.getAssessmentSummaryById(assessId)
-			const stateAssessment = this.getAssessmentById(assessId)
+			const stateSummary = this.getAssessmentSummaryById(assessId, true)
+			const stateAssessment = this.getAssessmentById(assessId, true)
 
 			// copy attempts into state
 			stateAssessment.attempts = attempts
