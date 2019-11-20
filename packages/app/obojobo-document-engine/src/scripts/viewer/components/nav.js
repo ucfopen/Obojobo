@@ -189,6 +189,11 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
+	toggleRedAlert() {
+		const isRedAlert = NavUtil.isRedAlertEnabled(this.props.navState)
+		NavUtil.setRedAlert(!isRedAlert)
+	}
+
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
@@ -198,7 +203,8 @@ export default class Nav extends React.Component {
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled') +
+			isOrNot(navState.redAlert, 'red-alert')
 
 		return (
 			<nav
@@ -249,6 +255,9 @@ export default class Nav extends React.Component {
 					})}
 				</ul>
 				<Logo />
+				<button className="red-alert-button" onClick={this.toggleRedAlert.bind(this)}>
+					Toggle red alert
+				</button>
 			</nav>
 		)
 	}

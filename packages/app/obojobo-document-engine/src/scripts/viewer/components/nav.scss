@@ -4,6 +4,7 @@
 	$color-nav-bg: #fbfbfb;
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
+	$color-red-alert: #751010;
 	$padding: 2rem;
 
 	position: fixed;
@@ -68,6 +69,19 @@
 		list-style-type: none;
 		padding: 0 0 1rem 0;
 		border-left: solid 1px $color-text-minor;
+	}
+
+	&.is-red-alert {
+		background: $color-red-alert;
+	}
+
+	&.is-not-red-alert {
+		background: $color-nav-bg;
+	}
+
+	.red-alert-button {
+		font-size: 0.8em;
+		padding: 0.5em;
 	}
 
 	.lock-icon {
