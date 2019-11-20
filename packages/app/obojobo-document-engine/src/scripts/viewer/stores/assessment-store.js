@@ -119,7 +119,7 @@ class AssessmentStore extends Store {
 	getAssessmentById(assessmentId, createIfMissing = false){
 		let assessment = this.state.assessments[assessmentId]
 
-		if (!stateAssessment && createIfMissing) {
+		if (!assessment && createIfMissing) {
 			assessment = {
 				id: assessmentId,
 				current: null,
@@ -377,11 +377,8 @@ class AssessmentStore extends Store {
 			model.children.at(1).children.add(c)
 		}
 
-		if (!this.state.assessments[id]) {
-			this.state.assessments[id] = getNewAssessmentObject(id)
-		}
-
-		this.state.assessments[id].current = startAttemptResp
+		const stateAssessment = this.getAssessmentById(id, true)
+		stateAssessment.current = startAttemptResp
 
 		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
 		NavUtil.rebuildMenu(model.getRoot())
@@ -403,7 +400,18 @@ class AssessmentStore extends Store {
 			if (res.status === 'error') {
 				return ErrorUtil.errorResponse(res)
 			}
-			// @TODO: it'd be nice to display the score result dialog here using the results from endAttempt rather than later
+
+			const model = OboModel.models[assessmentId]
+			const reporter = new AssessmentScoreReporter({
+				assessmentRubric: model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: model.modelState.attempts,
+				allAttempts: [...assessment.attempts, {scoreDetails: res.value} ]
+			})
+
+			const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
+			const scoreReport = reporter.getReportFor(res.value.attemptNumber)
+			this.displayResultsModal(assessmentLabel, res.value.attemptNumber, scoreReport)
+
 			return this.getAttemptHistory()
 		})
 		.then(() => {
@@ -441,17 +449,6 @@ class AssessmentStore extends Store {
 		model.processTrigger('onEndAttempt')
 
 		Dispatcher.trigger('assessment:attemptEnded', assessmentId)
-
-		const attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
-		const reporter = new AssessmentScoreReporter({
-			assessmentRubric: model.modelState.rubric.toObject(),
-			totalNumberOfAttemptsAllowed: model.modelState.attempts,
-			allAttempts: assessment.attempts
-		})
-
-		const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
-		const scoreReport = reporter.getReportFor(attempt.attemptNumber)
-		this.displayResultsModal(assessmentLabel, attempt.attemptNumber, scoreReport)
 	}
 
 	displayResultsModal(label, attemptNumber, scoreReport){
