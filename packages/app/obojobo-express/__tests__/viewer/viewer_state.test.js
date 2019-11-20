@@ -180,11 +180,11 @@ describe('viewer state', () => {
 		db.oneOrNone.mockResolvedValueOnce({
 			payload: {
 				'nav:isOpen': {
-					value: true,
-					version: 1
-				},
-				is_red_alert_enabled: false
-			}
+					value: 'mockValue',
+					version: 'mockVersion'
+				}
+			},
+			is_red_alert_enabled: false
 		})
 
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
@@ -198,8 +198,8 @@ describe('viewer state', () => {
 			)
 			expect(result).toEqual({
 				'nav:isOpen': {
-					value: true,
-					version: 1
+					value: 'mockValue',
+					version: 'mockVersion'
 				},
 				'nav:redAlert': {
 					value: false

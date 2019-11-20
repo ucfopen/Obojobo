@@ -62,7 +62,7 @@ function get(userId, contentId, resourceLinkId) {
 		.oneOrNone(
 			`
 				SELECT view_state.payload, red_alert_status.is_red_alert_enabled FROM view_state
-				JOIN red_alert_status ON
+				FULL OUTER JOIN red_alert_status ON
 					view_state.user_id = red_alert_status.user_id AND
 					view_state.draft_id = red_alert_status.draft_id AND
 					view_state.draft_content_id = red_alert_status.content_id
@@ -91,7 +91,7 @@ function get(userId, contentId, resourceLinkId) {
 				}
 			}
 
-			delete result.payload.is_red_alert_enabled
+			delete result.is_red_alert_enabled
 
 			return result.payload
 		})
