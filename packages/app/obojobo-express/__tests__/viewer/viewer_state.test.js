@@ -80,7 +80,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -97,7 +97,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -114,13 +114,97 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
 				}
 			)
 			expect(logger.error).toHaveBeenCalledTimes(1)
+			done()
+		})
+	})
+
+	test('setRedAlert inserts values into red_alert_status', done => {
+		db.none.mockResolvedValueOnce({})
+
+		Viewer.setRedAlert(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockTimestamp',
+			'mockValue'
+		).then(() => {
+			expect(db.none).toHaveBeenCalledTimes(1)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('INSERT INTO red_alert_status'),
+				{
+					userId: 'mockUserId',
+					draftId: 'mockDraftId',
+					contentId: 'mockContentId',
+					timestamp: 'mockTimestamp',
+					isRedAlertEnabled: 'mockValue'
+				}
+			)
+			done()
+		})
+	})
+
+	test('setRedAlert fails on db error', done => {
+		db.none.mockRejectedValueOnce('mockDBError')
+
+		Viewer.setRedAlert(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockTimestamp',
+			'mockValue'
+		).then(() => {
+			expect(logger.error).toHaveBeenCalledTimes(1)
+			expect(db.none).toHaveBeenCalledTimes(1)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('INSERT INTO red_alert_status'),
+				{
+					userId: 'mockUserId',
+					draftId: 'mockDraftId',
+					contentId: 'mockContentId',
+					timestamp: 'mockTimestamp',
+					isRedAlertEnabled: 'mockValue'
+				}
+			)
+			done()
+		})
+	})
+
+	test('get inserts redAlert status into view_state', done => {
+		db.oneOrNone.mockResolvedValueOnce({
+			payload: {
+				'nav:isOpen': {
+					value: true,
+					version: 1
+				},
+				is_red_alert_enabled: false
+			}
+		})
+
+		Viewer.get('mockUserId', 'mockContentId').then(result => {
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			expect(db.oneOrNone).toHaveBeenCalledWith(
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
+				{
+					userId: 'mockUserId',
+					contentId: 'mockContentId'
+				}
+			)
+			expect(result).toEqual({
+				'nav:isOpen': {
+					value: true,
+					version: 1
+				},
+				'nav:redAlert': {
+					value: false
+				}
+			})
 			done()
 		})
 	})

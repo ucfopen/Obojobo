@@ -1,5 +1,8 @@
 jest.mock('../config')
-jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
+jest.mock('../viewer/viewer_state', () => ({
+	set: jest.fn(),
+	setRedAlert: jest.fn()
+}))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
 jest.mock('../models/visit')
 
@@ -8,8 +11,10 @@ const mockEvent = {
 	draftId: 'mockDraftId',
 	contentId: 'mockContentId',
 	visitId: 'mockVisitId',
+	createdAt: 'mockCreatedAt',
 	payload: {
-		open: 'yep'
+		open: 'yep',
+		redAlert: 'mockValue'
 	}
 }
 let vs
@@ -34,7 +39,8 @@ describe('viewer events', () => {
 		ve = oboRequire('viewer_events')
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
-		expect(oboEvents.on).toHaveBeenCalledTimes(2)
+		expect(oboEvents.on).toBeCalledWith('client:nav:redAlert', expect.any(Function))
+		expect(oboEvents.on).toHaveBeenCalledTimes(3)
 	})
 
 	test('executes next when included to support express middleware', () => {
@@ -94,5 +100,24 @@ describe('viewer events', () => {
 				'mockResourceLinkId'
 			)
 		})
+	})
+
+	test('client:nav:redAlert', () => {
+		expect.hasAssertions()
+		ve = oboRequire('viewer_events')
+		const [eventName, callback] = oboEvents.on.mock.calls[2]
+
+		expect(eventName).toBe('client:nav:redAlert')
+		expect(callback).toHaveLength(1) // callback has 1 argument
+
+		callback(mockEvent)
+
+		expect(vs.setRedAlert).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockCreatedAt',
+			'mockValue'
+		)
 	})
 })
