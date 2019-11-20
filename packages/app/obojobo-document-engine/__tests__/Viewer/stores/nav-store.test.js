@@ -14,7 +14,9 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	goto: jest.fn(),
 	toggle: jest.fn(),
 	getOrderedList: jest.fn(),
-	getNavTargetModel: jest.fn()
+	getNavTargetModel: jest.fn(),
+	setRedAlert: jest.fn(),
+	isRedAlertEnabled: jest.fn()
 }))
 
 jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
@@ -479,6 +481,15 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
+	test('nav:setRedAlert event fires and updates state', () => {
+		eventCallbacks['nav:redAlert']({ value: { redAlert: false } })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalled()
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
@@ -543,6 +554,11 @@ describe('NavStore', () => {
 		NavUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
 		NavStore.init('mockDraftId', null, null, 'startingpath', 11)
 		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstId')
+	})
+
+	test('init builds with red alert value', () => {
+		NavStore.init('mockDraftId', null, 12, 'startingpath', 11, { 'nav:redAlert': true })
+		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds with no first', () => {

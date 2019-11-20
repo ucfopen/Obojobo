@@ -155,6 +155,19 @@ class NavStore extends Store {
 					item.showChildren = false
 					this.triggerChange()
 				},
+				'nav:redAlert': payload => {
+					const enabled = payload.value.enabled
+					APIUtil.postEvent({
+						draftId: this.state.draftId,
+						action: 'nav:redAlert',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							redAlert: enabled
+						}
+					})
+					this.setAndTrigger({ redAlert: enabled })
+				},
 				'question:scoreSet': payload => {
 					const navItem = this.state.itemsById[payload.value.id]
 					if (navItem) {
@@ -183,6 +196,10 @@ class NavStore extends Store {
 					? Boolean(viewState['nav:isOpen'].value)
 					: true,
 			context: DEFAULT_CONTEXT,
+			redAlert:
+				viewState['nav:redAlert'] !== null && typeof viewState['nav:redAlert'] !== 'undefined'
+					? Boolean(viewState['nav:redAlert'].value)
+					: false,
 			visitId,
 			draftId
 		}

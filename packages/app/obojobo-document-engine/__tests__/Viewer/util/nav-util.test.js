@@ -517,4 +517,30 @@ describe('NavUtil', () => {
 		NavUtil.resetContext()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:resetContext')
 	})
+
+	test('setRedAlert calls Dispatcher.trigger', () => {
+		NavUtil.setRedAlert(true)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
+			value: {
+				enabled: true
+			}
+		})
+
+		NavUtil.setRedAlert(false)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
+			value: {
+				enabled: false
+			}
+		})
+	})
+
+	test('isRedAlertEnabled returns if redAlert is enabled', () => {
+		const mockState = {
+			redAlert: true
+		}
+		expect(NavUtil.isRedAlertEnabled(mockState)).toBe(true)
+
+		mockState.redAlert = false
+		expect(NavUtil.isRedAlertEnabled(mockState)).toBe(false)
+	})
 })

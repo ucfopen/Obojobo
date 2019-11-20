@@ -12,6 +12,7 @@ Object {
   "nav:openExternalLink": [Function],
   "nav:prev": [Function],
   "nav:rebuildMenu": [Function],
+  "nav:redAlert": [Function],
   "nav:resetContext": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
@@ -276,6 +277,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -292,6 +294,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -308,6 +311,24 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore init builds with red alert value 1`] = `
+Object {
+  "context": "practice",
+  "draftId": "mockDraftId",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -507,6 +528,26 @@ Object {
     },
   },
   "navTargetId": 7,
+}
+`;
+
+exports[`NavStore nav:setRedAlert event fires and updates state 1`] = `
+Array [
+  Object {
+    "action": "nav:redAlert",
+    "draftId": undefined,
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "redAlert": undefined,
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`NavStore nav:setRedAlert event fires and updates state 2`] = `
+Object {
+  "redAlert": undefined,
 }
 `;
 
