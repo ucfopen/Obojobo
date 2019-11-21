@@ -118,6 +118,7 @@ router
 	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAssessmentId])
 	.post(async (req, res) => {
 		try{
+			// @TODO validate req.body.importedAssessmentScoreId
 			// load the AssessmentScore to import
 			const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
 
@@ -137,14 +138,13 @@ router
 
 			if(attemptHistory.length !== 0) throw "Scores can only be imported if no assessment attempts have been made."
 
-			console.log(originalScore)
 			const originalAttempt = await AssessmentModel.fetchAttemptByID(originalScore.attemptId)
 
 			if(originalAttempt.userId !== req.currentUser.id) throw "Original attempt was not created by the current user"
 
-			console.log(originalAttempt)
-			const importedAttempt = await originalAttempt.importAsNewAttempt(req.currentVisit.resource_link_id)
-			const importedScore = await originalScore.importAsNewScore(importedAttempt.id, req.currentVisit.resource_link_id)
+			// db-transaction for these!
+			const importedAttempt = await originalAttempt.importAsNewAttempt(req.currentVisit.resource_link_id, txHERE)
+			const importedScore = await originalScore.importAsNewScore(importedAttempt.id, req.currentVisit.resource_link_id, txHERE)
 
 			const history = await AssessmentModel.getCompletedAssessmentAttemptHistory(
 				req.currentUser.id,

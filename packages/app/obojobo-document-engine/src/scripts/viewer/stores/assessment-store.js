@@ -65,7 +65,7 @@ class AssessmentStore extends Store {
 		if(unfinishedAttempt) this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
 
 		// Importable score?
-		if(ext.importableScore && this.state.importHasBeenUsed !== true){
+		else if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
 		}
 	}
@@ -96,12 +96,12 @@ class AssessmentStore extends Store {
 	}
 
 	// get an assessment summary from the state object
-	getAssessmentSummaryById(assessmentId, createIfMissing = false){
+	getOrCreateAssessmentSummaryById(assessmentId){
 		// search for it in our summaries
 		let summary = this.state.assessmentSummary.find(s => s.assessmentId === assessmentId)
 
 		// none found, make one?
-		if(!summary && createIfMissing){
+		if(!summary){
 			summary = {
 				assessmentId: assessmentId,
 				importUsed: false,
@@ -116,10 +116,10 @@ class AssessmentStore extends Store {
 		return summary
 	}
 
-	getAssessmentById(assessmentId, createIfMissing = false){
+	getOrCreateAssessmentById(assessmentId){
 		let assessment = this.state.assessments[assessmentId]
 
-		if (!assessment && createIfMissing) {
+		if (!assessment) {
 			assessment = {
 				id: assessmentId,
 				current: null,
@@ -139,19 +139,22 @@ class AssessmentStore extends Store {
 		return assessment
 	}
 
+	// @TODO explain purpose of this method
 	updateAttempts(attemptsByAssessment) {
 		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
 			const attempts = assessmentItem.attempts
-			const stateSummary = this.getAssessmentSummaryById(assessId, true)
-			const stateAssessment = this.getAssessmentById(assessId, true)
+			const stateSummary = this.getOrCreateAssessmentSummaryById(assessId)
+			const stateAssessment = this.getOrCreateAssessmentById(assessId)
 
 			// copy attempts into state
 			stateAssessment.attempts = attempts
 
 			// copy ltiState into state
 			stateAssessment.lti = assessmentItem.ltiState
+
+			// stateAssessment.highestAttemptScoreAttempts = Math.max(ArrayUtil.extract(attempts, 'result.attemptScore'))
 
 			// find highest attemptScore
 			stateAssessment.highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
@@ -173,7 +176,7 @@ class AssessmentStore extends Store {
 			// update unfinishedAttemptId
 			attempts.forEach(attempt => {
 				if(attempt.isImported){
-					this.state.importHasBeenUsed = true
+					this.state.importHasBeenUsed = true // @TODO: this will need to be updated to support multiple assessments
 					stateSummary.importUsed = true
 				}
 
@@ -335,6 +338,7 @@ class AssessmentStore extends Store {
 		})
 	}
 
+	// @TODO ASyNC?
 	startAttemptWithImportScoreOption(assessmentId) {
 		// import has been used, do nothing
 		if(this.state.importHasBeenUsed === true){
@@ -367,6 +371,7 @@ class AssessmentStore extends Store {
 			})
 	}
 
+	// @TODO rename updateStatefromServer
 	startAttempt(startAttemptResp) {
 		const id = startAttemptResp.assessmentId
 		const model = OboModel.models[id]
@@ -377,7 +382,7 @@ class AssessmentStore extends Store {
 			model.children.at(1).children.add(c)
 		}
 
-		const stateAssessment = this.getAssessmentById(id, true)
+		const stateAssessment = this.getOrCreateAssessmentById(id)
 		stateAssessment.current = startAttemptResp
 
 		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)

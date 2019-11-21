@@ -121,7 +121,7 @@ class AssessmentScore {
 	}
 
 	create(dbOrTransaction = db){
-		if(this.id) throw 'E'
+		if(this.id) throw 'Cannot call create on a model that has an id'
 		return dbOrTransaction.one(`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
@@ -134,7 +134,7 @@ class AssessmentScore {
 			})
 	}
 
-	importAsNewScore(attemptId, resourceLinkId){
+	importAsNewScore(attemptId, resourceLinkId, dbTransaction){
 		const newScore = this.clone()
 		delete newScore.id
 		newScore.attemptId = attemptId
@@ -144,7 +144,7 @@ class AssessmentScore {
 		newScore.scoreDetails.attemptNumber = 1 // fix the attemptNumber
 		// dispatch an event?
 		// store a caliper event?
-		return newScore.create()
+		return newScore.create(dbTransaction)
 	}
 
 }

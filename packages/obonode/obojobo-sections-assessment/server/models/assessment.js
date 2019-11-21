@@ -188,33 +188,6 @@ class AssessmentModel {
 			})
 	}
 
-	static getImportableAttempt(userId, draftContentId, isPreview){
-		return db
-			.oneOrNone(`
-				SELECT
-					*
-				FROM attempts
-				WHERE
-					user_id = $[userId]
-					AND draft_content_id = $[draftContentId]
-					AND is_preview = $[isPreview]
-					AND is_imported = false
-				ORDER BY
-					completed_at DESC
-				LIMIT 1
-				`,
-				{
-					userId,
-					isPreview,
-					draftContentId
-				})
-			.then(result => {
-				if(result){
-					return new AssessmentModel(result)
-				}
-			})
-	}
-
 	// get attempts for user and resour
 	static fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
 		const assessments = new Map()
@@ -314,6 +287,7 @@ class AssessmentModel {
 	the last complete attempts' finishTime
 	This function assumes that attempts are all for the same assessment_id
 	*/
+	// @TODO: rename with 'filter'
 	static removeAllButLastIncompleteAttempts(attempts) {
 		attempts = attempts.sort(sortByAttemptNumber)
 		const complete = attempts.filter(r => r.isFinished)
@@ -449,13 +423,14 @@ class AssessmentModel {
 			})
 	}
 
+	// @TODO delete the id here
 	clone(){
 		const clone = Object.assign({}, this)
 		return new AssessmentModel(clone)
 	}
 
 	create(dbOrTransaction = db){
-		if(this.id) throw 'E'
+		if(this.id) throw 'Cannot call create on a model that has an id'
 		return dbOrTransaction.one(`
 			INSERT INTO attempts
 				(completed_at, user_id, draft_id, assessment_id, state, result, is_preview, draft_content_id, resource_link_id, is_imported, imported_attempt_id)
@@ -471,7 +446,7 @@ class AssessmentModel {
 			})
 	}
 
-	importAsNewAttempt(resourceLinkId){
+	importAsNewAttempt(resourceLinkId, dbTransaction){
 		const newAttempt = this.clone()
 		delete newAttempt.id
 		newAttempt.isImported = true
@@ -480,7 +455,7 @@ class AssessmentModel {
 		newAttempt.resourceLinkId = resourceLinkId
 		// dispatch an event?
 		// store a caliper event?
-		return newAttempt.create()
+		return newAttempt.create(dbTransaction)
 	}
 
 

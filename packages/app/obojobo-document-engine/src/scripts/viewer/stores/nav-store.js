@@ -233,6 +233,7 @@ class NavStore extends Store {
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')
+		// @TODO announce that I'm doing something 'nav:changed', 'nav:navigated'
 		this.triggerChange()
 		return true
 	}

@@ -174,6 +174,7 @@ const AssessmentUtil = {
 		return false
 	},
 
+	// @TODO update this things name (no longer takes a model)
 	getNumberOfAttemptsCompletedForModel(state) {
 		// currently assuming there's only one assessment per module!
 		if(state.assessmentSummary && state.assessmentSummary[0] && state.assessmentSummary[0].scores){
@@ -191,6 +192,7 @@ const AssessmentUtil = {
 		return questionScores.map(q => q.score).filter(score => parseInt(score, 10) === 100).length
 	},
 
+	// @TODO move this into something like Array.extractEach /common/utils
 	findHighestAttempts(attempts, scoreProperty) {
 		if (attempts.length === 0) return []
 

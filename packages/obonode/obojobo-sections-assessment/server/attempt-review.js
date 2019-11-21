@@ -4,6 +4,7 @@ const DraftModel = require('obojobo-express/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/logger')
 
+// Extract draft caching to another function?
 const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
 	const attempt = await AssessmentModel.fetchAttemptByID(attemptId)
 	let draftDocument
