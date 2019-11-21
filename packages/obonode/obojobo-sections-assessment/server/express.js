@@ -142,9 +142,17 @@ router
 
 			if(originalAttempt.userId !== req.currentUser.id) throw "Original attempt was not created by the current user"
 
-			// db-transaction for these!
-			const importedAttempt = await originalAttempt.importAsNewAttempt(req.currentVisit.resource_link_id, txHERE)
-			const importedScore = await originalScore.importAsNewScore(importedAttempt.id, req.currentVisit.resource_link_id, txHERE)
+			let importedScore
+			await db.tx(transaction => {
+				return originalAttempt
+					.importAsNewAttempt(req.currentVisit.resource_link_id, transaction)
+					.then(importedAttemptResult => {
+						return originalScore.importAsNewScore(importedAttemptResult.id, req.currentVisit.resource_link_id, transaction)
+					})
+					.then(importedScoreResult => {
+						importedScore = importedScoreResult
+					})
+			})
 
 			const history = await AssessmentModel.getCompletedAssessmentAttemptHistory(
 				req.currentUser.id,

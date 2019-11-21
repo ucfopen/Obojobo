@@ -192,38 +192,6 @@ const AssessmentUtil = {
 		return questionScores.map(q => q.score).filter(score => parseInt(score, 10) === 100).length
 	},
 
-	// @TODO move this into something like Array.extractEach /common/utils
-	findHighestAttempts(attempts, scoreProperty) {
-		if (attempts.length === 0) return []
-
-		const splitProp = scoreProperty.split('.') // cache this for reuse below
-		let maxValue = -1
-		let attemptsWithMaxValue = [] // all attempts w/ max score
-
-		attempts.forEach(attempt => {
-			// look up a nested object property using 'dot notation'
-			// EG: 'result.attemptScore' is split to ['result', 'attemptScore']
-			// then reduce runs over that array one at a time in order
-			// feeding in  `attempt` object
-			// iteration 1: o = attempt['result']
-			// iteration 2 o = o['attemptScore']
-			const propValue = splitProp.reduce((o, i) => o[i], attempt) || -1
-
-			// new max score, reset our results
-			if (propValue > maxValue) {
-				maxValue = propValue
-				attemptsWithMaxValue = []
-			}
-
-			// keep this score
-			if(propValue === maxValue){
-				attemptsWithMaxValue.push(attempt)
-			}
-		})
-
-		return attemptsWithMaxValue
-	},
-
 	startAttempt(model) {
 		return Dispatcher.trigger('assessment:startAttempt', {
 			value: {

@@ -5,10 +5,10 @@ import getScoreChangeDescription from './assessment-score-reporter/get-score-cha
 import getTextItems from './assessment-score-reporter/get-text-items'
 
 class AssessmentScoreReporter {
-	constructor({ assessmentRubric, allAttempts, totalNumberOfAttemptsAllowed }) {
+	constructor({ assessmentRubric, allScoreDetails, totalNumberOfAttemptsAllowed }) {
 		this.assessmentRubric = assessmentRubric
 		this.totalNumberOfAttemptsAllowed = totalNumberOfAttemptsAllowed
-		this.allAttempts = allAttempts
+		this.allScoreDetails = allScoreDetails
 	}
 
 	getReportFor(attemptNumber) {
@@ -18,7 +18,8 @@ class AssessmentScoreReporter {
 			)
 		}
 
-		const assessScoreInfoToReport = this.allAttempts[attemptNumber - 1].scoreDetails
+		// @TODO: assessScoreInfoToReport is expected to have .status sometimes it doesnt
+		const assessScoreInfoToReport = this.allScoreDetails[attemptNumber - 1]
 
 		return {
 			textItems: getTextItems(
@@ -26,7 +27,7 @@ class AssessmentScoreReporter {
 				getReportDisplayValuesForAttempt(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)
 			),
 			scoreChangeDescription: getScoreChangeDescription(
-				getScoreComparisionData(this.allAttempts, attemptNumber)
+				getScoreComparisionData(this.allScoreDetails, attemptNumber)
 			)
 		}
 	}

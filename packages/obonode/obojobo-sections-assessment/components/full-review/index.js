@@ -33,7 +33,7 @@ class AssessmentReviewView extends React.Component {
 		const scoreReporter = new AssessmentScoreReporter({
 			assessmentRubric: this.props.model.modelState.rubric.toObject(),
 			totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
-			allAttempts: attempts
+			allScoreDetails: attempts.map(a => a.scoreDetails)
 		})
 
 		const attemptReviewComponent = (attempt, isAHighestScoringNonNullAttempt) => {
