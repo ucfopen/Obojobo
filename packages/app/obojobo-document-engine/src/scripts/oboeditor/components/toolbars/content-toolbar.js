@@ -5,6 +5,7 @@ import LinkMark from '../marks/link-mark'
 import ScriptMarks from '../marks/script-marks'
 import AlignMarks from '../marks/align-marks'
 import IndentMarks from '../marks/indent-marks'
+import ParagraphStyles from './paragraph-styles'
 import './content-toolbar.scss'
 
 const contentMarks = [
@@ -18,6 +19,7 @@ const contentMarks = [
 const ContentToolbar = props =>
 	(
 		<div className={`visual-editor--content-toolbar`}>
+			<ParagraphStyles editor={props.editorRef} />
 			{contentMarks.map(mark => {
 				const Icon = mark.icon
 				return (

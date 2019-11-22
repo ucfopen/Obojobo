@@ -1,9 +1,7 @@
-import { Block } from 'slate'
-
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 
 const slateToObo = node => {
 	const line = {
@@ -54,10 +52,12 @@ const switchType = {
 	'ObojoboDraft.Chunks.Text': (editor, node) => {
 		editor.setNodeByKey(node.key, TEXT_NODE)
 	},
-
-	'ObojoboDraft.Chunks.Heading': (editor, node, level) => {
-		editor.setNodeByKey(node.key, { data: { content: {...node.data.get('content'), level }}})
-	}
+	'ObojoboDraft.Chunks.Heading': (editor, node, data) => {
+		editor.setNodeByKey(node.key, { data: { content: {...node.data.get('content'), ...data }}})
+	},
+	'ObojoboDraft.Chunks.Code': (editor, node) => {
+		editor.setNodeByKey(node.key, CODE_NODE)
+	},
 }
 
 export default { slateToObo, oboToSlate, switchType }

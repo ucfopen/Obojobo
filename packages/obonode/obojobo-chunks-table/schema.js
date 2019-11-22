@@ -17,7 +17,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('table', error)
 				const { node, child, index } = error
 				const header = index === 0 && node.data.get('content').header
 				const numCols = node.data.get('content').numCols
@@ -58,7 +57,6 @@ const schema = {
 			],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
-				console.log('row', error, node, child, index)
 				const header = node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
@@ -66,11 +64,6 @@ const schema = {
 						if (child.object === 'block' && 
 							(index === node.nodes.size - 1 || index === 0)) {
 							return editor.unwrapNodeByKey(child.key)
-						}
-
-						// If a block was inserted in the middle, delete it to maintain table shape
-						if (child.object === 'block') {
-							return editor.removeNodeByKey(child.key)
 						}
 
 						return editor.wrapBlockByKey(child.key, {
@@ -91,7 +84,6 @@ const schema = {
 		'ObojoboDraft.Chunks.Table.Cell': {
 			nodes: [{ match: [{ object: 'text' }] }],
 			normalize: (editor, error) => {
-				console.log('cell', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {

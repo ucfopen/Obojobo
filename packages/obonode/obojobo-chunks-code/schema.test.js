@@ -4,6 +4,7 @@ const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 import Schema from './schema'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 describe('Code Schema', () => {
 	test('normalize fixes invalid children in code', () => {
@@ -64,5 +65,35 @@ describe('Code Schema', () => {
 		})
 
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Schema.blocks[CODE_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'block' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes non-block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Schema.blocks[CODE_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'mark' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
 	})
 })

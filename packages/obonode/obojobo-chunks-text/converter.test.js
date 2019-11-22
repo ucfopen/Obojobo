@@ -2,6 +2,8 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
 import Converter from './converter'
 
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+
 describe('Text editor', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
@@ -62,5 +64,22 @@ describe('Text editor', () => {
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('switchType[HEADING_NODE] changes leaf blocks to heading nodes', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+		const node = {
+			key: 'mockKey',
+			data: { get: () => ({}) },
+			getLeafBlocksAtRange: () => [
+				{ key: 'mockKey', data: { toJSON: () => ({}) } }
+			]
+		}
+
+		Converter.switchType[HEADING_NODE](editor, node, { level: 1 })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled
 	})
 })

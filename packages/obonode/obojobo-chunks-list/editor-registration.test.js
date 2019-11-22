@@ -895,6 +895,36 @@ describe('List editor', () => {
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'block' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes non-block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'mark' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
+	})
+
 	test('queries.createCodeLinesFromText builds text lines', () => {
 		const editor = {}
 

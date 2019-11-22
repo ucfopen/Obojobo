@@ -439,7 +439,7 @@ describe('PageEditor', () => {
 		expect(plugins).toMatchSnapshot()
 
 		// Call the save plugin
-		plugins[12].onKeyDown(
+		plugins[13].onKeyDown(
 			{
 				preventDefault: jest.fn(),
 				key: 's',

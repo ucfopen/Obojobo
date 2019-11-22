@@ -13,6 +13,10 @@ import IndentMarks from '../marks/indent-marks'
 
 import './file-toolbar.scss'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+
 const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
 
 const textMenu = {
@@ -71,6 +75,7 @@ const isCollapsed = selection => {
 }
 
 const insertDisabled = (name, value) => {
+	if(!value || !value.blocks) return false
 	// If the selected area spans across multiple blocks, the selection is deleted before
 	// inserting, colapsing it down to the type of the first block
 	const firstType = value.blocks.get(0).type
@@ -98,32 +103,66 @@ const FileToolbar = props => {
 	const editMenu = [
 		{ name: 'Undo', type: 'action', action: () => editor.current.undo() },
 		{ name: 'Redo', type: 'action', action: () => editor.current.redo() },
-		{ name: 'Delete', type: 'action', action: () => editor.current.delete(), disabled: isCollapsed(props.value.selection) },
+		{ name: 'Delete', type: 'action', action: () => editor.current.delete(), disabled: props.mode === 'visual' && isCollapsed(props.value.selection) },
 		{ name: 'Select all', type: 'action', action: () => editor.current.moveToRangeOfDocument().focus() }
 	]
-
-
 
 	const paragraphMenu = {
 		name: 'Paragraph styles',
 		type: 'sub-menu',
 		menu: [
-			{ name: 'Normal Text', type: 'action', action: () => editor.current.changeToText() },
-			{ name: 'Heading 1', type: 'action', action: () => editor.current.changeToHeading(1) },
-			{ name: 'Heading 2', type: 'action', action: () => editor.current.changeToHeading(2) },
-			{ name: 'Heading 3', type: 'action', action: () => editor.current.changeToHeading(3) },
-			{ name: 'Heading 4', type: 'action', action: () => editor.current.changeToHeading(4) },
-			{ name: 'Heading 5', type: 'action', action: () => editor.current.changeToHeading(5) },
-			{ name: 'Heading 6', type: 'action', action: () => editor.current.changeToHeading(6) }
+			{ 
+				name: 'Normal Text', 
+				type: 'action', 
+				action: () => editor.current.changeToType(TEXT_NODE) 
+			},
+			{ 
+				name: 'Heading 1', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 1 }) 
+			},
+			{ 
+				name: 'Heading 2', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 2 })  
+			},
+			{ 
+				name: 'Heading 3', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 3 })  
+			},
+			{ 
+				name: 'Heading 4', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 3 })  
+			},
+			{ 
+				name: 'Heading 5', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 3 })  
+			},
+			{ 
+				name: 'Heading 6', 
+				type: 'action', 
+				action: () => editor.current.changeToType(HEADING_NODE, { level: 3 })  
+			},
+			{ 
+				name: 'Code', 
+				type: 'action', 
+				action: () => editor.current.changeToType(CODE_NODE)  
+			}
 		]
 	}
-	textMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-		i.disabled = isCollapsed(props.value.selection)
-	})
-	alignMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-	})
+
+	if(props.mode === 'visual'){
+		textMenu.menu.forEach(i => {
+			i.action = () => i.markAction(editor.current)
+			i.disabled = isCollapsed(props.value.selection)
+		})
+		alignMenu.menu.forEach(i => {
+			i.action = () => i.markAction(editor.current)
+		})
+	}
 	const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
 
 	const saved = props.saved ? 'saved' : ''

@@ -16,11 +16,14 @@ const AlignMarks = {
 		queries: {
 			indentText(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.indent) dataJSON.indent = 0
 				dataJSON.indent = Math.min(dataJSON.indent + 1, 20)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
 			indentCode(editor, block) {
 				const dataJSON = block.data.toJSON()
+				console.log(dataJSON)
+				if(!dataJSON.content.indent) dataJSON.content.indent = 0
 				dataJSON.content.indent = dataJSON.content.indent + 1
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
@@ -46,11 +49,13 @@ const AlignMarks = {
 			},
 			unindentText(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.indent) dataJSON.indent = 0
 				dataJSON.indent = Math.max(dataJSON.indent - 1, 0)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
 			unindentCode(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.content.indent) dataJSON.content.indent = 0
 				dataJSON.content.indent = Math.max(dataJSON.content.indent - 1, 0)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},

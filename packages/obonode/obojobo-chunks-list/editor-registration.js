@@ -144,11 +144,7 @@ const List = {
 	menuLabel: 'List',
 	icon: Icon,
 	isInsertable: true,
-	helpers: {
-		isType, //@TODO check if this is needed?
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	helpers: Converter,
 	json: {
 		emptyNode
 	},
