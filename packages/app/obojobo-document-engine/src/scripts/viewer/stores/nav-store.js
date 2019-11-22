@@ -179,7 +179,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
+	init(draftId, model, startingId, startingPath, visitId, isRedAlert, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -196,10 +196,7 @@ class NavStore extends Store {
 					? Boolean(viewState['nav:isOpen'].value)
 					: true,
 			context: DEFAULT_CONTEXT,
-			redAlert:
-				viewState['nav:redAlert'] !== null && typeof viewState['nav:redAlert'] !== 'undefined'
-					? Boolean(viewState['nav:redAlert'].value)
-					: false,
+			redAlert: isRedAlert,
 			visitId,
 			draftId
 		}

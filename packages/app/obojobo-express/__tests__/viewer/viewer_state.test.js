@@ -80,7 +80,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
+				expect.stringContaining('SELECT payload FROM view_state'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -97,7 +97,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
+				expect.stringContaining('SELECT payload FROM view_state'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -114,7 +114,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
+				expect.stringContaining('SELECT payload FROM view_state'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -172,39 +172,6 @@ describe('viewer state', () => {
 					isRedAlertEnabled: 'mockValue'
 				}
 			)
-			done()
-		})
-	})
-
-	test('get inserts redAlert status into view_state', done => {
-		db.oneOrNone.mockResolvedValueOnce({
-			payload: {
-				'nav:isOpen': {
-					value: 'mockValue',
-					version: 'mockVersion'
-				}
-			},
-			is_red_alert_enabled: false
-		})
-
-		Viewer.get('mockUserId', 'mockContentId').then(result => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
-			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT view_state.payload, red_alert_status.is_red_alert_enabled'),
-				{
-					userId: 'mockUserId',
-					contentId: 'mockContentId'
-				}
-			)
-			expect(result).toEqual({
-				'nav:isOpen': {
-					value: 'mockValue',
-					version: 'mockVersion'
-				},
-				'nav:redAlert': {
-					value: false
-				}
-			})
 			done()
 		})
 	})

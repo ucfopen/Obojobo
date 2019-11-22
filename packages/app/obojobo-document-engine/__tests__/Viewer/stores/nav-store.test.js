@@ -526,44 +526,44 @@ describe('NavStore', () => {
 	})
 
 	test('init builds state with basic options', () => {
-		NavStore.init('mockDraftId', null, 12, '', 11)
+		NavStore.init('mockDraftId', null, 12, '', 11, false)
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state locked state', () => {
-		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isLocked': { value: true } })
+		NavStore.init('mockDraftId', null, 12, '', 11, false, { 'nav:isLocked': { value: true } })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state open state', () => {
-		NavStore.init('mockDraftId', null, 12, '', 11, { 'nav:isOpen': { value: true } })
+		NavStore.init('mockDraftId', null, 12, '', 11, false, { 'nav:isOpen': { value: true } })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds and goes to starting path', () => {
-		NavStore.init('mockDraftId', null, 12, 'startingpath', 11)
+		NavStore.init('mockDraftId', null, 12, 'startingpath', 11, false)
 		expect(NavUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
 	test('init builds and goes to starting id', () => {
-		NavStore.init('mockDraftId', null, 12, 'startingpath', 11)
+		NavStore.init('mockDraftId', null, 12, 'startingpath', 11, false)
 		expect(NavUtil.goto).toHaveBeenCalledWith(12)
 	})
 
 	test('init builds and goes to first with no starting id', () => {
 		NavUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
-		NavStore.init('mockDraftId', null, null, 'startingpath', 11)
+		NavStore.init('mockDraftId', null, null, 'startingpath', 11, false)
 		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstId')
 	})
 
 	test('init builds with red alert value', () => {
-		NavStore.init('mockDraftId', null, 12, 'startingpath', 11, { 'nav:redAlert': true })
+		NavStore.init('mockDraftId', null, 12, 'startingpath', 11, false, { 'nav:redAlert': true })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds with no first', () => {
 		NavUtil.getFirst.mockReturnValueOnce(undefined) //eslint-disable-line
-		NavStore.init('mockDraftId', null, null, 'startingpath', 11)
+		NavStore.init('mockDraftId', null, null, 'startingpath', 11, false)
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
 

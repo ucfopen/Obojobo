@@ -4,6 +4,7 @@ const logger = oboRequire('logger')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
 const insertEvent = oboRequire('insert_event')
+const db = oboRequire('db')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
@@ -116,11 +117,23 @@ router
 				})
 			})
 			.then(() => {
-				logger.log(
-					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
-						req.currentUser.id
-					}"`
+				return db.oneOrNone(
+					`
+						SELECT is_red_alert_enabled from red_alert_status
+						WHERE user_id = $[userId] AND draft_id = $[draftId]
+					`,
+					{
+						userId: req.currentUser.id,
+						draftId
+					}
 				)
+			})
+			.then(result => {
+				logger.log(
+					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${req.currentUser.id}"`
+				)
+
+				const isRedAlert = result && !!result.is_red_alert_enabled
 
 				// Build lti data for return
 				const lti = { lis_outcome_service_url: null }
@@ -137,7 +150,8 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartReturnExtensionsProps
+					extensions: visitStartReturnExtensionsProps,
+					isRedAlert
 				})
 			})
 			.catch(err => {

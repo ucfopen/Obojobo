@@ -440,4 +440,33 @@ describe('api visits route', () => {
 				})
 			})
 	})
+
+	test('/start returns redAlert status', () => {
+		expect.assertions(1)
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'howtune.com'
+			}
+		}
+		db.oneOrNone.mockReturnValueOnce(true)
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+		viewerState.get.mockResolvedValueOnce('view state')
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+
+		mockCurrentUser = { id: 99 }
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.body.value.isRedAlert).toBe(false)
+			})
+	})
 })

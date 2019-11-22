@@ -114,6 +114,7 @@ export default class ViewerApp extends React.Component {
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
 		let viewSessionId
+		let isRedAlert
 
 		Dispatcher.trigger('viewer:loading')
 
@@ -125,12 +126,12 @@ export default class ViewerApp extends React.Component {
 				MediaStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
-
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+				isRedAlert = visit.value.isRedAlert
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
@@ -143,6 +144,7 @@ export default class ViewerApp extends React.Component {
 					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
+					isRedAlert,
 					viewState
 				)
 				AssessmentStore.init(attemptHistory)
