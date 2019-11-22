@@ -30,11 +30,11 @@ exports.up = function(db) {
 				type: 'UUID',
 				notNull: true
 			},
-			content_id: {
+			draft_content_id: {
 				type: 'UUID',
 				notNull: true
 			},
-			creation_time: {
+			created_at: {
 				type: 'timestamp WITH TIME ZONE',
 				notNull: true,
 				defaultValue: new String('now()')

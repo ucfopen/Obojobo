@@ -34,11 +34,11 @@ function setRedAlert(userId, draftId, contentId, timestamp, isRedAlertEnabled) {
 		.none(
 			`
 				INSERT INTO red_alert_status
-				(user_id, draft_id, content_id, creation_time, is_red_alert_enabled)
+				(user_id, draft_id, draft_content_id, created_at, is_red_alert_enabled)
 				VALUES($[userId], $[draftId], $[contentId], $[timestamp], $[isRedAlertEnabled])
 				ON CONFLICT (user_id, draft_id) DO UPDATE
 				SET
-					creation_time = $[timestamp],
+					created_at = $[timestamp],
 					is_red_alert_enabled = $[isRedAlertEnabled]
 				WHERE
 					red_alert_status.user_id = $[userId] AND
