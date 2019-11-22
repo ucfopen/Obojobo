@@ -4,8 +4,10 @@ import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 class ParagraphStyles extends React.Component {
 	constructor(props) {
@@ -85,6 +87,30 @@ class ParagraphStyles extends React.Component {
 		})
 	}
 
+	reduceHeading(value) {
+		const nodeLevel = value.blocks.reduce(
+			(accum, block) => accum === block.data.get('content').level ? accum : "", 
+			value.blocks.get(0).data.get('content').level
+		)
+
+		if(nodeLevel) return 'Heading ' + nodeLevel
+
+		return ""
+	}
+
+	getParagraphStyle(value) {
+		const nodeType = value.blocks.reduce(
+			(accum, block) => accum === block.type ? accum : "", 
+			value.blocks.get(0).type
+		)
+
+		switch(nodeType){
+			case HEADING_NODE: return this.reduceHeading(value)
+			case CODE_LINE_NODE: return "Code"
+			case TEXT_LINE_NODE: return "Normal Text"
+		}
+	}
+
 	render() {
 		return (
 			<div 
@@ -96,7 +122,7 @@ class ParagraphStyles extends React.Component {
 				<button 
 					onClick={this.toggleLevelSelect}
 					ref={this.menuButton}>
-					{`Heading 1`}
+					{this.getParagraphStyle(this.props.value)}
 					<span className={isOrNot(this.state.isOpen, 'open')}>{'⌃'}</span>
 				</button>
 				<div className={'paragraph-styles-menu ' + isOrNot(this.state.isOpen, 'open')}>

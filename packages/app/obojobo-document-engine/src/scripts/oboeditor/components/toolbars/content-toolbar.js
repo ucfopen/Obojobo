@@ -19,7 +19,7 @@ const contentMarks = [
 const ContentToolbar = props =>
 	(
 		<div className={`visual-editor--content-toolbar`}>
-			<ParagraphStyles editor={props.editorRef} />
+			<ParagraphStyles editor={props.editorRef} value={props.value}/>
 			{contentMarks.map(mark => {
 				const Icon = mark.icon
 				return (

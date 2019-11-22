@@ -184,7 +184,7 @@ class PageEditor extends React.Component {
 						showPlaceholders={this.state.showPlaceholders}
 						value={this.state.value}
 					/>
-					<ContentToolbar editorRef={this.editorRef} />
+					<ContentToolbar editorRef={this.editorRef} value={this.state.value}/>
 				</div>
 
 				<EditorNav
