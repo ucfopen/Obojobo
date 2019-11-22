@@ -120,11 +120,15 @@ router
 				return db.oneOrNone(
 					`
 						SELECT is_red_alert_enabled from red_alert_status
-						WHERE user_id = $[userId] AND draft_id = $[draftId]
+						WHERE
+							user_id = $[userId] AND
+							draft_id = $[draftId] AND
+							draft_content_id = $[draftContentId]
 					`,
 					{
 						userId: req.currentUser.id,
-						draftId
+						draftId,
+						draftContentId: req.currentDocument.contentId
 					}
 				)
 			})
