@@ -231,9 +231,18 @@ class NavStore extends Store {
 
 		FocusUtil.clearFadeEffect()
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
+
+		const prevNavItemId = this.state.navTargetId
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')
-		// @TODO announce that I'm doing something 'nav:changed', 'nav:navigated'
+
+		Dispatcher.trigger('nav:afterNavChange', {
+			value: {
+				from: prevNavItemId,
+				to: this.state.navTargetId
+			}
+		})
+
 		this.triggerChange()
 		return true
 	}

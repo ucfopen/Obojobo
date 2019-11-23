@@ -96,14 +96,14 @@ const AssessmentUtil = {
 	getAttemptsRemaining(state, model) {
 		if(state.importHasBeenUsed === true) return 0
 		return Math.max(
-			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state),
+			model.modelState.attempts - this.getNumberOfAttemptsCompleted(state),
 			0
 		)
 	},
 
 	hasAttemptsRemaining(state, model) {
 		if(state.importHasBeenUsed === true) return false
-		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state) > 0
+		return model.modelState.attempts - this.getNumberOfAttemptsCompleted(state) > 0
 	},
 
 	getLTIStateForModel(state, model) {
@@ -174,8 +174,7 @@ const AssessmentUtil = {
 		return false
 	},
 
-	// @TODO update this things name (no longer takes a model)
-	getNumberOfAttemptsCompletedForModel(state) {
+	getNumberOfAttemptsCompleted(state) {
 		// currently assuming there's only one assessment per module!
 		if(state.assessmentSummary && state.assessmentSummary[0] && state.assessmentSummary[0].scores){
 			return state.assessmentSummary[0].scores.length

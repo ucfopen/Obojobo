@@ -22,7 +22,6 @@ class Assessment extends React.Component {
 		super()
 		this.state = {
 			isFetchingEndAttempt: false,
-			isFetchingHistory: true,
 			currentStep: Assessment.getCurrentStep(props)
 		}
 		this.onEndAttempt = this.onEndAttempt.bind(this)
@@ -34,13 +33,6 @@ class Assessment extends React.Component {
 
 		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
-	}
-
-	componentDidMount() {
-		AssessmentStore.getAttemptHistory()
-		.then(() => {
-			this.setState({isFetchingHistory: false})
-		})
 	}
 
 	static focusOnContent() {
@@ -167,7 +159,7 @@ class Assessment extends React.Component {
 	}
 
 	render() {
-		if(this.state.isFetchingHistory) return 'Loading...'
+		if(this.props.moduleData.assessmentState.attemptHistoryLoadState !== 'loaded') return 'Loading...'
 
 		const childEl = (() => {
 			switch (this.state.curStep) {

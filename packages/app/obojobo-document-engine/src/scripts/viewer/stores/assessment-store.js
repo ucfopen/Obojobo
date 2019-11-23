@@ -14,6 +14,7 @@ import React from 'react'
 import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
 
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
@@ -46,15 +47,25 @@ class AssessmentStore extends Store {
 				shouldPrompt()
 			}
 		})
+
+		Dispatcher.on('nav:afterNavChange', payload => {
+			if(!this.assessmentIds){
+				this.assessmentIds = new Set()
+				const assessmentModels = OboModel.getRoot().getDirectChildrenOfType(ASSESSMENT_NODE_TYPE)
+				assessmentModels.forEach(m => this.assessmentIds.add(m.get('id')))
+			}
+
+			if(this.assessmentIds.has(payload.value.to)) this.getAttemptHistory()
+		})
 	}
 
 	init(extensions) {
 		const ext = {assessmentSummary: [], importableScore: null}
-		const filteredExtArrays = extensions.filter(val => val.name === 'ObojoboDraft.Sections.Assessment')
+		const filteredExtArrays = extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
 		this.state = {
-			assessments: {},
+			assessments: {}, // assessments found in attempt history
 			importHasBeenUsed: false, // @TODO: this will need to be updated to support multiple assessments
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
@@ -141,7 +152,7 @@ class AssessmentStore extends Store {
 	}
 
 	// @TODO explain purpose of this method
-	updateAttempts(attemptsByAssessment) {
+	updateStateAfterAttemptHistory(attemptsByAssessment) {
 		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
 			const assessId = assessmentItem.assessmentId
@@ -257,18 +268,20 @@ class AssessmentStore extends Store {
 	}
 
 	getAttemptHistory(){
-		const { draftId, visitId } = NavStore.getState()
-		this.state.attemptHistoryLoadState = 'loading'
-		return AssessmentAPI.getAttemptHistory({draftId, visitId})
-		.then(res => {
-			if (res.status === 'error') {
-				return ErrorUtil.errorResponse(res)
-			}
+		if(this.state.attemptHistoryLoadState === 'none'){
+			this.state.attemptHistoryLoadState = 'loading'
+			const { draftId, visitId } = NavStore.getState()
+			return AssessmentAPI.getAttemptHistory({draftId, visitId})
+			.then(res => {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
 
-			this.updateAttempts(res.value)
-			this.state.attemptHistoryLoadState = 'loaded'
-			this.triggerChange()
-		})
+				this.updateStateAfterAttemptHistory(res.value)
+				this.state.attemptHistoryLoadState = 'loaded'
+				this.triggerChange()
+			})
+		}
 	}
 
 	startImportScoresWithAPICall(draftId, visitId, assessmentId){
@@ -282,15 +295,8 @@ class AssessmentStore extends Store {
 			if(result.status === 'ok'){
 				this.state.importHasBeenUsed = true
 				// load new attempt history
-				return AssessmentAPI.getAttemptHistory({draftId, visitId})
-				.then(res => {
-					if (res.status === 'error') {
-						return ErrorUtil.errorResponse(res)
-					}
-
-					this.updateAttempts(res.value)
-					this.triggerChange()
-				})
+				this.state.attemptHistoryLoadState === 'none'
+				return this.getAttemptHistory()
 			}
 			return result
 		})
@@ -398,10 +404,12 @@ class AssessmentStore extends Store {
 			}
 
 			const model = OboModel.models[assessmentId]
+			const allScoreDetails = assessment.attempts.map(a => a.scoreDetails)
+			allScoreDetails.push(res.value)
 			const reporter = new AssessmentScoreReporter({
 				assessmentRubric: model.modelState.rubric.toObject(),
 				totalNumberOfAttemptsAllowed: model.modelState.attempts,
-				allScoreDetails: assessment.attempts.map(a => a.scoreDetails).push(res.value)
+				allScoreDetails
 			})
 
 			const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)

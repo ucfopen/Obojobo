@@ -172,7 +172,7 @@ class OboModel extends Backbone.Model {
 		if(this.get('id') === newId) {
 			return true
 		}
-		
+
 		if(OboModel.models[newId]) {
 			return false
 		}
@@ -186,7 +186,7 @@ class OboModel extends Backbone.Model {
 
 	clone(deep = false) {
 		const clone = new OboModel(
-			{ ...this.attributes, ...{ id: this.createNewLocalId() }}, 
+			{ ...this.attributes, ...{ id: this.createNewLocalId() }},
 			this.adapter.constructor
 		)
 		this.adapter.clone(this, clone)
@@ -414,12 +414,9 @@ class OboModel extends Backbone.Model {
 		return this.remove()
 	}
 
-	// getChildrenOfType: (type) ->
-	// 	matching = []
-
-	// 	for child in @children
-	// 		if child.get('type') is type
-	// 			matching.push child
+	getDirectChildrenOfType(type) {
+		return this.children.models.filter(c => c.get('type') === type)
+	}
 
 	// 	matching
 

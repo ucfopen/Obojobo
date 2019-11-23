@@ -21,7 +21,6 @@ const endAttempt = async (req, res) => {
 		throw "Cannot end an attempt for a different module"
 	}
 
-	// @TODO check if attempt.attemptNumber already exists?
 	const attemptNumber = await AssessmentModel.getAttemptNumber(
 		attempt.userId,
 		attempt.draftId,
