@@ -24,7 +24,6 @@ const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
 	const assessmentNode = draftDocument.getChildNodeById(attempt.assessmentId)
 
 	if (assessmentNode.node.content.review !== 'always') {
-		// @TODO: are res & req needed for OboModel.yell()?!
 		const res = {}
 		const req = {}
 		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))

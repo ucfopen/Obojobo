@@ -1,5 +1,4 @@
 import AssessmentAPI from '../util/assessment-api'
-import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
 import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
 import AssessmentUtil from '../util/assessment-util'
 import Common from 'Common'
@@ -12,15 +11,15 @@ import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 import React from 'react'
 import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
+import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
+import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
+import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
-
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
-const { SimpleDialog, Dialog } = Common.components.modal
-
 
 class AssessmentStore extends Store {
 	constructor() {
@@ -82,31 +81,6 @@ class AssessmentStore extends Store {
 		}
 	}
 
-	displayScoreImportNotice(importableScore) {
-		Dispatcher.trigger('viewer:alert', {
-			value: {
-				title: 'Previous Score Import',
-				message: `Your instructor allows importing your previous high score (${Math.round(importableScore.highestScore)}%) for this module. The option to import will be shown when you start the Assessment.`
-			}
-		})
-	}
-
-	displayUnfinishedAttemptNotice(attemptId){
-		ModalUtil.show(
-			<SimpleDialog
-				ok
-				title="Resume Attempt"
-				onConfirm={this.resumeAttemptWithAPICall.bind(this, attemptId)}
-			>
-				<p>
-					It looks like you were in the middle of an attempt. We&apos;ll resume where you left
-					off.
-				</p>
-			</SimpleDialog>,
-			true
-		)
-	}
-
 	// get an assessment summary from the state object
 	getOrCreateAssessmentSummaryById(assessmentId){
 		// search for it in our summaries
@@ -151,7 +125,6 @@ class AssessmentStore extends Store {
 		return assessment
 	}
 
-	// @TODO explain purpose of this method
 	updateStateAfterAttemptHistory(attemptsByAssessment) {
 		// copy data into our state
 		attemptsByAssessment.forEach(assessmentItem => {
@@ -203,7 +176,6 @@ class AssessmentStore extends Store {
 		})
 
 		// UPDATE QUESTION STORE
-		// @TODO: endAttempt calls  QuestionUtil.hideQuestion and QuestionUtil.clearResponse, then we do this. is it needed?
 		for (const assessment in this.state.assessments) {
 			this.state.assessments[assessment].attempts.forEach(attempt => {
 				const qState = {
@@ -237,36 +209,6 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	displayPreAttemptImportScoreNotice(importableScore, importOrNot){
-		const roundedScore = Math.round(importableScore.highestScore)
-		ModalUtil.show(
-			<Dialog
-				centered
-				buttons={[
-					{
-						value: 'Do Not Import',
-						onClick: () => {importOrNot(false)}
-					},
-					{
-						value: `Import Score: ${roundedScore}%`,
-						onClick: () => {importOrNot(true)}
-					}
-				]}
-				title='Import Previous Score?'
-				width='300'
-			>
-				<p>
-					You have previously completed this module and your instructor is
-					allowing you to import your high score of <strong>{roundedScore}%</strong>
-				</p>
-				<p>
-					Would you like to use that score now or ignore it and begin the Assessment?
-				</p>
-
-			</Dialog>
-		)
-	}
-
 	getAttemptHistory(){
 		if(this.state.attemptHistoryLoadState === 'none'){
 			this.state.attemptHistoryLoadState = 'loading'
@@ -292,13 +234,14 @@ class AssessmentStore extends Store {
 			importedAssessmentScoreId: this.state.importableScore.assessmentScoreId
 		})
 		.then(result => {
-			if(result.status === 'ok'){
-				this.state.importHasBeenUsed = true
-				// load new attempt history
-				this.state.attemptHistoryLoadState === 'none'
-				return this.getAttemptHistory()
+			if(result.status !== 'ok'){
+				throw 'An error occured importing your score.'
 			}
-			return result
+
+			this.state.importHasBeenUsed = true
+			// load new attempt history
+			this.state.attemptHistoryLoadState = 'none'
+			return this.getAttemptHistory()
 		})
 	}
 
@@ -329,15 +272,6 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	displayImportAlreadyUsed(importableScore) {
-		Dispatcher.trigger('viewer:alert', {
-			value: {
-				title: 'Score Already Imported',
-				message: 'You have already imported a score for this module in this course, no attempts remain.'
-			}
-		})
-	}
-
 	startAttemptWithImportScoreOption(assessmentId) {
 		// import has been used, do nothing
 		if(this.state.importHasBeenUsed === true){
@@ -353,11 +287,12 @@ class AssessmentStore extends Store {
 						resolve(shouldImport)
 					}
 
-					return this.displayPreAttemptImportScoreNotice(this.state.importableScore, importOrNotCallback)
+					this.displayPreAttemptImportScoreNotice(this.state.importableScore.highestScore, importOrNotCallback)
 				}
-
-				// no importable score, next
-				resolve(false)
+				else{
+					// no importable score, next
+					resolve(false)
+				}
 			})
 			.then(shouldImport => {
 				const { draftId, visitId } = NavStore.getState()
@@ -366,6 +301,7 @@ class AssessmentStore extends Store {
 			})
 			.catch(error => {
 				console.error(error) /* eslint-disable-line no-console */
+				ErrorUtil.errorResponse(error)
 			})
 	}
 
@@ -455,26 +391,6 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptEnded', assessmentId)
 	}
 
-	displayResultsModal(label, attemptNumber, scoreReport){
-		ModalUtil.show(
-			<Dialog
-				modalClassName="obojobo-draft--sections--assessment--results-modal"
-				centered
-				buttons={[
-					{
-						value: `Show ${label} Overview`,
-						onClick: this.onCloseResultsDialog.bind(this),
-						default: true
-					}
-				]}
-				title={`Attempt ${attemptNumber} Results`}
-				width="35rem"
-			>
-				<AssessmentScoreReportView report={scoreReport} />
-			</Dialog>
-		)
-	}
-
 	tryResendLTIScore(assessmentId) {
 		const assessmentModel = OboModel.models[assessmentId]
 		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
@@ -537,6 +453,49 @@ class AssessmentStore extends Store {
 
 	setState(newState) {
 		return (this.state = newState)
+	}
+
+	displayPreAttemptImportScoreNotice(highestScore, importOrNot){
+		ModalUtil.show(
+			<PreAttemptImportScoreDialog
+				highestScore={highestScore}
+				onChoice={importOrNot}
+			/>
+		)
+	}
+
+	displayResultsModal(label, attemptNumber, scoreReport){
+		ModalUtil.show(
+			<ResultsDialog
+				label={lable}
+				attemptNumber={attemptNumber}
+				scoreReport={scoreReport}
+				onShowClick={this.onCloseResultsDialog.bind(this)}
+			/>
+		)
+	}
+
+	displayUnfinishedAttemptNotice(attemptId){
+		const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
+		ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
+	}
+
+	displayScoreImportNotice(importableScore) {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Previous Score Import',
+				message: `Your instructor allows importing your previous high score (${Math.round(importableScore.highestScore)}%) for this module. The option to import will be shown when you start the Assessment.`
+			}
+		})
+	}
+
+	displayImportAlreadyUsed(importableScore) {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'Score Already Imported',
+				message: 'You have already imported a score for this module in this course, no attempts remain.'
+			}
+		})
 	}
 }
 
