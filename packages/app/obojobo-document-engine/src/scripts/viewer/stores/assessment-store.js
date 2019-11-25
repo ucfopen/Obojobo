@@ -96,7 +96,7 @@ class AssessmentStore extends Store {
 			}
 
 			// add to the state
-			this.state.assessmentSummary[assessmentId] = summary
+			this.state.assessmentSummary.push(summary)
 		}
 
 		return summary
@@ -342,6 +342,7 @@ class AssessmentStore extends Store {
 			const model = OboModel.models[assessmentId]
 			const allScoreDetails = assessment.attempts.map(a => a.scoreDetails)
 			allScoreDetails.push(res.value)
+
 			const reporter = new AssessmentScoreReporter({
 				assessmentRubric: model.modelState.rubric.toObject(),
 				totalNumberOfAttemptsAllowed: model.modelState.attempts,
@@ -352,6 +353,7 @@ class AssessmentStore extends Store {
 			const scoreReport = reporter.getReportFor(res.value.attemptNumber)
 			this.displayResultsModal(assessmentLabel, res.value.attemptNumber, scoreReport)
 
+			this.state.attemptHistoryLoadState = 'none'
 			return this.getAttemptHistory()
 		})
 		.then(() => {
@@ -467,7 +469,7 @@ class AssessmentStore extends Store {
 	displayResultsModal(label, attemptNumber, scoreReport){
 		ModalUtil.show(
 			<ResultsDialog
-				label={lable}
+				label={label}
 				attemptNumber={attemptNumber}
 				scoreReport={scoreReport}
 				onShowClick={this.onCloseResultsDialog.bind(this)}
