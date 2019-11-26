@@ -19,7 +19,7 @@ const PageLibrary = (props) =>
 
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">
-				<p>Find the modules your course needs.</p>
+				<p>Find modules for your course.</p>
 				{props.collections.map(collection =>
 					<span key={collection.id}>
 						<div className="repository--main-content--title">{collection.title}</div>

@@ -146,7 +146,7 @@
 
 .repository--main-content {
 	box-sizing: border-box;
-	max-width: 800px;
+	max-width: 770px;
 	margin: 0 auto;
 
 	@include mq($from: zero, $until: tablet) {
@@ -161,6 +161,7 @@
 
 	img {
 		max-width: 100%;
+		border: 1px solid $color-shadow;
 	}
 }
 

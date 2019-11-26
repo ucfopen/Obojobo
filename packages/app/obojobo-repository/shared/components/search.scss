@@ -28,6 +28,10 @@ $search-input-height: 30px;
 		&:hover,
 		&:focus {
 			border-color: $color-action;
+
+			+.repository--nav--links--search--icon {
+				fill: $color-action;
+			}
 		}
 
 		&.is-not-empty {

@@ -11,6 +11,15 @@
 	min-width: 135px;
 	margin-right: 10px;
 
+	> button {
+		font: inherit;
+		border: none;
+		background: none;
+		color: inherit;
+		padding: 0;
+		display: block;
+	}
+
 	.child-buttons {
 		display: none;
 	}
@@ -39,6 +48,47 @@
 			line-height: $size;
 			content: '＋';
 			color: $color-action;
+		}
+	}
+
+	&.is-open {
+		color: $color-action;
+		background-color: white;
+		border: 1px solid darken($color-banner-bg, 10%);
+
+		.child-buttons {
+			display: block;
+			position: absolute;
+			top: 38px;
+			width: calc(100% + 2px);
+			left: 0;
+			box-sizing: border-box;
+			background: #ffffff;
+			border: 1px solid darken($color-banner-bg, 10%);
+			border-radius: 0 0 5px 5px;
+			margin-left: -1px;
+			padding: 12px 10px 0 10px;
+			z-index: 100;
+			border-top: none;
+
+			button {
+				display: block;
+				margin-bottom: 8px;
+				width: 100%;
+			}
+		}
+
+		.icon {
+			svg {
+				fill: white;
+				stroke: $color-action;
+				stroke-width: 6px;
+			}
+
+			&::after {
+				content: '＋';
+				color: $color-action;
+			}
 		}
 	}
 

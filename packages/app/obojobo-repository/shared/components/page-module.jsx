@@ -28,7 +28,7 @@ const PageModule = (props) =>
 		</RepositoryBanner>
 
 		<section className="repository--main-content">
-			<div >Created by <b>{props.owner.firstName} {props.owner.lastName}</b> on <b>{moment(props.module.createdAt).format('ll')}</b> and updated {moment(props.module.updatedAt).fromNow()}.</div>
+			<div >Module created by <b>{props.owner.firstName} {props.owner.lastName}</b> on <b>{moment(props.module.createdAt).format('ll')}</b> and updated {moment(props.module.updatedAt).fromNow()}.</div>
 
 			<h2>Use this Module in your Canvas Course</h2>
 			<p>This module can be used inside your course as an <b>assignment</b> or <b>module</b>.</p>
@@ -80,7 +80,7 @@ const PageModule = (props) =>
 				<li>Click "FIND" next to the input labeled "Enter or find an External Tool URL"</li>
 				<li>In the popup that appears, scroll down and select "ObojoboNext Module (gradebook synced)"</li>
 				<li>Choose Community Collection</li>
-				<li>Search for <code>{props.module.title}</code> or use this module's id: <code>{props.module.draftId}</code></li>
+				<li>Search for the module by its title (<code>{props.module.title}</code>) or its id (<code>{props.module.draftId}</code>)</li>
 				<li>Click Embed next to your chosen module</li>
 			</ol>
 

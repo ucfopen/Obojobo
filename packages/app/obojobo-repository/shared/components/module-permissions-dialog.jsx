@@ -49,6 +49,7 @@ class ModulePermissionsDialog extends React.Component {
 				contentLabel="Module Access"
 				className="repository--modal"
 				overlayClassName="repository--modal-overlay"
+				onRequestClose={this.closePeoplePicker}
 				>
 					<PeopleSearchDialog
 						onClose={this.closePeoplePicker}

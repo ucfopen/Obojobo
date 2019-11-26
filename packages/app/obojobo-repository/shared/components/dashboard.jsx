@@ -78,11 +78,10 @@ const Dashboard = props =>{
 			<section className="repository--main-content">
 				<div className="repository--main-content--control-bar">
 					<MultiButton title="New Module">
-						<Button onClick={() => {props.createNewModule(false)}}>New XML Module</Button>
-						<Button onClick={() => {props.createNewModule(false)}}>New Visual Editor Module</Button>
-						<Button onClick={() => {props.createNewModule(true)}}>New Sample / Tutorial</Button>
+						<Button onClick={() => {props.createNewModule(false)}}>New Module</Button>
+						<Button onClick={() => {props.createNewModule(true)}}>New Tutorial</Button>
 					</MultiButton>
-					<Search value={props.moduleSearchString} placeholder="filter..." onChange={props.filterModules} />
+					<Search value={props.moduleSearchString} placeholder="Filter..." onChange={props.filterModules} />
 				</div>
 				<div className="repository--main-content--title">My Modules</div>
 				<div className="repository--item-list--collection">
