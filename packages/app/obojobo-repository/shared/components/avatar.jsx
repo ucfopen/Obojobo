@@ -5,7 +5,7 @@ const React = require('react')
 const Avatar = props =>
 	<div className={`avatar ${props.className || ''}`} >
 		<div className="avatar--image">
-			<img src={props.avatarUrl} />
+			<img src={props.avatarUrl} alt={props.alt || ""}/>
 		</div>
 		{
 			props.notice

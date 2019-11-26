@@ -6,17 +6,31 @@ const ModuleImage = require('./module-image')
 const ModuleMenu = require('./module-menu-hoc')
 
 const Module = (props) => {
+	let timeOutId
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const onCloseMenu = () => setMenuOpen(false)
 	const onToggleMenu = (e) => {
 		setMenuOpen(!isMenuOpen)
 		e.preventDefault() // block the event from bubbling out to the parent href
 	}
+	// Handle keyboard focus
+	const onBlurHandler = () => {
+		timeOutId = setTimeout(() => {
+			setMenuOpen(false)
+		})
+	}
+	const onFocusHandler = () => {
+		clearTimeout(timeOutId);
+	}
 
 	return (
-		<div onMouseLeave={onCloseMenu} className={"repository--module-icon " + (isMenuOpen ? "is-open" : "is-not-open") }>
+		<div 
+			onMouseLeave={onCloseMenu}
+			className={"repository--module-icon " + (isMenuOpen ? "is-open" : "is-not-open") }
+			onBlur={onBlurHandler}
+			onFocus={onFocusHandler}>
 			{ props.hasMenu ?
-				<div onClick={onToggleMenu}>
+				<button onClick={onToggleMenu}>
 					<ModuleImage id={props.draftId} />
 					<div className="repository--module-icon--menu-control-button">
 						<svg height="32px" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +38,7 @@ const Module = (props) => {
 						</svg>
 					</div>
 					<div className="repository--module-icon--title">{props.title}</div>
-				</div>
+				</button>
 				: <a href={`/library/${props.draftId}`} >
 					<ModuleImage id={props.draftId} />
 					<div className="repository--module-icon--title">{props.title}</div>

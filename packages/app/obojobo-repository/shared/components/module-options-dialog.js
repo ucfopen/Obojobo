@@ -18,7 +18,7 @@ const ModuleOptionsDialog = props => (
 			<ModuleIamge id={props.draftId} />
 			<div className="module-title">{props.title}</div>
 			<Button className="close-button" onClick={props.onClose}>
-				X
+				×
 			</Button>
 		</div>
 		<h1 className="title">Module Options</h1>

@@ -79,11 +79,17 @@
 .repository--nav--current-user--menu {
 	display: none;
 	position: absolute;
-	right: -20px;
-	top: 62px;
+	left: -1em;
+	top: 4em;
 	background: #ffffff;
 	padding: 20px;
 	border-radius: 3px;
+	width: 100%;
+	text-align: left;
+
+	&.is-open {
+		display: block;
+	}
 }
 
 .repository--nav--current-user {
@@ -101,13 +107,20 @@
 	}
 }
 
-.repository--nav--current-user > .avatar {
-	position: absolute;
-	right: 0;
-	top: 5px;
-	height: 55px;
-	width: 55px;
-	margin: 0;
+.repository--nav--current-user {
+	button {
+		border: none;
+		font-size: 1em;
+	}
+
+	.avatar {
+		position: absolute;
+		right: 0;
+		top: 5px;
+		height: 55px;
+		width: 55px;
+		margin: 0;
+	}
 }
 
 .repository--nav--current-user--name {

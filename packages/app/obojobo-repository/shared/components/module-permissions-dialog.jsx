@@ -5,7 +5,7 @@ const ModuleIamge = require('./module-image')
 const ReactModal = require('react-modal')
 const Button = require('./button')
 const PeopleSearchDialog = require('./people-search-dialog-hoc')
-const PoepleListItem = require('./people-list-item')
+const PeopleListItem = require('./people-list-item')
 
 class ModulePermissionsDialog extends React.Component {
 	constructor(props) {
@@ -66,22 +66,22 @@ class ModulePermissionsDialog extends React.Component {
 				<div className="top-bar">
 					<ModuleIamge id={this.props.draftId} />
 					<div className="module-title">{this.props.title}</div>
-					<Button className="close-button" onClick={this.props.onClose}>X</Button>
+					<Button className="close-button" onClick={this.props.onClose}>×</Button>
 				</div>
 				<h1 className="title">Module Access</h1>
-				<div className="sub-title">Poeple who can edit this module</div>
+				<div className="sub-title">People who can edit this module</div>
 				<Button className="new-button" onClick={this.openPeoplePicker}>Add People</Button>
 				<div className="access-list-wrapper">
 					<ul className="access-list">
 						{ this.props.draftPermissions[this.props.draftId] ?
 							this.props.draftPermissions[this.props.draftId].items.map(p =>
-								<PoepleListItem
+								<PeopleListItem
 									key={p.id}
 									isMe={p.id === this.props.currentUserId}
 									{...p}
 								>
-									<Button className="close-button" onClick={() => {this.removePerson(p.id)}}>X</Button>
-								</PoepleListItem>
+									<Button className="close-button" onClick={() => {this.removePerson(p.id)}}>×</Button>
+								</PeopleListItem>
 							)
 							: null
 						}

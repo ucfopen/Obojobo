@@ -38,14 +38,9 @@
 		height: $dimensions-close-button;
 		min-width: $dimensions-close-button;
 		line-height: $dimensions-close-button;
-		font-size: 0.85em;
 		position: absolute;
 		right: 5px;
 		top: calc(50% - #{$dimensions-close-button / 2});
 		background-color: inherit;
-
-		&:hover {
-			background-color: $color-action;
-		}
 	}
 }

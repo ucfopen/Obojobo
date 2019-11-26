@@ -31,7 +31,7 @@
 
 		.close-button {
 			position: absolute;
-			top: 5px;
+			top: 0;
 			right: 10px;
 		}
 	}
@@ -59,7 +59,7 @@
 
 		text-align: left;
 		height: 150px;
-		overflow: scroll;
+		overflow-y: scroll;
 		list-style: none;
 		font-size: 0.7em;
 		padding: 0;

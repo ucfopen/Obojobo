@@ -4,7 +4,7 @@ const React = require('react')
 const { useEffect } = require('react')
 const Button = require('./button')
 const Search = require('./search')
-const PoepleListItem = require('./people-list-item')
+const PeopleListItem = require('./people-list-item')
 
 const PeopleSearchDialog = props => {
 	// clear results on initial render
@@ -18,9 +18,9 @@ const PeopleSearchDialog = props => {
 
 	return (
 		<div className="people-search-dialog" >
-			<Button className="close-button" onClick={props.onClose}>X</Button>
+			<Button className="close-button" onClick={props.onClose}>×</Button>
 			<h1 className="title">Find Users to Share With</h1>
-			<div className="sub-title">Poeple who can edit this module</div>
+			<div className="sub-title">People who can edit this module</div>
 			<Search
 				onChange={props.onSearchChange}
 				focusOnMount={true}
@@ -30,7 +30,7 @@ const PeopleSearchDialog = props => {
 			<div className="access-list-wrapper">
 				<ul className="access-list">
 					{props.people.map(p =>
-						<PoepleListItem
+						<PeopleListItem
 							key={p.id}
 							isMe={p.id === props.currentUserId}
 							{...p}
@@ -38,7 +38,7 @@ const PeopleSearchDialog = props => {
 							<Button className="select-button" onClick={() => onSelectPerson(p)}>
 								Select
 							</Button>
-						</PoepleListItem>
+						</PeopleListItem>
 					)}
 
 				</ul>
