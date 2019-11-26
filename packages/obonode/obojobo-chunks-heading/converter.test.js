@@ -3,6 +3,7 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 import Converter from './converter'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('Heading Converter', () => {
@@ -75,6 +76,15 @@ describe('Heading Converter', () => {
 		}
 
 		Converter.switchType[HEADING_NODE](editor, node, { level: 1 })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled
+	})
+
+	test('switchType to code calls editor.setNodeByKey', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+		Converter.switchType[CODE_NODE](editor, { key: 'mockKey' })
 
 		expect(editor.setNodeByKey).toHaveBeenCalled
 	})
