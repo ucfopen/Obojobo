@@ -89,6 +89,9 @@ class Draft {
 			.then(() => {
 				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
 			})
+			.catch(error => {
+				throw logger.logError('Draft fetchById Error', error)
+			})
 	}
 
 	static fetchById(id) {
@@ -120,8 +123,7 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				logger.error('Draft fetchById Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('Draft fetchById Error', error)
 			})
 	}
 
@@ -155,8 +157,7 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				logger.error('fetchByVersion Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('fetchByVersion Error', error)
 			})
 	}
 
@@ -194,6 +195,9 @@ class Draft {
 					return newDraft
 				})
 		})
+		.catch(error => {
+			throw logger.logError('Error createWithContent', error)
+		})
 	}
 
 	static updateContent(draftId, jsonContent, xmlContent) {
@@ -221,6 +225,9 @@ class Draft {
 			.then(insertContentResult => {
 				oboEvents.emit(Draft.EVENT_DRAFT_UPDATED, { draftId, jsonContent, xmlContent })
 				return insertContentResult.id
+			})
+			.catch(error => {
+				throw logger.logError('Error Draft.updateContent', error)
 			})
 	}
 
@@ -250,6 +257,9 @@ class Draft {
 			.then(xml => {
 				if (xml) return xml.xml
 				return null
+			})
+			.catch(error => {
+				throw logger.logError('Error xmlDocument', error)
 			})
 	}
 

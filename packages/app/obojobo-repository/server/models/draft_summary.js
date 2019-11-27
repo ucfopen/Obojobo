@@ -56,8 +56,7 @@ class DraftSummary {
 			.one(buildQueryWhere('drafts.id = $[id]'), { id })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('DraftSummary fetchById Error', error.message)
-				return Promise.reject('Error Loading DraftSummary by id')
+				throw logger.logError('DraftSummary fetchById Error', error)
 			})
 	}
 
@@ -75,8 +74,7 @@ class DraftSummary {
 			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
-				return Promise.reject('Error loading DraftSummary by query')
+				throw logger.logError('Error loading DraftSummary by query', error)
 			})
 	}
 
@@ -85,8 +83,7 @@ class DraftSummary {
 			.any(buildQueryWhere(whereSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
-				return Promise.reject('Error loading DraftSummary by query')
+				throw logger.logError('Error loading DraftSummary by query', error)
 			})
 	}
 

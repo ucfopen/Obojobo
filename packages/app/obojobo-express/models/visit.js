@@ -122,8 +122,7 @@ class Visit {
 			)
 			.then(result => new Visit(result))
 			.catch(error => {
-				logger.error('Visit fetchById Error', visitId, error.message)
-				return Promise.reject(error)
+				throw logger.logError('Visit fetchById Error', error)
 			})
 	}
 

@@ -13,9 +13,10 @@ class User {
 		createdAt = Date.now(),
 		roles = []
 	} = {}) {
-		if (firstName === null || lastName === null || email === null || username === null) {
-			throw new Error('Missing arguments for new user')
-		}
+		if (firstName === null) throw 'Missing first name for new user'
+		if (lastName === null) throw 'Missing last name for new user'
+		if (email === null) throw 'Missing email for new user'
+		if (username === null) throw 'Missing username for new user'
 
 		this.id = id
 		this.firstName = firstName
@@ -33,31 +34,70 @@ class User {
 		}
 	}
 
-	static fetchById(id) {
+	static dbResultToModel(result){
+		return new User({
+			id: result.id,
+			firstName: result.first_name,
+			lastName: result.last_name,
+			email: result.email,
+			username: result.username,
+			createdAt: result.created_at,
+			roles: result.roles
+		})
+	}
+
+	static fetchById(userId) {
 		return db
 			.one(
 				`
-			SELECT *
-			FROM users
-			WHERE id = $1
-		`,
-				id
+				SELECT *
+				FROM users
+				WHERE id =  $[userId]
+				`,
+				{userId}
 			)
-			.then(result => {
-				return new User({
-					id: result.id,
-					firstName: result.first_name,
-					lastName: result.last_name,
-					email: result.email,
-					username: result.username,
-					createdAt: result.created_at,
-					roles: result.roles
-				})
+			.then(User.dbResultToModel)
+			.catch(error => {
+				throw logger.logError('Error fetchById', error)
 			})
 	}
 
 	static clearSessionsForUserById(id) {
 		return db.none(`DELETE FROM sessions WHERE sess ->> 'currentUserId' = $[id]`, { id })
+			.catch(error => {
+				throw logger.logError('Error clearSessionsForUserById', error)
+			})
+	}
+
+	// searches by firstname, lastname, and email
+	static searchForUsers(searchInput){
+		// Create a quick function for quickly searching users (if missing)
+		// @TODO - this COULD be in a migration?
+		return db
+			.none(
+				`CREATE OR REPLACE FUNCTION obo_immutable_concat_ws(s text, t1 text, t2 text)
+				RETURNS text AS
+				$func$
+				SELECT concat_ws(s, t1, t2)
+				$func$ LANGUAGE sql IMMUTABLE;
+				`)
+			.then(() => {
+				return db.manyOrNone(
+					`SELECT
+						*
+					FROM users
+					WHERE obo_immutable_concat_ws(' ', first_name, last_name)ILIKE $[searchInput]
+					OR email ILIKE $[searchInput]
+					OR username ILIKE $[searchInput]
+					ORDER BY first_name, last_name
+					LIMIT 25`,
+					{ searchInput }
+				)
+			})
+			.then(results => results.map(r => User.dbResultToModel(r)))
+			.catch(error => {
+				throw logger.logError('Error searchForUsers', error)
+			})
 	}
 
 	saveOrCreate() {
@@ -85,6 +125,9 @@ class User {
 				}
 				oboEvents.emit(eventName, this)
 				return this
+			})
+			.catch(error => {
+				throw logger.logError('Error saveOrCreate', error)
 			})
 	}
 

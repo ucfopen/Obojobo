@@ -47,13 +47,11 @@ router
 	.route('/start')
 	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, checkValidationRules])
 	.post((req, res) => {
+		logger.log(`VISIT: Begin start visit for visitId="${req.currentVisit.id}", draftContentId="${req.currentDocument.contentId}"`)
+
 		let viewState
 		let visitStartExtensions
 		let launch
-
-		const draftId = req.currentDocument.draftId
-		const visitId = req.body.visitId
-		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftContentId="${req.currentDocument.contentId}"`)
 
 		return Promise.all([
 				viewerState.get(
@@ -78,7 +76,7 @@ router
 					// load lti launch data
 					return ltiUtil.retrieveLtiLaunch(
 						req.currentUser.id,
-						draftId,
+						req.currentDocument.draftId,
 						'START_VISIT_API',
 						req.currentVisit.resource_link_id
 					)
@@ -93,15 +91,15 @@ router
 					userId: req.currentUser.id,
 					ip: req.connection.remoteAddress,
 					metadata: {},
-					draftId,
+					draftId: req.currentDocument.draftId,
 					isPreview: req.currentVisit.is_preview,
 					contentId: req.currentDocument.contentId,
-					payload: { visitId },
+					payload: { visitId: req.currentVisit.id },
 					eventVersion: '1.0.0',
-					visitId,
+					visitId: req.currentVisit.id,
 					caliperPayload: createViewerSessionLoggedInEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						draftId,
+						draftId: req.currentDocument.draftId,
 						contentId: req.currentDocument.contentId,
 						sessionIds: getSessionIds(req.session)
 					})
@@ -109,7 +107,7 @@ router
 			})
 			.then(() => {
 				logger.log(
-					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
+					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${
 						req.currentUser.id
 					}"`
 				)
@@ -122,10 +120,10 @@ router
 
 				// register a visitSessionId in the user's server side session
 				if (!req.session.visitSessions) req.session.visitSessions = {}
-				req.session.visitSessions[draftId] = true
+				req.session.visitSessions[req.currentDocument.draftId] = true
 
 				res.success({
-					visitId,
+					visitId: req.currentVisit.id,
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,

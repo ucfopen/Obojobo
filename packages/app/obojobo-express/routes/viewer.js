@@ -37,7 +37,6 @@ router
 		let createdVisitId
 		const scoreImport = req.body.score_import || req.params.score_import || false
 		const isScoreImportable = isTruthyParam(scoreImport)
-		console.log(isScoreImportable)
 
 		return Visit.createVisit(
 			req.currentUser.id,

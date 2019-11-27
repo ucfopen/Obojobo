@@ -335,9 +335,9 @@ class Media {
 
 		try {
 			file = fs.readFileSync(fileInfo.path)
-		} catch (err) {
+		} catch (error) {
 			// calling methods expect a thenable object to be returned
-			return Promise.reject(err)
+			throw logger.logError('Error Reading media file', error)
 		}
 
 		if (!Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)) {
@@ -376,9 +376,8 @@ class Media {
 				// ID of the user media, not the binary data
 				return mediaRecord
 			})
-			.catch(err => {
-				logger.error(err)
-				throw err
+			.catch(error => {
+				throw logger.logError('Error saving media file', error)
 			})
 	}
 }
