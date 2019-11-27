@@ -119,6 +119,8 @@ router
 	.post(async (req, res) => {
 		try{
 			// @TODO validate req.body.importedAssessmentScoreId
+			if(req.currentVisit.score_importable !== true) throw "Import score used on visit without import enabled"
+
 			// load the AssessmentScore to import
 			const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
 

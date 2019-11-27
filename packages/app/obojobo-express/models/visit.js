@@ -5,13 +5,14 @@ const oboEvents = require('../obo_events')
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
 // them from being used again
-const deactivateOldVisitsAndCreateNewVisit = (
+const deactivateOldVisitsAndCreateNewVisit = ({
 	userId,
 	draftId,
 	resourceLinkId,
-	launchId,
-	isPreview
-) => {
+	launchId = null,
+	isPreview = false,
+	isScoreImportable = false
+}) => {
 	let deactivatedVisitIds
 	return db
 		.manyOrNone(
@@ -48,8 +49,26 @@ const deactivateOldVisitsAndCreateNewVisit = (
 			db.one(
 				// Create a new visit
 				`INSERT INTO visits
-					(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
-					VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
+					(
+						draft_id,
+						draft_content_id,
+						user_id,
+						launch_id,
+						resource_link_id,
+						is_active,
+						is_preview,
+						score_importable
+					)
+					VALUES (
+						$[draftId],
+						$[draftContentId],
+						$[userId],
+						$[launchId],
+						$[resourceLinkId],
+						true,
+						$[isPreview],
+						$[isScoreImportable]
+					)
 					RETURNING id`,
 				{
 					draftId,
@@ -57,7 +76,8 @@ const deactivateOldVisitsAndCreateNewVisit = (
 					userId,
 					resourceLinkId,
 					launchId,
-					isPreview
+					isPreview,
+					isScoreImportable
 				}
 			)
 		)
@@ -91,7 +111,7 @@ class Visit {
 		return db
 			.one(
 				`
-			SELECT id, is_active, is_preview, draft_content_id, resource_link_id
+			SELECT id, is_active, is_preview, draft_content_id, resource_link_id, score_importable
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}
@@ -109,14 +129,25 @@ class Visit {
 
 	// create a student visit
 	// deactivates all previous visits
-	static createVisit(userId, draftId, resourceLinkId, launchId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, resourceLinkId, launchId, false)
+	static createVisit(userId, draftId, resourceLinkId, launchId, isScoreImportable) {
+		return deactivateOldVisitsAndCreateNewVisit({
+			userId,
+			draftId,
+			resourceLinkId,
+			launchId,
+			isScoreImportable
+		})
 	}
 
 	// create a preview visit
 	// deactivates all previous visits
 	static createPreviewVisit(userId, draftId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, 'preview', null, true)
+		return deactivateOldVisitsAndCreateNewVisit({
+			userId,
+			draftId,
+			resourceLinkId: 'preview',
+			isPreview: true
+		})
 	}
 }
 

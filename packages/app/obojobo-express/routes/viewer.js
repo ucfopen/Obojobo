@@ -10,8 +10,14 @@ const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireVisitId,
+	requireCurrentVisit,
 	requireCurrentUser
 } = oboRequire('express_validators')
+
+
+const isTruthyParam = param => {
+	return param && (param === true || param === 'true' || param === 1 || param === '1')
+}
 
 // launch lti view of draft - redirects to visit route
 // mounted as /view/:draftId/:page
@@ -29,12 +35,16 @@ router
 		}
 
 		let createdVisitId
+		const scoreImport = req.body.score_import || req.params.score_import || false
+		const isScoreImportable = isTruthyParam(scoreImport)
+		console.log(isScoreImportable)
 
 		return Visit.createVisit(
 			req.currentUser.id,
 			req.currentDocument.draftId,
 			req.oboLti.body.resource_link_id,
-			req.oboLti.launchId
+			req.oboLti.launchId,
+			isScoreImportable
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
 				createdVisitId = visitId
@@ -73,14 +83,11 @@ router
 // mounted as /view/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
+	.get([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, checkValidationRules])
 	.get((req, res) => {
-		let currentVisit
-		return Visit.fetchById(req.params.visitId, false)
-			.then(visit => {
-				currentVisit = visit
-				return req.currentDocument.yell('internal:sendToClient', req, res)
-			})
+		return req
+			.currentDocument
+			.yell('internal:sendToClient', req, res)
 			.then(() => {
 				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
@@ -92,13 +99,14 @@ router
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
 					visitId: req.params.visitId,
-					payload: { visitId: req.params.visitId },
-					eventVersion: '1.1.0',
-					isPreview: currentVisit.is_preview,
+					payload: { visitId: req.params.visitId, isScoreImportable: req.currentDocument.score_importable },
+					eventVersion: '1.2.0',
+					isPreview: req.currentDocument.is_preview,
 					caliperPayload: createViewerOpenEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),
-						visitId: req.params.visitId
+						visitId: req.params.visitId,
+						extensions: { isScoreImportable: req.currentDocument.score_importable }
 					})
 				})
 			})

@@ -21,20 +21,16 @@ class Assessment extends DraftNode {
 		return this.yell(`${NODE_NAME}:sendToClient`, req, res)
 	}
 
-	onStartVisit(req, res, draftId, visitId, extensions) {
-		let visit
-		let canImport = true // @TODO ask the visit if importing is enabled
+	// visitStartExtensions is an array of extensions
+	// that get returned to the client
+	onStartVisit(req, res, visitStartExtensions) {
 		return req
 			.requireCurrentUser()
-			.then(() => Visit.fetchById(visitId))
-			.then(currentVisit => {
-				visit = currentVisit
-			})
 			.then(() => AssessmentModel.fetchAttemptHistory(
 				req.currentUser.id,
-				draftId,
-				visit.is_preview,
-				visit.resource_link_id
+				req.currentDocument.draftId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
 			))
 			.then(attemptHistory => {
 				// @TODO: I'd be happier changing fetchAttemptHistory to return this exact object
@@ -62,7 +58,7 @@ class Assessment extends DraftNode {
 
 				// only add extension if summary isn't empty
 				if(assessmentSummary.size){
-					extensions.push({
+					visitStartExtensions.push({
 						name: NODE_NAME,
 						assessmentSummary: Array.from(assessmentSummary.values())
 					})
@@ -70,15 +66,15 @@ class Assessment extends DraftNode {
 
 				// if there's no attempt history
 				// find the highest importable score
-				if(canImport && attemptHistory.length === 0){
+				if(req.currentVisit.score_importable === true && attemptHistory.length === 0){
 					return AssessmentScore.getImportableScore(
 						req.currentUser.id,
-						visit.draft_content_id,
-						visit.is_preview
+						req.currentVisit.draft_content_id,
+						req.currentVisit.is_preview
 					)
 					.then(importableScore => {
 						if(importableScore){
-							extensions.push({
+							visitStartExtensions.push({
 								name: NODE_NAME,
 								importableScore: {
 									highestScore: importableScore.score,

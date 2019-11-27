@@ -52,7 +52,7 @@ const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 		oauth_signature_method: 'HMAC-SHA1',
 		oauth_version: '1.0'
 	}
-	const params = { ...paramsIn, ...oauthParams }
+	const params = { ...paramsIn, ...oauthParams}
 	const hmac_sha1 = sig.generate(method, endpoint, params, oauthSecret, '', {
 		encodeSignature: false
 	})
@@ -158,7 +158,8 @@ module.exports = app => {
 			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
-			resource_link_id
+			resource_link_id,
+			score_import: req.query.score_import ? 1 : 0
 		}
 		renderLtiLaunch({ ...ltiContext, ...person, ...params }, method, endpoint, res)
 	})

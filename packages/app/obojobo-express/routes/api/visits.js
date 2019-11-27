@@ -15,17 +15,15 @@ const {
 	requireCurrentVisit
 } = oboRequire('express_validators')
 
-const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
+const getDraftAndStartVisitProps = (req, res) => {
 	// trigger startVisit
 	// allows listeners to add objects the extensions array
 	const visitStartExtensions = []
-	return draftDocument
+	return req.currentDocument
 		.yell(
 			'internal:startVisit',
 			req,
 			res,
-			draftDocument.draftId,
-			visitId,
 			visitStartExtensions
 		)
 		.then(() => visitStartExtensions)
@@ -63,7 +61,7 @@ router
 					req.currentDocument.contentId,
 					req.currentVisit.resource_link_id
 				),
-				getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
+				getDraftAndStartVisitProps(req, res)
 			])
 			.then(results => {
 				// expand results
