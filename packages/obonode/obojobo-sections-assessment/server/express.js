@@ -9,6 +9,7 @@ const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const AssessmentScore = require('./models/assessment-score')
 const attemptReview = require('./attempt-review')
+const insertEvents = require('./attempt-end/insert-events')
 const { logAndRespondToUnexpected } = require('./util')
 const {
 	requireCurrentDocument,
@@ -145,10 +146,12 @@ router
 			if(originalAttempt.userId !== req.currentUser.id) throw "Original attempt was not created by the current user"
 
 			let importedScore
+			let importedAttempt
 			await db.tx(transaction => {
 				return originalAttempt
 					.importAsNewAttempt(req.currentVisit.resource_link_id, transaction)
 					.then(importedAttemptResult => {
+						importedAttempt = importedAttemptResult
 						return originalScore.importAsNewScore(importedAttemptResult.id, req.currentVisit.resource_link_id, transaction)
 					})
 					.then(importedScoreResult => {
@@ -163,6 +166,51 @@ router
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id
 			)
+
+			console.log(history)
+
+			// save an event
+			await insertEvents.insertAttemptEndEvents(
+				req.currentUser,
+				req.currentDocument,
+				req.body.assessmentId,
+				importedAttempt.id,
+				importedAttempt.attemptNumber,
+				req.currentVisit.is_preview,
+				req.hostname,
+				req.connection.remoteAddress
+			)
+
+			// send the lti score
+			const ltiRequest = await lti.sendHighestAssessmentScore(
+				req.currentUser.id,
+				req.currentDocument,
+				req.body.assessmentId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
+
+			// save events for the lti scores
+			// await insertEvents.insertAttemptScoredEvents(
+			// 	req.currentUser,
+			// 	req.currentDocument,
+			// 	req.body.assessmentId,
+			// 	importedScore.id,
+			// 	importedAttempt.id,
+			// 	importedAttempt.attemptNumber,
+			// 	importedScore,
+			// 	calculatedScores.assessmentScoreDetails.assessmentModdedScore, // @TODO?
+			// 	req.currentVisit.is_preview,
+			// 	ltiRequest.scoreSent,
+			// 	ltiRequest.status,
+			// 	ltiRequest.statusDetails,
+			// 	ltiRequest.gradebookStatus,
+			// 	ltiRequest.ltiAssessmentScoreId,
+			// 	req.hostname,
+			// 	req.connection.remoteAddress,
+			// 	calculatedScores.assessmentScoreDetails, // @TODO
+			// 	req.currentVisit.resource_link_id
+			// )
 
 			res.success({history, importedScore})
 		} catch(e){
