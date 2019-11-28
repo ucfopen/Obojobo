@@ -1,44 +1,35 @@
-let convert = require('xml-js');
+const convert = require('xml-js');
+const nameTransform = require('./src/name-transformer');
+const extensionTransform = require('./src/extension-transform');
+const htmlTransform = require('./src/html-transform');
+const draftJsonTransform = require('./src/draft-json-transform');
+const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
+const parseTg = require('./src/text-group-parser');
+const scoreParser = require('./src/score-action-parser');
+const parseTriggers = require('./src/triggers-parser');
+const parseListStyles = require('./src/list-styles-parser');
+const parseAssessmentRubric = require('./src/assessment-rubric-parser');
 
-let nameTransform = require('./src/name-transformer');
-let extensionTransform = require('./src/extension-transform');
-let htmlTransform = require('./src/html-transform');
-let draftJsonTransform = require('./src/draft-json-transform');
-let attrElementToAttrItem = require('./src/attr-element-to-attr-item')
-// let cdataElementToCdata = require('./src/cdata-element-to-cdata')
-
-let parseTg = require('./src/text-group-parser');
-let scoreParser = require('./src/score-action-parser');
-let parseTriggers = require('./src/triggers-parser');
-let parseListStyles = require('./src/list-styles-parser');
-let parseAssessmentRubric = require('./src/assessment-rubric-parser');
-let parseScoreAction = scoreParser.parseScoreAction;
-let parseScoreActions = scoreParser.parseScoreActions;
-
-let parsers = {
-	'textGroup': parseTg,
-	'scoreAction': parseScoreAction,
-	'scoreActions': parseScoreActions,
-	'rubric': parseAssessmentRubric,
-	'triggers': parseTriggers,
-	'listStyles': parseListStyles,
-	'solution': (solAttr) => { return solAttr.elements[0]; }
+const parsers = {
+	textGroup: parseTg,
+	scoreAction: scoreParser.parseScoreAction,
+	scoreActions: scoreParser.parseScoreActions,
+	rubric: parseAssessmentRubric,
+	triggers: parseTriggers,
+	listStyles: parseListStyles,
+	solution: solAttr => solAttr.elements[0]
 }
 
-let elementsToAttrElements = (o) => {
-	for(let i in o.elements)
-	{
+const elementsToAttrElements = o => {
+	for(const i in o.elements){
 		elementsToAttrElements(o.elements[i])
 	}
 
-	if(parsers[o.name])
-	{
+	if(parsers[o.name]){
 		o.type = 'attribute'
 		o.value = parsers[o.name](o)
 		delete o.elements
-	}
-	else if(o.name && (o.name.charAt(0) === o.name.charAt(0).toLowerCase()))
-	{
+	} else if(o.name && (o.name.charAt(0) === o.name.charAt(0).toLowerCase())) {
 		o.type = 'attribute'
 		o.value = o.elements
 		delete o.elements
@@ -46,9 +37,8 @@ let elementsToAttrElements = (o) => {
 }
 
 // @TODO: Hack
-let __finalPass = (o) => {
-	if(o.type === 'ObojoboDraft.Chunks.Table')
-	{
+const __finalPass = o => {
+	if(o.type === 'ObojoboDraft.Chunks.Table'){
 		o.content.textGroup = {
 			textGroup: o.content.textGroup,
 			numRows: o.content.numRows,
@@ -58,20 +48,19 @@ let __finalPass = (o) => {
 		delete o.content.numCols;
 	}
 
-	for(let i in o.children)
-	{
+	for(const i in o.children){
 		__finalPass(o.children[i]);
 	}
 }
 
 module.exports = (xml, generateIds = false) => {
-	let root = convert.xml2js(xml, {
+	const root = convert.xml2js(xml, {
 		compact: false,
 		trim: false,
 		nativeType: false,
 		ignoreComment: true,
 		ignoreDeclaration: true
-	});
+	})
 	nameTransform(root)
 	extensionTransform(root)
 	htmlTransform(root)
@@ -79,7 +68,5 @@ module.exports = (xml, generateIds = false) => {
 	attrElementToAttrItem(root)
 	draftJsonTransform(root, generateIds)
 	__finalPass(root.elements[0])
-	// return root;
-
 	return root.elements[0].children[0];
 }

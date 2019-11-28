@@ -18,7 +18,6 @@ class AssessmentScoreReporter {
 			)
 		}
 
-		// @TODO: assessScoreInfoToReport is expected to have .status sometimes it doesnt
 		const assessScoreInfoToReport = this.allScoreDetails[attemptNumber - 1]
 
 		return {
