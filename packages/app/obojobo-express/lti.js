@@ -118,15 +118,15 @@ const getLatestHighestAssessmentScoreRecord = (
 			`
 				SELECT
 					T1.id,
-					T1.user_id as userId,
-					T1.draft_id as draftId,
-					T1.draft_content_id as contentId,
-					T1.assessment_id as assessmentId,
-					T1.attempt_id as attemptId,
+					T1.user_id AS "userId",
+					T1.draft_id AS "draftId",
+					T1.draft_content_id AS "contentId",
+					T1.assessment_id AS "assessmentId",
+					T1.attempt_id AS "attemptId",
 					T1.score,
-					T1.score_details as scoreDetails,
-					T1.is_preview as isPreview,
-					T1.resource_link_id as resourceLinkId
+					T1.score_details AS "scoreDetails",
+					T1.is_preview AS "isPreview",
+					T1.resource_link_id AS "resourceLinkId"
 				FROM
 				(
 					SELECT
@@ -199,13 +199,13 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 			`
 			SELECT
 				DISTINCT ON (T1.assessment_id)
-				T1.assessment_id AS assessmentId,
-				T1.assessment_score_id AS assessmentScoreId,
-				T1.score_sent AS scoreSent,
-				T1.lti_sent_date AS sentDate,
+				T1.assessment_id AS "assessmentId",
+				T1.assessment_score_id AS "assessmentScoreId",
+				T1.score_sent AS "scoreSent",
+				T1.lti_sent_date AS "sentDate",
 				T1.status,
-				T1.gradebook_status AS gradebookStatus,
-				T1.status_details AS statusDetails
+				T1.gradebook_status AS "gradebookStatus",
+				T1.status_details AS "statusDetails"
 			FROM
 			(
 				SELECT
@@ -641,6 +641,7 @@ const sendHighestAssessmentScore = (
 	isPreview,
 	resourceLinkId
 ) => {
+
 	const logId = uuid()
 	let requiredData = null
 	let outcomeData = null

@@ -111,7 +111,32 @@ const insertAttemptScoredEvents = (
 		})
 }
 
+
+const insertAttemptImportedEvents = (
+	userId,
+	draftId,
+	contentId,
+	assessmentId,
+	attemptId,
+	scoreId,
+	originalAttemptId,
+	originalScoreId,
+	isPreview,
+	ltiScoreSent,
+	ltiScoreStatus,
+	ltiStatusDetails,
+	ltiGradeBookStatus,
+	ltiAssessmentScoreId,
+	hostname,
+	remoteAddress,
+	resourceLinkId
+) => {
+	// @TODO
+	return Promise.resolve()
+}
+
 module.exports = {
 	insertAttemptEndEvents,
-	insertAttemptScoredEvents
+	insertAttemptScoredEvents,
+	insertAttemptImportedEvents
 }
