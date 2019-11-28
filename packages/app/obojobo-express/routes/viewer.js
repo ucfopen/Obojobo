@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Visit = oboRequire('models/visit')
+const config = oboRequire('config')
 const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
@@ -15,7 +16,7 @@ const {
 } = oboRequire('express_validators')
 
 
-const isTruthyParam = param => {
+const paramToBool = param => {
 	return param && (param === true || param === 'true' || param === 1 || param === '1')
 }
 
@@ -35,8 +36,10 @@ router
 		}
 
 		let createdVisitId
-		const scoreImport = req.body.score_import || req.params.score_import || false
-		const isScoreImportable = isTruthyParam(scoreImport)
+		// @TODO score importing is part of assessment - we should fire an event and allow
+		// assessment to alter some things here?
+		const scoreImport = req.body.score_import || req.params.score_import || config.general.allowImportDefault
+		const isScoreImportable = paramToBool(scoreImport)
 
 		return Visit.createVisit(
 			req.currentUser.id,

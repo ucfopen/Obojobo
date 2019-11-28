@@ -9,12 +9,14 @@ import './css/module-selector.scss'
 	const data = { items: undefined, allItems: undefined, last: 0 } // eslint-disable-line no-undefined
 	const searchStrings = {}
 	let selectedItem = null
+	let allowScorePassback
 
 	// elements:
 	const $template = $($('.template.obo-item')[0])
 	const $listContainer = $('#list-container')
 	const $search = $('#search')
 	let section = null
+	let sectionState = null
 
 	// searching:
 	function search() {
@@ -98,6 +100,11 @@ import './css/module-selector.scss'
 
 	// navigation
 	function gotoSection(sectionId, skipFadeAnimation = false, addClass = '') {
+		sectionState = {
+			sectionId,
+			skipFadeAnimation,
+			addClass
+		}
 		if (sectionId === 'progress') {
 			showProgress()
 		} else if (sectionId === 'section-success') {
@@ -127,10 +134,6 @@ import './css/module-selector.scss'
 	function gotoTab(newSection) {
 		section = newSection
 		populateList(section)
-		$('#section-select-object')
-			.removeClass('community-library-section')
-			.removeClass('my-objects-section')
-			.removeClass('my-instances-section')
 	}
 
 	function showProgress() {
@@ -214,7 +217,7 @@ import './css/module-selector.scss'
 	}
 
 	function buildLaunchUrl(draftId) {
-		return window.location.origin + '/view/' + draftId
+		return window.location.origin + '/view/' + draftId + '?score_import=' + (allowScorePassback ? 'true' : 'false')
 	}
 
 	// utility
@@ -232,7 +235,7 @@ import './css/module-selector.scss'
 		$clone.find('.preview').attr('href', '/preview/' + lo.draftId)
 		$clone.attr('data-lo-id', lo.draftId)
 
-		$clone.find('.button').click(onSelectClick)
+		$clone.find('.button').click(onEmbedClick)
 
 		$list.append($clone)
 		return $clone
@@ -376,23 +379,28 @@ import './css/module-selector.scss'
 			gotoSection('section-select-object', false, 'blue')
 			gotoTab('My Modules')
 		})
+
+		$('#finish-button').click(event => {
+			event.preventDefault()
+			allowScorePassback = $("input[name='allow_import']:checked"). val() === '1'
+			gotoSection('progress')
+			$('#instance-name').val($oboItem.find('.title').text())
+		})
+
+		$('#finish-cancel-button').click(event => {
+			event.preventDefault()
+			gotoSection('section-select-object', sectionState.skipFadeAnimation, sectionState.addClass)
+		})
 	}
 
-	function onSelectClick(event) {
+	function onEmbedClick(event) {
 		event.preventDefault()
 
 		const $this = $(this)
 		const $oboItem = $this.parent().parent()
 		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
-		gotoSection('progress')
-		$('#instance-name').val($oboItem.find('.title').text())
-
-		if (typeof $oboItem.attr('data-lo-id') === 'undefined' || $oboItem.attr('data-lo-id') === '0') {
-			$('.instance-copy-note').hide()
-		} else {
-			$('.instance-copy-note').show()
-		}
+		gotoSection('section-options')
 	}
 
 	function handleError(result) {

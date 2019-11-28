@@ -14,7 +14,8 @@
 			}
 		},
 		"demoPurgeMode": "none",
-		"demoPurgeDaysAgo": 7
+		"demoPurgeDaysAgo": 7,
+		"allowImportDefault": true
 	},
 	"test": {
 		"key": "value",

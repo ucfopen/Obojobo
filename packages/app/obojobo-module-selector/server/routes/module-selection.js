@@ -1,5 +1,6 @@
 const router = require('express').Router() // eslint-disable-line new-cap
 const ltiLaunch = require('obojobo-express/express_lti_launch')
+const allowImportDefault = require('obojobo-express/config').general.allowImportDefault
 const { requireCanViewEditor } = require('obojobo-express/express_validators')
 
 const showModuleSelector = (req, res) => {
@@ -22,7 +23,7 @@ const showModuleSelector = (req, res) => {
 			throw 'Unknown return url for assignment selection'
 		}
 
-		res.render('lti_picker', { returnUrl, isAssignment })
+		res.render('lti_picker', { returnUrl, isAssignment, allowImportDefault })
 	} catch (error) {
 		res.unexpected(error)
 	}

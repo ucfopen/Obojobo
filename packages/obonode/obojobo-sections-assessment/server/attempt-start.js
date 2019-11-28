@@ -42,7 +42,6 @@ const startAttempt = (req, res) => {
 			req.currentVisit.resource_link_id
 		)
 		.then(attemptHistory => {
-			console.log('attemptHistory', attemptHistory.length, 'allowed attempts:', assessmentProperties.oboNode.node.content.attempts)
 			assessmentProperties.attemptHistory = attemptHistory
 			assessmentProperties.numAttemptsTaken = attemptHistory.length
 
