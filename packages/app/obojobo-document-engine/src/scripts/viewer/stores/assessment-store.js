@@ -58,21 +58,26 @@ class AssessmentStore extends Store {
 		})
 	}
 
+	findUnfinishedAttemptInAssessmentSummary(summaries){
+		return summaries.find(s => s.unfinishedAttemptId !== null)
+	}
+
 	init(extensions) {
 		const ext = {assessmentSummary: [], importableScore: null}
 		const filteredExtArrays = extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
+
+		const unfinishedAttempt = this.findUnfinishedAttemptInAssessmentSummary(ext.assessmentSummary)
 
 		this.state = {
 			assessments: {}, // assessments found in attempt history
 			importHasBeenUsed: false, // @TODO: this will need to be updated to support multiple assessments
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
-			attemptHistoryLoadState: 'none' // not loaded yet
+			attemptHistoryLoadState: 'none', // not loaded yet
+			isResumingAttempt: unfinishedAttempt !== null
 		}
 
-		// Any unfinished attempts?
-		const unfinishedAttempt = ext.assessmentSummary.find(el => el.unfinishedAttemptId !== null)
 		if(unfinishedAttempt){
 			this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
 		}
@@ -328,6 +333,7 @@ class AssessmentStore extends Store {
 
 	endAttemptWithAPICall(assessmentId, context) {
 		const assessment = this.state.assessments[assessmentId]
+		const wasResumingAttempt = this.state.isResumingAttempt
 		const { draftId, visitId } = NavStore.getState()
 		return AssessmentAPI.endAttempt({
 			attemptId: assessment.current.attemptId,
@@ -339,10 +345,21 @@ class AssessmentStore extends Store {
 				return ErrorUtil.errorResponse(res)
 			}
 
-			const model = OboModel.models[assessmentId]
+			this.state.attemptHistoryLoadState = 'none'
+			this.state.isResumingAttempt = false
+
+			/* === BUILD SCORE REPORT DISPLAY == */
+
+			// collect all the scoreDetails objects from each assessment
 			const allScoreDetails = assessment.attempts.map(a => a.scoreDetails)
+			if(wasResumingAttempt){
+				allScoreDetails.splice(-1, 1) // removes incomplete attempt
+			}
+			// append the results of endAttempt
+			// it's essentially a scoreDetails object
 			allScoreDetails.push(res.value)
 
+			const model = OboModel.models[assessmentId]
 			const reporter = new AssessmentScoreReporter({
 				assessmentRubric: model.modelState.rubric.toObject(),
 				totalNumberOfAttemptsAllowed: model.modelState.attempts,
@@ -353,7 +370,6 @@ class AssessmentStore extends Store {
 			const scoreReport = reporter.getReportFor(res.value.attemptNumber)
 			this.displayResultsModal(assessmentLabel, res.value.attemptNumber, scoreReport)
 
-			this.state.attemptHistoryLoadState = 'none'
 			return this.getAttemptHistory()
 		})
 		.then(() => {

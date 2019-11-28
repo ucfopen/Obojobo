@@ -20,6 +20,10 @@ class AssessmentScoreReporter {
 
 		const assessScoreInfoToReport = this.allScoreDetails[attemptNumber - 1]
 
+		if (!assessScoreInfoToReport || !assessScoreInfoToReport.status){
+			throw new Error(`Error, score details for attempt ${attemptNumber} were not loaded`)
+		}
+
 		return {
 			textItems: getTextItems(
 				getReportDetailsForAttempt(this.assessmentRubric, assessScoreInfoToReport),

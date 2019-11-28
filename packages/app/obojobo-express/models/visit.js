@@ -11,7 +11,7 @@ const deactivateOldVisitsAndCreateNewVisit = ({
 	resourceLinkId,
 	launchId = null,
 	isPreview = false,
-	isScoreImportable = false
+	nodeOptions = { isScoreImportable: false }
 }) => {
 	let deactivatedVisitIds
 	return db
@@ -77,7 +77,7 @@ const deactivateOldVisitsAndCreateNewVisit = ({
 					resourceLinkId,
 					launchId,
 					isPreview,
-					isScoreImportable
+					isScoreImportable: nodeOptions.isScoreImportable
 				}
 			)
 		)
@@ -128,13 +128,13 @@ class Visit {
 
 	// create a student visit
 	// deactivates all previous visits
-	static createVisit(userId, draftId, resourceLinkId, launchId, isScoreImportable) {
+	static createVisit(userId, draftId, resourceLinkId, launchId, nodeOptions) {
 		return deactivateOldVisitsAndCreateNewVisit({
 			userId,
 			draftId,
 			resourceLinkId,
 			launchId,
-			isScoreImportable
+			nodeOptions
 		})
 	}
 
