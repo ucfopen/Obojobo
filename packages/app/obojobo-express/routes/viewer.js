@@ -38,7 +38,7 @@ router
 
 		let createdVisitId
 		// fire an event and allow nodes to alter node visit
-		// Warning - I don't know if async can work
+		// Warning - I don't know if async can work in your listeners
 		const nodeVisitOptions = oboEvents.emit(Visit.EVENT_BEFORE_NEW_VISIT, { req })
 		const nodeVisitOptions = req.visitOptions ? req.visitOptions : {}
 
