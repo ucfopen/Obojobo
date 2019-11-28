@@ -151,5 +151,6 @@ class Visit {
 }
 
 Visit.EVENT_NEW_VISIT = 'EVENT_NEW_VISIT'
+Visit.EVENT_BEFORE_NEW_VISIT = 'EVENT_BEFORE_NEW_VISIT'
 
 module.exports = Visit

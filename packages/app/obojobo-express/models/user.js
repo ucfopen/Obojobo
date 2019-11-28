@@ -72,7 +72,6 @@ class User {
 	// searches by firstname, lastname, and email
 	static searchForUsers(searchInput){
 		// Create a quick function for quickly searching users (if missing)
-		// @TODO - this COULD be in a migration?
 		return db
 			.none(
 				`CREATE OR REPLACE FUNCTION obo_immutable_concat_ws(s text, t1 text, t2 text)

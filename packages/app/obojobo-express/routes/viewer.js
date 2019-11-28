@@ -6,6 +6,7 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+const oboEvents = require('../obo_events')
 const ltiLaunch = oboRequire('express_lti_launch')
 const {
 	checkValidationRules,
@@ -36,17 +37,17 @@ router
 		}
 
 		let createdVisitId
-		// @TODO score importing is part of assessment - we should fire an event and allow
-		// assessment to alter some things here?
-		const scoreImport = req.body.score_import || req.params.score_import || config.general.allowImportDefault
-		const isScoreImportable = paramToBool(scoreImport)
+		// fire an event and allow nodes to alter node visit
+		// Warning - I don't know if async can work
+		const nodeVisitOptions = oboEvents.emit(Visit.EVENT_BEFORE_NEW_VISIT, { req })
+		const nodeVisitOptions = req.visitOptions ? req.visitOptions : {}
 
 		return Visit.createVisit(
 			req.currentUser.id,
 			req.currentDocument.draftId,
 			req.oboLti.body.resource_link_id,
 			req.oboLti.launchId,
-			isScoreImportable
+			nodeVisitOptions
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
 				createdVisitId = visitId

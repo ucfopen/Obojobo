@@ -19,6 +19,9 @@ const {
 	requireAssessmentId
 } = require('obojobo-express/express_validators')
 
+// load the server event listeners
+require('./events')
+
 router
 	.route('/api/lti/send-assessment-score')
 	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
