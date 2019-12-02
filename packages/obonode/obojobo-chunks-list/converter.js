@@ -12,7 +12,7 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 
 const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
+const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 'upper-roman']
 
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.data.get('content')

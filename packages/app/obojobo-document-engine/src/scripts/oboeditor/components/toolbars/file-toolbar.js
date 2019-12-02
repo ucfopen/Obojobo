@@ -16,6 +16,7 @@ import './file-toolbar.scss'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
 
@@ -43,32 +44,7 @@ const alignMenu = {
 	}))
 }
 
-const bulletsMenu = {
-	name: 'Bullets & numbering',
-	type: 'sub-menu',
-	menu: [
-		{
-			name: 'Bulleted List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Disc', type: 'action', disabled: true },
-				{ name: 'Circle', type: 'action', disabled: true },
-				{ name: 'Square', type: 'action', disabled: true }
-			]
-		},
-		{
-			name: 'Numbered List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Numbers', type: 'action', disabled: true },
-				{ name: 'Uppercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Uppercase Roman Numerals', type: 'action', disabled: true },
-				{ name: 'Lowercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Lowercase Roman Numerals', type: 'action', disabled: true }
-			]
-		}
-	]
-}
+	
 
 const isCollapsed = selection => {
 	return selection.focus.key === selection.anchor.key && selection.focus.offset === selection.anchor.offset
@@ -150,6 +126,50 @@ const FileToolbar = props => {
 				name: 'Code', 
 				type: 'action', 
 				action: () => editor.current.changeToType(CODE_NODE)  
+			}
+		]
+	}
+
+	const bulletsMenu = {
+		name: 'Bullets & numbering',
+		type: 'sub-menu',
+		menu: [
+			{
+				name: 'Bulleted List',
+				type: 'sub-menu',
+				menu: [
+					{ 
+						name: 'Disc', 
+						type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
+					},
+					{ 
+						name: 'Circle', 
+						type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' }) 
+					},
+					{ 
+						name: 'Square', 
+						type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' }) 
+					}
+				]
+			},
+			{
+				name: 'Numbered List',
+				type: 'sub-menu',
+				menu: [
+					{ name: 'Numbers', type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })},
+					{ name: 'Lowercase Alphabet', type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })},
+					{ name: 'Lowercase Roman Numerals', type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })},
+					{ name: 'Uppercase Alphabet', type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })},
+					{ name: 'Uppercase Roman Numerals', type: 'action', 
+						action: () => editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })}
+				]
 			}
 		]
 	}

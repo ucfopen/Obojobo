@@ -10,7 +10,7 @@ const { Button } = Common.components
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
+const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 'upper-roman']
 
 class List extends React.Component {
 	constructor(props) {

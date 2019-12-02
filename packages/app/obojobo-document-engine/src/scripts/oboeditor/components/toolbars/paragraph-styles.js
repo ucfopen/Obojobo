@@ -108,6 +108,7 @@ class ParagraphStyles extends React.Component {
 			case HEADING_NODE: return this.reduceHeading(value)
 			case CODE_LINE_NODE: return "Code"
 			case TEXT_LINE_NODE: return "Normal Text"
+			default: return "No Style"
 		}
 	}
 

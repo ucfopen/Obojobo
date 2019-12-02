@@ -9,7 +9,7 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
+const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 'upper-roman']
 
 const AlignMarks = {
 	plugins: {
@@ -22,7 +22,6 @@ const AlignMarks = {
 			},
 			indentCode(editor, block) {
 				const dataJSON = block.data.toJSON()
-				console.log(dataJSON)
 				if(!dataJSON.content.indent) dataJSON.content.indent = 0
 				dataJSON.content.indent = dataJSON.content.indent + 1
 				return editor.setNodeByKey(block.key, { data: dataJSON })
