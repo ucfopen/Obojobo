@@ -114,7 +114,7 @@ const getLatestHighestAssessmentScoreRecord = (
 	isPreview = false
 ) => {
 	return db
-		.oneOrNone(
+		.one(
 			`
 				SELECT
 					T1.id,
@@ -156,17 +156,14 @@ const getLatestHighestAssessmentScoreRecord = (
 				isPreview
 			}
 		)
-		.then(dbResult => {
-			if (!dbResult) {
+		.catch(error => {
+			logger.error('Error in getLatestHighestAssessmentScoreRecord')
+			logger.error(error)
+			if (error instanceof db.errors.QueryResultError && error.code === db.errors.queryResultErrorCode.noData) {
+				console.log('YEEEEP')
 				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
 			}
-			return dbResult
-		})
-		.catch(e => {
-			logger.error('Error in getLatestHighestAssessmentScoreRecord')
-			logger.error(e)
-			result.error = e
-			return result
+			throw error
 		})
 }
 
@@ -288,11 +285,9 @@ const getRequiredDataForReplaceResult = function(
 		isPreview
 	)
 		.then(assessmentScoreResult => {
+			console.log('DIDNT THROW')
+			console.log(assessmentScoreResult)
 			result.assessmentScoreRecord = assessmentScoreResult
-
-			if (assessmentScoreResult.error) {
-				throw assessmentScoreResult.error
-			}
 
 			logger.info(
 				`LTI found assessment score. Details: user:"${
@@ -342,6 +337,9 @@ const getRequiredDataForReplaceResult = function(
 			return result
 		})
 		.catch(e => {
+			if(e === ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND){
+				throw e
+			}
 			result.error = e
 
 			return result
@@ -679,6 +677,10 @@ const sendHighestAssessmentScore = (
 
 			result.outcomeServiceURL = outcomeData.serviceURL
 
+			// @TODO: move this above getRequiredDataForReplaceResult call
+			// @TODO: heck, why dont we just move all these throws down
+			// to the where the code that finds these issues occurs
+			// and pass them up using the normal throw/catch functionality
 			if (isPreview) {
 				throw ERROR_PREVIEW_MODE
 			}
@@ -780,7 +782,6 @@ module.exports = {
 	getLatestHighestAssessmentScoreRecord,
 	getLatestSuccessfulLTIAssessmentScoreRecord,
 	getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId,
-	// getRequiredDataForReplaceResult,
 	getOutcomeServiceForLaunch,
 	retrieveLtiLaunch,
 	findSecretForKey,
