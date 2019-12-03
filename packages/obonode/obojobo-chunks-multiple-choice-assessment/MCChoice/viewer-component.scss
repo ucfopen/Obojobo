@@ -39,7 +39,7 @@
 
 			&.feedback-enter {
 				max-height: 0;
-				overflow: hidden;
+				// overflow: hidden;
 				opacity: 0;
 				margin-bottom: 0;
 			}
@@ -102,10 +102,10 @@
 }
 
 // when in a review, push the input down to make room for review flags
-.component.obojobo-draft--chunks--mc-assessment {
-	&.is-mode-review {
-		.obojobo-draft--chunks--mc-assessment--mc-choice > input {
-			top: 1.7em + $dimension-review-answer-flag-padding;
-		}
-	}
-}
+// .component.obojobo-draft--chunks--mc-assessment {
+// 	&.is-mode-review {
+// 		.obojobo-draft--chunks--mc-assessment--mc-choice > input {
+// 			top: 1.7em + $dimension-review-answer-flag-padding;
+// 		}
+// 	}
+// }

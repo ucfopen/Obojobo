@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericFeedback Editor Node NumericFeedback builds the expected component 1`] = `
+<div
+  className="component numeric-feedback-editor"
+  contentEditable={true}
+>
+  <button
+    className="feedback-delete-button"
+    contentEditable={false}
+    onClick={[Function]}
+  >
+    ×
+  </button>
+</div>
+`;
+
+exports[`NumericFeedback Editor Node NumericFeedback component deletes itself 1`] = `"<div class=\\"component numeric-feedback-editor\\" contenteditable=\\"true\\"><button class=\\"feedback-delete-button\\" contenteditable=\\"false\\">×</button></div>"`;

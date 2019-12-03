@@ -4,6 +4,13 @@ import renderer from 'react-test-renderer'
 
 import NumericFeedback from './editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/common', () => ({
+	components: {
+		// eslint-disable-next-line react/display-name
+		Button: props => <button {...props}>{props.children}</button>
+	}
+}))
+
 describe('NumericFeedback Editor Node', () => {
 	test('NumericFeedback builds the expected component', () => {
 		const component = renderer.create(
@@ -43,7 +50,7 @@ describe('NumericFeedback Editor Node', () => {
 		)
 		const tree = component.html()
 
-		component.find('button').simulate('click')
+		component.find('Button').simulate('click')
 
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()

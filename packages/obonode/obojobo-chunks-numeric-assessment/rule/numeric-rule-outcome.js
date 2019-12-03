@@ -1,9 +1,13 @@
-import { ROUND_TYPE_NONE, ROUND_TYPE_ROUND_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } from './round-types'
-import { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } from '../numerics/types/input-types'
-import ValueRange from '../range/value-range'
-import getPercentError from '../util/percent-error'
-import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
-import { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } from './unit-types'
+const ValueRange = require('../range/value-range')
+const getPercentError = require('../util/percent-error')
+const {
+	ROUND_TYPE_NONE,
+	ROUND_TYPE_ROUND_DIGITS,
+	ROUND_TYPE_ROUND_SIG_FIGS
+} = require('./round-types')
+const { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } = require('../numerics/types/input-types')
+const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
+const { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } = require('./unit-types')
 
 /**
  * @typedef {Object} NumericRuleScoreOutcomeObject
@@ -29,7 +33,7 @@ import { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } from './unit-types'
  * outcome.scoreOutcome.isWithinError // true (Student answer is the correct value)
  * outcome.isExpectedNumSigFigs // false (Student failed to specify the correct number of sig figs)
  */
-export default class NumericRuleOutcome {
+module.exports = class NumericRuleOutcome {
 	/**
 	 * Returns a new range of valid values based on the rule's allowed percentError.
 	 * @param {NumericRule} rule

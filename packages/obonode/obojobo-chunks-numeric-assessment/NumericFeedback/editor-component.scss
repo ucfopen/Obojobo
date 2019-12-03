@@ -1,36 +1,26 @@
 @import '~styles/includes';
 
-.numeric-feedback-editor {
-	$color-border: #dfdfdf;
-
+.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
+	border: 1px solid $color-shadow;
+	margin-top: 0;
+	margin-left: 3.75em;
+	margin-right: 3.75em;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	padding-left: 0;
+	padding-right: 0;
+	pointer-events: all;
+	background: none;
 	position: relative;
-	margin-top: 1rem;
-	padding: 1.1rem 0;
+	top: -2em;
+	border-radius: $dimension-rounded-radius;
 
-	border: 1px solid $color-border;
-	background: $color-bg;
-
-	&:before {
-		color: $color-text-minor;
-		content: 'Feedback';
-		display: block;
-		font-family: $font-default;
-		position: absolute;
-		left: 3.65rem;
-		top: 0.5rem;
-		transform: scale(0.7);
-		transform-origin: top left;
+	.delete-button {
+		top: 1em;
 	}
 
-	.feedback-delete-button {
-		background-color: $color-bg;
-		border: $color-bg;
-		right: 0.1rem;
-		top: 0.2rem;
-		position: absolute;
-
-		button {
-			pointer-events: none;
-		}
+	.label {
+		top: 0.5em;
+		left: 1em;
 	}
 }

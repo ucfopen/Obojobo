@@ -1,7 +1,7 @@
-import NumericClasses from '../numerics/numeric-classes'
-import NumericMatches from './numeric-matches'
+const NumericClasses = require('../numerics/numeric-classes')
+const NumericMatches = require('./numeric-matches')
 
-import {
+const {
 	MATCH_EXACT,
 	MATCH_NONE,
 	MULTIPLE_EXACT,
@@ -10,14 +10,14 @@ import {
 	SINGLE_INFERRED,
 	MATCH_INFERRED,
 	NO_MATCHES
-} from './match-types'
-import {
+} = require('./match-types')
+const {
 	INPUT_MATCHES_MULTIPLE_TYPES,
 	INPUT_NOT_SAFE,
 	INPUT_NOT_MATCHED,
 	INPUT_INVALID,
 	OK
-} from './numeric-entry-statuses'
+} = require('./numeric-entry-statuses')
 
 /**
  * Represents, processes and validates a numeric value in an accepted format. Used as
@@ -31,7 +31,7 @@ import {
  * entry.status // 'inputNotMatched'
  * entry.numericInstance // null
  */
-export default class NumericEntry {
+module.exports = class NumericEntry {
 	/**
 	 * Returns a new NumericMatches object which returns possible NumericEntry instances
 	 * which match the type of the entry string.
@@ -209,6 +209,11 @@ export default class NumericEntry {
 	 */
 	clone() {
 		return new NumericEntry(this.inputString, this.types)
+	}
+
+	toString() {
+		if (!this.numericInstance) return ''
+		return this.numericInstance.toString()
 	}
 
 	toJSON() {

@@ -1,9 +1,9 @@
-import Decimal from './decimal'
-import Scientific from './scientific'
-import Fractional from './fractional'
-import Hexadecimal from './hexadecimal'
-import Octal from './octal'
-import Binary from './binary'
+const Decimal = require('./decimal')
+const Scientific = require('./scientific')
+const Fractional = require('./fractional')
+const Hexadecimal = require('./hexadecimal')
+const Octal = require('./octal')
+const Binary = require('./binary')
 
 const NumericClasses = {}
 
@@ -14,4 +14,4 @@ NumericClasses[Hexadecimal.type] = Hexadecimal
 NumericClasses[Octal.type] = Octal
 NumericClasses[Binary.type] = Binary
 
-export default NumericClasses
+module.exports = NumericClasses

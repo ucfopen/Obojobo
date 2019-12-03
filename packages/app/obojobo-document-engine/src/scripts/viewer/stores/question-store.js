@@ -15,6 +15,7 @@ const getNewContextState = () => {
 	return {
 		viewing: null,
 		viewedQuestions: {},
+		revealedQuestions: {},
 		scores: {},
 		responses: {},
 		data: {}
@@ -28,10 +29,11 @@ class QuestionStore extends Store {
 
 		Dispatcher.on({
 			'question:setResponse': payload => {
-				const { context, id } = payload.value
+				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
+				const questionId = id
 				const contextState = this.getOrCreateContextState(context)
 
-				contextState.responses[id] = payload.value.response
+				contextState.responses[questionId] = response
 
 				this.triggerChange()
 
@@ -41,12 +43,12 @@ class QuestionStore extends Store {
 					eventVersion: '2.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: id,
-						response: payload.value.response,
-						targetId: payload.value.targetId,
+						questionId,
+						response,
+						targetId,
 						context,
-						assessmentId: payload.value.assessmentId,
-						attemptId: payload.value.attemptId
+						assessmentId,
+						attemptId
 					}
 				})
 			},
@@ -134,6 +136,7 @@ class QuestionStore extends Store {
 				})
 
 				delete contextState.viewedQuestions[id]
+				delete contextState.revealedQuestions[id]
 				if (contextState.viewing === id) {
 					contextState.viewing = null
 				}
@@ -211,11 +214,18 @@ class QuestionStore extends Store {
 			},
 
 			'question:retry': payload => {
-				const { id, context } = payload.value
+				const { id, context, response } = payload.value
 				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
 
-				if (!this.clearResponses(id, context)) return
+				// if (!this.clearResponses(id, context)) return
+
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.responses[id] = response
+				delete contextState.revealedQuestions[id]
+
+				this.triggerChange()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -235,15 +245,42 @@ class QuestionStore extends Store {
 				QuestionUtil.clearScore(id, context)
 			},
 
+			'question:revealAnswer': payload => {
+				const { context, id } = payload.value
+				const questionId = id
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.revealedQuestions[id] = true
+
+				// contextState.responses[questionId] = response
+
+				// QuestionUtil.setScore(questionId, 100, 'Answer Revealed', null, context)
+
+				this.triggerChange()
+
+				APIUtil.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'question:revealAnswer',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId,
+						context
+					}
+				})
+			},
+
 			'question:scoreSet': payload => {
 				const scoreId = uuid()
-				const { itemId, context, score } = payload.value
+				const { itemId, context, score, feedbackText, detailedText } = payload.value
 
 				const contextState = this.getOrCreateContextState(context)
 
 				contextState.scores[itemId] = {
 					id: scoreId,
 					score,
+					feedbackText,
+					detailedText,
 					itemId
 				}
 

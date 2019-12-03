@@ -1,225 +1,319 @@
 import './viewer-component.scss'
 
+// import { CSSTransition } from 'react-transition-group'
 import React from 'react'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
+import _ from 'underscore'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
-import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 
-const { OboComponent } = Viewer.components
+const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
+const { NavUtil } = Viewer.util
+const { OboModel } = Common.models
 
-class NumericAssessment extends React.Component {
-	constructor() {
-		super()
+const KEY_FEEDBACK = 'feedback'
+const LONG_RESPONSE_NUM_CHARS = 19
 
-		this.state = {
-			isScored: false,
-			isCorrect: true,
-			correctLabel: 'Correct',
-			incorrectLabel: 'Incorrect',
-			isWarning: false,
-			warningLabel: 'Answer must be an integer',
-			input: '',
-			feedback: null
-		}
-	}
+export default class NumericAssessment extends OboQuestionAssessmentComponent {
+	constructor(props) {
+		super(props)
 
-	onInputChange(event) {
-		const value = event.target.value
-		this.setState({
-			input: event.target.value,
-			isScored: false,
-			isWarning: isNaN(value)
+		// this.matchMedia = window.matchMedia('(max-width: 980px)')
+		// this.onMatchMediaChanged = this.onMatchMediaChanged.bind(this)
+		// this.matchMedia.addListener(this.onMatchMediaChanged)
+
+		this.evaluator = new NumericAnswerEvaluator({
+			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
+
+		// debugger
+
+		// this.onInputChange = this.onInputChange.bind(this)
+
+		// this.state = {
+		// 	feedback: null
+		// }
+
+		// this.state = {
+		// 	isScreenLte980Px: false
+		// }
 	}
 
-	// onSubmit() {
+	// componentDidMount() {
 	// 	this.setState({
-	// 		...this.state,
-	// 		isScored: true,
-	// 		isCorrect: 4 == this.state.input,
-	// 		isWarning: false
+	// 		isScreenLte980Px: this.matchMedia.matches
 	// 	})
 	// }
 
-	onRetry() {
-		this.setState({
-			...this.state,
-			isScored: false,
-			input: ''
-		})
+	// componentWillUnmount() {
+	// 	this.matchMedia.removeListener(this.onMatchMediaChanged)
+	// }
+
+	// onMatchMediaChanged() {
+	// 	this.setState({
+	// 		isScreenLte980Px: this.matchMedia.matches
+	// 	})
+	// }
+
+	static getInstructions(questionModel, questionAssessmentModel) {
+		return <span>Input your answer</span>
 	}
 
-	//@TODO - This is duplicated in MCAssessment
-	getQuestionModel() {
-		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
-	}
+	// static getDerivedStateFromProps(props, state) {
+	// 	if (props.response !== state.response) {
+	// 		return {
+	// 			response: props.response
+	// 		}
+	// 	}
+	// }
 
-	onFormChange(event) {
-		console.log('fc', event.target.value)
-		const questionModel = this.getQuestionModel()
-		const response = event.target.value
+	// onInputChange(event) {
+	// 	this.setState({
+	// 		response: event.target.value
+	// 	})
+	// }
 
-		QuestionUtil.setResponse(
-			questionModel.get('id'),
-			response,
-			null,
-			this.props.moduleData.navState.context,
-			this.props.moduleData.navState.context.split(':')[1],
-			this.props.moduleData.navState.context.split(':')[2]
+	setFeedback(feedback) {
+		QuestionUtil.setData(
+			this.props.model.get('id'),
+			NavUtil.getContext(this.props.moduleData.navState),
+			KEY_FEEDBACK,
+			feedback
 		)
 	}
+
+	clearFeedback() {
+		QuestionUtil.clearData(
+			this.props.model.get('id'),
+			NavUtil.getContext(this.props.moduleData.navState),
+			KEY_FEEDBACK
+		)
+	}
+
+	getFeedback() {
+		return QuestionUtil.getData(
+			this.props.moduleData.questionState,
+			this.props.model,
+			NavUtil.getContext(this.props.moduleData.navState),
+			KEY_FEEDBACK
+		)
+	}
+
+	// getCorrectResponse() {
+	// 	// Get the first correct response
+	// 	const correctRules = this.evaluator.grader.rules.filter(r => r.score === 100)
+
+	// 	if(correctRules.length === 0) {
+	// 		return null
+	// 	}
+
+	// 	return {
+	// 		state: {
+	// 			value: correctRules[0].
+	// 		},
+	// 		targetId: null
+	// 	}
+	// }
 
 	calculateScore() {
-		const questionResponse = QuestionUtil.getResponse(
-			this.props.moduleData.questionState,
-			this.getQuestionModel(),
-			this.props.moduleData.navState.context
-		)
+		const questionResponse = this.props.response.value
 
-		console.log(questionResponse)
+		console.log('CALCULATE SCORE', questionResponse)
 
 		// debugger
 
-		const evaluator = new NumericAnswerEvaluator({
-			scoreRuleConfigs: this.props.model.modelState.scoreRules
-		})
-
-		const results = evaluator.evaluate(questionResponse)
-
+		const results = this.evaluator.evaluate(questionResponse)
+		this.results = results
 		console.log('results', results)
 
-		this.setState({
-			feedback: results.details.matchingOutcome.rule.feedback
-		})
+		switch (results.status) {
+			case 'inputInvalid':
+				alert('input invalid')
+				return null
 
-		return results.details.score
+			default: {
+				let feedback = null
+				if (
+					results.details.matchingOutcome &&
+					results.details.matchingOutcome.rule &&
+					results.details.matchingOutcome.rule.feedback
+				) {
+					feedback = results.details.matchingOutcome.rule.feedback
+				}
+
+				this.setFeedback(feedback)
+
+				return results.details.score
+			}
+		}
 	}
 
-	onSubmit(event) {
-		event.preventDefault()
-
-		// debugger
-
-		const questionModel = this.getQuestionModel()
-
-		QuestionUtil.setScore(
-			questionModel.get('id'),
-			this.calculateScore(),
+	retry() {
+		QuestionUtil.retryQuestion(
+			this.props.questionModel.get('id'),
 			this.props.moduleData.navState.context
 		)
+	}
 
-		// Clear out labels so they are reselected
-		// QuestionUtil.clearData(
-		// 	questionModel.get('id'),
-		// 	this.props.moduleData.navState.context,
-		// 	FEEDBACK_LABELS_TO_SHOW
-		// )
+	handleFormChange(event) {
+		if (this.props.score !== null) {
+			this.retry()
+		}
 
-		if (questionModel.modelState.type === 'survey') {
-			QuestionUtil.submitResponse(questionModel.get('id'), this.props.moduleData.navState.context)
+		return {
+			state: {
+				value: event.target.value
+			},
+			targetId: null
+		}
+	}
+
+	getRuleSummary(rule) {
+		const min = rule.value.min.toString()
+		const max = rule.value.max.toString()
+
+		if (rule.value.isSingular) {
+			return {
+				type: 'single',
+				value: min
+			}
+		}
+
+		const isFullyInclusive = rule.value.isMinInclusive && rule.value.isMaxInclusive
+		if (isFullyInclusive) {
+			return {
+				type: 'range',
+				min,
+				max,
+				conjunction: 'to'
+			}
+		}
+
+		let minPrefix = ''
+		let maxPrefix = ''
+
+		if (rule.value.isMinInclusive) {
+			minPrefix = 'Greater than or equal to'
 		} else {
-			QuestionUtil.checkAnswer(questionModel.get('id'), this.props.moduleData.navState.context)
+			minPrefix = 'Greater than'
+		}
+
+		if (rule.value.isMaxInclusive) {
+			maxPrefix = 'less than or equal to'
+		} else {
+			maxPrefix = 'less than'
+		}
+
+		return {
+			type: 'range',
+			minPrefix,
+			maxPrefix,
+			min,
+			max,
+			conjunction: 'and'
+		}
+	}
+
+	renderRuleSummary(summary) {
+		switch (summary.type) {
+			case 'single':
+				return <span className="value">{summary.value}</span>
+
+			case 'range':
+				return (
+					<React.Fragment>
+						{summary.minPrefix ? <span>{summary.minPrefix} </span> : null}
+						<span className="value">{summary.min}</span>
+						<span> {summary.conjunction} </span>
+						{summary.maxPrefix ? <span>{summary.maxPrefix} </span> : null}
+						<span className="value">{summary.max}</span>
+					</React.Fragment>
+				)
 		}
 	}
 
 	render() {
-		const isReview = false
-		const className = 'test'
+		const score = this.props.score
+		const scoreClass = this.props.scoreClass
+		const isAnswered = this.props.isAnswered
+		// const isAnswerRevealed = this.props.isAnswerRevealed
+		const feedback = this.getFeedback()
+		const feedbackModel = feedback ? OboModel.create(feedback) : null
+		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
+		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
+		const responseValue =
+			this.props.response && this.props.response.value ? this.props.response.value : ''
+		console.log('fb', feedback, feedbackModel, FeedbackComponent)
 
-		var fb = this.state.feedback
-
-		console.log('fb be all', fb)
-
-		var fbc = null
-		if (fb) {
-			fb.type = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-			fb = OboModel.create(fb)
-			const Component = fb.getComponentClass()
-			// debugger
-			fbc = <Component model={fb} moduleData={this.props.moduleData} />
-		}
+		const className =
+			'obojobo-draft--chunks--numeric-assessment' +
+			` is-response-type-${this.props.model.modelState.responseType}` +
+			` is-mode-${this.props.mode}` +
+			` is-type-${this.props.type}` +
+			isOrNot(responseValue.length >= LONG_RESPONSE_NUM_CHARS, 'long-response') +
+			isOrNot(isAnswered, 'answered') +
+			` ${scoreClass}` +
+			// isOrNot(isShowingExplanationValue, 'showing-explanation') +
+			isOrNot(score !== null, 'scored')
 
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				onChange={!isReview ? this.onFormChange.bind(this) : null}
-				onSubmit={this.onFormSubmit}
-				tag="form"
 				className={className}
 			>
-				<textarea on></textarea>
-				<button onClick={this.onSubmit.bind(this)}>Submit</button>
-				{fbc}
-			</OboComponent>
-		)
-	}
-
-	renderOLD() {
-		const className =
-			`component` +
-			` obojobo-draft--chunks--numeric-assessment` +
-			isOrNot(this.state.isScored, 'scored') +
-			isOrNot(this.state.isCorrect, 'correct')
-
-		return (
-			<label className={className}>
-				<fieldset>
-					<div className="input-section pad">
-						<div className="input-container">
-							<p>x = </p>
-							<input
-								id="numeric-assessment--input"
-								placeholder="Your answer..."
-								value={this.state.input}
-								onChange={e => this.onInputChange(e)}
+				<div className="input-section pad">
+					<div className="input-container">
+						<input
+							autoComplete="off"
+							id="numeric-assessment--input"
+							placeholder={this.props.mode !== 'review' ? 'Your answer...' : '(No answer given)'}
+							value={responseValue}
+							disabled={this.props.mode === 'review'}
+							// onChange={this.onInputChange}
+						/>
+					</div>
+					{feedback ? (
+						<FeedbackComponent model={feedbackModel} moduleData={this.props.moduleData} />
+					) : null}
+					{this.props.mode === 'review' ? (
+						<div className="review">
+							<Flag
+								// small={this.state.isScreenLte980Px}
+								type={Flag.getType(
+									score === 100,
+									score === 100,
+									true,
+									this.props.questionModel.modelState.type === 'survey'
+								)}
 							/>
-							<p> meters</p>
-
-							{this.state.isWarning ? (
-								<div className="warning">
-									<p className="warning--content">{this.state.warningLabel}</p>
+							{score !== 100 ? (
+								<div className="correct-answers">
+									{correctRules.length === 1 ? (
+										<React.Fragment>
+											<h2>Correct answer: </h2>
+											<span>{this.renderRuleSummary(this.getRuleSummary(correctRules[0]))}</span>
+										</React.Fragment>
+									) : (
+										<React.Fragment>
+											<h2>Correct answers:</h2>
+											<ul>
+												{correctRules.map((rule, index) => {
+													return (
+														<li key={index}>{this.renderRuleSummary(this.getRuleSummary(rule))}</li>
+													)
+												})}
+											</ul>
+										</React.Fragment>
+									)}
 								</div>
 							) : null}
 						</div>
-
-						{this.state.isScored && !this.state.isCorrect ? (
-							<div className="feedback">
-								<p className="feedback--content">Two plus two is four.</p>
-							</div>
-						) : null}
-					</div>
-
-					<div className="submit-and-result-container pad">
-						<div className="submit">
-							<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center">
-								{!this.state.isScored ? (
-									<button className="button" onClick={() => this.onSubmit()}>
-										Check your answer
-									</button>
-								) : (
-									<button className="button" onClick={() => this.onRetry()}>
-										Retry
-									</button>
-								)}
-							</div>
-						</div>
-
-						<div className="result-container">
-							{this.state.isScored && this.state.isCorrect ? (
-								<p className="result correct">{this.state.correctLabel}</p>
-							) : null}
-							{this.state.isScored && !this.state.isCorrect ? (
-								<p className="result incorrect">{this.state.incorrectLabel}</p>
-							) : null}
-						</div>
-					</div>
-				</fieldset>
-			</label>
+					) : null}
+				</div>
+			</OboComponent>
 		)
 	}
 }
-
-export default NumericAssessment

@@ -9,6 +9,7 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 
 class Question extends React.Component {
 	constructor(props) {
@@ -16,6 +17,7 @@ class Question extends React.Component {
 		this.addSolution = this.addSolution.bind(this)
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
+		this.onSetAssessmentType = this.onSetAssessmentType.bind(this)
 	}
 
 	onSetType(event) {
@@ -42,6 +44,64 @@ class Question extends React.Component {
 		})
 	}
 
+	onSetAssessmentType(event) {
+		console.log(event.target.value)
+		const type = event.target.value
+
+		console.log('key', this.props.node.nodes.last().key)
+
+		// return false
+
+		// const newAssessment = Block.create({
+		// 	type: 'ObojoboDraft.Chunks.YouTube',
+		// 	data: {
+		// 		content: {}
+		// 	}
+		// })
+
+		const newAssessment = Block.create({
+			type,
+			data: {
+				content: {
+					numericChoices: [
+						{
+							type: 'percent',
+							score: 100,
+							answer: '3',
+							margin: '3',
+							requirement: 'margin'
+						},
+						{
+							type: 'absolute',
+							score: 100,
+							answer: '3',
+							margin: '3',
+							requirement: 'margin'
+						}
+					]
+				}
+			}
+		})
+
+		// this.props.editor.removeNodeByKey(this.props.node.nodes.last())
+		this.props.editor.replaceNodeByKey(
+			this.props.node.nodes.get(this.props.node.nodes.size - 1).key,
+			newAssessment
+		)
+		// return this.props.editor.removeNodeByKey(
+		// 	this.props.node.nodes.get(this.props.node.nodes.size - 1).key
+		// )
+
+		// this.props.editor.setNodeByKey(this.props.node.key, {
+		// 	nodes: [
+		// 		this.props.node.nodes[0],
+		// 		Block.create({
+		// 			type
+		// 		})
+		// 	]
+		// })
+	}
+
 	delete() {
 		const editor = this.props.editor
 		return editor.removeNodeByKey(this.props.node.key)
@@ -62,7 +122,7 @@ class Question extends React.Component {
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
-		if(hasSolution){
+		if (hasSolution) {
 			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
 		} else {
 			questionType = this.props.node.nodes.last().type
@@ -71,17 +131,19 @@ class Question extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div
-					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${
-						content.type
-					}`}>
+					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
+				>
 					<div className="flipper question-editor">
 						<div className="content-back">
 							<div className="question-settings">
 								<label>Question Type</label>
 								<select
 									contentEditable={false}
-									value={questionType}>
+									value={questionType}
+									onChange={this.onSetAssessmentType}
+								>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
+									<option value={NUMERIC_ASSESSMENT_NODE}>Numeric</option>
 								</select>
 								<div className="question-type" contentEditable={false}>
 									<input
@@ -89,7 +151,8 @@ class Question extends React.Component {
 										name="vehicle1"
 										value="Bike"
 										checked={content.type === 'survey'}
-										onChange={this.onSetType}/>
+										onChange={this.onSetType}
+									/>
 									<label>Survey Only</label>
 								</div>
 							</div>

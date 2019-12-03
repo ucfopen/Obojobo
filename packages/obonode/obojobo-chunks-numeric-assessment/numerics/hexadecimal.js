@@ -1,15 +1,15 @@
-import {
+const {
 	HEX_TYPE_ZERO_X,
 	HEX_TYPE_OCTOTHORPE,
 	HEX_TYPE_DOLLAR_SIGN,
 	HEX_TYPE_NO_PREFIX,
 	HEX_TYPE_INFERRED
-} from './types/hexadecimal-types'
-import { INPUT_TYPE_HEXADECIMAL } from './types/input-types'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
-import Numeric from './numeric'
-import Decimal from './decimal'
-import Big from '../big'
+} = require('./types/hexadecimal-types')
+const { INPUT_TYPE_HEXADECIMAL } = require('./types/input-types')
+const { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } = require('../entry/match-types')
+const Numeric = require('./numeric')
+const Decimal = require('./decimal')
+const Big = require('../big')
 
 const hexZeroX = /^0x[0-9a-fA-F]+$/
 const hexOctothorpe = /^#[0-9a-fA-F]+$/
@@ -27,7 +27,7 @@ const hexInferred = /^[0-9a-fA-F]+$/
  * new Hexadecimal("0xF0 bytes") // Unit example
  * new Hexadecimal("B0283") // 'inferred' hex value
  */
-export default class Hexadecimal extends Numeric {
+module.exports = class Hexadecimal extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'hex'}

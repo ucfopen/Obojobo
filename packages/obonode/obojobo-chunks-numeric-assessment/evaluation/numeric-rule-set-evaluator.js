@@ -1,5 +1,9 @@
-import NumericRuleOutcome from '../rule/numeric-rule-outcome'
-import { NO_RULES, RULE_MATCHED, NO_MATCHING_RULES } from './numeric-rule-set-evaluator-statuses'
+const NumericRuleOutcome = require('../rule/numeric-rule-outcome')
+const {
+	NO_RULES,
+	RULE_MATCHED,
+	NO_MATCHING_RULES
+} = require('./numeric-rule-set-evaluator-statuses')
 
 /**
  * @typedef {Object} NumericRuleSetEvaluatorResultObject
@@ -24,7 +28,7 @@ import { NO_RULES, RULE_MATCHED, NO_MATCHING_RULES } from './numeric-rule-set-ev
  * results.details.score //100
  * results.details.matchingOutcome //NumericRuleOutcome instance
  */
-export default class NumericRuleSetEvaluator {
+module.exports = class NumericRuleSetEvaluator {
 	/**
 	 * Creates NumericRuleOutcome objects from a NumericEntry and an array of NumericRules
 	 * @param {NumericEntry} studentEntry

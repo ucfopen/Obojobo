@@ -53,7 +53,7 @@
  * new ValueRange({ min:6, isMinInclusive:true, max:7, isMaxInclusive:true }) // 6 to 7
  * new ValueRange({ max:7, isMaxInclusive:true }) // <= 7
  */
-export default class ValueRange {
+class ValueRange {
 	/**
 	 * Parsed a ValueRangeString into a ValueRangeObject
 	 * @param {ValueRangeString} rangeString
@@ -509,3 +509,5 @@ ValueRange.VALUE_ABOVE_MAX = 'aboveMax'
 ValueRange.VALUE_BELOW = 'below'
 ValueRange.VALUE_ABOVE = 'above'
 ValueRange.VALUE_EQUAL = 'equal'
+
+module.exports = ValueRange

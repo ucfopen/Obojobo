@@ -5,18 +5,13 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 const { OboComponent } = Viewer.components
 
-const MCFeedback = props => (
+const NumericFeedback = props => (
 	<OboComponent
 		model={props.model}
 		moduleData={props.moduleData}
-		className={`obojobo-draft--chunks--numeric-assessment--numeric-feedback${
-			3
-			// props.model.parent.modelState.score === 100
-			// 	? ' is-correct-feedback'
-			// 	: ' is-not-correct-feedback'
-		}`}
+		className={`obojobo-draft--chunks--numeric-assessment--numeric-feedback`}
 	>
-		<span className="for-screen-reader-only">. Feedback for your answer:</span>
+		<span className="for-screen-reader-only">. Feedback for this answer choice:</span>
 		{props.model.children.models.map(child => {
 			const Component = child.getComponentClass()
 			return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
@@ -24,4 +19,4 @@ const MCFeedback = props => (
 	</OboComponent>
 )
 
-export default MCFeedback
+export default NumericFeedback

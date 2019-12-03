@@ -255,6 +255,8 @@ export default class ViewerApp extends React.Component {
 	}
 
 	updateDOMFocus() {
+		console.log(JSON.stringify(this.state.focusState))
+
 		const focussedItem = FocusUtil.getFocussedItemAndClear(this.state.focusState)
 
 		switch (focussedItem.type) {
@@ -296,6 +298,8 @@ export default class ViewerApp extends React.Component {
 	focusComponent(model, opts) {
 		if (!model) return false
 
+		console.log('focusComponent', model, opts)
+
 		// Save the current scroll location since focus() will scroll the page (there is a
 		// preventScroll option but it is not widely supported). Once focus is called we'll
 		// quickly reset the scroll location to what it was before the focus. This allows
@@ -309,10 +313,10 @@ export default class ViewerApp extends React.Component {
 		if (Component && Component.focusOnContent) {
 			Component.focusOnContent(model, opts)
 		} else {
-			focus(el)
+			focus(el, opts.scroll)
 		}
 
-		if (opts.animateScroll) {
+		if (opts.scroll && opts.animateScroll) {
 			this.containerRef.current.scrollTop = currentScrollTop
 			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}

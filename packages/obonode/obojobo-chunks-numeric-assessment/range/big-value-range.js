@@ -1,5 +1,5 @@
-import ValueRange from './value-range'
-import Big from '../big'
+const ValueRange = require('./value-range')
+const Big = require('../big')
 
 /**
  * A type of ValueRange but for Big values instead of numbers.
@@ -8,7 +8,7 @@ import Big from '../big'
  * range.min // Equal to Big(2)
  * range.max // Equal to Big(4)
  */
-export default class BigValueRange extends ValueRange {
+module.exports = class BigValueRange extends ValueRange {
 	/**
 	 * Compare two Big numbers
 	 * @param {Big} a

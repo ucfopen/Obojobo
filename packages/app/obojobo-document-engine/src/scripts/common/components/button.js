@@ -43,6 +43,7 @@ export default class Button extends React.Component {
 		return (
 			<div className={className}>
 				<button
+					type={this.props.isSubmittable ? 'submit' : 'button'}
 					ref={this.buttonRef}
 					className={'button'}
 					onClick={this.props.onClick}

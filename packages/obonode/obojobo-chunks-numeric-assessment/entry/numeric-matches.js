@@ -1,5 +1,4 @@
-import {
-	MATCH_NONE,
+const {
 	MATCH_EXACT,
 	MATCH_INFERRED,
 	MULTIPLE_EXACT,
@@ -7,7 +6,7 @@ import {
 	SINGLE_EXACT,
 	SINGLE_INFERRED,
 	NO_MATCHES
-} from './match-types'
+} = require('./match-types')
 
 /**
  * Organizes and contains Numeric instances based on an input string. Instances are
@@ -25,7 +24,7 @@ import {
  * matches.add(new Decimal('14g'))
  * matches.status // 'multipleExact'
  */
-export default class NumericMatches {
+module.exports = class NumericMatches {
 	constructor() {
 		/**
 		 * Object with the key as the match type and the value an array of matching numeric types

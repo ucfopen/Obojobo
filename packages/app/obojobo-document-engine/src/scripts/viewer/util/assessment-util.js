@@ -235,6 +235,22 @@ const AssessmentUtil = {
 				id: model.get('id')
 			}
 		})
+	},
+
+	isFullReviewAvailableForModel(state, model) {
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		switch (model.modelState.review) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'no-attempts-remaining':
+				return !AssessmentUtil.hasAttemptsRemaining(state, model)
+		}
 	}
 }
 

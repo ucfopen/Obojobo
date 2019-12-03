@@ -1,5 +1,5 @@
-import ValueRange from './value-range'
-import NumericEntry from '../entry/numeric-entry'
+const ValueRange = require('./value-range')
+const NumericEntry = require('../entry/numeric-entry')
 
 /**
  * String describing the range for NumericEntryRange.
@@ -38,7 +38,7 @@ import NumericEntry from '../entry/numeric-entry'
  * range.max // equal to new NumericEntry("10")
  * range.unit // "g"
  */
-export default class NumericEntryRange extends ValueRange {
+module.exports = class NumericEntryRange extends ValueRange {
 	// Handles strings like '[1,2]g', returning '[1,2]' and 'g'.
 	/**
 	 * Extracts the unit from the given range string and returns an object giving you

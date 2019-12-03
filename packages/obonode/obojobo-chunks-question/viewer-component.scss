@@ -1,8 +1,58 @@
 @import '~styles/includes';
 
+// .explanation-enter {
+// 	transition: background 8s;
+// 	background: red !important;
+// }
+
+// .explanation-leave {
+// 	transition: background 8s;
+// 	background: green !important;
+// }
+
+// .explanation-exit {
+// 	transition: background 8s;
+// 	background: blue !important;
+// }
+
 .obojobo-draft--chunks--question {
 	perspective: 1000px;
 	margin: 0 auto;
+
+	//@TODO - duplicated color also in MCAssessment
+	// $color-survey: #48b8b9;
+	$color-correct-text: darken($color-correct, 10%);
+	$color-border: transparentize($color-shadow, 0.25);
+
+	@keyframes obojobo-draft--chunks--question--bounce {
+		0% {
+			transform: scale(0);
+		}
+
+		50% {
+			transform: scale(1.1);
+		}
+
+		80% {
+			transform: scale(0.9);
+		}
+
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	// &:focus-within .flipper {
+	// 	box-shadow: 0 0 0 2px $color-shadow;
+	// }
+
+	// &.is-correct:focus-within .flipper {
+	// 	box-shadow: 0 0 0 2px $color-correct;
+	// }
+
+	// &.is-not-correct:focus-within .flipper {
+	// 	box-shadow: 0 0 0 2px $color-incorrect;
+	// }
 
 	.obojobo-draft--chunks--question--survey-question-icon {
 		width: 1.2em;
@@ -31,6 +81,44 @@
 		> .blocker-front,
 		> .content-back {
 			width: 100%;
+
+			> fieldset {
+				padding: 0;
+				margin: 0;
+				border: none;
+				border-bottom: 1px solid $color-border;
+				background: white;
+				border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+
+				> legend {
+					$font-size: 1em;
+
+					@include pad();
+
+					@include mq($until: desktop) {
+						@include pad(0.75);
+					}
+
+					@include mq($until: tablet) {
+						@include pad(0.3);
+					}
+
+					content: 'Practice';
+					display: block;
+					font-family: $font-default;
+					color: $color-action;
+					font-size: $font-size;
+					font-weight: normal;
+					width: 100%;
+					box-sizing: border-box;
+					border: none;
+					border-bottom: 1px solid $color-border;
+					// position: absolute;
+					background: none;
+					// left: 0;
+					// top: -0.5em;
+				}
+			}
 
 			> .solution-editor {
 				background: $color-bg2;
@@ -208,5 +296,301 @@
 		> .flipper {
 			transform: rotateY(-180deg);
 		}
+	}
+
+	//////////////
+
+	.submit-and-result-container {
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
+
+		min-height: 4em;
+		display: block;
+		position: relative;
+	}
+
+	.submit {
+		margin-left: 0;
+		margin-right: 0;
+		position: relative;
+		display: inline-block;
+
+		button {
+			// cursor: pointer;
+			font-size: 0.85em;
+			margin-bottom: 1em;
+			margin-top: 1em;
+			min-width: 11.5em;
+		}
+
+		.divider {
+			color: $color-shadow;
+			display: inline-block;
+			padding: 0 0.4em;
+			transform: scale(2, 0.9);
+		}
+	}
+
+	.reveal-answer-button {
+		position: absolute;
+		right: $dimension-padding;
+		top: 0;
+
+		button {
+			font-size: 0.85em;
+			margin-bottom: 1em;
+			margin-top: 1em;
+		}
+	}
+
+	.pick-all-instructions {
+		display: block;
+		font-family: $font-default;
+		font-size: 0.8em;
+		font-weight: bold;
+		// max-width: 24em;
+		// display: inline-block;
+		line-height: 1.5em;
+		vertical-align: middle;
+		// margin-left: 1.25em;
+		margin-bottom: 1em;
+	}
+
+	&.is-correct .pick-all-instructions {
+		color: $color-correct-text;
+	}
+
+	&.is-not-correct .pick-all-instructions {
+		color: $color-incorrect;
+	}
+
+	.result-container {
+		display: inline-block;
+		position: relative;
+		vertical-align: middle;
+		padding-right: 1em;
+		padding-top: 1em;
+		padding-bottom: 1em;
+		line-height: 1em;
+
+		@include mq($until: mobile) {
+			display: block;
+		}
+
+		.result {
+			font-family: $font-default;
+			color: $color-bg;
+			font-weight: bold;
+			box-sizing: border-box;
+			margin: 0;
+			display: inline-block;
+			border-radius: 9999px;
+			padding: 0.5em 1.5em;
+			font-size: 0.8em;
+			transform: scale(0);
+			animation: obojobo-draft--chunks--question--bounce 0.4s;
+			// animation-delay: $duration-animation-default * 1.5;
+			animation-fill-mode: forwards;
+
+			&.correct {
+				background-color: $color-correct;
+			}
+
+			&.incorrect {
+				background-color: $color-incorrect;
+			}
+
+			&.survey {
+				background-color: $color-survey;
+			}
+		}
+	}
+
+	.solution {
+		background: $color-bg2;
+		position: relative;
+		border-bottom-left-radius: 0.3em;
+		border-bottom-right-radius: 0.3em;
+		border-top: 1px solid $color-shadow;
+		padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+
+		> .obojobo-draft--components--button {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			margin-left: 3em;
+			margin-right: 3em;
+
+			@include mq($until: desktop) {
+				margin-left: 3em * 0.75;
+				margin-right: 3em * 0.75;
+			}
+
+			@include mq($until: tablet) {
+				margin-left: 3em * 0.3;
+				margin-right: 3em * 0.3;
+			}
+
+			button {
+				min-width: 10.5em;
+			}
+		}
+
+		&.explanation-enter {
+			opacity: 0;
+			max-height: 0;
+			overflow: hidden;
+		}
+
+		&.explanation-enter.explanation-enter-active {
+			opacity: 1;
+			max-height: 16em;
+
+			/* prettier-ignore */
+			transition:
+				opacity $duration-animation-default * 2,
+				max-height $duration-animation-default * 2;
+			// transition-delay: $duration-animation-default * 2;
+		}
+
+		&.explanation-leave {
+			opacity: 1;
+			max-height: 16em;
+			overflow: hidden;
+		}
+
+		&.explanation-leave.explanation-exit-active {
+			opacity: 0;
+			max-height: 0;
+
+			/* prettier-ignore */
+			transition:
+				opacity $duration-animation-default * 2,
+				max-height $duration-animation-default * 2;
+		}
+
+		> .solution-container-animation-placeholder {
+			transition: height $duration-animation-default * 2;
+		}
+
+		.solution-container {
+			background: $color-bg;
+			text-align: left;
+			padding: 0.5em;
+			margin-bottom: $dimension-padding / 3;
+			margin-left: $dimension-padding / 3;
+			margin-right: $dimension-padding / 3;
+			border: 1px solid $color-shadow;
+			position: relative;
+
+			&:focus {
+				outline: none;
+			}
+
+			&::before {
+				$color-solution-label-text: transparentize($color-text, 0.25);
+
+				content: 'Full explanation:';
+				font-family: $font-default;
+				font-size: 1em;
+				font-weight: bold;
+				color: $color-solution-label-text;
+				margin-top: 1em;
+				margin-left: 2em;
+				margin-bottom: -1em;
+				display: block;
+				transform: scale(0.7);
+				transform-origin: top left;
+
+				@include mq($until: tablet) {
+					margin-top: 0.5em;
+					margin-left: 0.5em;
+				}
+			}
+
+			&.solution-enter {
+				max-height: 0;
+				overflow: hidden;
+				border: 0 solid $color-transparent;
+				margin-bottom: 0;
+				opacity: 0;
+			}
+
+			&.solution-enter.solution-enter-active {
+				max-height: 60em;
+				margin-bottom: 1em;
+				border: 1px solid $color-shadow;
+				opacity: 1;
+
+				/* prettier-ignore */
+				transition:
+					max-height $duration-animation-default * 2,
+					margin-bottom $duration-animation-default * 2,
+					border $duration-animation-default * 2,
+					opacity $duration-animation-default * 2;
+			}
+
+			&.solution-exit {
+				max-height: 60em;
+				margin-bottom: 1em;
+				border: 1px solid $color-shadow;
+				overflow: hidden;
+				opacity: 1;
+			}
+
+			&.solution-exit.solution-exit-active {
+				max-height: 0;
+				margin-bottom: 0;
+				border: 0 solid $color-transparent;
+				opacity: 0;
+
+				/* prettier-ignore */
+				transition:
+					max-height $duration-animation-default * 2,
+					margin-bottom $duration-animation-default * 2,
+					border $duration-animation-default * 2,
+					opacity $duration-animation-default * 2;
+			}
+
+			> div > .for-screen-reader-only {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 0;
+				height: 0;
+				overflow: hidden;
+			}
+
+			> div > .component[data-obo-component='true'] {
+				margin-left: -1em;
+				margin-right: -1em;
+			}
+
+			.obojobo-draft--pages--page {
+				font-size: 0.85em;
+
+				@include mq($until: tablet) {
+					padding-top: 0.5em;
+				}
+			}
+		}
+
+		&.is-type-survey {
+			.solution-container {
+				&::before {
+					content: 'About this question:';
+				}
+			}
+		}
+	}
+
+	.submit .obojobo-draft--components--button:first-child {
+		margin-right: 1em;
 	}
 }

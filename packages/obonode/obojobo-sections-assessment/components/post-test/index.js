@@ -68,21 +68,10 @@ class AssessmentPostTest extends React.Component {
 		AssessmentUtil.resendLTIScore(this.props.model)
 	}
 
-	isFullReviewAvailable(model, assessmentState) {
-		switch (model.modelState.review) {
-			case 'always':
-				return true
-			case 'never':
-				return false
-			case 'no-attempts-remaining':
-				return !AssessmentUtil.hasAttemptsRemaining(assessmentState, model)
-		}
-	}
-
 	renderFullReview() {
-		const showFullReview = this.isFullReviewAvailable(
-			this.props.model,
-			this.props.moduleData.assessmentState
+		const showFullReview = AssessmentUtil.isFullReviewAvailableForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
 		)
 
 		return (
@@ -124,9 +113,7 @@ class AssessmentPostTest extends React.Component {
 					{Math.round(assessmentScore)}
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>
-				<span className="from-attempt">{`From attempt ${
-					highestAttempts[0].assessmentScoreDetails.attemptNumber
-				}`}</span>
+				<span className="from-attempt">{`From attempt ${highestAttempts[0].assessmentScoreDetails.attemptNumber}`}</span>
 			</div>
 		)
 	}

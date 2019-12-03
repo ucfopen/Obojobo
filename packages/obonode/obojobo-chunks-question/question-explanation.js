@@ -9,9 +9,6 @@ export default class MCAssessmentExplanation extends React.Component {
 	constructor(props) {
 		super(props)
 		this.solutionLabelRef = React.createRef()
-		this.animationOnEntered = this.props.animationOnEntered.bind(this)
-		this.animationOnExit = this.props.animationOnExit.bind(this)
-		this.animationOnExiting = this.props.animationOnExiting
 	}
 
 	focusOnExplanation() {
@@ -47,9 +44,6 @@ export default class MCAssessmentExplanation extends React.Component {
 					in={isShowingExplanation}
 					classNames="solution"
 					timeout={this.props.animationTransitionTime}
-					onEntered={this.animationOnEntered}
-					onExit={this.animationOnExit}
-					onExiting={this.animationOnExiting}
 				>
 					{isShowingExplanation ? (
 						<div

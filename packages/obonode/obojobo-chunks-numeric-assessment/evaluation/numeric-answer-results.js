@@ -1,4 +1,4 @@
-import {
+const {
 	FAILED,
 	PASSED,
 	FAILED_VALIDATION,
@@ -6,8 +6,8 @@ import {
 	INPUT_NOT_SAFE,
 	INPUT_MATCHES_MULTIPLE_TYPES,
 	INPUT_NOT_MATCHED
-} from './numeric-answer-result-statuses'
-import { RULE_MATCHED } from './numeric-rule-set-evaluator-statuses'
+} = require('./numeric-answer-result-statuses')
+const { RULE_MATCHED } = require('./numeric-rule-set-evaluator-statuses')
 
 /**
  * Object representing the evaluation of a student answer
@@ -21,7 +21,7 @@ import { RULE_MATCHED } from './numeric-rule-set-evaluator-statuses'
  * Contains a few utility methods used by NumericAnswerEvaluator to summarize the
  * evaluation results.
  */
-export default class NumericAnswerResults {
+module.exports = class NumericAnswerResults {
 	/**
 	 * Returns an object of suggestions from a NumericMatches instance where there
 	 * are multiple inferred matches. This would be used to create a UI asking a student

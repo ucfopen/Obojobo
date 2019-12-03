@@ -11,8 +11,8 @@ const { TextChunk } = Common.chunk
 const { focus } = Common.page
 
 export default class ActionButton extends React.Component {
-	static focusOnContent(model) {
-		focus(model.getDomEl().querySelector('button'))
+	static focusOnContent(model, opts = {}) {
+		focus(model.getDomEl().querySelector('button'), opts.scroll)
 	}
 
 	render() {

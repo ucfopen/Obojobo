@@ -108,8 +108,8 @@ class AssessmentStore extends Store {
 		for (const assessment in assessments) {
 			assessments[assessment].attempts.forEach(attempt => {
 				const scoreObject = {}
-				attempt.questionScores.forEach(score => {
-					scoreObject[score.id] = score
+				attempt.questionScores.forEach(scoreData => {
+					scoreObject[scoreData.id] = scoreData
 				})
 				const stateToUpdate = {
 					scores: scoreObject,

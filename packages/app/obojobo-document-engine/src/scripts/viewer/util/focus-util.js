@@ -4,11 +4,13 @@ const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
 const FocusUtil = {
-	focusComponent(id, opts = { fade: false, animateScroll: false }) {
+	focusComponent(id, opts = { fade: false, animateScroll: false, scroll: true }) {
+		console.log('FU.fC', arguments)
 		Dispatcher.trigger('focus:component', {
 			value: {
 				id,
 				fade: opts.fade || false,
+				scroll: typeof opts.scroll !== 'undefined' ? opts.scroll : true,
 				animateScroll: opts.animateScroll || false
 			}
 		})
@@ -32,6 +34,7 @@ const FocusUtil = {
 			target: state.target,
 			options: {
 				animateScroll: state.animateScroll,
+				scroll: state.scroll,
 				fade: state.visualFocusTarget !== null && state.visualFocusTarget === state.target
 			}
 		}
@@ -42,6 +45,7 @@ const FocusUtil = {
 
 		state.type = null
 		state.target = null
+		state.scroll = true
 		state.animateScroll = false
 
 		return item

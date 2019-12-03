@@ -45,7 +45,12 @@ class FocusStore extends Store {
 		Dispatcher.on('focus:navTarget', this._focusOnNavTarget.bind(this))
 		Dispatcher.on('focus:navigation', this._focusOnNavigation.bind(this))
 		Dispatcher.on('focus:component', payload => {
-			this._focusComponent(payload.value.id, payload.value.animateScroll, payload.value.fade)
+			this._focusComponent(
+				payload.value.id,
+				payload.value.scroll,
+				payload.value.animateScroll,
+				payload.value.fade
+			)
 		})
 		Dispatcher.on('focus:clearFadeEffect', this._clearFadeEffect.bind(this))
 	}
@@ -54,16 +59,20 @@ class FocusStore extends Store {
 		this.state = {
 			target: null,
 			type: null,
+			scroll: true,
 			animateScroll: false,
 			visualFocusTarget: null
 		}
 	}
 
-	_updateFocusTarget(type, target = null, animateScroll = false) {
+	_updateFocusTarget(type, target = null, scroll = true, animateScroll = false) {
+		console.log('_uFT', arguments)
 		this.state.type = type
 		this.state.target = target
-		this.state.animateScroll = !!animateScroll
+		this.state.scroll = ('' + scroll).toLowerCase() === 'true'
+		this.state.animateScroll = ('' + animateScroll).toLowerCase() === 'true'
 		this.state.visualFocusTarget = null
+		console.log('now', JSON.stringify(this.state))
 	}
 
 	_focusOnNavTarget() {
@@ -71,8 +80,8 @@ class FocusStore extends Store {
 		this.triggerChange()
 	}
 
-	_focusComponent(id, animateScroll = false, fade = false) {
-		this._updateFocusTarget(TYPE_COMPONENT, id, animateScroll)
+	_focusComponent(id, scroll = true, animateScroll = false, fade = false) {
+		this._updateFocusTarget(TYPE_COMPONENT, id, scroll, animateScroll)
 		this.state.visualFocusTarget = fade ? id : null
 		this.triggerChange()
 	}

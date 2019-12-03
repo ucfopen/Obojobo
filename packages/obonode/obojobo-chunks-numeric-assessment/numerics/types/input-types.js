@@ -14,7 +14,7 @@ const allTypes = [
 	INPUT_TYPE_BINARY
 ]
 
-export {
+module.exports = {
 	INPUT_TYPE_SCIENTIFIC,
 	INPUT_TYPE_DECIMAL,
 	INPUT_TYPE_FRACTIONAL,

@@ -1,7 +1,7 @@
-import { INPUT_TYPE_DECIMAL } from './types/input-types'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
-import Numeric from './numeric'
-import Big from '../big'
+const { INPUT_TYPE_DECIMAL } = require('./types/input-types')
+const { MATCH_EXACT } = require('../entry/match-types')
+const Numeric = require('./numeric')
+const Big = require('../big')
 
 //0
 //+0
@@ -28,7 +28,7 @@ const decimalRegex = /^[-\+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
  * new Decimal("+51.07 mols") // Plus sign optional and is ignored
  * new Decimal("1,024") // Commas optional and are ignored
  */
-export default class Decimal extends Numeric {
+module.exports = class Decimal extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'decimal'}

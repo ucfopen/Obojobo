@@ -1,16 +1,31 @@
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		getItemForType: () => ({
-			slateToObo: jest.fn(),
-			oboToSlate: jest.fn()
+		getItemForType: type => ({
+			slateToObo: () => ({
+				slateToOboReturnFor: type
+			}),
+			oboToSlate: type => ({
+				oboToSlateReturnFor: type
+			})
+		})
+	}
+}))
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor', () => ({
+	helpers: {
+		slateToObo: child => ({
+			componentSlateToOboReturnFor: child
+		}),
+		oboToSlate: child => ({
+			componentOboToSlateReturnFor: child
 		})
 	}
 }))
 
 import Converter from './converter'
-import { NUMERIC_FEEDBACK_NODE } from '../constants'
+const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
-describe('NumericFeedback Converter', () => {
+describe('MCFeedback Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
@@ -40,7 +55,7 @@ describe('NumericFeedback Converter', () => {
 			type: 'mockType',
 			children: [
 				{
-					type: NUMERIC_FEEDBACK_NODE
+					type: BREAK_NODE
 				},
 				{
 					type: 'notADefinedNode'

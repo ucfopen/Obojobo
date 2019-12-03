@@ -2,215 +2,56 @@
 
 .obojobo-draft--chunks--numeric-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
-	$color-survey: #48b8b9;
 
-	@keyframes obojobo-draft--chunks--mc-assessment--fadein {
-		0% {
-			opacity: 0;
-		}
+	// border-top: 1px solid $color-border;
+	// border-bottom: 1px solid $color-border;
 
-		100% {
-			opacity: 1;
+	&.is-long-response {
+		#numeric-assessment--input {
+			width: 100%;
 		}
 	}
 
-	@keyframes obojobo-draft--chunks--mc-assessment--bounce {
-		0% {
-			transform: scale(0);
-		}
+	#numeric-assessment--input {
+		@include text-input();
 
-		50% {
-			transform: scale(1.1);
-		}
-
-		80% {
-			transform: scale(0.9);
-		}
-
-		100% {
-			transform: scale(1);
-		}
+		width: 11.5em * 0.85 * (1 / 0.8);
 	}
 
-	@mixin correct() {
-		content: '✔';
-		position: absolute;
-		top: 0.8em;
-		left: 0.6em;
-		color: $color-correct;
-		font-size: 2.5em;
-		transform: translate(-50%, -50%);
-		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+	&.is-correct {
+		background: transparentize($color-correct, 0.9);
 	}
 
-	@mixin incorrect() {
-		content: '✖';
-		position: absolute;
-		top: 0.8em;
-		left: 0.6em;
-		color: $color-incorrect;
-		font-size: 2.5em;
-		transform: translate(-50%, -50%);
-		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+	&.is-not-correct {
+		background: transparentize($color-incorrect, 0.9);
 	}
 
-	padding-bottom: 0;
-	margin-top: 1em;
+	.correct-answers {
+		margin-top: 2em;
+		font-size: 0.8em;
 
-	> fieldset {
-		padding: 0;
-		margin: 0;
-		border: none;
-		background: white;
-		border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
-	}
-
-	.input-section {
-		border: 1px solid $color-border;
-		position: relative;
-		margin: -1px;
-
-		.input-container {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			margin: 1rem 0;
-
-			#numeric-assessment--input {
-				height: 2.5rem;
-				cursor: pointer;
-				font-family: $font-default;
-				font-size: 1rem;
-				width: 8rem;
-				padding: 0 0.5rem;
-				border-radius: 2px;
-				border: 1px solid $color-action;
-				margin: auto 0;
-				display: inline-block;
-			}
-
-			* {
-				margin: 0;
-			}
-		}
-
-		.feedback {
-			background: lighten($color-incorrect, 60%);
-			border-radius: 0.2rem;
-
-			.feedback--content {
-				margin: 1rem;
-				padding: 0.5rem;
-				font-size: 1rem;
-			}
-		}
-	}
-
-	.warning {
-		height: 2.2rem;
-		position: relative;
-		background-color: $color-warning;
-		margin: auto 0;
-
-		&::before {
-			content: '';
-			position: absolute;
-			border-color: $color-bg $color-warning $color-bg $color-bg;
-			border-style: solid;
-			border-width: 1.1rem 1.1rem 1.1rem 1.1rem;
-		}
-
-		.warning--content {
-			font-family: $font-default;
+		h2 {
+			color: black;
+			font-size: 1em;
 			font-weight: bold;
-			box-sizing: border-box;
-			margin: 0;
-			display: inline-block;
-			padding: 0 1rem 0 2.3rem;
-			font-size: 0.7em;
-			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
+		}
+
+		.value {
+			font-family: $font-monospace;
 		}
 	}
 
-	.submit-and-result-container {
-		min-height: 4em;
-		display: table;
-		border-bottom: 1px solid $color-border;
-	}
+	.obojobo-draft--components--flag {
+		position: absolute;
 
-	.result-container {
-		display: table-cell;
-		position: relative;
-		vertical-align: middle;
-		padding: 1em;
+		left: -5.3em;
+		top: 1.1em;
+		// padding-left: 0.5em;
+		// padding-right: 0.5em;
 
-		.result {
-			font-family: $font-default;
-			color: $color-bg;
-			font-weight: bold;
-			box-sizing: border-box;
-			margin: 0;
-			display: inline-block;
-			border-radius: 9999px;
-			padding: 0 1.5em;
-			font-size: 0.8em;
-			transform: scale(0);
-			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
-			animation-delay: $duration-animation-default * 1.5;
-			animation-fill-mode: forwards;
-
-			&.correct {
-				background-color: $color-correct;
-			}
-
-			&.incorrect {
-				background-color: $color-incorrect;
-			}
-		}
-	}
-
-	.submit {
-		margin-left: 0;
-		margin-right: 0;
-		position: relative;
-		display: inline-block;
-
-		button {
-			cursor: pointer;
-			font-size: 0.85em;
-			margin-bottom: 1em;
-			margin-top: 1em;
-			min-width: 10.5em;
-		}
-	}
-
-	&.is-scored {
-		&.is-correct {
-			.input-section {
-				&::before {
-					@include correct();
-				}
-
-				background: transparentize($color-correct, 0.9);
-
-				#numeric-assessment--input {
-					border: 1px solid $color-correct;
-				}
-			}
-		}
-
-		&.is-not-correct {
-			.input-section {
-				&::before {
-					@include incorrect();
-				}
-
-				background: transparentize($color-incorrect, 0.9);
-
-				#numeric-assessment--input {
-					border: 1px solid $color-incorrect;
-				}
-			}
+		&.is-size-small {
+			left: -1.9em;
+			top: 0.3em;
 		}
 	}
 }
