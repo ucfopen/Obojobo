@@ -149,8 +149,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             className="attempt-info-content"
           >
             <div>
-              Submitted
-               
+              Submitted 
               <time
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
@@ -164,10 +163,11 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
               </span>
             </div>
             <div>
+              6
                out of 
-              1
+              7
                question
-              
+              s
                correct
             </div>
             <div>

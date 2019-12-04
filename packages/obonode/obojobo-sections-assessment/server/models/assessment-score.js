@@ -1,9 +1,6 @@
 const db = require('obojobo-express/db')
 const camelcaseKeys = require('camelcase-keys')
-// const draftNodeStore = oboRequire('draft_node_store')
 const logger = require('obojobo-express/logger')
-// const oboEvents = oboRequire('obo_events')
-
 
 class AssessmentScore {
 	constructor(props) {

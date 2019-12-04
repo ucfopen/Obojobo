@@ -614,8 +614,14 @@ describe('NavStore', () => {
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:afterNavChange', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('gotoItem sends updates history with no previous item', () => {
@@ -644,8 +650,14 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:afterNavChange', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('generateNav with no model returns empty object', () => {

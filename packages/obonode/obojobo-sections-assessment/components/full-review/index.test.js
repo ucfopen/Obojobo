@@ -198,7 +198,7 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 		const attempts = []
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttempt' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttempt' })
 		// mock attempts taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
@@ -223,23 +223,24 @@ describe('FullReview', () => {
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
-			attemptId: 'mockAttemptId'
+			id: 'mockAttemptId'
 		})
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([{ id: 'mockId' }])
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId',
+				id: 'mockAttemptId',
 				attemptNumber: 3,
 				assessmentScore: 80,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					],
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -276,22 +277,24 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId',
+				id: 'mockAttemptId',
 				attemptNumber: 3,
 				assessmentScore: 80,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					],
+					attemptScore: 80.34
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -299,7 +302,8 @@ describe('FullReview', () => {
 				}
 			}
 		]
-		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(7)
+		AssessmentUtil.getNumCorrect.mockReturnValueOnce(6)
 
 		const component = renderer.create(
 			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
@@ -321,7 +325,7 @@ describe('FullReview', () => {
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
-			attemptId: 'lastAttemptMockAttemptId'
+			id: 'lastAttemptMockAttemptId'
 		})
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([
@@ -330,16 +334,17 @@ describe('FullReview', () => {
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId_1',
+				id: 'mockAttemptId_1',
 				attemptNumber: 3,
 				assessmentScore: 80,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -370,18 +375,19 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId',
+				id: 'mockAttemptId',
 				attemptNumber: 3,
 				assessmentScore: null, // student did not pass
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: []
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: []
+				},
 			}
 		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
@@ -404,16 +410,17 @@ describe('FullReview', () => {
 		}
 		const model = OboModel.create(assessmentJSON)
 		const mockAttempt = {
-			attemptId: 'mockAttemptId',
+			id: 'mockAttemptId',
 			attemptNumber: 3,
 			assessmentScore: 80.34,
-			attemptScore: 80.34,
-			finishTime: '2018-06-05 20:28:11.228294+00',
-			questionScores: []
+			completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: []
+				},
 		}
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
 		// mock attempt taken
@@ -441,22 +448,23 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId',
+				id: 'mockAttemptId',
 				attemptNumber: 3,
 				assessmentScore: 80,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -464,15 +472,16 @@ describe('FullReview', () => {
 				}
 			},
 			{
-				attemptId: 'mockSecondAttemptId',
+				id: 'mockSecondAttemptId',
 				assessmentScore: 80.34,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -510,22 +519,23 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
-				attemptId: 'mockAttemptId',
+				id: 'mockAttemptId',
 				attemptNumber: 3,
 				assessmentScore: 80,
-				attemptScore: 80.34,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
@@ -533,16 +543,17 @@ describe('FullReview', () => {
 				}
 			},
 			{
-				attemptId: 'mockSecondAttemptId',
+				id: 'mockSecondAttemptId',
 				attemptNumber: 2,
 				assessmentScore: 100,
-				attemptScore: 100,
-				finishTime: '2018-06-05 20:28:11.228294+00',
-				questionScores: [
-					{
-						id: 'questionId'
-					}
-				],
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					]
+				},
 				state: {
 					questionModels: {
 						questionId: questionJSON
