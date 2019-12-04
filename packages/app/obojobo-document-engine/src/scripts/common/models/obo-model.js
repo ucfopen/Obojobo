@@ -254,14 +254,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	markDirty() {
-		// if (markChildren == null) { markChildren = false; }
 		this.modelState.dirty = true
 		this.modelState.needsUpdate = true
-
-		// if (markChildren) {
-		// 	return Array.from(this.children.models).map((child) =>
-		// 		child.markDirty());
-		// }
 	}
 
 	markForUpdate(markChildren = false) {
@@ -417,13 +411,6 @@ class OboModel extends Backbone.Model {
 	getDirectChildrenOfType(type) {
 		return this.children.models.filter(c => c.get('type') === type)
 	}
-
-	// 	matching
-
-	// searchChildren: (fn) ->
-	// 	for child in @children
-	// 		if fn(child)
-	// 			child.searchChildren fn
 
 	contains(child) {
 		while (child !== null) {
