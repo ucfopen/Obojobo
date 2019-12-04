@@ -160,7 +160,6 @@ const getLatestHighestAssessmentScoreRecord = (
 			logger.error('Error in getLatestHighestAssessmentScoreRecord')
 			logger.error(error)
 			if (error instanceof db.errors.QueryResultError && error.code === db.errors.queryResultErrorCode.noData) {
-				console.log('YEEEEP')
 				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
 			}
 			throw error
@@ -285,8 +284,6 @@ const getRequiredDataForReplaceResult = function(
 		isPreview
 	)
 		.then(assessmentScoreResult => {
-			console.log('DIDNT THROW')
-			console.log(assessmentScoreResult)
 			result.assessmentScoreRecord = assessmentScoreResult
 
 			logger.info(
@@ -337,9 +334,6 @@ const getRequiredDataForReplaceResult = function(
 			return result
 		})
 		.catch(e => {
-			if(e === ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND){
-				throw e
-			}
 			result.error = e
 
 			return result
@@ -732,6 +726,7 @@ const sendHighestAssessmentScore = (
 			result.statusDetails = errorResult.statusDetails
 		})
 		.then(() => {
+			// ALWAYS RUNS DUE TO CATCH ABOVE
 			result.gradebookStatus = getGradebookStatus(
 				outcomeData.type,
 				requiredData.scoreType,
@@ -741,8 +736,9 @@ const sendHighestAssessmentScore = (
 
 			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
 
+			const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord ? requiredData.assessmentScoreRecord.id : null
 			return insertLTIAssessmentScore(
-				requiredData.assessmentScoreRecord.id,
+				assessmentScoreIdOrNull,
 				result.launchId,
 				result.scoreSent,
 				result.status,
@@ -763,13 +759,14 @@ const sendHighestAssessmentScore = (
 			result.dbStatus = DB_STATUS_ERROR
 		})
 		.then(() => {
+			// ALWAYS RUNS DUE TO CATCH ABOVE
 			insertReplaceResultEvent(userId, draftDocument, requiredData.launch, outcomeData, result)
 		})
 		.catch(error => {
 			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
-			return Promise.resolve() // Go to next then
 		})
 		.then(() => {
+			// ALWAYS RUNS DUE TO CATCH ABOVE
 			logger.info(`LTI complete`, logId)
 			return result
 		})

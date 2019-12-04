@@ -74,57 +74,37 @@ const mockSendAssessScoreDBCalls = (
 	insertLTIAssessmentScoreSucceeds = true,
 	previewMode = false
 ) => {
-	// mock get assessment_score
 	if (assessmentScore === 'missing') {
+		// mock getLatestHighestAssessmentScoreRecord
 		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 		db.one.mockRejectedValueOnce(noDataError)
-	} else if (previewMode === true) {
-		db.one.mockResolvedValueOnce({
-			id: 'assessment-score-id',
-			userId: 'user-id',
-			draftId: 'draft-id',
-			contentId: 'content-id',
-			assessmentId: 'assessment-id',
-			attemptId: 'attempt-id',
-			score: assessmentScore,
-			scoreDetails: {
-				status: 'passed',
-				rewardTotal: 0,
-				attemptScore: assessmentScore,
-				rewardedMods: [],
-				attemptNumber: 1,
-				assessmentScore: assessmentScore,
-				assessmentModdedScore: assessmentScore
-			},
-			isPreview: true
-		})
-	} else {
-		db.one.mockResolvedValueOnce({
-			id: 'assessment-score-id',
-			userId: 'user-id',
-			draftId: 'draft-id',
-			contentId: 'content-id',
-			assessmentId: 'assessment-id',
-			attemptId: 'attempt-id',
-			score: assessmentScore,
-			scoreDetails: {
-				status: 'passed',
-				rewardTotal: 0,
-				attemptScore: assessmentScore,
-				rewardedMods: [],
-				attemptNumber: 1,
-				assessmentScore: assessmentScore,
-				assessmentModdedScore: assessmentScore
-			},
-			isPreview: false
-		})
 	}
+	else{
 
-	if (assessmentScore !== 'missing') {
+		// mock getLatestHighestAssessmentScoreRecord
+		db.one.mockResolvedValueOnce({
+			id: 'assessment-score-id',
+			userId: 'user-id',
+			draftId: 'draft-id',
+			contentId: 'content-id',
+			assessmentId: 'assessment-id',
+			attemptId: 'attempt-id',
+			score: assessmentScore,
+			scoreDetails: {
+				status: 'passed',
+				rewardTotal: 0,
+				attemptScore: assessmentScore,
+				rewardedMods: [],
+				attemptNumber: 1,
+				assessmentScore: assessmentScore,
+				assessmentModdedScore: assessmentScore
+			},
+			isPreview: previewMode === true
+		})
+
 		// mock getLatestSuccessfulLTIAssessmentScoreRecord
 		if (ltiPrevRecordScoreSent === null) {
-			const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
-			db.one.mockRejectedValueOnce(noDataError)
+			db.oneOrNone.mockResolvedValueOnce(null)
 		} else {
 			db.oneOrNone.mockResolvedValueOnce({
 				id: 'lti-assessment-score-id',
@@ -140,7 +120,7 @@ const mockSendAssessScoreDBCalls = (
 			})
 		}
 
-		// mock tryRetrieveLtiLaunch:
+		// mock retrieveLtiLaunch:
 		if (ltiHasOutcome === 'missing') {
 			db.oneOrNone.mockResolvedValueOnce(false)
 		} else if (ltiHasOutcome === 'error') {
@@ -167,11 +147,9 @@ const mockSendAssessScoreDBCalls = (
 	if (insertLTIAssessmentScoreSucceeds) {
 		db.one.mockResolvedValueOnce({ id: 'new-lti-assessment-score-id' })
 	} else {
-		db.one.mockReturnValueOnce(
-			new Promise(() => {
-				throw new Error('insertLTIAssessmentScore failed')
-			})
-		)
+		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		db.one.mockRejectedValueOnce(noDataError)
+
 	}
 
 	// mock insertEvent
@@ -1132,7 +1110,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.only('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', () => {
+	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', () => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -1157,8 +1135,8 @@ describe('lti', () => {
 						status: 'error_no_assessment_score_found',
 						statusDetails: null,
 						gradebookStatus: 'error_state_unknown',
-						dbStatus: 'error',
-						ltiAssessmentScoreId: null,
+						dbStatus: 'recorded',
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 						outcomeServiceURL: null
 					}
 				},
@@ -1177,8 +1155,8 @@ describe('lti', () => {
 				status: 'error_no_assessment_score_found',
 				statusDetails: null,
 				gradebookStatus: 'error_state_unknown',
-				dbStatus: 'error',
-				ltiAssessmentScoreId: null,
+				dbStatus: 'recorded',
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
 
@@ -1187,6 +1165,7 @@ describe('lti', () => {
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			)
+
 			expect(logger.error).toHaveBeenCalledWith(
 				'LTI no assessment score found, unable to proceed!',
 				logId
@@ -2368,13 +2347,13 @@ describe('lti', () => {
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns expected values', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
-				assessment_id: 'assessmentid',
-				assessment_score_id: 'assessment-score-id',
-				score_sent: 'score-sent',
-				lti_sent_date: 'lti-sent-date',
+				assessmentId: 'assessmentid',
+				assessmentScoreId: 'assessment-score-id',
+				scoreSent: 'score-sent',
+				sentDate: 'lti-sent-date',
 				status: 'status',
-				gradebook_status: 'gradebook-status',
-				status_details: 'status-details'
+				gradebookStatus: 'gradebook-status',
+				statusDetails: 'status-details'
 			}
 		])
 
@@ -2398,13 +2377,13 @@ describe('lti', () => {
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId searches on assessment', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
-				assessment_id: 'assessment-id',
-				assessment_score_id: 'assessment-score-id',
-				score_sent: 'score-sent',
-				lti_sent_date: 'lti-sent-date',
+				assessmentId: 'assessment-id',
+				assessmentScoreId: 'assessment-score-id',
+				scoreSent: 'score-sent',
+				sentDate: 'lti-sent-date',
 				status: 'status',
-				gradebook_status: 'gradebook-status',
-				status_details: 'status-details'
+				gradebookStatus: 'gradebook-status',
+				statusDetails: 'status-details'
 			}
 		])
 
@@ -2431,91 +2410,91 @@ describe('lti', () => {
 			})
 	})
 
-	// test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns empty object when nothing returned from database', () => {
-	// 	expect.hasAssertions()
-	// 	db.manyOrNone.mockResolvedValueOnce(null)
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns empty object when nothing returned from database', () => {
+		expect.hasAssertions()
+		db.manyOrNone.mockResolvedValueOnce(null)
 
-	// 	return lti
-	// 		.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
-	// 		.then(result => {
-	// 			expect(result).toEqual({})
-	// 		})
-	// })
+		return lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+			.then(result => {
+				expect(result).toEqual({})
+			})
+	})
 
-	// test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', async () => {
-	// 	expect.hasAssertions()
-	// 	db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
-	// 	try {
-	// 		await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
-	// 	} catch (e) {
-	// 		expect(logger.error).toHaveBeenCalledWith(
-	// 			'Error in getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId'
-	// 		)
-	// 		expect(logger.error).toHaveBeenCalledWith('mock-reject-error')
-	// 		expect(e).toBe('mock-reject-error')
-	// 	}
-	// })
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', async () => {
+		expect.hasAssertions()
+		db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
+		try {
+			await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+		} catch (e) {
+			expect(logger.error).toHaveBeenCalledWith(
+				'Error in getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId'
+			)
+			expect(logger.error).toHaveBeenCalledWith('mock-reject-error')
+			expect(e).toBe('mock-reject-error')
+		}
+	})
 
-	// test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
-	// 	// reqVars should be a plain js object but by making it an instance of
-	// 	// this class below I can cause an error to be thrown when getOutcomeServiceForLaunch
-	// 	// tries to get lis_outcome_service_url. I just need to get some error to be
-	// 	// thrown in getOutcomeServiceForLaunch so that it can be caught.
+	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
+		// reqVars should be a plain js object but by making it an instance of
+		// this class below I can cause an error to be thrown when getOutcomeServiceForLaunch
+		// tries to get lis_outcome_service_url. I just need to get some error to be
+		// thrown in getOutcomeServiceForLaunch so that it can be caught.
 
-	// 	const rtn = lti.getOutcomeServiceForLaunch({
-	// 		key: 'testkey',
-	// 		reqVars: new MockedBadReqVars()
-	// 	})
+		const rtn = lti.getOutcomeServiceForLaunch({
+			key: 'testkey',
+			reqVars: new MockedBadReqVars()
+		})
 
-	// 	expect(rtn.error.message).toBe('Some Unexpected Error')
-	// })
+		expect(rtn.error.message).toBe('Some Unexpected Error')
+	})
 
-	// test('sendReplaceResultRequest returns false when OutcomeService returns error, logs error', () => {
-	// 	OutcomeService.__setNextSendReplaceResultError(new Error('Internal Outcome Service Error'))
-	// 	// OutcomeService.__setNextSendReplaceResultReturn('rv')
+	test('sendReplaceResultRequest returns false when OutcomeService returns error, logs error', () => {
+		OutcomeService.__setNextSendReplaceResultError(new Error('Internal Outcome Service Error'))
+		// OutcomeService.__setNextSendReplaceResultReturn('rv')
 
-	// 	const os = new OutcomeService()
-	// 	os.service_url = 'service-url'
+		const os = new OutcomeService()
+		os.service_url = 'service-url'
 
-	// 	return lti.sendReplaceResultRequest(os, 1).then(result => {
-	// 		expect(result).toBe(false)
-	// 		expect(logger.info).toHaveBeenCalledWith('LTI sendReplaceResult to "service-url" with "1"')
-	// 		expect(logger.info).toHaveBeenCalledWith(
-	// 			'LTI sendReplaceResult threw error: "Error: Internal Outcome Service Error"'
-	// 		)
-	// 	})
-	// })
+		return lti.sendReplaceResultRequest(os, 1).then(result => {
+			expect(result).toBe(false)
+			expect(logger.info).toHaveBeenCalledWith('LTI sendReplaceResult to "service-url" with "1"')
+			expect(logger.info).toHaveBeenCalledWith(
+				'LTI sendReplaceResult threw error: "Error: Internal Outcome Service Error"'
+			)
+		})
+	})
 
-	// test('insertReplaceResultEvent calls insertEvent', () => {
-	// 	insertEvent.mockResolvedValueOnce('inserted')
+	test('insertReplaceResultEvent calls insertEvent', () => {
+		insertEvent.mockResolvedValueOnce('inserted')
 
-	// 	lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
-	// 		expect(insertEvent).toHaveBeenCalled()
-	// 	})
-	// })
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
+			expect(insertEvent).toHaveBeenCalled()
+		})
+	})
 
-	// test('insertReplaceResultEvent catches error', () => {
-	// 	insertEvent.mockRejectedValueOnce(new Error('mock Error'))
+	test('insertReplaceResultEvent catches error', () => {
+		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
 
-	// 	return lti
-	// 		.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
-	// 		.then(() => {
-	// 			expect(logger.error).toHaveBeenCalledWith(
-	// 				'There was an error inserting the lti event:',
-	// 				new Error('mock Error')
-	// 			)
-	// 		})
-	// })
+		return lti
+			.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+			.then(() => {
+				expect(logger.error).toHaveBeenCalledWith(
+					'There was an error inserting the lti event:',
+					new Error('mock Error')
+				)
+			})
+	})
 
-	// test('logAndGetStatusForError logs unexpected error', () => {
-	// 	// All other errors are tested through other methods
+	test('logAndGetStatusForError logs unexpected error', () => {
+		// All other errors are tested through other methods
 
-	// 	const result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
-	// 	expect(result).toEqual({
-	// 		status: 'error_unexpected',
-	// 		statusDetails: { message: 'Mock Error' }
-	// 	})
-	// })
+		const result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
+		expect(result).toEqual({
+			status: 'error_unexpected',
+			statusDetails: { message: 'Mock Error' }
+		})
+	})
 
 	test('sendHighestAssessmentScore fails and logs as expected', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
@@ -2526,32 +2505,6 @@ describe('lti', () => {
 		}
 
 		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.error.mock.calls[0][0]).toBe('LTI bad error attempting to update database! :(')
-			expect(logger.info.mock.calls[7]).toEqual(['LTI complete', logId])
 
 			expect(insertEvent).lastCalledWith({
 				action: 'lti:replaceResult',
@@ -2594,6 +2547,33 @@ describe('lti', () => {
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 		})
+
+			expect(logger.info.mock.calls[0]).toEqual([
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+				logId
+			])
+			expect(logger.info.mock.calls[1]).toEqual([
+				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+				logId
+			])
+			expect(logger.info.mock.calls[2]).toEqual([
+				'LTI launch with id:"launch-id" retrieved!',
+				logId
+			])
+			expect(logger.info.mock.calls[3]).toEqual([
+				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+				logId
+			])
+			expect(logger.info.mock.calls[4]).toEqual([
+				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+			])
+			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+			expect(logger.info.mock.calls[6]).toEqual([
+				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+				logId
+			])
+			expect(logger.error.mock.calls[0][0]).toBe('LTI bad error attempting to update database! :(')
+			expect(logger.info.mock.calls[7]).toEqual(['LTI complete', logId])
 	})
 
 	test('unexpected error works as expected', () => {
