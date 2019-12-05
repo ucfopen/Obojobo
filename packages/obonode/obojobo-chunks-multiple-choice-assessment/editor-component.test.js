@@ -106,7 +106,8 @@ describe('MCAssessment Editor Node', () => {
 						get: key => {
 							if (key === 'questionType') return null
 							return {}
-						}
+						},
+						toJSON: () => ({})
 					}
 				}}
 				editor={editor}

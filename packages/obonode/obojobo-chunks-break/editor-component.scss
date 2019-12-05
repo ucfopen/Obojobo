@@ -4,6 +4,12 @@ div.non-editable-chunk.obojobo-draft--chunks--break.viewer {
 	text-align: center;
 	cursor: pointer;
 
+	&.width-large {
+		hr {
+			width: 80%;
+		}
+	}
+
 	.buttonbox-box {
 		position: absolute;
 		text-align: center;

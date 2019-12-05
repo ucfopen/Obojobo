@@ -161,7 +161,7 @@ class TriggerListModal extends React.Component {
 				return (
 					<div className="action-options">
 						<div>
-							<label>Assessment</label>
+							<label>Assessment Id</label>
 							<input
 								className="input-item"
 								value={action.value.id}

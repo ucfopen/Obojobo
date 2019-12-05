@@ -23,6 +23,12 @@
 			padding-right: 0.5em;
 			font-weight: normal;
 			font-size: 1rem;
+			cursor: pointer;
+
+			&:hover {
+				border: 1px solid $color-action;
+				background: lighten($color-action, 48%);
+			}
 
 			input {
 				position: relative;

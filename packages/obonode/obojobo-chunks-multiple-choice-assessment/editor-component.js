@@ -25,6 +25,7 @@ class MCAssessment extends React.Component {
 	changeShuffle(shuffle) {
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
+				...this.props.node.data.toJSON(),
 				content: {
 					...this.props.node.data.get('content'),
 					shuffle

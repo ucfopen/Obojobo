@@ -9,23 +9,29 @@ import './editor-component.scss'
 
 class Node extends React.Component {
 	insertBlockAtStart(item) {
+		const newBlock = Block.create(item.cloneBlankNode())
+		console.log(newBlock.key)
 		// Inserts a sibling node before the current node
 		return this.props.editor.insertNodeByKey(
 			this.props.parent.key,
 			this.props.parent.getPath(this.props.node.key).get(0),
-			Block.create(item.cloneBlankNode()))
+			newBlock)
 	}
 
 	insertBlockAtEnd(item) {
+		const newBlock = Block.create(item.cloneBlankNode())
+		console.log(newBlock.key)
 		// Inserts a sibling node after the current node
 		return this.props.editor.insertNodeByKey(
 			this.props.parent.key,
 			this.props.parent.getPath(this.props.node.key).get(0) + 1,
-			Block.create(item.cloneBlankNode()))
+			newBlock)
 	}
 
 	saveId(prevId, newId) {
 		if(prevId === newId) return
+
+		// check against existing nodes
 
 		const jsonNode = this.props.node.toJSON()
 		jsonNode.key = newId
