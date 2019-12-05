@@ -212,20 +212,20 @@ describe('user model', () => {
 	test('throws error when not given enough arguments', () => {
 		expect(() => {
 			new User()
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing last name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name',
 				lastName: 'last-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing email for new user')
 
 		expect(() => {
 			new User({
@@ -233,27 +233,27 @@ describe('user model', () => {
 				lastName: 'last-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing username for new user')
 
 		expect(() => {
 			new User({
 				lastName: 'last-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				lastName: 'last-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing last name for new user')
 
 		expect(() => {
 			new User({

@@ -62,7 +62,7 @@ describe('AssessmentStore', () => {
 	})
 
 	const mockValidStartAttempt = () => {
-		AssessmentUtil.startAttempt.mockResolvedValue({
+		AssessmentAPI.startAttempt.mockResolvedValue({
 			status: 'ok',
 			value: {
 				attemptId: 'attemptId',
@@ -312,7 +312,7 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test('startAttempt builds an attempt if it doesnt exist', () => {
+	test('startAttemptWithAPICall builds an attempt if it doesnt exist', () => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
@@ -326,7 +326,7 @@ describe('AssessmentStore', () => {
 
 		assessmentModel.processTrigger = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId').then(() => {
 			expect(assessmentModel.children.length).toBe(2)
 			expect(qBank.children.length).toBe(2)
 			expect(qBank.children.at(0).id).toBe('q1')
@@ -345,7 +345,7 @@ describe('AssessmentStore', () => {
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({})
 		AssessmentStore.setState({ assessments: { assessmentId: {} } })
 
-		APIUtil.resendLTIAssessmentScore.mockResolvedValueOnce({
+		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'attempt limit reached'
@@ -375,7 +375,7 @@ describe('AssessmentStore', () => {
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(
 			AssessmentStore.getState().assessments.assessmentId
 		)
-		APIUtil.resendLTIAssessmentScore.mockResolvedValueOnce({
+		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'Some unexpected error that was not accounted for'
@@ -406,7 +406,7 @@ describe('AssessmentStore', () => {
 			AssessmentStore.getState().assessments.assessmentId
 		)
 
-		APIUtil.resendLTIAssessmentScore.mockResolvedValueOnce({
+		AssessmentAPI.resendLTIAssessmentScore.mockResolvedValueOnce({
 			status: 'success',
 			value: {}
 		})
@@ -443,14 +443,14 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
-	test('tryEndAttempt catches unexpected errors', () => {
+	test('endAttemptWithAPICall catches unexpected errors', () => {
 		OboModel.create(getExampleAssessment())
 
 		AssessmentStore.setState({
 			assessments: { assessmentId: { current: { attemptId: 'mockAttemptId' } } }
 		})
 
-		APIUtil.endAttempt.mockResolvedValueOnce({
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'attempt limit reached'
@@ -460,7 +460,7 @@ describe('AssessmentStore', () => {
 			throw new Error('Mock Error')
 		})
 
-		return AssessmentStore.tryEndAttempt('assessmentId').then(() => {
+		return AssessmentStore.endAttemptWithAPICall('assessmentId', 'mock-context').then(() => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
@@ -471,18 +471,18 @@ describe('AssessmentStore', () => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
-		APIUtil.endAttempt.mockResolvedValueOnce({
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'Some unexpected error that was not accounted for'
 			}
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId')
-			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
+			.then(() => AssessmentStore.endAttemptWithAPICall('assessmentId'))
 			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(2)
 			})
 	})
 
@@ -494,42 +494,53 @@ describe('AssessmentStore', () => {
 		AssessmentStore.setState({
 			assessments: {
 				assessmentId: {
-					currentResponses: ['question1', 'question2']
+					currentResponses: ['question1', 'question2'],
+					attempts: []
 				}
 			}
 		})
 
-		APIUtil.endAttempt = jest.fn()
-		APIUtil.endAttempt.mockResolvedValueOnce({
+		AssessmentAPI.endAttempt = jest.fn()
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'mockStatus',
 			value: {
-				assessmentId: 'assessmentId',
-				attempts: [
-					{
-						assessmentId: 'assessmentId',
-						endTime: '1/1/2017 0:05:20',
-						isFinished: true,
-						questionScores: [{ id: 'question1' }, { id: 'question2' }],
-						result: { assessmentScore: 100 },
-						startTime: '1/1/2017 00:05:00',
-						state: {
-							questions: [
-								{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
-								{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
-							]
-						}
-					}
-				]
+				status: 1
 			}
+		})
+
+		AssessmentAPI.getAttemptHistory = jest.fn()
+		AssessmentAPI.getAttemptHistory.mockResolvedValueOnce({
+			status: 'ok',
+			value: [
+				{
+					assessmentId: 'assessmentId',
+					endTime: '1/1/2017 0:05:20',
+					isFinished: true,
+					scoreDetails:{
+						status: 1
+					},
+					questionScores: [{ id: 'question1' }, { id: 'question2' }],
+					result: { assessmentScore: 100 },
+					startTime: '1/1/2017 00:05:00',
+					state: {
+						questions: [
+							{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
+							{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
+						]
+					}
+				}
+			]
 		})
 
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
 			attemptNumber: 1
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId')
+
+
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(() => AssessmentStore.tryEndAttempt('assessmentId', 'mockContext'))
+			.then(() => AssessmentStore.endAttemptWithAPICall('assessmentId', 'mockContext'))
 			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
@@ -543,7 +554,7 @@ describe('AssessmentStore', () => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
-		return AssessmentStore.tryStartAttempt('assessmentId')
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
 			.then(() => {
 				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
@@ -559,7 +570,7 @@ describe('AssessmentStore', () => {
 			currentResponses: ['q2']
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId')
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
 			.then(() => {
 				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
@@ -584,16 +595,16 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.tryStartAttempt).toHaveBeenCalled()
 	})
 
-	test('assessment:endAttempt calls tryEndAttempt', () => {
-		jest.spyOn(AssessmentStore, 'tryEndAttempt')
-		AssessmentStore.tryEndAttempt.mockReturnValueOnce('mock')
+	test('assessment:endAttempt calls endAttemptWithAPICall', () => {
+		jest.spyOn(AssessmentStore, 'endAttemptWithAPICall')
+		AssessmentStore.endAttemptWithAPICall.mockReturnValueOnce('mock')
 
 		AssessmentStore.setState({
 			assessments: {
 				assessmentId: {}
 			}
 		})
-		APIUtil.endAttempt.mockResolvedValueOnce({
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'Some unexpected error that was not accounted for'
@@ -604,7 +615,7 @@ describe('AssessmentStore', () => {
 			value: { id: 'assessmentId' }
 		})
 
-		expect(AssessmentStore.tryEndAttempt).toHaveBeenCalled()
+		expect(AssessmentStore.endAttemptWithAPICall).toHaveBeenCalled()
 	})
 
 	test('assessment:resendLTIScore calls tryResendLTIScore', () => {
@@ -616,7 +627,7 @@ describe('AssessmentStore', () => {
 				assessmentId: {}
 			}
 		})
-		APIUtil.endAttempt.mockResolvedValueOnce({
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'Some unexpected error that was not accounted for'

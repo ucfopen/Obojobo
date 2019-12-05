@@ -86,7 +86,7 @@ router
 // mounted as /view/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, checkValidationRules])
+	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, requireCurrentVisit, checkValidationRules])
 	.get((req, res) => {
 		return req
 			.currentDocument

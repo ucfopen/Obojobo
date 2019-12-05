@@ -45,11 +45,13 @@ Object {
 exports[`user model fetches one from the database 2`] = `
 Array [
   "
-			SELECT *
-			FROM users
-			WHERE id = $1
-		",
-  5,
+				SELECT *
+				FROM users
+				WHERE id =  $[userId]
+				",
+  Object {
+    "userId": 5,
+  },
 ]
 `;
 
