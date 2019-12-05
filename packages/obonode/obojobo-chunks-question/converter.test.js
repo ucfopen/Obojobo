@@ -1,11 +1,14 @@
+import React from 'react'
+import Converter from './converter'
+
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		getItemForType: () => ({
-			slateToObo: args => ({mock: 'slateToObo', args}),
-			oboToSlate: args => ({mock: 'oboToSlate', args})
+			slateToObo: args => ({ mock: 'slateToObo', args }),
+			oboToSlate: args => ({ mock: 'oboToSlate', args })
 		})
 	},
-	components:{
+	components: {
 		modal: {
 			SimpleDialog: () => 'SimpleDialog'
 		}
@@ -15,7 +18,10 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
-import Converter from './converter'
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'

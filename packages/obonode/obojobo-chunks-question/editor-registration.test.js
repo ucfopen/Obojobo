@@ -27,6 +27,11 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
+
 describe('Question editor', () => {
 	test('plugins.renderNode renders a question when passed', () => {
 		const props = {

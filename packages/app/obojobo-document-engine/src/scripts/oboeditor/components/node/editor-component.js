@@ -7,31 +7,45 @@ import MoreInfoBox from '../navigation/more-info-box'
 
 import './editor-component.scss'
 
+const { OboModel } = Common.models
+
 class Node extends React.Component {
 	insertBlockAtStart(item) {
 		const newBlock = Block.create(item.cloneBlankNode())
-		console.log(newBlock.key)
+		// Create the obomodel and set its id to match the block key to prevent duplicate keys
+		const newModel = OboModel.create(item.insertJSON.type)
+		newModel.setId(newBlock.key)
+
 		// Inserts a sibling node before the current node
 		return this.props.editor.insertNodeByKey(
 			this.props.parent.key,
 			this.props.parent.getPath(this.props.node.key).get(0),
-			newBlock)
+			newBlock
+		)
 	}
 
 	insertBlockAtEnd(item) {
 		const newBlock = Block.create(item.cloneBlankNode())
-		console.log(newBlock.key)
+		// Create the obomodel and set its id to match the block key to prevent duplicate keys
+		const newModel = OboModel.create(item.insertJSON.type)
+		newModel.setId(newBlock.key)
+
 		// Inserts a sibling node after the current node
 		return this.props.editor.insertNodeByKey(
 			this.props.parent.key,
 			this.props.parent.getPath(this.props.node.key).get(0) + 1,
-			newBlock)
+			newBlock
+		)
 	}
 
 	saveId(prevId, newId) {
-		if(prevId === newId) return
+		if (prevId === newId) return
 
-		// check against existing nodes
+		// check against existing nodes for duplicate keys
+		const model = OboModel.models[prevId]
+		if (!model.setId(newId)) {
+			return 'The id "' + newId + '" already exists. Please choose a unique id'
+		}
 
 		const jsonNode = this.props.node.toJSON()
 		jsonNode.key = newId
@@ -40,15 +54,15 @@ class Node extends React.Component {
 			.insertNodeByKey(
 				this.props.parent.key,
 				this.props.parent.getPath(this.props.node.key).get(0),
-				Block.create(jsonNode))
+				Block.create(jsonNode)
+			)
 			.removeNodeByKey(prevId)
 	}
 
 	saveContent(prevContent, newContent) {
-		this.props.editor.setNodeByKey(
-			this.props.node.key,
-			{ data: { ...this.props.node.data.toJSON(), content: newContent } }
-		)
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: { ...this.props.node.data.toJSON(), content: newContent }
+		})
 	}
 
 	deleteNode() {
@@ -63,7 +77,8 @@ class Node extends React.Component {
 		return editor.insertNodeByKey(
 			this.props.parent.key,
 			this.props.parent.getPath(this.props.node.key).get(0) + 1,
-			Block.create(this.props.node.toJSON()))
+			Block.create(this.props.node.toJSON())
+		)
 	}
 
 	onOpen() {
@@ -111,7 +126,8 @@ class Node extends React.Component {
 						duplicateNode={this.duplicateNode.bind(this)}
 						markUnsaved={this.props.editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
-						onClose={this.onClose.bind(this)}/>
+						onClose={this.onClose.bind(this)}
+					/>
 				) : null}
 				{this.props.children}
 			</div>
