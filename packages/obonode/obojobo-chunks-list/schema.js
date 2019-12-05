@@ -60,6 +60,10 @@ const schema = {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
+						// Occasionally, blank text will appear due to overnormalization
+						// In that case, simply delete the node
+						if(child.text === "") return
+
 						return editor
 							.wrapBlockByKey(child.key, {
 								type: LIST_LINE_NODE

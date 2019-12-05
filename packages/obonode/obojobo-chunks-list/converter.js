@@ -150,7 +150,9 @@ const switchType = {
 		// as they will be rebuilt in the text node
 		// The first node (unremoved) provides an anchor for replacement
 		leaves.forEach((child, index) => {
+			const path = node.getPath(child.key)
 			const jsonNode = child.toJSON()
+			jsonNode.data.indent = path.size - 2
 			jsonNode.type = TEXT_LINE_NODE
 			textNode.nodes.push(jsonNode)
 
@@ -174,9 +176,11 @@ const switchType = {
 		// as they will be rebuilt in the text node
 		// The first node (unremoved) provides an anchor for replacement
 		leaves.forEach((child, index) => {
+			const path = node.getPath(child.key)
 			const jsonNode = child.toJSON()
 			jsonNode.type = CODE_LINE_NODE
 			jsonNode.data.content = jsonNode.data
+			jsonNode.data.content.indent = path.size - 2
 			textNode.nodes.push(jsonNode)
 
 			if(index !== 0) editor.removeNodeByKey(child.key)
@@ -186,7 +190,48 @@ const switchType = {
 		// including the copy of the first child
 		const block = Block.create(textNode)
 		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
-	}
+	},
+	'ObojoboDraft.Chunks.List': (editor, node, data) => {
+		console.log(node.data.get('content').listStyles.type)
+		const swapType = data.type !== node.data.get('content').listStyles.type
+
+		if(swapType) {
+			editor.setNodeByKey(node.key, { data: { content: {
+				...node.data.get('content'),
+				listStyles: data
+			}}})
+		}
+
+		// Find the bullet list ind starting index for the selection
+		const bulletList = data.type === 'unordered' ? unorderedBullets : orderedBullets
+		const bulletIndex = bulletList.indexOf(data.bulletStyle)
+
+		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
+
+		const shortestPath = leaves.reduce((accum, child) => {
+			const path = node.getPath(child.key)
+			if (path.size < accum) return path.size
+			return accum
+		}, Infinity)
+
+		leaves.forEach(child => {
+			const path = node.getPath(child.key)
+			path.forEach((value, index) => {
+				// because of the nesting of list-level-line
+				// shortestPath - 2 is the path index of the highest visibly selected level
+				if(index === path.size - 1 || (index < shortestPath - 2 && !swapType)) return
+
+				const newPath = path.slice(0, index+1)
+				const parentLevel = node.getNode(newPath)
+				const bulletStyle = bulletList[(bulletIndex + index - shortestPath + 2 + bulletList.length) % bulletList.length]
+				return editor.setNodeByKey(parentLevel.key, { data: { content: {
+					...parentLevel.data.get('content'),
+					...data,
+					bulletStyle
+				}}})
+			})
+		})
+	},
 }
 
 export default { slateToObo, oboToSlate, switchType }

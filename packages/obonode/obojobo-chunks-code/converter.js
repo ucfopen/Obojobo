@@ -108,6 +108,7 @@ const switchType = {
 		leaves.forEach((child, index) => {
 			const jsonNode = child.toJSON()
 			jsonNode.type = TEXT_LINE_NODE
+			jsonNode.data = jsonNode.data.content
 			textNode.nodes.push(jsonNode)
 
 			if(index !== 0) editor.removeNodeByKey(child.key)
@@ -132,7 +133,7 @@ const switchType = {
 
 		const topIndent = leaves.reduce((accum, child) => {
 			const jsonNode = child.toJSON()
-			if (jsonNode.data.indent < accum) return jsonNode.data.indent
+			if (jsonNode.data.content.indent < accum) return jsonNode.data.content.indent
 			return accum
 		}, 20)
 
@@ -146,7 +147,7 @@ const switchType = {
 
 			// Use the topmost indent as the starting bullet style
 			// then rotate through the bullet styles as the indents increase
-			const indentDiff = jsonNode.data.indent - topIndent
+			const indentDiff = jsonNode.data.content.indent - topIndent
 			const bulletStyle = bulletList[(bulletIndex + indentDiff) % bulletList.length]
 			jsonNode.data.content = { ...data, bulletStyle }
 			textNode.nodes.push(unFlattenList(jsonNode, indentDiff, data.type, bulletList, bulletIndex))

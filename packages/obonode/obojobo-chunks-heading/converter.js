@@ -2,6 +2,7 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 const slateToObo = node => {
 	const line = {
@@ -57,6 +58,9 @@ const switchType = {
 	},
 	'ObojoboDraft.Chunks.Code': (editor, node) => {
 		editor.setNodeByKey(node.key, CODE_NODE)
+	},
+	'ObojoboDraft.Chunks.List': (editor, node, data) => {
+		editor.setNodeByKey(node.key, { type: LIST_NODE, data: { content: { listStyles: data }}})
 	},
 }
 

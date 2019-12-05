@@ -139,17 +139,17 @@ const FileToolbar = props => {
 				type: 'sub-menu',
 				menu: [
 					{ 
-						name: 'Disc', 
+						name: '● Disc', 
 						type: 'action', 
 						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 					},
 					{ 
-						name: 'Circle', 
+						name: '○ Circle', 
 						type: 'action', 
 						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' }) 
 					},
 					{ 
-						name: 'Square', 
+						name: '■ Square', 
 						type: 'action', 
 						action: () => editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' }) 
 					}
