@@ -62,18 +62,21 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
             <circle
               cx="57"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />
             <circle
               cx="107"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />
             <circle
               cx="157"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />

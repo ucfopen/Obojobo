@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import { Block } from 'slate'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
@@ -12,6 +13,8 @@ import AlignMarks from '../marks/align-marks'
 import IndentMarks from '../marks/indent-marks'
 
 import './file-toolbar.scss'
+
+const { OboModel } = Common.models
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
@@ -57,7 +60,7 @@ const insertDisabled = (name, value) => {
 	const firstType = value.blocks.get(0).type
 	if(firstType === 'ObojoboDraft.Chunks.Table.Cell') return true
 
-	if(value.fragment.filterDescendants(node => node.type === 'ObojoboDraft.Chunks.Question')) {
+	if(value.fragment.filterDescendants(node => node.type === 'ObojoboDraft.Chunks.Question').size) {
 		if(name === 'Question' || name === 'Question Bank') return true
 
 		return false
@@ -72,7 +75,12 @@ const FileToolbar = props => {
 	const editor = props.editorRef
 	const insertMenu = props.insertableItems.map(item => ({
 		name: item.name,
-		action: () => editor.current.insertBlock(Block.create(item.cloneBlankNode())),
+		action: () => {
+			const newBlock = Block.create(item.cloneBlankNode())
+			const newModel = OboModel.create(item.insertJSON.type)
+			newModel.setId(newBlock.key)
+			editor.current.insertBlock(newBlock)
+		},
 		disabled: insertDisabled(item.name, props.value)
 	}))
 

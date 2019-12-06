@@ -20,21 +20,20 @@
 		cursor: pointer;
 
 		svg {
-			stroke: $color-shadow;
-			fill: none;
+			opacity: 0.6;
 		}
 
 		&:hover {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1
 			}
 		}
 
 		&.is-open {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1
 			}
 		}
 	}

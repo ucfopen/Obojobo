@@ -6,6 +6,7 @@ import ScriptMarks from '../marks/script-marks'
 import AlignMarks from '../marks/align-marks'
 import IndentMarks from '../marks/indent-marks'
 import ParagraphStyles from './paragraph-styles'
+import ListDropper from './list-dropper'
 import './content-toolbar.scss'
 
 const contentMarks = [
@@ -14,6 +15,20 @@ const contentMarks = [
 	...ScriptMarks.marks,
 	...AlignMarks.marks,
 	...IndentMarks.marks
+]
+
+const unorderedList = [
+	{ bulletStyle: 'disc', display: '●'},
+	{ bulletStyle: 'circle', display: '○'},
+	{ bulletStyle: 'square', display: '■'}
+]
+
+const orderedList = [
+	{ bulletStyle: 'decimal', display: '1.'},
+	{ bulletStyle: 'lower-alpha', display: 'a.'},
+	{ bulletStyle: 'lower-roman', display: 'i.'},
+	{ bulletStyle: 'upper-alpha', display: 'A.'},
+	{ bulletStyle: 'upper-roman', display: 'I.'}
 ]
 
 const ContentToolbar = props =>
@@ -26,12 +41,23 @@ const ContentToolbar = props =>
 					<button
 						key={mark.name}
 						onClick={() => mark.action(props.editorRef.current)}
-						title={mark.name}
-					>
+						title={mark.name}>
 						<Icon />
 					</button>
 				)
 			})}
+			<ListDropper 
+				editor={props.editorRef} 
+				type='unordered' 
+				bullets={unorderedList} 
+				defaultStyle="disc"
+				value={props.value}/>
+			<ListDropper 
+				editor={props.editorRef} 
+				type='ordered' 
+				bullets={orderedList} 
+				defaultStyle="decimal"
+				value={props.value}/>
 		</div>
 	)
 

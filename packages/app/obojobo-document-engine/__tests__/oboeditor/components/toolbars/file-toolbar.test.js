@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { Value } from 'slate'
+import Common from '../../../../src/scripts/common'
 
 import FileToolbar from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar'
 
@@ -36,7 +37,37 @@ jest.mock('../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu'
 	}
 ))
 
+jest.mock('Common', () => ({
+	models: {
+		OboModel: {}
+	},
+	components: {
+		modal: {
+			SimpleDialog: () => 'MockSimpleDialog'
+		}
+	},
+	util: {
+		ModalUtil: {
+			hide: jest.fn(),
+			show: jest.fn()
+		}
+	},
+	flux: {
+		Dispatcher: {
+			trigger: jest.fn()
+		}
+	}
+}))
+
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+
 describe('File Toolbar', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+
+		Common.models.OboModel.create = jest.fn().mockReturnValue({ setId: () => true })
+	})
+
 	test('FileToolbar node', () => {
 		const editor = { current: {
 			undo: jest.fn(),
@@ -64,7 +95,11 @@ describe('File Toolbar', () => {
 			changeToType: jest.fn(),
 		}}
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
-		const items = [{ name: 'mock-item', cloneBlankNode: () => ({ type: 'mock-type' }) }]
+		const items = [{ 
+			name: 'mock-item', 
+			cloneBlankNode: () => ({ type: 'mock-type' }),
+			insertJSON: { type: TEXT_NODE }
+		}]
 		const value = {
 			blocks: { get: () => ({ type: 'ObojoboDraft.Chunks.Table.Cell'})},
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 1} }
@@ -87,8 +122,16 @@ describe('File Toolbar', () => {
 		}}
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
 		const items = [
-			{ name: 'mock-item', cloneBlankNode: () => ({ type: 'mock-type' }) },
-			{ name: 'Question Bank', cloneBlankNode: () => ({ type: 'mock-type' }) }
+			{ 
+				name: 'mock-item', 
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE } 
+			},
+			{ 
+				name: 'Question Bank', 
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE } 
+			}
 		]
 		const value = {
 			blocks: { 
@@ -117,7 +160,11 @@ describe('File Toolbar', () => {
 			changeToType: jest.fn(),
 		}}
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
-		const items = [{ name: 'mock-item', cloneBlankNode: () => ({ type: 'mock-type' }) }]
+		const items = [{ 
+			name: 'mock-item', 
+			cloneBlankNode: () => ({ type: 'mock-type' }),
+			insertJSON: { type: TEXT_NODE } 
+		}]
 		const value = {
 			blocks: { 
 				get: () => ({ type: 'ObojoboDraft.Chunks.Text'}),

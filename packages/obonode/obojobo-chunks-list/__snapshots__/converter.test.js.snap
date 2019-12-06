@@ -52,7 +52,7 @@ Object {
         Object {
           "data": Object {
             "content": Object {
-              "bulletStyle": "upper-alpha",
+              "bulletStyle": "lower-alpha",
               "type": undefined,
             },
           },
@@ -60,7 +60,7 @@ Object {
             Object {
               "data": Object {
                 "content": Object {
-                  "bulletStyle": "upper-roman",
+                  "bulletStyle": "lower-roman",
                   "type": undefined,
                 },
               },
@@ -68,7 +68,7 @@ Object {
                 Object {
                   "data": Object {
                     "content": Object {
-                      "bulletStyle": "lower-alpha",
+                      "bulletStyle": "upper-alpha",
                       "type": undefined,
                     },
                   },
@@ -76,7 +76,7 @@ Object {
                     Object {
                       "data": Object {
                         "content": Object {
-                          "bulletStyle": "lower-roman",
+                          "bulletStyle": "upper-roman",
                           "type": undefined,
                         },
                       },
