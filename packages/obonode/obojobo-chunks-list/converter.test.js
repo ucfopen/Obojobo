@@ -198,7 +198,7 @@ describe('List Converter', () => {
 	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes', () => {
 		const editor = {
 			focus: jest.fn(),
-			removeNodeByKey: jest.fn(),
+			setNodeByKey: jest.fn(),
 			value: {}
 		}
 
@@ -210,21 +210,88 @@ describe('List Converter', () => {
 			getLeafBlocksAtRange: () => ({
 				// Mock the forEach call
 				forEach: fn => {
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					fn({ 
+						toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}),
+						key: "mock-key"
+					}, 0)
+					fn({ 
+						toJSON: () => ({ data: { indent: 1 }, 
+						object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 1)
 				},
 				reduce: fn => {
-					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					fn(20, { 
+						toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 0)
+					fn(0, { 
+						toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 1)
 					return 0
 				},
-				get: () => ({ key: 'mock-key'}),
-				getNode: () => ({ data: { get: () => ({}) } })
-			})
+				get: () => ({ key: 'mock-key'})
+			}),
+			getNode: () => ({ data: { get: () => ({}) } }),
+			getPath: () => ({ slice: () => [], size: 2, forEach: fn => { 
+				fn(1,0) 
+				fn(2,1)
+			} }),
 		}
 
 		Converter.switchType[LIST_NODE](editor, node, { type: 'ordered', bulletStyle: 'disc'})
 
-		expect(editor.replaceNodeByKey).toHaveBeenCalled
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('switchType[LIST_NODE] changes leaf blocks to unordered list nodes', () => {
+		const editor = {
+			focus: jest.fn(),
+			setNodeByKey: jest.fn(),
+			value: {}
+		}
+
+		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
+		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
+		const node = {
+			key: 'mockKey',
+			data: { get: () => ({ listStyles: { type: 'unordered' } }) },
+			getLeafBlocksAtRange: () => ({
+				// Mock the forEach call
+				forEach: fn => {
+					fn({ 
+						toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}),
+						key: "mock-key"
+					}, 0)
+					fn({ 
+						toJSON: () => ({ data: { indent: 1 }, 
+						object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 1)
+				},
+				reduce: fn => {
+					fn(20, { 
+						toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 0)
+					fn(0, { 
+						toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), 
+						key: "mock-key"
+					}, 1)
+					return 3
+				},
+				get: () => ({ key: 'mock-key'})
+			}),
+			getNode: () => ({ data: { get: () => ({}) } }),
+			getPath: () => ({ slice: () => [], size: 2, forEach: fn => { 
+				fn(1,0) 
+				fn(2,1)
+			} }),
+		}
+
+		Converter.switchType[LIST_NODE](editor, node, { type: 'unordered', bulletStyle: 'disc'})
+
+		expect(editor.setNodeByKey).not.toHaveBeenCalled()
 	})
 })

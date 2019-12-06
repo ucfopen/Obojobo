@@ -5,6 +5,7 @@ import Converter from './converter'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 describe('Heading Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -87,5 +88,27 @@ describe('Heading Converter', () => {
 		Converter.switchType[CODE_NODE](editor, { key: 'mockKey' })
 
 		expect(editor.setNodeByKey).toHaveBeenCalled
+	})
+
+	test('switchType[LIST_NODE] changes leaf blocks to code nodes', () => {
+		const editor = {
+			focus: jest.fn(),
+			removeNodeByKey: jest.fn(),
+			value: {}
+		}
+
+		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
+		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
+		const node = {
+			key: 'mockKey',
+			data: { get: () => ({}) },
+			toJSON: () => ({
+				nodes: []
+			})
+		}
+
+		Converter.switchType[LIST_NODE](editor, node)
+
+		expect(editor.replaceNodeByKey).toHaveBeenCalled()
 	})
 })
