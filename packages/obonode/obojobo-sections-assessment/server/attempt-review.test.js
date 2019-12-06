@@ -1,5 +1,5 @@
 /* eslint no-extend-native: 0 */
-jest.mock('./assessment')
+jest.mock('./models/assessment')
 jest.mock('./attempt-start')
 jest.mock('obojobo-express/models/draft')
 jest.mock('./util')
@@ -7,10 +7,9 @@ jest.mock('obojobo-express/logger')
 
 const attemptStart = require('./attempt-start')
 const DraftModel = require('obojobo-express/models/draft')
+const AssessmentModel = require('./models/assessment')
 const util = require('./util')
 const logger = require('obojobo-express/logger')
-
-// attemptStart.getSendToClientPromises = jest.fn(() => [])
 
 describe('attempt review', () => {
 	beforeEach(() => {
@@ -18,10 +17,9 @@ describe('attempt review', () => {
 		jest.restoreAllMocks()
 	})
 
-	test('reviewAttempt handles no attempt ids', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview handles no attempt ids', async () => {
+		const attemptReview = require('./attempt-review')
 
-		// DraftModel.fetchDraftByVersion.mockResolvedValue()
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
 				content: {
@@ -34,7 +32,7 @@ describe('attempt review', () => {
 				id: 'mockId'
 			}
 		])
-		const questionModels = await reviewAttempt([])
+		const questionModels = await attemptReview([])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
@@ -47,10 +45,18 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('reviewAttempt for 2 attempts with review always', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview for 2 attempts with review always', async () => {
+		const attemptReview = require('./attempt-review')
 
-		// DraftModel.fetchDraftByVersion.mockResolvedValue()
+		AssessmentModel.fetchAttemptByID.mockReturnValueOnce({
+			draftId: 'mock-draft-id',
+			assessmentId: 'mock-assessment-id',
+			draftContentId: 'mock-content-id',
+			state: {
+				chosen: [{id: 'mock-chosen-id'}]
+			}
+		})
+
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
 				content: {
@@ -63,7 +69,7 @@ describe('attempt review', () => {
 				id: 'mockId'
 			}
 		])
-		const questionModels = await reviewAttempt([1, 2])
+		const questionModels = await attemptReview([1, 2])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
@@ -89,8 +95,8 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('reviewAttempt for one attempt without review always', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview for one attempt without review always', async () => {
+		const attemptReview = require('./attempt-review')
 
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
@@ -106,7 +112,7 @@ describe('attempt review', () => {
 		])
 		attemptStart.getSendToClientPromises.mockReturnValue([Promise.resolve()])
 
-		const questionModels = await reviewAttempt([1])
+		const questionModels = await attemptReview([1])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
@@ -127,8 +133,8 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('reviewAttempt loggs errors', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview loggs errors', async () => {
+		const attemptReview = require('./attempt-review')
 
 		DraftModel.fetchDraftByVersion.mockRejectedValue('mockError')
 		DraftModel.mockGetChildNodeById.mockReturnValue({
@@ -145,7 +151,7 @@ describe('attempt review', () => {
 		])
 		attemptStart.getSendToClientPromises.mockReturnValue([Promise.resolve()])
 
-		const questionModels = await reviewAttempt([1])
+		const questionModels = await attemptReview([1])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {

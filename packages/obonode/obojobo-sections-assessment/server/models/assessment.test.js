@@ -1,7 +1,7 @@
-jest.mock('../../db')
+jest.mock('obojobo-express/db')
 
-import Draft from '../../models/draft'
-import DraftNode from '../../models/draft_node'
+import Draft from 'obojobo-express/models/draft'
+import DraftNode from 'obojobo-express/models/draft_node'
 
 const mockRawDraft = {
 	id: 'whatever',

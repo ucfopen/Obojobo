@@ -1,4 +1,3 @@
-import AssessmentUtil from '../../util/assessment-util'
 import findItemsWithMaxPropValue from '../../../common/util/find-items-with-max-prop-value'
 
 const getScoreComparisionData = (allScoreDetails, attemptNumberToGenerateReportFor) => {
@@ -13,7 +12,7 @@ const getScoreComparisionData = (allScoreDetails, attemptNumberToGenerateReportF
 	const highestDetails = findItemsWithMaxPropValue(prevDetails, 'assessmentScore')
 
 	return {
-		prevHighestInfo: highestDetails.length === 0 ? null : highestDetails[0],
+		prevHighestInfo: highestDetails.length === 0 ? null : highestDetails[highestDetails.length-1],
 		newInfo: allScoreDetails[attemptNumberToGenerateReportFor - 1]
 	}
 }
