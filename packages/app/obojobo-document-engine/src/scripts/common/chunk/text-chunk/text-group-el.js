@@ -28,7 +28,6 @@ const getText = props => {
 
 	return text
 }
-
 const TextGroupEl = props => (
 	<span
 		className={`text align-${props.textItem.data.align}`}

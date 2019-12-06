@@ -9,7 +9,7 @@ describe('Text Editor Node', () => {
 			<Text
 				node={{
 					data: {
-						get: () => 0
+						get: () => false
 					}
 				}}
 			/>
