@@ -40,7 +40,7 @@ class Rubric extends React.Component {
 		ModalUtil.show(
 			<ModProperties
 				mods={this.props.node.data.get('content').mods}
-				attempts={this.props.node.data.get('content').attempts}
+				attempts={this.props.parent.data.get('content').attempts}
 				onConfirm={this.changeMods.bind(this)}
 			/>
 		)
