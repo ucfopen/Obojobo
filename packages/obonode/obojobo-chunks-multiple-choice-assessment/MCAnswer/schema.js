@@ -9,6 +9,7 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.MCAssessment.MCAnswer': {
 			nodes: [{ match: [
+						// Content nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },

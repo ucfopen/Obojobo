@@ -7,11 +7,9 @@ const showModuleSelector = (req, res) => {
 		let returnUrl = null // REQUIRED: will hold the return url sent via LTI
 		let isAssignment = false // In Canvas, this can be an assignment or a content module
 		if (req.lti && req.lti.body) {
-			returnUrl = req.lti.body.content_item_return_url ? req.lti.body.content_item_return_url : null
+			returnUrl = req.lti.body.content_item_return_url || null
 
-			returnUrl = req.lti.body.ext_content_return_url
-				? req.lti.body.ext_content_return_url
-				: returnUrl
+			returnUrl = req.lti.body.ext_content_return_url || returnUrl
 
 			if (req.lti.body.ext_lti_assignment_id) {
 				isAssignment = true

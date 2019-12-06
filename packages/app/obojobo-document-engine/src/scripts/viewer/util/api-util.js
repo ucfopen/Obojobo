@@ -53,12 +53,12 @@ const APIUtil = {
 			method: 'DELETE',
 			credentials: 'include',
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
 		})
 	},
-	
+
 	postMultiPart(endpoint, formData = new FormData()) {
 		return fetch(endpoint, {
 			method: 'POST',
@@ -97,7 +97,7 @@ const APIUtil = {
 		return APIUtil.get(`/api/drafts/${id}`, 'json').then(processJsonResults)
 	},
 
-	getFullDraft(id, format='json') {
+	getFullDraft(id, format = 'json') {
 		return APIUtil.get(`/api/drafts/${id}/full`, format).then(res => res.text())
 	},
 
@@ -153,7 +153,7 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	postDraft(id, draftString, format='application/json') {
+	postDraft(id, draftString, format = 'application/json') {
 		return APIUtil.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
 	},
 
@@ -162,12 +162,12 @@ const APIUtil = {
 	},
 
 	deleteDraft(draftId) {
-		return APIUtil.delete(`/api/drafts/`+draftId).then(processJsonResults)
+		return APIUtil.delete(`/api/drafts/${draftId}`).then(processJsonResults)
 	},
 
 	getAllDrafts() {
 		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
-	},
+	}
 }
 
 export default APIUtil

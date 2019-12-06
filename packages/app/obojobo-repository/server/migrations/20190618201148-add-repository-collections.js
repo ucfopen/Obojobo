@@ -46,10 +46,6 @@ exports.up = function(db) {
 			.then(result => {
 				return db.addIndex('repository_collections', 'collections_user_id_index', ['user_id'])
 			})
-			// .then(result => {
-			// 	return db.addIndex('repository_collections', 'collections_parent_group_id_index', ['parent_group_id'])
-			// })
-			//
 			.then(() =>
 				db.runSql(`
 			INSERT

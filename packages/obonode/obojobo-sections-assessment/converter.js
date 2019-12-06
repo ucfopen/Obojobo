@@ -53,7 +53,6 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const content = node.get('content')
-	console.log(content)
 
 	const nodes = node.attributes.children.map(child => {
 		if (child.type === PAGE_NODE) {

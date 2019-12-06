@@ -13,6 +13,7 @@ const EditorSchema = {
 			nodes: [
 				{
 					match: [
+						// Insertable Nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },
@@ -28,6 +29,7 @@ const EditorSchema = {
 						{ type: 'ObojoboDraft.Chunks.QuestionBank' },
 						{ type: 'ObojoboDraft.Chunks.Question' },
 						{ type: 'ObojoboDraft.Sections.Assessment' },
+						// Special visual editor nodes
 						{ type: 'oboeditor.ErrorMessage' }
 					],
 					min: 1

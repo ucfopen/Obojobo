@@ -2,17 +2,17 @@
 
 .qb-settings {
 	font-size: 0.85em;
-	font-family: "Libre Franklin", Arial, sans-serif;
+	font-family: $font-default;
 	font-weight: bold;
 
 	.choose {
 		display: inline-block;
 		border: none;
-		input[type="radio"] {
+		input[type='radio'] {
 			margin-right: 0.5em;
 		}
 
-		input[type="number"] {
+		input[type='number'] {
 			@include text-input();
 			margin-left: 0.5em;
 			max-width: 5em;
@@ -24,7 +24,7 @@
 			font-weight: normal;
 		}
 	}
-	
+
 	.select {
 		display: inline-block;
 		text-align: right;

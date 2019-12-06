@@ -61,8 +61,8 @@ router
 		}
 	})
 
-// Get a complete Draft Document Tree (for editing)
-// mounted as /api/drafts/:draftId/full
+// Get a raw draft record from the database
+// mounted as /api/drafts/:draftId/raw
 router
 	.route('/:draftId/raw')
 	.get([requireDraftId, requireCanViewEditor, checkValidationRules])

@@ -14,7 +14,9 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.Question': {
 			nodes: [
-				{ match: [
+				{
+					match: [
+						// Content nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },
@@ -27,7 +29,9 @@ const schema = {
 						{ type: 'ObojoboDraft.Chunks.Table' },
 						{ type: 'ObojoboDraft.Chunks.Text' },
 						{ type: 'ObojoboDraft.Chunks.YouTube' }
-					], min: 1 },
+					],
+					min: 1
+				},
 				{ match: [MCASSESSMENT_NODE], min: 1 },
 				{ match: [SOLUTION_NODE] }
 			],

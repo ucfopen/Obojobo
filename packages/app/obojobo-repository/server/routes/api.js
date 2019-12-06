@@ -97,7 +97,7 @@ router
 // @TODO: make sure the user being added exists
 router
 	.route('/drafts/:draftId/permission')
-	.post([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
+	.post([requireCurrentUser, requireCurrentDocument])
 	.post((req, res) => {
 		return Promise.resolve()
 			.then(() => {
@@ -118,7 +118,7 @@ router
 // @TODO: make sure the user removing the permission has permission
 router
 	.route('/drafts/:draftId/permission/:userId')
-	.delete([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
+	.delete([requireCurrentUser, requireCurrentDocument])
 	.delete((req, res) => {
 		return UserModel.fetchById(req.params.userId)
 			.then(user => {

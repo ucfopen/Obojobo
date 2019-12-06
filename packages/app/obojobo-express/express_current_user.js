@@ -13,7 +13,7 @@ const resetCurrentUser = req => {
 	req.currentUser = null
 }
 
-const resovleWithNewGuest = req => {
+const resolveWithNewGuest = req => {
 	req.currentUser = new GuestUser()
 	return Promise.resolve(req.currentUser)
 }
@@ -35,7 +35,7 @@ const getCurrentUser = (req, isRequired = false) => {
 			)
 			return Promise.reject(new Error('Login Required'))
 		}
-		return resovleWithNewGuest(req)
+		return resolveWithNewGuest(req)
 	}
 
 	// fetch user from database using session data for the user id
@@ -47,7 +47,7 @@ const getCurrentUser = (req, isRequired = false) => {
 		.catch(err => {
 			logger.warn('getCurrentUser', err)
 			if (isRequired) return Promise.reject(new Error('Login Required'))
-			return resovleWithNewGuest(req)
+			return resolveWithNewGuest(req)
 		})
 }
 

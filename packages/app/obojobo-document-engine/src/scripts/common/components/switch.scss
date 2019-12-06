@@ -69,7 +69,7 @@
 		}
 
 		input:focus + .switch-slider {
-			box-shadow: 0 0 5px #2196f3;
+			box-shadow: 0 0 10px $color-obojobo-blue;
 		}
 
 		input:checked + .switch-slider::before {

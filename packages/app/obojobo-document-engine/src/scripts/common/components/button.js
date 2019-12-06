@@ -50,6 +50,7 @@ export default class Button extends React.Component {
 					disabled={this.props.disabled || this.props.shouldPreventTab}
 					aria-label={this.props.ariaLabel}
 					aria-selected={this.props.ariaSelected}
+					contentEditable={false}
 				>
 					{children}
 				</button>

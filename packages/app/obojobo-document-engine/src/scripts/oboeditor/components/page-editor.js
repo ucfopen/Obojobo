@@ -158,13 +158,11 @@ class PageEditor extends React.Component {
 			this.exportToJSON(prevProps.page, prevState.value)
 			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 		}
-
 	}
 
 	render() {
 		const className =
-			'editor--page-editor ' +
-			isOrNot(this.state.showPlaceholders, 'show-placeholders')
+			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className}>
 				<div className="draft-toolbars">
@@ -189,7 +187,8 @@ class PageEditor extends React.Component {
 					model={this.props.model}
 					draftId={this.props.draftId}
 					savePage={this.exportCurrentToJSON}
-					markUnsaved={this.markUnsaved}/>
+					markUnsaved={this.markUnsaved}
+				/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<Editor
@@ -224,7 +223,7 @@ class PageEditor extends React.Component {
 		}
 
 		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
-		this.setState({ value: change.value, saved: false, editable: true })
+		this.setState({ value: change.value, saved: false })
 	}
 
 	saveModule(draftId) {
@@ -293,7 +292,7 @@ class PageEditor extends React.Component {
 	}
 
 	// convenience method to prevent rerendring nav and duplicate code
-	exportCurrentToJSON(){
+	exportCurrentToJSON() {
 		this.exportToJSON(this.props.page, this.state.value)
 	}
 

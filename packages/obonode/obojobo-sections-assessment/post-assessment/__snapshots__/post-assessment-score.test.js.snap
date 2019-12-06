@@ -24,6 +24,7 @@ exports[`Actions editor Score component 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
       >
         ×
@@ -33,8 +34,8 @@ exports[`Actions editor Score component 1`] = `
 </div>
 `;
 
-exports[`Actions editor Score component changes range 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;
+exports[`Actions editor Score component changes range 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
 
-exports[`Actions editor Score component deletes self 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;
+exports[`Actions editor Score component deletes self 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
 
-exports[`Actions editor changeRange updates the range 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;
+exports[`Actions editor changeRange updates the range 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;

@@ -44,6 +44,11 @@ class MoreInfoBox extends React.Component {
 		this.node = React.createRef()
 	}
 
+	componentWillUnmount() {
+		// remove the listener if the component somehow unmounts without closing
+		document.removeEventListener('mousedown', this.handleClick, false)
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
@@ -261,7 +266,7 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className={'more-info ' + this.props.className}>
+			<div ref={this.node} className={'visual-editor--more-info ' + (this.props.className || '')}>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}

@@ -10,6 +10,7 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.MCAssessment.MCFeedback': {
 			nodes: [{ match: [
+						// Content nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },

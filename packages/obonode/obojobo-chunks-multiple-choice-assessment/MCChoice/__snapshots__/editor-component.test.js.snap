@@ -9,6 +9,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ×
@@ -19,6 +20,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ✖ Incorrect
@@ -34,6 +36,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       Add Feedback
@@ -51,6 +54,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ×
@@ -61,6 +65,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ✔ Correct
@@ -74,4 +79,4 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
 </div>
 `;
 
-exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center correct-button\\"><button class=\\"button\\">✖ Incorrect</button></div><div class=\\"children\\"><div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-feedback\\"><button class=\\"button\\">Add Feedback</button></div></div>"`;
+exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center correct-button\\"><button class=\\"button\\" contenteditable=\\"false\\">✖ Incorrect</button></div><div class=\\"children\\"><div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-feedback\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Feedback</button></div></div>"`;

@@ -11,7 +11,7 @@
 	border: 1px solid $color-action;
 	background: $color-bg;
 
-	.is-disabled {
+	&.is-disabled {
 		background: $color-shadow;
 	}
 }

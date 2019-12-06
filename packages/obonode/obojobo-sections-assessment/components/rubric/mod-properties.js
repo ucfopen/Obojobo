@@ -87,7 +87,7 @@ class ModProperties extends React.Component {
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
-				<div className="mod-properties">
+				<div className="obojobo-draft--sections--assessment--mod-properties">
 					<p className="info" ref={this.inputRef} tabIndex={-1}>
 						You can add or deduct percentage points from a student&apos;s assessment score based on
 						which attempt they achived a passing score. (The final assessment score is still limited

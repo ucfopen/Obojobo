@@ -43,12 +43,6 @@ const Heading = {
 	},
 	getNavItem(model) {
 		switch (model.modelState.headingLevel) {
-			// when 1
-			// 	type: 'link',
-			// 	label: model.modelState.textGroup.first.text.value,
-			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
-			// 	showChildren: false
-
 			case 1:
 			case 2:
 				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
