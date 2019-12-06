@@ -157,7 +157,8 @@ describe('List Converter', () => {
 					fn({ toJSON: () => ({ data: {}, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
 				},
 				get: () => ({ key: 'mock-key'})
-			})
+			}),
+			getPath: () => ({ size: 2 })
 		}
 
 		Converter.switchType[CODE_NODE](editor, node)
@@ -184,7 +185,8 @@ describe('List Converter', () => {
 					fn({ toJSON: () => ({ data: {}, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
 				},
 				get: () => ({ key: 'mock-key'})
-			})
+			}),
+			getPath: () => ({ size: 2 })
 		}
 
 		Converter.switchType[TEXT_NODE](editor, node)

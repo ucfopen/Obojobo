@@ -10,7 +10,6 @@ const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
-
 const unorderedBullets = ['disc', 'circle', 'square']
 const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 'upper-roman']
 
@@ -192,7 +191,6 @@ const switchType = {
 		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
 	},
 	'ObojoboDraft.Chunks.List': (editor, node, data) => {
-		console.log(node.data.get('content').listStyles.type)
 		const swapType = data.type !== node.data.get('content').listStyles.type
 
 		if(swapType) {
