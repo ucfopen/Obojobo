@@ -8,12 +8,14 @@
 	.choose {
 		display: inline-block;
 		border: none;
+
 		input[type='radio'] {
 			margin-right: 0.5em;
 		}
 
 		input[type='number'] {
 			@include text-input();
+
 			margin-left: 0.5em;
 			max-width: 5em;
 		}
