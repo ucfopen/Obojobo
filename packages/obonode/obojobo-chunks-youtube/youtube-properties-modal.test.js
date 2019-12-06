@@ -67,7 +67,7 @@ describe('YoutubeProperties modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('Youtube properties changes endTime', () => {
+	test('YoutubeProperties component changes endTime', () => {
 		const onConfirm = jest.fn()
 		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
 
@@ -115,9 +115,7 @@ describe('YoutubeProperties modal', () => {
 
 	test('YouTubeProperties component checks endTime before confirming', () => {
 		const onConfirm = jest.fn()
-		const mockContent = {
-			content: { startTime: 100 }
-		}
+		const mockContent = { startTime: 100 }
 		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={mockContent} />)
 		const spy = jest.spyOn(component.instance(), 'setState')
 
