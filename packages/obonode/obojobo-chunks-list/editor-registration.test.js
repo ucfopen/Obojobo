@@ -879,6 +879,22 @@ describe('List editor', () => {
 		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid blank text children in Level', () => {
+		const editor = {
+			moveToStartOfNextText: jest.fn()
+		}
+		editor.wrapBlockByKey = jest.fn().mockReturnValueOnce(editor)
+
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 5 } },
+			child: { object: 'text', key: 'mockKey', text: "" },
+			index: 0
+		})
+
+		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes required children in Level', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),

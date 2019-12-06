@@ -113,7 +113,7 @@ describe('Text editor', () => {
 		expect(editor.replaceNodeByKey).toHaveBeenCalled
 	})
 
-	test('switchType[LIST_NODE] changes leaf blocks to list nodes', () => {
+	test('switchType[LIST_NODE] changes leaf blocks to unordered list nodes', () => {
 		const editor = {
 			focus: jest.fn(),
 			removeNodeByKey: jest.fn(),
@@ -128,12 +128,45 @@ describe('Text editor', () => {
 			getLeafBlocksAtRange: () => ({
 				// Mock the forEach call
 				forEach: fn => {
-					fn({ toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn({ toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
 				},
 				reduce: fn => {
 					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
 					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					return 0
+				},
+				get: () => ({ key: 'mock-key'})
+			})
+		}
+
+		Converter.switchType[LIST_NODE](editor, node, { type: 'unordered', bulletStyle: 'disc'})
+
+		expect(editor.replaceNodeByKey).toHaveBeenCalled
+	})
+
+	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes', () => {
+		const editor = {
+			focus: jest.fn(),
+			removeNodeByKey: jest.fn(),
+			value: {}
+		}
+
+		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
+		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
+		const node = {
+			key: 'mockKey',
+			data: { get: () => ({}) },
+			getLeafBlocksAtRange: () => ({
+				// Mock the forEach call
+				forEach: fn => {
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+				},
+				reduce: fn => {
+					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
+					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					return 0
 				},
 				get: () => ({ key: 'mock-key'})
 			})

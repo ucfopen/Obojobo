@@ -1,6 +1,7 @@
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
 import Converter from './converter'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
@@ -190,6 +191,39 @@ describe('List Converter', () => {
 		}
 
 		Converter.switchType[TEXT_NODE](editor, node)
+
+		expect(editor.replaceNodeByKey).toHaveBeenCalled
+	})
+
+	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes', () => {
+		const editor = {
+			focus: jest.fn(),
+			removeNodeByKey: jest.fn(),
+			value: {}
+		}
+
+		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
+		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
+		const node = {
+			key: 'mockKey',
+			data: { get: () => ({ listStyles: { type: 'unordered' } }) },
+			getLeafBlocksAtRange: () => ({
+				// Mock the forEach call
+				forEach: fn => {
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
+					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+				},
+				reduce: fn => {
+					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
+					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
+					return 0
+				},
+				get: () => ({ key: 'mock-key'}),
+				getNode: () => ({ data: { get: () => ({}) } })
+			})
+		}
+
+		Converter.switchType[LIST_NODE](editor, node, { type: 'ordered', bulletStyle: 'disc'})
 
 		expect(editor.replaceNodeByKey).toHaveBeenCalled
 	})
