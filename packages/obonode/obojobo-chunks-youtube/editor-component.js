@@ -3,6 +3,7 @@ import YouTubeProperties from './youtube-properties-modal'
 import YoutubePlayer from './youtube-player'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import './viewer-component.scss'
+import './editor-component.scss'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
