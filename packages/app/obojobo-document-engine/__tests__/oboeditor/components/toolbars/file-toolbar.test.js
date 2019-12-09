@@ -77,7 +77,7 @@ describe('File Toolbar', () => {
 			toggleMark: jest.fn(),
 		}}
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
-		const value = Value.fromJSON({ document: { nodes: [] } })
+		const value = {}
 
 		const component = shallow(<FileToolbar saved editorRef={editor} insertableItems={[]} value={value}/>)
 		const tree = component.html()
@@ -103,6 +103,31 @@ describe('File Toolbar', () => {
 		const value = {
 			blocks: { get: () => ({ type: 'ObojoboDraft.Chunks.Table.Cell'})},
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 1} }
+		}
+
+		const component = mount(<FileToolbar mode="visual" editorRef={editor} insertableItems={items} value={value}/>)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('FileToolbar node with no nodes', () => {
+		const editor = { current: {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			delete: jest.fn(),
+			focus: jest.fn(),
+			toggleMark: jest.fn(),
+			insertBlock: jest.fn(),
+			changeToType: jest.fn(),
+		}}
+		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
+		const items = [{ 
+			name: 'mock-item', 
+			cloneBlankNode: () => ({ type: 'mock-type' }),
+			insertJSON: { type: TEXT_NODE } 
+		}]
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 1} },
 		}
 
 		const component = mount(<FileToolbar mode="visual" editorRef={editor} insertableItems={items} value={value}/>)
@@ -140,7 +165,7 @@ describe('File Toolbar', () => {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } },
 			fragment: { filterDescendants: fn => { 
 				fn({ type: 'ObojoboDraft.Chunks.Question'}) 
-				return true
+				return { size: 1 }
 			}}
 		}
 
