@@ -7,7 +7,7 @@ import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
-import { Editor } from 'slate-react'
+import { Slate, Editable, withReact } from 'slate-react'
 import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
@@ -19,7 +19,7 @@ import ScriptMarks from './marks/script-marks'
 import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
-import { Value } from 'slate'
+import { Value, createEditor } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
@@ -161,48 +161,52 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		const className =
-			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
-		return (
-			<div className={className}>
-				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
-					<FileToolbar
-						editorRef={this.editorRef}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						onSave={this.saveModule}
-						switchMode={this.props.switchMode}
-						saved={this.state.saved}
-						mode={'visual'}
-						insertableItems={this.props.insertableItems}
-						togglePlaceholders={this.togglePlaceholders}
-						showPlaceholders={this.state.showPlaceholders}
-					/>
-					<ContentToolbar editorRef={this.editorRef} />
-				</div>
-
-				<EditorNav
-					navState={this.props.navState}
-					model={this.props.model}
-					draftId={this.props.draftId}
-					savePage={this.exportCurrentToJSON}
-					markUnsaved={this.markUnsaved}
-				/>
-
-				<div className="component obojobo-draft--modules--module" role="main">
-					<Editor
-						className="component obojobo-draft--pages--page"
-						value={this.state.value}
-						ref={this.editorRef}
-						onChange={this.onChange}
-						plugins={this.plugins}
-						readOnly={!this.props.page || !this.state.editable}
-					/>
-				</div>
-			</div>
-		)
+		
 	}
+
+	// render() {
+	// 	const className =
+	// 		'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+	// 	return (
+	// 		<div className={className}>
+	// 			<div className="draft-toolbars">
+	// 				<div className="draft-title">{this.props.model.title}</div>
+	// 				<FileToolbar
+	// 					editorRef={this.editorRef}
+	// 					model={this.props.model}
+	// 					draftId={this.props.draftId}
+	// 					onSave={this.saveModule}
+	// 					switchMode={this.props.switchMode}
+	// 					saved={this.state.saved}
+	// 					mode={'visual'}
+	// 					insertableItems={this.props.insertableItems}
+	// 					togglePlaceholders={this.togglePlaceholders}
+	// 					showPlaceholders={this.state.showPlaceholders}
+	// 				/>
+	// 				<ContentToolbar editorRef={this.editorRef} />
+	// 			</div>
+
+	// 			<EditorNav
+	// 				navState={this.props.navState}
+	// 				model={this.props.model}
+	// 				draftId={this.props.draftId}
+	// 				savePage={this.exportCurrentToJSON}
+	// 				markUnsaved={this.markUnsaved}
+	// 			/>
+
+	// 			<div className="component obojobo-draft--modules--module" role="main">
+	// 				<Editor
+	// 					className="component obojobo-draft--pages--page"
+	// 					value={this.state.value}
+	// 					ref={this.editorRef}
+	// 					onChange={this.onChange}
+	// 					plugins={this.plugins}
+	// 					readOnly={!this.props.page || !this.state.editable}
+	// 				/>
+	// 			</div>
+	// 		</div>
+	// 	)
+	// }
 
 	onChange(change) {
 		const nodesChanged = change.operations
