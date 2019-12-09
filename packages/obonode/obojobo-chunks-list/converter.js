@@ -132,10 +132,12 @@ const switchType = {
 	'ObojoboDraft.Chunks.Heading': (editor, node, data) => {
 		node
 			.getLeafBlocksAtRange(editor.value.selection)
-			.forEach(child => editor.setNodeByKey(
-				child.key, 
-				{ type: HEADING_NODE, data: { content: { ...child.data.toJSON(), ...data } }}
-			))
+			.forEach(child =>
+				editor.setNodeByKey(child.key, {
+					type: HEADING_NODE,
+					data: { content: { ...child.data.toJSON(), ...data } }
+				})
+			)
 	},
 	'ObojoboDraft.Chunks.Text': (editor, node) => {
 		const textNode = {
@@ -145,8 +147,8 @@ const switchType = {
 
 		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
 
-		// Copy the selected List Line nodes over to the new textNode, 
-		// then remove every node except for the first, 
+		// Copy the selected List Line nodes over to the new textNode,
+		// then remove every node except for the first,
 		// as they will be rebuilt in the text node
 		// The first node (unremoved) provides an anchor for replacement
 		leaves.forEach((child, index) => {
@@ -156,7 +158,7 @@ const switchType = {
 			jsonNode.type = TEXT_LINE_NODE
 			textNode.nodes.push(jsonNode)
 
-			if(index !== 0) {
+			if (index !== 0) {
 				editor.removeNodeByKey(child.key)
 			}
 		})
@@ -164,7 +166,10 @@ const switchType = {
 		// The text node replaces the first child node, with all the copied children,
 		// including the copy of the first child
 		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).focus()
+		editor
+			.replaceNodeByKey(leaves.get(0).key, block)
+			.moveToRangeOfNode(block)
+			.focus()
 	},
 	'ObojoboDraft.Chunks.Code': (editor, node) => {
 		const textNode = {
@@ -173,8 +178,8 @@ const switchType = {
 		}
 		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
 
-		// Copy the selected List Line nodes over to the new textNode, 
-		// then remove every node except for the first, 
+		// Copy the selected List Line nodes over to the new textNode,
+		// then remove every node except for the first,
 		// as they will be rebuilt in the text node
 		// The first node (unremoved) provides an anchor for replacement
 		leaves.forEach((child, index) => {
@@ -185,22 +190,29 @@ const switchType = {
 			jsonNode.data.content.indent = path.size - 2
 			textNode.nodes.push(jsonNode)
 
-			if(index !== 0) editor.removeNodeByKey(child.key)
+			if (index !== 0) editor.removeNodeByKey(child.key)
 		})
 
 		// The text node replaces the first child node, with all the copied children,
 		// including the copy of the first child
 		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).focus()
+		editor
+			.replaceNodeByKey(leaves.get(0).key, block)
+			.moveToRangeOfNode(block)
+			.focus()
 	},
 	'ObojoboDraft.Chunks.List': (editor, node, data) => {
 		const swapType = data.type !== node.data.get('content').listStyles.type
 
-		if(swapType) {
-			editor.setNodeByKey(node.key, { data: { content: {
-				...node.data.get('content'),
-				listStyles: data
-			}}})
+		if (swapType) {
+			editor.setNodeByKey(node.key, {
+				data: {
+					content: {
+						...node.data.get('content'),
+						listStyles: data
+					}
+				}
+			})
 		}
 
 		// Find the bullet list ind starting index for the selection
@@ -220,21 +232,28 @@ const switchType = {
 			path.forEach((value, index) => {
 				// because of the nesting of list-level-line
 				// shortestPath - 2 is the path index of the highest visibly selected level
-				if(index === path.size - 1 || (index < shortestPath - 2 && !swapType)) return
+				if (index === path.size - 1 || (index < shortestPath - 2 && !swapType)) return
 
-				const newPath = path.slice(0, index+1)
+				const newPath = path.slice(0, index + 1)
 				const parentLevel = node.getNode(newPath)
-				const bulletStyle = bulletList[(bulletIndex + index - shortestPath + 2 + bulletList.length) % bulletList.length]
-				return editor.setNodeByKey(parentLevel.key, { data: { content: {
-					...parentLevel.data.get('content'),
-					...data,
-					bulletStyle
-				}}})
+				const bulletStyle =
+					bulletList[
+						(bulletIndex + index - shortestPath + 2 + bulletList.length) % bulletList.length
+					]
+				return editor.setNodeByKey(parentLevel.key, {
+					data: {
+						content: {
+							...parentLevel.data.get('content'),
+							...data,
+							bulletStyle
+						}
+					}
+				})
 			})
 		})
 
 		editor.focus()
-	},
+	}
 }
 
 export default { slateToObo, oboToSlate, switchType }
