@@ -1,4 +1,4 @@
-import React from 'React'
+import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import './youtube-properties-modal.scss'
 
