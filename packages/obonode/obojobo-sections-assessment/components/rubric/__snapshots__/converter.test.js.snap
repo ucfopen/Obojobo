@@ -20,6 +20,26 @@ Object {
 }
 `;
 
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no unableToPassResult 2`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": "no_score",
+      "failedType": "set-value",
+      "mods": Array [],
+      "passedResult": 100,
+      "passedType": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+      "unableToPassType": "no-value",
+    },
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
 exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no-scores 1`] = `
 Object {
   "data": Object {

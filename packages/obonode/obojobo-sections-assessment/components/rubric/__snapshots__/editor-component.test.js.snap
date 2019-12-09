@@ -48,7 +48,7 @@ exports[`Rubric editor Rubric renders 1`] = `
       Pass & Fail Rules
     </legend>
     <p>
-      In this mode, students must achieve a certian threshold on an attempt to pass. The assessment scores will be set based on whether the student passes or fails
+      In this mode, students must achieve a certain threshold on an attempt to pass. The assessment scores will be set based on whether the student passes or fails
     </p>
     <div>
       <label>
