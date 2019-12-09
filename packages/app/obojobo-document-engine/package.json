@@ -110,7 +110,6 @@
 			"<rootDir>/src/scripts/common/index.js",
 			"<rootDir>/src/scripts/common/dist.js",
 			"<rootDir>/src/scripts/common/models/chunk.js",
-			"<rootDir>/src/scripts/common/components/delete-button.js",
 			"<rootDir>/src/scripts/viewer/components/rd.js",
 			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-network-states.js",
 			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-resync-states.js"
