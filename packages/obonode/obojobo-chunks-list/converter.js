@@ -142,6 +142,7 @@ const switchType = {
 			type: TEXT_NODE,
 			nodes: []
 		}
+
 		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
 
 		// Copy the selected List Line nodes over to the new textNode, 
@@ -155,13 +156,15 @@ const switchType = {
 			jsonNode.type = TEXT_LINE_NODE
 			textNode.nodes.push(jsonNode)
 
-			if(index !== 0) editor.removeNodeByKey(child.key)
+			if(index !== 0) {
+				editor.removeNodeByKey(child.key)
+			}
 		})
 
 		// The text node replaces the first child node, with all the copied children,
 		// including the copy of the first child
 		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
+		editor.replaceNodeByKey(leaves.get(0).key, block).focus()
 	},
 	'ObojoboDraft.Chunks.Code': (editor, node) => {
 		const textNode = {
@@ -188,7 +191,7 @@ const switchType = {
 		// The text node replaces the first child node, with all the copied children,
 		// including the copy of the first child
 		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
+		editor.replaceNodeByKey(leaves.get(0).key, block).focus()
 	},
 	'ObojoboDraft.Chunks.List': (editor, node, data) => {
 		const swapType = data.type !== node.data.get('content').listStyles.type
@@ -229,6 +232,8 @@ const switchType = {
 				}}})
 			})
 		})
+
+		editor.focus()
 	},
 }
 

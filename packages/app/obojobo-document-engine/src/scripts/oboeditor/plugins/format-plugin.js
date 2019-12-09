@@ -3,16 +3,16 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 const FormatPlugin = {
 	commands: {
 		changeToType: (editor, type, data) => {
-			editor.value.document.getRootBlocksAtRange(editor.value.selection).forEach(node => {
-				const item = Common.Registry.getItemForType(node.type)
+			editor.withoutNormalizing(()=> {
+				editor.value.document.getRootBlocksAtRange(editor.value.selection).forEach(node => {
+					const item = Common.Registry.getItemForType(node.type)
 
-				console.log(item)
-
-				if(item.switchType[type]) {
-					item.switchType[type](editor, node, data)
-				}
+					if(item.switchType[type]) {
+						item.switchType[type](editor, node, data)
+					}
+				})
 			})
-		},
+		}
 	}
 }
 

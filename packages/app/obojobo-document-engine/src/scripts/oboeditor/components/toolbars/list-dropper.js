@@ -6,6 +6,7 @@ import OrderedListIcon from '../../assets/ordered-list-icon'
 import UnorderedListIcon from '../../assets/unordered-list-icon'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 class ListDropper extends React.Component {
@@ -92,9 +93,16 @@ class ListDropper extends React.Component {
 	}
 
 	toggleBullet() {
-		const isList = this.props.value.blocks.every(block => block.type === LIST_NODE)
+		const isList = this.props.value.blocks.every(block => block.type === LIST_LINE_NODE)
 
 		if(!isList) {
+			return this.props.editor.current.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
+		}
+
+		const rootBlocks = this.props.value.document.getRootBlocksAtRange(this.props.value.selection)
+		const isSameType = rootBlocks.every(block => block.data.get('content').listStyles.type === this.props.type)
+
+		if(!isSameType) {
 			return this.props.editor.current.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
 		}
 
