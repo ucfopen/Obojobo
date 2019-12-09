@@ -95,6 +95,7 @@ class YoutubeProperties extends React.Component {
 					<label>Start time (optional):</label>
 					<input
 						type="number"
+						min="0"
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange.bind(this)}
 					/>
@@ -102,6 +103,7 @@ class YoutubeProperties extends React.Component {
 					<label>End time (optional):</label>
 					<input
 						type="number"
+						min="1"
 						value={this.state.content.endTime || ''}
 						onChange={this.handleEndTimeChange.bind(this)}
 					/>
