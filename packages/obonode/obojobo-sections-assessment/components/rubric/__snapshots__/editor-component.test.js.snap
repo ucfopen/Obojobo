@@ -58,6 +58,8 @@ exports[`Rubric editor Rubric renders 1`] = `
         </b>
         , students must achieve an attempt score of at least
         <input
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -93,6 +95,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -133,6 +137,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -178,6 +184,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"

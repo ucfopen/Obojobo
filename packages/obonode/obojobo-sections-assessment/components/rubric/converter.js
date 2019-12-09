@@ -10,6 +10,10 @@ const slateToObo = node => {
 	if (content.unableToPassResult === 'no-value') content.unableToPassResult = null
 	if (content.mods && content.mods.length < 1) delete content.mods
 
+	delete content.passedType
+	delete content.failedType
+	delete content.unableToPassType
+
 	return content
 }
 

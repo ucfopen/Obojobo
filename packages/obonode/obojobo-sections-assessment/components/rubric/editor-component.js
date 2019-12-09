@@ -120,6 +120,8 @@ class Rubric extends React.Component {
 							To <b>pass</b>, students must achieve an attempt score of at least
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.passingAttemptScore}
 								onChange={this.changeScoreType.bind(this, 'passingAttemptScore')}
 								onClick={event => event.stopPropagation()}
@@ -142,6 +144,8 @@ class Rubric extends React.Component {
 						<label className={isOrNot(content.passedType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.passedResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'passedResult')}
@@ -168,6 +172,8 @@ class Rubric extends React.Component {
 						<label className={isOrNot(content.failedType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.failedResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'failedResult')}
@@ -197,6 +203,8 @@ class Rubric extends React.Component {
 						<label className={isOrNot(content.unableToPassType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.unableToPassResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'unableToPassResult')}

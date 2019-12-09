@@ -22,11 +22,8 @@ describe('Assessment Converter', () => {
 		expect(oboNode).toMatchInlineSnapshot(`
 		Object {
 		  "failedResult": "$attempt_score",
-		  "failedType": "$attempt_score",
 		  "passedResult": "$attempt_score",
-		  "passedType": "$attempt_score",
 		  "unableToPassResult": null,
-		  "unableToPassType": "no-value",
 		}
 	`)
 	})
@@ -52,11 +49,8 @@ describe('Assessment Converter', () => {
 		expect(oboNode).toMatchInlineSnapshot(`
 		Object {
 		  "failedResult": "100",
-		  "failedType": "set-value",
 		  "passedResult": "100",
-		  "passedType": "set-value",
 		  "unableToPassResult": "100",
-		  "unableToPassType": "set-value",
 		}
 	`)
 	})

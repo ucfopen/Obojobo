@@ -142,6 +142,8 @@ class ModProperties extends React.Component {
 										Add{' '}
 										<input
 											type="number"
+											min="-100"
+											max="100"
 											value={mod.reward}
 											onChange={this.onChangeReward.bind(this, index)}
 										/>
