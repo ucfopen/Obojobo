@@ -20,7 +20,7 @@ class ImageProperties extends React.Component {
 			height: 100,
 			width: 100
 		}
-		this.firstRef = React.createRef()
+		this.inputRef = React.createRef()
 		this.state = {
 			...defaultState,
 			...props.content,
@@ -56,8 +56,8 @@ class ImageProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		if (this.firstRef && this.firstRef.current) {
-			return this.firstRef.current.focus()
+		if (this.inputRef && this.inputRef.current) {
+			return this.inputRef.current.focus()
 		}
 	}
 
@@ -124,7 +124,7 @@ class ImageProperties extends React.Component {
 							<Button
 								className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
 								onClick={() => this.onOpenChoosingImageModal()}
-								ref={this.firstRef}
+								ref={this.inputRef}
 							>
 								Change Image...
 							</Button>
