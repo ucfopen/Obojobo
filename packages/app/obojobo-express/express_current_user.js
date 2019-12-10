@@ -13,42 +13,26 @@ const resetCurrentUser = req => {
 	req.currentUser = null
 }
 
-const resolveWithNewGuest = req => {
-	req.currentUser = new GuestUser()
-	return Promise.resolve(req.currentUser)
-}
-
-// returns a Promise!!!
-const getCurrentUser = (req, isRequired = false) => {
+// returns the current user
+// if there is no user in the session, returns a new guest by default
+const getCurrentUser = async (req, errorIfMissing = false) => {
 	// return early if already verified
-	if (req.currentUser) return Promise.resolve(req.currentUser)
+	if (req.currentUser) return req.currentUser
 
-	// no session data
-	// if isRequired returns a promise rejection
-	// if not require, resolves with a GuestUser
-	if (!req.session || !req.session.currentUserId) {
-		if (isRequired) {
-			logger.warn(
-				'No Session or Current User?',
-				req.session instanceof Object,
-				req.session.currentUserId
-			)
-			return Promise.reject(new Error('Login Required'))
+	try {
+		if (req.session && req.session.currentUserId) {
+			req.currentUser = await User.fetchById(req.session.currentUserId)
 		}
-		return resolveWithNewGuest(req)
+	} catch (err) {
+		logger.warn('getCurrentUser', err)
 	}
 
-	// fetch user from database using session data for the user id
-	return User.fetchById(req.session.currentUserId)
-		.then(user => {
-			req.currentUser = user
-			return user
-		})
-		.catch(err => {
-			logger.warn('getCurrentUser', err)
-			if (isRequired) return Promise.reject(new Error('Login Required'))
-			return resolveWithNewGuest(req)
-		})
+	if (!req.currentUser) {
+		if (errorIfMissing) throw new Error('Login Required')
+		req.currentUser = new GuestUser()
+	}
+
+	return req.currentUser
 }
 
 // sugar for getCurrentUser(true)
