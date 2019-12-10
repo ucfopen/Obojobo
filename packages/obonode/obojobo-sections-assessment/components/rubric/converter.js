@@ -15,6 +15,7 @@ const slateToObo = node => {
 	delete content.passedType
 	delete content.failedType
 	delete content.unableToPassType
+	delete content.attempts
 
 	return content
 }
