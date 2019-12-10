@@ -16,13 +16,27 @@ router
 		res.render('page-homepage.jsx', { currentUser: req.currentUser })
 	})
 
-// returns images for a module
-router.route('/library/module-icon/:moduleId').get((req, res) => {
-	const pattern = GeoPattern.generate(req.params.moduleId)
-	res.set('Cache-Control', 'public, max-age=31557600') // one year
-	res.setHeader('Content-Type', 'image/svg+xml')
-	res.send(pattern.toString())
-})
+// Module Images
+router
+	.route('/library/module-icon/:moduleId')
+	.get((req, res) => {
+		// @TODO: when user's can change these images,
+		// we'll need to use a smarter etag
+
+		// use etag to avoid doing work, if the browser
+		// sends an if-none-match of this object's etag
+		// it already has it cached, just return 304 now
+		if(req.headers['if-none-match'] === req.params.moduleId){
+			res.status(304)
+			res.send()
+			return
+		}
+
+		const pattern = GeoPattern.generate(req.params.moduleId)
+		res.setHeader('ETag', req.params.moduleId)
+		res.setHeader('Content-Type', 'image/svg+xml')
+		res.send(pattern.toString())
+	})
 
 router
 	.route('/login')
