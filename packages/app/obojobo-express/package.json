@@ -76,6 +76,7 @@
 	"devDependencies": {
 		"babel-loader": "^8.0.6",
 		"babel-polyfill": "^6.26.0",
+		"bluebird": "^3.7.2",
 		"copy-webpack-plugin": "^5.0.4",
 		"css-loader": "^3.2.0",
 		"express-list-endpoints": "^4.0.1",
