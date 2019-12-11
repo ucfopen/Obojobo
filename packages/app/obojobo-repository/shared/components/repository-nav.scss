@@ -28,6 +28,9 @@
 
 	> div {
 		font-size: 0.85em;
+		margin-left: 0.4em;
+		margin-right: 0.4em;
+		text-align: center;
 
 		@include mq($from: zero, $until: mobileS) {
 			font-size: 0.65em;
