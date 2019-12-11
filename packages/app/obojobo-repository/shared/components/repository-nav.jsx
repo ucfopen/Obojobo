@@ -32,7 +32,6 @@ const RepositoryNav = (props) => {
 				<a href="/"><div className="repository--nav--logo">Obojobo</div></a>
 				<div className="repository--nav--links--link"><a href="/library">Module Library</a></div>
 				<div className="repository--nav--links--link"><a href="/dashboard">Dashboard</a></div>
-				{ /* <Search /> */ }
 				{ props.userId !== 0 ?
 					<div className="repository--nav--current-user">
 						<button onClick={onToggleMenu}>
