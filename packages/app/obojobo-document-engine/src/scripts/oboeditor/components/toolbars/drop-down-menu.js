@@ -102,6 +102,7 @@ class DropMenu extends React.PureComponent {
 							case 'sub-menu':
 								return (
 									<DropMenu
+										key={item.name}
 										name={item.name}
 										menu={item.menu}
 										onRef={item => {
@@ -117,7 +118,8 @@ class DropMenu extends React.PureComponent {
 										disabled={item.disabled}
 										ref={item => {
 											this.menu.push(item)
-										}}>
+										}}
+									>
 										{item.name}
 										{item.value ? <span>✔</span> : null}
 									</button>

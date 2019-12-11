@@ -4,9 +4,10 @@ import renderer from 'react-test-renderer'
 
 import Table from './editor-component'
 
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
-	props => <div>{props.children}</div>
-))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
@@ -62,8 +63,6 @@ describe('Table Editor Node', () => {
 			/>
 		)
 		const tree = component.html()
-
-		console.log(tree)
 
 		component
 			.find('button')
