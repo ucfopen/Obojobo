@@ -71,7 +71,7 @@ const PageHomepage = props =>
 				<div className="step-items-container">
 					<h1>Open Source First.</h1>
 					<p>
-						Install it, cusomize it, update it. Let's build the future of learning together.
+						Install it, customize it, update it. Let's build the future of learning together.
 					</p>
 					<p><a href="https://github.com/ucfopen/Obojobo">Join us on Github</a>!</p>
 				</div>
