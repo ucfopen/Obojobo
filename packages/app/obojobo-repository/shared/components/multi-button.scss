@@ -1,15 +1,16 @@
 @import '../../client/css/defaults';
 
 .repository--button.repository--multi-button {
-	$size: 30px;
+	$size: 2.3em;
 
 	position: relative;
 	border: 1px solid $color-action;
-	min-height: 42px;
-	padding-left: 43px;
-	padding-top: 14px;
+	min-height: 2.6em;
+	padding-left: 3em;
+	padding-top: 1em;
 	min-width: 135px;
-	margin-right: 10px;
+	margin-right: .8em;
+	font-size: .65em;
 
 	> button {
 		font: inherit;
@@ -22,20 +23,42 @@
 
 	.child-buttons {
 		display: none;
+
+		position: absolute;
+		font-size: 1.2em;
+		top: 2.2em;
+		width: calc(100% + 2px);
+		left: 0;
+		box-sizing: border-box;
+		background: $color-bg;
+		border: 1px solid darken($color-banner-bg, 10%);
+		border-radius: 0 0 .4em .4em;
+		margin-left: -1px;
+		padding: 1em .8em 0 .8em;
+		z-index: 100;
+		border-top: none;
+
+		button {
+			display: block;
+			margin-bottom: .7em;
+			width: 100%;
+		}
 	}
 
 	.icon {
 		position: absolute;
 		height: $size;
 		width: $size;
-		left: 5px;
-		top: 5px;
+		left: .3em;
+		top: .3em;
 
 		svg {
 			position: relative;
 			height: 100%;
 			width: 100%;
 			fill: white;
+			stroke-width: .5em;
+			stroke: $color-action;
 		}
 
 		&::after {
@@ -51,44 +74,14 @@
 		}
 	}
 
-	&.is-open {
+	&.is-open,
+	&:hover {
 		color: $color-action;
 		background-color: white;
 		border: 1px solid darken($color-banner-bg, 10%);
 
 		.child-buttons {
 			display: block;
-			position: absolute;
-			top: 38px;
-			width: calc(100% + 2px);
-			left: 0;
-			box-sizing: border-box;
-			background: $color-bg;
-			border: 1px solid darken($color-banner-bg, 10%);
-			border-radius: 0 0 5px 5px;
-			margin-left: -1px;
-			padding: 12px 10px 0 10px;
-			z-index: 100;
-			border-top: none;
-
-			button {
-				display: block;
-				margin-bottom: 8px;
-				width: 100%;
-			}
-		}
-
-		.icon {
-			svg {
-				fill: white;
-				stroke: $color-action;
-				stroke-width: 6px;
-			}
-
-			&::after {
-				content: '＋';
-				color: $color-action;
-			}
 		}
 	}
 
@@ -99,37 +92,6 @@
 
 		.child-buttons {
 			display: block;
-			position: absolute;
-			top: 38px;
-			width: calc(100% + 2px);
-			left: 0;
-			box-sizing: border-box;
-			background: #ffffff;
-			border: 1px solid darken($color-banner-bg, 10%);
-			border-radius: 0 0 5px 5px;
-			margin-left: -1px;
-			padding: 12px 10px 0 10px;
-			z-index: 100;
-			border-top: none;
-
-			button {
-				display: block;
-				margin-bottom: 8px;
-				width: 100%;
-			}
-		}
-
-		.icon {
-			svg {
-				fill: white;
-				stroke: $color-action;
-				stroke-width: 6px;
-			}
-
-			&::after {
-				content: '＋';
-				color: $color-action;
-			}
 		}
 	}
 }

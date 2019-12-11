@@ -39,7 +39,7 @@
 		height: 150px;
 		overflow-y: scroll;
 		list-style: none;
-		font-size: 0.7em;
+		font-size: 0.9em;
 		padding: 0;
 		margin: 0;
 
@@ -49,6 +49,10 @@
 			margin: 0 auto;
 			position: relative;
 			border-radius: 3px;
+		}
+
+		.respository--button{
+			font-size: .8em;
 		}
 	}
 }
