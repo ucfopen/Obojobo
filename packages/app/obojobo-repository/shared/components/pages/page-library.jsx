@@ -1,13 +1,14 @@
-const React = require('react')
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './repository-nav'
-import RepositoryBanner from './repository-banner'
-import Module from './module'
+const React = require('react');
+import LayoutDefault from '../layouts/default'
+import RepositoryNav from '../repository-nav'
+import RepositoryBanner from '../repository-banner'
+import Module from '../module'
+import Button from '../button'
 
 const title = 'Module Library'
 
 const PageLibrary = props => (
-	<DefaultLayout title={title} className="repository--library">
+	<LayoutDefault title={title} className="repository--library">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -39,7 +40,7 @@ const PageLibrary = props => (
 				))}
 			</section>
 		</div>
-	</DefaultLayout>
+	</LayoutDefault>
 )
 
 module.exports = PageLibrary

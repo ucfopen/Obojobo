@@ -1,4 +1,4 @@
-import './css/module-selector.scss'
+import '../css/module-selector.scss'
 ;(function() {
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250

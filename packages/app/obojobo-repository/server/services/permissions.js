@@ -29,7 +29,7 @@ const userHasPermissionToDraft = async (userId, draftId) => {
 		FROM repository_map_user_to_draft
 		WHERE draft_id = $[draftId]
 		AND user_id = $[userId]`,
-		{userId, draftId}
+		{ userId, draftId }
 	)
 
 	// oneOrNone reutrns null when there are no results

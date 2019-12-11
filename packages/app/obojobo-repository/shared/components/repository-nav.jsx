@@ -23,7 +23,7 @@ const RepositoryNav = (props) => {
 	}
 
 	return(
-		<div 
+		<div
 			className="repository--section-wrapper repository--stick-to-top"
 			onMouseLeave={onCloseMenu}
 			onFocus={onFocusHandler}

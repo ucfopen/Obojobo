@@ -34,6 +34,7 @@ oboEvents.on(DraftModel.EVENT_DRAFT_DELETED, () => {
 		.catch(logger.error)
 })
 
+// 401 Error Page
 oboEvents.on('HTTP_NOT_AUTHORIZED', ({ req, res, next }) => {
 	req.responseHandled = true
 	return req.getCurrentUser().then(() => {
@@ -42,10 +43,11 @@ oboEvents.on('HTTP_NOT_AUTHORIZED', ({ req, res, next }) => {
 			children: 'You do not have the permissions required to view this page.',
 			currentUser: req.currentUser
 		}
-		res.render('page-error.jsx', props)
+		res.render('pages/page-error.jsx', props)
 	})
 })
 
+// 404 Error Page
 oboEvents.on('HTTP_NOT_FOUND', ({ req, res, next }) => {
 	req.responseHandled = true
 	return req.getCurrentUser().then(() => {
@@ -54,10 +56,11 @@ oboEvents.on('HTTP_NOT_FOUND', ({ req, res, next }) => {
 			children: "The page you requested doesn't exist.",
 			currentUser: req.currentUser
 		}
-		res.render('page-error.jsx', props)
+		res.render('pages/page-error.jsx', props)
 	})
 })
 
+// 500 Error Page
 oboEvents.on('HTTP_UNEXPECTED', ({ req, res, next }) => {
 	req.responseHandled = true
 	return req.getCurrentUser().then(() => {
@@ -66,6 +69,6 @@ oboEvents.on('HTTP_UNEXPECTED', ({ req, res, next }) => {
 			children: 'There was an internal server error.',
 			currentUser: req.currentUser
 		}
-		res.render('page-error.jsx', props)
+		res.render('pages/page-error.jsx', props)
 	})
 })

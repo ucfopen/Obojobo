@@ -1,14 +1,14 @@
 require('./page-homepage.scss')
 
 const React = require('react');
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './repository-nav'
+import LayoutDefault from '../layouts/default'
+import RepositoryNav from '../repository-nav'
 
 const title = 'Obojobo™ Next - Next Generation Course Content for your LMS'
 const currentYear = new Date().getFullYear()
 
 const PageHomepage = props =>
-	<DefaultLayout title={title} appCSSUrl="/static/homepage.css" className="repository--homepage">
+	<LayoutDefault title={title} appCSSUrl="/static/homepage.css" className="repository--homepage">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -78,6 +78,6 @@ const PageHomepage = props =>
 			</section>
 
 		</div>
-	</DefaultLayout>
+	</LayoutDefault>
 
 module.exports = PageHomepage

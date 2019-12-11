@@ -1,12 +1,12 @@
 const React = require('react');
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './repository-nav'
-import RepositoryBanner from './repository-banner'
+import LayoutDefault from '../layouts/default'
+import RepositoryNav from '../repository-nav'
+import RepositoryBanner from '../repository-banner'
 
 const title = 'Log in to ObojoboNext'
 
 const PageLogin = (props) =>
-	<DefaultLayout title={title} className="repository--library">
+	<LayoutDefault title={title} className="repository--library">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -21,6 +21,6 @@ const PageLogin = (props) =>
 			</section>
 		</div>
 
-	</DefaultLayout>
+	</LayoutDefault>
 
 module.exports = PageLogin;

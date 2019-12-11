@@ -1,6 +1,4 @@
 const router = require('express').Router() //eslint-disable-line new-cap
-const oboEvents = require('obojobo-express/obo_events')
-const db = require('obojobo-express/db')
 const Assessment = require('./assessment')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
@@ -9,6 +7,7 @@ const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const { reviewAttempt } = require('./attempt-review')
 const { logAndRespondToUnexpected } = require('./util')
+const { deletePreviewState } = require('./services/preview')
 const {
 	requireCurrentDocument,
 	requireCurrentVisit,
@@ -36,9 +35,7 @@ router
 	.post(async (req, res) => {
 		try {
 			logger.info(
-				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${
-					req.currentDocument.draftId
-				}", assessmentId="${req.body.assessmentId}"`
+				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${req.currentDocument.draftId}", assessmentId="${req.body.assessmentId}"`
 			)
 			const ltiScoreResult = await lti.sendHighestAssessmentScore(
 				req.currentUser.id,
@@ -107,105 +104,22 @@ router
 		res.send(questionModels)
 	})
 
-const deletePreviewScores = ({ transaction, userId, draftId, resourceLinkId }) => {
-	return transaction
-		.manyOrNone(
-			`
-			SELECT assessment_scores.id
-			FROM assessment_scores
-			JOIN attempts
-				ON attempts.id = assessment_scores.attempt_id
-			WHERE assessment_scores.user_id = $[userId]
-			AND assessment_scores.draft_id = $[draftId]
-			AND attempts.resource_link_id = $[resourceLinkId]
-			AND assessment_scores.is_preview = true
-		`,
-			{ userId, draftId, resourceLinkId }
-		)
-		.then(assessmentScoreIdsResult => {
-			const ids = assessmentScoreIdsResult.map(i => i.id)
-			if (ids.length < 1) return []
-
-			return [
-				transaction.none(
-					`
-					DELETE FROM lti_assessment_scores
-					WHERE assessment_score_id IN ($[ids:csv])
-				`,
-					{ ids }
-				),
-				transaction.none(
-					`
-					DELETE FROM assessment_scores
-					WHERE id IN ($[ids:csv])
-				`,
-					{ ids }
-				)
-			]
-		})
-}
-
-const deletePreviewAttempts = ({ transaction, userId, draftId, resourceLinkId }) => {
-	return transaction
-		.manyOrNone(
-			`
-			SELECT id
-			FROM attempts
-			WHERE user_id = $[userId]
-			AND draft_id = $[draftId]
-			AND resource_link_id = $[resourceLinkId]
-			AND is_preview = true
-		`,
-			{ userId, draftId, resourceLinkId }
-		)
-		.then(attemptIdsResult => {
-			const ids = attemptIdsResult.map(i => i.id)
-			if (ids.length < 1) return []
-
-			return [
-				transaction.none(
-					`
-					DELETE FROM attempts_question_responses
-					WHERE attempt_id IN ($[ids:csv])
-				`,
-					{ ids }
-				),
-				transaction.none(
-					`
-					DELETE FROM attempts
-					WHERE id IN ($[ids:csv])
-				`,
-					{ ids }
-				)
-			]
-		})
-}
-
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
-	.post((req, res) => {
+	.post(async (req, res) => {
 		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
-		return db
-			.tx(transaction => {
-				const args = {
-					transaction,
-					userId: req.currentUser.id,
-					draftId: req.currentDocument.draftId,
-					resourceLinkId: req.currentVisit.resource_link_id
-				}
-
-				return Promise.all([deletePreviewScores(args), deletePreviewAttempts(args)]).then(
-					([scoreQueries, attemptQueries]) => {
-						return transaction.batch(scoreQueries.concat(attemptQueries))
-					}
-				)
-			})
-			.then(() => res.success())
-			.catch(error => {
-				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
-			})
+		try {
+			await deletePreviewState(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentVisit.resource_link_id
+			)
+			res.success()
+		} catch (error) {
+			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
+		}
 	})
 
 // @TODO NOT USED
@@ -266,36 +180,7 @@ router
 			})
 	})
 
-oboEvents.on('client:question:setResponse', async (event, req) => {
-	const eventRecordResponse = 'client:question:setResponse'
-
-	try {
-		if (!event.payload.attemptId) return // assume we're in practice
-		if (!event.payload.questionId) throw 'Missing Question ID'
-		if (!event.payload.response) throw 'Missing Response'
-
-		await db.none(
-			`
-		INSERT INTO attempts_question_responses
-		(attempt_id, question_id, response, assessment_id)
-		VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
-		ON CONFLICT (attempt_id, question_id) DO
-			UPDATE
-			SET
-				response = $[response],
-				updated_at = now()
-			WHERE attempts_question_responses.attempt_id = $[attemptId]
-				AND attempts_question_responses.question_id = $[questionId]`,
-			{
-				assessmentId: event.payload.assessmentId,
-				attemptId: event.payload.attemptId,
-				questionId: event.payload.questionId,
-				response: event.payload.response
-			}
-		)
-	} catch (error) {
-		logger.error(eventRecordResponse, req, event, error, error.toString())
-	}
-})
+// register the event listeners
+require('./events')
 
 module.exports = router

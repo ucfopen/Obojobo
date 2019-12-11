@@ -2,7 +2,7 @@ require('./default.scss')
 
 const React = require('react');
 const Footer = require('./footer')
-const DefaultLayout = props =>
+const LayoutDefault = props =>
 	<html lang="en">
 		<head>
 			<title>{ props.title }</title>
@@ -36,8 +36,8 @@ const DefaultLayout = props =>
 		</body>
 	</html>
 
-DefaultLayout.defaultProps = {
+LayoutDefault.defaultProps = {
 	headerJs: []
 }
 
-module.exports = DefaultLayout;
+module.exports = LayoutDefault;

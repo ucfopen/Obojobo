@@ -26,7 +26,7 @@ const MultiButton = props => {
 			className={`repository--button repository--multi-button ${props.className || ''} ` + (isMenuOpen ? "is-open" : "is-not-open")}
 			onFocus={onFocusHandler}
 			onBlur={onBlurHandler}
-			onMouseLeave={onCloseMenu}>	
+			onMouseLeave={onCloseMenu}>
 			<button onClick={onToggleMenu}>
 				<div className="icon">
 					<svg viewBox="0 0 134 150" version="1.1" xmlns="http://www.w3.org/2000/svg">

@@ -1,12 +1,12 @@
 const React = require('react');
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './repository-nav'
-import RepositoryBanner from './repository-banner'
-import ModuleImage from './module-image'
-import Button from './button'
-import ButtonLink from './button-link'
+import LayoutDefault from '../layouts/default'
+import RepositoryNav from '../repository-nav'
+import RepositoryBanner from '../repository-banner'
+import ModuleImage from '../module-image'
+import Button from '../button'
+import ButtonLink from '../button-link'
 import moment from 'moment'
-import  { urlForEditor } from '../repository-utils'
+import  { urlForEditor } from '../../repository-utils'
 
 const deleteModule = (title, draftId, deleteFn) => {
 	var response = confirm(`Delete "${title}" id: ${draftId} ?`)
@@ -15,7 +15,7 @@ const deleteModule = (title, draftId, deleteFn) => {
 }
 
 const PageModule = (props) =>
-	<DefaultLayout title={`${props.module.title} - an Obojobo Module`} className="repository--module">
+	<LayoutDefault title={`${props.module.title} - an Obojobo Module`} className="repository--module">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -85,6 +85,6 @@ const PageModule = (props) =>
 			</ol>
 
 		</section>
-	</DefaultLayout>
+	</LayoutDefault>
 
 module.exports = PageModule;

@@ -1,10 +1,10 @@
 const React = require('react');
-import DefaultLayout from '../../shared/components/layouts/default'
-import RepositoryNav from '../../shared/components/repository-nav'
-import RepositoryBanner from '../../shared/components/repository-banner'
+import LayoutDefault from '../layouts/default'
+import RepositoryNav from '../repository-nav'
+import RepositoryBanner from '../repository-banner'
 
-const ErrorPage = props =>
-	<DefaultLayout title={props.title} className="repository--library">
+const PageError = props =>
+	<LayoutDefault title={props.title} className="repository--library">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -19,6 +19,6 @@ const ErrorPage = props =>
 			</section>
 		</div>
 
-	</DefaultLayout>
+	</LayoutDefault>
 
-module.exports = ErrorPage;
+module.exports = PageError;
