@@ -1,7 +1,7 @@
 @import '../../client/css/defaults';
 
 .repository--section-wrapper {
-	max-width: 770px;
+	max-width: $dimension-width;
 	margin: 0 auto;
 }
 
@@ -14,26 +14,32 @@
 }
 
 .repository--nav {
-	max-width: 800px;
-	min-height: 65px;
-	margin: 5px auto;
+	max-width: $dimension-width;
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+	box-sizing: border-box;
+	min-height: $dimension-nav-height;
+	margin: 0.25em auto;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-between;
 	align-content: flex-start;
 	align-items: center;
-	font-size: 0.85em;
 
-	@include mq($from: zero, $until: mobileS) {
-		font-size: 0.65em;
-	}
+	> div {
+		font-size: 0.85em;
 
-	@include mq($from: mobileS, $until: mobileL) {
-		font-size: 0.7em;
-	}
+		@include mq($from: zero, $until: mobileS) {
+			font-size: 0.65em;
+		}
 
-	@include mq($from: mobileL, $until: tablet) {
-		font-size: 0.75em;
+		@include mq($from: mobileS, $until: mobileL) {
+			font-size: 0.7em;
+		}
+
+		@include mq($from: mobileL, $until: tablet) {
+			font-size: 0.75em;
+		}
 	}
 }
 
@@ -49,7 +55,7 @@
 
 .repository--nav--logo {
 	background-image: url('/images/obojobo-logo.svg');
-	background-position: center;
+	background-position: center left;
 	background-repeat: no-repeat;
 	background-size: contain;
 	box-sizing: border-box;
@@ -57,23 +63,8 @@
 	height: 25px;
 	overflow: hidden;
 	text-indent: -1000px;
-	width: 100px;
-	margin: 0 20px;
-
-	@include mq($from: zero, $until: mobileS) {
-		margin: 0 10px;
-		width: 65px;
-	}
-
-	@include mq($from: mobileS, $until: mobileL) {
-		margin: 0 10px;
-		width: 70px;
-	}
-
-	@include mq($from: mobileL, $until: tablet) {
-		margin: 0 10px;
-		width: 75px;
-	}
+	width: 6em;
+	margin: 0;
 }
 
 .repository--nav--current-user--menu {
@@ -94,10 +85,10 @@
 
 .repository--nav--current-user {
 	position: relative;
-	font-size: 0.9em;
-	height: 65px;
+	font-size: 1em;
+	height: $dimension-nav-height;
 	text-align: right;
-	padding: 25px 65px 0 0;
+	padding: 0 $dimension-nav-height 0 0;
 	box-sizing: border-box;
 
 	&:hover {
@@ -111,20 +102,21 @@
 	button {
 		border: none;
 		font-size: 1em;
+		background: $color-bg;
+		font-family: $font-default;
+		height: $dimension-nav-height;
+		margin: 0;
 	}
 
 	.avatar {
 		position: absolute;
 		right: 0;
-		top: 5px;
-		height: 55px;
-		width: 55px;
+		top: 50%;
+		transform: translate(0, -50%);
+		height: 2.9em;
+		width: 2.9em;
 		margin: 0;
 	}
-}
-
-.repository--nav--current-user--name {
-	font-size: 0.9em;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)

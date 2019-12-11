@@ -4,13 +4,12 @@
 	border: 0;
 	background: $color-button-bg;
 	color: white;
-	border-radius: .4em;
-	padding: .8em 1.1em;
-	font-weight: bold;
+	border-radius: 0.25em;
+	padding: 0.8em 1.1em;
 	box-sizing: border-box;
 	cursor: pointer;
 	text-decoration: none;
-	font-size: .7em;
+	font-size: 0.7em;
 
 	&:hover {
 		background: $color-action;
@@ -35,13 +34,21 @@
 	}
 
 	&.secondary-button {
-		border: .1em solid $color-action;
+		border: 0.1em solid $color-action;
 		background-color: white;
 		color: $color-action;
 
 		&:hover {
 			background-color: $color-action;
 			color: white;
+		}
+	}
+
+	&.dangerous-button {
+		background-color: $color-dangerous;
+
+		&:hover {
+			background-color: $color-dangerous-minor;
 		}
 	}
 }

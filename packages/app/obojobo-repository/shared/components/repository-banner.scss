@@ -4,9 +4,10 @@
 	margin-bottom: $size-spacing-vertical-big;
 	position: relative;
 	z-index: 1;
+	box-sizing: border-box;
 
 	> section {
-		max-width: 766px;
+		max-width: $dimension-width;
 		margin: 0 auto;
 	}
 
@@ -39,14 +40,14 @@
 	display: flex;
 	position: relative;
 	z-index: 1;
-	padding: 30px 0px;
+	padding: $dimension-padding;
 	box-sizing: border-box;
 	align-items: center;
 	color: #555555;
 	overflow: hidden;
 
 	.repository--module-icon--image {
-		margin-right: 20px;
+		margin-right: 1em;
 
 		svg {
 			height: $dimension-module-icon + 45px;
@@ -63,6 +64,8 @@
 	margin: 0;
 	padding: 0;
 	z-index: 1;
+	// Nudge the text slightly left to line up:
+	margin-left: -3px;
 }
 
 .default-bg .repository--title-banner--title {
@@ -79,10 +82,7 @@
 		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
 		// In case we're not in webkit, throw a text-shadow on to at least get
 		// a pixel of glow to keep the background from mixing with the font too much
-		text-shadow:
-			-1px -1px 0 $color-banner-bg,
-			1px -1px 0 $color-banner-bg,
-			-1px 1px 0 $color-banner-bg,
-			1px 1px 0 $color-banner-bg;
+		text-shadow: -1px -1px 0 $color-banner-bg, 1px -1px 0 $color-banner-bg,
+			-1px 1px 0 $color-banner-bg, 1px 1px 0 $color-banner-bg;
 	}
 }

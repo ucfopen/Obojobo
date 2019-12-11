@@ -1,64 +1,79 @@
 @import '../../client/css/defaults';
 
 .module-permissions-dialog {
-	max-width: 400px;
+	max-width: 25em;
 	text-align: center;
 	width: 80vw;
-
-	.repository--module-icon--image {
-		width: 25px;
-		display: inline-block;
-		vertical-align: middle;
-	}
+	padding-bottom: 1em;
 
 	.top-bar {
 		text-align: left;
-		margin: -10px -20px 20px -20px;
-		padding: 0 20px 5px 20px;
 		position: relative;
-		border-bottom: 1px solid #999999;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		box-sizing: border-box;
+		height: 3em;
+
+		.repository--module-icon--image {
+			width: 1.5em;
+			height: 1.75em;
+			display: inline-block;
+			vertical-align: middle;
+			position: absolute;
+			left: 0.75em;
+			top: 50%;
+			transform: translate(0, -50%);
+		}
 
 		.module-title {
 			display: inline-block;
-			font-size: 12px;
-			font-weight: 600;
+			font-size: 0.625em;
+			font-weight: bold;
 			color: black;
-			margin: 0 20px 0 10px;
+			margin: 0;
 			max-width: 50%;
 			vertical-align: middle;
+			position: absolute;
+			left: 4.5em;
+			top: 50%;
+			transform: translate(0, -50%);
 		}
 
 		.close-button {
 			position: absolute;
-			top: 0;
-			right: 10px;
+			right: 0.5em;
+			top: 50%;
+			transform: translate(0, -50%);
 		}
+	}
+
+	.wrapper {
+		padding-left: 1.25em;
+		padding-right: 1.25em;
 	}
 
 	.title {
 		font-weight: 700;
 		font-size: 1.3em;
-		margin-bottom: 5px;
+		margin-bottom: 0.2em;
 	}
 
 	.sub-title {
 		font-size: 0.7em;
-		margin-bottom: 20px;
+		margin-bottom: 2em;
 	}
 
 	.access-list-wrapper {
-		margin: 20px -20px 20px -20px;
+		margin: 1em 0;
 		background-color: $color-banner-bg;
-		padding: 10px;
+		padding: 0;
 	}
 
 	.access-list {
-		$dimensions-avatar: 30px;
-		$dimensions-close-button: 20px;
+		$dimensions-avatar: 1.8em;
+		$dimensions-close-button: 1.2em;
 
 		text-align: left;
-		height: 150px;
+		height: 11.5em;
 		overflow-y: scroll;
 		list-style: none;
 		font-size: 0.9em;
@@ -66,16 +81,24 @@
 		margin: 0;
 
 		li {
-			max-width: 50%;
+			max-width: 75%;
+
+			&:first-child {
+				margin-top: 1em;
+			}
+
+			&:last-child {
+				margin-bottom: 1em;
+			}
 		}
 	}
 
 	.button-things {
 		text-align: left;
-		margin: 40px 10px;
+		margin: 2em 0;
 		display: grid;
 		grid-template-columns: 7em auto;
-		grid-gap: 10px;
+		grid-gap: 0.6em;
 		align-items: center;
 
 		.label {
@@ -83,10 +106,10 @@
 		}
 
 		.repository--button {
-			min-width: 100px;
+			min-width: 9.5em;
 			display: inline-block;
 			text-align: center;
-			margin-right: 10px;
+			margin-right: 1em;
 		}
 	}
 }
