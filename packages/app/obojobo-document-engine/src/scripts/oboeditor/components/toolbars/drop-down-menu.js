@@ -3,7 +3,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './drop-down-menu.scss'
 
-class DropMenu extends React.PureComponent {
+class DropDownMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -97,12 +97,12 @@ class DropMenu extends React.PureComponent {
 					{this.props.name}
 				</button>
 				<div className="menu-items">
-					{this.props.menu.map(item => {
+					{this.props.menu.map((item, index) => {
 						switch (item.type) {
 							case 'sub-menu':
 								return (
-									<DropMenu
-										key={item.name}
+									<DropDownMenu
+										key={index}
 										name={item.name}
 										menu={item.menu}
 										onRef={item => {
@@ -113,7 +113,7 @@ class DropMenu extends React.PureComponent {
 							case 'toggle-action':
 								return (
 									<button
-										key={item.name}
+										key={index}
 										onClick={item.action}
 										disabled={item.disabled}
 										ref={item => {
@@ -127,7 +127,7 @@ class DropMenu extends React.PureComponent {
 							default:
 								return (
 									<button
-										key={item.name}
+										key={index}
 										onClick={item.action}
 										disabled={item.disabled}
 										ref={item => {
@@ -145,4 +145,4 @@ class DropMenu extends React.PureComponent {
 	}
 }
 
-export default DropMenu
+export default DropDownMenu

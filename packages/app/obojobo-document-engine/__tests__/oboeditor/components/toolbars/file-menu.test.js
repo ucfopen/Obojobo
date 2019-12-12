@@ -20,6 +20,7 @@ jest.mock('downloadjs')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+window.open = jest.fn()
 
 describe('File Menu', () => {
 	beforeEach(() => {
@@ -28,20 +29,18 @@ describe('File Menu', () => {
 	})
 
 	test('File Menu node', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
-		const component = shallow(<FileMenu draftId="mockDraft"/>)
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
+		const component = shallow(<FileMenu draftId="mockDraft" />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls save', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			flatJSON: () => ({ children: [] }),
@@ -49,12 +48,10 @@ describe('File Menu', () => {
 				{
 					get: () => CONTENT_NODE,
 					flatJSON: () => ({ children: [] }),
-					children: { models: [
-						{ get: () => 'mockValue' }
-					]}
+					children: { models: [{ get: () => 'mockValue' }] }
 				},
 				{
-					get: () => ASSESSMENT_NODE,
+					get: () => ASSESSMENT_NODE
 				}
 			]
 		}
@@ -62,11 +59,12 @@ describe('File Menu', () => {
 		const exportToJSON = jest.fn()
 
 		const component = mount(
-			<FileMenu 
+			<FileMenu
 				draftId="mockDraft"
 				model={model}
 				exportToJSON={exportToJSON}
-				onSave={APIUtil.postDraft}/>
+				onSave={APIUtil.postDraft}
+			/>
 		)
 		const tree = component.html()
 
@@ -81,7 +79,7 @@ describe('File Menu', () => {
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'error',
-			value: { message: 'mock Error'}
+			value: { message: 'mock Error' }
 		})
 
 		component
@@ -89,25 +87,21 @@ describe('File Menu', () => {
 			.at(1)
 			.simulate('click')
 
-
 		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('FileMenu calls new', done => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" />
-		)
+		const component = mount(<FileMenu draftId="mockDraft" />)
 		const tree = component.html()
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'ok',
-			value: { id: 'mock-id'}
+			value: { id: 'mock-id' }
 		})
 
 		component
@@ -117,14 +111,13 @@ describe('File Menu', () => {
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
-			value: { message: 'mock Error'}
+			value: { message: 'mock Error' }
 		})
 
 		component
 			.find('button')
 			.at(2)
 			.simulate('click')
-
 
 		expect(tree).toMatchSnapshot()
 		setTimeout(() => {
@@ -141,14 +134,14 @@ describe('File Menu', () => {
 			title: 'mockTitle'
 		}
 
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft", title: 'Mock Title' },
-			{ draftId: "otherDraft", title: 'Mock Other Title' }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [
+				{ draftId: 'mockDraft', title: 'Mock Title' },
+				{ draftId: 'otherDraft', title: 'Mock Other Title' }
+			]
+		})
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		setTimeout(() => {
 			component.update()
@@ -165,18 +158,15 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Copy', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
 		component
@@ -189,18 +179,15 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Download', done => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
 		APIUtil.getFullDraft.mockResolvedValueOnce('')
@@ -218,7 +205,7 @@ describe('File Menu', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		
+
 		setTimeout(() => {
 			component.update()
 			expect(APIUtil.getFullDraft).toHaveBeenCalled()
@@ -230,18 +217,15 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Rename', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
 		component
@@ -254,18 +238,15 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Delete', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
 		component
@@ -278,18 +259,15 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" model={model}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
 		component
@@ -302,14 +280,11 @@ describe('File Menu', () => {
 	})
 
 	test('renameModule renames with blank name', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
-		const component = mount(
-			<FileMenu draftId="mockDraft" onRename={jest.fn()}/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" onRename={jest.fn()} />)
 
 		component.instance().renameModule('mockId', '      ')
 
@@ -317,14 +292,11 @@ describe('File Menu', () => {
 	})
 
 	test('renameModule renames with new name', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
-		const component = mount(
-			<FileMenu draftId="mockDraft"/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		component.instance().renameModule('mockId', 'mock title')
 
@@ -332,10 +304,9 @@ describe('File Menu', () => {
 	})
 
 	test('copyModule creates a copy of the current draft', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
 		const model = {
 			flatJSON: () => ({ children: [] }),
@@ -343,12 +314,10 @@ describe('File Menu', () => {
 				{
 					get: () => CONTENT_NODE,
 					flatJSON: () => ({ children: [] }),
-					children: { models: [
-						{ get: () => 'mockValue' }
-					]}
+					children: { models: [{ get: () => 'mockValue' }] }
 				},
 				{
-					get: () => ASSESSMENT_NODE,
+					get: () => ASSESSMENT_NODE
 				}
 			]
 		}
@@ -356,11 +325,7 @@ describe('File Menu', () => {
 		const exportToJSON = jest.fn()
 
 		const component = mount(
-			<FileMenu 
-				draftId="mockDraft" 
-				model={model} 
-				exportToJSON={exportToJSON}
-				onSave={jest.fn()}/>
+			<FileMenu draftId="mockDraft" model={model} exportToJSON={exportToJSON} onSave={jest.fn()} />
 		)
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
@@ -376,14 +341,11 @@ describe('File Menu', () => {
 	})
 
 	test('deleteModule removes draft', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
-			{ draftId: "mockDraft" },
-			{ draftId: "otherDraft" }
-		]})
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
 
-		const component = mount(
-			<FileMenu draftId="mockDraft"/>
-		)
+		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'ok' })
 		component.instance().deleteModule('mockId', '      ')
