@@ -204,7 +204,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:goto', value: {} }]
+					actions: [{ type: 'nav:goto', value: { id: 1 } }, { type: 'nav:goto', value: { id: 2 } }]
 				},
 				{
 					type: 'onUnmount',
