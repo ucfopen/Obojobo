@@ -25,7 +25,8 @@ jest.mock('../../../../src/scripts/common', () => ({
 	},
 	components: {
 		modal: {
-			SimpleDialog: () => 'MockSimpleDialog'
+			Dialog: () => <div>Dialog</div>, //eslint-disable-line react/display-name
+			Prompt: () => <div>Prompt</div> //eslint-disable-line react/display-name
 		}
 	},
 	util: {
@@ -154,10 +155,8 @@ describe('SubMenu', () => {
 		]
 		const component = mount(<SubMenu index={0} isSelected={true} list={itemList} />)
 
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
+		const addPageButton = component.find({ className: 'add-page-button' })
+		addPageButton.simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
 	})
