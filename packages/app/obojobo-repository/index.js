@@ -8,7 +8,8 @@ module.exports = {
 				'shared/components/pages/page-module.jsx'
 			],
 			dashboard: 'shared/components/pages/page-dashboard-client.jsx',
-			homepage: 'shared/components/pages/page-homepage.jsx'
+			homepage: 'shared/components/pages/page-homepage.jsx',
+			['page-module']: 'shared/components/pages/page-module-client.jsx'
 		}
 	}
 }

@@ -99,7 +99,7 @@ router
 				currentUser: req.currentUser,
 				appCSSUrl: webpackAssetPath('repository.css')
 			}
-			res.render('pages/page-module.jsx', props)
+			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {
 			res.unexpected(e)
 		}

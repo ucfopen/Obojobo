@@ -1,6 +1,8 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
+const Draft = require('obojobo-express/models/draft')
 const DraftSummary = require('../models/draft_summary')
+const DraftsMetadata = require('../models/drafts_metadata')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
@@ -52,6 +54,32 @@ router
 			res.success(users)
 		} catch (error) {
 			res.unexpected(error)
+		}
+	})
+
+// Copy a public draft to current user
+// mounted as /api/drafts/:draftId/copy/
+router
+	.route('/drafts/:draftId/copy/')
+	.get([requireCanPreviewDrafts, requireCurrentUser])
+	.get(async (req, res) => {
+		try {
+			const userId = req.currentUser.id
+			const draftId = req.params.draftId
+
+			const oldDraft = await Draft.fetchById(draftId)
+			const newDraft = await Draft.createWithContent(userId, oldDraft.root.toObject())
+
+			const draftMetadata = new DraftsMetadata({
+				draft_id: newDraft.id,
+				key: 'copied',
+				value: draftId
+			})
+			await draftMetadata.saveOrCreate()
+
+			res.success()
+		} catch (e) {
+			res.unexpected(e)
 		}
 	})
 
