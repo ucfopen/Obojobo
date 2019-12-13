@@ -19,7 +19,7 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
           </label>
           <select
             contentEditable={false}
-            value="ObojoboDraft.Chunks.Break"
+            defaultValue="ObojoboDraft.Chunks.Break"
           >
             <option
               value="ObojoboDraft.Chunks.MCAssessment"
@@ -82,7 +82,7 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
           </label>
           <select
             contentEditable={false}
-            value="ObojoboDraft.Chunks.Break"
+            defaultValue="ObojoboDraft.Chunks.Break"
           >
             <option
               value="ObojoboDraft.Chunks.MCAssessment"
