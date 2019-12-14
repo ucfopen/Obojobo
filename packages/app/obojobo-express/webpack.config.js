@@ -1,14 +1,16 @@
 const path = require('path')
+const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
 const entriesFromObojoboModules = gatherClientScriptsFromModules()
+const WatchIgnorePlugin = require('webpack/lib/WatchIgnorePlugin')
 
 module.exports =
 	// built client files
 	(env, argv) => {
 		const is_production = argv.mode === 'production'
-		const filename_with_min = is_production ? '[name].min' : '[name]'
+		const filename = is_production ? '[name]-[contenthash].min' : '[name]'
 		// eslint-disable-next-line no-console
 		console.log(`OboNode client scripts to build ${Object.keys(entriesFromObojoboModules).length}`)
 		return {
@@ -36,7 +38,7 @@ module.exports =
 			entry: entriesFromObojoboModules,
 			output: {
 				path: path.join(__dirname, 'public', 'compiled'),
-				filename: `${filename_with_min}.js`
+				filename: `${filename}.js`
 			},
 			module: {
 				rules: [
@@ -100,7 +102,14 @@ module.exports =
 				'slate-react': 'SlateReact',
 				immutable: 'Immutable'
 			},
-			plugins: [new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })],
+			plugins: [
+				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
+				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
+				new ManifestPlugin({
+					publicPath: '/static/',
+					writeToFileEmit: true
+				})
+			],
 			resolve: {
 				extensions: ['.js', '.jsx'],
 				alias: {

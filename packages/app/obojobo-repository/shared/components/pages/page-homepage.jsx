@@ -1,13 +1,13 @@
 require('./page-homepage.scss')
 
 const React = require('react');
-const { assetForEnv } = require('obojobo-express/asset_resolver')
+const { webpackAssetPath } = require('obojobo-express/asset_resolver')
 import LayoutDefault from '../layouts/default'
 import RepositoryNav from '../repository-nav'
 
 const title = 'Obojobo™ Next - Next Generation Course Content for your LMS'
 const currentYear = new Date().getFullYear()
-const cssUrl = assetForEnv("/static/homepage$[.min].css")
+const cssUrl = webpackAssetPath('homepage.css')
 
 const PageHomepage = props =>
 	<LayoutDefault title={title} appCSSUrl={cssUrl} className="repository--homepage">

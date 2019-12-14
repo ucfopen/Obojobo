@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
 	<%
-		let assetForEnv = oboRequire('asset_resolver').assetForEnv
-		let title = 'Obojobo Module Selector'
-		let css = [
-			assetForEnv('/static/module-selector$[.min].css')
+		const { webpackAssetPath } = oboRequire('asset_resolver')
+		const title = 'Obojobo Module Selector'
+		const css = [
+			webpackAssetPath('module-selector.css')
 		]
 
-		let headerJs = [
-			assetForEnv('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'),
-			assetForEnv('/module-selector/jquery-ui-1.10.3.custom.js')
+		const headerJs = [
+			'//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
+			'/module-selector/jquery-ui-1.10.3.custom.js'
 		]
 
-		let footerJs = [
-			assetForEnv('/static/module-selector$[.min].js')
+		const footerJs = [
+			webpackAssetPath('module-selector.js')
 		]
 
-		let fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
+		const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
 	%>
 	<%- include ../../../obojobo-express/views/partials/head %>
 </head>

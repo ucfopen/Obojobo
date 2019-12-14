@@ -2,8 +2,8 @@ require('./default.scss')
 
 const React = require('react');
 const Footer = require('./footer')
-const { assetForEnv } = require('obojobo-express/asset_resolver')
-const cssUrl = assetForEnv("/static/repository$[.min].css")
+const { webpackAssetPath } = require('obojobo-express/asset_resolver')
+const cssUrl = webpackAssetPath('repository.css')
 const LayoutDefault = props =>
 	<html lang="en">
 		<head>
