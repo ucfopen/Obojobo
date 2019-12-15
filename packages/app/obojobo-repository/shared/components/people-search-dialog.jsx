@@ -21,7 +21,7 @@ const PeopleSearchDialog = props => {
 	return (
 		<div className="people-search-dialog">
 			<div className="wrapper">
-				<Button className="close-button" aria-label="Close" onClick={props.onClose}>
+				<Button className="close-button" ariaLabel="Close" onClick={props.onClose}>
 					×
 				</Button>
 				<h1 className="title">Find Users to Share With</h1>

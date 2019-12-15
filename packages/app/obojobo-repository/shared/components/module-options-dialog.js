@@ -17,13 +17,13 @@ const ModuleOptionsDialog = props => (
 		<div className="top-bar">
 			<ModuleIamge id={props.draftId} />
 			<div className="module-title">{props.title}</div>
-			<Button className="close-button" aria-label="Close" onClick={props.onClose}>
+			<Button className="close-button" ariaLabel="Close" onClick={props.onClose}>
 				×
 			</Button>
 		</div>
 		<div className="wrapper">
 			<h1 className="title">Module Options</h1>
-			<div className="button-things">
+			<div className="buttons-with-labels">
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
 					Preview
 				</ButtonLink>
