@@ -1,7 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const DraftSummary = require('../models/draft_summary')
-const { requireCurrentUser, requireCanPreviewDrafts } = require('obojobo-express/express_validators')
+const {
+	requireCurrentUser,
+	requireCanPreviewDrafts
+} = require('obojobo-express/express_validators')
 
 // Home page
 // mounted as /

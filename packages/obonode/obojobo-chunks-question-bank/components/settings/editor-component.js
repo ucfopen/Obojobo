@@ -43,43 +43,47 @@ class Settings extends React.Component {
 
 	render() {
 		const content = this.props.node.data.get('content')
-		
+
 		return (
 			<div className={'qb-settings'}>
 				<fieldset className="choose">
 					<legend>How many questions should be displayed?</legend>
 					<label>
-						<input 
-							type="radio" 
-							name="choose" 
-							value="all" 
+						<input
+							type="radio"
+							name="choose"
+							value="all"
 							checked={content.chooseAll}
-							onChange={this.changeChooseType.bind(this)}/>
+							onChange={this.changeChooseType.bind(this)}
+						/>
 						All questions
 					</label>
 					<span> or</span>
 					<label>
-						<input 
-							type="radio" 
-							name="choose" 
-							value="pick" 
+						<input
+							type="radio"
+							name="choose"
+							value="pick"
 							checked={!content.chooseAll}
-							onChange={this.changeChooseType.bind(this)}/>
+							onChange={this.changeChooseType.bind(this)}
+						/>
 						Pick
 					</label>
-					<input 
-						type="number" 
-						value={content.choose} 
+					<input
+						type="number"
+						value={content.choose}
 						disabled={content.chooseAll}
 						onChange={this.changeChooseAmount.bind(this)}
-						onClick={event => event.stopPropagation()}/>
+						onClick={event => event.stopPropagation()}
+					/>
 				</fieldset>
 				<label className="select">
 					How should questions be selected?
-					<select 
-						value={content.select} 
+					<select
+						value={content.select}
 						onChange={this.changeSelect.bind(this)}
-						onClick={event => event.stopPropagation()}>
+						onClick={event => event.stopPropagation()}
+					>
 						<option value="sequential">In order</option>
 						<option value="random">Randomly</option>
 						<option value="random-unseen">Randomly, with no repeats</option>

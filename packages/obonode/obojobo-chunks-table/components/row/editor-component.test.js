@@ -5,12 +5,9 @@ import Row from './editor-component'
 
 describe('Row Editor Node', () => {
 	test('Row component', () => {
-		const component = renderer.create(
-			<Row>children</Row>
-		)
+		const component = renderer.create(<Row>children</Row>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
-
 })

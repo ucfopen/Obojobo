@@ -342,13 +342,7 @@ const getRequiredDataForReplaceResult = function(
 			}
 
 			logger.info(
-				`LTI found assessment score. Details: user:"${
-					result.assessmentScoreRecord.userId
-				}", draft:"${result.assessmentScoreRecord.draftId}", score:"${
-					result.assessmentScoreRecord.score
-				}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${
-					result.assessmentScoreRecord.attemptId
-				}", preview:"${result.assessmentScoreRecord.isPreview}"`,
+				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result.assessmentScoreRecord.score}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${result.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.isPreview}"`,
 				logId
 			)
 
@@ -703,9 +697,7 @@ const sendHighestAssessmentScore = (
 	})
 
 	logger.info(
-		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${
-			draftDocument.draftId
-		}", assessmentId:"${assessmentId}"`,
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
 		logId
 	)
 
@@ -748,13 +740,7 @@ const sendHighestAssessmentScore = (
 			result.scoreSent = requiredData.ltiScoreToSend
 
 			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${
-					requiredData.assessmentScoreRecord.id
-				}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${
-					requiredData.assessmentScoreRecord.draftId
-				}", sourcedid:"${outcomeData.resultSourcedId}", url:"${
-					outcomeData.serviceURL
-				}" using key:"${requiredData.launch.key}"`,
+				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
 				logId
 			)
 

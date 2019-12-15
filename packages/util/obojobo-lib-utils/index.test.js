@@ -12,7 +12,6 @@ const yarnList = `yarn list v1.13.0
 ✨  Done in 698.89s.`
 
 describe('obojobo lib utils', () => {
-
 	beforeEach(() => {
 		jest.resetModules() // needed to completely reset draft_node_store
 		// fake the response from yarn list

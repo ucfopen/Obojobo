@@ -6,9 +6,10 @@ import YouTube from './editor-component'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
-	props => <div>{props.children}</div>
-))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 let mockNode
 let editor

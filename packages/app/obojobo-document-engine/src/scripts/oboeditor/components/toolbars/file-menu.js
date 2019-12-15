@@ -32,7 +32,10 @@ class FileMenu extends React.PureComponent {
 							name: draft.title,
 							type: 'action',
 							action: () =>
-								window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draft.draftId, '_blank')
+								window.open(
+									window.location.origin + '/editor/' + this.props.mode + '/' + draft.draftId,
+									'_blank'
+								)
 						}
 					})
 					.filter(Boolean)
@@ -48,7 +51,7 @@ class FileMenu extends React.PureComponent {
 
 		EditorUtil.renamePage(moduleId, label)
 
-		if(this.props.onRename) {
+		if (this.props.onRename) {
 			this.props.onRename(label)
 		}
 	}
@@ -118,7 +121,10 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					APIUtil.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id, '_blank')
+							window.open(
+								window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id,
+								'_blank'
+							)
 						}
 					})
 			},
@@ -189,8 +195,7 @@ class FileMenu extends React.PureComponent {
 		]
 
 		return (
-			<div
-				className="visual-editor--drop-down-menu">
+			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="File" menu={menu} />
 			</div>
 		)

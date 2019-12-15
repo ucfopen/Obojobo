@@ -72,9 +72,7 @@ class IFrame extends React.Component {
 			<Node {...this.props}>
 				<div className={className}>
 					<div className={`editor-container  ${isSelected}`} style={previewStyle}>
-						<Button 
-							className="delete-button" 
-							onClick={this.deleteNode.bind(this)}>
+						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 							×
 						</Button>
 						<div className="iframe-toolbar">
@@ -83,7 +81,8 @@ class IFrame extends React.Component {
 							</span>
 							<Button
 								className="properties-button"
-								onClick={this.showIFramePropertiesModal.bind(this)}>
+								onClick={this.showIFramePropertiesModal.bind(this)}
+							>
 								IFrame Properties
 							</Button>
 						</div>

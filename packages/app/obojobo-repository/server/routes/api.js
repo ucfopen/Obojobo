@@ -47,10 +47,10 @@ router
 			return
 		}
 
-		try{
+		try {
 			const users = await searchForUserByString(req.query.q)
 			res.success(users)
-		} catch (error){
+		} catch (error) {
 			res.unexpected(error)
 		}
 	})
@@ -61,22 +61,22 @@ router
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return fetchAllUsersWithPermissionToDraft(req.params.draftId)
-		.then(res.success)
-		.catch(res.unexpected)
+			.then(res.success)
+			.catch(res.unexpected)
 	})
 
 // add a permission for a user to a draft
 router
 	.route('/drafts/:draftId/permission')
 	.post([requireCurrentUser, requireCurrentDocument])
-	.post( async (req, res) => {
-		try{
+	.post(async (req, res) => {
+		try {
 			const userId = req.body.userId
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
 			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
-			if(!canShare){
+			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return
 			}
@@ -88,7 +88,7 @@ router
 			// add permissions
 			await addUserPermissionToDraft(userId, draftId)
 			res.success()
-		} catch (error){
+		} catch (error) {
 			res.unexpected(error)
 		}
 	})
@@ -98,13 +98,13 @@ router
 	.route('/drafts/:draftId/permission/:userId')
 	.delete([requireCurrentUser, requireCurrentDocument])
 	.delete(async (req, res) => {
-		try{
+		try {
 			const userIdToRemove = req.params.userId
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
 			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
-			if(!canShare){
+			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return
 			}
@@ -116,7 +116,7 @@ router
 			// remove perms
 			await removeUserPermissionToDraft(userToRemove.id, draftId)
 			res.success()
-		} catch(error){
+		} catch (error) {
 			res.unexpected(error)
 		}
 	})

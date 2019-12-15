@@ -63,7 +63,6 @@ describe('Assessment Converter', () => {
 
 		slateNode = createSlateNode([{ type: 'someTrigger' }])
 		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
-
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with no model', () => {
@@ -100,7 +99,6 @@ describe('Assessment Converter', () => {
 
 		slateNode = createSlateNode([{ type: 'someTrigger' }])
 		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
-
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {

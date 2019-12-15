@@ -87,21 +87,24 @@ class MathEquation extends React.Component {
 							<input
 								value={content.latex}
 								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'latex')}/>
+								onChange={this.onChangeContent.bind(this, 'latex')}
+							/>
 						</div>
 						<div>
 							<label>Optional Label:</label>
 							<input
 								value={content.label}
 								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'label')}/>
+								onChange={this.onChangeContent.bind(this, 'label')}
+							/>
 						</div>
 						<div>
 							<label>Alt Text:</label>
 							<input
 								value={content.alt}
 								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'alt')}/>
+								onChange={this.onChangeContent.bind(this, 'alt')}
+							/>
 						</div>
 						<div>
 							<label>Size:</label>
@@ -110,7 +113,8 @@ class MathEquation extends React.Component {
 								type="number"
 								step="0.1"
 								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'size')}/>
+								onChange={this.onChangeContent.bind(this, 'size')}
+							/>
 						</div>
 					</div>
 				</div>
@@ -127,7 +131,9 @@ class MathEquation extends React.Component {
 					className={
 						'component obojobo-draft--chunks--math-equation pad ' +
 						'align-' +
-						(content.align || 'center')}>
+						(content.align || 'center')
+					}
+				>
 					{this.renderLatex()}
 					{isSelected ? this.renderAttributes() : null}
 				</div>

@@ -15,19 +15,6 @@
 		cursor: pointer;
 		user-select: none;
 
-		&:hover {
-			> div.is-not-open {
-				display: block;
-			}
-
-			> button {
-				span.is-not-open {
-					transform: none;
-					top: 0.2em;
-				}
-			}
-		}
-
 		> button {
 			display: block;
 			border-radius: $dimension-rounded-radius;
@@ -52,12 +39,26 @@
 			}
 		}
 
-		div {
+		> div {
+			&.is-not-open {
+				display: none;
+			}
+
 			&.is-open {
 				display: block;
 			}
-			&.is-not-open {
-				display: none;
+		}
+
+		&:hover {
+			> div.is-not-open {
+				display: block;
+			}
+
+			> button {
+				span.is-not-open {
+					transform: none;
+					top: 0.2em;
+				}
 			}
 		}
 

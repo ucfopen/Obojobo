@@ -40,13 +40,13 @@ $search-input-height: 30px;
 		padding-right: 10px;
 		outline: none;
 
-		&:focus {
-			outline-width: 0;
-		}
-
 		&::-webkit-search-cancel-button {
 			color: red;
 			background: red;
+		}
+
+		&:focus {
+			outline-width: 0;
 		}
 	}
 
@@ -58,7 +58,7 @@ $search-input-height: 30px;
 
 			&:-webkit-autofill {
 				-webkit-text-fill-color: white;
-				-webkit-box-shadow: 0 0 0px 1000px $color-action inset;
+				-webkit-box-shadow: 0 0 0 1000px $color-action inset;
 			}
 		}
 
@@ -67,21 +67,17 @@ $search-input-height: 30px;
 		}
 	}
 
-	&.is-empty {
-		> input {
-			&:active,
-			&:hover,
-			&:focus {
-				border-color: $color-action;
+	&.is-empty > input:active,
+	&.is-empty > input:hover,
+	&.is-empty > input:focus {
+		border-color: $color-action;
 
-				+ .repository--nav--links--search--icon {
-					fill: $color-action;
-				}
+		+ .repository--nav--links--search--icon {
+			fill: $color-action;
+		}
 
-				&::placeholder {
-					color: $color-action;
-				}
-			}
+		&::placeholder {
+			color: $color-action;
 		}
 	}
 }

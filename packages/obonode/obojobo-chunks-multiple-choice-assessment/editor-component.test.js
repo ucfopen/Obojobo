@@ -58,7 +58,7 @@ describe('MCAssessment Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		
+
 		component
 			.find('button')
 			.at(0)
@@ -85,11 +85,11 @@ describe('MCAssessment Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		
+
 		component
 			.find('select')
 			.at(0)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick-all' }})
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick-all' } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
@@ -113,11 +113,11 @@ describe('MCAssessment Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		
+
 		component
 			.find('input')
 			.at(0)
-			.simulate('change', { stopPropagation: jest.fn(), target: { checked: true }})
+			.simulate('change', { stopPropagation: jest.fn(), target: { checked: true } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})

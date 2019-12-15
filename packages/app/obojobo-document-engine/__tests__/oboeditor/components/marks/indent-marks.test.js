@@ -141,11 +141,7 @@ describe('IndentMarks', () => {
 			unindentList: jest.fn(),
 			unindentText: jest.fn(),
 			value: {
-				blocks: [
-					{ type: CODE_LINE_NODE },
-					{ type: LIST_LINE_NODE },
-					{ type: 'text node'}
-				]
+				blocks: [{ type: CODE_LINE_NODE }, { type: LIST_LINE_NODE }, { type: 'text node' }]
 			}
 		}
 
@@ -161,4 +157,3 @@ describe('IndentMarks', () => {
 		expect(editor.unindentList).toHaveBeenCalledTimes(1)
 	})
 })
-

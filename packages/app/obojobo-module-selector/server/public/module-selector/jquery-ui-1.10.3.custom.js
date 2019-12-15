@@ -1,7 +1,7 @@
 /*! jQuery UI - v1.10.3 - 2013-07-01
-* http://jqueryui.com
-* Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.mouse.js, jquery.ui.position.js, jquery.ui.draggable.js, jquery.ui.droppable.js, jquery.ui.resizable.js, jquery.ui.button.js, jquery.ui.dialog.js, jquery.ui.progressbar.js, jquery.ui.spinner.js
-* Copyright 2013 jQuery Foundation and other contributors Licensed MIT */
+ * http://jqueryui.com
+ * Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.mouse.js, jquery.ui.position.js, jquery.ui.draggable.js, jquery.ui.droppable.js, jquery.ui.resizable.js, jquery.ui.button.js, jquery.ui.dialog.js, jquery.ui.progressbar.js, jquery.ui.spinner.js
+ * Copyright 2013 jQuery Foundation and other contributors Licensed MIT */
 
 ;(function($, undefined) {
 	var uuid = 0,
@@ -152,7 +152,9 @@
 		return (
 			(/input|select|textarea|button|object/.test(nodeName)
 				? !element.disabled
-				: 'a' === nodeName ? element.href || isTabIndexNotNaN : isTabIndexNotNaN) &&
+				: 'a' === nodeName
+				? element.href || isTabIndexNotNaN
+				: isTabIndexNotNaN) &&
 			// the element and all of its ancestors must be visible
 			visible(element)
 		)
@@ -843,8 +845,8 @@
 				effectName = !options
 					? method
 					: options === true || typeof options === 'number'
-						? defaultEffect
-						: options.effect || defaultEffect
+					? defaultEffect
+					: options.effect || defaultEffect
 			options = options || {}
 			if (typeof options === 'number') {
 				options = { duration: options }
@@ -1182,7 +1184,9 @@
 			if (pos.length === 1) {
 				pos = rhorizontal.test(pos[0])
 					? pos.concat(['center'])
-					: rvertical.test(pos[0]) ? ['center'].concat(pos) : ['center', 'center']
+					: rvertical.test(pos[0])
+					? ['center'].concat(pos)
+					: ['center', 'center']
 			}
 			pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
 			pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'
@@ -1416,7 +1420,9 @@
 					atOffset =
 						data.at[0] === 'left'
 							? data.targetWidth
-							: data.at[0] === 'right' ? -data.targetWidth : 0,
+							: data.at[0] === 'right'
+							? -data.targetWidth
+							: 0,
 					offset = -2 * data.offset[0],
 					newOverRight,
 					newOverLeft
@@ -1459,7 +1465,9 @@
 					atOffset =
 						data.at[1] === 'top'
 							? data.targetHeight
-							: data.at[1] === 'bottom' ? -data.targetHeight : 0,
+							: data.at[1] === 'bottom'
+							? -data.targetHeight
+							: 0,
 					offset = -2 * data.offset[1],
 					newOverTop,
 					newOverBottom
@@ -1651,9 +1659,9 @@
 			}
 
 			/*
-		 * - Position generation -
-		 * This block generates everything position related - it's the core of draggables.
-		 */
+			 * - Position generation -
+			 * This block generates everything position related - it's the core of draggables.
+			 */
 
 			//Cache the margins of the original element
 			this._cacheMargins()
@@ -1832,7 +1840,9 @@
 			var o = this.options,
 				helper = $.isFunction(o.helper)
 					? $(o.helper.apply(this.element[0], [event]))
-					: o.helper === 'clone' ? this.element.clone().removeAttr('id') : this.element
+					: o.helper === 'clone'
+					? this.element.clone().removeAttr('id')
+					: this.element
 
 			if (!helper.parents('body').length) {
 				helper.appendTo(o.appendTo === 'parent' ? this.element[0].parentNode : o.appendTo)
@@ -2066,9 +2076,9 @@
 			}
 
 			/*
-		 * - Position constraining -
-		 * Constrain the position to a mix of grid, containment.
-		 */
+			 * - Position constraining -
+			 * Constrain the position to a mix of grid, containment.
+			 */
 
 			// If we are not dragging yet, we won't check for options
 			if (this.originalPosition) {
@@ -2108,7 +2118,9 @@
 						? top - this.offset.click.top >= containment[1] ||
 						  top - this.offset.click.top > containment[3]
 							? top
-							: top - this.offset.click.top >= containment[1] ? top - o.grid[1] : top + o.grid[1]
+							: top - this.offset.click.top >= containment[1]
+							? top - o.grid[1]
+							: top + o.grid[1]
 						: top
 
 					left = o.grid[0]
@@ -2119,8 +2131,8 @@
 						  left - this.offset.click.left > containment[2]
 							? left
 							: left - this.offset.click.left >= containment[0]
-								? left - o.grid[0]
-								: left + o.grid[0]
+							? left - o.grid[0]
+							: left + o.grid[0]
 						: left
 				}
 			}
@@ -3140,7 +3152,11 @@
 							'padding',
 							/ne|nw|n/.test(i)
 								? 'Top'
-								: /se|sw|s/.test(i) ? 'Bottom' : /^e$/.test(i) ? 'Right' : 'Left'
+								: /se|sw|s/.test(i)
+								? 'Bottom'
+								: /^e$/.test(i)
+								? 'Right'
+								: 'Left'
 						].join('')
 
 						target.css(padPos, padWrapper)
@@ -3673,8 +3689,8 @@
 	})
 
 	/*
- * Resizable Extensions
- */
+	 * Resizable Extensions
+	 */
 
 	$.ui.plugin.add('resizable', 'animate', {
 		stop: function(event) {
@@ -3919,8 +3935,8 @@
 								c && c.length
 									? c
 									: el.parents(ui.originalElement[0]).length
-										? ['width', 'height']
-										: ['width', 'height', 'top', 'left']
+									? ['width', 'height']
+									: ['width', 'height', 'top', 'left']
 
 						$.each(css, function(i, prop) {
 							var sum = (start[prop] || 0) + (delta[prop] || 0)
@@ -5351,7 +5367,7 @@
 		_percentage: function() {
 			return this.indeterminate
 				? 100
-				: 100 * (this.options.value - this.min) / (this.options.max - this.min)
+				: (100 * (this.options.value - this.min)) / (this.options.max - this.min)
 		},
 
 		_refreshValue: function() {
@@ -5680,7 +5696,7 @@
 			if (incremental) {
 				return $.isFunction(incremental)
 					? incremental(i)
-					: Math.floor(i * i * i / 50000 - i * i / 500 + 17 * i / 200 + 1)
+					: Math.floor((i * i * i) / 50000 - (i * i) / 500 + (17 * i) / 200 + 1)
 			}
 
 			return 1

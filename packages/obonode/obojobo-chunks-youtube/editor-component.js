@@ -65,13 +65,13 @@ class YouTube extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}>
-					<Button 
-						className="delete-button" 
-						onClick={this.deleteNode.bind(this)}>
+					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
-					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>Edit</Button>
+					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
+						Edit
+					</Button>
 				</div>
 			</Node>
 		)

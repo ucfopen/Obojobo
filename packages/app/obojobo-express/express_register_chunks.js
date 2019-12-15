@@ -22,7 +22,7 @@ module.exports = app => {
 	})
 
 	// ===========  ASSETS FROM THE ASSET MANIFEST ===========
-	if (!process.env.IS_WEBPACK){
+	if (!process.env.IS_WEBPACK) {
 		app.use('/static', express.static(`${__dirname}/public/compiled/`))
 	}
 }

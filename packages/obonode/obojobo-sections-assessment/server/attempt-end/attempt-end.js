@@ -5,9 +5,7 @@ const endAttempt = async (req, res) => {
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
 	logger.info(
-		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${
-			req.isPreview
-		}")`
+		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${req.isPreview}")`
 	)
 
 	await helpers.getAttempt(req, res)

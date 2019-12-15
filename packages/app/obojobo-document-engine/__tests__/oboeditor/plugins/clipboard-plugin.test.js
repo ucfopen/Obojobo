@@ -29,11 +29,13 @@ describe('ClipboardPlugin', () => {
 
 	test('onPaste calls common registry with slate content', () => {
 		const spy = jest.spyOn(Common.Registry, 'getItemForType')
-		spy.mockReturnValueOnce({
-			getPasteNode: node => Block.create(node)
-		}).mockReturnValueOnce({
-			getPasteNode: node => [Block.create(node),Block.create(node)]
-		})
+		spy
+			.mockReturnValueOnce({
+				getPasteNode: node => Block.create(node)
+			})
+			.mockReturnValueOnce({
+				getPasteNode: node => [Block.create(node), Block.create(node)]
+			})
 
 		getEventTransfer.mockReturnValueOnce({
 			type: 'fragment',

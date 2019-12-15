@@ -188,7 +188,7 @@ class Media {
 		// size (ignoring whatever the requested size was)
 		if (
 			!Media.isMimeTypeResizable(originalMedia.mime_type) ||
-			!await Media.shouldResizeMedia(originalMedia.blob, targetDimensions)
+			!(await Media.shouldResizeMedia(originalMedia.blob, targetDimensions))
 		) {
 			return {
 				binaryData: originalMedia.blob,

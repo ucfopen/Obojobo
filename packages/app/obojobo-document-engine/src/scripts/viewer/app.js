@@ -10,7 +10,6 @@ const urlTokens = document.location.pathname.split('/')
 const visitId = urlTokens[4] ? urlTokens[4] : null
 const draftId = urlTokens[2] ? urlTokens[2] : null
 
-
 // Set up listeners for window for blur/focus
 const onFocus = function() {
 	document.body.className = 'is-focused-window'

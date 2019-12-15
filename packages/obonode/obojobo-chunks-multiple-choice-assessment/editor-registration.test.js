@@ -2,7 +2,6 @@ import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCAssessment from './editor-registration'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 
 describe('MCAssessment editor', () => {
 	test('plugins.renderNode renders a MCAssessment when passed', () => {

@@ -3,7 +3,6 @@ import { mount } from 'enzyme'
 
 import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-
 jest.mock('src/scripts/oboeditor/components/page-editor')
 jest.mock('src/scripts/oboeditor/components/code-editor')
 
@@ -71,7 +70,9 @@ describe('EditorApp', () => {
 
 		APIUtil.getFullDraft
 			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-			.mockResolvedValueOnce('<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>')
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -95,7 +96,9 @@ describe('EditorApp', () => {
 
 		APIUtil.getFullDraft
 			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-			.mockResolvedValueOnce('<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>')
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -138,7 +141,7 @@ describe('EditorApp', () => {
 		expect.assertions(1)
 
 		// No visit or draft id
-		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['','',CLASSIC_MODE])
+		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['', '', CLASSIC_MODE])
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -215,10 +218,12 @@ describe('EditorApp', () => {
 		})
 
 		const mockError = { type: 'someType', message: 'someMessage' }
-		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({
-			status: 'error',
-			value: mockError
-		}))
+		APIUtil.getFullDraft.mockResolvedValueOnce(
+			JSON.stringify({
+				status: 'error',
+				value: mockError
+			})
+		)
 
 		const component = mount(<EditorApp />)
 

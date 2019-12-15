@@ -5,9 +5,10 @@ import renderer from 'react-test-renderer'
 import MathEquation from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
-	props => <div>{props.children}</div>
-))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('MathEquation Editor Node', () => {
 	test('renders with no latex', () => {
@@ -99,7 +100,7 @@ describe('MathEquation Editor Node', () => {
 		component
 			.find('input')
 			.at(1)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue'} })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()

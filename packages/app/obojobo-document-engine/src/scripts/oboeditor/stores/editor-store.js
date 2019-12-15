@@ -162,7 +162,12 @@ class EditorStore extends Store {
 
 			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = ['/editor', this.state.mode, model.getRoot().get('draftId'), flatPath].join('/')
+			childNavItem.fullFlatPath = [
+				'/editor',
+				this.state.mode,
+				model.getRoot().get('draftId'),
+				flatPath
+			].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}
@@ -176,7 +181,7 @@ class EditorStore extends Store {
 		const rootModel = OboModel.getRoot()
 		let newPageModel
 
-		if(afterPageId) {
+		if (afterPageId) {
 			const pageModel = OboModel.models[afterPageId]
 			newPageModel = OboModel.create(newPage)
 			pageModel.addChildAfter(newPageModel)
