@@ -81,14 +81,14 @@ describe('register chunks middleware', () => {
 		middleware(mockApp)
 		const compiledDir = realPath.resolve(__dirname, '..', 'public', 'compiled')
 
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/')
 	})
 
 	test('IS_WEBPACK = true causes static directions to not be used', () => {
 		const actualProcess = global.process
 		global.process = {
 			env: {
-				IS_WEBPACK: true
+				IS_WEBPACK: 'true'
 			}
 		}
 

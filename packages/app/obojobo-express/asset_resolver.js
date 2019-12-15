@@ -44,7 +44,7 @@ const getEnv = forceEnvTo => {
 }
 
 const manifest = require('./public/compiled/manifest.json')
-const IS_WEBPACK = process.env.IS_WEBPACK || false
+const IS_WEBPACK = process.env.IS_WEBPACK === 'true'
 const webpackAssetPath = IS_WEBPACK
 	? assetName => `/static/${assetName}` // use the original name in the static path
 	: assetName => manifest[assetName] // return path from the manifest
