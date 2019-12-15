@@ -20,7 +20,6 @@ jest.mock('downloadjs')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-window.open = jest.fn()
 
 describe('File Menu', () => {
 	beforeEach(() => {

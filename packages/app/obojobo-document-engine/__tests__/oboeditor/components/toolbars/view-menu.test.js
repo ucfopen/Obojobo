@@ -5,7 +5,6 @@ import ViewMenu from '../../../../src/scripts/oboeditor/components/toolbars/view
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
 const VISUAL_MODE = 'visual'
-window.open = jest.fn()
 
 describe('ViewMenu', () => {
 	test('ViewMenu node', () => {
