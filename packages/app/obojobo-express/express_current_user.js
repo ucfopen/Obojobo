@@ -13,9 +13,8 @@ const resetCurrentUser = req => {
 	req.currentUser = null
 }
 
-// returns the current user
-// if there is no user in the session, returns a new guest by default
-const getCurrentUser = async (req, errorIfMissing = false) => {
+// returns the current user or a guest user
+const getCurrentUser = async req => {
 	// return early if already verified
 	if (req.currentUser) return req.currentUser
 
@@ -28,15 +27,25 @@ const getCurrentUser = async (req, errorIfMissing = false) => {
 	}
 
 	if (!req.currentUser) {
-		if (errorIfMissing) throw new Error('Login Required')
 		req.currentUser = new GuestUser()
 	}
 
 	return req.currentUser
 }
 
-// sugar for getCurrentUser(true)
-const requireCurrentUser = req => req.getCurrentUser(true)
+// throws an error if:
+// A: currentUser ISNT a instance of USER
+// OR B: currentUser IS a guest
+const requireCurrentUser = async req => {
+	const user = await req.getCurrentUser()
+
+	// isn't a user or is a guest?
+	if (!(user instanceof User) || user.isGuest()) {
+		throw new Error('Login Required')
+	}
+
+	return user
+}
 
 const saveSessionPromise = req => {
 	return new Promise((resolve, reject) => {
