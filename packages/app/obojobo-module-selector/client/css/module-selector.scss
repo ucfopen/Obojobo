@@ -94,6 +94,7 @@ header {
 	padding: 15px;
 	background: $color-top-bar-bg;
 	position: relative;
+	z-index: 1;
 
 	#list-header {
 		margin: 0 auto;
