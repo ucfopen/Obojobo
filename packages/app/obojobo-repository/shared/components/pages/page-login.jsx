@@ -6,7 +6,7 @@ import RepositoryBanner from '../repository-banner'
 const title = 'Log in to ObojoboNext'
 
 const PageLogin = props => (
-	<LayoutDefault title={title} className="repository--library">
+	<LayoutDefault title={title} className="repository--library" appCSSUrl={props.appCSSUrl}>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
