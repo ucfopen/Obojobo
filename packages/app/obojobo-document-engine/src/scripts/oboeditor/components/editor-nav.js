@@ -29,7 +29,7 @@ class EditorNav extends React.Component {
 	}
 
 	onNavItemClick(item) {
-		EditorUtil.gotoPath(item.fullPath)
+		EditorUtil.goto(item.id)
 		this.setState({ navTargetId: item.id })
 	}
 

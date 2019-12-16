@@ -110,7 +110,7 @@ describe('EditorNav', () => {
 			}
 		})
 
-		expect(EditorUtil.gotoPath).toHaveBeenCalled()
+		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Add Page button', () => {
