@@ -9,22 +9,22 @@
 		"test": "TZ='America/New_York' jest",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"lint": "yarn lint:js && yarn lint:css",
-		"lint:js": "eslint .",
+		"lint:js": "eslint **/*{js,jsx}",
 		"lint:css": "stylelint **/*.scss",
-		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"prettier:run": "prettier --write '**/*.{js,jsx,scss}'",
 		"precommit": "lint-staged"
 	},
 	"engines": {
 		"node": "^12.11.1"
 	},
 	"lint-staged": {
-		"**/*.js": [
+		"**/*.{js,jsx}": [
 			"eslint"
 		],
 		"**/*.scss": [
 			"stylelint"
 		],
-		"**/*.{js,scss}": [
+		"**/*.{js,jsx,scss}": [
 			"prettier --write",
 			"git add"
 		]

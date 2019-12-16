@@ -1,9 +1,8 @@
-const React = require('react');
+const React = require('react')
 import LayoutDefault from '../layouts/default'
 import RepositoryNav from '../repository-nav'
 import RepositoryBanner from '../repository-banner'
 import Module from '../module'
-import Button from '../button'
 
 const title = 'Module Library'
 
@@ -11,7 +10,8 @@ const PageLibrary = props => (
 	<LayoutDefault
 		title={title}
 		className="repository--library"
-		appCSSUrl={props.appCSSUrl/* provided by resp.render() */}>
+		appCSSUrl={props.appCSSUrl /* provided by resp.render() */}
+	>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
