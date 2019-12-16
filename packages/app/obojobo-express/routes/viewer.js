@@ -6,6 +6,7 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 const ltiLaunch = oboRequire('express_lti_launch')
+const { assetForEnv, webpackAssetPath } = oboRequire('asset_resolver')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
@@ -105,6 +106,8 @@ router
 			.then(() => {
 				const draft = req.currentDocument
 				res.render('viewer', {
+					assetForEnv,
+					webpackAssetPath,
 					draftTitle:
 						draft &&
 						draft.root &&

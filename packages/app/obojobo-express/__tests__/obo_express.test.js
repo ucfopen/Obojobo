@@ -8,6 +8,14 @@ mockVirtual('./express_register_chunks')
 mockVirtual('./lti')
 mockVirtual('express-ims-lti')
 jest.mock('db')
+jest.mock(
+	'../asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 
 const mockOn = jest.fn().mockImplementation(() => {})
 let mockOnCallback

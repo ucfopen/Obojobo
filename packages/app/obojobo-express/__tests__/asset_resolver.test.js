@@ -1,9 +1,13 @@
 // mock a fake webpack manifest
-jest.mock('../public/compiled/manifest.json', () => ({
-	'test.js': '/static-from-manifest/test.js',
-	'test.css': '/static-from-manifest/test.css',
-	'subdir/test.json': '/static-from-manifest/subdir/test.json'
-}))
+jest.mock(
+	'../public/compiled/manifest.json',
+	() => ({
+		'test.js': '/static-from-manifest/test.js',
+		'test.css': '/static-from-manifest/test.css',
+		'subdir/test.json': '/static-from-manifest/subdir/test.json'
+	}),
+	{ virtual: true }
+)
 
 const { assetForEnv } = require('../asset_resolver')
 
