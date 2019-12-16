@@ -5,9 +5,8 @@ const RepositoryNav = require('../repository-nav')
 const RepositoryBanner = require('../repository-banner')
 const ModuleImage = require('../module-image')
 const Button = require('../button')
-const ButtonLink = require('../button-link')
 const moment = require('moment')
-const { urlForEditor } = require('../../repository-utils')
+const APIUtil = require('../../api-util')
 
 const deleteModule = (title, draftId, deleteFn) => {
 	var response = confirm(`Delete "${title}" id: ${draftId} ?`)
@@ -16,13 +15,8 @@ const deleteModule = (title, draftId, deleteFn) => {
 }
 
 const PageModule = (props) => {
-	const handleCopy = () => {
-		fetch(`/api/drafts/${props.module.draftId}/copy`)
-			.then(() => {
-				window.location.replace("/dashboard")
-			}).catch(err => {
-				console.log(err)
-			})
+	const copyModule = () => {
+		APIUtil.copyModule(props.module.draftId)
 	}
 
 	return (
@@ -38,9 +32,8 @@ const PageModule = (props) => {
 				<ModuleImage id={props.module.draftId} />
 			</RepositoryBanner>
 
-
 			<section className="repository--main-content">
-				<Button className="copy-button" onClick={handleCopy}>Copy this module</Button>
+				<Button className="copy-button" onClick={copyModule}>Copy this module</Button>
 
 				<div >Module created by <b>{props.owner.firstName} {props.owner.lastName}</b> on <b>{moment(props.module.createdAt).format('ll')}</b> and updated {moment(props.module.updatedAt).fromNow()}.</div>
 

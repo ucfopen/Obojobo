@@ -61,8 +61,8 @@ router
 // mounted as /api/drafts/:draftId/copy/
 router
 	.route('/drafts/:draftId/copy/')
-	.get([requireCanPreviewDrafts, requireCurrentUser])
-	.get(async (req, res) => {
+	.post([requireCanPreviewDrafts, requireCurrentUser])
+	.post(async (req, res) => {
 		try {
 			const userId = req.currentUser.id
 			const draftId = req.params.draftId

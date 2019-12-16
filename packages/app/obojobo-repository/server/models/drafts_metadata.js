@@ -10,28 +10,18 @@ class DraftsMetadata {
 		this.value = value
 	}
 
-	static fetchById(id) {
-		// return db
-		// 	.one(buildQueryWhere('drafts.id = $[id]'), { id })
-		// 	.then(DraftsMetadata.resultsToObjects)
-		// 	.catch(error => {
-		// 		logger.error('fetchById Error', error.message)
-		// 		return Promise.reject('Error Loading DraftSummary by id')
-		// 	})
-	}
-
 	saveOrCreate() {
 		return db
 			.none(
 				`
-                INSERT INTO
-                    drafts_metadata (draft_id, key, value)
-                VALUES
-                    ($[draftId], $[key], $[value])
-                ON CONFLICT (draft_id, key) DO UPDATE SET
-                    value = $[value],
-                    updated_at = 'now()'
-			    `,
+				INSERT INTO
+					drafts_metadata (draft_id, key, value)
+				VALUES
+					($[draftId], $[key], $[value])
+				ON CONFLICT (draft_id, key) DO UPDATE SET
+					value = $[value],
+					updated_at = 'now()'
+			  `,
 				this
 			)
 			.then(() => {
