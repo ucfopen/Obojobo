@@ -8,7 +8,10 @@ import Button from '../button'
 const title = 'Module Library'
 
 const PageLibrary = props => (
-	<LayoutDefault title={title} className="repository--library">
+	<LayoutDefault
+		title={title}
+		className="repository--library"
+		appCSSUrl={props.appCSSUrl/* provided by resp.render() */}>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}

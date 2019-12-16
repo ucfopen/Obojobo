@@ -2,8 +2,7 @@ require('./default.scss')
 
 const React = require('react');
 const Footer = require('./footer')
-const { webpackAssetPath } = require('obojobo-express/asset_resolver')
-const cssUrl = webpackAssetPath('repository.css')
+
 const LayoutDefault = props =>
 	<html lang="en">
 		<head>
@@ -13,7 +12,7 @@ const LayoutDefault = props =>
 			<meta id="meta-viewport" name="viewport" content="width=device-width initial-scale=1 minimum-scale=1 user-scalable=yes" />
 			{ props.appCSSUrl ?
 				<link rel="stylesheet" media="screen" href={props.appCSSUrl} />
-				: <link rel="stylesheet" media="screen" href={cssUrl} />
+				: null
 			}
 			<link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i" />
 			{ props.headerJs.map(url  => <script src={url}></script>) }

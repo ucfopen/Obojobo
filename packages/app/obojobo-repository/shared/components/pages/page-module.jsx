@@ -15,7 +15,10 @@ const deleteModule = (title, draftId, deleteFn) => {
 }
 
 const PageModule = (props) =>
-	<LayoutDefault title={`${props.module.title} - an Obojobo Module`} className="repository--module">
+	<LayoutDefault
+		title={`${props.module.title} - an Obojobo Module`}
+		className="repository--module"
+		appCSSUrl={props.appCSSUrl/* provided by resp.render() */}>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}

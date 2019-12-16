@@ -2,6 +2,7 @@ const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/models/user')
+const { webpackAssetPath } = require('obojobo-express/asset_resolver')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
@@ -13,7 +14,11 @@ router
 	.route('/')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('pages/page-homepage.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('homepage.css')
+		}
+		res.render('pages/page-homepage.jsx', props)
 	})
 
 // Module Images
@@ -40,7 +45,11 @@ router
 	.route('/login')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('pages/page-login.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('repository.css')
+		}
+		res.render('pages/page-login.jsx', props)
 	})
 
 router
@@ -58,7 +67,8 @@ router
 					collections: [collection],
 					page: 1,
 					pageCount: 1,
-					currentUser: req.currentUser
+					currentUser: req.currentUser,
+					appCSSUrl: webpackAssetPath('repository.css')
 				}
 				res.render('pages/page-library.jsx', props)
 			})
@@ -86,7 +96,8 @@ router
 			const props = {
 				module,
 				owner,
-				currentUser: req.currentUser
+				currentUser: req.currentUser,
+				appCSSUrl: webpackAssetPath('repository.css')
 			}
 			res.render('pages/page-module.jsx', props)
 		} catch (e) {

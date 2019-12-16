@@ -4,7 +4,7 @@ import RepositoryNav from '../repository-nav'
 import RepositoryBanner from '../repository-banner'
 
 const PageError = props =>
-	<LayoutDefault title={props.title} className="repository--library">
+	<LayoutDefault title={props.title} className="repository--library" appCSSUrl={props.appCSSUrl}>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}

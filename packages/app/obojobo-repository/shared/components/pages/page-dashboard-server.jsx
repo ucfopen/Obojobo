@@ -3,17 +3,14 @@ const LayoutDefault = require('../layouts/default')
 const Dashboard = require('../dashboard-hoc')
 const { propsToStore, createCommonReactApp, convertPropsToString} = require('../../react-utils')
 const DashboardReducer = require('../../reducers/dashboard-reducer')
-const { webpackAssetPath } = require('obojobo-express/asset_resolver')
-const cssUrl = webpackAssetPath('dashboard.css')
-const jsUrl = webpackAssetPath('dashboard.js')
 
 const PageDashboardServer = props =>
 	<LayoutDefault
 		title="Dashboard"
 		className="repository--dashboard"
 		headerJs={['//cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js']}
-		appScriptUrl={jsUrl}
-		appCSSUrl={cssUrl}
+		appScriptUrl={props.appJsUrl}
+		appCSSUrl={props.appCSSUrl}
 		>
 		<span id="react-hydrate-root" data-react-props={convertPropsToString(props)}>
 			{createCommonReactApp(Dashboard, propsToStore(DashboardReducer, props))}
