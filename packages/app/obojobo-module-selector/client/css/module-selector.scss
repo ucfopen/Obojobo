@@ -149,6 +149,8 @@ header {
 #list-container {
 	margin: 0 auto;
 	max-width: 600px;
+	position: relative;
+	height: calc(100% - 60px);
 
 	.template {
 		display: none;
@@ -210,7 +212,7 @@ header {
 
 #section-select-object {
 	display: none;
-	height: 100%;
+	height: 100vh;
 
 	.new-module-button-wrapper {
 		bottom: 0;
@@ -534,7 +536,8 @@ header {
 	display: none;
 
 	.progress-container {
-		width: 580px;
+		width: 100vw;
+		max-width: 580px;
 		margin: 10px auto;
 		padding: 4em 1em 5em 1em;
 		box-sizing: border-box;
@@ -624,7 +627,7 @@ header {
 	background: url('/assets/images/lti/progressbar-bg.gif');
 	height: 20px;
 	border-radius: 11px;
-	width: 470px;
+	width: 80%;
 	margin: 0 auto;
 }
 
