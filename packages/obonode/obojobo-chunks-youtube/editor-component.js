@@ -1,6 +1,6 @@
 import React from 'react'
 import YouTubeProperties from './youtube-properties-modal'
-import YoutubePlayer from './youtube-player'
+import YouTubePlayer from './youtube-player'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import './viewer-component.scss'
 import './editor-component.scss'
@@ -35,7 +35,7 @@ class YouTube extends React.Component {
 	}
 
 	renderVideo() {
-		return <YoutubePlayer content={this.props.node.data.get('content')} />
+		return <YouTubePlayer content={this.props.node.data.get('content')} />
 	}
 
 	render() {

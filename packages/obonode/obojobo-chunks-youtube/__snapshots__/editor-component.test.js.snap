@@ -4,12 +4,10 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
 <div
   className="obojobo-draft--chunks--you-tube viewer pad"
 >
-  <div>
-    <div
-      className="obojobo-draft--chunks-you-tube-player"
-      id="obojobo-draft--chunks-you-tube-player-mockId"
-    />
-  </div>
+  <div
+    className="obojobo-draft--chunks-you-tube-player"
+    id="obojobo-draft--chunks-you-tube-player-mockId"
+  />
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center"
   >
@@ -47,7 +45,7 @@ exports[`YouTube Editor Node YouTube builds the expected component without a vid
 </div>
 `;
 
-exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
+exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
 
 exports[`YouTube Editor Node handleSourceChange sets the nodes content 1`] = `
 <div

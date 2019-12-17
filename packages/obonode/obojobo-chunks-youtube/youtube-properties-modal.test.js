@@ -1,30 +1,30 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import YoutubeProperties from './youtube-properties-modal'
+import YouTubeProperties from './youtube-properties-modal'
 
-describe('YoutubeProperties modal', () => {
+describe('YouTubeProperties modal', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
 
-	test('YoutubeProperties component renders correctly', () => {
-		const component = mount(<YoutubeProperties content={{}} />)
+	test('YouTubeProperties component renders correctly', () => {
+		const component = mount(<YouTubeProperties content={{}} />)
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('YouTubeProperties component focuses on first element', () => {
-		const component = mount(<YoutubeProperties content={{}} />)
+		const component = mount(<YouTubeProperties content={{}} />)
 
 		component.instance().focusOnFirstElement()
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('YoutubeProperties component changes id', () => {
+	test('YouTubeProperties component changes id', () => {
 		const onConfirm = jest.fn()
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={{}} />)
 		// find the id input
 		component
 			.find('input')
@@ -45,9 +45,9 @@ describe('YoutubeProperties modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('YoutubeProperties component changes startTime', () => {
+	test('YouTubeProperties component changes startTime', () => {
 		const onConfirm = jest.fn()
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={{}} />)
 		// find the startTime input
 		component
 			.find('input')
@@ -67,9 +67,9 @@ describe('YoutubeProperties modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('YoutubeProperties component changes endTime', () => {
+	test('YouTubeProperties component changes endTime', () => {
 		const onConfirm = jest.fn()
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={{}} />)
 
 		// find the endTime input
 		component
@@ -90,9 +90,9 @@ describe('YoutubeProperties modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('YoutubeProperties component checks startTime before confirming', () => {
+	test('YouTubeProperties component checks startTime before confirming', () => {
 		const onConfirm = jest.fn()
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={{}} />)
 		const spy = jest.spyOn(component.instance(), 'setState')
 
 		component
@@ -116,7 +116,7 @@ describe('YoutubeProperties modal', () => {
 	test('YouTubeProperties component checks endTime before confirming', () => {
 		const onConfirm = jest.fn()
 		const mockContent = { startTime: 100 }
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={mockContent} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={mockContent} />)
 		const spy = jest.spyOn(component.instance(), 'setState')
 
 		component
@@ -139,7 +139,7 @@ describe('YoutubeProperties modal', () => {
 
 	test('YouTubeProperties component checks endTime is less than startTime', () => {
 		const onConfirm = jest.fn()
-		const component = mount(<YoutubeProperties onConfirm={onConfirm} content={{}} />)
+		const component = mount(<YouTubeProperties onConfirm={onConfirm} content={{}} />)
 		const spy = jest.spyOn(component.instance(), 'setState')
 
 		component

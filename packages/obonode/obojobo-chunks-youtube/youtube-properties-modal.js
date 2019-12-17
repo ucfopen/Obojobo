@@ -4,7 +4,7 @@ import './youtube-properties-modal.scss'
 
 const { SimpleDialog } = Common.components.modal
 
-class YoutubeProperties extends React.Component {
+class YouTubeProperties extends React.Component {
 	constructor(props) {
 		super(props)
 		this.idInputRef = React.createRef()
@@ -114,4 +114,4 @@ class YoutubeProperties extends React.Component {
 	}
 }
 
-export default YoutubeProperties
+export default YouTubeProperties
