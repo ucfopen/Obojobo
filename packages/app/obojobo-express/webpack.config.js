@@ -105,10 +105,7 @@ module.exports =
 			plugins: [
 				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new ManifestPlugin({
-					publicPath: '/static/',
-					writeToFileEmit: true
-				})
+				new ManifestPlugin({ publicPath: '/static/' })
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const DraftSummary = require('../models/draft_summary')
+const { webpackAssetPath } = require('obojobo-express/asset_resolver')
 const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
 } = require('obojobo-express/express_validators')
 
-// Home page
-// mounted as /
+// Dashboard page
+// mounted as /dashboard
+// NOTE: is an isomorphic react page
 router
 	.route('/dashboard')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
@@ -16,7 +18,9 @@ router
 			const props = {
 				title: 'Dashboard',
 				myModules,
-				currentUser: req.currentUser
+				currentUser: req.currentUser,
+				appCSSUrl: webpackAssetPath('dashboard.css'),
+				appJsUrl: webpackAssetPath('dashboard.js')
 			}
 			res.render('pages/page-dashboard-server.jsx', props)
 		})

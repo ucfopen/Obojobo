@@ -36,7 +36,7 @@ class ModulePermissionsDialog extends React.Component {
 
 	removePerson(userId) {
 		if (userId === this.props.currentUserId) {
-			const response = confirm('Remove yourself from this module?')
+			const response = window.confirm('Remove yourself from this module?') //eslint-disable-line no-alert
 			if (!response) return
 		}
 		this.props.deleteModulePermissions(this.props.draftId, userId)
@@ -82,7 +82,8 @@ class ModulePermissionsDialog extends React.Component {
 				</div>
 				<div className="access-list-wrapper">
 					<ul className="access-list">
-						{this.props.draftPermissions[this.props.draftId]
+						{/* eslint-disable no-mixed-spaces-and-tabs */
+						this.props.draftPermissions[this.props.draftId]
 							? this.props.draftPermissions[this.props.draftId].items.map(p => (
 									<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
 										<Button
