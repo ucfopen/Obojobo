@@ -9,6 +9,7 @@ const {
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/express_validators')
+const { userHasPermissionToCopy } = require('../services/permissions')
 
 router
 	.route('/')
@@ -93,11 +94,14 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
+			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+
 			const props = {
 				module,
 				owner,
 				currentUser: req.currentUser,
-				appCSSUrl: webpackAssetPath('repository.css')
+				appCSSUrl: webpackAssetPath('repository.css'),
+				canCopy
 			}
 			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {

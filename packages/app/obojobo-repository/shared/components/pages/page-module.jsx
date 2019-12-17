@@ -19,14 +19,14 @@ const PageModule = (props) => {
 		APIUtil.copyModule(props.module.draftId)
 	}
 
-	return (
-		<div>
-			<RepositoryNav
-				userId={props.currentUser.id}
-				avatarUrl={props.currentUser.avatarUrl}
-				displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-				noticeCount={0}
-				/>
+		<section className="repository--main-content">
+			<Button
+				className="copy-button"
+				onClick={() => APIUtil.copyModule(props.module.draftId)}
+				disabled={!props.canCopy}
+			>
+				Copy this module
+			</Button>
 
 			<RepositoryBanner title={props.module.title}>
 				<ModuleImage id={props.module.draftId} />
