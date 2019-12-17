@@ -4,7 +4,7 @@ describe('Debounce Util', () => {
 	test('debounce executes and passes arguments', () => {
 		jest.useFakeTimers()
 
-		const mockArg = {mockarg: 1}
+		const mockArg = { mockarg: 1 }
 		const callback = jest.fn()
 		const test = debounce(10, arg1 => callback(arg1))
 		test(mockArg)
@@ -20,8 +20,8 @@ describe('Debounce Util', () => {
 	test('debounce only executes the last request', () => {
 		jest.useFakeTimers()
 
-		const mockArg = {mockarg: 1}
-		const mockArg2 = {mockarg: 2}
+		const mockArg = { mockarg: 1 }
+		const mockArg2 = { mockarg: 2 }
 		const callback = jest.fn()
 		const test = debounce(10, arg1 => callback(arg1))
 

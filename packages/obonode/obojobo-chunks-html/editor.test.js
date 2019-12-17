@@ -1,127 +1,24 @@
-import HTML from './editor'
-const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
+jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
+	Registry: {
+		registerEditorModel: jest.fn()
+	}
+}))
 
-describe('HTML editor', () => {
-	test('plugins.renderNode renders HTML when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: HTML_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
 
-		expect(HTML.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
+import Common from 'obojobo-document-engine/src/scripts/common/index'
 
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
+describe('HTML editor script', () => {
+	test('registers node', () => {
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const next = jest.fn()
+		require('./editor')
+		const EditorRegistration = require('./editor-registration')
 
-		expect(HTML.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
-	})
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
 
-	test('plugins.onKeyDown deals with no html', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: 'mockType'
-					}
-				]
-			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
-		}
-
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with random keypress', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'e',
-			preventDefault: jest.fn()
-		}
-
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Enter]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			},
-			insertText: jest.fn()
-		}
-
-		const event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
-		}
-
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('\n')
-	})
-
-	test('plugins.onKeyDown deals with [Tab]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			},
-			insertText: jest.fn()
-		}
-
-		const event = {
-			key: 'Tab',
-			preventDefault: jest.fn()
-		}
-
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('\t')
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })

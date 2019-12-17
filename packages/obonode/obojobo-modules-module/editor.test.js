@@ -1,50 +1,27 @@
-/* eslint no-undefined: 0 */
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import './editor'
-
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		registerModel: jest.fn()
+		registerEditorModel: jest.fn()
 	}
 }))
 
-describe('Modules/Module editor', () => {
-	test('registers model with expected values', () => {
-		const modulesModuleMock = Common.Registry.registerModel.mock.calls[0][1]
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
 
-		expect(modulesModuleMock.slateToObo()).toBe(undefined)
-		expect(modulesModuleMock.oboToSlate()).toBe(undefined)
+import Common from 'obojobo-document-engine/src/scripts/common/index'
 
-		expect(JSON.stringify(modulesModuleMock)).toEqual(
-			JSON.stringify({
-				name: 'Module',
-				ignore: true,
-				isInsertable: false,
-				slateToObo: () => {},
-				oboToSlate: () => {},
-				plugins: null,
-				getNavItem(model) {
-					return {
-						type: 'heading',
-						label: model.title,
-						showChildren: true
-					}
-				}
-			})
-		)
-	})
-	test('getNavItem returns expected object', () => {
-		const modulesModuleMock = Common.Registry.registerModel.mock.calls[0][1]
+describe('Module editor script', () => {
+	test('registers node', () => {
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const model = {
-			title: 'TestTitle'
+		require('./editor')
+
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
+
+		expect(Common.Registry.registerEditorModel.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "EditorNode": 1,
 		}
-
-		expect(modulesModuleMock.getNavItem(model)).toEqual({
-			type: 'heading',
-			label: 'TestTitle',
-			showChildren: true
-		})
+	`)
 	})
 })

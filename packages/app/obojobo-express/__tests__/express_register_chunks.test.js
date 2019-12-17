@@ -3,6 +3,7 @@ jest.mock('express')
 jest.mock('../draft_node_store')
 jest.mock('path')
 jest.mock('obojobo-lib-utils')
+jest.mock('../logger')
 const realPath = require.requireActual('path')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const express = require('express')
@@ -39,8 +40,8 @@ describe('register chunks middleware', () => {
 		const middleware = oboRequire('express_register_chunks')
 
 		middleware(mockApp)
-		// 8 for assets, 1 each for express files
-		expect(mockApp.use).toHaveBeenCalledTimes(10)
+
+		expect(mockApp.use).toHaveBeenCalledTimes(1)
 	})
 
 	test('registers all middleware as expected', () => {
@@ -80,21 +81,14 @@ describe('register chunks middleware', () => {
 		middleware(mockApp)
 		const compiledDir = realPath.resolve(__dirname, '..', 'public', 'compiled')
 
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.min.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.min.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.min.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.min.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.css')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/')
 	})
 
 	test('IS_WEBPACK = true causes static directions to not be used', () => {
 		const actualProcess = global.process
 		global.process = {
 			env: {
-				IS_WEBPACK: true
+				IS_WEBPACK: 'true'
 			}
 		}
 

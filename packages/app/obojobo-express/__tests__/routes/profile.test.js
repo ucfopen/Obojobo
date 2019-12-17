@@ -21,7 +21,7 @@ app.use('/', oboRequire('routes/profile'))
 
 describe('profile routes', () => {
 	test('view profile renders current user', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 		return request(app)
 			.get('/')
 			.then(response => {
@@ -31,15 +31,23 @@ describe('profile routes', () => {
 			})
 	})
 
-	test('logout ... logs out', () => {
-		expect.assertions(4)
+	test('logout... logs out', () => {
+		expect.hasAssertions()
+		return request(app)
+			.get('/logout')
+			.then(() => {
+				expect(mockResetCurrentUser).toHaveBeenCalledTimes(1)
+			})
+	})
+
+	test('logout redirects', () => {
+		expect.hasAssertions()
 		return request(app)
 			.get('/logout')
 			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toBe('Logged out')
-				expect(mockResetCurrentUser).toHaveBeenCalledTimes(1)
+				expect(response.header['content-type']).toContain('text/plain; charset=utf-8')
+				expect(response.statusCode).toBe(302)
+				expect(response.text).toBe('Found. Redirecting to /')
 			})
 	})
 })

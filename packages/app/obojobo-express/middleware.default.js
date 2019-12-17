@@ -9,15 +9,19 @@ const compression = require('compression')
 const logger = require('./logger')
 const ObojoboDocumentServer = require('./obo_express')
 const db = require('./db')
-const IS_WEBPACK = process.env.IS_WEBPACK || false
+const IS_WEBPACK = process.env.IS_WEBPACK === 'true'
+const engines = require('consolidate')
 
 module.exports = app => {
 	// =========== STATIC ASSET PATHS ================
 	app.use(express.static(path.join(__dirname, 'public'))) // serve the files from public as static files
 	app.use(compression()) // enable gzip compression
+	app.disable('x-powered-by')
 
 	// =========== VIEW ENGINES ================
-	app.set('view engine', 'ejs')
+	// register express-react-views template engine if not already registered
+	if (!app.engines['ejs']) app.engine('ejs', engines.ejs)
+	app.set('view engine', 'ejs') // set the default extension to ejs
 	app.set('views', path.join(__dirname, 'views'))
 
 	// =========== SET UP MIDDLEWARE ================
@@ -49,7 +53,6 @@ module.exports = app => {
 	app.use(ObojoboDocumentServer)
 
 	// Custom Routes
-	app.use('/', require('./routes/index'))
 	app.use('/profile', require('./routes/profile'))
 
 	// 404 handler

@@ -1,0 +1,87 @@
+@import '~styles/includes';
+
+.obojobo-draft--components--switch {
+	position: relative;
+
+	> span {
+		padding-right: 0.5em;
+	}
+
+	.switch {
+		position: absolute;
+		display: inline-block;
+		width: 2.6em;
+		height: 1em;
+		top: 50%;
+		transform: translate(0, -50%);
+		font-size: 1.2em;
+
+		input {
+			opacity: 0;
+		}
+
+		.switch-slider {
+			$color-switch-text: lighten($color-text, 20%);
+
+			border: 1px solid $color-shadow;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: $color-bg2;
+			transition: 0.4s;
+			border-radius: 0.7em;
+			cursor: pointer;
+			width: 2.5em;
+
+			// Circle slider
+			&::before {
+				border: 1px solid $color-shadow;
+				position: absolute;
+				content: '';
+				height: 0.7em;
+				width: 0.7em;
+				left: 0.05em;
+				background-color: $color-bg;
+				transition: 0.4s;
+				border-radius: 50%;
+				z-index: 1;
+				top: 0.05em;
+			}
+
+			&::after {
+				content: 'OFF';
+				font-family: $font-default;
+				color: $color-switch-text;
+				font-weight: bold;
+				display: block;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 62%;
+				font-size: 0.5em;
+			}
+		}
+
+		input:checked + .switch-slider {
+			background-color: $color-obojobo-blue;
+		}
+
+		input:focus + .switch-slider {
+			box-shadow: 0 0 10px $color-obojobo-blue;
+		}
+
+		input:checked + .switch-slider::before {
+			transform: translateX(1.6em);
+			background-color: $color-bg;
+			border: 1px solid $color-bg;
+		}
+
+		input:checked + .switch-slider::after {
+			content: 'ON';
+			color: $color-bg;
+			left: 37%;
+		}
+	}
+}

@@ -2,7 +2,7 @@
 
 exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
 <div
-  className="obojobo-draft--components--modal--dialog"
+  className="obojobo-draft--components--modal--dialog "
   style={
     Object {
       "width": "35rem",
@@ -45,6 +45,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Submit as incomplete
@@ -60,6 +61,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Resume assessment

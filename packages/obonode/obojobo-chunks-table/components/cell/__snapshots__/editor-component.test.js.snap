@@ -3,3 +3,105 @@
 exports[`Cell Editor Node Cell component 1`] = `<td />`;
 
 exports[`Cell Editor Node Cell component as header 1`] = `<th />`;
+
+exports[`Cell Editor Node Cell component as selected header 1`] = `
+<th>
+  <div
+    className="dropdown-cell"
+    contentEditable={false}
+  >
+    <button
+      className=" is-not-open"
+      onClick={[Function]}
+    >
+      ⌃
+    </button>
+    <div
+      className="drop-content-cell  is-not-open"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Insert Row Above
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Row Below
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Column Left
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Column Right
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Delete Row
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Delete Column
+      </button>
+    </div>
+  </div>
+</th>
+`;
+
+exports[`Cell Editor Node Cell component opens drop down 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\">⌃</button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
+
+exports[`Cell Editor Node Cell component selected 1`] = `
+<td>
+  <div
+    className="dropdown-cell"
+    contentEditable={false}
+  >
+    <button
+      className=" is-not-open"
+      onClick={[Function]}
+    >
+      ⌃
+    </button>
+    <div
+      className="drop-content-cell  is-not-open"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Insert Row Above
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Row Below
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Column Left
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Insert Column Right
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Delete Row
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Delete Column
+      </button>
+    </div>
+  </div>
+</td>
+`;

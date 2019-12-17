@@ -8,11 +8,14 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
+      "componentOboToSlateReturnFor": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
     },
   ],
   "object": "block",
@@ -23,7 +26,16 @@ Object {
 exports[`Page Converter slateToObo converts a Slate node to an OboNode 1`] = `
 Object {
   "children": Array [
-    undefined,
+    Object {
+      "componentSlateToOboReturnFor": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+    },
   ],
   "content": Object {},
   "id": "mockKey",
@@ -34,7 +46,16 @@ Object {
 exports[`Page Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
 Object {
   "children": Array [
-    undefined,
+    Object {
+      "componentSlateToOboReturnFor": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+    },
   ],
   "id": "mockKey",
   "type": "mockType",

@@ -38,13 +38,15 @@ const getTextItems = (
 ) => {
 	let items = []
 
-	switch (getDisplayType({
-		rubricType,
-		mods,
-		status,
-		statusResult,
-		isAttemptScore100
-	})) {
+	switch (
+		getDisplayType({
+			rubricType,
+			mods,
+			status,
+			statusResult,
+			isAttemptScore100
+		})
+	) {
 		case TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
 		case TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
 		case TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:

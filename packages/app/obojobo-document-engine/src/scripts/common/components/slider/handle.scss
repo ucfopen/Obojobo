@@ -1,0 +1,17 @@
+@import '~styles/includes';
+
+.obojobo-draft--components--slider--handle {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+	border: 1px solid $color-action;
+	background: $color-bg;
+
+	&.is-disabled {
+		background: $color-shadow;
+	}
+}

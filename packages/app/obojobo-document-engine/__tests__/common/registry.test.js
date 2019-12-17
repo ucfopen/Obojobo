@@ -12,15 +12,26 @@ describe('Registry', () => {
 		Registry.getItems(items => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
-									Object {
-									  "cloneBlankNode": [Function],
-									  "default": false,
-									  "init": [Function],
-									  "templateObject": "",
-									  "type": null,
-									  "variables": Object {},
-									}
-						`)
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getPasteNode": [Function],
+			  "icon": null,
+			  "init": [Function],
+			  "insertItem": null,
+			  "isInsertable": false,
+			  "name": "",
+			  "oboToSlate": null,
+			  "plugins": null,
+			  "slateToObo": null,
+			  "supportsChildren": false,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
 		})
 	})
 
@@ -32,33 +43,262 @@ describe('Registry', () => {
 		Registry.getItems(items => {
 			expect(items.size).toBe(1)
 			expect(items.get('mockType')).toMatchInlineSnapshot(`
-						Object {
-						  "cloneBlankNode": [Function],
-						  "default": false,
-						  "init": [Function],
-						  "templateObject": "",
-						  "type": null,
-						  "variables": Object {},
-						}
-				`)
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getPasteNode": [Function],
+			  "icon": null,
+			  "init": [Function],
+			  "insertItem": null,
+			  "isInsertable": false,
+			  "name": "",
+			  "oboToSlate": null,
+			  "plugins": null,
+			  "slateToObo": null,
+			  "supportsChildren": false,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
 		})
 	})
 
 	test('registerModel cloneBlankNode really does clone the template', () => {
 		expect.hasAssertions()
 
-		const templateObject = { mockProperty: {} }
-		Registry.registerModel('mockType', { templateObject })
+		const insertJSON = { mockProperty: {} }
+		Registry.registerModel('mockType', { insertJSON })
 
 		Registry.getItems(items => {
 			const item = items.get('mockType')
 			const clone = item.cloneBlankNode()
 
 			// expect the objects to look the same
-			expect(clone.mockProperty).toEqual(templateObject.mockProperty)
+			expect(clone.mockProperty).toEqual(insertJSON.mockProperty)
 
 			// but not reference the same object
-			expect(clone.mockProperty).not.toBe(templateObject.mockProperty)
+			expect(clone.mockProperty).not.toBe(insertJSON.mockProperty)
+		})
+	})
+
+	test('registerEditorModel registers a model', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			json: {
+				emptyNode: 'mockjson'
+			},
+			helpers: {
+				slateToObo: 'mockSlateToObo',
+				oboToSlate: 'mockOboToSlate'
+			},
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getNavItem": "mockGetNavItem",
+			  "getPasteNode": undefined,
+			  "icon": "mockIcon",
+			  "ignore": true,
+			  "init": [Function],
+			  "insertItem": null,
+			  "insertJSON": "mockjson",
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": "mockOboToSlate",
+			  "plugins": "mockPlugins",
+			  "slateToObo": "mockSlateToObo",
+			  "supportsChildren": true,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no json', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			helpers: {
+				slateToObo: 'mockSlateToObo',
+				oboToSlate: 'mockOboToSlate'
+			},
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getNavItem": "mockGetNavItem",
+			  "getPasteNode": undefined,
+			  "icon": "mockIcon",
+			  "ignore": true,
+			  "init": [Function],
+			  "insertItem": null,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": "mockOboToSlate",
+			  "plugins": "mockPlugins",
+			  "slateToObo": "mockSlateToObo",
+			  "supportsChildren": true,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
+		})
+	})
+
+	test('registerEditorModel registers a model with helpers', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getNavItem": "mockGetNavItem",
+			  "getPasteNode": undefined,
+			  "icon": "mockIcon",
+			  "ignore": true,
+			  "init": [Function],
+			  "insertItem": null,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": undefined,
+			  "plugins": "mockPlugins",
+			  "slateToObo": undefined,
+			  "supportsChildren": true,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no supportsChildren', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getNavItem": "mockGetNavItem",
+			  "getPasteNode": undefined,
+			  "icon": "mockIcon",
+			  "ignore": true,
+			  "init": [Function],
+			  "insertItem": null,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": undefined,
+			  "plugins": "mockPlugins",
+			  "slateToObo": undefined,
+			  "supportsChildren": false,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no ignore', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem'
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "cloneBlankNode": [Function],
+			  "commandHandler": null,
+			  "componentClass": null,
+			  "default": false,
+			  "getNavItem": "mockGetNavItem",
+			  "getPasteNode": undefined,
+			  "icon": "mockIcon",
+			  "ignore": false,
+			  "init": [Function],
+			  "insertItem": null,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": undefined,
+			  "plugins": "mockPlugins",
+			  "slateToObo": undefined,
+			  "supportsChildren": false,
+			  "templateObject": "",
+			  "type": null,
+			  "variables": Object {},
+			}
+		`)
 		})
 	})
 
@@ -72,8 +312,17 @@ describe('Registry', () => {
 		})
 	})
 
+	test('registers calls getPasteNode', () => {
+		Registry.registerModel('mockType')
+
+		const inputNode = { nockKey: 'mockValue' }
+		const node = Registry.getItemForType('mockType').getPasteNode(inputNode)
+
+		expect(node).toEqual(inputNode)
+	})
+
 	test('registers default', () => {
-		expect.assertions(2)
+		expect.assertions(3)
 		Registry.registerModel('chunk', {
 			type: 'chunk',
 			default: false,
@@ -98,6 +347,7 @@ describe('Registry', () => {
 		Registry.getItems(() => {
 			expect(Registry.getDefaultItemForModelType('chunk').__testValue).toBe(2)
 			expect(Registry.getDefaultItemForModelType('page').__testValue).toBe(4)
+			expect(Registry.getDefaultItemForModelType('non-existant')).toBe(null)
 		})
 	})
 
@@ -166,55 +416,6 @@ describe('Registry', () => {
 		})
 	})
 
-	test('registers toolbar items', () => {
-		Registry.registerToolbarItem({
-			id: 'test',
-			a: 1,
-			b: 2
-		})
-
-		expect(Registry.registeredToolbarItems).toEqual({
-			separator: {
-				id: 'separator',
-				type: 'separator'
-			},
-			test: {
-				id: 'test',
-				a: 1,
-				b: 2
-			}
-		})
-	})
-
-	test('adds toolbar items', () => {
-		Registry.registerToolbarItem({
-			id: 'test',
-			a: 1,
-			b: 2
-		})
-
-		Registry.addToolbarItem('test')
-		Registry.addToolbarItem('separator')
-		Registry.addToolbarItem('test')
-
-		expect(Registry.toolbarItems).toEqual([
-			{
-				id: 'test',
-				a: 1,
-				b: 2
-			},
-			{
-				id: 'separator',
-				type: 'separator'
-			},
-			{
-				id: 'test',
-				a: 1,
-				b: 2
-			}
-		])
-	})
-
 	test('loads dependencies registered onload callback for javascript', () => {
 		expect.assertions(2)
 		document.head.appendChild = jest.fn()
@@ -247,5 +448,24 @@ describe('Registry', () => {
 		Registry.loadDependency('example.css')
 
 		expect(document.head.appendChild).toHaveBeenCalledTimes(2)
+	})
+
+	test('insertableItems processes the items the first time its called', () => {
+		Registry.registerModel('insertable', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isInsertable: true
+		})
+		expect(Registry.insertableItems.length).toEqual(1)
+
+		Registry.registerModel('insertable', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isInsertable: true
+		})
+
+		expect(Registry.insertableItems.length).toEqual(1)
 	})
 })

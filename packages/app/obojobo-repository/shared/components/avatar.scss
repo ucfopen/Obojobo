@@ -1,0 +1,35 @@
+@import '../../client/css/defaults';
+
+.avatar {
+	position: relative;
+	height: $dimension-avatar-icon;
+	width: $dimension-avatar-icon;
+	margin: 0.6em;
+}
+
+.avatar--image {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	right: 0;
+
+	img {
+		height: 100%;
+		border-radius: 50%;
+	}
+}
+
+.avatar--notice {
+	cursor: default;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: red;
+	border-radius: 1em;
+	color: white;
+	padding: 0.25em;
+	min-width: 1.2em;
+	text-align: center;
+	font-size: 0.8em;
+}
