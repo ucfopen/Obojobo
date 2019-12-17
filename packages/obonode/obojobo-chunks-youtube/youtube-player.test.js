@@ -1,13 +1,12 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
-
 import YouTubePlayer from './youtube-player'
+import { mount } from 'enzyme'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => {
 	return () => 'mockId'
 })
 
-describe('YouTubeProperties component renders correctly', () => {
+describe('YouTubePlayer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
@@ -19,11 +18,11 @@ describe('YouTubeProperties component renders correctly', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('YoutubePlayer updates video on content change', () => {
-		// mock YouTube's Iframe Player object
+	test('YouTubePlayer updates video on content change', () => {
+		// Mock YouTube's Iframe Player object
 		global.YT = {
 			Player: jest.fn(() => ({
-				destroy: jest.fn()
+				cueVideoById: jest.fn()
 			}))
 		}
 
@@ -33,9 +32,7 @@ describe('YouTubeProperties component renders correctly', () => {
 			endTime: 2
 		}
 		const spy = jest.spyOn(YouTubePlayer.prototype, 'loadVideo')
-		const component = shallow(<YouTubePlayer content={mockContent} />)
-
-		expect(spy).toHaveBeenCalledTimes(1)
+		const component = mount(<YouTubePlayer content={mockContent} />)
 
 		component.setProps({
 			content: {
@@ -44,16 +41,12 @@ describe('YouTubeProperties component renders correctly', () => {
 			}
 		})
 
-		expect(spy).toHaveBeenCalledTimes(2)
-
 		component.setProps({
 			content: {
 				...mockContent,
 				startTime: 4
 			}
 		})
-
-		expect(spy).toHaveBeenCalledTimes(3)
 
 		component.setProps({
 			content: {
@@ -68,7 +61,8 @@ describe('YouTubeProperties component renders correctly', () => {
 	test("YouTubePlayer doesn't update if content hasn't changed", () => {
 		global.YT = {
 			Player: jest.fn(() => ({
-				destroy: jest.fn()
+				destroy: jest.fn(),
+				cueVideoById: jest.fn()
 			}))
 		}
 
@@ -78,9 +72,7 @@ describe('YouTubeProperties component renders correctly', () => {
 			endTime: 2
 		}
 		const spy = jest.spyOn(YouTubePlayer.prototype, 'loadVideo')
-		const component = shallow(<YouTubePlayer content={mockContent} />)
-
-		expect(spy).toHaveBeenCalledTimes(1)
+		const component = mount(<YouTubePlayer content={mockContent} />)
 
 		component.setProps({
 			content: {
@@ -90,5 +82,42 @@ describe('YouTubeProperties component renders correctly', () => {
 
 		expect(spy).toHaveBeenCalledTimes(1)
 		expect(component.instance().player.destroy).not.toHaveBeenCalled()
+	})
+
+	test('YouTubePlayer loads Iframe API', () => {
+		global.YT = null
+
+		const mockContent = {
+			videoId: 'mockId',
+			startTime: 1,
+			endTime: 2,
+			test: true
+		}
+
+		// Make sure loading multiple videos doesn't break anything
+		mount(
+			<div>
+				<YouTubePlayer content={mockContent} />
+				<YouTubePlayer content={mockContent} />
+				<YouTubePlayer content={mockContent} />
+			</div>
+		)
+
+		const callbacks = YouTubePlayer.callbacks
+
+		// Simulate loading YouTube's Player object
+		window.YT = {
+			Player: jest.fn(() => ({
+				destroy: jest.fn(),
+				cueVideoById: jest.fn()
+			}))
+		}
+		window.onYouTubeIframeAPIReady()
+
+		callbacks.forEach(cb => {
+			expect(cb).toHaveBeenCalled()
+		})
+
+		expect(callbacks.length).toEqual(0)
 	})
 })

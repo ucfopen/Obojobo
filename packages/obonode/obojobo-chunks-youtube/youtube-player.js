@@ -4,24 +4,28 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 const { uuid } = Common.util
+const _callbacks = []
 
-class YoutubePlayer extends React.Component {
+window.onYouTubeIframeAPIReady = () => {
+	while (YouTubePlayer.callbacks.length > 0) {
+		const callback = YouTubePlayer.callbacks.shift()
+		callback()
+	}
+}
+
+class YouTubePlayer extends React.Component {
+	static get callbacks() {
+		return _callbacks
+	}
+
 	constructor(props) {
 		super(props)
 		this.playerId = `obojobo-draft--chunks-you-tube-player-${uuid()}`
+		this.player = null
 	}
 
 	componentDidMount() {
-		if (window.YT) {
-			this.loadVideo()
-			return
-		}
-
-		// Load YouTube's Iframe API asynchronously, but only once
-		const tag = document.createElement('script')
-		tag.src = 'https://www.youtube.com/iframe_api'
-		window.onYouTubeIframeAPIReady = this.loadVideo.bind(this)
-		document.body.appendChild(tag)
+		this.loadYouTubeApi()
 	}
 
 	componentDidUpdate(prevProps) {
@@ -33,13 +37,41 @@ class YoutubePlayer extends React.Component {
 		this.loadVideo()
 	}
 
+	loadYouTubeApi() {
+		if (window.YT) {
+			this.loadVideo()
+			return
+		}
+
+		const youtubeUrl = 'https://www.youtube.com/iframe_api'
+		const scripts = Array.from(document.querySelectorAll('script'))
+		const isLoading = scripts.some(script => script.src === youtubeUrl)
+
+		// Makes sure multiple script tags aren't added
+		if (!isLoading) {
+			const tag = document.createElement('script')
+			tag.src = youtubeUrl
+			document.body.appendChild(tag)
+		}
+
+		// Wait for YouTube's API to be loaded before loading a video
+		_callbacks.push(this.loadVideo.bind(this))
+	}
+
 	loadVideo() {
+		if (!this.props.content) {
+			return
+		}
+
 		const { videoId, startTime, endTime } = this.props.content
 
-		// Loading a new video or changing start/end times automatically
-		// starts the video so the player has to be destroyed and re-created again
 		if (this.player) {
-			this.player.destroy()
+			this.player.cueVideoById({
+				videoId,
+				startSeconds: startTime,
+				endSeconds: endTime
+			})
+			return
 		}
 
 		this.player = new window.YT.Player(this.playerId, {
@@ -55,24 +87,16 @@ class YoutubePlayer extends React.Component {
 		const prevContent = prevProps.content
 		const { startTime, endTime, videoId } = this.props.content
 
-		// Changing a video should always trigger an update
-		if (prevContent.videoId !== videoId) {
-			return true
-		}
-
-		// Changing start/end times should always trigger an update
-		return prevContent.startTime !== startTime || prevContent.endTime !== endTime
+		return (
+			prevContent.startTime !== startTime ||
+			prevContent.endTime !== endTime ||
+			prevContent.videoId !== videoId
+		)
 	}
 
 	render() {
-		// The player needs to be wrapped in a div to prevent a DOMException
-		// when this component gets unmounted
-		return (
-			<div>
-				<div id={this.playerId} className="obojobo-draft--chunks-you-tube-player" />
-			</div>
-		)
+		return <div id={this.playerId} className="obojobo-draft--chunks-you-tube-player" />
 	}
 }
 
-export default YoutubePlayer
+export default YouTubePlayer
