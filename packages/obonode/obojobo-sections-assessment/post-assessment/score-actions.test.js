@@ -59,6 +59,120 @@ describe('score-actions', () => {
 		})
 	})
 
+	test('getAllMatchingActionsForScore returns all matching actions for a given score', () => {
+		const sa = new ScoreAction([])
+		sa.actions = [
+			{
+				page: 'never-matching-action-1',
+				range: {
+					min: 'no-score',
+					max: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'never-matching-action-2',
+				range: {
+					max: 'no-score',
+					min: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'no-score-matching-action-1',
+				range: {
+					min: 'no-score',
+					max: 'no-score',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'no-score-matching-action-2',
+				range: {
+					min: 'no-score',
+					max: 'no-score',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'numeric-matching-action-1',
+				range: {
+					min: '0',
+					max: '99',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'numeric-matching-action-2',
+				range: {
+					min: '0',
+					max: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			}
+		]
+
+		expect(sa.getAllMatchingActionsForScore(null)).toEqual([
+			{
+				page: 'no-score-matching-action-1',
+				range: {
+					min: 'no-score',
+					max: 'no-score',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'no-score-matching-action-2',
+				range: {
+					min: 'no-score',
+					max: 'no-score',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			}
+		])
+
+		expect(sa.getAllMatchingActionsForScore(0)).toEqual([
+			{
+				page: 'numeric-matching-action-1',
+				range: {
+					min: '0',
+					max: '99',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'numeric-matching-action-2',
+				range: {
+					min: '0',
+					max: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			}
+		])
+
+		expect(sa.getAllMatchingActionsForScore(100)).toEqual([
+			{
+				page: 'numeric-matching-action-2',
+				range: {
+					min: '0',
+					max: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			}
+		])
+	})
+
 	test('getActionForScore returns action that matches the score', () => {
 		const action = new ScoreAction([
 			{
