@@ -22,6 +22,30 @@ const fetchAllUsersWithPermissionToDraft = async draftId => {
 	return users.map(u => new UserModel(u))
 }
 
+const userHasPermissionToCopy = async (userId, draftId) => {
+	const results = await Promise.all([
+		draftIsPublic(draftId),
+		userHasPermissionToDraft(userId, draftId)
+	])
+
+	return results[0] || results[1]
+}
+
+const draftIsPublic = async draftId => {
+	const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
+
+	const result = await db.oneOrNone(
+		`
+		SELECT draft_id
+		FROM repository_map_drafts_to_collections
+		WHERE draft_id = $[draftId] AND collection_id = $[publicLibCollectionId]
+		`,
+		{ draftId, publicLibCollectionId }
+	)
+
+	return result !== null
+}
+
 // returns a boolean
 const userHasPermissionToDraft = async (userId, draftId) => {
 	const result = await db.oneOrNone(
@@ -62,5 +86,6 @@ module.exports = {
 	addUserPermissionToDraft,
 	userHasPermissionToDraft,
 	fetchAllUsersWithPermissionToDraft,
-	removeUserPermissionToDraft
+	removeUserPermissionToDraft,
+	userHasPermissionToCopy
 }

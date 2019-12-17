@@ -14,7 +14,8 @@ const {
 	addUserPermissionToDraft,
 	userHasPermissionToDraft,
 	fetchAllUsersWithPermissionToDraft,
-	removeUserPermissionToDraft
+	removeUserPermissionToDraft,
+	userHasPermissionToCopy
 } = require('../services/permissions')
 const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
@@ -66,6 +67,12 @@ router
 		try {
 			const userId = req.currentUser.id
 			const draftId = req.params.draftId
+
+			const canCopy = await userHasPermissionToCopy(userId, draftId)
+			if (!canCopy) {
+				res.notAuthorized('Current user has no permissions to copy draft')
+				return
+			}
 
 			const oldDraft = await Draft.fetchById(draftId)
 			const newDraft = await Draft.createWithContent(userId, oldDraft.root.toObject())

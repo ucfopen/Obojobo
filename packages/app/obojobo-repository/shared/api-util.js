@@ -23,17 +23,15 @@ const APIUtil = {
 	},
 
 	copyModule(draftId) {
-		return this.post(`/api/drafts/${draftId}/copy`)
-			.then(result => {
-				if (result.status === 200) {
-					window.location.replace('/dashboard')
-				} else {
-					alert('You are not authorized to copy this module')
-				}
-			})
-			.catch(err => {
-				console.log(err)
-			})
+		return this.post(`/api/drafts/${draftId}/copy`).then(result => {
+			if (result.status === 200) {
+				window.location.replace('/dashboard')
+			} else if (result.status === 401) {
+				alert('You are not authorized to copy this module')
+			} else {
+				alert('Something went wrong while copying')
+			}
+		})
 	}
 }
 
