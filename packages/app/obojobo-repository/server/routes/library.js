@@ -7,8 +7,7 @@ const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
-	getCurrentUser,
-	requireCanPreviewDrafts
+	getCurrentUser
 } = require('obojobo-express/express_validators')
 
 router

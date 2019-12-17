@@ -58,7 +58,7 @@ router
 		}
 	})
 
-// Copy a public draft to current user
+// Copy a draft to the current user
 // mounted as /api/drafts/:draftId/copy/
 router
 	.route('/drafts/:draftId/copy/')
@@ -70,7 +70,7 @@ router
 
 			const canCopy = await userHasPermissionToCopy(userId, draftId)
 			if (!canCopy) {
-				res.notAuthorized('Current user has no permissions to copy draft')
+				res.notAuthorized('Current user has no permissions to copy this draft')
 				return
 			}
 
