@@ -30,7 +30,7 @@ class YouTubePlayer extends React.Component {
 	}
 
 	componentDidMount() {
-		if (window.YT) {
+		if (window.YT && window.YT.Player) {
 			this.loadVideo()
 			return
 		}
