@@ -382,7 +382,10 @@ import '../css/module-selector.scss'
 		event.preventDefault()
 
 		const $this = $(this)
-		const $oboItem = $this.parent().parent()
+		const $oboItem = $this
+			.parent()
+			.parent()
+			.parent()
 		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
 		gotoSection('progress')
