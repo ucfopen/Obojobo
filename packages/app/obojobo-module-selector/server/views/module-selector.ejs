@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-			<%
+		<%
 			const { webpackAssetPath } = oboRequire('asset_resolver')
 			const title = 'Obojobo Module Selector'
 			const css = [
 				webpackAssetPath('module-selector.css')
 			]
-	
-			const headerJs = [
-				'//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
-				'/module-selector/jquery-ui-1.10.3.custom.js'
-			]
-	
+
 			const footerJs = [
 				webpackAssetPath('module-selector.js')
 			]
-	
+
 			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
 		%>
 		<%- include ../../../obojobo-express/views/partials/head %>
 	</head>
 	<body>
+
 		<section id="section-module-selection">
 			<header>
 				<div class="heading-container">
@@ -37,8 +33,7 @@
 			<div class="choose-library-wrapper">
 				<a role="button" id="personal-library-button" class="wizard-button-container ">
 					<div href="#" class="wizard-button">
-						Personal<br />
-						Library
+						Personal<br /> Library
 					</div>
 					<p>
 						Modules you've created.
@@ -47,14 +42,14 @@
 
 				<a role="button" id="community-library-button" class="wizard-button-container">
 					<div href="#" class="wizard-button">
-						Community<br />
-						Collection
+						Community<br /> Collection
 					</div>
 					<p>
 						Modules from others.
 					</p>
 				</a>
 			</div>
+
 		</section>
 
 		<section id="section-select-object">
@@ -73,6 +68,7 @@
 			</div>
 
 			<div id="list-container">
+
 				<ul class="template">
 					<li class="template obo-item">
 						<div class="obo-item-container">
@@ -90,27 +86,25 @@
 
 				<div class="section community-library">
 					<ul></ul>
+					<div class="no-items no-objects">
+						<p>There are no community modules</p>
+					</div>
 				</div>
 
 				<div class="section my-modules">
 					<ul></ul>
 					<div class="no-items no-objects">
-						<p>
-							You don't have any objects. Click the button below to create an object at Obojobo,
-							then return to this page and select your newly created instance.
-						</p>
-						<a class="button" role="button" target="_blank" href="/dashboard"
-							>Create a new Obojobo Next module</a
-						>
+						<p>You don't have any modules. Click the button below to begin creating one. Return to this page when you're finished.</p>
+						<a class="button" role="button" target="_blank" href="/dashboard">Create a new Obojobo Next module</a>
 					</div>
 				</div>
+
 			</div>
 
 			<div class="new-module-button-wrapper">
-				<a href="/dashboard" role="button" class="button" target="_blank" id="new-module"
-					>Create a New Module</a
-				>
+				<a href="/dashboard" role="button" class="button" target="_blank" id="new-module">Create a New Module</a>
 			</div>
+
 		</section>
 
 		<section id="section-progress">
@@ -125,7 +119,9 @@
 
 			<div class="progress-container">
 				<span>Embedding Module...</span>
-				<div class="progressbar"></div>
+				<div id="progressbar" class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+					<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: block; width: 0;"></div>
+				</div>
 			</div>
 		</section>
 
@@ -137,21 +133,13 @@
 			<div class="grey-box">
 				<h1>Obojobo Instance Connected:</h1>
 				<h2 class="selected-instance-title"></h2>
-				<span class="note"
-					>Scores for this Obojobo assignment will sync with your Canvas gradebook</span
-				>
+				<span class="note">Scores for this Obojobo assignment will sync with your Canvas gradebook</span>
 			</div>
 			<a href="#" class="preview-link" target="_blank">Preview this instance in a new window...</a>
 		</section>
 
 		<section id="loading"></section>
 		<section id="dead"></section>
-
-		<div id="error-window" title="Error">
-			<p>
-				Sorry, something went wrong. Please try again.
-			</p>
-		</div>
 
 		<div id="confirm-window" title="Are you sure?">
 			<p>
@@ -165,17 +153,26 @@
 			<input type="hidden" name="content_items" value="" />
 		</form>
 
+
 		<script type="text/javascript">
 			window.__returnUrl = '<%= returnUrl %>';
 			window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 		</script>
 
-		<% if (typeof inlines !== 'undefined') { inlines.forEach(function(inline) { %>
-		<script>
-			<% - js %>
-		</script>
-		<% }) } if (typeof footerJs !== 'undefined') { footerJs.forEach(function(href) { %>
-		<script src="<%= href %>"></script>
-		<% }) } %>
+		<%
+			if (typeof inlines !== 'undefined')
+			{
+				inlines.forEach(function(inline)
+				{ %>
+			<script><% - js %></script>
+			<% })
+			}
+			if (typeof footerJs !== 'undefined')
+			{
+				footerJs.forEach(function(href) { %>
+				<script src="<%= href %>"></script>
+				<% })
+			}
+		%>
 	</body>
 </html>
