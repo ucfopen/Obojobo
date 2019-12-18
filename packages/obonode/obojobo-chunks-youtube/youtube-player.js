@@ -5,6 +5,11 @@ import './editor-component.scss'
 
 const { uuid } = Common.util
 const _callbacks = []
+const tag = document.createElement('script')
+
+// Load YouTube's Iframe API
+tag.src = 'https://www.youtube.com/iframe_api'
+document.body.appendChild(tag)
 
 window.onYouTubeIframeAPIReady = () => {
 	while (YouTubePlayer.callbacks.length > 0) {
@@ -25,7 +30,13 @@ class YouTubePlayer extends React.Component {
 	}
 
 	componentDidMount() {
-		this.loadYouTubeApi()
+		if (window.YT) {
+			this.loadVideo()
+			return
+		}
+
+		// Wait for YouTube's API to be loaded before loading a video
+		_callbacks.push(this.loadVideo.bind(this))
 	}
 
 	componentDidUpdate(prevProps) {
@@ -35,27 +46,6 @@ class YouTubePlayer extends React.Component {
 		}
 
 		this.loadVideo()
-	}
-
-	loadYouTubeApi() {
-		if (window.YT) {
-			this.loadVideo()
-			return
-		}
-
-		const youtubeUrl = 'https://www.youtube.com/iframe_api'
-		const scripts = Array.from(document.querySelectorAll('script'))
-		const isLoading = scripts.some(script => script.src === youtubeUrl)
-
-		// Makes sure multiple script tags aren't added
-		if (!isLoading) {
-			const tag = document.createElement('script')
-			tag.src = youtubeUrl
-			document.body.appendChild(tag)
-		}
-
-		// Wait for YouTube's API to be loaded before loading a video
-		_callbacks.push(this.loadVideo.bind(this))
 	}
 
 	loadVideo() {

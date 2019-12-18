@@ -114,9 +114,7 @@ describe('YouTubePlayer', () => {
 		}
 		window.onYouTubeIframeAPIReady()
 
-		callbacks.forEach(cb => {
-			expect(cb).toHaveBeenCalled()
-		})
+		callbacks.forEach(cb => expect(cb).toHaveBeenCalled())
 
 		expect(callbacks.length).toEqual(0)
 	})
