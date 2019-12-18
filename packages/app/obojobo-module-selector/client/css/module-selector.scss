@@ -148,10 +148,8 @@ header {
 }
 
 #list-container {
-	margin: 0 auto;
-	max-width: 600px;
 	position: relative;
-	height: calc(100% - 60px);
+	height: calc(100% - 166px);
 
 	.template {
 		display: none;
@@ -167,10 +165,6 @@ header {
 .obo-item {
 	border-bottom: 1px solid $color-light-border;
 	padding: 20px;
-	display: flex;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: center;
 
 	:last-child {
 		border-bottom: 0;
@@ -183,6 +177,15 @@ header {
 	.selected,
 	.selected:hover {
 		background-color: #fafafa;
+	}
+
+	.obo-item-container {
+		max-width: 600px;
+		margin: 0 auto;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-items: center;
 	}
 
 	.buttons {
@@ -335,7 +338,8 @@ header {
 }
 
 .section.my-modules {
-	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 #section-progress header .blue-flourish,
