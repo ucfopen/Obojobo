@@ -136,6 +136,24 @@ describe('score-actions', () => {
 					isMinInclusive: true,
 					isMaxInclusive: true
 				}
+			},
+			{
+				page: 'numeric-matching-action-1',
+				range: {
+					min: '0',
+					max: '99',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
+			},
+			{
+				page: 'numeric-matching-action-2',
+				range: {
+					min: '0',
+					max: '100',
+					isMinInclusive: true,
+					isMaxInclusive: true
+				}
 			}
 		])
 

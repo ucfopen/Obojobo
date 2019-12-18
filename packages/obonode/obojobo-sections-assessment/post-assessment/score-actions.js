@@ -31,10 +31,11 @@ class ScoreActions {
 	getAllMatchingActionsForScore(assessmentScore) {
 		switch (assessmentScore) {
 			case null:
-				// If the assessment score is null try to find a score action matching "no-score"...
-				return this.actions.filter(
-					action => action.range.min === 'no-score' && action.range.max === 'no-score'
-				)
+				// If the assessment score is null try to find a score action matching "no-score".
+				// In case none exists, include any score action pages for a 0% as well.
+				return this.actions
+					.filter(action => action.range.min === 'no-score' && action.range.max === 'no-score')
+					.concat(this.getAllMatchingActionsForScore(0))
 
 			//0-100
 			default:
