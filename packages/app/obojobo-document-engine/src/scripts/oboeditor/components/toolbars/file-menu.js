@@ -13,36 +13,6 @@ const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			drafts: []
-		}
-	}
-
-	componentDidMount() {
-		APIUtil.getAllDrafts().then(result => {
-			this.setState({
-				drafts: result.value
-					.map(draft => {
-						if (draft.draftId === this.props.draftId) return null
-
-						return {
-							name: draft.title,
-							type: 'action',
-							action: () =>
-								window.open(
-									window.location.origin + '/editor/' + this.props.mode + '/' + draft.draftId,
-									'_blank'
-								)
-						}
-					})
-					.filter(Boolean)
-			})
-		})
-	}
-
 	renameModule(moduleId, label) {
 		ModalUtil.hide()
 
@@ -127,11 +97,6 @@ class FileMenu extends React.PureComponent {
 							)
 						}
 					})
-			},
-			{
-				name: 'Open',
-				type: 'sub-menu',
-				menu: this.state.drafts
 			},
 			{
 				name: 'Make a copy',
