@@ -45,14 +45,12 @@ class MCChoice extends React.Component {
 	}
 
 	render() {
-		const isSelected = this.props.isSelected
 		const score = this.props.node.data.get('content').score
 		const hasFeedback = this.props.node.nodes.size === 2
 
 		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(score === 100, 'correct') +
-			isOrNot(isSelected, 'selected') +
 			' editor-mc-choice'
 
 		return (
@@ -60,16 +58,16 @@ class MCChoice extends React.Component {
 				<Button className="delete-button" onClick={event => this.delete(event)}>
 					×
 				</Button>
-				<button className="correct-button" onClick={event => this.handleScoreChange(event)}>
-					{score === 100 ? '✔' : '✖'}
-				</button>
+				<Button className="correct-button" onClick={event => this.handleScoreChange(event)}>
+					{score === 100 ? '✔ Correct' : '✖ Incorrect'}
+				</Button>
 				<div className="children">
 					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? (
-					<button className="add-feedback" onClick={() => this.addFeedback()}>
+					<Button className="add-feedback" onClick={() => this.addFeedback()}>
 						Add Feedback
-					</button>
+					</Button>
 				) : null}
 			</div>
 		)

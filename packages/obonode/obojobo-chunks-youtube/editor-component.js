@@ -2,11 +2,11 @@ import React from 'react'
 import YouTubeProperties from './youtube-properties-modal'
 import YouTubePlayer from './youtube-player'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import './viewer-component.scss'
-import './editor-component.scss'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
+const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
 	showSourceModal() {
@@ -38,14 +38,28 @@ class YouTube extends React.Component {
 		return <YouTubePlayer content={this.props.node.data.get('content')} />
 	}
 
+	deleteNode() {
+		const editor = this.props.editor
+		editor.removeNodeByKey(this.props.node.key)
+	}
+
 	render() {
 		const content = this.props.node.data.get('content')
 
+		const isSelected = isOrNot(this.props.isSelected, 'selected')
+
 		return (
-			<div className={'obojobo-draft--chunks--you-tube viewer pad'}>
-				{content.videoId ? this.renderVideo() : this.renderNoVideo()}
-				<Button onClick={this.showSourceModal.bind(this)}>Edit</Button>
-			</div>
+			<Node {...this.props}>
+				<div className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}>
+					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+						×
+					</Button>
+					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
+					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
+						Edit
+					</Button>
+				</div>
+			</Node>
 		)
 	}
 }

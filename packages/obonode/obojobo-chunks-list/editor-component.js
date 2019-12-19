@@ -1,11 +1,14 @@
 import './viewer-component.scss'
+import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import ListStyles from './list-styles'
+
+const { Button } = Common.components
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
-
-const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
 class List extends React.Component {
 	constructor(props) {
@@ -23,9 +26,14 @@ class List extends React.Component {
 		levels.forEach(levelNode => {
 			const levelContent = levelNode.data.get('content')
 			levelContent.type = content.listStyles.type
-			const bulletList = content.listStyles.type === 'unordered' ? unorderedBullets : orderedBullets
+			const bulletList =
+				content.listStyles.type === 'unordered'
+					? ListStyles.UNORDERED_LIST_BULLETS
+					: ListStyles.ORDERED_LIST_BULLETS
 			const previousBulletList =
-				content.listStyles.type === 'unordered' ? orderedBullets : unorderedBullets
+				content.listStyles.type === 'unordered'
+					? ListStyles.ORDERED_LIST_BULLETS
+					: ListStyles.UNORDERED_LIST_BULLETS
 
 			// bullet style will be different depending on tab indentation
 			// the index of the current bullet style is preserved between toggling
@@ -43,10 +51,12 @@ class List extends React.Component {
 		const type = this.props.node.data.get('content').listStyles.type
 		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
 		return (
-			<div className={'text-chunk obojobo-draft--chunks--list pad'}>
-				{this.props.children}
-				<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
-			</div>
+			<Node {...this.props}>
+				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
+					{this.props.children}
+					<Button onClick={() => this.toggleType()}>{'Swap to ' + other}</Button>
+				</div>
+			</Node>
 		)
 	}
 }

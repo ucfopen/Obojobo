@@ -77,13 +77,13 @@ const getScaleDimensions = (modelState, zoom, scaleAmount, minScale, setDimensio
 
 const getIFrameStyle = scale => ({
 	transform: `scale(${scale})`,
-	width: 1 / scale * 100 + '%',
-	height: 1 / scale * 100 + '%'
+	width: (1 / scale) * 100 + '%',
+	height: (1 / scale) * 100 + '%'
 })
 
 const getAfterStyle = (setWidth, setHeight, fit) => {
 	if (fit === IFrameFitTypes.SCALE) {
-		return { paddingTop: setHeight / setWidth * 100 + '%' }
+		return { paddingTop: (setHeight / setWidth) * 100 + '%' }
 	}
 
 	return { height: setHeight }

@@ -184,9 +184,7 @@ class Assessment extends DraftNode {
 
 						if (!attemptForResponse) {
 							logger.warn(
-								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
-									response.id
-								}', '${optionalAssessmentId}') - Shouldn't get here!`
+								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${response.id}', '${optionalAssessmentId}') - Shouldn't get here!`
 							)
 
 							return

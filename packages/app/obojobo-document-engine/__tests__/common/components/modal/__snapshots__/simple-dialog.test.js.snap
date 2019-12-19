@@ -5,7 +5,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog "
     style={null}
   >
     <div
@@ -40,6 +40,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               Cancel
@@ -50,6 +51,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               OK
@@ -72,7 +74,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog "
     style={null}
   >
     <div
@@ -107,6 +109,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               Cancel
@@ -117,6 +120,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               OK
@@ -139,7 +143,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog "
     style={null}
   >
     <div
@@ -174,6 +178,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               No
@@ -189,6 +194,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               Yes
@@ -211,7 +217,7 @@ exports[`SimpleDialog SimpleDialog ok 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog "
     style={null}
   >
     <div
@@ -246,6 +252,7 @@ exports[`SimpleDialog SimpleDialog ok 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               OK
@@ -268,7 +275,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog "
     style={null}
   >
     <div
@@ -303,6 +310,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               Yes
@@ -318,6 +326,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
           >
             <button
               className="button"
+              contentEditable={false}
               onClick={[MockFunction]}
             >
               No
@@ -335,4 +344,4 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
 </div>
 `;
 
-exports[`SimpleDialog focusOnFirstElement without props 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><div class=\\"dialog-content\\" style=\\"text-align: center;\\">Content</div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`SimpleDialog focusOnFirstElement without props 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><div class=\\"dialog-content\\" style=\\"text-align: center;\\">Content</div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;

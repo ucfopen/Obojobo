@@ -1,0 +1,10 @@
+@import '../../client/css/defaults';
+
+#dashboard-root {
+	.repository--main-content--control-bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: $size-spacing-vertical-big;
+	}
+}

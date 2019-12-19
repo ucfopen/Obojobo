@@ -4,6 +4,64 @@ exports[`Settings Editor Node Settings builds the expected component 1`] = `
 <div
   className="qb-settings"
 >
-  <div />
+  <fieldset
+    className="choose"
+  >
+    <legend>
+      How many questions should be displayed?
+    </legend>
+    <label>
+      <input
+        name="choose"
+        onChange={[Function]}
+        type="radio"
+        value="all"
+      />
+      All questions
+    </label>
+    <span>
+       or
+    </span>
+    <label>
+      <input
+        checked={true}
+        name="choose"
+        onChange={[Function]}
+        type="radio"
+        value="pick"
+      />
+      Pick
+    </label>
+    <input
+      onChange={[Function]}
+      onClick={[Function]}
+      type="number"
+    />
+  </fieldset>
+  <label
+    className="select"
+  >
+    How should questions be selected?
+    <select
+      onChange={[Function]}
+      onClick={[Function]}
+    >
+      <option
+        value="sequential"
+      >
+        In order
+      </option>
+      <option
+        value="random"
+      >
+        Randomly
+      </option>
+      <option
+        value="random-unseen"
+      >
+        Randomly, with no repeats
+      </option>
+    </select>
+  </label>
 </div>
 `;

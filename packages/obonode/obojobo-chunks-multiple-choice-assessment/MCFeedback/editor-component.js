@@ -2,6 +2,9 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
+
+const { Button } = Common.components
 
 class MCFeedback extends React.Component {
 	delete() {
@@ -11,9 +14,9 @@ class MCFeedback extends React.Component {
 	render() {
 		return (
 			<div className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback">
-				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
-					X
-				</button>
+				<Button className="delete-button" onClick={this.delete.bind(this)}>
+					×
+				</Button>
 				<span className="label" contentEditable={false}>
 					Feedback
 				</span>

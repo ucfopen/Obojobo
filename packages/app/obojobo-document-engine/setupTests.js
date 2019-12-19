@@ -32,6 +32,14 @@ Object.defineProperty(document, 'hidden', {
 	}
 })
 
+class XMLSerializer {
+	serializeToString() {
+		return '<mockSerializedToString/>'
+	}
+}
+
+global.XMLSerializer = XMLSerializer
+
 global.flushPromises = () => {
 	return new Promise(resolve => setImmediate(resolve));
 }

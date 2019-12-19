@@ -78,4 +78,23 @@ describe('ActionButton Converter', () => {
 
 		expect(slateNode).toMatchSnapshot()
 	})
+
+	test('oboToSlate converts an OboNode to a Slate node with onClick trigger', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			content: {
+				label: 'mockLabel',
+				triggers: [
+					{
+						type: 'onClick',
+						actions: [{ type: 'mockType' }, { type: 'mockOtherType', value: { id: 'mockId' } }]
+					}
+				]
+			}
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
 })

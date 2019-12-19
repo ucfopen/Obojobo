@@ -7,18 +7,37 @@
 		position: absolute;
 		height: 100%;
 		top: 0;
-		z-index: $z-index-above-content;
+		left: 1em;
+		border: 2px dotted $color-shadow;
+		width: 0.1em;
+		user-select: none;
 
 		.top {
 			top: 0;
-			left: 0;
+			left: -1em;
 			transform: translate(0, -50%);
 		}
 
 		.bottom {
 			bottom: 0;
-			left: 0;
+			left: -1em;
 			transform: translate(0, 50%);
 		}
+	}
+
+	.more-info {
+		font-size: 0.9em;
+	}
+
+	.more-info-button {
+		width: 1.7em;
+		height: 1.7em;
+		position: absolute;
+		right: -2em;
+		top: 0;
+		border: none;
+		background: none;
+		padding: 0;
+		cursor: pointer;
 	}
 }

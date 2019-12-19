@@ -1,17 +1,60 @@
 @import '~styles/includes';
 
-.component.obojobo-draft--chunks--mc-assessment {
+.component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
+	background-color: $color-bg2;
+	padding: 0.5em;
+	margin-top: 0;
+
+	> div {
+		background-color: $color-bg;
+		border-radius: $dimension-rounded-radius;
+
+		.obojobo-draft--components--button {
+			padding-top: 0.5em;
+			padding-bottom: 0.5em;
+		}
+	}
+
+	.mc-settings {
+		background-color: $color-bg2;
+		padding-bottom: 0.5em;
+		padding-left: 2.5em;
+		font-family: $font-default;
+		position: relative;
+
+		select {
+			margin-left: 0.5em;
+			min-width: 15em;
+		}
+
+		.obojobo-draft--components--switch {
+			position: absolute;
+			right: 4.3em;
+			top: 0.2em;
+		}
+	}
+
 	// Work around for the tangled scss in MCAssessment
 	.obojobo-draft--chunks--mc-assessment--mc-choice {
+		position: relative;
+
 		&.editor-mc-choice {
-			padding-bottom: 1em;
+			.delete-button {
+				top: 0.7em;
+				right: 0.7em;
+			}
+		}
 
-			&.is-selected {
-				border: 1px solid $color-action;
+		.obojobo-draft--chunks--mc-assessment--mc-answer {
+			padding-bottom: 3em;
+			padding-top: 2.5em;
+			padding-left: 0;
+		}
 
-				.obojobo-draft--components--button {
-					display: block;
-				}
+		.obojobo-draft--chunks--mc-assessment--mc-feedback {
+			.delete-button {
+				right: 0.8em;
+				top: 1em;
 			}
 		}
 	}

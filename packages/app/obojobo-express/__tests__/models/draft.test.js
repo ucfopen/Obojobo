@@ -1,12 +1,10 @@
-jest.mock('../../db')
-jest.mock('../../logger')
-
-import DraftModel from '../../models/draft'
-import DraftNode from '../../models/draft_node'
-
-const db = oboRequire('db')
-
 describe('Draft Model', () => {
+	jest.mock('../../db')
+	jest.mock('../../logger')
+	jest.mock('../../obo_events')
+	let db
+	let DraftModel
+	let DraftNode
 	const mockRawDraft = {
 		id: 'whatever',
 		version: 9,
@@ -32,10 +30,12 @@ describe('Draft Model', () => {
 		}
 	}
 
-	beforeAll(() => {})
-	afterAll(() => {})
 	beforeEach(() => {
-		db.one.mockReset()
+		jest.resetModules()
+		jest.resetAllMocks()
+		db = require('../../db')
+		DraftNode = require('../../models/draft_node')
+		DraftModel = require('../../models/draft')
 	})
 	afterEach(() => {})
 
@@ -285,6 +285,18 @@ describe('Draft Model', () => {
 			expect(model.getChildNodeById(666).node.id).toBe(666)
 			expect(model.getChildNodeById(666).node.stuff).toBe(true)
 			expect(model.getChildNodeById(666).node.type).toBe('DraftNode')
+		})
+	})
+
+	test('deleteByIdAndUser sets delete flag', () => {
+		expect.hasAssertions()
+		const oboEvents = require('../../obo_events')
+
+		db.none.mockResolvedValueOnce()
+
+		return DraftModel.deleteByIdAndUser('draft_id', 'user_id').then(voidResult => {
+			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', { id: 'draft_id' })
 		})
 	})
 

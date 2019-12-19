@@ -1,6 +1,6 @@
 import './dialog.scss'
 
-import Button from '../../../common/components/button'
+import Button from '../button'
 import Modal from './modal'
 import React from 'react'
 
@@ -46,8 +46,10 @@ export default class Dialog extends React.Component {
 			styles = { width: this.props.width }
 		}
 
+		const className = 'obojobo-draft--components--modal--dialog ' + (this.props.className || '')
+
 		return (
-			<div className="obojobo-draft--components--modal--dialog" style={styles}>
+			<div className={className} style={styles}>
 				<Modal
 					onClose={this.props.onClose}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
