@@ -87,6 +87,7 @@ class YouTubeProperties extends React.Component {
 				<div className="youtube-video-properties">
 					<label>Youtube video id:</label>
 					<input
+						id="obojobo-draft--chunks--youtube--video-id"
 						type="text"
 						ref={this.idInputRef}
 						value={this.state.content.videoId || ''}
@@ -99,7 +100,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange.bind(this)}
 					/>
-					{this.state.startTimeError && <span className="error">{this.state.startTimeError}</span>}
+					<span className="error">{this.state.startTimeError}</span>
 					<label>End time (optional):</label>
 					<input
 						type="number"
@@ -107,7 +108,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.endTime || ''}
 						onChange={this.handleEndTimeChange.bind(this)}
 					/>
-					{this.state.endTimeError && <span className="error">{this.state.endTimeError}</span>}
+					<span className="error">{this.state.endTimeError}</span>
 				</div>
 			</SimpleDialog>
 		)
