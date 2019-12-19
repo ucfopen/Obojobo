@@ -20,7 +20,7 @@ describe('YouTubePlayer', () => {
 
 	test('YouTubePlayer updates video on content change', () => {
 		// Mock YouTube's Iframe Player object
-		global.YT = {
+		window.YT = {
 			Player: jest.fn(() => ({
 				cueVideoById: jest.fn()
 			}))
@@ -59,7 +59,7 @@ describe('YouTubePlayer', () => {
 	})
 
 	test("YouTubePlayer doesn't update if content hasn't changed", () => {
-		global.YT = {
+		window.YT = {
 			Player: jest.fn(() => ({
 				destroy: jest.fn(),
 				cueVideoById: jest.fn()
@@ -85,13 +85,12 @@ describe('YouTubePlayer', () => {
 	})
 
 	test('YouTubePlayer loads Iframe API', () => {
-		global.YT = null
+		window.YT = null
 
 		const mockContent = {
 			videoId: 'mockId',
 			startTime: 1,
-			endTime: 2,
-			test: true
+			endTime: 2
 		}
 
 		// Make sure loading multiple videos doesn't break anything
