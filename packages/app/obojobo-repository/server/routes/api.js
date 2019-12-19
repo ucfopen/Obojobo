@@ -59,9 +59,9 @@ router
 	})
 
 // Copy a draft to the current user
-// mounted as /api/drafts/:draftId/copy/
+// mounted as /api/drafts/:draftId/copy
 router
-	.route('/drafts/:draftId/copy/')
+	.route('/drafts/:draftId/copy')
 	.post([requireCanPreviewDrafts, requireCurrentUser])
 	.post(async (req, res) => {
 		try {

@@ -29,7 +29,7 @@ exports.up = function(db) {
 			},
 			value: {
 				type: 'varchar',
-				length: 50,
+				length: 256,
 				notNull: true
 			},
 			created_at: {
