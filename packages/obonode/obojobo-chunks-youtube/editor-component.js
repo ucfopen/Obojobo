@@ -1,3 +1,6 @@
+import './viewer-component.scss'
+import './editor-component.scss'
+
 import React from 'react'
 import YouTubeProperties from './youtube-properties-modal'
 import YouTubePlayer from './youtube-player'
