@@ -44,13 +44,8 @@ class MoreInfoBox extends React.Component {
 		this.node = React.createRef()
 	}
 
-	onClose() {
-		document.removeEventListener('mousedown', this.handleClick, false)
-		if (this.props.onClose) this.props.onClose()
-	}
-
 	componentWillUnmount() {
-		this.onClose()
+		this.close()
 	}
 
 	handleClick(event) {
@@ -124,7 +119,8 @@ class MoreInfoBox extends React.Component {
 	}
 
 	close() {
-		this.onClose()
+		document.removeEventListener('mousedown', this.handleClick, false)
+		if (this.props.onClose) this.props.onClose()
 		return this.setState({ isOpen: false })
 	}
 
