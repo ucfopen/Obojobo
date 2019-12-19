@@ -15,10 +15,9 @@ exports[`YouTube YouTube component 1`] = `
   <div
     className="obojobo-draft--chunks--you-tube viewer"
   >
-    <iframe
-      allowFullScreen={true}
-      frameBorder="0"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+    <div
+      className="obojobo-draft--chunks-you-tube-player"
+      id="obojobo-draft--chunks-you-tube-player-mockId"
     />
   </div>
 </div>

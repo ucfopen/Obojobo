@@ -6,6 +6,9 @@ import YouTube from './editor-component'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => {
+	return () => 'mockId'
+})
 
 let mockNode
 let editor
@@ -17,7 +20,7 @@ describe('YouTube Editor Node', () => {
 		editor = { setNodeByKey: jest.fn() }
 	})
 
-	test('YouTube builds the expected componen without a videoId', () => {
+	test('YouTube builds the expected component without a videoId', () => {
 		const component = renderer.create(<YouTube node={mockNode} />)
 		const tree = component.toJSON()
 
@@ -57,11 +60,18 @@ describe('YouTube Editor Node', () => {
 			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
 		)
 		const component = testRenderer.root
+		const mockContent = {
+			videoId: 'mockId',
+			startTime: 'mockStartTime',
+			endTime: 'mockEndTime'
+		}
 
 		// execute the instance callback
-		component.instance.handleSourceChange('mockId')
+		component.instance.handleSourceChange(mockContent)
 		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockNodeKey', {
-			data: { content: { videoId: 'mockId' } }
+			data: {
+				content: mockContent
+			}
 		})
 
 		const tree = testRenderer.toJSON()
