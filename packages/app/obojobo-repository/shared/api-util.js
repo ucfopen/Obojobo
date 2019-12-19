@@ -25,11 +25,11 @@ const APIUtil = {
 	copyModule(draftId) {
 		return this.post(`/api/drafts/${draftId}/copy`).then(result => {
 			if (result.status === 200) {
-				window.location('/dashboard')
+				window.location = '/dashboard'
 			} else if (result.status === 401) {
-				alert('You are not authorized to copy this module')
+				window.alert('You are not authorized to copy this module') //eslint-disable-line no-alert
 			} else {
-				alert('Something went wrong while copying')
+				window.alert('Something went wrong while copying') //eslint-disable-line no-alert
 			}
 		})
 	}
