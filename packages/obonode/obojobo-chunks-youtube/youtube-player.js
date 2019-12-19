@@ -1,7 +1,5 @@
 import React from 'react'
 import Common from 'Common'
-import './viewer-component.scss'
-import './editor-component.scss'
 
 const { uuid } = Common.util
 const _callbacks = []
