@@ -99,7 +99,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange.bind(this)}
 					/>
-					<span className="error">{this.state.startTimeError}</span>
+					{this.state.startTimeError && <span className="error">{this.state.startTimeError}</span>}
 					<label>End time (optional):</label>
 					<input
 						type="number"
@@ -107,7 +107,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.endTime || ''}
 						onChange={this.handleEndTimeChange.bind(this)}
 					/>
-					<span className="error">{this.state.endTimeError}</span>
+					{this.state.endTimeError && <span className="error">{this.state.endTimeError}</span>}
 				</div>
 			</SimpleDialog>
 		)
