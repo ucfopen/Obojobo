@@ -11,6 +11,7 @@
 	background: #ffffff;
 	min-width: 100%;
 	z-index: 100;
+	border-bottom: 1px solid $border-color;
 }
 
 .repository--nav {
@@ -86,13 +87,13 @@
 	}
 }
 
-.repository--nav--current-user {
+.repository--nav .repository--nav--current-user {
 	position: relative;
-	font-size: 1em;
 	height: $dimension-nav-height;
 	text-align: right;
 	padding: 0 $dimension-nav-height 0 0;
 	box-sizing: border-box;
+	margin-right: 0;
 
 	&:hover {
 		.repository--nav--current-user--menu {
