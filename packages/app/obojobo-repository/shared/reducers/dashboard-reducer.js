@@ -28,12 +28,12 @@ const closedDialogState = () => ({
 })
 
 function filterModules(modules, searchString) {
-	searchString = ('' + searchString).toLowerCase().replace(whitespaceRegex, '')
+	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
 
 	return modules.filter(m =>
 		((m.title || '') + m.draftId)
-			.toLowerCase()
 			.replace(whitespaceRegex, '')
+			.toLowerCase()
 			.includes(searchString)
 	)
 }
