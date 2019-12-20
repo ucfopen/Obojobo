@@ -26,8 +26,10 @@ const closedDialogState = () => ({
 })
 
 function filterModules(modules, searchString) {
+	searchString = searchString.toLowerCase().replace(/\s+/g, '')
+
 	return modules.filter(m => {
-		return `${(m.title || '').toLowerCase()}${m.draftId}`.includes(searchString)
+		return `${(m.title || '').toLowerCase().replace(/\s+/g, '')}${m.draftId}`.includes(searchString)
 	})
 }
 
