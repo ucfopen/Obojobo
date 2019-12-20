@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React from 'react'
 import katex from 'katex'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import RestoreSelectionInput from './restore-selection-input'
 
 const getLatexHtml = latex => {
 	try {
@@ -17,6 +18,8 @@ const getLatexHtml = latex => {
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.inputRef = React.createRef()
 	}
 
 	changeProperties(content) {
@@ -66,8 +69,11 @@ class MathEquation extends React.Component {
 
 	onChangeContent(key, event) {
 		event.stopPropagation()
+
 		const newContent = {}
 		newContent[key] = event.target.value
+
+		const cursorPosition = event.target.selectionStart
 
 		const content = this.props.node.data.get('content')
 
@@ -84,7 +90,8 @@ class MathEquation extends React.Component {
 					<div className="attributes-list">
 						<div>
 							<label>Latex:</label>
-							<input
+							<RestoreSelectionInput
+								ref={this.inputRef}
 								value={content.latex}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'latex')}
@@ -92,7 +99,7 @@ class MathEquation extends React.Component {
 						</div>
 						<div>
 							<label>Optional Label:</label>
-							<input
+							<RestoreSelectionInput
 								value={content.label}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'label')}
@@ -100,7 +107,7 @@ class MathEquation extends React.Component {
 						</div>
 						<div>
 							<label>Alt Text:</label>
-							<input
+							<RestoreSelectionInput
 								value={content.alt}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'alt')}
@@ -108,7 +115,7 @@ class MathEquation extends React.Component {
 						</div>
 						<div>
 							<label>Size:</label>
-							<input
+							<RestoreSelectionInput
 								value={content.size || 1}
 								type="number"
 								step="0.1"
