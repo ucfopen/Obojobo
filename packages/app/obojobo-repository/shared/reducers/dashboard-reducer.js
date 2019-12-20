@@ -26,9 +26,9 @@ const closedDialogState = () => ({
 })
 
 function filterModules(modules, searchString) {
-	return modules.filter(m => {
-		return `${(m.title || '').toLowerCase()}${m.draftId}`.includes(searchString)
-	})
+	// ensure we have a lowercased string
+	searchString = (searchString + '').toLowerCase()
+	return modules.filter(m => (m.title + m.draftId).toLowerCase().includes(searchString))
 }
 
 function DashboardReducer(state, action) {
