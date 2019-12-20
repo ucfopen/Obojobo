@@ -103,9 +103,11 @@ var getChosen = (node, questionIds) => {
 
 var toStateObject = (root, questionIds) => {
 	const questions = getChosen(root, questionIds)
-	const questionObjects = questions.map(q => ({ id: q.id, type: q.type })).filter(q => {
-		return q.id !== root.id
-	})
+	const questionObjects = questions
+		.map(q => ({ id: q.id, type: q.type }))
+		.filter(q => {
+			return q.id !== root.id
+		})
 
 	return {
 		chosen: questionObjects

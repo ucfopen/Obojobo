@@ -1,0 +1,83 @@
+@import '../../client/css/defaults';
+
+$search-input-height: 30px;
+
+.repository--nav--links--search {
+	position: relative;
+
+	.repository--nav--links--search--icon {
+		position: absolute;
+		fill: $border-color;
+		height: calc(100% - 4px);
+		z-index: 2;
+		top: 50%;
+		transform: translate(0, -54%);
+		left: 0.4em;
+		width: 0.6em;
+		pointer-events: none;
+
+		svg {
+			height: 40%;
+		}
+	}
+
+	input {
+		position: relative;
+
+		@include text-input;
+
+		z-index: 1;
+		background: none;
+		top: 0;
+		left: 0;
+		width: calc(100% - 2px);
+		line-height: $search-input-height;
+		border: solid 1px $border-color;
+		background-color: white;
+		border-radius: 3px;
+		height: $search-input-height;
+		padding-left: 23px;
+		padding-right: 10px;
+		outline: none;
+
+		&::-webkit-search-cancel-button {
+			color: red;
+			background: red;
+		}
+
+		&:focus {
+			outline-width: 0;
+		}
+	}
+
+	&.is-not-empty {
+		> input {
+			border-color: $color-action;
+			background-color: $color-action;
+			color: white;
+
+			&:-webkit-autofill {
+				-webkit-text-fill-color: white;
+				-webkit-box-shadow: 0 0 0 1000px $color-action inset;
+			}
+		}
+
+		.repository--nav--links--search--icon {
+			fill: white;
+		}
+	}
+
+	&.is-empty > input:active,
+	&.is-empty > input:hover,
+	&.is-empty > input:focus {
+		border-color: $color-action;
+
+		+ .repository--nav--links--search--icon {
+			fill: $color-action;
+		}
+
+		&::placeholder {
+			color: $color-action;
+		}
+	}
+}

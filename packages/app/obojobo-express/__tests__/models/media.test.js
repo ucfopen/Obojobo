@@ -385,15 +385,16 @@ describe('media model', () => {
 	})
 
 	test('fetchManyById retrieves correct data', async () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		const mockStart = 0
 		const mockCount = 1
 		const mockResults = []
 		db.manyOrNone.mockResolvedValueOnce(mockResults)
 
-		MediaModel.fetchManyById(mockUserId, mockStart, mockCount).then(medias => {
-			expect(medias.length).toEqual(0)
+		await MediaModel.fetchManyById(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.data.length).toEqual(0)
+			expect(results.hasMore).toEqual(false)
 		})
 	})
 

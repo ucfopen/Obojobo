@@ -6,7 +6,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 		})
 	},
 	components: {
-		Slider: jest.fn()
+		Switch: jest.fn()
 	}
 }))
 
@@ -15,8 +15,6 @@ jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model')
 import Converter from './converter'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
-const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
-const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 describe('MCAssessment Converter', () => {
@@ -29,7 +27,8 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: 'NotADefinedNode'
+					type: 'NotADefinedNode',
+					data: { get: () => ({}) }
 				}
 			]
 		}
@@ -49,31 +48,11 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: CHOICE_LIST_NODE,
-					nodes: [
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
 						}
-					]
-				},
-				{
-					type: SETTINGS_NODE,
-					nodes: {
-						first: () => ({
-							data: {
-								get: () => 'pick-one-multiple-correct'
-							}
-						}),
-						last: () => ({
-							data: {
-								get: () => false
-							}
-						})
 					}
 				}
 			]
@@ -94,47 +73,27 @@ describe('MCAssessment Converter', () => {
 			},
 			nodes: [
 				{
-					type: CHOICE_LIST_NODE,
-					nodes: [
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
-						},
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 100 }
-								}
-							}
-						},
-						{
-							type: MCCHOICE_NODE,
-							data: {
-								get: () => {
-									return { score: 0 }
-								}
-							}
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
 						}
-					]
+					}
 				},
 				{
-					type: SETTINGS_NODE,
-					nodes: {
-						first: () => ({
-							data: {
-								get: () => 'pick-one'
-							}
-						}),
-						last: () => ({
-							data: {
-								get: () => false
-							}
-						})
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 100 }
+						}
+					}
+				},
+				{
+					type: MCCHOICE_NODE,
+					data: {
+						get: () => {
+							return { score: 0 }
+						}
 					}
 				}
 			]

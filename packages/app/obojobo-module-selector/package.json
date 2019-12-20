@@ -1,0 +1,38 @@
+{
+	"name": "obojobo-module-selector",
+	"license": "AGPL-3.0-only",
+	"version": "7.0.2",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
+	"description": "Obojobo package responsible for selecting which module you use in a course.",
+	"scripts": {
+		"test": "echo 'not implemented'",
+		"test:ci": "echo 'not implemented'",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "stylelint **/*.scss",
+		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"precommit": "lint-staged"
+	},
+	"engines": {
+		"node": "^12.11.1"
+	},
+	"lint-staged": {
+		"**/*.js": [
+			"eslint"
+		],
+		"**/*.scss": [
+			"stylelint"
+		],
+		"**/*.{js,scss}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"dependencies": {
+		"express": "~4.17.1",
+		"obojobo-express": "^7.0.2",
+		"obojobo-lib-utils": "^7.0.2",
+		"obojobo-repository": "^7.0.2"
+	}
+}

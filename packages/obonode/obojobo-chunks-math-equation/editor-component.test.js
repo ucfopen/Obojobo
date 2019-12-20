@@ -4,11 +4,14 @@ import renderer from 'react-test-renderer'
 
 import MathEquation from './editor-component'
 
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('MathEquation Editor Node', () => {
-	test('MathEquation component', () => {
+	test('renders with no latex', () => {
 		const component = renderer.create(
 			<MathEquation
 				node={{
@@ -69,7 +72,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1', label: '1.1', size: 1 }
+							return { latex: '1', label: '1.1' }
 						}
 					}
 				}}
@@ -78,14 +81,28 @@ describe('MathEquation Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		const tree = component.html()
-
 		component
-			.find('button')
+			.find('input')
 			.at(0)
-			.simulate('click')
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(1)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(2)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(3)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(1)
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
 
-		expect(ModalUtil.show).toHaveBeenCalled()
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 

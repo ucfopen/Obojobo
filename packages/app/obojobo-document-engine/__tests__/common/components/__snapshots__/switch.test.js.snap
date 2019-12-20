@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch Switch renders correctly when initialized on 1`] = `
+<div
+  className="obojobo-draft--components--switch"
+>
+  <span
+    contentEditable={false}
+  >
+    
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={true}
+      className="switch-slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="switch-slider round"
+    />
+  </label>
+</div>
+`;
+
+exports[`Switch Switch renders correctly with a title 1`] = `
+<div
+  className="obojobo-draft--components--switch"
+>
+  <span
+    contentEditable={false}
+  >
+    mocktitle
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={false}
+      className="switch-slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="switch-slider round"
+    />
+  </label>
+</div>
+`;
+
+exports[`Switch Switch renders correctly with no options set 1`] = `
+<div
+  className="obojobo-draft--components--switch"
+>
+  <span
+    contentEditable={false}
+  >
+    
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={false}
+      className="switch-slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="switch-slider round"
+    />
+  </label>
+</div>
+`;

@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "6.0.1",
+	"version": "7.0.2",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
@@ -25,9 +25,13 @@
 		]
 	},
 	"dependencies": {
+		"db-migrate": "^0.11.6",
+		"db-migrate-pg": "^1.0.0",
+		"fs-extra": "^8.0.1",
 		"prop-types": "15.7.2",
 		"react": "16.10.1",
 		"react-dom": "16.10.1",
+		"react-idle-timer": "^4.2.9",
 		"react-transition-group": "^4.3.0"
 	},
 	"devDependencies": {
@@ -51,6 +55,9 @@
 		"stylelint": "^9.4.0",
 		"stylelint-config-standard": "^18.2.0",
 		"stylelint-declaration-use-variable": "^1.7.0"
+	},
+	"bin": {
+		"obojobo-migrate": "./bin/obojobo-migrate"
 	},
 	"jest": {
 		"coveragePathIgnorePatterns": [

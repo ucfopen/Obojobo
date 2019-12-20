@@ -1,73 +1,115 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`YouTube Editor Node YouTube builds the expected componen without a videoId 1`] = `
-<div
-  className="obojobo-draft--chunks--you-tube viewer pad"
->
+<div>
   <div
-    className="empty-frame"
+    className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
   >
-    <div>
-      No Video Id.
-    </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
     >
-      Edit
-    </button>
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+    <div
+      className="empty-frame"
+    >
+      <div>
+        No Video Id.
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
 </div>
 `;
 
 exports[`YouTube Editor Node YouTube builds the expected component given a videoId 1`] = `
-<div
-  className="obojobo-draft--chunks--you-tube viewer pad"
->
-  <iframe
-    allowFullScreen={true}
-    frameBorder="0"
-    src="https://www.youtube.com/embed/mockId"
-  />
+<div>
   <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
+    className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
   >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
     >
-      Edit
-    </button>
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+    <iframe
+      allowFullScreen={true}
+      frameBorder="0"
+      src="https://www.youtube.com/embed/mockId"
+    />
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
 </div>
 `;
 
-exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><iframe src=\\"https://www.youtube.com/embed/mockId\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
+exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div><div class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><iframe src=\\"https://www.youtube.com/embed/mockId\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`;
 
 exports[`YouTube Editor Node handleSourceChange sets the nodes content 1`] = `
-<div
-  className="obojobo-draft--chunks--you-tube viewer pad"
->
+<div>
   <div
-    className="empty-frame"
+    className="obojobo-draft--chunks--you-tube viewer pad  is-selected"
   >
-    <div>
-      No Video Id.
-    </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
     >
-      Edit
-    </button>
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+    <div
+      className="empty-frame"
+    >
+      <div>
+        No Video Id.
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
   </div>
 </div>
 `;

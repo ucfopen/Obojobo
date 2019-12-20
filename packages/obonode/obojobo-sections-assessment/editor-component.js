@@ -1,12 +1,6 @@
 import './editor-component.scss'
 
 import React from 'react'
-import { Block } from 'slate'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const { Button } = Common.components
-
-import emptyRubric from './components/rubric/empty-node.json'
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -14,25 +8,8 @@ class Assessment extends React.Component {
 		this.state = this.props.node.data.get('content')
 	}
 
-	addRubric() {
-		const editor = this.props.editor
-
-		const newRubric = Block.create(emptyRubric)
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newRubric)
-	}
-
 	render() {
-		const hasRubric = this.props.node.nodes.size === 5
-		return (
-			<div className={'obojobo-draft--sections--assessment'}>
-				{this.props.children}
-				{!hasRubric ? (
-					<Button className={'add-rubric'} onClick={() => this.addRubric()}>
-						{'Add Rubric'}
-					</Button>
-				) : null}
-			</div>
-		)
+		return <div className={'obojobo-draft--sections--assessment'}>{this.props.children}</div>
 	}
 }
 

@@ -14,7 +14,7 @@ router.route('/').get((req, res) => {
 // mounted as /profile/logout
 router.get('/logout', (req, res) => {
 	req.resetCurrentUser()
-	res.send('Logged out')
+	res.redirect('back')
 })
 
 module.exports = router

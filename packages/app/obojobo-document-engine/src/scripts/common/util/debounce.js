@@ -1,10 +1,10 @@
 const debounce = (time, fn) => {
-	let timeout;
+	let timeout
 
 	return function() {
-		const functionCall = () => fn.apply(this, arguments);
-		clearTimeout(timeout);
-		timeout = setTimeout(functionCall, time);
+		const functionCall = () => fn.apply(this, arguments)
+		clearTimeout(timeout)
+		timeout = setTimeout(functionCall, time)
 	}
 }
 
