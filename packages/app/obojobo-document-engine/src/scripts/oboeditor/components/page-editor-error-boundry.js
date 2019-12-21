@@ -1,6 +1,6 @@
 import React from 'react'
 
-class ErrorBoundary extends React.Component {
+class PageEditorErrorBoundry extends React.Component {
 	componentDidCatch() {
 		if (this.props.editorRef.current) {
 			this.props.editorRef.current.undo()
@@ -12,4 +12,4 @@ class ErrorBoundary extends React.Component {
 	}
 }
 
-export default ErrorBoundary
+export default PageEditorErrorBoundry
