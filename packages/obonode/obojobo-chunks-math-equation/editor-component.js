@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React from 'react'
 import katex from 'katex'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
 const getLatexHtml = latex => {
 	try {
@@ -17,6 +18,21 @@ const getLatexHtml = latex => {
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.updateNodeFromState = debounce(200, this.updateNodeFromState)
+
+		// copy the attributes we want into state
+		const content = this.props.node.data.get('content')
+		this.state = this.contentToStateObj(content)
+	}
+
+	contentToStateObj(content) {
+		return {
+			latex: content.latex || '',
+			alt: content.alt || '',
+			label: content.label || '',
+			size: content.size || 1
+		}
 	}
 
 	changeProperties(content) {
@@ -25,6 +41,8 @@ class MathEquation extends React.Component {
 		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
+
+		this.setState(this.contentToStateObj(content))
 	}
 
 	renderEmptyEquation() {
@@ -38,10 +56,9 @@ class MathEquation extends React.Component {
 	}
 
 	renderLatex() {
-		const content = this.props.node.data.get('content')
-		if (!content.latex && !content.label) return this.renderEmptyEquation()
+		if (!this.state.latex && !this.state.label) return this.renderEmptyEquation()
 
-		let katexHtml = getLatexHtml(content.latex)
+		let katexHtml = getLatexHtml(this.state.latex)
 		if (katexHtml.error) {
 			return (
 				<div className={'katex-container katex-error'}>
@@ -56,60 +73,65 @@ class MathEquation extends React.Component {
 			<div className="non-editable-chunk">
 				<div
 					className="katex-container"
-					style={{ fontSize: content.size + 'em' }}
+					style={{ fontSize: this.state.size + 'em' }}
 					dangerouslySetInnerHTML={{ __html: katexHtml }}
 				/>
-				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
+				{this.state.label === '' ? null : <div className="equation-label">{this.state.label}</div>}
 			</div>
 		)
 	}
 
-	onChangeContent(key, event) {
-		event.stopPropagation()
-		const newContent = {}
-		newContent[key] = event.target.value
-
+	updateNodeFromState() {
 		const content = this.props.node.data.get('content')
-
 		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: { content: { ...content, ...newContent } }
+			data: { content: { ...content, ...this.state } }
 		})
 	}
 
+	onChangeContent(key, event) {
+		event.stopPropagation()
+		const newContent = { [key]: event.target.value }
+		this.setState(newContent) // update the display now
+		this.updateNodeFromState() // debounced to reduce lag as it updates the document
+	}
+
 	renderAttributes() {
-		const content = this.props.node.data.get('content')
 		return (
 			<div className="attributes-box" contentEditable={false}>
 				<div className="box-border">
 					<div className="attributes-list">
 						<div>
-							<label>Latex:</label>
+							<label htmlFor="math-equation-latex">Latex:</label>
 							<input
-								value={content.latex}
+								id="math-equation-latex"
+								value={this.state.latex}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'latex')}
 							/>
 						</div>
 						<div>
-							<label>Optional Label:</label>
+							<label htmlFor="math-equation-label">Optional Label:</label>
 							<input
-								value={content.label}
+								id="math-equation-label"
+								value={this.state.label}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'label')}
 							/>
 						</div>
 						<div>
-							<label>Alt Text:</label>
+							<label htmlFor="math-equation-alt">Alt Text:</label>
 							<input
-								value={content.alt}
+								id="math-equation-alt"
+								value={this.state.alt}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'alt')}
 							/>
 						</div>
 						<div>
-							<label>Size:</label>
+							<label htmlFor="math-equation-size">Size:</label>
 							<input
-								value={content.size || 1}
+								id="math-equation-size"
+								value={this.state.size}
 								type="number"
 								step="0.1"
 								onClick={event => event.stopPropagation()}
@@ -123,8 +145,8 @@ class MathEquation extends React.Component {
 	}
 
 	render() {
-		const { isSelected } = this.props
-		const content = this.props.node.data.get('content')
+		const { isSelected, node } = this.props
+		const content = node.data.get('content')
 		return (
 			<Node {...this.props}>
 				<div
