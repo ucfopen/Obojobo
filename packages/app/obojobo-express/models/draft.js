@@ -72,6 +72,20 @@ class Draft {
 		return draftNode
 	}
 
+	// returns a boolean
+	static async userHasPermissionToDraft(userId, draftId) {
+		const result = await db.oneOrNone(
+			`SELECT user_id
+			FROM drafts
+			WHERE id = $[draftId]
+			AND user_id = $[userId]`,
+			{ userId, draftId }
+		)
+
+		// oneOrNone reutrns null when there are no results
+		return result !== null
+	}
+
 	static deleteByIdAndUser(id, userId) {
 		return db
 			.none(

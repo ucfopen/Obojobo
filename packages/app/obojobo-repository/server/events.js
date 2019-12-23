@@ -4,6 +4,8 @@ const db = require('obojobo-express/db')
 const DraftModel = require('obojobo-express/models/draft')
 const { webpackAssetPath } = require('obojobo-express/asset_resolver')
 const appCSSUrl = webpackAssetPath('repository.css')
+const { userHasPermissionToDraft } = require('./services/permissions')
+const { registerPromiseProvider } = require('obojobo-express/util/promise_provider')
 
 // when a new draft is created make sure we create an ownership association
 oboEvents.on(DraftModel.EVENT_NEW_DRAFT_CREATED, newDraft => {
@@ -76,4 +78,8 @@ oboEvents.on('HTTP_UNEXPECTED', ({ req, res, next }) => {
 		}
 		res.render('pages/page-error.jsx', props)
 	})
+})
+
+registerPromiseProvider('userHasPermissionToDraft', async (permType, { draftId, userId }) => {
+	return await userHasPermissionToDraft(userId, draftId)
 })

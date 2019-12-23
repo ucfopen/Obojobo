@@ -1,9 +1,17 @@
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = name => {
+	return require(`obojobo-express/${name}`)
+}
+
 describe('Server Events', () => {
 	jest.mock('obojobo-express/logger')
 	jest.mock('obojobo-express/obo_events')
 	jest.mock('obojobo-express/db')
+	jest.mock('obojobo-express/logger')
 	jest.mock('obojobo-express/models/draft')
 	jest.mock('../../obojobo-express/public/compiled/manifest.json', () => ({}), { virtual: true })
+	jest.mock('obojobo-express/util/promise_provider')
 
 	let oboEvents
 	let DraftModel

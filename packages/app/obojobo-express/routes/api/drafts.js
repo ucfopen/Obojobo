@@ -10,6 +10,7 @@ const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xm
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
+const { callPromiseProviders, registerPromiseProvider } = oboRequire('util/promise_provider')
 const {
 	checkValidationRules,
 	requireDraftId,
@@ -24,32 +25,49 @@ const isNoDataFromQueryError = e => {
 	)
 }
 
+registerPromiseProvider('userHasPermissionToDraft', async (permType, { draftId, userId }) => {
+	return await DraftModel.userHasPermissionToDraft(userId, draftId)
+})
+
 // Get a complete Draft Document Tree (for editing)
 // mounted as /api/drafts/:draftId/full
 router
 	.route('/:draftId/full')
 	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
 	.get(async (req, res) => {
+		const draftId = req.params.draftId
 		try {
-			const draftModel = await DraftModel.fetchById(req.params.draftId)
-
-			if (draftModel.authorId !== req.currentUser.id) {
+			// check permission providers
+			const args = {
+				draftId,
+				userId: req.currentUser.id
+			}
+			const hasPermResults = await callPromiseProviders('userHasPermissionToDraft', args, true)
+			const hasPermissions = hasPermResults.find(p => p === true)
+			if (!hasPermissions) {
 				return res.notAuthorized(
 					'You must be the author of this draft to retrieve this information'
 				)
 			}
+		} catch (e) {
+			res.unexpected(e)
+			return
+		}
+
+		try {
+			const draft = await DraftModel.fetchById(draftId)
 
 			res.format({
 				'application/xml': async () => {
-					let xml = await draftModel.xmlDocument
+					let xml = await draft.xmlDocument
 					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-						xml = jsonToXml(draftModel.document)
+						xml = jsonToXml(draft.document)
 					}
 					res.send(xml)
 				},
 				default: () => {
-					res.success(draftModel.document)
+					res.success(draft.document)
 				}
 			})
 		} catch (e) {
