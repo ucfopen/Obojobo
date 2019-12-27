@@ -1,6 +1,6 @@
-jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
-jest.mock('obojobo-express/db')
-const db = require('obojobo-express/db')
+jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
+jest.mock('obojobo-express/server/db')
+const db = require('obojobo-express/server/db')
 const { deletePreviewState } = require('./preview')
 
 describe('assessment preview service', () => {

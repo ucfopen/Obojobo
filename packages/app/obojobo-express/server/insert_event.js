@@ -1,4 +1,4 @@
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 
 module.exports = insertObject => {
 	insertObject.visitId = insertObject.visitId || null

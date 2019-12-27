@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Visit = oboRequire('models/visit')
-const insertEvent = oboRequire('insert_event')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const Visit = oboRequire('server/models/visit')
+const insertEvent = oboRequire('server/insert_event')
+const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
 const { ACTOR_USER } = require('./api/events/caliper_constants')
 const { getSessionIds } = require('./api/events/caliper_utils')
 const {
@@ -10,7 +10,7 @@ const {
 	requireCurrentDocument,
 	requireDraftId,
 	requireCanPreviewDrafts
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId

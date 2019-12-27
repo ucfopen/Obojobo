@@ -1,7 +1,7 @@
 describe('Draft Model', () => {
-	jest.mock('../../db')
-	jest.mock('../../logger')
-	jest.mock('../../obo_events')
+	jest.mock('../../server/db')
+	jest.mock('../../server/logger')
+	jest.mock('../../server/obo_events')
 	let db
 	let DraftModel
 	let DraftNode
@@ -33,9 +33,9 @@ describe('Draft Model', () => {
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
-		db = require('../../db')
-		DraftNode = require('../../models/draft_node')
-		DraftModel = require('../../models/draft')
+		db = require('../../server/db')
+		DraftNode = require('../../server/models/draft_node')
+		DraftModel = require('../../server/models/draft')
 	})
 	afterEach(() => {})
 
@@ -100,7 +100,6 @@ describe('Draft Model', () => {
 		const mockContent = { content: 'yes' }
 		const mockXMLContent = '<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc />'
 		const mockUserId = 555
-
 		return DraftModel.createWithContent(mockUserId, mockContent, mockXMLContent).then(newDraft => {
 			// make sure we're using a transaction
 			expect(db.tx).toBeCalled()
@@ -290,7 +289,7 @@ describe('Draft Model', () => {
 
 	test('deleteByIdAndUser sets delete flag', () => {
 		expect.hasAssertions()
-		const oboEvents = require('../../obo_events')
+		const oboEvents = require('../../server/obo_events')
 
 		db.none.mockResolvedValueOnce()
 

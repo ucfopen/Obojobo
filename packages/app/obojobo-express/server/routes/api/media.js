@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const multer = require('multer')
-const mediaConfig = oboRequire('config').media
-const MediaModel = oboRequire('models/media')
-const { requireCurrentUser } = oboRequire('express_validators')
+const mediaConfig = oboRequire('server/config').media
+const MediaModel = oboRequire('server/models/media')
+const { requireCurrentUser } = oboRequire('server/express_validators')
 
 const upload = (req, res) => {
 	const diskStorage = multer.diskStorage({

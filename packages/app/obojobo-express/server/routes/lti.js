@@ -1,7 +1,7 @@
 const router = require('express').Router() //eslint-disable-line new-cap
-const config = oboRequire('config')
-const ltiLaunch = oboRequire('express_lti_launch')
-const { requireCanViewEditor } = oboRequire('express_validators')
+const config = oboRequire('server/config')
+const ltiLaunch = oboRequire('server/express_lti_launch')
+const { requireCanViewEditor } = oboRequire('server/express_validators')
 
 // LTI Instructions
 // mounted as /lti/

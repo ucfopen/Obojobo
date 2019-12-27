@@ -1,9 +1,9 @@
 const OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
-const config = oboRequire('config')
-const db = require('./db')
+const config = oboRequire('server/config')
+const db = oboRequire('server/db')
 const moment = require('moment')
-const insertEvent = oboRequire('insert_event')
-const logger = oboRequire('logger')
+const insertEvent = oboRequire('server/insert_event')
+const logger = oboRequire('server/logger')
 const uuid = require('uuid').v4
 
 const MINUTES_EXPIRED_LAUNCH = 300

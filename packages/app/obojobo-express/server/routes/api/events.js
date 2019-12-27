@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const oboEvents = oboRequire('obo_events')
-const insertEvent = oboRequire('insert_event')
+const oboEvents = oboRequire('server/obo_events')
+const insertEvent = oboRequire('server/insert_event')
 const createCaliperEvent = require('./events/create_caliper_event')
 const {
 	checkValidationRules,
@@ -9,7 +9,7 @@ const {
 	requireEvent,
 	requireCurrentUser,
 	requireCurrentVisit
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 // Create A New Event
 // mounted as /api/events

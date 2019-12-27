@@ -6,8 +6,8 @@ describe('config', () => {
 	beforeEach(() => {
 		delete process.env.NODE_ENV
 		jest.resetModules()
-		jest.mock('../logger')
-		logger = oboRequire('logger')
+		jest.mock('../server/logger')
+		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 	})
 	afterEach(() => {})
@@ -17,7 +17,7 @@ describe('config', () => {
 	})
 
 	test('db to have expected props and vals', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host')
 		expect(config).toHaveProperty('db.port')
 		expect(config).toHaveProperty('db.database')
@@ -27,7 +27,7 @@ describe('config', () => {
 	})
 
 	test('expects config to have loaded all files', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db')
 		expect(config).toHaveProperty('lti')
 		expect(config).toHaveProperty('permissions')
@@ -36,7 +36,7 @@ describe('config', () => {
 	})
 
 	test('selects the environment based on env', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db')
 		expect(config.db.host).toBe('itsdev!')
 	})
@@ -57,7 +57,7 @@ describe('config', () => {
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DATABASE_URL = 'postgres://mock-user:mock-password@mock-host.com:7777/mock-dbname'
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'mock-host.com')
 		expect(config).toHaveProperty('db.port', 7777)
 		expect(config).toHaveProperty('db.database', 'mock-dbname')
@@ -85,7 +85,7 @@ describe('config', () => {
 		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(logger.error).toHaveBeenCalledTimes(2)
 		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV var DB_USER is not set')
 		expect(config.db).toEqual({})
@@ -103,7 +103,7 @@ describe('config', () => {
 		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
-		oboRequire('config')
+		oboRequire('server/config')
 		expect(logger.error).toHaveBeenCalledTimes(2)
 		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV var DB_USER is not set')
 	})
@@ -118,7 +118,7 @@ describe('config', () => {
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":999}'
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'mock-host')
 		expect(config).toHaveProperty('db.port', 999)
 		delete process.env.DB_CONFIG_JSON
@@ -135,7 +135,7 @@ describe('config', () => {
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DB_CONFIG_JSON = '{invalid-json:"mock-host"}'
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 
 		expect(config).not.toHaveProperty('db.host', 'mock-host')
 		expect(config).not.toHaveProperty('db.port', 999)
@@ -160,7 +160,7 @@ describe('config', () => {
 		// NOTE the value of port in this json is another ENV:value key that itself
 		// should be replaced with the actual env var value!!!
 		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":{"ENV":"DB_PORT"}}'
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'mock-host')
 		expect(config).toHaveProperty('db.port', 'mock-port')
 		delete process.env.DB_CONFIG_JSON
@@ -168,7 +168,7 @@ describe('config', () => {
 	})
 
 	test('config top level values can not be changed', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'itsdev!')
 
 		const changeConfigValue = () => {
@@ -185,7 +185,7 @@ describe('config', () => {
 	})
 
 	test('config nested values can not be changed', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'itsdev!')
 
 		const changeConfigValue = () => {
@@ -202,7 +202,7 @@ describe('config', () => {
 	})
 
 	test('custom configs cant be added', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).not.toHaveProperty('custom')
 
 		const changeConfigValue = () => {
@@ -219,7 +219,7 @@ describe('config', () => {
 	})
 
 	test('config values cant be deleted', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'itsdev!')
 
 		const changeConfigValue = () => {
@@ -236,7 +236,7 @@ describe('config', () => {
 	})
 
 	test('config nested values cant be deleted', () => {
-		const config = oboRequire('config')
+		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db.host', 'itsdev!')
 
 		const changeConfigValue = () => {

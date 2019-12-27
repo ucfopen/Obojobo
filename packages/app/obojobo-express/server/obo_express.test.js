@@ -1,15 +1,15 @@
-mockVirtual('./express_response_decorator')
-mockVirtual('./dev_nonce_store')
-mockVirtual('./express_current_user')
-mockVirtual('./express_current_document')
-mockVirtual('./express_load_balancer_helper')
-mockVirtual('./express_lti_launch')
-mockVirtual('./express_register_chunks')
-mockVirtual('./lti')
+mockVirtual('./server/express_response_decorator')
+mockVirtual('./server/dev_nonce_store')
+mockVirtual('./server/express_current_user')
+mockVirtual('./server/express_current_document')
+mockVirtual('./server/express_load_balancer_helper')
+mockVirtual('./server/express_lti_launch')
+mockVirtual('./server/express_register_chunks')
+mockVirtual('./server/lti')
 mockVirtual('express-ims-lti')
-jest.mock('db')
+jest.mock('../server/db')
 jest.mock(
-	'../asset_resolver',
+	'../server/asset_resolver',
 	() => ({
 		assetForEnv: path => path,
 		webpackAssetPath: path => path
@@ -49,12 +49,18 @@ const mockExpress = (mockOn = false, mockStatic = false) => {
 	)
 }
 
+		// let x = oboRequire('server/dev_nonce_store')
+		// console.log('go', x)
+		// console.log(new x())
+
 describe('obo express', () => {
 	beforeAll(() => {
 		// call this beforeAll because it only happens once on require
 		// and the tests are run in random order
+
 		mockExpress(mockOn)
-		oboRequire('obo_express')
+
+		oboRequire('server/obo_express')
 		mockOnCallback = mockOn.mock.calls[0][1]
 	})
 	afterAll(() => {})
@@ -66,21 +72,21 @@ describe('obo express', () => {
 	})
 
 	test('implements expected middleware on parent app', () => {
-		oboRequire('obo_express')
+		oboRequire('server/obo_express')
 		const mockApp = require('express')()
-		const registerChunks = oboRequire('express_register_chunks')
+		const registerChunks = oboRequire('server/express_register_chunks')
 		mockOnCallback(mockApp)
 
 		expect(mockApp.on).toHaveBeenCalledWith('mount', expect.any(Function))
 		expect(registerChunks).toHaveBeenCalledWith(mockApp)
-		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
-		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
-		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('express_response_decorator'))
+		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('server/express_load_balancer_helper'))
+		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('server/express_current_user'))
+		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('server/express_response_decorator'))
 	})
 
 	test('returns an express application', () => {
 		mockExpress()
-		const oe = oboRequire('obo_express')
+		const oe = oboRequire('server/obo_express')
 
 		expect(oe).toEqual(
 			expect.objectContaining({

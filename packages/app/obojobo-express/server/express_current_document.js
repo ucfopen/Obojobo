@@ -1,5 +1,5 @@
-const DraftDocument = oboRequire('models/draft')
-const logger = oboRequire('logger')
+const DraftDocument = oboRequire('server/models/draft')
+const logger = oboRequire('server/logger')
 
 const setCurrentDocument = (req, draftDocument) => {
 	if (!(draftDocument instanceof DraftDocument)) {

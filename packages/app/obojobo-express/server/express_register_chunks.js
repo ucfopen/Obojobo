@@ -1,6 +1,6 @@
 const express = require('express')
-const draftNodeStore = oboRequire('draft_node_store')
-const logger = oboRequire('logger')
+const draftNodeStore = oboRequire('server/draft_node_store')
+const logger = oboRequire('server/logger')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 
 module.exports = app => {

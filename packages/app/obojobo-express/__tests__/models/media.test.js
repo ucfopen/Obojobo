@@ -1,5 +1,5 @@
-jest.mock('../../db')
-jest.mock('../../config', () => {
+jest.mock('../../server/db')
+jest.mock('../../server/config', () => {
 	return {
 		media: {
 			allowedMimeTypesRegex: 'jpeg|jpg|png|gif|svg',
@@ -39,14 +39,14 @@ jest.mock('sharp', () => () => {
 	}
 })
 
-import MediaModel from '../../models/media'
+import MediaModel from '../../server/models/media'
 import fileType from 'file-type'
 import fs from 'fs'
 import isSvg from 'is-svg'
 
 require('../../config').media
 
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 
 describe('media model', () => {
 	const mockUserId = 555

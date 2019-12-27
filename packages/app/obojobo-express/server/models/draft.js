@@ -1,7 +1,7 @@
-const db = require('../db')
-const draftNodeStore = oboRequire('draft_node_store')
-const logger = require('../logger.js')
-const oboEvents = oboRequire('obo_events')
+const db = oboRequire('server/db')
+const draftNodeStore = oboRequire('server/draft_node_store')
+const logger = oboRequire('server/logger.js')
+const oboEvents = oboRequire('server/obo_events')
 
 // Recurses through a draft tree
 // to find duplicate ids

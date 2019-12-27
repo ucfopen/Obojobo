@@ -1,5 +1,5 @@
-const VisitModel = oboRequire('models/visit')
-const logger = oboRequire('logger')
+const VisitModel = oboRequire('server/models/visit')
+const logger = oboRequire('server/logger')
 
 // this doesn't resolve with a Visit
 // preferred method is to access currentVisit from your req object

@@ -1,5 +1,5 @@
-const db = oboRequire('db')
-const logger = oboRequire('logger')
+const db = oboRequire('server/db')
+const logger = oboRequire('server/logger')
 
 function set(userId, draftId, contentId, key, version, value, resourceLinkId) {
 	return db

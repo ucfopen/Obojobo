@@ -1,5 +1,5 @@
-const db = require('obojobo-express/db')
-const UserModel = require('obojobo-express/models/user')
+const db = require('obojobo-express/server/db')
+const UserModel = require('obojobo-express/server/models/user')
 
 const searchForUserByString = async searchString => {
 	// creates a function to make searching firstname and lastname together faster

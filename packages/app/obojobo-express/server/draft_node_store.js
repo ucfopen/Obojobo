@@ -1,4 +1,4 @@
-const DraftNode = global.oboRequire('models/draft_node')
+const DraftNode = global.oboRequire('server/models/draft_node')
 const draftNodeStorage = new Map()
 
 const add = nodeClass => {

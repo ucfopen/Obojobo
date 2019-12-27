@@ -1,12 +1,12 @@
 /* eslint no-extend-native: 0 */
 
-jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
-jest.mock('obojobo-express/db')
-jest.mock('obojobo-express/routes/api/events/create_caliper_event')
+jest.setMock('obojobo-express/server/insert_event', require('obojobo-express/__mocks__/insert_event'))
+jest.mock('obojobo-express/server/db')
+jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('./assessment') // from __mocks___
 
 jest.mock(
-	'obojobo-express/models/visit',
+	'obojobo-express/server/models/visit',
 	() => ({
 		fetchById: jest.fn()
 	}),
@@ -15,9 +15,9 @@ jest.mock(
 
 const resumeAttempt = require('./attempt-resume')
 const attemptStart = require('./attempt-start')
-const insertEvent = require('obojobo-express/insert_event')
-const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
-const Visit = require('obojobo-express/models/visit')
+const insertEvent = require('obojobo-express/server/insert_event')
+const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
+const Visit = require('obojobo-express/server/models/visit')
 const Assessment = require('./assessment')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'

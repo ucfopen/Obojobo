@@ -1,6 +1,6 @@
-const User = oboRequire('models/user')
-const GuestUser = oboRequire('models/guest_user')
-const logger = oboRequire('logger')
+const User = oboRequire('server/models/user')
+const GuestUser = oboRequire('server/models/guest_user')
+const logger = oboRequire('server/logger')
 
 const setCurrentUser = (req, user) => {
 	if (!(user instanceof User)) throw new Error('Invalid User for Current user')

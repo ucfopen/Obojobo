@@ -5,8 +5,8 @@ const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
 	requireCurrentDocument
-} = require('obojobo-express/express_validators')
-const UserModel = require('obojobo-express/models/user')
+} = require('obojobo-express/server/express_validators')
+const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
 const {
 	addUserPermissionToDraft,

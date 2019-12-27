@@ -1,7 +1,7 @@
-const db = oboRequire('db')
-const permissions = oboRequire('config').permissions
+const db = oboRequire('server/db')
+const permissions = oboRequire('server/config').permissions
 const crypto = require('crypto')
-const oboEvents = oboRequire('obo_events')
+const oboEvents = oboRequire('server/obo_events')
 
 class User {
 	constructor({

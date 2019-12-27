@@ -9,7 +9,7 @@ jest.mock(
 	{ virtual: true }
 )
 
-const { assetForEnv } = require('../asset_resolver')
+const { assetForEnv } = require('../server/asset_resolver')
 
 describe('Asset Resolver', () => {
 	const originalNODE_ENV = process.env.NODE_ENV
@@ -71,7 +71,7 @@ describe('Asset Resolver', () => {
 
 	test('webpackAssetPath returns expected paths when using webpack dev server', () => {
 		process.env.IS_WEBPACK = 'true'
-		const { webpackAssetPath } = require('../asset_resolver')
+		const { webpackAssetPath } = require('../server/asset_resolver')
 
 		expect(webpackAssetPath('test.js')).toBe('/static/test.js')
 		expect(webpackAssetPath('test.css')).toBe('/static/test.css')
@@ -83,7 +83,7 @@ describe('Asset Resolver', () => {
 
 	test('webpackAssetPath returns expected paths when NOT using webpack dev server', () => {
 		process.env.IS_WEBPACK = 'false'
-		const { webpackAssetPath } = require('../asset_resolver')
+		const { webpackAssetPath } = require('../server/asset_resolver')
 
 		expect(webpackAssetPath('test.js')).toBe('/static-from-manifest/test.js')
 		expect(webpackAssetPath('test.css')).toBe('/static-from-manifest/test.css')

@@ -3,10 +3,10 @@ const fs = require('fs')
 const isSvg = require('is-svg')
 const sharp = require('sharp')
 
-const mediaConfig = oboRequire('config').media
-const logger = oboRequire('logger.js')
-const db = oboRequire('db')
-const oboEvents = oboRequire('obo_events')
+const mediaConfig = oboRequire('server/config').media
+const logger = oboRequire('server/logger')
+const db = oboRequire('server/db')
+const oboEvents = oboRequire('server/obo_events')
 
 const MODE_INSERT_ORIGINAL_IMAGE = 'modeInsertOriginalImage'
 const MODE_INSERT_RESIZED_IMAGE = 'modeInsertResizedImage'

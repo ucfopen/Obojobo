@@ -1,11 +1,11 @@
-const db = oboRequire('db')
-const insertEvent = oboRequire('insert_event')
-const User = oboRequire('models/user')
-const config = oboRequire('config')
-const logger = oboRequire('logger')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
-const oboEvents = oboRequire('obo_events')
+const db = oboRequire('server/db')
+const insertEvent = oboRequire('server/insert_event')
+const User = oboRequire('server/models/user')
+const config = oboRequire('server/config')
+const logger = oboRequire('server/logger')
+const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
+const oboEvents = oboRequire('server/obo_events')
 
 const saveSessionPromise = req =>
 	new Promise((resolve, reject) => {

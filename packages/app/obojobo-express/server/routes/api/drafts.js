@@ -1,9 +1,9 @@
 const express = require('express')
 const fs = require('fs')
 const router = express.Router()
-const DraftModel = oboRequire('models/draft')
-const logger = oboRequire('logger')
-const db = oboRequire('db')
+const DraftModel = oboRequire('server/models/draft')
+const logger = oboRequire('server/logger')
+const db = oboRequire('server/db')
 const pgp = require('pg-promise')
 const xmlToDraftObject = require('obojobo-document-xml-parser/xml-to-draft-object')
 const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
@@ -17,7 +17,7 @@ const {
 	requireCanViewEditor,
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 const isNoDataFromQueryError = e => {
 	return (

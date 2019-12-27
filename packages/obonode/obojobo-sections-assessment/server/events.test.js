@@ -1,10 +1,10 @@
 describe('Assessment server Events', () => {
-	jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
-	jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
-	jest.mock('obojobo-express/obo_events')
-	jest.mock('obojobo-express/db')
-	jest.mock('obojobo-express/logger')
-	jest.mock('obojobo-express/models/draft')
+	jest.setMock('obojobo-express/server/logger', require('obojobo-express/__mocks__/logger'))
+	jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
+	jest.mock('obojobo-express/server/obo_events')
+	jest.mock('obojobo-express/server/db')
+	jest.mock('obojobo-express/server/logger')
+	jest.mock('obojobo-express/server/models/draft')
 
 	let oboEvents
 	let db
@@ -13,9 +13,9 @@ describe('Assessment server Events', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.resetModules()
-		oboEvents = require('obojobo-express/obo_events')
-		db = require('obojobo-express/db')
-		logger = require('obojobo-express/logger')
+		oboEvents = require('obojobo-express/server/obo_events')
+		db = require('obojobo-express/server/db')
+		logger = require('obojobo-express/server/logger')
 		require('./events')
 	})
 

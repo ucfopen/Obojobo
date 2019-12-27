@@ -1,8 +1,8 @@
 const QueryResultError = require('pg-promise').errors.QueryResultError
 const inflector = require('json-inflector')
-const logger = oboRequire('logger')
+const logger = oboRequire('server/logger')
 const apiUrlRegex = /\/api\/.*/
-const oboEvents = require('./obo_events')
+const oboEvents = oboRequire('server/obo_events')
 
 const getSanitizedErrorMessage = e => {
 	// If the error is in our blacklist only return the error name:

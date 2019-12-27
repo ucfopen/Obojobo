@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const mediaConfig = oboRequire('config').media
-const { requireCanViewEditor, requireCurrentDocument } = oboRequire('express_validators')
-const { assetForEnv, webpackAssetPath } = oboRequire('asset_resolver')
+const mediaConfig = oboRequire('server/config').media
+const { requireCanViewEditor, requireCurrentDocument } = oboRequire('server/express_validators')
+const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
 const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 	.split('|')
 	.map(i => `.${i}`)

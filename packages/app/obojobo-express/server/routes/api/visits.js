@@ -1,18 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const logger = oboRequire('logger')
-const ltiUtil = oboRequire('lti')
-const viewerState = oboRequire('viewer/viewer_state')
-const insertEvent = oboRequire('insert_event')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
-const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+const logger = oboRequire('server/logger')
+const ltiUtil = oboRequire('server/lti')
+const viewerState = oboRequire('server/viewer/viewer_state')
+const insertEvent = oboRequire('server/insert_event')
+const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
+const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
 const {
 	checkValidationRules,
 	requireVisitId,
 	requireCurrentUser,
 	requireCurrentDocument
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}

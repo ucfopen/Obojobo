@@ -1,18 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const Visit = oboRequire('models/visit')
-const insertEvent = oboRequire('insert_event')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
-const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
-const ltiLaunch = oboRequire('express_lti_launch')
-const { assetForEnv, webpackAssetPath } = oboRequire('asset_resolver')
+const Visit = oboRequire('server/models/visit')
+const insertEvent = oboRequire('server/insert_event')
+const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
+const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
+const ltiLaunch = oboRequire('server/express_lti_launch')
+const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireVisitId,
 	requireCurrentUser
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 // launch lti view of draft - redirects to visit route
 // mounted as /view/:draftId/:page

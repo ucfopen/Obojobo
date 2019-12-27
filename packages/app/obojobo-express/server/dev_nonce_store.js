@@ -1,5 +1,5 @@
 const NonceStore = require('ims-lti').Stores.NonceStore
-const logger = oboRequire('logger')
+const logger = oboRequire('server/logger')
 
 const EXPIRE_IN_SEC = 5 * 60
 

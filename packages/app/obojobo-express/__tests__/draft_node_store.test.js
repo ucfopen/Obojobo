@@ -6,8 +6,8 @@ describe('draft_node_store', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		jest.resetModules() // needed to completely reset draft_node_store
-		draft_node_store = oboRequire('draft_node_store')
-		DraftNode = global.oboRequire('models/draft_node')
+		draft_node_store = oboRequire('server/draft_node_store')
+		DraftNode = global.oboRequire('server/models/draft_node')
 	})
 	afterEach(() => {})
 

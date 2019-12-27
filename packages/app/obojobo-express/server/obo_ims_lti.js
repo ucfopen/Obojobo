@@ -1,7 +1,7 @@
 const ltiMiddleware = require('express-ims-lti')
-const DevNonceStore = oboRequire('dev_nonce_store')
-const ltiUtil = oboRequire('lti')
-const logger = oboRequire('logger')
+const DevNonceStore = oboRequire('server/dev_nonce_store')
+const ltiUtil = oboRequire('server/lti')
+const logger = oboRequire('server/logger')
 
 /*
  Obojobo LTI Middleware abstraction

@@ -1,4 +1,4 @@
-const permissions = oboRequire('config').permissions
+const permissions = oboRequire('server/config').permissions
 let saveOrCreateCallbackFn = jest.fn()
 
 class MockUser {

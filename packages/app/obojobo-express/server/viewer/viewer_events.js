@@ -1,6 +1,6 @@
-const oboEvents = oboRequire('obo_events')
-const viewerState = oboRequire('viewer/viewer_state')
-const VisitModel = oboRequire('models/visit')
+const oboEvents = oboRequire('server/obo_events')
+const viewerState = oboRequire('server/viewer/viewer_state')
+const VisitModel = oboRequire('server/models/visit')
 
 oboEvents.on('client:nav:open', event => {
 	return setNavOpen(event.userId, event.draftId, event.contentId, true, event.visitId)
