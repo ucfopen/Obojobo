@@ -1,6 +1,6 @@
 /* eslint no-extend-native: 0 */
 
-jest.setMock('obojobo-express/server/insert_event', require('obojobo-express/__mocks__/insert_event'))
+jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('./assessment') // from __mocks___

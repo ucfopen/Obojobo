@@ -1,4 +1,3 @@
-jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
 jest.mock('obojobo-express/server/db')
 const db = require('obojobo-express/server/db')
 const { deletePreviewState } = require('./preview')

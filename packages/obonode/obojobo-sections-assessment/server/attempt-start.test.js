@@ -4,10 +4,8 @@ global.oboRequire = name => {
 	return require(`obojobo-express/${name}`)
 }
 
-jest.setMock('obojobo-express/server/logger', require('obojobo-express/__mocks__/logger'))
-jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
-jest.setMock('obojobo-express/server/insert_event', require('obojobo-express/__mocks__/insert_event'))
 jest.mock('obojobo-express/server/logger')
+jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')

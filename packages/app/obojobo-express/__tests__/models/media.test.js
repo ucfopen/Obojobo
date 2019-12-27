@@ -44,7 +44,7 @@ import fileType from 'file-type'
 import fs from 'fs'
 import isSvg from 'is-svg'
 
-require('../../config').media
+require('../../server/config').media
 
 const db = oboRequire('server/db')
 

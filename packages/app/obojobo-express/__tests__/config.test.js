@@ -2,6 +2,7 @@ const env_node = process.env.NODE_ENV
 const path = require('path')
 let logger
 
+const configPath = path.resolve(__dirname + '/../server/config')
 describe('config', () => {
 	beforeEach(() => {
 		delete process.env.NODE_ENV
@@ -53,7 +54,6 @@ describe('config', () => {
 				port: { ENV: 'DB_PORT' }
 			}
 		}
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DATABASE_URL = 'postgres://mock-user:mock-password@mock-host.com:7777/mock-dbname'
@@ -82,7 +82,6 @@ describe('config', () => {
 			}
 		}
 
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		const config = oboRequire('server/config')
@@ -100,7 +99,6 @@ describe('config', () => {
 				user: { ENV: 'DB_USER' }
 			}
 		}
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		oboRequire('server/config')
@@ -114,7 +112,6 @@ describe('config', () => {
 			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":999}'
@@ -131,7 +128,6 @@ describe('config', () => {
 			test: { ENV: 'DB_CONFIG_JSON' }
 		}
 
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DB_CONFIG_JSON = '{invalid-json:"mock-host"}'
@@ -154,7 +150,6 @@ describe('config', () => {
 			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
-		const configPath = path.resolve(__dirname + '/../config')
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		// NOTE the value of port in this json is another ENV:value key that itself

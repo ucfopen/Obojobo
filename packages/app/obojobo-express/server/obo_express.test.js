@@ -7,9 +7,9 @@ mockVirtual('./server/express_lti_launch')
 mockVirtual('./server/express_register_chunks')
 mockVirtual('./server/lti')
 mockVirtual('express-ims-lti')
-jest.mock('../server/db')
+jest.mock('./db')
 jest.mock(
-	'../server/asset_resolver',
+	'./asset_resolver',
 	() => ({
 		assetForEnv: path => path,
 		webpackAssetPath: path => path
@@ -49,9 +49,9 @@ const mockExpress = (mockOn = false, mockStatic = false) => {
 	)
 }
 
-		// let x = oboRequire('server/dev_nonce_store')
-		// console.log('go', x)
-		// console.log(new x())
+// let x = oboRequire('server/dev_nonce_store')
+// console.log('go', x)
+// console.log(new x())
 
 describe('obo express', () => {
 	beforeAll(() => {

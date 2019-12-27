@@ -1,6 +1,4 @@
 describe('Assessment server Events', () => {
-	jest.setMock('obojobo-express/server/logger', require('obojobo-express/__mocks__/logger'))
-	jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
 	jest.mock('obojobo-express/server/obo_events')
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')

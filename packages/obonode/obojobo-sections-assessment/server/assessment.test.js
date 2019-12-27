@@ -4,8 +4,6 @@ global.oboRequire = name => {
 	return require(`obojobo-express/${name}`)
 }
 
-jest.setMock('obojobo-express/server/logger', require('obojobo-express/__mocks__/logger'))
-jest.setMock('obojobo-express/server/db', require('obojobo-express/__mocks__/db'))
 jest.setMock(
 	'ims-lti/src/extensions/outcomes',
 	require('obojobo-express/__mocks__/ims-lti/src/extensions/outcomes')

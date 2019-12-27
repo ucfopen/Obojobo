@@ -22,7 +22,7 @@ describe('current user middleware', () => {
 			const mockNext = jest.fn()
 			res.status = mockStatus
 
-			oboRequire('express_current_visit')(req, res, mockNext)
+			oboRequire('server/express_current_visit')(req, res, mockNext)
 			return { res, req, mockJson, mockStatus, mockNext }
 		})()
 	})

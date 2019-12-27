@@ -8,10 +8,9 @@
    * a body parser (if using 'body-parser', make sure json options is set to 1mb or higher)
    * a view engine that parses .pug
 */
-
-global.oboRequire = name => {
-	return require(`${__dirname}/../${name}`)
-}
+const path = require('path')
+const basePath = path.resolve(`${__dirname}/../`)
+global.oboRequire = name => require(`${basePath}/${name}`)
 const express = require('express')
 const app = express()
 const responseDecorator = oboRequire('server/express_response_decorator')

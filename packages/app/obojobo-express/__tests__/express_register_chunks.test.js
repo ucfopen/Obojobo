@@ -57,7 +57,7 @@ describe('register chunks middleware', () => {
 	})
 
 	test('registers all obonodes as expected', () => {
-		const dns = oboRequire('draft_node_store')
+		const dns = oboRequire('server/draft_node_store')
 		const middleware = oboRequire('server/express_register_chunks')
 		const MockOboNode = require('mock-obo-node')
 
@@ -79,7 +79,7 @@ describe('register chunks middleware', () => {
 		})
 
 		middleware(mockApp)
-		const compiledDir = realPath.resolve(__dirname, '..', 'public', 'compiled')
+		const compiledDir = realPath.resolve(__dirname, '..', 'server', 'public', 'compiled')
 
 		expect(express.static).toHaveBeenCalledWith(compiledDir + '/')
 	})

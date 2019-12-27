@@ -1,6 +1,6 @@
 // mock a fake webpack manifest
 jest.mock(
-	'../public/compiled/manifest.json',
+	'../server/public/compiled/manifest.json',
 	() => ({
 		'test.js': '/static-from-manifest/test.js',
 		'test.css': '/static-from-manifest/test.css',
