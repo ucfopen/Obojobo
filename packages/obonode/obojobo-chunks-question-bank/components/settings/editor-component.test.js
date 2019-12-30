@@ -4,11 +4,12 @@ import renderer from 'react-test-renderer'
 
 import Settings from './editor-component'
 
-describe('Settings Editor Node', () => {
+describe('Question Bank Settings Editor Node', () => {
 	test('Settings builds the expected component', () => {
 		const component = renderer.create(
 			<Settings
 				node={{
+					key: 'mock-id',
 					data: {
 						get: () => {
 							return {}
@@ -30,6 +31,7 @@ describe('Settings Editor Node', () => {
 		const component = mount(
 			<Settings
 				node={{
+					key: 'mock-id',
 					data: {
 						get: () => {
 							return { chooseAll: false }
@@ -66,6 +68,7 @@ describe('Settings Editor Node', () => {
 			<Settings
 				node={{
 					data: {
+						key: 'mock-id',
 						get: () => {
 							return { chooseAll: false }
 						}

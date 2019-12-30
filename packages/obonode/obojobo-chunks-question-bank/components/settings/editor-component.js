@@ -43,7 +43,7 @@ class Settings extends React.Component {
 
 	render() {
 		const content = this.props.node.data.get('content')
-
+		const radioGroup = `${this.props.node.key}-choose`
 		return (
 			<div className={'qb-settings'}>
 				<fieldset className="choose">
@@ -51,7 +51,7 @@ class Settings extends React.Component {
 					<label>
 						<input
 							type="radio"
-							name="choose"
+							name={radioGroup}
 							value="all"
 							checked={content.chooseAll}
 							onChange={this.changeChooseType.bind(this)}
@@ -62,7 +62,7 @@ class Settings extends React.Component {
 					<label>
 						<input
 							type="radio"
-							name="choose"
+							name={radioGroup}
 							value="pick"
 							checked={!content.chooseAll}
 							onChange={this.changeChooseType.bind(this)}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Settings Editor Node Settings builds the expected component 1`] = `
+exports[`Question Bank Settings Editor Node Settings builds the expected component 1`] = `
 <div
   className="qb-settings"
 >
@@ -12,7 +12,7 @@ exports[`Settings Editor Node Settings builds the expected component 1`] = `
     </legend>
     <label>
       <input
-        name="choose"
+        name="mock-id-choose"
         onChange={[Function]}
         type="radio"
         value="all"
@@ -25,7 +25,7 @@ exports[`Settings Editor Node Settings builds the expected component 1`] = `
     <label>
       <input
         checked={true}
-        name="choose"
+        name="mock-id-choose"
         onChange={[Function]}
         type="radio"
         value="pick"
