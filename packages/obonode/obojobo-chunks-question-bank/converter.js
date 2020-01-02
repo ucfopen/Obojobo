@@ -19,8 +19,14 @@ const slateToObo = node => {
 				break
 
 			case SETTINGS_NODE:
-				content = child.data.get('content') || {}
-				if (content.chooseAll) content.choose = Infinity
+				content = { ...(child.data.get('content') || {}) }
+
+				if (content.chooseAll) {
+					content.choose = 'all'
+				} else if (!Number.isFinite(parseInt(content.choose, 10))) {
+					content.choose = '1'
+				}
+				delete content.chooseAll
 				break
 		}
 	})
@@ -37,7 +43,7 @@ const oboToSlate = node => {
 	const chooseAll = !Number.isFinite(parseInt(node.content.choose, 10))
 	const data = { content: { ...node.content, chooseAll } }
 
-	if (chooseAll) data.content.choose = 1
+	if (chooseAll) data.content.choose = '1'
 
 	const nodes = [
 		{

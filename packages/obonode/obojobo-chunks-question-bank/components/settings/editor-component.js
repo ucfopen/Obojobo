@@ -5,12 +5,15 @@ import React from 'react'
 class Settings extends React.Component {
 	changeChooseType(event) {
 		event.stopPropagation()
+
 		const chooseAll = event.target.value === 'all'
+		const nodeContentData = this.props.node.data.get('content')
 
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
-					...this.props.node.data.get('content'),
+					...nodeContentData,
+					choose: chooseAll ? '1' : nodeContentData.choose,
 					chooseAll
 				}
 			}
@@ -19,11 +22,31 @@ class Settings extends React.Component {
 
 	changeChooseAmount(event) {
 		event.stopPropagation()
+
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					...this.props.node.data.get('content'),
-					choose: event.target.value
+					choose: event.target.value,
+					chooseAll: false
+				}
+			}
+		})
+	}
+
+	validateAndUpdateChooseAmount(event) {
+		event.stopPropagation()
+
+		// Ensure that any typed in choose value is a valid number >= 1
+		const choose = this.props.node.data.get('content').choose
+		let updatedChooseNumber = Math.max(1, parseInt(choose, 10))
+		if (!Number.isFinite(updatedChooseNumber)) updatedChooseNumber = 1
+
+		return this.props.editor.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					...this.props.node.data.get('content'),
+					choose: '' + updatedChooseNumber
 				}
 			}
 		})
@@ -31,6 +54,7 @@ class Settings extends React.Component {
 
 	changeSelect(event) {
 		event.stopPropagation()
+
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
@@ -72,9 +96,11 @@ class Settings extends React.Component {
 					<input
 						type="number"
 						value={content.choose}
-						disabled={content.chooseAll}
-						onChange={this.changeChooseAmount.bind(this)}
 						onClick={event => event.stopPropagation()}
+						onBlur={this.validateAndUpdateChooseAmount.bind(this)}
+						onChange={this.changeChooseAmount.bind(this)}
+						disabled={content.chooseAll}
+						min="1"
 					/>
 				</fieldset>
 				<label className="select">
