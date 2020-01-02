@@ -14,7 +14,8 @@
 			}
 		},
 		"demoPurgeMode": "none",
-		"demoPurgeDaysAgo": 7
+		"demoPurgeDaysAgo": 7,
+		"editLockExpireMinutes": 5
 	},
 	"test": {
 		"key": "value",

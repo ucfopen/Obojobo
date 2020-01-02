@@ -167,6 +167,10 @@ const APIUtil = {
 
 	getAllDrafts() {
 		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
+	},
+
+	requestEditLock(draftId) {
+		return APIUtil.post(`/api/locks/${draftId}`, {}).then(processJsonResults)
 	}
 }
 

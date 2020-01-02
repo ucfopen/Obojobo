@@ -41,6 +41,7 @@ app.on('mount', app => {
 	app.use('/api/events', oboRequire('routes/api/events'))
 	app.use('/api/media', oboRequire('routes/api/media'))
 	app.use('/api/visits', oboRequire('routes/api/visits'))
+	app.use('/api/locks', oboRequire('routes/api/locks'))
 	app.use('/profile', oboRequire('routes/profile'))
 
 	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========

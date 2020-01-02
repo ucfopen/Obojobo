@@ -30,6 +30,7 @@ const { OboModel } = Common.models
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
+const RENEW_LOCK_INTERVAL = 60000 * 4.9 // 4.9 minutes in milliseconds
 
 const plugins = [
 	Component.plugins,
@@ -54,7 +55,9 @@ class EditorApp extends React.Component {
 			draftId: null,
 			draft: null,
 			mode: VISUAL_MODE,
-			code: null
+			code: null,
+			requestStatus: null,
+			requestError: null
 		}
 
 		// register plugins from dynamic registry items
@@ -123,6 +126,28 @@ class EditorApp extends React.Component {
 		this.reloadDraft(this.state.draftId, mode)
 	}
 
+	displayLockedModal() {
+		this.setState({
+			requestStatus: 'invalid',
+			requestError: {
+				title: 'Module is Being Edited.',
+				message: 'Someone else is currently editing this module, please try again later.'
+			}
+		})
+	}
+
+	startRenewEditLockInterval() {
+		setInterval(() => {
+			this.createEditLock(this.state.draftId).then(success => {
+				if (!success) this.displayLockedModal()
+			})
+		}, RENEW_LOCK_INTERVAL)
+	}
+
+	createEditLock(draftId) {
+		return APIUtil.requestEditLock(draftId).then(json => json.status !== 'error')
+	}
+
 	reloadDraft(draftId, mode) {
 		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
@@ -164,7 +189,14 @@ class EditorApp extends React.Component {
 		if (mode === 'classic') mode = XML_MODE // convert classic to xml
 
 		ModalStore.init()
-		return this.reloadDraft(draftId, this.state.mode)
+		return this.createEditLock(draftId).then(lockSuccess => {
+			if (!lockSuccess) {
+				this.displayLockedModal()
+			} else {
+				this.startRenewEditLockInterval()
+				return this.reloadDraft(draftId, this.state.mode)
+			}
+		})
 	}
 
 	componentWillUnmount() {
@@ -204,8 +236,8 @@ class EditorApp extends React.Component {
 		if (this.state.requestStatus === 'invalid') {
 			return (
 				<div className="viewer--viewer-app--visit-error">
-					<h1>Error</h1>
-					<h2>{this.state.requestError.type}</h2>
+					<h1>{this.state.requestError.title || 'Error'}</h1>
+					{this.state.requestError.type ? <h2>{this.state.requestError.type}</h2> : null}
 					<div>{this.state.requestError.message}</div>
 				</div>
 			)
