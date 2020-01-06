@@ -9,7 +9,7 @@ import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
-import { KeyUtils } from 'slate'
+//import { KeyUtils } from 'slate'
 import PageEditor from './page-editor'
 import React from 'react'
 import generateId from '../generate-ids'
@@ -65,7 +65,7 @@ class EditorApp extends React.Component {
 		})
 
 		// Make Slate nodes generate with UUIDs
-		KeyUtils.setGenerator(generateId)
+		//KeyUtils.setGenerator(generateId)
 
 		// === SET UP DATA STORES ===
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
