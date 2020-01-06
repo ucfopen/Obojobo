@@ -1,5 +1,4 @@
-import { hydrateEl } from '../../react-utils'
-import PageModule from './page-module-hoc'
+import { hydrateElWithoutStore } from '../../react-utils'
+import PageModule from './page-module.jsx'
 
-const emptyReducer = state => state;
-hydrateEl(PageModule, emptyReducer, "#react-hydrate-root")
+hydrateElWithoutStore(PageModule, '#react-hydrate-root')

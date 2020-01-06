@@ -1,4 +1,4 @@
-const API = require('obojobo-document-engine/src/scripts/viewer/util/api').default
+const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
 
 const APIUtil = {
 	copyModule(draftId) {

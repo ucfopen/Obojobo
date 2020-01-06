@@ -2,7 +2,7 @@
 
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
-const API = require('../../../src/scripts/viewer/util/api').default
+const API = require('../../../src/scripts/viewer/util/api')
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
