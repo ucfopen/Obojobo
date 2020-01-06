@@ -43,11 +43,10 @@ const oboToSlate = node => {
 		actions: []
 	}
 	if (!node.content.triggers) {
-		node.content.triggers = [
-			onClickTrigger
-		]
+		node.content.triggers = [onClickTrigger]
 	} else {
-		const hasOnClickTrigger = node.content.triggers.filter(trigger => trigger.type === 'onClick').length > 0
+		const hasOnClickTrigger =
+			node.content.triggers.filter(trigger => trigger.type === 'onClick').length > 0
 		if (!hasOnClickTrigger) node.content.triggers.push(onClickTrigger)
 	}
 

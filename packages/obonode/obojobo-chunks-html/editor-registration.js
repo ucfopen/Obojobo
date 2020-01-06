@@ -27,7 +27,8 @@ const HTML = {
 				<span
 					className="placeholder"
 					contentEditable={false}
-					data-placeholder="<!-- HTML code here -->"/>
+					data-placeholder="<!-- HTML code here -->"
+				/>
 			)
 		},
 		renderNode(props, editor, next) {

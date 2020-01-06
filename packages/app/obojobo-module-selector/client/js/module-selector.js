@@ -1,4 +1,4 @@
-import './css/module-selector.scss'
+import '../css/module-selector.scss'
 ;(function() {
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
@@ -382,7 +382,10 @@ import './css/module-selector.scss'
 		event.preventDefault()
 
 		const $this = $(this)
-		const $oboItem = $this.parent().parent()
+		const $oboItem = $this
+			.parent()
+			.parent()
+			.parent()
 		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
 		gotoSection('progress')

@@ -1,7 +1,14 @@
 jest.mock('../../db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
-
+jest.mock(
+	'../../asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
 

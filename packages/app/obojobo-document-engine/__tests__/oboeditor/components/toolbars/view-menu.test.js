@@ -2,7 +2,6 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 
 import ViewMenu from '../../../../src/scripts/oboeditor/components/toolbars/view-menu'
-
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
 const VISUAL_MODE = 'visual'

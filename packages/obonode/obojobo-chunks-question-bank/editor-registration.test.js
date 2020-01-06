@@ -80,7 +80,7 @@ describe('QuestionBank editor', () => {
 	})
 
 	test('plugins.getPasteNode returns question', () => {
-		const question = { 'type': QUESTION_NODE }
+		const question = { type: QUESTION_NODE }
 		const qb = {
 			nodes: {
 				size: 1,
@@ -101,7 +101,7 @@ describe('QuestionBank editor', () => {
 						{
 							nodes: [
 								{
-									toJSON:() => ({ object: 'block', type: 'mockNode' })
+									toJSON: () => ({ object: 'block', type: 'mockNode' })
 								}
 							]
 						}

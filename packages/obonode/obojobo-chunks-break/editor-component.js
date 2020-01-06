@@ -38,7 +38,8 @@ class Break extends React.Component {
 				<div
 					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
 						this.props.node.data.get('content').width
-					}`}>
+					}`}
+				>
 					<hr />
 					{this.props.isSelected ? this.renderButton() : null}
 				</div>

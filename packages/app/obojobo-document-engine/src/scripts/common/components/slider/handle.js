@@ -7,7 +7,7 @@ const Handle = ({
 	domain: [min, max],
 	handle: { id, value, percent },
 	disabled,
-	getHandleProps,
+	getHandleProps
 }) => {
 	return (
 		<button
@@ -17,7 +17,7 @@ const Handle = ({
 			aria-valuenow={value}
 			className={'obojobo-draft--components--slider--handle ' + isOrNot(disabled, 'disabled')}
 			style={{
-				left: `${percent}%`,
+				left: `${percent}%`
 			}}
 			{...getHandleProps(id)}
 		/>

@@ -1,5 +1,5 @@
 /* stylelint-disable */
-@import '../../client/css/defaults';
+@import '../../../client/css/defaults';
 
 /* global element styles */
 a {
@@ -22,7 +22,6 @@ html {
 }
 
 body {
-	font-family: 'Source Sans Pro', Arial, sans;
 	padding: 0;
 	margin: 0;
 	text-align: center;

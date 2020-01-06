@@ -41,8 +41,6 @@ const BasicMarks = {
 				default:
 					return next()
 			}
-
-
 		},
 		renderMark(props, editor, next) {
 			switch (props.mark.type) {

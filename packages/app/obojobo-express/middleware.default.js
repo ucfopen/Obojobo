@@ -9,7 +9,7 @@ const compression = require('compression')
 const logger = require('./logger')
 const ObojoboDocumentServer = require('./obo_express')
 const db = require('./db')
-const IS_WEBPACK = process.env.IS_WEBPACK || false
+const IS_WEBPACK = process.env.IS_WEBPACK === 'true'
 const engines = require('consolidate')
 
 module.exports = app => {

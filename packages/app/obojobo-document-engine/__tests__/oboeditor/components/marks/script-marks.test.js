@@ -44,30 +44,46 @@ describe('ScriptMarks', () => {
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 
-		mockEvent.key = "."
+		mockEvent.key = '.'
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 	})
 
 	test('renderMark diplays expected style', () => {
-		expect(ScriptMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: SCRIPT_MARK, data: { get: () => 1 } }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			ScriptMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: SCRIPT_MARK, data: { get: () => 1 } }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(ScriptMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: SCRIPT_MARK, data: { get: () => -1 } }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			ScriptMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: SCRIPT_MARK, data: { get: () => -1 } }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 
 	test('renderMark calls next', () => {
 		const next = jest.fn()
 
-		ScriptMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: 'mockMark' }
-		}, null, next)
+		ScriptMarks.plugins.renderMark(
+			{
+				children: 'mockChild',
+				mark: { type: 'mockMark' }
+			},
+			null,
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -77,9 +93,7 @@ describe('ScriptMarks', () => {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),
 			value: {
-				marks: [
-					{ type: SCRIPT_MARK, data: { get: () => 1 }}
-				]
+				marks: [{ type: SCRIPT_MARK, data: { get: () => 1 } }]
 			}
 		}
 
@@ -94,9 +108,7 @@ describe('ScriptMarks', () => {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),
 			value: {
-				marks: [
-					{ type: 'mockMark', data: { get: () => 1 }}
-				]
+				marks: [{ type: 'mockMark', data: { get: () => 1 } }]
 			}
 		}
 
@@ -118,4 +130,3 @@ describe('ScriptMarks', () => {
 		expect(editor.toggleScript).toHaveBeenCalledTimes(2)
 	})
 })
-

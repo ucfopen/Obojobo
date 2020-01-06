@@ -112,7 +112,7 @@ class Rubric extends React.Component {
 				<fieldset className="pass-fail">
 					<legend>Pass & Fail Rules</legend>
 					<p>
-						In this mode, students must achieve a certian threshold on an attempt to pass. The
+						In this mode, students must achieve a certain threshold on an attempt to pass. The
 						assessment scores will be set based on whether the student passes or fails
 					</p>
 					<div>

@@ -44,19 +44,29 @@ describe('LinkMark', () => {
 	})
 
 	test('renderMark diplays expected style', () => {
-		expect(LinkMark.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: LINK_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			LinkMark.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: LINK_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 
 	test('renderMark calls next', () => {
 		const next = jest.fn()
 
-		LinkMark.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: 'mockMark' }
-		}, null, next)
+		LinkMark.plugins.renderMark(
+			{
+				children: 'mockChild',
+				mark: { type: 'mockMark' }
+			},
+			null,
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -75,7 +85,7 @@ describe('LinkMark', () => {
 					{
 						data: { toJSON: () => ({ content: {} }) },
 						type: 'mockNode'
-					},
+					}
 				]
 			}
 		}
@@ -100,7 +110,7 @@ describe('LinkMark', () => {
 					{
 						data: { toJSON: () => ({ content: {} }) },
 						type: 'mockNode'
-					},
+					}
 				]
 			}
 		}
@@ -123,4 +133,3 @@ describe('LinkMark', () => {
 		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
 	})
 })
-

@@ -40,3 +40,5 @@ const buildMockReactComponent = name => {
 global.mockReactComponent = (target, name) => {
 	return buildMockReactComponent.call(target, name)
 }
+
+global.window.open = jest.fn()

@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const slateToObo = node => {
@@ -13,6 +15,7 @@ const slateToObo = node => {
 	delete content.passedType
 	delete content.failedType
 	delete content.unableToPassType
+	delete content.attempts
 
 	return content
 }
@@ -49,6 +52,7 @@ const oboToSlate = node => {
 			node.unableToPassResult = 0
 			break
 		case null:
+		case undefined:
 			node.unableToPassType = 'no-value'
 			node.unableToPassResult = 0
 			break

@@ -8,7 +8,7 @@ const Track = ({ source, target, getTrackProps, disabled }) => {
 		<div
 			style={{
 				left: `${source.percent}%`,
-				width: `${target.percent - source.percent}%`,
+				width: `${target.percent - source.percent}%`
 			}}
 			className={'obojobo-draft--components--slider--track ' + isOrNot(disabled, 'disabled')}
 			{...getTrackProps()}

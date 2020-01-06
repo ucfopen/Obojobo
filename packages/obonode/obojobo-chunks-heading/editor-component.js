@@ -63,7 +63,8 @@ class Heading extends React.Component {
 		const dropText = text.slice(0, 15) || 'Your Heading'
 		return (
 			<div className={'dropdown-heading'} contentEditable={false}>
-				<button onClick={this.toggleLevelSelect}>{`Heading ${content.level}`}
+				<button onClick={this.toggleLevelSelect}>
+					{`Heading ${content.level}`}
 					<span className={isOrNot(this.state.isOpen, 'open')}>{'⌃'}</span>
 				</button>
 				<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
@@ -96,14 +97,12 @@ class Heading extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div
-					className={'text-chunk obojobo-draft--chunks--heading pad'}
-					ref={this.nodeRef}>
+				<div className={'text-chunk obojobo-draft--chunks--heading pad'} ref={this.nodeRef}>
 					<HTag>
 						<span className={`text align-${content.align}`}>{this.props.children}</span>
 					</HTag>
 
-					{this.props.isSelected ? this.renderDropdown() : null }
+					{this.props.isSelected ? this.renderDropdown() : null}
 				</div>
 			</Node>
 		)

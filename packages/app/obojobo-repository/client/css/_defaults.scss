@@ -8,6 +8,7 @@ $color-button-bg: lighten($color-action, 9%);
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
 $color-dangerous: #d40000;
+$color-dangerous-minor: desaturate($color-dangerous, 20%);
 $color-text: #000000;
 $color-text-minor: lighten($color-text, 40%);
 $color-text-subheading: #a20e83;
@@ -50,11 +51,14 @@ $font-size: 14.25pt;
 
 $dimension-module-icon: 90px;
 $dimension-avatar-icon: 90px;
+$dimension-padding: 1.5em;
+$dimension-width: 42em;
+$dimension-nav-height: 3.75em;
 
 @mixin text-input() {
 	box-sizing: border-box;
 	font-family: $font-monospace;
-	font-size: 0.8em;
+	font-size: 0.7em;
 	padding: 0.4em;
 }
 

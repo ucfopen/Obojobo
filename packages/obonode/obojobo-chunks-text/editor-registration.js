@@ -93,7 +93,8 @@ const plugins = {
 			<span
 				className={'placeholder align-' + node.data.get('align')}
 				contentEditable={false}
-				data-placeholder="Type Your Text Here" />
+				data-placeholder="Type Your Text Here"
+			/>
 		)
 	},
 	schema: Schema,

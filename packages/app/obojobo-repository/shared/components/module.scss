@@ -4,8 +4,8 @@
 	position: relative;
 	font-family: $font-default;
 	width: $dimension-module-icon;
-	padding: 9px;
-	border-radius: 5px;
+	padding: 0.8em;
+	border-radius: 0.25em;
 	background-color: none;
 	font-size: 0.75em;
 	text-align: center;
@@ -40,8 +40,7 @@
 		border-color: $color-banner-bg;
 
 		.repository--module-icon--image {
-			margin-top: -2px;
-			padding-bottom: 2px;
+			transform: translate(0, -2px);
 		}
 
 		.repository--module-icon--menu-control-button {

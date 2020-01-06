@@ -339,8 +339,8 @@ describe('render-settings', () => {
 
 		expect(i(721)).toEqual({
 			transform: 'scale(721)',
-			width: 1 / 721 * 100 + '%',
-			height: 1 / 721 * 100 + '%'
+			width: (1 / 721) * 100 + '%',
+			height: (1 / 721) * 100 + '%'
 		})
 	})
 
@@ -348,7 +348,7 @@ describe('render-settings', () => {
 		const a = getAfterStyle
 
 		expect(a(123, 456, 'scale')).toEqual({
-			paddingTop: 456 / 123 * 100 + '%'
+			paddingTop: (456 / 123) * 100 + '%'
 		})
 		expect(a(123, 456, 'scroll')).toEqual({
 			height: 456

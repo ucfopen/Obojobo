@@ -92,6 +92,18 @@ describe('Assessment Converter', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
+	test('oboToSlate converts an OboComponent to a Slate node with no unableToPassResult', () => {
+		const oboNode = {
+			passingAttemptScore: 0,
+			passedResult: '$attempt_score',
+			failedResult: 'no_score',
+			unableToPassResult: undefined
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboComponent to a Slate node with numerical values', () => {
 		const oboNode = {
 			passingAttemptScore: 0,

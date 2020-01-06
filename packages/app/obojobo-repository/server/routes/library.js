@@ -2,6 +2,7 @@ const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/models/user')
+const { webpackAssetPath } = require('obojobo-express/asset_resolver')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
@@ -13,13 +14,29 @@ router
 	.route('/')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('page-homepage.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('homepage.css')
+		}
+		res.render('pages/page-homepage.jsx', props)
 	})
 
-// returns images for a module
+// Module Images
 router.route('/library/module-icon/:moduleId').get((req, res) => {
+	// @TODO: when user's can change these images,
+	// we'll need to use a smarter etag
+
+	// use etag to avoid doing work, if the browser
+	// sends an if-none-match of this object's etag
+	// it already has it cached, just return 304 now
+	if (req.headers['if-none-match'] === req.params.moduleId) {
+		res.status(304)
+		res.send()
+		return
+	}
+
 	const pattern = GeoPattern.generate(req.params.moduleId)
-	res.set('Cache-Control', 'public, max-age=31557600') // one year
+	res.setHeader('ETag', req.params.moduleId)
 	res.setHeader('Content-Type', 'image/svg+xml')
 	res.send(pattern.toString())
 })
@@ -28,7 +45,11 @@ router
 	.route('/login')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('page-login.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('repository.css')
+		}
+		res.render('pages/page-login.jsx', props)
 	})
 
 router
@@ -46,9 +67,10 @@ router
 					collections: [collection],
 					page: 1,
 					pageCount: 1,
-					currentUser: req.currentUser
+					currentUser: req.currentUser,
+					appCSSUrl: webpackAssetPath('repository.css')
 				}
-				res.render('page-library.jsx', props)
+				res.render('pages/page-library.jsx', props)
 			})
 			.catch(res.unexpected)
 	})
@@ -74,9 +96,10 @@ router
 			const props = {
 				module,
 				owner,
-				currentUser: req.currentUser
+				currentUser: req.currentUser,
+				appCSSUrl: webpackAssetPath('repository.css')
 			}
-			res.render('page-module.jsx', props)
+			res.render('pages/page-module.jsx', props)
 		} catch (e) {
 			res.unexpected(e)
 		}

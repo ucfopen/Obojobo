@@ -15,7 +15,7 @@ const plugins = {
 				return next()
 		}
 	},
-	schema: Schema,
+	schema: Schema
 }
 
 const Rubric = {

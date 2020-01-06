@@ -32,7 +32,8 @@ const LinkMark = {
 							node={props.node}
 							offset={props.offset}
 							editor={props.editor}
-							text={props.text}>
+							text={props.text}
+						>
 							{props.children}
 						</Link>
 					)
@@ -66,13 +67,14 @@ const LinkMark = {
 			name: 'Link',
 			type: LinkMark,
 			icon: LinkIcon,
-			action: editor => ModalUtil.show(
-				<Prompt
-					title="Insert Link"
-					message="Enter the link url:"
-					onConfirm={editor.changeLinkValue}
-				/>
-			)
+			action: editor =>
+				ModalUtil.show(
+					<Prompt
+						title="Insert Link"
+						message="Enter the link url:"
+						onConfirm={editor.changeLinkValue}
+					/>
+				)
 		}
 	]
 }

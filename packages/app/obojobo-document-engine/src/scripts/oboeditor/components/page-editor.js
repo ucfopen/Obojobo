@@ -22,6 +22,7 @@ import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value, createEditor } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import PageEditorErrorBoundry from './page-editor-error-boundry'
 
 const { ModalUtil } = Common.util
 
@@ -161,7 +162,49 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		
+		const className =
+			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+		return (
+			<div className={className}>
+				<div className="draft-toolbars">
+					<div className="draft-title">{this.props.model.title}</div>
+					<FileToolbar
+						editorRef={this.editorRef}
+						model={this.props.model}
+						draftId={this.props.draftId}
+						onSave={this.saveModule}
+						switchMode={this.props.switchMode}
+						saved={this.state.saved}
+						mode={'visual'}
+						insertableItems={this.props.insertableItems}
+						togglePlaceholders={this.togglePlaceholders}
+						showPlaceholders={this.state.showPlaceholders}
+					/>
+					<ContentToolbar editorRef={this.editorRef} />
+				</div>
+
+				<EditorNav
+					navState={this.props.navState}
+					model={this.props.model}
+					draftId={this.props.draftId}
+					savePage={this.exportCurrentToJSON}
+					markUnsaved={this.markUnsaved}
+				/>
+
+				<div className="component obojobo-draft--modules--module" role="main">
+					<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<Editor
+							className="component obojobo-draft--pages--page"
+							value={this.state.value}
+							ref={this.editorRef}
+							onChange={this.onChange}
+							plugins={this.plugins}
+							readOnly={!this.props.page || !this.state.editable}
+						/>
+					</PageEditorErrorBoundry>
+				</div>
+			</div>
+		)
 	}
 
 	// render() {

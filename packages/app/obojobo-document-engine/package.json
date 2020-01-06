@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "6.0.1",
+	"version": "7.0.4",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -51,7 +51,7 @@
 		"downloadjs": "^1.4.7",
 		"immutable": "^4.0.0-rc.12",
 		"katex": "^0.11.1",
-		"obojobo-lib-utils": "6.0.1",
+		"obojobo-lib-utils": "^7.0.4",
 		"prop-types": "15.6.2",
 		"react": "16.10.1",
 		"react-codemirror2": "^6.0.0",
@@ -110,7 +110,6 @@
 			"<rootDir>/src/scripts/common/index.js",
 			"<rootDir>/src/scripts/common/dist.js",
 			"<rootDir>/src/scripts/common/models/chunk.js",
-			"<rootDir>/src/scripts/common/components/delete-button.js",
 			"<rootDir>/src/scripts/viewer/components/rd.js",
 			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-network-states.js",
 			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-resync-states.js"

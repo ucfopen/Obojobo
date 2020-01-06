@@ -13,14 +13,16 @@ const ClipboardPlugin = {
 				const item = Common.Registry.getItemForType(node.type)
 				const pastableNode = item.getPasteNode(node)
 
-				if(pastableNode instanceof Block){
+				if (pastableNode instanceof Block) {
 					nodes.push(pastableNode)
 				} else {
 					pastableNode.forEach(node => nodes.push(node))
 				}
 			})
-			
-			return editor.insertFragment(Document.create({ object: 'document', nodes: nodes.map(node => node.toJSON()) }))
+
+			return editor.insertFragment(
+				Document.create({ object: 'document', nodes: nodes.map(node => node.toJSON()) })
+			)
 		}
 
 		return next()

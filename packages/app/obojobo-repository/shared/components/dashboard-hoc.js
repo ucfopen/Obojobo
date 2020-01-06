@@ -21,4 +21,7 @@ const mapActionsToProps = {
 	deleteModule,
 	showModulePermissions
 }
-module.exports = connect(mapStoreStateToProps, mapActionsToProps)(Dashboard)
+module.exports = connect(
+	mapStoreStateToProps,
+	mapActionsToProps
+)(Dashboard)

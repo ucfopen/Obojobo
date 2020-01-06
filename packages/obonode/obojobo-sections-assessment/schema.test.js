@@ -50,7 +50,6 @@ describe('Assessment Schema', () => {
 		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-
 	test('normalize adds missing first child in Assessment', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()

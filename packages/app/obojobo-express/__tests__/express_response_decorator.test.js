@@ -76,10 +76,13 @@ describe('api response middleware', () => {
 	test('some functions emit events', () => {
 		const oboEvents = require('../obo_events')
 		oboEvents.emit.mockReset()
-		const { res } = mockArgs
+		const { req, res } = mockArgs
+
+		// prevent them from shorcutting due to json format
+		;(req.originalUrl = 'not-an-api'), req.is.mockReturnValue(false)
 
 		functionsWithEvents.forEach(method => {
-			res[method]()
+			res[method](req, res)
 		})
 
 		expect(oboEvents.emit).toHaveBeenCalledTimes(functionsWithEvents.length)
@@ -91,11 +94,24 @@ describe('api response middleware', () => {
 	})
 
 	test('some functions do nothing if responseHandled is set', () => {
-		const { res } = mockArgs
+		const { req, res } = mockArgs
 
-		res.responseHandled = true
+		// prevent them from shorcutting due to json format
+		;(req.originalUrl = 'not-an-api'), req.is.mockReturnValue(false)
+		// pretend the callback marked the req w/ responseHandled
+		req.responseHandled = true
+		res.headersSent = false
+
 		functionsWithEvents.forEach(method => {
-			res[method]()
+			res[method](req, res)
+			expect(res.send).not.toHaveBeenCalled()
+		})
+
+		req.responseHandled = false
+		res.headersSent = true
+
+		functionsWithEvents.forEach(method => {
+			res[method](req, res)
 			expect(res.send).not.toHaveBeenCalled()
 		})
 	})

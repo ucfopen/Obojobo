@@ -60,15 +60,17 @@ class TriggerListModal extends React.Component {
 		// Update triggers[triggerIndex].actions[actionIndex].type
 		// The nested loops insure that React's immutable state is updated properly
 		return this.setState(prevState => ({
+			/* eslint-disable no-mixed-spaces-and-tabs */
 			triggers: prevState.triggers.map((trigger, tIndex) =>
-				triggerIndex === tIndex ?
-					Object.assign(trigger, {
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
 							actions: trigger.actions.map((action, aIndex) =>
-								actionIndex === aIndex ?
-									Object.assign(action, { type, value: { animateScroll: true } }) :
-									action
-					)}) :
-					trigger
+								actionIndex === aIndex
+									? Object.assign(action, { type, value: { animateScroll: true } })
+									: action
+							)
+					  })
+					: trigger
 			)
 		}))
 	}
@@ -82,17 +84,19 @@ class TriggerListModal extends React.Component {
 		// Update triggers[triggerIndex].actions[actionIndex].value.key
 		// The nested loops insure that React's immutable state is updated properly
 		return this.setState(prevState => ({
+			/* eslint-disable no-mixed-spaces-and-tabs */
 			triggers: prevState.triggers.map((trigger, tIndex) =>
-				triggerIndex === tIndex ?
-					Object.assign(trigger, {
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
 							actions: trigger.actions.map((action, aIndex) =>
-								actionIndex === aIndex ?
-								Object.assign(action, {
+								actionIndex === aIndex
+									? Object.assign(action, {
 											value: Object.assign({}, action.value, value)
-								}) : 
-								action
-					)}) :
-					trigger
+									  })
+									: action
+							)
+					  })
+					: trigger
 			)
 		}))
 	}
@@ -101,13 +105,13 @@ class TriggerListModal extends React.Component {
 		// Delete triggers[triggerIndex].actions[actionIndex]
 		return this.setState(prevState => ({
 			triggers: prevState.triggers.map((trigger, tIndex) =>
-				triggerIndex === tIndex ?
-					Object.assign(trigger, {
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
 							actions: trigger.actions
 								.map((action, aIndex) => (actionIndex === aIndex ? null : action))
 								.filter(Boolean)
-					}) :
-					trigger
+					  })
+					: trigger
 			)
 		}))
 	}
@@ -116,14 +120,14 @@ class TriggerListModal extends React.Component {
 		// Create a new action in triggers[triggerIndex].actions
 		return this.setState(prevState => ({
 			triggers: prevState.triggers.map((trigger, tIndex) =>
-				triggerIndex === tIndex ?
-					Object.assign(trigger, {
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
 							actions: trigger.actions.concat({
 								type: 'nav:goto',
 								value: {}
 							})
-					}) :
-					trigger
+					  })
+					: trigger
 			)
 		}))
 	}

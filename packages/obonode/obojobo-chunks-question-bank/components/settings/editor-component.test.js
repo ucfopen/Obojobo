@@ -39,20 +39,20 @@ describe('Settings Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		
+
 		component
 			.find('input')
 			.at(1)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick' }})
-	
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick' } })
+
 		component
 			.find('input')
 			.at(2)
-			.simulate('click', { stopPropagation: jest.fn(), target: { value: 11 }})
+			.simulate('click', { stopPropagation: jest.fn(), target: { value: 11 } })
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 11 }})
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 11 } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
 	})
@@ -74,15 +74,15 @@ describe('Settings Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		
+
 		component
 			.find('select')
 			.at(0)
-			.simulate('click', { stopPropagation: jest.fn(), target: { value: 'random' }})
+			.simulate('click', { stopPropagation: jest.fn(), target: { value: 'random' } })
 		component
 			.find('select')
 			.at(0)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'random' }})
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'random' } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})

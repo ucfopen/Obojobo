@@ -22,7 +22,9 @@ class Question extends React.Component {
 		const type = event.target.checked ? 'survey' : 'default'
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
-		const mcAssessmentNode = this.props.node.nodes.filter(node => node.type === MCASSESSMENT_NODE).get(0)
+		const mcAssessmentNode = this.props.node.nodes
+			.filter(node => node.type === MCASSESSMENT_NODE)
+			.get(0)
 		const mcAssessmentData = mcAssessmentNode.data.toJSON()
 
 		this.props.editor.setNodeByKey(this.props.node.key, {
@@ -62,7 +64,7 @@ class Question extends React.Component {
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
-		if(hasSolution){
+		if (hasSolution) {
 			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
 		} else {
 			questionType = this.props.node.nodes.last().type
@@ -71,16 +73,13 @@ class Question extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div
-					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${
-						content.type
-					}`}>
+					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
+				>
 					<div className="flipper question-editor">
 						<div className="content-back">
 							<div className="question-settings">
 								<label>Question Type</label>
-								<select
-									contentEditable={false}
-									value={questionType}>
+								<select contentEditable={false} defaultValue={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
 								<label className="question-type" contentEditable={false}>
@@ -89,7 +88,8 @@ class Question extends React.Component {
 										name="vehicle1"
 										value="Bike"
 										checked={content.type === 'survey'}
-										onChange={this.onSetType}/>
+										onChange={this.onSetType}
+									/>
 									Survey Only
 								</label>
 							</div>

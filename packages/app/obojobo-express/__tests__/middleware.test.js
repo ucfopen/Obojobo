@@ -169,7 +169,7 @@ describe('middleware', () => {
 	})
 
 	test('when using webpack, the 404 handler calls calls missing when not a static file', () => {
-		process.env.IS_WEBPACK = true
+		process.env.IS_WEBPACK = 'true'
 		const middleware = require('../middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
@@ -185,7 +185,7 @@ describe('middleware', () => {
 	})
 
 	test('when using webpack, the 404 handler calls next on missing static files', () => {
-		process.env.IS_WEBPACK = true
+		process.env.IS_WEBPACK = 'true'
 		const middleware = require('../middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2

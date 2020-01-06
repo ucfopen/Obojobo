@@ -3,6 +3,7 @@ describe('Server Events', () => {
 	jest.mock('obojobo-express/obo_events')
 	jest.mock('obojobo-express/db')
 	jest.mock('obojobo-express/models/draft')
+	jest.mock('../../obojobo-express/public/compiled/manifest.json', () => ({}), { virtual: true })
 
 	let oboEvents
 	let DraftModel
