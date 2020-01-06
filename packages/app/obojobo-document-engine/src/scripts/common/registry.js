@@ -39,7 +39,7 @@ class _Registry {
 
 	// convenience method for editor nodes to register
 	registerEditorModel(EditorNode) {
-		this.registerModel(EditorNode.name, {
+		const registration = {
 			name: EditorNode.menuLabel,
 			icon: EditorNode.icon,
 			isInsertable: EditorNode.isInsertable,
@@ -51,7 +51,20 @@ class _Registry {
 			getNavItem: EditorNode.getNavItem,
 			supportsChildren: EditorNode.supportsChildren || false,
 			ignore: EditorNode.ignore || false
+		}
+
+		// Since registerModel sets defaults we want to remove any
+		// undefined values (Object.assign won't overwrite object
+		// values that are undefined, only ones that don't exist
+		// in the object)
+		const filteredRegistration = {}
+		Object.keys(registration).forEach(key => {
+			if (typeof registration[key] !== 'undefined') {
+				filteredRegistration[key] = registration[key]
+			}
 		})
+
+		this.registerModel(EditorNode.name, filteredRegistration)
 	}
 
 	cloneBlankNode(templateObject) {

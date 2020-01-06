@@ -1,3 +1,4 @@
+import { getEventTransfer } from 'slate-react'
 import React from 'react'
 
 import emptyNode from './empty-node.json'
@@ -7,6 +8,10 @@ import Schema from './schema'
 import Converter from './converter'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+
+const isType = editor => {
+	return editor.value.blocks.some(block => block.type === HEADING_NODE)
+}
 
 const Heading = {
 	name: HEADING_NODE,
@@ -18,6 +23,21 @@ const Heading = {
 		emptyNode
 	},
 	plugins: {
+		onPaste(event, editor, next) {
+			const isHeading = isType(editor)
+			const transfer = getEventTransfer(event)
+
+			// If we are pasting standard text (not-html) then we simply
+			// put the text inside the existing heading node. If we don't
+			// do this the page will crash when pasting text into a blank
+			// heading node.
+			if (isHeading && transfer.type === 'text') {
+				editor.insertText(transfer.text)
+				return
+			}
+
+			return next()
+		},
 		renderPlaceholder(props, editor, next) {
 			const { node } = props
 			if (node.object !== 'block' || node.type !== HEADING_NODE) return next()
