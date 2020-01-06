@@ -33,4 +33,72 @@ describe('Break editor', () => {
 		expect(Break.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
+
+	test('plugins.onBeforeInput calls next for non-break nodes', () => {
+		const next = jest.fn()
+		const event = {
+			preventDefault: jest.fn()
+		}
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: 'not-break-node' })
+				}
+			}
+		}
+
+		Break.plugins.onBeforeInput(event, editor, next)
+		expect(next).toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onBeforeInput calls prevent default for break nodes', () => {
+		const next = jest.fn()
+		const event = {
+			preventDefault: jest.fn()
+		}
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: BREAK_NODE })
+				}
+			}
+		}
+
+		Break.plugins.onBeforeInput(event, editor, next)
+		expect(next).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onPaste calls next for non-break nodes', () => {
+		const next = jest.fn()
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: 'not-break-node' })
+				}
+			},
+			undo: jest.fn()
+		}
+
+		Break.plugins.onPaste(null, editor, next)
+		expect(next).toHaveBeenCalled()
+		expect(editor.undo).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onPaste calls next for non-break nodes', () => {
+		const next = jest.fn()
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: BREAK_NODE })
+				}
+			},
+			undo: jest.fn()
+		}
+
+		Break.plugins.onPaste(null, editor, next)
+		expect(next).toHaveBeenCalled()
+		expect(editor.undo).toHaveBeenCalled()
+	})
 })

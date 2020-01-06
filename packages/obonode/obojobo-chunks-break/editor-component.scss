@@ -6,7 +6,7 @@ div.non-editable-chunk.obojobo-draft--chunks--break.viewer {
 
 	&.width-large {
 		hr {
-			width: 80%;
+			width: 100%;
 		}
 	}
 
@@ -51,6 +51,23 @@ div.non-editable-chunk.obojobo-draft--chunks--break.viewer {
 			position: relative;
 			z-index: 1;
 			font-size: 1.2em;
+		}
+	}
+
+	.ghost {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0;
+		overflow: hidden;
+		color: $color-transparent;
+		text-shadow: 0 0 0 $color-bg;
+
+		* {
+			color: $color-transparent;
+			text-shadow: 0 0 0 $color-bg;
 		}
 	}
 }
