@@ -76,13 +76,11 @@ const plugins = {
 		}
 	},
 	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case TEXT_NODE:
-				return <Node {...props} {...props.attributes} />
+		switch (props.element.subtype) {
 			case TEXT_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
 			default:
-				return next()
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	renderPlaceholder(props, editor, next) {

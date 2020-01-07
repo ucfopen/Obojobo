@@ -21,20 +21,12 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	let nodes
+	const slateNode = Object.assign({}, node)
 	if (!node.content.textGroup) {
 		// If there is currently no caption, add one
-		nodes = [
-			{
-				object: 'text',
-				leaves: [{ text: node.content.label }]
-			}
-		]
+		slateNode.children = [{ text: node.content.label }]
 	} else {
-		nodes = node.content.textGroup.map(line => ({
-			object: 'text',
-			leaves: TextUtil.parseMarkings(line)
-		}))
+		slateNode.children = node.content.textGroup.flatMap(line => TextUtil.parseMarkings(line))
 	}
 
 	// Make sure that buttons have an onClick trigger
@@ -50,15 +42,7 @@ const oboToSlate = node => {
 		if (!hasOnClickTrigger) node.content.triggers.push(onClickTrigger)
 	}
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		data: {
-			content: node.content
-		},
-		nodes
-	}
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }

@@ -1,5 +1,6 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const slateToObo = node => {
@@ -27,33 +28,19 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	const nodes = node.content.textGroup.map(line => {
+	const slateNode = Object.assign({}, node)
+	slateNode.children = node.content.textGroup.map(line => {
 		const indent = line.data ? line.data.indent : 0
 		const align = line.data ? line.data.align : 'left'
-		const textLine = {
-			object: 'block',
-			type: TEXT_LINE_NODE,
-			data: { indent, align },
-			nodes: [
-				{
-					object: 'text',
-					leaves: TextUtil.parseMarkings(line)
-				}
-			]
+		return {
+			type: TEXT_NODE,
+			subtype: TEXT_LINE_NODE,
+			content: { indent, align },
+			children: TextUtil.parseMarkings(line)
 		}
-
-		return textLine
 	})
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		nodes,
-		data: {
-			content: {}
-		}
-	}
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }

@@ -22,27 +22,14 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	let align
-	const nodes = node.content.textGroup.map(line => {
-		align = line.data ? line.data.align : 'left'
-		return {
-			object: 'text',
-			leaves: TextUtil.parseMarkings(line)
-		}
+	const slateNode = Object.assign({}, node)
+
+	slateNode.children = node.content.textGroup.flatMap(line => {
+		slateNode.content.align = line.data ? line.data.align : 'left'
+		return TextUtil.parseMarkings(line)
 	})
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		nodes,
-		data: {
-			content: {
-				align,
-				level: node.content.headingLevel
-			}
-		}
-	}
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }

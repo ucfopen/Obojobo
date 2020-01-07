@@ -2,7 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import Element from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
@@ -31,13 +31,8 @@ const Heading = {
 				/>
 			)
 		},
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case HEADING_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		renderNode(props) {
+			return <Element {...props} {...props.attributes} />
 		},
 		schema: Schema
 	},

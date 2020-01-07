@@ -103,6 +103,7 @@ class InsertMenu extends React.PureComponent {
 						this.itemRefs[item.name] = button
 					}}
 					onClick={() => {
+						console.log(item)
 						this.props.masterOnClick(item)
 					}}
 					disabled={item.disabled}

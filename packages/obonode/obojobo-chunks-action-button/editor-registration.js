@@ -2,7 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import Element from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
@@ -14,7 +14,7 @@ const ActionButton = {
 	icon: Icon,
 	isInsertable: true,
 	components: {
-		Node,
+		Element,
 		Icon
 	},
 	helpers: Converter,
@@ -22,13 +22,8 @@ const ActionButton = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case UNIQUE_NAME:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		renderNode(props) {
+			return <Element {...props} {...props.attributes} />
 		},
 		renderPlaceholder(props, editor, next) {
 			const { node } = props

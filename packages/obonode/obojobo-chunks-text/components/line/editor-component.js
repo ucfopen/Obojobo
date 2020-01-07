@@ -4,9 +4,8 @@ import React from 'react'
 
 const Line = props => (
 	<span
-		className={'text align-' + props.node.data.get('align')}
-		data-indent={props.node.data.get('indent')}
-	>
+		className={'text align-' + props.element.content.align}
+		data-indent={props.element.content.indent}>
 		{props.children}
 	</span>
 )
