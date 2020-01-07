@@ -7,13 +7,28 @@
 		"size": "custom",
 		"width": "700",
 		"height": "100",
-		"textGroup": [{
-			"data": null,
-			"text": {
-				"value": "An image with a custom size",
-				"styleList": []
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
 			}
-		}]
+		],
+		"textGroup": [
+			{
+				"data": null,
+				"text": {
+					"value": "An image with a custom size",
+					"styleList": []
+				}
+			}
+		]
 	},
 	"children": []
 }

@@ -84,7 +84,7 @@ describe('QuestionBank converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { choose: null },
+			content: { choose: null, triggers: 'mock-triggers' },
 			children: [
 				{
 					type: QUESTION_BANK_NODE,

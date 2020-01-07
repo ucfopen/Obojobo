@@ -1,8 +1,7 @@
 {
-	"id": "ab2734d1-3ab0-47fd-aa7c-c3c8405f1396",
-	"type": "ObojoboDraft.Chunks.Break",
+	"id": "action-button-id",
+	"type": "ObojoboDraft.Chunks.ActionButton",
 	"content": {
-		"width": "normal",
 		"triggers": [
 			{
 				"type": "onClick",
@@ -14,6 +13,15 @@
 						}
 					}
 				]
+			}
+		],
+		"textGroup": [
+			{
+				"data": null,
+				"text": {
+					"value": "Example Button",
+					"styleList": []
+				}
 			}
 		]
 	},

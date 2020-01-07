@@ -5,6 +5,7 @@ Object {
   "data": Object {
     "content": Object {
       "choose": null,
+      "triggers": "mock-triggers",
     },
   },
   "nodes": Array [
@@ -13,6 +14,7 @@ Object {
         "content": Object {
           "choose": 1,
           "chooseAll": true,
+          "triggers": "mock-triggers",
         },
       },
       "isVoid": true,

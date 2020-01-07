@@ -1,4 +1,5 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -19,7 +20,7 @@ const slateToObo = node => {
 				break
 
 			case SETTINGS_NODE:
-				content = child.data.get('content') || {}
+				content = withoutUndefined(child.data.get('content') || {})
 				if (content.chooseAll) content.choose = Infinity
 				break
 		}
