@@ -42,5 +42,9 @@
 		border: 2px solid $color-bg;
 		border-radius: 100%;
 		cursor: pointer;
+
+		> svg {
+			pointer-events: none;
+		}
 	}
 }
