@@ -138,14 +138,16 @@ class EditorApp extends React.Component {
 
 	startRenewEditLockInterval() {
 		setInterval(() => {
-			this.createEditLock(this.state.draftId).then(success => {
-				if (!success) this.displayLockedModal()
+			this.createEditLock(this.state.draftId).catch(() => {
+				this.displayLockedModal()
 			})
 		}, RENEW_LOCK_INTERVAL)
 	}
 
 	createEditLock(draftId) {
-		return APIUtil.requestEditLock(draftId).then(json => json.status !== 'error')
+		return APIUtil.requestEditLock(draftId).then(json => {
+			if (json.status === 'error') throw new Error('Unable to lock module.')
+		})
 	}
 
 	reloadDraft(draftId, mode) {
@@ -189,14 +191,15 @@ class EditorApp extends React.Component {
 		if (mode === 'classic') mode = XML_MODE // convert classic to xml
 
 		ModalStore.init()
-		return this.createEditLock(draftId).then(lockSuccess => {
-			if (!lockSuccess) {
-				this.displayLockedModal()
-			} else {
+
+		return this.createEditLock(draftId)
+			.then(() => {
 				this.startRenewEditLockInterval()
 				return this.reloadDraft(draftId, this.state.mode)
-			}
-		})
+			})
+			.catch(() => {
+				this.displayLockedModal()
+			})
 	}
 
 	componentWillUnmount() {

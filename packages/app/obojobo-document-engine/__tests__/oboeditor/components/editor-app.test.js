@@ -27,13 +27,15 @@ describe('EditorApp', () => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
+		APIUtil.requestEditLock.mockResolvedValue({ status: 'ok' })
 	})
 
 	afterEach(() => {
 		restoreConsole()
+		jest.clearAllTimers()
 	})
 
-	test('component renders', done => {
+	test('component renders', () => {
 		expect.hasAssertions()
 
 		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
@@ -50,44 +52,17 @@ describe('EditorApp', () => {
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 
 			expect(component.html()).toMatchSnapshot()
 
 			component.unmount()
-			done()
 		})
 	})
 
-	test('EditorApp component displays xml in classic mode', done => {
-		expect.assertions(1)
-
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart' }
-		})
-
-		APIUtil.getFullDraft
-			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-			.mockResolvedValueOnce(
-				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
-			)
-		EditorStore.getState.mockReturnValueOnce({})
-
-		const component = mount(<EditorApp />)
-		component.instance().switchMode(CLASSIC_MODE)
-
-		setTimeout(() => {
-			component.update()
-			expect(component.html()).toMatchSnapshot()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('EditorApp component displays xml', done => {
-		expect.assertions(1)
+	test('EditorApp component displays xml in xml mode', () => {
+		expect.hasAssertions()
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -104,16 +79,40 @@ describe('EditorApp', () => {
 		const component = mount(<EditorApp />)
 		component.instance().switchMode(XML_MODE)
 
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()
 			component.unmount()
-			done()
 		})
 	})
 
-	test('EditorApp component with no draft', done => {
-		expect.assertions(1)
+	test('EditorApp component displays xml', () => {
+		expect.hasAssertions()
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft
+			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		component.instance().switchMode(XML_MODE)
+
+		return global.flushPromises().then(() => {
+			component.update()
+			expect(component.html()).toMatchSnapshot()
+			component.unmount()
+		})
+	})
+
+	test('EditorApp component with no draft', () => {
+		expect.hasAssertions()
 
 		// No visit or draft id
 		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
@@ -127,18 +126,17 @@ describe('EditorApp', () => {
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 
 			expect(component.html()).toMatchSnapshot()
 
 			component.unmount()
-			done()
 		})
 	})
 
-	test('EditorApp component with classic mode', done => {
-		expect.assertions(1)
+	test('EditorApp component with classic mode in url', () => {
+		expect.hasAssertions()
 
 		// No visit or draft id
 		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['', '', CLASSIC_MODE])
@@ -152,18 +150,17 @@ describe('EditorApp', () => {
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
-
+			expect(component.html()).toContain('visual-editor--editor-app')
 			expect(component.html()).toMatchSnapshot()
 
 			component.unmount()
-			done()
 		})
 	})
 
-	test('onEditorStoreChange calls Editor.getState', done => {
-		expect.assertions(1)
+	test('onEditorStoreChange calls Editor.getState', () => {
+		expect.hasAssertions()
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -174,19 +171,18 @@ describe('EditorApp', () => {
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 
 			component.instance().onEditorStoreChange()
 			expect(EditorStore.getState).toHaveBeenCalled()
 
 			component.unmount()
-			done()
 		})
 	})
 
-	test('onModalStoreChange calls ModalStore.getState', done => {
-		expect.assertions(1)
+	test('onModalStoreChange calls ModalStore.getState', () => {
+		expect.hasAssertions()
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -198,19 +194,18 @@ describe('EditorApp', () => {
 		ModalStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 
 			component.instance().onModalStoreChange()
 			expect(ModalStore.getState).toHaveBeenCalled()
 
 			component.unmount()
-			done()
 		})
 	})
 
 	test('EditorApp component renders error messsage', () => {
-		expect.assertions(2)
+		expect.hasAssertions()
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -228,7 +223,7 @@ describe('EditorApp', () => {
 		const component = mount(<EditorApp />)
 
 		// eslint-disable-next-line no-undef
-		return flushPromises().then(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()
 			// eslint-disable-next-line no-console
@@ -238,7 +233,7 @@ describe('EditorApp', () => {
 	})
 
 	test('EditorApp component renders modal', () => {
-		expect.assertions(2)
+		expect.hasAssertions()
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -255,12 +250,122 @@ describe('EditorApp', () => {
 		const component = mount(<EditorApp />)
 
 		// eslint-disable-next-line no-undef
-		return flushPromises().then(() => {
+		return global.flushPromises().then(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()
 			// eslint-disable-next-line no-console
 			expect(console.error).not.toHaveBeenCalled()
 			component.unmount()
+		})
+	})
+
+	test('EditorApp calls displayLockedModal when module is locked', () => {
+		expect.hasAssertions()
+		APIUtil.requestEditLock.mockResolvedValue({ status: 'error' })
+
+		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
+		spyGetItems.mockImplementationOnce(cb => {
+			cb([{ plugins: 'mock-plugin' }, { noplugins: 'mock-plugin' }])
+		})
+
+		const spyModelCreate = jest.spyOn(Common.models.OboModel, 'create')
+		spyModelCreate.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		return global.flushPromises().then(() => {
+			component.update()
+			// make sure the error is displayed
+			expect(component.html()).toContain('Module is Being Edited')
+
+			// make sure state has the error message
+			expect(component.instance().state).toHaveProperty('requestStatus', 'invalid')
+			expect(component.instance().state).toHaveProperty('requestError')
+			expect(component.instance().state.requestError).toMatchInlineSnapshot(`
+			Object {
+			  "message": "Someone else is currently editing this module, please try again later.",
+			  "title": "Module is Being Edited.",
+			}
+		`)
+
+			component.unmount()
+		})
+	})
+
+	test('startRenewEditLockInterval is called when ', () => {
+		expect.hasAssertions()
+
+		const component = mount(<EditorApp />)
+		const renewInterval = jest.spyOn(component.instance(), 'startRenewEditLockInterval')
+		// mock reloadDraft just to simplify the test
+		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
+
+		return global.flushPromises().then(() => {
+			// make sure the error is displayed
+			expect(renewInterval).toHaveBeenCalledTimes(1)
+			component.unmount()
+		})
+	})
+
+	test('startRenewEditLockInterval calls requestEditLock', () => {
+		expect.hasAssertions()
+		jest.useFakeTimers()
+		const component = mount(<EditorApp />)
+		// mock reloadDraft just to simplify the test
+		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
+
+		return global.flushPromises().then(() => {
+			// move forward to just before the timeout
+			jest.advanceTimersByTime(60000 * 4)
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(1)
+
+			// move past the timeout
+			jest.advanceTimersByTime(60000 * 1)
+
+			// make sure requestEditLock is called at 5 minutes
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
+
+			// check again in another 5 minutes
+			jest.advanceTimersByTime(60000 * 5)
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(3)
+			component.unmount()
+		})
+	})
+
+	test('startRenewEditLockInterval displays error when unable to secure lock', () => {
+		expect.hasAssertions()
+		jest.useFakeTimers()
+		const component = mount(<EditorApp />)
+		// mock reloadDraft just to simplify the test
+		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
+
+		return global.flushPromises().then(() => {
+			// now simulate not being able to obtain a lock
+			APIUtil.requestEditLock.mockResolvedValueOnce({ status: 'error' })
+
+			// make sure we're not in an error state
+			expect(component.instance().state).toHaveProperty('requestStatus', null)
+
+			// move forward to just before the timeout
+			jest.advanceTimersByTime(60000 * 5)
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
+
+			return global.flushPromises().then(() => {
+				// make sure state has the error message
+				expect(component.instance().state).toHaveProperty('requestStatus', 'invalid')
+				expect(component.instance().state).toHaveProperty('requestError')
+				expect(component.instance().state.requestError).toMatchInlineSnapshot(`
+				Object {
+				  "message": "Someone else is currently editing this module, please try again later.",
+				  "title": "Module is Being Edited.",
+				}
+			`)
+				component.unmount()
+			})
 		})
 	})
 })
