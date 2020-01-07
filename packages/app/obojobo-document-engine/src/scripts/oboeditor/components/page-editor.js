@@ -41,7 +41,6 @@ class PageEditor extends React.Component {
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
 
 		const json = this.importFromJSON()
-		console.log(json)
 
 		this.state = {
 			value: json,
@@ -63,9 +62,8 @@ class PageEditor extends React.Component {
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 
 		this.editor = withReact(createEditor())
-
-		console.log(createEditor())
-		console.log(withReact(createEditor()))
+		this.editor.toggleEditable = this.toggleEditable
+		this.editor.markUnsaved = this.markUnsaved
 	}
 
 	toggleEditable(editable) {
@@ -210,7 +208,7 @@ class PageEditor extends React.Component {
 				<div className="component obojobo-draft--modules--module" role="main">
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
 						<Slate editor={this.editor} value={this.state.value} onChange={value => this.setState({ value })}>
-							<Editable renderElement={this.renderElement.bind(this)}/>
+							<Editable renderElement={this.renderElement.bind(this)} readOnly={!this.state.editable}/>
 						</Slate>
 					</PageEditorErrorBoundry>
 				</div>
