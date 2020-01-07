@@ -45,13 +45,11 @@ describe('Question Bank Settings Editor Node', () => {
 		)
 
 		component
-			.find('input')
-			.at(1)
+			.find({ type: 'radio', value: 'pick' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick' } })
 
 		component
-			.find('input')
-			.at(2)
+			.find({ type: 'number' })
 			.simulate('click', { stopPropagation: jest.fn(), target: { value: 11 } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
@@ -81,8 +79,7 @@ describe('Question Bank Settings Editor Node', () => {
 		)
 
 		component
-			.find('input')
-			.at(1)
+			.find({ type: 'radio', value: 'pick' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick' } })
 
 		expect(nodeData).toEqual({
@@ -91,8 +88,7 @@ describe('Question Bank Settings Editor Node', () => {
 		})
 
 		component
-			.find('input')
-			.at(2)
+			.find({ type: 'number' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: '99' } })
 
 		expect(nodeData).toEqual({
@@ -125,8 +121,7 @@ describe('Question Bank Settings Editor Node', () => {
 		)
 
 		component
-			.find('input')
-			.at(0)
+			.find({ type: 'radio', value: 'all' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'all' } })
 
 		expect(nodeData).toEqual({
@@ -159,8 +154,7 @@ describe('Question Bank Settings Editor Node', () => {
 		)
 
 		component
-			.find('input')
-			.at(2)
+			.find({ type: 'number' })
 			.simulate('focus', { stopPropagation: jest.fn(), target: { value: '-100.5' } })
 
 		expect(nodeData).toEqual({
@@ -245,14 +239,10 @@ describe('Question Bank Settings Editor Node', () => {
 			/>
 		)
 
-		component
-			.find('select')
-			.at(0)
-			.simulate('click', { stopPropagation: jest.fn(), target: { value: 'random' } })
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'random' } })
+		const select = component.find('select').at(0)
+
+		select.simulate('click', { stopPropagation: jest.fn(), target: { value: 'random' } })
+		select.simulate('change', { stopPropagation: jest.fn(), target: { value: 'random' } })
 
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
