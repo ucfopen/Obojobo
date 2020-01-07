@@ -6,6 +6,8 @@ import renderer from 'react-test-renderer'
 
 import Settings from './editor-component'
 
+jest.useFakeTimers()
+
 describe('Question Bank Settings Editor Node', () => {
 	test('Settings builds the expected component', () => {
 		const component = renderer.create(
@@ -52,6 +54,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.find({ type: 'number' })
 			.simulate('click', { stopPropagation: jest.fn(), target: { value: 11 } })
 
+		jest.runAllTimers()
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
 
@@ -82,6 +85,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.find({ type: 'radio', value: 'pick' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick' } })
 
+		jest.runAllTimers()
 		expect(nodeData).toEqual({
 			chooseAll: false,
 			choose: '99'
@@ -91,6 +95,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.find({ type: 'number' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: '99' } })
 
+		jest.runAllTimers()
 		expect(nodeData).toEqual({
 			chooseAll: false,
 			choose: '99'
@@ -124,6 +129,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.find({ type: 'radio', value: 'all' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'all' } })
 
+		jest.runAllTimers()
 		expect(nodeData).toEqual({
 			chooseAll: true,
 			choose: '1'
@@ -157,6 +163,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.find({ type: 'number' })
 			.simulate('focus', { stopPropagation: jest.fn(), target: { value: '-100.5' } })
 
+		jest.runAllTimers()
 		expect(nodeData).toEqual({
 			chooseAll: false,
 			choose: '-100.5'
@@ -167,6 +174,7 @@ describe('Question Bank Settings Editor Node', () => {
 			.at(2)
 			.simulate('blur', { stopPropagation: jest.fn(), target: { value: '-100.5' } })
 
+		jest.runAllTimers()
 		expect(nodeData).toEqual({
 			chooseAll: false,
 			choose: '1'
@@ -189,7 +197,7 @@ describe('Question Bank Settings Editor Node', () => {
 	`(
 		'validateAndUpdateChooseAmount ensures choose value is valid ($choose => $correctedValue)',
 		({ choose, correctedValue }) => {
-			const mockSetNodeByKeyFn = jest.fn()
+			const mockSetState = jest.fn()
 
 			Settings.prototype.validateAndUpdateChooseAmount.bind(
 				{
@@ -199,24 +207,17 @@ describe('Question Bank Settings Editor Node', () => {
 								get: () => ({
 									choose
 								})
-							},
-							key: 'mock-id'
-						},
-						editor: {
-							setNodeByKey: mockSetNodeByKeyFn
+							}
 						}
-					}
+					},
+					setState: mockSetState
 				},
 				{ stopPropagation: jest.fn() }
 			)()
 
-			expect(mockSetNodeByKeyFn).toHaveBeenLastCalledWith('mock-id', {
-				data: {
-					content: {
-						choose: correctedValue
-					}
-				}
-			})
+			jest.runAllTimers()
+			expect(mockSetState).toHaveBeenCalledTimes(1)
+			expect(mockSetState).toHaveBeenCalledWith({ choose: correctedValue })
 		}
 	)
 
@@ -244,6 +245,7 @@ describe('Question Bank Settings Editor Node', () => {
 		select.simulate('click', { stopPropagation: jest.fn(), target: { value: 'random' } })
 		select.simulate('change', { stopPropagation: jest.fn(), target: { value: 'random' } })
 
+		jest.runAllTimers()
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
 })
