@@ -30,6 +30,7 @@ router
 			}
 
 			const existingLock = await EditLock.fetchByDraftId(req.params.draftId)
+
 			if (existingLock && existingLock.userId !== req.currentUser.id) {
 				return res.notAuthorized('Draft is already locked by someone else.')
 			}

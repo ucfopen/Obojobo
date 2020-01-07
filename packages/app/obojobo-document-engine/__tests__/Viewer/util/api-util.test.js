@@ -574,4 +574,13 @@ describe('apiutil', () => {
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
+
+	test('requestEditLock calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.requestEditLock('mock-draft-id').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/locks/mock-draft-id', {})
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
 })

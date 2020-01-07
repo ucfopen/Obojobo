@@ -176,7 +176,7 @@ describe('Edit Lock Model', () => {
 	test('fetchByDraftId returns null if query is empty', () => {
 		db.oneOrNone.mockResolvedValueOnce(null)
 		return EditLock.fetchByDraftId().then(result => {
-			expect(result).toBe(null)
+			expect(result).toBe(undefined) // eslint-disable-line no-undefined
 		})
 	})
 
