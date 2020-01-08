@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
 
 const { Button } = Common.components
 
@@ -43,9 +44,7 @@ class Break extends React.Component {
 						this.props.node.data.get('content').width
 					}`}
 				>
-					<div contentEditable={true} suppressContentEditableWarning className="ghost">
-						{this.props.children}
-					</div>
+					<EditableHiddenText>{this.props.children}</EditableHiddenText>
 					<hr contentEditable={false} />
 					{this.props.isSelected ? this.renderButton() : null}
 				</div>
