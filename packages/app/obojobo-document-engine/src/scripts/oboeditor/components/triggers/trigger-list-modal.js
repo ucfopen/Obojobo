@@ -52,6 +52,43 @@ class TriggerListModal extends React.Component {
 		}))
 	}
 
+	createNewDefaultActionValueObject(type) {
+		switch (type) {
+			case 'nav:goto':
+			case 'assessment:startAttempt':
+			case 'assessment:endAttempt':
+				return {
+					id: ''
+				}
+
+			case 'nav:openExternalLink':
+				return {
+					url: ''
+				}
+
+			case 'viewer:alert':
+				return {
+					title: '',
+					message: ''
+				}
+
+			case 'viewer:scrollToTop':
+				return {
+					animateScroll: true
+				}
+
+			case 'focus:component':
+				return {
+					id: '',
+					fade: false,
+					animateScroll: true
+				}
+
+			default:
+				return {}
+		}
+	}
+
 	updateActionType(triggerIndex, actionIndex, event) {
 		const type = event.target.value
 
@@ -64,7 +101,10 @@ class TriggerListModal extends React.Component {
 					? Object.assign(trigger, {
 							actions: trigger.actions.map((action, aIndex) =>
 								actionIndex === aIndex
-									? Object.assign(action, { type, value: { animateScroll: true } })
+									? Object.assign(action, {
+											type,
+											value: this.createNewDefaultActionValueObject(type)
+									  })
 									: action
 							)
 					  })

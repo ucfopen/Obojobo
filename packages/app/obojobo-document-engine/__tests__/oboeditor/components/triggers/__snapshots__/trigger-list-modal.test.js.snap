@@ -17,3 +17,62 @@ exports[`TriggerListModal TriggerListModal node deletes an action 1`] = `"<div c
 exports[`TriggerListModal TriggerListModal node deletes trigger 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input type=\\"text\\" class=\\"first-tab\\"/><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align:center\\">Triggers</h1><div class=\\"dialog-content\\" style=\\"text-align:center\\"><div class=\\"trigger-list-modal\\"><div class=\\"trigger\\"><label>When</label><select class=\\"select-item\\"><option value=\\"onMount\\">This item is shown</option><option selected=\\"\\" value=\\"onUnmount\\">This item is hidden</option><option value=\\"onNavEnter\\">The student enters the page</option><option value=\\"onNavExit\\">The student leaves the page</option><option value=\\"onStartAttempt\\">An assessment attempt starts</option><option value=\\"onEndAttempt\\">An assessment attempt ends</option><option value=\\"onClick\\">The student clicks the button</option></select><button class=\\"delete-button\\">×</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">+ Add Action</button></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">+ Add Trigger</button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">OK</button></div></div></div><input type=\\"text\\" class=\\"last-tab\\"/></div></div></div>"`;
 
 exports[`TriggerListModal TriggerListModal still renders if given no triggers 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input type=\\"text\\" class=\\"first-tab\\"/><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align:center\\">Triggers</h1><div class=\\"dialog-content\\" style=\\"text-align:center\\"><div class=\\"trigger-list-modal\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">+ Add Trigger</button></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">OK</button></div></div></div><input type=\\"text\\" class=\\"last-tab\\"/></div></div></div>"`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(assessment:endAttempt) creates a new default action value object 1`] = `
+Object {
+  "id": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(assessment:startAttempt) creates a new default action value object 1`] = `
+Object {
+  "id": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(focus:component) creates a new default action value object 1`] = `
+Object {
+  "animateScroll": true,
+  "fade": false,
+  "id": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:close) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:goto) creates a new default action value object 1`] = `
+Object {
+  "id": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:lock) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:next) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:open) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:openExternalLink) creates a new default action value object 1`] = `
+Object {
+  "url": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:prev) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:toggle) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(nav:unlock) creates a new default action value object 1`] = `Object {}`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(viewer:alert) creates a new default action value object 1`] = `
+Object {
+  "message": "",
+  "title": "",
+}
+`;
+
+exports[`TriggerListModal createNewDefaultActionValueObject(viewer:scrollToTop) creates a new default action value object 1`] = `
+Object {
+  "animateScroll": true,
+}
+`;
