@@ -65,7 +65,7 @@ class EditLock {
 			})
 	}
 
-	// inserts a lock only when a differnt user's valid lock doesn't already exist
+	// inserts a lock only when a different user's valid lock doesn't already exist
 	static create(userId, draftId) {
 		return db.one(
 			`
