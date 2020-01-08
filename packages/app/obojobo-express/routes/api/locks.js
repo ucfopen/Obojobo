@@ -17,7 +17,7 @@ router
 	})
 
 // CREATE A LOCK
-// // mounted as /api/locks/:draftId
+// mounted as /api/locks/:draftId
 router
 	.route('/:draftId')
 	.post([requireDraftId, requireCanViewEditor, checkValidationRules])
