@@ -84,13 +84,18 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	// All plugins are passed the following parameters:
+	// Any parameters that the default method is passed
+	// The editor
+	// The default method
 	addPlugin(editor, plugin) {
-		const { normalizeNode } = editor
+		const { normalizeNode, isVoid } = editor
 		if(plugin.normalizeNode) {
-			editor.normalizeNode = entry => {
-				plugin.normalizeNode(editor, entry)
-				normalizeNode(entry)
-			}
+			editor.normalizeNode = entry => plugin.normalizeNode(entry, editor, normalizeNode)
+		}
+
+		if(plugin.isVoid) {
+			editor.isVoid = element => plugin.isVoid(element, editor, isVoid)
 		}
 
 		return editor

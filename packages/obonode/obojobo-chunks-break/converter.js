@@ -1,24 +1,31 @@
+/**
+ * Generates an Obojobo Break from a Slate node.
+ * Copies the key, type, and width
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Break node 
+ */
 const slateToObo = node => ({
-	id: node.key,
+	id: node.id,
 	type: node.type,
 	children: [],
 	content: {
-		width: node.data.get('content').width
+		width: node.content.width
 	}
 })
 
+/**
+ * Generates a Slate node from an Obojobo Break. Copies all attributes, and adds a dummy child
+ * The conversion also ensures that the Slate node has a width so it will display properly
+ * @param {Object} node An Obojobo Break node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
-	const content = node.content
-	if (!content.width) content.width = 'normal'
+	const slateNode = Object.assign({}, node)
+	slateNode.children = [{ text: '' }]
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		data: {
-			content
-		}
-	}
+	if (!slateNode.content.width) slateNode.content.width = 'normal'
+
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }

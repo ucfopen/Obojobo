@@ -34,6 +34,8 @@ const insertBlockAtEnd = (editor, element, item) => {
 	const newModel = OboModel.create(item.insertJSON.type)
 	newModel.setId(newBlock.id)
 
+	console.log(newBlock)
+
 	// Use the ReactEditor to get the path for the current element, and increment the last element
 	// Then use transforms to insert at that path, which effectively inserts below like in arrays
 	const path = ReactEditor.findPath(editor, element)

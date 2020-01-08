@@ -1,8 +1,5 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.Break",
-	"isVoid":true,
-	"data":{
-		"content": { "width": "normal" }
-	}
+	"content": { "width": "normal" },
+	"children": [{ "text": "" }]
 }

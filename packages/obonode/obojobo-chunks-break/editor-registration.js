@@ -3,7 +3,6 @@ import React from 'react'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
@@ -18,15 +17,14 @@ const Break = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case BREAK_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		renderNode(props) {
+			return <Node {...props} {...props.attributes} />
 		},
-		schema: Schema
+		isVoid(element, editor, next) {
+			if(element.type === BREAK_NODE) return true
+
+			next(element)
+		}
 	}
 }
 

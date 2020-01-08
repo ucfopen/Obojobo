@@ -25,7 +25,7 @@ const ActionButton = {
 		renderNode(props) {
 			return <NodeElement {...props} {...props.attributes} />
 		},
-		normalizeNode(editor, entry) {
+		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
 			// If the element is an Action Button, only allow Text children
@@ -37,6 +37,8 @@ const ActionButton = {
 					}
 				}
 			}
+
+			next(entry, editor)
 		}
 	}
 }
