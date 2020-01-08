@@ -2,20 +2,18 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 
 const slateToObo = node => {
 	const line = {
-		text: { value: node.text, styleList: [] },
-		data: { align: node.data.get('content').align }
+		text: { value: "", styleList: [] },
+		data: { align: node.content.align }
 	}
-
-	node.nodes.forEach(text => {
-		TextUtil.slateToOboText(text, line)
-	})
+	
+	TextUtil.slateToOboText(node, line)
 
 	return {
-		id: node.key,
+		id: node.id,
 		type: node.type,
 		children: [],
 		content: {
-			headingLevel: node.data.get('content').level,
+			headingLevel: node.content.headingLevel,
 			textGroup: [line]
 		}
 	}

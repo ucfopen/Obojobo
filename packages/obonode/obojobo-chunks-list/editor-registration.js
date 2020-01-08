@@ -95,34 +95,34 @@ const plugins = {
 			/>
 		)
 	},
-	normalizeNode(node, editor, next) {
-		if (node.object !== 'block') return next()
-		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
-		if (node.nodes.size <= 1) return next()
+	// normalizeNode(node, editor, next) {
+	// 	if (node.object !== 'block') return next()
+	// 	if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
+	// 	if (node.nodes.size <= 1) return next()
 
-		// Checks children for two consecutive list levels
-		// If consecutive levels are found, return the second one so it can be
-		// merged into its previous sibling
-		const invalids = node.nodes
-			.map((child, i) => {
-				const nextNode = node.nodes.get(i + 1)
-				if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) {
-					return false
-				}
-				return nextNode
-			})
-			.filter(Boolean)
+	// 	// Checks children for two consecutive list levels
+	// 	// If consecutive levels are found, return the second one so it can be
+	// 	// merged into its previous sibling
+	// 	const invalids = node.nodes
+	// 		.map((child, i) => {
+	// 			const nextNode = node.nodes.get(i + 1)
+	// 			if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) {
+	// 				return false
+	// 			}
+	// 			return nextNode
+	// 		})
+	// 		.filter(Boolean)
 
-		if (invalids.size === 0) return next()
+	// 	if (invalids.size === 0) return next()
 
-		return editor => {
-			return editor.withoutNormalizing(e => {
-				invalids.forEach(n => {
-					e.mergeNodeByKey(n.key)
-				})
-			})
-		}
-	},
+	// 	return editor => {
+	// 		return editor.withoutNormalizing(e => {
+	// 			invalids.forEach(n => {
+	// 				e.mergeNodeByKey(n.key)
+	// 			})
+	// 		})
+	// 	}
+	// },
 	schema: Schema,
 	queries: {
 		createListLinesFromText(editor, textList) {

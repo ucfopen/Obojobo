@@ -4,21 +4,19 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const slateToObo = node => {
-	const textGroup = node.nodes.map(line => {
+	const textGroup = node.children.map(line => {
 		const textLine = {
-			text: { value: line.text, styleList: [] },
-			data: { indent: line.data.get('indent'), align: line.data.get('align') }
+			text: { value: "", styleList: [] },
+			data: { indent: line.content.indent, align: line.content.align }
 		}
 
-		line.nodes.forEach(text => {
-			TextUtil.slateToOboText(text, textLine)
-		})
+		TextUtil.slateToOboText(line, textLine)
 
 		return textLine
 	})
 
 	return {
-		id: node.key,
+		id: node.id,
 		type: node.type,
 		children: [],
 		content: {

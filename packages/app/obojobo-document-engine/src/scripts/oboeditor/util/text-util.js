@@ -1,4 +1,4 @@
-const TextUtil = {
+ const TextUtil = {
 	// Collapse multiple scripts into one value
 	collapseScripts: marks => {
 		let scriptHeight = 0
@@ -86,17 +86,22 @@ const TextUtil = {
 	slateToOboText: (text, line) => {
 		let currIndex = 0
 
-		text.leaves.forEach(textRange => {
-			textRange.marks.forEach(mark => {
-				const style = {
-					start: currIndex,
-					end: currIndex + textRange.text.length,
-					type: mark.type,
-					data: mark.type === 'sup' ? mark.data.get('num') : mark.data.toJSON()
-				}
+		text.children.forEach(textRange => {
 
-				line.text.styleList.push(style)
-			})
+			if(textRange.marks) {
+				textRange.marks.forEach(mark => {
+					const style = {
+						start: currIndex,
+						end: currIndex + textRange.text.length,
+						type: mark.type,
+						data: mark.type === 'sup' ? mark.data.get('num') : mark.data.toJSON()
+					}
+
+					line.text.styleList.push(style)
+				})
+			}
+				
+			line.text.value += textRange.text
 			currIndex += textRange.text.length
 		})
 	}

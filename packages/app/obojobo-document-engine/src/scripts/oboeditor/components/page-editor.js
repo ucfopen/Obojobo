@@ -58,10 +58,9 @@ class PageEditor extends React.Component {
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
-		this.plugins = this.getPlugins()
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 
-		this.editor = withReact(createEditor())
+		this.editor = this.withPlugins(withReact(createEditor()))
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
 	}
@@ -85,32 +84,46 @@ class PageEditor extends React.Component {
 		}
 	}
 
-	getPlugins() {
+	addPlugin(editor, plugin) {
+		const { normalizeNode } = editor
+		if(plugin.normalizeNode) {
+			editor.normalizeNode = entry => {
+				plugin.normalizeNode(editor, entry)
+				normalizeNode(entry)
+			}
+		}
+
+		return editor
+	}
+
+	withPlugins(editor) {
 		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
 			.map(item => item.plugins)
 			.filter(item => item)
 
-		const markPlugins = [
-			BasicMarks.plugins,
-			LinkMark.plugins,
-			ScriptMarks.plugins,
-			AlignMarks.plugins,
-			IndentMarks.plugins
-		]
-		const componentPlugins = [
-			Component.plugins,
-			ToggleParameter.plugins,
-			SelectParameter.plugins,
-			TextParameter.plugins
-		]
+		return nodePlugins.reduce(this.addPlugin, editor)
 
-		const editorPlugins = [
-			EditorSchema,
-			ClipboardPlugin,
-			hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
-		]
+		// const markPlugins = [
+		// 	BasicMarks.plugins,
+		// 	LinkMark.plugins,
+		// 	ScriptMarks.plugins,
+		// 	AlignMarks.plugins,
+		// 	IndentMarks.plugins
+		// ]
+		// const componentPlugins = [
+		// 	Component.plugins,
+		// 	ToggleParameter.plugins,
+		// 	SelectParameter.plugins,
+		// 	TextParameter.plugins
+		// ]
 
-		return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
+		// const editorPlugins = [
+		// 	EditorSchema,
+		// 	ClipboardPlugin,
+		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
+		// ]
+
+		// return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
 	}
 
 	convertItemsToArray(items) {
@@ -323,7 +336,7 @@ class PageEditor extends React.Component {
 		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(value.document.nodes.get(0))
+			const json = this.assessment.slateToObo(value)
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
 			page.children.set(childrenModels)
@@ -334,7 +347,7 @@ class PageEditor extends React.Component {
 			const json = {}
 			json.children = []
 
-			value.document.nodes.forEach(child => {
+			value.forEach(child => {
 				const oboChild = Component.helpers.slateToObo(child)
 				json.children.push(oboChild)
 			})
@@ -342,7 +355,7 @@ class PageEditor extends React.Component {
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
 			page.children.set(childrenModels)
-
+			
 			return json
 		}
 	}

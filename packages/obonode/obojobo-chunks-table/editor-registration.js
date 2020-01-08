@@ -72,48 +72,48 @@ const plugins = {
 				return next()
 		}
 	},
-	normalizeNode(node, editor, next) {
-		if (node.object !== 'block') return next()
-		if (node.type !== TABLE_ROW_NODE) return next()
+	// normalizeNode(node, editor, next) {
+	// 	if (node.object !== 'block') return next()
+	// 	if (node.type !== TABLE_ROW_NODE) return next()
 
-		// Normalize Rows with the wrong number of cells
-		const numCols = node.data.get('content').numCols
-		if (node.nodes.size < numCols) {
-			const header = node.data.get('content').header
+	// 	// Normalize Rows with the wrong number of cells
+	// 	const numCols = node.data.get('content').numCols
+	// 	if (node.nodes.size < numCols) {
+	// 		const header = node.data.get('content').header
 
-			// Insert missing cells at the end of the row
-			return editor => {
-				for (let i = node.nodes.size; i < numCols; i++) {
-					editor.insertNodeByKey(node.key, i, {
-						object: 'block',
-						type: 'ObojoboDraft.Chunks.Table.Cell',
-						data: { content: { header } },
-						nodes: [
-							{
-								object: 'text',
-								leaves: [{ object: 'leaf', text: '', marks: [] }]
-							}
-						]
-					})
-				}
-			}
-		}
+	// 		// Insert missing cells at the end of the row
+	// 		return editor => {
+	// 			for (let i = node.nodes.size; i < numCols; i++) {
+	// 				editor.insertNodeByKey(node.key, i, {
+	// 					object: 'block',
+	// 					type: 'ObojoboDraft.Chunks.Table.Cell',
+	// 					data: { content: { header } },
+	// 					nodes: [
+	// 						{
+	// 							object: 'text',
+	// 							leaves: [{ object: 'leaf', text: '', marks: [] }]
+	// 						}
+	// 					]
+	// 				})
+	// 			}
+	// 		}
+	// 	}
 
-		if (node.nodes.size > numCols) {
-			return editor => {
-				editor.setNodeByKey(node.key, {
-					data: {
-						content: {
-							...node.data.get('content'),
-							numCols: node.nodes.size
-						}
-					}
-				})
-			}
-		}
+	// 	if (node.nodes.size > numCols) {
+	// 		return editor => {
+	// 			editor.setNodeByKey(node.key, {
+	// 				data: {
+	// 					content: {
+	// 						...node.data.get('content'),
+	// 						numCols: node.nodes.size
+	// 					}
+	// 				}
+	// 			})
+	// 		}
+	// 	}
 
-		return next()
-	},
+	// 	return next()
+	// },
 	schema: Schema
 }
 

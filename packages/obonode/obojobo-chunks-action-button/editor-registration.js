@@ -1,9 +1,9 @@
 import React from 'react'
+import { Element, Node, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Element from './editor-component'
-import Schema from './schema'
+import NodeElement from './editor-component'
 import Converter from './converter'
 
 const UNIQUE_NAME = 'ObojoboDraft.Chunks.ActionButton'
@@ -14,7 +14,7 @@ const ActionButton = {
 	icon: Icon,
 	isInsertable: true,
 	components: {
-		Element,
+		NodeElement,
 		Icon
 	},
 	helpers: Converter,
@@ -23,22 +23,21 @@ const ActionButton = {
 	},
 	plugins: {
 		renderNode(props) {
-			return <Element {...props} {...props.attributes} />
+			return <NodeElement {...props} {...props.attributes} />
 		},
-		renderPlaceholder(props, editor, next) {
-			const { node } = props
-			if (node.object !== 'block' || node.type !== UNIQUE_NAME) return next()
-			if (node.text !== '') return next()
+		normalizeNode(editor, entry) {
+			const [node, path] = entry
 
-			return (
-				<span
-					className={'placeholder align-center required'}
-					contentEditable={false}
-					data-placeholder="Your Label Here"
-				/>
-			)
-		},
-		schema: Schema
+			// If the element is an Action Button, only allow Text children
+			if (Element.isElement(node) && node.type === UNIQUE_NAME) {
+				for (const [child, childPath] of Node.children(editor, path)) {
+					if (Element.isElement(child)) {
+						Transforms.unwrapNodes(editor, { at: childPath })
+						return
+					}
+				}
+			}
+		}
 	}
 }
 

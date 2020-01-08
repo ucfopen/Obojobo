@@ -1,9 +1,9 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import {
-  useEditor,
-  useSelected,
-  ReactEditor
+	useEditor,
+	useSelected,
+	ReactEditor
 } from 'slate-react'
 
 import { Transforms } from 'slate'

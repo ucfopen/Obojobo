@@ -1,25 +1,37 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
+/**
+ * Generates an Obojobo Action Button from a Slate node.
+ * Copies the key, type, triggers, and text (including marks)
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Action Bution node 
+ */
 const slateToObo = node => {
-	const content = node.data.get('content')
-
 	const labelLine = {
-		text: { value: node.text, styleList: [] },
+		text: { value: "", styleList: [] },
 		data: null
 	}
-	node.nodes.forEach(text => {
-		TextUtil.slateToOboText(text, labelLine)
-	})
-	content.textGroup = [labelLine]
+	TextUtil.slateToOboText(node, labelLine)
 
 	return {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content
+		content: {
+			triggers: node.content.triggers,
+			textGroup: [labelLine]
+		}
 	}
 }
 
+/**
+ * Generates a Slate node from an Obojobo Action Button.
+ * Copies all attributes, and converts a label or textGroup into Slate Text children
+ * The conversion also ensures that the Slate node has an onClick trigger so that
+ * the user can easily add onClick actions
+ * @param {Object} node An Obojobo Action Bution node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	if (!node.content.textGroup) {
