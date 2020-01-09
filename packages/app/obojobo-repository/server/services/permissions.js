@@ -1,5 +1,6 @@
 const db = require('obojobo-express/db')
 const UserModel = require('obojobo-express/models/user')
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 const fetchAllUsersWithPermissionToDraft = async draftId => {
 	const users = await db.manyOrNone(
@@ -32,8 +33,6 @@ const userHasPermissionToCopy = async (userId, draftId) => {
 }
 
 const draftIsPublic = async draftId => {
-	const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-
 	const result = await db.oneOrNone(
 		`
 		SELECT draft_id

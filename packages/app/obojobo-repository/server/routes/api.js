@@ -18,7 +18,7 @@ const {
 	removeUserPermissionToDraft,
 	userHasPermissionToCopy
 } = require('../services/permissions')
-const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 // List public drafts
 router.route('/drafts-public').get((req, res) => {

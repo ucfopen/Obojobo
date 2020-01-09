@@ -10,6 +10,7 @@ const {
 	getCurrentUser
 } = require('obojobo-express/express_validators')
 const { userHasPermissionToCopy } = require('../services/permissions')
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
 	.route('/')
@@ -57,8 +58,6 @@ router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-
 		return RepositoryCollection.fetchById(publicLibCollectionId)
 			.then(collection => {
 				return collection.loadRelatedDrafts()
