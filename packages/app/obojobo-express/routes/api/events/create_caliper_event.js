@@ -206,11 +206,6 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			return createNavMenuEvent(obj, IRI)
 		},
 
-		createNavMenuToggledEvent: obj => {
-			obj.action = 'Toggled'
-			return createNavMenuEvent(obj, IRI)
-		},
-
 		createNavMenuActivatedEvent: obj => {
 			obj.action = 'Activated'
 			return createNavMenuEvent(obj, IRI)

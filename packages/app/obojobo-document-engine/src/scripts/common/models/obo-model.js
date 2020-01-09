@@ -1,10 +1,10 @@
 import Backbone from 'backbone'
 
-import uuid from '../../common/util/uuid'
-import Dispatcher from '../../common/flux/dispatcher'
+import uuid from '../util/uuid'
+import Dispatcher from '../flux/dispatcher'
 import { Registry } from '../registry'
-import DOMUtil from '../../common/page/dom-util'
-import setProp from '../../common/util/set-prop'
+import DOMUtil from '../page/dom-util'
+import setProp from '../util/set-prop'
 
 const DefaultAdapter = {
 	construct() {
@@ -166,14 +166,34 @@ class OboModel extends Backbone.Model {
 		return (OboModel.models[this.get('id')] = this)
 	}
 
-	// should be overridden
+	// Returns false and fails to change the ID if the newId already exists
+	// Otherwise, sets the new id and deletes the old id
+	setId(newId) {
+		if (this.get('id') === newId) {
+			return true
+		}
+
+		if (OboModel.models[newId]) {
+			return false
+		}
+
+		delete OboModel.models[this.get('id')]
+
+		this.set('id', newId)
+
+		return (OboModel.models[this.get('id')] = this)
+	}
+
 	clone(deep = false) {
-		const clone = new OboModel(this.attributes, this.adapter.constructor)
+		const clone = new OboModel(
+			{ ...this.attributes, ...{ id: this.createNewLocalId() } },
+			this.adapter.constructor
+		)
 		this.adapter.clone(this, clone)
 
 		if (deep && this.hasChildren()) {
 			for (const child of Array.from(this.children.models)) {
-				clone.children.add(child.clone(true))
+				clone.children.add(child.clone(true), { at: clone.children.length })
 			}
 		}
 

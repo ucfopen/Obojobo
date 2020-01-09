@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-obojobo",
+  "rules": {
+    "unit-blacklist": "warning",
+    "sh-waqar/declaration-use-variable": "warning"
+  }
+}

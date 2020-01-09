@@ -2,8 +2,8 @@ import './simple-dialog.scss'
 
 import React from 'react'
 
-import ModalUtil from '../../../common/util/modal-util'
-import Dialog from '../../../common/components/modal/dialog'
+import ModalUtil from '../../util/modal-util'
+import Dialog from './dialog'
 
 class SimpleDialog extends React.Component {
 	focusOnFirstElement() {

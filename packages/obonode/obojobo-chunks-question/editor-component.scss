@@ -5,9 +5,41 @@
 		&.question-editor {
 			background: $color-bg;
 		}
+	}
 
-		> .content-back > div:first-child {
-			padding-top: 2em;
+	.question-settings {
+		padding-left: 3em;
+		padding-top: 2em;
+		font-family: $font-default;
+		font-weight: bold;
+
+		.question-type {
+			position: absolute;
+			top: 2em;
+			right: 2em;
+			border: 1px solid $color-shadow;
+			border-radius: $dimension-rounded-radius;
+			padding: 0.18em;
+			padding-right: 0.5em;
+			font-weight: normal;
+			font-size: 1rem;
+			cursor: pointer;
+
+			&:hover {
+				border: 1px solid $color-action;
+				background: lighten($color-action, 48%);
+			}
+
+			input {
+				position: relative;
+				top: -0.1em;
+				left: 0.2em;
+				margin-right: 1em;
+			}
+		}
+
+		label {
+			padding-right: 0.5em;
 		}
 	}
 
@@ -20,24 +52,27 @@
 
 	.delete-button {
 		position: absolute;
-		right: 3em;
-		top: 0;
+		right: 3.7em;
+		left: auto;
+		top: 0.7em;
 		transform: translate(50%, -50%);
 		z-index: 3;
 
-		button {
+		.button {
 			font-size: 1.2em;
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
-		}
-	}
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
 
-	> .question-type {
-		position: absolute;
-		right: 7em;
-		top: 1em;
-		z-index: 99;
+			&:hover {
+				background: none;
+				color: $color-obojobo-blue;
+			}
+		}
 	}
 
 	&.is-type-survey {
@@ -45,5 +80,17 @@
 		.solution-editor {
 			display: none;
 		}
+
+		.component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
+			.obojobo-draft--chunks--mc-assessment--mc-choice {
+				.obojobo-draft--chunks--mc-assessment--mc-answer {
+					padding-top: 0;
+				}
+			}
+		}
+	}
+
+	select {
+		@include select-input();
 	}
 }

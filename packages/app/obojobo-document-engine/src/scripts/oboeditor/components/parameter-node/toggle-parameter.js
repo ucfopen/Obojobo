@@ -1,9 +1,9 @@
 import React from 'react'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import './parameter-node.scss'
 
-const { Slider } = Common.components
+const { Switch } = Common.components
 
 const TOGGLE_PARAMETER = 'oboeditor.toggle-parameter'
 
@@ -23,7 +23,7 @@ const Node = props => {
 
 	return (
 		<div className={'parameter-node'} contentEditable={false}>
-			<Slider
+			<Switch
 				title={props.node.data.get('display')}
 				initialChecked={props.node.data.get('checked')}
 				handleCheckChange={event => handleCheckChange(event)}

@@ -1,5 +1,7 @@
 const db = oboRequire('db')
 const permissions = oboRequire('config').permissions
+const crypto = require('crypto')
+const oboEvents = oboRequire('obo_events')
 
 class User {
 	constructor({
@@ -75,7 +77,13 @@ class User {
 				this
 			)
 			.then(insertUserResult => {
-				this.id = insertUserResult.id
+				let eventName = User.EVENT_UPDATE_USER
+				if (!this.id) {
+					eventName = User.EVENT_NEW_USER
+					// populate my id from the result
+					this.id = insertUserResult.id
+				}
+				oboEvents.emit(eventName, this)
 				return this
 			})
 	}
@@ -109,6 +117,27 @@ class User {
 		if (!permissions[permName]) return false
 		return this.hasOneOfRole(permissions[permName])
 	}
+
+	get avatarUrl() {
+		const size = 120
+		const md5Email = crypto
+			.createHash('md5')
+			.update(this.email)
+			.digest('hex')
+		return `https://secure.gravatar.com/avatar/${md5Email}?s=${size}&d=retro`
+	}
+
+	toJSON() {
+		const userObj = {}
+		Object.keys(this).forEach(k => {
+			userObj[k] = this[k]
+		})
+		userObj.avatarUrl = this.avatarUrl
+		return userObj
+	}
 }
+
+User.EVENT_NEW_USER = 'EVENT_NEW_USER'
+User.EVENT_UPDATE_USER = 'EVENT_UPDATE_USER'
 
 module.exports = User

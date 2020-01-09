@@ -1,4 +1,4 @@
-import TextGroup from '../../../common/text-group/text-group'
+import TextGroup from '../../text-group/text-group'
 
 const TextGroupAdapter = {
 	construct(model, attrs) {

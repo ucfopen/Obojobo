@@ -1,9 +1,26 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
-	margin-top: 2em;
+	border: 1px solid $color-shadow;
+	margin-top: 0;
+	margin-left: 3.75em;
+	margin-right: 3.75em;
 	padding-top: 2em;
 	padding-bottom: 2em;
+	padding-left: 0;
+	padding-right: 0;
 	pointer-events: all;
-	background: $color-bg2;
+	background: none;
+	position: relative;
+	top: -2em;
+	border-radius: $dimension-rounded-radius;
+
+	.delete-button {
+		top: 1em;
+	}
+
+	.label {
+		top: 0.5em;
+		left: 1em;
+	}
 }

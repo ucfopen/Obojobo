@@ -49,6 +49,7 @@ exports[`LTIStatus LTIStatus component shows loading state 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         disabled={true}
       >
         Re-sending score...
@@ -88,6 +89,7 @@ exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti st
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Try again anyway
       </button>
@@ -126,6 +128,7 @@ exports[`LTIStatus LTIStatus component with error shows additional information i
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Try again anyway
       </button>
@@ -172,6 +175,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INV
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Resend score
       </button>
@@ -210,6 +214,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEW
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Resend score
       </button>
@@ -248,6 +253,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STA
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Resend score
       </button>

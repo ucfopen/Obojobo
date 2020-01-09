@@ -81,13 +81,31 @@ module.exports = app => {
 	// index page with links to all the launch types
 	app.get('/dev', (req, res) => {
 		res.set('Content-Type', 'text/html')
-		res.send(`<html><head><title>Obojobo Next Express Dev Utils</title></head><body>
+		res.send(`<html>
+			<head>
+			<title>Obojobo Next Express Dev Utils</title>
+			<script>
+				const launchInIframe = url => {
+					const iframeEl = document.getElementById('the-iframe')
+					iframeEl.src = url
+					iframeEl.scrollIntoView()
+				}
+			</script>
+			<style>
+				iframe{
+					width: 620px;
+					height: 475px;
+					resize: both;
+					overflow: auto;
+				}
+			</style>
+			</head><body>
 			<h1>Obojobo Next Express Dev Utils</h1>
 			<h2>LTI & Auth</h2>
 			<ul>
 				<li><a href="/lti">LTI Instructions</a></li>
 				<li>LTI Course Nav: <a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Instructor</a> <a href="/lti/dev/launch/course_navigation?student=1&resource_link_id=whatever-you-want"">Student</a></li>
-				<li>LTI Resource Selection: <a href="/lti/dev/launch/resource_selection">Instructor</a> <a href="/lti/dev/launch/resource_selection?student=1">Student</a></li>
+				<li>LTI Resource Selection: (iframe) <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection')">Instructor</a> <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection?student=1')">Student</a></li>
 				<li>LTI Assignment: <a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Instructor</a> <a href="/lti/dev/launch/view?student=1&resource_link_id=whatever-you-want">Student</a></li>
 				<li><a href="/profile">Whoami</a></li>
 				<li><a href="/profile/logout">Logout</a></li>
@@ -97,6 +115,7 @@ module.exports = app => {
 				<li><a href="/routes">Express Routes</a></li>
 				<li><a href="/webpack-dev-server">Webpack Dev Server Assets</a></li>
 			</ul>
+			<iframe id="the-iframe"></iframe>
 			</body></html>`)
 	})
 
@@ -150,9 +169,10 @@ module.exports = app => {
 	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
 		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const draftId = req.query.draft_id || '00000000-0000-0000-0000-000000000000'
 		const person = req.query.student ? ltiLearner : ltiInstructor
 		const method = 'POST'
-		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
+		const endpoint = `${baseUrl(req)}/view/${draftId}`
 		const params = {
 			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',

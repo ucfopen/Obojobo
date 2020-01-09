@@ -4,10 +4,14 @@ jest.mock('../../../db')
 jest.mock('../../../logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
+jest.mock('obojobo-repository/server/services/permissions', () => ({
+	userHasPermissionToDraft: jest.fn()
+}))
 
 import DraftModel from '../../../models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
+const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -62,6 +66,8 @@ describe('api draft route', () => {
 		db.any.mockReset()
 		xml.mockReset()
 		jsonToXml.mockReset()
+		userHasPermissionToDraft.mockReset()
+		userHasPermissionToDraft.mockResolvedValue(true)
 	})
 	afterEach(() => {})
 
@@ -278,6 +284,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user is not the author', () => {
 		expect.assertions(5)
+		userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -303,15 +310,9 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
 		expect.assertions(4)
+		userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
-		// mock a yell function that returns a document
-		const mockYell = jest.fn()
-		// mock the document returned by fetchById
-		DraftModel.fetchById.mockResolvedValueOnce({
-			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
-		})
+
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
 			.then(response => {
@@ -690,7 +691,7 @@ describe('api draft route', () => {
 
 	test('delete draft returns successfully', () => {
 		expect.assertions(4)
-		db.none.mockResolvedValueOnce('mock-db-result')
+		DraftModel.deleteByIdAndUser.mockResolvedValueOnce('mock-db-result')
 		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -704,7 +705,7 @@ describe('api draft route', () => {
 
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
-		db.none.mockRejectedValueOnce('oh no')
+		DraftModel.deleteByIdAndUser.mockRejectedValueOnce('oh no')
 		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
 		return request(app)
 			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -717,47 +718,17 @@ describe('api draft route', () => {
 			})
 	})
 
-	// list drafts
-	test('list drafts works when user cant view drafts', () => {
-		expect.assertions(4)
-		db.any.mockResolvedValueOnce('mock-db-result')
-		mockCurrentUser = { id: 99, canPreviewDrafts: false } // mock current logged in user
+	test('raw draft queries the db', () => {
+		expect.hasAssertions()
+		db.one.mockResolvedValueOnce('mock-db-result')
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
 		return request(app)
-			.get('/api/drafts')
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/raw')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body).toHaveProperty('value', 'mock-db-result')
-			})
-	})
-
-	test('list drafts renders results', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
-		db.any.mockResolvedValueOnce('mock-db-result') // mock result of query to get all my drafts
-		return request(app)
-			.get('/api/drafts')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
-			})
-	})
-
-	test('delete 500s when the database errors', () => {
-		expect.assertions(5)
-		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
-		db.any.mockRejectedValueOnce('rejected value') // mock result of query to get all my drafts
-		return request(app)
-			.get('/api/drafts')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
 			})
 	})
 })

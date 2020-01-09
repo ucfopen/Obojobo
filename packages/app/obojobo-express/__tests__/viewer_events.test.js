@@ -1,68 +1,63 @@
+jest.mock('../config')
 jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
-jest.mock('../models/visit', () => ({
-	fetchById: jest.fn().mockResolvedValue({ resource_link_id: 'mockResourceLinkId' })
-}))
+jest.mock('../models/visit')
 
-const vs = oboRequire('viewer/viewer_state')
 const mockEvent = {
 	userId: 'mockUserId',
 	draftId: 'mockDraftId',
 	contentId: 'mockContentId',
-	visitId: 'mockVisitId'
+	visitId: 'mockVisitId',
+	payload: {
+		open: 'yep'
+	}
 }
+let vs
 let ve
 let oboEvents
+let VisitModel
 
 describe('viewer events', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		ve = oboRequire('viewer_events')
+		jest.resetModules()
+		vs = oboRequire('viewer/viewer_state')
 		oboEvents = oboRequire('obo_events')
+		VisitModel = oboRequire('models/visit')
 	})
 	afterEach(() => {})
 
 	test('registers expected events', () => {
+		expect(oboEvents.on).not.toBeCalled()
+
+		ve = oboRequire('viewer_events')
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
-		expect(oboEvents.on).toBeCalledWith('client:nav:toggle', expect.any(Function))
-		expect(oboEvents.on).toHaveBeenCalledTimes(3)
+		expect(oboEvents.on).toHaveBeenCalledTimes(2)
 	})
 
 	test('executes next when included to support express middleware', () => {
+		ve = oboRequire('viewer_events')
 		const mockNext = jest.fn()
 		ve({}, {}, mockNext)
 		expect(mockNext).toBeCalled()
 	})
 
-	test.skip('client:nav:lock', () => {
-		oboEvents.emit(`client:nav:lock`, mockEvent)
-		expect(vs.set).toBeCalledWith(
-			'mockUserId',
-			'mockDraftId',
-			'mockContentId',
-			'nav:isLocked',
-			1,
-			true
-		)
-	})
-
-	test.skip('client:nav:unlock', () => {
-		oboEvents.emit(`client:nav:unlock`, mockEvent)
-		expect(vs.set).toBeCalledWith(
-			'mockUserId',
-			'mockDraftId',
-			'mockContentId',
-			'nav:isLocked',
-			1,
-			false
-		)
-	})
-
 	test('client:nav:open', () => {
-		const clientNavOpen = oboEvents.on.mock.calls[0][1]
-		clientNavOpen(mockEvent).then(() => {
+		expect.hasAssertions()
+		ve = oboRequire('viewer_events')
+
+		const [eventName, callback] = oboEvents.on.mock.calls[0]
+		expect(eventName).toBe('client:nav:open')
+		expect(callback).toHaveLength(1) // callback has 1 argument
+
+		VisitModel.fetchById.mockResolvedValueOnce({
+			resource_link_id: 'mockResourceLinkId'
+		})
+
+		expect(vs.set).not.toHaveBeenCalled()
+		return callback(mockEvent).then(() => {
 			expect(vs.set).toBeCalledWith(
 				'mockUserId',
 				'mockDraftId',
@@ -76,8 +71,19 @@ describe('viewer events', () => {
 	})
 
 	test('client:nav:close', () => {
-		const clientNavClose = oboEvents.on.mock.calls[1][1]
-		clientNavClose(mockEvent).then(() => {
+		expect.hasAssertions()
+		ve = oboRequire('viewer_events')
+
+		const [eventName, callback] = oboEvents.on.mock.calls[1]
+		expect(eventName).toBe('client:nav:close')
+		expect(callback).toHaveLength(1) // callback has 1 argument
+
+		VisitModel.fetchById.mockResolvedValueOnce({
+			resource_link_id: 'mockResourceLinkId'
+		})
+
+		expect(vs.set).not.toHaveBeenCalled()
+		return callback(mockEvent).then(() => {
 			expect(vs.set).toBeCalledWith(
 				'mockUserId',
 				'mockDraftId',
@@ -85,27 +91,6 @@ describe('viewer events', () => {
 				'nav:isOpen',
 				1,
 				false,
-				'mockResourceLinkId'
-			)
-		})
-	})
-
-	test('client:nav:toggle', () => {
-		const clientNavToggle = oboEvents.on.mock.calls[2][1]
-		const mockPayloadEvent = {
-			userId: 'mockUserId',
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			payload: { open: 'yep' }
-		}
-		clientNavToggle(mockPayloadEvent).then(() => {
-			expect(vs.set).toBeCalledWith(
-				'mockUserId',
-				'mockDraftId',
-				'mockContentId',
-				'nav:isOpen',
-				1,
-				'yep',
 				'mockResourceLinkId'
 			)
 		})

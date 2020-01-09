@@ -11,6 +11,18 @@
 	"nodes": [
 		{
 			"object":"block",
+			"type":"ObojoboDraft.Chunks.QuestionBank.Settings",
+			"isVoid":true,
+			"data":{
+				"content": {
+					"chooseAll":true,
+					"choose":"all",
+					"select":"sequential"
+				}
+			}
+		},
+		{
+			"object":"block",
 			"type":"ObojoboDraft.Chunks.Question",
 			"isVoid":false,
 			"data": {
@@ -20,27 +32,21 @@
 			},
 			"nodes":[
 				{
-					"object": "block",
-					"type": "oboeditor.component",
-					"nodes": [
+					"object":"block",
+					"type":"ObojoboDraft.Chunks.Text",
+					"isVoid":false,
+					"data":{"content":{"indent":0}},
+					"nodes":[
 						{
 							"object":"block",
-							"type":"ObojoboDraft.Chunks.Text",
+							"type":"ObojoboDraft.Chunks.Text.TextLine",
 							"isVoid":false,
-							"data":{"content":{"indent":0}},
+							"data":{"indent":0},
 							"nodes":[
 								{
-									"object":"block",
-									"type":"ObojoboDraft.Chunks.Text.TextLine",
-									"isVoid":false,
-									"data":{"indent":0},
-									"nodes":[
-										{
-											"object":"text",
-											"leaves":[
-												{"object":"leaf","text":"","marks":[]}
-											]
-										}
+									"object":"text",
+									"leaves":[
+										{"object":"leaf","text":"","marks":[]}
 									]
 								}
 							]
@@ -66,30 +72,24 @@
 									"data":{},
 									"nodes":[
 										{
-											"object": "block",
-											"type": "oboeditor.component",
-											"nodes": [
+											"object":"block",
+											"type":"ObojoboDraft.Chunks.Text",
+											"isVoid":false,
+											"data":{"content":{"indent":0}},
+											"nodes":[
 												{
 													"object":"block",
-													"type":"ObojoboDraft.Chunks.Text",
+													"type":"ObojoboDraft.Chunks.Text.TextLine",
 													"isVoid":false,
-													"data":{"content":{"indent":0}},
+													"data":{"indent":0},
 													"nodes":[
 														{
-															"object":"block",
-															"type":"ObojoboDraft.Chunks.Text.TextLine",
-															"isVoid":false,
-															"data":{"indent":0},
-															"nodes":[
+															"object":"text",
+															"leaves":[
 																{
-																	"object":"text",
-																	"leaves":[
-																		{
-																			"object":"leaf",
-																			"text":"",
-																			"marks":[]
-																		}
-																	]
+																	"object":"leaf",
+																	"text":"",
+																	"marks":[]
 																}
 															]
 														}
@@ -114,30 +114,24 @@
 									"data":{},
 									"nodes":[
 										{
-											"object": "block",
-											"type": "oboeditor.component",
-											"nodes": [
+											"object":"block",
+											"type":"ObojoboDraft.Chunks.Text",
+											"isVoid":false,
+											"data":{"content":{"indent":0}},
+											"nodes":[
 												{
 													"object":"block",
-													"type":"ObojoboDraft.Chunks.Text",
+													"type":"ObojoboDraft.Chunks.Text.TextLine",
 													"isVoid":false,
-													"data":{"content":{"indent":0}},
+													"data":{"indent":0},
 													"nodes":[
 														{
-															"object":"block",
-															"type":"ObojoboDraft.Chunks.Text.TextLine",
-															"isVoid":false,
-															"data":{"indent":0},
-															"nodes":[
+															"object":"text",
+															"leaves":[
 																{
-																	"object":"text",
-																	"leaves":[
-																		{
-																			"object":"leaf",
-																			"text":"",
-																			"marks":[]
-																		}
-																	]
+																	"object":"leaf",
+																	"text":"",
+																	"marks":[]
 																}
 															]
 														}

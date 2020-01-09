@@ -1,6 +1,6 @@
 import './button.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../index'
 import React from 'react'
 
 export default class Button extends React.Component {
@@ -50,6 +50,7 @@ export default class Button extends React.Component {
 					disabled={this.props.disabled || this.props.shouldPreventTab}
 					aria-label={this.props.ariaLabel}
 					aria-selected={this.props.ariaSelected}
+					contentEditable={false}
 				>
 					{children}
 				</button>

@@ -147,10 +147,8 @@ describe('styleableTextRenderer', () => {
 		st.styleText('_latex', 4, 7, { a: 1 })
 		const mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(
-			`
-			<span>dog <span class="latex" role="math" a="1" alt="fox"><span aria-hidden="true"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span></span> cat</span>
-		`.replace(/[\t\n]/g, '')
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\"><span aria-hidden=\\"true\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding=\\"application/x-tex\\">fox</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.8888799999999999em;vertical-align:-0.19444em;\\"></span><span class=\\"mord mathdefault\\" style=\\"margin-right:0.10764em;\\">f</span><span class=\\"mord mathdefault\\">o</span><span class=\\"mord mathdefault\\">x</span></span></span></span></span></span> cat</span>"`
 		)
 	})
 
@@ -159,10 +157,8 @@ describe('styleableTextRenderer', () => {
 		st.styleText('_latex', 4, 7, { alt: 'alt-text' })
 		const mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(
-			`
-			<span>dog <span class="latex" role="math" alt="alt-text"><span aria-hidden="true"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span></span> cat</span>
-		`.replace(/[\t\n]/g, '')
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" alt=\\"alt-text\\"><span aria-hidden=\\"true\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding=\\"application/x-tex\\">fox</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.8888799999999999em;vertical-align:-0.19444em;\\"></span><span class=\\"mord mathdefault\\" style=\\"margin-right:0.10764em;\\">f</span><span class=\\"mord mathdefault\\">o</span><span class=\\"mord mathdefault\\">x</span></span></span></span></span></span> cat</span>"`
 		)
 	})
 
@@ -171,10 +167,8 @@ describe('styleableTextRenderer', () => {
 		st.styleText('monospace', 4, 7, { a: 1 })
 		const mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(
-			`
-			<span>dog <code a="1">fox</code> cat</span>
-		`.replace(/[\t\n]/g, '')
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <code a=\\"1\\">fox</code> cat</span>"`
 		)
 	})
 

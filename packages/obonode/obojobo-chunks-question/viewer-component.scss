@@ -24,6 +24,10 @@
 		max-width: $dimension-column-width;
 		background: $color-bg;
 
+		@include mq($until: desktop) {
+			border-radius: 0;
+		}
+
 		> .blocker-front,
 		> .content-back {
 			width: 100%;
@@ -75,6 +79,10 @@
 			background: $color-bg;
 			cursor: pointer;
 			border-radius: $dimension-rounded-radius;
+
+			@include mq($until: desktop) {
+				border-radius: 0;
+			}
 
 			> .obojobo-draft--components--button {
 				transition: transform $duration-animation-default;

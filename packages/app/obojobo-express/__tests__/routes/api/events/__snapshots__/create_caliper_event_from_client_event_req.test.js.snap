@@ -148,26 +148,6 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav:toggle returns the expected snapshot 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-  "action": "Toggled",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
-  "edApp": "https://hostnameReq/api/system",
-  "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "internalName": "nav:toggle",
-    "isOpen": undefined,
-    "navType": "toggle",
-  },
-  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
-  "session": "https://hostnameReq/api/session/SessionIdReq",
-  "type": "Event",
-}
-`;
-
 exports[`Caliper event from req nav:unlock returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
