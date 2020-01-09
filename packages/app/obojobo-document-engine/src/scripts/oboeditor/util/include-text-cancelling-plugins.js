@@ -25,8 +25,6 @@ export default (nodeType, pluginsConfig) => {
 	// we need to cancel it. The hack du jour is undoing the paste action.
 	pluginsConfig.onPaste = (event, editor, next) => {
 		if (isType(editor, nodeType)) {
-			next()
-			editor.undo()
 			return
 		}
 
