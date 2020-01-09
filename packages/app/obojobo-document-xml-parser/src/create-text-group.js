@@ -1,4 +1,4 @@
-let createTextGroup = els => {
+const createTextGroup = els => {
 	return [
 		{
 			type: 'element',

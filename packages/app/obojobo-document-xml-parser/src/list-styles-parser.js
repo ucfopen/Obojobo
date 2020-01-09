@@ -1,5 +1,5 @@
-let parseListStyles = el => {
-	let listStyles = {}
+const parseListStyles = el => {
+	const listStyles = {}
 
 	el.elements.forEach(child => {
 		switch (child.name) {
@@ -16,11 +16,12 @@ let parseListStyles = el => {
 	return listStyles
 }
 
-let parseIndents = indentsArr => {
-	let indents = {}
-	for (let i in indentsArr) {
-		let indentEl = indentsArr[i]
-		let level = indentEl.attributes.level
+const parseIndents = indentsArr => {
+	const indents = {}
+	for (const i in indentsArr) {
+		const indentEl = indentsArr[i]
+		const level = indentEl.attributes.level
+
 		delete indentEl.attributes.level
 		indents[level] = indentEl.attributes
 	}

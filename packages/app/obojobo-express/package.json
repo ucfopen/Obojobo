@@ -30,9 +30,6 @@
 		"node": "^12.11.1"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],

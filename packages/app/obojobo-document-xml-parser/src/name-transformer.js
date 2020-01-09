@@ -1,16 +1,16 @@
-let nameTransform = node => {
+const nameTransform = node => {
 	if (node.type === 'element') {
 		if (nameTable[node.name]) {
 			node.name = nameTable[node.name]
 		}
 	}
 
-	for (let i in node.elements) {
+	for (const i in node.elements) {
 		nameTransform(node.elements[i])
 	}
 }
 
-let nameTable = {
+const nameTable = {
 	Code: 'ObojoboDraft.Chunks.Code',
 	Module: 'ObojoboDraft.Modules.Module',
 	Content: 'ObojoboDraft.Sections.Content',

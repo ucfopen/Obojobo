@@ -42,7 +42,8 @@
 					"<rootDir>.*\\.min\\.js$",
 					"<rootDir>.*\\.custom\\.js$",
 					"<rootDir>.*/migrations/.*",
-					"<rootDir>.*obojobo-express/public/picker/.*"
+					"<rootDir>.*obojobo-express/public/picker/.*",
+					"<rootDir>.*stylelint-config-obojobo/.*"
 				]
 			}
 		],
