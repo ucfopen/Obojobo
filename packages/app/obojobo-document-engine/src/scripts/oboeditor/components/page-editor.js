@@ -60,7 +60,11 @@ class PageEditor extends React.Component {
 		this.insertableItems = []
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 
-		this.editor = this.withPlugins(withReact(createEditor()))
+		this.nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
+			.map(item => item.plugins)
+			.filter(item => item)
+
+		this.editor = this.nodePlugins.reduce(this.addPlugin, withReact(createEditor()))
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
 	}
@@ -102,11 +106,6 @@ class PageEditor extends React.Component {
 	}
 
 	withPlugins(editor) {
-		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
-			.map(item => item.plugins)
-			.filter(item => item)
-
-		return nodePlugins.reduce(this.addPlugin, editor)
 
 		// const markPlugins = [
 		// 	BasicMarks.plugins,
@@ -194,6 +193,20 @@ class PageEditor extends React.Component {
 	// 	}
 	// }
 
+	defaultKeyDown(event) {
+		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.saveModule(this.props.draftId)
+		}
+	}
+
+	getOnKeyDown() {
+		return this.nodePlugins.reduce((keyDown, plugin) => {
+			if(plugin.onKeyDown) return event => plugin.onKeyDown(event, this.editor, keyDown)
+			return keyDown
+		}, this.defaultKeyDown.bind(this))
+	}
+
 	render() {
 		console.log(this.state.value)
 		const className =
@@ -226,7 +239,10 @@ class PageEditor extends React.Component {
 				<div className="component obojobo-draft--modules--module" role="main">
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
 						<Slate editor={this.editor} value={this.state.value} onChange={value => this.setState({ value })}>
-							<Editable renderElement={this.renderElement.bind(this)} readOnly={!this.state.editable}/>
+							<Editable 
+								renderElement={this.renderElement.bind(this)} 
+								readOnly={!this.state.editable}
+								onKeyDown={this.getOnKeyDown()}/>
 						</Slate>
 					</PageEditorErrorBoundry>
 				</div>

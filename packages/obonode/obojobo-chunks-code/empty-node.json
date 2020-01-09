@@ -1,22 +1,11 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.Code",
-	"isVoid":false,
-	"data":{},
-	"nodes":[
+	"children":[
 		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.Code.CodeLine",
-			"isVoid":false,
-			"data":{ "content":{ "indent":0 } },
-			"nodes":[
-				{
-					"object":"text",
-					"leaves":[
-						{"object":"leaf","text":"","marks":[]}
-					]
-				}
-			]
+			"type":"ObojoboDraft.Chunks.Code",
+			"subtype":"ObojoboDraft.Chunks.Code.CodeLine",
+			"content":{ "indent": 0 },
+			"children":[{ "text": ""}]
 		}
 	]
 }

@@ -41,47 +41,32 @@ const plugins = {
 			}
 		})
 	},
-	onKeyDown(event, editor, next) {
-		const isCode = isType(editor)
-		if (!isCode) return next()
+	// onKeyDown(event, editor, next) {
+	// 	const isCode = isType(editor)
+	// 	if (!isCode) return next()
 
-		switch (event.key) {
-			case 'Backspace':
-			case 'Delete':
-				return KeyDownUtil.deleteEmptyParent(event, editor, next, CODE_NODE)
+	// 	switch (event.key) {
+	// 		case 'Backspace':
+	// 		case 'Delete':
+	// 			return KeyDownUtil.deleteEmptyParent(event, editor, next, CODE_NODE)
 
-			case 'Tab':
-				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(event, editor, next)
+	// 		case 'Tab':
+	// 			// TAB+SHIFT
+	// 			if (event.shiftKey) return decreaseIndent(event, editor, next)
 
-				// TAB
-				return increaseIndent(event, editor, next)
+	// 			// TAB
+	// 			return increaseIndent(event, editor, next)
 
-			default:
-				return next()
-		}
-	},
-	renderPlaceholder(props, editor, next) {
-		const { node } = props
-		if (node.object !== 'block' || node.type !== CODE_LINE_NODE) return next()
-		if (node.text !== '') return next()
-
-		return (
-			<span
-				className={'placeholder'}
-				contentEditable={false}
-				data-placeholder="Type Your Code Here"
-			/>
-		)
-	},
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case CODE_NODE:
-				return <Node {...props} {...props.attributes} />
+	// 		default:
+	// 			return next()
+	// 	}
+	// },
+	renderNode(props) {
+		switch (props.element.subtype) {
 			case CODE_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
 			default:
-				return next()
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: Schema,

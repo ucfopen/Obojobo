@@ -43,39 +43,39 @@ const plugins = {
 			}
 		})
 	},
-	onKeyDown(event, editor, next) {
-		const isText = isType(editor)
-		if (!isText) return next()
+	// onKeyDown(event, editor, next) {
+	// 	const isText = isType(editor)
+	// 	if (!isText) return next()
 
-		const last = editor.value.endBlock
+	// 	const last = editor.value.endBlock
 
-		switch (event.key) {
-			case 'Backspace':
-			case 'Delete':
-				return KeyDownUtil.deleteEmptyParent(event, editor, next, TEXT_NODE)
+	// 	switch (event.key) {
+	// 		case 'Backspace':
+	// 		case 'Delete':
+	// 			return KeyDownUtil.deleteEmptyParent(event, editor, next, TEXT_NODE)
 
-			case 'Enter':
-				// Single Enter
-				if (last.text !== '') return next()
+	// 		case 'Enter':
+	// 			// Single Enter
+	// 			if (last.text !== '') return next()
 
-				// Double Enter
-				return splitParent(event, editor, next)
+	// 			// Double Enter
+	// 			return splitParent(event, editor, next)
 
-			case 'Tab':
-				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(event, editor, next)
+	// 		case 'Tab':
+	// 			// TAB+SHIFT
+	// 			if (event.shiftKey) return decreaseIndent(event, editor, next)
 
-				// TAB+ALT
-				if (event.altKey) return increaseIndent(event, editor, next)
+	// 			// TAB+ALT
+	// 			if (event.altKey) return increaseIndent(event, editor, next)
 
-				// TAB
-				return insertTab(event, editor, next)
+	// 			// TAB
+	// 			return insertTab(event, editor, next)
 
-			default:
-				return next()
-		}
-	},
-	renderNode(props, editor, next) {
+	// 		default:
+	// 			return next()
+	// 	}
+	// },
+	renderNode(props) {
 		switch (props.element.subtype) {
 			case TEXT_LINE_NODE:
 				return <Line {...props} {...props.attributes} />

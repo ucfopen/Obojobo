@@ -39,24 +39,24 @@ const HTML = {
 					return next()
 			}
 		},
-		onKeyDown(event, editor, next) {
-			const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
-			if (!isHTML) return next()
+		// onKeyDown(event, editor, next) {
+		// 	const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
+		// 	if (!isHTML) return next()
 
-			switch (event.key) {
-				// Insert a softbreak on enter
-				case 'Enter':
-					event.preventDefault()
-					return editor.insertText('\n')
+		// 	switch (event.key) {
+		// 		// Insert a softbreak on enter
+		// 		case 'Enter':
+		// 			event.preventDefault()
+		// 			return editor.insertText('\n')
 
-				case 'Tab':
-					event.preventDefault()
-					return editor.insertText('\t')
+		// 		case 'Tab':
+		// 			event.preventDefault()
+		// 			return editor.insertText('\t')
 
-				default:
-					return next()
-			}
-		},
+		// 		default:
+		// 			return next()
+		// 	}
+		// },
 		schema: Schema
 	}
 }

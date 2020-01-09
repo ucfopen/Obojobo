@@ -45,32 +45,32 @@ const plugins = {
 			}
 		})
 	},
-	onKeyDown(event, editor, next) {
-		// See if any of the selected nodes have a LIST_NODE parent
-		const isLine = isType(editor)
-		if (!isLine) return next()
+	// onKeyDown(event, editor, next) {
+	// 	// See if any of the selected nodes have a LIST_NODE parent
+	// 	const isLine = isType(editor)
+	// 	if (!isLine) return next()
 
-		switch (event.key) {
-			case 'Backspace':
-			case 'Delete':
-				return onBackspace(event, editor, next)
+	// 	switch (event.key) {
+	// 		case 'Backspace':
+	// 		case 'Delete':
+	// 			return onBackspace(event, editor, next)
 
-			case 'Enter':
-				// Text lines will be changed to list lines by the schema unless
-				// they are at the end of the list
-				return insertText(event, editor, next)
+	// 		case 'Enter':
+	// 			// Text lines will be changed to list lines by the schema unless
+	// 			// they are at the end of the list
+	// 			return insertText(event, editor, next)
 
-			case 'Tab':
-				// TAB+SHIFT
-				if (event.shiftKey) return wrapLevel(event, editor, next)
+	// 		case 'Tab':
+	// 			// TAB+SHIFT
+	// 			if (event.shiftKey) return wrapLevel(event, editor, next)
 
-				// TAB
-				return unwrapLevel(event, editor, next)
+	// 			// TAB
+	// 			return unwrapLevel(event, editor, next)
 
-			default:
-				return next()
-		}
-	},
+	// 		default:
+	// 			return next()
+	// 	}
+	// },
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case LIST_NODE:

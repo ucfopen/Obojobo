@@ -41,25 +41,25 @@ const plugins = {
 
 		return cloneFragment(event, editor, next, cutFragment)
 	},
-	onKeyDown(event, editor, next) {
-		// See if any of the selected nodes have a TABLE_NODE parent
-		const isTable = isType(editor)
-		if (!isTable) return next()
+	// onKeyDown(event, editor, next) {
+	// 	// See if any of the selected nodes have a TABLE_NODE parent
+	// 	const isTable = isType(editor)
+	// 	if (!isTable) return next()
 
-		switch (event.key) {
-			case 'Backspace':
-			case 'Delete':
-				return KeyDownUtil.deleteNodeContents(event, editor, next)
+	// 	switch (event.key) {
+	// 		case 'Backspace':
+	// 		case 'Delete':
+	// 			return KeyDownUtil.deleteNodeContents(event, editor, next)
 
-			case 'Enter':
-				// Disallows enter
-				event.preventDefault()
-				return true
+	// 		case 'Enter':
+	// 			// Disallows enter
+	// 			event.preventDefault()
+	// 			return true
 
-			default:
-				return next()
-		}
-	},
+	// 		default:
+	// 			return next()
+	// 	}
+	// },
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TABLE_NODE:
