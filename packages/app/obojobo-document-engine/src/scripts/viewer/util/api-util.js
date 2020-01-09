@@ -172,6 +172,7 @@ const APIUtil = {
 	requestEditLock(draftId) {
 		return APIUtil.post(`/api/locks/${draftId}`, {}).then(processJsonResults)
 	}
+
 }
 
 export default APIUtil

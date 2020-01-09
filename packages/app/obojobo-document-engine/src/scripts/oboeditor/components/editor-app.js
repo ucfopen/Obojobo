@@ -4,7 +4,7 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import APIUtil from '../../viewer/util/api-util' //@TODO: move api-util out of viewer
 import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
@@ -13,6 +13,8 @@ import { KeyUtils } from 'slate'
 import PageEditor from './page-editor'
 import React from 'react'
 import generateId from '../generate-ids'
+import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
+import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
 
 // PLUGINS
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -23,14 +25,16 @@ import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import MarkToolbar from './toolbars/content-toolbar'
 
-const { ModalContainer } = Common.components
-const { ModalUtil } = Common.util
-const { ModalStore } = Common.stores
-const { OboModel } = Common.models
+const ModalContainer = Common.components.ModalContainer
+const ModalUtil = Common.util.ModalUtil
+const ModalStore = Common.stores.ModalStore
+const OboModel = Common.models.OboModel
+const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-const RENEW_LOCK_INTERVAL = 60000 * 4.9 // 4.9 minutes in milliseconds
+const RENEW_LOCK_INTERVAL = 60000 * .2 // 4.9 minutes in milliseconds
+const IDLE_TIMEOUT_DURATION_MS = 60000 * .1 // 30 minutes in milliseconds
 
 const plugins = [
 	Component.plugins,
@@ -77,7 +81,9 @@ class EditorApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 
 		this.switchMode = this.switchMode.bind(this)
+		this.renewLockInterval = null
 	}
+
 
 	getVisualEditorState(draftId, draftModel) {
 		const json = JSON.parse(draftModel)
@@ -136,12 +142,18 @@ class EditorApp extends React.Component {
 		})
 	}
 
-	startRenewEditLockInterval() {
-		setInterval(() => {
-			this.createEditLock(this.state.draftId).catch(() => {
+	startRenewEditLockInterval(draftId) {
+		return this.createEditLock(draftId)
+			.then(() => {
+				this.renewLockInterval = setInterval(() => {
+					this.createEditLock(this.state.draftId).catch(() => {
+						this.displayLockedModal()
+					})
+				}, RENEW_LOCK_INTERVAL)
+			})
+			.catch(() => {
 				this.displayLockedModal()
 			})
-		}, RENEW_LOCK_INTERVAL)
 	}
 
 	createEditLock(draftId) {
@@ -192,14 +204,25 @@ class EditorApp extends React.Component {
 
 		ModalStore.init()
 
-		return this.createEditLock(draftId)
+		return this.startRenewEditLockInterval(draftId)
 			.then(() => {
-				this.startRenewEditLockInterval()
+				enableWindowCloseDispatcher()
+				Dispatcher.on('window:closeNow', this.onWindowInactive.bind(this))
+				Dispatcher.on('window:inactive', this.onWindowInactive.bind(this))
+				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive.bind(this))
 				return this.reloadDraft(draftId, this.state.mode)
 			})
-			.catch(() => {
-				this.displayLockedModal()
-			})
+	}
+
+	onWindowInactive(event){
+		// delete my lock
+		navigator.sendBeacon(`/api/locks/${this.state.draftId}/delete`)
+		clearInterval(this.renewLockInterval)
+		this.renewLockInterval = null
+	}
+
+	onWindowReturnFromInactive(event){
+		this.startRenewEditLockInterval(this.state.draftId)
 	}
 
 	componentWillUnmount() {
@@ -251,6 +274,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
+				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DURATION_MS}/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>

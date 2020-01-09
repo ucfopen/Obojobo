@@ -50,4 +50,15 @@ router
 		}
 	})
 
+// DELETE MY LOCK
+// would like to use delete method, but were relying on navigator.sendBeacon which is only post
+// mounted as /api/locks/:draftId/delete
+router
+	.route('/:draftId/delete')
+	.post([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.post(async (req, res) => {
+		EditLock.deleteByDraftIdandUser(req.currentUser.id, req.params.draftId)
+		res.success()
+	})
+
 module.exports = router
