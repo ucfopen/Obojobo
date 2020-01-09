@@ -31,7 +31,7 @@ const Heading = {
 			// put the text inside the existing heading node. If we don't
 			// do this the page will crash when pasting text into a blank
 			// heading node.
-			if (isHeading && transfer.type === 'text') {
+			if (isHeading && transfer.type !== 'fragment') {
 				editor.insertText(transfer.text)
 				return
 			}
