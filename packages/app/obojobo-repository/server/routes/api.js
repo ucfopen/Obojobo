@@ -1,4 +1,5 @@
 const router = require('express').Router() //eslint-disable-line new-cap
+const insertEvent = require('obojobo-express/insert_event')
 const RepositoryCollection = require('../models/collection')
 const Draft = require('obojobo-express/models/draft')
 const DraftSummary = require('../models/draft_summary')
@@ -82,7 +83,23 @@ router
 				key: 'copied',
 				value: draftId
 			})
-			await draftMetadata.saveOrCreate()
+
+			await Promise.all([
+				draftMetadata.saveOrCreate(),
+				insertEvent({
+					actorTime: 'now()',
+					action: 'draft:copy',
+					userId,
+					ip: req.connection.remoteAddress,
+					metadata: {},
+					payload: { from: draftId },
+					draftId: newDraft.id,
+					contentId: newDraft.content.id,
+					eventVersion: '1.0.0',
+					isPreview: false,
+					visitId: req.body.visitId
+				})
+			])
 
 			res.success()
 		} catch (e) {
