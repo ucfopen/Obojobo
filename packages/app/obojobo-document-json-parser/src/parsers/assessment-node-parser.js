@@ -43,7 +43,7 @@ const rubricParser = rubric => {
 			modsBodyXML += `<mod${attrs} />`
 		})
 
-		modsXML = `<mods>` + modsBodyXML + `</mods>`
+		modsXML = !modsBodyXML ? '' : `<mods>` + modsBodyXML + `</mods>`
 	}
 
 	const attrs = processAttrs(rubric, ['mods'])
