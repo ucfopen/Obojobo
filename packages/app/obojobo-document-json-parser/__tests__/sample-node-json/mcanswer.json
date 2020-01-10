@@ -1,7 +1,21 @@
 {
 	"id": "6d1b4a2b-8a2e-46b5-ba43-5d8ebcb76ac9",
 	"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
-	"content": {},
+	"content": {
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
+	},
 	"children": [
 		{
 			"id": "d200c0b9-db2f-4537-a054-e8ef01103519",

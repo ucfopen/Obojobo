@@ -78,7 +78,7 @@ describe('Question editor', () => {
 					type: MCASSESSMENT_NODE
 				}
 			],
-			content: { solution: {} }
+			content: { solution: {}, triggers: 'mock-triggers' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
