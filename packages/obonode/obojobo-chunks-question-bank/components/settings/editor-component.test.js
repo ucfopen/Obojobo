@@ -38,7 +38,7 @@ describe('Question Bank Settings Editor Node', () => {
 					key: 'mock-id',
 					data: {
 						get: () => {
-							return { chooseAll: false }
+							return { chooseAll: false, choose: '1' }
 						}
 					}
 				}}
@@ -52,9 +52,10 @@ describe('Question Bank Settings Editor Node', () => {
 
 		component
 			.find({ type: 'number' })
-			.simulate('click', { stopPropagation: jest.fn(), target: { value: 11 } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 11 } })
 
 		jest.runAllTimers()
+
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
 

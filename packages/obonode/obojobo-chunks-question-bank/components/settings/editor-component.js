@@ -62,8 +62,16 @@ class Settings extends React.Component {
 	}
 
 	componentDidUpdate() {
-		// copy the state changes into the slate model
-		this.updateNodeFromState()
+		const content = this.props.node.data.get('content')
+
+		// copy the state changes into the slate model if any values changed
+		if (
+			content.choose !== this.state.choose ||
+			content.chooseAll !== this.state.chooseAll ||
+			content.select !== this.state.select
+		) {
+			this.updateNodeFromState()
+		}
 	}
 
 	changeSelect(event) {
