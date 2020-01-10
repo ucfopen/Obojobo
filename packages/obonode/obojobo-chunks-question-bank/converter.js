@@ -28,6 +28,7 @@ const slateToObo = node => {
 					content.choose = '1'
 				}
 				delete content.chooseAll
+				break
 		}
 	})
 
