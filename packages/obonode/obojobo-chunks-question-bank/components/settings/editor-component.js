@@ -1,7 +1,6 @@
 import './editor-component.scss'
 
 import React from 'react'
-import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
 const stopPropagation = event => event.stopPropagation()
 
@@ -21,14 +20,26 @@ class Settings extends React.Component {
 		this.validateAndUpdateChooseAmount = this.validateAndUpdateChooseAmount.bind(this)
 		this.changeChooseAmount = this.changeChooseAmount.bind(this)
 		this.changeSelect = this.changeSelect.bind(this)
-		this.updateNodeFromState = debounce(200, this.updateNodeFromState)
 	}
 
-	updateNodeFromState() {
+	setNodeContent() {
 		const content = this.props.node.data.get('content')
+		if (
+			content.choose === this.state.choose &&
+			content.chooseAll === this.state.chooseAll &&
+			content.select === this.state.select
+		) {
+			return
+		}
+
+		// update the node ONLY if it's changed
 		this.props.editor.setNodeByKey(this.props.node.key, {
 			data: { content: { ...content, ...this.state } }
 		})
+	}
+
+	setStateAndUpdateNode(state) {
+		this.setState(state, this.setNodeContent)
 	}
 
 	changeChooseType(event) {
@@ -37,7 +48,8 @@ class Settings extends React.Component {
 		const chooseAll = event.target.value === 'all'
 		const choose = chooseAll ? '1' : this.props.node.data.get('content').choose
 
-		this.setState({
+		if (chooseAll === this.state.chooseAll && choose === this.state.choose) return
+		this.setStateAndUpdateNode({
 			choose,
 			chooseAll
 		})
@@ -45,7 +57,8 @@ class Settings extends React.Component {
 
 	changeChooseAmount(event) {
 		event.stopPropagation()
-		this.setState({ choose: event.target.value })
+		if (event.target.value === this.state.choose) return
+		this.setStateAndUpdateNode({ choose: event.target.value })
 	}
 
 	validateAndUpdateChooseAmount(event) {
@@ -55,30 +68,16 @@ class Settings extends React.Component {
 		const choose = this.props.node.data.get('content').choose
 		let updatedChooseNumber = Math.max(1, parseInt(choose, 10))
 		if (!Number.isFinite(updatedChooseNumber)) updatedChooseNumber = 1
+		updatedChooseNumber = '' + updatedChooseNumber
 
-		this.setState({
-			choose: '' + updatedChooseNumber
-		})
-	}
-
-	componentDidUpdate() {
-		const content = this.props.node.data.get('content')
-
-		// copy the state changes into the slate model if any values changed
-		if (
-			content.choose !== this.state.choose ||
-			content.chooseAll !== this.state.chooseAll ||
-			content.select !== this.state.select
-		) {
-			this.updateNodeFromState()
-		}
+		if (updatedChooseNumber === this.state.choose) return
+		this.setStateAndUpdateNode({ choose: updatedChooseNumber })
 	}
 
 	changeSelect(event) {
 		event.stopPropagation()
-		this.setState({
-			select: event.target.value
-		})
+		if (event.target.value === this.state.select) return
+		this.setStateAndUpdateNode({ select: event.target.value })
 	}
 
 	render() {
