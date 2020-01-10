@@ -1,5 +1,5 @@
 import { getEventTransfer } from 'slate-react'
-import { Block } from 'slate'
+import { Block, Editor } from 'slate'
 
 import Converter from './converter'
 import Icon from './icon'
@@ -24,43 +24,47 @@ const isType = editor => {
 }
 
 const plugins = {
-	onPaste(event, editor, next) {
-		const isCode = isType(editor)
-		const transfer = getEventTransfer(event)
-		if (transfer.type === 'fragment' || !isCode) return next()
-
-		const saveBlocks = editor.value.blocks
-
-		editor
-			.createCodeLinesFromText(transfer.text.split('\n'))
-			.forEach(line => editor.insertBlock(line))
-
-		saveBlocks.forEach(node => {
-			if (node.text === '') {
-				editor.removeNodeByKey(node.key)
-			}
-		})
-	},
-	// onKeyDown(event, editor, next) {
+	// onPaste(event, editor, next) {
 	// 	const isCode = isType(editor)
-	// 	if (!isCode) return next()
+	// 	const transfer = getEventTransfer(event)
+	// 	if (transfer.type === 'fragment' || !isCode) return next()
 
-	// 	switch (event.key) {
-	// 		case 'Backspace':
-	// 		case 'Delete':
-	// 			return KeyDownUtil.deleteEmptyParent(event, editor, next, CODE_NODE)
+	// 	const saveBlocks = editor.value.blocks
 
-	// 		case 'Tab':
-	// 			// TAB+SHIFT
-	// 			if (event.shiftKey) return decreaseIndent(event, editor, next)
+	// 	editor
+	// 		.createCodeLinesFromText(transfer.text.split('\n'))
+	// 		.forEach(line => editor.insertBlock(line))
 
-	// 			// TAB
-	// 			return increaseIndent(event, editor, next)
-
-	// 		default:
-	// 			return next()
-	// 	}
+	// 	saveBlocks.forEach(node => {
+	// 		if (node.text === '') {
+	// 			editor.removeNodeByKey(node.key)
+	// 		}
+	// 	})
 	// },
+	onKeyDown(event, editor, next) {
+		const [match] = Editor.nodes(editor, {
+			match: n => n.type === CODE_NODE,
+		})
+		console.log(match)
+		if (!match) return next(event)
+
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				KeyDownUtil.deleteEmptyParent(event, editor, next, match)
+				return
+
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return decreaseIndent(event, editor, next)
+
+				// TAB
+				return increaseIndent(event, editor, next)
+
+			default:
+				return next(event)
+		}
+	},
 	renderNode(props) {
 		switch (props.element.subtype) {
 			case CODE_LINE_NODE:
@@ -69,24 +73,6 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 		}
 	},
-	schema: Schema,
-	queries: {
-		createCodeLinesFromText(editor, textList) {
-			return textList.map(textLine =>
-				Block.create({
-					object: 'block',
-					type: 'ObojoboDraft.Chunks.Code.CodeLine',
-					data: { content: { indent: 0 } },
-					nodes: [
-						{
-							object: 'text',
-							leaves: [{ object: 'leaf', text: textLine, marks: [] }]
-						}
-					]
-				})
-			)
-		}
-	}
 }
 
 const Code = {

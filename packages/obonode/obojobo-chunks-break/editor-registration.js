@@ -23,7 +23,7 @@ const Break = {
 		isVoid(element, editor, next) {
 			if(element.type === BREAK_NODE) return true
 
-			next(element)
+			return next(element)
 		}
 	}
 }

@@ -1,3 +1,6 @@
+import { Text, Editor, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
+
 const KeyDownUtil = {
 	deleteNodeContents: (event, editor, next) => {
 		const value = editor.value
@@ -45,18 +48,29 @@ const KeyDownUtil = {
 
 		return editor
 	},
-	deleteEmptyParent: (event, editor, next, nodeType, currentNode) => {
-		const firstBlock = currentNode || editor.value.blocks.get(0)
-
-		const parent = editor.value.document.getClosest(firstBlock.key, node => node.type === nodeType)
-
-		if (firstBlock.text === '' && parent.nodes.size === 1) {
+	isDeepEmpty(editor, node) {
+		if(editor.isVoid(node)) return false
+		if(Text.isText(node)) return node.text === ''
+		return  Editor.isEmpty(editor, node) || (node.children.length === 1 && KeyDownUtil.isDeepEmpty(editor, node.children[0]))
+	},
+	deleteEmptyParent: (event, editor, next, match) => {
+		if(KeyDownUtil.isDeepEmpty(editor, match[0])) {
 			event.preventDefault()
-			editor.removeNodeByKey(parent.key)
-			return true
+			const path = ReactEditor.findPath(editor, match[0])
+			Transforms.removeNodes(editor, { at: path, hanging: true })
 		}
 
-		return next()
+		return next(event)
+
+		// Editor.isEmpty(editor, match[0])
+
+		// if (firstBlock.text === '' && parent.nodes.size === 1) {
+		// 	event.preventDefault()
+		// 	editor.removeNodeByKey(parent.key)
+		// 	return true
+		// }
+
+		// return next()
 	}
 }
 

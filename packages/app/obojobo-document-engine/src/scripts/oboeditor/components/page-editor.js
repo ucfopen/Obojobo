@@ -65,6 +65,7 @@ class PageEditor extends React.Component {
 			.filter(item => item)
 
 		this.editor = this.nodePlugins.reduce(this.addPlugin, withReact(createEditor()))
+		//this.editor = withReact(createEditor())
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
 	}
@@ -202,7 +203,9 @@ class PageEditor extends React.Component {
 
 	getOnKeyDown() {
 		return this.nodePlugins.reduce((keyDown, plugin) => {
-			if(plugin.onKeyDown) return event => plugin.onKeyDown(event, this.editor, keyDown)
+			if(plugin.onKeyDown) {
+				return event => plugin.onKeyDown(event, this.editor, keyDown)
+			}
 			return keyDown
 		}, this.defaultKeyDown.bind(this))
 	}
