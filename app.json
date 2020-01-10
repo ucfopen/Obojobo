@@ -4,7 +4,7 @@
 	"keywords": ["education", "edtech", "obojobo", "openedu", "open education", "learning"],
 	"website": "https://ucfopen.github.io/Obojobo-Docs/",
 	"logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_blue.svg",
-	"success_url": "/lti",
+	"success_url": "/",
 	"scripts": {
 		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed",
 		"purgedata": "yarn run obojobo_purge_data"

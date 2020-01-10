@@ -15,7 +15,8 @@ module.exports = {
 		"mockVirtual": false,
 		"oboRequire": false,
 		"validUUID": false,
-		"window": true
+		"window": true,
+		"fetch": false
 	},
 	"env": {
 		"amd": true,

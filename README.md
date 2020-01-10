@@ -43,6 +43,12 @@ We added Heroku support as an easy way to give Obojobo a **free test drive** (or
 
 > Familiarize yourself with the **scripts** section of package.json.
 
+### Dev Shortcuts
+
+[https://127.0.0.1:8080/dev](https://127.0.0.1:8080/dev) has a bunch of links that'll simulate all of the LTI integrations Obojobo supports. Use these to quickly log in and test out the different launch modes.
+
+This route is only available in development mode. In production, the only way to log in is through an LTI launch from an LMS.
+
 ### Logging in
 
 To view the example object you need to login via an LTI launch. Instructions are available in Obojobo: [https://127.0.0.1:8080/lti](https://127.0.0.1:8080/lti)
@@ -54,3 +60,7 @@ Once logged in, visit [https://127.0.0.1:8080/editor](https://127.0.0.1:8080/edi
 ### Testing
 
 `yarn test` or `yarn test:ci`
+
+### Special Thanks
+
+Support for this work was provided by the National Science Foundation Scholarships in Science, Technology, Engineering, and Mathematics (S-STEM) program under [Award No.1643835](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1643835). Any opinions, findings, conclusions and recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.

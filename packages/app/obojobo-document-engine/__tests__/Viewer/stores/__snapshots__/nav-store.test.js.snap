@@ -535,12 +535,9 @@ Array [
 exports[`NavStore nav:toggle event fires and updates state 2`] = `
 Array [
   Object {
-    "action": "nav:toggle",
+    "action": "nav:open",
     "draftId": "mockDraftId",
     "eventVersion": "1.0.0",
-    "payload": Object {
-      "open": true,
-    },
     "visitId": undefined,
   },
 ]

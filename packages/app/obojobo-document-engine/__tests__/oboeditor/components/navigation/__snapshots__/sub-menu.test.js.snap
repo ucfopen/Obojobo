@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubMenu SubMenu component 1`] = `
+<li
+  className="editor--editor-nav--submenu link is-not-selected is-not-assessment is-first-in-list is-last-in-list"
+>
+  <button
+    aria-label="Go to Page: label5"
+  >
+    <span>
+      label5
+    </span>
+  </button>
+</li>
+`;
+
+exports[`SubMenu SubMenu component adds page 1`] = `
+"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on Page: label5\\"><span>label5</span></button><div mockname=\\"MockMoreInfoBox\\">{
+  \\"id\\": 5,
+  \\"index\\": 0,
+  \\"isFirst\\": true,
+  \\"isLast\\": false,
+  \\"type\\": \\"mock-type\\",
+  \\"content\\": \\"mock-content\\",
+  \\"contentDescription\\": [
+    {
+      \\"name\\": \\"title\\",
+      \\"description\\": \\"Title\\",
+      \\"type\\": \\"input\\"
+    }
+  ],
+  \\"showMoveButtons\\": true
+}</div><div class=\\"add-page\\"><button class=\\"add-page-button\\">+ Page</button></div></li>"
+`;
+
+exports[`SubMenu SubMenu component selected as assessment 1`] = `
+<li
+  className="editor--editor-nav--submenu link is-selected is-assessment is-first-in-list is-last-in-list"
+>
+  <button
+    aria-label="Currently on label6"
+  >
+    <span>
+      label6
+    </span>
+  </button>
+  <div
+    mockname="MockMoreInfoBox"
+  >
+    {
+  "id": 6,
+  "index": 1,
+  "isFirst": false,
+  "isLast": true,
+  "type": "mock-type",
+  "content": "mock-content",
+  "contentDescription": [
+    {
+      "name": "title",
+      "description": "Title",
+      "type": "input"
+    },
+    {
+      "name": "attempts",
+      "description": "Attempts",
+      "type": "input"
+    },
+    {
+      "name": "review",
+      "description": "Review",
+      "type": "select",
+      "values": [
+        {
+          "value": "always",
+          "description": "Always show answers in review"
+        },
+        {
+          "value": "never",
+          "description": "Never show answers in review"
+        },
+        {
+          "value": "no-attempts-remaining",
+          "description": "Show answers in review after last attempt"
+        }
+      ]
+    },
+    {
+      "name": "lock-nav",
+      "description": "Lock Navigation During Attempts",
+      "type": "abstract-toggle"
+    }
+  ],
+  "showMoveButtons": true
+}
+  </div>
+</li>
+`;
+
+exports[`SubMenu saveContent updates model 1`] = `
+Object {
+  "clone": [Function],
+  "get": [Function],
+  "getIndex": [Function],
+  "isFirst": [Function],
+  "isLast": [Function],
+  "set": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "content": Object {},
+        },
+      ],
+    ],
+    "results": Array [
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+    ],
+  },
+  "setId": [MockFunction],
+  "title": null,
+  "triggers": Array [],
+}
+`;
+
+exports[`SubMenu saveContent updates model 2`] = `
+Object {
+  "clone": [Function],
+  "get": [Function],
+  "getIndex": [Function],
+  "isFirst": [Function],
+  "isLast": [Function],
+  "set": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "content": Object {},
+        },
+      ],
+      Array [
+        Object {
+          "content": Object {
+            "title": "Mock title",
+            "triggers": Array [],
+          },
+        },
+      ],
+    ],
+    "results": Array [
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+    ],
+  },
+  "setId": [MockFunction],
+  "title": "Mock title",
+  "triggers": Array [],
+}
+`;

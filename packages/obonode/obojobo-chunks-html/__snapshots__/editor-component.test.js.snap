@@ -2,8 +2,13 @@
 
 exports[`HTML Editor Node HTML builds the expected component 1`] = `
 <div
-  className="obojobo-draft--chunks--html html-editor viewer pad"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
-  <pre />
+  <div
+    className="obojobo-draft--chunks--html html-editor viewer pad"
+  >
+    <pre />
+  </div>
 </div>
 `;

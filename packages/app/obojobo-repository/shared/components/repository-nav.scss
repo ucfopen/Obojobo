@@ -1,0 +1,128 @@
+@import '../../client/css/defaults';
+
+.repository--section-wrapper {
+	max-width: $dimension-width;
+	margin: 0 auto;
+}
+
+.repository--stick-to-top {
+	position: sticky;
+	top: 0;
+	background: #ffffff;
+	min-width: 100%;
+	z-index: 100;
+	border-bottom: 1px solid $border-color;
+}
+
+.repository--nav {
+	max-width: $dimension-width;
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+	box-sizing: border-box;
+	min-height: $dimension-nav-height;
+	margin: 0.25em auto;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	align-items: center;
+
+	> div {
+		font-size: 0.85em;
+		margin-left: 0.4em;
+		margin-right: 0.4em;
+		text-align: center;
+
+		@include mq($from: zero, $until: mobileS) {
+			font-size: 0.65em;
+		}
+
+		@include mq($from: mobileS, $until: mobileL) {
+			font-size: 0.7em;
+		}
+
+		@include mq($from: mobileL, $until: tablet) {
+			font-size: 0.75em;
+		}
+	}
+}
+
+.repository--nav a:link,
+.repository--nav a:visited {
+	color: $color-obojobo-blue;
+}
+
+.repository--nav a:active,
+.repository--nav a:hover {
+	color: $color-highlight;
+}
+
+.repository--nav--logo {
+	background-image: url('/images/obojobo-logo.svg');
+	background-position: center left;
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+	display: block;
+	height: 25px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 6em;
+	margin: 0;
+}
+
+.repository--nav--current-user--menu {
+	display: none;
+	position: absolute;
+	left: -1em;
+	top: 3.7em;
+	background: #ffffff;
+	padding: 20px;
+	border-radius: 3px;
+	width: 100%;
+	text-align: left;
+
+	&.is-open {
+		display: block;
+	}
+}
+
+.repository--nav .repository--nav--current-user {
+	position: relative;
+	height: $dimension-nav-height;
+	text-align: right;
+	padding: 0 $dimension-nav-height 0 0;
+	box-sizing: border-box;
+	margin-right: 0;
+
+	&:hover {
+		.repository--nav--current-user--menu {
+			display: block;
+		}
+	}
+
+	button {
+		border: none;
+		font-size: 1em;
+		background: $color-bg;
+		font-family: $font-default;
+		height: $dimension-nav-height;
+		margin: 0;
+	}
+
+	.avatar {
+		position: absolute;
+		right: 0;
+		top: 50%;
+		transform: translate(0, -50%);
+		height: 2.9em;
+		width: 2.9em;
+		margin: 0;
+	}
+}
+
+// if the last child is a link (login link instead of logged in user avatar)
+// space it from the right side of the window
+.repository--nav--links--link:last-child {
+	padding-right: 20px;
+}

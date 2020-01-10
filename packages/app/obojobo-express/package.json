@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "6.0.0-alpha.0",
+	"version": "7.0.4",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -9,10 +9,10 @@
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production --optimize-minimize",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-		"db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
-		"db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
-		"db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
-		"db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
+		"db:reset": "obojobo-migrate reset",
+		"db:migrateup": "obojobo-migrate up",
+		"db:migratedown": "obojobo-migrate down",
+		"db:createmigration": "obojobo-migrate create",
 		"db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
 		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
@@ -46,10 +46,7 @@
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
 		"compression": "^1.7.4",
 		"connect-pg-simple": "^6.0.1",
-		"copy-webpack-plugin": "^5.0.4",
-		"css-loader": "^3.2.0",
-		"db-migrate": "^0.11.6",
-		"db-migrate-pg": "^1.0.0",
+		"consolidate": "^0.15.1",
 		"debug": "~4.1.1",
 		"debug-logger": "^0.4.1",
 		"deep-freeze": "^0.0.1",
@@ -66,11 +63,12 @@
 		"moment": "^2.18.0",
 		"morgan": "~1.9.1",
 		"multer": "^1.4.2",
-		"obojobo-document-engine": "^6.0.0-alpha.0",
-		"obojobo-document-xml-parser": "^6.0.0-alpha.0",
-		"obojobo-lib-utils": "^6.0.0-alpha.0",
+		"obojobo-document-engine": "^7.0.4",
+		"obojobo-document-xml-parser": "^7.0.4",
+		"obojobo-lib-utils": "^7.0.4",
 		"pg-promise": "^9.2.1",
 		"react-transition-group": "^4.3.0",
+		"responsive-loader": "^1.2.0",
 		"serve-favicon": "~2.5.0",
 		"sharp": "0.23.1",
 		"uuid": "^3.3.3"
@@ -78,6 +76,9 @@
 	"devDependencies": {
 		"babel-loader": "^8.0.6",
 		"babel-polyfill": "^6.26.0",
+		"bluebird": "^3.7.2",
+		"copy-webpack-plugin": "^5.0.4",
+		"css-loader": "^3.2.0",
 		"express-list-endpoints": "^4.0.1",
 		"lint-staged": "^9.4.1",
 		"mini-css-extract-plugin": "^0.8.0",
@@ -92,6 +93,7 @@
 		"webpack": "^4.41.0",
 		"webpack-cli": "^3.3.9",
 		"webpack-dev-server": "^3.8.2",
+		"webpack-manifest-plugin": "^2.2.0",
 		"whatwg-fetch": "^3.0.0"
 	},
 	"bin": {
@@ -106,8 +108,6 @@
 			"*.js",
 			"models/**/*.js",
 			"routes/**/*.js",
-			"routes/**/*.js",
-			"controllers/**/*.js",
 			"viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
@@ -139,11 +139,13 @@
 		"ext": "js ejs",
 		"watch": [
 			"./",
-			"../obojobo-document-engine/server",
 			"../../obonode/obojobo-sections-assessment/server",
 			"../../obonode/multiple-choice-assessment/server",
 			"../../obonode/chunks-question/server",
-			"../../obonode/chunks-question-bank/server"
+			"../../obonode/chunks-question-bank/server",
+			"../obojobo-document-engine/server",
+			"../obojobo-module-selector/server",
+			"../obojobo-repository/server"
 		]
 	}
 }

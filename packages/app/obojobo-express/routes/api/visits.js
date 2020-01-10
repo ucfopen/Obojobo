@@ -117,9 +117,7 @@ router
 			})
 			.then(() => {
 				logger.log(
-					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
-						req.currentUser.id
-					}"`
+					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${req.currentUser.id}"`
 				)
 
 				// Build lti data for return

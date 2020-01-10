@@ -1,6 +1,6 @@
 import './nav.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../common'
 import FocusUtil from '../util/focus-util'
 import Logo from './logo'
 import NavUtil from '../util/nav-util'
@@ -11,6 +11,7 @@ const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
 const { Dispatcher } = Common.flux
 const TIMER_MOBILE_NAV_COLLAPSE = 900
+const MOBILE_MEDIA_QUERY = '(max-width: 480px)'
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
@@ -21,39 +22,43 @@ export default class Nav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.selfRef = React.createRef()
-		this.onWindowClick = this.onWindowClick.bind(this)
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
+		this.closeNavOnMobile = this.closeNavOnMobile.bind(this)
 	}
 
 	isMobileSize() {
-		return window.matchMedia('(max-width: 480px)').matches
+		return window.matchMedia(MOBILE_MEDIA_QUERY).matches
 	}
 
-	onWindowClick(event) {
-		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)) {
+	closeNavOnMobile(event) {
+		if (this.isMobileSize() && !this.selfRef.current.contains(event.target)) {
 			NavUtil.close()
 		}
 	}
 
-	hideOrShowOnResize(){
+	hideOrShowOnResize() {
 		const isMobile = this.isMobileSize()
+		// do nothing if this change didn't cross the mobile boundry
+		if (this.prevIsMobile === isMobile) return
 
-		if(window.innerWidth > this.prevWidth){ // window size is increasing
-			if(!isMobile) NavUtil.open()
-		} else if(isMobile) { // window size is decreasing
-			NavUtil.close()
+		if (window.innerWidth > this.prevWidth) {
+			NavUtil.open() // window size is increasing
+		} else {
+			NavUtil.close() // window size is decreasing
 		}
 
 		this.prevWidth = window.innerWidth
+		this.prevIsMobile = isMobile
 	}
 
 	componentDidMount() {
 		this.prevWidth = window.innerWidth
-		window.addEventListener('mouseup', this.onWindowClick)
-		window.addEventListener('pointerup', this.onWindowClick)
+		this.prevIsMobile = this.isMobileSize()
+		window.addEventListener('mouseup', this.closeNavOnMobile)
+		window.addEventListener('pointerup', this.closeNavOnMobile)
 		window.addEventListener('resize', this.hideOrShowOnResize)
 
-		if(this.isMobileSize()) {
+		if (this.prevIsMobile) {
 			setTimeout(() => {
 				NavUtil.close()
 			}, TIMER_MOBILE_NAV_COLLAPSE)
@@ -61,8 +66,8 @@ export default class Nav extends React.Component {
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('mouseup', this.onWindowClick)
-		window.removeEventListener('pointerup', this.onWindowClick)
+		window.removeEventListener('mouseup', this.closeNavOnMobile)
+		window.removeEventListener('pointerup', this.closeNavOnMobile)
 		window.removeEventListener('resize', this.hideOrShowOnResize)
 	}
 

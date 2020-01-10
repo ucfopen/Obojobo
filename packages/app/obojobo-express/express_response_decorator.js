@@ -2,6 +2,7 @@ const QueryResultError = require('pg-promise').errors.QueryResultError
 const inflector = require('json-inflector')
 const logger = oboRequire('logger')
 const apiUrlRegex = /\/api\/.*/
+const oboEvents = require('./obo_events')
 
 const getSanitizedErrorMessage = e => {
 	// If the error is in our blacklist only return the error name:
@@ -32,12 +33,13 @@ const success = (req, res, next, valueObject) => {
 			})
 		)
 	}
-
 	res.send(valueObject)
 }
 
 const badInput = (req, res, next, message) => {
 	res.status(422)
+
+	// if json, just return json
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -50,11 +52,17 @@ const badInput = (req, res, next, message) => {
 		)
 	}
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_BAD_INPUT', { req, res, next, message })
+	if (res.headersSent || req.responseHandled) return
+
 	res.send(`Bad Input: ${message}`)
 }
 
 const notAuthorized = (req, res, next, message) => {
 	res.status(401)
+
+	// if json, just return json
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -67,11 +75,17 @@ const notAuthorized = (req, res, next, message) => {
 		)
 	}
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_NOT_AUTHORIZED', { req, res, next, message })
+	if (res.headersSent || req.responseHandled) return
+
 	res.send(`Not Authorized`)
 }
 
 const reject = (req, res, next, message) => {
 	res.status(403)
+
+	// if json, just return json
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -84,12 +98,17 @@ const reject = (req, res, next, message) => {
 		)
 	}
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_REJECTED', { req, res, next, message })
+	if (res.headersSent || req.responseHandled) return
+
 	res.send(`Rejected Request: ${message}`)
 }
 
 const missing = (req, res, next, message) => {
 	res.status(404)
 
+	// if json, just return json
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -102,14 +121,17 @@ const missing = (req, res, next, message) => {
 		)
 	}
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_NOT_FOUND', { req, res, next, message })
+	if (res.headersSent || req.responseHandled) return
+
 	res.render('404')
 }
 
 const unexpected = (req, res, next, messageOrError) => {
-	let message
-
 	res.status(500)
 
+	let message
 	if (messageOrError instanceof Error) {
 		logger.error('error thrown', messageOrError.stack)
 		message = getSanitizedErrorMessage(messageOrError)
@@ -122,6 +144,7 @@ const unexpected = (req, res, next, messageOrError) => {
 		message = 'Unexpected Error'
 	}
 
+	// if json, just return json
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -133,6 +156,10 @@ const unexpected = (req, res, next, messageOrError) => {
 			})
 		)
 	}
+
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_UNEXPECTED', { req, res, next, message })
+	if (res.headersSent || req.responseHandled) return
 
 	res.send(`Server Error: ${message}`)
 }

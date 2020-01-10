@@ -2,10 +2,15 @@
 
 exports[`Code Editor Node Code builds the expected component 1`] = `
 <div
-  className="text-chunk obojobo-draft--chunks--code pad"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
-  <pre>
-    <code />
-  </pre>
+  <div
+    className="text-chunk obojobo-draft--chunks--code pad"
+  >
+    <pre>
+      <code />
+    </pre>
+  </div>
 </div>
 `;

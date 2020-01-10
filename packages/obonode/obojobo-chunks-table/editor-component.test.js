@@ -1,8 +1,13 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import Table from './editor-component'
+
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
@@ -22,80 +27,12 @@ describe('Table Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Table component removes col', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<Table
-				node={{
-					data: {
-						get: () => {
-							return { textGroup: { textGroup: [], numCols: 1 } }
-						}
-					},
-					nodes: [
-						{
-							nodes: {
-								get: () => {
-									return {
-										key: 'deletedCell'
-									}
-								}
-							}
-						}
-					]
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Table component adds row', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<Table
-				node={{
-					data: {
-						get: () => {
-							return { textGroup: { numRows: 1, numCols: 2 } }
-						}
-					},
-					nodes: { size: 2 }
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(2) // Need to skip an extra button for the extra column
-			.simulate('click')
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
-	})
-
 	test('Table component toggles header', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Table
 				node={{
 					data: {
@@ -122,52 +59,14 @@ describe('Table Editor Node', () => {
 					}
 				}}
 				editor={editor}
+				isSelected
 			/>
 		)
 		const tree = component.html()
 
 		component
 			.find('button')
-			.at(3)
-			.simulate('click')
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Table component adds col', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<Table
-				node={{
-					data: {
-						get: () => {
-							return { textGroup: { numCols: 1 } }
-						}
-					},
-					nodes: [
-						{
-							data: {
-								get: () => {
-									return {
-										header: true
-									}
-								}
-							}
-						}
-					]
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(2)
+			.at(0)
 			.simulate('click')
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()

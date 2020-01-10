@@ -3,42 +3,55 @@
 .obojobo-draft--chunks--mc-assessment--mc-choice {
 	$color-border: transparentize($color-shadow, 0.25);
 
-	border: 1px solid $color-border;
-	padding-bottom: 1em;
+	border-bottom: 1px solid $color-border;
 
-	.obojobo-draft--components--button {
-		display: none;
-	}
-
-	&.is-selected {
-		border: 1px solid $color-action;
-
-		.obojobo-draft--components--button {
-			display: block;
-		}
+	&:hover {
+		background: none;
 	}
 
 	.correct-button {
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
-		position: relative;
-		top: 2.3em;
-		left: 0.5em;
-		font-size: inherit;
-		background: transparent;
-		border: none;
+		position: absolute;
+		top: 0.5em;
+		left: 3em;
 		font-family: $correct-font;
+
+		.button {
+			padding: 0.2em 0.5em;
+			color: $color-correct;
+			background-color: $color-bg;
+			border-color: $color-correct;
+			border-width: 2px;
+			height: 2.35em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-correct;
+			}
+		}
+	}
+
+	&.is-not-correct {
+		.correct-button {
+			color: $color-incorrect;
+
+			.button {
+				color: $color-incorrect;
+				border-color: $color-incorrect;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-incorrect;
+				}
+			}
+		}
 	}
 
 	.add-feedback {
 		position: absolute;
-		bottom: 0;
-		right: 0;
-		font-size: 0.85em;
-		background-color: $color-bg2;
-		border: 1px solid transparentize($color-shadow, 0.2);
-		border-radius: $dimension-rounded-radius;
-		margin: 0.2em;
+		bottom: 0.5em;
+		right: 3em;
 	}
 
 	&.is-correct {
@@ -47,16 +60,11 @@
 		}
 	}
 
-	&.is-not-correct {
-		.correct-button {
-			color: $color-incorrect;
-		}
-	}
-
 	.delete-button {
 		position: absolute;
-		right: 0;
-		top: 0;
+		right: -2em;
+		left: auto;
+		top: 0.5em;
 		transform: translate(50%, -50%);
 		z-index: 3;
 
@@ -65,6 +73,10 @@
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
 		}
 	}
 }

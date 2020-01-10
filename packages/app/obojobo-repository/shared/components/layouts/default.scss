@@ -1,0 +1,112 @@
+@import '../../../client/css/defaults';
+
+.layout--wrapper {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.layout--content {
+	flex-grow: 1;
+}
+
+.layout--footer {
+	flex-grow: 0;
+}
+
+.repository--item-list--collection {
+	&:last-child {
+		border-top: 0;
+	}
+}
+
+.repository--item-list--collection--item-wrapper {
+	// add some margin so that the
+	// icons line up visually with the left
+	// the padding/bg around them makes them look off otherwise
+	margin-left: -0.5em;
+	margin-right: -0.5em;
+}
+
+.repository--item-list--row {
+	// overflow: auto;
+	font-size: 0.8em;
+	font-family: $font-text;
+	width: 100%;
+
+	.avatar,
+	> .repository--module-icon {
+		float: left;
+	}
+
+	> a {
+		text-decoration: none;
+		color: black;
+		font-weight: 600;
+	}
+
+	> em {
+		font-style: normal;
+		font-weight: 700;
+	}
+
+	@include with-bottom-border();
+}
+
+.repository--item-list--collection--item--multi-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	justify-content: flex-start;
+
+	@include with-bottom-border();
+
+	@include mq($from: zero, $until: mobileL) {
+		justify-content: space-around;
+	}
+}
+
+.repository--main-content {
+	box-sizing: border-box;
+	max-width: $dimension-width;
+	margin: 0 auto;
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+
+	code {
+		background-color: #eeeeee;
+		padding: 2px;
+	}
+
+	img {
+		max-width: 100%;
+		border: 1px solid $color-shadow;
+	}
+}
+
+.repository--main-content--title {
+	font-family: $font-default;
+	text-align: left;
+	font-size: 1.2em;
+	display: table;
+	white-space: nowrap;
+	margin-bottom: 0.8em;
+	width: 100%;
+	position: relative;
+
+	> span {
+		background: $color-bg;
+		position: relative;
+		padding-right: 1em;
+	}
+
+	&::before {
+		border-top: 1px solid $border-color;
+		content: '';
+		display: table-cell;
+		position: absolute;
+		top: 0.6em;
+		left: 0;
+		right: 0;
+	}
+}

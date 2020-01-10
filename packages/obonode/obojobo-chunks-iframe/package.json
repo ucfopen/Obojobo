@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-iframe",
-	"version": "6.0.0-alpha.0",
+	"version": "7.0.4",
 	"license": "AGPL-3.0-only",
 	"description": "IFrame content chunk for Obojobo",
 	"scripts": {
@@ -31,7 +31,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^6.0.0-alpha.0"
+		"obojobo-lib-utils": "^7.0.4"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
@@ -49,7 +49,10 @@
 			"lcov"
 		],
 		"coveragePathIgnorePatterns": [
-			"node_modules"
+			"node_modules",
+			"iframe-control-types.js",
+			"iframe-fit-types.js",
+			"iframe-media-types.js"
 		],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",

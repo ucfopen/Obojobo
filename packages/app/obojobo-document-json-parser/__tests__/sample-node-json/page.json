@@ -2,7 +2,20 @@
 	"id": "b64fdc8e-48c1-43c1-9644-747519ad14ef",
 	"type": "ObojoboDraft.Pages.Page",
 	"content": {
-		"title": "Welcome to the Obojobo Visual Editor"
+		"title": "Welcome to the Obojobo Visual Editor",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": []
 }

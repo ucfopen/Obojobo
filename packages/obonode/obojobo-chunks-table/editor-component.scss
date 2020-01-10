@@ -2,14 +2,123 @@
 
 .obojobo-draft--chunks--table.viewer {
 	.view {
-		.delete-cell {
-			border: none;
-			width: 1em;
-			text-align: center;
+		th {
+			position: relative;
+		}
+
+		td {
+			position: relative;
+		}
+	}
+
+	.dropdown-cell {
+		text-align: right;
+		position: absolute;
+		top: -0.3em;
+		right: 0;
+		z-index: 99;
+
+		> button {
+			font-weight: bold;
+			position: absolute;
+			right: 0.2em;
+			top: 0.8em;
+			height: 0.5em;
+			width: 1.5em;
+			padding: 0;
+			color: $color-text-minor;
+			transform: rotate(-180deg);
+
+			&.is-open {
+				transform: none;
+				top: 0.2em;
+			}
+		}
+
+		&:hover {
+			> div.is-not-open {
+				display: block;
+			}
+
+			span.is-not-open {
+				transform: none;
+				top: 0.2em;
+			}
+		}
+
+		.drop-content-cell {
+			display: none;
+			text-align: right;
+			border: 1px solid $color-shadow;
+			border-radius: $dimension-rounded-radius;
+			overflow: hidden;
+			position: relative;
+			top: 1.4em;
+			right: 0.2em;
+
+			&.is-open {
+				display: block;
+			}
+
+			button {
+				display: block;
+				width: 100%;
+				text-align: right;
+				border: none;
+
+				&:hover {
+					background-color: $color-obojobo-blue;
+					color: $color-bg;
+				}
+			}
 		}
 	}
 
 	.table-settings {
 		text-align: center;
+	}
+
+	.buttonbox-box {
+		position: absolute;
+		text-align: center;
+		border-radius: $dimension-rounded-radius;
+		font-size: 0.75em;
+		bottom: -4em;
+		left: 50%;
+		transform: translate(-50%, 0);
+		font-family: $font-default;
+		box-sizing: border-box;
+		background-color: $color-bg2;
+		box-shadow: $box-shadow-overlay;
+		z-index: 9;
+
+		@mixin point() {
+			content: ' ';
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, -50%) rotate(45deg);
+			width: 1.72em;
+			height: 1.72em;
+			border-radius: $dimension-rounded-radius 0;
+			z-index: -1;
+		}
+
+		.box-border {
+			background-color: $color-bg2;
+			padding: 1em;
+		}
+
+		&::before {
+			@include point();
+
+			background-color: $color-bg2;
+			box-shadow: -$box-shadow-overlay;
+		}
+
+		.obojobo-draft--components--button {
+			position: relative;
+			z-index: 1;
+			font-size: 1.2em;
+		}
 	}
 }

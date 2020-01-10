@@ -34,8 +34,7 @@ describe('viewer events', () => {
 		ve = oboRequire('viewer_events')
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
-		expect(oboEvents.on).toBeCalledWith('client:nav:toggle', expect.any(Function))
-		expect(oboEvents.on).toHaveBeenCalledTimes(3)
+		expect(oboEvents.on).toHaveBeenCalledTimes(2)
 	})
 
 	test('executes next when included to support express middleware', () => {
@@ -92,32 +91,6 @@ describe('viewer events', () => {
 				'nav:isOpen',
 				1,
 				false,
-				'mockResourceLinkId'
-			)
-		})
-	})
-
-	test('client:nav:toggle', () => {
-		expect.hasAssertions()
-		ve = oboRequire('viewer_events')
-
-		const [eventName, callback] = oboEvents.on.mock.calls[2]
-		expect(eventName).toBe('client:nav:toggle')
-		expect(callback).toHaveLength(1) // callback has 1 argument
-
-		VisitModel.fetchById.mockResolvedValueOnce({
-			resource_link_id: 'mockResourceLinkId'
-		})
-
-		expect(vs.set).not.toHaveBeenCalled()
-		return callback(mockEvent).then(() => {
-			expect(vs.set).toBeCalledWith(
-				'mockUserId',
-				'mockDraftId',
-				'mockContentId',
-				'nav:isOpen',
-				1,
-				'yep',
 				'mockResourceLinkId'
 			)
 		})

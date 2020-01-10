@@ -1,6 +1,10 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--figure {
+	.accessibility-warning {
+		font-family: $font-default;
+	}
+
 	.figure-box {
 		cursor: default;
 		position: relative;
@@ -9,6 +13,15 @@
 		.obojobo-draft--components--button {
 			transition: opacity 0.2s linear 0.2s;
 			opacity: 0;
+		}
+
+		&.is-selected {
+			border: 3px solid $color-action;
+
+			.obojobo-draft--components--button {
+				transition: opacity 0s;
+				opacity: 1;
+			}
 		}
 
 		&:hover {
@@ -43,7 +56,7 @@
 			button {
 				font-size: 1.2em;
 				padding: 0;
-				min-width: 1.4em;
+				min-width: 1.3em;
 				border-radius: 50%;
 			}
 		}
