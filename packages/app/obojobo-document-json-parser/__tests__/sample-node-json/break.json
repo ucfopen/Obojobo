@@ -2,7 +2,20 @@
 	"id": "ab2734d1-3ab0-47fd-aa7c-c3c8405f1396",
 	"type": "ObojoboDraft.Chunks.Break",
 	"content": {
-		"width": "normal"
+		"width": "normal",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": []
 }

@@ -19,18 +19,7 @@ describe('YouTube Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
-		}
-		const slateNode = Converter.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
-		const oboNode = {
-			id: 'mockKey',
-			type: 'mockType',
-			content: {}
+			content: { videoId: 'mock-video-id', triggers: 'mock-triggers' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

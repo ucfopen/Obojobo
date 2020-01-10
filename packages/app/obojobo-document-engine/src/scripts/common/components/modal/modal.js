@@ -21,7 +21,7 @@ class Modal extends React.Component {
 	}
 
 	onKeyUp(event) {
-		if (event.keyCode === 27) {
+		if (!this.props.preventEsc && event.keyCode === 27) {
 			//ESC
 			if (this.props.onClose) {
 				this.props.onClose()

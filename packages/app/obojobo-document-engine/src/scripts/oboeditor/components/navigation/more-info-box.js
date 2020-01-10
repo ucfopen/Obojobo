@@ -45,8 +45,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	componentWillUnmount() {
-		// remove the listener if the component somehow unmounts without closing
-		document.removeEventListener('mousedown', this.handleClick, false)
+		this.close()
 	}
 
 	handleClick(event) {

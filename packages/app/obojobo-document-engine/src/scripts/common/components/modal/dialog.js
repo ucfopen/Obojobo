@@ -52,6 +52,7 @@ export default class Dialog extends React.Component {
 			<div className={className} style={styles}>
 				<Modal
 					onClose={this.props.onClose}
+					preventEsc={this.props.preventEsc}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 					className={this.props.modalClassName}
 				>
