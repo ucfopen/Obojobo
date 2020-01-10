@@ -71,6 +71,7 @@ class SimpleDialog extends React.Component {
 					title={this.props.title}
 					width={this.props.width}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+					preventEsc={this.props.preventEsc}
 				>
 					{this.props.children}
 				</Dialog>
@@ -86,6 +87,7 @@ SimpleDialog.defaultProps = {
 	cancelOk: false,
 	title: null,
 	width: null,
+	preventEsc: false,
 	onCancel() {
 		return ModalUtil.hide()
 	},
