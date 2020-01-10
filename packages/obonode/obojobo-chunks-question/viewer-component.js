@@ -23,6 +23,8 @@ export default class Question extends React.Component {
 		this.state = {
 			isFlipping: false
 		}
+
+		this.onClickBlocker = this.onClickBlocker.bind(this)
 	}
 
 	static focusOnContent(model) {
@@ -151,7 +153,7 @@ export default class Question extends React.Component {
 							isReview={this.props.isReview}
 						/>
 					</div>
-					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
+					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker}>
 						<Button
 							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}

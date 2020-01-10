@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LinkMark LinkMark registers a type and key 1`] = `"a"`;
-
-exports[`LinkMark LinkMark registers a type and key 2`] = `undefined`;
+exports[`LinkMark renderMark diplays expected style 1`] = `
+<Link
+  mark={
+    Object {
+      "type": "a",
+    }
+  }
+>
+  mockChild
+</Link>
+`;

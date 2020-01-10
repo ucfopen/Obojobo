@@ -48,4 +48,24 @@ describe('Prompt Modal', () => {
 
 		expect(component.html()).toMatchSnapshot()
 	})
+
+	test('Prompt component deals with keydown', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<Prompt onConfirm={onConfirm} />)
+
+		component
+			.find('input')
+			.at(1)
+			.simulate('keyDown', { key: 'R' })
+
+		expect(component.html()).toMatchSnapshot()
+
+		component
+			.find('input')
+			.at(1)
+			.simulate('keyDown', { key: 'Enter' })
+
+		expect(onConfirm).toHaveBeenCalled()
+	})
 })

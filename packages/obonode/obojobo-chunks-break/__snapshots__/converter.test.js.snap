@@ -4,6 +4,7 @@ exports[`Break Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
     "content": Object {
+      "triggers": "mock-triggers",
       "width": "large",
     },
   },
@@ -16,9 +17,7 @@ Object {
 exports[`Break Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
-  "content": Object {
-    "width": undefined,
-  },
+  "content": Object {},
   "id": "mockKey",
   "type": "mockType",
 }

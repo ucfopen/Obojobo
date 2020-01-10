@@ -1,0 +1,41 @@
+@import '../../../../scss/includes';
+
+.visual-editor--file-toolbar {
+	z-index: $z-index-above-all;
+	margin: 0 auto;
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	background-color: $color-bg;
+	border-bottom: 1px solid $color-shadow;
+	font-family: $font-default;
+	font-size: 0.8em;
+
+	button {
+		font-size: 1em;
+		padding: 0.5em;
+		margin: 0;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+		font-family: $font-default;
+
+		&:hover {
+			opacity: 1;
+			background: lighten($color-action, 48%);
+		}
+	}
+
+	.saved-message {
+		display: none;
+
+		&.saved {
+			font-size: 1em;
+			padding-left: 3em;
+			color: $color-action;
+			display: inline-block;
+			pointer-events: none;
+			text-align: center;
+			font-weight: bold;
+		}
+	}
+}

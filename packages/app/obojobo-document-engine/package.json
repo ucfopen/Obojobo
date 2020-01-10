@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "6.0.1",
+	"version": "7.0.4",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -46,11 +46,19 @@
 	"author": "",
 	"dependencies": {
 		"backbone": "^1.3.3",
+		"codemirror": "^5.48.4",
 		"date-fns": "^2.4.1",
-		"immutable": "^3.8.2",
+		"downloadjs": "^1.4.7",
+		"immutable": "^4.0.0-rc.12",
 		"katex": "^0.11.1",
-		"obojobo-lib-utils": "^6.0.1",
+		"obojobo-lib-utils": "^7.0.4",
+		"prop-types": "15.6.2",
+		"react": "16.10.1",
+		"react-codemirror2": "^6.0.0",
+		"react-compound-slider": "^2.4.0",
+		"react-dom": "16.10.1",
 		"react-idle-timer": "^4.2.9",
+		"react-transition-group": "^4.3.0",
 		"sass-mq": "^5.0.1",
 		"slate": "0.44.12",
 		"slate-react": "0.20.8",
@@ -76,6 +84,7 @@
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
 			"^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
 			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.css$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": [
@@ -96,7 +105,6 @@
 			"<rootDir>/src/scripts/oboeditor/index.js",
 			"<rootDir>/src/scripts/oboeditor/app.js",
 			"<rootDir>/src/scripts/oboeditor/dist.js",
-			"<rootDir>/src/scripts/oboeditor/draftmanager.js",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			".json",
 			"<rootDir>/src/scripts/common/index.js",

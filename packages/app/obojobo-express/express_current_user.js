@@ -13,43 +13,39 @@ const resetCurrentUser = req => {
 	req.currentUser = null
 }
 
-// returns a Promise!!!
-const getCurrentUser = (req, isRequired = false) => {
+// returns the current user or a guest user
+const getCurrentUser = async req => {
 	// return early if already verified
-	if (req.currentUser) return Promise.resolve(req.currentUser)
+	if (req.currentUser) return req.currentUser
 
-	// no session data
-	// if isRequired returns a promise rejection
-	// if not require, resolves with a GuestUser
-	if (!req.session || !req.session.currentUserId) {
-		if (isRequired) {
-			logger.warn(
-				'No Session or Current User?',
-				req.session instanceof Object,
-				req.session.currentUserId
-			)
-			return Promise.reject(new Error('Login Required'))
+	try {
+		if (req.session && req.session.currentUserId) {
+			req.currentUser = await User.fetchById(req.session.currentUserId)
 		}
-		req.currentUser = new GuestUser()
-		return Promise.resolve(req.currentUser)
+	} catch (err) {
+		logger.warn('getCurrentUser', err)
 	}
 
-	// fetch user from database using session data for the user id
-	return User.fetchById(req.session.currentUserId)
-		.then(user => {
-			req.currentUser = user
-			return user
-		})
-		.catch(err => {
-			logger.warn('getCurrentUser', err)
-			if (isRequired) return Promise.reject(new Error('Login Required'))
-			req.currentUser = new GuestUser()
-			return Promise.resolve(req.currentUser)
-		})
+	if (!req.currentUser) {
+		req.currentUser = new GuestUser()
+	}
+
+	return req.currentUser
 }
 
-// sugar for getCurrentUser(true)
-const requireCurrentUser = req => req.getCurrentUser(true)
+// throws an error if:
+// A: currentUser ISNT a instance of USER
+// OR B: currentUser IS a guest
+const requireCurrentUser = async req => {
+	const user = await req.getCurrentUser()
+
+	// isn't a user or is a guest?
+	if (!(user instanceof User) || user.isGuest()) {
+		throw new Error('Login Required')
+	}
+
+	return user
+}
 
 const saveSessionPromise = req => {
 	return new Promise((resolve, reject) => {

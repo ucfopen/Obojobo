@@ -1,10 +1,10 @@
 import Common from 'Common'
 
-import APIUtil from '../../viewer/util/api-util'
-import QuestionUtil from '../../viewer/util/question-util'
-import FocusUtil from '../../viewer/util/focus-util'
+import APIUtil from '../util/api-util'
+import QuestionUtil from '../util/question-util'
+import FocusUtil from '../util/focus-util'
 
-import NavStore from '../../viewer/stores/nav-store'
+import NavStore from '../stores/nav-store'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux

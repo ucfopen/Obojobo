@@ -39,8 +39,7 @@ const renderSynced = (assessmentScore, externalSystemLabel) => (
 const renderResyncedSuccessfully = (assessmentScore, externalSystemLabel) => (
 	<div className="is-resynced">
 		<h2>Success!</h2>
-		<p
-		>{`✔ Your recorded score of ${assessmentScore}% was successfully sent to ${externalSystemLabel}.`}</p>
+		<p>{`✔ Your recorded score of ${assessmentScore}% was successfully sent to ${externalSystemLabel}.`}</p>
 	</div>
 )
 

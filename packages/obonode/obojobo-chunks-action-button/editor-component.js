@@ -3,88 +3,63 @@ import './editor-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-
-import NewActionModal from './new-action-modal'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import TriggerListModal from 'obojobo-document-engine/src/scripts/oboeditor/components/triggers/trigger-list-modal'
+import ActionButtonEditorAction from './action-button-editor-action'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
-const Trigger = props => {
-	return (
-		<div className="trigger" key={props.type}>
-			<span>{props.type}</span>
-			<span>{props.value}</span>
-			<Button className="delete-button" onClick={props.update}>
-				×
-			</Button>
-		</div>
-	)
-}
-
 class ActionButton extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.showTriggersModal = this.showTriggersModal.bind(this)
+		this.closeModal = this.closeModal.bind(this)
 	}
 
-	showAddActionModal() {
-		ModalUtil.show(<NewActionModal onConfirm={this.addAction.bind(this)} />)
+	showTriggersModal() {
+		ModalUtil.show(
+			<TriggerListModal content={this.props.node.data.get('content')} onClose={this.closeModal} />
+		)
 	}
 
-	addAction(newAction) {
-		const editor = this.props.editor
-		const content = this.props.node.data.get('content')
-
-		content.actions.push(newAction)
-
-		return editor.setNodeByKey(this.props.node.key, {
-			data: { content }
-		})
-	}
-
-	removeAction(index) {
-		const editor = this.props.editor
-		const content = this.props.node.data.get('content')
-
-		content.actions.splice(index, 1)
-
-		return editor.setNodeByKey(this.props.node.key, {
-			data: { content }
+	closeModal(modalState) {
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: { ...this.props.node.data.toJSON(), content: modalState }
 		})
 	}
 
 	renderTriggers() {
 		const content = this.props.node.data.get('content')
+		const onClickTrigger = content.triggers.find(trigger => trigger.type === 'onClick')
 		return (
 			<div className="trigger-box" contentEditable={false}>
-				<div>Button Actions:</div>
-				{content.actions.map((action, index) => {
-					return (
-						<Trigger
-							type={action.type}
-							value={action.value}
-							key={action.type}
-							parent={content.actions}
-							update={() => this.removeAction(index)}
-						/>
-					)
-				})}
-				<Button className="add-action" onClick={this.showAddActionModal.bind(this)}>
-					+ Add New Action
-				</Button>
+				<div className="box-border">
+					<div className="trigger-list">
+						<div className="title">When the button is clicked:</div>
+						{onClickTrigger.actions.map(action => (
+							<ActionButtonEditorAction key={action.type} {...action} />
+						))}
+					</div>
+					<Button className="add-action" onClick={this.showTriggersModal}>
+						Edit Triggers
+					</Button>
+				</div>
 			</div>
 		)
 	}
 
 	render() {
-		const { isSelected } = this.props
-
 		return (
-			<div className="text-chunk obojobo-draft--chunks--action-button pad">
-				<div className="obojobo-draft--components--button align-center">
-					<div className="button">{this.props.children}</div>
+			<Node {...this.props}>
+				<div className="text-chunk obojobo-draft--chunks--action-button pad">
+					<div className="obojobo-draft--components--button align-center">
+						<div className="button">{this.props.children}</div>
+					</div>
+					{this.props.isSelected ? this.renderTriggers() : null}
 				</div>
-				{isSelected ? this.renderTriggers() : null}
-			</div>
+			</Node>
 		)
 	}
 }

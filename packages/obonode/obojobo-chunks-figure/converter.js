@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => {
 	const captionLine = {
@@ -17,7 +18,7 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content
+		content: withoutUndefined(content)
 	}
 }
 

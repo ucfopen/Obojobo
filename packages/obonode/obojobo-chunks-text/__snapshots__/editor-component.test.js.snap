@@ -2,6 +2,11 @@
 
 exports[`Text Editor Node Text builds the expected component 1`] = `
 <div
-  className="text-chunk obojobo-draft--chunks--single-text pad"
-/>
+  className="oboeditor-component component"
+  data-obo-component="true"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--single-text pad"
+  />
+</div>
 `;

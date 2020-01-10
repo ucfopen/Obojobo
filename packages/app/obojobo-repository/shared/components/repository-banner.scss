@@ -1,0 +1,91 @@
+@import '../../client/css/defaults';
+
+.repository--section-wrapper--full-width {
+	margin-bottom: $size-spacing-vertical-big;
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+
+	> section {
+		max-width: $dimension-width;
+		margin: 0 auto;
+	}
+
+	&.default-bg .repository--section-wrapper--full-width-bg {
+		content: ' ';
+		position: absolute;
+		display: block;
+		height: 100%;
+		width: 100%;
+		background-repeat: no-repeat;
+		background-size: auto;
+		background-attachment: fixed;
+		background-position-x: right;
+		background-position-y: top;
+		top: 0;
+		z-index: -1;
+		background-image: url('/images/purple-background-cubes.png');
+		filter: none;
+		opacity: 0.6;
+	}
+}
+
+.repository--section-wrapper--grey {
+	background-color: $color-banner-bg;
+	border-bottom: 1px solid $border-color;
+}
+
+.repository--title-banner {
+	display: flex;
+	position: relative;
+	z-index: 1;
+	padding: $dimension-padding;
+	box-sizing: border-box;
+	align-items: center;
+	color: #555555;
+	overflow: hidden;
+
+	.repository--module-icon--image {
+		margin-right: 1em;
+
+		svg {
+			height: $dimension-module-icon + 45px;
+		}
+	}
+}
+
+.repository--title-banner--title {
+	font-family: $font-default;
+	color: darken($color-action, 10%);
+	font-weight: 700;
+	font-size: 2.5em;
+	white-space: pre-wrap;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	// Nudge the text slightly left to line up:
+	margin-left: -3px;
+}
+
+.default-bg .repository--title-banner--title {
+	// add a stroke/shadow
+	&::before {
+		$stroke-width: 5px;
+
+		position: absolute;
+		content: attr(data-title);
+		z-index: -1;
+		// webkit supports strokes, although they are center aligned,
+		// so we'll double the desired stroke here to think of the stroke-width
+		// in terms of pixels of stroke that'll be visible outside the text
+		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
+		// In case we're not in webkit, throw a text-shadow on to at least get
+		// a pixel of glow to keep the background from mixing with the font too much
+		// prettier-ignore
+		text-shadow:
+			-1px -1px 0 $color-banner-bg,
+			1px -1px 0 $color-banner-bg,
+			-1px 1px 0 $color-banner-bg,
+			1px 1px 0 $color-banner-bg;
+	}
+}
