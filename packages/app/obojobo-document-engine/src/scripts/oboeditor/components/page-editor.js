@@ -229,6 +229,7 @@ class PageEditor extends React.Component {
 		this.setState({ value: change.value, saved: false })
 	}
 
+	// NOTE: returns a promise!
 	saveModule(draftId) {
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
@@ -262,8 +263,12 @@ class PageEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: true })
+
 		return APIUtil.postDraft(draftId, JSON.stringify(json))
+			.then((saveDraftResult) => {
+				this.setState({ saved: true })
+				return saveDraftResult
+			})
 	}
 
 	exportToJSON(page, value) {

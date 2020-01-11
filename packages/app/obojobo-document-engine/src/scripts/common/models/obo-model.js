@@ -455,6 +455,10 @@ class OboModel extends Backbone.Model {
 
 OboModel.models = {}
 
+// WARNING THIS IS UNPREDICTABLE
+// If OboModel.create() was ever used to create a model
+// that isnt added to an existing tree, getRoot may return
+// the root of a different tree than expected
 OboModel.getRoot = function() {
 	for (const id in OboModel.models) {
 		return OboModel.models[id].getRoot()

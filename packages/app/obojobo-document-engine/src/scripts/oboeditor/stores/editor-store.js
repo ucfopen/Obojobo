@@ -43,7 +43,10 @@ class EditorStore extends Store {
 					this.movePage(payload.value.pageId, payload.value.index)
 				},
 				'editor:renamePage': payload => {
-					this.renamePage(payload.value.pageId, payload.value.name)
+					this.setNodeTitle(payload.value.pageId, payload.value.name)
+				},
+				'editor:renameModule': payload => {
+					this.setNodeTitle(this.state.model.getRoot().id, payload.value.name)
 				},
 				'editor:setStartPage': payload => {
 					this.setStartPage(payload.value.pageId)
@@ -63,6 +66,7 @@ class EditorStore extends Store {
 			navTargetId: null,
 			context: 'editor',
 			currentPageModel: null,
+			model,
 			mode,
 			settings,
 			startingId
@@ -165,7 +169,7 @@ class EditorStore extends Store {
 			childNavItem.fullFlatPath = [
 				'/editor',
 				this.state.mode,
-				model.getRoot().get('draftId'),
+				this.state.model.get('draftId'),
 				flatPath
 			].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
@@ -178,7 +182,7 @@ class EditorStore extends Store {
 	}
 
 	addPage(newPage, afterPageId) {
-		const rootModel = OboModel.getRoot()
+		const rootModel = this.state.model.getRoot()
 		let newPageModel
 
 		if (afterPageId) {
@@ -200,7 +204,7 @@ class EditorStore extends Store {
 	}
 
 	addAssessment(newAssessment) {
-		const rootModel = OboModel.getRoot()
+		const rootModel = this.state.model.getRoot()
 
 		// Add the newPage to the content
 		const assessmentModel = OboModel.create(newAssessment)
@@ -224,12 +228,12 @@ class EditorStore extends Store {
 		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
-	renamePage(pageId, newName) {
-		const pageModel = OboModel.models[pageId]
-		pageModel.get('content').title = newName
-		pageModel.title = newName
+	setNodeTitle(id, newName) {
+		const nodeModel = OboModel.models[id]
+		nodeModel.get('content').title = newName
+		nodeModel.title = newName
 
-		EditorUtil.rebuildMenu(OboModel.getRoot())
+		EditorUtil.rebuildMenu(this.state.model.getRoot())
 		this.triggerChange()
 	}
 
@@ -242,11 +246,10 @@ class EditorStore extends Store {
 		const pageModel = OboModel.models[pageId]
 		pageModel.moveTo(index)
 
-		EditorUtil.rebuildMenu(OboModel.getRoot())
+		EditorUtil.rebuildMenu(this.state.model.getRoot())
 		this.triggerChange()
 	}
 }
 
 const editorStore = new EditorStore()
-window.__es = editorStore
 export default editorStore

@@ -16,7 +16,9 @@ import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
+import Common from '../../common'
 
+const Dispatcher = Common.flux.Dispatcher
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
 
@@ -28,6 +30,7 @@ class CodeEditor extends React.Component {
 		super(props)
 
 		this.state = {
+			draftTitle: EditorUtil.getTitleFromString(this.props.initialCode, props.mode),
 			code: this.props.initialCode,
 			saved: true,
 			editor: null,
@@ -48,23 +51,26 @@ class CodeEditor extends React.Component {
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
 		this.saveCode = this.saveCode.bind(this)
-		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.onKeyUp = this.onKeyUp.bind(this)
 		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.setTitle = this.setTitle.bind(this)
 
 		this.keyBinding = hotKeyPlugin(this.saveCode)
 		this.setEditor = this.setEditor.bind(this)
+
 	}
 
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		Dispatcher.on('editor:renameModule', this.setTitle)
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
+		Dispatcher.off('editor:renameModule', this.setTitle)
 	}
 
 	checkIfSaved(event) {
@@ -80,13 +86,13 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
-	setJSONTitle(code, title) {
+	setJSONTitle(code, draftTitle) {
 		const json = JSON.parse(code)
-		json.content.title = title
-		return { code: JSON.stringify(json, null, 4) }
+		json.content.title = draftTitle
+		return { draftTitle, code: JSON.stringify(json, null, 4), saved: false }
 	}
 
-	setXMLTitle(code, title) {
+	setXMLTitle(code, draftTitle) {
 		const doc = domParser.parseFromString(code, 'application/xml')
 		let els = doc.getElementsByTagName('Module')
 		if (els.length === 0) {
@@ -94,36 +100,39 @@ class CodeEditor extends React.Component {
 		}
 		if (els.length > 0) {
 			const el = els[0]
-			el.setAttribute('title', title)
+			el.setAttribute('title', draftTitle)
 		}
-		return { code: serial.serializeToString(doc) }
+		return { draftTitle, code: serial.serializeToString(doc), saved: false }
 	}
 
-	setTitle(title) {
+	setTitle(payload) {
+		const draftTitle = payload.value.name
 		return this.setState((state, props) => {
 			switch (props.mode) {
 				case JSON_MODE:
-					return this.setJSONTitle(state.code, title)
+					return this.setJSONTitle(state.code, draftTitle)
 
 				case XML_MODE:
-					return this.setXMLTitle(state.code, title)
+					return this.setXMLTitle(state.code, draftTitle)
 			}
 		})
 	}
 
+	// NOTE: returns a promise
 	saveCode() {
 		// Update the title in the File Toolbar
-		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-		EditorUtil.renamePage(this.props.model.id, label)
-
-		this.setState({ saved: true })
+		const label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
+		EditorUtil.renameModule(label)
 
 		return APIUtil.postDraft(
 			this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
 		)
+		.then((saveDraftResult) => {
+			this.setState({ saved: true })
+			return saveDraftResult
+		})
 	}
 
 	// Makes CodeMirror commands match Slate commands
@@ -182,14 +191,13 @@ class CodeEditor extends React.Component {
 				onKeyPress={this.onKeyPress}
 			>
 				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
+					<div className="draft-title">{this.state.draftTitle}</div>
 					{this.state.editor ? (
 						<FileToolbar
 							editorRef={this.state.editor}
-							model={this.props.model}
 							draftId={this.props.draftId}
+							draftTitle={this.state.draftTitle}
 							onSave={this.saveCode}
-							onRename={this.setTitle}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
 							mode={this.props.mode}

@@ -13,17 +13,9 @@ const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
-	renameModule(moduleId, label) {
+	renameModule(label) {
 		ModalUtil.hide()
-
-		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-
-		EditorUtil.renamePage(moduleId, label)
-
-		if (this.props.onRename) {
-			this.props.onRename(label)
-		}
+		EditorUtil.renameModule(label)
 	}
 
 	deleteModule() {
@@ -35,7 +27,7 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(moduleId, label) {
-		this.renameModule(moduleId, label)
+		EditorUtil.renameModule(label)
 
 		let draftId = null
 
@@ -106,8 +98,8 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Copy Module"
 							message="Enter the title for the copied module:"
-							value={this.props.model.title + ' - Copy'}
-							onConfirm={this.copyModule.bind(this, this.props.model.id)}
+							value={this.props.draftTitle + ' - Copy'}
+							onConfirm={this.copyModule.bind(this, this.props.draftId)}
 						/>
 					)
 			},
@@ -135,8 +127,8 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Rename Module"
 							message="Enter the new title for the module:"
-							value={this.props.model.title}
-							onConfirm={this.renameModule.bind(this, this.props.model.id)}
+							value={this.props.draftTitle}
+							onConfirm={this.renameModule.bind(this)}
 						/>
 					)
 			},
@@ -147,7 +139,7 @@ class FileMenu extends React.PureComponent {
 					ModalUtil.show(
 						<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
 							{'Are you sure you want to delete ' +
-								this.props.model.title +
+								this.props.draftTitle +
 								'? This will permanately delete all content in the module'}
 						</SimpleDialog>
 					)

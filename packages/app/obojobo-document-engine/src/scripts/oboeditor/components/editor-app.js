@@ -29,6 +29,7 @@ const { ModalStore } = Common.stores
 const { OboModel } = Common.models
 
 const XML_MODE = 'xml'
+const JSON_MODE = 'json'
 const VISUAL_MODE = 'visual'
 
 const plugins = [
@@ -46,15 +47,14 @@ class EditorApp extends React.Component {
 		super(props)
 
 		this.state = {
-			model: null,
+			model: null, // Instance of OboModel
+			draft: null, // raw xml string OR parsed json from server
 			editorState: null,
 			modalState: null,
 			navTargetId: null,
 			loading: true,
 			draftId: null,
-			draft: null,
-			mode: VISUAL_MODE,
-			code: null
+			mode: VISUAL_MODE
 		}
 
 		// register plugins from dynamic registry items
@@ -76,12 +76,14 @@ class EditorApp extends React.Component {
 		this.switchMode = this.switchMode.bind(this)
 	}
 
-	getVisualEditorState(draftId, draftModel) {
-		const json = JSON.parse(draftModel)
-		const obomodel = OboModel.create(json)
+	getEditorState(draftId, draftModelString, draftModelJSON){
+		const obomodel = OboModel.create(draftModelJSON)
+		const draft = this.state.mode === VISUAL_MODE ? draftModelJSON : draftModelString
+		const startId = this.state.mode === VISUAL_MODE ? draftModelJSON.content.start : null
+
 		EditorStore.init(
 			obomodel,
-			json.content.start,
+			startId,
 			this.props.settings,
 			window.location.pathname,
 			this.state.mode
@@ -91,28 +93,7 @@ class EditorApp extends React.Component {
 			modalState: ModalStore.getState(),
 			editorState: EditorStore.getState(),
 			draftId,
-			draft: json,
-			model: obomodel,
-			loading: false
-		}
-	}
-
-	getCodeEditorState(draftId, draftModel) {
-		const obomodel = OboModel.create({
-			type: 'ObojoboDraft.Modules.Module',
-			content: {
-				title: EditorUtil.getTitleFromString(draftModel, this.state.mode)
-			}
-		})
-
-		EditorStore.init(obomodel, null, this.props.settings, window.location.pathname, this.state.mode)
-
-		return {
-			modalState: ModalStore.getState(),
-			editorState: EditorStore.getState(),
-			code: draftModel,
-			draftId,
-			draft: draftModel,
+			draft,
 			model: obomodel,
 			loading: false
 		}
@@ -126,25 +107,35 @@ class EditorApp extends React.Component {
 	reloadDraft(draftId, mode) {
 		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
-				let json
+				let draftModelString
+				let draftModelJSON
 				switch (mode) {
 					case XML_MODE:
 						// Calling getFullDraft with xml will return plain text xml
-						return response
+						// if we're using XML we need to recreate the top level OboNode
+						// 1: shortcut to avoid converting xml response to json
+						// 2: so various parts of the editor can look up the title from OboNode
+						// 3: Obonode.getRoot() can become unreliable with multiple trees in use
+						draftModelJSON = {
+							id: draftId,
+							type: 'ObojoboDraft.Modules.Module',
+								content: {
+									title: EditorUtil.getTitleFromString(response, mode)
+								}
+							}
+						draftModelString = response
+						break
+
 					default:
-						json = JSON.parse(response)
+						const json = JSON.parse(response)
 						if (json.status === 'error') throw json.value
 
-						return JSON.stringify(json.value, null, 4)
+						draftModelJSON = json.value
+						draftModelString = JSON.stringify(draftModelJSON, null, 4)
+						break
 				}
-			})
-			.then(draftModel => {
-				switch (mode) {
-					case VISUAL_MODE:
-						return this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
-					default:
-						return this.setState({ ...this.getCodeEditorState(draftId, draftModel), mode })
-				}
+
+				this.setState({ ...this.getEditorState(draftId, draftModelString, draftModelJSON), mode })
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console
@@ -161,7 +152,6 @@ class EditorApp extends React.Component {
 
 		// get the mode from the location
 		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if (mode === 'classic') mode = XML_MODE // convert classic to xml
 
 		ModalStore.init()
 		return this.reloadDraft(draftId, this.state.mode)
@@ -175,8 +165,7 @@ class EditorApp extends React.Component {
 	renderCodeEditor() {
 		return (
 			<CodeEditor
-				initialCode={this.state.code}
-				model={this.state.model}
+				initialCode={this.state.draft}
 				draftId={this.state.draftId}
 				mode={this.state.mode}
 				switchMode={this.switchMode}

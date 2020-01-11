@@ -110,6 +110,14 @@ const EditorUtil = {
 
 		return OboModel.models[navTarget.id]
 	},
+	renameModule(name){
+		if (!name || !/[^\s]/.test(name)) name = '(Unnamed Module)'
+		return Dispatcher.trigger('editor:renameModule', {
+			value: {
+				name
+			}
+		})
+	},
 	renamePage(pageId, name) {
 		return Dispatcher.trigger('editor:renamePage', {
 			value: {

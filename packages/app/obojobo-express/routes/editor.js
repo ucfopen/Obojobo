@@ -10,7 +10,7 @@ const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 // Display the visual editor
 // mounted as /editor/draftId/page
 router
-	.route('/visual|classic/:draftId/:page?')
+	.route('/visual|xml|json/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
 	.get((req, res) => {
 		res.render('editor', { settings: { allowedUploadTypes }, assetForEnv, webpackAssetPath })
