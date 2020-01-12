@@ -86,35 +86,40 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
-	setJSONTitle(code, draftTitle) {
-		const json = JSON.parse(code)
+	setJSONTitle(stringJSON, draftTitle) {
+		// replace the title in  the json string
+		const json = JSON.parse(stringJSON)
 		json.content.title = draftTitle
-		return { draftTitle, code: JSON.stringify(json, null, 4), saved: false }
+		return JSON.stringify(json, null, 4)
 	}
 
-	setXMLTitle(code, draftTitle) {
-		const doc = domParser.parseFromString(code, 'application/xml')
+	setXMLTitle(stringXML, draftTitle) {
+		const doc = domParser.parseFromString(stringXML, 'application/xml')
+
+		// find the module element
 		let els = doc.getElementsByTagName('Module')
 		if (els.length === 0) {
 			els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
 		}
+
+		// update the title
 		if (els.length > 0) {
-			const el = els[0]
-			el.setAttribute('title', draftTitle)
+			els[0].setAttribute('title', draftTitle)
+			stringXML = serial.serializeToString(doc)
 		}
-		return { draftTitle, code: serial.serializeToString(doc), saved: false }
+
+		return stringXML
 	}
 
 	onRenameModule(payload) {
 		const draftTitle = payload.value.name
-		return this.setState((state, props) => {
-			switch (props.mode) {
-				case JSON_MODE:
-					return this.setJSONTitle(state.code, draftTitle)
+		const setTitleFn = this.props.mode === XML_MODE ?  this.setXMLTitle : this.setJSONTitle
+		const code = setTitleFn(this.state.code, draftTitle)
 
-				case XML_MODE:
-					return this.setXMLTitle(state.code, draftTitle)
-			}
+		this.setState({
+			draftTitle,
+			code,
+			saved: false
 		})
 	}
 

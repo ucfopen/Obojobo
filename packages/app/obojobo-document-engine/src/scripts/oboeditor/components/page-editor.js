@@ -39,7 +39,7 @@ class PageEditor extends React.Component {
 		const json = this.importFromJSON()
 
 		this.state = {
-			value: Value.fromJSON(json),
+			slateValue: Value.fromJSON(json), // object structure for rendering Slate
 			saved: true,
 			editable: true,
 			showPlaceholders: true
@@ -138,7 +138,7 @@ class PageEditor extends React.Component {
 		// If updating from an existing page to no page, set the user alert message
 		if (prevProps.page && !this.props.page) {
 			return this.setState({
-				value: Value.fromJSON({
+				slateValue: Value.fromJSON({
 					document: {
 						nodes: [
 							{
@@ -159,14 +159,14 @@ class PageEditor extends React.Component {
 
 		// If updating from no page to an existing page, load the new page into the editor
 		if (!prevProps.page && this.props.page) {
-			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+			return this.setState({ slateValue: Value.fromJSON(this.importFromJSON()) })
 		}
 
 		// Both page and previous page are garunteed to not be null here
 		// Save changes and update value when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
-			this.exportToJSON(prevProps.page, prevState.value)
-			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+			this.exportToJSON(prevProps.page, prevState.slateValue)
+			return this.setState({ slateValue: Value.fromJSON(this.importFromJSON()) })
 		}
 	}
 
@@ -204,7 +204,7 @@ class PageEditor extends React.Component {
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
 						<Editor
 							className="component obojobo-draft--pages--page"
-							value={this.state.value}
+							value={this.state.slateValue}
 							ref={this.editorRef}
 							onChange={this.onChange}
 							plugins={this.plugins}
@@ -235,7 +235,7 @@ class PageEditor extends React.Component {
 		}
 
 		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
-		this.setState({ value: change.value, saved: false })
+		this.setState({ slateValue: change.value, saved: false })
 	}
 
 	// NOTE: returns a promise!
@@ -280,11 +280,11 @@ class PageEditor extends React.Component {
 			})
 	}
 
-	exportToJSON(page, value) {
+	exportToJSON(page, slateValue) {
 		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(value.document.nodes.get(0))
+			const json = this.assessment.slateToObo(slateValue.document.nodes.get(0))
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
 			page.children.set(childrenModels)
@@ -295,7 +295,7 @@ class PageEditor extends React.Component {
 			const json = {}
 			json.children = []
 
-			value.document.nodes.forEach(child => {
+			slateValue.document.nodes.forEach(child => {
 				const oboChild = Component.helpers.slateToObo(child)
 				json.children.push(oboChild)
 			})
@@ -310,12 +310,12 @@ class PageEditor extends React.Component {
 
 	// convenience method to prevent rerendring nav and duplicate code
 	exportCurrentToJSON() {
-		this.exportToJSON(this.props.page, this.state.value)
+		this.exportToJSON(this.props.page, this.state.slateValue)
 	}
 
 	importFromJSON() {
 		const json = { document: { nodes: [] } }
-		const { page } = this.props
+		const page = this.props.page
 
 		if (!page) return json // if page is empty, exit
 
