@@ -55,7 +55,7 @@ class CodeEditor extends React.Component {
 		this.onKeyUp = this.onKeyUp.bind(this)
 		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
-		this.setTitle = this.setTitle.bind(this)
+		this.onRenameModule = this.onRenameModule.bind(this)
 
 		this.keyBinding = hotKeyPlugin(this.saveCode)
 		this.setEditor = this.setEditor.bind(this)
@@ -65,12 +65,12 @@ class CodeEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
-		Dispatcher.on('editor:renameModule', this.setTitle)
+		Dispatcher.on('editor:renameModule', this.onRenameModule)
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
-		Dispatcher.off('editor:renameModule', this.setTitle)
+		Dispatcher.off('editor:renameModule', this.onRenameModule)
 	}
 
 	checkIfSaved(event) {
@@ -105,7 +105,7 @@ class CodeEditor extends React.Component {
 		return { draftTitle, code: serial.serializeToString(doc), saved: false }
 	}
 
-	setTitle(payload) {
+	onRenameModule(payload) {
 		const draftTitle = payload.value.name
 		return this.setState((state, props) => {
 			switch (props.mode) {
@@ -120,17 +120,15 @@ class CodeEditor extends React.Component {
 
 	// NOTE: returns a promise
 	saveCode() {
-		// Update the title in the File Toolbar
-		const label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
-		EditorUtil.renameModule(label)
-
 		return APIUtil.postDraft(
 			this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
 		)
 		.then((saveDraftResult) => {
-			this.setState({ saved: true })
+			// Update the title in the File Toolbar
+			const draftTitle = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
+			this.setState({ draftTitle, saved: true })
 			return saveDraftResult
 		})
 	}

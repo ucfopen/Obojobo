@@ -5,6 +5,7 @@ const { OboModel } = Common.models
 const domParser = new DOMParser()
 
 const XML_MODE = 'xml'
+const UNNAMED_MODULE_TITLE = '(Unnamed Module)'
 
 const getFlatList = function(item) {
 	let list = []
@@ -111,7 +112,7 @@ const EditorUtil = {
 		return OboModel.models[navTarget.id]
 	},
 	renameModule(name){
-		if (!name || !/[^\s]/.test(name)) name = '(Unnamed Module)'
+		if (!name || !/[^\s]/.test(name)) name = UNNAMED_MODULE_TITLE
 		return Dispatcher.trigger('editor:renameModule', {
 			value: {
 				name
@@ -154,23 +155,23 @@ const EditorUtil = {
 				if (!this.isEmptyString(title)) return title
 			}
 
-			return '(Unnamed Module)'
+			return UNNAMED_MODULE_TITLE
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
+			return UNNAMED_MODULE_TITLE
 		}
 	},
 	getTitleFromJSON(draftModel) {
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
+			if (!json.content || this.isEmptyString(json.content.title)) return UNNAMED_MODULE_TITLE
 
 			return json.content.title
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
+			return UNNAMED_MODULE_TITLE
 		}
 	},
 	isEmptyString(string) {

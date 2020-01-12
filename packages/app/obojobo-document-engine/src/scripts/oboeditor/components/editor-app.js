@@ -47,7 +47,7 @@ class EditorApp extends React.Component {
 		super(props)
 
 		this.state = {
-			model: null, // Instance of OboModel
+			oboModel: null, // Instance of OboModel
 			draft: null, // raw xml string OR parsed json from server
 			editorState: null,
 			modalState: null,
@@ -77,12 +77,12 @@ class EditorApp extends React.Component {
 	}
 
 	getEditorState(draftId, draftModelString, draftModelJSON){
-		const obomodel = OboModel.create(draftModelJSON)
+		const oboModel = OboModel.create(draftModelJSON)
 		const draft = this.state.mode === VISUAL_MODE ? draftModelJSON : draftModelString
 		const startId = this.state.mode === VISUAL_MODE ? draftModelJSON.content.start : null
 
 		EditorStore.init(
-			obomodel,
+			oboModel,
 			startId,
 			this.props.settings,
 			window.location.pathname,
@@ -94,7 +94,7 @@ class EditorApp extends React.Component {
 			editorState: EditorStore.getState(),
 			draftId,
 			draft,
-			model: obomodel,
+			oboModel,
 			loading: false
 		}
 	}
@@ -117,6 +117,7 @@ class EditorApp extends React.Component {
 						// 2: so various parts of the editor can look up the title from OboNode
 						// 3: Obonode.getRoot() can become unreliable with multiple trees in use
 						draftModelJSON = {
+							draftId,
 							id: draftId,
 							type: 'ObojoboDraft.Modules.Module',
 								content: {
@@ -180,7 +181,7 @@ class EditorApp extends React.Component {
 				page={this.state.editorState.currentPageModel}
 				navState={this.state.editorState}
 				context={this.state.editorState.context}
-				model={this.state.model}
+				model={this.state.oboModel}
 				draft={this.state.draft}
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}

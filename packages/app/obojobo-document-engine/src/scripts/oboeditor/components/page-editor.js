@@ -24,9 +24,9 @@ import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
 
-const { ModalUtil } = Common.util
-
-const { OboModel } = Common.models
+const ModalUtil = Common.util.ModalUtil
+const OboModel = Common.models.OboModel
+const Dispatcher = Common.flux.Dispatcher
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -56,6 +56,13 @@ class PageEditor extends React.Component {
 		this.insertableItems = []
 		this.plugins = this.getPlugins()
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
+		this.onRenameModule = this.onRenameModule.bind(this)
+	}
+
+	onRenameModule(payload) {
+		const draftTitle = payload.value.name
+		this.props.model.title = draftTitle
+		this.setState({ saved: false })
 	}
 
 	toggleEditable(editable) {
@@ -105,10 +112,12 @@ class PageEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		Dispatcher.on('editor:renameModule', this.onRenameModule)
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
+		Dispatcher.off('editor:renameModule', this.onRenameModule)
 	}
 
 	checkIfSaved(event) {
@@ -170,12 +179,12 @@ class PageEditor extends React.Component {
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
 						editorRef={this.editorRef}
-						model={this.props.model}
 						draftId={this.props.draftId}
+						draftTitle={this.props.model.title}
 						onSave={this.saveModule}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
-						mode={'visual'}
+						mode='visual'
 						insertableItems={this.props.insertableItems}
 						togglePlaceholders={this.togglePlaceholders}
 						showPlaceholders={this.state.showPlaceholders}
