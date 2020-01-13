@@ -27,24 +27,15 @@ const toHTML = el => {
 }
 
 const extensionTransform = node => {
-	// console.log('node', node)
 	if (node.name === 'extension') {
 		switch (node.attributes.type) {
 			case 'edX:multipleChoiceQuestion': {
 				const problem = node.elements[0]
-				let multiplechoiceresponse, label, description, choicegroup, solution
+				let label, description, choicegroup, solution
 
-				problem.elements.forEach(childEl => {
-					switch (childEl.name) {
-						case 'multiplechoiceresponse':
-							multiplechoiceresponse = childEl
-							break
-
-						// case 'demandhint':
-						// 	demandhint = childEl
-						// 	break
-					}
-				})
+				const multiplechoiceresponse = problem.elements.find(
+					childEl => childEl.name === 'multiplechoiceresponse'
+				)
 
 				multiplechoiceresponse.elements.forEach(childEl => {
 					switch (childEl.name) {
