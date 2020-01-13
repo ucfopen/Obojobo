@@ -80,7 +80,8 @@
 			return leaf
 		})
 
-		return leafList.filter(leaf => leaf !== null)
+		const leaves = leafList.filter(leaf => leaf !== null)
+		return leaves.length === 0 ? [{ text: ''}] : leaves 
 	},
 
 	slateToOboText: (text, line) => {

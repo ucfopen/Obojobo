@@ -32,7 +32,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor } from 'slate'
+import { createEditor, Editor, Element } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 class PageEditor extends React.Component {
@@ -59,6 +59,7 @@ class PageEditor extends React.Component {
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
 			.map(item => item.plugins)
@@ -194,20 +195,27 @@ class PageEditor extends React.Component {
 	// 	}
 	// }
 
-	defaultKeyDown(event) {
+	onKeyDownGlobal(event) {
 		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.saveModule(this.props.draftId)
 		}
 	}
 
-	getOnKeyDown() {
-		return this.nodePlugins.reduce((keyDown, plugin) => {
-			if(plugin.onKeyDown) {
-				return event => plugin.onKeyDown(event, this.editor, keyDown)
+	onKeyDown(event) {
+		this.onKeyDownGlobal(event)
+
+		const list = Editor.nodes(this.editor, {
+			mode: 'highest',
+			match: node => Element.isElement(node)
+		})
+
+		for(const node of list) {
+			const item = Common.Registry.getItemForType(node[0].type)
+			if(item && item.plugins.onKeyDown) {
+				item.plugins.onKeyDown(node[0], this.editor, event)
 			}
-			return keyDown
-		}, this.defaultKeyDown.bind(this))
+		}
 	}
 
 	render() {
@@ -245,7 +253,7 @@ class PageEditor extends React.Component {
 							<Editable 
 								renderElement={this.renderElement.bind(this)} 
 								readOnly={!this.state.editable}
-								onKeyDown={this.getOnKeyDown()}/>
+								onKeyDown={this.onKeyDown}/>
 						</Slate>
 					</PageEditorErrorBoundry>
 				</div>

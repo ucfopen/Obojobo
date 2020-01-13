@@ -1,4 +1,4 @@
-import { Text, Editor, Transforms } from 'slate'
+import { Text, Editor, Transforms, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 const KeyDownUtil = {
@@ -53,24 +53,18 @@ const KeyDownUtil = {
 		if(Text.isText(node)) return node.text === ''
 		return  Editor.isEmpty(editor, node) || (node.children.length === 1 && KeyDownUtil.isDeepEmpty(editor, node.children[0]))
 	},
-	deleteEmptyParent: (event, editor, next, match) => {
-		if(KeyDownUtil.isDeepEmpty(editor, match[0])) {
+	deleteEmptyParent: (event, editor, node, deleteForward) => {
+		// Only delete the node if the selection is collapsed and the node is empty
+		if(Range.isCollapsed(editor.selection) && KeyDownUtil.isDeepEmpty(editor, node)) {
 			event.preventDefault()
-			const path = ReactEditor.findPath(editor, match[0])
+			const path = ReactEditor.findPath(editor, node)
 			Transforms.removeNodes(editor, { at: path, hanging: true })
+
+			// By default, the cursor moves to the end of the item before a deleted node
+			// after the deletion has occured.  If we are deleting forward, we move it
+			// ahead by one, so that it is at the start of the item after the deleted node
+			if(deleteForward) Transforms.move(editor)
 		}
-
-		return next(event)
-
-		// Editor.isEmpty(editor, match[0])
-
-		// if (firstBlock.text === '' && parent.nodes.size === 1) {
-		// 	event.preventDefault()
-		// 	editor.removeNodeByKey(parent.key)
-		// 	return true
-		// }
-
-		// return next()
 	}
 }
 

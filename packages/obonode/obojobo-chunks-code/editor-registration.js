@@ -1,5 +1,5 @@
-import { getEventTransfer } from 'slate-react'
-import { Block, Editor } from 'slate'
+import { getEventTransfer, ReactEditor } from 'slate-react'
+import { Block, Editor, Path, Element, Transforms } from 'slate'
 
 import Converter from './converter'
 import Icon from './icon'
@@ -14,14 +14,6 @@ import increaseIndent from './changes/increase-indent'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
-
-const isType = editor => {
-	return editor.value.blocks.some(block => {
-		return !!editor.value.document.getClosest(block.key, parent => {
-			return parent.type === CODE_NODE
-		})
-	})
-}
 
 const plugins = {
 	// onPaste(event, editor, next) {
@@ -41,28 +33,18 @@ const plugins = {
 	// 		}
 	// 	})
 	// },
-	onKeyDown(event, editor, next) {
-		const [match] = Editor.nodes(editor, {
-			match: n => n.type === CODE_NODE,
-		})
-		console.log(match)
-		if (!match) return next(event)
-
+	onKeyDown(node, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				KeyDownUtil.deleteEmptyParent(event, editor, next, match)
-				return
+				return KeyDownUtil.deleteEmptyParent(event, editor, node, event.key === 'Delete')
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(event, editor, next)
+				if (event.shiftKey) return decreaseIndent(node, editor, event)
 
 				// TAB
-				return increaseIndent(event, editor, next)
-
-			default:
-				return next(event)
+				return increaseIndent(node, editor, event)
 		}
 	},
 	renderNode(props) {
