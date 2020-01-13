@@ -1,4 +1,4 @@
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 
 class Question extends DraftNode {
 	static get nodeName() {

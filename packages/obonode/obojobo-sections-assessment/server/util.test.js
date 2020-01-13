@@ -1,7 +1,7 @@
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 
 const Util = require('./util')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'

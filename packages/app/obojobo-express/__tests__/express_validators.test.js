@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 
 jest.mock('test_node')
-jest.mock('../models/user')
+jest.mock('../server/models/user')
 
 let mockRes
 let mockReq
@@ -9,7 +9,7 @@ let mockNext
 let mockUser
 let mockDocument
 
-const Validators = oboRequire('express_validators')
+const Validators = oboRequire('server/express_validators')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
