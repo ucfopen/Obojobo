@@ -41,6 +41,8 @@ class Image extends React.Component {
 		const isUrlUUID = uuidRegex.test(data.url)
 		let src
 
+		const lazyLoad = typeof this.props.lazyLoad === 'undefined' ? true : !!this.props.lazyLoad
+
 		if (!isUrlUUID) {
 			// If this is an external URL we simply use that url:
 			src = data.url
@@ -87,7 +89,7 @@ class Image extends React.Component {
 				style={imgStyles}
 				onLoad={this.boundOnLoad}
 				onError={this.boundOnError}
-				loading="lazy"
+				loading={lazyLoad ? 'lazy' : null}
 			/>
 		)
 	}
