@@ -49,10 +49,6 @@ const mockExpress = (mockOn = false, mockStatic = false) => {
 	)
 }
 
-// let x = oboRequire('server/dev_nonce_store')
-// console.log('go', x)
-// console.log(new x())
-
 describe('obo express', () => {
 	beforeAll(() => {
 		// call this beforeAll because it only happens once on require
