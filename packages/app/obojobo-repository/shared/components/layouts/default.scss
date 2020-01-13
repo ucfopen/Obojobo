@@ -88,16 +88,18 @@
 	font-family: $font-default;
 	text-align: left;
 	font-size: 1.2em;
-	display: table;
+	display: flex;
 	white-space: nowrap;
 	margin-bottom: 0.8em;
 	width: 100%;
 	position: relative;
+	justify-content: space-between;
 
 	> span {
 		background: $color-bg;
 		position: relative;
 		padding-right: 1em;
+		padding-top: 0.05em;
 	}
 
 	&::before {
@@ -105,8 +107,26 @@
 		content: '';
 		display: table-cell;
 		position: absolute;
-		top: 0.6em;
+		top: 0.7em;
 		left: 0;
-		right: 0;
+		right: 7.5em;
+	}
+
+	.repository--main-content--sort {
+		display: flex;
+		align-items: center;
+
+		> span {
+			margin-right: 0.7em;
+			font-size: 0.7em;
+		}
+
+		select {
+			@include select-input();
+
+			position: relative;
+			align-self: center;
+			font-size: 0.5em;
+		}
 	}
 }

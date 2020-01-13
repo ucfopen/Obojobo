@@ -14,10 +14,20 @@ router
 	.route('/dashboard')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
+		const cookies = req.headers.cookie.split(';')
+		let selectedSort = 'Alphabetical'
+
+		cookies.forEach(cookie => {
+			if (cookie.includes('selectedSort')) {
+				selectedSort = cookie.split('=')[1]
+			}
+		})
+
 		return DraftSummary.fetchByUserId(req.currentUser.id).then(myModules => {
 			const props = {
 				title: 'Dashboard',
 				myModules,
+				selectedSort,
 				currentUser: req.currentUser,
 				appCSSUrl: webpackAssetPath('dashboard.css'),
 				appJsUrl: webpackAssetPath('dashboard.js')
