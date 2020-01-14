@@ -27,6 +27,12 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('TriggerListModal still renders if given no triggers', () => {
+		const component = shallow(<TriggerListModal content={{}} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('TriggerListModal node deletes trigger', () => {
 		const content = {
 			triggers: [

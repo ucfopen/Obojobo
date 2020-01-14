@@ -94,7 +94,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component calls setNodeByKey after debounce', () => {
+	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -115,9 +115,9 @@ describe('MathEquation Editor Node', () => {
 			/>
 		)
 
-		component
-			.find({ id: 'math-equation-label' })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
+		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+
+		component.setProps({ isSelected: false })
 
 		expect(editor.setNodeByKey).not.toHaveBeenCalled()
 		jest.runAllTimers()
@@ -129,7 +129,7 @@ describe('MathEquation Editor Node', () => {
 		    "data": Object {
 		      "content": Object {
 		        "alt": "",
-		        "label": "mockValue",
+		        "label": "1.1",
 		        "latex": "2x/3",
 		        "size": 1,
 		      },
@@ -137,6 +137,43 @@ describe('MathEquation Editor Node', () => {
 		  },
 		]
 	`)
+	})
+
+	test('MathEquation focuses on the first input when the edit dialog appears', () => {
+		const mockFocus = jest.fn()
+		const spy = jest.spyOn(document, 'getElementById').mockReturnValue({
+			focus: mockFocus
+		})
+
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<MathEquation
+				node={{
+					key: 'mock-key',
+					data: {
+						get: () => {
+							return { latex: '2x/3', label: '1.1' }
+						}
+					}
+				}}
+				isFocused={true}
+				isSelected={false}
+				editor={editor}
+			/>
+		)
+
+		expect(mockFocus).not.toHaveBeenCalled()
+
+		component.setProps({ isSelected: true })
+
+		expect(mockFocus).not.toHaveBeenCalled()
+		jest.runAllTimers()
+		expect(mockFocus).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('changeProperties edits properties', () => {

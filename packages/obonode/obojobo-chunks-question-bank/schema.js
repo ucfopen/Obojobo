@@ -24,7 +24,7 @@ const schema = {
 								type: SETTINGS_NODE,
 								data: {
 									content: {
-										choose: 'all',
+										choose: '1',
 										chooseAll: true,
 										select: 'sequential'
 									}
@@ -42,7 +42,7 @@ const schema = {
 								type: SETTINGS_NODE,
 								data: {
 									content: {
-										choose: 'all',
+										choose: '1',
 										chooseAll: true,
 										select: 'sequential'
 									}

@@ -1,5 +1,5 @@
 const helpers = require('./attempt-end-helpers')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const endAttempt = async (req, res) => {
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)

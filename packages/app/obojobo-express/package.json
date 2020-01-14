@@ -103,19 +103,19 @@
 		],
 		"collectCoverageFrom": [
 			"*.js",
-			"models/**/*.js",
-			"routes/**/*.js",
-			"viewer/**/*.js"
+			"server/models/**/*.js",
+			"server/routes/**/*.js",
+			"server/viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",
-			"<rootDir>/app.js",
+			"<rootDir>/server/app.js",
 			"<rootDir>/webpack.config.js",
-			"<rootDir>/dev_nonce_store.js",
+			"<rootDir>/server/dev_nonce_store.js",
 			"<rootDir>/setup_tests.js",
 			"<rootDir>/babel.config.js",
 			"<rootDir>/prettier.config.js",
-			"<rootDir>/obo_express_dev.js"
+			"<rootDir>/server/obo_express_dev.js"
 		],
 		"coverageReporters": [
 			"text",

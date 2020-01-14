@@ -1,3 +1,4 @@
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
 const slateToObo = node => {
@@ -16,7 +17,7 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content
+		content: withoutUndefined(content)
 	}
 }
 

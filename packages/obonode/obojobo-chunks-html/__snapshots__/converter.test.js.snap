@@ -2,6 +2,11 @@
 
 exports[`HTML Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
+  "data": Object {
+    "content": Object {
+      "triggers": undefined,
+    },
+  },
   "key": "mockKey",
   "nodes": Array [
     Object {
@@ -18,8 +23,13 @@ Object {
 }
 `;
 
-exports[`HTML Converter oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+exports[`HTML Converter oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
 Object {
+  "data": Object {
+    "content": Object {
+      "triggers": "mock-triggers",
+    },
+  },
   "key": "mockKey",
   "nodes": Array [
     Object {
@@ -41,6 +51,18 @@ Object {
   "children": Array [],
   "content": Object {
     "html": "mockText",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`HTML Converter slateToObo converts a Slate node to an OboNode with triggers 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "html": "mockText",
+    "triggers": "mock-triggers",
   },
   "id": "mockKey",
   "type": "mockType",
