@@ -227,14 +227,17 @@ class Media {
 						user_id = $[userId]
 					ORDER BY
 						"createdAt" DESC
+					LIMIT $[count] OFFSET $[start]
 				`,
 				{
-					userId
+					userId,
+					start,
+					count: count + 1
 				}
 			)
 			.then(res => {
-				const hasMore = res.length > start + count
-				const data = res.splice(start, count)
+				const hasMore = res.length > count
+				const data = res.splice(0, count)
 				return {
 					data,
 					hasMore
