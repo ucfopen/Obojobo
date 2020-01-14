@@ -3,7 +3,6 @@ const fs = require('fs')
 const router = express.Router()
 const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
-const db = oboRequire('db')
 const pgp = require('pg-promise')
 const xmlToDraftObject = require('obojobo-document-xml-parser/xml-to-draft-object')
 const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
@@ -63,36 +62,6 @@ router
 
 			res.unexpected(e)
 		}
-	})
-
-// Get a raw draft record from the database
-// mounted as /api/drafts/:draftId/raw
-router
-	.route('/:draftId/raw')
-	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
-	.get((req, res) => {
-		return db
-			.one(
-				`
-			SELECT
-				drafts.id AS id,
-				drafts.user_id as author,
-				drafts_content.id AS version,
-				drafts.created_at AS draft_created_at,
-				drafts_content.created_at AS content_created_at,
-				drafts_content.content AS content,
-				drafts_content.xml AS xml
-			FROM drafts
-			JOIN drafts_content
-				ON drafts.id = drafts_content.draft_id
-			WHERE drafts.id = $[id]
-				AND deleted = FALSE
-			ORDER BY content_created_at DESC
-			LIMIT 1
-			`,
-				{ id: req.params.draftId }
-			)
-			.then(res.success)
 	})
 
 // Get a Draft Document Tree (for viewing by a student)
