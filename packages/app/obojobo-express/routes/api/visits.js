@@ -66,7 +66,7 @@ router
 				// this check doesn't happen in preview mode so authors
 				// can reload the page to see changes easier
 				if (
-					req.currentVisit.is_preview === false &&
+					!req.currentVisit.is_preview &&
 					req.currentVisit.draft_content_id !== req.currentDocument.contentId
 				) {
 					throw new Error('Visit for older draft version!')
