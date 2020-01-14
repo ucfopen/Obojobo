@@ -1,13 +1,15 @@
 const textGroupParser = require('../text-group-parser')
 const processAttrs = require('../process-attrs')
+const processTriggers = require('../process-triggers')
 
 const listNodeParser = node => {
 	const id = node.id ? ` id="${node.id}"` : ''
 
 	const listStyles = listStylesParser(node.content.listStyles)
 	const textGroupXML = textGroupParser(node.content.textGroup)
+	const triggersXML = processTriggers(node.content.triggers)
 
-	return `<List${id}>` + listStyles + textGroupXML + `</List>`
+	return `<List${id}>` + listStyles + textGroupXML + triggersXML + `</List>`
 }
 
 const listStylesParser = listStyles => {
@@ -17,13 +19,13 @@ const listStylesParser = listStyles => {
 	let intentsXML = ''
 	if (Array.isArray(listStyles.indents)) {
 		listStyles.indents.forEach(indent => {
-			const attrs = processAttrs(indent, [])
+			const attrs = processAttrs(indent, ['triggers', 'actions'])
 			intentsXML += `<indent${attrs} />`
 		})
 	} else {
 		for (const intent in listStyles.indents) {
 			let attrs = ` level="${intent}"`
-			attrs += processAttrs(listStyles.indents[intent], [])
+			attrs += processAttrs(listStyles.indents[intent], ['triggers', 'actions'])
 			intentsXML += `<indent${attrs} />`
 		}
 	}

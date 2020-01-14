@@ -3,7 +3,9 @@
 exports[`MCAnswer Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "content": undefined,
+    "content": Object {
+      "triggers": "mock-triggers",
+    },
   },
   "key": "mockKey",
   "nodes": Array [

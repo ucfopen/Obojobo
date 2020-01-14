@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => {
 	const content = node.data.get('content') || {}
@@ -22,7 +23,7 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children,
-		content
+		content: withoutUndefined(content)
 	}
 }
 

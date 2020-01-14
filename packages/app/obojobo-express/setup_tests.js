@@ -1,5 +1,5 @@
 // Global for loading specialized Obojobo stuff
-// use oboRequire('models/draft') to load draft models from any context
+// use oboRequire('server/models/draft') to load draft models from any context
 global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
@@ -17,7 +17,8 @@ global.oboJestMockConfig = () => {
 			port: 'portVal',
 			database: 'databaseVal',
 			user: 'userVal',
-			password: 'pwVal'
+			password: 'pwVal',
+			useBluebird: true
 		},
 		// adds a simple config for testing environment switching
 		development: {
@@ -27,7 +28,7 @@ global.oboJestMockConfig = () => {
 
 	// get the actual empty.xml
 	const realFs = require.requireActual('fs')
-	const configPath = path.resolve(__dirname, 'config')
+	const configPath = path.resolve(__dirname, 'server', 'config')
 	const bypassMock = file => {
 		fs.__setMockFileContents(file, realFs.readFileSync(file))
 	}
@@ -51,9 +52,7 @@ global.mockVirtual = mock => {
 	const mockFunction = jest.fn()
 	jest.mock(
 		mock,
-		() => {
-			return mockFunction
-		},
+		() => mockFunction,
 		{ virtual: true }
 	)
 	return mockFunction

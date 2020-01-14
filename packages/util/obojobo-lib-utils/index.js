@@ -94,7 +94,7 @@ const gatherAllMigrations = () => {
 const migrateUp = () => {
 	const { execSync } = require('child_process')
 	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
-	const configPath = resolver('obojobo-express/config/db.json')
+	const configPath = resolver('obojobo-express/server/config/db.json')
 	const migrationDirs = gatherAllMigrations()
 
 	migrationDirs.forEach(dir => {

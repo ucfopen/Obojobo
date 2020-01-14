@@ -3,6 +3,7 @@
 exports[`Image Image component with a custom url of a custom size 1`] = `
 <img
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/200x100"
@@ -19,6 +20,7 @@ exports[`Image Image component with a custom url of a custom size 1`] = `
 exports[`Image Image component with height only 1`] = `
 <img
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/*x100"
@@ -40,6 +42,7 @@ exports[`Image Image component with no url 1`] = `
 exports[`Image Image component with no width and no height 1`] = `
 <img
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/original"
@@ -51,6 +54,7 @@ exports[`Image Image component with no width and no height 1`] = `
 exports[`Image Image component with width only 1`] = `
 <img
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/100x*"
@@ -67,6 +71,7 @@ exports[`Image Large image component 1`] = `
 <img
   alt="alt text"
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/large"
@@ -79,6 +84,7 @@ exports[`Image Medium image component 1`] = `
 <img
   alt="alt text"
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/medium"
@@ -91,6 +97,7 @@ exports[`Image Small image component 1`] = `
 <img
   alt="alt text"
   className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+  loading="lazy"
   onError={[Function]}
   onLoad={[Function]}
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/small"

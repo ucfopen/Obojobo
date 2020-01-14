@@ -1,3 +1,5 @@
+import withoutUndefined from './util/without-undefined'
+
 let items
 let defaults
 let variableHandlers
@@ -39,19 +41,27 @@ class _Registry {
 
 	// convenience method for editor nodes to register
 	registerEditorModel(EditorNode) {
-		this.registerModel(EditorNode.name, {
-			name: EditorNode.menuLabel,
-			icon: EditorNode.icon,
-			isInsertable: EditorNode.isInsertable,
-			insertJSON: EditorNode.json && EditorNode.json.emptyNode,
-			slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
-			oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
-			plugins: EditorNode.plugins,
-			getPasteNode: EditorNode.getPasteNode,
-			getNavItem: EditorNode.getNavItem,
-			supportsChildren: EditorNode.supportsChildren || false,
-			ignore: EditorNode.ignore || false
-		})
+		// Since registerModel sets defaults we want to remove any
+		// undefined values (Object.assign won't overwrite object
+		// values that are undefined, only ones that don't exist
+		// in the object)
+
+		this.registerModel(
+			EditorNode.name,
+			withoutUndefined({
+				name: EditorNode.menuLabel,
+				icon: EditorNode.icon,
+				isInsertable: EditorNode.isInsertable,
+				insertJSON: EditorNode.json && EditorNode.json.emptyNode,
+				slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
+				oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
+				plugins: EditorNode.plugins,
+				getPasteNode: EditorNode.getPasteNode,
+				getNavItem: EditorNode.getNavItem,
+				supportsChildren: EditorNode.supportsChildren || false,
+				ignore: EditorNode.ignore || false
+			})
+		)
 	}
 
 	cloneBlankNode(templateObject) {

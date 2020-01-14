@@ -1,16 +1,15 @@
-let attrElementToAttrItem = node => {
+const attrElementToAttrItem = node => {
 	if (!node) return
 
-	for (let prop in node) {
+	for (const prop in node) {
 		if (typeof node[prop] === 'object') {
 			attrElementToAttrItem(node[prop])
 		}
 	}
 
 	if (node.elements) {
-		// console.log('yup, dig into', node.elements)
 		for (let i = node.elements.length - 1; i >= 0; i--) {
-			let childNode = node.elements[i]
+			const childNode = node.elements[i]
 
 			if (childNode.type === 'attribute') {
 				if (!node.attributes) node.attributes = {}

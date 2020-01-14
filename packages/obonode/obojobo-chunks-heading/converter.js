@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => {
 	const line = {
@@ -14,10 +15,11 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content: {
+		content: withoutUndefined({
 			headingLevel: node.data.get('content').level,
-			textGroup: [line]
-		}
+			textGroup: [line],
+			triggers: node.data.get('content').triggers
+		})
 	}
 }
 
@@ -39,7 +41,8 @@ const oboToSlate = node => {
 		data: {
 			content: {
 				align,
-				level: node.content.headingLevel
+				level: node.content.headingLevel,
+				triggers: node.content.triggers
 			}
 		}
 	}

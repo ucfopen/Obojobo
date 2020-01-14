@@ -3,7 +3,20 @@
 	"type": "ObojoboDraft.Chunks.QuestionBank",
 	"content": {
 		"choose": "2",
-		"select": "random"
+		"select": "random",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": [
 		{

@@ -7,7 +7,7 @@ describe('obo events', () => {
 	test('returns a singleton event emitter', () => {
 		jest.mock('events')
 		const expectedEmitter = require('events')
-		const oboEvents = oboRequire('obo_events')
+		const oboEvents = oboRequire('server/obo_events')
 		expect(oboEvents).toBeInstanceOf(expectedEmitter)
 	})
 })
