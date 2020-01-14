@@ -2,9 +2,9 @@ let mockArgs // array of mocked express middleware request arguments
 const documentFunctions = ['setCurrentDocument', 'requireCurrentDocument', 'resetCurrentDocument']
 
 jest.mock('test_node')
-jest.mock('../models/draft')
+jest.mock('../server/models/draft')
 
-const DraftDocument = oboRequire('models/draft')
+const DraftDocument = oboRequire('server/models/draft')
 
 describe('current document middleware', () => {
 	beforeAll(() => {})
@@ -22,7 +22,7 @@ describe('current document middleware', () => {
 			const mockNext = jest.fn()
 			res.status = mockStatus
 
-			const currentDocumentMiddleware = oboRequire('express_current_document')
+			const currentDocumentMiddleware = oboRequire('server/express_current_document')
 			currentDocumentMiddleware(req, res, mockNext)
 			return { res, req, mockJson, mockStatus, mockNext }
 		})()

@@ -1,9 +1,11 @@
 describe('Server Events', () => {
-	jest.mock('obojobo-express/logger')
-	jest.mock('obojobo-express/obo_events')
-	jest.mock('obojobo-express/db')
-	jest.mock('obojobo-express/models/draft')
-	jest.mock('../../obojobo-express/public/compiled/manifest.json', () => ({}), { virtual: true })
+	jest.mock('obojobo-express/server/logger')
+	jest.mock('obojobo-express/server/obo_events')
+	jest.mock('obojobo-express/server/db')
+	jest.mock('obojobo-express/server/models/draft')
+	jest.mock('../../obojobo-express/server/public/compiled/manifest.json', () => ({}), {
+		virtual: true
+	})
 
 	let oboEvents
 	let DraftModel
@@ -11,15 +13,15 @@ describe('Server Events', () => {
 
 	beforeEach(() => {
 		jest.resetModules()
-		oboEvents = require('obojobo-express/obo_events')
-		DraftModel = require('obojobo-express/models/draft')
-		db = require('obojobo-express/db')
+		oboEvents = require('obojobo-express/server/obo_events')
+		DraftModel = require('obojobo-express/server/models/draft')
+		db = require('obojobo-express/server/db')
 		require('./events')
 	})
 
 	test('registers expected listeners', () => {
-		const oboEvents = require('obojobo-express/obo_events')
-		const DraftModel = require('obojobo-express/models/draft')
+		const oboEvents = require('obojobo-express/server/obo_events')
+		const DraftModel = require('obojobo-express/server/models/draft')
 
 		require('./events')
 

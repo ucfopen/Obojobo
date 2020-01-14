@@ -12,6 +12,7 @@ describe('Modal', () => {
 	beforeEach(() => {
 		onClose = jest.fn()
 		focusOnFirstElement = jest.fn()
+		jest.resetAllMocks()
 	})
 
 	test('Modal', () => {
@@ -42,10 +43,12 @@ describe('Modal', () => {
 			.simulate('click')
 
 		expect(onClose).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('Esc closes modal', () => {
-		mount(
+		const component = mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
 			</Modal>
@@ -56,20 +59,42 @@ describe('Modal', () => {
 		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
 
 		expect(onClose).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('Esc closes modal (even when no onClose method present)', () => {
-		mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
+		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(0)
 
 		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
+	test('Esc does not work if preventEsc is set', () => {
+		const component = mount(
+			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement} preventEsc>
+				Content
+			</Modal>
+		)
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(0)
+		expect(onClose).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(0)
+		expect(onClose).toHaveBeenCalledTimes(0)
+
+		component.unmount()
 	})
 
 	test('Modal does not close with other keys', () => {
-		mount(
+		const component = mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
 			</Modal>
@@ -80,6 +105,8 @@ describe('Modal', () => {
 		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 28 }))
 
 		expect(onClose).not.toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('Tab will focus on nothing if no close or first element', () => {
@@ -98,6 +125,8 @@ describe('Modal', () => {
 			.simulate('focus')
 
 		expect(focusOnFirstElement).not.toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('Tab will focus on the first element if no close button', () => {
@@ -116,6 +145,8 @@ describe('Modal', () => {
 			.simulate('focus')
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('Tab will focus on the close button if it exists', () => {
@@ -136,6 +167,8 @@ describe('Modal', () => {
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 		expect(deleteButtonFocus).toHaveBeenCalledTimes(1)
+
+		component.unmount()
 	})
 
 	test('Unmounts with onClose function', () => {
@@ -170,6 +203,8 @@ describe('Modal', () => {
 
 		expect(focus).toHaveBeenCalled()
 		expect(focusOnFirstElement).not.toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('onTabTrapFocus focuses on focusOnFirstElement with onClose prop not set', () => {
@@ -183,6 +218,8 @@ describe('Modal', () => {
 
 		expect(focus).not.toHaveBeenCalled()
 		expect(focusOnFirstElement).toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('onTabTrapFocus does nothing without focusOnFirstElement or onClose props', () => {
@@ -194,5 +231,7 @@ describe('Modal', () => {
 		inst.onTabTrapFocus()
 
 		expect(focus).not.toHaveBeenCalled()
+
+		component.unmount()
 	})
 })

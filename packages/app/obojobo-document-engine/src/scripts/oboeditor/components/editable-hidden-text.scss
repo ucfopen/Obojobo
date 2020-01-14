@@ -1,0 +1,18 @@
+@import '~styles/includes';
+
+.editor--hidden-text {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	overflow: hidden;
+	color: $color-transparent;
+	text-shadow: 0 0 0 $color-bg;
+
+	* {
+		color: $color-transparent;
+		text-shadow: 0 0 0 $color-bg;
+	}
+}

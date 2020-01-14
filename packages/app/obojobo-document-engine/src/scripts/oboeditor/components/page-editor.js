@@ -22,6 +22,7 @@ import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import PageEditorErrorBoundry from './page-editor-error-boundry'
 
 const { ModalUtil } = Common.util
 
@@ -191,14 +192,16 @@ class PageEditor extends React.Component {
 				/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
-					<Editor
-						className="component obojobo-draft--pages--page"
-						value={this.state.value}
-						ref={this.editorRef}
-						onChange={this.onChange}
-						plugins={this.plugins}
-						readOnly={!this.props.page || !this.state.editable}
-					/>
+					<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<Editor
+							className="component obojobo-draft--pages--page"
+							value={this.state.value}
+							ref={this.editorRef}
+							onChange={this.onChange}
+							plugins={this.plugins}
+							readOnly={!this.props.page || !this.state.editable}
+						/>
+					</PageEditorErrorBoundry>
 				</div>
 			</div>
 		)

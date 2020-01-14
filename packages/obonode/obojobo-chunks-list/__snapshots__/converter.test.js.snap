@@ -139,7 +139,7 @@ Object {
 }
 `;
 
-exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style 1`] = `
+exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style and triggers 1`] = `
 Object {
   "data": Object {
     "content": Object {
@@ -167,6 +167,7 @@ Object {
           },
         },
       ],
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",

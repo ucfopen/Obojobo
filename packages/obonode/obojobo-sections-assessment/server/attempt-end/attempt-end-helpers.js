@@ -1,8 +1,8 @@
 const Assessment = require('../assessment')
-const lti = require('obojobo-express/lti')
+const lti = require('obojobo-express/server/lti')
 const insertEvents = require('./insert-events')
 const _getCalculatedScores = require('./get-calculated-scores')
-const DraftDocument = require('obojobo-express/models/draft')
+const DraftDocument = require('obojobo-express/server/models/draft')
 
 // functions are in execution order
 module.exports = {

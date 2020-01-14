@@ -18,6 +18,7 @@ exports[`YouTube YouTube component 1`] = `
     <iframe
       allowFullScreen={true}
       frameBorder="0"
+      loading="lazy"
       src="https://www.youtube.com/embed/dQw4w9WgXcQ"
     />
   </div>

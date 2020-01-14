@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-pages-page",
-	"version": "7.0.1",
+	"version": "7.0.4",
 	"license": "AGPL-3.0-only",
 	"description": "Page chunk for Obojobo",
 	"scripts": {
@@ -13,9 +13,6 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
@@ -31,8 +28,8 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^7.0.1",
-		"obojobo-lib-utils": "^7.0.1"
+		"obojobo-document-engine": "^7.0.4",
+		"obojobo-lib-utils": "^7.0.4"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
