@@ -34,13 +34,12 @@ const Code = {
 			const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
 			if(first[0].type !== CODE_NODE) return next(data)
 
-			// When inserting plain text into a Code node
-			// Insert all lines as code
+			// When inserting plain text into a Code node insert all lines as code
 			const plainText = data.getData('text/plain')
 			const fragment = plainText.split('\n').map(text => ({
 				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { align: 'left', indent: 0 },
+				content: { indent: 0 },
 				children: [{ text }]
 			}))
 
@@ -55,15 +54,12 @@ const Code = {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// Unwrap non-CodeLine children
 					if (Element.isElement(child) && child.subtype !== CODE_LINE_NODE) {
-
-						console.log('normalizing code children', child)
 						Transforms.liftNodes(editor, { at: childPath })
 						return
 					}
+
 					// Wrap loose text children in a CodeLine
 					if (Text.isText(child)) {
-
-						console.log('normalizing code text')
 						Transforms.wrapNodes(
 							editor, 
 							{

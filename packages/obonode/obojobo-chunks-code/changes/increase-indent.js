@@ -3,6 +3,7 @@ import { ReactEditor } from 'slate-react'
 
 const increaseIndent = (node, editor, event) => {
 	event.preventDefault()
+
 	// Get only the Element children of the current node that are in the current selection
 	const list = Editor.nodes(editor, {
 		match: child => {
@@ -12,6 +13,7 @@ const increaseIndent = (node, editor, event) => {
 		}
 	})
 
+	// For each child in the selection, increment the indent without letting it get above 20
 	for(const [child, path] of list){
 		Transforms.setNodes(
 			editor, 

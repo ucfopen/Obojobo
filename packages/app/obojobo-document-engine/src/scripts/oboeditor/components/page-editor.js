@@ -228,7 +228,6 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.value)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
