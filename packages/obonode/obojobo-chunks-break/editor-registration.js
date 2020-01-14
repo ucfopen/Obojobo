@@ -17,13 +17,17 @@ const Break = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props) {
-			return <Node {...props} {...props.attributes} />
-		},
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
 		isVoid(element, editor, next) {
 			if(element.type === BREAK_NODE) return true
 
 			return next(element)
+		},
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
+		renderNode(props) {
+			return <Node {...props} {...props.attributes} />
 		}
 	}
 }

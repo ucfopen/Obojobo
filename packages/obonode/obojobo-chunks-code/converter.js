@@ -3,6 +3,13 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
+/**
+ * Generates an Obojobo Code Node from a Slate node.
+ * Copies the id, type, triggers, and condenses CodeLine children and their 
+ * text children (including marks) into a single textGroup
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Code node 
+ */
 const slateToObo = node => {
 	const textGroup = node.children.map(line => {
 		const textLine = {
@@ -20,11 +27,20 @@ const slateToObo = node => {
 		type: node.type,
 		children: [],
 		content: {
+			triggers: node.content.triggers,
 			textGroup
 		}
 	}
 }
 
+/**
+ * Generates a Slate node from an Obojobo Code node.
+ * Copies all attributes, and converts a textGroup into Slate Text children
+ * Each textItem in the textgroup becomes a separate CodeLine node in order
+ * to properly leverage the Slate Editor's capabilities
+ * @param {Object} node An Obojobo Code node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	slateNode.children = node.content.textGroup.map(line => {

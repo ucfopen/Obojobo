@@ -1,4 +1,4 @@
- const TextUtil = {
+const TextUtil = {
 	// Collapse multiple scripts into one value
 	collapseScripts: marks => {
 		let scriptHeight = 0

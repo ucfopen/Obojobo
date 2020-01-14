@@ -3,7 +3,7 @@ import './page-editor.scss'
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
-import ClipboardPlugin from '../plugins/clipboard-plugin'
+// import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
@@ -61,11 +61,7 @@ class PageEditor extends React.Component {
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 
-		this.nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
-			.map(item => item.plugins)
-			.filter(item => item)
-
-		this.editor = this.nodePlugins.reduce(this.addPlugin, withReact(createEditor()))
+		this.editor = this.withPlugins(withReact(createEditor()))
 		//this.editor = withReact(createEditor())
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
@@ -95,7 +91,7 @@ class PageEditor extends React.Component {
 	// The editor
 	// The default method
 	addPlugin(editor, plugin) {
-		const { normalizeNode, isVoid } = editor
+		const { normalizeNode, isVoid, insertData } = editor
 		if(plugin.normalizeNode) {
 			editor.normalizeNode = entry => plugin.normalizeNode(entry, editor, normalizeNode)
 		}
@@ -104,10 +100,19 @@ class PageEditor extends React.Component {
 			editor.isVoid = element => plugin.isVoid(element, editor, isVoid)
 		}
 
+		if(plugin.insertData) {
+			editor.insertData = data => plugin.insertData(data, editor, insertData)
+		}
+
 		return editor
 	}
 
 	withPlugins(editor) {
+		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
+			.map(item => item.plugins)
+			.filter(item => item)
+
+		const plugins = [...nodePlugins ]
 
 		// const markPlugins = [
 		// 	BasicMarks.plugins,
@@ -130,6 +135,7 @@ class PageEditor extends React.Component {
 		// ]
 
 		// return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
+		return plugins.reduce(this.addPlugin, editor)
 	}
 
 	convertItemsToArray(items) {

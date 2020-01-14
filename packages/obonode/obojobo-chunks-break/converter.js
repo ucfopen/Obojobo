@@ -1,6 +1,6 @@
 /**
  * Generates an Obojobo Break from a Slate node.
- * Copies the key, type, and width
+ * Copies the id, type, and content.width
  * @param {Object} node A Slate Node
  * @returns {Object} An Obojobo Break node 
  */
