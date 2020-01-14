@@ -3,16 +3,17 @@
 .obojobo-draft--chunks--list {
 	ul,
 	ol {
+		padding-left: 2em;
 		margin-bottom: 0;
 		margin-top: 0;
-		padding-left: 2em;
+	}
 
-		@include mq($until: desktop) {
-			padding-left: 3.5em;
-		}
+	> div > ul,
+	> div > ol {
+		padding-left: 3.5em;
 
 		@include mq($until: tablet) {
-			padding-left: 2.5em;
+			padding-left: 2em;
 		}
 	}
 }
