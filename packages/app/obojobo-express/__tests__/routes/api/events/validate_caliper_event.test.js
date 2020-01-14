@@ -1,5 +1,5 @@
-import ValidateCaliper from '../../../../routes/api/events/validate_caliper_event'
-import CaliperConstants from '../../../../routes/api/events/caliper_constants'
+import ValidateCaliper from '../../../../server/routes/api/events/validate_caliper_event'
+import CaliperConstants from '../../../../server/routes/api/events/caliper_constants'
 
 describe('Validate Caliper Events', () => {
 	test('validateArguments checks parameters for required arguments', () => {

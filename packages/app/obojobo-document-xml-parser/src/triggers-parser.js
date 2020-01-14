@@ -1,5 +1,5 @@
-let parseTriggers = el => {
-	let t = el.elements.map(triggerEl => {
+const parseTriggers = el => {
+	const t = el.elements.map(triggerEl => {
 		return {
 			type: triggerEl.attributes.type,
 			actions: parseActions(triggerEl.value[0].value)
@@ -9,10 +9,10 @@ let parseTriggers = el => {
 	return t
 }
 
-let parseActions = actionsArray => {
+const parseActions = actionsArray => {
 	return actionsArray.map(actionEl => {
-		let values = parseValues(actionEl)
-		let rtn = {
+		const values = parseValues(actionEl)
+		const rtn = {
 			type: actionEl.attributes.type
 		}
 		if (values) rtn.value = values
@@ -20,11 +20,11 @@ let parseActions = actionsArray => {
 	})
 }
 
-let parseValues = actionEl => {
+const parseValues = actionEl => {
 	if (actionEl.attributes && actionEl.attributes.value) return actionEl.attributes.value
 	if (!actionEl.value || actionEl.value.length === 0) return null
-	let value = {}
-	for (let attrName in actionEl.value[0].attributes) {
+	const value = {}
+	for (const attrName in actionEl.value[0].attributes) {
 		value[attrName] = actionEl.value[0].attributes[attrName]
 	}
 

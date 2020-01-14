@@ -113,4 +113,35 @@ describe('Image', () => {
 
 		expect(component.find('img').hasClass('is-loaded')).toBe(true)
 	})
+
+	test('Image component with lazyLoad false does not include loading=lazy', () => {
+		const componentWithDefaults = mount(<Image chunk={{ modelState: { url: 'someUrl' } }} />)
+		const componentWithLazy = mount(
+			<Image lazyLoad={true} chunk={{ modelState: { url: 'someUrl' } }} />
+		)
+		const componentWithoutLazy = mount(
+			<Image lazyLoad={false} chunk={{ modelState: { url: 'someUrl' } }} />
+		)
+
+		expect(
+			componentWithDefaults
+				.find('img')
+				.getDOMNode()
+				.getAttribute('loading')
+		).toBe('lazy')
+
+		expect(
+			componentWithLazy
+				.find('img')
+				.getDOMNode()
+				.getAttribute('loading')
+		).toBe('lazy')
+
+		expect(
+			componentWithoutLazy
+				.find('img')
+				.getDOMNode()
+				.getAttribute('loading')
+		).toBe(null)
+	})
 })

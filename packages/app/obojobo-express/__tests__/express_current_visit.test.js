@@ -2,9 +2,9 @@ let mockArgs // array of mocked express middleware request arguments
 const userFunctions = ['getCurrentVisitFromRequest']
 
 jest.mock('test_node')
-jest.mock('../models/visit')
+jest.mock('../server/models/visit')
 
-const MockVisitModel = oboRequire('models/visit')
+const MockVisitModel = oboRequire('server/models/visit')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
@@ -22,7 +22,7 @@ describe('current user middleware', () => {
 			const mockNext = jest.fn()
 			res.status = mockStatus
 
-			oboRequire('express_current_visit')(req, res, mockNext)
+			oboRequire('server/express_current_visit')(req, res, mockNext)
 			return { res, req, mockJson, mockStatus, mockNext }
 		})()
 	})
