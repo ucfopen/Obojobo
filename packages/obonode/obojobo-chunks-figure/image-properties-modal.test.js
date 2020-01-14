@@ -5,6 +5,24 @@ import ImageProperties from './image-properties-modal'
 
 const mockedDebounce = jest.fn().mockImplementation((time, fn) => fn())
 
+jest.mock('./choose-image-modal', () => {
+	const MockChooseImageModal = props => {
+		return (
+			<div id="choose-image-modal-mock-id">
+				MockChooseImageModal
+				<button onClick={() => props.onCloseChooseImageModal(null)}>Cancel</button>
+				<button onClick={() => props.onCloseChooseImageModal('new_id')}>OK</button>
+			</div>
+		)
+	}
+	return MockChooseImageModal
+})
+
+jest.mock('./image', () => {
+	const MockImage = () => <div>MockImage</div>
+	return MockImage
+})
+
 jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
 	return (time, fn) => mockedDebounce(time, fn)
 })
@@ -52,9 +70,10 @@ describe('Image Properties Modal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('ImageProperties component render when click `change image`', () => {
+	test('ImageProperties component renders when click `Change Image...`', () => {
 		const component = mount(<ImageProperties content={{ url: 'mock_url' }} />)
 
+		// Click "Change image..."
 		component
 			.find('button')
 			.at(0)
@@ -64,20 +83,25 @@ describe('Image Properties Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ImageProperties component render ChooseImageModal component and onClick `Cancel`', () => {
+	test('ImageProperties component without url opens ChooseImageModal component and clicks `Cancel`', () => {
 		const onConfirm = jest.fn()
 
 		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
+
+		expect(component.instance().state.isChoosingImage).toBe(true)
+
+		// Click "Cancel" on ChooseImageModal
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
 		expect(component.instance().state.isChoosingImage).toBe(false)
+		expect(onConfirm).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ImageProperties component open ChooseImageModal component and onClick `Cancel` without a specified URL', () => {
+	test('ImageProperties component with a url opens ChooseImageModal component and clicks `Cancel`', () => {
 		const onConfirm = jest.fn()
 
 		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={onConfirm} />)
@@ -91,50 +115,45 @@ describe('Image Properties Modal', () => {
 
 		expect(component.instance().state.isChoosingImage).toBe(true)
 
+		// Click "Cancel" on ChooseImageModal
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
-
-		expect(component.instance().state.isChoosingImage).toBe(false)
-		expect(component.html()).toMatchSnapshot()
-	})
-
-	test('ImageProperties component render ChooseImageModal component and onClick `OK`', () => {
-		const onConfirm = jest.fn()
-
-		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
-
-		expect(component.instance().state.isChoosingImage).toBe(false)
-		expect(component.instance().state.url).toBe(null)
-		expect(component.html()).toMatchSnapshot()
-	})
-
-	test('ImageProperties onCloseChooseImageModal()', () => {
-		const onConfirm = jest.fn()
-
-		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
-		component.instance().onCloseChooseImageModal('mock_url')
 
 		expect(component.instance().state.isChoosingImage).toBe(false)
 		expect(component.instance().state.url).toBe('mock_url')
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ImageProperties component calls onConfirm from props', () => {
+	test('ImageProperties component opens ChooseImageModal component and clicks `OK`', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
+
+		// Click "OK" on ChooseImageModal
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(component.instance().state.isChoosingImage).toBe(false)
+		expect(component.instance().state.url).toBe('new_id')
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties component calls onConfirm when click "OK"', () => {
 		const onConfirm = jest.fn()
 		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={onConfirm} />)
 
+		// Click OK
 		component
 			.find('button')
 			.at(2)
 			.simulate('click')
 
 		expect(onConfirm).toHaveBeenCalled()
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('ImageProperties Component handles content.url as expected', () => {
@@ -159,6 +178,7 @@ describe('Image Properties Modal', () => {
 		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={jest.fn} />)
 
 		component.instance().focusOnFirstElement()
+
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -166,12 +186,14 @@ describe('Image Properties Modal', () => {
 		const component = mount(<ImageProperties content={{ url: null }} onConfirm={jest.fn} />)
 
 		component.instance().focusOnFirstElement()
+
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('ImageProperties component changes alt text', () => {
 		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={jest.fn} />)
 
+		// Simulate changing "Alt Text"
 		component
 			.find('#obojobo-draft--chunks--figure--alt')
 			.simulate('change', { target: { value: 'changed alt' } })
@@ -236,6 +258,7 @@ describe('Image Properties Modal', () => {
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-height')
 		input.simulate('change', { target: { value: null } })
+
 		expect(input.html().includes(`value=""`)).toBe(true)
 	})
 
@@ -251,6 +274,7 @@ describe('Image Properties Modal', () => {
 
 		const input = component.find('#obojobo-draft--chunks--figure--custom-width')
 		input.simulate('change', { target: { value: null } })
+
 		expect(input.html().includes(`value=""`)).toBe(true)
 	})
 })

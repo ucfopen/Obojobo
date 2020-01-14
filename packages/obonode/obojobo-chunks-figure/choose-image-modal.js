@@ -54,11 +54,12 @@ class ChooseImageModal extends React.Component {
 						hasMore: result.hasMore,
 						start: this.state.start + this.state.count
 					})
+				} else {
+					this.setState({ ...this.state, isFetching: false, hasMore: false })
 				}
 			})
-			.catch(err => {
-				// eslint-disable-next-line no-console
-				console.log(err)
+			.catch(() => {
+				this.setState({ ...this.state, isFetching: false, hasMore: false })
 			})
 	}
 

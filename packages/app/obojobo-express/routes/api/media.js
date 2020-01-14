@@ -65,8 +65,8 @@ router
 	.route('/many/')
 	.get([requireCurrentUser])
 	.get((req, res, next) => {
-		const start = parseInt(req.query.start)
-		const count = parseInt(req.query.count)
+		const start = parseInt(req.query.start, 10)
+		const count = parseInt(req.query.count, 10)
 
 		MediaModel.fetchManyById(req.currentUser.id, start, count)
 			.then(medias => {

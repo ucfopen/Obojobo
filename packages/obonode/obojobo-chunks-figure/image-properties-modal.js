@@ -105,21 +105,17 @@ class ImageProperties extends React.Component {
 				<div className="image-properties">
 					<div>
 						<div className="flex-container image-container">
-							{this.state.url ? (
-								<Image
-									key={this.state.url}
-									chunk={{
-										modelState: {
-											url: this.state.url,
-											height: 100,
-											size: 'custom',
-											alt: 'Image preview'
-										}
-									}}
-								/>
-							) : (
-								<span className="image-preview image-preview-placeholder">No Image</span>
-							)}
+							<Image
+								key={this.state.url}
+								chunk={{
+									modelState: {
+										url: this.state.url,
+										height: 100,
+										size: 'custom',
+										alt: 'Image preview'
+									}
+								}}
+							/>
 
 							<Button
 								className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
