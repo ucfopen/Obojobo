@@ -3,7 +3,7 @@ import './page-editor.scss'
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
-// import ClipboardPlugin from '../plugins/clipboard-plugin'
+import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
@@ -112,7 +112,10 @@ class PageEditor extends React.Component {
 			.map(item => item.plugins)
 			.filter(item => item)
 
-		const plugins = [...nodePlugins ]
+		// Plugins are listed in order of priority
+		// The plugins list is reversed after building because the editor functions 
+		// are built from the bottom up to the top
+		const plugins = [...nodePlugins, ClipboardPlugin].reverse()
 
 		// const markPlugins = [
 		// 	BasicMarks.plugins,

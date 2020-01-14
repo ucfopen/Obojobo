@@ -24,8 +24,28 @@ const Code = {
 		emptyNode
 	},
 	plugins: {
-		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// Editor Plugins - These get attached to the editor object and override it's default functions
 		// They may affect multiple nodes simultaneously
+		insertData(data, editor, next) {
+			// Insert Slate fragments normally
+			if(data.types.includes('application/x-slate-fragment')) return next(data)
+
+			// If the node that we will be inserting into is not a Code node use the regular logic
+			const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
+			if(first[0].type !== CODE_NODE) return next(data)
+
+			// When inserting plain text into a Code node
+			// Insert all lines as code
+			const plainText = data.getData('text/plain')
+			const fragment = plainText.split('\n').map(text => ({
+				type: CODE_NODE,
+				subtype: CODE_LINE_NODE,
+				content: { align: 'left', indent: 0 },
+				children: [{ text }]
+			}))
+
+			Transforms.insertFragment(editor, fragment)
+		},
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
@@ -35,11 +55,15 @@ const Code = {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// Unwrap non-CodeLine children
 					if (Element.isElement(child) && child.subtype !== CODE_LINE_NODE) {
+
+						console.log('normalizing code children', child)
 						Transforms.liftNodes(editor, { at: childPath })
 						return
 					}
 					// Wrap loose text children in a CodeLine
 					if (Text.isText(child)) {
+
+						console.log('normalizing code text')
 						Transforms.wrapNodes(
 							editor, 
 							{
