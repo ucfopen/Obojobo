@@ -1,8 +1,8 @@
 const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
-const DraftModel = require('obojobo-express/models/draft')
+const DraftModel = require('obojobo-express/server/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const getQuestionModelsFromAttempt = async attemptId => {
 	const attempt = await Assessment.getAttempt(attemptId)

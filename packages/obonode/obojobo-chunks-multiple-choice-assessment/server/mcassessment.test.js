@@ -1,11 +1,11 @@
 jest.setMock(
-	'obojobo-express/models/draft_node',
+	'obojobo-express/server/models/draft_node',
 	require('obojobo-document-engine/__mocks__/models/draft_node')
 )
 
 let MCAssessment
 
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 
 describe('MCAssessment', () => {
 	let mcAssessment

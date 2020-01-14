@@ -2,24 +2,24 @@
 <html lang="en">
 	<head>
 			<%
-			const { webpackAssetPath } = oboRequire('asset_resolver')
+			const { webpackAssetPath } = oboRequire('server/asset_resolver')
 			const title = 'Obojobo Module Selector'
 			const css = [
 				webpackAssetPath('module-selector.css')
 			]
-	
+
 			const headerJs = [
 				'//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
 				'/module-selector/jquery-ui-1.10.3.custom.js'
 			]
-	
+
 			const footerJs = [
 				webpackAssetPath('module-selector.js')
 			]
-	
+
 			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
 		%>
-		<%- include ../../../obojobo-express/views/partials/head %>
+		<%- include ../../../obojobo-express/server/views/partials/head %>
 	</head>
 	<body>
 		<section id="section-module-selection">

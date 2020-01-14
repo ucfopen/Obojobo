@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const DraftSummary = require('../models/draft_summary')
-const { webpackAssetPath } = require('obojobo-express/asset_resolver')
+const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 
 // Dashboard page
 // mounted as /dashboard
