@@ -12,10 +12,12 @@ import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/xml-fold.js'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
-import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
+import APIUtil from '../../../scripts/viewer/util/api-util'
+import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
+import ModalUtil from '../../common/util/modal-util'
+import SimpleDialog from '../../common/components/modal/simple-dialog'
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -117,13 +119,17 @@ class CodeEditor extends React.Component {
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
 
-		this.setState({ saved: true })
-
 		return APIUtil.postDraft(
 			this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
-		)
+		).then(result => {
+			if (result.status !== 'ok') {
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
+			} else {
+				this.setState({ saved: true })
+			}
+		})
 	}
 
 	// Makes CodeMirror commands match Slate commands

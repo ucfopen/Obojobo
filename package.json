@@ -17,7 +17,9 @@
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
-		"test:ci:all": "lerna run test:ci"
+		"test:ci:all": "lerna run test:ci",
+		"release:tag": "lerna version --no-push --sign-git-commit --sign-git-tag --no-commit-hooks --force-publish",
+		"release:publish": "lerna publish from-package"
 	},
 	"devDependencies": {
 		"concurrently": "^4.1.2",
