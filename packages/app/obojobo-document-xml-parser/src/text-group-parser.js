@@ -1,22 +1,15 @@
-let parseTg = el => {
-	// console.log('pTg', el)
+const parseTg = el => {
+	const tg = []
 
-	let tg = []
-
-	for (let i in el.elements) {
+	for (const i in el.elements) {
 		tg.push(parseT(el.elements[i]))
 	}
-
-	// console.log('=', tg)
 
 	return tg
 }
 
-let parseT = el => {
-	// let data = (el.attributes && el.attributes.data) ? el.attributes.data : {};
-	// el.attributes = data;
-
-	let t = {
+const parseT = el => {
+	const t = {
 		text: {
 			value: '',
 			styleList: []
@@ -24,32 +17,23 @@ let parseT = el => {
 		data: el.attributes || null
 	}
 
-	// let foundText = false;
-	// let lastTextNode = null;
-	for (let i in el.value) {
-		// console.log('call pt', el.elements, i, el.elements[i], t.text)
-		parseText(el.value[i], t.text) //, foundText, lastTextNode)
+	for (const i in el.value) {
+		parseText(el.value[i], t.text)
 	}
-
-	// if(lastTextNode) lastTextNode.text = lastTextNode.text.replace(/\s+$/, '');
-
-	// console.log('parseT result', t);
 
 	return t
 }
 
-let parseText = (node, textItem, foundText, lastTextNode) => {
+const parseText = (node, textItem, foundText) => {
 	if (node.type === 'text') {
 		if (!foundText && typeof node.text === 'string') {
 			foundText = true
 		}
 
-		lastTextNode = node
 		textItem.value += node.text
 		return
 	}
 
-	let styleRange
 	let type = node.name
 	let data = {}
 
@@ -81,7 +65,7 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 			break
 	}
 
-	styleRange = {
+	const styleRange = {
 		type: type,
 		data: data,
 		start: textItem.value.length,
@@ -90,8 +74,8 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 
 	textItem.styleList.push(styleRange)
 
-	for (let i in node.value) {
-		parseText(node.value[i], textItem) //, foundText, lastTextNode)
+	for (const i in node.value) {
+		parseText(node.value[i], textItem)
 	}
 
 	styleRange.end = textItem.value.length

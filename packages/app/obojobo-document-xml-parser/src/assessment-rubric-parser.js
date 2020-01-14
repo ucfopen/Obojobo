@@ -1,4 +1,4 @@
-let parseRubric = el => {
+const parseRubric = el => {
 	let mods = []
 	if (el.elements && el.elements[0] && el.elements[0].name === 'mods') {
 		mods = el.elements[0].value.map(child => parseMod(child))
@@ -14,7 +14,7 @@ let parseRubric = el => {
 	}
 }
 
-let parseMod = el => {
+const parseMod = el => {
 	return {
 		attemptCondition: el.attributes.attemptCondition,
 		reward: el.attributes.reward
