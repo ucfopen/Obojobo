@@ -1,21 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component converter oboToSlate converts an OboNode to a Slate node 1`] = `
+exports[`Component converter oboToSlate converts OboNode to a Slate node 1`] = `
 Object {
-  "nodes": Array [
-    undefined,
-  ],
-  "object": "block",
-  "type": "oboeditor.component",
+  "type": "mockOboNode",
 }
 `;
 
-exports[`Component converter oboToSlate converts an OboNode to a Slate node 2`] = `
+exports[`Component converter oboToSlate converts OboNode to a Slate node 2`] = `undefined`;
+
+exports[`Component converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
-  "nodes": Array [],
-  "object": "block",
-  "type": "oboeditor.component",
+  "type": "mockSlateNode",
 }
 `;
-
-exports[`Component converter slateToObo converts a Slate node to an OboNode with content 1`] = `undefined`;

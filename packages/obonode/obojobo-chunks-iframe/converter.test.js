@@ -47,4 +47,15 @@ describe('IFrame Converter', () => {
 
 		expect(slateNode).toMatchSnapshot()
 	})
+
+	test('oboToSlate converts an OboNode to a Slate node with triggers', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			content: { triggers: 'mock-triggers' }
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
 })

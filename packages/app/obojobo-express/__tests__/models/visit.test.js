@@ -1,10 +1,10 @@
-jest.mock('../../db')
-jest.mock('../../logger')
+jest.mock('../../server/db')
+jest.mock('../../server/logger')
 
-import Visit from '../../models/visit'
-import logger from '../../logger'
+import Visit from '../../server/models/visit'
+import logger from '../../server/logger'
 
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 
 describe('Visit Model', () => {
 	beforeEach(() => {

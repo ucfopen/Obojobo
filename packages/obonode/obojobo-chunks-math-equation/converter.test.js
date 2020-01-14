@@ -19,18 +19,18 @@ describe('MathEquation Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
+			content: {}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
+	test('oboToSlate converts an OboNode to a Slate node with content', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: {}
+			content: { latex: 'y=2x', triggers: 'mock-triggers' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

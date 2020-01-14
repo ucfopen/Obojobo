@@ -1,4 +1,4 @@
-import Dispatcher from '../../common/flux/dispatcher'
+import Dispatcher from '../flux/dispatcher'
 
 const ModalUtil = {
 	show(component, hideViewer = false) {

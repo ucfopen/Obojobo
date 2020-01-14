@@ -1,16 +1,16 @@
 const helpers = require('./attempt-end-helpers')
-const lti = require('obojobo-express/lti')
+const lti = require('obojobo-express/server/lti')
 const Assessment = require('../assessment')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('./insert-events')
-const DraftDocument = require('obojobo-express/models/draft')
+const DraftDocument = require('obojobo-express/server/models/draft')
 
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
 jest.mock('./insert-events')
-jest.mock('obojobo-express/lti')
-jest.mock('obojobo-express/models/draft')
+jest.mock('obojobo-express/server/lti')
+jest.mock('obojobo-express/server/models/draft')
 
 const mockCurrentUser = {
 	id: 'mockCurrentUserId'

@@ -1,4 +1,4 @@
-import StyleableText from '../../common/text/styleable-text'
+import StyleableText from '../text/styleable-text'
 
 import Util from './text-group-util'
 import TextGroupItem from './text-group-item'

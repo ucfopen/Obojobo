@@ -34,7 +34,7 @@ Object {
         "correct": false,
       },
       "flatPath": "whatever/whatever2",
-      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullFlatPath": "/editor/visual/66/whatever/whatever2",
       "fullPath": Array [
         "whatever",
         "whatever2",
@@ -66,14 +66,14 @@ Object {
 exports[`EditorStore generateNav builds a navItem 2`] = `
 Object {
   "itemsByFullPath": Object {
-    "/editor/66/whatever/whatever2": Object {
+    "/editor/visual/66/whatever/whatever2": Object {
       "children": Array [],
       "flags": Object {
         "complete": false,
         "correct": false,
       },
       "flatPath": "whatever/whatever2",
-      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullFlatPath": "/editor/visual/66/whatever/whatever2",
       "fullPath": Array [
         "whatever",
         "whatever2",
@@ -96,7 +96,7 @@ Object {
             "correct": false,
           },
           "flatPath": "whatever/whatever2",
-          "fullFlatPath": "/editor/66/whatever/whatever2",
+          "fullFlatPath": "/editor/visual/66/whatever/whatever2",
           "fullPath": Array [
             "whatever",
             "whatever2",
@@ -130,7 +130,7 @@ Object {
         "correct": false,
       },
       "flatPath": "whatever/whatever2",
-      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullFlatPath": "/editor/visual/66/whatever/whatever2",
       "fullPath": Array [
         "whatever",
         "whatever2",
@@ -151,7 +151,7 @@ Object {
         "correct": false,
       },
       "flatPath": "whatever/whatever2",
-      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullFlatPath": "/editor/visual/66/whatever/whatever2",
       "fullPath": Array [
         "whatever",
         "whatever2",
@@ -164,6 +164,7 @@ Object {
       "type": "hidden",
     },
   },
+  "mode": "visual",
   "visitId": "visitId",
 }
 `;
@@ -208,40 +209,6 @@ Object {
 }
 `;
 
-exports[`EditorStore init builds state locked state 1`] = `
-Object {
-  "context": "editor",
-  "currentPageModel": null,
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": true,
-  "navItems": Object {},
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "settings": null,
-  "startingId": 12,
-}
-`;
-
-exports[`EditorStore init builds state open state 1`] = `
-Object {
-  "context": "editor",
-  "currentPageModel": null,
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": false,
-  "navItems": Object {},
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "settings": null,
-  "startingId": 12,
-}
-`;
-
 exports[`EditorStore init builds state with basic options 1`] = `
 Object {
   "context": "editor",
@@ -249,11 +216,10 @@ Object {
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
-  "locked": false,
+  "mode": "visual",
   "navItems": Object {},
   "navTargetHistory": Array [],
   "navTargetId": null,
-  "open": true,
   "settings": null,
   "startingId": null,
 }
@@ -266,11 +232,10 @@ Object {
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
-  "locked": false,
+  "mode": "visual",
   "navItems": Object {},
   "navTargetHistory": Array [],
   "navTargetId": null,
-  "open": true,
   "settings": Object {
     "mockSetting": true,
   },

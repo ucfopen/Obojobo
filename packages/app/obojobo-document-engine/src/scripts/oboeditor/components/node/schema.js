@@ -12,6 +12,7 @@ const schema = {
 			nodes: [
 				{
 					match: [
+						// @TODO: these need to be dynamic: get from Registry
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },

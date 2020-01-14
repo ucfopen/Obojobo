@@ -1,15 +1,15 @@
-jest.mock('../../models/draft')
-jest.mock('../../db')
+jest.mock('../../server/models/draft')
+jest.mock('../../server/db')
 jest.unmock('express') // we'll use supertest + express for this
 jest.unmock('fs') // need fs working for view rendering
 
-jest.mock('../../config', () => ({
+jest.mock('../../server/config', () => ({
 	general: { hostname: 'mock-hostname' },
 	lti: { keys: [{ 'mock-lti-key': 'mock-lti-key-value' }] }
 }))
 
 // ovveride requireCurrentDocument to provide our own
-jest.mock('../../express_lti_launch', () => ({
+jest.mock('../../server/express_lti_launch', () => ({
 	assignmentSelection: (req, res, next) => {
 		next()
 	},
@@ -46,11 +46,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '../../../views/')
+app.set('views', __dirname + '../../../server/views/')
 app.use(bodyParser.json())
 app.use(addMockPropsToReq)
-app.use('', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/lti')) // mounting under api so response_decorator assumes json content type
+app.use('', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/lti')) // mounting under api so response_decorator assumes json content type
 
 describe('lti route', () => {
 	beforeAll(() => {})
@@ -82,7 +82,7 @@ describe('lti route', () => {
 			.get('/config.xml')
 			.then(response => {
 				expect(response.statusCode).toBe(200)
-				expect(response.header['content-type']).toContain("application/xml; charset=utf-8")
+				expect(response.header['content-type']).toContain('application/xml; charset=utf-8')
 				expect(response.text).toContain('<?xml version="1.0" encoding="UTF-8"?>')
 				expect(response.text).toContain(
 					'<blti:launch_url>http://mock-hostname/lti</blti:launch_url>'
@@ -103,11 +103,11 @@ describe('lti route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/plain')
 				expect(response.statusCode).toBe(302)
-				expect(response.text).toBe('Found. Redirecting to /editor')
+				expect(response.text).toBe('Found. Redirecting to /dashboard')
 			})
 	})
 
-	test('course_navigation requires rejects when the user is invalid', () => {
+	test('course_navigation rejects when the user is invalid', () => {
 		expect.assertions(3)
 		mockCurrentUser = null
 
@@ -118,259 +118,6 @@ describe('lti route', () => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(401)
 				expect(response.text).toBe('Not Authorized')
-			})
-	})
-
-	test('canvas resource_selection requires a user', () => {
-		expect.assertions(3)
-		mockCurrentUser = null
-
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(401)
-				expect(response.text).toBe('Not Authorized')
-			})
-	})
-
-	test('canvas resource_selection renders module selector when user canViewEditor', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Pick a Learning Object')
-			})
-	})
-
-	test('canvas resource_selection sets vars when NOT an assignment', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'mock-return-url';")
-				expect(response.text).toContain('window.__isAssignment = false')
-			})
-	})
-
-	test('canvas resource_selection sets vars when IS an assignment', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url',
-					ext_lti_assignment_id: 'mock-assignment-id'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'mock-return-url';")
-				expect(response.text).toContain('window.__isAssignment = true')
-			})
-	})
-
-	test('canvas resource_selection errors with no content_item_return_url', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: null
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(500)
-				expect(response.text).toContain('Unknown return url for assignment selection')
-			})
-	})
-
-	test('canvas resource_selection overrides with ext_content_return_url', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'zombocom',
-					ext_content_return_url: 'newgrounds'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/resource_selection')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'newgrounds';")
-			})
-	})
-	//=========================
-
-	test('canvas editor_button requires a user', () => {
-		expect.assertions(3)
-		mockCurrentUser = null
-
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(401)
-				expect(response.text).toBe('Not Authorized')
-			})
-	})
-
-	test('canvas editor_button renders module selector when user canViewEditor', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Pick a Learning Object')
-			})
-	})
-
-	test('canvas editor_button sets vars when NOT an assignment', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'mock-return-url';")
-				expect(response.text).toContain('window.__isAssignment = false')
-			})
-	})
-
-	test('canvas editor_button sets vars when IS an assignment', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'mock-return-url',
-					ext_lti_assignment_id: 'mock-assignment-id'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'mock-return-url';")
-				expect(response.text).toContain('window.__isAssignment = true')
-			})
-	})
-
-	test('canvas editor_button errors with no content_item_return_url', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: null
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(500)
-				expect(response.text).toContain('Unknown return url for assignment selection')
-			})
-	})
-
-	test('canvas editor_button overrides with ext_content_return_url', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {
-				body: {
-					content_item_return_url: 'zombocom',
-					ext_content_return_url: 'newgrounds'
-				}
-			}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain("window.__returnUrl = 'newgrounds';")
-			})
-	})
-
-	test('canvas editor_button errors with no lti body', () => {
-		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: true }
-		mockReqProps = {
-			lti: {}
-		}
-		return request(app)
-			.post('/canvas/editor_button')
-			.type('application/x-www-form-urlencoded')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(500)
-				expect(response.text).toContain('Unknown return url for assignment selection')
 			})
 	})
 })

@@ -4,6 +4,11 @@ import renderer from 'react-test-renderer'
 
 import Heading from './editor-component'
 
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
+
 describe('Heading Editor Node', () => {
 	test('Heading component', () => {
 		const component = renderer.create(
@@ -44,13 +49,15 @@ describe('Heading Editor Node', () => {
 	test('Heading component toggles level select', () => {
 		const component = mount(
 			<Heading
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => ({})
+						get: () => ({
+							level: 1
+						})
 					},
 					text: 'Your Title Here'
 				}}
+				isSelected={true}
 			/>
 		)
 
@@ -66,50 +73,65 @@ describe('Heading Editor Node', () => {
 	test('Heading component handles clicks', () => {
 		const component = mount(
 			<Heading
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => ({})
+						get: () => ({
+							level: 1
+						})
 					},
-					text: 'Your Title Here'
+					text: ''
 				}}
+				isSelected={true}
 			/>
 		)
 
 		const nodeInstance = component.instance()
-		nodeInstance.node = {
-			contains: value => value
+		// click inside
+		nodeInstance.nodeRef = {
+			current: {
+				contains: () => true
+			}
 		}
-
-		nodeInstance.handleClick({ target: true }) // click inside
-
+		nodeInstance.handleClick({ target: 'mock' })
 		let tree = component.html()
 		expect(tree).toMatchSnapshot()
 
-		nodeInstance.handleClick({ target: false }) // click outside
-
+		// click outside
+		nodeInstance.nodeRef = {
+			current: {
+				contains: () => false
+			}
+		}
+		nodeInstance.handleClick({ target: 'mock' })
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
 
-		nodeInstance.node = null
-		nodeInstance.handleClick() // click without node
-
+		// click without a ref
+		nodeInstance.nodeRef = {
+			current: null
+		}
+		nodeInstance.handleClick({ target: 'mock' })
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Heading component edits heading level', () => {
+		const setNodeByKey = jest.fn()
 		const component = mount(
 			<Heading
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => ({})
+						get: () => ({
+							level: 1,
+							align: 'left'
+						})
 					},
+					key: 'mock-key',
 					text: 'Your Title Here'
 				}}
+				isSelected={true}
 				editor={{
-					setNodeByKey: jest.fn()
+					setNodeByKey
 				}}
 			/>
 		)
@@ -120,14 +142,26 @@ describe('Heading Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
+		expect(component.state()).toHaveProperty('isOpen', true)
+
 		// toggle level 1
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
+		expect(component.state()).toHaveProperty('isOpen', false)
+
 		let tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 1
+				}
+			}
+		})
 
 		// open select
 		component
@@ -143,6 +177,14 @@ describe('Heading Editor Node', () => {
 
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 2
+				}
+			}
+		})
 
 		// open select
 		component
@@ -158,6 +200,14 @@ describe('Heading Editor Node', () => {
 
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 3
+				}
+			}
+		})
 
 		// open select
 		component
@@ -173,6 +223,14 @@ describe('Heading Editor Node', () => {
 
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 4
+				}
+			}
+		})
 
 		// open select
 		component
@@ -188,6 +246,14 @@ describe('Heading Editor Node', () => {
 
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 5
+				}
+			}
+		})
 
 		// open select
 		component
@@ -203,5 +269,13 @@ describe('Heading Editor Node', () => {
 
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+		expect(setNodeByKey).toHaveBeenLastCalledWith('mock-key', {
+			data: {
+				content: {
+					align: 'left',
+					level: 6
+				}
+			}
+		})
 	})
 })

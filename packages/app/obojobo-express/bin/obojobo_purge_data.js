@@ -3,6 +3,6 @@
 global.oboRequire = name => {
 	return require(`${__dirname}/../${name}`)
 }
-const { purgeData } = oboRequire('util/purge_data')
+const { purgeData } = oboRequire('server/util/purge_data')
 
 purgeData()

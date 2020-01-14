@@ -31,6 +31,12 @@ class Prompt extends React.Component {
 		this.inputRef.current.select()
 	}
 
+	onKeyDown(event) {
+		if (event.key === 'Enter') {
+			this.props.onConfirm(this.state.text)
+		}
+	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -48,6 +54,7 @@ class Prompt extends React.Component {
 						onChange={this.handleTextChange.bind(this)}
 						ref={this.inputRef}
 						size="50"
+						onKeyDown={this.onKeyDown.bind(this)}
 					/>
 				</div>
 			</SimpleDialog>

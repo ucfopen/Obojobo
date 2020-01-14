@@ -13,7 +13,7 @@
 		"lint": "lerna run lint",
 		"lint:css": "lerna run lint:css",
 		"lint:js": "lerna run  lint:js",
-		"precommit": "lerna run precommit && yarn test:ci",
+		"precommit": "lerna run precommit && (yarn test:ci --bail)",
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
@@ -22,6 +22,7 @@
 	"devDependencies": {
 		"concurrently": "^4.1.2",
 		"husky": "^3.0.8",
+		"jest-runner-eslint": "^0.7.4",
 		"lerna": "^3.16.4",
 		"nodemon": "^1.19.3"
 	},
@@ -30,7 +31,21 @@
 	},
 	"jest": {
 		"projects": [
-			"<rootDir>/packages/*/*"
+			"<rootDir>/packages/*/*",
+			{
+				"runner": "jest-runner-eslint",
+				"displayName": "lint",
+				"testMatch": [
+					"<rootDir>/packages/*/*/**/*.js"
+				],
+				"testPathIgnorePatterns": [
+					"<rootDir>.*\\.min\\.js$",
+					"<rootDir>.*\\.custom\\.js$",
+					"<rootDir>.*/migrations/.*",
+					"<rootDir>.*obojobo-express/public/picker/.*",
+					"<rootDir>.*stylelint-config-obojobo/.*"
+				]
+			}
 		],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
@@ -49,6 +64,8 @@
 		"packages/app/obojobo-document-xml-parser",
 		"packages/app/obojobo-document-json-parser",
 		"packages/app/obojobo-express",
+		"packages/app/obojobo-module-selector",
+		"packages/app/obojobo-repository",
 		"packages/obonode/obojobo-chunks-action-button",
 		"packages/obonode/obojobo-chunks-break",
 		"packages/obonode/obojobo-chunks-code",
