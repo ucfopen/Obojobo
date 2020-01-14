@@ -1,14 +1,14 @@
 {
   "dependencies": {
     "minimist": "^1.2.0",
-    "obojobo-lib-utils": "^7.0.1",
+    "obojobo-lib-utils": "^7.0.4",
     "xml-js": "^1.0.2"
   },
   "devDependencies": {
     "lint-staged": "^9.4.1"
   },
   "name": "obojobo-document-xml-parser",
-  "version": "7.0.1",
+  "version": "7.0.4",
   "license": "AGPL-3.0-only",
   "main": "xml2draft.js",
   "scripts": {

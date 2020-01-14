@@ -17,6 +17,7 @@ const YouTube = props => (
 				src={`https://www.youtube.com/embed/${props.model.modelState.videoId}`}
 				frameBorder="0"
 				allowFullScreen={true}
+				loading="lazy"
 			/>
 		</div>
 	</OboComponent>

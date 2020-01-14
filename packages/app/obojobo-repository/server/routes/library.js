@@ -1,14 +1,14 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
-const UserModel = require('obojobo-express/models/user')
-const { webpackAssetPath } = require('obojobo-express/asset_resolver')
+const UserModel = require('obojobo-express/server/models/user')
+const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 const { userHasPermissionToCopy } = require('../services/permissions')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 

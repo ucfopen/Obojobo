@@ -77,14 +77,7 @@ const PageModule = props => (
 			<ol>
 				<li>Click Modules in your course&apos;s menu.</li>
 				<li>Click the &quot;+&quot; in a module</li>
-				<li>
-					Set the:
-					<ul>
-						<li>Assignment Name</li>
-						<li>Points (do not use 0)</li>
-						<li>any other relevant settings</li>
-					</ul>
-				</li>
+				<li>Type an Assignment Name</li>
 				<li>Change the top drop down from &quot;Assignment&quot; to &quot;External Tool&quot;.</li>
 				<li>
 					Follow the <a href="#selecting-this-module">Choosing a Obojobo Module</a> instructions

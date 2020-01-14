@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
@@ -16,13 +17,20 @@ const slateToObo = node => {
 		return textLine
 	})
 
+	const content = {
+		textGroup
+	}
+
+	const nodeContent = node.data.get('content')
+	if (nodeContent && nodeContent.triggers) {
+		content.triggers = nodeContent.triggers
+	}
+
 	return {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content: {
-			textGroup
-		}
+		content: withoutUndefined(content)
 	}
 }
 
@@ -51,7 +59,9 @@ const oboToSlate = node => {
 		type: node.type,
 		nodes,
 		data: {
-			content: {}
+			content: {
+				triggers: node.content.triggers
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
 
 const { ModalUtil } = Common.util
 const { Prompt } = Common.components.modal
@@ -11,7 +12,9 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
-	showSourceModal() {
+	showSourceModal(event) {
+		event.stopPropagation()
+
 		ModalUtil.show(
 			<Prompt
 				cancelOk
@@ -64,11 +67,15 @@ class YouTube extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}>
+				<div
+					contentEditable={false}
+					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
+				>
 					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
+					<EditableHiddenText>{this.props.children}</EditableHiddenText>
 					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
 						Edit
 					</Button>

@@ -1,8 +1,14 @@
 {
-	"object":"block",
-	"type":"ObojoboDraft.Chunks.Break",
-	"isVoid":true,
-	"data":{
+	"object": "block",
+	"type": "ObojoboDraft.Chunks.Break",
+	"isVoid": false,
+	"data": {
 		"content": { "width": "normal" }
-	}
+	},
+	"nodes": [
+		{
+			"object": "text",
+			"leaves": [{ "object": "leaf", "text": "", "marks": [] }]
+		}
+	]
 }

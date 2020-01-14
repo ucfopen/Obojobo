@@ -4,6 +4,7 @@ exports[`YouTube Editor Node YouTube builds the expected componen without a vide
 <div>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
+    contentEditable={false}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -23,6 +24,11 @@ exports[`YouTube Editor Node YouTube builds the expected componen without a vide
         No Video Id.
       </div>
     </div>
+    <div
+      className="editor--hidden-text"
+      contentEditable={true}
+      suppressContentEditableWarning={true}
+    />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
     >
@@ -42,6 +48,7 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
 <div>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
+    contentEditable={false}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -60,6 +67,11 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
       src="https://www.youtube.com/embed/mockId"
     />
     <div
+      className="editor--hidden-text"
+      contentEditable={true}
+      suppressContentEditableWarning={true}
+    />
+    <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
     >
       <button
@@ -74,12 +86,13 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
 </div>
 `;
 
-exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div><div class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><iframe src=\\"https://www.youtube.com/embed/mockId\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`;
+exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div><div contenteditable=\\"false\\" class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><iframe src=\\"https://www.youtube.com/embed/mockId\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><div contenteditable=\\"true\\" class=\\"editor--hidden-text\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`;
 
 exports[`YouTube Editor Node handleSourceChange sets the nodes content 1`] = `
 <div>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-selected"
+    contentEditable={false}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -99,6 +112,11 @@ exports[`YouTube Editor Node handleSourceChange sets the nodes content 1`] = `
         No Video Id.
       </div>
     </div>
+    <div
+      className="editor--hidden-text"
+      contentEditable={true}
+      suppressContentEditableWarning={true}
+    />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
     >

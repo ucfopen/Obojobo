@@ -1,11 +1,11 @@
 jest.mock('./assessment')
-jest.mock('obojobo-express/lti')
+jest.mock('obojobo-express/server/lti')
 jest.mock('./services/preview')
 jest.mock('./attempt-start')
 jest.mock('./attempt-resume')
 jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
-jest.mock('obojobo-express/express_validators')
+jest.mock('obojobo-express/server/express_validators')
 jest.mock('./events')
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
@@ -19,16 +19,16 @@ const Assessment = require('./assessment')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
-const lti = require('obojobo-express/lti')
+const lti = require('obojobo-express/server/lti')
 const {
 	requireCurrentDocument,
 	requireCurrentVisit,
 	requireAttemptId,
 	requireCurrentUser,
 	requireAssessmentId
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 const assessmentExpress = require('./express')
-const express_response_decorator = require('obojobo-express/express_response_decorator')
+const express_response_decorator = require('obojobo-express/server/express_response_decorator')
 const express = require('express')
 let app
 

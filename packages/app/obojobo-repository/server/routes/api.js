@@ -1,15 +1,15 @@
 const router = require('express').Router() //eslint-disable-line new-cap
-const insertEvent = require('obojobo-express/insert_event')
+const insertEvent = require('obojobo-express/server/insert_event')
 const RepositoryCollection = require('../models/collection')
-const Draft = require('obojobo-express/models/draft')
+const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
 const DraftsMetadata = require('../models/drafts_metadata')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
 	requireCurrentDocument
-} = require('obojobo-express/express_validators')
-const UserModel = require('obojobo-express/models/user')
+} = require('obojobo-express/server/express_validators')
+const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
 const {
 	addUserPermissionToDraft,
