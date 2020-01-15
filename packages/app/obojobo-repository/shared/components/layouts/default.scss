@@ -95,20 +95,20 @@
 	position: relative;
 	justify-content: space-between;
 
-	@include mq($from: zero, $until: mobileL) {
-		flex-direction: column;
-		align-items: center;
-
-		> span {
-			padding-right: 0.2em;
-		}
-	}
-
 	> span {
 		background: $color-bg;
 		position: relative;
 		padding-right: 1em;
 		padding-top: 0.05em;
+	}
+
+	@include mq($from: zero, $until: mobileL) {
+		flex-direction: column;
+		align-items: center;
+
+		> span {
+			padding-right: 0;
+		}
 	}
 
 	&::before {
