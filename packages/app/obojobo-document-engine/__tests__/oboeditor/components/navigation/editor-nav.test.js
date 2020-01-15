@@ -151,7 +151,7 @@ describe('EditorNav', () => {
 			}
 		})
 
-		expect(EditorUtil.gotoPath).toHaveBeenCalled()
+		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
 	test('addAssessment hides the modal and calls EditorUtil', () => {
