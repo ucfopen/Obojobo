@@ -5,7 +5,6 @@ jest.mock('../../../server/models/user')
 jest.mock('../../../server/db')
 jest.mock('../../../server/logger')
 
-
 const mediaConfig = require('../../../server/config').media
 // Mocks multerUpload with no errors
 const mockMulterUpload = jest.fn().mockImplementation((req, res, cb) => {

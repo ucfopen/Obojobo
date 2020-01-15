@@ -1,49 +1,106 @@
 import '../css/module-selector.scss'
 ;(function() {
+	// settings set by the view
+	const SETTINGS_IS_ASSIGNMENT = __isAssignment // eslint-disable-line no-undef
+	const SETTINGS_RETURN_URL = __returnUrl // eslint-disable-line no-undef
+	const TAB_COMMUNITY = 'Community Library'
+	const TAB_PERSONAL = 'My Modules'
+	const SECTION_MODULE_SELECT = 'section-module-selection'
+	const SECTION_SELECT_OBJECT = 'section-select-object'
+	const SECTION_PROGRESS = 'section-progress'
+	const SECTION_PRE_PROGRESS = 'pre-progress'
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
 	const MESSAGE_LOGOUT = 'You have been logged out. Please refresh the page and try again.'
-
-	let searchIntervalId = -1
-	const data = { items: undefined, allItems: undefined, last: 0 } // eslint-disable-line no-undefined
 	const searchStrings = {}
+	const itemTemplateEl = document.querySelectorAll('.template.obo-item')[0]
+	const listContainerEl = document.getElementById('list-container')
+	const searchEl = document.getElementById('search')
+	const progressBarEL = document.getElementById('progressbar')
+	const progressBarValueEl = progressBarEL.querySelector('.ui-progressbar-value')
+	const progressBarContainerEl = document.querySelector('.progress-container')
+	const data = {
+		items: undefined, // eslint-disable-line no-undefined
+		allItems: undefined, // eslint-disable-line no-undefined
+		last: 0
+	}
+	let searchIntervalId = -1
+	let section = null
 	let selectedItem = null
 
-	// elements:
-	const $template = $($('.template.obo-item')[0])
-	const $listContainer = $('#list-container')
-	const $search = $('#search')
-	let section = null
+	function empty(el) {
+		while (el.firstChild) el.removeChild(el.firstChild)
+	}
 
-	// searching:
+	function hide(el) {
+		el.style.display = 'none'
+		el.style.opacity = 1
+	}
+
+	function show(el) {
+		el.style.display = 'block'
+		el.style.opacity = 1
+	}
+
+	function fadeOut(el) {
+		el.style.opacity = 1
+		;(function fade() {
+			if ((el.style.opacity -= 0.1) < 0) {
+				el.style.display = 'none'
+			} else {
+				window.requestAnimationFrame(fade)
+			}
+		})()
+	}
+
+	function sectionClassName(string) {
+		return '.' + string.replace(' ', '-').toLowerCase()
+	}
+
+	function fadeIn(el, delay) {
+		if (delay) {
+			setTimeout(() => {
+				fadeIn(el)
+			}, delay)
+			return
+		}
+
+		el.style.opacity = 0
+		el.style.display = 'block'
+		;(function fade() {
+			let val = parseFloat(el.style.opacity)
+			if (!((val += 0.1) > 1)) {
+				el.style.opacity = val
+				window.requestAnimationFrame(fade)
+			}
+		})()
+	}
+
 	function search() {
 		if (data.items === 'pending') {
 			return
 		}
 
-		const text = $.trim($search.val())
-		if ($search.attr('data-last-search') !== text) {
-			const className = section.replace(' ', '-').toLowerCase()
-			$('.' + className)
-				.children('ul')
-				.empty()
-			filterList(text)
+		const text = searchEl.value.trim()
+		if (searchEl.getAttribute('data-last-search') !== text) {
+			const ul = document.querySelector(sectionClassName(section) + ' ul')
+			empty(ul)
+			filterModules(text)
 			populateSection(section)
-			$('#list-container').scrollTop(0)
+			listContainerEl.scrollTop = 0
 		}
-		$search.attr('data-last-search', text)
+		searchEl.setAttribute('data-last-search', text)
 	}
 
 	function clearSearch() {
-		const className = section.replace(' ', '-').toLowerCase()
-		$('.' + className)
-			.children('ul')
-			.empty()
-		$('#search').val('')
+		const className = sectionClassName(section)
+		const ul = document.querySelector(className + ' ul')
+		empty(ul)
+		searchEl.value = ''
 		data.items = data.allItems
 		data.last = 0
-		$search.attr('data-last-search', '')
+		searchEl.setAttribute('data-last-search', '')
 	}
 
 	function getDraftById(draftId) {
@@ -52,7 +109,15 @@ import '../css/module-selector.scss'
 		})
 	}
 
-	function filterList(searchTerms) {
+	function getMemoizedSearchStringForDraft(draft) {
+		const key = draft.draftId
+		if (!searchStrings[key]) {
+			searchStrings[key] = `${draft.title || 'untitled'} ${draft.draftId}`.toLowerCase()
+		}
+		return searchStrings[key]
+	}
+
+	function filterModules(searchTerms) {
 		const items = data.allItems
 
 		if (searchTerms.length === 0) {
@@ -61,82 +126,61 @@ import '../css/module-selector.scss'
 		}
 
 		const terms = searchTerms.toLowerCase().split(' ')
-		const numTerms = terms.length
-
-		const len = items.length
-		let item
-		let ss
-		let numMatches
-		let key
 
 		data.items = []
 
-		for (let i = 0; i < len; i++) {
-			item = items[i]
-			key = item.draftId
-			if (typeof searchStrings[key] === 'undefined') {
-				searchStrings[key] = (
-					(typeof item.title !== 'undefined' ? item.title : 'Untitled') +
-					(typeof item.draftId !== 'undefined' ? ' draftId:' + item.draftId : '')
-				).toLowerCase()
-			}
-			ss = searchStrings[key]
+		items.forEach(item => {
+			const search = getMemoizedSearchStringForDraft(item)
 
-			numMatches = 0
-			for (let j = 0; j < numTerms; j++) {
-				if (ss.indexOf(terms[j]) >= 0) {
-					numMatches++
-				}
+			// locate any searchterms in the draft search strings
+			if (terms.find(term => search.indexOf(term) >= 0)) {
+				data.items.push(item)
 			}
-			if (numMatches === numTerms) {
-				data.items.push(items[i])
-			}
-		}
+		})
 
 		data.last = 0
 	}
 
 	// navigation
 	function gotoSection(sectionId, skipFadeAnimation = false, addClass = '') {
-		if (sectionId === 'progress') {
+		if (sectionId === SECTION_PRE_PROGRESS) {
 			showProgress()
-		} else if (sectionId === 'section-success') {
-			$('.selected-instance-title').html(window.repreviousResponse.body.name)
-			$('.preview-link').attr('href', '/preview/' + window.__previousResponse.body.loID)
+			return
 		}
 
-		const $shownSection = $('section:not(:hidden)')
-		const $newSection = $('#' + sectionId)
-		$newSection.removeClass().addClass(addClass)
-		if ($shownSection.length === 0) {
+		const shownSectionEl = document.querySelectorAll('section[style*="display: block"]')
+		const newSectionEl = document.getElementById(sectionId)
+		newSectionEl.className = ''
+		if (addClass) newSectionEl.classList.add(addClass)
+		if (shownSectionEl.length === 0) {
 			if (skipFadeAnimation) {
-				$newSection.show()
+				show(newSectionEl)
 			} else {
-				$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
+				fadeIn(newSectionEl)
 			}
 		} else if (skipFadeAnimation) {
-			$shownSection.hide()
-			$newSection.show()
-		} else {
-			$shownSection.fadeOut(CHANGE_SECTION_FADE_DELAY_MS, function() {
-				$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
+			shownSectionEl.forEach(s => {
+				hide(s)
 			})
+			show(newSectionEl)
+		} else {
+			shownSectionEl.forEach(s => {
+				fadeOut(s)
+			})
+			fadeIn(newSectionEl, CHANGE_SECTION_FADE_DELAY_MS)
 		}
 	}
 
 	function gotoTab(newSection) {
 		section = newSection
 		populateList(section)
-		$('#section-select-object')
-			.removeClass('community-library-section')
-			.removeClass('my-objects-section')
-			.removeClass('my-instances-section')
 	}
 
 	function showProgress() {
-		$('#section-progress h1').html(selectedItem.title)
-		$('.progressbar').progressbar()
-		gotoSection('section-progress')
+		const titleEl = document.querySelector('#section-progress h1')
+		titleEl.innerHTML = selectedItem.title
+		progressBarValueEl.style.width = '10%'
+		gotoSection(SECTION_PROGRESS)
 
 		setTimeout(() => {
 			startProgressBar()
@@ -158,41 +202,29 @@ import '../css/module-selector.scss'
 		const intervalId = setInterval(() => {
 			stops.tick++
 			if (typeof stops[stops.tick] !== 'undefined') {
-				$('.progressbar').progressbar('value', stops.tick * 10)
+				progressBarValueEl.style.width = `${stops.tick * 10}%`
 			}
 			if (stops.tick >= 10) {
 				clearInterval(intervalId)
 				finishProgressBarAndSubmit()
 			}
 		}, 200)
-
-		$(document).on('keyup', event => {
-			if (event.keyCode === 16) {
-				// shift
-				$('.progress-container')
-					.find('span')
-					.html('Reticulating splines...')
-				$(document).off('keyup')
-			}
-		})
 	}
 
 	function finishProgressBarAndSubmit() {
-		$('.progress-container').addClass('success')
-		$('.progress-container')
-			.find('span')
-			.html('Success!')
-		$('.progressbar').progressbar('value', 100)
+		progressBarContainerEl.classList.add('success')
+		progressBarContainerEl.querySelector('span').innerHTML = 'Success!'
+		progressBarValueEl.style.width = '100%'
 		setTimeout(() => {
 			const ltiData = buildContentItem(
 				selectedItem.title,
 				buildLaunchUrl(selectedItem.draftId),
-				__isAssignment // eslint-disable-line no-undef
+				SETTINGS_IS_ASSIGNMENT
 			)
-			const $form = $('#submit-form')
-			$form.find('input[name=content_items]').val(JSON.stringify(ltiData))
-			$form.attr('action', __returnUrl) // eslint-disable-line no-undef
-			$form.submit()
+			const formEl = document.getElementById('submit-form')
+			formEl.querySelector('input[name=content_items]').value = JSON.stringify(ltiData)
+			formEl.setAttribute('action', SETTINGS_RETURN_URL)
+			formEl.submit()
 		}, 1000)
 	}
 
@@ -217,33 +249,23 @@ import '../css/module-selector.scss'
 		return window.location.origin + '/view/' + draftId
 	}
 
-	// utility
-	function hasMoreItems() {
-		const d = data
-		return d.last < d.items.length
-	}
-
 	// list pages
-	function appendListItem(lo, $list) {
-		const $clone = $template.clone()
-		$clone.removeClass('template')
-		$clone.find('.title').html(lo.title ? lo.title : 'Untitled')
-		$clone.find('.draft-id').html('id: ' + lo.draftId)
-		$clone.find('.preview').attr('href', '/preview/' + lo.draftId)
-		$clone.attr('data-lo-id', lo.draftId)
-
-		$clone.find('.button').click(onSelectClick)
-
-		$list.append($clone)
-		return $clone
+	function appendListItem(lo, listEl) {
+		const cloneEl = itemTemplateEl.cloneNode(true)
+		cloneEl.classList.remove('template')
+		cloneEl.querySelector('.title').innerHTML = lo.title ? lo.title : 'Untitled'
+		cloneEl.querySelector('.draft-id').innerHTML = 'id: ' + lo.draftId
+		cloneEl.querySelector('.preview').setAttribute('href', '/preview/' + lo.draftId)
+		cloneEl.setAttribute('data-lo-id', lo.draftId)
+		cloneEl.querySelector('.button').addEventListener('click', onEmbedClick)
+		listEl.appendChild(cloneEl)
 	}
 
 	function populateList(section) {
 		resetSectionList(section)
 
-		const fetchOptions = { credentials: 'same-origin' }
-		$listContainer.find('.section').hide()
-		$search.val('')
+		hide(listContainerEl.querySelector('.section'))
+		searchEl.value = ''
 
 		let title = ''
 		let apiUrl = ''
@@ -251,27 +273,25 @@ import '../css/module-selector.scss'
 
 		switch (section) {
 			default:
-			case 'My Modules':
+			case TAB_PERSONAL:
 				title = 'Personal Library'
 				apiUrl = '/api/drafts'
 				color = 'blue'
 				break
 
-			case 'Community Library':
+			case TAB_COMMUNITY:
 				title = 'Community Collection'
 				apiUrl = '/api/drafts-public'
 				color = 'purple'
 				break
 		}
 
-		const className = section.replace(' ', '-').toLowerCase()
-		$('.' + className).addClass(color)
-		$('.my-objects')
-			.show()
-			.addClass('loading')
+		const className = sectionClassName(section)
+		document.querySelector(className).classList.add(color)
 
-		$('#select-section-title').html(title)
+		document.getElementById('select-section-title').innerHTML = title
 		data.items = 'pending'
+		const fetchOptions = { credentials: 'same-origin' }
 		fetch(apiUrl, fetchOptions)
 			.then(resp => resp.json())
 			.then(respJson => {
@@ -279,9 +299,8 @@ import '../css/module-selector.scss'
 
 				data.allItems = data.items = respJson.value
 				populateSection(section, title, color)
-				$('.my-objects').removeClass('loading')
 
-				if ($search.val() !== '') {
+				if (searchEl.value !== '') {
 					search()
 				}
 			})
@@ -291,41 +310,41 @@ import '../css/module-selector.scss'
 	}
 
 	function populateSection(section) {
-		const className = section.replace(' ', '-').toLowerCase()
+		const className = sectionClassName(section)
 		const items = data.items
 		const lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
-		const $section = $('.' + className)
-		const $list = $section.children('ul')
+		const sectionEl = document.querySelector(className)
+		const listEl = sectionEl.querySelector('ul')
 
 		if (items.length === 0) {
-			$section.find('.no-items').show()
+			show(sectionEl.querySelector('.no-items'))
 		} else {
-			$section.find('.no-items').hide()
+			hide(sectionEl.querySelector('.no-items'))
 
 			const len = lastIndex
 			for (let i = data.last; i < len; i++) {
-				appendListItem(items[i], $list)
+				appendListItem(items[i], listEl)
 			}
 
 			data.last = lastIndex
 		}
 
-		$section.show()
+		show(sectionEl)
 	}
 
 	function resetSectionList(section) {
-		const $list = $('.' + section.toLowerCase().replace(' ', '-'))
+		const listEl = document.querySelector(sectionClassName(section))
 		data.items = undefined // eslint-disable-line no-undefined
 		data.last = 0
-		$list.find('ul').empty()
-		$list.find('.no-items').hide()
+		empty(listEl.querySelector('ul'))
+		hide(listEl.querySelector('.no-items'))
 	}
 
 	// UI:
 	function setupUI() {
-		$listContainer.find('ul.template').remove()
+		listContainerEl.querySelector('ul.template').remove()
 
-		$search.keyup(event => {
+		searchEl.addEventListener('keyup', event => {
 			clearInterval(searchIntervalId)
 
 			if (event.keyCode === 27) {
@@ -340,17 +359,7 @@ import '../css/module-selector.scss'
 			}
 		})
 
-		$('#list-container').scroll(() => {
-			const $this = $(this)
-			const $list = $this.find('.' + section.replace(' ', '-').toLowerCase()).children('ul')
-			if ($list.height() - $this.scrollTop() <= $this.height()) {
-				if (hasMoreItems() && $list.find('.click-to-expand').length === 0) {
-					populateSection(section)
-				}
-			}
-		})
-
-		$('#refresh').click(event => {
+		document.getElementById('refresh').addEventListener('click', event => {
 			event.preventDefault()
 
 			if (typeof data.items !== 'undefined' && data.items !== 'pending') {
@@ -359,43 +368,32 @@ import '../css/module-selector.scss'
 			}
 		})
 
-		$('#back-button').click(event => {
+		document.getElementById('back-button').addEventListener('click', event => {
 			event.preventDefault()
-			gotoSection('section-module-selection')
+			gotoSection(SECTION_MODULE_SELECT)
 		})
 
-		// section-module-selection
-		$('#community-library-button').click(event => {
+		document.getElementById('community-library-button').addEventListener('click', event => {
 			event.preventDefault()
-			gotoSection('section-select-object', false, 'purple')
-			gotoTab('Community Library')
+			gotoSection(SECTION_SELECT_OBJECT, false, 'purple')
+			gotoTab(TAB_COMMUNITY)
 		})
 
-		$('#personal-library-button').click(event => {
+		document.getElementById('personal-library-button').addEventListener('click', event => {
 			event.preventDefault()
-			gotoSection('section-select-object', false, 'blue')
-			gotoTab('My Modules')
+			gotoSection(SECTION_SELECT_OBJECT, false, 'blue')
+			gotoTab(TAB_PERSONAL)
 		})
 	}
 
-	function onSelectClick(event) {
+	function onEmbedClick(event) {
 		event.preventDefault()
 
-		const $this = $(this)
-		const $oboItem = $this
-			.parent()
-			.parent()
-			.parent()
-		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
+		const oboItemEl = this.parentNode.parentNode.parentNode
+		const draftId = oboItemEl.getAttribute('data-lo-id')
+		selectedItem = getDraftById(draftId)
 
-		gotoSection('progress')
-		$('#instance-name').val($oboItem.find('.title').text())
-
-		if (typeof $oboItem.attr('data-lo-id') === 'undefined' || $oboItem.attr('data-lo-id') === '0') {
-			$('.instance-copy-note').hide()
-		} else {
-			$('.instance-copy-note').show()
-		}
+		gotoSection(SECTION_PRE_PROGRESS)
 	}
 
 	function handleError(result) {
@@ -417,31 +415,19 @@ import '../css/module-selector.scss'
 			message += ' (' + errorID + ')'
 		}
 
-		$('#error-window p').html(message)
-		$('#error-window').dialog({
-			modal: true,
-			close: () => {
-				gotoSection('section-module-selection')
-			}
-		})
+		window.alert(message) //eslint-disable-line no-alert
+		gotoSection(SECTION_MODULE_SELECT)
 	}
 
 	function killPage(message) {
+		// go to a non-existant section
 		gotoSection('dead', true)
+		// disable gotoSection
 		gotoSection = () => {} // eslint-disable-line no-func-assign
-
-		$('#error-window p').html(message)
-		$('#error-window')
-			.dialog({
-				modal: true,
-				closeOnEscape: false
-			})
-			.parent()
-			.find('.ui-button')
-			.hide() // remove close button
+		window.alert(message) //eslint-disable-line no-alert
 	}
 
 	// initalize:
 	setupUI()
-	gotoSection('section-module-selection')
+	gotoSection(SECTION_MODULE_SELECT)
 })()

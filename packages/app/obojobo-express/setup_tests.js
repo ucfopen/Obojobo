@@ -50,11 +50,7 @@ global.oboJestMockConfig()
 // it can also be used to mock a file that doesn't exist
 global.mockVirtual = mock => {
 	const mockFunction = jest.fn()
-	jest.mock(
-		mock,
-		() => mockFunction,
-		{ virtual: true }
-	)
+	jest.mock(mock, () => mockFunction, { virtual: true })
 	return mockFunction
 }
 
