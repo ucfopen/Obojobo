@@ -2,7 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
@@ -27,7 +27,7 @@ const Break = {
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		renderNode(props) {
-			return <Node {...props} {...props.attributes} />
+			return <EditorComponent {...props} {...props.attributes} />
 		}
 	}
 }

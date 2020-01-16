@@ -15,7 +15,7 @@ const slateToObo = node => {
 	TextUtil.slateToOboText(node, labelLine)
 
 	return {
-		id: node.key,
+		id: node.id,
 		type: node.type,
 		children: [],
 		content: {

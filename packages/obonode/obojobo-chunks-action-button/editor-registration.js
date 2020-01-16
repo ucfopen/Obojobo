@@ -1,9 +1,9 @@
 import React from 'react'
-import { Element, Node, Transforms } from 'slate'
+import { Element, Editor, Node, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import NodeElement from './editor-component'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const UNIQUE_NAME = 'ObojoboDraft.Chunks.ActionButton'
@@ -14,7 +14,7 @@ const ActionButton = {
 	icon: Icon,
 	isInsertable: true,
 	components: {
-		NodeElement,
+		EditorComponent,
 		Icon
 	},
 	helpers: Converter,
@@ -41,8 +41,22 @@ const ActionButton = {
 		},
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
+		decorate([node, path], editor) {
+			// Define a placeholder decoration
+			if(Element.isElement(node) && Node.string(node) === ''){
+				const point = Editor.start(editor, path)
+
+				return [{
+					placeholder: 'Type your label here',
+					anchor: point,
+					focus: point
+				}]
+			}
+
+			return []
+		},
 		renderNode(props) {
-			return <NodeElement {...props} {...props.attributes} />
+			return <EditorComponent {...props} {...props.attributes} />
 		}
 	}
 }

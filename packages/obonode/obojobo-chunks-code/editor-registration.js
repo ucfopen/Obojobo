@@ -5,7 +5,7 @@ import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 import Line from './components/line/editor-component'
-import CodeNode from './editor-component'
+import EditorComponent from './editor-component'
 import React from 'react'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
@@ -103,6 +103,20 @@ const Code = {
 		},
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
+		decorate([node, path], editor) {
+			// Define a placeholder decoration
+			if(Element.isElement(node) && !node.subtype && Node.string(node) === ''){
+				const point = Editor.start(editor, path)
+
+				return [{
+					placeholder: 'Type your code here',
+					anchor: point,
+					focus: point
+				}]
+			}
+
+			return []
+		},
 		onKeyDown(node, editor, event) {
 			switch (event.key) {
 				case 'Backspace':
@@ -122,7 +136,7 @@ const Code = {
 				case CODE_LINE_NODE:
 					return <Line {...props} {...props.attributes} />
 				default:
-					return <CodeNode {...props} {...props.attributes} />
+					return <EditorComponent {...props} {...props.attributes} />
 			}
 		},
 	}

@@ -32,7 +32,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element } from 'slate'
+import { createEditor, Editor, Element, Node } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 class PageEditor extends React.Component {
@@ -60,6 +60,7 @@ class PageEditor extends React.Component {
 		this.insertableItems = []
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.decorate = this.decorate.bind(this)
 
 		this.editor = this.withPlugins(withReact(createEditor()))
 		//this.editor = withReact(createEditor())
@@ -163,6 +164,32 @@ class PageEditor extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
+	renderLeaf({ attributes, children, leaf }) {
+		if (leaf.placeholder) {
+			return (
+				<span {...attributes}>
+					<span
+						contentEditable={false}
+						data-placeholder={leaf.placeholder}/>
+					{children}
+				</span>
+			)
+		}
+
+		return <span {...attributes}>{children}</span>
+	}
+
+	decorate(entry) {
+		if(!this.state.showPlaceholders) return []
+
+		const item = Common.Registry.getItemForType(entry[0].type)
+		if(item && item.plugins.decorate) {
+			return item.plugins.decorate(entry, this.editor)
+		}
+
+		return []
+	}
+
 	// componentDidUpdate(prevProps, prevState) {
 	// 	// Do nothing when updating state from empty page
 	// 	if (!prevProps.page && !this.props.page) {
@@ -259,7 +286,9 @@ class PageEditor extends React.Component {
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
 						<Slate editor={this.editor} value={this.state.value} onChange={value => this.setState({ value })}>
 							<Editable 
-								renderElement={this.renderElement.bind(this)} 
+								renderElement={this.renderElement.bind(this)}
+								renderLeaf={this.renderLeaf}
+								decorate={this.decorate}
 								readOnly={!this.state.editable}
 								onKeyDown={this.onKeyDown}/>
 						</Slate>

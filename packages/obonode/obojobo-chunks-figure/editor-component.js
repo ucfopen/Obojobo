@@ -1,6 +1,14 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
+import {
+	useEditor,
+	useSelected,
+	ReactEditor
+} from 'slate-react'
+
+import { Editor, Transforms } from 'slate'
+
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
@@ -12,105 +20,91 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
-class Figure extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			imageIsSelected: false
-		}
-
-		this.handleClick = this.handleClick.bind(this)
-	}
-
-	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClick, false)
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.handleClick, false)
-	}
-
-	handleClick(event) {
-		if (!this.node || this.node.contains(event.target)) return
-		this.setState({ imageIsSelected: false })
-	}
-
-	showImagePropertiesModal() {
-		ModalUtil.show(
-			<ImageProperties
-				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
-				content={this.props.node.data.get('content')}
-				onConfirm={this.changeProperties.bind(this)}
-			/>
-		)
-	}
-
-	changeProperties(content) {
-		const editor = this.props.editor
-		editor.setNodeByKey(this.props.node.key, {
-			data: { content }
+const focusFigure = (editor, node, isSelected) => {
+	if(!isSelected) {
+		const path = ReactEditor.findPath(editor, node)
+		const start = Editor.start(editor, path)
+		Transforms.setSelection(editor, {
+			focus: start,
+			anchor: start
 		})
 	}
+}
 
-	deleteNode() {
-		const editor = this.props.editor
-		editor.removeNodeByKey(this.props.node.key)
-	}
+const deleteNode = (editor, node) => {
+	const path = ReactEditor.findPath(editor, node)
+	Transforms.removeNodes(editor, { at: path })
+}
 
-	render() {
-		const content = this.props.node.data.get('content')
+const showImagePropertiesModal = (editor, node) => {
+	ModalUtil.show(
+		<ImageProperties
+			allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
+			content={node.content}
+			onConfirm={changeProperties.bind(this, editor, node)}
+		/>
+	)
+}
 
-		const isCustom = content.size === 'custom'
-		const imgStyles = {}
+const changeProperties = (editor, node, content) => {
+	ModalUtil.hide()
+	const path = ReactEditor.findPath(editor, node)
+	Transforms.setNodes(editor, { content: {...node.content, ...content} }, { at: path })
+}
 
-		if (isCustom) {
-			if (content.width) {
-				imgStyles.width = content.width + 'px'
-			}
+/**
+ * Display an Obojobo Figure node.  Users can type below the figure to add a caption. 
+ * When the node is selected, the figure is outlined, and a delete button and image properties
+ * button appear.  The Image properties button opens up a modal that alows the user to 
+ * select an image, and set its size and alt text. Clicking on the image when it is not selected
+ * will move the cursor to the start of the figurecaption
+ */
+const Figure = props => {
+	const { content } = props.element
+	const hasAltText = content.alt && content.alt.length !== 0
+	const selected = useSelected()
+	const editor = useEditor()
+	const isSelected = isOrNot(selected, 'selected')
 
-			if (content.height) {
-				imgStyles.height = content.height + 'px'
-			}
-		}
-
-		const hasAltText = content.alt && content.alt.length !== 0
-		const isSelected = isOrNot(this.props.isSelected, 'selected')
-
-		return (
-			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
-					<div className="container">
-						{hasAltText ? null : (
-							<div contentEditable={false} className="accessibility-warning">
-								Accessibility Warning: No Alt Text!
-							</div>
-						)}
-						<div className={`figure-box  ${isSelected}`} contentEditable={false}>
-							<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
-								×
-							</Button>
-							<div className="image-toolbar">
-								<Button
-									className="properties-button"
-									onClick={this.showImagePropertiesModal.bind(this)}
-								>
-									Image Properties
-								</Button>
-							</div>
-							<Image
-								key={content.url + content.width + content.height + content.size}
-								chunk={{ modelState: content }}
-							/>
+	return (
+		<Node {...props}>
+			<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
+				<figure className="container">
+					{hasAltText ? null : (
+						<div 
+							contentEditable={false} 
+							className="accessibility-warning"
+							style={{ userSelect: "none" }}>
+							Accessibility Warning: No Alt Text!
 						</div>
-
-						{/* uses children below because the caption is a textgroup */}
-						<figcaption>{this.props.children}</figcaption>
+					)}
+					<div 
+						className={`figure-box  ${isSelected}`} 
+						contentEditable={false}
+						style={{ userSelect: "none" }}
+						onClick={focusFigure.bind(this, editor, props.element, selected)}>
+						<Button 
+							className="delete-button" 
+							onClick={deleteNode.bind(this, editor, props.element)}>
+							×
+						</Button>
+						<div className="image-toolbar">
+							<Button
+								className="properties-button"
+								onClick={showImagePropertiesModal.bind(this, editor, props.element)}>
+								Image Properties
+							</Button>
+						</div>
+						<Image
+							key={content.url + content.width + content.height + content.size}
+							chunk={{ modelState: content }}
+						/>
 					</div>
-				</div>
-			</Node>
-		)
-	}
+					<figcaption className="align-center">{props.children}</figcaption>
+				</figure>
+			</div>
+		</Node>
+	)
 }
 
 export default Figure
