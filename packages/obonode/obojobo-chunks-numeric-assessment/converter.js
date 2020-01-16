@@ -15,10 +15,9 @@ const slateToObo = node => {
 						numericChoice = component.data.get('numericChoice')
 					}
 					if (component.type === NUMERIC_FEEDBACK_NODE) {
-						numericChoice.feedback = Common.Registry.getItemForType(
-							component.type
-						).helpers.slateToObo(component)
-						console.log(Common.Registry.getItemForType(component.type).helpers.slateToObo)
+						numericChoice.feedback = Common.Registry.getItemForType(component.type).slateToObo(
+							component
+						)
 					}
 				})
 				numericChoices.push(numericChoice)

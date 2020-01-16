@@ -8,7 +8,7 @@ const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeed
 
 const NumericFeedback = {
 	name: NUMERIC_FEEDBACK_NODE,
-	menuLabel: 'Multiple Choice Feedback',
+	menuLabel: 'Numeric Feedback',
 	isInsertable: false,
 	supportsChildren: true,
 	helpers: Converter,
