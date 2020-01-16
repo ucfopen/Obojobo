@@ -1,9 +1,9 @@
 import React from 'react'
+import { Element, Editor, Node } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Element from './editor-component'
-import Schema from './schema'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
@@ -18,23 +18,27 @@ const Heading = {
 		emptyNode
 	},
 	plugins: {
-		renderPlaceholder(props, editor, next) {
-			const { node } = props
-			if (node.object !== 'block' || node.type !== HEADING_NODE) return next()
-			if (node.text !== '') return next()
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
+		decorate([node, path], editor) {
+			// Define a placeholder decoration
+			if(Element.isElement(node) && Node.string(node) === ''){
+				const point = Editor.start(editor, path)
 
-			return (
-				<span
-					className={`placeholder align-${node.data.get('content').align}`}
-					contentEditable={false}
-					data-placeholder="Type Your Heading Here"
-				/>
-			)
+				return [{
+					placeholder: 'Type your heading here',
+					anchor: point,
+					focus: point
+				}]
+			}
+
+			return []
 		},
 		renderNode(props) {
-			return <Element {...props} {...props.attributes} />
-		},
-		schema: Schema
+			return <EditorComponent {...props} {...props.attributes} />
+		}
 	},
 	getNavItem(model) {
 		switch (model.modelState.headingLevel) {

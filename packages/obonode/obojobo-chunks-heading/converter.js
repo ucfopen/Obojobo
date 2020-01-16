@@ -1,5 +1,12 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
+/**
+ * Generates an Obojobo Heading from a Slate node.
+ * Copies the id, type, triggers, and converts text children (including marks)
+ * into a textGroup.  The conversion also saves the headingLevel attribute
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Heading node 
+ */
 const slateToObo = node => {
 	const line = {
 		text: { value: "", styleList: [] },
@@ -19,6 +26,12 @@ const slateToObo = node => {
 	}
 }
 
+/**
+ * Generates a Slate node from an Obojobo Heading.
+ * Copies all attributes, and converts a textGroup into Slate Text children
+ * @param {Object} node An Obojobo Heading node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 
