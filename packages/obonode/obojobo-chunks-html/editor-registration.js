@@ -1,5 +1,5 @@
 import React from 'react'
-import { Element, Editor, Node } from 'slate'
+import { Element, Editor, Node, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -39,32 +39,17 @@ const HTML = {
 		onKeyDown(node, editor, event) {
 			switch (event.key) {
 				case 'Enter':
-
-
+					event.preventDefault()
+					Transforms.insertText(editor, '\n')
+					return
 				case 'Tab':
+					event.preventDefault()
+					Transforms.insertText(editor, '\t')
 			}
 		},
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
-		},
-		// onKeyDown(event, editor, next) {
-		// 	const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
-		// 	if (!isHTML) return next()
-
-		// 	switch (event.key) {
-		// 		// Insert a softbreak on enter
-		// 		case 'Enter':
-		// 			event.preventDefault()
-		// 			return editor.insertText('\n')
-
-		// 		case 'Tab':
-		// 			event.preventDefault()
-		// 			return editor.insertText('\t')
-
-		// 		default:
-		// 			return next()
-		// 	}
-		// },
+		}, 
 	}
 }
 
