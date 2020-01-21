@@ -1,9 +1,9 @@
 import React from 'react'
+import { Element, Editor, Node } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
-import Schema from './schema'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
@@ -18,26 +18,34 @@ const HTML = {
 		emptyNode
 	},
 	plugins: {
-		renderPlaceholder(props, editor, next) {
-			const { node } = props
-			if (node.object !== 'block' || node.type !== HTML_NODE) return next()
-			if (node.text !== '') return next()
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
+		decorate([node, path], editor) {
+			// Define a placeholder decoration
+			if(Element.isElement(node) && Node.string(node) === ''){
+				const point = Editor.start(editor, path)
 
-			return (
-				<span
-					className="placeholder"
-					contentEditable={false}
-					data-placeholder="<!-- HTML code here -->"
-				/>
-			)
-		},
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case HTML_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
+				return [{
+					placeholder: '<!-- HTML code here -->',
+					anchor: point,
+					focus: point
+				}]
 			}
+
+			return []
+		},
+		onKeyDown(node, editor, event) {
+			switch (event.key) {
+				case 'Enter':
+
+
+				case 'Tab':
+			}
+		},
+		renderNode(props) {
+			return <EditorComponent {...props} {...props.attributes} />
 		},
 		// onKeyDown(event, editor, next) {
 		// 	const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
@@ -57,7 +65,6 @@ const HTML = {
 		// 			return next()
 		// 	}
 		// },
-		schema: Schema
 	}
 }
 

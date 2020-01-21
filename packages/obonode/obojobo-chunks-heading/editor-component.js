@@ -6,7 +6,7 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 
 const Heading = (props) => {
 	const { content } = props.element
-	const HTag = `h${content.headingLevel}`
+	const HTag = `h${content.headingLevel || 1}`
 
 	return (
 		<Node {...props}>
