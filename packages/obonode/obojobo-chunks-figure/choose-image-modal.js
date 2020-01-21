@@ -86,18 +86,21 @@ class ChooseImageModal extends React.Component {
 					<div className="choose-image--image-controls">
 						<div className="choose-image--image-controls--upload">
 							<input
-								tabIndex={0}
 								type="file"
-								name="file"
-								id="file"
+								name="fileupload"
+								id="fileupload"
 								className="inputfile"
-								ref={this.firstRef}
 								onChange={event => this.handleFileChange(event)}
+								tabIndex="-1"
 							/>
-							<label htmlFor="file">Upload new image</label>
+							<label htmlFor="fileupload">
+								<span role="button" aria-controls="filename" tabIndex="0" ref={this.firstRef}>
+									Upload new image
+								</span>
+							</label>
 						</div>
 
-						<div className="choose-image--image-controls--or">or</div>
+						<p className="choose-image--image-controls--or">or</p>
 
 						<input
 							id="choose-image--image-controls--url"
@@ -105,6 +108,8 @@ class ChooseImageModal extends React.Component {
 							placeholder="Enter URL"
 							value={this.state.url}
 							onChange={e => this.setState({ url: e.target.value })}
+							tabIndex="0"
+							aria-label="Enter image's URL"
 						/>
 					</div>
 					<div className="choose-image--divider" />
@@ -121,6 +126,10 @@ class ChooseImageModal extends React.Component {
 								onKeyPress={event =>
 									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
 								}
+								role="button"
+								aria-label="Select image"
+								aria-live="polite"
+								aria-atomic="false"
 							/>
 						))}
 
@@ -130,6 +139,10 @@ class ChooseImageModal extends React.Component {
 								<button
 									className="choose-image--image-gallary--view-more-btn button"
 									onClick={() => this.fetchMedias()}
+									tabIndex={0}
+									aria-label="Load more images"
+									aria-live="polite"
+									aria-atomic="false"
 								>
 									Load More...
 								</button>

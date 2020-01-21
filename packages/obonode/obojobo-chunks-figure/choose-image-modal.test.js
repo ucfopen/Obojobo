@@ -57,7 +57,7 @@ describe('Choose Image Modal', () => {
 		const onCloseChooseImageModal = jest.fn()
 		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
-		component.find('#file').simulate('change', {
+		component.find('#fileupload').simulate('change', {
 			target: {
 				value: 'changed',
 				files: [

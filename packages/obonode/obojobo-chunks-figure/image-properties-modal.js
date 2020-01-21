@@ -137,7 +137,11 @@ class ImageProperties extends React.Component {
 						/>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
-						<div id="obojobo-draft--chunks--figure--size">
+						<div
+							id="obojobo-draft--chunks--figure--size"
+							aria-role="radiogroup"
+							aria-label="Select size for image"
+						>
 							<div className="size-input">
 								<input
 									type="radio"
@@ -191,7 +195,7 @@ class ImageProperties extends React.Component {
 											step="1"
 											type="number"
 											placeholder="Width"
-											aria-label="Width"
+											aria-label="Width in pixels"
 											value={this.state.width || ''}
 											onChange={this.handleWidthTextChange.bind(this)}
 										/>
@@ -204,7 +208,7 @@ class ImageProperties extends React.Component {
 											step="1"
 											type="number"
 											placeholder="Height"
-											aria-label="Height"
+											aria-label="Height in pixels"
 											value={this.state.height || ''}
 											onChange={this.handleHeightTextChange.bind(this)}
 										/>
