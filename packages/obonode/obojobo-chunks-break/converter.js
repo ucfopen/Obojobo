@@ -1,6 +1,6 @@
 /**
  * Generates an Obojobo Break from a Slate node.
- * Copies the id, type, and content.width
+ * Copies the id, type, and triggers, as well as content.width
  * @param {Object} node A Slate Node
  * @returns {Object} An Obojobo Break node 
  */
@@ -9,6 +9,7 @@ const slateToObo = node => ({
 	type: node.type,
 	children: [],
 	content: {
+		trigger: node.content.triggers,
 		width: node.content.width
 	}
 })

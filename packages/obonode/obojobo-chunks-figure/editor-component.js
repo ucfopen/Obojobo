@@ -81,7 +81,6 @@ const Figure = props => {
 					<div 
 						className={`figure-box  ${isSelected}`} 
 						contentEditable={false}
-						style={{ userSelect: "none" }}
 						onClick={focusFigure.bind(this, editor, props.element, selected)}>
 						<Button 
 							className="delete-button" 

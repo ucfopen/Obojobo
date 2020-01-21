@@ -1,30 +1,40 @@
+/**
+ * Generates an Obojobo Break from a Slate node.
+ * Copies the id, type, and triggers.  The conversion also saves the
+ * src, title, type, border, fit, width, height, initalZoom, autoload,
+ * and controlls attributes.
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Iframe node 
+ */
 const slateToObo = node => ({
-	id: node.key,
+	id: node.id,
 	type: node.type,
 	children: [],
-	content: node.data.get('content') || {}
+	content: {
+		triggers: node.content.triggers,
+		src: node.content.src,
+		title: node.content.title,
+		type: node.content.type,
+		border: node.content.border,
+		fit: node.content.fit,
+		width: node.content.width,
+		height: node.content.height,
+		initialZoom: node.content.initialZoom,
+		autoload: node.content.autoload,
+		controls: node.content.controls
+	}
 })
 
+/**
+ * Generates a Slate node from an Obojobo IFrame. Copies all attributes, and adds a dummy child
+ * @param {Object} node An Obojobo Iframe node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
-	// Set up the defaults for content in order to migrate safely from older versions
-	const contentType = node.content.type || 'media'
-	const defaultContent = {
-		type: contentType,
-		border: contentType !== 'media',
-		fit: contentType === 'media' ? 'scale' : 'scroll',
-		initialZoom: 1,
-		autoload: false,
-		controls: contentType === 'media' ? 'reload' : 'zoom,reload,new-window'
-	}
+	const slateNode = Object.assign({}, node)
+	slateNode.children = [{ text: '' }]
 
-	const finalContent = Object.assign(defaultContent, node.content)
-
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		data: { content: finalContent }
-	}
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }
