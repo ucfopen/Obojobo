@@ -80,7 +80,6 @@ class YouTubeProperties extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="YouTube Video"
-				message="Enter the video id for the Youtube Video:"
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 				onConfirm={this.onConfirm.bind(this)}
 			>
@@ -93,7 +92,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.videoId || ''}
 						onChange={this.handleIdChange.bind(this)}
 					/>
-					<label>Start time (optional):</label>
+					<label>Start time in seconds (optional):</label>
 					<input
 						type="number"
 						min="0"
@@ -101,7 +100,7 @@ class YouTubeProperties extends React.Component {
 						onChange={this.handleStartTimeChange.bind(this)}
 					/>
 					<span className="error">{this.state.startTimeError}</span>
-					<label>End time (optional):</label>
+					<label>End time in seconds (optional):</label>
 					<input
 						type="number"
 						min="1"
