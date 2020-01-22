@@ -13,9 +13,6 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],

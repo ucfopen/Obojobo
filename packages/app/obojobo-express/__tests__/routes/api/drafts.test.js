@@ -1,14 +1,14 @@
-jest.mock('../../../models/draft')
-jest.mock('../../../models/user')
-jest.mock('../../../db')
-jest.mock('../../../logger')
+jest.mock('../../../server/models/draft')
+jest.mock('../../../server/models/user')
+jest.mock('../../../server/db')
+jest.mock('../../../server/logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
 jest.mock('obojobo-repository/server/services/permissions', () => ({
 	userHasPermissionToDraft: jest.fn()
 }))
 
-import DraftModel from '../../../models/draft'
+import DraftModel from '../../../server/models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
 const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
@@ -31,9 +31,9 @@ const basicXML = `<ObojoboDraftDoc>
 	  </Module>
 	</ObojoboDraftDoc>`
 
-const mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-const db = oboRequire('db')
-const drafts = oboRequire('routes/api/drafts')
+const mockInsertNewDraft = mockVirtual('./server/routes/api/drafts/insert_new_draft')
+const db = oboRequire('server/db')
+const drafts = oboRequire('server/routes/api/drafts')
 
 let mockCurrentUser
 
@@ -42,7 +42,7 @@ const mockGetCurrentUser = jest.fn().mockImplementation(req => {
 	return Promise.resolve(mockCurrentUser)
 })
 
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = mockGetCurrentUser.bind(this, req)
 	req.requireCurrentUser = mockGetCurrentUser.bind(this, req)
 	next()
@@ -51,8 +51,8 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
-app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('express_response_decorator'))
+app.use(oboRequire('server/express_current_user'))
+app.use('/', oboRequire('server/express_response_decorator'))
 app.use('/api/drafts', drafts)
 
 describe('api draft route', () => {

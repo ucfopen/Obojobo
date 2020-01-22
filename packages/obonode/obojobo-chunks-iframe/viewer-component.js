@@ -216,6 +216,7 @@ export default class IFrame extends React.Component {
 									frameBorder="0"
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
 									style={iframeStyle}
+									loading="lazy"
 								/>
 							) : (
 								<div className="blocker" style={iframeStyle} />

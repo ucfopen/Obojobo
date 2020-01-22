@@ -1,8 +1,8 @@
-const DraftNode = require('obojobo-express/models/draft_node')
-const Visit = require('obojobo-express/models/visit')
-const db = require('obojobo-express/db')
-const lti = require('obojobo-express/lti')
-const logger = require('obojobo-express/logger')
+const DraftNode = require('obojobo-express/server/models/draft_node')
+const Visit = require('obojobo-express/server/models/visit')
+const db = require('obojobo-express/server/db')
+const lti = require('obojobo-express/server/lti')
+const logger = require('obojobo-express/server/logger')
 
 class Assessment extends DraftNode {
 	static get nodeName() {
