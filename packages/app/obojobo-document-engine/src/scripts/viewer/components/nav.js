@@ -85,7 +85,7 @@ export default class Nav extends React.Component {
 						value: { animateScroll: true }
 					})
 				} else {
-					NavUtil.gotoPath(item.fullPath)
+					NavUtil.goto(item.id)
 					FocusUtil.focusOnNavigation()
 				}
 				break
