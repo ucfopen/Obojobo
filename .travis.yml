@@ -13,7 +13,7 @@ jobs:
   include:
     - stage: publish to npm
       # only matches when a semver tag is found
-      if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
+      if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+(\-.+)?
       # only run on one node (would inherit the root level multiple node_js otherwise)
       node_js: '12.11.1'
       # dont run the top level script tag above
