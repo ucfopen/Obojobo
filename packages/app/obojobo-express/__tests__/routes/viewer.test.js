@@ -1,7 +1,13 @@
 jest.mock('../../models/visit')
-
 jest.mock('../../insert_event')
-
+jest.mock(
+	'../../asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 // make sure all Date objects use a static date
 mockStaticDate()
 

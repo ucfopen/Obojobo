@@ -3,14 +3,14 @@ jest.mock('Common', () => ({
 		getItemForType: node => {
 			if (node === 'ignoreMe') {
 				return {
-					slateToObo: jest.fn(),
-					oboToSlate: jest.fn(),
+					slateToObo: jest.fn().mockReturnValue({ type: 'mockSlateNode' }),
+					oboToSlate: jest.fn().mockReturnValue({ type: 'mockOboNode' }),
 					ignore: true
 				}
 			}
 			return {
-				slateToObo: jest.fn(),
-				oboToSlate: jest.fn()
+				slateToObo: jest.fn().mockReturnValue({ type: 'mockSlateNode' }),
+				oboToSlate: jest.fn().mockReturnValue({ type: 'mockOboNode' })
 			}
 		}
 	}
@@ -36,7 +36,7 @@ describe('Component converter', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node', () => {
+	test('oboToSlate converts OboNode to a Slate node', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType'

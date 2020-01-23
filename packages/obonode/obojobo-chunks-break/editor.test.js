@@ -1,36 +1,24 @@
-import Break from './editor'
+jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
+	Registry: {
+		registerEditorModel: jest.fn()
+	}
+}))
 
-const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
 
-describe('Break editor', () => {
-	test('plugins.renderNode renders a break when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: BREAK_NODE,
-				data: {
-					get: () => ({})
-				}
-			}
-		}
+import Common from 'obojobo-document-engine/src/scripts/common/index'
 
-		expect(Break.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
+describe('Break editor script', () => {
+	test('registers node', () => {
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => ({})
-				}
-			}
-		}
+		require('./editor')
+		const EditorRegistration = require('./editor-registration')
 
-		const next = jest.fn()
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
 
-		expect(Break.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })

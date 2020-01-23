@@ -6,6 +6,10 @@ import YouTube from './editor-component'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 let mockNode
 let editor
@@ -14,7 +18,7 @@ describe('YouTube Editor Node', () => {
 	beforeEach(() => {
 		const mockNodeDataGet = jest.fn().mockReturnValue({})
 		mockNode = { data: { get: mockNodeDataGet } }
-		editor = { setNodeByKey: jest.fn() }
+		editor = { setNodeByKey: jest.fn(), removeNodeByKey: jest.fn() }
 	})
 
 	test('YouTube builds the expected componen without a videoId', () => {
@@ -32,6 +36,20 @@ describe('YouTube Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('YouTube component deletes self', () => {
+		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
+		const component = mount(
+			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
+		)
+
+		// locate the delete button
+		const button = component.find('button').at(0)
+
+		// click it
+		button.simulate('click')
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
+	})
+
 	test('YouTube component edits input', () => {
 		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
 		const component = mount(
@@ -39,7 +57,7 @@ describe('YouTube Editor Node', () => {
 		)
 
 		// locate the edit button
-		const button = component.find('button')
+		const button = component.find('button').at(1)
 		expect(button.props().children).toBe('Edit')
 
 		// click it

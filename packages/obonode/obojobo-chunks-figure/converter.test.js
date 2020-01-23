@@ -38,18 +38,20 @@ describe('Figure Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
+			content: {}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
+	test('oboToSlate converts an OboNode to a Slate node with caption, size and triggers', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
+				size: 'large',
+				triggers: 'mock-triggers',
 				textGroup: [
 					{
 						text: { value: 'mockCaption' }

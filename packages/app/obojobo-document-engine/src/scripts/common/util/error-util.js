@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Dispatcher from '../../common/flux/dispatcher'
-import ErrorDialog from '../../common/components/modal/error-dialog'
+import Dispatcher from '../flux/dispatcher'
+import ErrorDialog from '../components/modal/error-dialog'
 
 const ErrorUtil = {
 	show(title, errorMessage) {

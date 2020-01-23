@@ -35,6 +35,17 @@ body {
 	}
 }
 
+#editor-app {
+	opacity: 0;
+	transition: opacity $duration-animation-default * 2;
+	height: 100%;
+	overflow: auto;
+
+	&.is-loaded {
+		opacity: 1;
+	}
+}
+
 #viewer-app-loading {
 	background: $color-bg;
 	box-sizing: border-box;

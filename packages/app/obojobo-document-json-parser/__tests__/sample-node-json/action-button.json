@@ -1,0 +1,29 @@
+{
+	"id": "action-button-id",
+	"type": "ObojoboDraft.Chunks.ActionButton",
+	"content": {
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		],
+		"textGroup": [
+			{
+				"data": null,
+				"text": {
+					"value": "Example Button",
+					"styleList": []
+				}
+			}
+		]
+	},
+	"children": []
+}

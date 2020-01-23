@@ -7,170 +7,21 @@ cache:
   directories:
   - node_modules
 script:
-- yarn test:ci
-
-
-# this is a yaml alias - it's a template that can be reused and modified
-_deploy_npm_template: &_deploy_npm_template
-  provider: npm
-  email: iturgeon+npm@gmail.com
-  on:
-    tags: true
-  api_key:
-    secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
-
-# this is a yaml alias - it's a template that can be reused and modified
-_npm-package-deploy-on-tag-template: &_npm-package-deploy-on-tag-template
-  # make sure you name your stage
-  stage: name your stage!
-  # only matches when a semver tag is found
-  if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
-  # only run on one node (would inherit the root level node_js otherwise!)
-  node_js: '12.11.1'
-  # dont bother running the top level script tag (yarn test:ci)
-  script: skip
-  # copied from another script - this may not be required?
-  after_deploy:
-    - cd ../../..
-  deploy:
-    # use the template as the default
-    <<: *_deploy_npm_template
-
+  - yarn test:ci
 
 jobs:
   include:
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-express npm release
-      before_deploy:
-        - cd packages/app/obojobo-express
-        - yarn build
+    - stage: publish to npm
+      # only matches when a semver tag is found
+      if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+(\-.+)?
+      # only run on one node (would inherit the root level multiple node_js otherwise)
+      node_js: '12.11.1'
+      # dont run the top level script tag above
+      script: skip
       deploy:
-        # use the default template
-        # append skip_cleanup to make sure the built js/css files are retained in the package
-        <<: *_deploy_npm_template
-        skip_cleanup: true
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-document-engine npm release
-      before_deploy:
-        - cd packages/app/obojobo-document-engine
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-document-engine npm release
-      before_deploy:
-        - cd packages/app/obojobo-document-engine
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-document-xml-parser npm release
-      before_deploy:
-        - cd packages/app/obojobo-document-xml-parser
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: eslint-config-obojobo npm release
-      before_deploy:
-        - cd packages/util/eslint-config-obojobo
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-lib-utils npm release
-      before_deploy:
-        - cd packages/util/obojobo-lib-utils
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: stylelint-config-obojobo npm release
-      before_deploy:
-        - cd packages/util/stylelint-config-obojobo
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-action-button npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-action-button
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-break npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-break
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-code npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-code
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-figure npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-figure
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-heading npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-heading
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-html npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-html
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-iframe npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-iframe
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-list npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-list
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-math-equation npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-math-equation
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobople-choice-assessment npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-multiple-choice-assessment
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-question npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-question
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-question-bank npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-question-bank
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-table npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-table
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-text npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-text
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-chunks-youtube npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-youtube
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-modules-module npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-modules-module
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-pages-page npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-pages-page
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-sections-assessment npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-sections-assessment
-
-    - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobo-sections-content npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-sections-content
+        provider: script
+        script: yarn run release:publish --yes
+        on:
+          tags: true
+        env:
+          secure: "gVlbRF7dWM8A64GKoGEVr3wganOLC+ZHvyRvuaRV4FaezWeDET0uTxxAFPdpjXLN+X8D+3LuxAG7gEyKcNBZljxavQJUjZEvG4JiiAAWZvdpMqNhhAowG7K2JgQelI1qHBoOIqPmpAwAMcnkMvFr8NBDu9si70ZDVSJqv3bQaBppZ7oAZ3xlWqmCzL98yVmkSOBGR/TYxuLK+6URXYI0C3FNxz/gXN56nbnOsOS16pvM7UzeuFUaz+CNk37YgS70mrSDg5IAAa6UbLcfv9eFJLS2ql4MNvedjF4Z/DzHcV3ZG7PV2ZEouIswmaeoKbVyBJ6q70yzXvgSt0Hl0KLFtD34N26mhFxunc8uMB20dQDnFQtYvpG3JP2hvzJ2iWUwB3Fm4KdiEDCAomFrWxUED4kAp+MhMC7PsSCjVmQ+mU+u1qteXGWwRnGBBg+0Q6YwZvV72L1i5I0/9ThONT5/E+9IaF9AV0RO5PqG+qX1MEJ8go6jEdkNDhnOI+AuvdqczBhKQ84/fbVeBQYPWNOjNAY6XYhtGrhEuRA1q2ypwhJgJ5aO22JOyoH7pXZMBXS3oW0S/p6tojQeb0hAB1OlgVid7W5/nUKVm0gxl2RHlVBlDIXoR65KLGordjauoox+RGUT1yeUlIoauhlsPaTxsEnkrR7CrVkJPTEIo3+PKts="

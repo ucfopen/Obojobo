@@ -13,8 +13,6 @@
 	display: inline-block;
 
 	.button {
-		$color-button-bg: lighten($color-action, 9%);
-
 		user-select: none;
 		cursor: pointer;
 		font-family: $font-default;

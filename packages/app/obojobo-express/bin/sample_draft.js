@@ -23,35 +23,33 @@ try {
 
 	switch (process.argv[2]) {
 		case 'seed':
-			db
-				.any(
-					`SELECT id
+			db.any(
+				`SELECT id
 				FROM drafts
 				WHERE id = $[id]`,
-					{ id: defaultId }
-				)
-				.then(result => {
-					let cmd
-					if (result.length < 1) {
-						cmd = `node ${writeJsonDraftToDbPath} insert ${sampleJsonPath} 0 ${defaultId}`
-					} else {
-						cmd = `node ${writeJsonDraftToDbPath} update ${sampleJsonPath} ${defaultId}`
+				{ id: defaultId }
+			).then(result => {
+				let cmd
+				if (result.length < 1) {
+					cmd = `node ${writeJsonDraftToDbPath} insert ${sampleJsonPath} 0 ${defaultId}`
+				} else {
+					cmd = `node ${writeJsonDraftToDbPath} update ${sampleJsonPath} ${defaultId}`
+				}
+
+				exec(cmd, {}, (err, stdout, stderr) => {
+					if (err) {
+						throw err
 					}
 
-					exec(cmd, {}, (err, stdout, stderr) => {
-						if (err) {
-							throw err
-						}
+					console.log(
+						`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`
+					)
 
-						console.log(
-							`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`
-						)
-
-						if (stdout) console.info(stdout)
-						if (stderr) console.error(stderr)
-						process.exit(0)
-					})
+					if (stdout) console.info(stdout)
+					if (stderr) console.error(stderr)
+					process.exit(0)
 				})
+			})
 			break
 
 		case 'watch':

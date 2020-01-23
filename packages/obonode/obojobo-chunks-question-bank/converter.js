@@ -1,15 +1,12 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
-const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
-
 const slateToObo = node => {
-	const content = node.data.get('content') || {}
+	let content
 	const children = []
 
 	node.nodes.forEach(child => {
@@ -23,8 +20,14 @@ const slateToObo = node => {
 				break
 
 			case SETTINGS_NODE:
-				content.choose = child.nodes.first().text
-				content.select = child.nodes.last().data.get('current')
+				content = withoutUndefined(child.data.get('content') || {})
+
+				if (content.chooseAll) {
+					content.choose = 'all'
+				} else if (!Number.isFinite(parseInt(content.choose, 10))) {
+					content.choose = '1'
+				}
+				delete content.chooseAll
 				break
 		}
 	})
@@ -38,18 +41,17 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
+	const chooseAll = !Number.isFinite(parseInt(node.content.choose, 10))
+	const data = { content: { ...node.content, chooseAll } }
+
+	if (chooseAll) data.content.choose = '1'
+
 	const nodes = [
 		{
 			object: 'block',
 			type: SETTINGS_NODE,
-			nodes: [
-				TextParameter.helpers.oboToSlate(
-					'choose',
-					'' + (node.content.choose || Infinity),
-					'Choose'
-				),
-				SelectParameter.helpers.oboToSlate('select', node.content.select, 'Select', SELECT_TYPES)
-			]
+			isVoid: true,
+			data
 		}
 	]
 

@@ -1,6 +1,11 @@
 let parseRubric = el => {
 	let mods = []
-	if (el.elements && el.elements[0] && el.elements[0].name === 'mods') {
+	if (
+		el.elements &&
+		el.elements[0] &&
+		el.elements[0].name === 'mods' &&
+		Array.isArray(el.elements[0].value)
+	) {
 		mods = el.elements[0].value.map(child => parseMod(child))
 	}
 

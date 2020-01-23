@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider Slider renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--slider--slider"
+>
+  <div
+    className="slider-root"
+    style={Object {}}
+  >
+    <div
+      className="obojobo-draft--components--slider--slider-rail-outer"
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    />
+    <div
+      className="obojobo-draft--components--slider--slider-rail-inner"
+    />
+    <div
+      className="slider-handles"
+    >
+      <button
+        aria-valuemax={5}
+        aria-valuemin={1}
+        aria-valuenow={1}
+        className="obojobo-draft--components--slider--handle  is-not-disabled"
+        onKeyDown={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        role="slider"
+        style={
+          Object {
+            "left": "0%",
+          }
+        }
+      />
+      <button
+        aria-valuemax={5}
+        aria-valuemin={1}
+        aria-valuenow={3}
+        className="obojobo-draft--components--slider--handle  is-not-disabled"
+        onKeyDown={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        role="slider"
+        style={
+          Object {
+            "left": "50%",
+          }
+        }
+      />
+    </div>
+    <div
+      className="slider-tracks"
+    >
+      <div
+        className="obojobo-draft--components--slider--track  is-not-disabled"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "left": "0%",
+            "width": "50%",
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

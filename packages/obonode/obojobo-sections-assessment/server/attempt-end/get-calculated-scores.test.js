@@ -99,6 +99,42 @@ describe('attempt-end/get-calculated-scores', () => {
 		mockAssessmentModel.yell = mockYell
 	})
 
+	test('returns zero when no gradeable questions exist', async () => {
+		mockAssessmentModel.yell = jest
+			.fn()
+			.mockImplementation((name, req, res, assessmentModel, responseHistory, obj) => {
+				obj.addScore('mockId_1', 'no-score')
+				obj.addScore('mockId_2', 'no-score')
+				return []
+			})
+		const result = await getCalculatedScores(
+			mockReq,
+			mockRes,
+			mockAssessmentModel,
+			{
+				chosen: [
+					{ type: QUESTION_NODE_TYPE, id: 'mockId_1' },
+					{ type: QUESTION_NODE_TYPE, id: 'mockId_2' }
+				]
+			},
+			mockAttemptHistory,
+			mockResponseHistory
+		)
+
+		expect(result).toEqual({
+			assessmentScoreDetails: 'mockAssessmentScoreDetails',
+			attempt: {
+				attemptScore: 0,
+				questionScores: [
+					{ id: 'mockId_1', score: 'no-score' },
+					{ id: 'mockId_2', score: 'no-score' }
+				]
+			}
+		})
+
+		mockAssessmentModel.yell = mockYell
+	})
+
 	test('returns as expected when node.content.attempts is undefined', async () => {
 		delete mockAssessmentModel.node.content.attempts
 		const result = await getCalculatedScores(

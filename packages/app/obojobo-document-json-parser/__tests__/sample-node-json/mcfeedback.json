@@ -1,7 +1,21 @@
 {
 	"id": "a3c4c2cf-c2f3-4e98-8afb-02a736da72ca",
 	"type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
-	"content": {},
+	"content": {
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
+	},
 	"children": [
 		{
 			"id": "c4eaf302-d542-4ca8-b29b-60fe827a117d",

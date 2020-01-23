@@ -1,49 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Question Editor Node Question builds the expected component 1`] = `
-<div
-  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default"
->
-  <select
-    className="question-type"
-    contentEditable={false}
-    onChange={[Function]}
-    value="default"
-  >
-    <option
-      value="default"
-    >
-      Default
-    </option>
-    <option
-      value="survey"
-    >
-      Survey
-    </option>
-  </select>
+<div>
   <div
-    className="flipper question-editor"
+    className="component obojobo-draft--chunks--question is-viewed pad is-type-default"
   >
     <div
-      className="content-back"
+      className="flipper question-editor"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        className="content-back"
       >
+        <div
+          className="question-settings"
+        >
+          <label>
+            Question Type
+          </label>
+          <select
+            contentEditable={false}
+            defaultValue="ObojoboDraft.Chunks.Break"
+          >
+            <option
+              value="ObojoboDraft.Chunks.MCAssessment"
+            >
+              Multiple Choice
+            </option>
+          </select>
+          <label
+            className="question-type"
+            contentEditable={false}
+          >
+            <input
+              checked={false}
+              name="vehicle1"
+              onChange={[Function]}
+              type="checkbox"
+              value="Bike"
+            />
+            Survey Only
+          </label>
+        </div>
         <button
-          className="button"
+          className="add-solution"
           onClick={[Function]}
         >
           Add Solution
         </button>
       </div>
     </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
     <button
-      className="button"
+      className="delete-button"
       onClick={[Function]}
     >
       ×
@@ -52,56 +59,61 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\">Survey Only</label></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
 
-exports[`Question Editor Node Question component allows you to change question type 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
-exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component allows you to change set type 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><label class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\">Survey Only</label></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
 
 exports[`Question Editor Node Survey Question builds the expected component 1`] = `
-<div
-  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-survey"
->
-  <select
-    className="question-type"
-    contentEditable={false}
-    onChange={[Function]}
-    value="survey"
-  >
-    <option
-      value="default"
-    >
-      Default
-    </option>
-    <option
-      value="survey"
-    >
-      Survey
-    </option>
-  </select>
+<div>
   <div
-    className="flipper question-editor"
+    className="component obojobo-draft--chunks--question is-viewed pad is-type-survey"
   >
     <div
-      className="content-back"
+      className="flipper question-editor"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        className="content-back"
       >
+        <div
+          className="question-settings"
+        >
+          <label>
+            Question Type
+          </label>
+          <select
+            contentEditable={false}
+            defaultValue="ObojoboDraft.Chunks.Break"
+          >
+            <option
+              value="ObojoboDraft.Chunks.MCAssessment"
+            >
+              Multiple Choice
+            </option>
+          </select>
+          <label
+            className="question-type"
+            contentEditable={false}
+          >
+            <input
+              checked={true}
+              name="vehicle1"
+              onChange={[Function]}
+              type="checkbox"
+              value="Bike"
+            />
+            Survey Only
+          </label>
+        </div>
         <button
-          className="button"
+          className="add-solution"
           onClick={[Function]}
         >
           Add Solution
         </button>
       </div>
     </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
     <button
-      className="button"
+      className="delete-button"
       onClick={[Function]}
     >
       ×

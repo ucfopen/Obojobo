@@ -3,8 +3,8 @@ import { mount } from 'enzyme'
 
 import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-jest.mock('src/scripts/oboeditor/components/editor-nav')
 jest.mock('src/scripts/oboeditor/components/page-editor')
+jest.mock('src/scripts/oboeditor/components/code-editor')
 
 import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('src/scripts/viewer/util/api-util')
@@ -19,6 +19,9 @@ import testObject from 'test-object.json'
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
+const CLASSIC_MODE = 'classic'
+const XML_MODE = 'xml'
+
 describe('EditorApp', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -30,15 +33,20 @@ describe('EditorApp', () => {
 		restoreConsole()
 	})
 
-	test('EditorApp component', done => {
-		expect.assertions(1)
+	test('component renders', done => {
+		expect.hasAssertions()
 
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
+		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
+		spyGetItems.mockImplementationOnce(cb => {
+			cb([{ plugins: 'mock-plugin' }, { noplugins: 'mock-plugin' }])
+		})
+
+		const spyModelCreate = jest.spyOn(Common.models.OboModel, 'create')
+		spyModelCreate.mockReturnValueOnce({
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -47,6 +55,58 @@ describe('EditorApp', () => {
 
 			expect(component.html()).toMatchSnapshot()
 
+			component.unmount()
+			done()
+		})
+	})
+
+	test('EditorApp component displays xml in classic mode', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft
+			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		component.instance().switchMode(CLASSIC_MODE)
+
+		setTimeout(() => {
+			component.update()
+			expect(component.html()).toMatchSnapshot()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('EditorApp component displays xml', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft
+			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		component.instance().switchMode(XML_MODE)
+
+		setTimeout(() => {
+			component.update()
+			expect(component.html()).toMatchSnapshot()
 			component.unmount()
 			done()
 		})
@@ -63,7 +123,32 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('EditorApp component with classic mode', done => {
+		expect.assertions(1)
+
+		// No visit or draft id
+		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['', '', CLASSIC_MODE])
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -85,7 +170,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -108,7 +193,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 		ModalStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
@@ -133,10 +218,12 @@ describe('EditorApp', () => {
 		})
 
 		const mockError = { type: 'someType', message: 'someMessage' }
-		APIUtil.getFullDraft.mockResolvedValueOnce({
-			status: 'error',
-			value: mockError
-		})
+		APIUtil.getFullDraft.mockResolvedValueOnce(
+			JSON.stringify({
+				status: 'error',
+				value: mockError
+			})
+		)
 
 		const component = mount(<EditorApp />)
 
@@ -158,7 +245,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({})
 
 		ModalUtil.getCurrentModal.mockReturnValueOnce({

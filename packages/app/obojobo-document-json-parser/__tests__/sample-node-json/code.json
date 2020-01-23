@@ -2,6 +2,19 @@
 	"id": "1fbeedbe-a92d-4716-a614-9e6ce06c6804",
 	"type": "ObojoboDraft.Chunks.Code",
 	"content": {
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		],
 		"textGroup": [
 			{
 				"data": {

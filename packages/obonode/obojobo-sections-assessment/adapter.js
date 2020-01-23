@@ -16,10 +16,8 @@ const Adapter = {
 			model.modelState.rubric = new AssessmentRubric()
 		}
 
-		model.setStateProp(
-			'attempts',
-			Infinity,
-			p => (('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10))
+		model.setStateProp('attempts', Infinity, p =>
+			('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10)
 		)
 		model.setStateProp('review', 'never', p => p.toLowerCase(), [
 			'never',

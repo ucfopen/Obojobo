@@ -3,20 +3,19 @@ const fs = require('fs')
 const router = express.Router()
 const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
-const db = oboRequire('db')
 const pgp = require('pg-promise')
 const xmlToDraftObject = require('obojobo-document-xml-parser/xml-to-draft-object')
 const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
+const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
 const {
 	checkValidationRules,
 	requireDraftId,
 	requireCanViewEditor,
 	requireCanCreateDrafts,
-	requireCanDeleteDrafts,
-	requireCurrentUser
+	requireCanDeleteDrafts
 } = oboRequire('express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -32,13 +31,16 @@ router
 	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
 	.get(async (req, res) => {
 		try {
-			const draftModel = await DraftModel.fetchById(req.params.draftId)
+			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
+			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
 
-			if (draftModel.authorId !== req.currentUser.id) {
+			if (!hasPerms) {
 				return res.notAuthorized(
 					'You must be the author of this draft to retrieve this information'
 				)
 			}
+
+			const draftModel = await DraftModel.fetchById(req.params.draftId)
 
 			res.format({
 				'application/xml': async () => {
@@ -91,11 +93,9 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res) => {
+	.post((req, res, next) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -105,9 +105,7 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 
@@ -168,48 +166,7 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete((req, res) => {
-		return db
-			.none(
-				`
-			UPDATE drafts
-			SET deleted = TRUE
-			WHERE id = $[draftId]
-			AND user_id = $[userId]
-			`,
-				{
-					draftId: req.params.draftId,
-					userId: req.currentUser.id
-				}
-			)
-			.then(res.success)
-			.catch(res.unexpected)
-	})
-
-// List drafts
-// mounted as /api/drafts
-router
-	.route('/')
-	.get(requireCurrentUser)
-	.get((req, res) => {
-		return db
-			.any(
-				`
-			SELECT DISTINCT ON (draft_id)
-				draft_id AS "draftId",
-				id AS "latestVersion",
-				created_at AS "createdAt",
-				content->'content'->>'title' AS "title"
-			FROM drafts_content
-			WHERE draft_id IN (
-				SELECT id
-				FROM drafts
-				WHERE deleted = FALSE
-				AND user_id = $[userId]
-			)
-			ORDER BY draft_id, id desc
-		`,
-				{ userId: req.currentUser.id }
-			)
+		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
