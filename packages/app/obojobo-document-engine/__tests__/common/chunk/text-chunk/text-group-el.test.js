@@ -67,6 +67,6 @@ describe('TextGroupEl', () => {
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
 
-		expect(component.text()).toBe('Some BOLD text with a variable included')
+		expect(component.text()).toBe('Some BOLD text with a {{variable}} included')
 	})
 })
