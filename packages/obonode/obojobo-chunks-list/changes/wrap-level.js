@@ -1,8 +1,47 @@
-const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+import { Editor, Transforms, Range } from 'slate'
+import { ReactEditor } from 'slate-react'
+import ListStyles from '../list-styles'
 
-const wrapLevel = (event, editor) => {
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+
+
+const wrapLevel = (node, editor, event) => {
 	event.preventDefault()
-	return editor.unwrapBlock(LIST_LEVEL_NODE)
+	const nodePath = ReactEditor.findPath(editor, node)
+	const nodeRange = Editor.range(editor, nodePath)
+
+	const list = Array.from(Editor.nodes(editor, {
+		at: Range.intersection(editor.selection, nodeRange),
+		mode: 'lowest',
+		match: child => child.subtype === LIST_LINE_NODE
+	}))
+
+	// Normalization will merge consecutive ListLevels into a single node,
+	// which can change the paths of subsequent ListLines. To keep the paths consistant,
+	// prevent normalization until all Lines have been indented
+	Editor.withoutNormalizing(editor, () => {
+		for(const [, path] of list) {
+			const [parent,] = Editor.parent(editor, path)
+
+			const bulletList =
+			parent.content.type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
+			const bulletStyle = bulletList[(bulletList.indexOf(parent.content.bulletStyle) + 1) % bulletList.length]
+			
+			Transforms.wrapNodes(
+				editor, 
+				{
+					type: LIST_NODE,
+					subtype: LIST_LEVEL_NODE,
+					content: { type: parent.content.type, bulletStyle }
+				},
+				{
+					at: path,
+				}
+			)
+		}
+	})
 }
 
 export default wrapLevel

@@ -58,7 +58,7 @@ const KeyDownUtil = {
 		if(Range.isCollapsed(editor.selection) && KeyDownUtil.isDeepEmpty(editor, node)) {
 			event.preventDefault()
 			const path = ReactEditor.findPath(editor, node)
-			Transforms.removeNodes(editor, { at: path, hanging: true })
+			Transforms.removeNodes(editor, { at: path })
 
 			// By default, the cursor moves to the end of the item before a deleted node
 			// after the deletion has occured.  If we are deleting forward, we move it

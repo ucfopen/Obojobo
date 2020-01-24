@@ -39,6 +39,7 @@ const ActionButton = {
 
 			next(entry, editor)
 		},
+
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {

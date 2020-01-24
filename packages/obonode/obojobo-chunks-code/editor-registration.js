@@ -1,12 +1,13 @@
-import { Editor, Node, Element, Transforms, Text } from 'slate'
+import { Editor, Node, Element, Transforms } from 'slate'
 
 import Converter from './converter'
 import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
-import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 import Line from './components/line/editor-component'
 import EditorComponent from './editor-component'
 import React from 'react'
+
+import normalizeNode from './changes/normalize-node'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
@@ -45,62 +46,7 @@ const Code = {
 
 			Transforms.insertFragment(editor, fragment)
 		},
-		normalizeNode(entry, editor, next) {
-			const [node, path] = entry
-
-			// If the element is a Code Node, only allow CodeLine children
-			if (node.type === CODE_NODE && !node.subtype) {
-				// Code child normalization
-				for (const [child, childPath] of Node.children(editor, path)) {
-					// Unwrap non-CodeLine children
-					if (Element.isElement(child) && child.subtype !== CODE_LINE_NODE) {
-						Transforms.liftNodes(editor, { at: childPath })
-						return
-					}
-
-					// Wrap loose text children in a CodeLine
-					if (Text.isText(child)) {
-						Transforms.wrapNodes(
-							editor, 
-							{
-								type: CODE_NODE,
-								subtype: CODE_LINE_NODE,
-								content: { indent: 0 }
-							},
-							{ at: childPath }
-						)
-						return
-					}
-				}
-			}
-
-			// If the element is a CodeLine Node, make sure it has a Code parent
-			// and only allow text children
-			if (node.type === CODE_NODE && node.subtype === CODE_LINE_NODE) {
-				// CodeLine children normalization
-				for (const [child, childPath] of Node.children(editor, path)) {
-					// Unwrap non-text children
-					if (Element.isElement(child)) {
-						Transforms.liftNodes(editor, { at: childPath })
-						return
-					}
-				}
-
-				// CodeLine parent normalization
-				const [parent] = Editor.parent(editor, path)
-				if(!Element.isElement(parent) || parent.type !== CODE_NODE) {
-					NormalizeUtil.wrapOrphanedSiblings(
-						editor, 
-						entry, 
-						{ type: CODE_NODE, children: []}, 
-						node => node.subtype === CODE_LINE_NODE
-					)
-					return
-				}
-			}
-
-			next(entry, editor)
-		},
+		normalizeNode,
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {

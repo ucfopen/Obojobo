@@ -1,5 +1,5 @@
 import React from 'react'
-import { Element, Editor, Node } from 'slate'
+import { Element, Editor, Node, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -20,6 +20,21 @@ const Figure = {
 	plugins: {
 		// Editor Plugins - These get attached to the editor object an override it's default functions
 		// They may affect multiple nodes simultaneously
+		normalizeNode(entry, editor, next) {
+			const [node, path] = entry
+
+			// If the element is a Figure, only allow Text children
+			if (Element.isElement(node) && node.type === FIGURE_NODE) {
+				for (const [child, childPath] of Node.children(editor, path)) {
+					if (Element.isElement(child)) {
+						Transforms.liftNodes(editor, { at: childPath })
+						return
+					}
+				}
+			}
+
+			next(entry, editor)
+		},
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {

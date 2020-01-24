@@ -241,10 +241,11 @@ class PageEditor extends React.Component {
 	onKeyDown(event) {
 		this.onKeyDownGlobal(event)
 
-		const list = Editor.nodes(this.editor, {
+		const list = Array.from(Editor.nodes(this.editor, {
 			mode: 'highest',
 			match: node => Element.isElement(node)
-		})
+		}))
+
 
 		for(const node of list) {
 			const item = Common.Registry.getItemForType(node[0].type)
@@ -255,6 +256,7 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
+		console.log(this.editor)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (

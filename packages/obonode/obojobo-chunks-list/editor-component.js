@@ -2,11 +2,8 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import ListStyles from './list-styles'
-
-const { Button } = Common.components
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
@@ -48,13 +45,10 @@ class List extends React.Component {
 	}
 
 	render() {
-		const type = this.props.node.data.get('content').listStyles.type
-		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
 		return (
 			<Node {...this.props}>
 				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
 					{this.props.children}
-					<Button onClick={() => this.toggleType()}>{'Swap to ' + other}</Button>
 				</div>
 			</Node>
 		)
