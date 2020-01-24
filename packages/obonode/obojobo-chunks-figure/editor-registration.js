@@ -1,4 +1,5 @@
 import React from 'react'
+import { getEventTransfer } from 'slate-react'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
@@ -17,6 +18,17 @@ const Figure = {
 		emptyNode
 	},
 	plugins: {
+		onPaste(event, editor, next) {
+			const transfer = getEventTransfer(event)
+
+			// Only paste plain text
+			if (transfer.type !== 'fragment') {
+				editor.insertText(transfer.text)
+				return
+			}
+
+			return next()
+		},
 		renderPlaceholder(props, editor, next) {
 			const { node } = props
 			if (node.object !== 'block' || node.type !== FIGURE_NODE) return next()
