@@ -1,11 +1,22 @@
-const slateToObo = node => ({
-	id: node.key,
-	type: node.type,
-	children: [],
-	content: {
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
+
+const slateToObo = node => {
+	const content = {
 		html: node.text
 	}
-})
+
+	const nodeContent = node.data.get('content')
+	if (nodeContent && nodeContent.triggers) {
+		content.triggers = nodeContent.triggers
+	}
+
+	return {
+		id: node.key,
+		type: node.type,
+		children: [],
+		content: withoutUndefined(content)
+	}
+}
 
 const oboToSlate = node => ({
 	object: 'block',
@@ -20,7 +31,12 @@ const oboToSlate = node => ({
 				}
 			]
 		}
-	]
+	],
+	data: {
+		content: {
+			triggers: node.content.triggers
+		}
+	}
 })
 
 export default { slateToObo, oboToSlate }

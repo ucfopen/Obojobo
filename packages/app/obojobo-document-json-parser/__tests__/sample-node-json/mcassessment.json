@@ -3,7 +3,20 @@
 	"type": "ObojoboDraft.Chunks.MCAssessment",
 	"content": {
 		"shuffle": true,
-		"responseType": "Pick One"
+		"responseType": "pick-one",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": [
 		{

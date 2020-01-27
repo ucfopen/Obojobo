@@ -26,7 +26,7 @@ class EditorNav extends React.PureComponent {
 	}
 
 	onNavItemClick(item) {
-		EditorUtil.gotoPath(item.fullPath)
+		EditorUtil.goto(item.id)
 	}
 
 	showAddAssessmentModal() {

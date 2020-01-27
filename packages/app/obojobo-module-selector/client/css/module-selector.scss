@@ -65,7 +65,7 @@ header {
 .no-items {
 	display: none;
 	position: absolute;
-	top: 150px;
+	top: 50px;
 	text-align: center;
 	width: 400px;
 	margin-left: -200px;
@@ -629,7 +629,6 @@ header {
 }
 
 .ui-progressbar {
-	background: url('/assets/images/lti/progressbar-bg.gif');
 	height: 20px;
 	border-radius: 11px;
 	width: 80%;

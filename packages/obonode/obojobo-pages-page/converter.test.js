@@ -79,7 +79,10 @@ describe('Page Converter', () => {
 						}
 					]
 				}
-			]
+			],
+			content: {
+				triggers: 'mock-triggers'
+			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

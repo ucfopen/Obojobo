@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageEditorErrorBoundry PageEditorErrorBoundry component 1`] = `
+<div>
+  Contents...
+</div>
+`;

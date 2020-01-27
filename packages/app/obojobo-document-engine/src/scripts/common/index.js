@@ -47,6 +47,7 @@ import isOrNot from './util/isornot'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
 import debounce from './util/debounce'
+import withoutUndefined from './util/without-undefined'
 
 export default {
 	Registry,
@@ -134,6 +135,7 @@ export default {
 		setProp,
 		cloneProps,
 		isOrNot,
-		debounce
+		debounce,
+		withoutUndefined
 	}
 }

@@ -69,7 +69,8 @@ describe('Table Converter', () => {
 							text: { value: 'Mock4' }
 						}
 					]
-				}
+				},
+				triggers: 'mock-triggers'
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)

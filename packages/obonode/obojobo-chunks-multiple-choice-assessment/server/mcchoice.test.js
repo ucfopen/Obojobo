@@ -1,5 +1,5 @@
 jest.setMock(
-	'obojobo-express/models/draft_node',
+	'obojobo-express/server/models/draft_node',
 	require('obojobo-document-engine/__mocks__/models/draft_node')
 )
 

@@ -1,5 +1,7 @@
 const { handle } = require('redux-pack')
 
+const whitespaceRegex = /\s+/g
+
 const {
 	SHOW_MODULE_PERMISSIONS,
 	CLOSE_MODAL,
@@ -26,9 +28,14 @@ const closedDialogState = () => ({
 })
 
 function filterModules(modules, searchString) {
-	return modules.filter(m => {
-		return `${(m.title || '').toLowerCase()}${m.draftId}`.includes(searchString)
-	})
+	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
+
+	return modules.filter(m =>
+		((m.title || '') + m.draftId)
+			.replace(whitespaceRegex, '')
+			.toLowerCase()
+			.includes(searchString)
+	)
 }
 
 function DashboardReducer(state, action) {

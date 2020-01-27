@@ -1,15 +1,15 @@
-jest.mock('../../models/draft')
-jest.mock('../../db')
+jest.mock('../../server/models/draft')
+jest.mock('../../server/db')
 jest.unmock('express') // we'll use supertest + express for this
 jest.unmock('fs') // need fs working for view rendering
 
-jest.mock('../../config', () => ({
+jest.mock('../../server/config', () => ({
 	general: { hostname: 'mock-hostname' },
 	lti: { keys: [{ 'mock-lti-key': 'mock-lti-key-value' }] }
 }))
 
 // ovveride requireCurrentDocument to provide our own
-jest.mock('../../express_lti_launch', () => ({
+jest.mock('../../server/express_lti_launch', () => ({
 	assignmentSelection: (req, res, next) => {
 		next()
 	},
@@ -46,11 +46,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '../../../views/')
+app.set('views', __dirname + '../../../server/views/')
 app.use(bodyParser.json())
 app.use(addMockPropsToReq)
-app.use('', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/lti')) // mounting under api so response_decorator assumes json content type
+app.use('', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/lti')) // mounting under api so response_decorator assumes json content type
 
 describe('lti route', () => {
 	beforeAll(() => {})

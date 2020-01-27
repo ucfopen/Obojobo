@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "7.0.2",
+	"version": "7.1.2",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -30,9 +30,6 @@
 		"node": "^12.11.1"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
@@ -63,9 +60,9 @@
 		"moment": "^2.18.0",
 		"morgan": "~1.9.1",
 		"multer": "^1.4.2",
-		"obojobo-document-engine": "^7.0.2",
-		"obojobo-document-xml-parser": "^7.0.2",
-		"obojobo-lib-utils": "^7.0.2",
+		"obojobo-document-engine": "^7.1.2",
+		"obojobo-document-xml-parser": "^7.1.2",
+		"obojobo-lib-utils": "^7.1.2",
 		"pg-promise": "^9.2.1",
 		"react-transition-group": "^4.3.0",
 		"responsive-loader": "^1.2.0",
@@ -93,8 +90,7 @@
 		"webpack": "^4.41.0",
 		"webpack-cli": "^3.3.9",
 		"webpack-dev-server": "^3.8.2",
-		"webpack-manifest-plugin": "^2.2.0",
-		"whatwg-fetch": "^3.0.0"
+		"webpack-manifest-plugin": "^2.2.0"
 	},
 	"bin": {
 		"start_obojobo_server": "./bin/start_obojobo_server",
@@ -106,19 +102,19 @@
 		],
 		"collectCoverageFrom": [
 			"*.js",
-			"models/**/*.js",
-			"routes/**/*.js",
-			"viewer/**/*.js"
+			"server/models/**/*.js",
+			"server/routes/**/*.js",
+			"server/viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",
-			"<rootDir>/app.js",
+			"<rootDir>/server/app.js",
 			"<rootDir>/webpack.config.js",
-			"<rootDir>/dev_nonce_store.js",
+			"<rootDir>/server/dev_nonce_store.js",
 			"<rootDir>/setup_tests.js",
 			"<rootDir>/babel.config.js",
 			"<rootDir>/prettier.config.js",
-			"<rootDir>/obo_express_dev.js"
+			"<rootDir>/server/obo_express_dev.js"
 		],
 		"coverageReporters": [
 			"text",
