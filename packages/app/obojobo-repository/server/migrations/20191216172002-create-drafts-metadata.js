@@ -24,7 +24,7 @@ exports.up = function(db) {
 			},
 			key: {
 				type: 'varchar',
-				length: 50,
+				length: 256,
 				notNull: true
 			},
 			value: {
