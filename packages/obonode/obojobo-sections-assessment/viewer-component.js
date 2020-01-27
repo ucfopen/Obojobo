@@ -12,6 +12,7 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
+const { SimpleDialog } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil, FocusUtil } = Viewer.util
@@ -109,10 +110,27 @@ class Assessment extends React.Component {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
 			return
 		}
-		return this.endAttempt()
+
+		const remainAttempts = AssessmentUtil.getAttemptsRemaining(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
+		if (remainAttempts === 1) {
+			ModalUtil.show(
+				<SimpleDialog
+					cancelOk
+					title="This is your last attempt. Are you sure you want to submit?"
+					onConfirm={this.endAttempt}
+				/>
+			)
+		} else {
+			this.endAttempt()
+		}
 	}
 
 	endAttempt() {
+		ModalUtil.hide()
 		return AssessmentUtil.endAttempt({
 			model: this.props.model,
 			context: this.props.moduleData.navState.context,

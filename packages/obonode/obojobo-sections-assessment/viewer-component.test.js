@@ -347,6 +347,57 @@ describe('Assessment', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
+	test('onClickSubmit displays a Modal for the last attempt', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// Last attempt
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(1)
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		// Attempt is completed
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().onClickSubmit()
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('onClickSubmit does not display a Modal it is not the last attempt', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// 3 attempts remain
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(3)
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		// Attempt is completed
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().onClickSubmit()
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
+	})
+
 	test('onClickSubmit calls endAttempt', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
