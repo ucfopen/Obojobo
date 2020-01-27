@@ -3,7 +3,10 @@ import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
 const getLatexHtml = latex => {
@@ -22,8 +25,11 @@ class MathEquation extends React.Component {
 		this.updateNodeFromState = debounce(200, this.updateNodeFromState)
 
 		// copy the attributes we want into state
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
+
+		this.freezeEditor = this.freezeEditor.bind(this)
+		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 	}
 
 	contentToStateObj(content) {
@@ -33,16 +39,6 @@ class MathEquation extends React.Component {
 			label: content.label || '',
 			size: content.size || 1
 		}
-	}
-
-	changeProperties(content) {
-		const editor = this.props.editor
-
-		editor.setNodeByKey(this.props.node.key, {
-			data: { content }
-		})
-
-		this.setState(this.contentToStateObj(content))
 	}
 
 	renderEmptyEquation() {
@@ -82,10 +78,13 @@ class MathEquation extends React.Component {
 	}
 
 	updateNodeFromState() {
-		const content = this.props.node.data.get('content')
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: { content: { ...content, ...this.state } }
-		})
+		const content = this.props.element.content
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor, 
+			{ content: {...content, ...this.state} }, 
+			{ at: path }
+		)
 	}
 
 	onChangeContent(key, event) {
@@ -93,6 +92,14 @@ class MathEquation extends React.Component {
 		const newContent = { [key]: event.target.value }
 		this.setState(newContent) // update the display now
 		this.updateNodeFromState() // debounced to reduce lag as it updates the document
+	}
+
+	freezeEditor() {
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		this.props.editor.toggleEditable(true)
 	}
 
 	renderAttributes() {
@@ -107,6 +114,8 @@ class MathEquation extends React.Component {
 								value={this.state.latex}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'latex')}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 						</div>
 						<div>
@@ -116,6 +125,8 @@ class MathEquation extends React.Component {
 								value={this.state.label}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'label')}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 						</div>
 						<div>
@@ -125,6 +136,8 @@ class MathEquation extends React.Component {
 								value={this.state.alt}
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'alt')}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 						</div>
 						<div>
@@ -136,6 +149,8 @@ class MathEquation extends React.Component {
 								step="0.1"
 								onClick={event => event.stopPropagation()}
 								onChange={this.onChangeContent.bind(this, 'size')}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 						</div>
 					</div>
@@ -145,8 +160,7 @@ class MathEquation extends React.Component {
 	}
 
 	render() {
-		const { isSelected, node } = this.props
-		const content = node.data.get('content')
+		const content = this.props.element.content
 		return (
 			<Node {...this.props}>
 				<div
@@ -154,14 +168,14 @@ class MathEquation extends React.Component {
 						'component obojobo-draft--chunks--math-equation pad ' +
 						'align-' +
 						(content.align || 'center')
-					}
-				>
+					}>
 					{this.renderLatex()}
-					{isSelected ? this.renderAttributes() : null}
+					{this.props.selected ? this.renderAttributes() : null}
 				</div>
+				{this.props.children}
 			</Node>
 		)
 	}
 }
 
-export default MathEquation
+export default withSlateWrapper(MathEquation)

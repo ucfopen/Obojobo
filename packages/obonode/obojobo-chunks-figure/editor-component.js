@@ -1,17 +1,13 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import {
-	useEditor,
-	useSelected,
-	ReactEditor
-} from 'slate-react'
-
+import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import Image from './image'
 import ImageProperties from './image-properties-modal'
 import React from 'react'
@@ -62,8 +58,8 @@ const changeProperties = (editor, node, content) => {
 const Figure = props => {
 	const { content } = props.element
 	const hasAltText = content.alt && content.alt.length !== 0
-	const selected = useSelected()
-	const editor = useEditor()
+	const selected = props.selected
+	const editor = props.editor
 	const isSelected = isOrNot(selected, 'selected')
 
 	return (
@@ -106,4 +102,4 @@ const Figure = props => {
 	)
 }
 
-export default Figure
+export default withSlateWrapper(Figure)

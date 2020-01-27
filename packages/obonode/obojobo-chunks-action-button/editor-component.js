@@ -10,6 +10,7 @@ import {
 import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import TriggerListModal from 'obojobo-document-engine/src/scripts/oboeditor/components/triggers/trigger-list-modal'
 import ActionButtonEditorAction from './action-button-editor-action'
 
@@ -64,20 +65,15 @@ const renderTriggers = (props, editor) => {
  * actions associated with the onClick trigger, as well a a button to launch the Trigger Dialog so 
  * that users can edit the onClick actions.
  */
-const ActionButton = props => {
-	const selected = useSelected()
-	const editor = useEditor()
-
-	return (
-		<Node {...props}>
-			<div className="text-chunk obojobo-draft--chunks--action-button pad">
-				<div className="obojobo-draft--components--button align-center">
-					<div className="button">{props.children}</div>
-				</div>
-				{selected ? renderTriggers(props, editor) : null}
+const ActionButton = props => (
+	<Node {...props}>
+		<div className="text-chunk obojobo-draft--chunks--action-button pad">
+			<div className="obojobo-draft--components--button align-center">
+				<div className="button">{props.children}</div>
 			</div>
-		</Node>
-	)
-}
+			{props.selected ? renderTriggers(props, props.editor) : null}
+		</div>
+	</Node>
+)
 
-export default ActionButton
+export default withSlateWrapper(ActionButton)

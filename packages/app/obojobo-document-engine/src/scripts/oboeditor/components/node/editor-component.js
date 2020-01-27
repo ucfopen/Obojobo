@@ -1,10 +1,6 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import {
-	useEditor,
-	useSelected,
-	ReactEditor
-} from 'slate-react'
+import { ReactEditor } from 'slate-react'
 
 import { Transforms } from 'slate'
 
@@ -89,8 +85,8 @@ const onClose = (editor) => {
 }
 
 const Node = (props) => {
-	const selected = useSelected()
-	const editor = useEditor()
+	const selected = props.selected
+	const editor = props.editor
 
 	return (
 		<div className={'oboeditor-component component'} data-obo-component="true">
@@ -110,7 +106,7 @@ const Node = (props) => {
 				</div>
 			) : null}
 
-			{true ? (
+			{selected ? (
 				<MoreInfoBox
 					className="content-node"
 					id={props.element.id}

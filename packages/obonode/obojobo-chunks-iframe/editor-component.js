@@ -1,15 +1,12 @@
 import './viewer-component.scss'
 
 import React from 'react'
-import {
-	useEditor,
-	useSelected,
-	ReactEditor
-} from 'slate-react'
+import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 import IframeProperties from './iframe-properties-modal'
 
@@ -60,8 +57,7 @@ const deleteNode = (editor, node) => {
 
 const IFrame = props => {
 	const content = props.element.content
-	const selected = useSelected()
-	const editor = useEditor()
+	const { selected, editor } = props
 
 	const previewStyle = {
 		height: (content.height || '500') + 'px',
@@ -105,4 +101,4 @@ const IFrame = props => {
 	)
 }
 
-export default IFrame
+export default withSlateWrapper(IFrame)

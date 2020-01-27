@@ -1,5 +1,5 @@
 /**
- * Generates an Obojobo Break from a Slate node.
+ * Generates an Obojobo IFrame from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
  * src, title, type, border, fit, width, height, initalZoom, autoload,
  * and controlls attributes.

@@ -3,6 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import ListStyles from './list-styles'
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
@@ -55,4 +56,4 @@ class List extends React.Component {
 	}
 }
 
-export default List
+export default withSlateWrapper(List)

@@ -3,7 +3,6 @@ import React from 'react'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
@@ -18,15 +17,16 @@ const MathEquation = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case MATH_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
+		isVoid(element, editor, next) {
+			if(element.type === MATH_NODE) return true
+
+			return next(element)
 		},
-		schema: Schema
+		renderNode(props) {
+			return <Node {...props} {...props.attributes} />
+		}
 	}
 }
 

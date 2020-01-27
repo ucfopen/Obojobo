@@ -2,14 +2,11 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import {
-	useEditor,
-	useSelected,
-	ReactEditor
-} from 'slate-react'
+import { ReactEditor } from 'slate-react'
 import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 const { Button } = Common.components
 
@@ -31,21 +28,17 @@ const renderButton = (editor, element) => {
 	)
 }
 
-const Break = props => {
-	const selected = useSelected()
-	const editor = useEditor()
-	return (
-		<Node {...props}>
-			<div
-				className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
-					props.element.content.width
-				}`}>
-				<hr />
-				{props.children}
-				{selected ? renderButton(editor, props.element) : null}
-			</div>
-		</Node>
-	)
-}
+const Break = props => (
+	<Node {...props}>
+		<div
+			className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
+				props.element.content.width
+			}`}>
+			<hr />
+			{props.children}
+			{props.selected ? renderButton(props.editor, props.element) : null}
+		</div>
+	</Node>
+)
 
-export default Break
+export default withSlateWrapper(Break)

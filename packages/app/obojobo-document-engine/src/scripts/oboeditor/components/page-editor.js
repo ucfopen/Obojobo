@@ -255,8 +255,15 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	onChange(value) {
+		// Save the previous selection in case the editor is unfocused
+		// This mostly happens with MoreInfoBoxes and void nodes
+		if(this.editor.selection) this.editor.prevSelection = this.editor.selection
+			
+		this.setState({ value })
+	}
+
 	render() {
-		console.log(this.editor)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
@@ -286,7 +293,7 @@ class PageEditor extends React.Component {
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
-						<Slate editor={this.editor} value={this.state.value} onChange={value => this.setState({ value })}>
+						<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
 							<Editable 
 								renderElement={this.renderElement.bind(this)}
 								renderLeaf={this.renderLeaf}
@@ -343,28 +350,6 @@ class PageEditor extends React.Component {
 // 	// 		</div>
 // 	// 	)
 // 	// }
-
-	onChange(change) {
-		const nodesChanged = change.operations
-			.toJSON()
-			.some(
-				operation =>
-					operation.type === 'set_node' ||
-					operation.type === 'insert_node' ||
-					operation.type === 'add_mark' ||
-					operation.type === 'set_mark'
-			)
-
-		if (nodesChanged) {
-			// Hacky solution: editor changes need an uninterrupted React render cycle
-			// Calling ModalUtil.hide right after Modals are finished interrupts this asyncronously
-			// This hack only works because Modals are not directly a part of the Slate Editor
-			ModalUtil.hide()
-		}
-
-		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
-		this.setState({ value: change.value, saved: false })
-	}
 
 	saveModule(draftId) {
 		this.exportCurrentToJSON()
