@@ -24,6 +24,8 @@ const MathEquation = {
 
 			return next(element)
 		},
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
 		renderNode(props) {
 			return <Node {...props} {...props.attributes} />
 		}

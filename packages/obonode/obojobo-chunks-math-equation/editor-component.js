@@ -3,7 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
@@ -30,6 +30,7 @@ class MathEquation extends React.Component {
 
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
+		this.focusEquation = this.focusEquation.bind(this)
 	}
 
 	contentToStateObj(content) {
@@ -159,6 +160,17 @@ class MathEquation extends React.Component {
 		)
 	}
 
+	focusEquation(event) {
+		event.preventDefault()
+		event.stopPropagation()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
+	}
+
 	render() {
 		const content = this.props.element.content
 		return (
@@ -168,7 +180,8 @@ class MathEquation extends React.Component {
 						'component obojobo-draft--chunks--math-equation pad ' +
 						'align-' +
 						(content.align || 'center')
-					}>
+					}
+					onClick={this.focusEquation}>
 					{this.renderLatex()}
 					{this.props.selected ? this.renderAttributes() : null}
 				</div>

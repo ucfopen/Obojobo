@@ -3,14 +3,17 @@
 .obojobo-draft--chunks--math-equation {
 	position: relative;
 	cursor: pointer;
+	user-select: none;
 
 	.katex-error {
 		font-family: $font-default;
 		text-align: center;
+		user-select: none;
 	}
 
 	.no-equation {
 		font-family: $font-default;
+		user-select: none;
 	}
 
 	.attributes-box {
