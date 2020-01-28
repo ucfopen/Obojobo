@@ -6,6 +6,7 @@ import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatch
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import Dialog from 'obojobo-document-engine/src/scripts/common/components/modal/dialog'
 import React from 'react'
 import _ from 'underscore'
 import renderer from 'react-test-renderer'
@@ -17,6 +18,7 @@ jest.mock('./components/post-test')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/common/components/modal/dialog')
 
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer')
@@ -347,7 +349,7 @@ describe('Assessment', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('onClickSubmit displays a Modal for the last attempt', () => {
+	test('onClickSubmit displays the last attempt Modal for the last submission', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -369,10 +371,29 @@ describe('Assessment', () => {
 
 		component.instance().onClickSubmit()
 
-		expect(ModalUtil.show).toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalledWith(
+			<Dialog
+				width="32rem"
+				title="This is your last attempt"
+				buttons={[
+					{
+						value: 'Cancel',
+						altAction: true,
+						default: true,
+						onClick: ModalUtil.hide
+					},
+					{
+						value: 'OK - Submit Last Attempt',
+						onClick: component.instance().endAttempt
+					}
+				]}
+			>
+				<p>{"You won't be able to submit another attempt after this one."}</p>
+			</Dialog>
+		)
 	})
 
-	test('onClickSubmit does not display a Modal it is not the last attempt', () => {
+	test('onClickSubmit() displays the confirm modal when submitting an assessment', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -394,32 +415,26 @@ describe('Assessment', () => {
 
 		component.instance().onClickSubmit()
 
-		expect(ModalUtil.show).not.toHaveBeenCalled()
-		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
-	})
-
-	test('onClickSubmit calls endAttempt', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
-		// Attempt is complete
-		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
-
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-
-		component.instance().onClickSubmit()
-
-		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
-		expect(ModalUtil.show).not.toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalledWith(
+			<Dialog
+				width="32rem"
+				title="Just to confirm..."
+				buttons={[
+					{
+						value: 'Cancel',
+						altAction: true,
+						default: true,
+						onClick: ModalUtil.hide
+					},
+					{
+						value: 'OK - Submit',
+						onClick: component.instance().endAttempt
+					}
+				]}
+			>
+				<p>Are you ready to submit?</p>
+			</Dialog>
+		)
 	})
 
 	test('endAttempt calls AssessmentUtil', () => {
