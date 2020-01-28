@@ -4,7 +4,7 @@ import { getEventTransfer, cloneFragment } from 'slate-react'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Row from './components/row/editor-component'
 import Cell from './components/cell/editor-component'
 import Schema from './schema'
@@ -63,7 +63,7 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TABLE_NODE:
-				return <Node {...props} {...props.attributes} />
+				return <EditorComponent {...props} {...props.attributes} />
 			case TABLE_ROW_NODE:
 				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
@@ -122,6 +122,7 @@ const Table = {
 	menuLabel: 'Table',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

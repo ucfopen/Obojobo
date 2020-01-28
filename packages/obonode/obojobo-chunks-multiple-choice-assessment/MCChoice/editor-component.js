@@ -3,11 +3,14 @@ import './editor-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { Block } from 'slate'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { Button } = Common.components
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 class MCChoice extends React.Component {
@@ -36,17 +39,26 @@ class MCChoice extends React.Component {
 	}
 
 	addFeedback() {
-		const editor = this.props.editor
-
-		const newFeedback = Block.create({
-			type: MCFEEDBACK_NODE
-		})
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newFeedback)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		console.log(path)
+		return Transforms.insertNodes(
+			this.props.editor,
+			{
+				type: MCFEEDBACK_NODE,
+				children: [
+					{
+						type: TEXT_NODE,
+						children: [{ text: '' }]
+					}
+				]
+			},
+			{ at: path.concat(1) }
+		)
 	}
 
 	render() {
-		const score = this.props.node.data.get('content').score
-		const hasFeedback = this.props.node.nodes.size === 2
+		const score = this.props.element.content.score
+		const hasFeedback = this.props.element.children.length === 2
 
 		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
@@ -74,4 +86,4 @@ class MCChoice extends React.Component {
 	}
 }
 
-export default MCChoice
+export default withSlateWrapper(MCChoice)

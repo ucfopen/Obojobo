@@ -12,6 +12,7 @@ const Break = {
 	menuLabel: 'Horizontal Line',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

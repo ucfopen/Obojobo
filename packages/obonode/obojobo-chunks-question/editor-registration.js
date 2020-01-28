@@ -23,17 +23,14 @@ const Question = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case QUESTION_NODE:
-					return <Node {...props} {...props.attributes} />
+		renderNode(props) {
+			switch (props.element.subtype) {
 				case SOLUTION_NODE:
 					return <Solution {...props} {...props.attributes} />
 				default:
-					return next()
+					return <Node {...props} {...props.attributes} />
 			}
-		},
-		schema: Schema
+		}
 	},
 	getNavItem(model) {
 		const questions = model.parent.children.models.filter(

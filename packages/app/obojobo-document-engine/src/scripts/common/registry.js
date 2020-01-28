@@ -4,6 +4,7 @@ let variableHandlers
 
 const noop = () => {}
 let memoInsertable
+let memoContent
 
 const generateId = () => {
 	return (function b(a) {
@@ -51,6 +52,7 @@ class _Registry {
 			name: EditorNode.menuLabel,
 			icon: EditorNode.icon,
 			isInsertable: EditorNode.isInsertable,
+			isContent: EditorNode.isContent,
 			insertJSON: EditorNode.json && EditorNode.json.emptyNode,
 			slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
 			oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
@@ -77,7 +79,7 @@ class _Registry {
 		// combine defaults with opts (and existing item)
 		opts = Object.assign(
 			{
-				type: null,
+				type: className,
 				default: false,
 				insertItem: null,
 				componentClass: null,
@@ -151,6 +153,13 @@ class _Registry {
 			memoInsertable = Array.from(items.values()).filter(item => item.isInsertable)
 		}
 		return memoInsertable
+	}
+
+	get contentTypes() {
+		if (!memoContent) {
+			memoContent = Array.from(items.values()).filter(item => item.isContent).map(item => item.type)
+		}
+		return memoContent
 	}
 }
 

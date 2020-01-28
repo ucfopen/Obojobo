@@ -2,7 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
@@ -13,6 +13,7 @@ const YouTube = {
 	menuLabel: 'YouTube',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode
@@ -21,7 +22,7 @@ const YouTube = {
 		renderNode(props, editor, next) {
 			switch (props.node.type) {
 				case YOUTUBE_NODE:
-					return <Node {...props} {...props.attributes} />
+					return <EditorComponent {...props} {...props.attributes} />
 				default:
 					return next()
 			}

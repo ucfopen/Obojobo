@@ -5,7 +5,7 @@ import Converter from './converter'
 import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import Line from './components/line/editor-component'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import React from 'react'
 import Schema from './schema'
 import decreaseIndent from './changes/decrease-indent'
@@ -80,7 +80,7 @@ const plugins = {
 			case TEXT_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
 			default:
-				return <Node {...props} {...props.attributes} />
+				return <EditorComponent {...props} {...props.attributes} />
 		}
 	},
 	renderPlaceholder(props, editor, next) {
@@ -120,6 +120,7 @@ const Text = {
 	menuLabel: 'Text',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

@@ -13,6 +13,7 @@ const Figure = {
 	menuLabel: 'Figure',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

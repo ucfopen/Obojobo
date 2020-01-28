@@ -45,8 +45,8 @@ class MCAssessment extends React.Component {
 	}
 
 	render() {
-		const questionType = this.props.node.data.get('questionType') || 'default'
-		const content = this.props.node.data.get('content')
+		const questionType = this.props.element.questionType || 'default'
+		const content = this.props.element.content
 
 		return (
 			<div

@@ -13,6 +13,7 @@ const HTML = {
 	menuLabel: 'HTML',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

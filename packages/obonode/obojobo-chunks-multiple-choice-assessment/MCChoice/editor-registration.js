@@ -13,13 +13,9 @@ const MCChoice = {
 	supportsChildren: true,
 	helpers: Converter,
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case MCCHOICE_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		renderNode(props) {
+			console.log('rendering')
+			return <Node {...props} {...props.attributes} />
 		},
 		schema: Schema
 	}

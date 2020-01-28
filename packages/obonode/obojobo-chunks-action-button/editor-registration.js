@@ -13,6 +13,7 @@ const ActionButton = {
 	menuLabel: 'Button',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	components: {
 		EditorComponent,
 		Icon

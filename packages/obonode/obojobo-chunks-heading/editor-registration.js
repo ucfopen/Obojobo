@@ -13,6 +13,7 @@ const Heading = {
 	menuLabel: 'Heading',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

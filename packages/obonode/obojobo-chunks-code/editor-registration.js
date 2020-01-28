@@ -20,6 +20,7 @@ const Code = {
 	icon: Icon,
 	menuLabel: 'Code',
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

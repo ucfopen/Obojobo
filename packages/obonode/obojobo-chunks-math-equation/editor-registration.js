@@ -2,7 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
@@ -12,6 +12,7 @@ const MathEquation = {
 	menuLabel: 'Math Equation',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode
@@ -27,7 +28,7 @@ const MathEquation = {
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		renderNode(props) {
-			return <Node {...props} {...props.attributes} />
+			return <EditorComponent {...props} {...props.attributes} />
 		}
 	}
 }

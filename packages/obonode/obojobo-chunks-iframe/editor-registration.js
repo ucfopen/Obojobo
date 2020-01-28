@@ -13,6 +13,7 @@ const IFrame = {
 	menuLabel: 'IFrame',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

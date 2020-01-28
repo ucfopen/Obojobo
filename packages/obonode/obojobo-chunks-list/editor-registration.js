@@ -19,14 +19,6 @@ const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const isType = editor => {
-	return editor.value.blocks.some(block => {
-		return !!editor.value.document.getClosest(block.key, parent => {
-			return parent.type === LIST_NODE
-		})
-	})
-}
-
 const plugins = {
 	// Editor Plugins - These get attached to the editor object and override it's default functions
 	// They may affect multiple nodes simultaneously
@@ -101,8 +93,8 @@ const List = {
 	menuLabel: 'List',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: {
-		isType, //@TODO check if this is needed?
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
 	},

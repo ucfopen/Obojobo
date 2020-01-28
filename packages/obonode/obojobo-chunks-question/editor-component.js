@@ -58,16 +58,17 @@ class Question extends React.Component {
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
-		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		const element = this.props.element
+		const content = element.content
+		const hasSolution = element.children[element.children.length - 1].type === SOLUTION_NODE
 		let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
 		if (hasSolution) {
-			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
+			questionType = element.children[element.children.length - 2].type
 		} else {
-			questionType = this.props.node.nodes.last().type
+			questionType = element.children[element.children.length - 1]
 		}
 
 		return (
