@@ -9,6 +9,7 @@ import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { Button } = Common.components
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
@@ -51,7 +52,8 @@ class Question extends React.Component {
 		return Transforms.insertNodes(
 			this.props.editor,
 			{
-				type: SOLUTION_NODE,
+				type: QUESTION_NODE,
+				subtype: SOLUTION_NODE,
 				content: { score: 0 },
 				children: [
 					{
@@ -74,14 +76,14 @@ class Question extends React.Component {
 					}
 				]
 			},
-			{ at: path.concat(1) }
+			{ at: path.concat(this.props.element.children.length) }
 		)
 	}
 
 	render() {
 		const element = this.props.element
 		const content = element.content
-		const hasSolution = element.children[element.children.length - 1].type === SOLUTION_NODE
+		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
 		let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement

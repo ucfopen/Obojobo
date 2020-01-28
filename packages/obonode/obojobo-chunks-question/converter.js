@@ -1,6 +1,7 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
 
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
@@ -22,8 +23,9 @@ const slateToObo = node => {
 
 	node.children.forEach(child => {
 		switch (child.type) {
-			case SOLUTION_NODE:
-				content.solution = Common.Registry.getItemForType(PAGE_NODE).slateToObo(child.nodes.get(0))
+			// Handles Solution nodes - 
+			case QUESTION_NODE:
+				content.solution = Common.Registry.getItemForType(PAGE_NODE).slateToObo(child.children[0])
 				break
 
 			case MCASSESSMENT_NODE:
@@ -63,12 +65,10 @@ const oboToSlate = node => {
 
 	if (node.content.solution) {
 		const solution = {
-			object: 'block',
-			type: SOLUTION_NODE,
-			children: Common.Registry.getItemForType(PAGE_NODE).oboToSlate(node.content.solution)
+			type: QUESTION_NODE,
+			subtype: SOLUTION_NODE,
+			children: [Common.Registry.getItemForType(PAGE_NODE).oboToSlate(node.content.solution)]
 		}
-
-		solution.nodes.push()
 		slateNode.children.push(solution)
 	}
 
