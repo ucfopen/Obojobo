@@ -20,7 +20,7 @@ const MCFeedback = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			// If the element is a MCAnswer, only allow Content children
+			// If the element is a MCFeedback, only allow Content children
 			if (Element.isElement(node) && node.type === MCFEEDBACK_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					if (!Common.Registry.contentTypes.includes(child.type)) {

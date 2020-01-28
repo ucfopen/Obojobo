@@ -11,44 +11,53 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 const { Button } = Common.components
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 class MCChoice extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.delete = this.delete.bind(this)
+		this.handleScoreChange = this.handleScoreChange.bind(this)
+		this.addFeedback = this.addFeedback.bind(this)
 	}
 
-	delete(event) {
-		event.stopPropagation()
-		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+	delete() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
-	handleScoreChange(event) {
-		event.stopPropagation()
-		const editor = this.props.editor
-		const newScore = this.props.node.data.get('content').score === 100 ? 0 : 100
+	handleScoreChange() {
+		const score = this.props.element.content.score === 100 ? 0 : 100
 
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					score: newScore
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.setNodes(
+			this.props.editor, 
+			{ content: { ...this.props.element.content, score } },
+			{ at: path }
+		)
 	}
 
 	addFeedback() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		console.log(path)
 		return Transforms.insertNodes(
 			this.props.editor,
 			{
 				type: MCFEEDBACK_NODE,
+				content: {},
 				children: [
 					{
 						type: TEXT_NODE,
-						children: [{ text: '' }]
+						content: {},
+						children: [
+							{
+								type: TEXT_NODE,
+								subtype: TEXT_LINE_NODE,
+								content: { indent: 0 },
+								children: [{ text: '' }]
+							}
+						]
 					}
 				]
 			},
@@ -67,17 +76,17 @@ class MCChoice extends React.Component {
 
 		return (
 			<div className={className}>
-				<Button className="delete-button" onClick={event => this.delete(event)}>
+				<Button className="delete-button" onClick={this.delete}>
 					×
 				</Button>
-				<Button className="correct-button" onClick={event => this.handleScoreChange(event)}>
+				<Button className="correct-button" onClick={this.handleScoreChange}>
 					{score === 100 ? '✔ Correct' : '✖ Incorrect'}
 				</Button>
 				<div className="children">
 					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? (
-					<Button className="add-feedback" onClick={() => this.addFeedback()}>
+					<Button className="add-feedback" onClick={this.addFeedback}>
 						Add Feedback
 					</Button>
 				) : null}
