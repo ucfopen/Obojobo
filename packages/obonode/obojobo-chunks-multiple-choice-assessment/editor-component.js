@@ -59,7 +59,7 @@ class MCAssessment extends React.Component {
 					}
 				]
 			},
-			{ at: path.concat(1) }
+			{ at: path.concat(this.props.element.children.length) }
 		)
 	}
 

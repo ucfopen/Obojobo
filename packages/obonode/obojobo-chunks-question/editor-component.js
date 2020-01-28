@@ -1,14 +1,19 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import { Block } from 'slate'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 class Question extends React.Component {
 	constructor(props) {
@@ -20,41 +25,57 @@ class Question extends React.Component {
 
 	onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
-		const questionData = this.props.node.data
-		const questionDataContent = questionData.get('content')
-		const mcAssessmentNode = this.props.node.nodes
-			.filter(node => node.type === MCASSESSMENT_NODE)
-			.get(0)
-		const mcAssessmentData = mcAssessmentNode.data.toJSON()
 
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...questionDataContent,
-					type
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor, 
+			{ content: { ...this.props.element.content, type } },
+			{ at: path }
+		)
 
-		this.props.editor.setNodeByKey(mcAssessmentNode.key, {
-			data: {
-				...mcAssessmentData,
-				questionType: type
-			}
-		})
+		const lastChildIndex = this.props.element.children.length - 1
+		return Transforms.setNodes(
+			this.props.editor, 
+			{ questionType: type },
+			{ at: path.concat(lastChildIndex) }
+		)
 	}
 
 	delete() {
-		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
 	addSolution() {
-		const editor = this.props.editor
-		const newQuestion = Block.create({
-			type: SOLUTION_NODE
-		})
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.insertNodes(
+			this.props.editor,
+			{
+				type: SOLUTION_NODE,
+				content: { score: 0 },
+				children: [
+					{
+						type: PAGE_NODE,
+						content: {},
+						children: [
+							{
+								type: TEXT_NODE,
+								content: {},
+								children: [
+									{
+										type: TEXT_NODE,
+										subtype: TEXT_LINE_NODE,
+										content: { indent: 0 },
+										children: [{ text: '' }]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{ at: path.concat(1) }
+		)
 	}
 
 	render() {
@@ -111,4 +132,4 @@ class Question extends React.Component {
 	}
 }
 
-export default Question
+export default withSlateWrapper(Question) 

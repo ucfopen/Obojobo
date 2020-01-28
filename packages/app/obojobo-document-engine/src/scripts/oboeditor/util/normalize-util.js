@@ -9,10 +9,9 @@ const NormalizeUtil = {
 		let currNode = entry
 		while(currNode) {
 			currNode = Editor.previous(editor, { at: currNode[1] })
-			// Stop collecting if there are no more siblings 
-			// or if the sibling is not a CodeLine 
+			// Stop collecting if there are no more siblings or if the sibling is not a match
 			// (this prevents non-consecutive orphans from being grouped together)
-			if(!currNode || match(currNode)) break
+			if(!currNode || !match(currNode[0])) break
 
 			orphanedNodes.push(currNode)
 		}
@@ -23,32 +22,29 @@ const NormalizeUtil = {
 		currNode = entry
 		while(currNode) {
 			currNode = Editor.next(editor, { at: currNode[1] })
-			// Stop collecting if there are no more siblings 
-			// or if the sibling is not a CodeLine 
+			// Stop collecting if there are no more siblings or if the sibling is not a match
 			// (this prevents non-consecutive orphans from being grouped together)
-			if(!currNode || match(currNode)) break
+			if(!currNode || !match(currNode[0])) break
 
 			orphanedNodes.push(currNode)
 		}
 
-		// Wrap orphaned children in a new Code Parent
-		// Based off of the wrapper 
+		// Wrap orphaned children in a new parent based off of the wrapper 
 		const first = orphanedNodes[0]
 		const last = orphanedNodes[orphanedNodes.length - 1]
 		const firstPath = first[1]
 		const lastPath = last[1]
-		const commonPath = Path.equals(firstPath, lastPath)
-			? Path.parent(firstPath)
-			: Path.common(firstPath, lastPath)
 
 		const range = Editor.range(editor, firstPath, lastPath)
-		const depth = commonPath.length + 1
-		const wrapperPath = Path.next(lastPath.slice(0, depth))
+		// Because all of the orphaned nodes are consecutive and at the same level
+		// we can insert the wrapper right after the last orphan
+		const wrapperPath = Path.next(lastPath)
 
 		Transforms.insertNodes(
 			editor, 
 			wrapper, 
-			{ at: wrapperPath })
+			{ at: wrapperPath }
+		)
 
 		Transforms.moveNodes(editor, {
 			at: range,

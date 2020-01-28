@@ -1,12 +1,15 @@
 import React from 'react'
-import { Node, Element, Transforms, Text } from 'slate'
+import { Node, Element, Transforms, Text, Editor } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
 import EditorComponent from './editor-component'
 import Converter from './converter'
 
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const MCAnswer = {
 	name: MCANSWER_NODE,
@@ -40,6 +43,23 @@ const MCAnswer = {
 						)
 						return
 					}
+				}
+
+				// MCAnswer parent normalization
+				// Note - collect up an adjacent MCFeedback, if it exists
+				const [parent] = Editor.parent(editor, path)
+				if(!Element.isElement(parent) || parent.type !== MCCHOICE_NODE) {
+					NormalizeUtil.wrapOrphanedSiblings(
+						editor, 
+						entry, 
+						{ 
+							type: MCCHOICE_NODE, 
+							content: {},
+							children: []
+						}, 
+						node => node.type === MCFEEDBACK_NODE
+					)
+					return
 				}
 			}
 

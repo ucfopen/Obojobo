@@ -1,9 +1,12 @@
 import React from 'react'
-import { Node, Element, Transforms, Text } from 'slate'
+import { Node, Element, Transforms, Text, Editor } from 'slate'
+import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
 import EditorComponent from './editor-component'
 import Converter from './converter'
 
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
@@ -22,10 +25,17 @@ const MCAssessment = {
 			// If the element is a MCAssessment, only allow MCChoice nodes
 			if (Element.isElement(node) && node.type === MCASSESSMENT_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					// The first node should be a MCAnswer
+					// The first node should be a MCChoice
 					// If it is not, wrapping it will result in normalizations to fix it
 					if(Element.isElement(child) && child.type !== MCCHOICE_NODE) {
-						Transforms.removeNodes(editor, { at: childPath })
+						Transforms.wrapNodes(
+							editor, 
+							{
+								type: MCCHOICE_NODE,
+								content: { score: 0 }
+							},
+							{ at: childPath }
+						)
 						return
 					}
 
@@ -42,6 +52,25 @@ const MCAssessment = {
 						)
 						return
 					}
+				}
+
+				// MCA parent normalization
+				// Note - Wraps an adjacent Solution node as well
+				const [parent] = Editor.parent(editor, path)
+				if(!Element.isElement(parent) || parent.type !== QUESTION_NODE) {
+					NormalizeUtil.wrapOrphanedSiblings(
+						editor, 
+						entry, 
+						{ 
+							type: QUESTION_NODE, 
+							content: {
+								type: node.questionType
+							},
+							children: []
+						}, 
+						() => node.type === SOLUTION_NODE
+					)
+					return
 				}
 			}
 

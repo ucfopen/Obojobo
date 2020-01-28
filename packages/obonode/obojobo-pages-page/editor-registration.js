@@ -13,13 +13,8 @@ const Page = {
 	supportsChildren: true,
 	helpers: Converter,
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case PAGE_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		renderNode(props) {
+			return <Node {...props} {...props.attributes} />
 		},
 		schema: Schema
 	},
