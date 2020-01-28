@@ -3,7 +3,7 @@ import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-mode
 
 /**
  * Generates an Obojobo MCAssessment Node from a Slate node.
- * Copies the id, type, triggers, and sets the responseType
+ * Copies the id, type, triggers, shuffle, and sets the responseType
  * based on the number of correct children. It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
@@ -32,7 +32,8 @@ const slateToObo = node => {
 		children,
 		content: {
 			triggers: node.content.triggers,
-			responseType
+			responseType,
+			shuffle: node.content.shuffle
 		}
 	}
 }

@@ -23,7 +23,7 @@ const MCFeedback = {
 			// If the element is a MCFeedback, only allow Content children
 			if (Element.isElement(node) && node.type === MCFEEDBACK_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					if (!Common.Registry.contentTypes.includes(child.type)) {
+					if (Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)) {
 						Transforms.removeNodes(editor, { at: childPath })
 						return
 					}

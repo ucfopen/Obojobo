@@ -1,47 +1,66 @@
 import React from 'react'
-import { Block } from 'slate'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 import './editor-component.scss'
 
 const { Button, Switch } = Common.components
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 class MCAssessment extends React.Component {
 	changeResponseType(event) {
-		event.stopPropagation()
-		const editor = this.props.editor
-
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...this.props.node.data.get('content'),
-					responseType: event.target.value
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.setNodes(
+			this.props.editor, 
+			{ content: { ...this.props.element.content, responseType: event.target.value } },
+			{ at: path }
+		)
 	}
 
 	changeShuffle(shuffle) {
-		return this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				...this.props.node.data.toJSON(),
-				content: {
-					...this.props.node.data.get('content'),
-					shuffle
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.setNodes(
+			this.props.editor, 
+			{ content: { ...this.props.element.content, shuffle } },
+			{ at: path }
+		)
 	}
 
 	addChoice() {
-		const editor = this.props.editor
-
-		const newChoice = Block.create({
-			type: MCCHOICE_NODE,
-			data: { content: { score: 0 } }
-		})
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newChoice)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.insertNodes(
+			this.props.editor,
+			{
+				type: MCCHOICE_NODE,
+				content: { score: 0 },
+				children: [
+					{
+						type: MCANSWER_NODE,
+						content: {},
+						children: [
+							{
+								type: TEXT_NODE,
+								content: {},
+								children: [
+									{
+										type: TEXT_NODE,
+										subtype: TEXT_LINE_NODE,
+										content: { indent: 0 },
+										children: [{ text: '' }]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{ at: path.concat(1) }
+		)
 	}
 
 	render() {
@@ -77,4 +96,4 @@ class MCAssessment extends React.Component {
 	}
 }
 
-export default MCAssessment
+export default withSlateWrapper(MCAssessment)

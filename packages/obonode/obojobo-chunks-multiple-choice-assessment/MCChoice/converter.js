@@ -12,7 +12,8 @@ const slateToObo = node => ({
 	type: node.type,
 	children: node.children.map(child => Common.Registry.getItemForType(child.type).slateToObo(child)),
 	content: {
-		triggers: node.content.triggers
+		triggers: node.content.triggers,
+		score: node.content. score
 	}
 })
 

@@ -23,7 +23,7 @@ const MCAnswer = {
 			// If the element is a MCAnswer, only allow Content children
 			if (Element.isElement(node) && node.type === MCANSWER_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					if (!Common.Registry.contentTypes.includes(child.type)) {
+					if (Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)) {
 						Transforms.removeNodes(editor, { at: childPath })
 						return
 					}
