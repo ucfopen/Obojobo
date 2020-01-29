@@ -27,7 +27,10 @@ class Header extends React.Component {
 
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
-		if (!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
+		// prettier-ignore
+		if (!model.setId(newId)) {
+			return 'The id "' + newId + '" already exists. Please choose a unique id'
+		}
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 	}
@@ -57,10 +60,12 @@ class Header extends React.Component {
 				name: 'start',
 				description: 'Start Page',
 				type: 'select',
-				values: list.filter(item => item.type === 'link').map(item => ({
-					value: item.id,
-					description: item.label
-				}))
+				values: list
+					.filter(item => item.type === 'link')
+					.map(item => ({
+						value: item.id,
+						description: item.label
+					}))
 			}
 		]
 
@@ -76,7 +81,8 @@ class Header extends React.Component {
 					savePage={this.props.savePage}
 					contentDescription={contentDescription}
 					markUnsaved={this.props.markUnsaved}
-					hideButtonBar/>
+					hideButtonBar
+				/>
 			</li>
 		)
 	}

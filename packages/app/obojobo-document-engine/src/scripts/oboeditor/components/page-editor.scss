@@ -4,9 +4,10 @@
 	display: flex;
 	margin: 2em;
 	margin-top: 8em;
-	border: 1px solid $color-text;
+	border: 1px solid $color-shadow;
 	background-color: $color-bg;
 	border-radius: $dimension-rounded-radius;
+	min-height: calc(100vh - 10.5em);
 
 	.obojobo-draft--modules--module {
 		margin: 3em auto;
@@ -26,7 +27,9 @@
 	}
 
 	span[data-placeholder] {
-		&::before {
+		pointer-events: none;
+
+		&.required::before {
 			content: attr(data-placeholder);
 			opacity: 0.5;
 			position: absolute;
@@ -41,6 +44,16 @@
 		&.align-right {
 			&::before {
 				right: 2em;
+			}
+		}
+	}
+
+	&.is-show-placeholders {
+		span[data-placeholder] {
+			&::before {
+				content: attr(data-placeholder);
+				opacity: 0.5;
+				position: absolute;
 			}
 		}
 	}

@@ -242,6 +242,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const feedback = this.getFeedback()
 		const feedbackModel = feedback ? OboModel.create(feedback) : null
 		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
+		console.log('RULES', this.evaluator.grader.rules)
 		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
 		const responseValue =
 			this.props.response && this.props.response.value ? this.props.response.value : ''

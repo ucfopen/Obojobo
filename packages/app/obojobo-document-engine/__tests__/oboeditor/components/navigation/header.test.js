@@ -26,15 +26,17 @@ describe('Header', () => {
 	test('Header component', () => {
 		const props = {
 			index: 0,
-			list: [{
-				id: '5',
-				type: 'header',
-				label: 'label5',
-				contentType: 'Page',
-				flags: {
-					assessment: false
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
 				}
-			}]
+			]
 		}
 		const component = mount(<Header {...props} />)
 		expect(component.html()).toMatchSnapshot()
@@ -43,45 +45,55 @@ describe('Header', () => {
 	test('saveContent updates the model', () => {
 		const props = {
 			index: 0,
-			list: [{
-				id: '5',
-				type: 'header',
-				label: 'label5',
-				contentType: 'Page',
-				flags: {
-					assessment: false
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
 				}
-			}]
+			]
 		}
 		const component = mount(<Header {...props} />)
 		component.instance().saveContent({}, {})
-		component.instance().saveContent({}, {
-			triggers: [],
-			title: "     "
-		})
-		component.instance().saveContent({}, {
-			triggers: [],
-			title: "Mock Title"
-		})
+		component.instance().saveContent(
+			{},
+			{
+				triggers: [],
+				title: '     '
+			}
+		)
+		component.instance().saveContent(
+			{},
+			{
+				triggers: [],
+				title: 'Mock Title'
+			}
+		)
 
-		expect(Common.models.OboModel.models["5"].set).toHaveBeenCalledTimes(3)
+		expect(Common.models.OboModel.models['5'].set).toHaveBeenCalledTimes(3)
 	})
 
 	test('saveId updates the model', () => {
 		const props = {
 			index: 0,
-			list: [{
-				id: '5',
-				type: 'header',
-				label: 'label5',
-				contentType: 'Page',
-				flags: {
-					assessment: false
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
 				}
-			}]
+			]
 		}
 		const component = mount(<Header {...props} />)
-		Common.models.OboModel.models["5"].setId.mockReturnValueOnce(true)
+		Common.models.OboModel.models['5'].setId.mockReturnValueOnce(true)
 		component.instance().saveId('5', 'mock-id')
 
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
@@ -90,18 +102,20 @@ describe('Header', () => {
 	test('saveId does not update the model', () => {
 		const props = {
 			index: 0,
-			list: [{
-				id: '5',
-				type: 'header',
-				label: 'label5',
-				contentType: 'Page',
-				flags: {
-					assessment: false
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
 				}
-			}]
+			]
 		}
 		const component = mount(<Header {...props} />)
-		Common.models.OboModel.models["5"].setId.mockReturnValueOnce(false)
+		Common.models.OboModel.models['5'].setId.mockReturnValueOnce(false)
 		component.instance().saveId('5', 'mock-id')
 
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()

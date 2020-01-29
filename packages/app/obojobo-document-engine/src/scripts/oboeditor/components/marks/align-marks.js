@@ -13,7 +13,7 @@ const AlignMarks = {
 		onKeyDown(event, editor, next) {
 			if (!(event.ctrlKey || event.metaKey)) return next()
 
-			switch(event.key) {
+			switch (event.key) {
 				case 'l':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_LEFT)
@@ -26,8 +26,6 @@ const AlignMarks = {
 				default:
 					next()
 			}
-
-
 		},
 		queries: {
 			setAlign: (editor, align) => {

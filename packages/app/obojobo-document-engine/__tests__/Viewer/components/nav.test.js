@@ -49,7 +49,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 // NavUtil
 jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	canNavigate: jest.fn(),
-	gotoPath: jest.fn(),
+	goto: jest.fn(),
 	toggle: jest.fn(),
 	getOrderedList: jest.fn(),
 	getNavTarget: jest.fn(),
@@ -215,14 +215,14 @@ describe('Nav', () => {
 		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
 		expect(NavUtil.canNavigate).toHaveBeenCalledWith(props.navState)
-		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
 
 		NavUtil.canNavigate.mockReset()
 		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		el.find('li').simulate('click')
 		expect(NavUtil.canNavigate).toHaveBeenCalledWith(props.navState)
-		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockFullPath')
+		expect(NavUtil.goto).toHaveBeenCalledWith(5)
 	})
 
 	test('onClick sub-link scrolls to the chunk', () => {
@@ -277,7 +277,7 @@ describe('Nav', () => {
 		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
 	})
 
-	test('Clicking on a link calls NavUtil.gotoPath and FocusUtil.focusOnNavigation', () => {
+	test('Clicking on a link calls NavUtil.goto and FocusUtil.focusOnNavigation', () => {
 		NavUtil.getOrderedList.mockReturnValue([
 			{
 				id: 'mock-id',
@@ -305,12 +305,12 @@ describe('Nav', () => {
 		const li = el.find('li')
 
 		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
-		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
 		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
 		li.simulate('click')
 		expect(FocusUtil.focusOnNavigation).toHaveBeenCalledTimes(1)
-		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
-		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockFullPath')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledWith('mock-id')
 		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
 	})
 
@@ -342,11 +342,11 @@ describe('Nav', () => {
 		const li = el.find('li')
 
 		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
-		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
 		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
 		li.simulate('click')
 		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
-		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
 		expect(mockDispatcherTrigger).toHaveBeenCalledTimes(1)
 		expect(mockDispatcherTrigger).toHaveBeenCalledWith('viewer:scrollToTop', {
 			value: { animateScroll: true }
@@ -525,7 +525,7 @@ describe('Nav', () => {
 				contains: () => false
 			}
 		}
-		component.instance().closeNavOnMobile({target: true})
+		component.instance().closeNavOnMobile({ target: true })
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
@@ -542,7 +542,7 @@ describe('Nav', () => {
 				contains: () => true
 			}
 		}
-		component.instance().closeNavOnMobile({target: true})
+		component.instance().closeNavOnMobile({ target: true })
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
@@ -559,7 +559,7 @@ describe('Nav', () => {
 				contains: () => false
 			}
 		}
-		component.instance().closeNavOnMobile({target: true})
+		component.instance().closeNavOnMobile({ target: true })
 		expect(NavUtil.close).toHaveBeenCalled()
 	})
 })

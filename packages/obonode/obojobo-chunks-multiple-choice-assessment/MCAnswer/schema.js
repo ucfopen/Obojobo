@@ -8,7 +8,10 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.MCAssessment.MCAnswer': {
-			nodes: [{ match: [
+			nodes: [
+				{
+					match: [
+						// Content nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },
@@ -20,7 +23,11 @@ const schema = {
 						{ type: 'ObojoboDraft.Chunks.MathEquation' },
 						{ type: 'ObojoboDraft.Chunks.Table' },
 						{ type: 'ObojoboDraft.Chunks.Text' },
-						{ type: 'ObojoboDraft.Chunks.YouTube' }], min: 1 }],
+						{ type: 'ObojoboDraft.Chunks.YouTube' }
+					],
+					min: 1
+				}
+			],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {

@@ -22,25 +22,31 @@ class ViewMenu extends React.PureComponent {
 						name: 'JSON Editor',
 						type: 'action',
 						action: () => {
-							this.props.onSave(this.props.draftId)
-							this.props.switchMode(JSON_MODE)
-						}
+							this.props.onSave(this.props.draftId).then(() => {
+								this.props.switchMode(JSON_MODE)
+							})
+						},
+						disabled: this.props.mode === JSON_MODE
 					},
 					{
 						name: 'XML Editor',
 						type: 'action',
 						action: () => {
-							this.props.onSave(this.props.draftId)
-							this.props.switchMode(XML_MODE)
-						}
+							this.props.onSave(this.props.draftId).then(() => {
+								this.props.switchMode(XML_MODE)
+							})
+						},
+						disabled: this.props.mode === XML_MODE
 					},
 					{
 						name: 'Visual Editor',
 						type: 'action',
 						action: () => {
-							this.props.onSave(this.props.draftId)
-							this.props.switchMode(VISUAL_MODE)
-						}
+							this.props.onSave(this.props.draftId).then(() => {
+								this.props.switchMode(VISUAL_MODE)
+							})
+						},
+						disabled: this.props.mode === VISUAL_MODE
 					}
 				]
 			},
@@ -49,6 +55,12 @@ class ViewMenu extends React.PureComponent {
 				type: 'action',
 				action: () => window.open(previewURL, '_blank')
 			},
+			{
+				name: 'Show Placeholders',
+				type: 'toggle-action',
+				action: this.props.togglePlaceholders,
+				value: this.props.showPlaceholders
+			}
 		]
 
 		return (

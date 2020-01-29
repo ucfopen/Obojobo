@@ -2,7 +2,10 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+
+const { Button } = Common.components
 
 class Table extends React.Component {
 	constructor(props) {
@@ -31,20 +34,28 @@ class Table extends React.Component {
 		})
 	}
 
+	renderButton() {
+		return (
+			<div className="buttonbox-box" contentEditable={false}>
+				<div className="box-border">
+					<Button className="toggle-header" onClick={this.toggleHeader.bind(this)}>
+						Toggle Header
+					</Button>
+				</div>
+			</div>
+		)
+	}
+
 	render() {
 		return (
 			<Node {...this.props}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
 						<table className="view" key="table">
-							<tbody>
-								{this.props.children}
-							</tbody>
+							<tbody>{this.props.children}</tbody>
 						</table>
 					</div>
-					<div className={'table-editor-buttons'}>
-						<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>
-					</div>
+					{this.props.isSelected ? this.renderButton() : null}
 				</div>
 			</Node>
 		)

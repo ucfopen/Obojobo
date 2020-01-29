@@ -6,9 +6,7 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 const Text = props => {
 	return (
 		<Node {...props}>
-			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
-				{props.children}
-			</div>
+			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>{props.children}</div>
 		</Node>
 	)
 }

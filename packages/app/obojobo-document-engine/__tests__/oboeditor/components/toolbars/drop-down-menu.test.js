@@ -9,9 +9,19 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu node', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = shallow(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = shallow(<DropDownMenu name="MockMenu" menu={menu} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('DropDownMenu node with toggle-action', () => {
+		const menu = [
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: true },
+			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: false }
+		]
+		const component = shallow(<DropDownMenu name="MockMenu" menu={menu} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -19,11 +29,13 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu node with sub-menu', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'subMenu', type: 'sub-menu', menu: [
-				{ name: 'SubItem', type: 'action', action: jest.fn() },
-			]},
+			{
+				name: 'subMenu',
+				type: 'sub-menu',
+				menu: [{ name: 'SubItem', type: 'action', action: jest.fn() }]
+			}
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -31,10 +43,10 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu node opens and closes', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
-		
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
+
 		component
 			.find('button')
 			.at(0)
@@ -53,9 +65,9 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu component opens and closes menu with keys', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 
 		component
 			.find('div')
@@ -81,9 +93,9 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu component moves up and down with keys', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 
 		component
 			.find('div')
@@ -109,9 +121,9 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu component closes menu when unfocused', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 
 		const html = component
 			.find('div')
@@ -127,9 +139,9 @@ describe('Drop Down Menu', () => {
 	test('DropDownMenu component cancels menu closure when focused', () => {
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
-			{ name: 'Redo', type: 'action', action: jest.fn() },
+			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu}/>)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 
 		const html = component
 			.find('div')

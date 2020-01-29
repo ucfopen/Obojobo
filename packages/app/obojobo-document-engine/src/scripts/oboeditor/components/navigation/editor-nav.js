@@ -17,19 +17,16 @@ const { ModalUtil } = Common.util
 class EditorNav extends React.PureComponent {
 	constructor(props) {
 		super(props)
-		this.state = this.props.navState
 
 		// optimization - bind once instead of every render
 		this.showAddPageModal = this.showAddPageModal.bind(this)
 		this.showAddAssessmentModal = this.showAddAssessmentModal.bind(this)
 		this.addAssessment = this.addAssessment.bind(this)
 		this.addPage = this.addPage.bind(this)
-		this.updateNavTargetId = this.updateNavTargetId.bind(this)
 	}
 
 	onNavItemClick(item) {
-		EditorUtil.gotoPath(item.fullPath)
-		this.setState({ navTargetId: item.id })
+		EditorUtil.goto(item.id)
 	}
 
 	showAddAssessmentModal() {
@@ -48,7 +45,6 @@ class EditorNav extends React.PureComponent {
 		const newAssessment = generateAssessment()
 		newAssessment.content.title = this.isWhiteSpace(name) ? 'Assessment' : name
 		EditorUtil.addAssessment(newAssessment)
-		return this.setState({ navTargetId: newAssessment.id })
 	}
 
 	showAddPageModal() {
@@ -67,7 +63,6 @@ class EditorNav extends React.PureComponent {
 		const newPage = generatePage()
 		newPage.content.title = this.isWhiteSpace(title) ? null : title
 		EditorUtil.addPage(newPage)
-		this.setState({ navTargetId: newPage.id })
 	}
 
 	isWhiteSpace(str) {
@@ -77,55 +72,46 @@ class EditorNav extends React.PureComponent {
 	renderAddAssessmentButton() {
 		return (
 			<button className={'add-node-button'} onClick={this.showAddAssessmentModal}>
-					+ Add Assessment
+				+ Add Assessment
 			</button>
 		)
-	}
-
-	updateNavTargetId(itemId) {
-		this.setState({ navTargetId: itemId })
 	}
 
 	renderItems(list) {
 		// If there are no pages in the nav list, add a placeholder item
 		// The placeholder will render an Add Page button
-		if(list
-			.filter(item => item.type === 'no-pages' || (item.type !== 'heading' && !item.flags.assessment))
-			.length < 1) {
-
-			list.splice(1,0, {
+		if (
+			list.filter(
+				item => item.type === 'no-pages' || (item.type !== 'heading' && !item.flags.assessment)
+			).length < 1
+		) {
+			list.splice(1, 0, {
 				type: 'no-pages'
 			})
 		}
 
 		return list.map((item, index) => {
-			switch(item.type){
+			switch (item.type) {
 				case 'heading':
 					return (
-						<Header
-							key={index}
-							index={index}
-							list={list}
-							markUnsaved={this.props.markUnsaved}/>
+						<Header key={index} index={index} list={list} markUnsaved={this.props.markUnsaved} />
 					)
 				case 'link':
 					return (
 						<SubMenu
 							key={index}
 							index={index}
-							isSelected={this.state.navTargetId === item.id}
+							isSelected={this.props.navState.navTargetId === item.id}
 							list={list}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
 							markUnsaved={this.props.markUnsaved}
-							updateNavTargetId={this.updateNavTargetId}/>
+						/>
 					)
 				case 'no-pages':
 					return (
 						<li key="1" className="no-pages-item">
-							<button
-								className="add-node-button"
-								onClick={this.showAddPageModal}>
+							<button className="add-node-button" onClick={this.showAddPageModal}>
 								+ Page
 							</button>
 						</li>
@@ -139,9 +125,9 @@ class EditorNav extends React.PureComponent {
 	render() {
 		const className =
 			'visual-editor--draft-nav ' +
-			isOrNot(this.state.locked, 'locked') +
-			isOrNot(this.state.open, 'open') +
-			isOrNot(!this.state.disabled, 'enabled')
+			isOrNot(this.props.navState.locked, 'locked') +
+			isOrNot(this.props.navState.open, 'open') +
+			isOrNot(!this.props.navState.disabled, 'enabled')
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
 
@@ -149,9 +135,7 @@ class EditorNav extends React.PureComponent {
 
 		return (
 			<div className={className}>
-				<ul>
-					{this.renderItems(list)}
-				</ul>
+				<ul>{this.renderItems(list)}</ul>
 				{!containsAssessment ? this.renderAddAssessmentButton() : null}
 			</div>
 		)

@@ -19,7 +19,6 @@ import Schema from './schema'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 
 describe('Question Bank Schema', () => {
 	test('plugins.schema.normalize fixes first invalid child in bank', () => {
@@ -83,72 +82,6 @@ describe('Question Bank Schema', () => {
 			code: 'child_min_invalid',
 			node: {},
 			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing first child in setting', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: {},
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing second child in setting', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: {},
-			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes first invalid child in setting', () => {
-		const editor = {
-			insertNodeByKey: jest.fn(),
-			removeNodeByKey: jest.fn()
-		}
-
-		editor.withoutNormalizing = funct => funct(editor)
-
-		Schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: {},
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes second invalid child in setting', () => {
-		const editor = {
-			insertNodeByKey: jest.fn(),
-			removeNodeByKey: jest.fn()
-		}
-
-		editor.withoutNormalizing = funct => funct(editor)
-
-		Schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: {},
-			child: { key: 'mockKey' },
 			index: 1
 		})
 

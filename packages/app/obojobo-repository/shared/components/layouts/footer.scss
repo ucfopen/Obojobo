@@ -4,10 +4,11 @@ $color-bg: white;
 footer {
 	background: $color-bg;
 	color: $color-fg;
-	padding-top: 30px;
+	padding-top: 2em;
 	font-size: 0.7em;
 	border-top: 1px solid #f9f4f4;
-	margin-top: 20px;
+	margin-top: 2em;
+	margin-bottom: 2em;
 }
 
 footer div {
@@ -21,7 +22,7 @@ footer div {
 }
 
 .ucf-open-footer {
-	margin-bottom: 35px;
+	margin-bottom: 2.5em;
 }
 
 .ucf-open-logo {
@@ -31,16 +32,16 @@ footer div {
 	width: 13em;
 	height: 3.5em;
 	background: url('/images/ucf_open.svg') center center no-repeat;
-	margin-bottom: 20px;
+	margin-bottom: 1.5em;
 }
 
 .ucf-open-desc {
-	margin-bottom: 5px;
+	margin-bottom: 0.5em;
 }
 
 .ucf-open-links > a {
 	display: inline-block;
-	padding: 2px 0;
+	padding: 0.2em 0;
 	color: $color-fg;
 
 	&:hover {
@@ -50,7 +51,7 @@ footer div {
 	// add separator between links
 	& + a::before {
 		content: '·';
-		padding: 0 0.5rem;
+		padding: 0 0.75em;
 		display: inline-block;
 	}
 }

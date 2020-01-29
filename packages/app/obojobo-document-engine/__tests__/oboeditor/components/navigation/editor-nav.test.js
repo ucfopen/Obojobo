@@ -15,7 +15,6 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
 }))
 
-
 describe('EditorNav', () => {
 	beforeAll(() => {
 		document.getSelection = jest.fn()
@@ -26,11 +25,10 @@ describe('EditorNav', () => {
 				isFirst: () => true,
 				isLast: () => false,
 				getIndex: () => 0,
-				get: type => type === 'type' ? 'ObojoboDraft.Chunks.Page' : {
-					id: 'mock-id',
-					title: 'Mock title',
-					triggers: []
-				}
+				get: type =>
+					type === 'type'
+						? 'ObojoboDraft.Chunks.Page'
+						: { id: 'mock-id', title: 'Mock title', triggers: [] }
 			}
 		}
 	})
@@ -153,7 +151,7 @@ describe('EditorNav', () => {
 			}
 		})
 
-		expect(EditorUtil.gotoPath).toHaveBeenCalled()
+		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
 	test('addAssessment hides the modal and calls EditorUtil', () => {
@@ -167,11 +165,11 @@ describe('EditorNav', () => {
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addAssessment.mock.calls[0][0].title).toMatchSnapshot()
 
-		component.instance().addAssessment("    ")
+		component.instance().addAssessment('    ')
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addAssessment.mock.calls[1][0].title).toMatchSnapshot()
 
-		component.instance().addAssessment("Assessment title")
+		component.instance().addAssessment('Assessment title')
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addAssessment.mock.calls[2][0].title).toMatchSnapshot()
 	})
@@ -187,25 +185,12 @@ describe('EditorNav', () => {
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addPage.mock.calls[0][0].title).toMatchSnapshot()
 
-		component.instance().addPage("    ")
+		component.instance().addPage('    ')
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addPage.mock.calls[1][0].title).toMatchSnapshot()
 
-		component.instance().addPage("Page title")
+		component.instance().addPage('Page title')
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addPage.mock.calls[2][0].title).toMatchSnapshot()
-	})
-
-	test('updateNavTargetId changes the state', () => {
-		EditorUtil.getOrderedList.mockReturnValue([])
-		const props = {
-			navState: {}
-		}
-		const component = mount(<EditorNav {...props} />)
-		const instance = component.instance()
-
-		instance.updateNavTargetId('mock-id')
-
-		expect(instance.state).toMatchSnapshot()
 	})
 })

@@ -2,15 +2,18 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import CodeEditor from 'src/scripts/oboeditor/components/code-editor'
 import React from 'react'
-
 import APIUtil from 'src/scripts/viewer/util/api-util'
-jest.mock('src/scripts/viewer/util/api-util')
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
-jest.mock('src/scripts/oboeditor/util/editor-util')
-jest.mock('react-codemirror2')
-jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 
 const mockClickFn = jest.fn().mockImplementation((a, b, c) => c())
+
+jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/oboeditor/util/editor-util')
+jest.mock('react-codemirror2', () => ({
+	Controlled: global.mockReactComponent(this, 'Codemirror')
+}))
+
+jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/plugins/hot-key-plugin', () => () => ({
 	onKeyDown: mockClickFn,
 	onKeyUp: mockClickFn
@@ -192,6 +195,10 @@ describe('CodeEditor', () => {
 	})
 
 	test('saveCode calls APIUtil', () => {
+		APIUtil.postDraft.mockResolvedValue({
+			status: 'ok'
+		})
+
 		const props = {
 			initialCode: '',
 			mode: XML_MODE,
@@ -205,6 +212,25 @@ describe('CodeEditor', () => {
 		component.instance().saveCode()
 
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
+	})
+
+	test('saveCode() with invalid document', () => {
+		APIUtil.postDraft.mockResolvedValue({
+			status: 'error',
+			value: {
+				message: 'mock_message'
+			}
+		})
+
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<CodeEditor {...props} />)
+		component.instance().saveCode()
+
+		expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
 	})
 
 	test('setEditor changes state', () => {

@@ -1,23 +1,33 @@
 @import '../../client/css/defaults';
 
 .repository--button {
+	@mixin disabled() {
+		cursor: not-allowed;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid $color-transparent;
+		opacity: 0.4;
+	}
+
 	border: 0;
 	background: $color-button-bg;
 	color: white;
-	border-radius: 4px;
-	padding: 8px 18px;
-	font-weight: bold;
+	border-radius: 0.25em;
+	padding: 0.8em 1.1em;
 	box-sizing: border-box;
 	cursor: pointer;
 	text-decoration: none;
-	font-size: 11px;
+	font-size: 0.7em;
+
+	&:disabled {
+		@include disabled();
+	}
 
 	&:hover {
 		background: $color-action;
 	}
 
 	&.close-button {
-		$size: 25px;
+		$size: 1.6em;
 
 		min-width: $size;
 		height: $size;
@@ -27,7 +37,17 @@
 		color: $color-action-minor;
 		background-color: white;
 		font-weight: 900;
-		font-size: 18px;
+		font-size: 1.1em;
+
+		&:hover {
+			color: $color-action;
+		}
+	}
+
+	&.secondary-button {
+		border: 0.1em solid $color-action;
+		background-color: white;
+		color: $color-action;
 
 		&:hover {
 			background-color: $color-action;
@@ -35,14 +55,11 @@
 		}
 	}
 
-	&.secondary-button {
-		border: 1px solid $color-action;
-		background-color: white;
-		color: $color-action;
+	&.dangerous-button {
+		background-color: $color-dangerous;
 
 		&:hover {
-			background-color: $color-action;
-			color: white;
+			background-color: $color-dangerous-minor;
 		}
 	}
 }

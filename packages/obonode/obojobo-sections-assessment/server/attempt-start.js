@@ -1,7 +1,7 @@
 const Assessment = require('./assessment')
-const VisitModel = require('obojobo-express/models/visit')
-const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
-const insertEvent = require('obojobo-express/insert_event')
+const VisitModel = require('obojobo-express/server/models/visit')
+const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
+const insertEvent = require('obojobo-express/server/insert_event')
 const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'

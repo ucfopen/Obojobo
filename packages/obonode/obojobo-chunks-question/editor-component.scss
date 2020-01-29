@@ -9,28 +9,32 @@
 
 	.question-settings {
 		padding-left: 3em;
-		padding-top: 1em;
-		font-family: "Libre Franklin", Arial, sans-serif;
+		padding-top: 2em;
+		font-family: $font-default;
 		font-weight: bold;
 
 		.question-type {
 			position: absolute;
-			top: 1em;
+			top: 2em;
 			right: 2em;
 			border: 1px solid $color-shadow;
 			border-radius: $dimension-rounded-radius;
 			padding: 0.18em;
+			padding-right: 0.5em;
+			font-weight: normal;
+			font-size: 1rem;
+			cursor: pointer;
 
-			label {
-				padding-left: 0.5em;
-				font-weight: normal;
-				font-size: 1rem;
+			&:hover {
+				border: 1px solid $color-action;
+				background: lighten($color-action, 48%);
 			}
 
 			input {
 				position: relative;
 				top: -0.1em;
 				left: 0.2em;
+				margin-right: 1em;
 			}
 		}
 
@@ -87,19 +91,6 @@
 	}
 
 	select {
-		font-family: $font-default;
-		border-radius: 3px;
-		font-size: 0.7em;
-		background-color: white;
-		min-width: 10em;
-		padding: 0.7em 2em 0.7em 0.5em;
-
-		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-			linear-gradient(135deg, gray 50%, transparent 50%);
-		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
-			calc(100% - 2.5em) 0.5em;
-		background-size: 5px 5px, 5px 5px, 1px 1.5em;
-		background-repeat: no-repeat;
+		@include select-input();
 	}
 }

@@ -3,25 +3,22 @@
 .repository--module-icon--menu-wrapper {
 	position: relative;
 	box-sizing: border-box;
-	margin-left: -10px;
+	margin-left: -0.8em;
 	width: 100%;
 }
 
 .repository--module-icon--menu-control-button {
-	$size-small: 30px;
-	$size-big: 35px;
-	$position-icon-top: 80px;
-	$position-icon-right: 15px;
+	$button-size: 2.6em;
 
-	height: $size-small;
-	width: $size-small;
-	line-height: $size-small;
+	height: $button-size;
+	width: $button-size;
+	line-height: $button-size;
 	position: absolute;
-	border-radius: $size-small;
+	border-radius: $button-size;
 	background-color: $color-banner-bg;
 	border: 3px solid white;
-	top: $position-icon-top;
-	right: $position-icon-right;
+	top: 6.8em;
+	right: 1.3em;
 	color: white;
 
 	> svg {
@@ -34,15 +31,10 @@
 
 	&:hover {
 		background-color: $color-action;
-		height: $size-big;
-		width: $size-big;
-		line-height: $size-big;
-		border-radius: $size-big;
-		top: $position-icon-top - ($size-big - $size-small) / 2;
-		right: $position-icon-right - ($size-big - $size-small) / 2;
+		transform: scale(1.2);
+		transform-origin: center;
 
 		> svg {
-			margin: -5px;
 			stroke: white;
 			fill: white;
 		}
@@ -53,41 +45,33 @@
 	display: block;
 	position: absolute;
 	width: 100%;
-	top: 5px;
+	top: 0.8em;
 	background-color: $color-banner-bg;
-	border-radius: 0 0 5px 5px;
-	padding: 5px 9px;
+	border-radius: 0 0 0.25em 0.25em;
+	padding: 0.7em 0.8em;
 	z-index: 100;
 	border: 1px solid $color-banner-bg;
 	border-top: 0;
+	transform: translate(-1px);
 
 	hr {
-		margin: 0 0 4px 0;
+		margin: 0 0 0.6em 0;
 		border: 0;
 		border-top: 1px solid darken($color-banner-bg, 10%);
 	}
 
 	.repository--button {
 		display: inline-block;
-		margin-bottom: 8px;
+		margin-bottom: 0.7em;
 		width: 100%;
 		position: relative;
-		font-weight: bold;
+		font-size: 1em;
 
 		&.more {
-			margin-bottom: 2px;
+			margin-bottom: 0;
 			color: $color-action;
 			background-color: inherit;
 			text-decoration: underline;
-
-			&::before {
-				content: ' ';
-				width: 100%;
-				height: 1px;
-				position: absolute;
-				top: -10px;
-				left: 0;
-			}
 
 			&:hover {
 				background-color: rgba(255, 255, 255, 0.5);

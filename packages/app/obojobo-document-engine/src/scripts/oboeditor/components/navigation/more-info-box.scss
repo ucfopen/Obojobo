@@ -1,10 +1,12 @@
 @import '../../../../scss/includes';
 
-.more-info {
+.visual-editor--more-info {
 	position: absolute;
 	z-index: 9999;
 	top: 0;
 	right: 0;
+	font-family: $font-default;
+	font-weight: bold;
 
 	.more-info-button {
 		width: 1.7em;
@@ -15,23 +17,23 @@
 		border: none;
 		background: none;
 		padding: 0;
+		cursor: pointer;
 
 		svg {
-			stroke: $color-shadow;
-			fill: none;
+			opacity: 0.4;
 		}
 
 		&:hover {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1;
 			}
 		}
 
 		&.is-open {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1;
 			}
 		}
 	}
@@ -39,11 +41,11 @@
 	.more-info-box {
 		position: absolute;
 		top: -1em;
-		right: -28.5em;
+		right: -30.5em;
 		background-color: $color-bg2;
 		z-index: $z-index-above-content;
 		box-shadow: $box-shadow-overlay;
-		width: 26em;
+		width: 28em;
 
 		&::before {
 			position: absolute;
@@ -75,24 +77,30 @@
 			margin-bottom: 0.5em;
 
 			> div {
-				padding: 0.5em;
-				padding-right: 0;
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
 				min-height: 1.5em;
 				border-bottom: 1px solid $color-shadow;
 				position: relative;
 
 				label {
 					display: inline-block;
-					width: 5em;
+					width: 7em;
+					min-height: 2em;
+
+					&.switch {
+						min-height: 1.1em;
+					}
 				}
 
 				input {
 					@include text-input();
 
-					width: 23em;
+					width: 22.7em;
 
 					&.id-input {
-						width: 18.1em;
+						width: 17.9em;
+						border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
 					}
 				}
 
@@ -112,7 +120,12 @@
 					background-color: $color-bg;
 					border-color: $color-action;
 					border-width: 2px;
-					height: 2.35em;
+					height: 2.5em;
+
+					&:hover {
+						color: $color-bg;
+						background-color: $color-action;
+					}
 				}
 
 				.xml-button {
@@ -138,13 +151,21 @@
 					right: 0;
 				}
 
-				.delete-page-button {
-					position: relative;
-					left: -0.5em;
+				&.button-bar {
+					.obojobo-draft--components--button {
+						margin-right: 0.5em;
+					}
 
-					.button {
-						border-color: $color-dangerous;
-						color: $color-dangerous;
+					.delete-page-button {
+						.button {
+							border-color: $color-dangerous;
+							color: $color-dangerous;
+
+							&:hover {
+								color: $color-bg;
+								background-color: $color-dangerous;
+							}
+						}
 					}
 				}
 			}
@@ -168,12 +189,16 @@
 		}
 	}
 
+	.box-controls {
+		text-align: center;
+	}
+
 	.select-item {
 		font-family: $font-default;
 		border-radius: $dimension-rounded-radius;
 		font-size: 0.7em;
 		background-color: $color-bg;
-		min-width: 26.3em;
+		min-width: 27em;
 		padding: 0.7em 2em 0.7em 0.5em;
 		appearance: none;
 		//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
@@ -186,7 +211,7 @@
 		background-repeat: no-repeat;
 	}
 
-	.obojobo-draft--components--slider {
+	.obojobo-draft--components--switch {
 		margin-top: 0.3em;
 		margin-bottom: 0.3em;
 	}

@@ -1,4 +1,4 @@
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 jest.mock(
 	'./util',
 	() => ({
@@ -8,13 +8,13 @@ jest.mock(
 )
 
 jest.setMock(
-	'obojobo-express/models/draft_node',
+	'obojobo-express/server/models/draft_node',
 	require('obojobo-document-engine/__mocks__/models/draft_node')
 )
 
 const QuestionBank = require('./question-bank')
 const _ = require('underscore')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 const { getRandom } = require('./util')
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'

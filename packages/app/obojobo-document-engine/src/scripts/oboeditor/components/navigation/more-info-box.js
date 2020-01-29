@@ -7,7 +7,7 @@ import React from 'react'
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 
-const { Button, Slider } = Common.components
+const { Button, Switch } = Common.components
 const { ModalUtil } = Common.util
 
 // Expected Props:
@@ -44,6 +44,10 @@ class MoreInfoBox extends React.Component {
 		this.node = React.createRef()
 	}
 
+	componentWillUnmount() {
+		this.close()
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
@@ -69,7 +73,7 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
-	handleSliderChange(key, booleanValue) {
+	handleSwitchChange(key, booleanValue) {
 		const newContent = {}
 		newContent[key] = booleanValue
 
@@ -169,17 +173,17 @@ class MoreInfoBox extends React.Component {
 				)
 			case 'toggle':
 				return (
-					<Slider
+					<Switch
 						key={description.type}
 						title={description.description}
 						initialChecked={this.state.content[description.name]}
-						handleCheckChange={this.handleSliderChange.bind(this, description.name)}
+						handleCheckChange={this.handleSwitchChange.bind(this, description.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
 			case 'abstract-toggle':
 				return (
-					<Slider
+					<Switch
 						key={description.type}
 						title={description.description}
 						initialChecked={description.value(this.state.content)}
@@ -248,10 +252,10 @@ class MoreInfoBox extends React.Component {
 							</div>
 						)}
 					</div>
-					<div>
+					<div className="box-controls">
 						{this.state.error ? <p>{this.state.error}</p> : null}
 						<Button onClick={this.onSave} className="cancel-button">
-							Close
+							Save &amp; Close
 						</Button>
 					</div>
 				</div>
@@ -261,7 +265,7 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className={'more-info ' + this.props.className}>
+			<div ref={this.node} className={'visual-editor--more-info ' + (this.props.className || '')}>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}

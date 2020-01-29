@@ -41,7 +41,7 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
         label4
       </span>
       <div
-        className="more-info undefined"
+        className="visual-editor--more-info "
       >
         <button
           className="more-info-button "
@@ -62,18 +62,21 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
             <circle
               cx="57"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />
             <circle
               cx="107"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />
             <circle
               cx="157"
               cy="107"
+              fill="#000"
               r="7"
               strokeWidth="16"
             />
@@ -96,9 +99,3 @@ exports[`EditorNav addPage hides the modal and calls EditorUtil 1`] = `undefined
 exports[`EditorNav addPage hides the modal and calls EditorUtil 2`] = `undefined`;
 
 exports[`EditorNav addPage hides the modal and calls EditorUtil 3`] = `undefined`;
-
-exports[`EditorNav updateNavTargetId changes the state 1`] = `
-Object {
-  "navTargetId": "mock-id",
-}
-`;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Track Track renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--slider--track  is-not-disabled"
+  style={
+    Object {
+      "left": "10%",
+      "width": "0%",
+    }
+  }
+/>
+`;

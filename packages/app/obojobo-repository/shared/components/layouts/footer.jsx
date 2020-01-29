@@ -1,9 +1,9 @@
 require('./footer.scss')
 
-const React = require('react');
+const React = require('react')
 const currentYear = new Date().getFullYear()
 
-const Footer = () =>
+const Footer = () => (
 	<footer>
 		<div className="ucf-open-footer">
 			<div className="ucf-open-image">
@@ -20,8 +20,12 @@ const Footer = () =>
 		</div>
 
 		<div className="copyright">
-			<span className="copy">&copy; <span id="copyright-date">{ currentYear }</span> <a href="https://ucf.edu">University of Central Florida</a></span>
+			<span className="copy">
+				&copy; <span id="copyright-date">{currentYear}</span>{' '}
+				<a href="https://ucf.edu">University of Central Florida</a>
+			</span>
 		</div>
 	</footer>
+)
 
 module.exports = React.memo(Footer)

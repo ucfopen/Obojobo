@@ -29,7 +29,7 @@ exports[`Figure editor plugins.renderPlaceholder exits when not relevent 3`] = `
 
 exports[`Figure editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
-  className="placeholder align-center"
+  className="placeholder align-center required"
   contentEditable={false}
   data-placeholder="Type Your Caption Here"
 />

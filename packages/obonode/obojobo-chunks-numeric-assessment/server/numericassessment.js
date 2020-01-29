@@ -1,4 +1,4 @@
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 const NumericAnswerEvaluator = require('../evaluation/numeric-answer-evaluator')
 const numericChoicesToScoreRuleConfigs = require('../numeric-choices-to-score-rule-configs')
 

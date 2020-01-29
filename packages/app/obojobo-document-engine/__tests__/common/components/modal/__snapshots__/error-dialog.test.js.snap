@@ -8,7 +8,7 @@ exports[`ErrorDialog ErrorDialog component 1`] = `
     className="obojobo-draft--components--modal--simple-dialog"
   >
     <div
-      className="obojobo-draft--components--modal--dialog undefined"
+      className="obojobo-draft--components--modal--dialog "
       style={null}
     >
       <div
@@ -53,6 +53,7 @@ exports[`ErrorDialog ErrorDialog component 1`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
               >
                 OK

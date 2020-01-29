@@ -63,17 +63,52 @@ describe('Assessment Converter', () => {
 
 		slateNode = createSlateNode([{ type: 'someTrigger' }])
 		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+	})
 
+	test('slateToObo converts a Slate node to an OboNode with no model', () => {
+		const createSlateNode = triggersValue => ({
+			key: 'otherMockKey',
+			type: 'mockType',
+			data: {
+				get: () => ({
+					rubric: true,
+					triggers: triggersValue
+				})
+			},
+			nodes: [
+				{
+					type: PAGE_NODE
+				},
+				{
+					type: QUESTION_BANK_NODE
+				},
+				{
+					type: ACTIONS_NODE
+				},
+				{
+					type: RUBRIC_NODE
+				}
+			]
+		})
+
+		let slateNode = createSlateNode([])
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+
+		slateNode = createSlateNode(undefined)
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+
+		slateNode = createSlateNode([{ type: 'someTrigger' }])
+		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const createOboNode = (hasRubric, triggers) => ({
+		const createOboNode = (rubric, triggers) => ({
 			id: 'mockKey',
 			get() {
 				return {
 					triggers,
 					scoreActions: 'someScoreActions',
-					rubric: hasRubric
+					rubric: rubric
 				}
 			},
 			attributes: {
@@ -88,7 +123,7 @@ describe('Assessment Converter', () => {
 
 		// startAttemptLock && endAttemptLock == false
 		// rubric exists
-		let oboNode = createOboNode(true, [])
+		let oboNode = createOboNode({}, [])
 		expect(Converter.oboToSlate(oboNode)).toMatchSnapshot()
 
 		// startAttemptLock && endAttemptLock == true

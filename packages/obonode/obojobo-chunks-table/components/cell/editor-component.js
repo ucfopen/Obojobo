@@ -25,7 +25,7 @@ class Cell extends React.Component {
 	}
 
 	toggleOpen() {
-		this.setState(prevState => ({ isOpen: !prevState.isOpen}))
+		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
 	addRowAbove() {
@@ -38,17 +38,26 @@ class Cell extends React.Component {
 
 		const newRow = Block.create({
 			type: TABLE_ROW_NODE,
-			data: { content: { header: rowIndex === 0 && isHeader, numCols: tableParent.data.get('content').numCols } }
+			data: {
+				content: {
+					header: rowIndex === 0 && isHeader,
+					numCols: tableParent.data.get('content').numCols
+				}
+			}
 		})
 
 		editor.insertNodeByKey(tableParent.key, rowIndex, newRow)
 
-		if(isHeader) {
+		if (isHeader) {
 			const noHeader = { header: false }
 			this.props.parent.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, { data: { content: { ...cell.data.get('content'), ...noHeader } } })
+				editor.setNodeByKey(cell.key, {
+					data: { content: { ...cell.data.get('content'), ...noHeader } }
+				})
 			})
-			editor.setNodeByKey(this.props.parent.key, { data: { content: { ...this.props.parent.data.get('content'), ...noHeader } } })
+			editor.setNodeByKey(this.props.parent.key, {
+				data: { content: { ...this.props.parent.data.get('content'), ...noHeader } }
+			})
 		}
 	}
 
@@ -75,26 +84,32 @@ class Cell extends React.Component {
 
 		return editor.withoutNormalizing(() => {
 			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, { data: { content: {
-				...tableParent.data.get('content'),
-				numCols: tableContent.numCols + 1
-			}}})
+			editor.setNodeByKey(tableParent.key, {
+				data: {
+					content: {
+						...tableParent.data.get('content'),
+						numCols: tableContent.numCols + 1
+					}
+				}
+			})
 
 			tableParent.nodes.forEach(row => {
 				const newCell = Block.create({
 					type: TABLE_CELL_NODE,
 					data: { content: { header: row.data.get('content').header } }
 				})
-				
-				editor.setNodeByKey(row.key, { data: { content: {
-					...row.data.get('content'),
-					numCols: tableContent.numCols + 1
-				}}})
+
+				editor.setNodeByKey(row.key, {
+					data: {
+						content: {
+							...row.data.get('content'),
+							numCols: tableContent.numCols + 1
+						}
+					}
+				})
 				editor.insertNodeByKey(row.key, colIndex, newCell)
 			})
 		})
-
-			
 	}
 
 	addColRight() {
@@ -105,10 +120,14 @@ class Cell extends React.Component {
 
 		return editor.withoutNormalizing(() => {
 			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, { data: { content: {
-				...tableParent.data.get('content'),
-				numCols: tableContent.numCols + 1
-			}}})
+			editor.setNodeByKey(tableParent.key, {
+				data: {
+					content: {
+						...tableParent.data.get('content'),
+						numCols: tableContent.numCols + 1
+					}
+				}
+			})
 
 			tableParent.nodes.forEach(row => {
 				const newCell = Block.create({
@@ -116,10 +135,14 @@ class Cell extends React.Component {
 					data: { content: { header: row.data.get('content').header } }
 				})
 
-				editor.setNodeByKey(row.key, { data: { content: {
-					...row.data.get('content'),
-					numCols: tableContent.numCols + 1
-				}}})
+				editor.setNodeByKey(row.key, {
+					data: {
+						content: {
+							...row.data.get('content'),
+							numCols: tableContent.numCols + 1
+						}
+					}
+				})
 				editor.insertNodeByKey(row.key, colIndex + 1, newCell)
 			})
 		})
@@ -143,9 +166,13 @@ class Cell extends React.Component {
 
 			const yesHeader = { header: true }
 			sibling.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, { data: { content: { ...cell.data.get('content'), ...yesHeader } } })
+				editor.setNodeByKey(cell.key, {
+					data: { content: { ...cell.data.get('content'), ...yesHeader } }
+				})
 			})
-			editor.setNodeByKey(sibling.key, { data: { content: { ...sibling.data.get('content'), ...yesHeader } } })
+			editor.setNodeByKey(sibling.key, {
+				data: { content: { ...sibling.data.get('content'), ...yesHeader } }
+			})
 		}
 
 		return this.props.editor.removeNodeByKey(this.props.parent.key)
@@ -164,21 +191,24 @@ class Cell extends React.Component {
 
 		return editor.withoutNormalizing(() => {
 			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, { data: { content: {
-				...tableParent.data.get('content'),
-				numCols: tableContent.numCols - 1
-			}}})
+			editor.setNodeByKey(tableParent.key, {
+				data: {
+					content: {
+						...tableParent.data.get('content'),
+						numCols: tableContent.numCols - 1
+					}
+				}
+			})
 
 			tableParent.nodes.forEach(row => {
 				const cell = row.nodes.get(colIndex)
-				editor.setNodeByKey(row.key, { 
-					data: { 
+				editor.setNodeByKey(row.key, {
+					data: {
 						content: {
 							...row.data.get('content'),
 							numCols: tableContent.numCols - 1
-						} 
-
-					} 
+						}
+					}
 				})
 				editor.removeNodeByKey(cell.key)
 			})
@@ -188,28 +218,18 @@ class Cell extends React.Component {
 	renderDropdown() {
 		return (
 			<div className="dropdown-cell" contentEditable={false}>
-					<button onClick={this.toggleOpen}>{(this.state.isOpen ? '▲' : '▼')}</button>
-					<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
-						<button onClick={this.addRowAbove}>
-							Insert Row Above
-						</button>
-						<button onClick={this.addRowBelow}>
-							Insert Row Below
-						</button>
-						<button onClick={this.addColLeft}>
-							Insert Column Left
-						</button>
-						<button onClick={this.addColRight}>
-							Insert Column Right
-						</button>
-						<button onClick={this.deleteRow}>
-							Delete Row
-						</button>
-						<button onClick={this.deleteCol}>
-							Delete Column
-						</button>
-					</div>
+				<button className={isOrNot(this.state.isOpen, 'open')} onClick={this.toggleOpen}>
+					{'⌃'}
+				</button>
+				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
+					<button onClick={this.addRowAbove}>Insert Row Above</button>
+					<button onClick={this.addRowBelow}>Insert Row Below</button>
+					<button onClick={this.addColLeft}>Insert Column Left</button>
+					<button onClick={this.addColRight}>Insert Column Right</button>
+					<button onClick={this.deleteRow}>Delete Row</button>
+					<button onClick={this.deleteCol}>Delete Column</button>
 				</div>
+			</div>
 		)
 	}
 
@@ -222,7 +242,12 @@ class Cell extends React.Component {
 				</th>
 			)
 		}
-		return <td>{this.props.isSelected ? this.renderDropdown() : null}{this.props.children}</td>
+		return (
+			<td>
+				{this.props.isSelected ? this.renderDropdown() : null}
+				{this.props.children}
+			</td>
+		)
 	}
 }
 

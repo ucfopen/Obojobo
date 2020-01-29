@@ -1,6 +1,6 @@
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 const _ = require('underscore')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 const { getRandom } = require('./util')
 const flatten = require('array-flatten')
 

@@ -14,11 +14,40 @@ const { QuestionUtil } = Viewer.util
 
 const PICK_ALL_INCORRECT_MESSAGE =
 	'You have either missed some correct answers or selected some incorrect answers.'
+const ANIMATION_TRANSITION_TIME_MS = 800
+
+const FEEDBACK_LABELS_TO_SHOW = 'feedbackLabelsToShow'
+
+const FOCUS_TARGET_EXPLANATION = 'explanation'
+const FOCUS_TARGET_RESULTS = 'results'
+const FOCUS_TARGET_QUESTION = 'question'
 
 export default class MCAssessment extends OboQuestionAssessmentComponent {
 	static getDetails(questionModel, questionAssessmentModel, score) {
 		if (questionAssessmentModel.modelState.responseType === 'pick-all' && score !== 100) {
 			return PICK_ALL_INCORRECT_MESSAGE
+		}
+
+		return null
+	}
+
+	constructor(props) {
+		super(props)
+		this.answerChoicesRef = React.createRef()
+
+		// this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
+		// this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
+		// this.onClickReset = this.onClickReset.bind(this)
+		// this.onFormChange = this.onFormChange.bind(this)
+		// this.onFormSubmit = this.onFormSubmit.bind(this)
+		// this.isShowingExplanation = this.isShowingExplanation.bind(this)
+
+		this.sortIds()
+	}
+
+	getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered) {
+		if (correctLabels) {
+			return correctLabels
 		}
 
 		return null
@@ -64,13 +93,6 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 				{instructions}
 			</React.Fragment>
 		)
-	}
-
-	constructor(props) {
-		super(props)
-
-		this.answerChoicesRef = React.createRef()
-		this.sortIds()
 	}
 
 	getResponseData() {
@@ -188,6 +210,66 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 	componentDidUpdate() {
 		this.sortIds()
 	}
+
+	//@TODO - Begin dev/9 stuff that I don't know if I need!!!!
+	// getScore() {
+	// 	return QuestionUtil.getScoreForModel(
+	// 		this.props.moduleData.questionState,
+	// 		this.getQuestionModel(),
+	// 		this.props.moduleData.navState.context
+	// 	)
+	// }
+
+	// getScoreClass() {
+	// 	return QuestionUtil.getScoreClass(this.getScore())
+	// }
+
+	// getIsAnswered() {
+	// 	return QuestionUtil.isAnswered(
+	// 		this.props.moduleData.questionState,
+	// 		this.getQuestionModel(),
+	// 		this.props.moduleData.navState.context
+	// 	)
+	// }
+
+	// componentDidUpdate() {
+	// 	this.sortIds()
+
+	// 	switch (this.nextFocus) {
+	// 		case FOCUS_TARGET_EXPLANATION:
+	// 			delete this.nextFocus
+	// 			this.refExplanation.focusOnExplanation()
+	// 			break
+
+	// 		case FOCUS_TARGET_RESULTS:
+	// 			if (this.getScore() !== null) {
+	// 				delete this.nextFocus
+	// 				this.answerChoicesRef.current.focusOnResults()
+	// 			}
+	// 			break
+
+	// 		case FOCUS_TARGET_QUESTION:
+	// 			delete this.nextFocus
+	// 			FocusUtil.focusComponent(this.getQuestionModel().get('id'))
+	// 			break
+	// 	}
+	// }
+
+	// getFeedbackLabels(isReview, isSurvey, isAnswered) {
+	// 	const { correctLabels, incorrectLabels } = this.props.model.modelState
+
+	// 	return {
+	// 		correct: this.getRandomItem(
+	// 			this.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+	// 		),
+	// 		incorrect: this.getRandomItem(this.getIncorrectLabels(incorrectLabels, isReview))
+	// 	}
+	// }
+
+	// getRandomItem(arrayOfOptions) {
+	// 	return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
+	// }
+	//@TODO - END dev/9 stuff that I'm not sure I need!
 
 	sortIds() {
 		if (!this.getSortedIds()) {

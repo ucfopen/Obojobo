@@ -1,30 +1,15 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
-
-const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
-const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => {
 	const content = node.data.get('content') || {}
-	const children = []
 	let correct = 0
 
-	node.nodes.forEach(child => {
-		switch (child.type) {
-			case CHOICE_LIST_NODE:
-				child.nodes.forEach(choice => {
-					children.push(Common.Registry.getItemForType(choice.type).slateToObo(choice))
-					if (choice.data.get('content').score === 100) correct++
-				})
-				break
+	const children = node.nodes.map(child => {
+		if (child.data.get('content').score === 100) correct++
 
-			case SETTINGS_NODE:
-				content.responseType = child.nodes.first().data.get('current')
-				content.shuffle = child.nodes.last().data.get('checked')
-				break
-		}
+		return Common.Registry.getItemForType(child.type).slateToObo(child)
 	})
 
 	if (correct > 1 && content.responseType === 'pick-one') {
@@ -37,32 +22,12 @@ const slateToObo = node => {
 	return {
 		id: node.key,
 		type: node.type,
-		children: children,
-		content
+		children,
+		content: withoutUndefined(content)
 	}
 }
 
 const oboToSlate = node => {
-	const choiceList = {
-		object: 'block',
-		type: CHOICE_LIST_NODE,
-		nodes: node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child))
-	}
-
-	const settings = {
-		object: 'block',
-		type: SETTINGS_NODE,
-		nodes: [
-			SelectParameter.helpers.oboToSlate(
-				'responseType',
-				node.content.responseType,
-				'Response Type',
-				['pick-one', 'pick-all']
-			),
-			ToggleParameter.helpers.oboToSlate('shuffle', node.content.shuffle, 'Shuffle')
-		]
-	}
-
 	// Need to get the question type from the Question parent
 	// This is done to render elements correctly
 	const oboModel = OboModel.models[node.id]
@@ -73,7 +38,7 @@ const oboToSlate = node => {
 		object: 'block',
 		key: node.id,
 		type: node.type,
-		nodes: [settings, choiceList],
+		nodes: node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child)),
 		data: {
 			content: node.content,
 			questionType: questionType

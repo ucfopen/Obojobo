@@ -1,4 +1,4 @@
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 

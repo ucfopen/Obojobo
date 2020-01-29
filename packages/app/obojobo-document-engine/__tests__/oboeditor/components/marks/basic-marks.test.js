@@ -63,52 +63,93 @@ describe('BasicMarks', () => {
 	})
 
 	test('renderMark diplays expected style', () => {
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: BOLD_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: BOLD_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: ITALIC_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: ITALIC_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: STRIKE_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: STRIKE_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: QUOTE_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: QUOTE_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: MONOSPACE_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: MONOSPACE_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 
-		expect(BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: LATEX_MARK }
-		}, null, jest.fn())).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderMark(
+				{
+					children: 'mockChild',
+					mark: { type: LATEX_MARK }
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 
 	test('renderMark calls next', () => {
 		const next = jest.fn()
 
-		BasicMarks.plugins.renderMark({
-			children: 'mockChild',
-			mark: { type: 'mockMark' }
-		}, null, next)
+		BasicMarks.plugins.renderMark(
+			{
+				children: 'mockChild',
+				mark: { type: 'mockMark' }
+			},
+			null,
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.toggleMark', () => {
 		const editor = {
-			toggleMark: jest.fn()
+			focus: jest.fn()
 		}
+		editor.toggleMark = jest.fn().mockReturnValue(editor)
 
 		BasicMarks.marks.forEach(mark => {
 			mark.action(editor)
@@ -117,4 +158,3 @@ describe('BasicMarks', () => {
 		expect(editor.toggleMark).toHaveBeenCalledTimes(6)
 	})
 })
-

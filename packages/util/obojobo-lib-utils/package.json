@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "6.0.1",
+	"version": "7.1.2",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
@@ -13,9 +13,6 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
@@ -28,12 +25,11 @@
 		"db-migrate": "^0.11.6",
 		"db-migrate-pg": "^1.0.0",
 		"fs-extra": "^8.0.1",
-		"prop-types": "15.6.2",
-		"react-idle-timer": "^4.2.9",
-		"react-transition-group": "^4.3.0",
 		"prop-types": "15.7.2",
 		"react": "16.10.1",
-		"react-dom": "16.10.1"
+		"react-dom": "16.10.1",
+		"react-idle-timer": "^4.2.9",
+		"react-transition-group": "^4.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.2",

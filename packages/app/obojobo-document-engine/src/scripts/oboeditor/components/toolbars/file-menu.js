@@ -13,33 +13,6 @@ const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			drafts: []
-		}
-	}
-
-	componentDidMount() {
-		APIUtil.getAllDrafts().then(result => {
-			this.setState({
-				drafts: result.value
-					.map(draft => {
-						if (draft.draftId === this.props.draftId) return null
-
-						return {
-							name: draft.title,
-							type: 'action',
-							action: () =>
-								window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draft.draftId, '_blank')
-						}
-					})
-					.filter(Boolean)
-			})
-		})
-	}
-
 	renameModule(moduleId, label) {
 		ModalUtil.hide()
 
@@ -48,9 +21,14 @@ class FileMenu extends React.PureComponent {
 
 		EditorUtil.renamePage(moduleId, label)
 
-		if(this.props.onRename) {
+		if (this.props.onRename) {
 			this.props.onRename(label)
 		}
+	}
+
+	renameAndSaveModule(moduleId, label) {
+		this.renameModule(moduleId, label)
+		this.props.onSave(this.props.draftId)
 	}
 
 	deleteModule() {
@@ -105,14 +83,7 @@ class FileMenu extends React.PureComponent {
 			{
 				name: 'Save',
 				type: 'action',
-				action: () =>
-					this.props.onSave(this.props.draftId).then(result => {
-						if (result.status === 'ok') {
-							ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
-						} else {
-							ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-						}
-					})
+				action: () => this.props.onSave(this.props.draftId)
 			},
 			{
 				name: 'New',
@@ -120,14 +91,12 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					APIUtil.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id, '_blank')
+							window.open(
+								window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id,
+								'_blank'
+							)
 						}
 					})
-			},
-			{
-				name: 'Open',
-				type: 'sub-menu',
-				menu: this.state.drafts
 			},
 			{
 				name: 'Make a copy',
@@ -167,7 +136,7 @@ class FileMenu extends React.PureComponent {
 							title="Rename Module"
 							message="Enter the new title for the module:"
 							value={this.props.model.title}
-							onConfirm={this.renameModule.bind(this, this.props.model.id)}
+							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
 						/>
 					)
 			},
@@ -191,8 +160,7 @@ class FileMenu extends React.PureComponent {
 		]
 
 		return (
-			<div
-				className="visual-editor--drop-down-menu">
+			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="File" menu={menu} />
 			</div>
 		)

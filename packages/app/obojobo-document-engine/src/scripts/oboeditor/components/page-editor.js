@@ -21,6 +21,8 @@ import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
 import EditorNav from './navigation/editor-nav'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import PageEditorErrorBoundry from './page-editor-error-boundry'
 
 const { ModalUtil } = Common.util
 
@@ -39,7 +41,8 @@ class PageEditor extends React.Component {
 		this.state = {
 			value: Value.fromJSON(json),
 			saved: true,
-			editable: true
+			editable: true,
+			showPlaceholders: true
 		}
 
 		this.editorRef = React.createRef()
@@ -52,6 +55,7 @@ class PageEditor extends React.Component {
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
 		this.plugins = this.getPlugins()
+		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 	}
 
 	toggleEditable(editable) {
@@ -60,6 +64,10 @@ class PageEditor extends React.Component {
 
 	markUnsaved() {
 		return this.setState({ saved: false })
+	}
+
+	togglePlaceholders() {
+		return this.setState(prevState => ({ showPlaceholders: !prevState.showPlaceholders }))
 	}
 
 	getPlugins() {
@@ -154,8 +162,10 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
+		const className =
+			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
-			<div className="editor--page-editor">
+			<div className={className}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
@@ -167,6 +177,8 @@ class PageEditor extends React.Component {
 						saved={this.state.saved}
 						mode={'visual'}
 						insertableItems={this.props.insertableItems}
+						togglePlaceholders={this.togglePlaceholders}
+						showPlaceholders={this.state.showPlaceholders}
 					/>
 					<ContentToolbar editorRef={this.editorRef} />
 				</div>
@@ -180,14 +192,16 @@ class PageEditor extends React.Component {
 				/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
-					<Editor
-						className="component obojobo-draft--pages--page"
-						value={this.state.value}
-						ref={this.editorRef}
-						onChange={this.onChange}
-						plugins={this.plugins}
-						readOnly={!this.props.page || !this.state.editable}
-					/>
+					<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<Editor
+							className="component obojobo-draft--pages--page"
+							value={this.state.value}
+							ref={this.editorRef}
+							onChange={this.onChange}
+							plugins={this.plugins}
+							readOnly={!this.props.page || !this.state.editable}
+						/>
+					</PageEditorErrorBoundry>
 				</div>
 			</div>
 		)
@@ -212,7 +226,7 @@ class PageEditor extends React.Component {
 		}
 
 		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
-		this.setState({ value: change.value, saved: false, editable: true })
+		this.setState({ value: change.value, saved: false })
 	}
 
 	saveModule(draftId) {

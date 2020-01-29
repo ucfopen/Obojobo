@@ -10,74 +10,84 @@
 	},
 	"nodes": [
 		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.Question",
-			"isVoid":false,
+			"object": "block",
+			"type": "ObojoboDraft.Chunks.QuestionBank.Settings",
+			"isVoid": true,
+			"data": {
+				"content": {
+					"chooseAll": true,
+					"choose": "1",
+					"select": "sequential"
+				}
+			}
+		},
+		{
+			"object": "block",
+			"type": "ObojoboDraft.Chunks.Question",
+			"isVoid": false,
 			"data": {
 				"content": {
 					"type": "default"
 				}
 			},
-			"nodes":[
+			"nodes": [
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Text",
-					"isVoid":false,
-					"data":{"content":{"indent":0}},
-					"nodes":[
+					"object": "block",
+					"type": "ObojoboDraft.Chunks.Text",
+					"isVoid": false,
+					"data": { "content": { "indent": 0 } },
+					"nodes": [
 						{
-							"object":"block",
-							"type":"ObojoboDraft.Chunks.Text.TextLine",
-							"isVoid":false,
-							"data":{"indent":0},
-							"nodes":[
+							"object": "block",
+							"type": "ObojoboDraft.Chunks.Text.TextLine",
+							"isVoid": false,
+							"data": { "indent": 0 },
+							"nodes": [
 								{
-									"object":"text",
-									"leaves":[
-										{"object":"leaf","text":"","marks":[]}
-									]
+									"object": "text",
+									"leaves": [{ "object": "leaf", "text": "", "marks": [] }]
 								}
 							]
 						}
 					]
 				},
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.MCAssessment",
-					"isVoid":false,
-					"data":{"content":{"responseType":"pick-one","shuffle":true}},
-					"nodes":[
+					"object": "block",
+					"type": "ObojoboDraft.Chunks.MCAssessment",
+					"isVoid": false,
+					"data": { "content": { "responseType": "pick-one", "shuffle": true } },
+					"nodes": [
 						{
-							"object":"block",
-							"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
-							"isVoid":false,
-							"data":{"content":{"score":100}},
-							"nodes":[
+							"object": "block",
+							"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+							"isVoid": false,
+							"data": { "content": { "score": 100 } },
+							"nodes": [
 								{
-									"object":"block",
-									"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
-									"isVoid":false,
-									"data":{},
-									"nodes":[
+									"object": "block",
+									"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+									"isVoid": false,
+									"data": {},
+									"nodes": [
 										{
-											"object":"block",
-											"type":"ObojoboDraft.Chunks.Text",
-											"isVoid":false,
-											"data":{"content":{"indent":0}},
-											"nodes":[
+											"object": "block",
+											"type": "ObojoboDraft.Chunks.Text",
+											"isVoid": false,
+											"data": { "content": { "indent": 0 } },
+											"nodes": [
 												{
-													"object":"block",
-													"type":"ObojoboDraft.Chunks.Text.TextLine",
-													"isVoid":false,
-													"data":{"indent":0},
-													"nodes":[
+													"object": "block",
+													"type": "ObojoboDraft.Chunks.Text.TextLine",
+													"isVoid": false,
+													"data": { "indent": 0 },
+													"nodes": [
 														{
-															"object":"text",
-															"leaves":[
+															"object": "text",
+															"leaves": [
 																{
-																	"object":"leaf",
-																	"text":"",
-																	"marks":[]
+																	"object": "leaf",
+																	"text": "",
+																	"marks": []
 																}
 															]
 														}
@@ -90,36 +100,36 @@
 							]
 						},
 						{
-							"object":"block",
-							"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
-							"isVoid":false,
-							"data":{"content":{"score":0}},
-							"nodes":[
+							"object": "block",
+							"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+							"isVoid": false,
+							"data": { "content": { "score": 0 } },
+							"nodes": [
 								{
-									"object":"block",
-									"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
-									"isVoid":false,
-									"data":{},
-									"nodes":[
+									"object": "block",
+									"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+									"isVoid": false,
+									"data": {},
+									"nodes": [
 										{
-											"object":"block",
-											"type":"ObojoboDraft.Chunks.Text",
-											"isVoid":false,
-											"data":{"content":{"indent":0}},
-											"nodes":[
+											"object": "block",
+											"type": "ObojoboDraft.Chunks.Text",
+											"isVoid": false,
+											"data": { "content": { "indent": 0 } },
+											"nodes": [
 												{
-													"object":"block",
-													"type":"ObojoboDraft.Chunks.Text.TextLine",
-													"isVoid":false,
-													"data":{"indent":0},
-													"nodes":[
+													"object": "block",
+													"type": "ObojoboDraft.Chunks.Text.TextLine",
+													"isVoid": false,
+													"data": { "indent": 0 },
+													"nodes": [
 														{
-															"object":"text",
-															"leaves":[
+															"object": "text",
+															"leaves": [
 																{
-																	"object":"leaf",
-																	"text":"",
-																	"marks":[]
+																	"object": "leaf",
+																	"text": "",
+																	"marks": []
 																}
 															]
 														}

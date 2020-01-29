@@ -1,4 +1,14 @@
+import React from 'react'
+import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
+import Common from '../../../../src/scripts/common'
+
+import Node from 'src/scripts/oboeditor/components/node/editor-component'
+
 jest.mock('Common', () => ({
+	models: {
+		OboModel: {}
+	},
 	components: {
 		modal: {
 			SimpleDialog: () => 'MockSimpleDialog'
@@ -19,6 +29,7 @@ jest.mock('Common', () => ({
 						icon: null,
 						name: 'mockItem',
 						templateObject: 'mockNode',
+						insertJSON: { type: 'mockType' },
 						cloneBlankNode: () => ({ type: 'mockNode' })
 					}
 				]
@@ -30,19 +41,28 @@ jest.mock('Common', () => ({
 				icon: null,
 				name: 'mockItem',
 				templateObject: 'mockNode',
+				insertJSON: { type: 'mockType' },
 				cloneBlankNode: () => ({ type: 'mockNode' })
 			}
 		]
 	}
 }))
 
-import React from 'react'
-import { mount } from 'enzyme'
-import renderer from 'react-test-renderer'
-
-import Node from 'src/scripts/oboeditor/components/node/editor-component'
-
 describe('Component Editor Node', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+
+		Common.models.OboModel.models = {
+			'mock-id': {
+				setId: () => true
+			},
+			'mock-duplicate-id': {
+				setId: () => false
+			}
+		}
+
+		Common.models.OboModel.create = jest.fn().mockReturnValue({ setId: () => true })
+	})
 	test('Node builds the expected component', () => {
 		const component = renderer.create(
 			<Node
@@ -146,9 +166,39 @@ describe('Component Editor Node', () => {
 		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
 	})
 
+	test('saveId does not allow duplicate nodes', () => {
+		const editor = {
+			removeNodeByKey: jest.fn()
+		}
+		editor.insertNodeByKey = jest.fn().mockReturnValue(editor)
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 },
+					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().saveId('mock-duplicate-id', 'mock-id2')
+
+		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+	})
+
 	test('saveId adds and removes the node if ids are not the same', () => {
 		const editor = {
-			removeNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
 		}
 		editor.insertNodeByKey = jest.fn().mockReturnValue(editor)
 

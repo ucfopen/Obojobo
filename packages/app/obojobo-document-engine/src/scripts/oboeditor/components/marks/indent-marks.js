@@ -8,6 +8,7 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
+// These values are also defined in obojobo-chinks-list/list-styles
 const unorderedBullets = ['disc', 'circle', 'square']
 const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
@@ -29,7 +30,10 @@ const AlignMarks = {
 				let type = 'unordered'
 
 				// get the bullet and type of the closest parent level
-				const level = editor.value.document.getClosest(block.key, parent => parent.type === LIST_LEVEL_NODE)
+				const level = editor.value.document.getClosest(
+					block.key,
+					parent => parent.type === LIST_LEVEL_NODE
+				)
 
 				const content = level.data.get('content')
 				bullet = content.bulletStyle
@@ -64,31 +68,33 @@ const AlignMarks = {
 			name: 'Indent',
 			type: INDENT,
 			icon: IndentIcon,
-			action: editor => editor.value.blocks.forEach(block => {
-				switch (block.type) {
-					case CODE_LINE_NODE:
-						return editor.indentCode(block)
-					case LIST_LINE_NODE:
-						return editor.indentList(block)
-					default:
-						return editor.indentText(block)
-				}
-			})
+			action: editor =>
+				editor.value.blocks.forEach(block => {
+					switch (block.type) {
+						case CODE_LINE_NODE:
+							return editor.indentCode(block)
+						case LIST_LINE_NODE:
+							return editor.indentList(block)
+						default:
+							return editor.indentText(block)
+					}
+				})
 		},
 		{
 			name: 'Unindent',
 			type: UNINDENT,
 			icon: UnindentIcon,
-			action: editor => editor.value.blocks.forEach(block => {
-				switch (block.type) {
-					case CODE_LINE_NODE:
-						return editor.unindentCode(block)
-					case LIST_LINE_NODE:
-						return editor.unindentList(block)
-					default:
-						return editor.unindentText(block)
-				}
-			})
+			action: editor =>
+				editor.value.blocks.forEach(block => {
+					switch (block.type) {
+						case CODE_LINE_NODE:
+							return editor.unindentCode(block)
+						case LIST_LINE_NODE:
+							return editor.unindentList(block)
+						default:
+							return editor.unindentText(block)
+					}
+				})
 		}
 	]
 }

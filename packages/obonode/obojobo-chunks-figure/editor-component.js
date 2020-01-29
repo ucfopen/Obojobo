@@ -7,6 +7,7 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 import Image from './image'
 import ImageProperties from './image-properties-modal'
 import React from 'react'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -74,16 +75,19 @@ class Figure extends React.Component {
 		}
 
 		const hasAltText = content.alt && content.alt.length !== 0
+		const isSelected = isOrNot(this.props.isSelected, 'selected')
 
 		return (
 			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
+				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
 					<div className="container">
-						{hasAltText ? null : <div contentEditable={false}>Accessibility Warning: No Alt Text!</div>}
-						<div className="figure-box" contentEditable={false}>
-							<Button 
-								className="delete-button" 
-								onClick={this.deleteNode.bind(this)}>
+						{hasAltText ? null : (
+							<div contentEditable={false} className="accessibility-warning">
+								Accessibility Warning: No Alt Text!
+							</div>
+						)}
+						<div className={`figure-box  ${isSelected}`} contentEditable={false}>
+							<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 								×
 							</Button>
 							<div className="image-toolbar">
@@ -97,6 +101,7 @@ class Figure extends React.Component {
 							<Image
 								key={content.url + content.width + content.height + content.size}
 								chunk={{ modelState: content }}
+								lazyLoad={false}
 							/>
 						</div>
 

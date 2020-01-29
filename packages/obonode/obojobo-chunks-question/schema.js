@@ -16,6 +16,7 @@ const schema = {
 			nodes: [
 				{
 					match: [
+						// Content nodes
 						{ type: 'ObojoboDraft.Chunks.ActionButton' },
 						{ type: 'ObojoboDraft.Chunks.Break' },
 						{ type: 'ObojoboDraft.Chunks.Code' },

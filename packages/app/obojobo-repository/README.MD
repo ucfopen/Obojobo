@@ -1,4 +1,4 @@
-## Obojobo-Repository
+## Obojobo Repository
 
 This package is part of Obojobo. Documentation can be found at https://ucfopen.github.io/Obojobo-Docs/.
 
@@ -16,8 +16,7 @@ This package is intended to provide:
 
 ### Client
 
-
-* `/client/*.js` - Top level scripts used as entrypoints for webpack. They will output a .js and possibly .css file.  Added to the webpack workflow by adding them to `index.js` under the `clientScripts` property.
+All javascript files built for the client use Obojobo's 'clientScripts' mechanism to register files to be processed by webpack.
 
 ### Server
 

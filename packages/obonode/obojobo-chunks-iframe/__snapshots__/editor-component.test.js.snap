@@ -9,13 +9,24 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="editor-container"
+      className="editor-container   is-not-selected"
       style={
         Object {
           "height": "200px",
         }
       }
     >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          contentEditable={false}
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
       <div
         className="iframe-toolbar"
       >
@@ -30,6 +41,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             IFrame Properties
@@ -50,13 +62,24 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
     className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="editor-container"
+      className="editor-container   is-not-selected"
       style={
         Object {
           "height": "500px",
         }
       }
     >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          contentEditable={false}
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
       <div
         className="iframe-toolbar"
       >
@@ -71,6 +94,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             IFrame Properties

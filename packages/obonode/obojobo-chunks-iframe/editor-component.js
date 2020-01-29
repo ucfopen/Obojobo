@@ -46,6 +46,11 @@ class IFrame extends React.Component {
 		return src.replace(/^https?:\/\//, '')
 	}
 
+	deleteNode() {
+		const editor = this.props.editor
+		editor.removeNodeByKey(this.props.node.key)
+	}
+
 	render() {
 		const content = this.props.node.data.get('content')
 
@@ -61,10 +66,15 @@ class IFrame extends React.Component {
 			isOrNot(!content.src, 'missing-src') +
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
+		const isSelected = isOrNot(this.props.isSelected, 'selected')
+
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div className={'editor-container'} style={previewStyle}>
+					<div className={`editor-container  ${isSelected}`} style={previewStyle}>
+						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+							×
+						</Button>
 						<div className="iframe-toolbar">
 							<span className="title" aria-hidden>
 								{this.getTitle(content.src || null, content.title)}

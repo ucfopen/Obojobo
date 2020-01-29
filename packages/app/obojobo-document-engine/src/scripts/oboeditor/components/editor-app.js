@@ -124,7 +124,7 @@ class EditorApp extends React.Component {
 	}
 
 	reloadDraft(draftId, mode) {
-		return APIUtil.getFullDraft(draftId, mode)
+		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
 				let json
 				switch (mode) {

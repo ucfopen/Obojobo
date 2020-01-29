@@ -9,28 +9,39 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ×
     </button>
   </div>
-  <button
-    className="correct-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
   >
-    ✖ Incorrect
-  </button>
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      ✖ Incorrect
+    </button>
+  </div>
   <div
     className="children"
   >
     <div />
   </div>
-  <button
-    className="add-feedback"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center add-feedback"
   >
-    Add Feedback
-  </button>
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Add Feedback
+    </button>
+  </div>
 </div>
 `;
 
@@ -43,17 +54,23 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       ×
     </button>
   </div>
-  <button
-    className="correct-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
   >
-    ✔ Correct
-  </button>
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      ✔ Correct
+    </button>
+  </div>
   <div
     className="children"
   >
@@ -62,4 +79,4 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
 </div>
 `;
 
-exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><button class=\\"correct-button\\">✖ Incorrect</button><div class=\\"children\\"><div></div></div><button class=\\"add-feedback\\">Add Feedback</button></div>"`;
+exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center correct-button\\"><button class=\\"button\\" contenteditable=\\"false\\">✖ Incorrect</button></div><div class=\\"children\\"><div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-feedback\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Feedback</button></div></div>"`;

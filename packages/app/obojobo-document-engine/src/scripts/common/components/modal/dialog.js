@@ -46,12 +46,13 @@ export default class Dialog extends React.Component {
 			styles = { width: this.props.width }
 		}
 
-		const className = "obojobo-draft--components--modal--dialog " + this.props.className
+		const className = 'obojobo-draft--components--modal--dialog ' + (this.props.className || '')
 
 		return (
 			<div className={className} style={styles}>
 				<Modal
 					onClose={this.props.onClose}
+					preventEsc={this.props.preventEsc}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 					className={this.props.modalClassName}
 				>

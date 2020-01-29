@@ -1,62 +1,100 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node 1`] = `
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no unableToPassResult 1`] = `
 Object {
   "data": Object {
     "content": Object {
-      "failedResult": 0,
-      "mods": Array [
-        Object {
-          "attemptCondition": 1,
-          "reward": 10,
-        },
-      ],
+      "failedResult": "no_score",
+      "failedType": "set-value",
+      "mods": Array [],
       "passedResult": 100,
+      "passedType": "$attempt_score",
       "passingAttemptScore": 0,
       "unableToPassResult": 0,
+      "unableToPassType": "no-value",
     },
   },
-  "nodes": Array [
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    Object {
-      "nodes": Array [
-        Object {
-          "nodes": Array [
-            "ActionsChildOboToSlate",
-            "ActionsChildOboToSlate",
-          ],
-          "object": "block",
-          "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
-    },
-  ],
+  "isVoid": true,
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
 `;
 
-exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node without mods 1`] = `
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no unableToPassResult 2`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": "no_score",
+      "failedType": "set-value",
+      "mods": Array [],
+      "passedResult": 100,
+      "passedType": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+      "unableToPassType": "no-value",
+    },
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no-scores 1`] = `
 Object {
   "data": Object {
     "content": Object {
       "failedResult": 0,
+      "failedType": "no-score",
+      "mods": Array [],
       "passedResult": 100,
+      "passedType": "$attempt_score",
       "passingAttemptScore": 0,
       "unableToPassResult": 0,
+      "unableToPassType": "no-score",
     },
   },
-  "nodes": Array [
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-  ],
+  "isVoid": true,
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with numerical values 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 100,
+      "failedType": "set-value",
+      "mods": Array [],
+      "passedResult": 100,
+      "passedType": "set-value",
+      "passingAttemptScore": 0,
+      "unableToPassResult": 100,
+      "unableToPassType": "set-value",
+    },
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with special types 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 0,
+      "failedType": "$attempt_score",
+      "mods": Array [],
+      "passedResult": 100,
+      "passedType": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+      "unableToPassType": "$highest_attempt_score",
+    },
+  },
+  "isVoid": true,
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }

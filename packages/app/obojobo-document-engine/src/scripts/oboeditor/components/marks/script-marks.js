@@ -10,7 +10,7 @@ const ScriptMark = {
 		onKeyDown(event, editor, next) {
 			if (!(event.ctrlKey || event.metaKey)) return next()
 
-			switch(event.key) {
+			switch (event.key) {
 				case '-':
 				case ',':
 					event.preventDefault()

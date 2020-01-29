@@ -5,6 +5,7 @@ Object {
   "data": Object {
     "content": Object {
       "solution": Object {},
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",

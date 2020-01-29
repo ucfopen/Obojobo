@@ -4,12 +4,20 @@ exports[`Break Editor Node Node builds the expected component 1`] = `
 <div>
   <div
     className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
+    contentEditable={false}
   >
-    <hr />
+    <div
+      className="editor--hidden-text"
+      contentEditable={true}
+      suppressContentEditableWarning={true}
+    />
+    <hr
+      contentEditable={false}
+    />
   </div>
 </div>
 `;
 
-exports[`Break Editor Node Node component toggles size to large 1`] = `"<div><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div></div>"`;
+exports[`Break Editor Node Node component toggles size to large 1`] = `"<div><div contenteditable=\\"false\\" class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><div contenteditable=\\"true\\" class=\\"editor--hidden-text\\"></div><hr contenteditable=\\"false\\"><div class=\\"buttonbox-box\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-size\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Size</button></div></div></div></div></div>"`;
 
-exports[`Break Editor Node Node component toggles size to normal 1`] = `"<div><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div></div>"`;
+exports[`Break Editor Node Node component toggles size to normal 1`] = `"<div><div contenteditable=\\"false\\" class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><div contenteditable=\\"true\\" class=\\"editor--hidden-text\\"></div><hr contenteditable=\\"false\\"><div class=\\"buttonbox-box\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-size\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Size</button></div></div></div></div></div>"`;

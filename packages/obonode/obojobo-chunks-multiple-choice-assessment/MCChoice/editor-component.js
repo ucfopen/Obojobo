@@ -58,16 +58,16 @@ class MCChoice extends React.Component {
 				<Button className="delete-button" onClick={event => this.delete(event)}>
 					×
 				</Button>
-				<button className="correct-button" onClick={event => this.handleScoreChange(event)}>
+				<Button className="correct-button" onClick={event => this.handleScoreChange(event)}>
 					{score === 100 ? '✔ Correct' : '✖ Incorrect'}
-				</button>
+				</Button>
 				<div className="children">
 					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? (
-					<button className="add-feedback" onClick={() => this.addFeedback()}>
+					<Button className="add-feedback" onClick={() => this.addFeedback()}>
 						Add Feedback
-					</button>
+					</Button>
 				) : null}
 			</div>
 		)

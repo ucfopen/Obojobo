@@ -5,6 +5,22 @@ $search-input-height: 30px;
 .repository--nav--links--search {
 	position: relative;
 
+	.repository--nav--links--search--icon {
+		position: absolute;
+		fill: $border-color;
+		height: calc(100% - 4px);
+		z-index: 2;
+		top: 50%;
+		transform: translate(0, -54%);
+		left: 0.4em;
+		width: 0.6em;
+		pointer-events: none;
+
+		svg {
+			height: 40%;
+		}
+	}
+
 	input {
 		position: relative;
 
@@ -24,39 +40,44 @@ $search-input-height: 30px;
 		padding-right: 10px;
 		outline: none;
 
-		&:active,
-		&:hover,
-		&:focus {
-			border-color: $color-action;
-		}
-
-		&.is-not-empty {
-			border-color: $color-action;
-			background-color: $color-action;
-			color: white;
+		&::-webkit-search-cancel-button {
+			color: red;
+			background: red;
 		}
 
 		&:focus {
 			outline-width: 0;
 		}
+	}
 
-		@include mq($from: zero, $until: tablet) {
-			margin-left: 10px;
-			margin-right: 10px;
+	&.is-not-empty {
+		> input {
+			border-color: $color-action;
+			background-color: $color-action;
+			color: white;
+
+			&:-webkit-autofill {
+				-webkit-text-fill-color: white;
+				-webkit-box-shadow: 0 0 0 1000px $color-action inset;
+			}
+		}
+
+		.repository--nav--links--search--icon {
+			fill: white;
 		}
 	}
-}
 
-.repository--nav--links--search--icon {
-	position: absolute;
-	top: 2px;
-	left: 6px;
-	fill: $border-color;
-	height: calc(100% - 4px);
-	width: 14px;
-	z-index: 2;
+	&.is-empty > input:active,
+	&.is-empty > input:hover,
+	&.is-empty > input:focus {
+		border-color: $color-action;
 
-	svg {
-		height: 40%;
+		+ .repository--nav--links--search--icon {
+			fill: $color-action;
+		}
+
+		&::placeholder {
+			color: $color-action;
+		}
 	}
 }

@@ -2,7 +2,6 @@ import hotKeyPlugin from 'src/scripts/oboeditor/plugins/hot-key-plugin'
 
 describe('HotKeyPlugin', () => {
 	test('onKeyPress calls next with no ctrl or meta keys', () => {
-		
 		const mockEvent = { ctrlKey: false, metaKey: false }
 		const editor = {}
 		const next = jest.fn()
@@ -13,7 +12,6 @@ describe('HotKeyPlugin', () => {
 	})
 
 	test('onKeyPress calls saveFn with ctrl+s', () => {
-		
 		const mockEvent = { ctrlKey: true, key: 's', preventDefault: jest.fn() }
 		const editor = {}
 		const next = jest.fn()
@@ -25,7 +23,6 @@ describe('HotKeyPlugin', () => {
 	})
 
 	test('onKeyPress calls saveFn with ctrl+z', () => {
-		
 		const mockEvent = { ctrlKey: true, key: 'z', preventDefault: jest.fn() }
 		const editor = { undo: jest.fn() }
 		const next = jest.fn()
@@ -37,7 +34,6 @@ describe('HotKeyPlugin', () => {
 	})
 
 	test('onKeyPress calls saveFn with ctrl+y', () => {
-		
 		const mockEvent = { ctrlKey: true, key: 'y', preventDefault: jest.fn() }
 		const editor = { redo: jest.fn() }
 		const next = jest.fn()
@@ -49,7 +45,6 @@ describe('HotKeyPlugin', () => {
 	})
 
 	test('onKeyPress calls saveFn with ctrl+a', () => {
-		
 		const mockEvent = { ctrlKey: true, key: 'a', preventDefault: jest.fn() }
 		const editor = { focus: jest.fn() }
 		editor.moveToRangeOfDocument = jest.fn().mockReturnValue(editor)
@@ -62,7 +57,6 @@ describe('HotKeyPlugin', () => {
 	})
 
 	test('onKeyPress calls next with ctrl+other', () => {
-		
 		const mockEvent = { ctrlKey: true, key: 'r', preventDefault: jest.fn() }
 		const editor = {}
 		const next = jest.fn()

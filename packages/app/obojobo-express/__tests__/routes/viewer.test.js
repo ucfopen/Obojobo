@@ -1,11 +1,17 @@
-jest.mock('../../models/visit')
-
-jest.mock('../../insert_event')
-
+jest.mock('../../server/models/visit')
+jest.mock('../../server/insert_event')
+jest.mock(
+	'../../server/asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 // make sure all Date objects use a static date
 mockStaticDate()
 
-jest.mock('../../db')
+jest.mock('../../server/db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
@@ -13,7 +19,7 @@ jest.unmock('express') // we'll use supertest + express for this
 let mockCurrentUser
 let mockCurrentVisit
 let mockSaveSessionSuccess = true
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -31,7 +37,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		if (!mockCurrentDocument) return Promise.reject()
 		req.currentDocument = mockCurrentDocument
@@ -42,7 +48,7 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockLtiLaunch
-jest.mock('../../express_lti_launch', () => ({
+jest.mock('../../server/express_lti_launch', () => ({
 	assignment: (req, res, next) => {
 		req.lti = { body: mockLtiLaunch }
 		req.oboLti = {
@@ -58,15 +64,15 @@ const request = require('supertest')
 const express = require('express')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '../../../views/')
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/viewer'))
+app.set('views', __dirname + '../../../server/views/')
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/viewer'))
 
 describe('viewer route', () => {
-	const insertEvent = oboRequire('insert_event')
-	const VisitModel = oboRequire('models/visit')
+	const insertEvent = oboRequire('server/insert_event')
+	const VisitModel = oboRequire('server/models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})

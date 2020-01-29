@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 const ActionButtonEditorAction = props => {
 	let description
 
-	switch(props.type){
+	switch (props.type) {
 		case 'nav:goto':
 			description = `Go to "${props.value.id}"`
 			break

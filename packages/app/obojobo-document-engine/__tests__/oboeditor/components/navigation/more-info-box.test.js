@@ -17,13 +17,15 @@ describe('MoreInfoBox', () => {
 
 	test('More Info Box renders properly', () => {
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -34,7 +36,7 @@ describe('MoreInfoBox', () => {
 		const onOpen = jest.fn()
 		const onClose = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
@@ -42,13 +44,14 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				onOpen={onOpen}
-				onClose={onClose}/>)
+				onClose={onClose}
+			/>
+		)
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
-
 
 		expect(component.html()).toMatchSnapshot()
 		expect(onOpen).toHaveBeenCalled()
@@ -63,11 +66,13 @@ describe('MoreInfoBox', () => {
 		expect(saveContent).not.toHaveBeenCalled()
 		expect(markUnsaved).not.toHaveBeenCalled()
 		expect(onClose).toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('More Info Box with triggers', () => {
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{
 					triggers: [
@@ -82,20 +87,21 @@ describe('MoreInfoBox', () => {
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('More Info Box with contentDescriptions', () => {
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{
 					mockInput: 'value1',
@@ -138,7 +144,9 @@ describe('MoreInfoBox', () => {
 						value: () => false,
 						onChange: () => true
 					}
-				]}/>)
+				]}
+			/>
+		)
 
 		component
 			.find('button')
@@ -149,17 +157,25 @@ describe('MoreInfoBox', () => {
 	})
 
 	test('More Info Box edits values', () => {
-		const toggleFn = jest.fn().mockReturnValue(true)
+		// mocks extracting custom content prop for value
+		const abstractValue = jest.fn().mockImplementation(contentState => contentState.abstractValue)
+		// mocks using checked to change custom content prop
+		const abstractOnChangeFn = jest.fn().mockImplementation((prevContentState, checked) => ({
+			...prevContentState,
+			abstractValue: checked
+		}))
+
 		const saveId = jest.fn()
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{
-					mockInput: 'value1',
-					mockSelect: 'value2',
-					mockToggle: false
+					mockInput: 'mockInputValue1',
+					mockSelect: 'mockSelectValue2',
+					mockToggle: false,
+					abstractValue: false
 				}}
 				saveId={saveId}
 				saveContent={saveContent}
@@ -176,11 +192,11 @@ describe('MoreInfoBox', () => {
 						name: 'mockSelect',
 						values: [
 							{
-								value: 'value1',
+								value: 'mockSelectValue1',
 								description: 'Value One'
 							},
 							{
-								value: 'value2',
+								value: 'mockSelectValue2',
 								description: 'Value Two'
 							}
 						]
@@ -194,81 +210,78 @@ describe('MoreInfoBox', () => {
 						type: 'abstract-toggle',
 						description: 'Mock Abstract Toggle',
 						name: 'mockAbstractToggle',
-						value: () => false,
-						onChange: toggleFn
+						value: abstractValue,
+						onChange: abstractOnChangeFn
 					}
-				]}/>)
+				]}
+			/>
+		)
 
+		// click to open
+		expect(component.state()).toHaveProperty('isOpen', false)
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
+		expect(component.state()).toHaveProperty('isOpen', true)
 
-		// Change the id
-		component
-			.find('input')
-			.at(0)
-			.simulate('click', {
-				stopPropagation: jest.fn()
-			})
-			.simulate('change', {
-				target: { value: 'changed value'}
-			})
-
+		// Change the current id
+		expect(component.state()).toHaveProperty('currentId', 'mock-id')
+		const idInputBox = component.find({ id: 'oboeditor--components--more-info-box--id-input' })
+		idInputBox.simulate('change', {
+			target: { value: 'new-mock-id' }
+		})
+		idInputBox.simulate('click') // used to cover internal onClick Handler
+		expect(component.state()).toHaveProperty('currentId', 'new-mock-id')
 		expect(component.html()).toMatchSnapshot()
 
-		// Change the Mock Input
-		component
-			.find('input')
-			.at(1)
-			.simulate('click', {
-				stopPropagation: jest.fn()
-			})
-			.simulate('change', {
-				target: { value: 'changed value'}
-			})
-
+		// Change mockInput
+		expect(component.state()).toHaveProperty('content.mockInput', 'mockInputValue1')
+		const mockInput = component.find({ value: 'mockInputValue1' }) // value of content['mockInput']
+		mockInput.simulate('change', {
+			target: { value: 'changed value' }
+		})
+		mockInput.simulate('click') // used to cover internal onClick Handler
+		expect(component.state()).toHaveProperty('content.mockInput', 'changed value')
 		expect(component.html()).toMatchSnapshot()
 
-		// Change the Mock Select
-		component
-			.find('select')
-			.at(0)
-			.simulate('click', {
-				stopPropagation: jest.fn()
-			})
-			.simulate('change', {
-				target: { value: 'value1'}
-			})
-
+		// Change mockSelect
+		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue2')
+		const selectItem = component.find({ className: 'select-item' })
+		selectItem.simulate('change', {
+			target: { value: 'mockSelectValue1' }
+		})
+		selectItem.simulate('click') // used to cover internal onClick Handler
+		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue1')
 		expect(component.html()).toMatchSnapshot()
 
-		// Change the Mock Toggle
-		component
-			.find('input')
-			.at(2)
-			.simulate('click', {
-				stopPropagation: jest.fn()
-			})
-			.simulate('change', {
-				target: { checked: true}
-			})
-
+		// Change mockToggle
+		expect(component.state()).toHaveProperty('content.mockToggle', false)
+		const mockToggle = component.find({ title: 'Mock Toggle' })
+		mockToggle.find('input').simulate('change', {
+			target: { checked: true }
+		})
+		expect(component.state()).toHaveProperty('content.mockToggle', true)
 		expect(component.html()).toMatchSnapshot()
 
 		// Change the Mock Abstract Toggle
-		component
-			.find('input')
-			.at(3)
-			.simulate('click', {
-				stopPropagation: jest.fn()
-			})
-			.simulate('change', {
-				target: { checked: true}
-			})
-
+		expect(abstractOnChangeFn).not.toHaveBeenCalled()
+		expect(abstractValue).toHaveLastReturnedWith(false)
+		const abstractToggle = component.find({ title: 'Mock Abstract Toggle' })
+		abstractToggle.find('input').simulate('change', {
+			target: { checked: true }
+		})
+		expect(abstractValue).toHaveLastReturnedWith(true)
+		expect(abstractOnChangeFn).toHaveBeenLastCalledWith(
+			{
+				abstractValue: false,
+				mockInput: 'changed value',
+				mockSelect: 'mockSelectValue1',
+				mockToggle: true
+			},
+			true
+		)
 		expect(component.html()).toMatchSnapshot()
-		expect(toggleFn).toHaveBeenCalled()
 
 		component
 			.find('button')
@@ -278,22 +291,24 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 		expect(saveId).toHaveBeenCalled()
 		expect(saveContent).toHaveBeenCalled()
-		jest.runAllTimers();
+		jest.runAllTimers()
 		expect(markUnsaved).toHaveBeenCalled()
 	})
 
 	test('More Info Box tries to save with error', () => {
-		const saveId = jest.fn().mockReturnValue("A simple Error")
+		const saveId = jest.fn().mockReturnValue('A simple Error')
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
 				saveContent={saveContent}
 				markUnsaved={markUnsaved}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		component
 			.find('button')
@@ -304,7 +319,7 @@ describe('MoreInfoBox', () => {
 			.find('input')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'changed value'}
+				target: { value: 'changed value' }
 			})
 
 		component
@@ -323,14 +338,16 @@ describe('MoreInfoBox', () => {
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
 				saveContent={saveContent}
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
-				hideButtonBar/>)
+				hideButtonBar
+			/>
+		)
 		component.setState({ isOpen: true })
 
 		expect(component.html()).toMatchSnapshot()
@@ -342,14 +359,16 @@ describe('MoreInfoBox', () => {
 		const markUnsaved = jest.fn()
 		const moveNode = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
 				saveContent={saveContent}
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
-				moveNode={moveNode}/>)
+				moveNode={moveNode}
+			/>
+		)
 		component.setState({ isOpen: true })
 
 		component
@@ -369,7 +388,7 @@ describe('MoreInfoBox', () => {
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
@@ -377,24 +396,28 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				isFirst
-				isLast/>)
+				isLast
+			/>
+		)
 		component.setState({ isOpen: true })
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('More Info Box copies the id', () => {
-		const saveId = jest.fn().mockReturnValue("A simple Error")
+		const saveId = jest.fn().mockReturnValue('A simple Error')
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
 				saveContent={saveContent}
 				markUnsaved={markUnsaved}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		component
 			.find('button')
@@ -411,13 +434,15 @@ describe('MoreInfoBox', () => {
 
 	test('More Info Box opens the showTriggersModal', () => {
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		component
 			.find('button')
@@ -434,13 +459,15 @@ describe('MoreInfoBox', () => {
 
 	test('More Info Box closes the TriggersModal', () => {
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		component.instance().closeModal({ triggers: [] })
 
@@ -453,13 +480,15 @@ describe('MoreInfoBox', () => {
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const component = mount(
-			<MoreInfoBox 
+			<MoreInfoBox
 				id="mock-id"
 				content={{}}
 				saveId={saveId}
 				saveContent={saveContent}
 				markUnsaved={markUnsaved}
-				contentDescription={[]}/>)
+				contentDescription={[]}
+			/>
+		)
 
 		const nodeInstance = component.instance()
 		nodeInstance.node = {
