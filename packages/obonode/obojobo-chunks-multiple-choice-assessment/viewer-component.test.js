@@ -1198,7 +1198,7 @@ describe('MCAssessment', () => {
 		component.instance().onClickReset(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(component.instance().nextFocus).toBe('question')
+		expect(component.instance().nextFocus).toBe('results')
 		expect(QuestionUtil.retryQuestion).toHaveBeenCalledWith('parent', 'mockContext')
 	})
 

@@ -172,7 +172,7 @@ export default class MCAssessment extends React.Component {
 	onClickReset(event) {
 		event.preventDefault()
 
-		this.nextFocus = FOCUS_TARGET_QUESTION
+		this.nextFocus = FOCUS_TARGET_RESULTS
 
 		this.retry()
 	}
