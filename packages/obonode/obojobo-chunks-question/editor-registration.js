@@ -1,5 +1,5 @@
 import React from 'react'
-import { Node, Element, Transforms } from 'slate'
+import { Node, Element, Transforms, Text } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
@@ -11,10 +11,11 @@ import Converter from './converter'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
-const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 const Question = {
 	name: QUESTION_NODE,
@@ -35,9 +36,60 @@ const Question = {
 			// If the element is a Question, handle Content children
 			if (Element.isElement(node) && node.type === QUESTION_NODE && !node.subtype) {
 				let index = 0
-				for (const [child, childPath] of Node.children(editor, path)) {
-					// The first child should always be a content node
-					if(index === 0 && Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)){
+				let hasSolution = false
+				let hasMCAssessment = false
+				for (const [child, childPath] of Node.children(editor, path, { reverse: true })) {
+					// the last index should either be a solution node or a MCAssessment
+					if(index === 0 && Element.isElement(child)) {
+						if (child.subtype === SOLUTION_NODE){
+							hasSolution = true
+							index++
+							continue
+						} else if (child.type === MCASSESSMENT_NODE) {
+							hasMCAssessment = true
+							index++
+							continue
+						} else {
+							// If the last index is not one of the two valid options
+							// insert a MCAssessment and allow subsequent normalizations
+							// to fill it
+							Transforms.insertNodes(
+								editor,
+								{
+									type: MCASSESSMENT_NODE,
+									content: {
+										responseType: "pick-one",
+										shuffle: true
+									},
+									questionType: "default",
+									children: [{ text: '' }]
+								},
+								{ at: path.concat(node.children.length) }
+							)
+							return
+						}
+					}
+
+					// If there is a solution but no MCAssessment, insert a MCAssessment
+					// and allow subsequent normalizations to fill it
+					if(index === 1 && hasSolution && child.type !== MCASSESSMENT_NODE) {
+							Transforms.insertNodes(
+								editor,
+								{
+									type: MCASSESSMENT_NODE,
+									content: {
+										responseType: "pick-one",
+										shuffle: true
+									},
+									questionType: "default",
+									children: [{ text: '' }]
+								},
+								{ at: path.concat(node.children.length - 1) }
+							)
+							return
+					}
+
+					if(hasMCAssessment && Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)){
 						Transforms.insertNodes(
 							editor,
 							{
@@ -51,6 +103,19 @@ const Question = {
 										children: [{ text: '' }]
 									}
 								]
+							},
+							{ at: childPath }
+						)
+						return
+					}
+
+					// Wrap loose text children in a Question
+					if (Text.isText(child)) {
+						Transforms.wrapNodes(
+							editor, 
+							{
+								type: TEXT_NODE,
+								content: {},
 							},
 							{ at: childPath }
 						)

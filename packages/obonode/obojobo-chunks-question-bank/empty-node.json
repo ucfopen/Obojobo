@@ -7,16 +7,6 @@
 	},
 	"children": [
 		{
-			"type": "ObojoboDraft.Chunks.QuestionBank",
-			"subtype":"ObojoboDraft.Chunks.QuestionBank.Settings",
-			"content": {
-				"chooseAll": true,
-				"choose": "all",
-				"select": "sequential"
-			},
-			"children": [{ "text": "" }]
-		},
-		{
 			"type": "ObojoboDraft.Chunks.Question",
 			"content": {
 				"type": "default"

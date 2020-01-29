@@ -7,167 +7,154 @@ import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
 import emptyQB from './empty-node.json'
 
 const { Button } = Common.components
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
-class QuestionBank extends React.Component {
-	constructor(props) {
-		super(props)
+const remove = (editor, element) => {
+	const path = ReactEditor.findPath(editor, element)
+	return Transforms.removeNodes(editor, { at: path })
+}
 
-		//this.updateNodeFromState = debounce(200, this.updateNodeFromState)
+const addQuestion = (editor, element) => {
+	const Question = Common.Registry.getItemForType(QUESTION_NODE)
+	const path = ReactEditor.findPath(editor, element)
+	return Transforms.insertNodes(
+		editor,
+		Question.insertJSON,
+		{ at: path.concat(element.children.length) }
+	)
+}
 
-		// copy the attributes we want into state
-		const content = this.props.element.content
-		this.state = this.contentToStateObj(content)
+const addQuestionBank = (editor, element) => {
+	const path = ReactEditor.findPath(editor, element)
+	return Transforms.insertNodes(
+		editor,
+		emptyQB,
+		{ at: path.concat(element.children.length) }
+	)
+}
 
-		this.freezeEditor = this.freezeEditor.bind(this)
-		this.unfreezeEditor = this.unfreezeEditor.bind(this)
-		this.onChangeChooseAll = this.onChangeChooseAll.bind(this)
-		this.remove = this.remove.bind(this)
-		this.addQuestion = this.addQuestion.bind(this)
-		this.addQuestionBank = this.addQuestionBank.bind(this)
-	}
+const changeChooseType = (editor, element, event) => {
+	event.stopPropagation()
+	const chooseAll = event.target.value === 'all'
 
-	contentToStateObj(content) {
-		console.log(content)
-		return {
-			choose: content.choose || 1,
-			chooseAll: content.chooseAll,
-			select: content.select || 'sequential',
-		}
-	}
+	const path = ReactEditor.findPath(editor, element)
+	Transforms.setNodes(
+		editor, 
+		{ content: { ...element.content, chooseAll } },
+		{ at: path }
+	)
+}
 
-	updateNodeFromState() {
-		console.log('hewwo?')
-		const content = this.props.element.content
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor, 
-			{ content: {...content, ...this.state} }, 
-			{ at: path }
-		)
-	}
+const changeChooseAmount = (editor, element, event) => {
+	const path = ReactEditor.findPath(editor, element)
+	Transforms.setNodes(
+		editor, 
+		{ content: { ...element.content, choose: event.target.value } },
+		{ at: path }
+	)
+}
 
-	remove() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		return Transforms.removeNodes(this.props.editor, { at: path })
-	}
+const changeSelect = (editor, element, event) => {
+	const path = ReactEditor.findPath(editor, element)
+	Transforms.setNodes(
+		editor, 
+		{ content: { ...element.content, select: event.target.value } },
+		{ at: path }
+	)
+}
 
-	addQuestion() {
-		const Question = Common.Registry.getItemForType(QUESTION_NODE)
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		return Transforms.insertNodes(
-			this.props.editor,
-			Question.insertJSON,
-			{ at: path.concat(this.props.element.children.length) }
-		)
-	}
+const freezeEditor = (editor) => {
+	editor.toggleEditable(false)
+}
 
-	addQuestionBank() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		return Transforms.insertNodes(
-			this.props.editor,
-			emptyQB,
-			{ at: path.concat(this.props.element.children.length) }
-		)
-	}
+const unfreezeEditor = (editor) => {
+	editor.toggleEditable(true)
+}
 
-	onChangeContent(key, event) {
-		this.setState({ [key]: event.target.value }) // update the display now
-		this.updateNodeFromState() // debounced to reduce lag as it updates the document
-	}
-
-	onChangeChooseAll(event) {
-		this.setState({ chooseAll: event.target.value === 'all' }) // update the display now
-		this.updateNodeFromState() // debounced to reduce lag as it updates the document
-	}
-
-	freezeEditor() {
-		this.props.editor.toggleEditable(false)
-	}
-
-	unfreezeEditor() {
-		this.props.editor.toggleEditable(true)
-	}
-
-	displaySettings() {
-		const content = this.props.element.content
-		return (
-			<div className={'qb-settings'}>
-				<fieldset className="choose">
-					<legend>How many questions should be displayed?</legend>
-					<label>
-						<input
-							type="radio"
-							name="choose"
-							value="all"
-							checked={content.chooseAll}
-							onChange={this.onChangeChooseAll}/>
-						All questions
-					</label>
-					<span> or</span>
-					<label>
-						<input
-							type="radio"
-							name="choose"
-							value="pick"
-							checked={!content.chooseAll}
-							onChange={this.onChangeChooseAll}/>
-						Pick
-					</label>
+const displaySettings = (editor, element, content) => {
+	const radioGroupName = `${element.id}-choose`
+	return (
+		<div className={'qb-settings'}>
+			<fieldset className="choose">
+				<legend>How many questions should be displayed?</legend>
+				<label>
 					<input
-						type="number"
-						value={content.choose}
-						disabled={content.chooseAll}
-						onChange={this.onChangeContent.bind(this, 'choose')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}/>
-				</fieldset>
-				<label className="select">
-					How should questions be selected?
-					<select
-						value={content.select}
-						onClick={event => event.stopPropagation()}
-						onChange={this.onChangeContent.bind(this, 'select')}>
-						<option value="sequential">In order</option>
-						<option value="random">Randomly</option>
-						<option value="random-unseen">Randomly, with no repeats</option>
-					</select>
+						type="radio"
+						name={radioGroupName}
+						value="all"
+						checked={content.chooseAll}
+						onChange={changeChooseType.bind(this, editor, element)}/>
+					All questions
 				</label>
-			</div>
-		)
-	}
+				<span> or</span>
+				<label>
+					<input
+						type="radio"
+						name={radioGroupName}
+						value="pick"
+						checked={!content.chooseAll}
+						onChange={changeChooseType.bind(this, editor, element)}/>
+					Pick
+				</label>
+				<input
+					type="number"
+					value={content.choose}
+					disabled={content.chooseAll}
+					onClick={event => event.stopPropagation()}
+					onChange={changeChooseAmount.bind(this, editor, element)}
+					onFocus={freezeEditor.bind(this, editor)}
+					onBlur={unfreezeEditor.bind(this, editor)}/>
+			</fieldset>
+			<label className="select">
+				How should questions be selected?
+				<select
+					value={content.select}
+					onClick={event => event.stopPropagation()}
+					onChange={changeSelect.bind(this, editor, element)}>
+					<option value="sequential">In order</option>
+					<option value="random">Randomly</option>
+					<option value="random-unseen">Randomly, with no repeats</option>
+				</select>
+			</label>
+		</div>
+	)
+}
 
-	render() {
-		console.log(this.state)
-		return (
-			<Node {...this.props}>
-				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
+const QuestionBank = props => {
+	const { editor, element, children } = props
+	return (
+		<Node {...props}>
+			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
+				<Button
+					className="delete-button"
+					onClick={() => {
+						remove(editor, element)
+					}}>
+					&times;
+				</Button>
+				{displaySettings(editor, element, element.content)}
+				{children}
+				<div className="button-bar">
 					<Button
-						className="delete-button"
-						onClick={this.remove}>
-						&times;
+						onClick={() => {
+							addQuestion(editor, element)
+						}}>
+						Add Question
 					</Button>
-					{this.displaySettings()}
-					{this.props.children}
-					<div className="button-bar">
-						<Button
-							onClick={this.addQuestion}>
-							Add Question
-						</Button>
-						<Button
-							onClick={this.addQuestionBank}>
-							Add Question Bank
-						</Button>
-					</div>
+					<Button
+						onClick={() => {
+							addQuestionBank(editor, element)
+						}}>
+						Add Question Bank
+					</Button>
 				</div>
-			</Node>
-		)
-	}
+			</div>
+		</Node>
+	)
 }
 
 export default memo(withSlateWrapper(QuestionBank))
