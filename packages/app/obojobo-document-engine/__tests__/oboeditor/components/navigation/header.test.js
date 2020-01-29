@@ -99,7 +99,7 @@ describe('Header', () => {
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
-	test('saveId does not allow a missing id', () => {
+	test('saveId does not allow an empty id', () => {
 		const props = {
 			index: 0,
 			list: [
