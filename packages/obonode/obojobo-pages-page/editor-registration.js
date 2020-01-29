@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Node from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
@@ -15,8 +14,7 @@ const Page = {
 	plugins: {
 		renderNode(props) {
 			return <Node {...props} {...props.attributes} />
-		},
-		schema: Schema
+		}
 	},
 	getNavItem(model) {
 		let label

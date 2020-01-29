@@ -42,7 +42,7 @@ class Settings extends React.Component {
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
 
 		return (
 			<div className={'qb-settings'}>
@@ -89,6 +89,7 @@ class Settings extends React.Component {
 						<option value="random-unseen">Randomly, with no repeats</option>
 					</select>
 				</label>
+				{this.props.children}
 			</div>
 		)
 	}

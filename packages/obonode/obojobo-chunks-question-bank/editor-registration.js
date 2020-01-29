@@ -4,9 +4,8 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Settings from './components/settings/editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
@@ -26,17 +25,14 @@ const QuestionBank = {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case QUESTION_BANK_NODE:
-					return <Node {...props} {...props.attributes} />
+		renderNode(props) {
+			switch (props.element.subtype) {
 				case SETTINGS_NODE:
 					return <Settings {...props} {...props.attributes} />
 				default:
-					return next()
+					return <EditorComponent {...props} {...props.attributes} />
 			}
-		},
-		schema: Schema
+		}
 	},
 	getPasteNode: questionbank => {
 		// If passed a 'whole' questionbank, return the questionbank

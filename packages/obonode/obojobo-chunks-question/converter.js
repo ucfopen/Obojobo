@@ -17,8 +17,8 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const slateToObo = node => {
 	const children = []
 	const content = {
-		triggers: node.triggers,
-		type: node.type
+		triggers: node.content.triggers,
+		type: node.content.type
 	}
 
 	node.children.forEach(child => {
