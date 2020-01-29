@@ -8,7 +8,7 @@ const sig = require('oauth-signature')
 const {
 	requireCanViewDrafts,
 	requireCurrentUser,
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 
 const oauthKey = 'materia-key'
 const oauthSecret = 'materia-secret'

@@ -20,6 +20,7 @@ const schema = {
 						{ type: 'ObojoboDraft.Chunks.HTML' },
 						{ type: 'ObojoboDraft.Chunks.IFrame' },
 						{ type: 'ObojoboDraft.Chunks.List' },
+						{ type: 'ObojoboDraft.Chunks.Materia' },
 						{ type: 'ObojoboDraft.Chunks.MathEquation' },
 						{ type: 'ObojoboDraft.Chunks.Table' },
 						{ type: 'ObojoboDraft.Chunks.Text' },

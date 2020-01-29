@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'Common'
 
 const { SimpleDialog } = Common.components.modal
-const { Slider } = Common.components
+const { Switch } = Common.components
 
 import './iframe-properties-modal.scss'
 
@@ -97,7 +97,7 @@ class MateriaProperties extends React.Component {
 		return (
 			<SimpleDialog
 				cancelOk
-				title="Materia Properties"
+				title="Materia Widget Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
@@ -121,7 +121,7 @@ class MateriaProperties extends React.Component {
 								type="text"
 								id="obojobo-draft--chunks--iframe--properties-modal--src"
 								value={this.state.src || ''}
-								placeholder="Widget Embed URL"
+								placeholder="Web Address"
 								onChange={this.handleURLChange.bind(this)}
 							/>
 						</div>
@@ -158,14 +158,14 @@ class MateriaProperties extends React.Component {
 							<span className="px-label">px</span>
 						</div>
 						<div>
-							<Slider
+							<Switch
 								title="Border"
 								initialChecked={this.state.border}
 								handleCheckChange={this.handleBorderChange.bind(this)}
 							/>
 						</div>
 						<div>
-							<Slider
+							<Switch
 								title="Autoload"
 								initialChecked={this.state.autoload}
 								handleCheckChange={this.handleAutoloadChange.bind(this)}
@@ -201,17 +201,17 @@ class MateriaProperties extends React.Component {
 
 					<div className="controls">
 						<h2>Controls:</h2>
-						<Slider
+						<Switch
 							title="Reload"
 							initialChecked={controlList.includes('reload')}
 							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
 						/>
-						<Slider
+						<Switch
 							title="New Window"
 							initialChecked={controlList.includes('new-window')}
 							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
 						/>
-						<Slider
+						<Switch
 							title="Zoom"
 							initialChecked={controlList.includes('zoom')}
 							handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
