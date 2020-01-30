@@ -139,7 +139,7 @@ class ImageProperties extends React.Component {
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
 						<div
 							id="obojobo-draft--chunks--figure--size"
-							aria-role="radiogroup"
+							role="radiogroup"
 							aria-label="Select size for image"
 						>
 							<div className="size-input">
