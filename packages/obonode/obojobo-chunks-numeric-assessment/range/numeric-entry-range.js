@@ -22,7 +22,7 @@ const NumericEntry = require('../entry/numeric-entry')
  * @property {boolean|null} [isMinInclusive]
  * @property {NumericEntry|null} [max]
  * @property {boolean|null} [isMaxInclusive]
- * @property {boolean} [isClosed]
+ * @property {boolean} [isEmpty]
  * @property {string} [unit]
  */
 

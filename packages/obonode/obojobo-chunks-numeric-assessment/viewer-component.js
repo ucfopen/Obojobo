@@ -8,6 +8,7 @@ import _ from 'underscore'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
+const { PERCENT_ERROR, ABSOLUTE_ERROR } = require('./rule/rule-error-types')
 
 const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
@@ -170,18 +171,32 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
-	getRuleSummary(rule) {
-		const min = rule.value.min.toString()
-		const max = rule.value.max.toString()
+	getRangeSummary(range) {
+		const min = range.min.toString()
+		const max = range.max.toString()
 
-		if (rule.value.isSingular) {
+		if (range.isSingular) {
 			return {
 				type: 'single',
 				value: min
 			}
 		}
 
-		const isFullyInclusive = rule.value.isMinInclusive && rule.value.isMaxInclusive
+		if (range.isEmpty) {
+			return {
+				type: 'single',
+				value: 'Nothing'
+			}
+		}
+
+		if (range.isUniversal) {
+			return {
+				type: 'single',
+				value: 'Any value'
+			}
+		}
+
+		const isFullyInclusive = range.isMinInclusive && range.isMaxInclusive
 		if (isFullyInclusive) {
 			return {
 				type: 'range',
@@ -194,13 +209,13 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		let minPrefix = ''
 		let maxPrefix = ''
 
-		if (rule.value.isMinInclusive) {
+		if (range.isMinInclusive) {
 			minPrefix = 'Greater than or equal to'
 		} else {
 			minPrefix = 'Greater than'
 		}
 
-		if (rule.value.isMaxInclusive) {
+		if (range.isMaxInclusive) {
 			maxPrefix = 'less than or equal to'
 		} else {
 			maxPrefix = 'less than'
@@ -216,7 +231,138 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
-	renderRuleSummary(summary) {
+	// getRangeSummaryString(rangeSummary) {
+	// 	return `${summary.minPrefix ? summary.minPrefix : ''
+	// 					<span className="value">{summary.min}</span>
+	// 					<span> {summary.conjunction} </span>
+	// 					{summary.maxPrefix ? <span>{summary.maxPrefix} </span> : null}
+	// 					<span className="value">{summary.max}</span>
+	// }
+
+	getRuleModSummaries(rule) {
+		// const valueSummary = this.getRangeSummary(rule.value)
+
+		console.log('rule ERROR VALUE', rule.errorValue.toString())
+
+		const mods = []
+
+		switch (rule.errorType) {
+			case ABSOLUTE_ERROR:
+				mods.push(`±${rule.errorValue.toString()} Error accepted`)
+				break
+
+			case PERCENT_ERROR:
+				mods.push(`${rule.errorValue.toString()}% Error accepted`)
+				break
+		}
+
+		if (!rule.sigFigs.isUniversal) {
+			mods.push(
+				`${this.getRangeSummaryString(this.getRangeSummary(rule.sigFigs))} significant figures`
+			)
+		}
+
+		//@TODO - Is anything being done with digits?
+		// let digitsMod = ''
+		// if (!rule.digits.isUniversal) {
+		// 	digitsMod = `${this.getRangeSummary(rule.digits)} number`
+		// }
+
+		switch (rule.isFractionReduced) {
+			case true:
+				mods.push('Must be in reduced form')
+				break
+
+			case false:
+				mods.push('Not in reduced form')
+				break
+		}
+
+		console.log('we got mods for ya', mods)
+
+		// switch (mods.length) {
+		// 	case 0:
+		// 		return valueSummary
+
+		// 	case 1:
+		// 		debugger
+		// 		return valueSummary + ' (' + mods[0] + ')'
+
+		// 	case 2:
+		// 		return valueSummary + ' (' + mods[0] + ' and ' + mods[1] + ')'
+
+		// 	default:
+		// 		return (
+		// 			valueSummary +
+		// 			' (' +
+		// 			mods.slice(0, mods.length - 2).join(', ') +
+		// 			' and ' +
+		// 			mods[mods.length - 1] +
+		// 			')'
+		// 		)
+		// }
+
+		return mods
+
+		// @TODO - scientific types
+		// @TODO - isValidScientific
+		// @TODO - round
+
+		// if (rule.value.isSingular) {
+		// 	return {
+		// 		type: 'single',
+		// 		value: min
+		// 	}
+		// }
+
+		// const isFullyInclusive = rule.value.isMinInclusive && rule.value.isMaxInclusive
+		// if (isFullyInclusive) {
+		// 	return {
+		// 		type: 'range',
+		// 		min,
+		// 		max,
+		// 		conjunction: 'to'
+		// 	}
+		// }
+
+		// let minPrefix = ''
+		// let maxPrefix = ''
+
+		// if (rule.value.isMinInclusive) {
+		// 	minPrefix = 'Greater than or equal to'
+		// } else {
+		// 	minPrefix = 'Greater than'
+		// }
+
+		// if (rule.value.isMaxInclusive) {
+		// 	maxPrefix = 'less than or equal to'
+		// } else {
+		// 	maxPrefix = 'less than'
+		// }
+
+		// return {
+		// 	type: 'range',
+		// 	minPrefix,
+		// 	maxPrefix,
+		// 	min,
+		// 	max,
+		// 	conjunction: 'and'
+		// }
+	}
+
+	getRangeSummaryString(summary) {
+		switch (summary.type) {
+			case 'single':
+				return summary.value
+
+			case 'range':
+				return `${summary.minPrefix ? summary.minPrefix : ''} ${summary.min} ${
+					summary.conjunction
+				} ${summary.maxPrefix ? summary.maxPrefix : ''} ${summary.max}`
+		}
+	}
+
+	renderRangeSummary(summary) {
 		switch (summary.type) {
 			case 'single':
 				return <span className="value">{summary.value}</span>
@@ -230,6 +376,24 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 						{summary.maxPrefix ? <span>{summary.maxPrefix} </span> : null}
 						<span className="value">{summary.max}</span>
 					</React.Fragment>
+				)
+		}
+	}
+
+	renderRuleModSummaries(mods) {
+		switch (mods.length) {
+			case 0:
+				return ''
+
+			case 1:
+				return ' (' + mods[0] + ')'
+
+			case 2:
+				return ' (' + mods[0] + ' and ' + mods[1] + ')'
+
+			default:
+				return (
+					' (' + mods.slice(0, mods.length - 2).join(', ') + ' and ' + mods[mods.length - 1] + ')'
 				)
 		}
 	}
@@ -295,7 +459,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 									{correctRules.length === 1 ? (
 										<React.Fragment>
 											<h2>Correct answer: </h2>
-											<span>{this.renderRuleSummary(this.getRuleSummary(correctRules[0]))}</span>
+											<div>
+												<span>
+													{this.renderRangeSummary(this.getRangeSummary(correctRules[0].value))}
+												</span>
+												<span>
+													{this.renderRuleModSummaries(this.getRuleModSummaries(correctRules[0]))}
+												</span>
+											</div>
 										</React.Fragment>
 									) : (
 										<React.Fragment>
@@ -303,7 +474,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 											<ul>
 												{correctRules.map((rule, index) => {
 													return (
-														<li key={index}>{this.renderRuleSummary(this.getRuleSummary(rule))}</li>
+														<li key={index}>
+															<span>
+																{this.renderRangeSummary(this.getRangeSummary(rule.value))}
+															</span>
+															<span>
+																{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}
+															</span>
+														</li>
 													)
 												})}
 											</ul>

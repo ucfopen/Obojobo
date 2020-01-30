@@ -425,7 +425,7 @@ module.exports = class NumericRule {
 
 		const range = new NumericEntryRange(config.value, types)
 
-		if (range.isClosed) throw 'Invalid range given for value'
+		if (range.isEmpty) throw 'Invalid range given for value'
 
 		return range
 	}

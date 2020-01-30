@@ -19,7 +19,7 @@ describe('BigValueRange', () => {
 			max: '2',
 			isMinInclusive: true,
 			isMaxInclusive: true,
-			isClosed: false
+			isEmpty: false
 		})
 	})
 })

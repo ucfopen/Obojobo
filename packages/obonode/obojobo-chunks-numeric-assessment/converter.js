@@ -54,9 +54,9 @@ const oboToSlate = node => {
 
 			// Parse feedback node
 			if (numericChoice.feedback) {
-				const feedbackNode = Common.Registry.getItemForType(
-					numericChoice.feedback.type
-				).helpers.oboToSlate(numericChoice.feedback)
+				const feedbackNode = Common.Registry.getItemForType(numericChoice.feedback.type).oboToSlate(
+					numericChoice.feedback
+				)
 
 				node.nodes.push(feedbackNode)
 			}

@@ -22,7 +22,7 @@
  * @property {boolean|null} [isMinInclusive]
  * @property {*|null} [max]
  * @property {boolean|null} [isMaxInclusive]
- * @property {boolean} [isClosed]
+ * @property {boolean} [isEmpty]
  * @example
  * {
  * 	min: 2,
@@ -43,7 +43,7 @@
  * new ValueRange() // -Infinity to Infinity
  * new ValueRange('[,]') // -Infinity to Infinity
  * new ValueRange({}) // -Infinity to Infinity
- * new ValueRange({ isClosed:true }) // Closed range (no values)
+ * new ValueRange({ isEmpty:true }) // Empty range (no values)
  * new ValueRange('') // Closed range (no values)
  * new ValueRange(null) // Closed range (no values)
  * new ValueRange('6') // 6
@@ -123,7 +123,7 @@ class ValueRange {
 		/**
 		 * If true then this is a range which accepts no values.
 		 */
-		this.isClosed = false
+		this.isEmpty = false
 
 		/**
 		 * The minimum value of the range. If equal to null then it is considered to
@@ -163,7 +163,7 @@ class ValueRange {
 		if (rangeStringOrRangeObject === false) rangeStringOrRangeObject = '[,]'
 
 		if (rangeStringOrRangeObject === null) {
-			this.isClosed = true
+			this.isEmpty = true
 		}
 
 		if (typeof rangeStringOrRangeObject === 'string') {
@@ -171,8 +171,8 @@ class ValueRange {
 		}
 
 		if (typeof rangeStringOrRangeObject === 'object') {
-			if (rangeStringOrRangeObject.isClosed) {
-				this.isClosed = true
+			if (rangeStringOrRangeObject.isEmpty) {
+				this.isEmpty = true
 				return
 			}
 
@@ -194,7 +194,7 @@ class ValueRange {
 	 * Resets values to a infinite range (all values)
 	 */
 	init() {
-		this.isClosed = false
+		this.isEmpty = false
 		this.min = null
 		this.isMinInclusive = null
 		this.max = null
@@ -225,7 +225,7 @@ class ValueRange {
 	 * range.getMinValuePosition(5) //'above'
 	 */
 	getMinValuePosition(value) {
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		if (this.isEmpty) return this.constructor.VALUE_CLOSED_RANGE
 		if (this.isMinInclusive && this.minEq(value)) return this.constructor.VALUE_EQUAL
 		if (this.minLt(value)) return this.constructor.VALUE_ABOVE
 		return this.constructor.VALUE_BELOW
@@ -242,7 +242,7 @@ class ValueRange {
 	 * range.getMinValuePosition(5) //'above'
 	 */
 	getMaxValuePosition(value) {
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		if (this.isEmpty) return this.constructor.VALUE_CLOSED_RANGE
 		if (this.isMaxInclusive && this.maxEq(value)) return this.constructor.VALUE_EQUAL
 		if (this.maxGt(value)) return this.constructor.VALUE_BELOW
 		return this.constructor.VALUE_ABOVE
@@ -302,7 +302,7 @@ class ValueRange {
 	 */
 	getValuePosition(value) {
 		// By definition a value is not inside a closed range
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		if (this.isEmpty) return this.constructor.VALUE_CLOSED_RANGE
 
 		const isMinRequirementMet = this.isValueWithinMin(value)
 		const isMaxRequirementMet = this.isValueWithinMax(value)
@@ -323,7 +323,7 @@ class ValueRange {
 	 * @returns {ValueRangeString}
 	 */
 	toString() {
-		if (this.isClosed) return 'null'
+		if (this.isEmpty) return 'null'
 		if (this.isSingular) return this.min
 
 		let lhs = ''
@@ -349,7 +349,7 @@ class ValueRange {
 	 */
 	toJSON() {
 		return {
-			isClosed: this.isClosed,
+			isEmpty: this.isEmpty,
 			min: this.min,
 			isMinInclusive: this.isMinInclusive,
 			max: this.max,
@@ -479,7 +479,7 @@ class ValueRange {
 	 */
 	get isSingular() {
 		return (
-			!this.isClosed &&
+			!this.isEmpty &&
 			this.min !== null &&
 			this.max !== null &&
 			this.minEq(this.max) &&
@@ -489,11 +489,19 @@ class ValueRange {
 	}
 
 	/**
-	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. [,7])
+	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. [*,7])
 	 * @type {boolean}
 	 */
-	get isFinite() {
-		return this.isClosed || (this.min !== null && this.max !== null)
+	get isBounded() {
+		return this.isEmpty || (this.min !== null && this.max !== null)
+	}
+
+	/**
+	 * True if this range is the set of all values (-Infinity to Infinity)
+	 * @type {boolean}
+	 */
+	get isUniversal() {
+		return !this.isEmpty && this.min === null && this.max === null
 	}
 }
 

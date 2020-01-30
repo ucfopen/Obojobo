@@ -17,12 +17,15 @@
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
-		top: 3.3rem;
+		top: 2.35em;
 		left: 1rem;
 		font-size: inherit;
 		background: transparent;
-		border: none;
 		font-family: $correct-font;
+		border: 1px solid $color-border;
+		border-radius: $dimension-rounded-radius * 0.75;
+		width: 1.7em;
+		height: 2.25em;
 
 		&.is-correct {
 			color: $color-correct;
