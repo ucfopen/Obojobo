@@ -60,7 +60,7 @@ class FileMenu extends React.PureComponent {
 		switch (format) {
 			case 'json':
 				formatResults = text => {
-					const json = JSON.parse(text)
+					const json = JSON.parse(text).value
 					return JSON.stringify(json, null, 2)
 				}
 				break
