@@ -1,6 +1,9 @@
 @import '~styles/includes';
 
 .editor--page-editor {
+	$latex-editor-background: #e8eef9;
+	$latex-editor-color: #124386;
+
 	display: flex;
 	margin: 2em;
 	margin-top: 8em;
@@ -22,8 +25,8 @@
 	}
 
 	.latex-editor {
-		background: $color-action;
-		color: $color-bg;
+		background: $latex-editor-background;
+		color: $latex-editor-color;
 	}
 
 	span[data-placeholder] {
