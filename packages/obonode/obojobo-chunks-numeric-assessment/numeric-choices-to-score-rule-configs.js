@@ -1,3 +1,5 @@
+const { ROUND_TYPE_ROUND_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } = require('./rule/round-types')
+
 module.exports = numericChoices => {
 	return numericChoices.map(choice => {
 		const score = parseFloat(choice.score)
@@ -43,6 +45,7 @@ module.exports = numericChoices => {
 						return {
 							value: choice.answer,
 							digits: choice.precision,
+							round: ROUND_TYPE_ROUND_DIGITS,
 							feedback: choice.feedback || null,
 							score
 						}
@@ -51,6 +54,7 @@ module.exports = numericChoices => {
 						return {
 							value: choice.answer,
 							sigFigs: choice.precision,
+							round: ROUND_TYPE_ROUND_SIG_FIGS,
 							feedback: choice.feedback || null,
 							score
 						}

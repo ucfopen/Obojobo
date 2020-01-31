@@ -1,3 +1,4 @@
+const Big = require('../big')
 const { INPUT_TYPE_INVALID } = require('./types/input-types')
 const { MATCH_NONE } = require('../entry/match-types')
 

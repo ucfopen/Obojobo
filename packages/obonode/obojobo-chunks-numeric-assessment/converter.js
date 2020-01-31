@@ -26,6 +26,8 @@ const slateToObo = node => {
 		}
 	})
 
+	console.log('s2o', numericChoices)
+
 	return {
 		id: node.key,
 		type: node.type,

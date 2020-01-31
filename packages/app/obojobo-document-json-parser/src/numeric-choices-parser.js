@@ -20,8 +20,9 @@ const numericChoicesParser = (numericChoices, childrenParser) => {
 					break
 
 				case 'precise':
-					attrs.decimals = rule.decimals
-					attrs['sig-figs'] = rule['sig-figs']
+					attrs.type = rule.type
+					attrs.precision = rule.precision
+					attrs.answer = rule.answer
 					break
 
 				case 'exact':

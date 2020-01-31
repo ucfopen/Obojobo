@@ -26,6 +26,7 @@
 		border-radius: $dimension-rounded-radius * 0.75;
 		width: 1.7em;
 		height: 2.25em;
+		cursor: pointer;
 
 		&.is-correct {
 			color: $color-correct;

@@ -44,9 +44,12 @@ const NumericInput = props => {
 			switch (value) {
 				case PRECISE_RESPONSE: {
 					updatenumericChoice.type = 'sig-figs'
+					break
 				}
+
 				case MARGIN_OF_ERROR: {
 					updatenumericChoice.type = 'percent'
+					break
 				}
 			}
 		} else {
@@ -55,6 +58,8 @@ const NumericInput = props => {
 				[name]: fullTextToSimplifed[value]
 			}
 		}
+
+		console.log('ocd', name, value, fullTextToSimplifed, updatenumericChoice)
 
 		props.editor.setNodeByKey(props.node.key, {
 			data: { numericChoice: updatenumericChoice }
