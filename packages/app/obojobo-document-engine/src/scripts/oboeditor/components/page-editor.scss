@@ -27,6 +27,9 @@
 	.latex-editor {
 		background: $latex-editor-background;
 		color: $latex-editor-color;
+		font-family: $font-monospace;
+		border-radius: 0.15em;
+		font-size: 0.95em;
 	}
 
 	span[data-placeholder] {
