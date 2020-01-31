@@ -126,12 +126,12 @@ describe('IFrame Properties Modal', () => {
 		const startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		// locate the slider component for border input
+		// locate the switch component for border input
 		const testInstance = testRenderer.root
-		const borderSlider = testInstance.findByProps({ title: 'Border' })
+		const borderSwitch = testInstance.findByProps({ title: 'Border' })
 
-		// execute that slider's handleCheckChange
-		borderSlider.props.handleCheckChange(true)
+		// execute that switch's handleCheckChange
+		borderSwitch.props.handleCheckChange(true)
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -234,12 +234,12 @@ describe('IFrame Properties Modal', () => {
 		const startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		// locate the slider component for border input
+		// locate the switch component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({ title: 'Autoload' })
+		const autoloadSwitch = testInstance.findByProps({ title: 'Autoload' })
 
-		// execute that slider's handleCheckChange
-		autoloadSlider.props.handleCheckChange(true)
+		// execute that switch's handleCheckChange
+		autoloadSwitch.props.handleCheckChange(true)
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -265,12 +265,12 @@ describe('IFrame Properties Modal', () => {
 		const startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		// locate the slider component for border input
+		// locate the switch component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({ title: 'Reload' })
+		const autoloadSwitch = testInstance.findByProps({ title: 'Reload' })
 
-		// execute that slider's handleCheckChange
-		autoloadSlider.props.handleCheckChange(true)
+		// execute that switch's handleCheckChange
+		autoloadSwitch.props.handleCheckChange(true)
 		expect(testInstance.instance.state.controls).toBe(',reload')
 
 		// capture the changes
@@ -282,7 +282,7 @@ describe('IFrame Properties Modal', () => {
 		expect(startState).not.toEqual(endState)
 
 		// turn it back off
-		autoloadSlider.props.handleCheckChange(false)
+		autoloadSwitch.props.handleCheckChange(false)
 		expect(testInstance.instance.state.controls).toBe('')
 	})
 
@@ -301,12 +301,12 @@ describe('IFrame Properties Modal', () => {
 		const startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		// locate the slider component for border input
+		// locate the switch component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({ title: 'New Window' })
+		const autoloadSwitch = testInstance.findByProps({ title: 'New Window' })
 
-		// execute that slider's handleCheckChange
-		autoloadSlider.props.handleCheckChange(true)
+		// execute that switch's handleCheckChange
+		autoloadSwitch.props.handleCheckChange(true)
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -332,12 +332,12 @@ describe('IFrame Properties Modal', () => {
 		const startState = testRenderer.toJSON()
 		expect(startState).toMatchSnapshot()
 
-		// locate the slider component for border input
+		// locate the switch component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({ title: 'Zoom' })
+		const autoloadSwitch = testInstance.findByProps({ title: 'Zoom' })
 
-		// execute that slider's handleCheckChange
-		autoloadSlider.props.handleCheckChange(true)
+		// execute that switch's handleCheckChange
+		autoloadSwitch.props.handleCheckChange(true)
 
 		// capture the changes
 		const endState = testRenderer.toJSON()

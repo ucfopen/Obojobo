@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericFeedback editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`NumericFeedback editor plugins.renderNode renders a node 1`] = `
+<NumericFeedback
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+    }
+  }
+/>
+`;

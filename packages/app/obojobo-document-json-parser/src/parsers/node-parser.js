@@ -11,8 +11,10 @@ const listNodeParser = require('./list-node-parser/list-node-parser')
 const mathEquationNodeParser = require('./math-equation-node-parser/math-equation-node-parser')
 const mcAnswerNodeParser = require('./mc-answer-node-parser/mc-answer-node-parser')
 const mcAssessmentNodeParser = require('./mc-assessment-node-parser/mcAssessmentNodeParser')
+const numericAssessmentNodeParser = require('./numeric-assessment-node-parser/mcAssessmentNodeParser')
 const mcChoiceNodeParser = require('./mc-choice-node-parser/mc-choice-node-parser')
 const mcFeedbackNodeParser = require('./mc-feedback-node-parser/mc-feedback-node-parser')
+const numericFeedbackNodeParser = require('./numeric-feedback-node-parser/mc-feedback-node-parser')
 const moduleNodeParser = require('./module-node-parser/module-node-parser')
 const pageNodeParser = require('./page-node-parser/page-node-parser')
 const questionBankNodeParser = require('./question-bank-node-parser/question-bank-node-parser')
@@ -35,8 +37,10 @@ const parsers = {
 	'ObojoboDraft.Chunks.MathEquation': mathEquationNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': mcAnswerNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment': mcAssessmentNodeParser,
+	'ObojoboDraft.Chunks.NumericAssessment': numericAssessmentNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice': mcChoiceNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': mcFeedbackNodeParser,
+	'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback': numericFeedbackNodeParser,
 	'ObojoboDraft.Modules.Module': moduleNodeParser,
 	'ObojoboDraft.Pages.Page': pageNodeParser,
 	'ObojoboDraft.Chunks.QuestionBank': questionBankNodeParser,

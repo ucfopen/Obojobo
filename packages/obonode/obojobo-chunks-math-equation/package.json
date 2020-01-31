@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-math-equation",
-	"version": "5.0.1",
+	"version": "7.1.2",
 	"license": "AGPL-3.0-only",
 	"description": "MathEquation content chunk for Obojobo",
 	"scripts": {
@@ -13,9 +13,6 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
@@ -31,11 +28,11 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"katex": "^0.9.0",
-		"obojobo-lib-utils": "^5.0.1"
+		"katex": "^0.11.1",
+		"obojobo-lib-utils": "^7.1.2"
 	},
 	"devDependencies": {
-		"lint-staged": "^6.1.1"
+		"lint-staged": "^9.4.1"
 	},
 	"jest": {
 		"testMatch": [

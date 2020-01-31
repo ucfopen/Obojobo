@@ -1,2 +1,3 @@
-import Viewer from './index'
-window.Viewer = Viewer
+require('../common/dist.js')
+window.Viewer = require('./index')
+require('./app.js')

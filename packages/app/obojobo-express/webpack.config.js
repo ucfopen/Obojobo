@@ -1,32 +1,18 @@
-/* eslint-disable no-console */
-
 const path = require('path')
+const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
-const viewerOboNodeScripts = getAllOboNodeScriptPathsByType('viewer')
-const editorOboNodeScripts = getAllOboNodeScriptPathsByType('editor')
+const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
-const CopyPlugin = require('copy-webpack-plugin')
-const Babel = require('@babel/core')
+const entriesFromObojoboModules = gatherClientScriptsFromModules()
+const WatchIgnorePlugin = require('webpack/lib/WatchIgnorePlugin')
 
 module.exports =
 	// built client files
 	(env, argv) => {
 		const is_production = argv.mode === 'production'
-		const filename_with_min = is_production ? '[name].min' : '[name]'
-		const commonPath = path.join(
-			__dirname,
-			'..',
-			'obojobo-document-engine',
-			'src',
-			'scripts',
-			'common',
-			'dist.js'
-		)
-
-		console.log(
-			`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${editorOboNodeScripts.length}`
-		)
+		const filename = is_production ? '[name]-[contenthash].min' : '[name]'
+		// eslint-disable-next-line no-console
+		console.log(`OboNode client scripts to build ${Object.keys(entriesFromObojoboModules).length}`)
 		return {
 			stats: { children: false, modules: false },
 			optimization: { minimize: true },
@@ -38,9 +24,9 @@ module.exports =
 				host: '127.0.0.1',
 				before: app => {
 					// add utilities for dev env (visit /dev)
-					require('./obo_express_dev')(app)
+					require('./server/obo_express_dev')(app)
 					// add obojobo express server to webpack
-					require('./middleware.default')(app)
+					require('./server/middleware.default')(app)
 				},
 				publicPath: '/static/',
 				watchContentBase: true,
@@ -49,32 +35,10 @@ module.exports =
 				},
 				stats: { children: false, modules: false }
 			},
-			entry: {
-				viewer: [
-					'whatwg-fetch',
-					// common (to both viewer and editor)
-					commonPath,
-					// the application logic
-					path.join(docEnginePath, 'src', 'scripts', 'viewer', 'dist.js'),
-					// where window and document variables are set and rendering is done
-					path.join(docEnginePath, 'src', 'scripts', 'viewer', 'app.js'),
-					// all viewer nodes that were registered in obojobo.js
-					...viewerOboNodeScripts
-				],
-				editor: [
-					'whatwg-fetch',
-					// common (to both viewer and editor)
-					commonPath,
-					// where window and document variables are set and rendering is done
-					// and application logic
-					path.join(docEnginePath, 'src', 'scripts', 'oboeditor', 'app.js'),
-					// all editor nodes that were registered in obojobo.js
-					...editorOboNodeScripts
-				]
-			},
+			entry: entriesFromObojoboModules,
 			output: {
 				path: path.join(__dirname, 'public', 'compiled'),
-				filename: `${filename_with_min}.js`
+				filename: `${filename}.js`
 			},
 			module: {
 				rules: [
@@ -89,7 +53,7 @@ module.exports =
 						}
 					},
 					{
-						test: /\.js?$/,
+						test: /\.(js|jsx)$/,
 						exclude: '/node_modules',
 						use: {
 							loader: 'babel-loader',
@@ -121,6 +85,17 @@ module.exports =
 								cache: true
 							}
 						}
+					},
+					{
+						test: /\.(jpe?g|png)$/i,
+						use: [
+							{
+								loader: 'responsive-loader',
+								options: {
+									adapter: require('responsive-loader/sharp')
+								}
+							}
+						]
 					}
 				]
 			},
@@ -137,27 +112,12 @@ module.exports =
 				immutable: 'Immutable'
 			},
 			plugins: [
-				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` }),
-				new CopyPlugin([
-					{
-						from: path.resolve(
-							__dirname,
-							'..',
-							'obojobo-document-engine',
-							'src',
-							'scripts',
-							'oboeditor',
-							'draftmanager.js'
-						),
-						to: path.join(__dirname, 'public', 'compiled', filename_with_min + '.js'),
-						transform(content) {
-							const output = Babel.transformSync(content, { presets: ['@babel/preset-env'] })
-							return output.code
-						}
-					}
-				])
+				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
+				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
+				new ManifestPlugin({ publicPath: '/static/' })
 			],
 			resolve: {
+				extensions: ['.js', '.jsx'],
 				alias: {
 					styles: path.join(docEnginePath, 'src', 'scss')
 				}

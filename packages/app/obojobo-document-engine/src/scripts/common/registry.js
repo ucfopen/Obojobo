@@ -1,20 +1,17 @@
+import withoutUndefined from './util/without-undefined'
+
 let items
 let defaults
-let registeredToolbarItems
-let toolbarItems
 let variableHandlers
 
 const noop = () => {}
+let memoInsertable
 
 class _Registry {
 	init() {
 		items = new Map()
 		defaults = new Map()
-		toolbarItems = []
 		variableHandlers = new Map()
-		registeredToolbarItems = {
-			separator: { id: 'separator', type: 'separator' }
-		}
 	}
 
 	loadDependency(url, onLoadCallback = () => {}) {
@@ -42,6 +39,31 @@ class _Registry {
 		return this
 	}
 
+	// convenience method for editor nodes to register
+	registerEditorModel(EditorNode) {
+		// Since registerModel sets defaults we want to remove any
+		// undefined values (Object.assign won't overwrite object
+		// values that are undefined, only ones that don't exist
+		// in the object)
+
+		this.registerModel(
+			EditorNode.name,
+			withoutUndefined({
+				name: EditorNode.menuLabel,
+				icon: EditorNode.icon,
+				isInsertable: EditorNode.isInsertable,
+				insertJSON: EditorNode.json && EditorNode.json.emptyNode,
+				slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
+				oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
+				plugins: EditorNode.plugins,
+				getPasteNode: EditorNode.getPasteNode,
+				getNavItem: EditorNode.getNavItem,
+				supportsChildren: EditorNode.supportsChildren || false,
+				ignore: EditorNode.ignore || false
+			})
+		)
+	}
+
 	cloneBlankNode(templateObject) {
 		return JSON.parse(JSON.stringify(templateObject))
 	}
@@ -57,16 +79,27 @@ class _Registry {
 			{
 				type: null,
 				default: false,
+				insertItem: null,
+				componentClass: null,
+				commandHandler: null,
 				variables: {},
 				variableHandler: noop,
 				templateObject: '',
-				init: noop
+				init: noop,
+				name: '',
+				icon: null,
+				isInsertable: false,
+				slateToObo: null,
+				oboToSlate: null,
+				plugins: null,
+				getPasteNode: node => node,
+				supportsChildren: false
 			},
 			opts
 		)
 
 		// bind cloneBlankNode to the combined templateObject value
-		opts.cloneBlankNode = this.cloneBlankNode.bind(this, opts.templateObject)
+		opts.cloneBlankNode = this.cloneBlankNode.bind(this, opts.insertJSON)
 
 		// save/update the final combined options on items
 		items.set(className, opts)
@@ -101,16 +134,6 @@ class _Registry {
 		return items.get(type)
 	}
 
-	registerToolbarItem(opts) {
-		registeredToolbarItems[opts.id] = opts
-		return this
-	}
-
-	addToolbarItem(id) {
-		toolbarItems.push(Object.assign({}, registeredToolbarItems[id]))
-		return this
-	}
-
 	getItems(callback) {
 		return callback(items)
 	}
@@ -130,12 +153,11 @@ class _Registry {
 		return cb.call(null, model, viewerState)
 	}
 
-	get registeredToolbarItems() {
-		return registeredToolbarItems
-	}
-
-	get toolbarItems() {
-		return toolbarItems
+	get insertableItems() {
+		if (!memoInsertable) {
+			memoInsertable = Array.from(items.values()).filter(item => item.isInsertable)
+		}
+		return memoInsertable
 	}
 }
 

@@ -1,16 +1,16 @@
-let nameTransform = node => {
+const nameTransform = node => {
 	if (node.type === 'element') {
 		if (nameTable[node.name]) {
 			node.name = nameTable[node.name]
 		}
 	}
 
-	for (let i in node.elements) {
+	for (const i in node.elements) {
 		nameTransform(node.elements[i])
 	}
 }
 
-let nameTable = {
+const nameTable = {
 	Code: 'ObojoboDraft.Chunks.Code',
 	Module: 'ObojoboDraft.Modules.Module',
 	Content: 'ObojoboDraft.Sections.Content',
@@ -25,9 +25,11 @@ let nameTable = {
 	QuestionBank: 'ObojoboDraft.Chunks.QuestionBank',
 	Question: 'ObojoboDraft.Chunks.Question',
 	MCAssessment: 'ObojoboDraft.Chunks.MCAssessment',
+	NumericAssessment: 'ObojoboDraft.Chunks.NumericAssessment',
 	MCChoice: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 	MCAnswer: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
 	MCFeedback: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+	NumericFeedback: 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback',
 	ActionButton: 'ObojoboDraft.Chunks.ActionButton',
 	Table: 'ObojoboDraft.Chunks.Table',
 	Break: 'ObojoboDraft.Chunks.Break',

@@ -1,6 +1,6 @@
-import { INPUT_TYPE_INVALID } from './types/input-types'
-import { MATCH_NONE } from '../entry/match-types'
-import big from '../big'
+const Big = require('../big')
+const { INPUT_TYPE_INVALID } = require('./types/input-types')
+const { MATCH_NONE } = require('../entry/match-types')
 
 /**
  * The result of parsing a string for a given numeric class
@@ -21,7 +21,7 @@ import big from '../big'
 /**
  * Base "abstract" class representing different number formats. You shouldn't create an instance of this class directly, rather, you would create instances of one of the super classes (like Decimal or Scientific).
  */
-export default class Numeric {
+module.exports = class Numeric {
 	/**
 	 * A string representing this type. (Super classes MUST overwrite this method.)
 	 * @type {'invalid'}
@@ -271,6 +271,10 @@ export default class Numeric {
 		o.bigValue = o.bigValue.toString()
 
 		return o
+	}
+
+	toString() {
+		return this.getString()
 	}
 
 	/**

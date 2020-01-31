@@ -1,5 +1,5 @@
 import Common from 'Common'
-import MCAssessmentResults from './mc-assessment-results'
+import QuestionOutcome from '../obojobo-chunks-question/question-outcome'
 import React from 'react'
 
 const { focus } = Common.page
@@ -23,13 +23,11 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 			<div role={isTypePickAll ? null : 'radiogroup'}>
 				<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
 					{isAnswerScored ? (
-						<MCAssessmentResults
+						<QuestionOutcome
 							score={this.props.score}
 							type={this.props.type}
 							isTypePickAll={isTypePickAll}
-							correctLabel={this.props.correctLabel}
-							incorrectLabel={this.props.incorrectLabel}
-							pickAllIncorrectMessage={this.props.pickAllIncorrectMessage}
+							feedbackText={this.props.feedbackText}
 							isForScreenReader
 						/>
 					) : null}
@@ -40,9 +38,11 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 						<Component
 							key={model.get('id')}
 							model={model}
+							questionModel={this.props.questionModel}
 							moduleData={this.props.moduleData}
 							responseType={responseType}
 							isShowingExplanation
+							isAnswerRevealed={this.props.isAnswerRevealed}
 							mode={this.props.mode}
 							type={this.props.type}
 							questionSubmitted={isAnswerScored}

@@ -1,15 +1,15 @@
-import {
+const {
 	SCIENTIFIC_TYPE_X,
 	SCIENTIFIC_TYPE_E,
 	SCIENTIFIC_TYPE_EE,
 	SCIENTIFIC_TYPE_APOS,
 	SCIENTIFIC_TYPE_ASTERISK
-} from './types/scientific-types'
-import Numeric from './numeric'
-import Decimal from './decimal'
-import { INPUT_TYPE_SCIENTIFIC } from './types/input-types'
-import { MATCH_EXACT } from '../entry/match-types'
-import big from '../big'
+} = require('./types/scientific-types')
+const Numeric = require('./numeric')
+const Decimal = require('./decimal')
+const { INPUT_TYPE_SCIENTIFIC } = require('./types/input-types')
+const { MATCH_EXACT } = require('../entry/match-types')
+const Big = require('../big')
 
 const xScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?x10\^[-+]?[0-9]+/
 const asteriskScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?\*10\^[-+]?[0-9]+/
@@ -37,7 +37,7 @@ const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+/
  * new Scientific("+6.02e23mols") // Plus sign optional and ignored
  * new Scientific("60.2e22") // The left-hand digit may be >= 10 even though this is not technically valid scientific notation
  */
-export default class Scientific extends Numeric {
+module.exports = class Scientific extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'scientific'}

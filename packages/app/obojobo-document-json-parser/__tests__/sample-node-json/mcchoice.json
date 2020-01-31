@@ -2,7 +2,20 @@
 	"id": "98f100ac-97d5-4c62-8e4b-5346e1ae0d2d",
 	"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
 	"content": {
-		"score": 100
+		"score": 100,
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": [
 		{

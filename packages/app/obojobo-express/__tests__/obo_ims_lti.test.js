@@ -1,10 +1,10 @@
 jest.mock('fs')
-jest.mock('../dev_nonce_store')
-jest.mock('../logger')
+jest.mock('../server/dev_nonce_store')
+jest.mock('../server/logger')
 jest.mock('ims-lti')
 
 import fs from 'fs'
-import logger from '../logger'
+import logger from '../server/logger'
 
 let oboLtiMiddleware
 
@@ -26,7 +26,7 @@ describe('Middleware Abstraction', () => {
 		}`)
 		global.EXPIRE_IN_SEC = ''
 
-		oboLtiMiddleware = require('../obo_ims_lti')
+		oboLtiMiddleware = require('../server/obo_ims_lti')
 	})
 	afterAll(() => {
 		delete global.EXPIRE_IN_SEC

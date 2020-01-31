@@ -9,7 +9,20 @@
 		"border": false,
 		"autoload": false,
 		"controls": "reload",
-		"initialZoom": 1
+		"initialZoom": 1,
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": []
 }

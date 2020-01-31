@@ -1,0 +1,26 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
+	font-size: 0.8em;
+	padding-left: $dimension-padding * 0.2333333333;
+	padding-right: $dimension-padding * 0.2333333333;
+
+	&.editor-feedback {
+		position: relative;
+		margin-top: 2em;
+		padding-top: 2em;
+		padding-bottom: 2em;
+		pointer-events: all;
+		background: $color-bg2;
+	}
+
+	.label {
+		position: absolute;
+		top: -0.1em;
+		left: 0.6em;
+		color: $color-text-minor;
+		transform: scale(0.7);
+		transform-origin: top left;
+		font-family: $font-default;
+	}
+}

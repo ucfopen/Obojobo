@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
+<MCAssessment
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    }
+  }
+/>
+`;

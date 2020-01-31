@@ -44,7 +44,7 @@
 		$bg-color: #fdfdfd;
 		$hover-bg-color: #f9f4ff;
 
-		border: 1px solid transparentize($color-action, 0.8);
+		border: 3px solid transparentize($color-action, 0.7);
 		max-height: 15em;
 		border-radius: $dimension-rounded-radius;
 		background-color: $bg-color;
@@ -63,6 +63,41 @@
 			right: 3.3em;
 			bottom: 0;
 			transition: transform $duration-animation-default, opacity $duration-animation-default;
+		}
+
+		.delete-button {
+			position: absolute;
+			right: 3.1em;
+			top: 0.1em;
+			transform: translate(50%, -50%);
+			z-index: 3;
+			opacity: 0;
+			transition: opacity 0.2s linear 0.2s;
+
+			button {
+				font-size: 1.2em;
+				padding: 0;
+				min-width: 1.3em;
+				border-radius: 50%;
+			}
+		}
+
+		&.is-selected {
+			border: 3px solid $color-action;
+
+			.delete-button {
+				transition: opacity 0s;
+				opacity: 1;
+			}
+		}
+
+		&:hover {
+			border: 3px solid $color-action;
+
+			.delete-button {
+				transition: opacity 0s;
+				opacity: 1;
+			}
 		}
 	}
 }

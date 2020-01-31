@@ -4,7 +4,7 @@ const SCIENTIFIC_TYPE_EE = 'ee'
 const SCIENTIFIC_TYPE_APOS = 'apos'
 const SCIENTIFIC_TYPE_ASTERISK = 'asterisk'
 
-export {
+module.exports = {
 	SCIENTIFIC_TYPE_X,
 	SCIENTIFIC_TYPE_E,
 	SCIENTIFIC_TYPE_EE,

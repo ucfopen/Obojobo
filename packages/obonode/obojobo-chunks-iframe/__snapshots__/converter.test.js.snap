@@ -36,6 +36,25 @@ Object {
 }
 `;
 
+exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "autoload": false,
+      "border": false,
+      "controls": "reload",
+      "fit": "scale",
+      "initialZoom": 1,
+      "triggers": "mock-triggers",
+      "type": "media",
+    },
+  },
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
 exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with webpage defaults 1`] = `
 Object {
   "data": Object {

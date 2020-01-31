@@ -1,3 +1,5 @@
+const processTriggers = require('../process-triggers')
+
 const questionNodeParser = (node, childrenParser) => {
 	const id = node.id ? ` id="${node.id}"` : ''
 	const solution = node.content.solution
@@ -7,7 +9,11 @@ const questionNodeParser = (node, childrenParser) => {
 		solutionXML = `<solution>` + childrenParser([solution]) + `</solution>`
 	}
 
-	return `<Question${id}>` + solutionXML + childrenParser(node.children) + `</Question>`
+	const triggersXML = processTriggers(node.content.triggers)
+
+	return (
+		`<Question${id}>` + solutionXML + childrenParser(node.children) + triggersXML + `</Question>`
+	)
 }
 
 module.exports = questionNodeParser

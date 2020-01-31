@@ -47,8 +47,9 @@ const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	// Filter out survey ('no-score') questions:
 	const gradableQuestionScores = questionScores.filter(q => Number.isFinite(q.score))
 
+	// Calculate attempt score, defaulting to zero if there are no gradeable questions.
 	const attemptScore =
-		gradableQuestionScores.reduce((acc, s) => acc + s.score, 0) / gradableQuestionScores.length
+		gradableQuestionScores.reduce((acc, s) => acc + s.score, 0) / gradableQuestionScores.length || 0
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))

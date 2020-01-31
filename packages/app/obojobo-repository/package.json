@@ -1,0 +1,73 @@
+{
+	"name": "obojobo-repository",
+	"license": "AGPL-3.0-only",
+	"version": "7.1.2",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
+	"description": "Obojobo express server middleware.",
+	"scripts": {
+		"test": "TZ='America/New_York' jest",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint **/*{js,jsx}",
+		"lint:css": "stylelint **/*.scss",
+		"prettier:run": "prettier --write '**/*.{js,jsx,scss}'",
+		"precommit": "lint-staged"
+	},
+	"engines": {
+		"node": "^12.11.1"
+	},
+	"lint-staged": {
+		"**/*.scss": [
+			"stylelint"
+		],
+		"**/*.{js,jsx,scss}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"dependencies": {
+		"express": "~4.16.4",
+		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
+		"express-validator": "^5.2.0",
+		"geopattern": "^1.2.3",
+		"ignore-styles": "^5.0.1",
+		"js-beautify": "^1.7.3",
+		"lodash.escaperegexp": "^4.1.2",
+		"moment": "2.24.0",
+		"object-assign": "^4.1.1",
+		"obojobo-express": "^7.1.2",
+		"obojobo-lib-utils": "^7.1.2",
+		"react-modal": "^3.8.2",
+		"react-redux": "^6.0.1",
+		"redux": "^4.0.1",
+		"redux-pack": "^0.1.5",
+		"sass-mq": "^5.0.1"
+	},
+	"jest": {
+		"collectCoverageFrom": [
+			"*.js",
+			"client/**/*.js",
+			"server/**/*.js",
+			"shared/**/*.js"
+		],
+		"coveragePathIgnorePatterns": [
+			"<rootDir>/node_modules",
+			"<rootDir>/setup_tests.js",
+			"<rootDir>/babel.config.js",
+			"<rootDir>/prettier.config.js"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	}
+}

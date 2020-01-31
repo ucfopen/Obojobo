@@ -1,10 +1,10 @@
-import NumericRuleSetEvaluator from './numeric-rule-set-evaluator'
-import NumericRule from '../rule/numeric-rule'
-import NumericEntry from '../entry/numeric-entry'
+const NumericRuleSetEvaluator = require('./numeric-rule-set-evaluator')
+const NumericRule = require('../rule/numeric-rule')
+const NumericEntry = require('../entry/numeric-entry')
 
-import NumericAnswerResults from './numeric-answer-results'
-import { OK } from '../entry/numeric-entry-statuses'
-import { RULE_MATCHED } from './numeric-rule-set-evaluator-statuses'
+const NumericAnswerResults = require('./numeric-answer-results')
+const { OK } = require('../entry/numeric-entry-statuses')
+const { RULE_MATCHED } = require('./numeric-rule-set-evaluator-statuses')
 
 /**
  * @external {Big} http://mikemcl.github.io/big.js/
@@ -124,4 +124,4 @@ class NumericAnswerEvaluator {
 	}
 }
 
-export default NumericAnswerEvaluator
+module.exports = NumericAnswerEvaluator

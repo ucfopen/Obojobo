@@ -2,7 +2,7 @@ import Common from 'Common'
 
 const { Dispatcher } = Common.flux
 
-import QuestionUtil from '../../viewer/util/question-util'
+import QuestionUtil from '../util/question-util'
 
 const AssessmentUtil = {
 	getAssessmentForModel(state, model) {
@@ -235,6 +235,22 @@ const AssessmentUtil = {
 				id: model.get('id')
 			}
 		})
+	},
+
+	isFullReviewAvailableForModel(state, model) {
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		switch (model.modelState.review) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'no-attempts-remaining':
+				return !AssessmentUtil.hasAttemptsRemaining(state, model)
+		}
 	}
 }
 

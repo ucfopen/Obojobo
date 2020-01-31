@@ -2,7 +2,7 @@ describe('Caliper event from req', () => {
 	// make sure all Date objects use a static date
 	mockStaticDate()
 
-	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
+	const caliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
 
 	// some redundant values
 	const id = 'testIdReq'
@@ -41,7 +41,6 @@ describe('Caliper event from req', () => {
 		'nav:goto': { from: 'fromReq', to: 'toReq' },
 		'nav:open': {},
 		'nav:close': {},
-		'nav:toggle': { isOpen: true },
 		'nav:lock': {},
 		'nav:unlock': {},
 		'question:view': { questionId },

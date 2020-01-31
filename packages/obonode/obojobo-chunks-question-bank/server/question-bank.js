@@ -1,6 +1,6 @@
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 const _ = require('underscore')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 const { getRandom } = require('./util')
 const flatten = require('array-flatten')
 
@@ -31,6 +31,7 @@ class QuestionBank extends DraftNode {
 	}
 
 	buildAssessment(questionUsesMap) {
+		console.log('QB buildAssessment', this)
 		let chosenIds
 		switch (this.select) {
 			case SELECT_SEQUENTIAL:
@@ -88,6 +89,7 @@ class QuestionBank extends DraftNode {
 	// but within those groups, questions are kept in order
 	// only return up to the desired amount of questions per attempt.
 	createChosenArraySequentially(questionUsesMap) {
+		console.log('ccas', this.immediateChildrenSet)
 		return (
 			// convert this questionBank's set of direct children *IDs* to an array
 			[...this.immediateChildrenSet]

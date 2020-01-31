@@ -1,4 +1,4 @@
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
@@ -19,6 +19,7 @@ const getFullQuestionsFromDraftTree = (draftTree, questionMetadata) => {
 	for (const question of questionMetadata) {
 		// the client does not need question bank nodes to render the assessment
 		if (question.type === QUESTION_NODE_TYPE) {
+			console.log('PUSH', question)
 			questions.push(draftTree.getChildNodeById(question.id).toObject())
 		}
 	}

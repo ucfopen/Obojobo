@@ -1,8 +1,6 @@
-/* eslint-disable new-cap */
+const Big = require('big.js')
 
-import Big from 'big.js'
-
-export default s => {
+module.exports = s => {
 	s = typeof s === 'string' ? s.replace(/^\+/, '') : s
 	return Big(s)
 }

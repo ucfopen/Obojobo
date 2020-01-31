@@ -1,6 +1,6 @@
 /* eslint eqeqeq: 0 */
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../util/editor-util'
 
 const { Store } = Common.flux
@@ -31,7 +31,7 @@ class EditorStore extends Store {
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
 				'editor:addPage': payload => {
-					this.addPage(payload.value.newPage)
+					this.addPage(payload.value.newPage, payload.value.afterPageId)
 				},
 				'editor:addAssessment': payload => {
 					this.addAssessment(payload.value.newAssessment)
@@ -53,7 +53,7 @@ class EditorStore extends Store {
 		)
 	}
 
-	init(model, startingId = null, settings, startingPath, viewState = {}) {
+	init(model, startingId = null, settings, startingPath, mode) {
 		this.state = {
 			navItems: {},
 			itemsById: {},
@@ -61,10 +61,9 @@ class EditorStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
-			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 			context: 'editor',
 			currentPageModel: null,
+			mode,
 			settings,
 			startingId
 		}
@@ -163,7 +162,12 @@ class EditorStore extends Store {
 
 			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = ['/editor', model.getRoot().get('draftId'), flatPath].join('/')
+			childNavItem.fullFlatPath = [
+				'/editor',
+				this.state.mode,
+				model.getRoot().get('draftId'),
+				flatPath
+			].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}
@@ -173,19 +177,26 @@ class EditorStore extends Store {
 		return navItem
 	}
 
-	addPage(newPage) {
+	addPage(newPage, afterPageId) {
 		const rootModel = OboModel.getRoot()
+		let newPageModel
 
-		// Add the newPage to the content
-		const pageModel = OboModel.create(newPage)
-		rootModel.children.forEach(child => {
-			if (child.get('type') === CONTENT_NODE) {
-				child.children.add(pageModel)
-			}
-		})
+		if (afterPageId) {
+			const pageModel = OboModel.models[afterPageId]
+			newPageModel = OboModel.create(newPage)
+			pageModel.addChildAfter(newPageModel)
+		} else {
+			// Add the newPage to the end of the content
+			newPageModel = OboModel.create(newPage)
+			rootModel.children.forEach(child => {
+				if (child.get('type') === CONTENT_NODE) {
+					child.children.add(newPageModel)
+				}
+			})
+		}
 
 		EditorUtil.rebuildMenu(rootModel)
-		EditorUtil.goto(pageModel.id)
+		EditorUtil.goto(newPageModel.id)
 	}
 
 	addAssessment(newAssessment) {
@@ -208,11 +219,14 @@ class EditorStore extends Store {
 
 		this.state.currentPageModel = null
 		this.triggerChange()
+
+		const first = EditorUtil.getFirst(this.state)
+		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
 	renamePage(pageId, newName) {
 		const pageModel = OboModel.models[pageId]
-		pageModel.set('content', { title: newName })
+		pageModel.get('content').title = newName
 		pageModel.title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())

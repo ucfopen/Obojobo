@@ -1,9 +1,9 @@
-import { BINARY_TYPE_INFERRED, BINARY_TYPE_ZERO_B } from './types/binary-types'
-import { INPUT_TYPE_BINARY } from './types/input-types'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
-import Numeric from './numeric'
-import Decimal from './decimal'
-import big from '../big'
+const { BINARY_TYPE_INFERRED, BINARY_TYPE_ZERO_B } = require('./types/binary-types')
+const { INPUT_TYPE_BINARY } = require('./types/input-types')
+const { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } = require('../entry/match-types')
+const Numeric = require('./numeric')
+const Decimal = require('./decimal')
+const Big = require('../big')
 
 const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+ /
 const binaryInferred = /^[0-1]+$|^[0-1]+ /
@@ -15,7 +15,7 @@ const binaryInferred = /^[0-1]+$|^[0-1]+ /
  * new Binary("0b1101 bytes") // Unit example
  * new Binary("101") // 'inferred' binary value
  */
-export default class Binary extends Numeric {
+module.exports = class Binary extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'binary'}

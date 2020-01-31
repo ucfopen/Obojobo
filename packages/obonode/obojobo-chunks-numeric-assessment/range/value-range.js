@@ -1,7 +1,7 @@
 // Ranges:
 // Finite range: [1,2], [-3,9]
 // Infinite range: [1,], [,9], [,]
-// Closed range (This is a range which accepts no values)
+// empty range (This is a range which accepts no values)
 
 /**
  * A string used in a ValueRange
@@ -23,7 +23,7 @@
  * @property {boolean|null} [isMinInclusive]
  * @property {*|null} [max]
  * @property {boolean|null} [isMaxInclusive]
- * @property {boolean} [isClosed]
+ * @property {boolean} [isEmpty]
  * @example
  * {
  * 	min: 2,
@@ -37,7 +37,7 @@
  * Represents a range of values which can be created using a range syntax. Allows you
  * to query the range to determine if values are less than, inside or greater than the
  * range. Ranges can be "singular" meaning they're singular values. You can also specify
- * a "closed" range which is simply a range with no valid values.
+ * a "empty" range which is simply a range with no valid values.
  * By default ValueRange works with numbers, however you can pass custom value parsing
  * functions and comparison functions to create a range to work with any value type.
  * @example
@@ -45,10 +45,10 @@
  * new ValueRange(true) // -Infinity to Infinity
  * new ValueRange('(*,*)') // -Infinity to Infinity
  * new ValueRange({}) // -Infinity to Infinity
- * new ValueRange({ isClosed:true }) // Closed range (no values)
- * new ValueRange('') // Closed range (no values)
- * new ValueRange(null) // Closed range (no values)
- * new ValueRange(false) // Closed range (no values)
+ * new ValueRange({ isEmpty:true }) // Empty range (no values)
+ * new ValueRange('') // empty range (no values)
+ * new ValueRange(null) // empty range (no values)
+ * new ValueRange(false) // empty range (no values)
  * new ValueRange('6') // 6
  * new ValueRange('[6,7)') // >= 6 and < 7
  * new ValueRange('(*,7)') // < 7
@@ -56,7 +56,7 @@
  * new ValueRange({ min:6, isMinInclusive:true, max:7, isMaxInclusive:true }) // 6 to 7
  * new ValueRange({ max:7, isMaxInclusive:true }) // <= 7
  */
-export default class ValueRange {
+class ValueRange {
 	/**
 	 * Parsed a ValueRangeString into a ValueRangeObject
 	 * @param {ValueRangeString} rangeString
@@ -157,7 +157,7 @@ export default class ValueRange {
 		/**
 		 * If true then this is a range which accepts no values.
 		 */
-		this.isClosed = false
+		this.isEmpty = false
 
 		/**
 		 * The minimum value of the range. If equal to null then it is considered to
@@ -208,9 +208,9 @@ export default class ValueRange {
 
 		if (
 			!rangeStringOrRangeObject ||
-			(typeof rangeStringOrRangeObject === 'object' && rangeStringOrRangeObject.isClosed)
+			(typeof rangeStringOrRangeObject === 'object' && rangeStringOrRangeObject.isEmpty)
 		) {
-			this.close()
+			this.empty()
 			return
 		}
 
@@ -251,7 +251,7 @@ export default class ValueRange {
 				this.isMaxInclusive = true
 			}
 
-			// A range like (1,1) is a closed range, convert accordingly
+			// A range like (1,1) is a empty range, convert accordingly
 			if (
 				this.min !== null &&
 				this.max !== null &&
@@ -259,7 +259,7 @@ export default class ValueRange {
 				!this.isMinInclusive &&
 				!this.isMaxInclusive
 			) {
-				this.close()
+				this.empty()
 				return
 			}
 
@@ -284,7 +284,7 @@ export default class ValueRange {
 	 * Resets values to a infinite range (all values)
 	 */
 	init() {
-		this.isClosed = false
+		this.isEmpty = false
 		this.min = null
 		this.isMinInclusive = null
 		this.max = null
@@ -292,10 +292,10 @@ export default class ValueRange {
 	}
 
 	/**
-	 * Resets values to a closed range
+	 * Resets values to an empty range
 	 */
-	close() {
-		this.isClosed = true
+	empty() {
+		this.isEmpty = true
 		this.min = null
 		this.isMinInclusive = null
 		this.max = null
@@ -318,7 +318,7 @@ export default class ValueRange {
 	/**
 	 * Determine the position of value compared to the range's min value
 	 * @param {*} value
-	 * @return {'closed'|'equal'|'above'|'below'}
+	 * @return {'empty'|'equal'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
 	 * range.getMinValuePosition(2) //'equal'
@@ -326,7 +326,7 @@ export default class ValueRange {
 	 * range.getMinValuePosition(5) //'above'
 	 */
 	getMinValuePosition(value) {
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
 		if (this.isMinInclusive && this.minEq(value)) return this.constructor.VALUE_EQUAL
 		if (this.minLt(value)) return this.constructor.VALUE_ABOVE
 		return this.constructor.VALUE_BELOW
@@ -335,7 +335,7 @@ export default class ValueRange {
 	/**
 	 * Determine the position of value compared to the range's max value
 	 * @param {*} value
-	 * @return {'closed'|'equal'|'above'|'below'}
+	 * @return {'empty'|'equal'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
 	 * range.getMinValuePosition(4) //'equal'
@@ -343,7 +343,7 @@ export default class ValueRange {
 	 * range.getMinValuePosition(5) //'above'
 	 */
 	getMaxValuePosition(value) {
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
 		if (this.isMaxInclusive && this.maxEq(value)) return this.constructor.VALUE_EQUAL
 		if (this.maxGt(value)) return this.constructor.VALUE_BELOW
 		return this.constructor.VALUE_ABOVE
@@ -392,7 +392,7 @@ export default class ValueRange {
 	/**
 	 * Determine the position of value compared to the range
 	 * @param {*} value
-	 * @return {'closed'|'inside'|'above'|'below'}
+	 * @return {'empty'|'inside'|'above'|'below'}
 	 * @example
 	 * const range = new ValueRange('[2,4]')
 	 * range.getValuePosition(1) //'below'
@@ -402,8 +402,8 @@ export default class ValueRange {
 	 * range.getValuePosition(5) //'above'
 	 */
 	getValuePosition(value) {
-		// By definition a value is not inside a closed range
-		if (this.isClosed) return this.constructor.VALUE_CLOSED_RANGE
+		// By definition a value is not inside a empty range
+		if (this.isEmpty) return this.constructor.VALUE_EMPTY_RANGE
 
 		const isMinRequirementMet = this.isValueWithinMin(value)
 		const isMaxRequirementMet = this.isValueWithinMax(value)
@@ -424,9 +424,9 @@ export default class ValueRange {
 	 * @returns {ValueRangeString}
 	 */
 	toString() {
-		if (this.isClosed) return ''
+		if (this.isEmpty) return ''
 		if (this.isSingular) return this.toStringFn(this.min)
-		if (this.isAllValues) return '*'
+		if (this.isUniversal) return '*'
 
 		let lhs = ''
 		if (this.isMinInclusive === true) {
@@ -451,10 +451,10 @@ export default class ValueRange {
 	 */
 	toJSON() {
 		return {
-			isClosed: this.isClosed,
+			isEmpty: this.isEmpty,
 			min: this.serializeFn(this.min),
-			isMinInclusive: this.isMinInclusive,
 			max: this.serializeFn(this.max),
+			isMinInclusive: this.isMinInclusive,
 			isMaxInclusive: this.isMaxInclusive
 		}
 	}
@@ -581,7 +581,7 @@ export default class ValueRange {
 	 */
 	get isSingular() {
 		return (
-			!this.isClosed &&
+			!this.isEmpty &&
 			this.min !== null &&
 			this.max !== null &&
 			this.minEq(this.max) &&
@@ -591,26 +591,26 @@ export default class ValueRange {
 	}
 
 	/**
-	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. [,7])
+	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. [*,7])
 	 * @type {boolean}
 	 */
-	get isFinite() {
-		return this.isClosed || (this.min !== null && this.max !== null)
+	get isBounded() {
+		return this.isEmpty || (this.min !== null && this.max !== null)
 	}
 
 	/**
-	 * True if this range includes all values (-Infinity to Infinity), false otherwise
+	 * True if this range is the set of all values (-Infinity to Infinity) (i.e. '*')
 	 * @type {boolean}
 	 */
-	get isAllValues() {
-		return !this.isClosed && this.min === null && this.max === null
+	get isUniversal() {
+		return !this.isEmpty && this.min === null && this.max === null
 	}
 }
 
-// Values for closed ranges:
-ValueRange.VALUE_CLOSED_RANGE = 'closed'
+// Values for empty ranges:
+ValueRange.VALUE_EMPTY_RANGE = 'empty'
 
-// Values for non-closed ranges:
+// Values for non-empty ranges:
 ValueRange.VALUE_INSIDE = 'inside'
 ValueRange.VALUE_BELOW_MIN = 'belowMin'
 ValueRange.VALUE_ABOVE_MAX = 'aboveMax'
@@ -619,3 +619,5 @@ ValueRange.VALUE_ABOVE_MAX = 'aboveMax'
 ValueRange.VALUE_BELOW = 'below'
 ValueRange.VALUE_ABOVE = 'above'
 ValueRange.VALUE_EQUAL = 'equal'
+
+module.exports = ValueRange

@@ -1,4 +1,5 @@
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => {
 	const json = {
@@ -7,7 +8,7 @@ const slateToObo = node => {
 		children: node.nodes.map(child => Component.helpers.slateToObo(child))
 	}
 
-	if (node.data) json.content = node.data.get('content') || {}
+	if (node.data) json.content = withoutUndefined(node.data.get('content') || {})
 
 	return json
 }

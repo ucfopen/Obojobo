@@ -7,7 +7,7 @@ const { OboComponent } = Viewer.components
 const { FocusUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	static focusOnContent(model, opts) {
+	static focusOnContent(model, opts = {}) {
 		const firstModel = model.children.at(0)
 		if (!firstModel) return
 

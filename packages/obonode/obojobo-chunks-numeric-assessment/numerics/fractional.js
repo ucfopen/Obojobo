@@ -1,9 +1,9 @@
-import Numeric from './numeric'
-import Decimal from './decimal'
-import { INPUT_TYPE_FRACTIONAL } from './types/input-types'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
-import big from '../big'
-import getPercentError from '../util/percent-error'
+const Numeric = require('./numeric')
+const Decimal = require('./decimal')
+const { INPUT_TYPE_FRACTIONAL } = require('./types/input-types')
+const { MATCH_EXACT, MATCH_NONE } = require('../entry/match-types')
+const Big = require('../big')
+const getPercentError = require('../util/percent-error')
 
 const DEFAULT_TO_FRACTION_ERROR_VALUE = 0.000001
 
@@ -34,7 +34,7 @@ const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+/
  * new Fractional("+22/7") // Plus sign optional and is ignored
  * new Fractional("7,392/8,040,112") // Commas optional and are ignored
  */
-export default class Fractional extends Numeric {
+module.exports = class Fractional extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'fractional'}

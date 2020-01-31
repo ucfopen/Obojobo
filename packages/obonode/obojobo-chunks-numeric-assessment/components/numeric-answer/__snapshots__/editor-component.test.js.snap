@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAnswer Editor Node NumericAnswer builds the expected component with score of 0 1`] = `
+<div
+  className="numeric-input-container pad"
+>
+  <button
+    className="correct-button is-not-correct"
+    onClick={[Function]}
+    tabIndex="0"
+  >
+    ✖
+  </button>
+  <table
+    contentEditable={false}
+  >
+    <thead>
+      <tr>
+        <th>
+          Requirement
+        </th>
+        <th>
+          Answer
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <select
+            className="select-item"
+            name="requirement"
+            onChange={[Function]}
+            onClick={[Function]}
+          >
+            <option>
+              Exact answer
+            </option>
+            <option>
+              Margin of error
+            </option>
+            <option>
+              Within a range
+            </option>
+            <option>
+              Precise response
+            </option>
+          </select>
+        </td>
+        <td>
+          <input
+            className="input-item"
+            contentEditable={false}
+            name="answer"
+            onChange={[Function]}
+            onClick={[Function]}
+            value=""
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer builds the expected component with score of 100 1`] = `
+<div
+  className="numeric-input-container pad"
+>
+  <button
+    className="correct-button is-correct"
+    onClick={[Function]}
+    tabIndex="0"
+  >
+    ✔
+  </button>
+  <table
+    contentEditable={false}
+  >
+    <thead>
+      <tr>
+        <th>
+          Requirement
+        </th>
+        <th>
+          Answer
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <select
+            className="select-item"
+            name="requirement"
+            onChange={[Function]}
+            onClick={[Function]}
+          >
+            <option>
+              Exact answer
+            </option>
+            <option>
+              Margin of error
+            </option>
+            <option>
+              Within a range
+            </option>
+            <option>
+              Precise response
+            </option>
+          </select>
+        </td>
+        <td>
+          <input
+            className="input-item"
+            contentEditable={false}
+            name="answer"
+            onChange={[Function]}
+            onClick={[Function]}
+            value=""
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onClickDropdown() change \`type\` for \`Margin of error\` 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-not-correct\\" tabindex=\\"0\\">✖</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Type</th><th>Answer</th><th>Margin</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"margin\\" value=\\"\\"></td></tr></tbody></table></div>"`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onClickDropdown() change requirement from \`Exact answer\` to \`Margin of error\` 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-not-correct\\" tabindex=\\"0\\">✖</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Answer</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr></tbody></table></div>"`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onClickDropdown() change requirement from \`Exact answer\` to \`Precise response\` 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-not-correct\\" tabindex=\\"0\\">✖</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Answer</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr></tbody></table></div>"`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onHandleInputChange() works as expected 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-not-correct\\" tabindex=\\"0\\">✖</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Answer</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr></tbody></table></div>"`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onHandleScoreChange() with score \`0\` 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-not-correct\\" tabindex=\\"0\\">✖</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Answer</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr></tbody></table></div>"`;
+
+exports[`NumericAnswer Editor Node NumericAnswer onHandleScoreChange() with score of \`100\` 1`] = `"<div class=\\"numeric-input-container pad\\"><button class=\\"correct-button is-correct\\" tabindex=\\"0\\">✔</button><table contenteditable=\\"false\\"><thead><tr><th>Requirement</th><th>Answer</th></tr></thead><tbody><tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr></tbody></table></div>"`;

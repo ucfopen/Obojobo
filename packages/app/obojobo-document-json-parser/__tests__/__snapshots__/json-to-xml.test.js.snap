@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JSON to XML Parser Converts action-button.json to xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+	<ActionButton id=\\"action-button-id\\">
+		<textGroup>
+			<t>Example Button</t>
+		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
+	</ActionButton>
+</ObojoboDraftDoc>"
+`;
+
 exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
@@ -209,6 +229,15 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 				<mod reward=\\"-6\\" attemptCondition=\\"$last_attempt\\"/>
 			</mods>
 		</rubric>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Assessment>
 </ObojoboDraftDoc>"
 `;
@@ -216,7 +245,17 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 exports[`JSON to XML Parser Converts break.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<hr width=\\"normal\\"/>
+	<Break width=\\"normal\\" id=\\"ab2734d1-3ab0-47fd-aa7c-c3c8405f1396\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
+	</Break>
 </ObojoboDraftDoc>"
 `;
 
@@ -232,6 +271,15 @@ exports[`JSON to XML Parser Converts code.json to xml 1`] = `
 			<t indent=\\"1\\">print(\\"Hello world\\");</t>
 			<t indent=\\"0\\">}</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Code>
 </ObojoboDraftDoc>"
 `;
@@ -240,6 +288,15 @@ exports[`JSON to XML Parser Converts content.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Content id=\\"40a16682-bcd9-44f0-aeb6-23d4cb143676\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Content>
 </ObojoboDraftDoc>"
 `;
@@ -251,6 +308,15 @@ exports[`JSON to XML Parser Converts figure.json to xml 1`] = `
 		<textGroup>
 			<t>An image with a custom size</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Figure>
 </ObojoboDraftDoc>"
 `;
@@ -262,6 +328,15 @@ exports[`JSON to XML Parser Converts heading.json to xml 1`] = `
 		<textGroup>
 			<t align=\\"left\\">Welcome to the Obojobo Visual Editor</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Heading>
 </ObojoboDraftDoc>"
 `;
@@ -269,7 +344,17 @@ exports[`JSON to XML Parser Converts heading.json to xml 1`] = `
 exports[`JSON to XML Parser Converts iframe.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"43010777-b961-4ebd-b906-47f374be1d81\\"/>
+	<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"43010777-b961-4ebd-b906-47f374be1d81\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
+	</IFrame>
 </ObojoboDraftDoc>"
 `;
 
@@ -288,6 +373,15 @@ exports[`JSON to XML Parser Converts list.json to xml 1`] = `
 			<t indent=\\"0\\">Another Item</t>
 			<t indent=\\"0\\">A Third Item</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</List>
 </ObojoboDraftDoc>"
 `;
@@ -295,7 +389,17 @@ exports[`JSON to XML Parser Converts list.json to xml 1`] = `
 exports[`JSON to XML Parser Converts mathequation.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<MathEquation alt=\\"x sub one equals x sub zero plus delta x\\" label=\\"1.1\\" latex=\\"x_1 = x_0 + \\\\Delta x\\" id=\\"66ae62f9-7cde-4a7f-9164-9245e9be1b1e\\"/>
+	<MathEquation alt=\\"x sub one equals x sub zero plus delta x\\" label=\\"1.1\\" latex=\\"x_1 = x_0 + \\\\Delta x\\" id=\\"66ae62f9-7cde-4a7f-9164-9245e9be1b1e\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
+	</MathEquation>
 </ObojoboDraftDoc>"
 `;
 
@@ -308,6 +412,15 @@ exports[`JSON to XML Parser Converts mcanswer.json to xml 1`] = `
 				<t indent=\\"0\\">Correct answer</t>
 			</textGroup>
 		</Text>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</MCAnswer>
 </ObojoboDraftDoc>"
 `;
@@ -315,7 +428,7 @@ exports[`JSON to XML Parser Converts mcanswer.json to xml 1`] = `
 exports[`JSON to XML Parser Converts mcassessment.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"802ec69f-2ba2-4dad-9ba4-06372a550ddb\\">
+	<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"802ec69f-2ba2-4dad-9ba4-06372a550ddb\\">
 		<MCChoice score=\\"100\\" id=\\"98f100ac-97d5-4c62-8e4b-5346e1ae0d2d\\">
 			<MCAnswer id=\\"40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31\\">
 				<Text id=\\"fedc62b5-31f5-4b89-abfd-f6604208837c\\">
@@ -325,6 +438,15 @@ exports[`JSON to XML Parser Converts mcassessment.json to xml 1`] = `
 				</Text>
 			</MCAnswer>
 		</MCChoice>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</MCAssessment>
 </ObojoboDraftDoc>"
 `;
@@ -340,6 +462,15 @@ exports[`JSON to XML Parser Converts mcchoice.json to xml 1`] = `
 				</textGroup>
 			</Text>
 		</MCAnswer>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</MCChoice>
 </ObojoboDraftDoc>"
 `;
@@ -353,6 +484,15 @@ exports[`JSON to XML Parser Converts mcfeedback.json to xml 1`] = `
 				<t indent=\\"0\\">Here is some detailed information about the incorrect answer</t>
 			</textGroup>
 		</Text>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</MCFeedback>
 </ObojoboDraftDoc>"
 `;
@@ -361,6 +501,15 @@ exports[`JSON to XML Parser Converts module.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Module title=\\"Obojobo Visual Editor Tutorial\\" id=\\"9c7e4d32-2e5b-432e-83dc-dbbb923df3b8\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Module>
 </ObojoboDraftDoc>"
 `;
@@ -369,6 +518,15 @@ exports[`JSON to XML Parser Converts page.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Page title=\\"Welcome to the Obojobo Visual Editor\\" id=\\"b64fdc8e-48c1-43c1-9644-747519ad14ef\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Page>
 </ObojoboDraftDoc>"
 `;
@@ -398,6 +556,15 @@ exports[`JSON to XML Parser Converts question.json to xml 1`] = `
 				</MCAnswer>
 			</MCChoice>
 		</MCAssessment>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Question>
 </ObojoboDraftDoc>"
 `;
@@ -425,6 +592,15 @@ exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 				</MCChoice>
 			</MCAssessment>
 		</Question>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</QuestionBank>
 </ObojoboDraftDoc>"
 `;
@@ -444,6 +620,15 @@ exports[`JSON to XML Parser Converts table.json to xml 1`] = `
 			<t>Item 5</t>
 			<t>Item 6</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Table>
 </ObojoboDraftDoc>"
 `;
@@ -455,6 +640,15 @@ exports[`JSON to XML Parser Converts text.json to xml 1`] = `
 		<textGroup>
 			<t align=\\"0\\" indent=\\"0\\">The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.</t>
 		</textGroup>
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
 	</Text>
 </ObojoboDraftDoc>"
 `;
@@ -462,6 +656,16 @@ exports[`JSON to XML Parser Converts text.json to xml 1`] = `
 exports[`JSON to XML Parser Converts youtube.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\"/>
+	<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\" startTime=\\"10\\" endTime=\\"20\\">
+		<triggers>
+			<trigger type=\\"onClick\\">
+				<actions>
+					<action type=\\"nav:goto\\">
+						<value id=\\"example-id\\"/>
+					</action>
+				</actions>
+			</trigger>
+		</triggers>
+	</YouTube>
 </ObojoboDraftDoc>"
 `;

@@ -1,12 +1,13 @@
-import big from '../big'
-import NumericEntryRange from '../range/numeric-entry-range'
-import BigValueRange from '../range/big-value-range'
-import {
+const Big = require('../big')
+const NumericEntryRange = require('../range/numeric-entry-range')
+const BigValueRange = require('../range/big-value-range')
+const NumericEntry = require('../entry/numeric-entry')
+const {
 	ROUND_TYPE_NONE,
 	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
 	ROUND_TYPE_ROUND_SIG_FIGS
-} from './round-types'
-import {
+} = require('./round-types')
+const {
 	INPUT_TYPE_SCIENTIFIC,
 	INPUT_TYPE_DECIMAL,
 	INPUT_TYPE_FRACTIONAL,
@@ -14,17 +15,16 @@ import {
 	INPUT_TYPE_OCTAL,
 	INPUT_TYPE_HEXADECIMAL,
 	allTypes
-} from '../numerics/types/input-types'
-import {
+} = require('../numerics/types/input-types')
+const {
 	SCIENTIFIC_TYPE_X,
 	SCIENTIFIC_TYPE_E,
 	SCIENTIFIC_TYPE_EE,
 	SCIENTIFIC_TYPE_APOS,
 	SCIENTIFIC_TYPE_ASTERISK
-} from '../numerics/types/scientific-types'
-import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
-import { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } from './unit-types'
-import ValueRange from '../range/value-range'
+} = require('../numerics/types/scientific-types')
+const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
+const { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } = require('./unit-types')
 
 const SCHEMA = [
 	'percentError',
@@ -41,10 +41,11 @@ const SCHEMA = [
 	'additionalUnits',
 	'unitsAreCaseSensitive',
 	'scientificTypes',
+	'feedback',
 	'value'
 ]
 
-const ZERO = big(0)
+const ZERO = Big(0)
 
 /**
  * A rule config object used to create a NumericRule instance. Rules compare a student answer to the rules properties and "match" if the student answer agrees with all of the properties.
@@ -78,7 +79,7 @@ const ZERO = big(0)
  * rule.unitsAreCaseSensitive // false (The default)
  * rule.value //Equivalent to new NumericEntryRange('[4,5]g')
  */
-export default class NumericRule {
+module.exports = class NumericRule {
 	/**
 	 * Return the error type as a rule can only specify one.
 	 * @param {RuleConfigObject} config
@@ -333,6 +334,10 @@ export default class NumericRule {
 		return [...new Set(types)]
 	}
 
+	static getFeedback(config) {
+		return config.feedback || null
+	}
+
 	/**
 	 * Validates and returns `config.unitsMatch`
 	 * @param {RuleConfigObject} config
@@ -406,8 +411,13 @@ export default class NumericRule {
 	 * @return {NumericEntryRange}
 	 */
 	static getRuleValue(config, types) {
-		if (!config.value) return new NumericEntryRange()
-		return new NumericEntryRange(config.value, types)
+		if (typeof config.value === 'undefined' || config.value === null) return new NumericEntryRange()
+
+		const range = new NumericEntryRange(config.value, types)
+
+		if (range.isEmpty) throw 'Invalid range given for value'
+
+		return range
 	}
 
 	/**
@@ -504,5 +514,10 @@ export default class NumericRule {
 		 * @type {string[]}
 		 */
 		this.scientificTypes = NumericRule.getRuleScientificTypes(config)
+
+		/**
+		 * @type {object}
+		 */
+		this.feedback = NumericRule.getFeedback(config)
 	}
 }

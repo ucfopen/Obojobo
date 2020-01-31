@@ -101,11 +101,22 @@ const QuestionUtil = {
 		})
 	},
 
-	setScore(itemId, score, context) {
+	revealAnswer(id, context) {
+		return Dispatcher.trigger('question:revealAnswer', {
+			value: {
+				id,
+				context
+			}
+		})
+	},
+
+	setScore(itemId, score, feedbackText, detailedText, context) {
 		return Dispatcher.trigger('question:scoreSet', {
 			value: {
 				itemId,
 				score,
+				feedbackText,
+				detailedText,
 				context
 			}
 		})
@@ -150,6 +161,13 @@ const QuestionUtil = {
 		return QuestionUtil.getResponse(state, model, context) !== null
 	},
 
+	isAnswerRevealed(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return false
+
+		return contextState.revealedQuestions[model.get('id')] || false
+	},
+
 	getData(state, model, context, key) {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return null
@@ -164,13 +182,28 @@ const QuestionUtil = {
 		return contextState.data[model.get('id') + ':showingExplanation'] || false
 	},
 
-	getScoreForModel(state, model, context) {
+	getScoreDataForModel(state, model, context) {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return null
 
 		const scoreItem = contextState.scores[model.get('id')] || null
 
-		return scoreItem ? scoreItem.score : null
+		return scoreItem || null
+	},
+
+	getScoreForModel(state, model, context) {
+		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
+		return scoreData ? scoreData.score : null
+	},
+
+	getFeedbackTextForModel(state, model, context) {
+		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
+		return scoreData ? scoreData.feedbackText : null
+	},
+
+	getDetailedTextForModel(state, model, context) {
+		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
+		return scoreData ? scoreData.detailedText : null
 	},
 
 	getScoreClass(score) {

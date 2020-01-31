@@ -1,9 +1,9 @@
-import { INPUT_TYPE_OCTAL } from './types/input-types'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
-import Numeric from './numeric'
-import Decimal from './decimal'
-import big from '../big'
-import { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } from './types/octal-types'
+const { INPUT_TYPE_OCTAL } = require('./types/input-types')
+const { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } = require('../entry/match-types')
+const Numeric = require('./numeric')
+const Decimal = require('./decimal')
+const Big = require('../big')
+const { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } = require('./types/octal-types')
 
 const octalZeroO = /^0o[0-7]+$|^0o[0-7]+ /
 const octalInferred = /^[0-7]+$|^[0-7]+ /
@@ -15,7 +15,7 @@ const octalInferred = /^[0-7]+$|^[0-7]+ /
  * new Octal("0o701 bytes") // Unit example
  * new Octal("701") // 'inferred' octal value
  */
-export default class Octal extends Numeric {
+module.exports = class Octal extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'octal'}

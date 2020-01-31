@@ -5,21 +5,29 @@ Object {
   "data": Object {
     "content": Object {
       "solution": Object {},
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.Break",
+      },
+      "mock": "oboToSlate",
     },
-    undefined,
+    Object {
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+      "mock": "oboToSlate",
+    },
     Object {
       "nodes": Array [
-        undefined,
+        Object {
+          "args": Object {},
+          "mock": "oboToSlate",
+        },
       ],
       "object": "block",
       "type": "ObojoboDraft.Chunks.Question.Solution",
@@ -38,20 +46,24 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.Break",
+      },
+      "mock": "oboToSlate",
     },
-    undefined,
+    Object {
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+      "mock": "oboToSlate",
+    },
   ],
   "object": "block",
   "type": "mockType",
 }
 `;
 
-exports[`Question editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`Question editor slateToObo converts a Slate node to an OboNode for NumericAssessment 1`] = `
 Object {
   "children": Array [
     undefined,
@@ -59,6 +71,45 @@ Object {
   ],
   "content": Object {
     "solution": undefined,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`Question editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "args": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+      "mock": "slateToObo",
+    },
+    Object {
+      "args": Object {
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+      "mock": "slateToObo",
+    },
+  ],
+  "content": Object {
+    "solution": Object {
+      "args": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+      "mock": "slateToObo",
+    },
   },
   "id": "mockKey",
   "type": "mockType",

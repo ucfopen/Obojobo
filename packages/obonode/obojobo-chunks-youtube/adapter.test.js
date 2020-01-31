@@ -13,14 +13,26 @@ describe('Youtube adapter', () => {
 	})
 
 	test('construct builds with attributes', () => {
-		const attrs = { content: { videoId: 'example_video_id' } }
+		const attrs = {
+			content: {
+				videoId: 'example_video_id',
+				startTime: 5,
+				enddTime: 10
+			}
+		}
 		const model = new OboModel(attrs)
 		YoutubeAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		const attrs = { content: { videoId: 'example_video_id' } }
+		const attrs = {
+			content: {
+				videoId: 'example_video_id',
+				startTime: 5,
+				enddTime: 10
+			}
+		}
 		const a = new OboModel(attrs)
 		const b = new OboModel({})
 
@@ -33,7 +45,13 @@ describe('Youtube adapter', () => {
 
 	test('toJSON builds a JSON representation', () => {
 		const json = { content: {} }
-		const attrs = { content: { videoId: 'example_video_id' } }
+		const attrs = {
+			content: {
+				videoId: 'example_video_id',
+				startTime: 5,
+				enddTime: 10
+			}
+		}
 		const model = new OboModel(attrs)
 
 		YoutubeAdapter.construct(model, attrs)
@@ -43,7 +61,13 @@ describe('Youtube adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		const attrs = { content: { videoId: 'example_video_id' } }
+		const attrs = {
+			content: {
+				videoId: 'example_video_id',
+				startTime: 5,
+				enddTime: 10
+			}
+		}
 		const model = new OboModel(attrs)
 
 		YoutubeAdapter.construct(model, attrs)

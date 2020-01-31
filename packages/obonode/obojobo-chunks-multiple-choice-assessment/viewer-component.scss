@@ -2,7 +2,7 @@
 
 .component.obojobo-draft--chunks--mc-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
-	$color-survey: #48b8b9;
+	// $color-survey: #48b8b9;
 
 	@keyframes obojobo-draft--chunks--mc-assessment--fadein {
 		0% {
@@ -11,24 +11,6 @@
 
 		100% {
 			opacity: 1;
-		}
-	}
-
-	@keyframes obojobo-draft--chunks--mc-assessment--bounce {
-		0% {
-			transform: scale(0);
-		}
-
-		50% {
-			transform: scale(1.1);
-		}
-
-		80% {
-			transform: scale(0.9);
-		}
-
-		100% {
-			transform: scale(1);
 		}
 	}
 
@@ -42,6 +24,17 @@
 		transform: translate(-50%, -50%);
 		left: 0.6em;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+
+		@include mq($until: desktop) {
+			font-size: 1.5em;
+			top: 1.1em;
+		}
+
+		@include mq($until: tablet) {
+			font-size: 1.2em;
+			top: 0.6em;
+			left: 1.1em;
+		}
 	}
 
 	@mixin incorrect() {
@@ -54,289 +47,359 @@
 		transform: translate(-50%, -50%);
 		left: 0.6em;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+
+		@include mq($until: desktop) {
+			font-size: 1.5em;
+			top: 1.1em;
+		}
+
+		@include mq($until: tablet) {
+			font-size: 1.2em;
+			top: 0.6em;
+			left: 1.1em;
+		}
 	}
 
 	padding-bottom: 0;
-	margin-top: 1em;
+	padding-top: 0;
+	// margin-top: 1em;
 
-	> fieldset {
-		padding: 0;
-		margin: 0;
-		border: none;
-		background: white;
-		border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+	// > fieldset {
+	// 	padding: 0;
+	// 	margin: 0;
+	// 	border: none;
+	// 	background: white;
+	// 	border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
 
-		> legend {
-			border: none;
-			position: absolute;
-			background: none;
-			left: 0;
-			top: -0.5em;
-		}
-	}
+	// 	> legend {
+	// 		border: none;
+	// 		position: absolute;
+	// 		background: none;
+	// 		left: 0;
+	// 		top: -0.5em;
+	// 	}
+	// }
 
 	.obojobo-draft--chunks--mc-assessment--mc-choice {
 		border-bottom: 1px solid $color-border;
 		padding-top: 0;
 		padding-bottom: 0;
+		display: inline-block;
+
+		&:last-child {
+			border-bottom: none;
+		}
 	}
 
 	.obojobo-draft--chunks--mc-assessment--mc-answer {
 		padding-top: 0;
 		padding-bottom: 0;
 		padding-left: 2em;
-	}
 
-	.instructions {
-		$font-size: 1em;
-
-		padding-left: $dimension-padding;
-		padding-right: $dimension-padding;
-		content: 'Practice';
-		display: block;
-		font-family: $font-default;
-		color: $color-action;
-		font-size: $font-size;
-		font-weight: normal;
-		border-bottom: 1px solid $color-border;
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	.submit-and-result-container {
-		margin-left: 3em;
-		min-height: 4em;
-		display: table;
-	}
-
-	.submit {
-		margin-left: 0;
-		margin-right: 0;
-		position: relative;
-		display: inline-block;
-
-		button {
-			cursor: pointer;
-			font-size: 0.85em;
-			margin-bottom: 1em;
-			margin-top: 1em;
-			min-width: 10.5em;
+		@include mq($until: desktop) {
+			padding-left: 1.5em;
 		}
 
-		.divider {
-			color: $color-shadow;
-			display: inline-block;
-			padding: 0 0.4em;
-			transform: scale(2, 0.9);
+		@include mq($until: mobileLandscape) {
+			padding-left: 1em;
 		}
 	}
 
-	.result-container {
-		display: table-cell;
-		position: relative;
-		vertical-align: middle;
-		padding-right: 1em;
-		padding-top: 1em;
-		padding-bottom: 1em;
+	// .instructions {
+	// 	$font-size: 1em;
 
-		.pick-all-instructions {
-			font-family: $font-default;
-			font-size: 0.8em;
-			font-weight: bold;
-			color: $color-incorrect;
-			width: 24em;
-			display: inline-block;
-			line-height: 1.5em;
-			vertical-align: middle;
-			margin-left: 1.25em;
-		}
+	// 	@include pad();
 
-		.result {
-			font-family: $font-default;
-			color: $color-bg;
-			font-weight: bold;
-			box-sizing: border-box;
-			margin: 0;
-			display: inline-block;
-			border-radius: 9999px;
-			padding: 0 1.5em;
-			font-size: 0.8em;
-			transform: scale(0);
-			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
-			animation-delay: $duration-animation-default * 1.5;
-			// animation-delay: $duration-animation-default * 2;
-			animation-fill-mode: forwards;
+	// 	@include mq($until: desktop) {
+	// 		@include pad(0.75);
+	// 	}
 
-			&.correct {
-				background-color: $color-correct;
-			}
+	// 	@include mq($until: tablet) {
+	// 		@include pad(0.3);
+	// 	}
 
-			&.incorrect {
-				background-color: $color-incorrect;
-			}
+	// 	content: 'Practice';
+	// 	display: block;
+	// 	font-family: $font-default;
+	// 	color: $color-action;
+	// 	font-size: $font-size;
+	// 	font-weight: normal;
+	// 	border-bottom: 1px solid $color-border;
+	// 	width: 100%;
+	// 	box-sizing: border-box;
+	// }
 
-			&.survey {
-				background-color: $color-survey;
-			}
-		}
-	}
+	// .submit-and-result-container {
+	// 	@include pad();
 
-	.solution {
-		background: $color-bg2;
-		position: relative;
-		border-bottom-left-radius: 0.3em;
-		border-bottom-right-radius: 0.3em;
-		border-top: 1px solid $color-shadow;
-		padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+	// 	@include mq($until: desktop) {
+	// 		@include pad(0.75);
+	// 	}
 
-		> .obojobo-draft--components--button {
-			margin-top: 1em;
-			margin-bottom: 1em;
-			margin-left: 3em;
+	// 	@include mq($until: tablet) {
+	// 		@include pad(0.3);
+	// 	}
 
-			button {
-				min-width: 10.5em;
-			}
-		}
+	// 	min-height: 4em;
+	// 	display: table;
+	// }
 
-		&.submit-enter {
-			opacity: 0;
-			max-height: 0;
-			overflow: hidden;
-		}
+	// .submit {
+	// 	margin-left: 0;
+	// 	margin-right: 0;
+	// 	position: relative;
+	// 	display: inline-block;
 
-		&.submit-enter.submit-enter-active {
-			opacity: 1;
-			max-height: 16em;
+	// 	button {
+	// 		cursor: pointer;
+	// 		font-size: 0.85em;
+	// 		margin-bottom: 1em;
+	// 		margin-top: 1em;
+	// 		min-width: 10.5em;
+	// 	}
 
-			/* prettier-ignore */
-			transition:
-				opacity $duration-animation-default * 2,
-				max-height $duration-animation-default * 2;
-			// transition-delay: $duration-animation-default * 2;
-		}
+	// 	.divider {
+	// 		color: $color-shadow;
+	// 		display: inline-block;
+	// 		padding: 0 0.4em;
+	// 		transform: scale(2, 0.9);
+	// 	}
+	// }
 
-		&.submit-leave {
-			opacity: 1;
-			max-height: 16em;
-			overflow: hidden;
-		}
+	// .result-container {
+	// 	display: table-cell;
+	// 	position: relative;
+	// 	vertical-align: middle;
+	// 	padding-right: 1em;
+	// 	padding-top: 1em;
+	// 	padding-bottom: 1em;
+	// 	line-height: 1em;
 
-		&.submit-leave.submit-exit-active {
-			opacity: 0;
-			max-height: 0;
+	// 	@include mq($until: mobile) {
+	// 		display: block;
+	// 	}
 
-			/* prettier-ignore */
-			transition:
-				opacity $duration-animation-default * 2,
-				max-height $duration-animation-default * 2;
-		}
+	// 	.pick-all-instructions {
+	// 		font-family: $font-default;
+	// 		font-size: 0.8em;
+	// 		font-weight: bold;
+	// 		color: $color-incorrect;
+	// 		max-width: 24em;
+	// 		display: inline-block;
+	// 		line-height: 1.5em;
+	// 		vertical-align: middle;
+	// 		margin-left: 1.25em;
+	// 	}
 
-		> .solution-container-animation-placeholder {
-			transition: height $duration-animation-default * 2;
-		}
+	// 	.result {
+	// 		font-family: $font-default;
+	// 		color: $color-bg;
+	// 		font-weight: bold;
+	// 		box-sizing: border-box;
+	// 		margin: 0;
+	// 		display: inline-block;
+	// 		border-radius: 9999px;
+	// 		padding: 0.5em 1.5em;
+	// 		font-size: 0.8em;
+	// 		transform: scale(0);
+	// 		animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
+	// 		animation-delay: $duration-animation-default * 1.5;
+	// 		animation-fill-mode: forwards;
 
-		.solution-container {
-			background: $color-bg;
-			text-align: left;
-			padding: 0;
-			margin-bottom: $dimension-padding / 3;
-			margin-left: $dimension-padding / 3;
-			margin-right: $dimension-padding / 3;
-			border: 1px solid $color-shadow;
-			position: relative;
+	// 		&.correct {
+	// 			background-color: $color-correct;
+	// 		}
 
-			&:focus {
-				outline: none;
-			}
+	// 		&.incorrect {
+	// 			background-color: $color-incorrect;
+	// 		}
 
-			&::before {
-				$color-solution-label-text: transparentize($color-text, 0.25);
+	// 		&.survey {
+	// 			background-color: $color-survey;
+	// 		}
+	// 	}
+	// }
 
-				content: 'Full explanation:';
-				font-family: $font-default;
-				font-size: 1em;
-				font-weight: bold;
-				color: $color-solution-label-text;
-				margin-top: 1em;
-				margin-left: 2em;
-				margin-bottom: -1em;
-				display: block;
-				transform: scale(0.7);
-				transform-origin: top left;
-			}
+	// .solution {
+	// 	background: $color-bg2;
+	// 	position: relative;
+	// 	border-bottom-left-radius: 0.3em;
+	// 	border-bottom-right-radius: 0.3em;
+	// 	border-top: 1px solid $color-shadow;
+	// 	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
 
-			&.solution-enter {
-				max-height: 0;
-				overflow: hidden;
-				border: 0 solid $color-transparent;
-				margin-bottom: 0;
-				opacity: 0;
-			}
+	// 	> .obojobo-draft--components--button {
+	// 		margin-top: 1em;
+	// 		margin-bottom: 1em;
+	// 		margin-left: 3em;
+	// 		margin-right: 3em;
 
-			&.solution-enter.solution-enter-active {
-				max-height: 60em;
-				margin-bottom: 1em;
-				border: 1px solid $color-shadow;
-				opacity: 1;
+	// 		@include mq($until: desktop) {
+	// 			margin-left: 3em * 0.75;
+	// 			margin-right: 3em * 0.75;
+	// 		}
 
-				/* prettier-ignore */
-				transition:
-					max-height $duration-animation-default * 2,
-					margin-bottom $duration-animation-default * 2,
-					border $duration-animation-default * 2,
-					opacity $duration-animation-default * 2;
-			}
+	// 		@include mq($until: tablet) {
+	// 			margin-left: 3em * 0.3;
+	// 			margin-right: 3em * 0.3;
+	// 		}
 
-			&.solution-exit {
-				max-height: 60em;
-				margin-bottom: 1em;
-				border: 1px solid $color-shadow;
-				overflow: hidden;
-				opacity: 1;
-			}
+	// 		button {
+	// 			min-width: 10.5em;
+	// 		}
+	// 	}
 
-			&.solution-exit.solution-exit-active {
-				max-height: 0;
-				margin-bottom: 0;
-				border: 0 solid $color-transparent;
-				opacity: 0;
+	// 	&.submit-enter {
+	// 		opacity: 0;
+	// 		max-height: 0;
+	// 		overflow: hidden;
+	// 	}
 
-				/* prettier-ignore */
-				transition:
-					max-height $duration-animation-default * 2,
-					margin-bottom $duration-animation-default * 2,
-					border $duration-animation-default * 2,
-					opacity $duration-animation-default * 2;
-			}
+	// 	&.submit-enter.submit-enter-active {
+	// 		opacity: 1;
+	// 		max-height: 16em;
 
-			> div > .for-screen-reader-only {
-				position: absolute;
-				left: 0;
-				top: 0;
-				width: 0;
-				height: 0;
-				overflow: hidden;
-			}
+	// 		/* prettier-ignore */
+	// 		transition:
+	// 			opacity $duration-animation-default * 2,
+	// 			max-height $duration-animation-default * 2;
+	// 		// transition-delay: $duration-animation-default * 2;
+	// 	}
 
-			> div > .component[data-obo-component='true'] {
-				margin-left: -1em;
-				margin-right: -1em;
-			}
-		}
+	// 	&.submit-leave {
+	// 		opacity: 1;
+	// 		max-height: 16em;
+	// 		overflow: hidden;
+	// 	}
 
-		&.is-type-survey {
-			.solution-container {
-				&::before {
-					content: 'About this question:';
-				}
-			}
-		}
-	}
+	// 	&.submit-leave.submit-exit-active {
+	// 		opacity: 0;
+	// 		max-height: 0;
 
-	.submit .obojobo-draft--components--button:first-child {
-		margin-right: 1em;
-	}
+	// 		/* prettier-ignore */
+	// 		transition:
+	// 			opacity $duration-animation-default * 2,
+	// 			max-height $duration-animation-default * 2;
+	// 	}
+
+	// 	> .solution-container-animation-placeholder {
+	// 		transition: height $duration-animation-default * 2;
+	// 	}
+
+	// 	.solution-container {
+	// 		background: $color-bg;
+	// 		text-align: left;
+	// 		padding: 0.5em;
+	// 		margin-bottom: $dimension-padding / 3;
+	// 		margin-left: $dimension-padding / 3;
+	// 		margin-right: $dimension-padding / 3;
+	// 		border: 1px solid $color-shadow;
+	// 		position: relative;
+
+	// 		&:focus {
+	// 			outline: none;
+	// 		}
+
+	// 		&::before {
+	// 			$color-solution-label-text: transparentize($color-text, 0.25);
+
+	// 			content: 'Full explanation:';
+	// 			font-family: $font-default;
+	// 			font-size: 1em;
+	// 			font-weight: bold;
+	// 			color: $color-solution-label-text;
+	// 			margin-top: 1em;
+	// 			margin-left: 2em;
+	// 			margin-bottom: -1em;
+	// 			display: block;
+	// 			transform: scale(0.7);
+	// 			transform-origin: top left;
+
+	// 			@include mq($until: tablet) {
+	// 				margin-top: 0.5em;
+	// 				margin-left: 0.5em;
+	// 			}
+	// 		}
+
+	// 		&.solution-enter {
+	// 			max-height: 0;
+	// 			overflow: hidden;
+	// 			border: 0 solid $color-transparent;
+	// 			margin-bottom: 0;
+	// 			opacity: 0;
+	// 		}
+
+	// 		&.solution-enter.solution-enter-active {
+	// 			max-height: 60em;
+	// 			margin-bottom: 1em;
+	// 			border: 1px solid $color-shadow;
+	// 			opacity: 1;
+
+	// 			/* prettier-ignore */
+	// 			transition:
+	// 				max-height $duration-animation-default * 2,
+	// 				margin-bottom $duration-animation-default * 2,
+	// 				border $duration-animation-default * 2,
+	// 				opacity $duration-animation-default * 2;
+	// 		}
+
+	// 		&.solution-exit {
+	// 			max-height: 60em;
+	// 			margin-bottom: 1em;
+	// 			border: 1px solid $color-shadow;
+	// 			overflow: hidden;
+	// 			opacity: 1;
+	// 		}
+
+	// 		&.solution-exit.solution-exit-active {
+	// 			max-height: 0;
+	// 			margin-bottom: 0;
+	// 			border: 0 solid $color-transparent;
+	// 			opacity: 0;
+
+	// 			/* prettier-ignore */
+	// 			transition:
+	// 				max-height $duration-animation-default * 2,
+	// 				margin-bottom $duration-animation-default * 2,
+	// 				border $duration-animation-default * 2,
+	// 				opacity $duration-animation-default * 2;
+	// 		}
+
+	// 		> div > .for-screen-reader-only {
+	// 			position: absolute;
+	// 			left: 0;
+	// 			top: 0;
+	// 			width: 0;
+	// 			height: 0;
+	// 			overflow: hidden;
+	// 		}
+
+	// 		> div > .component[data-obo-component='true'] {
+	// 			margin-left: -1em;
+	// 			margin-right: -1em;
+	// 		}
+
+	// 		.obojobo-draft--pages--page {
+	// 			font-size: 0.85em;
+
+	// 			@include mq($until: tablet) {
+	// 				padding-top: 0.5em;
+	// 			}
+	// 		}
+	// 	}
+
+	// 	&.is-type-survey {
+	// 		.solution-container {
+	// 			&::before {
+	// 				content: 'About this question:';
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// .submit .obojobo-draft--components--button:first-child {
+	// 	margin-right: 1em;
+	// }
 
 	&.is-scored {
 		// These two rules, one for pick-all and one for the others, could be combined but
@@ -374,6 +437,15 @@
 	}
 
 	&.is-mode-review {
+		.submit-and-result-container {
+			margin-top: 0;
+			min-height: inherit;
+
+			@include mq($until: tablet) {
+				margin-top: 1em;
+			}
+		}
+
 		.result-container .result {
 			animation: none;
 			transform: none;
@@ -402,99 +474,23 @@
 				}
 			}
 		}
+
+		// .obojobo-draft--chunks--mc-assessment--mc-answer > .component {
+		// 	padding-top: 1em + $dimension-review-answer-flag-padding;
+		// }
 	}
 
-	.obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag {
-		@mixin point() {
-			content: ' ';
-			position: absolute;
-			left: 0;
-			top: 50%;
-			transform: translate(6.79em, -50%) rotate(45deg);
-			width: 1.72em;
-			height: 1.72em;
-			border-radius: $dimension-rounded-radius;
-		}
-
-		&::before {
-			@include point();
-
-			z-index: -1;
-			box-shadow: 0 1px 1px $color-shadow;
-		}
-
-		&::after {
-			@include point();
-		}
-
+	.obojobo-draft--components--flag {
 		position: absolute;
-		color: $color-bg;
-		width: 7.75em;
-		text-align: center;
-		border-radius: $dimension-rounded-radius;
-		font-size: 0.75em;
+
 		left: -5.3em;
 		top: 1.1em;
-		font-family: $font-default;
-		box-shadow: 0 1px 1px $color-shadow;
-		padding-left: 0.5em;
-		padding-right: 0.5em;
-		box-sizing: border-box;
-		min-height: 2.5em;
 
-		> p {
-			margin: 0.25em;
-			margin-left: 0;
-			line-height: 1em;
-			top: 50%;
-		}
+		&.is-size-small {
+			left: -1.9em;
+			top: 0.3em;
 
-		&.is-type-chosen-correctly,
-		&.is-type-chosen-survey {
-			background-color: $color-correct;
-
-			&::before,
-			&::after {
-				background-color: $color-correct;
-			}
-		}
-
-		&.is-type-should-not-have-chosen {
-			background-color: $color-incorrect;
-
-			&::before,
-			&::after {
-				background-color: $color-incorrect;
-			}
-		}
-
-		&.is-type-should-have-chosen {
-			background-color: $color-unchosen-correct;
-
-			&::before,
-			&::after {
-				background-color: $color-unchosen-correct;
-			}
-		}
-
-		&.is-type-could-have-chosen {
-			background-color: $color-alt-correct;
-			color: $color-text;
-
-			&::before,
-			&::after {
-				background-color: $color-alt-correct;
-			}
-		}
-
-		&.is-type-chosen-survey {
-			background-color: $color-survey;
-			color: $color-bg;
-
-			&::before,
-			&::after {
-				background-color: $color-survey;
-			}
+			margin-top: -0.5em;
 		}
 	}
 }

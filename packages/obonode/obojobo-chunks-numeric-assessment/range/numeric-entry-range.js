@@ -1,6 +1,6 @@
-import ValueRange from './value-range'
-import NumericEntry from '../entry/numeric-entry'
-import BigValueRange from './big-value-range'
+const ValueRange = require('./value-range')
+const NumericEntry = require('../entry/numeric-entry')
+const BigValueRange = require('./big-value-range')
 
 /**
  * String describing the range for NumericEntryRange.
@@ -23,7 +23,7 @@ import BigValueRange from './big-value-range'
  * @property {boolean|null} [isMinInclusive]
  * @property {NumericEntry|null} [max]
  * @property {boolean|null} [isMaxInclusive]
- * @property {boolean} [isClosed]
+ * @property {boolean} [isEmpty]
  * @property {string} [unit]
  */
 
@@ -39,7 +39,7 @@ import BigValueRange from './big-value-range'
  * range.max // equal to new NumericEntry("10")
  * range.unit // "g"
  */
-export default class NumericEntryRange extends ValueRange {
+module.exports = class NumericEntryRange extends ValueRange {
 	// Handles strings like '[1,2]g', returning '[1,2]' and 'g'.
 	/**
 	 * Extracts the unit from the given range string and returns an object giving you

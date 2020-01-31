@@ -3,7 +3,7 @@
 
 const TIMEOUT_RESTORE_TAB_INDEX_MS = 1000
 
-export default el => {
+export default (el, scroll = true) => {
 	const isElement = el && el.focus && el.getAttribute && el.setAttribute
 	// in case we get a ref with current containing the dom element
 	const isRefWithCurrent =
@@ -18,7 +18,7 @@ export default el => {
 	// VoiceOver requires tabindex of 0 to read the element
 	element.setAttribute('tabindex', '0')
 
-	element.focus()
+	element.focus({ preventScroll: !scroll })
 
 	setTimeout(() => {
 		element.setAttribute('tabindex', tabIndex)

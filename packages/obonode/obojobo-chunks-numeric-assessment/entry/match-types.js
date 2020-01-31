@@ -8,7 +8,7 @@ const SINGLE_EXACT = 'singleExact'
 const SINGLE_INFERRED = 'singleInferred'
 const NO_MATCHES = 'noMatches'
 
-export {
+module.exports = {
 	MATCH_EXACT,
 	MATCH_INFERRED,
 	MATCH_NONE,

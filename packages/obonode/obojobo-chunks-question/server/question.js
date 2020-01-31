@@ -1,4 +1,4 @@
-const DraftNode = require('obojobo-express/models/draft_node')
+const DraftNode = require('obojobo-express/server/models/draft_node')
 
 class Question extends DraftNode {
 	static get nodeName() {
@@ -8,7 +8,8 @@ class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd
+			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd,
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': this.onSendToAssessment
 		})
 	}
 
@@ -47,6 +48,10 @@ class Question extends DraftNode {
 				currentAttempt.addScore(this.node.id, score)
 			}
 		)
+	}
+
+	onSendToAssessment() {
+		this.node.content.solution = null
 	}
 }
 

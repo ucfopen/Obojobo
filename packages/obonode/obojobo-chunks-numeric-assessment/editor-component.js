@@ -1,84 +1,33 @@
 import './editor-component.scss'
 
 import React from 'react'
+import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import NumericInput from './components/numeric-input'
+import { NUMERIC_CHOICE_NODE } from './constants'
 
 const { Button } = Common.components
 
-const emptyResponse = {
-	requirement: 'Exact answer',
-	answerInput: '',
-	startInput: '',
-	endInput: '',
-	marginType: 'Absolute',
-	precisionType: 'Significant digits'
-}
-
 class NumericAssessment extends React.Component {
-	constructor() {
-		super()
-
-		this.state = {
-			responses: [{ ...emptyResponse }]
-		}
-	}
-
-	onDeteteResponse(index) {
-		let updateResponses = this.state.responses
-		updateResponses.splice(index, 1)
-
-		if (updateResponses.length <= 0) {
-			updateResponses = [{ ...emptyResponse }]
-		}
-
-		this.setState({
-			responses: updateResponses
-		})
-	}
-
-	onClickDropdown(responseIndex, event) {
-		const { name, value } = event.target
-
-		const updateResponses = this.state.responses
-		updateResponses[responseIndex][name] = value
-
-		this.setState({ responses: updateResponses })
-	}
-
 	onAddNumericInput() {
-		this.setState({
-			responses: [...this.state.responses, { ...emptyResponse }]
+		const editor = this.props.editor
+
+		const newNumericInput = Block.create({
+			type: NUMERIC_CHOICE_NODE
 		})
-	}
 
-	onInputChange(responseIndex, event) {
-		const { name, value } = event.target
-
-		const updateResponses = this.state.responses
-		updateResponses[responseIndex][name] = value
-
-		this.setState({
-			responses: updateResponses
-		})
+		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newNumericInput)
 	}
 
 	render() {
 		return (
-			<div className="component obojobo-draft--chunks--numeric-assessment" contentEditable={false}>
-				{this.state.responses.map((response, index) => (
-					<NumericInput
-						response={response}
-						onClickDropdown={event => this.onClickDropdown(index, event)}
-						onDeteteResponse={() => this.onDeteteResponse(index)}
-						onInputChange={event => this.onInputChange(index, event)}
-					/>
-				))}
-
-				<Button className="add-answer-btn pad" onClick={() => this.onAddNumericInput()}>
-					Add possible answer
-				</Button>
+			<div className="component obojobo-draft--chunks--numeric-assessment">
+				{this.props.children}
+				<div contentEditable={false}>
+					<Button className="add-answer-btn pad" onClick={() => this.onAddNumericInput()}>
+						Add possible answer
+					</Button>
+				</div>
 			</div>
 		)
 	}

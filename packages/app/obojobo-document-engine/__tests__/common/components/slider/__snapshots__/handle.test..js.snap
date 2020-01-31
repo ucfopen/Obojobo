@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Handle Handle renders correctly 1`] = `
+<button
+  aria-valuemax={5}
+  aria-valuemin={1}
+  aria-valuenow={10}
+  className="obojobo-draft--components--slider--handle  is-not-disabled"
+  role="slider"
+  style={
+    Object {
+      "left": "10%",
+    }
+  }
+/>
+`;

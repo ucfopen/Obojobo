@@ -1,0 +1,232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericOption NumericOption renders as expected with default requirement 1`] = `
+<tr>
+  <td>
+    <select
+      className="select-item"
+      name="requirement"
+      onClick={[Function]}
+    >
+      <option>
+        Exact answer
+      </option>
+      <option>
+        Margin of error
+      </option>
+      <option>
+        Within a range
+      </option>
+      <option>
+        Precise response
+      </option>
+    </select>
+  </td>
+  <td>
+    <input
+      className="input-item"
+      contentEditable={false}
+      name="answer"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+</tr>
+`;
+
+exports[`NumericOption NumericOption renders as expected with requirement of \`exact\` 1`] = `
+<tr>
+  <td>
+    <select
+      className="select-item"
+      name="requirement"
+      onClick={[Function]}
+      value="Exact answer"
+    >
+      <option>
+        Exact answer
+      </option>
+      <option>
+        Margin of error
+      </option>
+      <option>
+        Within a range
+      </option>
+      <option>
+        Precise response
+      </option>
+    </select>
+  </td>
+  <td>
+    <input
+      className="input-item"
+      contentEditable={false}
+      name="answer"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+</tr>
+`;
+
+exports[`NumericOption NumericOption renders as expected with requirement of \`margin\` 1`] = `
+<tr>
+  <td>
+    <select
+      className="select-item"
+      name="requirement"
+      onClick={[Function]}
+      value="Margin of error"
+    >
+      <option>
+        Exact answer
+      </option>
+      <option>
+        Margin of error
+      </option>
+      <option>
+        Within a range
+      </option>
+      <option>
+        Precise response
+      </option>
+    </select>
+  </td>
+  <td>
+    <select
+      className="select-item"
+      name="type"
+      onClick={[Function]}
+    >
+      <option>
+        Percent
+      </option>
+      <option>
+        Absolute
+      </option>
+    </select>
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="answer"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="margin"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+</tr>
+`;
+
+exports[`NumericOption NumericOption renders as expected with requirement of \`precise\` 1`] = `
+<tr>
+  <td>
+    <select
+      className="select-item"
+      name="requirement"
+      onClick={[Function]}
+      value="Precise response"
+    >
+      <option>
+        Exact answer
+      </option>
+      <option>
+        Margin of error
+      </option>
+      <option>
+        Within a range
+      </option>
+      <option>
+        Precise response
+      </option>
+    </select>
+  </td>
+  <td>
+    <select
+      className="select-item"
+      name="type"
+      onClick={[Function]}
+    >
+      <option>
+        Significant digits
+      </option>
+      <option>
+        Decimal places
+      </option>
+    </select>
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="answer"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="precision"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+</tr>
+`;
+
+exports[`NumericOption NumericOption renders as expected with requirement of \`range\` 1`] = `
+<tr>
+  <td>
+    <select
+      className="select-item"
+      name="requirement"
+      onClick={[Function]}
+      value="Within a range"
+    >
+      <option>
+        Exact answer
+      </option>
+      <option>
+        Margin of error
+      </option>
+      <option>
+        Within a range
+      </option>
+      <option>
+        Precise response
+      </option>
+    </select>
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="start"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+  <td>
+    <input
+      className="input-item"
+      name="end"
+      onClick={[Function]}
+      value=""
+    />
+  </td>
+</tr>
+`;
+
+exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
+
+exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"margin\\" value=\\"\\"></td></tr>"`;
+
+exports[`NumericOption NumericOption with requirement of \`precise\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Significant digits</option><option>Decimal places</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"precision\\" value=\\"\\"></td></tr>"`;
+
+exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"start\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"end\\" value=\\"\\"></td></tr>"`;

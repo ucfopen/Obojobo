@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 import IframeProperties from './iframe-properties-modal'
 
@@ -45,6 +46,11 @@ class IFrame extends React.Component {
 		return src.replace(/^https?:\/\//, '')
 	}
 
+	deleteNode() {
+		const editor = this.props.editor
+		editor.removeNodeByKey(this.props.node.key)
+	}
+
 	render() {
 		const content = this.props.node.data.get('content')
 
@@ -60,22 +66,29 @@ class IFrame extends React.Component {
 			isOrNot(!content.src, 'missing-src') +
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
+		const isSelected = isOrNot(this.props.isSelected, 'selected')
+
 		return (
-			<div className={className}>
-				<div className={'editor-container'} style={previewStyle}>
-					<div className="iframe-toolbar">
-						<span className="title" aria-hidden>
-							{this.getTitle(content.src || null, content.title)}
-						</span>
-						<Button
-							className="properties-button"
-							onClick={this.showIFramePropertiesModal.bind(this)}
-						>
-							IFrame Properties
+			<Node {...this.props}>
+				<div className={className}>
+					<div className={`editor-container  ${isSelected}`} style={previewStyle}>
+						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+							×
 						</Button>
+						<div className="iframe-toolbar">
+							<span className="title" aria-hidden>
+								{this.getTitle(content.src || null, content.title)}
+							</span>
+							<Button
+								className="properties-button"
+								onClick={this.showIFramePropertiesModal.bind(this)}
+							>
+								IFrame Properties
+							</Button>
+						</div>
 					</div>
 				</div>
-			</div>
+			</Node>
 		)
 	}
 }

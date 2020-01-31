@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "numericChoices": Array [
+        Object {
+          "answer": "3",
+          "feedback": Object {
+            "children": Array [
+              Object {
+                "children": Array [],
+                "content": Object {
+                  "textGroup": Array [
+                    Object {
+                      "data": Object {
+                        "indent": 0,
+                      },
+                      "text": Object {
+                        "styleList": Array [],
+                        "value": "3222",
+                      },
+                    },
+                  ],
+                },
+                "id": "text_id",
+                "type": "ObojoboDraft.Chunks.Text",
+              },
+            ],
+            "content": Object {},
+            "id": "feedback_id",
+            "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+          },
+          "margin": "3",
+          "requirement": "margin",
+          "score": 100,
+          "type": "percent",
+        },
+        Object {
+          "answer": "3",
+          "margin": "3",
+          "requirement": "margin",
+          "score": 100,
+          "type": "absolute",
+        },
+      ],
+    },
+  },
+  "key": "mock_id",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "numericChoice": Object {
+              "answer": "3",
+              "feedback": Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": Object {
+                            "indent": 0,
+                          },
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "3222",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "text_id",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "feedback_id",
+                "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+              },
+              "margin": "3",
+              "requirement": "margin",
+              "score": 100,
+              "type": "percent",
+            },
+          },
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer",
+        },
+        undefined,
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "numericChoice": Object {
+              "answer": "3",
+              "margin": "3",
+              "requirement": "margin",
+              "score": 100,
+              "type": "absolute",
+            },
+          },
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+    },
+  ],
+  "object": "block",
+  "type": "mock_type",
+}
+`;
+
+exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node with no content 1`] = `
+Object {
+  "data": Object {
+    "content": undefined,
+  },
+  "key": "mock_key",
+  "nodes": Array [],
+  "object": "block",
+  "type": "mock_type",
+}
+`;
+
+exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "numericChoices": Array [
+      Object {
+        "feedback": undefined,
+        "requirement": "exact",
+      },
+    ],
+  },
+  "id": "mock_key",
+  "type": "mock_type",
+}
+`;
+
+exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "numericChoices": Array [],
+  },
+  "id": "mock_key",
+  "type": "mock_type",
+}
+`;
+
+exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode with two correct 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "numericChoices": Array [],
+  },
+  "id": "mock_key",
+  "type": "mock_type",
+}
+`;

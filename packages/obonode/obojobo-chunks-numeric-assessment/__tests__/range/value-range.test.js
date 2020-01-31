@@ -5,7 +5,7 @@ import ValueRange from '../../range/value-range'
 describe('ValueRange', () => {
 	test('Constructor with no arguments creates class with expected values', () => {
 		expect(new ValueRange().toJSON()).toEqual({
-			isClosed: false,
+			isempty: false,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -14,7 +14,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		input                                                               | isClosed | min     | isMinInclusive | max     | isMaxInclusive
+		input                                                               | isempty  | min     | isMinInclusive | max     | isMaxInclusive
 		${''}                                                               | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${null}                                                             | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${false}                                                            | ${true}  | ${null} | ${null}        | ${null} | ${null}
@@ -35,7 +35,7 @@ describe('ValueRange', () => {
 		${'(*,*)'}                                                          | ${false} | ${null} | ${null}        | ${null} | ${null}
 		${'*'}                                                              | ${false} | ${null} | ${null}        | ${null} | ${null}
 		${'(1,1)'}                                                          | ${true}  | ${null} | ${null}        | ${null} | ${null}
-		${{ isClosed: true }}                                               | ${true}  | ${null} | ${null}        | ${null} | ${null}
+		${{ isempty: true }}                                                | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${{ min: 1 }}                                                       | ${false} | ${1}    | ${true}        | ${null} | ${null}
 		${{ min: 1, isMinInclusive: false }}                                | ${false} | ${1}    | ${false}       | ${null} | ${null}
 		${{ min: 1, isMinInclusive: true }}                                 | ${false} | ${1}    | ${true}        | ${null} | ${null}
@@ -44,10 +44,10 @@ describe('ValueRange', () => {
 		${{ max: 2, isMaxInclusive: true }}                                 | ${false} | ${null} | ${null}        | ${2}    | ${true}
 		${{ min: 1, isMinInclusive: false, max: 2, isMaxInclusive: false }} | ${false} | ${1}    | ${false}       | ${2}    | ${false}
 	`(
-		`Constructor($input)={isClosed:$isClosed,min:$min,isMinInclusive:$isMinInclusive,max:$max,isMaxInclusive:$isMaxInclusive}`,
-		({ input, isClosed, min, isMinInclusive, max, isMaxInclusive }) => {
+		`Constructor($input)={isempty:$isempty,min:$min,isMinInclusive:$isMinInclusive,max:$max,isMaxInclusive:$isMaxInclusive}`,
+		({ input, isempty, min, isMinInclusive, max, isMaxInclusive }) => {
 			expect(new ValueRange(input).toJSON()).toEqual({
-				isClosed,
+				isempty,
 				min,
 				isMinInclusive,
 				max,
@@ -75,14 +75,14 @@ describe('ValueRange', () => {
 	test('init resets values to default all-values range', () => {
 		const r = new ValueRange()
 
-		r.isClosed = 'a'
+		r.isempty = 'a'
 		r.min = 'b'
 		r.max = 'c'
 		r.isMinInclusive = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isClosed: 'a',
+			isempty: 'a',
 			min: 'b',
 			max: 'c',
 			isMinInclusive: 'd',
@@ -92,7 +92,7 @@ describe('ValueRange', () => {
 		r.init()
 
 		expect(r.toJSON()).toEqual({
-			isClosed: false,
+			isempty: false,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -100,17 +100,17 @@ describe('ValueRange', () => {
 		})
 	})
 
-	test('close results values to a closed range', () => {
+	test('close results values to a empty range', () => {
 		const r = new ValueRange()
 
-		r.isClosed = 'a'
+		r.isempty = 'a'
 		r.min = 'b'
 		r.max = 'c'
 		r.isMinInclusive = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isClosed: 'a',
+			isempty: 'a',
 			min: 'b',
 			max: 'c',
 			isMinInclusive: 'd',
@@ -120,7 +120,7 @@ describe('ValueRange', () => {
 		r.close()
 
 		expect(r.toJSON()).toEqual({
-			isClosed: true,
+			isempty: true,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -174,7 +174,7 @@ describe('ValueRange', () => {
 		expect(new ValueRange('(*,1]').isValueInRange(1.1)).toBe(false)
 		expect(new ValueRange('(*,1]').isValueInRange(Infinity)).toBe(false)
 
-		// No values (closed range)
+		// No values (empty range)
 		expect(new ValueRange('').isValueInRange(-Infinity)).toBe(false)
 		expect(new ValueRange('').isValueInRange(-1.1)).toBe(false)
 		expect(new ValueRange('').isValueInRange(-1)).toBe(false)
@@ -228,13 +228,13 @@ describe('ValueRange', () => {
 		${'1'}      | ${1}         | ${'equal'}
 		${'1'}      | ${1.1}       | ${'above'}
 		${'1'}      | ${Infinity}  | ${'above'}
-		${''}       | ${-Infinity} | ${'closed'}
-		${''}       | ${-1.1}      | ${'closed'}
-		${''}       | ${-1}        | ${'closed'}
-		${''}       | ${0}         | ${'closed'}
-		${''}       | ${1}         | ${'closed'}
-		${''}       | ${1.1}       | ${'closed'}
-		${''}       | ${Infinity}  | ${'closed'}
+		${''}       | ${-Infinity} | ${'empty'}
+		${''}       | ${-1.1}      | ${'empty'}
+		${''}       | ${-1}        | ${'empty'}
+		${''}       | ${0}         | ${'empty'}
+		${''}       | ${1}         | ${'empty'}
+		${''}       | ${1.1}       | ${'empty'}
+		${''}       | ${Infinity}  | ${'empty'}
 	`(`$range getMinValuePosition($test)={$position}`, ({ range, test, position }) => {
 		expect(new ValueRange(range).getMinValuePosition(test)).toBe(position)
 	})
@@ -283,13 +283,13 @@ describe('ValueRange', () => {
 		${'1'}      | ${1}         | ${'equal'}
 		${'1'}      | ${1.1}       | ${'above'}
 		${'1'}      | ${Infinity}  | ${'above'}
-		${''}       | ${-Infinity} | ${'closed'}
-		${''}       | ${-1.1}      | ${'closed'}
-		${''}       | ${-1}        | ${'closed'}
-		${''}       | ${0}         | ${'closed'}
-		${''}       | ${1}         | ${'closed'}
-		${''}       | ${1.1}       | ${'closed'}
-		${''}       | ${Infinity}  | ${'closed'}
+		${''}       | ${-Infinity} | ${'empty'}
+		${''}       | ${-1.1}      | ${'empty'}
+		${''}       | ${-1}        | ${'empty'}
+		${''}       | ${0}         | ${'empty'}
+		${''}       | ${1}         | ${'empty'}
+		${''}       | ${1.1}       | ${'empty'}
+		${''}       | ${Infinity}  | ${'empty'}
 	`(`$range getMaxValuePosition($test)={$position}`, ({ range, test, position }) => {
 		expect(new ValueRange(range).getMaxValuePosition(test)).toBe(position)
 	})
@@ -452,13 +452,13 @@ describe('ValueRange', () => {
 		${'1'}      | ${1}         | ${'inside'}
 		${'1'}      | ${1.1}       | ${'aboveMax'}
 		${'1'}      | ${Infinity}  | ${'aboveMax'}
-		${''}       | ${-Infinity} | ${'closed'}
-		${''}       | ${-1.1}      | ${'closed'}
-		${''}       | ${-1}        | ${'closed'}
-		${''}       | ${0}         | ${'closed'}
-		${''}       | ${1}         | ${'closed'}
-		${''}       | ${1.1}       | ${'closed'}
-		${''}       | ${Infinity}  | ${'closed'}
+		${''}       | ${-Infinity} | ${'empty'}
+		${''}       | ${-1.1}      | ${'empty'}
+		${''}       | ${-1}        | ${'empty'}
+		${''}       | ${0}         | ${'empty'}
+		${''}       | ${1}         | ${'empty'}
+		${''}       | ${1.1}       | ${'empty'}
+		${''}       | ${Infinity}  | ${'empty'}
 	`(`$range getValuePosition($test)={$position}`, ({ range, test, position }) => {
 		expect(new ValueRange(range).getValuePosition(test)).toBe(position)
 	})
@@ -478,14 +478,14 @@ describe('ValueRange', () => {
 
 	test('toJSON returns a JSON representation of a range', () => {
 		const r = new ValueRange()
-		r.isClosed = 'a'
+		r.isempty = 'a'
 		r.min = 'b'
 		r.isMinInclusive = 'c'
 		r.max = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isClosed: 'a',
+			isempty: 'a',
 			min: 'b',
 			isMinInclusive: 'c',
 			max: 'd',
@@ -808,7 +808,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		range       | isAllValues
+		range       | isUniversal
 		${'[-1,1]'} | ${false}
 		${'(-1,1]'} | ${false}
 		${'(*,1]'}  | ${false}
@@ -816,8 +816,8 @@ describe('ValueRange', () => {
 		${'*'}      | ${true}
 		${'1'}      | ${false}
 		${''}       | ${false}
-	`(`$range isAllValues={$isAllValues}`, ({ range, isAllValues }) => {
-		expect(new ValueRange(range).isAllValues).toBe(isAllValues)
+	`(`$range isUniversal={$isUniversal}`, ({ range, isUniversal }) => {
+		expect(new ValueRange(range).isUniversal).toBe(isUniversal)
 	})
 
 	test('parseRangeString returns null if given invalid string', () => {

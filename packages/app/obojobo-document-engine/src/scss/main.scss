@@ -1,5 +1,5 @@
-@import '../scss/includes';
-@import '../scss/indents';
+@import './includes';
+@import './indents';
 
 html {
 	height: 100%;
@@ -32,6 +32,17 @@ body {
 
 	.root {
 		height: 100%;
+	}
+}
+
+#editor-app {
+	opacity: 0;
+	transition: opacity $duration-animation-default * 2;
+	height: 100%;
+	overflow: auto;
+
+	&.is-loaded {
+		opacity: 1;
 	}
 }
 
@@ -143,8 +154,15 @@ body {
 	}
 
 	.pad {
-		padding-left: $dimension-padding;
-		padding-right: $dimension-padding;
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
 	}
 
 	h1,
@@ -175,8 +193,6 @@ body {
 	}
 
 	pre,
-	code,
-	pre code,
 	textarea {
 		font-family: $font-monospace;
 		font-size: 1em;

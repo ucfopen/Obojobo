@@ -5,9 +5,9 @@ const extensionTransform = require('./src/extension-transform')
 const htmlTransform = require('./src/html-transform')
 const draftJsonTransform = require('./src/draft-json-transform')
 const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
-// const cdataElementToCdata = require('./src/cdata-element-to-cdata')
 
 const parseTg = require('./src/text-group-parser')
+const parseNumericChoices = require('./src/numeric-choices-parser')
 const scoreParser = require('./src/score-action-parser')
 const parseTriggers = require('./src/triggers-parser')
 const parseListStyles = require('./src/list-styles-parser')
@@ -18,6 +18,7 @@ const parseVars = require('./src/variables-parser')
 
 const parsers = {
 	textGroup: parseTg,
+	numericChoices: parseNumericChoices,
 	scoreAction: parseScoreAction,
 	scoreActions: parseScoreActions,
 	rubric: parseAssessmentRubric,

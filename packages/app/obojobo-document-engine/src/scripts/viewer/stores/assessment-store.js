@@ -1,15 +1,15 @@
-import APIUtil from '../../viewer/util/api-util'
-import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
-import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
-import AssessmentUtil from '../../viewer/util/assessment-util'
+import APIUtil from '../util/api-util'
+import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
+import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
+import AssessmentUtil from '../util/assessment-util'
 import Common from 'Common'
-import FocusUtil from '../../viewer/util/focus-util'
+import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
-import NavStore from '../../viewer/stores/nav-store'
-import NavUtil from '../../viewer/util/nav-util'
+import NavStore from '../stores/nav-store'
+import NavUtil from '../util/nav-util'
 import QuestionStore from './question-store'
-import QuestionUtil from '../../viewer/util/question-util'
+import QuestionUtil from '../util/question-util'
 import React from 'react'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -108,8 +108,8 @@ class AssessmentStore extends Store {
 		for (const assessment in assessments) {
 			assessments[assessment].attempts.forEach(attempt => {
 				const scoreObject = {}
-				attempt.questionScores.forEach(score => {
-					scoreObject[score.id] = score
+				attempt.questionScores.forEach(scoreData => {
+					scoreObject[scoreData.id] = scoreData
 				})
 				const stateToUpdate = {
 					scores: scoreObject,
@@ -126,6 +126,7 @@ class AssessmentStore extends Store {
 					ok
 					title="Resume Attempt"
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
+					preventEsc
 				>
 					<p>
 						It looks like you were in the middle of an attempt. We&apos;ll resume where you left
