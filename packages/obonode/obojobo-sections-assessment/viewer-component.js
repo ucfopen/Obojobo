@@ -29,9 +29,6 @@ class Assessment extends React.Component {
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 
 		this.childRef = React.createRef()
-
-		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
-		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	static focusOnContent() {
@@ -68,6 +65,15 @@ class Assessment extends React.Component {
 		NavUtil.resetContext()
 		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
+	}
+
+	componentDidMount(){
+		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
+
+		// if we're in an active attempt - notify the navUtil we're in Assessment
+		const attemptInfo = AssessmentUtil.getCurrentAttemptForModel(this.props.moduleData.assessmentState, this.props.model)
+		if(attemptInfo) NavUtil.setContext(`assessment:${attemptInfo.assessmentId}:${attemptInfo.attemptId}`)
 	}
 
 	componentDidUpdate(_, prevState) {
