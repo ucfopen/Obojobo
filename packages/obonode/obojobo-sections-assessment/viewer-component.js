@@ -62,18 +62,25 @@ class Assessment extends React.Component {
 	}
 
 	componentWillUnmount() {
+		// make sure navutil know's we're not in assessment any more
 		NavUtil.resetContext()
 		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 
 		// if we're in an active attempt - notify the navUtil we're in Assessment
-		const attemptInfo = AssessmentUtil.getCurrentAttemptForModel(this.props.moduleData.assessmentState, this.props.model)
-		if(attemptInfo) NavUtil.setContext(`assessment:${attemptInfo.assessmentId}:${attemptInfo.attemptId}`)
+		const attemptInfo = AssessmentUtil.getCurrentAttemptForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
+		if (attemptInfo) {
+			NavUtil.setContext(`assessment:${attemptInfo.assessmentId}:${attemptInfo.attemptId}`)
+		}
 	}
 
 	componentDidUpdate(_, prevState) {
