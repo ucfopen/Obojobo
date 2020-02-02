@@ -133,7 +133,7 @@ class GrammarFunctions {
 	}
 
 	max(list) {
-		return Math.max.apply(list)
+		return Math.max.apply(null, list)
 	}
 
 	mean(list) {
@@ -155,7 +155,8 @@ class GrammarFunctions {
 	}
 
 	min(list) {
-		return Math.min.apply(list)
+		console.log('min', list)
+		return Math.min.apply(null, list)
 	}
 
 	range(list) {
