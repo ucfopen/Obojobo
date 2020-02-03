@@ -1,5 +1,6 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import ListStyles from './list-styles'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -58,14 +59,14 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		content: {
+		content: withoutUndefined({
 			triggers: node.content.triggers,
 			listStyles: {
 				type: node.content.listStyles.type,
 				indents
 			},
 			textGroup
-		}
+		})
 	}
 }
 

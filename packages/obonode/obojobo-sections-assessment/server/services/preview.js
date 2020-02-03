@@ -1,4 +1,4 @@
-const db = require('obojobo-express/db')
+const db = require('obojobo-express/server/db')
 
 const deletePreviewScores = ({ transaction, userId, draftId, resourceLinkId }) => {
 	return transaction

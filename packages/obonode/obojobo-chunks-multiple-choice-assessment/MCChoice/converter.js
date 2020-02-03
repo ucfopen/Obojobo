@@ -1,4 +1,5 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
  * Generates an Obojobo MCChoice Node from a Slate node.
@@ -11,10 +12,10 @@ const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
 	children: node.children.map(child => Common.Registry.getItemForType(child.type).slateToObo(child)),
-	content: {
+	content: withoutUndefined({
 		triggers: node.content.triggers,
 		score: node.content. score
-	}
+	})
 })
 
 /**

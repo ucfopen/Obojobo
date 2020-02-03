@@ -4,12 +4,10 @@ import { Node, Element, Transforms, Text } from 'slate'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import EditorComponent from './editor-component'
-import Settings from './components/settings/editor-component'
 import Converter from './converter'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 
 const QuestionBank = {
 	name: QUESTION_BANK_NODE,
@@ -59,12 +57,7 @@ const QuestionBank = {
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
 		renderNode(props) {
-			switch (props.element.subtype) {
-				case SETTINGS_NODE:
-					return <Settings {...props} {...props.attributes} />
-				default:
-					return <EditorComponent {...props} {...props.attributes} />
-			}
+			return <EditorComponent {...props} {...props.attributes} />
 		}
 	},
 }

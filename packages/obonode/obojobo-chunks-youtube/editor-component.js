@@ -2,32 +2,30 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import YouTubeProperties from './youtube-properties-modal'
+import YouTubePlayer from './youtube-player'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
 
 const { ModalUtil } = Common.util
-const { Prompt } = Common.components.modal
 const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
-	showSourceModal() {
+	showSourceModal(event) {
+		event.stopPropagation()
+
 		ModalUtil.show(
-			<Prompt
-				cancelOk
-				title="YouTube Video"
-				message="Enter the video id for the Youtube Video:"
-				value={this.props.node.data.get('content').videoId}
+			<YouTubeProperties
+				content={this.props.node.data.get('content')}
 				onConfirm={this.handleSourceChange.bind(this)}
 			/>
 		)
 	}
 
-	handleSourceChange(videoId) {
+	handleSourceChange(content) {
 		const editor = this.props.editor
-		const content = this.props.node.data.get('content')
-
-		content.videoId = videoId
 
 		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
@@ -42,14 +40,8 @@ class YouTube extends React.Component {
 		)
 	}
 
-	renderVideo(videoId) {
-		return (
-			<iframe
-				src={'https://www.youtube.com/embed/' + videoId}
-				frameBorder="0"
-				allowFullScreen={true}
-			/>
-		)
+	renderVideo() {
+		return <YouTubePlayer content={this.props.node.data.get('content')} />
 	}
 
 	deleteNode() {
@@ -64,11 +56,15 @@ class YouTube extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}>
+				<div
+					contentEditable={false}
+					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
+				>
 					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>
-					{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
+					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
+					<EditableHiddenText>{this.props.children}</EditableHiddenText>
 					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
 						Edit
 					</Button>

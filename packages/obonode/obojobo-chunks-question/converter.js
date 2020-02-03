@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
@@ -42,7 +43,7 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children,
-		content
+		content: withoutUndefined(content)
 	}
 }
 

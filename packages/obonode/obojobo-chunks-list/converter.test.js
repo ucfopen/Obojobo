@@ -89,11 +89,12 @@ describe('List Converter', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a list style', () => {
+	test('oboToSlate converts an OboNode to a Slate node with a list style and triggers', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
+				triggers: 'mock-triggers',
 				listStyles: {
 					type: 'unordered',
 					indents: {}

@@ -5,14 +5,16 @@ Object {
   "data": Object {
     "content": Object {
       "choose": null,
+      "triggers": "mock-triggers",
     },
   },
   "nodes": Array [
     Object {
       "data": Object {
         "content": Object {
-          "choose": 1,
+          "choose": "1",
           "chooseAll": true,
+          "triggers": "mock-triggers",
         },
       },
       "isVoid": true,
@@ -22,14 +24,14 @@ Object {
     Object {
       "data": Object {
         "content": Object {
-          "choose": 1,
+          "choose": "1",
         },
       },
       "nodes": Array [
         Object {
           "data": Object {
             "content": Object {
-              "choose": 1,
+              "choose": "1",
               "chooseAll": false,
             },
           },
@@ -61,8 +63,7 @@ Object {
     undefined,
   ],
   "content": Object {
-    "choose": Infinity,
-    "chooseAll": true,
+    "choose": "all",
   },
   "id": "mockKey",
   "type": "mockType",
@@ -80,7 +81,9 @@ Object {
     },
     undefined,
   ],
-  "content": Object {},
+  "content": Object {
+    "choose": "1",
+  },
   "id": "mockKey",
   "type": "mockType",
 }

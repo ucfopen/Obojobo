@@ -1,3 +1,5 @@
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
+
 /**
  * Generates an Obojobo IFrame from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
@@ -10,7 +12,7 @@ const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
 	children: [],
-	content: {
+	content: withoutUndefined({
 		triggers: node.content.triggers,
 		src: node.content.src,
 		title: node.content.title,
@@ -22,7 +24,7 @@ const slateToObo = node => ({
 		initialZoom: node.content.initialZoom,
 		autoload: node.content.autoload,
 		controls: node.content.controls
-	}
+	})
 })
 
 /**

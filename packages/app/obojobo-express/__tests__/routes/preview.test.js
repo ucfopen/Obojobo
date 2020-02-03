@@ -1,6 +1,6 @@
-jest.mock('../../models/visit')
-jest.mock('../../insert_event')
-jest.mock('../../db')
+jest.mock('../../server/models/visit')
+jest.mock('../../server/insert_event')
+jest.mock('../../server/db')
 // make sure all Date objects use a static date
 mockStaticDate()
 
@@ -11,7 +11,7 @@ jest.unmock('express')
 let mockCurrentUser
 let mockSaveSessionSuccess = true
 let mockSaveSessionRejectValue
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -25,7 +25,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 
 // override requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
@@ -37,13 +37,13 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 const request = require('supertest')
 const express = require('express')
 const app = express()
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/preview'))
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/preview'))
 
 describe('preview route', () => {
-	const Visit = oboRequire('models/visit')
+	const Visit = oboRequire('server/models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})

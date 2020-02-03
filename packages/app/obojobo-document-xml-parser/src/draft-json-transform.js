@@ -1,15 +1,15 @@
-let generateId = require('./generate-id')
+const generateId = require('./generate-id')
 
-let getId = (id, shouldGenerateId) => {
+const getId = (id, shouldGenerateId) => {
 	if (id) return id
 	if (shouldGenerateId) return generateId()
 	return null
 }
 
-let parseAttrs = attrs => {
-	for (let k in attrs) {
-		let attr = attrs[k]
-		let floatAttr = parseFloat(attr)
+const parseAttrs = attrs => {
+	for (const k in attrs) {
+		const attr = attrs[k]
+		const floatAttr = parseFloat(attr)
 		if (floatAttr.toString() === attr) {
 			attrs[k] = floatAttr
 		} else if (attr === 'true') {
@@ -22,23 +22,23 @@ let parseAttrs = attrs => {
 	return attrs
 }
 
-let draftJsonTransform = (node, shouldGenerateId) => {
+const draftJsonTransform = (node, shouldGenerateId) => {
 	if (!node) return
 
-	for (let prop in node) {
+	for (const prop in node) {
 		if (typeof node[prop] === 'object') {
 			draftJsonTransform(node[prop], shouldGenerateId)
 		}
 	}
 
-	for (let prop in node) {
+	for (const prop in node) {
 		if (
 			node[prop] &&
 			typeof node[prop] === 'object' &&
 			node[prop].type &&
 			node[prop].type === 'element'
 		) {
-			let o = node[prop]
+			const o = node[prop]
 			if (!o.attributes) {
 				o.attributes = {}
 			}
@@ -47,7 +47,7 @@ let draftJsonTransform = (node, shouldGenerateId) => {
 				o.elements = []
 			}
 
-			let id = getId(o.attributes.id, shouldGenerateId)
+			const id = getId(o.attributes.id, shouldGenerateId)
 			delete o.attributes.id
 
 			node[prop] = {

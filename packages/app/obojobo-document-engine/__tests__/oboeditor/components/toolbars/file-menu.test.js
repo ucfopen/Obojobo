@@ -274,6 +274,20 @@ describe('File Menu', () => {
 		expect(EditorUtil.renamePage).toHaveBeenCalled()
 	})
 
+	test('renameAndSaveModule renames and saves draft', () => {
+		APIUtil.getAllDrafts.mockResolvedValueOnce({
+			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
+		})
+		const onSave = jest.fn()
+
+		const component = mount(<FileMenu draftId="mockDraft" onSave={onSave} />)
+
+		component.instance().renameAndSaveModule('mockId', 'mock title')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(onSave).toHaveBeenCalled()
+	})
+
 	test('copyModule creates a copy of the current draft', () => {
 		APIUtil.getAllDrafts.mockResolvedValueOnce({
 			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]

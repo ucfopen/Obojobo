@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
@@ -29,7 +30,7 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		content: {
+		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
 			textGroup: {
@@ -37,7 +38,7 @@ const slateToObo = node => {
 				numCols: node.children[0].children.length,
 				textGroup
 			}
-		}
+		})
 	}
 }
 

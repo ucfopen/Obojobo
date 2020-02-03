@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
  * Generates an Obojobo MCAssessment Node from a Slate node.
@@ -30,11 +31,11 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children,
-		content: {
+		content: withoutUndefined({
 			triggers: node.content.triggers,
 			responseType,
 			shuffle: node.content.shuffle
-		}
+		})
 	}
 }
 

@@ -1,38 +1,11 @@
-import MediaModel from '../../../models/media'
+import MediaModel from '../../../server/models/media'
 
-jest.mock('../../../models/media')
-jest.mock('../../../models/user')
-jest.mock('../../../db')
-jest.mock('../../../logger')
-jest.mock('../../../config', () => {
-	return {
-		media: {
-			allowedMimeTypesRegex: 'jpeg|jpg|png|gif|svg',
-			maxUploadSize: 100000,
-			originalMediaTag: 'original',
-			minImageSize: 10,
-			maxImageSize: 8000,
-			presetDimensions: {
-				small: {
-					width: 336,
-					height: 252
-				},
-				medium: {
-					width: 709,
-					height: 532
-				},
-				large: {
-					width: 821,
-					height: 616
-				}
-			},
-			tempUploadDestination: './tmp/media'
-		}
-	}
-})
+jest.mock('../../../server/models/media')
+jest.mock('../../../server/models/user')
+jest.mock('../../../server/db')
+jest.mock('../../../server/logger')
 
-const mediaConfig = require('../../../config').media
-
+const mediaConfig = require('../../../server/config').media
 // Mocks multerUpload with no errors
 const mockMulterUpload = jest.fn().mockImplementation((req, res, cb) => {
 	cb(null)
@@ -57,13 +30,13 @@ jest.mock('multer', () => {
 jest.unmock('express')
 
 // Load an example default Obojobo middleware
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 const express = require('express')
-const media = oboRequire('routes/api/media')
+const media = oboRequire('server/routes/api/media')
 const request = require('supertest')
 
 const app = express()
-app.use(oboRequire('express_current_user'))
+app.use(oboRequire('server/express_current_user'))
 
 let mockCurrentUser
 
@@ -72,7 +45,7 @@ const mockGetCurrentUser = jest.fn().mockImplementation(req => {
 	return Promise.resolve(mockCurrentUser)
 })
 
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = mockGetCurrentUser.bind(this, req)
 	req.requireCurrentUser = mockGetCurrentUser.bind(this, req)
 	next()
@@ -81,8 +54,8 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
-app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('express_response_decorator'))
+app.use(oboRequire('server/express_current_user'))
+app.use('/', oboRequire('server/express_response_decorator'))
 app.use('/api/media', media)
 
 describe('api media route', () => {

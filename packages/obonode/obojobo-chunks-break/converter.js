@@ -1,3 +1,5 @@
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
+
 /**
  * Generates an Obojobo Break from a Slate node.
  * Copies the id, type, and triggers, as well as content.width
@@ -8,10 +10,10 @@ const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
 	children: [],
-	content: {
+	content: withoutUndefined({
 		trigger: node.content.triggers,
 		width: node.content.width
-	}
+	})
 })
 
 /**

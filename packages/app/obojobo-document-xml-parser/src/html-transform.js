@@ -1,10 +1,9 @@
-let createTextGroup = require('./create-text-group')
+const createTextGroup = require('./create-text-group')
 
-let applyAlign = node => {
+const applyAlign = node => {
 	if (node && node.attributes && node.attributes.align) {
-		let align = node.attributes.align
+		const align = node.attributes.align
 		delete node.attributes.align
-		// node.elements[0].elements[0].attributes = { align:align }
 		node.elements[0].elements.forEach(el => {
 			if (!el.attributes) el.attributes = {}
 			el.attributes.align = align
@@ -12,7 +11,7 @@ let applyAlign = node => {
 	}
 }
 
-let htmlTransform = node => {
+const htmlTransform = node => {
 	if (node.type === 'element') {
 		if (!node.attributes) node.attributes = {}
 
@@ -27,21 +26,14 @@ let htmlTransform = node => {
 				node.attributes.headingLevel = parseInt(node.name.charAt(1), 10)
 				node.name = 'ObojoboDraft.Chunks.Heading'
 				node.elements = createTextGroup(node.elements)
-				// if(node.attributes.align)
-				// {
-				// 	let align = node.attributes.align;
-				// 	delete node.attributes.align;
-				// 	node.elements[0].elements[0].attributes = { align:align }
-				// }
+
 				applyAlign(node)
 
 				break
 
 			case 'ul':
-			case 'ol':
-				let text = node.elements
-
-				let attrs = node.attributes
+			case 'ol': {
+				const attrs = node.attributes
 				node.attributes = {
 					listStyles: { type: node.name === 'ol' ? 'ordered' : 'unordered' }
 				}
@@ -51,7 +43,6 @@ let htmlTransform = node => {
 						name: 'textGroup',
 						attributes: attrs,
 						elements: node.elements.map(li => {
-							let liData = {}
 							return {
 								type: 'element',
 								name: 't',
@@ -64,31 +55,27 @@ let htmlTransform = node => {
 				node.name = 'ObojoboDraft.Chunks.List'
 
 				break
-
-			// let elements = node.elements.map( (node) => {
-			// 	return createTextGroup(node.elements[0])
-			// })
+			}
 
 			case 'p':
-				// node.elements = [ createTextGroup(node.elements) ]
 				node.name = 'ObojoboDraft.Chunks.Text'
 				node.elements = createTextGroup(node.elements)
 				applyAlign(node)
 
 				break
 
-			case 'pre':
+			case 'pre': {
 				// node.elements = [ createTextGroup(node.elements) ]
 				node.name = 'ObojoboDraft.Chunks.Code'
 
-				let tEls = node.elements[0].text.split('\n').map(text => {
+				const tEls = node.elements[0].text.split('\n').map(text => {
 					let indent = 0
 					while (text.charAt(0) === '\t') {
 						indent++
 						text = text.substr(1)
 					}
 
-					let attributes = indent > 0 ? { indent } : null
+					const attributes = indent > 0 ? { indent } : null
 
 					return {
 						type: 'element',
@@ -114,19 +101,20 @@ let htmlTransform = node => {
 				applyAlign(node)
 
 				break
+			}
 
 			case 'hr':
 				node.name = 'ObojoboDraft.Chunks.Break'
 
 				break
 
-			case 'figure':
+			case 'figure': {
 				// when there is no figcaption
 				// node.elements will be an empty array
 				// so img is not processed again later
 				let newElements = []
 				node.name = 'ObojoboDraft.Chunks.Figure'
-				for (let i in node.elements) {
+				for (const i in node.elements) {
 					switch (node.elements[i].name) {
 						case 'img':
 							node.attributes = node.elements[i].attributes
@@ -142,6 +130,7 @@ let htmlTransform = node => {
 				node.attributes.url = node.attributes.src
 				delete node.attributes.src
 				break
+			}
 
 			case 'img':
 				node.name = 'ObojoboDraft.Chunks.Figure'
@@ -153,12 +142,12 @@ let htmlTransform = node => {
 				delete node.attributes.src
 				break
 
-			case 'table':
-				let numRows = node.elements.length
-				let numCols = node.elements[0].elements.length
-				let header = node.elements[0].elements[0].name === 'th'
+			case 'table': {
+				const numRows = node.elements.length
+				const numCols = node.elements[0].elements.length
+				const header = node.elements[0].elements[0].name === 'th'
 
-				let cells = []
+				const cells = []
 				node.elements.forEach(row => {
 					row.elements.forEach(col => {
 						return cells.push(col.elements)
@@ -179,21 +168,17 @@ let htmlTransform = node => {
 					}
 				]
 
-				// node.elements = [ {
-				// 	type: 'element',
-				// 	name: 'textGroup',
-				// 	elements: createTextGroup(texts)
-				// } ];
 				node.name = 'ObojoboDraft.Chunks.Table'
 				node.attributes = { numRows, numCols, header }
 				break
+			}
 		}
 
 		if (Object.keys(node.attributes).length === 0) delete node.attributes
 	}
 
 	if (node.elements) {
-		for (let i in node.elements) {
+		for (const i in node.elements) {
 			htmlTransform(node.elements[i])
 		}
 	}

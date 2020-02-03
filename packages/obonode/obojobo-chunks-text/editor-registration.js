@@ -1,4 +1,3 @@
-import { getEventTransfer } from 'slate-react'
 import { Editor, Node, Element, Transforms } from 'slate'
 
 import Converter from './converter'
@@ -12,7 +11,6 @@ import normalizeNode from './changes/normalize-node'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
-import insertTab from './changes/insert-tab'
 import splitParent from './changes/split-parent'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'

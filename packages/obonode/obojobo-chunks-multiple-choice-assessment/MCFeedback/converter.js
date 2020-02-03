@@ -1,4 +1,5 @@
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
  * Generates an Obojobo MCFeedback Node from a Slate node.
@@ -11,9 +12,9 @@ const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
 	children: node.children.map(child => Component.helpers.slateToObo(child)),
-	content: {
+	content: withoutUndefined({
 		triggers: node.content.triggers
-	}
+	})
 })
 
 /**

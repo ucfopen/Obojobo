@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
  * Generates an Obojobo Figure from a Slate node.
@@ -19,7 +20,7 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		content: {
+		content: withoutUndefined({
 			triggers: node.content.triggers,
 			textGroup: [captionLine],
 			alt: node.content.alt,
@@ -27,7 +28,7 @@ const slateToObo = node => {
 			size: node.content.size,
 			width: node.content.width,
 			height: node.content.height
-		}
+		})
 	}
 }
 

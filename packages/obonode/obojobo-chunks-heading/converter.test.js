@@ -32,11 +32,12 @@ describe('Heading Converter', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
+	test('oboToSlate converts an OboNode to a Slate node with content', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
+				triggers: 'mock-triggers',
 				textGroup: [
 					{
 						text: { value: 'mockText' }

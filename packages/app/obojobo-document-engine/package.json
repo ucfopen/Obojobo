@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "7.0.4",
+	"version": "7.1.2",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -23,9 +23,6 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"{__{tests,mocks}__,src}/**/*.js": [
-			"eslint"
-		],
 		"{__{tests,mocks}__,src}/**/*.scss": [
 			"stylelint"
 		],
@@ -51,7 +48,7 @@
 		"downloadjs": "^1.4.7",
 		"immutable": "^4.0.0-rc.12",
 		"katex": "^0.11.1",
-		"obojobo-lib-utils": "^7.0.4",
+		"obojobo-lib-utils": "^7.1.2",
 		"prop-types": "15.6.2",
 		"react": "^16.12.0",
 		"react-codemirror2": "^6.0.0",

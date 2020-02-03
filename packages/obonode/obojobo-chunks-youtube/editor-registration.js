@@ -5,6 +5,7 @@ import Icon from './icon'
 import EditorComponent from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
+import includeTextCancellingPlugins from 'obojobo-document-engine/src/scripts/oboeditor/util/include-text-cancelling-plugins'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
@@ -18,7 +19,7 @@ const YouTube = {
 	json: {
 		emptyNode
 	},
-	plugins: {
+	plugins: includeTextCancellingPlugins(YOUTUBE_NODE, {
 		renderNode(props, editor, next) {
 			switch (props.node.type) {
 				case YOUTUBE_NODE:
@@ -28,7 +29,7 @@ const YouTube = {
 			}
 		},
 		schema: Schema
-	}
+	})
 }
 
 export default YouTube

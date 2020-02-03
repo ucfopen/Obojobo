@@ -1,4 +1,6 @@
 import { Node } from 'slate'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
+
 /**
  * Generates an Obojobo HTML node from a Slate node.
  * Copies the id, type, triggers, and converts text children (including marks)
@@ -10,10 +12,10 @@ const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
 	children: [],
-	content: {
+	content: withoutUndefined({
 		triggers: node.content.triggers,
 		html: Node.string(node)
-	}
+	})
 })
 
 /**

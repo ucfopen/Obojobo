@@ -3,6 +3,19 @@
 	"type": "ObojoboDraft.Chunks.Table",
 	"content": {
 		"header": true,
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		],
 		"textGroup": {
 			"numCols": 3,
 			"numRows": 3,

@@ -43,11 +43,52 @@ describe('Text editor', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
+	test('slateToObo converts a Slate node to an OboNode with triggers', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			data: {
+				get: () => {
+					return { triggers: 'mock-triggers' }
+				}
+			},
+			nodes: [
+				{
+					text: 'mockText',
+					data: {
+						get: () => {
+							return {}
+						}
+					},
+					nodes: [
+						{
+							leaves: [
+								{
+									text: 'mockText',
+									marks: [
+										{
+											type: 'b',
+											data: {}
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
+				triggers: 'mock-triggers',
 				textGroup: [
 					{
 						data: { indent: 1 },

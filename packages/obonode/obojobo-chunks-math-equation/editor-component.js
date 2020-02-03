@@ -22,7 +22,11 @@ class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.updateNodeFromState = debounce(200, this.updateNodeFromState)
+		// This debounce is necessary to get slate to update the node data.
+		// I've tried several ways to remove it but haven't been able to
+		// get it work :(
+		// If you have a solution please have at it!
+		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
 
 		// copy the attributes we want into state
 		const content = this.props.element.content
@@ -89,10 +93,18 @@ class MathEquation extends React.Component {
 	}
 
 	onChangeContent(key, event) {
-		event.stopPropagation()
 		const newContent = { [key]: event.target.value }
 		this.setState(newContent) // update the display now
-		this.updateNodeFromState() // debounced to reduce lag as it updates the document
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.isSelected && !this.props.isSelected) {
+			this.updateNodeFromState()
+		} else if (!prevProps.isSelected && this.props.isSelected) {
+			setTimeout(() => {
+				document.getElementById('math-equation-latex').focus()
+			}, 1)
+		}
 	}
 
 	freezeEditor() {

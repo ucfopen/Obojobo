@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 
 // setup express server
-const caliper_utils = oboRequire('routes/api/events/caliper_utils')
+const caliper_utils = oboRequire('server/routes/api/events/caliper_utils')
 
 describe('caliper utils route', () => {
 	test('getUrnFromUuid builds expected string', () => {

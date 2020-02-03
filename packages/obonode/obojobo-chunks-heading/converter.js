@@ -1,4 +1,5 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
  * Generates an Obojobo Heading from a Slate node.
@@ -19,10 +20,11 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		content: {
+		content: withoutUndefined({
+			triggers: node.content.triggers,
 			headingLevel: node.content.headingLevel,
 			textGroup: [line]
-		}
+		})
 	}
 }
 

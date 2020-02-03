@@ -1,4 +1,5 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'

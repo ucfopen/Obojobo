@@ -26,6 +26,11 @@ class FileMenu extends React.PureComponent {
 		}
 	}
 
+	renameAndSaveModule(moduleId, label) {
+		this.renameModule(moduleId, label)
+		this.props.onSave(this.props.draftId)
+	}
+
 	deleteModule() {
 		return APIUtil.deleteDraft(this.props.draftId).then(result => {
 			if (result.status === 'ok') {
@@ -45,7 +50,7 @@ class FileMenu extends React.PureComponent {
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
-				window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draftId, '_blank')
+				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
 			})
 	}
 
@@ -78,12 +83,7 @@ class FileMenu extends React.PureComponent {
 			{
 				name: 'Save',
 				type: 'action',
-				action: () =>
-					this.props.onSave(this.props.draftId).then(result => {
-						if (result.status !== 'ok') {
-							ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-						}
-					})
+				action: () => this.props.onSave(this.props.draftId)
 			},
 			{
 				name: 'New',
@@ -91,10 +91,7 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					APIUtil.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(
-								window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id,
-								'_blank'
-							)
+							window.open(window.location.origin + '/editor/visual/' + result.value.id, '_blank')
 						}
 					})
 			},
@@ -136,7 +133,7 @@ class FileMenu extends React.PureComponent {
 							title="Rename Module"
 							message="Enter the new title for the module:"
 							value={this.props.model.title}
-							onConfirm={this.renameModule.bind(this, this.props.model.id)}
+							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
 						/>
 					)
 			},

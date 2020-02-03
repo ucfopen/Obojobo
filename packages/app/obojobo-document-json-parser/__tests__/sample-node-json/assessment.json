@@ -4,6 +4,19 @@
 	"content": {
 		"title": "Assessment",
 		"review": "always",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		],
 		"rubric": {
 			"mods": [
 				{

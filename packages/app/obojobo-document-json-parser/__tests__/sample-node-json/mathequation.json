@@ -4,7 +4,20 @@
 	"content": {
 		"alt": "x sub one equals x sub zero plus delta x",
 		"label": "1.1",
-		"latex": "x_1 = x_0 + \\Delta x"
+		"latex": "x_1 = x_0 + \\Delta x",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": []
 }

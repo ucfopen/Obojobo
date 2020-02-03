@@ -93,6 +93,7 @@ const Figure = props => {
 						<Image
 							key={content.url + content.width + content.height + content.size}
 							chunk={{ modelState: content }}
+							lazyLoad={false}
 						/>
 					</div>
 					<figcaption className="align-center">{props.children}</figcaption>
