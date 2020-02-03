@@ -23,15 +23,6 @@ const slateToObo = node => {
 		return textLine
 	})
 
-	const content = {
-		textGroup
-	}
-
-	const nodeContent = node.data.get('content')
-	if (nodeContent && nodeContent.triggers) {
-		content.triggers = nodeContent.triggers
-	}
-
 	return {
 		id: node.id,
 		type: node.type,

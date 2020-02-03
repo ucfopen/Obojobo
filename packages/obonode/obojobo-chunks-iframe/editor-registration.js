@@ -3,7 +3,6 @@ import React from 'react'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import EditorComponent from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
@@ -30,8 +29,7 @@ const IFrame = {
 		// They affect individual nodes independently of one another
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
-		},
-		schema: Schema
+		}
 	}
 }
 

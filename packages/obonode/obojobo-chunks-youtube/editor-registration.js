@@ -3,9 +3,7 @@ import React from 'react'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import EditorComponent from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
-import includeTextCancellingPlugins from 'obojobo-document-engine/src/scripts/oboeditor/util/include-text-cancelling-plugins'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
@@ -19,17 +17,20 @@ const YouTube = {
 	json: {
 		emptyNode
 	},
-	plugins: includeTextCancellingPlugins(YOUTUBE_NODE, {
-		renderNode(props, editor, next) {
-			switch (props.node.type) {
-				case YOUTUBE_NODE:
-					return <EditorComponent {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+	plugins: {
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
+		isVoid(element, editor, next) {
+			if(element.type === YOUTUBE_NODE) return true
+
+			return next(element)
 		},
-		schema: Schema
-	})
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
+		renderNode(props) {
+			return <EditorComponent {...props} {...props.attributes} />
+		}
+	}
 }
 
 export default YouTube
