@@ -1,52 +1,59 @@
-import { Text, Editor, Transforms, Range } from 'slate'
+import { Text, Editor, Transforms, Range, Path, Element, Point } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 const KeyDownUtil = {
-	deleteNodeContents: (event, editor, next) => {
-		const value = editor.value
-		const selection = value.selection
-		const startBlock = value.startBlock
-		const startOffset = selection.start.offset
-		const isCollapsed = selection.isCollapsed
-		const endBlock = value.endBlock
+	deleteNodeContents: (event, editor, node, deleteForward) => {
+		const nodePath = ReactEditor.findPath(editor, node)
+		const nodeRange = Editor.range(editor, nodePath)
+		// Get only the Element children of the current node that are in the current selection
+		const list = Array.from(Editor.nodes(editor, {
+			at: Range.intersection(editor.selection, nodeRange),
+			match: child => {
+				const childPath = ReactEditor.findPath(editor, child)
+				return Element.isElement(child) && Path.isAncestor(nodePath, childPath)
+			},
+			mode: 'lowest'
+		}))
 
-		// If a cursor is collapsed at the start of the first block, do nothing
-		if (startOffset === 0 && isCollapsed) {
-			event.preventDefault()
-			return editor
+		// If both ends of the selection are outside the table, simply delete the table
+		const [selStart, selEnd] = Range.edges(editor.selection)
+		const [nodeStart, nodeEnd] = Range.edges(nodeRange)
+		if(Point.isBefore(selStart, nodeStart) && Point.isAfter(selEnd, nodeEnd)) {
+			return
 		}
 
-		// Deletion within a single node
-		if (startBlock === endBlock) {
-			return next()
+
+		const [,startPath] = list[0]
+		const [,endPath] = list[list.length - 1]
+
+		// If a cursor is collapsed, do nothing at start/end based on delete direction
+		if (Range.isCollapsed(editor.selection)) {
+			if(!deleteForward && editor.selection.anchor.offset === 0){
+				event.preventDefault()
+				return
+			}
+			if(deleteForward && Point.equals(editor.selection.anchor, Editor.end(editor, startPath))){
+				event.preventDefault()
+				return
+			}	
 		}
+
+		// Deletion within a single node works as normal
+		if (Path.equals(startPath, endPath)) return
 
 		// Deletion across nodes
 		event.preventDefault()
-		const blocks = value.blocks
 
-		// Get all nodes that contain the selection
-		const cells = blocks.toSet()
-
-		const ignoreFirstCell = value.selection.moveToStart().start.isAtEndOfNode(cells.first())
-		const ignoreLastCell = value.selection.moveToEnd().end.isAtStartOfNode(cells.last())
-
-		let cellsToClear = cells
-		if (ignoreFirstCell) {
-			cellsToClear = cellsToClear.rest()
-		}
-		if (ignoreLastCell) {
-			cellsToClear = cellsToClear.butLast()
+		// For each child in the selection, clear the selected text
+		for(const [, path] of list){
+			const childRange = Editor.range(editor, path)
+			Transforms.delete(
+				editor, 
+				{ at: Range.intersection(editor.selection, childRange) }
+			)
 		}
 
-		// Clear all the selection
-		cellsToClear.forEach(cell => {
-			cell.nodes.forEach(node => {
-				editor.removeNodeByKey(node.key)
-			})
-		})
-
-		return editor
+		Transforms.collapse(editor, { edge: deleteForward ? 'end' : 'start' })
 	},
 	isDeepEmpty(editor, node) {
 		if(editor.isVoid(node)) return false

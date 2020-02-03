@@ -60,6 +60,7 @@ class PageEditor extends React.Component {
 		this.insertableItems = []
 		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.onCut = this.onCut.bind(this)
 		this.decorate = this.decorate.bind(this)
 
 		this.editor = this.withPlugins(withReact(createEditor()))
@@ -255,6 +256,22 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	onCut(event) {
+		const list = Array.from(Editor.nodes(this.editor, {
+			mode: 'highest',
+			match: node => Element.isElement(node)
+		}))
+
+
+		for(const node of list) {
+			const item = Common.Registry.getItemForType(node[0].type)
+			if(item && item.plugins.onCut) {
+				item.plugins.onCut(node[0], this.editor, event)
+				if(event.isDefaultPrevented() || event.isPropagationStopped()) return
+			}
+		}
+	}
+
 	onChange(value) {
 		// Save the previous selection in case the editor is unfocused
 		// This mostly happens with MoreInfoBoxes and void nodes
@@ -299,7 +316,8 @@ class PageEditor extends React.Component {
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
 								readOnly={!this.state.editable}
-								onKeyDown={this.onKeyDown}/>
+								onKeyDown={this.onKeyDown}
+								onCut={this.onCut}/>
 						</Slate>
 					</PageEditorErrorBoundry>
 				</div>
