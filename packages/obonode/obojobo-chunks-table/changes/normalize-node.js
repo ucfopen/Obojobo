@@ -89,7 +89,9 @@ const normalizeNode = (entry, editor, next) => {
 
 	// If the element is a TableRow, make sure it only has cell children
 	if (Element.isElement(node) && node.subtype === TABLE_ROW_NODE) {
-		for (const [child, childPath] of Node.children(editor, path)) {
+		// by going through the children in reverse order, any rows that need to be
+		// popped out will retain their logical order
+		for (const [child, childPath] of Node.children(editor, path, {reverse: true})) {
 			if(Element.isElement(child) && child.subtype !== TABLE_CELL_NODE){
 				if(child.subtype === TABLE_ROW_NODE){
 					Transforms.moveNodes(editor, { at: childPath, to: Path.next(path)})

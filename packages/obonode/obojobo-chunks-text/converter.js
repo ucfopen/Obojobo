@@ -3,6 +3,13 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
+/**
+ * Generates an Obojobo Text Node from a Slate node.
+ * Copies the id, type, triggers, and condenses TextLine children and their 
+ * text children (including marks) into a single textGroup
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Text node 
+ */
 const slateToObo = node => {
 	const textGroup = node.children.map(line => {
 		const textLine = {
@@ -20,11 +27,20 @@ const slateToObo = node => {
 		type: node.type,
 		children: [],
 		content: {
+			triggers: node.content.triggers,
 			textGroup
 		}
 	}
 }
 
+/**
+ * Generates a Slate node from an Obojobo Text node.
+ * Copies all attributes, and converts a textGroup into Slate Text children
+ * Each textItem in the textgroup becomes a separate TextLine node in order
+ * to properly leverage the Slate Editor's capabilities
+ * @param {Object} node An Obojobo Text node 
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	slateNode.children = node.content.textGroup.map(line => {
