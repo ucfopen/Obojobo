@@ -138,7 +138,7 @@ class FileMenu extends React.PureComponent {
 					)
 			},
 			{
-				name: 'Delete',
+				name: 'Delete Module',
 				type: 'action',
 				action: () =>
 					ModalUtil.show(

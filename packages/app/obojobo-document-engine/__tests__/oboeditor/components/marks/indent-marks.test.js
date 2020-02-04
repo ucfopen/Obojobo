@@ -21,12 +21,36 @@ describe('IndentMarks', () => {
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
 
+	test('indentText indents a text block with indent', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const block = { data: { toJSON: () => ({ indent: 1 }) }, key: 'mockKey' }
+
+		IndentMarks.plugins.queries.indentText(editor, block)
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+	})
+
 	test('indentCode indents a code block', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
 		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+
+		IndentMarks.plugins.queries.indentCode(editor, block)
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+	})
+
+	test('indentCode indents a code block with indent', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const block = { data: { toJSON: () => ({ content: { indent: 1 } }) }, key: 'mockKey' }
 
 		IndentMarks.plugins.queries.indentCode(editor, block)
 
@@ -96,12 +120,36 @@ describe('IndentMarks', () => {
 		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
 	})
 
+	test('unindentText unindents a text block with indent', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const block = { data: { toJSON: () => ({ indent: 1 }) }, key: 'mockKey' }
+
+		IndentMarks.plugins.queries.unindentText(editor, block)
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+	})
+
 	test('unindentCode unindents a code block', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
 		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+
+		IndentMarks.plugins.queries.unindentCode(editor, block)
+
+		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+	})
+
+	test('unindentCode unindents a code block with indent', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const block = { data: { toJSON: () => ({ content: { indent: 1 } }) }, key: 'mockKey' }
 
 		IndentMarks.plugins.queries.unindentCode(editor, block)
 

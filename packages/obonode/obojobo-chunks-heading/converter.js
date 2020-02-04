@@ -1,5 +1,13 @@
+import { Block } from 'slate'
+
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
+
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 /**
  * Generates an Obojobo Heading from a Slate node.
@@ -45,4 +53,39 @@ const oboToSlate = node => {
 	return slateNode
 }
 
-export default { slateToObo, oboToSlate }
+const switchType = {
+	'ObojoboDraft.Chunks.Text': (editor, node) => {
+		editor.setNodeByKey(node.key, TEXT_NODE)
+	},
+	'ObojoboDraft.Chunks.Heading': (editor, node, data) => {
+		editor.setNodeByKey(node.key, { data: { content: {...node.data.get('content'), ...data }}})
+	},
+	'ObojoboDraft.Chunks.Code': (editor, node) => {
+		editor.setNodeByKey(node.key, CODE_NODE)
+	},
+	'ObojoboDraft.Chunks.List': (editor, node, data) => {
+		const json = node.toJSON()
+		const newList = Block.create({ 
+			type: LIST_NODE, 
+			data: { content: { listStyles: data }},
+			nodes: [
+				{ 
+					type: LIST_LEVEL_NODE, 
+					data: { content: data },
+					object: 'block',
+					nodes: [
+						{ 
+							type: LIST_LINE_NODE, 
+							object: 'block',
+							nodes: json.nodes
+						}
+					]
+				}
+			]
+		})
+
+		editor.replaceNodeByKey(node.key, newList).moveToRangeOfNode(newList).focus()
+	},
+}
+
+export default { slateToObo, oboToSlate, switchType }

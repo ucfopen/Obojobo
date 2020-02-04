@@ -1,0 +1,16 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text font-weight="bold" stroke="null" transform="matrix(0.22785448799847718,0,0,0.1820734247733235,0.402310083847791,-0.06111700915811502) " xml:space="preserve" text-anchor="start" font-family="'Trebuchet MS', Gadget, sans-serif" font-size="35" id="svg_3" y="48.652441" x="11.332053" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">1</text>
+  <text font-weight="bold" stroke="null" transform="matrix(0.19090306669902105,0,0,0.17105965717958865,3.3724167812735115,-1.518014863915269) " xml:space="preserve" text-anchor="start" font-family="'Trebuchet MS', Gadget, sans-serif" font-size="35" id="svg_4" y="109.992691" x="2.436107" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">2</text>
+  <text font-weight="bold" stroke="null" transform="rotate(0.01722731441259384 6.022437572500336,24.469108581542535) matrix(0.18559552430480583,0,0,0.1625033238258164,1.9509355212165138,8.867520434553914) " xml:space="preserve" text-anchor="start" font-family="'Trebuchet MS', Gadget, sans-serif" font-size="35" id="svg_5" y="108.551442" x="11.685818" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">3</text>
+  <rect stroke="null" id="svg_6" height="0.942703" width="18" y="6.124997" x="8.749998" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="null"/>
+  <rect stroke="null" id="svg_8" height="0.942703" width="18" y="14.813125" x="8.749998" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="null"/>
+  <rect stroke="null" id="svg_9" height="0.942703" width="18" y="24.124997" x="8.749998" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="null"/>
+ </g>
+</svg>

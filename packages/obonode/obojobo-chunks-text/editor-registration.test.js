@@ -513,7 +513,7 @@ describe('Text editor', () => {
 
 		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
-			node: { nodes: { size: 5 } },
+			node: { nodes: { size: 5 }, data: { get: () => false } },
 			child: { key: 'mockKey' },
 			index: null
 		})

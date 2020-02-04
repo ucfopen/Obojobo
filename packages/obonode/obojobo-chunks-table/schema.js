@@ -23,7 +23,8 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
-						if (child.object === 'block' && index === node.nodes.size - 1) {
+						if (child.object === 'block' && 
+							(index === node.nodes.size - 1 || index === 0)) {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
@@ -59,14 +60,10 @@ const schema = {
 				const header = node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Allow inserting of new nodes by unwrapping unexpected blocks at end
-						if (child.object === 'block' && index === node.nodes.size - 1) {
+						// Allow inserting of new nodes by unwrapping unexpected blocks at start and end
+						if (child.object === 'block' && 
+							(index === node.nodes.size - 1 || index === 0)) {
 							return editor.unwrapNodeByKey(child.key)
-						}
-
-						// If a block was inserted in the middle, delete it to maintain table shape
-						if (child.object === 'block') {
-							return editor.removeNodeByKey(child.key)
 						}
 
 						return editor.wrapBlockByKey(child.key, {
@@ -91,7 +88,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
-						if (child.object === 'block' && index === node.nodes.size - 1) {
+						if (child.object === 'block' && (index === node.nodes.size - 1 || index === 0)) {
 							return editor.unwrapNodeByKey(child.key)
 						}
 					}

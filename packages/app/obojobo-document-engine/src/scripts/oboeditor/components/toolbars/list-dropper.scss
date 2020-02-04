@@ -1,0 +1,84 @@
+@import '~styles/includes';
+
+.list-dropper {
+	cursor: pointer;
+	user-select: none;
+	display: inline-block;
+	position: relative;
+
+	button {
+		&:hover {
+			opacity: 1;
+			background: lighten($color-action, 48%);
+		}
+
+		&.is-open {
+			opacity: 1;
+			background: lighten($color-action, 48%);
+		}
+	}
+
+	.icon {
+		background-color: transparent;
+		font-size: 1em;
+		border: none;
+		height: 2.5em;
+		width: 2.5em;
+		padding: 0.4em;
+		margin-right: 0.5em;
+		opacity: 0.6;
+	}
+
+	.dropdown {
+		font-weight: bold;
+		padding: 0;
+		border: none;
+		position: absolute;
+		top: 0em;
+		transform: rotate(-180deg);
+		right: 0.9em;
+		height: 4.3em;
+		background: transparent;
+		opacity: 0.6;
+
+		&.is-open {
+			transform: none;
+			top: 0.7em;
+		}
+	}
+
+	div {
+		&.is-open {
+			display: block;
+		}
+		&.is-not-open {
+			display: none;
+		}
+	}
+
+	.list-dropper-menu {
+		position: absolute;
+		top: 2em;
+		right: 0;
+		background-color: $color-bg;
+		border-radius: $dimension-rounded-radius;
+		width: 1.5em;
+		border: 1px solid $color-shadow;
+		box-shadow: $box-shadow-overlay;
+
+		button {
+			display: block;
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
+			border: none;
+			font-size: 1em;
+			width: 100%;
+			text-align: right;
+			padding: 0.3em;
+
+			&:hover {
+				background: lighten($color-action, 48%);
+			}
+		}
+	}
+}

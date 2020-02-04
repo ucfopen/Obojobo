@@ -11,6 +11,7 @@ import ContentToolbar from './toolbars/content-toolbar'
 import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
+import FormatPlugin from '../plugins/format-plugin'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
@@ -131,6 +132,7 @@ class PageEditor extends React.Component {
 		// const editorPlugins = [
 		// 	EditorSchema,
 		// 	ClipboardPlugin,
+		//	FormatPlugin,
 		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
 		// ]
 
@@ -287,8 +289,9 @@ class PageEditor extends React.Component {
 						mode={'visual'}
 						insertableItems={this.props.insertableItems}
 						togglePlaceholders={this.togglePlaceholders}
-						showPlaceholders={this.state.showPlaceholders}/>
-					<ContentToolbar editorRef={this.editorRef}/>
+						showPlaceholders={this.state.showPlaceholders}
+						value={this.state.value}/>
+					<ContentToolbar editorRef={this.editorRef} value={this.state.value}/>
 				</div>
 
 				<EditorNav

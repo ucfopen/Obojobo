@@ -94,10 +94,7 @@ const List = {
 	icon: Icon,
 	isInsertable: true,
 	isContent: true,
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	helpers: Converter,
 	json: {
 		emptyNode
 	},

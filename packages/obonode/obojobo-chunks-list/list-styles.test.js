@@ -72,7 +72,7 @@ describe('List Styles', () => {
 		expect(ls.get(6).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'upper-alpha'
+			bulletStyle: 'lower-alpha'
 		})
 	})
 
@@ -172,25 +172,25 @@ describe('List Styles', () => {
 		expect(ls.get(1).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'upper-alpha'
+			bulletStyle: 'lower-alpha'
 		})
 
 		expect(ls.get(2).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'upper-roman'
+			bulletStyle: 'lower-roman'
 		})
 
 		expect(ls.get(3).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'lower-alpha'
+			bulletStyle: 'upper-alpha'
 		})
 
 		expect(ls.get(4).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'lower-roman'
+			bulletStyle: 'upper-roman'
 		})
 
 		expect(ls.get(5).toDescriptor()).toEqual({
@@ -202,25 +202,25 @@ describe('List Styles', () => {
 		expect(ls.get(6).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'upper-alpha'
+			bulletStyle: 'lower-alpha'
 		})
 
 		expect(ls.get(7).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'upper-roman'
+			bulletStyle: 'lower-roman'
 		})
 
 		expect(ls.get(8).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'lower-alpha'
+			bulletStyle: 'upper-alpha'
 		})
 
 		expect(ls.get(9).toDescriptor()).toEqual({
 			type: 'ordered',
 			start: 1,
-			bulletStyle: 'lower-roman'
+			bulletStyle: 'upper-roman'
 		})
 	})
 

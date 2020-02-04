@@ -24,6 +24,7 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
+jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
 // jest.mock('src/scripts/oboeditor/components/toolbars/content-toolbar')
 //jest.mock('obojobo-document-engine/src/scripts/common/registry')
 
@@ -439,7 +440,7 @@ describe('PageEditor', () => {
 		expect(plugins).toMatchSnapshot()
 
 		// Call the save plugin
-		plugins[12].onKeyDown(
+		plugins[13].onKeyDown(
 			{
 				preventDefault: jest.fn(),
 				key: 's',

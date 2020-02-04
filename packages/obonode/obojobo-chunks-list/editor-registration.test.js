@@ -879,6 +879,22 @@ describe('List editor', () => {
 		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid blank text children in Level', () => {
+		const editor = {
+			moveToStartOfNextText: jest.fn()
+		}
+		editor.wrapBlockByKey = jest.fn().mockReturnValueOnce(editor)
+
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 5 } },
+			child: { object: 'text', key: 'mockKey', text: "" },
+			index: 0
+		})
+
+		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes required children in Level', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
@@ -893,6 +909,36 @@ describe('List editor', () => {
 		})
 
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'block' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes non-block children in Line', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {},
+			child: { object: 'mark' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
 	})
 
 	test('queries.createCodeLinesFromText builds text lines', () => {

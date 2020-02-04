@@ -6,11 +6,25 @@
 	padding-left: 0.4em;
 	border-bottom: 1px solid $color-shadow;
 
+	.paragraph-styles-dropdown {
+		display: inline-block;
+		
+		button {
+			display: block;
+			width: auto;
+			height: auto;
+
+			> * {
+				margin: 0;
+			}
+		}
+	}
+
 	@include mq($from: mobile, $until: desktop) {
 		left: $dimension-nav-menu-small;
 	}
 
-	button {
+	> button {
 		font-size: 1em;
 		width: 2.5em;
 		height: 2.5em;

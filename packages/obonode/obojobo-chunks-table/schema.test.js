@@ -70,7 +70,7 @@ describe('Table Schema', () => {
 
 	test('plugins.schema.normalize fixes first invalid child in row', () => {
 		const editor = {
-			removeNodeByKey: jest.fn()
+			unwrapNodeByKey: jest.fn()
 		}
 
 		Schema.blocks[TABLE_ROW_NODE].normalize(editor, {
@@ -80,7 +80,7 @@ describe('Table Schema', () => {
 			index: 0
 		})
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes last invalid child in row', () => {
@@ -105,9 +105,9 @@ describe('Table Schema', () => {
 
 		Schema.blocks[TABLE_ROW_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
-			node: { data: { get: () => ({ header: false }) }, nodes: { size: 1 } },
+			node: { data: { get: () => ({ header: false }) }, nodes: { size: 3 } },
 			child: { key: 'mockKey' },
-			index: 0
+			index: 1
 		})
 
 		expect(editor.wrapBlockByKey).toHaveBeenCalled()

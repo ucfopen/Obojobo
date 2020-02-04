@@ -10,18 +10,20 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 // These values are also defined in obojobo-chinks-list/list-styles
 const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
+const orderedBullets = ['decimal', 'lower-alpha', 'lower-roman', 'upper-alpha', 'upper-roman']
 
 const AlignMarks = {
 	plugins: {
 		queries: {
 			indentText(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.indent) dataJSON.indent = 0
 				dataJSON.indent = Math.min(dataJSON.indent + 1, 20)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
 			indentCode(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.content.indent) dataJSON.content.indent = 0
 				dataJSON.content.indent = dataJSON.content.indent + 1
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
@@ -50,11 +52,13 @@ const AlignMarks = {
 			},
 			unindentText(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.indent) dataJSON.indent = 0
 				dataJSON.indent = Math.max(dataJSON.indent - 1, 0)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
 			unindentCode(editor, block) {
 				const dataJSON = block.data.toJSON()
+				if(!dataJSON.content.indent) dataJSON.content.indent = 0
 				dataJSON.content.indent = Math.max(dataJSON.content.indent - 1, 0)
 				return editor.setNodeByKey(block.key, { data: dataJSON })
 			},
