@@ -267,11 +267,10 @@ class PageEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if(this.editor.selection) this.editor.prevSelection = this.editor.selection
 			
-		this.setState({ value })
+		this.setState({ value, saved: false })
 	}
 
 	render() {
-		console.log('value',this.state.value)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
@@ -315,50 +314,6 @@ class PageEditor extends React.Component {
 			</div>
 		)
 	}
-
-// 	// render() {
-// 	// 	const className =
-// 	// 		'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
-// 	// 	return (
-// 	// 		<div className={className}>
-// 	// 			<div className="draft-toolbars">
-// 	// 				<div className="draft-title">{this.props.model.title}</div>
-// 	// 				<FileToolbar
-// 	// 					editorRef={this.editorRef}
-// 	// 					model={this.props.model}
-// 	// 					draftId={this.props.draftId}
-// 	// 					onSave={this.saveModule}
-// 	// 					switchMode={this.props.switchMode}
-// 	// 					saved={this.state.saved}
-// 	// 					mode={'visual'}
-// 	// 					insertableItems={this.props.insertableItems}
-// 	// 					togglePlaceholders={this.togglePlaceholders}
-// 	// 					showPlaceholders={this.state.showPlaceholders}
-// 	// 				/>
-// 	// 				<ContentToolbar editorRef={this.editorRef} />
-// 	// 			</div>
-
-// 	// 			<EditorNav
-// 	// 				navState={this.props.navState}
-// 	// 				model={this.props.model}
-// 	// 				draftId={this.props.draftId}
-// 	// 				savePage={this.exportCurrentToJSON}
-// 	// 				markUnsaved={this.markUnsaved}
-// 	// 			/>
-
-// 	// 			<div className="component obojobo-draft--modules--module" role="main">
-// 	// 				<Editor
-// 	// 					className="component obojobo-draft--pages--page"
-// 	// 					value={this.state.value}
-// 	// 					ref={this.editorRef}
-// 	// 					onChange={this.onChange}
-// 	// 					plugins={this.plugins}
-// 	// 					readOnly={!this.props.page || !this.state.editable}
-// 	// 				/>
-// 	// 			</div>
-// 	// 		</div>
-// 	// 	)
-// 	// }
 
 	saveModule(draftId) {
 		this.exportCurrentToJSON()
@@ -436,13 +391,9 @@ class PageEditor extends React.Component {
 		const json = this.props.page.toJSON()
 
 		if (json.type === ASSESSMENT_NODE) {
-			const assessment = this.assessment.oboToSlate(json)
-			console.log('assessment', assessment)
-			return [assessment]
+			return [this.assessment.oboToSlate(json)]
 		} else {
-			const assessment = json.children.map(child => Component.helpers.oboToSlate(child))
-			console.log('assessment', JSON.stringify(assessment))
-			return assessment
+			return json.children.map(child => Component.helpers.oboToSlate(child))
 		}
 	}
 }

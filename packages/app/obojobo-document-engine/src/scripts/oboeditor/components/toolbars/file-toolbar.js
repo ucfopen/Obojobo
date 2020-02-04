@@ -93,10 +93,10 @@ const FileToolbar = props => {
 	// insert actions on menu items
 	// note that `editor.current` needs to be evaluated at execution time of the action!
 	const editor = props.editorRef
-	editMenu[0].action = () => editor.current.undo()
-	editMenu[1].action = () => editor.current.redo()
-	editMenu[2].action = () => editor.current.delete()
-	editMenu[3].action = () => editor.current.moveToRangeOfDocument().focus()
+	editMenu[0].action = () => editor.undo()
+	editMenu[1].action = () => editor.redo()
+	editMenu[2].action = () => editor.delete()
+	editMenu[3].action = () => editor.moveToRangeOfDocument().focus()
 	textMenu.menu.forEach(i => {
 		i.action = () => i.markAction(editor.current)
 	})
