@@ -32,7 +32,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element, Node } from 'slate'
+import { createEditor, Editor, Element } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 class PageEditor extends React.Component {
@@ -58,7 +58,6 @@ class PageEditor extends React.Component {
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
-		this.togglePlaceholders = this.togglePlaceholders.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.onCut = this.onCut.bind(this)
 		this.decorate = this.decorate.bind(this)
@@ -75,10 +74,6 @@ class PageEditor extends React.Component {
 
 	markUnsaved() {
 		return this.setState({ saved: false })
-	}
-
-	togglePlaceholders() {
-		return this.setState(prevState => ({ showPlaceholders: !prevState.showPlaceholders }))
 	}
 
 	renderElement(props) {
@@ -191,46 +186,41 @@ class PageEditor extends React.Component {
 		return []
 	}
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	// Do nothing when updating state from empty page
-	// 	if (!prevProps.page && !this.props.page) {
-	// 		return
-	// 	}
+	componentDidUpdate(prevProps, prevState) {
+		// Do nothing when updating state from empty page
+		if (!prevProps.page && !this.props.page) {
+			return
+		}
 
-	// 	// If updating from an existing page to no page, set the user alert message
-	// 	if (prevProps.page && !this.props.page) {
-	// 		return this.setState({
-	// 			value: Value.fromJSON({
-	// 				document: {
-	// 					nodes: [
-	// 						{
-	// 							type: 'oboeditor.ErrorMessage',
-	// 							object: 'block',
-	// 							nodes: [
-	// 								{
-	// 									object: 'text',
-	// 									leaves: [{ text: 'No content available, create a page to start editing' }]
-	// 								}
-	// 							]
-	// 						}
-	// 					]
-	// 				}
-	// 			})
-	// 		})
-	// 	}
+		// If updating from an existing page to no page, set the user alert message
+		if (prevProps.page && !this.props.page) {
+			return this.setState({
+				value: [
+					{
+						type: 'oboeditor.ErrorMessage',
+						children: [{ text: 'No content available, create a page to start editing' }]
+					}
+				],
+				editable: false
+			})
+		}
 
-	// 	// If updating from no page to an existing page, load the new page into the editor
-	// 	if (!prevProps.page && this.props.page) {
-	// 		return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
-	// 	}
+		// If updating from no page to an existing page, load the new page into the editor
+		if (!prevProps.page && this.props.page) {
+			this.editor.selection = null
+			this.editor.prevSelection = null
+			return this.setState({ value: this.importFromJSON(), editable: true })
+		}
 
-	// 	// Both page and previous page are garunteed to not be null here
-	// 	// Save changes and update value when switching pages
-	// 	if (prevProps.page.id !== this.props.page.id) {
-	// 		this.exportToJSON(prevProps.page, prevState.value)
-	// 		return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
-	// 	}
-	// }
+		// Both page and previous page are garunteed to not be null here
+		// Save changes and update value when switching pages
+		if (prevProps.page.id !== this.props.page.id) {
+			this.editor.selection = null
+			this.editor.prevSelection = null
+			this.exportToJSON(prevProps.page, prevState.value)
+			return this.setState({ value: this.importFromJSON(), editable: true })
+		}
+	}
 
 	onKeyDownGlobal(event) {
 		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
@@ -281,6 +271,7 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
+		console.log('value',this.state.value)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
@@ -410,7 +401,7 @@ class PageEditor extends React.Component {
 		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(value)
+			const json = this.assessment.slateToObo(value[0])
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
 			page.children.set(childrenModels)
@@ -445,9 +436,13 @@ class PageEditor extends React.Component {
 		const json = this.props.page.toJSON()
 
 		if (json.type === ASSESSMENT_NODE) {
-			return this.assessment.oboToSlate(json)
+			const assessment = this.assessment.oboToSlate(json)
+			console.log('assessment', assessment)
+			return [assessment]
 		} else {
-			return json.children.map(child => Component.helpers.oboToSlate(child))
+			const assessment = json.children.map(child => Component.helpers.oboToSlate(child))
+			console.log('assessment', JSON.stringify(assessment))
+			return assessment
 		}
 	}
 }

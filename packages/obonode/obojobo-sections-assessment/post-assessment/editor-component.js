@@ -1,12 +1,18 @@
 import './editor-component.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { Block } from 'slate'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import RangeModal from './range-modal'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
+const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 class PostAssessment extends React.Component {
 	constructor(props) {
@@ -20,16 +26,25 @@ class PostAssessment extends React.Component {
 	}
 
 	addAction(rangeString) {
-		const newScore = Block.create({
-			type: SCORE_NODE,
-			data: { for: rangeString }
-		})
+		ModalUtil.hide()
+		const actionsPath = ReactEditor.findPath(this.props.editor, this.props.element)
 
-		return this.props.editor.insertNodeByKey(
-			this.props.node.key,
-			this.props.node.nodes.size,
-			newScore
-		)
+		Transforms.insertNodes(this.props.editor, {
+			type: ACTIONS_NODE,
+			subtype: SCORE_NODE,
+			content: {
+				for: rangeString
+			},
+			children: [{ 
+				type: PAGE_NODE,
+				content: {},
+				children: [{ 
+					type: TEXT_NODE,
+					content: {},
+					children: [{ text: ''}]
+				}]
+			}]
+		}, { at: actionsPath.concat(this.props.element.children.length) })
 	}
 
 	render() {
@@ -43,4 +58,4 @@ class PostAssessment extends React.Component {
 	}
 }
 
-export default PostAssessment
+export default withSlateWrapper(PostAssessment)

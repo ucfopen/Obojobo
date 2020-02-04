@@ -1,6 +1,10 @@
 import React from 'react'
+import { ReactEditor } from 'slate-react'
+import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import RangeModal from './range-modal'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
@@ -14,20 +18,23 @@ class PostAssessmentScore extends React.Component {
 
 	showRangeModal() {
 		ModalUtil.show(
-			<RangeModal for={this.props.node.data.get('for')} onConfirm={this.changeRange} />
+			<RangeModal for={this.props.element.content.for} onConfirm={this.changeRange} />
 		)
 	}
 
 	changeRange(newRangeString) {
-		this.props.editor.setNodeByKey(this.props.node.key, { data: { for: newRangeString } })
+		ModalUtil.hide()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, for: newRangeString} }, { at: path })
 	}
 
 	deleteNode() {
-		return this.props.editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
 	render() {
-		const dataFor = this.props.node.data.get('for')
+		const dataFor = this.props.element.content.for
 		return (
 			<div>
 				<div className={'action-data'}>
@@ -35,8 +42,7 @@ class PostAssessmentScore extends React.Component {
 					<button
 						className="range-edit"
 						onClick={this.showRangeModal}
-						aria-label="Edit Score Range"
-					>
+						aria-label="Edit Score Range">
 						✎
 					</button>
 				</div>
@@ -51,4 +57,4 @@ class PostAssessmentScore extends React.Component {
 	}
 }
 
-export default PostAssessmentScore
+export default withSlateWrapper(PostAssessmentScore)

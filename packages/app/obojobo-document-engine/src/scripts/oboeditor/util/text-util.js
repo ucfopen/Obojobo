@@ -22,7 +22,7 @@ const TextUtil = {
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
 		const fullText = line.text.value
-		if (!line.text.styleList) return [fullText]
+		if (!line.text.styleList) return [{ text: fullText }]
 
 		// Retrieve all important points in this text
 		// Start and end of text, and the start and end of every style

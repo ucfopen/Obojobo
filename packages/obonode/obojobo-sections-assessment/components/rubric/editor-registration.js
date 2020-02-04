@@ -1,21 +1,23 @@
 import React from 'react'
 
 import RubricComponent from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const plugins = {
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case RUBRIC_NODE:
-				return <RubricComponent {...props} {...props.attributes} />
-			default:
-				return next()
-		}
+	// Editor Plugins - These get attached to the editor object an override it's default functions
+	// They may affect multiple nodes simultaneously
+	isVoid(element, editor, next) {
+		if(element.type === RUBRIC_NODE) return true
+
+		return next(element)
 	},
-	schema: Schema
+	// Editable Plugins - These are used by the PageEditor component to augment React functions
+	// They affect individual nodes independently of one another
+	renderNode(props) {
+		return <RubricComponent {...props} {...props.attributes} />
+	}
 }
 
 const Rubric = {
