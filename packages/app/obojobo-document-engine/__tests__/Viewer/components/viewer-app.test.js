@@ -1257,9 +1257,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1292,9 +1292,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1327,9 +1327,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1394,6 +1394,10 @@ describe('ViewerApp', () => {
 				getDomEl: () => mockDomEl,
 				getComponentClass: () => jest.fn()
 			}
+			const mockOpts = {
+				animateScroll: true,
+				preventScroll: true
+			}
 
 			// Force focus() to modify the container scrollTop value (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
@@ -1402,9 +1406,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
+			expect(component.instance().focusComponent(model, mockOpts)).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, true)
 			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
 			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 			expect(component.instance().containerRef.current.scrollTop).toBe(0)

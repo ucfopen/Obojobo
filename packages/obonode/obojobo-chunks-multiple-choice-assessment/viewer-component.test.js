@@ -1198,7 +1198,7 @@ describe('MCAssessment', () => {
 		component.instance().onClickReset(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(component.instance().nextFocus).toBe('results')
+		expect(component.instance().nextFocus).toBe('question')
 		expect(QuestionUtil.retryQuestion).toHaveBeenCalledWith('parent', 'mockContext')
 	})
 
@@ -2113,7 +2113,7 @@ describe('MCAssessment', () => {
 		component.instance().nextFocus = 'question'
 		component.instance().componentDidUpdate()
 		expect(component.instance().nextFocus).not.toBeDefined()
-		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('parent')
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('parent', { preventScroll: true })
 	})
 
 	test('animationOnEntered sets solution container height', () => {
