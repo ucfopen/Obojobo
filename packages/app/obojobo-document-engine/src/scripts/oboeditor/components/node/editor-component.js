@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { ReactEditor } from 'slate-react'
 
-import { Transforms } from 'slate'
+import { Transforms, Path } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -33,8 +33,7 @@ const insertBlockAtEnd = (editor, element, item) => {
 	// Use the ReactEditor to get the path for the current element, and increment the last element
 	// Then use transforms to insert at that path, which effectively inserts below like in arrays
 	const path = ReactEditor.findPath(editor, element)
-	path[path.length - 1]++
-	Transforms.insertNodes(editor, newBlock, { at: path })
+	Transforms.insertNodes(editor, newBlock, { at: Path.next(path) })
 }
 
 const saveId = (editor, element, prevId, newId) => {

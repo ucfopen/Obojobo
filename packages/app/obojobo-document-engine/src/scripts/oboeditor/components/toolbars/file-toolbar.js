@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
-import { Block } from 'slate'
+import { Block, Range, Editor, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
@@ -11,16 +12,14 @@ import './file-toolbar.scss'
 
 const { OboModel } = Common.models
 
-const isCollapsed = selection => {
-	return selection.focus.key === selection.anchor.key && selection.focus.offset === selection.anchor.offset
-}
 
-const insertDisabled = (name, value) => {
-	if(!value || !value.blocks) return false
+const insertDisabled = (name, editor, value) => {
+	if(!editor.selection) return true
 	// If the selected area spans across multiple blocks, the selection is deleted before
 	// inserting, colapsing it down to the type of the first block
-	const firstType = value.blocks.get(0).type
-	if(firstType === 'ObojoboDraft.Chunks.Table.Cell') return true
+	const [first] = Editor.first(editor, editor.selection)
+	if(first.type === 'ObojoboDraft.Chunks.Table.Cell') return true
+	if(!value || !value.blocks) return false
 
 	if(value.fragment.filterDescendants(node => node.type === 'ObojoboDraft.Chunks.Question').size) {
 		if(name === 'Question' || name === 'Question Bank') return true
@@ -31,26 +30,36 @@ const insertDisabled = (name, value) => {
 	return false
 }
 
+const selectAll = (editor) => {
+	if(Editor.isEditor){
+		const edges = Editor.edges(editor, [])
+		Transforms.select(editor, { focus: edges[0], anchor: edges[1] })
+		return ReactEditor.focus(editor)
+	}
+
+	editor.selectAll()
+}
+
 const FileToolbar = props => {
 	// insert actions on menu items
 	// note that `editor.current` needs to be evaluated at execution time of the action!
-	const editor = props.editorRef
+	const editor = props.editor
 	const insertMenu = props.insertableItems.map(item => ({
 		name: item.name,
 		action: () => {
-			const newBlock = Block.create(item.cloneBlankNode())
+			const newBlock = item.cloneBlankNode()
 			const newModel = OboModel.create(item.insertJSON.type)
-			newModel.setId(newBlock.key)
-			editor.current.insertBlock(newBlock)
+			newModel.setId(newBlock.id)
+			Transforms.insertNodes(editor, newBlock)
 		},
-		disabled: insertDisabled(item.name, props.value)
+		disabled: insertDisabled(item.name, editor, props.value)
 	}))
 
 	const editMenu = [
-		{ name: 'Undo', type: 'action', action: () => editor.current.undo() },
-		{ name: 'Redo', type: 'action', action: () => editor.current.redo() },
-		{ name: 'Delete', type: 'action', action: () => editor.current.delete(), disabled: props.mode === 'visual' && isCollapsed(props.value.selection) },
-		{ name: 'Select all', type: 'action', action: () => editor.current.moveToRangeOfDocument().focus() }
+		{ name: 'Undo', type: 'action', action: () => editor.undo() },
+		{ name: 'Redo', type: 'action', action: () => editor.redo() },
+		{ name: 'Delete', type: 'action', action: () => editor.deleteFragment(), disabled: props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection) },
+		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
 	]
 
 	const saved = props.saved ? 'saved' : ''
@@ -70,10 +79,7 @@ const FileToolbar = props => {
 				draftId={props.draftId}
 				switchMode={props.switchMode}
 				onSave={props.onSave}
-				mode={props.mode}
-				togglePlaceholders={props.togglePlaceholders}
-				showPlaceholders={props.showPlaceholders}
-			/>
+				mode={props.mode}/>
 			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">
 					<DropDownMenu name="Insert" menu={insertMenu} />

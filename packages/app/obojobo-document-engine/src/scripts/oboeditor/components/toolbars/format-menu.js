@@ -1,4 +1,5 @@
 import React from 'react'
+import { Range } from 'slate'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -16,10 +17,6 @@ const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
 const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
 
-const isCollapsed = selection => {
-	return selection.focus.key === selection.anchor.key && selection.focus.offset === selection.anchor.offset
-}
-
 const FormatMenu = props => {
 	const textMenu = {
 		name: 'Text',
@@ -27,8 +24,8 @@ const FormatMenu = props => {
 		menu: textMarks.map(mark => ({
 			name: mark.name,
 			type: 'action',
-			action: () => mark.action(props.editor.current),
-			disabled: isCollapsed(props.value.selection)
+			action: () => mark.action(props.editor),
+			disabled: props.editor.selection && Range.isCollapsed(props.editor.selection)
 		}))
 	}
 

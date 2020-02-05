@@ -58,6 +58,7 @@
 		"react-transition-group": "^4.3.0",
 		"sass-mq": "^5.0.1",
 		"slate": "^0.57.1",
+		"slate-history": "^0.57.1",
 		"slate-react": "^0.57.1",
 		"slate-schema-violations": "^0.1.39",
 		"smoothscroll-polyfill": "^0.4.4",

@@ -139,7 +139,7 @@ class CodeEditor extends React.Component {
 	// Makes CodeMirror commands match Slate commands
 	convertCodeMirrorToEditor(codeMirror) {
 		const editor = codeMirror
-		editor.moveToRangeOfDocument = () => {
+		editor.selectAll = () => {
 			const lastInfo = editor.lineInfo(editor.lastLine())
 			editor.setSelection(
 				{ line: editor.firstLine(), ch: 0 },
@@ -148,7 +148,7 @@ class CodeEditor extends React.Component {
 			return editor
 		}
 		editor.focus = () => editor
-		editor.delete = () => {
+		editor.deleteFragment = () => {
 			editor.deleteH(1, 'char')
 			return editor
 		}

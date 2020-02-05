@@ -1,4 +1,6 @@
 import React from 'react'
+import { Editor, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import Link from './link'
@@ -12,7 +14,7 @@ const LINK_MARK = 'a'
 const LinkMark = {
 	plugins: {
 		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return next()
+			if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
 
 			event.preventDefault()
 			return ModalUtil.show(
@@ -23,42 +25,34 @@ const LinkMark = {
 				/>
 			)
 		},
-		renderMark(props, editor, next) {
-			switch (props.mark.type) {
-				case 'a':
-					return (
-						<Link
-							mark={props.mark}
-							node={props.node}
-							offset={props.offset}
-							editor={props.editor}
-							text={props.text}
-						>
-							{props.children}
-						</Link>
-					)
-				default:
-					return next()
+		renderLeaf(props) {
+			let { children } = props
+			const { leaf } = props
+
+			if (leaf[LINK_MARK]){
+				children = (
+					<Link
+						leaf={leaf}>
+						{children}
+					</Link>
+				)
 			}
+
+			props.children = children
+			return props
 		},
-		queries: {
+		commands: {
 			changeLinkValue(editor, href) {
-				editor.value.marks.forEach(mark => {
-					if (mark.type === LINK_MARK) {
-						editor.removeMark({
-							type: LINK_MARK,
-							data: mark.data.toJSON()
-						})
-					}
-				})
+				ModalUtil.hide()
+				Transforms.select(editor, editor.prevSelection)
+				Editor.removeMark(editor, LINK_MARK)
 
 				// If href is empty, don't add a link
-				if (!href || !/[^\s]/.test(href)) return true
+				if (!href || !/[^\s]/.test(href)) return ReactEditor.focus(editor)
 
-				return editor.addMark({
-					type: LINK_MARK,
-					data: { href }
-				})
+				Editor.addMark(editor, LINK_MARK, true)
+				Editor.addMark(editor, 'href', href)
+				ReactEditor.focus(editor)
 			}
 		}
 	},

@@ -1,6 +1,7 @@
 import './paragraph-styles.scss'
 
 import React from 'react'
+import { Editor } from 'slate'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -88,9 +89,10 @@ class ParagraphStyles extends React.Component {
 	}
 
 	reduceHeading(value) {
-		const nodeLevel = value.blocks.reduce(
-			(accum, block) => accum === block.data.get('content').level ? accum : "", 
-			value.blocks.get(0).data.get('content').level
+		const list = Array.from(Editor.nodes(this.props.editor, {mode: 'highest'}))
+		const nodeLevel = list.reduce(
+			(accum, [block]) => accum === block.content.level ? accum : "", 
+			list[0][0].content.level
 		)
 
 		if(nodeLevel) return 'Heading ' + nodeLevel
@@ -99,9 +101,10 @@ class ParagraphStyles extends React.Component {
 	}
 
 	getParagraphStyle(value) {
-		const nodeType = value.blocks.reduce(
-			(accum, block) => accum === block.type ? accum : "", 
-			value.blocks.get(0).type
+		const list = Array.from(Editor.nodes(this.props.editor, {mode: 'highest'}))
+		const nodeType = list.reduce(
+			(accum, [block]) => accum === block.type ? accum : "", 
+			list.length > 0 ? list[0][0].type : ""
 		)
 
 		switch(nodeType){

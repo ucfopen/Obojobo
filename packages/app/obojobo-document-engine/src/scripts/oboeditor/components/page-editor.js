@@ -33,8 +33,9 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
+import { createEditor, Editor, Element, Transforms } from 'slate'
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
+import { withHistory } from 'slate-history'
 
 class PageEditor extends React.Component {
 	constructor(props) {
@@ -62,8 +63,9 @@ class PageEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.onCut = this.onCut.bind(this)
 		this.decorate = this.decorate.bind(this)
+		this.renderLeaf = this.renderLeaf.bind(this)
 
-		this.editor = this.withPlugins(withReact(createEditor()))
+		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		//this.editor = withReact(createEditor())
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
@@ -102,6 +104,12 @@ class PageEditor extends React.Component {
 			editor.insertData = data => plugin.insertData(data, editor, insertData)
 		}
 
+		if(plugin.commands) {
+			for(const [name, funct] of Object.entries(plugin.commands)) {
+				editor[name] = funct.bind(this, editor)
+			}
+		}
+		
 		return editor
 	}
 
@@ -110,18 +118,28 @@ class PageEditor extends React.Component {
 			.map(item => item.plugins)
 			.filter(item => item)
 
+		const markPlugins = [
+			BasicMarks.plugins,
+			LinkMark.plugins,
+			// ScriptMarks.plugins,
+			// AlignMarks.plugins,
+			// IndentMarks.plugins
+		]
+
+		this.globalPlugins = [
+			...markPlugins, 
+			ClipboardPlugin
+		]
+
 		// Plugins are listed in order of priority
 		// The plugins list is reversed after building because the editor functions 
 		// are built from the bottom up to the top
-		const plugins = [...nodePlugins, ClipboardPlugin].reverse()
+		this.plugins = [
+			...nodePlugins,
+			...this.globalPlugins
+		].reverse()
 
-		// const markPlugins = [
-		// 	BasicMarks.plugins,
-		// 	LinkMark.plugins,
-		// 	ScriptMarks.plugins,
-		// 	AlignMarks.plugins,
-		// 	IndentMarks.plugins
-		// ]
+		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)
 		// const componentPlugins = [
 		// 	Component.plugins,
 		// 	ToggleParameter.plugins,
@@ -137,7 +155,7 @@ class PageEditor extends React.Component {
 		// ]
 
 		// return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
-		return plugins.reduce(this.addPlugin, editor)
+		return this.plugins.reduce(this.addPlugin, editor)
 	}
 
 	convertItemsToArray(items) {
@@ -147,6 +165,9 @@ class PageEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		// Set keyboard focus to the editor
+		Transforms.select(this.editor, Editor.start(this.editor, []))
+		ReactEditor.focus(this.editor)
 	}
 
 	componentWillUnmount() {
@@ -162,10 +183,13 @@ class PageEditor extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	renderLeaf({ attributes, children, leaf }) {
+	renderLeaf(props) {
+		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
+		const { attributes, children, leaf } = props
+
 		if (leaf.placeholder) {
 			return (
-				<span {...attributes}>
+				<span {...props} {...attributes}>
 					<span
 						contentEditable={false}
 						data-placeholder={leaf.placeholder}/>
@@ -232,8 +256,20 @@ class PageEditor extends React.Component {
 	}
 
 	onKeyDown(event) {
+		// Run the global keydowns, stopping if one executes
 		this.onKeyDownGlobal(event)
 
+		for(const plugin of this.globalPlugins){
+			if(plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
+			if(event.defaultPrevented) return
+		}
+
+		// If none of the global plugins caught the key event,
+		// Seperate out all the selected nodes, and run the keyDown 
+		// on each one
+		// The event will always run on every selected node, but 
+		// if one node does something special, it will prevent the 
+		// default Slate action from occurring on any selected node
 		const list = Array.from(Editor.nodes(this.editor, {
 			mode: 'highest',
 			match: node => Element.isElement(node)
@@ -280,7 +316,8 @@ class PageEditor extends React.Component {
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
-						editorRef={this.editorRef}
+						editor={this.editor}
+						selection={this.editor.selection}
 						model={this.props.model}
 						draftId={this.props.draftId}
 						onSave={this.saveModule}
