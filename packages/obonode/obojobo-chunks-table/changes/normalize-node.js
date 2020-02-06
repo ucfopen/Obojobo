@@ -169,10 +169,10 @@ const normalizeNode = (entry, editor, next) => {
 		}
 	}
 
-	// If the element is a TableCell, make sure it only has text children
+	// If the element is a TableCell, make sure it only has text and inline children
 	if (Element.isElement(node) && node.subtype === TABLE_CELL_NODE) {
 		for (const [child, childPath] of Node.children(editor, path)) {
-			if(Element.isElement(child)){
+			if(Element.isElement(child) && !editor.isInline(child)){
 				Transforms.liftNodes(editor, { at: childPath })
 				return
 			}

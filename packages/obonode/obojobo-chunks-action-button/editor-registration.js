@@ -28,10 +28,10 @@ const ActionButton = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			// If the element is an Action Button, only allow Text children
+			// If the element is an Action Button, only allow Text and inline children
 			if (Element.isElement(node) && node.type === UNIQUE_NAME) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					if (Element.isElement(child)) {
+					if (Element.isElement(child) && !editor.isInline(child)) {
 						Transforms.liftNodes(editor, { at: childPath })
 						return
 					}

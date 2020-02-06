@@ -1,22 +1,47 @@
+import { Text } from 'slate'
+
 const TextUtil = {
-	// Collapse multiple scripts into one value
-	collapseScripts: marks => {
-		let scriptHeight = 0
-		const finalMarks = marks.map(mark => {
-			if (mark.type !== 'sup') return mark
+	// Collapse multiple links into one  inline element
+	collapseLinks(leaves) {
+		let currentLink = null
 
-			scriptHeight += mark.data
-			return null
-		})
-
-		if (scriptHeight !== 0) {
-			finalMarks.push({
-				type: 'sup',
-				data: { num: scriptHeight > 0 ? 1 : -1 }
-			})
-		}
-
-		return finalMarks.filter(mark => mark !== null)
+		return leaves.map(leaf => {
+			if(leaf.a) {
+				// If this is the first link in a chain
+				// create a new link element with leaf children
+				if(!currentLink){
+					currentLink = {
+						type: 'a',
+						href: leaf.href,
+						children: [leaf]
+					}
+					delete leaf.a
+					delete leaf.href
+					return currentLink
+				// If the href of this link does not match the current href
+				// create a new link element with leaf children
+				} else if(currentLink.href !== leaf.href) {
+					currentLink = {
+						type: 'a',
+						href: leaf.href,
+						children: [leaf]
+					}
+					delete leaf.a
+					delete leaf.href
+					return currentLink
+				// Otherwise, this is a leaf that matches the current link
+				// so simply add it to the children of the current link
+				} else {
+					delete leaf.a
+					delete leaf.href
+					currentLink.children.push(leaf)
+					return null
+				}
+			} else {
+				currentLink = null
+				return leaf
+			}
+		}).filter(mark => mark !== null)
 	},
 
 	// Parse Obojobo text object into Slate leaves array
@@ -55,24 +80,24 @@ const TextUtil = {
 				text: fullText.slice(last, point)
 			}
 
-			const marks = []
-
 			// Check if the current range is contained within each style and add
 			// any relevant marks
 			line.text.styleList.forEach(style => {
 				// If the style ends before this range or starts after it, it doesnt apply
 				if (style.end <= last || style.start >= point) return
 
-				// otherwise, add the type and the data to the mark
-				const mark = {
-					type: style.type,
-					data: style.data
+				// Otherwise, add the type and the data to the mark
+				leaf[style.type] = true
+				if(style.type === 'a') {
+					leaf.href = style.data.href
 				}
-
-				marks.push(mark)
+				if(style.type === 'sup') {
+					if(!leaf.num) leaf.num = 0
+					leaf.num += style.data
+				}
 			})
 
-			leaf.marks = TextUtil.collapseScripts(marks)
+			if(leaf.num) leaf.num = leaf.height > 0 ? 1 : -1
 
 			// finished a range
 			last = point
@@ -80,29 +105,62 @@ const TextUtil = {
 		})
 
 		const leaves = leafList.filter(leaf => leaf !== null)
-		return leaves.length === 0 ? [{ text: ''}] : leaves 
+		return leaves.length === 0 ? [{ text: ''}] : TextUtil.collapseLinks(leaves)
 	},
 
 	slateToOboText: (text, line) => {
 		let currIndex = 0
 
 		text.children.forEach(textRange => {
+			if (Text.isText(textRange)) {
+				Object.entries(textRange).forEach(([type, value]) => {
+					// Only the object keys that have a value of true are marks
+					if(value === true) {
+						const style = {
+							start: currIndex,
+							end: currIndex + textRange.text.length,
+							type: type,
+							data: type === 'sup' ? textRange.num : {}
+						}
 
-			if(textRange.marks) {
-				textRange.marks.forEach(mark => {
-					const style = {
-						start: currIndex,
-						end: currIndex + textRange.text.length,
-						type: mark.type,
-						data: mark.type === 'sup' ? mark.data.get('num') : mark.data.toJSON()
+						line.text.styleList.push(style)
 					}
-
-					line.text.styleList.push(style)
 				})
+
+				line.text.value += textRange.text
+				currIndex += textRange.text.length
+
+			} else {
+				const inlineStyle = {
+					start: currIndex,
+					type: textRange.type,
+					data: {
+						href: textRange.href
+					}
+				}
+
+				textRange.children.forEach(child => {
+					Object.entries(child).forEach(([type, value]) => {
+						// Only the object keys that have a value of true are marks
+						if(value === true) {
+							const style = {
+								start: currIndex,
+								end: currIndex + child.text.length,
+								type: type,
+								data: type === 'sup' ? child.num : {}
+							}
+
+							line.text.styleList.push(style)
+						}
+					})
+
+					line.text.value += child.text
+					currIndex += child.text.length
+				})
+
+				inlineStyle.end = currIndex
+				line.text.styleList.push(inlineStyle)
 			}
-				
-			line.text.value += textRange.text
-			currIndex += textRange.text.length
 		})
 	}
 }

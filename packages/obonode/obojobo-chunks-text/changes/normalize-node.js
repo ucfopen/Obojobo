@@ -39,12 +39,12 @@ const normalizeNode = (entry, editor, next) => {
 	}
 
 	// If the element is a TextLine Node, make sure it has a Text parent
-	// and only allow text children
+	// and only allow text and inline children
 	if (node.type === TEXT_NODE && node.subtype === TEXT_LINE_NODE) {
 		// TextLine children normalization
 		for (const [child, childPath] of Node.children(editor, path)) {
-			// Unwrap non-text children
-			if (Element.isElement(child)) {
+			// Unwrap non-text and non-inline children
+			if (Element.isElement(child) && !editor.isInline(child)) {
 				Transforms.liftNodes(editor, { at: childPath })
 				return
 			}

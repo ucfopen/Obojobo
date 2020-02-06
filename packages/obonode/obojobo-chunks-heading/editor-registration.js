@@ -24,10 +24,10 @@ const Heading = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			// If the element is a Figure, only allow Text children
+			// If the element is a Heading, only allow Text and inline children
 			if (Element.isElement(node) && node.type === HEADING_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					if (Element.isElement(child)) {
+					if (Element.isElement(child) && !editor.isInline(child)) {
 						Transforms.liftNodes(editor, { at: childPath })
 						return
 					}

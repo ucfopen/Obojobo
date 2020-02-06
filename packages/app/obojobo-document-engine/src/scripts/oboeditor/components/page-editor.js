@@ -80,6 +80,8 @@ class PageEditor extends React.Component {
 	}
 
 	renderElement(props) {
+		if(props.element.type === 'a') return LinkMark.plugins.renderNode(props)
+
 		const item = Common.Registry.getItemForType(props.element.type)
 		if(item) {
 			return item.plugins.renderNode(props)
@@ -98,6 +100,10 @@ class PageEditor extends React.Component {
 
 		if(plugin.isVoid) {
 			editor.isVoid = element => plugin.isVoid(element, editor, isVoid)
+		}
+
+		if(plugin.isInline) {
+			editor.isInline = element => plugin.isInline(element, editor, isVoid)
 		}
 
 		if(plugin.insertData) {

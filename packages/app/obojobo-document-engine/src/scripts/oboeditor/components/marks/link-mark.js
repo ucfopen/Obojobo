@@ -1,5 +1,5 @@
 import React from 'react'
-import { Editor, Transforms } from 'slate'
+import { Editor, Transforms, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
@@ -13,6 +13,11 @@ const LINK_MARK = 'a'
 
 const LinkMark = {
 	plugins: {
+		isInline(element, editor, next) {
+			if(element.type === LINK_MARK) return true
+
+			return next(element)
+		},
 		onKeyDown(event, editor, next) {
 			if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
 
@@ -25,34 +30,34 @@ const LinkMark = {
 				/>
 			)
 		},
-		renderLeaf(props) {
-			let { children } = props
-			const { leaf } = props
-
-			if (leaf[LINK_MARK]){
-				children = (
-					<Link
-						leaf={leaf}>
-						{children}
-					</Link>
-				)
-			}
-
-			props.children = children
-			return props
+		renderNode(props) {
+			return <Link {...props} {...props.attributes} />
 		},
 		commands: {
 			changeLinkValue(editor, href) {
 				ModalUtil.hide()
 				Transforms.select(editor, editor.prevSelection)
-				Editor.removeMark(editor, LINK_MARK)
+				Transforms.unwrapNodes(editor, { match: n => n.type === LINK_MARK })
 
-				// If href is empty, don't add a link
 				if (!href || !/[^\s]/.test(href)) return ReactEditor.focus(editor)
 
-				Editor.addMark(editor, LINK_MARK, true)
-				Editor.addMark(editor, 'href', href)
-				ReactEditor.focus(editor)
+				const { selection } = editor
+				const isCollapsed = selection && Range.isCollapsed(selection)
+				const link = {
+					type: LINK_MARK,
+					href,
+					children: isCollapsed ? [{ text: href }] : [],
+				}
+
+				Editor.withoutNormalizing(editor, () => {
+					if (isCollapsed) {
+						Transforms.insertNodes(editor, link)
+					} else {
+						Transforms.wrapNodes(editor, link, { split: true })
+						Transforms.collapse(editor, { edge: 'end' })
+					}
+
+				})
 			}
 		}
 	},

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Transforms, Node, Editor, Path } from 'slate'
+import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 import './link.scss'
 
@@ -14,17 +15,16 @@ class Link extends React.Component {
 	}
 
 	changeLinkValue(href) {
+		ModalUtil.hide()
 		const editor = this.props.editor
-		const key = ReactEditor.findKey(editor, this.props.leaf)
-		console.log(key)
-		const path = ReactEditor.findPath(editor, this.props.leaf)
+		const path = ReactEditor.findPath(editor, this.props.element)
 
 		// If href is empty, remove the link
 		if (!href || !/[^\s]/.test(href)) {
-			Transforms.setNodes(this.props.editor, { a: false, href }, { at: path })
+			return Transforms.unwrapNodes(editor, { at: path })
 		}
 
-		Transforms.setNodes(this.props.editor, { href }, { at: path })
+		Transforms.setNodes(editor, { href }, { at: path })
 	}
 
 	showLinkModal() {
@@ -32,7 +32,7 @@ class Link extends React.Component {
 			<Prompt
 				title="Edit Link"
 				message="Enter the link url:"
-				value={this.props.leaf.href}
+				value={this.props.element.href}
 				onConfirm={this.changeLinkValue.bind(this)}
 			/>
 		)
@@ -41,7 +41,7 @@ class Link extends React.Component {
 	render() {
 		return (
 			<span className="editor--components--mark--link">
-				<a href={this.props.leaf.href} title={this.props.leaf.href}>
+				<a href={this.props.element.href} title={this.props.element.href}>
 					{this.props.children}
 				</a>
 				<button
@@ -54,4 +54,4 @@ class Link extends React.Component {
 	}
 }
 
-export default Link
+export default withSlateWrapper(Link)
