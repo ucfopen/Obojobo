@@ -96,6 +96,7 @@ const normalizeNode = (entry, editor, next) => {
 					{
 						type: LIST_NODE,
 						subtype: LIST_LINE_NODE,
+						content: {}
 					},
 					{ at: childPath }
 				)

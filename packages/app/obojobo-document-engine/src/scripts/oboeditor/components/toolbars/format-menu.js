@@ -41,32 +41,32 @@ const FormatMenu = props => {
 			{ 
 				name: 'Heading 1', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 1 }) 
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 1 }) 
 			},
 			{ 
 				name: 'Heading 2', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 2 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })  
 			},
 			{ 
 				name: 'Heading 3', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })  
 			},
 			{ 
 				name: 'Heading 4', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })  
 			},
 			{ 
 				name: 'Heading 5', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })  
 			},
 			{ 
 				name: 'Heading 6', 
 				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })  
 			},
 			{ 
 				name: 'Code', 

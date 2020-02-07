@@ -1,10 +1,12 @@
-import { Block } from 'slate'
+import { Editor, Transforms, Range } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -54,37 +56,63 @@ const oboToSlate = node => {
 }
 
 const switchType = {
-	'ObojoboDraft.Chunks.Text': (editor, node) => {
-		editor.setNodeByKey(node.key, TEXT_NODE)
+	'ObojoboDraft.Chunks.Text': (editor, [node, path]) => {
+		Transforms.setNodes(
+			editor,
+			{ 
+				type: TEXT_NODE, 
+				subtype: TEXT_LINE_NODE,
+				content: { ...node.content, indent: 0 }
+			},
+			{ at: path }
+		)
 	},
-	'ObojoboDraft.Chunks.Heading': (editor, node, data) => {
-		editor.setNodeByKey(node.key, { data: { content: {...node.data.get('content'), ...data }}})
+	'ObojoboDraft.Chunks.Heading': (editor, [node, path], data) => {
+		Transforms.setNodes(
+			editor,
+			{ 
+				content: { ...node.content, ...data }
+			},
+			{ at: path }
+		)
 	},
-	'ObojoboDraft.Chunks.Code': (editor, node) => {
-		editor.setNodeByKey(node.key, CODE_NODE)
+	'ObojoboDraft.Chunks.Code': (editor, [node, path]) => {
+		Transforms.setNodes(
+			editor,
+			{ 
+				type: CODE_NODE, 
+				subtype: CODE_LINE_NODE,
+				content: { ...node.content, indent: 0 }
+			},
+			{ at: path }
+		)
 	},
-	'ObojoboDraft.Chunks.List': (editor, node, data) => {
-		const json = node.toJSON()
-		const newList = Block.create({ 
+	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
+		const newList = { 
 			type: LIST_NODE, 
-			data: { content: { listStyles: data }},
-			nodes: [
+			content: { listStyles: data },
+			children: [
 				{ 
-					type: LIST_LEVEL_NODE, 
-					data: { content: data },
-					object: 'block',
-					nodes: [
+					type: LIST_NODE, 
+					subtype: LIST_LEVEL_NODE, 
+					content: data,
+					children: [
 						{ 
-							type: LIST_LINE_NODE, 
-							object: 'block',
-							nodes: json.nodes
+							type: LIST_NODE, 
+							subtype: LIST_LINE_NODE, 
+							children: node.children
 						}
 					]
 				}
 			]
-		})
+		}
 
-		editor.replaceNodeByKey(node.key, newList).moveToRangeOfNode(newList).focus()
+		Transforms.removeNodes(editor, { at: path })
+		Transforms.insertNodes(
+			editor,
+			newList,
+			{ at: path }
+		)
 	},
 }
 

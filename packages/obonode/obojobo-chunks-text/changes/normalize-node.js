@@ -56,7 +56,7 @@ const normalizeNode = (entry, editor, next) => {
 			NormalizeUtil.wrapOrphanedSiblings(
 				editor, 
 				entry, 
-				{ type: TEXT_NODE, children: []}, 
+				{ type: TEXT_NODE, children: [], content: {}}, 
 				node => node.subtype === TEXT_LINE_NODE
 			)
 			return

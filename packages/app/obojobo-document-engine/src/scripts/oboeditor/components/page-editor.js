@@ -137,12 +137,20 @@ class PageEditor extends React.Component {
 			ClipboardPlugin
 		]
 
+		const editorPlugins = [
+		// 	EditorSchema,
+		// 	ClipboardPlugin,
+			FormatPlugin,
+		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
+		]
+
 		// Plugins are listed in order of priority
 		// The plugins list is reversed after building because the editor functions 
 		// are built from the bottom up to the top
 		this.plugins = [
 			...nodePlugins,
-			...this.globalPlugins
+			...this.globalPlugins,
+			...editorPlugins
 		].reverse()
 
 		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)
@@ -151,13 +159,6 @@ class PageEditor extends React.Component {
 		// 	ToggleParameter.plugins,
 		// 	SelectParameter.plugins,
 		// 	TextParameter.plugins
-		// ]
-
-		// const editorPlugins = [
-		// 	EditorSchema,
-		// 	ClipboardPlugin,
-		//	FormatPlugin,
-		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
 		// ]
 
 		// return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
@@ -271,8 +272,8 @@ class PageEditor extends React.Component {
 		}
 
 		// If none of the global plugins caught the key event,
-		// Seperate out all the selected Oobojobo nodes, and run the keyDown 
-		// on each one
+		// Get each component (non-subtype) node that is selected, 
+		// and run keydown on each
 		// The event will always run on every selected node, but 
 		// if one node does something special, it will prevent the 
 		// default Slate action from occurring on any selected node
@@ -315,6 +316,7 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
+		console.log(this.state.value)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
