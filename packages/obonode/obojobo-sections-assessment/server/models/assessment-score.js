@@ -1,6 +1,6 @@
-const db = require('obojobo-express/db')
+const db = require('obojobo-express/server/db')
 const camelcaseKeys = require('camelcase-keys')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 class AssessmentScore {
 	constructor(props) {

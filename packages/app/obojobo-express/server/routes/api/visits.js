@@ -13,7 +13,7 @@ const {
 	requireCurrentUser,
 	requireCurrentDocument,
 	requireCurrentVisit
-} = oboRequire('express_validators')
+} = oboRequire('server/express_validators')
 
 const getDraftAndStartVisitProps = (req, res) => {
 	// trigger startVisit

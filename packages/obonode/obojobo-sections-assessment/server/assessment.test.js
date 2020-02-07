@@ -37,7 +37,7 @@ describe('Assessment', () => {
 		Assessment = require('./assessment')
 		AssessmentModel = require('./models/assessment')
 		AssessmentScore = require('./models/assessment-score')
-		logger = require('obojobo-express/logger')
+		logger = require('obojobo-express/server/logger')
 		db.one.mockReset()
 		db.manyOrNone.mockReset()
 	})

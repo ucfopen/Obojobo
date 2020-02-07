@@ -1,6 +1,6 @@
-const db = require('obojobo-express/db')
-const User = require('obojobo-express/models/user')
-const logger = require('obojobo-express/logger')
+const db = require('obojobo-express/server/db')
+const User = require('obojobo-express/server/models/user')
+const logger = require('obojobo-express/server/logger')
 
 class DraftPermissions {
 

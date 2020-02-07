@@ -1,9 +1,9 @@
 const router = require('express').Router() //eslint-disable-line new-cap
-const oboEvents = require('obojobo-express/obo_events')
-const db = require('obojobo-express/db')
+const oboEvents = require('obojobo-express/server/obo_events')
+const db = require('obojobo-express/server/db')
 const AssessmentModel = require('./models/assessment')
-const lti = require('obojobo-express/lti')
-const logger = require('obojobo-express/logger')
+const lti = require('obojobo-express/server/lti')
+const logger = require('obojobo-express/server/logger')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')

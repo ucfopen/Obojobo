@@ -1,7 +1,7 @@
-const db = require('obojobo-express/db')
+const db = require('obojobo-express/server/db')
 const camelcaseKeys = require('camelcase-keys')
-const logger = require('obojobo-express/logger')
-const lti = require('obojobo-express/lti')
+const logger = require('obojobo-express/server/logger')
+const lti = require('obojobo-express/server/lti')
 const AssessmentScore = require('./assessment-score')
 
 // if the attempt is imported, return the importedAttemptId, otherwise return this attempt's id

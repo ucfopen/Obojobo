@@ -21,7 +21,7 @@ const showModuleSelector = (req, res) => {
 			throw 'Unknown return url for assignment selection'
 		}
 
-		res.render('lti_picker', { returnUrl, isAssignment, allowImportDefault })
+		res.render('module-selector', { returnUrl, isAssignment, allowImportDefault })
 	} catch (error) {
 		res.unexpected(error)
 	}

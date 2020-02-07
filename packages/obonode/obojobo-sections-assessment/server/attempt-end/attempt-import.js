@@ -1,9 +1,9 @@
 const AssessmentScore = require('../models/assessment-score')
 const AssessmentModel = require('../models/assessment')
 const insertEvents = require('./insert-events')
-const logger = require('obojobo-express/logger')
-const lti = require('obojobo-express/lti')
-const db = require('obojobo-express/db')
+const logger = require('obojobo-express/server/logger')
+const lti = require('obojobo-express/server/lti')
+const db = require('obojobo-express/server/db')
 
 const AttemptImport = async (req, res) => {
 	// @TODO validate req.body.importedAssessmentScoreId

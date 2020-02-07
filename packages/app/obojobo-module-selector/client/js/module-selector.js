@@ -8,7 +8,8 @@ import '../css/module-selector.scss'
 	const SECTION_MODULE_SELECT = 'section-module-selection'
 	const SECTION_SELECT_OBJECT = 'section-select-object'
 	const SECTION_PROGRESS = 'section-progress'
-	const SECTION_PRE_PROGRESS = 'pre-progress'
+	const SECTION_EMBED_OPTIONS = 'section-options'
+	const SECTION_PRE_PROGRESS = 'section-pre-progress'
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
@@ -402,8 +403,7 @@ import '../css/module-selector.scss'
 		document.getElementById('finish-button').addEventListener('click', event => {
 			event.preventDefault()
 			allowScorePassback = document.querySelector("input[name='allow_import']:checked").value === '1'
-			gotoSection(SECTION_PROGRESS)
-			// $('#instance-name').val($oboItem.find('.title').text())
+			gotoSection(SECTION_PRE_PROGRESS)
 		})
 
 		document.getElementById('finish-cancel-button').addEventListener('click', event => {
@@ -414,23 +414,11 @@ import '../css/module-selector.scss'
 
 	function onEmbedClick(event) {
 		event.preventDefault()
-
-		const $this = $(this)
-		const $oboItem = $this.parent().parent()
-		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
-
-		gotoSection('section-options')
-	}
-	}
-
-	function onEmbedClick(event) {
-		event.preventDefault()
-
 		const oboItemEl = this.parentNode.parentNode.parentNode
 		const draftId = oboItemEl.getAttribute('data-lo-id')
 		selectedItem = getDraftById(draftId)
 
-		gotoSection(SECTION_PRE_PROGRESS)
+		gotoSection(SECTION_EMBED_OPTIONS)
 	}
 
 	function handleError(result) {

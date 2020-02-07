@@ -10,8 +10,9 @@ const {
 	requireCurrentUser,
 	requireCurrentDocument
 } = require('obojobo-express/server/express_validators')
-const UserModel = require('obojobo-express/models/user')
-const db = require('obojobo-express/db')
+const UserModel = require('obojobo-express/server/models/user')
+const db = require('obojobo-express/server/db')
+const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
 // List public drafts
 router.route('/drafts-public').get((req, res) => {

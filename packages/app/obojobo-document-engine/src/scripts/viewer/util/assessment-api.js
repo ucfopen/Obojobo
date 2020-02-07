@@ -1,47 +1,47 @@
-import APIUtil from './api-util'
+import API from './api'
 
-const AssessmentAPIUtil = {
+const AssessmentAPI = {
 	importScore({draftId, assessmentId, visitId, importedAssessmentScoreId}) {
-		return APIUtil.post(`/api/assessments/${draftId}/${assessmentId}/import-score`, {
+		return API.post(`/api/assessments/${draftId}/${assessmentId}/import-score`, {
 			visitId,
 			importedAssessmentScoreId
-		}).then(APIUtil.processJsonResults)
+		}).then(API.processJsonResults)
 	},
 	resumeAttempt({ draftId, attemptId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/resume`, {
+		return API.post(`/api/assessments/attempt/${attemptId}/resume`, {
 			draftId,
 			attemptId,
 			visitId
-		}).then(APIUtil.processJsonResults)
+		}).then(API.processJsonResults)
 	},
 	getAttemptHistory({ draftId, visitId }){
-		return APIUtil.get(`/api/assessments/${draftId}/attempts?visitId=${visitId}`)
-		.then(APIUtil.processJsonResults)
+		return API.get(`/api/assessments/${draftId}/attempts?visitId=${visitId}`)
+		.then(API.processJsonResults)
 	},
 	startAttempt({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/assessments/attempt/start', {
+		return API.post('/api/assessments/attempt/start', {
 			draftId,
 			assessmentId,
 			visitId
-		}).then(APIUtil.processJsonResults)
+		}).then(API.processJsonResults)
 	},
 
 	endAttempt({ attemptId, draftId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
-			APIUtil.processJsonResults
+		return API.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
+			API.processJsonResults
 		)
 	},
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/lti/send-assessment-score', {
+		return API.post('/api/lti/send-assessment-score', {
 			draftId,
 			assessmentId,
 			visitId
-		}).then(APIUtil.processJsonResults)
+		}).then(API.processJsonResults)
 	},
 	reviewAttempt(attemptIds) {
-		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds })
-		.then(APIUtil.processJsonResults)
+		return API.post(`/api/assessments/attempt/review`, { attemptIds })
+		.then(API.processJsonResults)
 	},
 }
 
-export default AssessmentAPIUtil
+export default AssessmentAPI
