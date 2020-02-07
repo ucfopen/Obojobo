@@ -2,7 +2,7 @@ import './image-properties-modal.scss'
 
 import { isUrlUUID } from './utils'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Image from './image'
 import React from 'react'
@@ -33,7 +33,7 @@ class ImageProperties extends React.Component {
 		const file = event.target.files[0]
 		const formData = new window.FormData()
 		formData.append('userImage', file, file.name)
-		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
+		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
 			this.setState({ url: mediaData.media_id, urlInputText: '', filename: mediaData.filename })
 		})
 	}
