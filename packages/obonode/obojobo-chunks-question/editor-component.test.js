@@ -23,12 +23,13 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 			hide: jest.fn(),
 			show: jest.fn()
 		}
-	},
+	}
 }))
 
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
-	props => <div>{props.children}</div>
-))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
@@ -38,6 +39,7 @@ describe('Question Editor Node', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
+
 	test('Question builds the expected component', () => {
 		const component = renderer.create(
 			<Question
@@ -139,12 +141,12 @@ describe('Question Editor Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const mcAssess = { 
-			key: 'mock-mca-id', 
-			type: MCASSESSMENT_NODE, 
+		const mcAssess = {
+			key: 'mock-mca-id',
+			type: MCASSESSMENT_NODE,
 			data: {
 				toJSON: () => ({})
-			} 
+			}
 		}
 
 		const component = mount(
@@ -162,7 +164,7 @@ describe('Question Editor Node', () => {
 						filter: fn => {
 							fn({ type: MCASSESSMENT_NODE })
 							return {
-								get: () => mcAssess,
+								get: () => mcAssess
 							}
 						}
 					}

@@ -58,7 +58,7 @@ class MCChoice extends React.Component {
 				<Button className="delete-button" onClick={event => this.delete(event)}>
 					×
 				</Button>
-				<Button className="correct-button" onClick={event => this.handleScoreChange(event)} contentEditable={false}>
+				<Button className="correct-button" onClick={event => this.handleScoreChange(event)}>
 					{score === 100 ? '✔ Correct' : '✖ Incorrect'}
 				</Button>
 				<div className="children">

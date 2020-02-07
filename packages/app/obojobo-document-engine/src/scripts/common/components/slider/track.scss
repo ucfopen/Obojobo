@@ -9,7 +9,7 @@
 	cursor: pointer;
 	background: $color-action;
 
-	.is-disabled {
+	&.is-disabled {
 		background: $color-shadow;
 	}
 }

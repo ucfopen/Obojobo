@@ -226,6 +226,13 @@ describe('Rubric editor', () => {
 						}
 					}
 				}}
+				parent={{
+					data: {
+						get: () => {
+							return { attempts: 3 }
+						}
+					}
+				}}
 				editor={editor}
 			/>
 		)

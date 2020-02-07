@@ -1,16 +1,14 @@
 const AssessmentModel = require('../models/assessment')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('./insert-events')
-const logger = require('obojobo-express/logger')
-const lti = require('obojobo-express/lti')
+const logger = require('obojobo-express/server/logger')
+const lti = require('obojobo-express/server/lti')
 
 const endAttempt = async (req, res) => {
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
 	logger.info(
-		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${
-			req.isPreview
-		}")`
+		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${req.isPreview}")`
 	)
 
 	// get this attempt from the db

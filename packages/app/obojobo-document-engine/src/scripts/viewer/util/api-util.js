@@ -1,3 +1,5 @@
+import API from './api'
+
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
 		if (json.status === 'error') {
@@ -10,67 +12,9 @@ const processJsonResults = res => {
 
 const APIUtil = {
 	processJsonResults,
-	get(endpoint, format) {
-		return fetch(endpoint, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: `application/${format}`,
-				'Content-Type': `application/${format}`
-			}
-		})
-	},
-
-	post(endpoint, body) {
-		if (!body) body = {}
-
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify(body),
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			}
-		})
-	},
-
-	postWithFormat(endpoint, body, format) {
-		if (!body) body = '{}'
-
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: body,
-			headers: {
-				Accept: format,
-				'Content-Type': format
-			}
-		})
-	},
-
-	delete(endpoint) {
-		return fetch(endpoint, {
-			method: 'DELETE',
-			credentials: 'include',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		})
-	},
-
-	postMultiPart(endpoint, formData = new FormData()) {
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: formData
-		}).then(processJsonResults)
-	},
-
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
-			APIUtil.post('/api/events', {
+			API.post('/api/events', {
 				draftId,
 				visitId,
 				event: {
@@ -95,19 +39,19 @@ const APIUtil = {
 	},
 
 	getDraft(id) {
-		return APIUtil.get(`/api/drafts/${id}`, 'json').then(processJsonResults)
+		return API.get(`/api/drafts/${id}`, 'json').then(processJsonResults)
 	},
 
-	getFullDraft(id, format='json') {
-		return APIUtil.get(`/api/drafts/${id}/full`, format).then(res => res.text())
+	getFullDraft(id, format = 'json') {
+		return API.get(`/api/drafts/${id}/full`, format).then(res => res.text())
 	},
 
 	getVisitSessionStatus(draftId) {
-		return APIUtil.get(`/api/visits/${draftId}/status`, 'json').then(processJsonResults)
+		return API.get(`/api/visits/${draftId}/status`, 'json').then(processJsonResults)
 	},
 
 	requestStart(visitId, draftId) {
-		return APIUtil.post('/api/visits/start', {
+		return API.post('/api/visits/start', {
 			visitId,
 			draftId
 		}).then(processJsonResults)
@@ -117,7 +61,7 @@ const APIUtil = {
 	// and fire an event on the server
 	// and have assessment listening to do what it do
 	clearPreviewScores({ draftId, visitId }) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', {
+		return API.post('/api/assessments/clear-preview-scores', {
 			draftId,
 			visitId
 		}).then(processJsonResults)
@@ -128,17 +72,16 @@ const APIUtil = {
 	},
 
 	createNewDraft() {
-		return APIUtil.post(`/api/drafts/new`).then(processJsonResults)
+		return API.post(`/api/drafts/new`).then(processJsonResults)
 	},
 
 	deleteDraft(draftId) {
-		return APIUtil.delete(`/api/drafts/`+draftId).then(processJsonResults)
+		return API.delete(`/api/drafts/${draftId}`).then(processJsonResults)
 	},
 
 	getAllDrafts() {
-		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
-	},
-
+		return API.get(`/api/drafts`, 'json').then(processJsonResults)
+	}
 }
 
 export default APIUtil

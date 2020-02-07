@@ -1,52 +1,12 @@
-import React from 'react'
-import DeleteButton from '../../../src/scripts/common/components/delete-button'
 import DeleteButtonBase from '../../../src/scripts/common/components/delete-button-base'
-import { mount } from 'enzyme'
-import renderer from 'react-test-renderer'
+import withPageFocus from '../../../src/scripts/common/util/with-page-focus'
 
-jest.mock('../../../src/scripts/common/page/focus')
+jest.mock('../../../src/scripts/common/components/delete-button-base')
+jest.mock('../../../src/scripts/common/util/with-page-focus')
 
-describe('DeleteButton', () => {
-	test('DeleteButton component', () => {
-		const component = renderer.create(<DeleteButton />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('DeleteButton component with shouldPreventTab', () => {
-		const component = renderer.create(<DeleteButton shouldPreventTab={true} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('DeleteButton component with tabIndex', () => {
-		const component = renderer.create(<DeleteButton tabIndex={50} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('DeleteButton component disabled', () => {
-		const component = renderer.create(<DeleteButton disabled />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('DeleteButton component with onClick', () => {
-		const component = renderer.create(<DeleteButton onClick={() => {}} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('DeleteButton calls focus callback with ref argument', () => {
-		const focus = require('../../../src/scripts/common/page/focus').default
-		const wrapper = mount(<DeleteButton focus={focus} />)
-		const inst = wrapper.find(DeleteButtonBase).instance()
-		inst.focus()
-		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef)
+describe('Delete Button With Focus', () => {
+	test('withPageFocus HOC is applied to DeleteButtonBase', () => {
+		require('../../../src/scripts/common/components/delete-button').default
+		expect(withPageFocus).toHaveBeenCalledWith(DeleteButtonBase)
 	})
 })

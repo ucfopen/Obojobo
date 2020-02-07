@@ -3,7 +3,7 @@ const HotKeyPlugin = (saveFunction, markUnsavedFunction, toggleEditableFunction)
 	const onKeyPress = (event, editor, next) => {
 		if (!(event.ctrlKey || event.metaKey)) return next()
 
-		switch(event.key) {
+		switch (event.key) {
 			case 's':
 				event.preventDefault()
 				return saveFunction()
@@ -13,10 +13,10 @@ const HotKeyPlugin = (saveFunction, markUnsavedFunction, toggleEditableFunction)
 			case 'y':
 				event.preventDefault()
 				return editor.redo()
-			case 'a': 
+			case 'a':
 				event.preventDefault()
 				return editor.moveToRangeOfDocument().focus()
-			default: 
+			default:
 				return next()
 		}
 	}
@@ -32,7 +32,7 @@ const HotKeyPlugin = (saveFunction, markUnsavedFunction, toggleEditableFunction)
 			markUnsaved() {
 				return markUnsavedFunction()
 			},
-			toggleEditable(editor, editable){
+			toggleEditable(editor, editable) {
 				return toggleEditableFunction(editable)
 			}
 		}

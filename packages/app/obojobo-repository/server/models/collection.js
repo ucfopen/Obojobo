@@ -1,5 +1,5 @@
-const db = require('obojobo-express/db')
-const logger = require('obojobo-express/logger')
+const db = require('obojobo-express/server/db')
+const logger = require('obojobo-express/server/logger')
 const DraftSummary = require('./draft_summary')
 
 class RepositoryCollection {

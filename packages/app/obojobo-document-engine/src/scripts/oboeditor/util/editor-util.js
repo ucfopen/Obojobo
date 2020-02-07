@@ -156,7 +156,7 @@ const EditorUtil = {
 	getTitleFromJSON(draftModel) {
 		try {
 			const json = JSON.parse(draftModel)
-			if(!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
+			if (!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
 
 			return json.content.title
 		} catch (err) {
@@ -169,13 +169,13 @@ const EditorUtil = {
 		return !string || !/[^\s]/.test(string)
 	},
 	getTitleFromString(draftModel, mode) {
-		switch(mode) {
+		switch (mode) {
 			case XML_MODE:
 				return this.getTitleFromXML(draftModel)
 			default:
 				return this.getTitleFromJSON(draftModel)
 		}
-	},
+	}
 }
 
 export default EditorUtil

@@ -12,6 +12,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       disabled={true}
       onClick={[Function]}
     >
@@ -137,6 +138,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       disabled={true}
       onClick={[Function]}
     >
@@ -283,6 +285,7 @@ exports[`Nav renders closed 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       onClick={[Function]}
     >
       Skip Navigation
@@ -319,6 +322,7 @@ exports[`Nav renders opened 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       disabled={true}
       onClick={[Function]}
     >
@@ -356,6 +360,7 @@ exports[`Nav renders unlocked 1`] = `
   >
     <button
       className="button"
+      contentEditable={false}
       disabled={true}
       onClick={[Function]}
     >

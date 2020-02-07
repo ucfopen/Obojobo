@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import YouTubePlayer from './youtube-player'
 
 const { OboComponent } = Viewer.components
 
@@ -13,11 +14,7 @@ const YouTube = props => (
 		role="region"
 	>
 		<div className="obojobo-draft--chunks--you-tube viewer">
-			<iframe
-				src={`https://www.youtube.com/embed/${props.model.modelState.videoId}`}
-				frameBorder="0"
-				allowFullScreen={true}
-			/>
+			<YouTubePlayer content={props.model.modelState} />
 		</div>
 	</OboComponent>
 )

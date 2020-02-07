@@ -54,6 +54,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
       >
         + Add Choice
@@ -117,6 +118,7 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component wit
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
       >
         + Add Choice

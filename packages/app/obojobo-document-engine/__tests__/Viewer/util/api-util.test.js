@@ -3,6 +3,7 @@
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
 const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+const API = require('../../../src/scripts/viewer/util/api')
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
@@ -20,25 +21,25 @@ describe('apiutil', () => {
 		jest.spyOn(window.parent, 'postMessage')
 
 		mockJsonResult = {}
-		post = jest.spyOn(APIUtil, 'post')
+		post = jest.spyOn(API, 'post')
 		post.mockResolvedValueOnce({
 			json: () => mockJsonResult,
 			text: () => JSON.stringify(mockJsonResult)
 		})
 
-		get = jest.spyOn(APIUtil, 'get')
+		get = jest.spyOn(API, 'get')
 		get.mockResolvedValueOnce({
 			json: () => mockJsonResult,
 			text: () => JSON.stringify(mockJsonResult)
 		})
 
-		postWithFormat = jest.spyOn(APIUtil, 'postWithFormat')
+		postWithFormat = jest.spyOn(API, 'postWithFormat')
 		postWithFormat.mockResolvedValueOnce({
 			json: () => mockJsonResult,
 			text: () => JSON.stringify(mockJsonResult)
 		})
 
-		deleteMethod = jest.spyOn(APIUtil, 'delete')
+		deleteMethod = jest.spyOn(API, 'delete')
 		deleteMethod.mockResolvedValueOnce({
 			json: () => mockJsonResult,
 			text: () => JSON.stringify(mockJsonResult)
@@ -60,7 +61,7 @@ describe('apiutil', () => {
 
 	test('get fetches with the correct args', () => {
 		get.mockRestore() // disable our mock
-		APIUtil.get('mockEndpoint', 'json')
+		API.get('mockEndpoint', 'json')
 
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
@@ -78,7 +79,7 @@ describe('apiutil', () => {
 
 	test('post fetches with the correct args', () => {
 		post.mockRestore() // disable our mock
-		APIUtil.post('mockEndpoint', { arg: 'value' })
+		API.post('mockEndpoint', { arg: 'value' })
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
 		const calledOptions = fetch.mock.calls[0][1]
@@ -96,43 +97,7 @@ describe('apiutil', () => {
 
 	test('post fetches with blank body', () => {
 		post.mockRestore() // disable our mock
-		APIUtil.post('mockEndpoint')
-		expect(fetch).toHaveBeenCalled()
-		const calledEndpoint = fetch.mock.calls[0][0]
-		const calledOptions = fetch.mock.calls[0][1]
-		expect(calledEndpoint).toBe('mockEndpoint')
-		expect(calledOptions).toEqual({
-			body: JSON.stringify({}),
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-	})
-
-	test('postWithFormat fetches with the correct args', () => {
-		postWithFormat.mockRestore() // disable our mock
-		APIUtil.postWithFormat('mockEndpoint', '{"arg":"value"}', 'application/json')
-		expect(fetch).toHaveBeenCalled()
-		const calledEndpoint = fetch.mock.calls[0][0]
-		const calledOptions = fetch.mock.calls[0][1]
-		expect(calledEndpoint).toBe('mockEndpoint')
-		expect(calledOptions).toEqual({
-			body: JSON.stringify({ arg: 'value' }),
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-	})
-
-	test('postWithFormat fetches with blank body', () => {
-		postWithFormat.mockRestore() // disable our mock
-		APIUtil.postWithFormat('mockEndpoint', null, 'application/json')
+		API.post('mockEndpoint')
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
 		const calledOptions = fetch.mock.calls[0][1]
@@ -150,7 +115,7 @@ describe('apiutil', () => {
 
 	test('delete fetches with the correct args', () => {
 		deleteMethod.mockRestore() // disable our mock
-		APIUtil.delete('mockEndpoint', 'json')
+		API.delete('mockEndpoint', 'json')
 
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
@@ -433,37 +398,6 @@ describe('apiutil', () => {
 			expect(postWithFormat).toHaveBeenCalledWith('/api/drafts/mockDraftId', {}, 'application/json')
 			expect(console.error).toHaveBeenCalledWith('mockError') //eslint-disable-line no-console
 		})
-	})
-
-	test('postMultiPart calls fetch and returns json', async () => {
-		fetch.mockResolvedValueOnce({
-			json: jest.fn().mockResolvedValueOnce({ mediaId: 'mockMediaId' })
-		})
-		const response = await APIUtil.postMultiPart('mock/endpoint')
-		expect(fetch).toHaveBeenCalled()
-		expect(fetch.mock.calls[0][0]).toBe('mock/endpoint')
-		expect(fetch.mock.calls[0][1]).toEqual({
-			body: expect.anything(),
-			credentials: 'include',
-			method: 'POST'
-		})
-		expect(response).toEqual({ mediaId: 'mockMediaId' })
-	})
-
-	test('postMultiPart calls fetch with passed in formData', async () => {
-		const mockFormData = new FormData()
-		fetch.mockResolvedValueOnce({
-			json: jest.fn().mockResolvedValueOnce({ mediaId: 'mockMediaId' })
-		})
-		const response = await APIUtil.postMultiPart('mock/endpoint', mockFormData)
-		expect(fetch).toHaveBeenCalled()
-		expect(fetch.mock.calls[0][0]).toBe('mock/endpoint')
-		expect(fetch.mock.calls[0][1]).toEqual({
-			body: mockFormData,
-			credentials: 'include',
-			method: 'POST'
-		})
-		expect(response).toEqual({ mediaId: 'mockMediaId' })
 	})
 
 	test('getVisitSessionStatus calls fetch and returns', async () => {

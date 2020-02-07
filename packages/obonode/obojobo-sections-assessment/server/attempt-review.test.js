@@ -1,15 +1,15 @@
 /* eslint no-extend-native: 0 */
 jest.mock('./models/assessment')
 jest.mock('./attempt-start')
-jest.mock('obojobo-express/models/draft')
+jest.mock('obojobo-express/server/models/draft')
 jest.mock('./util')
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 
 const attemptStart = require('./attempt-start')
-const DraftModel = require('obojobo-express/models/draft')
+const DraftModel = require('obojobo-express/server/models/draft')
 const AssessmentModel = require('./models/assessment')
 const util = require('./util')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 describe('attempt review', () => {
 	beforeEach(() => {

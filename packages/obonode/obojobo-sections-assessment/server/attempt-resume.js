@@ -1,7 +1,7 @@
 const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
-const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
-const insertEvent = require('obojobo-express/insert_event')
+const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
+const insertEvent = require('obojobo-express/server/insert_event')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const resumeAttempt = async (

@@ -40,7 +40,7 @@ class Rubric extends React.Component {
 		ModalUtil.show(
 			<ModProperties
 				mods={this.props.node.data.get('content').mods}
-				attempts={this.props.node.data.get('content').attempts}
+				attempts={this.props.parent.data.get('content').attempts}
 				onConfirm={this.changeMods.bind(this)}
 			/>
 		)
@@ -81,11 +81,11 @@ class Rubric extends React.Component {
 			<div className={className}>
 				<h2 contentEditable={false}>Assessment Scoring</h2>
 				<p>
-					The assessment score is the final counted score for this module, and will be sent to any
-					connected gradebook
+					The recorded score for this module is the highest assessment score, and will be sent to
+					any connected gradebook.{' '}
 				</p>
 				<fieldset className="assessment-score">
-					<legend>How do you want to determine the assessment score?</legend>
+					<legend>How do you want to determine the recorded score?</legend>
 					<label>
 						<input
 							type="radio"
@@ -95,7 +95,7 @@ class Rubric extends React.Component {
 							onChange={this.changeRubricType.bind(this)}
 							onClick={event => event.stopPropagation()}
 						/>
-						Use the highest attempt score
+						Use the highest attempt score.
 					</label>
 					<label>
 						<input
@@ -106,20 +106,23 @@ class Rubric extends React.Component {
 							onChange={this.changeRubricType.bind(this)}
 							onClick={event => event.stopPropagation()}
 						/>
-						Calculate based on a threshold (pass/fail)
+						Calculate based on a threshold (pass/fail)...
 					</label>
 				</fieldset>
 				<fieldset className="pass-fail">
 					<legend>Pass & Fail Rules</legend>
 					<p>
-						In this mode, students must achieve a certian threshold on an attempt to pass. The
-						assessment scores will be set based on whether the student passes or fails
+						In this mode, students must achieve a certain threshold on an attempt to pass. The
+						assessment score for each attempt will be set based on whether the student passes or
+						fails, and the highest of these assessment scores will be used as the recorded score.
 					</p>
 					<div>
 						<label>
 							To <b>pass</b>, students must achieve an attempt score of at least
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.passingAttemptScore}
 								onChange={this.changeScoreType.bind(this, 'passingAttemptScore')}
 								onClick={event => event.stopPropagation()}
@@ -129,19 +132,21 @@ class Rubric extends React.Component {
 					</div>
 					<div>
 						<label>
-							When <b>passing</b>, set the recorded score to
+							When <b>passing</b>, set the assessment score to
 							<select
 								value={content.passedType}
 								onChange={this.changeScoreType.bind(this, 'passedType')}
 								onClick={event => event.stopPropagation()}
 							>
-								<option value="$attempt-score">The highest attempt score</option>
+								<option value="$attempt_score">The attempt score</option>
 								<option value="set-value">Specified value</option>
 							</select>
 						</label>
 						<label className={isOrNot(content.passedType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.passedResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'passedResult')}
@@ -158,9 +163,11 @@ class Rubric extends React.Component {
 								onChange={this.changeScoreType.bind(this, 'failedType')}
 								onClick={event => event.stopPropagation()}
 							>
-								<option value="$attempt-score">Set the score to the highest attempt score</option>
+								<option value="$attempt_score">
+									Set the assessment score to the attempt score
+								</option>
 								<option value="no-score">
-									Dont set the score (no score will be sent to the gradebook)
+									Don&apos;t set the score (no score will be sent to the gradebook)
 								</option>
 								<option value="set-value">Set the assessment score to specified value</option>
 							</select>
@@ -168,6 +175,8 @@ class Rubric extends React.Component {
 						<label className={isOrNot(content.failedType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.failedResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'failedResult')}
@@ -185,11 +194,13 @@ class Rubric extends React.Component {
 								onClick={event => event.stopPropagation()}
 							>
 								<option value="no-value">
-									Dont do anything, the failing rule will still apply
+									Don&apos;t do anything, the failing rule will still apply
 								</option>
-								<option value="$attempt-score">Set the score to the highest attempt score</option>
+								<option value="$highest_attempt_score">
+									Set the assessment score to the highest attempt score
+								</option>
 								<option value="no-score">
-									Dont set the score (no score will be sent to the gradebook)
+									Don&apos;t set assessment the score (no score will be sent to the gradebook)
 								</option>
 								<option value="set-value">Set the assessment score to specified value</option>
 							</select>
@@ -197,6 +208,8 @@ class Rubric extends React.Component {
 						<label className={isOrNot(content.unableToPassType === 'set-value', 'enabled')}>
 							<input
 								type="number"
+								min="0"
+								max="100"
 								value={content.unableToPassResult}
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'unableToPassResult')}

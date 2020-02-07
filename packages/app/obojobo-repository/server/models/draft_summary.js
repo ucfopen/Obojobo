@@ -1,5 +1,5 @@
-const db = require('obojobo-express/db')
-const logger = require('obojobo-express/logger')
+const db = require('obojobo-express/server/db')
+const logger = require('obojobo-express/server/logger')
 
 const buildQueryWhere = (whereSQL, joinSQL = '') => {
 	return `
@@ -9,7 +9,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			first_value(drafts_content.created_at) OVER wnd as "created_at",
 			last_value(drafts_content.id) OVER wnd as "latest_version",
 			count(drafts_content.id) OVER wnd as revision_count,
-			last_value(drafts_content.content->'content'->'title') OVER wnd as "title",
+			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
 			CASE
 				WHEN last_value(drafts_content.xml) OVER wnd IS NULL

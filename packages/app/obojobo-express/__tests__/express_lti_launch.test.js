@@ -1,17 +1,17 @@
-jest.mock('../insert_event')
-jest.mock('../models/user')
-jest.mock('../models/draft')
-jest.mock('../db')
-jest.mock('../logger')
-jest.mock('../config') // to prevent config object freezing
+jest.mock('../server/insert_event')
+jest.mock('../server/models/user')
+jest.mock('../server/models/draft')
+jest.mock('../server/db')
+jest.mock('../server/logger')
+jest.mock('../server/config') // to prevent config object freezing
 
-const insertEvent = oboRequire('insert_event')
-const User = oboRequire('models/user')
-const DraftDocument = oboRequire('models/draft')
-const logger = oboRequire('logger')
-const db = oboRequire('db')
-const config = oboRequire('config')
-const ltiLaunch = oboRequire('express_lti_launch')
+const insertEvent = oboRequire('server/insert_event')
+const User = oboRequire('server/models/user')
+const DraftDocument = oboRequire('server/models/draft')
+const logger = oboRequire('server/logger')
+const db = oboRequire('server/db')
+const config = oboRequire('server/config')
+const ltiLaunch = oboRequire('server/express_lti_launch')
 const sessionSave = jest.fn()
 
 // array of mocked express middleware request arguments

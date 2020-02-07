@@ -44,6 +44,10 @@ class MoreInfoBox extends React.Component {
 		this.node = React.createRef()
 	}
 
+	componentWillUnmount() {
+		this.close()
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
@@ -251,7 +255,7 @@ class MoreInfoBox extends React.Component {
 					<div className="box-controls">
 						{this.state.error ? <p>{this.state.error}</p> : null}
 						<Button onClick={this.onSave} className="cancel-button">
-							Close
+							Save &amp; Close
 						</Button>
 					</div>
 				</div>
@@ -261,7 +265,7 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className={'more-info ' + this.props.className}>
+			<div ref={this.node} className={'visual-editor--more-info ' + (this.props.className || '')}>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}

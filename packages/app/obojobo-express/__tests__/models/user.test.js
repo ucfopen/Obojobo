@@ -1,12 +1,12 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-new */
 
-jest.mock('../../db')
-jest.mock('../../obo_events')
+jest.mock('../../server/db')
+jest.mock('../../server/obo_events')
 const originalnow = Date.prototype.now
-const User = require('../../models/user')
-const db = require('../../db')
-const oboEvents = require('../../obo_events')
+const User = require('../../server/models/user')
+const db = require('../../server/db')
+const oboEvents = require('../../server/obo_events')
 
 describe('user model', () => {
 	beforeAll(() => {

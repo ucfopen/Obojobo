@@ -445,7 +445,6 @@ describe('NavStore', () => {
 	test('nav:openExternalLink fires event and opens a window', () => {
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
-		window.open = jest.fn()
 
 		// go
 		eventCallbacks['nav:openExternalLink']({ value: { url: 'mockUrl' } })

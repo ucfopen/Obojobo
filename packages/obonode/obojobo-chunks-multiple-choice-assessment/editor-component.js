@@ -25,6 +25,7 @@ class MCAssessment extends React.Component {
 	changeShuffle(shuffle) {
 		return this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
+				...this.props.node.data.toJSON(),
 				content: {
 					...this.props.node.data.get('content'),
 					shuffle
@@ -46,16 +47,15 @@ class MCAssessment extends React.Component {
 	render() {
 		const questionType = this.props.node.data.get('questionType') || 'default'
 		const content = this.props.node.data.get('content')
-	
+
 		return (
 			<div
-				className={`component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-${questionType}`}>
+				className={`component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-${questionType}`}
+			>
 				<div className="mc-settings" contentEditable={false}>
 					<label>
 						Response Type
-						<select
-							value={content.responseType}
-							onChange={this.changeResponseType.bind(this)}>
+						<select value={content.responseType} onChange={this.changeResponseType.bind(this)}>
 							<option value="pick-one">Pick one correct answer</option>
 							<option value="pick-all">Pick all correct answers</option>
 						</select>
@@ -63,7 +63,8 @@ class MCAssessment extends React.Component {
 					<Switch
 						title="Shuffle Choices"
 						initialChecked={content.shuffle}
-						handleCheckChange={this.changeShuffle.bind(this)}/>
+						handleCheckChange={this.changeShuffle.bind(this)}
+					/>
 				</div>
 				<div>
 					{this.props.children}

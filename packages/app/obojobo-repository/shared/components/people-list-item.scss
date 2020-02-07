@@ -1,22 +1,22 @@
 @import '../../client/css/defaults';
 
 .people-list-item {
-	$dimensions-avatar: 30px;
-	$dimensions-close-button: 20px;
+	$dimensions-avatar: 1.8em;
+	$dimensions-close-button: 1.2em;
 
-	padding: 5px;
+	padding: 0.3em;
 	margin: 0 auto;
 	position: relative;
-	border-radius: 3px;
+	border-radius: 0.25em;
 
 	&:hover {
 		background-color: lighten($color-banner-bg, 2%);
 	}
 
 	.user-name {
-		max-width: calc(100% - #{$dimensions-avatar + $dimensions-close-button + 20px});
+		max-width: calc(100% - #{$dimensions-avatar + $dimensions-close-button + 1.6em});
 		display: inline-block;
-		margin: 0 $dimensions-close-button + 10px 0 10px;
+		margin: 0 $dimensions-close-button + 0.8em 0 0.8em;
 		vertical-align: middle;
 	}
 
@@ -30,17 +30,19 @@
 
 	> button {
 		position: absolute;
-		top: 5px;
-		right: 10px;
+		top: 50%;
+		transform: translate(0, -50%);
+		right: 0;
 	}
 
 	.close-button {
 		height: $dimensions-close-button;
 		min-width: $dimensions-close-button;
 		line-height: $dimensions-close-button;
-		position: absolute;
-		right: 5px;
-		top: calc(50% - #{$dimensions-close-button / 2});
 		background-color: inherit;
+		position: absolute;
+		right: 0.5em;
+		top: 50%;
+		transform: translate(0, -50%);
 	}
 }

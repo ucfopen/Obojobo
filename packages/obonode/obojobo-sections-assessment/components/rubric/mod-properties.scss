@@ -1,6 +1,6 @@
 @import '~styles/includes';
 
-.mod-properties {
+.obojobo-draft--sections--assessment--mod-properties {
 	font-size: 0.85em;
 
 	.info {
@@ -17,7 +17,6 @@
 		border-radius: $dimension-rounded-radius;
 		border: 1px solid $color-shadow;
 		padding: 0.5em;
-		max-height: 14em;
 		overflow-y: scroll;
 
 		.mod {

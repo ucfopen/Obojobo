@@ -460,7 +460,7 @@ describe('EditorStore', () => {
 		expect(EditorStore.getState().currentPageModel).toBe('mock-current-model')
 		expect(EditorStore.triggerChange).not.toHaveBeenCalled()
 
-		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mock-id'})
+		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mock-id' })
 		EditorStore.deletePage('mockId')
 
 		expect(Common.models.OboModel.models.mockId.remove).toHaveBeenCalled()

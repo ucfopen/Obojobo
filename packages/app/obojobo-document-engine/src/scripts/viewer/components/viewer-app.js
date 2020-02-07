@@ -18,7 +18,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 
-const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
 const { DOMUtil, focus } = Common.page
@@ -517,7 +517,7 @@ export default class ViewerApp extends React.Component {
 			QuestionStore.triggerChange()
 
 			return ModalUtil.show(
-				<SimpleDialog ok width="15em">
+				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
 			)
@@ -631,48 +631,47 @@ export default class ViewerApp extends React.Component {
 		].join(' ')
 
 		return (
-			<IdleTimer
-				ref={this.idleTimerRef}
-				element={window}
-				timeout={IDLE_TIMEOUT_DURATION_MS}
-				onIdle={this.onIdle}
-				activeAction={this.onReturnFromIdle}
+			<div
+				ref={this.containerRef}
+				onMouseDown={this.onMouseDown}
+				onFocus={this.onFocus}
+				onScroll={this.onScroll}
+				className={classNames}
 			>
-				<div
-					ref={this.containerRef}
-					onMouseDown={this.onMouseDown}
-					onFocus={this.onFocus}
-					onScroll={this.onScroll}
-					className={classNames}
-				>
-					{hideViewer ? null : (
-						<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
-					)}
-					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
-					{hideViewer ? null : prevComp}
-					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
-					{hideViewer ? null : nextComp}
-					{this.state.isPreviewing ? (
-						<div className="preview-banner">
-							<span>Preview mode</span>
-							<div className="controls">
-								<span>Preview options:</span>
-								<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
-									Unlock navigation
-								</button>
-								<button className="button-clear-scores" onClick={this.clearPreviewScores}>
-									Reset assessments &amp; questions
-								</button>
-							</div>
-							<div className="border" />
+				<IdleTimer
+					ref={this.idleTimerRef}
+					element={window}
+					timeout={IDLE_TIMEOUT_DURATION_MS}
+					onIdle={this.onIdle}
+					onActive={this.onReturnFromIdle}
+				/>
+				{hideViewer ? null : (
+					<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
+				)}
+				{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
+				{hideViewer ? null : prevComp}
+				{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
+				{hideViewer ? null : nextComp}
+				{this.state.isPreviewing ? (
+					<div className="preview-banner">
+						<span>Preview mode</span>
+						<div className="controls">
+							<span>Preview options:</span>
+							<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
+								Unlock navigation
+							</button>
+							<button className="button-clear-scores" onClick={this.clearPreviewScores}>
+								Reset assessments &amp; questions
+							</button>
 						</div>
-					) : null}
-					<FocusBlocker moduleData={this.state} />
-					{modalItem && modalItem.component ? (
-						<ModalContainer>{modalItem.component}</ModalContainer>
-					) : null}
-				</div>
-			</IdleTimer>
+						<div className="border" />
+					</div>
+				) : null}
+				<FocusBlocker moduleData={this.state} />
+				{modalItem && modalItem.component ? (
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null}
+			</div>
 		)
 	}
 }

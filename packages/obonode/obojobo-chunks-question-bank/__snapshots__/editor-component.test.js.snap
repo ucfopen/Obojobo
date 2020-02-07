@@ -13,6 +13,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
       >
         ×
@@ -26,6 +27,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Add Question
@@ -36,6 +38,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Add Question Bank
@@ -46,8 +49,8 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
 </div>
 `;
 
-exports[`QuestionBank editor QuestionBank component adds question 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question Bank</button></div></div></div></div>"`;
+exports[`QuestionBank editor QuestionBank component adds question 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;
 
-exports[`QuestionBank editor QuestionBank component adds question bank 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question Bank</button></div></div></div></div>"`;
+exports[`QuestionBank editor QuestionBank component adds question bank 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;
 
-exports[`QuestionBank editor QuestionBank component deletes self 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Add Question Bank</button></div></div></div></div>"`;
+exports[`QuestionBank editor QuestionBank component deletes self 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;

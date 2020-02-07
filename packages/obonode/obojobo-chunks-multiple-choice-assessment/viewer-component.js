@@ -10,7 +10,6 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import _ from 'underscore'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
-const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const { DOMUtil } = Common.page
 const { OboComponent } = Viewer.components
@@ -44,7 +43,6 @@ export default class MCAssessment extends React.Component {
 		this.onClickReset = this.onClickReset.bind(this)
 		this.onFormChange = this.onFormChange.bind(this)
 		this.onFormSubmit = this.onFormSubmit.bind(this)
-		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 
 		this.sortIds()
@@ -301,10 +299,6 @@ export default class MCAssessment extends React.Component {
 		)
 	}
 
-	componentDidMount() {
-		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
-	}
-
 	componentDidUpdate() {
 		this.sortIds()
 
@@ -325,22 +319,6 @@ export default class MCAssessment extends React.Component {
 				delete this.nextFocus
 				FocusUtil.focusComponent(this.getQuestionModel().get('id'))
 				break
-		}
-	}
-
-	componentWillUnmount() {
-		Dispatcher.off('question:checkAnswer', this.onCheckAnswer)
-	}
-
-	onCheckAnswer(payload) {
-		const questionId = this.getQuestionModel().get('id')
-
-		if (payload.value.id === questionId) {
-			QuestionUtil.setScore(
-				questionId,
-				this.calculateScore(),
-				this.props.moduleData.navState.context
-			)
 		}
 	}
 
@@ -494,9 +472,7 @@ export default class MCAssessment extends React.Component {
 			>
 				<fieldset>
 					<legend className="instructions">
-						<span className="for-screen-reader-only">{`Multiple choice form with ${
-							sortedChoiceModels.length
-						} choices. `}</span>
+						<span className="for-screen-reader-only">{`Multiple choice form with ${sortedChoiceModels.length} choices. `}</span>
 						{this.getInstructions(responseType, this.props.type)}
 					</legend>
 					<MCAssessmentAnswerChoices

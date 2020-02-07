@@ -27,9 +27,9 @@ const isType = editor => {
 
 const plugins = {
 	onPaste(event, editor, next) {
-		const isList = isType(editor)
+		const isText = isType(editor)
 		const transfer = getEventTransfer(event)
-		if (transfer.type === 'fragment' || !isList) return next()
+		if (transfer.type === 'fragment' || !isText) return next()
 
 		const saveBlocks = editor.value.blocks
 
@@ -93,7 +93,8 @@ const plugins = {
 			<span
 				className={'placeholder align-' + node.data.get('align')}
 				contentEditable={false}
-				data-placeholder="Type Your Text Here" />
+				data-placeholder="Type Your Text Here"
+			/>
 		)
 	},
 	schema: Schema,

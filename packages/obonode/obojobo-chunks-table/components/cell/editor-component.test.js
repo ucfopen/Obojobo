@@ -49,7 +49,8 @@ describe('Cell Editor Node', () => {
 						}
 					}
 				}}
-				isSelected={true}/>
+				isSelected={true}
+			/>
 		)
 		const tree = component.toJSON()
 
@@ -66,7 +67,8 @@ describe('Cell Editor Node', () => {
 						}
 					}
 				}}
-				isSelected={true}/>
+				isSelected={true}
+			/>
 		)
 		const tree = component.toJSON()
 
@@ -75,15 +77,22 @@ describe('Cell Editor Node', () => {
 
 	test('Cell component opens drop down', () => {
 		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: true }
-						}
-					}
-				}}
-				isSelected={true}/>
+			<table>
+				<thead>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: true }
+									}
+								}
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</thead>
+			</table>
 		)
 
 		component
@@ -98,28 +107,39 @@ describe('Cell Editor Node', () => {
 	test('Cell component adds row above', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })}
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })}
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) }
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -134,34 +154,45 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })}
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: true }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: true })},
-					nodes: [
-						{
-							key: 'mock-key',
-							data: { get: () => ({})}
-						}
-					]
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<thead>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: true }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: true }) },
+								nodes: [
+									{
+										key: 'mock-key',
+										data: { get: () => ({}) }
+									}
+								]
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</thead>
+			</table>
 		)
 
 		component
@@ -176,28 +207,39 @@ describe('Cell Editor Node', () => {
 	test('Cell component adds row below', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })}
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })}
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) }
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -212,35 +254,46 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })},
-					nodes: [ 
-						{
-							data: { get: () => ({})}
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: [
+								{
+									data: { get: () => ({}) }
+								}
+							]
 						}
-					]
+					}
 				}
-			}}}
+			}
 		}
 		editor.withoutNormalizing = fn => fn(editor)
 		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
-						}
-					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-				}}
-				isSelected={true}/>
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -255,35 +308,46 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			insertNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })},
-					nodes: [ 
-						{
-							data: { get: () => ({})}
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: [
+								{
+									data: { get: () => ({}) }
+								}
+							]
 						}
-					]
+					}
 				}
-			}}}
+			}
 		}
 		editor.withoutNormalizing = fn => fn(editor)
 		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
-						}
-					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-				}}
-				isSelected={true}/>
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -298,32 +362,43 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })},
-					nodes: {
-						get: () => false
-					}
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: {
+								get: () => false
+							}
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -338,39 +413,50 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 0 }),
-					data: { get: () => ({ numCols: 1 })},
-					nodes: {
-						get: () => ({
-							data: { get: () => ({})},
-							nodes: [
-								{
-									data: { get: () => ({})}
-								}
-							]
-						})
-					}
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 0 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: {
+								get: () => ({
+									data: { get: () => ({}) },
+									nodes: [
+										{
+											data: { get: () => ({}) }
+										}
+									]
+								})
+							}
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -386,29 +472,40 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 1 }),
-					data: { get: () => ({ numCols: 1 })},
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 1 }),
+							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -423,30 +520,41 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 1 }),
-					data: { get: () => ({ numCols: 1 })},
-				}
-			}}}
-		}
-		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 1 }),
+							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-					nodes: { size: 1 }
-				}}
-				isSelected={true}/>
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 }),
+								nodes: { size: 1 }
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component
@@ -461,37 +569,48 @@ describe('Cell Editor Node', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
-			value: { document: { getClosest: (key, fn) => {
-				fn({ type: 'mock-node'})
-				return { 
-					getPath: () => ({ get: () => 1 }),
-					data: { get: () => ({ numCols: 1 })},
-					nodes: [
-						{
-							nodes: { get: () => ({})},
-							data: { get: () => ({})}
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 1 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: [
+								{
+									nodes: { get: () => ({}) },
+									data: { get: () => ({}) }
+								}
+							]
 						}
-					]
+					}
 				}
-			}}}
+			}
 		}
 		editor.withoutNormalizing = fn => fn(editor)
 		const component = mount(
-			<Cell
-				node={{
-					data: {
-						get: () => {
-							return { header: false }
-						}
-					}
-				}}
-				editor={editor}
-				parent={{
-					data: { get: () => ({ header: false })},
-					getPath: () => ({ get: () => 0 }),
-					nodes: { size: 2 }
-				}}
-				isSelected={true}/>
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 }),
+								nodes: { size: 2 }
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
 		)
 
 		component

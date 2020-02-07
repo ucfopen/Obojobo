@@ -9,7 +9,7 @@
 		background: none;
 	}
 
-	.correct-button{
+	.correct-button {
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
@@ -34,6 +34,8 @@
 
 	&.is-not-correct {
 		.correct-button {
+			color: $color-incorrect;
+
 			.button {
 				color: $color-incorrect;
 				border-color: $color-incorrect;
@@ -55,12 +57,6 @@
 	&.is-correct {
 		.correct-button {
 			color: $color-correct;
-		}
-	}
-
-	&.is-not-correct {
-		.correct-button {
-			color: $color-incorrect;
 		}
 	}
 

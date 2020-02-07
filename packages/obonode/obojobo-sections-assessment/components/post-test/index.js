@@ -132,7 +132,6 @@ class AssessmentPostTest extends React.Component {
 							highestAttempts[0].scoreDetails.attemptNumber
 						}`}</span>
 				}
-
 			</div>
 		)
 	}

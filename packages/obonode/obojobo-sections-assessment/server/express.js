@@ -11,13 +11,14 @@ const attemptReview = require('./attempt-review')
 const insertEvents = require('./attempt-end/insert-events')
 const attemptImport = require('./attempt-end/attempt-import')
 const { logAndRespondToUnexpected } = require('./util')
+const { deletePreviewState } = require('./services/preview')
 const {
 	requireCurrentDocument,
 	requireCurrentVisit,
 	requireAttemptId,
 	requireCurrentUser,
 	requireAssessmentId
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 
 // load the server event listeners
 require('./events')
@@ -28,9 +29,7 @@ router
 	.post(async (req, res) => {
 		try {
 			logger.info(
-				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${
-					req.currentDocument.draftId
-				}", assessmentId="${req.body.assessmentId}"`
+				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${req.currentDocument.draftId}", assessmentId="${req.body.assessmentId}"`
 			)
 			const ltiScoreResult = await lti.sendHighestAssessmentScore(
 				req.currentUser.id,
@@ -99,11 +98,10 @@ router
 		res.send(questionModels)
 	})
 
-
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
-	.post((req, res) => {
+	.post(async (req, res) => {
 		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
 		return AssessmentModel.deletePreviewAttemptsAndScores(

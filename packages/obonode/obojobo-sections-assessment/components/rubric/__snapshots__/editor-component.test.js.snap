@@ -10,13 +10,14 @@ exports[`Rubric editor Rubric renders 1`] = `
     Assessment Scoring
   </h2>
   <p>
-    The assessment score is the final counted score for this module, and will be sent to any connected gradebook
+    The recorded score for this module is the highest assessment score, and will be sent to any connected gradebook.
+     
   </p>
   <fieldset
     className="assessment-score"
   >
     <legend>
-      How do you want to determine the assessment score?
+      How do you want to determine the recorded score?
     </legend>
     <label>
       <input
@@ -27,7 +28,7 @@ exports[`Rubric editor Rubric renders 1`] = `
         type="radio"
         value="highest"
       />
-      Use the highest attempt score
+      Use the highest attempt score.
     </label>
     <label>
       <input
@@ -38,7 +39,7 @@ exports[`Rubric editor Rubric renders 1`] = `
         type="radio"
         value="pass-fail"
       />
-      Calculate based on a threshold (pass/fail)
+      Calculate based on a threshold (pass/fail)...
     </label>
   </fieldset>
   <fieldset
@@ -48,7 +49,7 @@ exports[`Rubric editor Rubric renders 1`] = `
       Pass & Fail Rules
     </legend>
     <p>
-      In this mode, students must achieve a certian threshold on an attempt to pass. The assessment scores will be set based on whether the student passes or fails
+      In this mode, students must achieve a certain threshold on an attempt to pass. The assessment score for each attempt will be set based on whether the student passes or fails, and the highest of these assessment scores will be used as the recorded score.
     </p>
     <div>
       <label>
@@ -58,6 +59,8 @@ exports[`Rubric editor Rubric renders 1`] = `
         </b>
         , students must achieve an attempt score of at least
         <input
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -71,15 +74,15 @@ exports[`Rubric editor Rubric renders 1`] = `
         <b>
           passing
         </b>
-        , set the recorded score to
+        , set the assessment score to
         <select
           onChange={[Function]}
           onClick={[Function]}
         >
           <option
-            value="$attempt-score"
+            value="$attempt_score"
           >
-            The highest attempt score
+            The attempt score
           </option>
           <option
             value="set-value"
@@ -93,6 +96,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -112,14 +117,14 @@ exports[`Rubric editor Rubric renders 1`] = `
           onClick={[Function]}
         >
           <option
-            value="$attempt-score"
+            value="$attempt_score"
           >
-            Set the score to the highest attempt score
+            Set the assessment score to the attempt score
           </option>
           <option
             value="no-score"
           >
-            Dont set the score (no score will be sent to the gradebook)
+            Don't set the score (no score will be sent to the gradebook)
           </option>
           <option
             value="set-value"
@@ -133,6 +138,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -154,17 +161,17 @@ exports[`Rubric editor Rubric renders 1`] = `
           <option
             value="no-value"
           >
-            Dont do anything, the failing rule will still apply
+            Don't do anything, the failing rule will still apply
           </option>
           <option
-            value="$attempt-score"
+            value="$highest_attempt_score"
           >
-            Set the score to the highest attempt score
+            Set the assessment score to the highest attempt score
           </option>
           <option
             value="no-score"
           >
-            Dont set the score (no score will be sent to the gradebook)
+            Don't set assessment the score (no score will be sent to the gradebook)
           </option>
           <option
             value="set-value"
@@ -178,6 +185,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       >
         <input
           disabled={true}
+          max="100"
+          min="0"
           onChange={[Function]}
           onClick={[Function]}
           type="number"
@@ -199,6 +208,7 @@ exports[`Rubric editor Rubric renders 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
       >
         Edit...

@@ -1,17 +1,12 @@
 import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-const TEXT_PARAMETER = 'oboeditor.text-parameter'
-const SELECT_PARAMETER = 'oboeditor.select-parameter'
-const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
 
 const schema = {
 	blocks: {
@@ -29,7 +24,7 @@ const schema = {
 								type: SETTINGS_NODE,
 								data: {
 									content: {
-										choose: 'all',
+										choose: '1',
 										chooseAll: true,
 										select: 'sequential'
 									}
@@ -47,7 +42,7 @@ const schema = {
 								type: SETTINGS_NODE,
 								data: {
 									content: {
-										choose: 'all',
+										choose: '1',
 										chooseAll: true,
 										select: 'sequential'
 									}

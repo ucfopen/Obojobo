@@ -1,35 +1,39 @@
-const convert = require('xml-js');
-const nameTransform = require('./src/name-transformer');
-const extensionTransform = require('./src/extension-transform');
-const htmlTransform = require('./src/html-transform');
-const draftJsonTransform = require('./src/draft-json-transform');
+const convert = require('xml-js')
+const nameTransform = require('./src/name-transformer')
+const extensionTransform = require('./src/extension-transform')
+const htmlTransform = require('./src/html-transform')
+const draftJsonTransform = require('./src/draft-json-transform')
 const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
-const parseTg = require('./src/text-group-parser');
-const scoreParser = require('./src/score-action-parser');
-const parseTriggers = require('./src/triggers-parser');
-const parseListStyles = require('./src/list-styles-parser');
-const parseAssessmentRubric = require('./src/assessment-rubric-parser');
+const parseTg = require('./src/text-group-parser')
+const scoreParser = require('./src/score-action-parser')
+const parseTriggers = require('./src/triggers-parser')
+const parseListStyles = require('./src/list-styles-parser')
+const parseAssessmentRubric = require('./src/assessment-rubric-parser')
+const parseScoreAction = scoreParser.parseScoreAction
+const parseScoreActions = scoreParser.parseScoreActions
 
 const parsers = {
 	textGroup: parseTg,
-	scoreAction: scoreParser.parseScoreAction,
-	scoreActions: scoreParser.parseScoreActions,
+	scoreAction: parseScoreAction,
+	scoreActions: parseScoreActions,
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
 	listStyles: parseListStyles,
-	solution: solAttr => solAttr.elements[0]
+	solution: solAttr => {
+		return solAttr.elements[0]
+	}
 }
 
 const elementsToAttrElements = o => {
-	for(const i in o.elements){
+	for (const i in o.elements) {
 		elementsToAttrElements(o.elements[i])
 	}
 
-	if(parsers[o.name]){
+	if (parsers[o.name]) {
 		o.type = 'attribute'
 		o.value = parsers[o.name](o)
 		delete o.elements
-	} else if(o.name && (o.name.charAt(0) === o.name.charAt(0).toLowerCase())) {
+	} else if (o.name && o.name.charAt(0) === o.name.charAt(0).toLowerCase()) {
 		o.type = 'attribute'
 		o.value = o.elements
 		delete o.elements
@@ -38,18 +42,18 @@ const elementsToAttrElements = o => {
 
 // @TODO: Hack
 const __finalPass = o => {
-	if(o.type === 'ObojoboDraft.Chunks.Table'){
+	if (o.type === 'ObojoboDraft.Chunks.Table') {
 		o.content.textGroup = {
 			textGroup: o.content.textGroup,
 			numRows: o.content.numRows,
 			numCols: o.content.numCols
 		}
-		delete o.content.numRows;
-		delete o.content.numCols;
+		delete o.content.numRows
+		delete o.content.numCols
 	}
 
-	for(const i in o.children){
-		__finalPass(o.children[i]);
+	for (const i in o.children) {
+		__finalPass(o.children[i])
 	}
 }
 
@@ -68,5 +72,5 @@ module.exports = (xml, generateIds = false) => {
 	attrElementToAttrItem(root)
 	draftJsonTransform(root, generateIds)
 	__finalPass(root.elements[0])
-	return root.elements[0].children[0];
+	return root.elements[0].children[0]
 }

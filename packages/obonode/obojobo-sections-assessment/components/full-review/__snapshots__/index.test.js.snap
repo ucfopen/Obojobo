@@ -34,6 +34,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             aria-label="Attempt 3"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -255,6 +256,7 @@ exports[`FullReview FullReview component with attempt 1`] = `
             aria-label="Attempt 3"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -286,6 +288,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
             aria-label="Attempt 3"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -317,6 +320,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
             aria-label="Attempt 3"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -348,6 +352,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
             aria-label="Attempt 3"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -379,6 +384,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             aria-label="Attempt 3"
             aria-selected={false}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             3
@@ -395,6 +401,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             aria-label="Attempt undefined"
             aria-selected={true}
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           />
         </div>

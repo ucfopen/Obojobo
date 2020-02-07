@@ -1,5 +1,9 @@
+import SlateReact from 'slate-react'
+
 import Heading from './editor-registration'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+
+jest.mock('slate-react')
 
 describe('Heading editor', () => {
 	test('plugins.renderNode renders Heading when passed', () => {
@@ -122,5 +126,62 @@ describe('Heading editor', () => {
 
 		model.modelState.headingLevel = 3
 		expect(Heading.getNavItem(model)).toBe(null)
+	})
+
+	test('onPaste handler calls next if item is not a heading', () => {
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: 'not-heading-node' })
+				}
+			},
+			insertText: jest.fn()
+		}
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
+
+		Heading.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+		expect(editor.insertText).not.toHaveBeenCalled()
+	})
+
+	test('onPaste handler calls next if transfer type is not text', () => {
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: HEADING_NODE })
+				}
+			},
+			insertText: jest.fn()
+		}
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'fragment' })
+
+		Heading.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+		expect(editor.insertText).not.toHaveBeenCalled()
+	})
+
+	test('onPaste handler calls editor.insertText if item is a heading and transfer type is text', () => {
+		const editor = {
+			value: {
+				blocks: {
+					some: fn => fn({ type: HEADING_NODE })
+				}
+			},
+			insertText: jest.fn()
+		}
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text', text: 'mock-text' })
+
+		Heading.plugins.onPaste(null, editor, next)
+
+		expect(next).not.toHaveBeenCalled()
+		expect(editor.insertText).toHaveBeenCalledWith('mock-text')
 	})
 })

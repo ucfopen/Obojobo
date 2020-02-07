@@ -1,4 +1,5 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -19,8 +20,14 @@ const slateToObo = node => {
 				break
 
 			case SETTINGS_NODE:
-				content = child.data.get('content') || {}
-				if (content.chooseAll) content.choose = Infinity
+				content = withoutUndefined(child.data.get('content') || {})
+
+				if (content.chooseAll) {
+					content.choose = 'all'
+				} else if (!Number.isFinite(parseInt(content.choose, 10))) {
+					content.choose = '1'
+				}
+				delete content.chooseAll
 				break
 		}
 	})
@@ -34,10 +41,10 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	const chooseAll = !node.content.choose || node.content.choose === 'all' || node.content.choose === 'Infinity' || node.content.choose === Infinity
+	const chooseAll = !Number.isFinite(parseInt(node.content.choose, 10))
 	const data = { content: { ...node.content, chooseAll } }
 
-	if (chooseAll) data.content.choose = 1
+	if (chooseAll) data.content.choose = '1'
 
 	const nodes = [
 		{

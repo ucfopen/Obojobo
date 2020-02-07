@@ -1,6 +1,6 @@
 @import '../../../../scss/includes';
 
-.more-info {
+.visual-editor--more-info {
 	position: absolute;
 	z-index: 9999;
 	top: 0;
@@ -20,21 +20,20 @@
 		cursor: pointer;
 
 		svg {
-			stroke: $color-shadow;
-			fill: none;
+			opacity: 0.4;
 		}
 
 		&:hover {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1;
 			}
 		}
 
 		&.is-open {
 			svg {
-				fill: $color-obojobo-blue;
-				stroke: $color-bg2;
+				stroke: $color-obojobo-blue;
+				opacity: 1;
 			}
 		}
 	}
@@ -96,6 +95,7 @@
 
 				input {
 					@include text-input();
+
 					width: 22.7em;
 
 					&.id-input {

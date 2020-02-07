@@ -1,6 +1,6 @@
-const oboEvents = require('obojobo-express/obo_events')
-const config = require('obojobo-express/config')
-const Visit = require('obojobo-express/models/visit')
+const oboEvents = require('obojobo-express/server/obo_events')
+const config = require('obojobo-express/server/config')
+const Visit = require('obojobo-express/server/models/visit')
 
 
 const paramToBool = param => {

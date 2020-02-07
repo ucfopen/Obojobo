@@ -1,6 +1,6 @@
-const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
-const insertEvent = require('obojobo-express/insert_event')
-const lti = require('obojobo-express/lti')
+const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
+const insertEvent = require('obojobo-express/server/insert_event')
+const lti = require('obojobo-express/server/lti')
 
 const insertAttemptEndEvents = (
 	user,

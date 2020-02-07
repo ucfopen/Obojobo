@@ -65,7 +65,7 @@ header {
 .no-items {
 	display: none;
 	position: absolute;
-	top: 150px;
+	top: 50px;
 	text-align: center;
 	width: 400px;
 	margin-left: -200px;
@@ -94,6 +94,7 @@ header {
 	padding: 15px;
 	background: $color-top-bar-bg;
 	position: relative;
+	z-index: 1;
 
 	#list-header {
 		margin: 0 auto;
@@ -147,8 +148,8 @@ header {
 }
 
 #list-container {
-	margin: 0 auto;
-	max-width: 600px;
+	position: relative;
+	height: calc(100% - 166px);
 
 	.template {
 		display: none;
@@ -164,10 +165,6 @@ header {
 .obo-item {
 	border-bottom: 1px solid $color-light-border;
 	padding: 20px;
-	display: flex;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: center;
 
 	:last-child {
 		border-bottom: 0;
@@ -180,6 +177,15 @@ header {
 	.selected,
 	.selected:hover {
 		background-color: #fafafa;
+	}
+
+	.obo-item-container {
+		max-width: 600px;
+		margin: 0 auto;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-items: center;
 	}
 
 	.buttons {
@@ -210,7 +216,7 @@ header {
 
 #section-select-object {
 	display: none;
-	height: 100%;
+	height: 100vh;
 
 	.new-module-button-wrapper {
 		bottom: 0;
@@ -325,7 +331,8 @@ header {
 }
 
 .section.my-modules {
-	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 #section-progress header .blue-flourish,
@@ -541,7 +548,8 @@ header {
 	display: none;
 
 	.progress-container {
-		width: 580px;
+		width: 100vw;
+		max-width: 580px;
 		margin: 10px auto;
 		padding: 4em 1em 5em 1em;
 		box-sizing: border-box;
@@ -628,10 +636,9 @@ header {
 }
 
 .ui-progressbar {
-	background: url('/assets/images/lti/progressbar-bg.gif');
 	height: 20px;
 	border-radius: 11px;
-	width: 470px;
+	width: 80%;
 	margin: 0 auto;
 }
 

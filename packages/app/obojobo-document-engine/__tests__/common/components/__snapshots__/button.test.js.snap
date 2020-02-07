@@ -6,6 +6,7 @@ exports[`Button 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
   >
     Label
   </button>
@@ -18,6 +19,7 @@ exports[`Button align 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
   >
     Label
   </button>
@@ -30,6 +32,7 @@ exports[`Button altAction 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
   >
     Label
   </button>
@@ -42,6 +45,7 @@ exports[`Button dangerous 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
   >
     Label
   </button>
@@ -54,6 +58,7 @@ exports[`Button disabled 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
     disabled={true}
   >
     Label
@@ -67,6 +72,7 @@ exports[`Button shouldPreventTab 1`] = `
 >
   <button
     className="button"
+    contentEditable={false}
     disabled={true}
     tabIndex="-1"
   >

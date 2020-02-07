@@ -1,14 +1,21 @@
-jest.mock('../../db')
+jest.mock('../../server/db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
-
+jest.mock(
+	'../../server/asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
 
 // override requireCurrentDocument for tests to provide our own document
 let mockCurrentDocument
 
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -20,7 +27,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
@@ -29,16 +36,16 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 })
 
 // setup express server
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 const request = require('supertest')
 const express = require('express')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '/../../views/')
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/editor'))
+app.set('views', __dirname + '/../../server/views/')
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/editor'))
 
 describe('editor route', () => {
 	beforeEach(() => {

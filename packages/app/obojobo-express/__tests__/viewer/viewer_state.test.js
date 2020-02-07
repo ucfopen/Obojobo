@@ -1,9 +1,9 @@
-jest.mock('../../db')
-jest.mock('../../logger')
+jest.mock('../../server/db')
+jest.mock('../../server/logger')
 
-const Viewer = oboRequire('viewer/viewer_state')
-const db = oboRequire('db')
-const logger = oboRequire('logger')
+const Viewer = oboRequire('server/viewer/viewer_state')
+const db = oboRequire('server/db')
+const logger = oboRequire('server/logger')
 
 describe('viewer state', () => {
 	beforeEach(() => {

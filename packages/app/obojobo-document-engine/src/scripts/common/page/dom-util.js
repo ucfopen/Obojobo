@@ -1,11 +1,10 @@
 // Note that parent here includes the node itself
 
 const getTextNodesInOrderRecur = (element, textNodes) => {
-	return Array.from(element.childNodes).map(
-		node =>
-			node.nodeType === Node.TEXT_NODE
-				? textNodes.push(node)
-				: getTextNodesInOrderRecur(node, textNodes)
+	return Array.from(element.childNodes).map(node =>
+		node.nodeType === Node.TEXT_NODE
+			? textNodes.push(node)
+			: getTextNodesInOrderRecur(node, textNodes)
 	)
 }
 

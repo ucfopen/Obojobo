@@ -20,17 +20,14 @@ class ActionButton extends React.Component {
 
 	showTriggersModal() {
 		ModalUtil.show(
-			<TriggerListModal
-				content={this.props.node.data.get('content')}
-				onClose={this.closeModal}/>
+			<TriggerListModal content={this.props.node.data.get('content')} onClose={this.closeModal} />
 		)
 	}
 
 	closeModal(modalState) {
-		this.props.editor.setNodeByKey(
-			this.props.node.key,
-			{ data: { ...this.props.node.data.toJSON(), content: modalState } }
-		)
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: { ...this.props.node.data.toJSON(), content: modalState }
+		})
 	}
 
 	renderTriggers() {
@@ -40,10 +37,10 @@ class ActionButton extends React.Component {
 			<div className="trigger-box" contentEditable={false}>
 				<div className="box-border">
 					<div className="trigger-list">
-						<div className="title">
-							When the button is clicked:
-						</div>
-						{ onClickTrigger.actions.map(action => <ActionButtonEditorAction key={action.type} {...action} />) }
+						<div className="title">When the button is clicked:</div>
+						{onClickTrigger.actions.map(action => (
+							<ActionButtonEditorAction key={action.type} {...action} />
+						))}
 					</div>
 					<Button className="add-action" onClick={this.showTriggersModal}>
 						Edit Triggers

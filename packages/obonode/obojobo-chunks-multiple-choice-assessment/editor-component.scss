@@ -5,7 +5,7 @@
 	padding: 0.5em;
 	margin-top: 0;
 
-	>div {
+	> div {
 		background-color: $color-bg;
 		border-radius: $dimension-rounded-radius;
 
@@ -15,11 +15,11 @@
 		}
 	}
 
-	.mc-settings{
+	.mc-settings {
 		background-color: $color-bg2;
 		padding-bottom: 0.5em;
 		padding-left: 2.5em;
-		font-family: "Libre Franklin", Arial, sans-serif;
+		font-family: $font-default;
 		position: relative;
 
 		select {
@@ -36,10 +36,9 @@
 
 	// Work around for the tangled scss in MCAssessment
 	.obojobo-draft--chunks--mc-assessment--mc-choice {
-		position: relative; 
+		position: relative;
 
 		&.editor-mc-choice {
-
 			.delete-button {
 				top: 0.7em;
 				right: 0.7em;

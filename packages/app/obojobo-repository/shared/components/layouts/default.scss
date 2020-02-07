@@ -14,62 +14,18 @@
 	flex-grow: 0;
 }
 
-.repository--column-layout {
-	display: flex;
-
-	> div {
-		margin-left: 25px;
-		margin-right: 25px;
-		width: 50%;
-
-		&:first-child {
-			margin-left: 0;
-		}
-
-		&:last-child {
-			margin-right: 0;
-		}
-	}
-}
-
-.repository--item-list--title {
-	display: table;
-	white-space: nowrap;
-	margin-bottom: 20px;
-
-	&::after {
-		border-top: 1px solid $border-color;
-		content: '';
-		display: table-cell;
-		position: relative;
-		top: 0.6em;
-		width: 100%;
-		left: 2%;
-	}
-}
-
 .repository--item-list--collection {
 	&:last-child {
 		border-top: 0;
 	}
 }
 
-.repository--item-list--collection--item--date {
-	font-size: 0.8em;
-	color: $color-text-minor;
-}
-
-.repository--item-list--collection--title {
-	font-size: 0.8em;
-	margin-bottom: 10px;
-}
-
 .repository--item-list--collection--item-wrapper {
 	// add some margin so that the
 	// icons line up visually with the left
 	// the padding/bg around them makes them look off otherwise
-	margin-left: -8px;
-	margin-right: -8px;
+	margin-left: -0.5em;
+	margin-right: -0.5em;
 }
 
 .repository--item-list--row {
@@ -97,34 +53,6 @@
 	@include with-bottom-border();
 }
 
-.repository--fact--bad {
-	color: red;
-}
-
-.repository--fact--good {
-	color: green;
-}
-
-.repository--fact--neutral {
-	color: inherit;
-}
-
-.repository--fact--value {
-	font-size: 1.1em;
-}
-
-.repository--item-list--collection--item--text {
-	margin: 10px;
-}
-
-.repository--item-list--collection--item--text-detail {
-	font-size: 0.8em;
-}
-
-.repository--quote {
-	font-style: italic;
-}
-
 .repository--item-list--collection--item--multi-wrapper {
 	display: flex;
 	flex-wrap: wrap;
@@ -138,21 +66,12 @@
 	}
 }
 
-.repository--item-list--collection--item--newline-container {
-	width: 100%;
-	margin: 20px 10px;
-	text-align: center;
-}
-
 .repository--main-content {
 	box-sizing: border-box;
-	max-width: 770px;
+	max-width: $dimension-width;
 	margin: 0 auto;
-
-	@include mq($from: zero, $until: tablet) {
-		margin-left: 10px;
-		margin-right: 10px;
-	}
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
 
 	code {
 		background-color: #eeeeee;
@@ -167,19 +86,27 @@
 
 .repository--main-content--title {
 	font-family: $font-default;
-	text-align: center;
+	text-align: left;
 	font-size: 1.2em;
 	display: table;
 	white-space: nowrap;
-	margin-bottom: 20px;
+	margin-bottom: 0.8em;
+	width: 100%;
+	position: relative;
 
-	&::after {
+	> span {
+		background: $color-bg;
+		position: relative;
+		padding-right: 1em;
+	}
+
+	&::before {
 		border-top: 1px solid $border-color;
 		content: '';
 		display: table-cell;
-		position: relative;
+		position: absolute;
 		top: 0.6em;
-		width: 100%;
-		left: 2%;
+		left: 0;
+		right: 0;
 	}
 }

@@ -12,7 +12,6 @@ const yarnList = `yarn list v1.13.0
 ✨  Done in 698.89s.`
 
 describe('obojobo lib utils', () => {
-
 	beforeEach(() => {
 		jest.resetModules() // needed to completely reset draft_node_store
 		// fake the response from yarn list
@@ -281,7 +280,7 @@ describe('obojobo lib utils', () => {
 
 		expect(mockExecSync).toHaveBeenCalledTimes(2)
 		expect(mockExecSync.mock.calls[1][0]).toContain('db-migrate/bin/db-migrate up')
-		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-express/config/db.json')
+		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-express/server/config/db.json')
 		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-lib-utils/__mocks__/mock-migrations')
 	})
 

@@ -1,25 +1,44 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
-const UserModel = require('obojobo-express/models/user')
+const UserModel = require('obojobo-express/server/models/user')
+const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
+const { userHasPermissionToCopy } = require('../services/permissions')
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
 	.route('/')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('page-homepage.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('homepage.css')
+		}
+		res.render('pages/page-homepage.jsx', props)
 	})
 
-// returns images for a module
+// Module Images
 router.route('/library/module-icon/:moduleId').get((req, res) => {
+	// @TODO: when user's can change these images,
+	// we'll need to use a smarter etag
+
+	// use etag to avoid doing work, if the browser
+	// sends an if-none-match of this object's etag
+	// it already has it cached, just return 304 now
+	if (req.headers['if-none-match'] === req.params.moduleId) {
+		res.status(304)
+		res.send()
+		return
+	}
+
 	const pattern = GeoPattern.generate(req.params.moduleId)
-	res.set('Cache-Control', 'public, max-age=31557600') // one year
+	res.setHeader('ETag', req.params.moduleId)
 	res.setHeader('Content-Type', 'image/svg+xml')
 	res.send(pattern.toString())
 })
@@ -28,15 +47,17 @@ router
 	.route('/login')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('page-login.jsx', { currentUser: req.currentUser })
+		const props = {
+			currentUser: req.currentUser,
+			appCSSUrl: webpackAssetPath('repository.css')
+		}
+		res.render('pages/page-login.jsx', props)
 	})
 
 router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-
 		return RepositoryCollection.fetchById(publicLibCollectionId)
 			.then(collection => {
 				return collection.loadRelatedDrafts()
@@ -46,9 +67,10 @@ router
 					collections: [collection],
 					page: 1,
 					pageCount: 1,
-					currentUser: req.currentUser
+					currentUser: req.currentUser,
+					appCSSUrl: webpackAssetPath('repository.css')
 				}
-				res.render('page-library.jsx', props)
+				res.render('pages/page-library.jsx', props)
 			})
 			.catch(res.unexpected)
 	})
@@ -71,12 +93,16 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
+			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+
 			const props = {
 				module,
 				owner,
-				currentUser: req.currentUser
+				currentUser: req.currentUser,
+				appCSSUrl: webpackAssetPath('repository.css'),
+				canCopy
 			}
-			res.render('page-module.jsx', props)
+			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {
 			res.unexpected(e)
 		}

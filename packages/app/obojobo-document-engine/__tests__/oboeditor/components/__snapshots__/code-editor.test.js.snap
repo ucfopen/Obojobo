@@ -16,7 +16,8 @@ exports[`CodeEditor CodeEditor component 1`] = `
       Mock Title
     </div>
   </div>
+  Codemirror
 </div>
 `;
 
-exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"draft-title\\">Mock Title</div></div></div>"`;
+exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"draft-title\\">Mock Title</div></div>Codemirror</div>"`;

@@ -24,8 +24,10 @@ class ModProperties extends React.Component {
 	}
 
 	onChangeSlider(index, values) {
-		const lowerVal = values[0] === this.props.attempts + 1 ? '$last_attempt' : values[0]
-		const upperVal = values[1] === this.props.attempts + 1 ? '$last_attempt' : values[1]
+		const lowerVal =
+			values[0] === parseInt(this.props.attempts, 10) + 1 ? '$last_attempt' : values[0]
+		const upperVal =
+			values[1] === parseInt(this.props.attempts, 10) + 1 ? '$last_attempt' : values[1]
 		const attemptCondition = '[' + lowerVal + ',' + upperVal + ']'
 		this.setState(prevState => ({
 			mods: prevState.mods.map((mod, listIndex) =>
@@ -87,7 +89,7 @@ class ModProperties extends React.Component {
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
-				<div className="mod-properties">
+				<div className="obojobo-draft--sections--assessment--mod-properties">
 					<p className="info" ref={this.inputRef} tabIndex={-1}>
 						You can add or deduct percentage points from a student&apos;s assessment score based on
 						which attempt they achived a passing score. (The final assessment score is still limited
@@ -98,7 +100,8 @@ class ModProperties extends React.Component {
 							const range = getParsedRange(mod.attemptCondition)
 							// If there are unlimited attempts, limit the mods to the first 20 attempts
 							// Otherwise, add one to the number of attempts to make a space for $last_attempt
-							const upperRange = this.props.attempts === 'unlimited' ? 20 : this.props.attempts + 1
+							const upperRange =
+								this.props.attempts === 'unlimited' ? 20 : parseInt(this.props.attempts, 10) + 1
 
 							// safely wrap string values like $last_attempt as the highest value
 							const lower = parseInt(range.min, 10)
@@ -139,6 +142,8 @@ class ModProperties extends React.Component {
 										Add{' '}
 										<input
 											type="number"
+											min="-100"
+											max="100"
 											value={mod.reward}
 											onChange={this.onChangeReward.bind(this, index)}
 										/>

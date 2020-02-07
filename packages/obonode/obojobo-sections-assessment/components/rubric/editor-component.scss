@@ -31,7 +31,7 @@
 			display: block;
 
 			input {
-				margin-right: 1em; 
+				margin-right: 1em;
 			}
 		}
 	}
@@ -76,7 +76,7 @@
 
 			.button {
 				color: $color-action;
-				background-color: inherit;
+				background-color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
 				border-color: $color-action;
 				border-width: 2px;
 
@@ -91,11 +91,11 @@
 			text-align: left;
 
 			.reward {
-				color: $color-correct
+				color: $color-correct;
 			}
 
 			.deduct {
-				color: $color-incorrect
+				color: $color-incorrect;
 			}
 		}
 	}
@@ -118,7 +118,7 @@
 		display: none;
 	}
 
-	input[type="number"] {
+	input[type='number'] {
 		@include text-input();
 
 		max-width: 3em;
