@@ -6,6 +6,7 @@ import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
+import VariableListModal from '../variables/variable-list-modal'
 
 const { Button, Switch } = Common.components
 const { ModalUtil } = Common.util
@@ -39,6 +40,7 @@ class MoreInfoBox extends React.Component {
 		this.onSave = this.onSave.bind(this)
 
 		this.showTriggersModal = this.showTriggersModal.bind(this)
+		this.showVariablesModal = this.showVariablesModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 
 		this.node = React.createRef()
@@ -130,6 +132,12 @@ class MoreInfoBox extends React.Component {
 		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
 	}
 
+	showVariablesModal() {
+		// Prevent info box from closing when modal is opened
+		document.removeEventListener('mousedown', this.handleClick, false)
+		ModalUtil.show(<VariableListModal content={this.state.content} onClose={this.closeModal} />)
+	}
+
 	closeModal(modalState) {
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
@@ -195,6 +203,7 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
+
 		return (
 			<div className="more-info-box">
 				<div className="container">
@@ -232,6 +241,21 @@ class MoreInfoBox extends React.Component {
 								) : null}
 							</span>
 							<Button className="trigger-button" onClick={this.showTriggersModal}>
+								✎ Edit
+							</Button>
+						</div>
+						<div>
+							<span className="triggers">
+								Variables:
+								{triggers && triggers.length > 0 ? (
+									<span>
+										{triggers
+											.map(trigger => trigger.type)
+											.reduce((accum, trigger) => accum + ', ' + trigger)}
+									</span>
+								) : null}
+							</span>
+							<Button className="trigger-button" onClick={this.showVariablesModal}>
 								✎ Edit
 							</Button>
 						</div>

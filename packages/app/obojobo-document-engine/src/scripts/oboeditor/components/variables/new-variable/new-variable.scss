@@ -1,0 +1,34 @@
+@import '~styles/includes';
+
+.new-variable {
+	background: $color-bg;
+	display: inline-block;
+	padding: 1em;
+	font-size: 0.9em;
+	overflow-y: scroll;
+	text-align: left;
+	flex: 1;
+
+	.new-variable--title {
+		margin: 0.8em auto;
+	}
+
+	.new-variable--type-list {
+		border-radius: $dimension-rounded-radius;
+		border: solid 2px $color-action;
+
+		.new-variable--type-list--single-item {
+			border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+			padding: 1em;
+
+			p {
+				padding: 0;
+				margin: 0;
+			}
+
+			&:hover {
+				background-color: lighten($color-action, 50%);
+			}
+		}
+	}
+}
