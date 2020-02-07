@@ -36,42 +36,42 @@ const FormatMenu = props => {
 			{ 
 				name: 'Normal Text', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(TEXT_NODE) 
+				action: () => props.editor.changeToType(TEXT_NODE) 
 			},
 			{ 
 				name: 'Heading 1', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 1 }) 
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 1 }) 
 			},
 			{ 
 				name: 'Heading 2', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 2 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 2 })  
 			},
 			{ 
 				name: 'Heading 3', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
 			},
 			{ 
 				name: 'Heading 4', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
 			},
 			{ 
 				name: 'Heading 5', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
 			},
 			{ 
 				name: 'Heading 6', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(HEADING_NODE, { level: 3 })  
+				action: () => props.editor.changeToType(HEADING_NODE, { level: 3 })  
 			},
 			{ 
 				name: 'Code', 
 				type: 'action', 
-				action: () => props.editor.current.changeToType(CODE_NODE)  
+				action: () => props.editor.changeToType(CODE_NODE)  
 			}
 		]
 	}
@@ -82,7 +82,7 @@ const FormatMenu = props => {
 		menu: alignIndentMarks.map(mark => ({
 			name: mark.name,
 			type: 'action',
-			action: () => mark.action(props.editor.current)
+			action: () => mark.action(props.editor)
 		}))
 	}
 
@@ -97,17 +97,17 @@ const FormatMenu = props => {
 					{ 
 						name: '● Disc', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 					},
 					{ 
 						name: '○ Circle', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' }) 
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' }) 
 					},
 					{ 
 						name: '■ Square', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' }) 
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' }) 
 					}
 				]
 			},
@@ -118,23 +118,23 @@ const FormatMenu = props => {
 					{ 
 						name: 'Numbers', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })},
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })},
 					{ 
 						name: 'Lowercase Alphabet', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })},
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })},
 					{ 
 						name: 'Lowercase Roman Numerals', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })},
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })},
 					{ 
 						name: 'Uppercase Alphabet', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })},
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })},
 					{ 
 						name: 'Uppercase Roman Numerals', 
 						type: 'action', 
-						action: () => props.editor.current.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })}
+						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })}
 				]
 			}
 		]

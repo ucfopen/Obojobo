@@ -1,8 +1,8 @@
+import { Editor, Element, Transforms } from 'slate'
+
 import LeftIcon from '../../assets/left-icon'
 import RightIcon from '../../assets/right-icon'
 import CenterIcon from '../../assets/center-icon'
-
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
@@ -11,7 +11,7 @@ const ALIGN_LEFT = 'left'
 const AlignMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey)) return next()
+			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
 				case 'l':
@@ -23,26 +23,20 @@ const AlignMarks = {
 				case 'e':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_CENTER)
-				default:
-					next()
 			}
 		},
-		queries: {
+		commands: {
 			setAlign: (editor, align) => {
-				const value = editor.value
+				const list = Array.from(Editor.nodes(editor, {
+					mode: 'lowest',
+					match: node => Element.isElement(node) && !editor.isInline(node)
+				}))
 
-				value.blocks.forEach(block => {
-					const dataJSON = block.data.toJSON()
-					if (block.type === TEXT_LINE_NODE) {
-						dataJSON.align = align
-					} else {
-						dataJSON.content.align = align
-					}
-
-					editor.setNodeByKey(block.key, { data: dataJSON })
-				})
-
-				return true
+				list.forEach(([child, path]) => Transforms.setNodes(
+					editor, 
+					{ content: {...child.content, align }}, 
+					{ at: path }
+				))
 			}
 		}
 	},

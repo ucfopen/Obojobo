@@ -127,9 +127,9 @@ class PageEditor extends React.Component {
 		const markPlugins = [
 			BasicMarks.plugins,
 			LinkMark.plugins,
-			// ScriptMarks.plugins,
-			// AlignMarks.plugins,
-			// IndentMarks.plugins
+			ScriptMarks.plugins,
+			AlignMarks.plugins,
+			IndentMarks.plugins
 		]
 
 		this.globalPlugins = [
@@ -271,14 +271,14 @@ class PageEditor extends React.Component {
 		}
 
 		// If none of the global plugins caught the key event,
-		// Seperate out all the selected nodes, and run the keyDown 
+		// Seperate out all the selected Oobojobo nodes, and run the keyDown 
 		// on each one
 		// The event will always run on every selected node, but 
 		// if one node does something special, it will prevent the 
 		// default Slate action from occurring on any selected node
 		const list = Array.from(Editor.nodes(this.editor, {
-			mode: 'highest',
-			match: node => Element.isElement(node)
+			mode: 'lowest',
+			match: node => Element.isElement(node) && !this.editor.isInline(node) && !node.subtype
 		}))
 
 
