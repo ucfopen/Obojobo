@@ -8,12 +8,15 @@ const FormatPlugin = {
 				mode: 'lowest',
 				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
 			}))
-			list.forEach(entry => {
-				const item = Common.Registry.getItemForType(entry[0].type)
 
-				if (item.switchType[type]) {
-					item.switchType[type](editor, entry, data)
-				}
+			Editor.withoutNormalizing(editor, () => {
+				list.forEach(entry => {
+					const item = Common.Registry.getItemForType(entry[0].type)
+
+					if (item.switchType[type]) {
+						item.switchType[type](editor, entry, data)
+					}
+				})
 			})
 		}
 	}

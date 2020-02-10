@@ -9,10 +9,11 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 // Slate runs normalizations repeatedly on a single node, so each problem can be fixed separtely
 // When the normalizeNode function returns, Slate knows that a single problem within the node
-// hs been fixed, and runs the normalizeNode function again to see if there are any further problems
+// has been fixed, and runs the normalizeNode function again to see if there are any further problems
 // For more detailed information, see: https://docs.slatejs.org/concepts/10-normalizing
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
+	console.log(node)
 
 	// If the element is a List Node, only allow ListLevel children
 	if (node.type === LIST_NODE && !node.subtype) {

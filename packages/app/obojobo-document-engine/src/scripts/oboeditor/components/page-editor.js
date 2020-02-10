@@ -37,6 +37,10 @@ import { createEditor, Editor, Element, Transforms } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
 
+// This file overwrites some Slate methods to fix weird bugs in the Slate system
+// It should be deleted when the Slate bugs are remidied
+import '../overwrite-bug-fixes'
+
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)

@@ -17,7 +17,9 @@ const onBackspace = (node, editor, event) => {
 
 	// If we are deleting multiple things or we are not at the start of the line, stop here
 	// Returning before the preventDefault allows Slate to handle the backspace
-	if (!Range.isCollapsed(editor.selection) || !Editor.isStart(editor, editor.selection.focus, startLineRange)) return 
+	if (!Range.isCollapsed(editor.selection) || !Editor.isStart(editor, editor.selection.focus, startLineRange)) {
+		return 
+	}
 
 
 	// Get the deepest level that contains this line
