@@ -47,23 +47,17 @@ describe('Visit Model', () => {
 		})
 	})
 
-	test('fetchById logs errors', done => {
-		expect.assertions(2)
+	test('fetchById logs errors', () => {
 		db.one.mockRejectedValueOnce(new Error('mockError'))
 
-		Visit.fetchById('mockVisitId')
-			.then(result => {
-				expect(result).toEqual('never reached')
-				done()
-			})
+		expect.hasAssertions()
+		return Visit.fetchById('mockVisitId')
 			.catch(error => {
-				expect(logger.error).toHaveBeenCalledWith(
+				expect(logger.logError).toHaveBeenCalledWith(
 					'Visit fetchById Error',
-					'mockVisitId',
-					'mockError'
+					expect.any(Error)
 				)
 				expect(error.message).toEqual('mockError')
-				done()
 			})
 	})
 
@@ -89,6 +83,42 @@ describe('Visit Model', () => {
 					draftId: 'draft-id',
 					draftContentId: 'mocked-draft-content-id',
 					userId: 'user-id',
+					isScoreImportable: false,
+					resourceLinkId: 'resource-link-id',
+					launchId: 'launch-id',
+					isPreview: false
+				})
+				expect(result).toEqual({
+					visitId: 'resulting-visit-id',
+					deactivatedVisitIds: ['deactivated-visit-id']
+				})
+			}
+		)
+	})
+
+	test('createVisit updates and inserts visit with importableScores', () => {
+		expect.assertions(4)
+
+		db.manyOrNone.mockResolvedValueOnce([{ id: 'deactivated-visit-id' }])
+		db.one
+			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
+			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
+
+		return Visit.createVisit('user-id', 'draft-id', 'resource-link-id', 'launch-id', { isScoreImportable: true }).then(
+			result => {
+				expect(db.manyOrNone.mock.calls[0][1]).toEqual({
+					draftId: 'draft-id',
+					userId: 'user-id',
+					resourceLinkId: 'resource-link-id'
+				})
+				expect(db.one.mock.calls[0][1]).toEqual({
+					draftId: 'draft-id'
+				})
+				expect(db.one.mock.calls[1][1]).toEqual({
+					draftId: 'draft-id',
+					draftContentId: 'mocked-draft-content-id',
+					userId: 'user-id',
+					isScoreImportable: true,
 					resourceLinkId: 'resource-link-id',
 					launchId: 'launch-id',
 					isPreview: false
@@ -125,6 +155,7 @@ describe('Visit Model', () => {
 				draftId: 'draft-id',
 				draftContentId: 'mocked-draft-content-id',
 				userId: 'user-id',
+				isScoreImportable: false,
 				resourceLinkId: 'preview',
 				launchId: null,
 				isPreview: true
@@ -157,6 +188,7 @@ describe('Visit Model', () => {
 				draftId: 'draft-id',
 				draftContentId: 'mocked-draft-content-id',
 				userId: 'user-id',
+				isScoreImportable: false,
 				resourceLinkId: 'preview',
 				launchId: null,
 				isPreview: true

@@ -1,11 +1,10 @@
 const AssessmentScore = require('../models/assessment-score')
 const AssessmentModel = require('../models/assessment')
 const insertEvents = require('./insert-events')
-const logger = require('obojobo-express/server/logger')
 const lti = require('obojobo-express/server/lti')
 const db = require('obojobo-express/server/db')
 
-const AttemptImport = async (req, res) => {
+const AttemptImport = async (req) => {
 	// @TODO validate req.body.importedAssessmentScoreId
 	if(req.currentVisit.score_importable !== true) throw "Import score used on visit without import enabled"
 
@@ -53,9 +52,6 @@ const AttemptImport = async (req, res) => {
 		req.currentVisit.is_preview,
 		req.currentVisit.resource_link_id
 	)
-
-	console.log('HISTORY')
-	console.log(history)
 
 	// save an event
 	await insertEvents.insertAttemptEndEvents(

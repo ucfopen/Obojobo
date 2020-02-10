@@ -25,7 +25,7 @@ const { DOMUtil, focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
-const { SimpleDialog, Dialog } = Common.components.modal
+const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 

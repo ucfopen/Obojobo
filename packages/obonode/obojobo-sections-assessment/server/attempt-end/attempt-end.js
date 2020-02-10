@@ -8,7 +8,7 @@ const endAttempt = async (req, res) => {
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
 	logger.info(
-		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${req.isPreview}")`
+		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${req.currentVisit.is_preview}")`
 	)
 
 	// get this attempt from the db
@@ -16,7 +16,7 @@ const endAttempt = async (req, res) => {
 
 	// ensure the attempt is for the current module & version
 	if(req.currentDocument.draftId !== attempt.draftId || req.currentDocument.contentId !== attempt.draftContentId) {
-		throw "Cannot end an attempt for a different module"
+		throw Error("Cannot end an attempt for a different module")
 	}
 
 	const attemptNumber = await AssessmentModel.getAttemptNumber(
@@ -42,7 +42,6 @@ const endAttempt = async (req, res) => {
 
 	// load the draft document to get the assessment model from the database
 	const assessmentModel = req.currentDocument.getChildNodeById(attempt.assessmentId)
-
 	// Run the assessment, responses, and history through the score calculator
 	const calculatedScores = await getCalculatedScores(
 		req,

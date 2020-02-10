@@ -68,7 +68,7 @@ const APIUtil = {
 	},
 
 	postDraft(draftId, draftString, format='application/json') {
-		return APIUtil.postWithFormat(`/api/drafts/${draftId}`, draftString, format).then(processJsonResults)
+		return API.postWithFormat(`/api/drafts/${draftId}`, draftString, format).then(processJsonResults)
 	},
 
 	createNewDraft() {

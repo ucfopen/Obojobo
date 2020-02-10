@@ -5,13 +5,13 @@ const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
 const DraftPermissions = require('../models/draft_permissions')
 const DraftsMetadata = require('../models/drafts_metadata')
+const { userHasPermissionToCopy } = require('../services/permissions')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
 	requireCurrentDocument
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
-const db = require('obojobo-express/server/db')
 const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
 // List public drafts
@@ -45,12 +45,9 @@ router
 			return
 		}
 
-		try {
-			const users = await searchForUserByString(req.query.q)
-			res.success(users)
-		} catch (error) {
-			res.unexpected(error)
-		}
+		return UserModel.searchForUsers(req.query.q)
+			.then(res.success)
+			.catch(res.unexpected)
 	})
 
 // Copy a draft to the current user

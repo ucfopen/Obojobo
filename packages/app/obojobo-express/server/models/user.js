@@ -2,6 +2,7 @@ const db = oboRequire('server/db')
 const permissions = oboRequire('server/config').permissions
 const crypto = require('crypto')
 const oboEvents = oboRequire('server/obo_events')
+const logger = oboRequire('server/logger')
 
 class User {
 	constructor({
@@ -90,7 +91,7 @@ class User {
 					OR username ILIKE $[searchInput]
 					ORDER BY first_name, last_name
 					LIMIT 25`,
-					{ searchInput }
+					{ searchInput: `%${searchInput}%` }
 				)
 			})
 			.then(results => results.map(r => User.dbResultToModel(r)))

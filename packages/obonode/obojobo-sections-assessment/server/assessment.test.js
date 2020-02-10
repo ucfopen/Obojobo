@@ -23,40 +23,19 @@ jest.mock('./models/assessment')
 jest.mock('./models/assessment-score')
 
 let db
-let lti
 let Assessment
 let AssessmentModel
 let AssessmentScore
-let logger
 
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
 		db = require('obojobo-express/server/db')
-		lti = require('obojobo-express/server/lti')
 		Assessment = require('./assessment')
 		AssessmentModel = require('./models/assessment')
 		AssessmentScore = require('./models/assessment-score')
-		logger = require('obojobo-express/server/logger')
 		db.one.mockReset()
 		db.manyOrNone.mockReset()
-	})
-
-	const makeMockAttempt = () => ({
-		attempt_id: 'mockAttemptId',
-		assessment_id: 'mockAssessmentId',
-		draft_content_id: 'mockContentId',
-		created_at: 'mockCreatedAt',
-		completed_at: 'mockCompletedAt',
-		state: 'mockState',
-		result: {
-			attemptScore: 'mockResult',
-			questionScores: ['mockScore']
-		},
-		assessment_score: '15',
-		score_details: 'mockScoreDetails',
-		assessment_score_id: 'scoreId',
-		attempt_number: '12'
 	})
 
 	test('nodeName is expected value', () => {

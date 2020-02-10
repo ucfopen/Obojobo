@@ -78,8 +78,7 @@ const mockSendAssessScoreDBCalls = (
 		// mock getLatestHighestAssessmentScoreRecord
 		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 		db.one.mockRejectedValueOnce(noDataError)
-	}
-	else{
+	} else{
 
 		// mock getLatestHighestAssessmentScoreRecord
 		db.one.mockResolvedValueOnce({
@@ -2547,33 +2546,6 @@ describe('lti', () => {
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 		})
-
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.error.mock.calls[0][0]).toBe('LTI bad error attempting to update database! :(')
-			expect(logger.info.mock.calls[7]).toEqual(['LTI complete', logId])
 	})
 
 	test('unexpected error works as expected', () => {

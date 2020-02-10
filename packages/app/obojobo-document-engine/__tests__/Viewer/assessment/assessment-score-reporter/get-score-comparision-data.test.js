@@ -9,7 +9,7 @@ describe('getScoreChangeData', () => {
 		]
 
 		const result = getScoreComparisionData(scoreDetails, 50)
-		expect(result).toHaveProperty('newInfo', undefined)
+		expect(result).toHaveProperty('newInfo', undefined) //eslint-disable-line no-undefined
 		expect(result).toHaveProperty('prevHighestInfo', scoreDetails[1])
 	})
 

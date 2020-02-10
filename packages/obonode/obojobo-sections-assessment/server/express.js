@@ -1,6 +1,4 @@
 const router = require('express').Router() //eslint-disable-line new-cap
-const oboEvents = require('obojobo-express/server/obo_events')
-const db = require('obojobo-express/server/db')
 const AssessmentModel = require('./models/assessment')
 const lti = require('obojobo-express/server/lti')
 const logger = require('obojobo-express/server/logger')
@@ -8,10 +6,8 @@ const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const attemptReview = require('./attempt-review')
-const insertEvents = require('./attempt-end/insert-events')
 const attemptImport = require('./attempt-end/attempt-import')
 const { logAndRespondToUnexpected } = require('./util')
-const { deletePreviewState } = require('./services/preview')
 const {
 	requireCurrentDocument,
 	requireCurrentVisit,
@@ -142,36 +138,7 @@ router
 			})
 	})
 
-oboEvents.on('client:question:setResponse', async (event, req) => {
-	const eventRecordResponse = 'client:question:setResponse'
-
-	try {
-		if (!event.payload.attemptId) return // assume we're in practice
-		if (!event.payload.questionId) throw 'Missing Question ID'
-		if (!event.payload.response) throw 'Missing Response'
-
-		await db.none(
-			`
-		INSERT INTO attempts_question_responses
-		(attempt_id, question_id, response, assessment_id)
-		VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
-		ON CONFLICT (attempt_id, question_id) DO
-			UPDATE
-			SET
-				response = $[response],
-				updated_at = now()
-			WHERE attempts_question_responses.attempt_id = $[attemptId]
-				AND attempts_question_responses.question_id = $[questionId]`,
-			{
-				assessmentId: event.payload.assessmentId,
-				attemptId: event.payload.attemptId,
-				questionId: event.payload.questionId,
-				response: event.payload.response
-			}
-		)
-	} catch (error) {
-		logger.error(eventRecordResponse, req, event, error, error.toString())
-	}
-})
+// register the event listeners
+require('./events')
 
 module.exports = router

@@ -80,8 +80,7 @@ class AssessmentStore extends Store {
 
 		if(unfinishedAttempt){
 			this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
-		}
-		else if(ext.importableScore && this.state.importHasBeenUsed !== true){
+		} else if(ext.importableScore && this.state.importHasBeenUsed !== true){
 			this.displayScoreImportNotice(ext.importableScore)
 		}
 	}
@@ -168,10 +167,9 @@ class AssessmentStore extends Store {
 					stateSummary.importUsed = true
 				}
 
-				if(!attempt.isFinished){
+				if (!attempt.isFinished){
 					stateSummary.unfinishedAttemptId = attempt.id
-				}
-				else{
+				} else{
 					stateSummary.scores.push(attempt.assessmentScore)
 				}
 			})
@@ -293,8 +291,7 @@ class AssessmentStore extends Store {
 					}
 
 					this.displayPreAttemptImportScoreNotice(this.state.importableScore.highestScore, importOrNotCallback)
-				}
-				else{
+				} else{
 					// no importable score, next
 					resolve(false)
 				}
@@ -387,9 +384,9 @@ class AssessmentStore extends Store {
 	}
 
 	updateStateAfterEndAttempt(assessmentId, context) {
+		console.log('ITS A ME')
 		const assessment = this.state.assessments[assessmentId]
 		const model = OboModel.models[assessmentId]
-
 		// flip all questions back over
 		assessment.current.state.chosen.forEach(question => {
 			if (question.type === QUESTION_NODE_TYPE) {
@@ -507,7 +504,7 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	displayImportAlreadyUsed(importableScore) {
+	displayImportAlreadyUsed() {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
 				title: 'Score Already Imported',

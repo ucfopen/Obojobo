@@ -1,7 +1,5 @@
 import LTIStatus, { UIStates } from './index'
-
 import React from 'react'
-import Viewer from 'Viewer'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'

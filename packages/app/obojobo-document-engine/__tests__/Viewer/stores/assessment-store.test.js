@@ -3,7 +3,6 @@
 
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import { Registry } from '../../../src/scripts/common/registry'
-import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../src/scripts/viewer/stores/nav-store'
@@ -15,8 +14,8 @@ import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
+import AssessmentScoreReporter from '../../../src/scripts/viewer/assessment/assessment-score-reporter'
 import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
@@ -29,16 +28,19 @@ jest.mock('../../../src/scripts/common/util/error-util', () => ({
 	errorResponse: jest.fn()
 }))
 
+jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
+jest.mock('../../../src/scripts/viewer/stores/nav-store')
 jest.mock('../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../src/scripts/viewer/util/nav-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/util/assessment-api')
-jest.mock('../../../src/scripts/viewer/util/assessment-util.js')
+jest.mock('../../../src/scripts/viewer/util/assessment-util')
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 describe('AssessmentStore', () => {
 	let restoreConsole
+	let AssessmentStore
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -61,63 +63,64 @@ describe('AssessmentStore', () => {
 		]
 	})
 
-	const mockValidStartAttempt = () => {
-		AssessmentAPI.startAttempt.mockResolvedValue({
-			status: 'ok',
-			value: {
-				attemptId: 'attemptId',
-				assessmentId: 'assessmentId',
-				state: {
-					chosen: [
-						{
-							id: 'q1',
-							type: 'ObojoboDraft.Chunks.Question'
-						},
-						{
-							id: 'q2',
-							type: 'ObojoboDraft.Chunks.Question'
-						},
-						{
-							id: 'qb',
-							type: 'ObojoboDraft.Chunks.QuestionBank'
-						}
-					]
-				},
-				questions: [
+	const mockStartAttemptResult = () => ({
+		status: 'ok',
+		value: {
+			attemptId: 'attemptId',
+			assessmentId: 'assessmentId',
+			state: {
+				chosen: [
 					{
 						id: 'q1',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'r1',
-								type: 'ObojoboDraft.Chunks.MCAssessment'
-							}
-						]
+						type: 'ObojoboDraft.Chunks.Question'
 					},
 					{
 						id: 'q2',
-						type: 'ObojoboDraft.Chunks.Question',
-						children: [
-							{
-								id: 'r2',
-								type: 'ObojoboDraft.Chunks.MCAssessment'
-							}
-						]
+						type: 'ObojoboDraft.Chunks.Question'
+					},
+					{
+						id: 'qb',
+						type: 'ObojoboDraft.Chunks.QuestionBank'
 					}
 				]
-			}
-		})
-	}
+			},
+			questions: [
+				{
+					id: 'q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [
+						{
+							id: 'r1',
+							type: 'ObojoboDraft.Chunks.MCAssessment'
+						}
+					]
+				},
+				{
+					id: 'q2',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [
+						{
+							id: 'r2',
+							type: 'ObojoboDraft.Chunks.MCAssessment'
+						}
+					]
+				}
+			]
+		}
+	})
 
 	beforeEach(done => {
+		jest.resetModules()
 		jest.resetAllMocks()
+		jest.clearAllMocks()
+		AssessmentStore = require('../../../src/scripts/viewer/stores/assessment-store').default
 		restoreConsole = mockConsole('error')
 		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.init([])
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()
 		QuestionStore.triggerChange = jest.fn()
-		NavStore.init()
+
 
 		// Need to make sure all the Obo components are loaded
 		Registry.getItems(() => {
@@ -218,6 +221,11 @@ describe('AssessmentStore', () => {
 			value: { mockValue: true }
 		}
 
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+
 		AssessmentAPI.resumeAttempt.mockResolvedValueOnce(mockResumeAttemptResponse)
 		jest.spyOn(AssessmentStore, 'updateStateAfterStartAttempt')
 		AssessmentStore.updateStateAfterStartAttempt.mockReturnValueOnce()
@@ -287,7 +295,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('startAttemptWithAPICall injects question models, creates state, updates the nav and processes the onStartAttempt trigger', () => {
-		mockValidStartAttempt()
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		NavUtil.rebuildMenu = jest.fn()
@@ -313,7 +321,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('startAttemptWithAPICall builds an attempt if it doesnt exist', () => {
-		mockValidStartAttempt()
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		AssessmentStore.setState({ assessments: { assessmentId: {} } })
@@ -341,7 +349,10 @@ describe('AssessmentStore', () => {
 
 	test('tryResendLTIScore catches unexpected errors', () => {
 		OboModel.create(getExampleAssessment())
-
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({})
 		AssessmentStore.setState({ assessments: { assessmentId: {} } })
 
@@ -363,7 +374,11 @@ describe('AssessmentStore', () => {
 
 	test('tryResendLTIScore returns with error', () => {
 		expect.assertions(2)
-		mockValidStartAttempt()
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		AssessmentStore.setState({
@@ -390,7 +405,11 @@ describe('AssessmentStore', () => {
 
 	test('tryResendLTIScore updates and triggersChange', () => {
 		expect.assertions(2)
-		mockValidStartAttempt()
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		AssessmentStore.setState({
@@ -445,7 +464,10 @@ describe('AssessmentStore', () => {
 
 	test('endAttemptWithAPICall catches unexpected errors', () => {
 		OboModel.create(getExampleAssessment())
-
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
 		AssessmentStore.setState({
 			assessments: { assessmentId: { current: { attemptId: 'mockAttemptId' } } }
 		})
@@ -468,7 +490,11 @@ describe('AssessmentStore', () => {
 
 	test('endAttempt shows an error if the endAttempt request fails and triggers a change', () => {
 		expect.assertions(2)
-		mockValidStartAttempt()
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		AssessmentAPI.endAttempt.mockResolvedValueOnce({
@@ -486,72 +512,184 @@ describe('AssessmentStore', () => {
 			})
 	})
 
-	test('endAttempt hides questions, resets responses, updates state, processes onEndAttempt trigger and triggers a change', () => {
-		expect.assertions(4)
-		mockValidStartAttempt()
-		OboModel.create(getExampleAssessment())
+	test('endAttemptWithAPICall calls endAttempt with correct args', async () => {
+		expect.hasAssertions()
 
 		AssessmentStore.setState({
 			assessments: {
-				assessmentId: {
-					currentResponses: ['question1', 'question2'],
-					attempts: []
-				}
-			}
-		})
-
-		AssessmentAPI.endAttempt = jest.fn()
-		AssessmentAPI.endAttempt.mockResolvedValueOnce({
-			status: 'mockStatus',
-			value: {
-				status: 1
-			}
-		})
-
-		AssessmentAPI.getAttemptHistory = jest.fn()
-		AssessmentAPI.getAttemptHistory.mockResolvedValueOnce({
-			status: 'ok',
-			value: [
-				{
-					assessmentId: 'assessmentId',
-					endTime: '1/1/2017 0:05:20',
-					isFinished: true,
-					scoreDetails:{
-						status: 1
-					},
-					questionScores: [{ id: 'question1' }, { id: 'question2' }],
-					result: { assessmentScore: 100 },
-					startTime: '1/1/2017 00:05:00',
-					state: {
-						questions: [
-							{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
-							{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
-						]
+				['mock-assessment-id']: {
+					current: {
+						attemptId: 'mock-attempt-id',
+						state:{
+							chosen: []
+						}
 					}
 				}
-			]
+			}
 		})
 
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
-			attemptNumber: 1
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
 		})
 
+		// reject so we can skip setup for inner logic
+		AssessmentAPI.endAttempt.mockRejectedValueOnce('mock-error')
+
+		await expect(AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')).resolves.toBe()
+		expect(AssessmentAPI.endAttempt).toHaveBeenCalledWith({"attemptId": "mock-attempt-id", "draftId": "mockDraftId", "visitId": "mockVisitId"})
+	})
+
+	test('endAttemptWithAPICall handles endAttempt error', async () => {
+		expect.hasAssertions()
+
+		AssessmentStore.setState({
+			assessments: {
+				['mock-assessment-id']: {
+					current: {
+						attemptId: 'mock-attempt-id',
+						state:{
+							chosen: []
+						}
+					}
+				}
+			},
+		})
+
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+
+		// reject so we can skip setup for inner logic
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
+			status: 'error'
+		})
+
+		jest.spyOn(AssessmentStore, 'updateStateAfterEndAttempt')
+		jest.spyOn(AssessmentStore, 'triggerChange')
+		jest.spyOn(AssessmentStore, 'getAttemptHistory')
+		AssessmentStore.updateStateAfterEndAttempt.mockReturnValue()
+		await expect(AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')).resolves.toBe()
+
+		expect(AssessmentAPI.endAttempt).toHaveBeenCalledWith({"attemptId": "mock-attempt-id", "draftId": "mockDraftId", "visitId": "mockVisitId"})
+		expect(AssessmentStore.updateStateAfterEndAttempt).toHaveBeenCalledWith("mock-assessment-id", "mock-context")
+		expect(AssessmentStore.triggerChange).toHaveBeenCalled()
+		expect(AssessmentStore.getAttemptHistory).not.toHaveBeenCalled()
+		expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
+	})
+
+	test('endAttemptWithAPICall displays score report', async () => {
+		expect.hasAssertions()
+
+		// mock out as many internal methods as we can
+		// to limit how much internal complexity
+		// we have to deal with
+		jest.spyOn(AssessmentStore, 'updateStateAfterEndAttempt')
+		jest.spyOn(AssessmentStore, 'triggerChange')
+		jest.spyOn(AssessmentStore, 'getAttemptHistory')
+		jest.spyOn(AssessmentStore, 'displayResultsModal')
+
+		// mock the assessment model parts needed
+		OboModel.models['mock-assessment-id'] = {
+			modelState:{
+				rubric: {
+					toObject: () => 'mock-rubric-object'
+				},
+				attempts: ['mock-attempts']
+			}
+		}
+
+		// place the assessment into the store's state
+		AssessmentStore.state = {
+			assessments: {
+				['mock-assessment-id']: {
+					current: {
+						attemptId: 'mock-attempt-id'
+					},
+					attempts: [{
+						scoreDetails: 'mock-score-details'
+					}]
+				}
+			},
+		}
+
+		// mock navstore's state
+		NavStore.getState.mockReturnValue({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+
+		// mock the label extracted from the model
+		NavUtil.getNavLabelForModel.mockReturnValueOnce('mock-nav-label')
+
+		// mock end attempt results
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
+			value: {
+				attemptNumber: 'mock-attempt-number'
+			}
+		})
+
+		// mock to skip implementation
+		AssessmentStore.updateStateAfterEndAttempt.mockReturnValue()
+		AssessmentStore.getAttemptHistory.mockResolvedValueOnce()
+		AssessmentStore.triggerChange.mockReturnValue()
 
 
-		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
-			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(() => AssessmentStore.endAttemptWithAPICall('assessmentId', 'mockContext'))
-			.then(() => {
-				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1', 'mockContext')
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2', 'mockContext')
-			})
+		AssessmentScoreReporter.mockImplementation(() => ({
+			getReportFor: () => 'mock-score-report'
+		}))
+
+		// execute & expect that it resolves
+		await expect(AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')).resolves.toBe()
+
+		// make sure the modal is sent the arguments we expect
+		expect(AssessmentStore.displayResultsModal).toHaveBeenCalledWith("mock-nav-label", 'mock-attempt-number', 'mock-score-report')
+	})
+
+	test('updateStateAfterEndAttempt flips questions, resets responses, informs the model and dispatches attemptEnded', () => {
+		expect.hasAssertions()
+		// mock the assessment model parts needed
+		const model = {
+			processTrigger: jest.fn()
+		}
+
+		OboModel.models['mock-assessment-id'] = model
+
+		AssessmentStore.state = {
+			assessments: {
+				['mock-assessment-id']: {
+					current: {
+						state:{
+							chosen: [
+								{
+									id: 'mock-question-id',
+									type: 'ObojoboDraft.Chunks.Question'
+								}
+							]
+						}
+					},
+					currentResponses: [
+						'mock-question-response-id'
+					]
+				}
+			}
+		}
+
+		jest.spyOn(Dispatcher, 'trigger')
+		console.log('GOOO')
+		AssessmentStore.updateStateAfterEndAttempt('mock-assessment-id', 'mock-context')
+
+		expect(model.processTrigger).toHaveBeenCalledWith('onEndAttempt')
+		expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith("mock-question-id", "mock-context")
+		expect(QuestionUtil.clearResponse).toHaveBeenCalledWith("mock-question-response-id", "mock-context")
+		expect(AssessmentStore.state.assessments['mock-assessment-id'].current).toBe(null)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith("assessment:attemptEnded", "mock-assessment-id")
 	})
 
 	test('trySetResponse will not update with no Assessment', () => {
 		expect.assertions(1)
-		mockValidStartAttempt()
+		AssessmentAPI.startAttempt.mockResolvedValue(mockStartAttemptResult())
 		OboModel.create(getExampleAssessment())
 
 		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId')
@@ -563,7 +701,7 @@ describe('AssessmentStore', () => {
 
 	test('trySetResponse will update state', () => {
 		expect.assertions(2)
-		mockValidStartAttempt()
+		AssessmentAPI.startAttempt.mockResolvedValue((mockStartAttemptResult()))
 		OboModel.create(getExampleAssessment())
 
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
@@ -586,13 +724,14 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.getState()).toEqual('mockState')
 	})
 
-	test('assessment:startAttempt calls tryStartAttempt', () => {
-		jest.spyOn(AssessmentStore, 'tryStartAttempt')
-		AssessmentStore.tryStartAttempt.mockReturnValueOnce('mock')
+	test('assessment:startAttempt calls startAttemptWithImportScoreOption', () => {
+
+		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
+		AssessmentStore.startAttemptWithImportScoreOption.mockReturnValueOnce('mock')
 
 		Dispatcher.trigger('assessment:startAttempt', { value: {} })
 
-		expect(AssessmentStore.tryStartAttempt).toHaveBeenCalled()
+		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalled()
 	})
 
 	test('assessment:endAttempt calls endAttemptWithAPICall', () => {
@@ -643,6 +782,10 @@ describe('AssessmentStore', () => {
 
 	test('question:setResponse calls trySetResponse', () => {
 		jest.spyOn(AssessmentStore, 'trySetResponse')
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
 		AssessmentStore.trySetResponse.mockReturnValueOnce('mock')
 
 		Dispatcher.trigger('question:setResponse', { value: { id: 'q1' } })
@@ -664,33 +807,6 @@ describe('AssessmentStore', () => {
 
 		expect(AssessmentUtil.isInAssessment).toHaveBeenCalled()
 		expect(mockFunction).toHaveBeenCalled()
-	})
-
-	test('updateAttempts sets highestAttemptScoreAttempts and highestAssessmentScoreAttempts correctly', () => {
-		AssessmentUtil.findHighestAttempts.mockImplementation((attempts, prop) => {
-			return 'Called with ' + prop
-		})
-
-		AssessmentStore.updateAttempts([
-			{
-				assessmentId: 'assessmentId',
-				attempts: [
-					{
-						attemptId: 'attempt-1',
-						attemptScore: 0,
-						assessmentScore: null,
-						state: {
-							questions: []
-						}
-					}
-				]
-			}
-		])
-
-		const state = AssessmentStore.getState()
-		const assessState = state.assessments.assessmentId
-		expect(assessState.highestAttemptScoreAttempts).toEqual('Called with attemptScore')
-		expect(assessState.highestAssessmentScoreAttempts).toEqual('Called with assessmentScore')
 	})
 
 	test('onCloseResultsDialog hides modal and focuses on nav target content', () => {

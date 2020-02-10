@@ -2,10 +2,6 @@ const DraftNode = require('obojobo-express/server/models/draft_node')
 const AssessmentScore = require('./models/assessment-score')
 const AssessmentModel = require('./models/assessment')
 const NODE_NAME = 'ObojoboDraft.Sections.Assessment'
-const Visit = require('obojobo-express/server/models/visit')
-const db = require('obojobo-express/server/db')
-const lti = require('obojobo-express/server/lti')
-const logger = require('obojobo-express/server/logger')
 
 class Assessment extends DraftNode {
 	static get nodeName() {

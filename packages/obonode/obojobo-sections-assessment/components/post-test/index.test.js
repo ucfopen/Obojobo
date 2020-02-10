@@ -7,7 +7,6 @@ import React from 'react'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')

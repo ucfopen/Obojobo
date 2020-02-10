@@ -259,10 +259,10 @@ import '../css/module-selector.scss'
 	}
 
 	// utility
-	function hasMoreItems() {
-		const d = data
-		return d.last < d.items.length
-	}
+	// function hasMoreItems() {
+	// 	const d = data
+	// 	return d.last < d.items.length
+	// }
 
 	// list pages
 	function appendListItem(lo, listEl) {

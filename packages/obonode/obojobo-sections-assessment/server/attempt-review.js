@@ -12,8 +12,7 @@ const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
 	if(draftCache[attempt.draftContentId]){
 		// already loaded, get from cache
 		draftDocument = draftCache[attempt.draftContentId]
-	}
-	else {
+	} else {
 		draftDocument = await DraftModel.fetchDraftByVersion(
 			attempt.draftId,
 			attempt.draftContentId

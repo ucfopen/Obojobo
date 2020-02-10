@@ -1,6 +1,4 @@
-const Assessment = require('./assessment')
 const AssessmentModel = require('./models/assessment')
-const VisitModel = require('obojobo-express/server/models/visit')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
@@ -14,33 +12,40 @@ const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
 	let attemptState
-	const assessmentProperties = {
-		user: req.currentUser,
-		isPreview: req.currentVisit.is_preview,
-		draftTree: req.currentDocument,
-		id: req.body.assessmentId,
-		oboNode: null,
-		nodeChildrenIds: null,
-		questionBank: null,
-		attemptHistory: null,
-		numAttemptsTaken: null,
-		questionUsesMap: null,
-		resourceLinkId: req.currentVisit.resource_link_id
-	}
+	let assessmentProperties
+	let assessmentNode
 
-	// @TODO: make sure assessmentID is found
-	const assessmentNode = req.currentDocument.getChildNodeById(req.body.assessmentId)
-	assessmentProperties.oboNode = assessmentNode
-	assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-	assessmentProperties.questionBank = assessmentNode.children[1]
+	return Promise.resolve()
+		.then(() => {
+			attemptState
+			assessmentProperties = {
+				user: req.currentUser,
+				isPreview: req.currentVisit.is_preview,
+				draftTree: req.currentDocument,
+				id: req.body.assessmentId,
+				oboNode: null,
+				nodeChildrenIds: null,
+				questionBank: null,
+				attemptHistory: null,
+				numAttemptsTaken: null,
+				questionUsesMap: null,
+				resourceLinkId: req.currentVisit.resource_link_id
+			}
 
-	return AssessmentModel.getCompletedAssessmentAttemptHistory(
-			req.currentUser.id,
-			req.currentDocument.draftId,
-			req.body.assessmentId,
-			req.currentVisit.is_preview,
-			req.currentVisit.resource_link_id
-		)
+			// @TODO: make sure assessmentID is found
+			assessmentNode = req.currentDocument.getChildNodeById(req.body.assessmentId)
+			assessmentProperties.oboNode = assessmentNode
+			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+			assessmentProperties.questionBank = assessmentNode.children[1]
+
+			return AssessmentModel.getCompletedAssessmentAttemptHistory(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.body.assessmentId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
+		})
 		.then(attemptHistory => {
 			assessmentProperties.attemptHistory = attemptHistory
 			assessmentProperties.numAttemptsTaken = attemptHistory.length
@@ -53,7 +58,6 @@ const startAttempt = (req, res) => {
 			) {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 			}
-
 			attemptState = getState(assessmentProperties)
 			const toClientPromises = getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
 			return Promise.all(toClientPromises)
@@ -165,9 +169,9 @@ const getSendToClientPromises = (assessmentNode, attemptState, req, res) => {
 		// A nodeInstance must be fetched from the draftTree since the state of an assessment only holds question/questionBank node ids and types.
 		// Questions and question banks can be yelled at once an instance is retrieved.s
 		const nodeInstance = assessmentNode.draftTree.getChildNodeById(node.id)
-		promises = promises.concat(nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
+		const yellReturn = nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res)
+		promises = promises.concat(yellReturn)
 	}
-
 	return promises
 }
 

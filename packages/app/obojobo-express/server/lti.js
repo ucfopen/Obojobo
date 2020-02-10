@@ -160,7 +160,7 @@ const getLatestHighestAssessmentScoreRecord = (
 			logger.error('Error in getLatestHighestAssessmentScoreRecord')
 			logger.error(error)
 			if (error instanceof db.errors.QueryResultError && error.code === db.errors.queryResultErrorCode.noData) {
-				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
+				throw Error(ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND)
 			}
 			throw error
 		})
@@ -707,7 +707,6 @@ const sendHighestAssessmentScore = (
 		})
 		.catch(error => {
 			const errorResult = logAndGetStatusForError(error, requiredData, logId)
-
 			result.status = errorResult.status
 			result.statusDetails = errorResult.statusDetails
 		})

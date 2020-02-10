@@ -241,6 +241,14 @@ describe('api visits route', () => {
 			yell: jest.fn().mockResolvedValueOnce(),
 			contentId: 'some-invalid-content-id'
 		}
+
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })

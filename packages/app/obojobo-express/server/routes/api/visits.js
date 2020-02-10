@@ -9,7 +9,6 @@ const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
 const {
 	checkValidationRules,
-	requireVisitId,
 	requireCurrentUser,
 	requireCurrentDocument,
 	requireCurrentVisit
@@ -67,6 +66,12 @@ router
 				;[viewState, visitStartExtensions] = results
 
 				if (req.currentVisit.is_preview === false) {
+					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
+						// error so the student starts a new view w/ newer version
+						// this check doesn't happen in preview mode so authors
+						// can reload the page to see changes easier
+						throw new Error('Visit for older draft version!')
+					}
 					// load lti launch data
 					return ltiUtil.retrieveLtiLaunch(
 						req.currentUser.id,

@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Visit = oboRequire('server/models/visit')
-const config = oboRequire('server/config')
 const insertEvent = oboRequire('server/insert_event')
 const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
@@ -16,11 +15,6 @@ const {
 	requireCurrentVisit,
 	requireCurrentUser
 } = oboRequire('server/express_validators')
-
-
-const paramToBool = param => {
-	return param && (param === true || param === 'true' || param === 1 || param === '1')
-}
 
 // launch lti view of draft - redirects to visit route
 // mounted as /view/:draftId/:page
@@ -39,7 +33,7 @@ router
 
 		let createdVisitId
 		// fire an event and allow nodes to alter node visit
-		// Warning - I don't know if async can work in your listeners
+		// Warning - I don't thinks async can work in any listeners
 		oboEvents.emit(Visit.EVENT_BEFORE_NEW_VISIT, { req })
 		const nodeVisitOptions = req.visitOptions ? req.visitOptions : {}
 

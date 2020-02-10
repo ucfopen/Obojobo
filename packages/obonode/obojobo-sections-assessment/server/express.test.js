@@ -1,6 +1,5 @@
-jest.mock('./assessment')
+jest.mock('./models/assessment')
 jest.mock('obojobo-express/server/lti')
-jest.mock('./services/preview')
 jest.mock('./attempt-start')
 jest.mock('./attempt-resume')
 jest.mock('./attempt-end/attempt-end')
@@ -13,9 +12,8 @@ const mockCurrentDocument = { draftId: 'mockDraftId' }
 const mockCurrentVisit = { resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview' }
 const bodyParser = require('body-parser')
 const request = require('supertest')
-const { reviewAttempt } = require('./attempt-review')
-const { deletePreviewState } = require('./services/preview')
-const Assessment = require('./assessment')
+const reviewAttempt = require('./attempt-review')
+const AssessmentModel = require('./models/assessment')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
@@ -65,33 +63,6 @@ describe('server/express', () => {
 		app.use(bodyParser.json())
 		app.use(express_response_decorator)
 		app.use(assessmentExpress)
-	})
-
-	test('GET /api/lti/state/draft/mock-draft-id', () => {
-		expect.hasAssertions()
-		const mockReturnValue = { mockReturn: 'mockReturn' }
-		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce(
-			mockReturnValue
-		)
-
-		return request(app)
-			.get('/api/lti/state/draft/mock-draft-id')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument.draftId,
-					mockCurrentVisit.resource_link_id
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
 	})
 
 	test('POST /api/lti/send-assessment-score', () => {
@@ -336,7 +307,7 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/clear-preview-scores', () => {
 		expect.hasAssertions()
-		deletePreviewState.mockResolvedValueOnce()
+		AssessmentModel.deletePreviewAttemptsAndScores.mockResolvedValueOnce()
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')
@@ -346,8 +317,8 @@ describe('server/express', () => {
 				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
 				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(deletePreviewState).toHaveBeenCalledTimes(1)
-				expect(deletePreviewState).toHaveBeenCalledWith(
+				expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledTimes(1)
+				expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledWith(
 					'mockCurrentUserId',
 					'mockDraftId',
 					'mockResourceLinkId'
@@ -382,7 +353,7 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/clear-preview-scores fails on errors', () => {
 		expect.hasAssertions()
-		deletePreviewState.mockRejectedValueOnce('mock-error')
+		AssessmentModel.deletePreviewAttemptsAndScores.mockRejectedValueOnce('mock-error')
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')
@@ -399,55 +370,10 @@ describe('server/express', () => {
 			})
 	})
 
-	test('GET /api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id', () => {
-		expect.hasAssertions()
-		const mockReturnValue = {}
-		Assessment.getAttempt.mockResolvedValueOnce(mockReturnValue)
-
-		return request(app)
-			.get('/api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireAssessmentId).toHaveBeenCalledTimes(1)
-				expect(Assessment.getAttempt).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument.draftId,
-					'mock-assessment-id',
-					'mock-attempt-id'
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
-	})
-
-	test('GET /api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id fails', () => {
-		expect.hasAssertions()
-		Assessment.getAttempt.mockRejectedValueOnce()
-
-		return request(app)
-			.get('/api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
-	})
-
 	test('GET /api/assessments/:draftId/attempts', () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
+		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce(mockReturnValue)
 
 		return request(app)
 			.get('/api/assessments/:draftId/attempts')
@@ -457,7 +383,7 @@ describe('server/express', () => {
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
 				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
 				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(Assessment.getAttempts).toHaveBeenCalledWith(
+				expect(AssessmentModel.fetchAttemptHistory).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId,
 					mockCurrentVisit.is_preview,
@@ -472,7 +398,7 @@ describe('server/express', () => {
 
 	test('GET /api/assessments/:draftId/attempts fails', () => {
 		expect.hasAssertions()
-		Assessment.getAttempts.mockRejectedValueOnce()
+		AssessmentModel.fetchAttemptHistory.mockRejectedValueOnce()
 
 		return request(app)
 			.get('/api/assessments/:draftId/attempts')
@@ -489,78 +415,4 @@ describe('server/express', () => {
 			})
 	})
 
-	test('GET /api/assessment/:draftId/mock-assesment-id/attempts', () => {
-		expect.hasAssertions()
-		const mockReturnValue = {}
-		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
-
-		return request(app)
-			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireAssessmentId).toHaveBeenCalledTimes(1)
-				expect(Assessment.getAttempts).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument.draftId,
-					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id,
-					'mock-assesment-id'
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
-	})
-
-	test('GET /api/assessment/:draftId/mock-assesment-id/attempts fails', () => {
-		expect.hasAssertions()
-		Assessment.getAttempts.mockRejectedValueOnce()
-
-		return request(app)
-			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
-	})
-
-	test('GET /api/assessment/:draftId/mock-assesment-id/attempts', () => {
-		expect.hasAssertions()
-		const mockReturnValue = {}
-		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
-
-		return request(app)
-			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
-			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireAssessmentId).toHaveBeenCalledTimes(1)
-				expect(Assessment.getAttempts).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument.draftId,
-					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id,
-					'mock-assesment-id'
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
-	})
 })

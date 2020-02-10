@@ -66,8 +66,6 @@ describe('media model', () => {
 	const mediaModelCacheImage = MediaModel.saveImageAtNewSize
 	const mediaModelValidFileType = MediaModel.isValidFileType
 
-	beforeAll(() => {})
-	afterAll(() => {})
 	beforeEach(() => {
 		jest.clearAllMocks()
 		db.one.mockReset()
@@ -76,7 +74,6 @@ describe('media model', () => {
 		MediaModel.saveImageAtNewSize = mediaModelCacheImage
 		MediaModel.isValidFileType = mediaModelValidFileType
 	})
-	afterEach(() => {})
 
 	test('storeImageInDb identifies invalid arguments', () => {
 		expect.assertions(8)
@@ -323,7 +320,7 @@ describe('media model', () => {
 		expect.hasAssertions()
 
 		fs.readFileSync = jest.fn().mockImplementationOnce(() => {
-			throw new Error('Mock error from readFileSync')
+			throw Error('Mock error from readFileSync')
 		})
 
 		return expect(MediaModel.createAndSave(mockUserId, mockFileInfo)).rejects.toThrow(
@@ -345,7 +342,7 @@ describe('media model', () => {
 	})
 
 	test('createAndSave correctly catches errors from storeImageInDb', async () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		MediaModel.isValidFileType = jest.fn()
 		MediaModel.isValidFileType.mockReturnValueOnce(true)

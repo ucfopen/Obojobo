@@ -1,65 +1,207 @@
-jest.mock('./attempt-end-helpers')
 jest.mock('obojobo-express/server/logger')
+jest.mock('obojobo-express/server/lti')
+jest.mock('./get-calculated-scores')
+jest.mock('../models/assessment')
+jest.mock('obojobo-express/server/logger')
+jest.mock('../assessment')
+jest.mock('./get-calculated-scores')
+jest.mock('./insert-events')
+jest.mock('obojobo-express/server/lti')
+jest.mock('obojobo-express/server/models/draft')
 
-const endAttempt = require('./attempt-end')
+describe('attempt-end', () => {
+	const lti = require('obojobo-express/server/lti')
+	const AssessmentModel = require('../models/assessment')
+	const getCalculatedScores = require('./get-calculated-scores')
+	const insertEvents = require('./insert-events')
+	const logger = require('obojobo-express/server/logger')
 
-const helpers = require('./attempt-end-helpers')
-const logger = require('obojobo-express/server/logger')
+	const mockCurrentUser = {
+		id: 'mockCurrentUserId'
+	}
 
-const mockReq = {
-	params: {
-		attemptId: 'mockAttemptId'
-	},
-	currentUser: {
-		id: 'mockUserId'
-	},
-	isPreview: 'mockIsPreview'
-}
+	const mockCurrentVisit = {
+		is_preview: 'mockIsPreview',
+		resource_link_id: 'mockResourceLinkId'
+	}
 
-const mockRes = {}
+	const mockCurrentDocument = {
+		draftId: 'mockDraftId',
+		contentId: 'mockContentId',
+		getChildNodeById: jest.fn()
+	}
 
-const executionOrder = []
-const handlePromise = name => {
-	executionOrder.push(name)
-	return () => Promise.resolve()
-}
+	const mockReq = {
+		currentUser: mockCurrentUser,
+		currentVisit: mockCurrentVisit,
+		currentDocument: mockCurrentDocument,
+		params: {
+			attemptId: 'mock-attempt-id'
+		},
+		connection: {
+			remoteAddress: 'mockRemoteAddress'
+		},
+		hostname: 'mockHostName'
+	}
 
-const spies = {}
-for (const name in helpers) {
-	spies[name] = jest.spyOn(helpers, name).mockImplementation(handlePromise(name))
-}
+	const mockRes = {}
 
-describe('attempt-end/attempt-end', () => {
-	test('runs through expected steps', async () => {
-		await endAttempt(mockReq, mockRes)
-		expect(logger.info.mock.calls).toEqual([
-			['End attempt "mockAttemptId" begin for user "mockUserId" (Preview="mockIsPreview")'],
-			['End attempt "mockAttemptId" - getAttempt success'],
-			['End attempt "mockAttemptId" - getAttemptHistory success'],
-			['End attempt "mockAttemptId" - getResponsesForAttempt success'],
-			['End attempt "mockAttemptId" - getCalculatedScores success'],
-			['End attempt "mockAttemptId" - completeAttempt success'],
-			['End attempt "mockAttemptId" - insertAttemptEndEvent success'],
-			['End attempt "mockAttemptId" - sendLTIScore success'],
-			['End attempt "mockAttemptId" - sendLTIScore success']
-		])
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
 
-		// ensures called and called in order
-		expect(executionOrder).toEqual([
-			'getAttempt',
-			'getAttemptHistory',
-			'getResponsesForAttempt',
-			'getCalculatedScores',
-			'completeAttempt',
-			'insertAttemptEndEvents',
-			'sendHighestAssessmentScore',
-			'insertAttemptScoredEvents',
-			'getAttempts'
-		])
-
-		// ensure res and req was sent to them all
-		for (const name in helpers) {
-			expect(spies[name]).toBeCalledWith(mockReq, mockRes)
+	test('endAttempt resovles and sends expected arguments to all external methods', async () => {
+		// set up all the mock results
+		const mockFetchAttemptByID = {
+			userId: 'mockAttemptUserId',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
+			assessmentId: 'mockAssessmentId',
+			state: 'mockAttemptState'
 		}
+
+		const mockCalculatedScore = {
+			attempt: {
+				attemptScore: 99
+			},
+			assessmentScoreDetails: {
+				assessmentModdedScore: 88
+			}
+		}
+
+		const mockHighestScore = {
+			status: 'mockLtiStatus',
+			scoreSent: 'mockScoreSent',
+			statusDetails: 'mockLtiStatusDetails',
+			gradebookStatus: 'mockLtiGradebookStatus',
+			ltiAssessmentScoreId: 'mockLtiAssessmentScoreId'
+		}
+
+		// set up mock returns
+		mockCurrentDocument.getChildNodeById.mockReturnValueOnce('mockChildNode')
+		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockFetchAttemptByID)
+		AssessmentModel.getAttemptNumber.mockResolvedValueOnce('mock-attempt-number')
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(['mock-response'])
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mockHistory')
+		AssessmentModel.completeAttempt.mockResolvedValueOnce('mock-assessment-score-id')
+		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
+		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
+
+		// call end attempt
+		const endAttempt = require('./attempt-end')
+		await expect(endAttempt(mockReq, mockRes)).resolves.toEqual({ assessmentModdedScore: 88 })
+
+		// make sure all the steps were called with the expected variables
+		expect(AssessmentModel.fetchAttemptByID).toHaveBeenCalledWith('mock-attempt-id')
+		expect(AssessmentModel.getAttemptNumber).toHaveBeenCalledWith(
+			'mockAttemptUserId',
+			'mockDraftId',
+			'mock-attempt-id'
+		)
+		expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalledWith(
+			'mockCurrentUserId',
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockIsPreview',
+			'mockResourceLinkId'
+		)
+		expect(AssessmentModel.fetchResponsesForAttempts).toHaveBeenCalledWith(['mock-attempt-id'])
+		expect(getCalculatedScores).toHaveBeenCalledWith(
+			mockReq,
+			mockRes,
+			'mockChildNode',
+			'mockAttemptState',
+			'mockHistory',
+			'mock-response'
+		)
+		expect(AssessmentModel.completeAttempt).toHaveBeenCalledWith(
+			'mockAssessmentId',
+			'mock-attempt-id',
+			'mockCurrentUserId',
+			'mockDraftId',
+			'mockContentId',
+			{ attemptScore: 99 },
+			{ assessmentModdedScore: 88 },
+			'mockIsPreview',
+			'mockResourceLinkId'
+		)
+		expect(insertEvents.insertAttemptEndEvents).toHaveBeenCalledWith(
+			mockCurrentUser,
+			mockCurrentDocument,
+			'mockAssessmentId',
+			'mock-attempt-id',
+			'mock-attempt-number',
+			'mockIsPreview',
+			'mockHostName',
+			'mockRemoteAddress'
+		)
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
+			'mockCurrentUserId',
+			mockCurrentDocument,
+			'mockAssessmentId',
+			'mockIsPreview',
+			'mockResourceLinkId'
+		)
+		expect(insertEvents.insertAttemptScoredEvents).toHaveBeenCalledWith(
+			mockCurrentUser,
+			mockCurrentDocument,
+			'mockAssessmentId',
+			'mock-assessment-score-id',
+			'mock-attempt-id',
+			'mock-attempt-number',
+			99,
+			88,
+			'mockIsPreview',
+			'mockScoreSent',
+			'mockLtiStatus',
+			'mockLtiStatusDetails',
+			'mockLtiGradebookStatus',
+			'mockLtiAssessmentScoreId',
+			'mockHostName',
+			'mockRemoteAddress',
+			{ assessmentModdedScore: 88 },
+			'mockResourceLinkId'
+		)
+
+		// make sure logger.info looks good
+		expect(logger.info.mock.calls).toMatchInlineSnapshot(`
+		Array [
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" begin for user \\"mockCurrentUserId\\" (Preview=\\"mockIsPreview\\")",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - getAttempt success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - getAttemptHistory success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - fetchResponsesForAttempt success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - getCalculatedScores success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - completeAttempt success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - insertAttemptEndEvent success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - sendLTIScore success",
+		  ],
+		  Array [
+		    "End attempt \\"mock-attempt-id\\" - sendLTIScore success",
+		  ],
+		]
+	`)
+	})
+
+	test('endAttempt rejects when attempting to end attempt module not matching currentDocument', async () => {
+		const endAttempt = require('./attempt-end')
+		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce({})
+		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
+			Error('Cannot end an attempt for a different module')
+		)
 	})
 })

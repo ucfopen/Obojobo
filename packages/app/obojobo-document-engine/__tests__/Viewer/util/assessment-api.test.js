@@ -1,88 +1,61 @@
-const originalFetch = global.fetch
-const originalToISOString = Date.prototype.toISOString
-const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+jest.mock('../../../src/scripts/viewer/util/api')
+const API = require('../../../src/scripts/viewer/util/api')
 const AssessmentAPI = require('../../../src/scripts/viewer/util/assessment-api').default
 
-describe('apiutil', () => {
+
+describe('assessment-api', () => {
 	let mockJsonResult
-	let post
-	let postWithFormat
-	let deleteMethod
-	let get
 
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
-		jest.spyOn(window.parent, 'postMessage')
 
+		// keep an obj reference of a mock result from calling res.json() from fetch
 		mockJsonResult = {}
-		post = jest.spyOn(APIUtil, 'post')
-		post.mockResolvedValueOnce({
-			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
-		})
+		// build the object that resolves from fetch calls for our json requests
+		const jsonResolve = {json: () => mockJsonResult}
+		API.post.mockResolvedValueOnce(jsonResolve)
+		API.get.mockResolvedValueOnce(jsonResolve)
+		API.postWithFormat.mockResolvedValueOnce(jsonResolve)
+		API.delete.mockResolvedValueOnce(jsonResolve)
 
-		get = jest.spyOn(APIUtil, 'get')
-		get.mockResolvedValueOnce({
-			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
-		})
-
-		postWithFormat = jest.spyOn(APIUtil, 'postWithFormat')
-		postWithFormat.mockResolvedValueOnce({
-			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
-		})
-
-		deleteMethod = jest.spyOn(APIUtil, 'delete')
-		deleteMethod.mockResolvedValueOnce({
-			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
-		})
-	})
-
-	beforeAll(() => {
-		global.fetch = jest.fn()
-		Date.prototype.toISOString = () => 'mockDate'
-	})
-	afterAll(() => {
-		global.fetch = originalFetch
-		Date.prototype.toISOString = originalToISOString
+		// simplify/mock what processJsonResults does
+		API.processJsonResults.mockImplementation(vars => vars.json())
 	})
 
 	test('startAttempt calls fetch', () => {
 		expect.hasAssertions()
 
-		return AssessmentAPI.startAttempt({
+		const args = {
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		}).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/start', {
-				assessmentId: 'mockAssessmentId',
-				draftId: 'mockDraftId',
-				visitId: 'mockVisitId'
-			})
+		}
+		return AssessmentAPI.startAttempt(args).then(result => {
+			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/start', args)
+			expect(API.processJsonResults).toHaveBeenCalled()
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('resumeAttempt calls fetch', () => {
 		expect.hasAssertions()
-
-		return AssessmentAPI.resumeAttempt({ attemptId: 999 }).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/resume', { attemptId: 999 })
+		const args = {attemptId:999}
+		return AssessmentAPI.resumeAttempt(args).then(result => {
+			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/999/resume', args)
+			expect(API.processJsonResults).toHaveBeenCalled()
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
 
 	test('endAttempt calls fetch', () => {
 		expect.hasAssertions()
-
-		return AssessmentAPI.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/999/end', {
+		const args = { attemptId: 999, visitId: 'mockVisitId' }
+		return AssessmentAPI.endAttempt(args).then(result => {
+			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/999/end', {
 				visitId: 'mockVisitId'
 			})
+			expect(API.processJsonResults).toHaveBeenCalled()
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
@@ -91,9 +64,10 @@ describe('apiutil', () => {
 		expect.hasAssertions()
 
 		return AssessmentAPI.reviewAttempt('mockAttemptIds', {}).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
+			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
 				attemptIds: 'mockAttemptIds'
 			})
+			expect(API.processJsonResults).toHaveBeenCalled()
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
@@ -101,24 +75,15 @@ describe('apiutil', () => {
 	test('resendLTIAssessmentScore calls fetch', () => {
 		expect.hasAssertions()
 
-		post.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return AssessmentAPI.resendLTIAssessmentScore({
+		const args = {
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		}).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/lti/send-assessment-score', {
-				draftId: 'mockDraftId',
-				assessmentId: 'mockAssessmentId',
-				visitId: 'mockVisitId'
-			})
+		}
 
+		return AssessmentAPI.resendLTIAssessmentScore(args).then(result => {
+			expect(API.post).toHaveBeenCalledWith('/api/lti/send-assessment-score', args)
+			expect(API.processJsonResults).toHaveBeenCalled()
 			expect(result).toEqual(mockJsonResult)
 		})
 	})

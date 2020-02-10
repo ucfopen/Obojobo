@@ -15,7 +15,6 @@ const { ModalUtil } = Common.util
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil, FocusUtil } = Viewer.util
-const { AssessmentStore } = Viewer.stores
 
 class Assessment extends React.Component {
 	constructor(props) {

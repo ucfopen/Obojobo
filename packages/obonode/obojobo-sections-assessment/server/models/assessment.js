@@ -297,7 +297,7 @@ class AssessmentModel {
 
 	// get all attempts containing an array of responses
 	// { <attemptId>: [ {...question response...} ] }
-	static fetchResponsesForAttempts(attemptIds, singleAttempt = false) {
+	static fetchResponsesForAttempts(attemptIds) {
 		if(attemptIds.length < 1) return []
 		return db
 			.manyOrNone(

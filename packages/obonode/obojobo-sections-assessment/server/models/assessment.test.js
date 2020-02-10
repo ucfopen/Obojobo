@@ -1,40 +1,5 @@
 jest.mock('obojobo-express/db')
 
-import Draft from 'obojobo-express/models/draft'
-import DraftNode from 'obojobo-express/models/draft_node'
-
-const mockRawDraft = {
-	id: 'whatever',
-	version: 9,
-	draft_created_at: new Date().toISOString(),
-	content_created_at: new Date().toISOString(),
-	content: {
-		id: 666,
-		stuff: true,
-		type: 'DraftNode',
-		content: { nothing: true },
-		children: [
-			{
-				id: 999,
-				type: 'DraftNode',
-				content: { otherStuff: true },
-				children: [
-					{
-						id: 777,
-						type: 'DraftNode',
-						content: { otherStuff: true }
-					}
-				]
-			},
-			{
-				id: 888,
-				type: 'DraftNode',
-				content: { otherStuff: false }
-			}
-		]
-	}
-}
-
 describe('AssessmentModel', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
