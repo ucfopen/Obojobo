@@ -135,7 +135,7 @@ const switchType = {
 
 		// Changing each CodeLine to a ListLevel will allow normalization
 		// to remove them from the Code node and wrap them in a List node
-		// Indents in the CodeLie are transfered into nested Levels
+		// Indents in the CodeLine are transfered into nested Levels
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([child, childPath]) => {
 				Transforms.removeNodes(editor, { at: childPath })
