@@ -162,6 +162,16 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
+	test('Latex with errors', () => {
+		const st = new StyleableText('dog fox{ cat')
+		st.styleText('_latex', 4, 8, { a: 1 })
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox{\\"><span aria-hidden=\\"true\\">KaTeX parse error: Expected '}', got 'EOF' at end of input: fox{</span></span> cat</span>"`
+		)
+	})
+
 	test('Monospace', () => {
 		const st = new StyleableText('dog fox cat')
 		st.styleText('monospace', 4, 7, { a: 1 })
