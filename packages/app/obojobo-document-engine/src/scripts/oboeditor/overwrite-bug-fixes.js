@@ -10,7 +10,7 @@ Transforms.mergeNodes = (editor, options) => Editor.withoutNormalizing(editor, (
 		return
 	}
 
-	if (match === null) {
+	if (match == null) {
 		if (Path.isPath(at)) {
 			const [parent] = Editor.parent(editor, at)
 			match = n => parent.children.includes(n)
@@ -32,7 +32,7 @@ Transforms.mergeNodes = (editor, options) => Editor.withoutNormalizing(editor, (
 			Transforms.delete(editor, { at })
 			at = pointRef.unref()
 
-			if (options.at === null) {
+			if (options.at == null) {
 				Transforms.select(editor, at)
 			}
 		}
@@ -81,11 +81,11 @@ Transforms.mergeNodes = (editor, options) => Editor.withoutNormalizing(editor, (
 	// Ensure that the nodes are equivalent, and figure out what the position
 	// and extra properties of the merge will be.
 	if (Text.isText(node) && Text.isText(prevNode)) {
-		const { ...rest } = node
+		const { text, ...rest } = node
 		position = prevNode.text.length
 		properties = rest
 	} else if (Element.isElement(node) && Element.isElement(prevNode)) {
-		const { ...rest } = node
+		const { children, ...rest } = node
 		position = prevNode.children.length
 		properties = rest
 	} else {

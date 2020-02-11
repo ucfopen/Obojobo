@@ -10,7 +10,6 @@ import Converter from './converter'
 
 import normalizeNode from './changes/normalize-node'
 import onBackspace from './changes/on-backspace'
-import onDelete from './changes/on-delete'
 import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
@@ -61,9 +60,8 @@ const plugins = {
 	onKeyDown(node, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
-				return onBackspace(node, editor, event)
 			case 'Delete':
-				return onDelete(node, editor, event)
+				return onBackspace(node, editor, event)
 
 			case 'Tab':
 				// TAB+SHIFT
