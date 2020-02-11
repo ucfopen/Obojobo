@@ -7,26 +7,17 @@ import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
-//import { Slate, Editable, withReact } from 'slate-react'
-import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
 import FormatPlugin from '../plugins/format-plugin'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
-//import React from 'react'
 import ScriptMarks from './marks/script-marks'
-import SelectParameter from './parameter-node/select-parameter'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
-//import { Value, createEditor } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generateId from '../generate-ids'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
-
-const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
 
@@ -185,13 +176,12 @@ class PageEditor extends React.Component {
 
 		this.globalPlugins = [
 			...markPlugins, 
-			ClipboardPlugin
+			ClipboardPlugin,
+			FormatPlugin,
 		]
 
 		const editorPlugins = [
-		// 	EditorSchema,
 		// 	ClipboardPlugin,
-			FormatPlugin,
 		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
 		]
 

@@ -152,7 +152,7 @@ class CodeEditor extends React.Component {
 			editor.deleteH(1, 'char')
 			return editor
 		}
-		return { current: editor }
+		return editor
 	}
 
 	getCodeMirrorMode(mode) {
@@ -195,7 +195,7 @@ class CodeEditor extends React.Component {
 					<div className="draft-title">{this.props.model.title}</div>
 					{this.state.editor ? (
 						<FileToolbar
-							editorRef={this.state.editor}
+							editor={this.state.editor}
 							model={this.props.model}
 							draftId={this.props.draftId}
 							onSave={this.saveCode}
