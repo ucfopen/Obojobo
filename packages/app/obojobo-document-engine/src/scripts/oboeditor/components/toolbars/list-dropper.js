@@ -1,12 +1,12 @@
 	import './list-dropper.scss'
 
 import React from 'react'
+import { Editor, Element } from 'slate'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import OrderedListIcon from '../../assets/ordered-list-icon'
 import UnorderedListIcon from '../../assets/unordered-list-icon'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 class ListDropper extends React.Component {
@@ -89,24 +89,28 @@ class ListDropper extends React.Component {
 	}
 
 	changeBullet(bulletStyle) {
-		this.props.editor.current.changeToType(LIST_NODE, { type: this.props.type, bulletStyle })
+		this.props.editor.changeToType(LIST_NODE, { type: this.props.type, bulletStyle })
 	}
 
 	toggleBullet() {
-		const isList = this.props.value.blocks.every(block => block.type === LIST_LINE_NODE)
+		const nodes = Array.from(Editor.nodes(this.props.editor, {
+			mode: 'lowest',
+			match: node => Element.isElement(node) && !this.props.editor.isInline(node) && !node.subtype
+		}))
+		const isList = nodes.every(([block]) => block.type === LIST_NODE)
 
 		if(!isList) {
-			return this.props.editor.current.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
+			return this.props.editor.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
 		}
 
-		const rootBlocks = this.props.value.document.getRootBlocksAtRange(this.props.value.selection)
-		const isSameType = rootBlocks.every(block => block.data.get('content').listStyles.type === this.props.type)
-
+		// Once we know they are all lists, we can check if the lists are the same type
+		// as the list we are changing to
+		const isSameType = nodes.every(([block]) => block.content.listStyles.type === this.props.type)
 		if(!isSameType) {
-			return this.props.editor.current.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
+			return this.props.editor.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
 		}
 
-		this.props.editor.current.changeToType(TEXT_NODE)
+		this.props.editor.changeToType(TEXT_NODE)
 	}
 
 	render() {

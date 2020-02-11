@@ -92,22 +92,21 @@ class ParagraphStyles extends React.Component {
 			list[0][0].content.headingLevel
 		)
 
-		console.log(nodeLevel)
-
 		if(nodeLevel) return 'Heading ' + nodeLevel
 
 		return ""
 	}
 
-	getParagraphStyle(value) {
-		const list = Array.from(Editor.nodes(this.props.editor, {mode: 'highest', match: n => Element.isElement(n)}))
-		console.log(list)
+	getParagraphStyle() {
+		const list = Array.from(Editor.nodes(this.props.editor, {
+			mode: 'lowest',
+			match: node => Element.isElement(node) && !this.props.editor.isInline(node) && !node.subtype
+		}))
+		
 		const nodeType = list.reduce(
 			(accum, [block]) => accum === block.type ? accum : "", 
 			list.length > 0 ? list[0][0].type : ""
 		)
-
-		console.log(nodeType)
 
 		switch(nodeType){
 			case HEADING_NODE: return this.reduceHeading(list)
@@ -119,7 +118,7 @@ class ParagraphStyles extends React.Component {
 
 	render() {
 		return (
-			<div 
+			<div
 				className={'paragraph-styles'} 
 				contentEditable={false}
 				onBlur={this.onBlurHandler}
@@ -128,7 +127,7 @@ class ParagraphStyles extends React.Component {
 				<button 
 					onClick={this.toggleLevelSelect}
 					ref={this.menuButton}>
-					{this.getParagraphStyle(this.props.value)}
+					{this.getParagraphStyle()}
 					<span className={isOrNot(this.state.isOpen, 'open')}>{'⌃'}</span>
 				</button>
 				<div className={'paragraph-styles-menu ' + isOrNot(this.state.isOpen, 'open')}>

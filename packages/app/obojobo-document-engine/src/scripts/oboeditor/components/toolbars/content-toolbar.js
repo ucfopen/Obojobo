@@ -33,7 +33,7 @@ const orderedList = [
 
 const ContentToolbar = props => (
 	<div className={`visual-editor--content-toolbar`}>
-		<ParagraphStyles editor={props.editor} value={props.value}/>
+		<ParagraphStyles editor={props.editor}/>
 		{contentMarks.map(mark => {
 			const Icon = mark.icon
 			return (
@@ -49,14 +49,12 @@ const ContentToolbar = props => (
 			editor={props.editor} 
 			type='unordered' 
 			bullets={unorderedList} 
-			defaultStyle="disc"
-			value={props.value}/>
+			defaultStyle="disc"/>
 		<ListDropper 
 			editor={props.editor} 
 			type='ordered' 
 			bullets={orderedList} 
-			defaultStyle="decimal"
-			value={props.value}/>
+			defaultStyle="decimal"/>
 	</div>
 )
 

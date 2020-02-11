@@ -1,5 +1,5 @@
 {
 	"type":"ObojoboDraft.Chunks.Heading",
-	"content": {},
+	"content": { "headingLevel": 1 },
 	"children":[{ "text": "" }]
 }
