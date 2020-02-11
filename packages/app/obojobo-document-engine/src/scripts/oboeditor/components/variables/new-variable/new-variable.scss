@@ -3,14 +3,15 @@
 .new-variable {
 	background: $color-bg;
 	display: inline-block;
-	padding: 1em;
+	padding: 0 1em;
 	font-size: 0.9em;
 	overflow-y: scroll;
 	text-align: left;
 	flex: 1;
 
 	.new-variable--title {
-		margin: 0.8em auto;
+		margin: 1em auto;
+		padding: auto;
 	}
 
 	.new-variable--type-list {
@@ -28,6 +29,14 @@
 
 			&:hover {
 				background-color: lighten($color-action, 50%);
+			}
+
+			input[type='checkbox'] {
+				display: none;
+
+				&:checked + label:before {
+					background-color: lighten($color-action, 50%);
+				}
 			}
 		}
 	}

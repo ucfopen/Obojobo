@@ -1,11 +1,16 @@
 @import '~styles/includes';
 
 .variable-properties {
-	font-size: inherit;
+	font-size: 0.9em;
 	background-color: $color-bg;
 	padding: 0 1em;
 	flex: 1;
+	overflow-y: scroll;
+	text-align: left;
 
+	.test {
+		z-index: 100000;
+	}
 	.group-item {
 		display: flex;
 		justify-content: center;
@@ -20,29 +25,38 @@
 		}
 
 		input {
-			@include text-input();
-			flex: 1;
-			font-size: inherit;
-			padding: 0.5em 0.5em;
 			margin: 0 0.5em;
-			border: solid 1px rgba(0, 0, 0, 0.1);
+		}
+
+		select {
+			margin-left: 0.5em;
 		}
 	}
 
-	.select-item {
+	input {
+		@include text-input();
+
+		font-size: 1em;
+		padding: 0.5em;
+		width: 1em;
+		border: solid 1px rgba(0, 0, 0, 0.1);
+		box-sizing: border-box;
 		flex: 1;
-		display: block;
+	}
+
+	select {
 		-moz-box-sizing: content-box;
 		-webkit-box-sizing: content-box;
-		box-sizing: content-box;
+		box-sizing: border-box;
 
-		font-size: inherit;
+		flex: 1;
+		font-size: 1em;
 		appearance: list-menu;
+		vertical-align: top;
 
 		border-radius: $dimension-rounded-radius;
 		background-color: $color-bg;
 		padding: 0.6em 0.5em;
-		margin-left: 0.5em;
 		appearance: none;
 		border: solid 1px rgba(0, 0, 0, 0.1);
 
@@ -54,5 +68,35 @@
 			calc(100% - 2.5em) 0.5em;
 		background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
 		background-repeat: no-repeat;
+	}
+
+	.variable-properties--delete-button {
+		button {
+			color: $color-dangerous;
+			background-color: $color-bg;
+			border-color: $color-dangerous;
+			padding: 0.7em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-dangerous;
+			}
+		}
+	}
+
+	.variable-properties--duplicate-button {
+		margin-bottom: 1em;
+
+		button {
+			color: $color-action;
+			background-color: $color-bg;
+			border-color: $color-action;
+			padding: 0.5em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-action;
+			}
+		}
 	}
 }

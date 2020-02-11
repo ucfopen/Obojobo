@@ -2,10 +2,13 @@ import './variable-list.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import { mapTypeToString } from '../constants'
 
 const { Button } = Common.components
 
-const VariableList = ({ variables, currSelect, onClickVarible, setCreatingVariable }) => {
+const VariableList = props => {
+	const { variables, currSelect, onClickVarible, setCreatingVariable } = props
+
 	return (
 		<div className="variable-list">
 			{variables.map((variable, index) => (
@@ -13,9 +16,12 @@ const VariableList = ({ variables, currSelect, onClickVarible, setCreatingVariab
 					key={variable.name}
 					className={'single-variable' + (index === currSelect ? ' variable-is-selected' : '')}
 					onClick={() => onClickVarible(index)}
+					tabIndex="1"
 				>
 					<h4>${variable.name}</h4>
-					<p>{variable.type}</p>
+					<small>
+						<p>{variable.type}</p>
+					</small>
 				</div>
 			))}
 			<Button className="create-variable-button" onClick={setCreatingVariable}>

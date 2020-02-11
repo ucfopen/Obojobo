@@ -1,8 +1,9 @@
 @import '~styles/includes';
 
 .variable-list {
+	$variable-selected: #285aa4;
+
 	overflow-y: scroll;
-	// flex: 1;
 	width: 12em;
 
 	.single-variable {
@@ -22,7 +23,7 @@
 
 	.variable-is-selected {
 		border-right: none;
-		color: blue;
+		color: $variable-selected;
 	}
 
 	.create-variable-button {
@@ -33,7 +34,7 @@
 			color: $color-action;
 			background-color: $color-bg;
 			border-color: $color-action;
-			border-width: 2px;
+			border-width: 1px;
 			height: 2.5em;
 
 			&:hover {

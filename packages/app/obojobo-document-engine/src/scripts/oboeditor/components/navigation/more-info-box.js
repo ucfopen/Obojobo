@@ -140,7 +140,7 @@ class MoreInfoBox extends React.Component {
 
 	closeModal(modalState) {
 		this.setState(prevState => ({
-			content: { ...prevState.content, triggers: modalState.triggers },
+			content: { ...prevState.content, ...modalState },
 			needsUpdate: true
 		}))
 		document.addEventListener('mousedown', this.handleClick, false)
