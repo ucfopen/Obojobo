@@ -2,14 +2,7 @@
 
 exports[`Question editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "solution": Object {},
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "args": Object {
         "type": "ObojoboDraft.Chunks.Break",
@@ -23,28 +16,28 @@ Object {
       "mock": "oboToSlate",
     },
     Object {
-      "nodes": Array [
+      "children": Array [
         Object {
           "args": Object {},
           "mock": "oboToSlate",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Question.Solution",
+      "subtype": "ObojoboDraft.Chunks.Question.Solution",
+      "type": "ObojoboDraft.Chunks.Question",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "solution": Object {},
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`Question editor oboToSlate converts an OboNode to a Slate node without a solution 1`] = `
 Object {
-  "data": Object {
-    "content": Object {},
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "args": Object {
         "type": "ObojoboDraft.Chunks.Break",
@@ -58,7 +51,8 @@ Object {
       "mock": "oboToSlate",
     },
   ],
-  "object": "block",
+  "content": Object {},
+  "id": "mockKey",
   "type": "mockType",
 }
 `;

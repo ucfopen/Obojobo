@@ -2,45 +2,43 @@
 
 exports[`Code Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "data": Object {
-        "content": Object {
-          "indent": 1,
-        },
+      "children": undefined,
+      "content": Object {
+        "indent": 1,
       },
-      "nodes": Array [
-        Object {
-          "leaves": undefined,
-          "object": "text",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Code.CodeLine",
+      "subtype": "ObojoboDraft.Chunks.Code.CodeLine",
+      "type": "ObojoboDraft.Chunks.Code",
     },
     Object {
-      "data": Object {
-        "content": Object {
-          "indent": 0,
-        },
+      "children": undefined,
+      "content": Object {
+        "indent": 0,
       },
-      "nodes": Array [
-        Object {
-          "leaves": undefined,
-          "object": "text",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Code.CodeLine",
+      "subtype": "ObojoboDraft.Chunks.Code.CodeLine",
+      "type": "ObojoboDraft.Chunks.Code",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "indent": 1,
+        },
+        "text": Object {
+          "value": "mockCode",
+        },
+      },
+      Object {
+        "text": Object {
+          "value": "mockCode2",
+        },
+      },
+    ],
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;

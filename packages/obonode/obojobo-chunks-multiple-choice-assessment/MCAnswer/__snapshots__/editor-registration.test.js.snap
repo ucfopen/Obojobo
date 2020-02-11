@@ -1,6 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAnswer editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`MCAnswer editor plugins.renderNode calls next 1`] = `
+<MCAnswer
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "mockNode",
+    }
+  }
+/>
+`;
 
 exports[`MCAnswer editor plugins.renderNode renders a node 1`] = `
 <MCAnswer

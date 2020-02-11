@@ -20,14 +20,7 @@ describe('Assessment Converter', () => {
 
 		const oboNode = Converter.slateToObo(slateNode)
 
-		expect(oboNode).toMatchInlineSnapshot(`
-		Object {
-		  "failedResult": "$attempt_score",
-		  "passedResult": "$attempt_score",
-		  "type": "pass-fail",
-		  "unableToPassResult": null,
-		}
-	`)
+		expect(oboNode).toMatchInlineSnapshot(`""`)
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with set values', () => {
@@ -49,14 +42,7 @@ describe('Assessment Converter', () => {
 
 		const oboNode = Converter.slateToObo(slateNode)
 
-		expect(oboNode).toMatchInlineSnapshot(`
-		Object {
-		  "failedResult": "100",
-		  "passedResult": "100",
-		  "type": "pass-fail",
-		  "unableToPassResult": "100",
-		}
-	`)
+		expect(oboNode).toMatchInlineSnapshot(`""`)
 	})
 
 	test('slateToObo does not convert a Slate node when type is not "pass-fail"', () => {

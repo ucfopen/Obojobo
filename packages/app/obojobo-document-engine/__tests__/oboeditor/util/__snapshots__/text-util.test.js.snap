@@ -3,73 +3,34 @@
 exports[`TextUtil parseMarkings converts styleList to leaves 1`] = `
 Array [
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "b",
-      },
-    ],
+    "b": true,
     "text": "This",
   },
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "i",
-      },
-      Object {
-        "data": undefined,
-        "type": "q",
-      },
-    ],
+    "i": true,
+    "q": true,
     "text": "Text",
   },
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "del",
-      },
-      Object {
-        "data": undefined,
-        "type": "q",
-      },
-      Object {
-        "data": Object {
-          "num": 1,
-        },
-        "type": "sup",
-      },
-    ],
+    "del": true,
+    "num": -1,
+    "q": true,
+    "sup": true,
     "text": "Is",
   },
   Object {
-    "marks": Array [
+    "children": Array [
       Object {
-        "data": Object {
-          "href": "mockLink",
-        },
-        "type": "a",
+        "num": -1,
+        "sup": true,
+        "text": "Form",
       },
       Object {
-        "data": Object {
-          "num": 1,
-        },
-        "type": "sup",
+        "text": "atted",
       },
     ],
-    "text": "Form",
-  },
-  Object {
-    "marks": Array [
-      Object {
-        "data": Object {
-          "href": "mockLink",
-        },
-        "type": "a",
-      },
-    ],
-    "text": "atted",
+    "href": "mockLink",
+    "type": "a",
   },
 ]
 `;
@@ -77,80 +38,43 @@ Array [
 exports[`TextUtil parseMarkings converts styleList to leaves 2`] = `
 Array [
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "b",
-      },
-    ],
+    "b": true,
     "text": "This",
   },
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "i",
-      },
-      Object {
-        "data": undefined,
-        "type": "q",
-      },
-    ],
+    "i": true,
+    "q": true,
     "text": "Text",
   },
   Object {
-    "marks": Array [
-      Object {
-        "data": undefined,
-        "type": "del",
-      },
-      Object {
-        "data": undefined,
-        "type": "q",
-      },
-      Object {
-        "data": Object {
-          "num": -1,
-        },
-        "type": "sup",
-      },
-    ],
+    "del": true,
+    "num": -1,
+    "q": true,
+    "sup": true,
     "text": "Is",
   },
   Object {
-    "marks": Array [
+    "children": Array [
       Object {
-        "data": Object {
-          "href": "mockLink",
-        },
-        "type": "a",
+        "num": -1,
+        "sup": true,
+        "text": "Form",
       },
       Object {
-        "data": Object {
-          "num": -1,
-        },
-        "type": "sup",
+        "text": "atted",
       },
     ],
-    "text": "Form",
-  },
-  Object {
-    "marks": Array [
-      Object {
-        "data": Object {
-          "href": "mockLink",
-        },
-        "type": "a",
-      },
-    ],
-    "text": "atted",
+    "href": "mockLink",
+    "type": "a",
   },
 ]
 `;
 
 exports[`TextUtil parseMarkings creates leaves without styleList 1`] = `
 Array [
-  undefined,
+  Object {
+    "text": "ThisTextIsFormatted",
+  },
 ]
 `;
 

@@ -63,19 +63,18 @@ describe('PostAssessment Converter', () => {
 
 		expect(slateNode).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "dummyRange",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "dummyRange",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)

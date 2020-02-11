@@ -1,9 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`MCChoice editor plugins.renderNode calls next 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "mockNode",
+    }
+  }
+/>
+`;
 
 exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
-<MCChoice
+<SlateWrapper
   attributes={
     Object {
       "dummy": "dummyData",

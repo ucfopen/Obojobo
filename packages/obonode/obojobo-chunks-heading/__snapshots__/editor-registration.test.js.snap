@@ -1,9 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Heading editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`Heading editor plugins.renderNode calls next 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "mockNode",
+    }
+  }
+/>
+`;
 
 exports[`Heading editor plugins.renderNode renders Heading when passed 1`] = `
-<Heading
+<SlateWrapper
   attributes={
     Object {
       "dummy": "dummyData",

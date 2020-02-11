@@ -29,7 +29,7 @@ describe('Registry', () => {
 			  "supportsChildren": false,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -61,7 +61,7 @@ describe('Registry', () => {
 			  "supportsChildren": false,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -129,7 +129,7 @@ describe('Registry', () => {
 			  "supportsChildren": true,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -175,7 +175,7 @@ describe('Registry', () => {
 			  "supportsChildren": true,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -217,7 +217,7 @@ describe('Registry', () => {
 			  "supportsChildren": true,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -258,7 +258,7 @@ describe('Registry', () => {
 			  "supportsChildren": false,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -298,7 +298,7 @@ describe('Registry', () => {
 			  "supportsChildren": false,
 			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)

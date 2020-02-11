@@ -253,16 +253,14 @@ describe('CodeEditor', () => {
 		Object {
 		  "code": "",
 		  "editor": Object {
-		    "current": Object {
-		      "delete": [Function],
-		      "deleteH": [MockFunction],
-		      "firstLine": [MockFunction],
-		      "focus": [Function],
-		      "lastLine": [MockFunction],
-		      "lineInfo": [MockFunction],
-		      "moveToRangeOfDocument": [Function],
-		      "setSelection": [MockFunction],
-		    },
+		    "deleteFragment": [Function],
+		    "deleteH": [MockFunction],
+		    "firstLine": [MockFunction],
+		    "focus": [Function],
+		    "lastLine": [MockFunction],
+		    "lineInfo": [MockFunction],
+		    "selectAll": [Function],
+		    "setSelection": [MockFunction],
 		  },
 		  "mode": "xml",
 		  "options": Object {
