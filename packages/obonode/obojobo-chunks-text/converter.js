@@ -1,4 +1,4 @@
-import { Block } from 'slate'
+import { Editor, Transforms, Range } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
@@ -8,6 +8,7 @@ const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
@@ -76,87 +77,97 @@ const unFlattenList = (jsonNode, diff, type, bulletList, bulletIndex) => {
 	const bulletStyle = bulletList[(bulletIndex + diff - 1) % bulletList.length]
 
 	return unFlattenList({
-		object: 'block',
-		type: LIST_LEVEL_NODE,
-		nodes: [jsonNode],
-		data: { content: { type,  bulletStyle }}
+		type: LIST_NODE,
+		subtype: LIST_LEVEL_NODE,
+		children: [jsonNode],
+		content: { type,  bulletStyle }
 	}, diff - 1, type, bulletList, bulletIndex)
 }
 
 const switchType = {
-	'ObojoboDraft.Chunks.Heading': (editor, node, data) => {
-		node
-			.getLeafBlocksAtRange(editor.value.selection)
-			.forEach(child => editor.setNodeByKey(
-				child.key, 
-				{ type: HEADING_NODE, data: { content: { ...child.data.toJSON(), ...data } }}
+	'ObojoboDraft.Chunks.Heading': (editor, [,path], data) => {
+		const nodeRange = Editor.range(editor, path)
+		// Get only the Element children of the current node that are in the current selection
+		const list = Array.from(Editor.nodes(editor, {
+			at: Range.intersection(editor.selection, nodeRange),
+			match: child => child.subtype === TEXT_LINE_NODE
+		}))
+
+		Editor.withoutNormalizing(editor, () => {
+			list.forEach(([child, childPath]) => Transforms.setNodes(
+				editor,
+				{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },
+				{ at: childPath }
 			))
-	},
-	'ObojoboDraft.Chunks.Code': (editor, node) => {
-		const textNode = {
-			type: CODE_NODE,
-			nodes: []
-		}
-		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
-
-		// Copy the selected Text Line nodes over to the new code Node, 
-		// then remove every node except for the first, 
-		// as they will be rebuilt in the code node
-		// The first node (unremoved) provides an anchor for replacement
-		leaves.forEach((child, index) => {
-			const jsonNode = child.toJSON()
-			jsonNode.type = CODE_LINE_NODE
-			jsonNode.data.content = jsonNode.data
-			textNode.nodes.push(jsonNode)
-
-			if(index !== 0) editor.removeNodeByKey(child.key)
 		})
-
-		// The code node replaces the first child node, with all the copied children,
-		// including the copy of the first child
-		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
 	},
-	'ObojoboDraft.Chunks.List': (editor, node, data) => {
-		// Find the bullet list ind starting index for the selection
+	'ObojoboDraft.Chunks.Code': (editor, [,path]) => {
+		const nodeRange = Editor.range(editor, path)
+		const list = Array.from(Editor.nodes(editor, {
+			at: Range.intersection(editor.selection, nodeRange),
+			match: child => child.subtype === TEXT_LINE_NODE
+		}))
+
+		// Changing each CodeLine to a TextLine will allow normalization
+		// to remove them from the Code node and wrap them in a Text node
+		Editor.withoutNormalizing(editor, () => {
+			list.forEach(([, childPath]) => Transforms.setNodes(
+				editor,
+				{ type: CODE_NODE, subtype: CODE_LINE_NODE, content: {} },
+				{ at: childPath }
+			))
+		})
+	},
+	'ObojoboDraft.Chunks.List': (editor, [,path], data) => {
+		// Find the bullet list and starting index for the selection
 		const bulletList = data.type === 'unordered' ? unorderedBullets : orderedBullets
 		const bulletIndex = bulletList.indexOf(data.bulletStyle)
 
-		const textNode = {
-			type: LIST_NODE,
-			nodes: [],
-			data: { content: { listStyles: { type: data.type }}}
-		}
-		const leaves = node.getLeafBlocksAtRange(editor.value.selection)
+		const nodeRange = Editor.range(editor, path)
+		const list = Array.from(Editor.nodes(editor, {
+			at: Range.intersection(editor.selection, nodeRange),
+			match: child => child.subtype === TEXT_LINE_NODE
+		}))
 
-		const topIndent = leaves.reduce((accum, child) => {
-			const jsonNode = child.toJSON()
-			if (jsonNode.data.indent < accum) return jsonNode.data.indent
+		const topIndent = list.reduce((accum, [child]) => {
+			if (child.content.indent < accum) return child.content.indent
 			return accum
 		}, 20)
 
-		// Copy the selected Text Line nodes over to the new list Node,
-		// then remove every node except for the first, 
-		// as they will be rebuilt in the list node
-		// The first node (unremoved) provides an anchor for replacement
-		leaves.forEach((child, index) => {
-			const jsonNode = child.toJSON()
-			jsonNode.type = LIST_LEVEL_NODE
+		// Changing each CodeLine to a ListLevel will allow normalization
+		// to remove them from the Code node and wrap them in a List node
+		// Indents in the CodeLine are transfered into nested Levels
+		Editor.withoutNormalizing(editor, () => {
+			list.forEach(([child, childPath]) => {
+				Transforms.removeNodes(editor, { at: childPath })
+				// Use the topmost indent as the starting bullet style
+				// then rotate through the bullet styles as the indents increase
+				const indentDiff = child.content.indent - topIndent
+				const bulletStyle = bulletList[(bulletIndex + indentDiff) % bulletList.length]
 
-			// Use the topmost indent as the starting bullet style
-			// then rotate through the bullet styles as the indents increase
-			const indentDiff = jsonNode.data.indent - topIndent
-			const bulletStyle = bulletList[(bulletIndex + indentDiff) % bulletList.length]
-			jsonNode.data.content = { ...data, bulletStyle }
-			textNode.nodes.push(unFlattenList(jsonNode, indentDiff, data.type, bulletList, bulletIndex))
-
-			if(index !== 0) editor.removeNodeByKey(child.key)
+				const jsonNode = {
+					type: LIST_NODE,
+					subtype: LIST_LEVEL_NODE,
+					content: {
+						type: data.type,
+						bulletStyle
+					},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LINE_NODE,
+							children: child.children
+						}
+					]
+				}
+				
+				Transforms.insertNodes(
+					editor,
+					unFlattenList(jsonNode, indentDiff, data.type, bulletList, bulletIndex),
+					{ at: childPath }
+				)
+			})
 		})
-
-		// The list node replaces the first child node, with all the copied children,
-		// including the copy of the first child
-		const block = Block.create(textNode)
-		editor.replaceNodeByKey(leaves.get(0).key, block).moveToRangeOfNode(block).focus()
 	}
 }
 

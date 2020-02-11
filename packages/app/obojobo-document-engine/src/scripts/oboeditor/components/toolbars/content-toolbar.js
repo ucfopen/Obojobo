@@ -33,26 +33,26 @@ const orderedList = [
 
 const ContentToolbar = props => (
 	<div className={`visual-editor--content-toolbar`}>
-		<ParagraphStyles editor={props.editorRef} value={props.value}/>
+		<ParagraphStyles editor={props.editor} value={props.value}/>
 		{contentMarks.map(mark => {
 			const Icon = mark.icon
 			return (
 				<button
 					key={mark.name}
-					onClick={() => mark.action(props.editorRef.current)}
+					onClick={() => mark.action(props.editor)}
 					title={mark.name}>
 					<Icon />
 				</button>
 			)
 		})}
 		<ListDropper 
-			editor={props.editorRef} 
+			editor={props.editor} 
 			type='unordered' 
 			bullets={unorderedList} 
 			defaultStyle="disc"
 			value={props.value}/>
 		<ListDropper 
-			editor={props.editorRef} 
+			editor={props.editor} 
 			type='ordered' 
 			bullets={orderedList} 
 			defaultStyle="decimal"

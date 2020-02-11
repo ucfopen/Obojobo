@@ -320,7 +320,6 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.value)
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
@@ -340,7 +339,7 @@ class PageEditor extends React.Component {
 						togglePlaceholders={this.togglePlaceholders}
 						showPlaceholders={this.state.showPlaceholders}
 						value={this.state.value}/>
-					<ContentToolbar editorRef={this.editorRef} value={this.state.value}/>
+					<ContentToolbar editor={this.editor} value={this.state.value}/>
 				</div>
 
 				<EditorNav

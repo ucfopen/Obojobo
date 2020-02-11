@@ -112,7 +112,7 @@ const switchType = {
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([, childPath]) => Transforms.setNodes(
 				editor,
-				{ type: TEXT_NODE, subtype: TEXT_LINE_NODE },
+				{ type: TEXT_NODE, subtype: TEXT_LINE_NODE, content: {} },
 				{ at: childPath }
 			))
 		})
