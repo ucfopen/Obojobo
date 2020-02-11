@@ -2,11 +2,7 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import {
-	useEditor,
-	useSelected,
-	ReactEditor
-} from 'slate-react'
+import { ReactEditor } from 'slate-react'
 import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'

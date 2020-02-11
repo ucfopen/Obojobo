@@ -1,4 +1,4 @@
-import { Editor, Transforms, Range } from 'slate'
+import { Transforms } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Editor, Element, Transforms, Path, Text, Range } from 'slate'
 
 // Most of this method is copied from Slate, with the emptyAncestor code edited

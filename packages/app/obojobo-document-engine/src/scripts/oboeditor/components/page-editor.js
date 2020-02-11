@@ -10,7 +10,6 @@ import ContentToolbar from './toolbars/content-toolbar'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
 import FormatPlugin from '../plugins/format-plugin'
-import hotKeyPlugin from '../plugins/hot-key-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
 import ScriptMarks from './marks/script-marks'
@@ -72,9 +71,9 @@ class PageEditor extends React.Component {
 		editor.apply = (op) => {
 			// If we are not altering a node, apply the operation as normal
 			if(!op.path) return apply(op)
-			const node = Node.get(editor, op.path)
 
 			// If we are altering an Obonode, adjust the ids accordingly
+			let node
 			let newModel
 			switch(op.type){
 				case 'insert_node':
@@ -90,6 +89,7 @@ class PageEditor extends React.Component {
 					break
 				case 'split_node':
 					// Only update the ids if the node that will be split is a core Obojobo node
+					node = Node.get(editor, op.path)
 					if(!Element.isElement(node) || editor.isInline(node) || node.subtype) break
 
 					// create new id 
@@ -102,6 +102,7 @@ class PageEditor extends React.Component {
 				case 'merge_node':
 				case 'remove_node':
 					// Only update the ids if the node that will be removed is a core Obojobo node
+					node = Node.get(editor, op.path)
 					if(!Element.isElement(node) || editor.isInline(node) || node.subtype) break
 
 					// remove old id on delete
@@ -180,27 +181,15 @@ class PageEditor extends React.Component {
 			FormatPlugin,
 		]
 
-		const editorPlugins = [
-		// 	ClipboardPlugin,
-		// 	hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
-		]
-
 		// Plugins are listed in order of priority
 		// The plugins list is reversed after building because the editor functions 
 		// are built from the bottom up to the top
 		this.plugins = [
 			...nodePlugins,
-			...this.globalPlugins,
-			...editorPlugins
+			...this.globalPlugins
 		].reverse()
 
 		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)
-		// const componentPlugins = [
-		// 	Component.plugins,
-		// 	ToggleParameter.plugins,
-		// 	SelectParameter.plugins,
-		// 	TextParameter.plugins
-		// ]
 
 		// return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
 		return this.plugins.reduce(this.addPlugin, editor)

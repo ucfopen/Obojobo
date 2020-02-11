@@ -1,6 +1,5 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { Value } from 'slate'
 import Common from '../../../../src/scripts/common'
 
 import FileToolbar from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar'
@@ -65,17 +64,6 @@ describe('File Toolbar', () => {
 	})
 
 	test('FileToolbar node', () => {
-<<<<<<< HEAD
-		const editor = {
-			current: {
-				undo: jest.fn(),
-				redo: jest.fn(),
-				delete: jest.fn(),
-				focus: jest.fn(),
-				toggleMark: jest.fn()
-			}
-		}
-=======
 		const editor = { current: {
 			undo: jest.fn(),
 			redo: jest.fn(),
@@ -83,31 +71,15 @@ describe('File Toolbar', () => {
 			focus: jest.fn(),
 			toggleMark: jest.fn(),
 		}}
->>>>>>> issue/795-editor-toolbar
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
 		const value = {}
 
-<<<<<<< HEAD
-		const component = shallow(<FileToolbar saved editorRef={editor} />)
-=======
 		const component = shallow(<FileToolbar saved editorRef={editor} insertableItems={[]} value={value}/>)
->>>>>>> issue/795-editor-toolbar
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileToolbar node in visual editor', () => {
-<<<<<<< HEAD
-		const editor = {
-			current: {
-				undo: jest.fn(),
-				redo: jest.fn(),
-				delete: jest.fn(),
-				focus: jest.fn(),
-				toggleMark: jest.fn()
-			}
-		}
-=======
 		const editor = { current: {
 			undo: jest.fn(),
 			redo: jest.fn(),
@@ -168,7 +140,6 @@ describe('File Toolbar', () => {
 			insertBlock: jest.fn(),
 			changeToType: jest.fn(),
 		}}
->>>>>>> issue/795-editor-toolbar
 		editor.current.moveToRangeOfDocument = jest.fn().mockReturnValue(editor.current)
 		const items = [
 			{ 
@@ -225,11 +196,7 @@ describe('File Toolbar', () => {
 			}}
 		}
 
-<<<<<<< HEAD
-		const component = mount(<FileToolbar mode="visual" editorRef={editor} />)
-=======
 		const component = mount(<FileToolbar mode="visual" editorRef={editor} insertableItems={items} value={value}/>)
->>>>>>> issue/795-editor-toolbar
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})

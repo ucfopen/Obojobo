@@ -1,8 +1,7 @@
-import { Editor, Transforms, Range, Path, Point, Element, Node } from 'slate'
+import { Editor, Transforms, Range, Node } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 const insertText = (node, editor, event) => {

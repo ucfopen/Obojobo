@@ -31,11 +31,11 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children,
-		content: {
+		content: withoutUndefined({
 			triggers: node.content.triggers,
 			choose: node.content.chooseAll ? Infinity : node.content.choose,
 			select: node.content.select
-		}
+		})
 	}
 }
 

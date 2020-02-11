@@ -15,7 +15,6 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 const Question = {
 	name: QUESTION_NODE,

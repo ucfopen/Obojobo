@@ -12,7 +12,6 @@ import EditorUtil from '../util/editor-util'
 //import { KeyUtils } from 'slate'
 import PageEditor from './page-editor'
 import React from 'react'
-import generateId from '../generate-ids'
 
 // PLUGINS
 import ClipboardPlugin from '../plugins/clipboard-plugin'

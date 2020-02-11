@@ -214,8 +214,6 @@ const switchType = {
 
 				textNode.children.push(jsonNode)
 			})
-
-			console.log('last', Editor.end(editor, lastPath))
 			
 			// When the new text node is inserted, all ListLine nodes that were
 			// changed are deleted, and then the textNode is inserted at the Point
