@@ -103,8 +103,8 @@ integer
 	= digits:[0-9]+ { return parseInt(digits.join(''), 10) }
 
 var
-	= name:name "[" _ index:expression _  "]" { return options.vars[name][index] }
-	/ name:name { return typeof options.vars[name] !== 'undefined' ? options.vars[name] : constants[name.toLowerCase()] }
+	= '$' name:name "[" _ index:expression _  "]" { return options.vars[name][index] }
+	/ '$' name:name { return typeof options.vars[name] !== 'undefined' ? options.vars[name] : constants[name.toLowerCase()] }
 
 string
 	= '"' contents:(!'"' c:. { return c })* '"' { return contents.join('') }

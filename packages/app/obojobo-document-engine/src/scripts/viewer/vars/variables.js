@@ -81,7 +81,7 @@ class Variables {
 	addMultiple(ownerId, variableDefinitions = []) {
 		// console.log('am', variableDefinitions)
 		variableDefinitions.forEach(v => {
-			this.add(ownerId, v.name, v.definition)
+			this.add(ownerId, v.name, { ...v })
 		})
 	}
 

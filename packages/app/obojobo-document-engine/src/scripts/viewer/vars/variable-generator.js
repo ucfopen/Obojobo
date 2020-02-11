@@ -25,6 +25,8 @@ class VariableGenerator {
 			return this.getSet(def)
 		}
 
+		console.log('def', def)
+
 		// if (!def.name) {
 		// 	throw 'Missing required name property!'
 		// }
@@ -32,16 +34,16 @@ class VariableGenerator {
 		let value = null
 
 		switch (def.type) {
-			case 'list-random':
-				value = this.getListRandom(def)
+			case 'random-list':
+				value = this.getRandomList(def)
 				break
 
-			case 'list-sequence':
-				value = this.getListSequence(def)
+			case 'random-sequence':
+				value = this.getRandomSequence(def)
 				break
 
-			case 'numeric':
-				value = this.getNumeric(def)
+			case 'random-number':
+				value = this.getRandomNumber(def)
 				break
 
 			case 'pick-one':
@@ -50,6 +52,11 @@ class VariableGenerator {
 
 			case 'pick-list':
 				value = this.getPickList(def)
+				break
+
+			case 'static-value':
+			case 'static-list':
+				value = def.value
 				break
 
 			// case 'fn':
@@ -67,31 +74,53 @@ class VariableGenerator {
 		return value
 	}
 
-	getListRandom(def) {
+	getRandomList(def) {
 		return this.generateRandomArray(
-			parseFloat(def.min),
-			parseFloat(def.max),
-			parseInt(def.size, 10),
-			parseInt(def.decimals, 10),
+			this.rand(parseInt(def.sizeMin, 10), parseInt(def.sizeMax, 10)),
+			parseFloat(def.valueMin),
+			parseFloat(def.valueMax),
+			parseInt(def.decimalPlacesMin, 10),
+			parseInt(def.decimalPlacesMax, 10),
 			Boolean(def.unique)
 		)
 	}
 
-	getListSequence(def) {
+	getRandomSequence(def) {
 		const list = []
 
 		const start = parseFloat(def.start) || 1
 		const step = parseFloat(def.step) || 1
+		const size = this.rand(parseInt(def.sizeMin, 10), parseInt(def.sizeMax, 10))
+		const seriesType = ('' + def.seriesType).toLowerCase()
 
-		for (let i = 0, len = parseInt(def.size, 10); i < len; i++) {
-			list.push(start + i * step)
+		let next
+		switch (seriesType) {
+			case 'arithmetic':
+				next = (arr, index, step) => arr[index - 1] + step
+				break
+
+			case 'geometric':
+				next = (arr, index, step) => arr[index - 1] * step
+				break
+
+			default:
+				throw 'Invalid sequence seriesType!'
+		}
+
+		list.push(start)
+		for (let i = 1, len = size; i < len; i++) {
+			list.push(next(list, i, step))
 		}
 
 		return list
 	}
 
-	getNumeric(def) {
-		return this.getNumber(parseFloat(def.min), parseFloat(def.max), parseInt(def.decimals, 10))
+	getRandomNumber(def) {
+		return this.rand(
+			parseFloat(def.valueMin),
+			parseFloat(def.valueMax),
+			this.rand(parseInt(def.decimalPlacesMin, 10), parseInt(def.decimalPlacesMax, 10))
+		)
 	}
 
 	getPickOne(def) {
@@ -141,7 +170,7 @@ class VariableGenerator {
 		return results
 	}
 
-	getNumber(min, max, decimals = 0) {
+	rand(min, max, decimals = 0) {
 		if (min > max) {
 			throw 'Min cannot be above max!'
 		}
@@ -155,11 +184,11 @@ class VariableGenerator {
 		return parseFloat((Math.random() * (max - min) + min).toFixed(decimals))
 	}
 
-	generateRandomArray(min, max, size, decimals = 0, unique = false) {
+	generateRandomArray(size, valueMin, valueMax, decimalsMin, decimalsMax, unique = false) {
 		const list = []
 
 		while (list.length < size) {
-			const n = this.getNumber(min, max, decimals)
+			const n = this.rand(valueMin, valueMax, this.rand(decimalsMin, decimalsMax))
 
 			if (!unique || list.indexOf(n) === -1) {
 				list.push(n)
@@ -170,21 +199,21 @@ class VariableGenerator {
 	}
 
 	pickOne(list) {
-		return list[this.getNumber(0, list.length - 1)]
+		return list[this.rand(0, list.length - 1)]
 	}
 
-	pickMany(list, minAmount, maxAmount, ordered = false) {
-		if (minAmount > list.length || maxAmount > list.length) {
+	pickMany(list, sizeMin, sizeMax, ordered = false) {
+		if (sizeMin > list.length || sizeMax > list.length) {
 			throw 'min or max cannot be larger than the size of the list!'
 		}
 
-		if (minAmount > maxAmount) {
+		if (sizeMin > sizeMax) {
 			throw 'min cannot be larger than max!'
 		}
 
-		const size = this.getNumber(minAmount, maxAmount)
+		const size = this.rand(sizeMin, sizeMax)
 
-		list = this.generateRandomArray(0, list.length - 1, size, 0, true)
+		list = this.generateRandomArray(size, 0, list.length - 1, 0, 0, true)
 			.sort()
 			.map(i => list[i])
 

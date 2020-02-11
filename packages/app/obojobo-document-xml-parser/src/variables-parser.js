@@ -30,22 +30,19 @@ const parseVariable = el => {
 }
 
 const parseV = el => {
-	if (el.value) {
-		return {
-			name: el.attributes.name,
-			definition: el.value[0].text
+	// if (el.value) {
+	// 	return {
+	// 		name: el.attributes.name,
+	// 		definition: el.value[0].text
 
-			// definitions: el.value
-		}
-	} else {
-		const name = el.attributes.name
-		delete el.attributes.name
+	// 		// definitions: el.value
+	// 	}
+	// } else {
+	// const name = el.attributes.name
+	// delete el.attributes.name
 
-		return {
-			name,
-			definition: el.attributes
-		}
-	}
+	return { ...el.attributes }
+	// }
 }
 
 const parseVGroup = el => {

@@ -470,6 +470,12 @@ ${rows.join('\\\\\n')}
 	// 	return a === b
 	// }
 	//@TODO - End
+
+	//@TODO - sigfigs
+
+	sigfigs(n) {
+		console.log('@TODO')
+	}
 }
 
 const grammarFunctions = new GrammarFunctions()
