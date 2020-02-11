@@ -147,6 +147,23 @@ describe('Figure Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Figure component replace "falsy" content with empty object', () => {
+		const component = mount(
+			<Figure
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => null
+					},
+					text: 'Your Title Here'
+				}}
+			/>
+		)
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('changeProperties sets the nodes content', () => {
 		const mockContent = { mockContent: true }
 		const newMockContent = { newMockContent: 999 }

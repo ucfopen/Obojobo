@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-math-equation",
-	"version": "7.1.2",
+	"version": "7.1.3",
 	"license": "AGPL-3.0-only",
 	"description": "MathEquation content chunk for Obojobo",
 	"scripts": {
@@ -29,7 +29,7 @@
 	},
 	"dependencies": {
 		"katex": "^0.11.1",
-		"obojobo-lib-utils": "^7.1.2"
+		"obojobo-lib-utils": "^7.1.3"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
