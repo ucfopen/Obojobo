@@ -1,7 +1,6 @@
 import React, { memo } from 'react'
-import { Block, Range, Editor, Transforms } from 'slate'
+import { Range, Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
@@ -9,9 +8,6 @@ import FormatMenu from './format-menu'
 import DropDownMenu from './drop-down-menu'
 
 import './file-toolbar.scss'
-
-const { OboModel } = Common.models
-
 
 const insertDisabled = (name, editor, value) => {
 	if(!editor.selection) return true
@@ -46,12 +42,7 @@ const FileToolbar = props => {
 	const editor = props.editor
 	const insertMenu = props.insertableItems.map(item => ({
 		name: item.name,
-		action: () => {
-			const newBlock = item.cloneBlankNode()
-			const newModel = OboModel.create(item.insertJSON.type)
-			newModel.setId(newBlock.id)
-			Transforms.insertNodes(editor, newBlock)
-		},
+		action: () => Transforms.insertNodes(editor, item.cloneBlankNode()),
 		disabled: insertDisabled(item.name, editor, props.value)
 	}))
 

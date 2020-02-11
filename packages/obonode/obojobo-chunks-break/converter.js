@@ -11,7 +11,7 @@ const slateToObo = node => ({
 	type: node.type,
 	children: [],
 	content: withoutUndefined({
-		trigger: node.content.triggers,
+		triggers: node.content.triggers,
 		width: node.content.width
 	})
 })

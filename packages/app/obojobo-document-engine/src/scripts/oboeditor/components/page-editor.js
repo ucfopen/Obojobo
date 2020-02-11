@@ -23,6 +23,7 @@ import ToggleParameter from './parameter-node/toggle-parameter'
 //import { Value, createEditor } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import generateId from '../generate-ids'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
 
 const { ModalUtil } = Common.util
@@ -33,7 +34,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element, Transforms } from 'slate'
+import { createEditor, Editor, Element, Transforms, Node } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
 
@@ -69,10 +70,56 @@ class PageEditor extends React.Component {
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 
-		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
-		//this.editor = withReact(createEditor())
+		this.editor = this.withIds(this.withPlugins(withHistory(withReact(createEditor()))))
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
+	}
+
+	withIds(editor) {
+		const { apply } = editor
+		// Override apply to handle node ids
+		editor.apply = (op) => {
+			// If we are not altering a node, apply the operation as normal
+			if(!op.path) return apply(op)
+			const node = Node.get(editor, op.path)
+
+			// If we are altering an Obonode, adjust the ids accordingly
+			let newModel
+			switch(op.type){
+				case 'insert_node':
+					// Only update the ids if the inserted node is a core Obojobo node
+					if(!Element.isElement(op.node) || editor.isInline(op.node) || op.node.subtype) break
+
+					// create new id
+					op.node.id = generateId()
+					// Create the obomodel and set its id to match the block key 
+					// to prevent duplicate keys
+					newModel = OboModel.create(op.node.type)
+					newModel.setId(op.node.id)
+					break
+				case 'split_node':
+					// Only update the ids if the node that will be split is a core Obojobo node
+					if(!Element.isElement(node) || editor.isInline(node) || node.subtype) break
+
+					// create new id 
+					op.properties.id = generateId()
+					// Create the obomodel and set its id to match the block key 
+					// to prevent duplicate keys
+					newModel = OboModel.create(op.properties.type)
+					newModel.setId(op.properties.id)
+					break
+				case 'merge_node':
+				case 'remove_node':
+					// Only update the ids if the node that will be removed is a core Obojobo node
+					if(!Element.isElement(node) || editor.isInline(node) || node.subtype) break
+
+					// remove old id on delete
+					delete OboModel.models[node.id]
+					
+			}
+			apply(op)
+		}
+		return editor
 	}
 
 	toggleEditable(editable) {

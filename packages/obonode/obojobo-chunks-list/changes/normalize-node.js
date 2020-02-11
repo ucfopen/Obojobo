@@ -13,7 +13,6 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 // For more detailed information, see: https://docs.slatejs.org/concepts/10-normalizing
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
-	console.log(node)
 
 	// If the element is a List Node, only allow ListLevel children
 	if (node.type === LIST_NODE && !node.subtype) {

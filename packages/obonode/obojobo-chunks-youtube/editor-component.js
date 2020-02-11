@@ -3,7 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import { ReactEditor } from 'slate-react'
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 
 import YouTubeProperties from './youtube-properties-modal'
 import YouTubePlayer from './youtube-player'
@@ -50,6 +50,15 @@ class YouTube extends React.Component {
 		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
+	focusYoutube() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
+	}
+
 	render() {
 		const content = this.props.element.content
 
@@ -59,7 +68,8 @@ class YouTube extends React.Component {
 			<Node {...this.props}>
 				<div
 					contentEditable={false}
-					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}>
+					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
+					onClick={this.focusYoutube.bind(this)}>
 					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>

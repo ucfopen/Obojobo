@@ -14,9 +14,6 @@ const { OboModel } = Common.models
 
 const insertBlockAtStart = (editor, element, item) => {
 	const newBlock = item.cloneBlankNode()
-	// Create the obomodel and set its id to match the block key to prevent duplicate keys
-	const newModel = OboModel.create(item.insertJSON.type)
-	newModel.setId(newBlock.id)
 
 	// Use the ReactEditor to get the path for the current element
 	// Then use transforms to insert at that path, which effectively inserts above like in arrays
@@ -26,9 +23,6 @@ const insertBlockAtStart = (editor, element, item) => {
 
 const insertBlockAtEnd = (editor, element, item) => {
 	const newBlock = item.cloneBlankNode()
-	// Create the obomodel and set its id to match the block key to prevent duplicate keys
-	const newModel = OboModel.create(item.insertJSON.type)
-	newModel.setId(newBlock.id)
 	
 	// Use the ReactEditor to get the path for the current element, and increment the last element
 	// Then use transforms to insert at that path, which effectively inserts below like in arrays
