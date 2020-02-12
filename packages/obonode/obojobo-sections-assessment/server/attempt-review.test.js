@@ -45,10 +45,10 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('attemptReview for 2 attempts with review always', async () => {
+	test('attemptReview for 2 attempts with review = always', async () => {
 		const attemptReview = require('./attempt-review')
 
-		AssessmentModel.fetchAttemptByID.mockReturnValueOnce({
+		AssessmentModel.fetchAttemptByID.mockReturnValue({
 			draftId: 'mock-draft-id',
 			assessmentId: 'mock-assessment-id',
 			draftContentId: 'mock-content-id',
@@ -72,9 +72,10 @@ describe('attempt review', () => {
 		const questionModels = await attemptReview([1, 2])
 
 		// eslint-disable-next-line no-undef
-		return flushPromises().then(() => {
+		return flushPromises().then(flushPromises).then(() => {
 			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(2)
+			// only called when review !== always
 			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
 			expect(logger.error).toHaveBeenCalledTimes(0)

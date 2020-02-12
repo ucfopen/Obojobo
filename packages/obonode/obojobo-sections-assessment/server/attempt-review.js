@@ -6,9 +6,15 @@ const logger = require('obojobo-express/server/logger')
 
 // Extract draft caching to another function?
 const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
+
 	const attempt = await AssessmentModel.fetchAttemptByID(attemptId)
 	let draftDocument
 
+	// @TODO: need to optimize here:
+	// ideally we could mark this content id as in
+	// the process of being fetched so that we don't
+	// queued up N requests to load it while waiting for
+	// the first request to load
 	if(draftCache[attempt.draftContentId]){
 		// already loaded, get from cache
 		draftDocument = draftCache[attempt.draftContentId]

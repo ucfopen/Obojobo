@@ -283,16 +283,40 @@ class AssessmentModel {
 	}
 
 	/*
+	1. Sort by attempt number
+	2. remove any incomplete attempts with a start time before the last complete time
+	3. place the last incomplete attempt at the end
+
 	Filter out any incomplete attempts that have a startTime after
 	the last complete attempts' finishTime
 	This function assumes that attempts are all for the same assessment_id
 	*/
-	// @TODO: rename with 'filter'
 	static removeAllButLastIncompleteAttempts(attempts) {
-		attempts = attempts.sort(sortByAttemptNumber)
-		const complete = attempts.filter(r => r.isFinished)
-		const incomplete = attempts.filter(r => !r.isFinished)
-		return complete.concat(incomplete.slice(-1))
+		// clone the array
+		let _attempts = [...attempts]
+		// sort by attempt number
+		_attempts = _attempts.sort(sortByAttemptNumber)
+		const complete = _attempts.filter(r => r.isFinished)
+		let incomplete = _attempts.filter(r => !r.isFinished)
+
+		// if both arrays have content
+		if(incomplete.length){
+			// exit early if there's no complete items
+			// return an array with the last incomplete item
+			if(!complete.length){
+				return incomplete.slice(-1)
+			}
+			// grab the last completed finishTime
+			const lastFinishTime = complete.slice(-1)[0].finishTime
+			// filter all incompletes that started before lastFinishTime
+			incomplete = incomplete.filter(r => r.startTime > lastFinishTime)
+			// make array with only the last item (or an empty array)
+			incomplete = incomplete.slice(-1)
+			// append the last item to the end (incomplete can be an empty array)
+			return complete.concat(incomplete)
+		}
+
+		return complete
 	}
 
 	// get all attempts containing an array of responses
