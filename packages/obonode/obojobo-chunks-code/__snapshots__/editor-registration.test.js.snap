@@ -4,7 +4,15 @@ exports[`Code editor plugins.decorate exits when not relevent 1`] = `Array []`;
 
 exports[`Code editor plugins.decorate exits when not relevent 2`] = `Array []`;
 
-exports[`Code editor plugins.decorate renders a placeholder 1`] = `Array []`;
+exports[`Code editor plugins.decorate renders a placeholder 1`] = `
+Array [
+  Object {
+    "anchor": undefined,
+    "focus": undefined,
+    "placeholder": "Type your code here",
+  },
+]
+`;
 
 exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
 <Line
@@ -39,29 +47,4 @@ exports[`Code editor plugins.renderNode renders code when passed 1`] = `
     }
   }
 />
-`;
-
-exports[`Code editor queries.createCodeLinesFromText builds text lines 1`] = `
-Array [
-  Immutable.Record {
-    "data": Immutable.Map {
-      "content": Object {
-        "indent": 0,
-      },
-    },
-    "key": "0",
-    "nodes": Immutable.List [
-      Immutable.Record {
-        "leaves": Immutable.List [
-          Immutable.Record {
-            "marks": Immutable.Set [],
-            "text": "mock text",
-          },
-        ],
-        "key": "1",
-      },
-    ],
-    "type": "ObojoboDraft.Chunks.Code.CodeLine",
-  },
-]
 `;

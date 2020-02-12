@@ -4,7 +4,7 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('./changes/increase-indent')
 jest.mock('./changes/decrease-indent')
 
-import { Editor, Transforms } from 'slate'
+import { Editor, Transforms, Element, Node } from 'slate'
 import Code from './editor-registration'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import decreaseIndent from './changes/decrease-indent'
@@ -30,7 +30,10 @@ describe('Code editor', () => {
 			types: ['application/html']
 		}
 		const next = jest.fn()
-		Editor.nodes.mockReturnValueOnce([[{ type: 'nonCodeNode' }]])
+		Editor.nodes.mockImplementation((editor, { match }) => {
+			match({ type: 'nonCodeNode' })
+			return [[{ type: 'nonCodeNode' }]]
+		})
 
 		Code.plugins.insertData(data, {}, next)
 
@@ -108,10 +111,12 @@ describe('Code editor', () => {
 		const editor = {
 			children: [{ children: [{ text: '' }] }]
 		}
+		Element.isElement.mockReturnValue(true)
+		Node.string.mockReturnValue('')
 
 		expect(
 			Code.plugins.decorate(
-				[{ children: [{ text: '' }] }, [0]],
+				[ { children: [{ text: '' }] }, [0]],
 				editor
 			)
 		).toMatchSnapshot()
@@ -129,13 +134,20 @@ describe('Code editor', () => {
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
-		const event = {
+		const event1 = {
+			key: 'Backspace',
+			preventDefault: jest.fn()
+		}
+
+		Code.plugins.onKeyDown({}, {}, event1)
+
+		const event2 = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown({}, {}, event)
-		expect(KeyDownUtil.deleteEmptyParent).not.toHaveBeenCalled()
+		Code.plugins.onKeyDown({}, {}, event2)
+		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
@@ -159,6 +171,5 @@ describe('Code editor', () => {
 		Code.plugins.onKeyDown({}, {}, event)
 
 		expect(increaseIndent).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
 	})
 })

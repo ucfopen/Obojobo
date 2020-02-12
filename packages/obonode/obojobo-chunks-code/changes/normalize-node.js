@@ -17,13 +17,13 @@ const normalizeNode = (entry, editor, next) => {
 		// Code child normalization
 		for (const [child, childPath] of Node.children(editor, path)) {
 			// Unwrap non-CodeLine children
-			if (Element.isElement(child) && child.subtype !== CODE_LINE_NODE) {
+			if (Element.isElement(child) && !editor.isInline(child) && child.subtype !== CODE_LINE_NODE) {
 				Transforms.liftNodes(editor, { at: childPath })
 				return
 			}
 
 			// Wrap loose text children in a CodeLine
-			if (Text.isText(child)) {
+			if (Text.isText(child) || editor.isInline(child)) {
 				Transforms.wrapNodes(
 					editor, 
 					{

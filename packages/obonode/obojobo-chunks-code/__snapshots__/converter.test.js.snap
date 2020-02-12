@@ -54,7 +54,7 @@ Object {
         },
         "text": Object {
           "styleList": Array [],
-          "value": "mockCode",
+          "value": "",
         },
       },
     ],
@@ -75,7 +75,7 @@ Object {
         },
         "text": Object {
           "styleList": Array [],
-          "value": "mockCode",
+          "value": "",
         },
       },
     ],
