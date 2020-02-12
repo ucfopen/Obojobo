@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Code editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`Code editor plugins.decorate exits when not relevent 1`] = `Array []`;
+
+exports[`Code editor plugins.decorate exits when not relevent 2`] = `Array []`;
+
+exports[`Code editor plugins.decorate renders a placeholder 1`] = `Array []`;
 
 exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
 <Line
@@ -10,47 +14,30 @@ exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.Code.CodeLine",
-    }
-  }
-/>
-`;
-
-exports[`Code editor plugins.renderNode renders code when passed 1`] = `
-<Code
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.Code.CodeLine",
       "type": "ObojoboDraft.Chunks.Code",
     }
   }
 />
 `;
 
-exports[`Code editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
-
-exports[`Code editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
-
-exports[`Code editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
-
-exports[`Code editor plugins.renderPlaceholder renders a placeholder 1`] = `
-<span
-  className="placeholder"
-  contentEditable={false}
-  data-placeholder="Type Your Code Here"
+exports[`Code editor plugins.renderNode renders code when passed 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  element={
+    Object {
+      "content": Object {},
+      "type": "ObojoboDraft.Chunks.Code",
+    }
+  }
 />
 `;
 
