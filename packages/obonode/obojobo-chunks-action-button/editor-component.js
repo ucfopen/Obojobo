@@ -13,13 +13,6 @@ import ActionButtonEditorAction from './action-button-editor-action'
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
-	
-
-
-	
-
-	
-
 /**
  * Display an Obojobo Action button node.  Users can type into the main body of the Action Button
  * to change the label text. When the node is selected, display a menu that contains a list of 

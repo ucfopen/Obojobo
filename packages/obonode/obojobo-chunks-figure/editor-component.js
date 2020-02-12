@@ -16,38 +16,6 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
-const focusFigure = (editor, node, isSelected) => {
-	if(!isSelected) {
-		const path = ReactEditor.findPath(editor, node)
-		const start = Editor.start(editor, path)
-		Transforms.setSelection(editor, {
-			focus: start,
-			anchor: start
-		})
-	}
-}
-
-const deleteNode = (editor, node) => {
-	const path = ReactEditor.findPath(editor, node)
-	Transforms.removeNodes(editor, { at: path })
-}
-
-const showImagePropertiesModal = (editor, node) => {
-	ModalUtil.show(
-		<ImageProperties
-			allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
-			content={node.content}
-			onConfirm={changeProperties.bind(this, editor, node)}
-		/>
-	)
-}
-
-const changeProperties = (editor, node, content) => {
-	ModalUtil.hide()
-	const path = ReactEditor.findPath(editor, node)
-	Transforms.setNodes(editor, { content: {...node.content, ...content} }, { at: path })
-}
-
 /**
  * Display an Obojobo Figure node.  Users can type below the figure to add a caption. 
  * When the node is selected, the figure is outlined, and a delete button and image properties
@@ -55,52 +23,85 @@ const changeProperties = (editor, node, content) => {
  * select an image, and set its size and alt text. Clicking on the image when it is not selected
  * will move the cursor to the start of the figurecaption
  */
-const Figure = props => {
-	const { content } = props.element
-	const hasAltText = content.alt && content.alt.length !== 0
-	const selected = props.selected
-	const editor = props.editor
-	const isSelected = isOrNot(selected, 'selected')
+class Figure extends React.Component {
+	focusFigure() {
+		if(!this.props.selected) {
+			const path = ReactEditor.findPath(this.props.editor, this.props.element)
+			const start = Editor.start(this.props.editor, path)
+			Transforms.setSelection(this.props.editor, {
+				focus: start,
+				anchor: start
+			})
+		}
+	}
 
-	return (
-		<Node {...props}>
-			<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
-				<figure className="container">
-					{hasAltText ? null : (
+	deleteNode() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
+	}
+
+	showImagePropertiesModal() {
+		ModalUtil.show(
+			<ImageProperties
+				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
+				content={this.props.element.content}
+				onConfirm={this.changeProperties.bind(this)}
+			/>
+		)
+	}
+
+	changeProperties(content) {
+		ModalUtil.hide()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
+	}
+
+	render() {
+		const { content } = this.props.element
+		const hasAltText = content.alt && content.alt.length !== 0
+		const selected = this.props.selected
+		const isSelected = isOrNot(selected, 'selected')
+
+		return (
+			<Node {...this.props}>
+				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
+					<figure className="container">
+						{hasAltText ? null : (
+							<div 
+								contentEditable={false} 
+								className="accessibility-warning"
+								style={{ userSelect: "none" }}>
+								Accessibility Warning: No Alt Text!
+							</div>
+						)}
 						<div 
-							contentEditable={false} 
-							className="accessibility-warning"
-							style={{ userSelect: "none" }}>
-							Accessibility Warning: No Alt Text!
-						</div>
-					)}
-					<div 
-						className={`figure-box  ${isSelected}`} 
-						contentEditable={false}
-						onClick={focusFigure.bind(this, editor, props.element, selected)}>
-						<Button 
-							className="delete-button" 
-							onClick={deleteNode.bind(this, editor, props.element)}>
-							×
-						</Button>
-						<div className="image-toolbar">
-							<Button
-								className="properties-button"
-								onClick={showImagePropertiesModal.bind(this, editor, props.element)}>
-								Image Properties
+							className={`figure-box  ${isSelected}`} 
+							contentEditable={false}
+							onClick={this.focusFigure.bind(this)}>
+							<Button 
+								className="delete-button" 
+								onClick={this.deleteNode.bind(this)}>
+								×
 							</Button>
+							<div className="image-toolbar">
+								<Button
+									className="properties-button"
+									onClick={this.showImagePropertiesModal.bind(this)}>
+									Image Properties
+								</Button>
+							</div>
+							<Image
+								key={content.url + content.width + content.height + content.size}
+								chunk={{ modelState: content }}
+								lazyLoad={false}
+							/>
 						</div>
-						<Image
-							key={content.url + content.width + content.height + content.size}
-							chunk={{ modelState: content }}
-							lazyLoad={false}
-						/>
-					</div>
-					<figcaption className="align-center">{props.children}</figcaption>
-				</figure>
-			</div>
-		</Node>
-	)
+						<figcaption className="align-center">{this.props.children}</figcaption>
+					</figure>
+				</div>
+			</Node>
+		)
+	}
 }
 
 export default withSlateWrapper(Figure)

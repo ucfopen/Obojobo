@@ -16,7 +16,9 @@ Object {
 exports[`Figure Converter oboToSlate converts an OboNode to a Slate node with caption, size and triggers 1`] = `
 Object {
   "children": Array [
-    undefined,
+    Object {
+      "text": "mockCaption",
+    },
   ],
   "content": Object {
     "size": "large",
@@ -42,7 +44,14 @@ Object {
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },

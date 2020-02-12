@@ -1,128 +1,89 @@
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
-jest.mock('slate-react')
 
-import SlateReact from 'slate-react'
+import { Transforms } from 'slate'
+
 import Figure from './editor-registration'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 describe('Figure editor', () => {
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
+		const next = jest.fn()
+		Figure.plugins.normalizeNode([ {},[] ], {}, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
+		const button = {
+			type: FIGURE_NODE,
+			children: [{ text: '' }]
+		}
+		const next = jest.fn()
+
+		Figure.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode calls Transforms on an invalid child', () => {
+		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
+
+		const button = {
+			type: FIGURE_NODE,
+			children: [
+				{ 
+					type: 'mockElement',
+					children: [{ text: '' }]
+				}
+			]
+		}
+		const editor = {
+			isInline: () => false,
+			children: [button]
+		}
+		const next = jest.fn()
+
+		Figure.plugins.normalizeNode([ button,[0] ], editor, next)
+		expect(Transforms.liftNodes).toHaveBeenCalled()
+	})
+	
+	test('plugins.decorate exits when not relevent', () => {
+		expect(
+			Figure.plugins.decorate(
+				[{ text: 'mock text' }],
+				{}
+			)
+		).toMatchSnapshot()
+
+		expect(
+			Figure.plugins.decorate(
+				[{ children: [{ text: 'mock text' }] }],
+				{}
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.decorate renders a placeholder', () => {
+		const editor = {
+			children: [{ children: [{ text: '' }] }]
+		}
+
+		expect(
+			Figure.plugins.decorate(
+				[{ children: [{ text: '' }] }, [0]],
+				editor
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode renders a figure when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
 				type: FIGURE_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+				content: {}
 			}
 		}
 
-		expect(Figure.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Figure.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
-	})
-
-	test('plugins.renderPlaceholder exits when not relevent', () => {
-		expect(
-			Figure.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			Figure.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			Figure.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: FIGURE_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('plugins.renderPlaceholder renders a placeholder', () => {
-		expect(
-			Figure.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: FIGURE_NODE,
-						text: ''
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('onPaste handler calls next if transfer type is not text', () => {
-		const editor = {
-			insertText: jest.fn()
-		}
-		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'fragment' })
-
-		Figure.plugins.onPaste(null, editor, next)
-
-		expect(next).toHaveBeenCalled()
-		expect(editor.insertText).not.toHaveBeenCalled()
-	})
-
-	test('onPaste handler calls editor.insertText if item is text', () => {
-		const editor = {
-			insertText: jest.fn()
-		}
-		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text', text: 'mock-text' })
-
-		Figure.plugins.onPaste(null, editor, next)
-
-		expect(next).not.toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('mock-text')
+		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })
