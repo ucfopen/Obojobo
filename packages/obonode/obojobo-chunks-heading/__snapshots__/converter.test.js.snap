@@ -3,8 +3,12 @@
 exports[`Heading Converter oboToSlate converts an OboNode to a Slate node with content 1`] = `
 Object {
   "children": Array [
-    undefined,
-    undefined,
+    Object {
+      "text": "mockText",
+    },
+    Object {
+      "text": "mockText",
+    },
   ],
   "content": Object {
     "align": "left",
@@ -40,7 +44,14 @@ Object {
           "align": undefined,
         },
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },

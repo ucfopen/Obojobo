@@ -1,184 +1,126 @@
+import { Transforms } from 'slate'
+
 import HTML from './editor-registration'
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
+jest.mock('slate-react')
+
 describe('HTML editor', () => {
-	test('plugins.renderNode renders HTML when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: HTML_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		expect(HTML.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
+	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
 		const next = jest.fn()
+		HTML.plugins.normalizeNode([ {},[] ], {}, next)
 
-		expect(HTML.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with no html', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: 'mockType'
-					}
-				]
-			}
+	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
+		const button = {
+			type: HTML_NODE,
+			children: [{ text: '' }]
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		const next = jest.fn()
 
-		const event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
-		}
-
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
+		HTML.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with random keypress', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+	test('plugins.normalizeNode calls Transforms on an invalid child', () => {
+		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
+		const button = {
+			type: HTML_NODE,
+			children: [
+				{ 
+					type: 'mockElement',
+					children: [{ text: '' }]
+				}
+			]
+		}
+		const editor = {
+			isInline: () => false,
+			children: [button]
+		}
+		const next = jest.fn()
+
+		HTML.plugins.normalizeNode([ button,[0] ], editor, next)
+		expect(Transforms.liftNodes).toHaveBeenCalled()
+	})
+
+	test('plugins.decorate exits when not relevent', () => {
+		expect(
+			HTML.plugins.decorate(
+				[{ text: 'mock text' }],
+				{}
+			)
+		).toMatchSnapshot()
+
+		expect(
+			HTML.plugins.decorate(
+				[{ children: [{ text: 'mock text' }] }],
+				{}
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.decorate renders a placeholder', () => {
+		const editor = {
+			children: [{ children: [{ text: '' }] }]
+		}
+
+		expect(
+			HTML.plugins.decorate(
+				[{ children: [{ text: '' }] }, [0]],
+				editor
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
 		const event = {
-			key: 'e',
+			key: 'k',
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
+		HTML.plugins.onKeyDown({}, {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			},
-			insertText: jest.fn()
-		}
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
+		HTML.plugins.onKeyDown({}, {}, event)
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('\n')
+		expect(Transforms.insertText).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						type: HTML_NODE
-					}
-				]
-			},
-			insertText: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
 		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, editor, jest.fn())
+		HTML.plugins.onKeyDown({}, {}, event)
+		
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('\t')
+		expect(Transforms.insertText).toHaveBeenCalled()
 	})
 
-	test('plugins.renderPlaceholder exits when not relevent', () => {
-		expect(
-			HTML.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
+	test('plugins.renderNode renders HTML when passed', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			element: {
+				type: HTML_NODE,
+				content: {}
+			}
+		}
 
-		expect(
-			HTML.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			HTML.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: HTML_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('plugins.renderPlaceholder renders a placeholder', () => {
-		expect(
-			HTML.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: HTML_NODE,
-						text: ''
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
+		expect(HTML.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })
