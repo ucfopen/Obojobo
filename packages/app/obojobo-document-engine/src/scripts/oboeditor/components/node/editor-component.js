@@ -92,8 +92,10 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const className = `oboeditor-component component ${this.props.className || ''}`
+
 		return (
-			<div className={'oboeditor-component component'} data-obo-component="true">
+			<div className={className.trim()} data-obo-component="true">
 				{this.props.isSelected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
