@@ -33,7 +33,7 @@ exports[`MathEquation Converter slateToObo converts a Slate node to an OboNode w
 Object {
   "children": Array [],
   "content": Object {},
-  "id": "mockKey",
+  "id": undefined,
   "type": "mockType",
 }
 `;

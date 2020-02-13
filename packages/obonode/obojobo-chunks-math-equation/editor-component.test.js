@@ -5,6 +5,13 @@ import renderer from 'react-test-renderer'
 import MathEquation from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
@@ -13,34 +20,14 @@ jest.useFakeTimers()
 
 describe('MathEquation Editor Node', () => {
 	test('renders with no latex', () => {
-		const component = renderer.create(
-			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: null }
-						}
-					}
-				}}
-			/>
-		)
+		const component = renderer.create(<MathEquation element={{ content: { latex: null } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('MathEquation component with error', () => {
-		const component = renderer.create(
-			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: 'x_0_0' }
-						}
-					}
-				}}
-			/>
-		)
+		const component = renderer.create(<MathEquation element={{ content: { latex: 'x_0_0' } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -48,15 +35,7 @@ describe('MathEquation Editor Node', () => {
 
 	test('MathEquation component with label', () => {
 		const component = renderer.create(
-			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: '1', label: '', size: 1 }
-						}
-					}
-				}}
-			/>
+			<MathEquation element={{ content: { latex: '1', label: '', size: 1 } }} />
 		)
 		const tree = component.toJSON()
 
@@ -64,22 +43,12 @@ describe('MathEquation Editor Node', () => {
 	})
 
 	test('MathEquation component edits properties', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: '1', label: '1.1' }
-						}
-					}
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
 				}}
-				isFocused={true}
-				isSelected={true}
-				editor={editor}
+				selected={true}
 			/>
 		)
 		component.find({ id: 'math-equation-latex' }).simulate('click', { stopPropagation: jest.fn() })
@@ -94,46 +63,59 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
+	test('MathEquation component freezes and unfreezes editor', () => {
 		const editor = {
-			setNodeByKey: jest.fn()
+			toggleEditable: jest.fn()
 		}
 
 		const component = mount(
 			<MathEquation
-				node={{
-					key: 'mock-key',
-					data: {
-						get: () => {
-							return { latex: '2x/3', label: '1.1' }
-						}
-					}
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
 				}}
-				isFocused={true}
-				isSelected={true}
+				selected={true}
 				editor={editor}
 			/>
 		)
 
-		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+		component
+			.find({ id: 'math-equation-label' })
+			.simulate('focus')
 
-		component.setProps({ isSelected: false })
+		expect(editor.toggleEditable).toHaveBeenCalledWith(false)
 
-		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+		component
+			.find({ id: 'math-equation-label' })
+			.simulate('blur')
+
+		expect(editor.toggleEditable).toHaveBeenCalledWith(true)
+	})
+
+	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
+		const component = mount(
+			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
+		)
+
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
+
+		component.setProps({ selected: false })
+
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 		jest.runAllTimers()
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
-		expect(editor.setNodeByKey.mock.calls[0]).toMatchInlineSnapshot(`
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
+		expect(Transforms.setNodes.mock.calls[0]).toMatchInlineSnapshot(`
 		Array [
-		  "mock-key",
+		  undefined,
 		  Object {
-		    "data": Object {
-		      "content": Object {
-		        "alt": "",
-		        "label": "1.1",
-		        "latex": "2x/3",
-		        "size": 1,
-		      },
+		    "content": Object {
+		      "alt": "",
+		      "label": "1.1",
+		      "latex": "2x/3",
+		      "size": 1,
 		    },
+		  },
+		  Object {
+		    "at": undefined,
 		  },
 		]
 	`)
@@ -145,92 +127,18 @@ describe('MathEquation Editor Node', () => {
 			focus: mockFocus
 		})
 
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<MathEquation
-				node={{
-					key: 'mock-key',
-					data: {
-						get: () => {
-							return { latex: '2x/3', label: '1.1' }
-						}
-					}
-				}}
-				isFocused={true}
-				isSelected={false}
-				editor={editor}
-			/>
+			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={false} />
 		)
 
 		expect(mockFocus).not.toHaveBeenCalled()
 
-		component.setProps({ isSelected: true })
+		component.setProps({ selected: true })
 
 		expect(mockFocus).not.toHaveBeenCalled()
 		jest.runAllTimers()
 		expect(mockFocus).toHaveBeenCalled()
 
 		spy.mockRestore()
-	})
-
-	test('changeProperties edits properties', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: '1', label: '', size: 1 }
-						}
-					}
-				}}
-				isFocused={true}
-				isSelected={true}
-				editor={editor}
-			/>
-		)
-
-		component.instance().changeProperties({ latex: '2', label: '2', size: 2 })
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(component.instance().state).toMatchInlineSnapshot(`
-		Object {
-		  "alt": "",
-		  "label": "2",
-		  "latex": "2",
-		  "size": 2,
-		}
-	`)
-	})
-
-	test('onChangeContent edits properties', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<MathEquation
-				node={{
-					data: {
-						get: () => {
-							return { latex: '1', label: '', size: 1 }
-						}
-					}
-				}}
-				isFocused={true}
-				isSelected={true}
-				editor={editor}
-			/>
-		)
-
-		component.instance().changeProperties({ mockProperties: 'mock value' })
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -98,9 +98,9 @@ class MathEquation extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.isSelected && !this.props.isSelected) {
+		if (prevProps.selected && !this.props.selected) {
 			this.updateNodeFromState()
-		} else if (!prevProps.isSelected && this.props.isSelected) {
+		} else if (!prevProps.selected && this.props.selected) {
 			setTimeout(() => {
 				document.getElementById('math-equation-latex').focus()
 			}, 1)
