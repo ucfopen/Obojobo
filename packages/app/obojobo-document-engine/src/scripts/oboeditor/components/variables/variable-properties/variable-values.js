@@ -32,6 +32,9 @@ const VariableValues = props => {
 						<label>Values: </label>
 						<input type="text" name="value" value={variable.value || ''} onChange={onChange} />
 					</div>
+					<p className="variable-values--example-text">
+						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
+					</p>
 				</form>
 			)
 
@@ -99,7 +102,8 @@ const VariableValues = props => {
 						<input
 							type="checkbox"
 							name="unique"
-							value={variable.unique || false}
+							checked={variable.unique}
+							value={variable.unique}
 							onChange={onChange}
 						/>
 					</div>
@@ -161,10 +165,22 @@ const VariableValues = props => {
 					</div>
 
 					<div className="variable-values--group">
-						<label>First value: </label>
-						<input type="number" />
-						<span>to</span>
-						<input type="number" />
+						<label>Min Value: </label>
+						<input
+							type="number"
+							name="valueMin"
+							value={variable.valueMin || ''}
+							onChange={onChange}
+						/>
+					</div>
+					<div className="variable-values--group">
+						<label>Max Value: </label>
+						<input
+							type="number"
+							name="valueMax"
+							value={variable.valueMax || ''}
+							onChange={onChange}
+						/>
 					</div>
 
 					<div className="variable-values--group">
@@ -192,6 +208,9 @@ const VariableValues = props => {
 						<label>Values: </label>
 						<input name="value" value={variable.value || ''} onChange={onChange} />
 					</div>
+					<p className="variable-values--example-text">
+						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
+					</p>
 				</div>
 			)
 
@@ -202,6 +221,9 @@ const VariableValues = props => {
 						<label>Values: </label>
 						<input name="value" value={variable.value || ''} onChange={onChange} />
 					</div>
+					<p className="variable-values--example-text">
+						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
+					</p>
 					<div className="variable-values--group">
 						<label>Min Value: </label>
 						<input
@@ -225,7 +247,8 @@ const VariableValues = props => {
 						<input
 							type="checkbox"
 							name="ordered"
-							value={variable.ordered || false}
+							checked={variable.ordered}
+							value={variable.ordered}
 							onChange={onChange}
 						/>
 					</div>

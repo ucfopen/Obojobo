@@ -8,9 +8,6 @@
 	overflow-y: scroll;
 	text-align: left;
 
-	.test {
-		z-index: 100000;
-	}
 	.group-item {
 		display: flex;
 		justify-content: center;
@@ -97,6 +94,90 @@
 				color: $color-bg;
 				background-color: $color-action;
 			}
+		}
+	}
+
+	.help-tip {
+		text-align: center;
+		background-color: rgba(0, 0, 0, 0.1);
+		border-radius: 50%;
+		width: 24px;
+		height: 24px;
+		font-size: 14px;
+		line-height: 26px;
+		cursor: default;
+		margin-right: 1em;
+
+		&::before {
+			content: '?';
+			font-weight: bold;
+			color: $color-action;
+		}
+
+		&:hover p {
+			display: block;
+			transform-origin: 100% 0%;
+
+			-webkit-animation: fadeIn 0.3s ease-in-out;
+			animation: fadeIn 0.3s ease-in-out;
+		}
+
+		p {
+			display: none;
+			font-size: 1em;
+			padding: 0.7em;
+			position: relative;
+			width: 17em;
+			left: -16.5em;
+
+			background-color: #1e2021;
+			color: #fff;
+
+			border-radius: 0.1em;
+			box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+			&::before {
+				position: absolute;
+				content: '';
+				width: 0;
+				height: 0;
+				border: 6px solid transparent;
+				border-bottom-color: #1e2021;
+				right: 10px;
+				top: -12px;
+			}
+
+			&::after {
+				width: 100%;
+				height: 40px;
+				content: '';
+				position: absolute;
+				top: -40px;
+				left: 0;
+			}
+		}
+	}
+
+	/* CSS animation */
+
+	@-webkit-keyframes fadeIn {
+		0% {
+			opacity: 0;
+			transform: scale(0.6);
+		}
+
+		100% {
+			opacity: 100%;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 100%;
 		}
 	}
 }

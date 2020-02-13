@@ -202,7 +202,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	renderInfoBox() {
-		const triggers = this.state.content.triggers
+		const { triggers, variables } = this.state.content
 
 		return (
 			<div className="more-info-box">
@@ -247,12 +247,8 @@ class MoreInfoBox extends React.Component {
 						<div>
 							<span className="triggers">
 								Variables:
-								{triggers && triggers.length > 0 ? (
-									<span>
-										{triggers
-											.map(trigger => trigger.type)
-											.reduce((accum, trigger) => accum + ', ' + trigger)}
-									</span>
+								{Array.isArray(variables) ? (
+									<span>{variables.map(variable => '$' + variable.name).join(', ')}</span>
 								) : null}
 							</span>
 							<Button className="trigger-button" onClick={this.showVariablesModal}>

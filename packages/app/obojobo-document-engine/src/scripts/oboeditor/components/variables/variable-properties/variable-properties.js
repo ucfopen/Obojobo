@@ -9,6 +9,7 @@ const { Button } = Common.components
 
 const VariableProperties = props => {
 	const { variable } = props
+	if (!variable) return null
 
 	const showDeleteModal = () => {
 		if (confirm('Are you sure you want to delete this variable?')) {
@@ -23,6 +24,9 @@ const VariableProperties = props => {
 					<strong>Name:</strong>
 				</label>
 				<input className="input-item" name="name" value={variable.name} onChange={props.onChange} />
+				<div className="help-tip">
+					<p>Alphanumeric plus underscore only</p>
+				</div>
 				<Button className="variable-properties--delete-button" onClick={showDeleteModal}>
 					Delete
 				</Button>

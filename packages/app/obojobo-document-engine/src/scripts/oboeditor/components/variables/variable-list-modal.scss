@@ -8,4 +8,60 @@
 	border-radius: $dimension-rounded-radius;
 	border: solid 1px rgba(0, 0, 0, 0.1);
 	display: flex;
+
+	.variable-list {
+		$variable-selected: #285aa4;
+
+		overflow-y: scroll;
+		width: 12em;
+
+		.single-variable {
+			background-color: $color-bg;
+			border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+			border-right: solid 1px rgba(0, 0, 0, 0.1);
+			padding: 0.5em;
+			text-align: left;
+			padding-left: 1em;
+
+			h4,
+			p {
+				padding: 0;
+				margin: 0;
+			}
+		}
+
+		.variable-holder {
+			background-color: $color-bg;
+			border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+			border-right: solid 1px rgba(0, 0, 0, 0.1);
+			padding: 0.2em 0;
+			text-align: left;
+			padding-left: 1em;
+			color: rgba(0, 0, 0, 0.5);
+			border-right: none;
+		}
+
+		.variable-is-selected {
+			border-right: none;
+			color: $variable-selected;
+		}
+
+		.create-variable-button {
+			margin: 0.5rem;
+
+			.button {
+				padding: 0.2em 0.5em;
+				color: $color-action;
+				background-color: $color-bg;
+				border-color: $color-action;
+				border-width: 1px;
+				height: 2.5em;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-action;
+				}
+			}
+		}
+	}
 }
