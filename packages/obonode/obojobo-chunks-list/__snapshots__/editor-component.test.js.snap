@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Editor Node List component 1`] = `
+<div>
+  <div
+    className="text-chunk obojobo-draft--chunks--list pad"
+  />
+</div>
+`;

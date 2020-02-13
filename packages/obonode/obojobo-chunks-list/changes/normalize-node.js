@@ -75,14 +75,7 @@ const normalizeNode = (entry, editor, next) => {
 	// and only allow ListLevel and ListLine children
 	if (node.type === LIST_NODE && node.subtype === LIST_LEVEL_NODE) {
 		// ListLevel children normalization
-		let prev
 		for (const [child, childPath] of Node.children(editor, path)) {
-			// Merge consecutive ListLevels
-			if (prev && prev.subtype === LIST_LEVEL_NODE && child.subtype === LIST_LEVEL_NODE) {
-				Transforms.mergeNodes(editor, { at: childPath })
-				return
-			}
-
 			// Unwrap non-ListLine children
 			if (Element.isElement(child) && !(child.subtype === LIST_LEVEL_NODE || child.subtype === LIST_LINE_NODE)) {
 				Transforms.liftNodes(editor, { at: childPath })
@@ -102,11 +95,6 @@ const normalizeNode = (entry, editor, next) => {
 				)
 				return
 			}
-
-			// If we got here, no normalizations occured in this node
-			// We know this is a safe node, so we should save it to check against
-			// its next sibling
-			prev = child
 		}
 
 		// ListLevel parent normalization

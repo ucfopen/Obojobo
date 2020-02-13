@@ -281,7 +281,7 @@ const switchType = {
 				{ at: {
 					anchor: Editor.before(editor, Editor.start(editor, firstPath)),
 					focus: Editor.end(editor, lastPath)
-				}, split: false }
+				}}
 			)
 		})
 	},

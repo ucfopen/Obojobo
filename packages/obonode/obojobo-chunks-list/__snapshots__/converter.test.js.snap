@@ -6,7 +6,11 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "mockLine1",
+            },
+          ],
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -21,7 +25,11 @@ Object {
                         Object {
                           "children": Array [
                             Object {
-                              "children": undefined,
+                              "children": Array [
+                                Object {
+                                  "text": "mockLine1",
+                                },
+                              ],
                               "subtype": "ObojoboDraft.Chunks.List.Line",
                               "type": "ObojoboDraft.Chunks.List",
                             },
@@ -66,7 +74,11 @@ Object {
           "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "mockLine2",
+            },
+          ],
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -115,12 +127,20 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "mockLine1",
+            },
+          ],
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "children": undefined,
+          "children": Array [
+            Object {
+              "text": "mockLine2",
+            },
+          ],
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -135,7 +155,11 @@ Object {
                         Object {
                           "children": Array [
                             Object {
-                              "children": undefined,
+                              "children": Array [
+                                Object {
+                                  "text": "mockLine3",
+                                },
+                              ],
                               "subtype": "ObojoboDraft.Chunks.List.Line",
                               "type": "ObojoboDraft.Chunks.List",
                             },
@@ -229,6 +253,7 @@ Object {
         Object {},
         Object {},
       ],
+      "type": undefined,
     },
     "textGroup": Array [
       Object {
@@ -236,7 +261,14 @@ Object {
           "indent": 0,
         },
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
@@ -245,13 +277,20 @@ Object {
           "indent": 1,
         },
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
     ],
   },
   "id": "mockKey",
-  "type": "mockType",
+  "type": "ObojoboDraft.Chunks.List",
 }
 `;
