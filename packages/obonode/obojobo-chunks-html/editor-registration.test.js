@@ -13,7 +13,7 @@ describe('HTML editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
+	test('plugins.normalizeNode calls next if all HTML children are text', () => {
 		const button = {
 			type: HTML_NODE,
 			children: [{ text: '' }]

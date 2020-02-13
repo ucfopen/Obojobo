@@ -1,8 +1,15 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { Transforms } from 'slate'
 
 import MCAnswer from './editor-registration'
 
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+
+jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
+	Registry: {
+		contentTypes: [ TEXT_NODE ]
+	}
+}))
 
 describe('MCAnswer editor', () => {
 	test('plugins.renderNode renders a node', () => {
@@ -21,57 +28,80 @@ describe('MCAnswer editor', () => {
 		expect(MCAnswer.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
+	test('normalizeNode calls next if the node is not a MCAnswer node', () => {
 		const next = jest.fn()
+		MCAnswer.plugins.normalizeNode([{}, []], {}, next)
 
-		expect(MCAnswer.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
+	test('normalizeNode on MCAnswer calls next if all MCAnswer children are valid', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: MCANSWER_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
+		MCAnswer.plugins.normalizeNode([editor.children[0], [0]], editor, next)
 
-		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(editor)
-		})
-
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: {},
-			child: { key: 'mockKey', object: 'text' },
-			index: null
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds missing children', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
+	test('normalizeNode on MCAnswer calls Transforms on invalid Element children', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: MCANSWER_NODE,
+					content: {},
+					children: [
+						{
+							type: 'improperNode',
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
+		MCAnswer.plugins.normalizeNode([editor.children[0], [0]], editor, next)
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: {},
-			child: null,
-			index: 0
-		})
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	test('normalizeNode on MCAnswer calls Transforms on invalid Text children', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: MCAnswer,
+					content: {},
+					children: [{ text: 'mockCode', b: true }]
+				}
+			],
+			isInline: () => false
+		}
+		MCAnswer.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 })
