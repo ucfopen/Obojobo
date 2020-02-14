@@ -1,21 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAssessment editor plugins.renderNode calls next 1`] = `
-<SlateWrapper
-  node={
-    Object {
-      "attributes": Object {
-        "dummy": "dummyData",
-      },
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "mockNode",
-    }
-  }
-/>
-`;
-
 exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
 <SlateWrapper
   attributes={
