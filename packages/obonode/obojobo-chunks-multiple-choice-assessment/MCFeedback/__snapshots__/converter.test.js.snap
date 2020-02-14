@@ -27,7 +27,7 @@ Object {
   "children": Array [
     Object {
       "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -37,7 +37,7 @@ Object {
     },
   ],
   "content": Object {},
-  "id": "mockKey",
+  "id": undefined,
   "type": "mockType",
 }
 `;

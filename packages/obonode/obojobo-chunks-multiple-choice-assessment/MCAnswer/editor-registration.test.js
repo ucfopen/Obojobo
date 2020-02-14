@@ -7,7 +7,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		contentTypes: [ TEXT_NODE ]
+		contentTypes: [ 'ObojoboDraft.Chunks.Text' ]
 	}
 }))
 
@@ -93,7 +93,7 @@ describe('MCAnswer editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCAnswer,
+					type: MCANSWER_NODE,
 					content: {},
 					children: [{ text: 'mockCode', b: true }]
 				}
