@@ -86,6 +86,8 @@ describe('current user middleware', () => {
 
 	test('getCurrentVisitFromRequest rejects when visitId isnt in req', () => {
 		const { req } = mockArgs
+		req.params = {}
+		req.query = {}
 		return req.getCurrentVisitFromRequest().catch(error => {
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toContain('Missing required Visit Id')

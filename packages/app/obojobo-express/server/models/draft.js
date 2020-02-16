@@ -90,7 +90,8 @@ class Draft {
 				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
 			})
 			.catch(error => {
-				throw logger.logError('Draft fetchById Error', error)
+				logger.logError('Draft fetchById Error', error)
+				throw error
 			})
 	}
 
@@ -123,7 +124,8 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				throw logger.logError('Draft fetchById Error', error)
+				logger.logError('Draft fetchById Error', error)
+				throw error
 			})
 	}
 
@@ -157,47 +159,50 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				throw logger.logError('fetchByVersion Error', error)
+				logger.logError('fetchByVersion Error', error)
+				throw error
 			})
 	}
 
 	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
 		let newDraft
 
-		return db.tx(transactionDb => {
-			// Create a draft first
-			return transactionDb
-				.one(
-					`
+		return db
+			.tx(transactionDb => {
+				// Create a draft first
+				return transactionDb
+					.one(
+						`
 						INSERT INTO drafts
 							(user_id)
 						VALUES
 							($[userId])
 						RETURNING *`,
-					{ userId }
-				)
-				.then(newDraftResult => {
-					newDraft = newDraftResult
-					// Add content referencing the draft
-					return transactionDb.one(
-						`
+						{ userId }
+					)
+					.then(newDraftResult => {
+						newDraft = newDraftResult
+						// Add content referencing the draft
+						return transactionDb.one(
+							`
 							INSERT INTO drafts_content
 								(draft_id, content, xml)
 							VALUES
 								($[draftId], $[jsonContent], $[xmlContent])
 							RETURNING *`,
-						{ draftId: newDraft.id, jsonContent, xmlContent }
-					)
-				})
-				.then(newContentResult => {
-					newDraft.content = newContentResult
-					oboEvents.emit(Draft.EVENT_NEW_DRAFT_CREATED, newDraft)
-					return newDraft
-				})
-		})
-		.catch(error => {
-			throw logger.logError('Error createWithContent', error)
-		})
+							{ draftId: newDraft.id, jsonContent, xmlContent }
+						)
+					})
+					.then(newContentResult => {
+						newDraft.content = newContentResult
+						oboEvents.emit(Draft.EVENT_NEW_DRAFT_CREATED, newDraft)
+						return newDraft
+					})
+			})
+			.catch(error => {
+				logger.logError('Error createWithContent', error)
+				throw error
+			})
 	}
 
 	static updateContent(draftId, jsonContent, xmlContent) {
@@ -227,7 +232,8 @@ class Draft {
 				return insertContentResult.id
 			})
 			.catch(error => {
-				throw logger.logError('Error Draft.updateContent', error)
+				logger.logError('Error Draft.updateContent', error)
+				throw error
 			})
 	}
 
@@ -259,7 +265,8 @@ class Draft {
 				return null
 			})
 			.catch(error => {
-				throw logger.logError('Error xmlDocument', error)
+				logger.logError('Error xmlDocument', error)
+				throw error
 			})
 	}
 

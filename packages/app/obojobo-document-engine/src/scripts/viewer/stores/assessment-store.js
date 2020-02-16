@@ -48,22 +48,22 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('nav:afterNavChange', payload => {
-			if(!this.assessmentIds){
+			if (!this.assessmentIds) {
 				this.assessmentIds = new Set()
 				const assessmentModels = OboModel.getRoot().getDirectChildrenOfType(ASSESSMENT_NODE_TYPE)
 				assessmentModels.forEach(m => this.assessmentIds.add(m.get('id')))
 			}
 
-			if(this.assessmentIds.has(payload.value.to)) this.getAttemptHistory()
+			if (this.assessmentIds.has(payload.value.to)) this.getAttemptHistory()
 		})
 	}
 
-	findUnfinishedAttemptInAssessmentSummary(summaries){
-		return summaries.find(s => s.unfinishedAttemptId !== null)
+	findUnfinishedAttemptInAssessmentSummary(summaries) {
+		return summaries.find(s => typeof s.unfinishedAttemptId === 'string')
 	}
 
 	init(extensions) {
-		const ext = {assessmentSummary: [], importableScore: null}
+		const ext = { assessmentSummary: [], importableScore: null }
 		const filteredExtArrays = extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
@@ -75,23 +75,23 @@ class AssessmentStore extends Store {
 			importableScore: ext.importableScore,
 			assessmentSummary: ext.assessmentSummary,
 			attemptHistoryLoadState: 'none', // not loaded yet
-			isResumingAttempt: unfinishedAttempt !== null
+			isResumingAttempt: unfinishedAttempt !== undefined //eslint-disable-line no-undefined
 		}
 
-		if(unfinishedAttempt){
+		if (unfinishedAttempt) {
 			this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
-		} else if(ext.importableScore && this.state.importHasBeenUsed !== true){
+		} else if (ext.importableScore && this.state.importHasBeenUsed !== true) {
 			this.displayScoreImportNotice(ext.importableScore)
 		}
 	}
 
 	// get an assessment summary from the state object
-	getOrCreateAssessmentSummaryById(assessmentId){
+	getOrCreateAssessmentSummaryById(assessmentId) {
 		// search for it in our summaries
 		let summary = this.state.assessmentSummary.find(s => s.assessmentId === assessmentId)
 
 		// none found, make one?
-		if(!summary){
+		if (!summary) {
 			summary = {
 				assessmentId: assessmentId,
 				importUsed: false,
@@ -106,7 +106,7 @@ class AssessmentStore extends Store {
 		return summary
 	}
 
-	getOrCreateAssessmentById(assessmentId){
+	getOrCreateAssessmentById(assessmentId) {
 		let assessment = this.state.assessments[assessmentId]
 
 		if (!assessment) {
@@ -162,20 +162,20 @@ class AssessmentStore extends Store {
 			// update importUsed
 			// update unfinishedAttemptId
 			attempts.forEach(attempt => {
-				if(attempt.isImported){
+				if (attempt.isImported) {
 					this.state.importHasBeenUsed = true // @TODO: this will need to be updated to support multiple assessments
 					stateSummary.importUsed = true
 				}
 
-				if (!attempt.isFinished){
+				if (!attempt.isFinished) {
 					stateSummary.unfinishedAttemptId = attempt.id
-				} else{
+				} else {
 					stateSummary.scores.push(attempt.assessmentScore)
 				}
 			})
 
 			// can no longer import now that we have a score
-			if(stateSummary.scores.length) this.state.importableScore = null
+			if (stateSummary.scores.length) this.state.importableScore = null
 		})
 
 		// UPDATE QUESTION STORE
@@ -212,12 +212,11 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	getAttemptHistory(){
-		if(this.state.attemptHistoryLoadState === 'none'){
+	getAttemptHistory() {
+		if (this.state.attemptHistoryLoadState === 'none') {
 			this.state.attemptHistoryLoadState = 'loading'
 			const { draftId, visitId } = NavStore.getState()
-			return AssessmentAPI.getAttemptHistory({draftId, visitId})
-			.then(res => {
+			return AssessmentAPI.getAttemptHistory({ draftId, visitId }).then(res => {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
 				}
@@ -229,15 +228,14 @@ class AssessmentStore extends Store {
 		}
 	}
 
-	startImportScoresWithAPICall(draftId, visitId, assessmentId){
+	startImportScoresWithAPICall(draftId, visitId, assessmentId) {
 		return AssessmentAPI.importScore({
 			visitId,
 			draftId,
 			assessmentId,
 			importedAssessmentScoreId: this.state.importableScore.assessmentScoreId
-		})
-		.then(result => {
-			if(result.status !== 'ok'){
+		}).then(result => {
+			if (result.status !== 'ok') {
 				throw 'An error occured importing your score.'
 			}
 
@@ -248,13 +246,12 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	startAttemptWithAPICall(draftId, visitId, assessmentId){
+	startAttemptWithAPICall(draftId, visitId, assessmentId) {
 		return AssessmentAPI.startAttempt({
 			draftId,
 			assessmentId,
 			visitId
-		})
-		.then(res => {
+		}).then(res => {
 			if (res.status === 'error') {
 				switch (res.value.message.toLowerCase()) {
 					case 'attempt limit reached':
@@ -277,28 +274,33 @@ class AssessmentStore extends Store {
 
 	startAttemptWithImportScoreOption(assessmentId) {
 		// import has been used, do nothing
-		if(this.state.importHasBeenUsed === true){
+		if (this.state.importHasBeenUsed === true) {
 			this.displayImportAlreadyUsed()
 			return Promise.resolve()
 		}
 
 		return new Promise(resolve => {
-				// ask the user to import
-				if(this.state.importableScore && this.state.importableScore.assessmentId === assessmentId){
-					const importOrNotCallback = shouldImport => {
-						ModalUtil.hide()
-						resolve(shouldImport)
-					}
-
-					this.displayPreAttemptImportScoreNotice(this.state.importableScore.highestScore, importOrNotCallback)
-				} else{
-					// no importable score, next
-					resolve(false)
+			// ask the user to import
+			if (this.state.importableScore && this.state.importableScore.assessmentId === assessmentId) {
+				const importOrNotCallback = shouldImport => {
+					ModalUtil.hide()
+					resolve(shouldImport)
 				}
-			})
+
+				this.displayPreAttemptImportScoreNotice(
+					this.state.importableScore.highestScore,
+					importOrNotCallback
+				)
+			} else {
+				// no importable score, next
+				resolve(false)
+			}
+		})
 			.then(shouldImport => {
 				const { draftId, visitId } = NavStore.getState()
-				const apiCall = shouldImport ? this.startImportScoresWithAPICall : this.startAttemptWithAPICall
+				const apiCall = shouldImport
+					? this.startImportScoresWithAPICall
+					: this.startAttemptWithAPICall
 				return apiCall.call(this, draftId, visitId, assessmentId)
 			})
 			.catch(error => {
@@ -337,45 +339,45 @@ class AssessmentStore extends Store {
 			draftId,
 			visitId
 		})
-		.then(res => {
-			if (res.status === 'error') {
-				return ErrorUtil.errorResponse(res)
-			}
+			.then(res => {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
 
-			this.state.attemptHistoryLoadState = 'none'
-			this.state.isResumingAttempt = false
+				this.state.attemptHistoryLoadState = 'none'
+				this.state.isResumingAttempt = false
 
-			/* === BUILD SCORE REPORT DISPLAY == */
+				/* === BUILD SCORE REPORT DISPLAY == */
 
-			// collect all the scoreDetails objects from each assessment
-			const allScoreDetails = assessment.attempts.map(a => a.scoreDetails)
-			if(wasResumingAttempt){
-				allScoreDetails.splice(-1, 1) // removes incomplete attempt
-			}
-			// append the results of endAttempt
-			// it's essentially a scoreDetails object
-			allScoreDetails.push(res.value)
+				// collect all the scoreDetails objects from each assessment
+				const allScoreDetails = assessment.attempts.map(a => a.scoreDetails)
+				if (wasResumingAttempt) {
+					allScoreDetails.splice(-1, 1) // removes incomplete attempt
+				}
+				// append the results of endAttempt
+				// it's essentially a scoreDetails object
+				allScoreDetails.push(res.value)
 
-			const model = OboModel.models[assessmentId]
-			const reporter = new AssessmentScoreReporter({
-				assessmentRubric: model.modelState.rubric.toObject(),
-				totalNumberOfAttemptsAllowed: model.modelState.attempts,
-				allScoreDetails
+				const model = OboModel.models[assessmentId]
+				const reporter = new AssessmentScoreReporter({
+					assessmentRubric: model.modelState.rubric.toObject(),
+					totalNumberOfAttemptsAllowed: model.modelState.attempts,
+					allScoreDetails
+				})
+
+				const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
+				const scoreReport = reporter.getReportFor(res.value.attemptNumber)
+				this.displayResultsModal(assessmentLabel, res.value.attemptNumber, scoreReport)
+
+				return this.getAttemptHistory()
 			})
-
-			const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
-			const scoreReport = reporter.getReportFor(res.value.attemptNumber)
-			this.displayResultsModal(assessmentLabel, res.value.attemptNumber, scoreReport)
-
-			return this.getAttemptHistory()
-		})
-		.then(() => {
-			this.updateStateAfterEndAttempt(assessmentId, context)
-			this.triggerChange()
-		})
-		.catch(e => {
-			console.error(e) /* eslint-disable-line no-console */
-		})
+			.then(() => {
+				this.updateStateAfterEndAttempt(assessmentId, context)
+				this.triggerChange()
+			})
+			.catch(e => {
+				console.error(e) /* eslint-disable-line no-console */
+			})
 	}
 
 	onCloseResultsDialog() {
@@ -384,7 +386,6 @@ class AssessmentStore extends Store {
 	}
 
 	updateStateAfterEndAttempt(assessmentId, context) {
-		console.log('ITS A ME')
 		const assessment = this.state.assessments[assessmentId]
 		const model = OboModel.models[assessmentId]
 		// flip all questions back over
@@ -470,16 +471,13 @@ class AssessmentStore extends Store {
 		return (this.state = newState)
 	}
 
-	displayPreAttemptImportScoreNotice(highestScore, importOrNot){
+	displayPreAttemptImportScoreNotice(highestScore, importOrNot) {
 		ModalUtil.show(
-			<PreAttemptImportScoreDialog
-				highestScore={highestScore}
-				onChoice={importOrNot}
-			/>
+			<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={importOrNot} />
 		)
 	}
 
-	displayResultsModal(label, attemptNumber, scoreReport){
+	displayResultsModal(label, attemptNumber, scoreReport) {
 		ModalUtil.show(
 			<ResultsDialog
 				label={label}
@@ -490,7 +488,7 @@ class AssessmentStore extends Store {
 		)
 	}
 
-	displayUnfinishedAttemptNotice(attemptId){
+	displayUnfinishedAttemptNotice(attemptId) {
 		const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
 		ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
 	}
@@ -499,7 +497,9 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
 				title: 'Previous Score Import',
-				message: `Your instructor allows importing your previous high score (${Math.round(importableScore.highestScore)}%) for this module. The option to import will be shown when you start the Assessment.`
+				message: `Your instructor allows importing your previous high score (${Math.round(
+					importableScore.highestScore
+				)}%) for this module. The option to import will be shown when you start the Assessment.`
 			}
 		})
 	}
@@ -508,7 +508,8 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
 				title: 'Score Already Imported',
-				message: 'You have already imported a score for this module in this course, no attempts remain.'
+				message:
+					'You have already imported a score for this module in this course, no attempts remain.'
 			}
 		})
 	}

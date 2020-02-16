@@ -80,15 +80,12 @@ describe('Draft Model', () => {
 		})
 	})
 
-	test('fetchById returns error when not found in database', () => {
+	test('fetchById returns error when not found in database', async () => {
 		expect.hasAssertions()
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return DraftModel.fetchById('whatever').catch(err => {
-			expect(err).toBeInstanceOf(Error)
-			expect(err.message).toBe('not found in db')
-		})
+		await expect(DraftModel.fetchById('whatever')).rejects.toThrow('not found in db')
 	})
 
 	test('createWithContent inserts a new draft', () => {

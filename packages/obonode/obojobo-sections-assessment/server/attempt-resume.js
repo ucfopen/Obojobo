@@ -26,7 +26,8 @@ const resumeAttempt = async (
 
 	for (const node of attempt.state.chosen) {
 		if (node.type === QUESTION_NODE_TYPE) {
-			attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
+			const questionNode = assessmentNode.draftTree.getChildNodeById(node.id)
+			attempt.questions.push(questionNode.toObject())
 		}
 	}
 

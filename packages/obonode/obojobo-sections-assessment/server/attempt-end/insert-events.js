@@ -111,7 +111,7 @@ const insertAttemptScoredEvents = (
 		})
 }
 
-
+/* eslint-disable no-unused-vars */
 const insertAttemptImportedEvents = (
 	userId,
 	draftId,
@@ -134,6 +134,7 @@ const insertAttemptImportedEvents = (
 	// @TODO
 	return Promise.resolve()
 }
+/* eslint-enable no-unused-vars */
 
 module.exports = {
 	insertAttemptEndEvents,
