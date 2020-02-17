@@ -74,7 +74,7 @@ describe('attempt review', () => {
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(flushPromises).then(() => {
 			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
-			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(2)
+			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1) // uses cache!
 			// only called when review !== always
 			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)

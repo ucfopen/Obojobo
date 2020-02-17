@@ -72,6 +72,9 @@ const createAssessmentEvent = (obj, IRI) => {
 	caliperEvent.setAction(action)
 	caliperEvent.setObject(IRI.getAssessmentIRI(contentId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
+	if(obj.referrer){
+		caliperEvent.referrer = IRI.getAssessmentAttemptIRI(obj.referrer)
+	}
 	Object.assign(caliperEvent.extensions, extensions)
 
 	return updateEventToVersion1_1(caliperEvent)
@@ -193,6 +196,17 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 
 		createAssessmentAttemptSubmittedEvent: obj => {
 			obj.action = 'Submitted'
+			return createAssessmentEvent(obj, IRI)
+		},
+
+		createAssessmentAttemptImportedEvent: obj => {
+			obj.action = 'Submitted'
+			obj.referrer = obj.orignalAttemptId
+			obj.extensions = Object.assign(obj.extensions, {
+				importedOrignalAttemptId: obj.orignalAttemptId,
+				importedOriginalScoreId: obj.originalScoreId,
+				resourceLinkId: obj.resourceLinkId
+			})
 			return createAssessmentEvent(obj, IRI)
 		},
 

@@ -45,14 +45,14 @@ const getQuestionModelsFromAttempt = async (attemptId, draftCache) => {
 
 const attemptReview = async attemptIds => {
 	try {
-		const promises = []
+		const results = []
 		const draftCache = {} // a place to cache draftDocuments for reuse
 
 		// aysnc, let's get all the attmpts
 		for (const attemptId of attemptIds) {
-			promises.push(getQuestionModelsFromAttempt(attemptId, draftCache))
+			results.push(await getQuestionModelsFromAttempt(attemptId, draftCache))
 		}
-		const results = await Promise.all(promises)
+
 		// now build an object
 		// { <attemptId>: questionModels }
 		let n = 0

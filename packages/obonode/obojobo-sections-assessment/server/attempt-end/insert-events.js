@@ -17,7 +17,7 @@ const insertAttemptEndEvents = (
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
 		payload: {
-			attemptId: attemptId,
+			attemptId,
 			attemptCount: attemptNumber
 		},
 		userId: user.id,
@@ -26,13 +26,13 @@ const insertAttemptEndEvents = (
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId,
 		eventVersion: '1.1.0',
-		isPreview: isPreview,
+		isPreview,
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
 			draftId: draftDocument.draftId,
 			contentId: draftDocument.contentId,
 			assessmentId,
-			attemptId: attemptId
+			attemptId
 		})
 	})
 }
@@ -111,7 +111,6 @@ const insertAttemptScoredEvents = (
 		})
 }
 
-/* eslint-disable no-unused-vars */
 const insertAttemptImportedEvents = (
 	userId,
 	draftId,
@@ -131,10 +130,36 @@ const insertAttemptImportedEvents = (
 	remoteAddress,
 	resourceLinkId
 ) => {
-	// @TODO
-	return Promise.resolve()
+	const { createAssessmentAttemptImportedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: 'assessment:attemptEnd',
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId,
+			attemptCount: 1,
+			originalScoreId,
+			originalAttemptId,
+			resourceLinkId
+		},
+		userId,
+		ip: remoteAddress,
+		metadata: {},
+		draftId,
+		contentId,
+		eventVersion: '1.1.0',
+		isPreview,
+		caliperPayload: createAssessmentAttemptImportedEvent({
+			actor: { type: 'user', id: userId },
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			originalScoreId,
+			originalAttemptId,
+			resourceLinkId
+		})
+	})
 }
-/* eslint-enable no-unused-vars */
 
 module.exports = {
 	insertAttemptEndEvents,

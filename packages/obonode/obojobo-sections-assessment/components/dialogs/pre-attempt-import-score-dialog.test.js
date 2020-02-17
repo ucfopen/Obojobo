@@ -26,7 +26,36 @@ describe('PreAttemptImportScoreDialog', () => {
 		const component = renderer.create(<PreAttemptImportScoreDialog {...props} />)
 		const tree = component.toJSON()
 
-		expect(tree).toMatchInlineSnapshot()
+		expect(tree).toMatchInlineSnapshot(`
+		<div
+		  buttons={
+		    Array [
+		      Object {
+		        "onClick": [Function],
+		        "value": "Do Not Import",
+		      },
+		      Object {
+		        "onClick": [Function],
+		        "value": "Import Score: 99%",
+		      },
+		    ]
+		  }
+		  centered={true}
+		  title="Import Previous Score?"
+		  width="300"
+		>
+		  <p>
+		    You have previously completed this module and your instructor is allowing you to import your high score of 
+		    <strong>
+		      99
+		      %
+		    </strong>
+		  </p>
+		  <p>
+		    Would you like to use that score now or ignore it and begin the Assessment?
+		  </p>
+		</div>
+	`)
 	})
 
 	test('handles Do not import click', () => {
@@ -35,7 +64,7 @@ describe('PreAttemptImportScoreDialog', () => {
 			onChoice: jest.fn()
 		}
 		const component = renderer.create(<PreAttemptImportScoreDialog {...props} />)
-		const buttons = component.root.findByProps({centered: true}).props.buttons
+		const buttons = component.root.findByProps({ centered: true }).props.buttons
 
 		expect(buttons[0]).toHaveProperty('value', 'Do Not Import')
 		expect(props.onChoice).toHaveBeenCalledTimes(0)
@@ -50,7 +79,7 @@ describe('PreAttemptImportScoreDialog', () => {
 			onChoice: jest.fn()
 		}
 		const component = renderer.create(<PreAttemptImportScoreDialog {...props} />)
-		const buttons = component.root.findByProps({centered: true}).props.buttons
+		const buttons = component.root.findByProps({ centered: true }).props.buttons
 
 		expect(buttons[1]).toHaveProperty('value', 'Import Score: 99%')
 		expect(props.onChoice).toHaveBeenCalledTimes(0)
