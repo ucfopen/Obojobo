@@ -63,7 +63,24 @@ describe('AssessmentScoreReporter', () => {
 		expect(() => {
 			asr.getReportFor(0)
 		}).toThrowErrorMatchingInlineSnapshot(
-			`"getReportFor parameter is not zero-indexed - Use \\"1\\" for first attempt"`
+			`"getReportFor parameter is not zero-indexed - Use \\"1\\" for first attempt."`
+		)
+	})
+
+	test('getReportFor calls helper methods', () => {
+		const assessmentRubric = { type: 'attempt' }
+		const allScoreDetails = [{}]
+		const totalNumberOfAttemptsAllowed = 100
+
+		const asr = new AssessmentScoreReporter({
+			assessmentRubric,
+			allScoreDetails,
+			totalNumberOfAttemptsAllowed
+		})
+		expect(() => {
+			asr.getReportFor(1)
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Error, score details for attempt 1 were not loaded."`
 		)
 	})
 })

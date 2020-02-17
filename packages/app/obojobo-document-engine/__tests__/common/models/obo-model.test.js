@@ -919,6 +919,24 @@ describe('OboModel', () => {
 		expect(root).not.toBe(replaceModel)
 	})
 
+	test('getDirectChildrenOfType returns filtered children', () => {
+		const root = new OboModel({})
+		const childA = new OboModel({type: 'typeA'})
+		const childB = new OboModel({type: 'typeB'})
+		const childC = new OboModel({type: 'typeA'})
+
+		root.children.add(childA)
+		root.children.add(childB)
+		root.children.add(childC)
+
+		const children = root.getDirectChildrenOfType('typeA')
+
+		expect(children).toHaveLength(2)
+		expect(children).not.toContain(childB)
+		expect(children).toContain(childA)
+		expect(children).toContain(childC)
+	})
+
 	test('contains will report if a model contains a given child', () => {
 		const grandparent = new OboModel({})
 		const parent = new OboModel({})

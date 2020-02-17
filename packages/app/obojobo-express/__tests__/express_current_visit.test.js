@@ -70,6 +70,30 @@ describe('current user middleware', () => {
 		})
 	})
 
+	test('getCurrentVisitFromRequest finds visitId in params, loads from db, and resolves', () => {
+		const { req } = mockArgs
+		req.params = {
+			visitId: 'mock-visit-id-8'
+		}
+		return req.getCurrentVisitFromRequest().then(result => {
+			expect(result).toBeUndefined()
+			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
+			expect(MockVisitModel.fetchById).toHaveBeenCalledWith('mock-visit-id-8')
+		})
+	})
+	test('getCurrentVisitFromRequest finds visitId in query, loads from db, and resolves', () => {
+		const { req } = mockArgs
+		req.params = {}
+		req.query = {
+			visitId: 'mock-visit-id-8'
+		}
+		return req.getCurrentVisitFromRequest().then(result => {
+			expect(result).toBeUndefined()
+			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
+			expect(MockVisitModel.fetchById).toHaveBeenCalledWith('mock-visit-id-8')
+		})
+	})
+
 	test('getCurrentVisitFromRequest finds visitId in body event, loads from db, and resolves', () => {
 		const { req } = mockArgs
 		req.body = {

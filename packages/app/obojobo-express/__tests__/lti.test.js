@@ -173,213 +173,213 @@ describe('lti', () => {
 		global.Date.prototype.toISOString = _DateToISOString
 	})
 
-	// test('findSecretForKey should find the appropriate secret for a given key', () => {
-	// 	const secret = lti.findSecretForKey('testkey')
-	// 	expect(secret).toBe('testsecret')
-	// })
+	test('findSecretForKey should find the appropriate secret for a given key', () => {
+		const secret = lti.findSecretForKey('testkey')
+		expect(secret).toBe('testsecret')
+	})
 
-	// test('findSecretForKey should fail to find an unused key', () => {
-	// 	expect(lti.findSecretForKey('fakekey')).toBe(null)
-	// })
+	test('findSecretForKey should fail to find an unused key', () => {
+		expect(lti.findSecretForKey('fakekey')).toBe(null)
+	})
 
-	// test.each([
-	// 	[0, true],
-	// 	[0.1, true],
-	// 	[0.9, true],
-	// 	[1, true],
-	// 	[-1, false],
-	// 	[1.1, false],
-	// 	[null, false],
-	// 	[undefined, false], //eslint-disable-line no-undefined
-	// 	[true, false],
-	// 	[false, false],
-	// 	[NaN, false],
-	// 	['0', false],
-	// 	['1', false],
-	// 	['0.5', false],
-	// 	[Infinity, false],
-	// 	[-Infinity, false]
-	// ])('isScoreValid(%s) returns %s', (score, expected) => {
-	// 	expect(lti.isScoreValid(score)).toBe(expected)
-	// })
+	test.each([
+		[0, true],
+		[0.1, true],
+		[0.9, true],
+		[1, true],
+		[-1, false],
+		[1.1, false],
+		[null, false],
+		[undefined, false], //eslint-disable-line no-undefined
+		[true, false],
+		[false, false],
+		[NaN, false],
+		['0', false],
+		['1', false],
+		['0.5', false],
+		[Infinity, false],
+		[-Infinity, false]
+	])('isScoreValid(%s) returns %s', (score, expected) => {
+		expect(lti.isScoreValid(score)).toBe(expected)
+	})
 
-	// test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
-	// 	const isLaunchExpired = lti.isLaunchExpired
+	test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
+		const isLaunchExpired = lti.isLaunchExpired
 
-	// 	expect(isLaunchExpired(moment().toISOString())).toBe(false)
-	// 	expect(
-	// 		isLaunchExpired(
-	// 			moment()
-	// 				.subtract(1, 'minute')
-	// 				.toISOString()
-	// 		)
-	// 	).toBe(false)
-	// 	expect(
-	// 		isLaunchExpired(
-	// 			moment()
-	// 				.subtract(295, 'minute')
-	// 				.toISOString()
-	// 		)
-	// 	).toBe(false)
-	// 	expect(
-	// 		isLaunchExpired(
-	// 			moment()
-	// 				.subtract(301, 'minute')
-	// 				.toISOString()
-	// 		)
-	// 	).toBe(true)
-	// })
+		expect(isLaunchExpired(moment().toISOString())).toBe(false)
+		expect(
+			isLaunchExpired(
+				moment()
+					.subtract(1, 'minute')
+					.toISOString()
+			)
+		).toBe(false)
+		expect(
+			isLaunchExpired(
+				moment()
+					.subtract(295, 'minute')
+					.toISOString()
+			)
+		).toBe(false)
+		expect(
+			isLaunchExpired(
+				moment()
+					.subtract(301, 'minute')
+					.toISOString()
+			)
+		).toBe(true)
+	})
 
-	// const unsent = 'error_newer_assessment_score_unsent'
-	// const unk = 'error_state_unknown'
-	// const invalid = 'error_invalid'
-	// const okNull = 'ok_null_score_not_sent'
-	// const match = 'ok_gradebook_matches_assessment_score'
-	// const noOutcome = 'ok_no_outcome_service'
-	// const okPreview = 'ok_preview_mode'
+	const unsent = 'error_newer_assessment_score_unsent'
+	const unk = 'error_state_unknown'
+	const invalid = 'error_invalid'
+	const okNull = 'ok_null_score_not_sent'
+	const match = 'ok_gradebook_matches_assessment_score'
+	const noOutcome = 'ok_no_outcome_service'
+	const okPreview = 'ok_preview_mode'
 
-	// test.each([
-	// 	['unknownOutcome', 'nullScore', false, false, okNull],
-	// 	['unknownOutcome', 'invalidScore', false, false, unk],
-	// 	['unknownOutcome', 'sameScore', false, false, match],
-	// 	['unknownOutcome', 'differentScore', false, false, unk],
-	// 	['unknownOutcome', 'nullScore', true, false, invalid],
-	// 	['unknownOutcome', 'invalidScore', true, false, invalid],
-	// 	['unknownOutcome', 'sameScore', true, false, invalid],
-	// 	['unknownOutcome', 'differentScore', true, false, invalid],
-	// 	['noOutcome', 'nullScore', false, false, noOutcome],
-	// 	['noOutcome', 'invalidScore', false, false, noOutcome],
-	// 	['noOutcome', 'sameScore', false, false, noOutcome],
-	// 	['noOutcome', 'differentScore', false, false, noOutcome],
-	// 	['noOutcome', 'nullScore', true, false, invalid],
-	// 	['noOutcome', 'invalidScore', true, false, invalid],
-	// 	['noOutcome', 'sameScore', true, false, invalid],
-	// 	['noOutcome', 'differentScore', true, false, invalid],
-	// 	['hasOutcome', 'nullScore', false, false, okNull],
-	// 	['hasOutcome', 'invalidScore', false, false, unk],
-	// 	['hasOutcome', 'sameScore', false, false, match],
-	// 	['hasOutcome', 'differentScore', false, false, unsent],
-	// 	['hasOutcome', 'nullScore', true, false, invalid],
-	// 	['hasOutcome', 'invalidScore', true, false, invalid],
-	// 	['hasOutcome', 'sameScore', true, false, match],
-	// 	['hasOutcome', 'differentScore', true, false, match],
-	// 	['unknownOutcome', 'nullScore', false, true, okPreview],
-	// 	['unknownOutcome', 'invalidScore', false, true, okPreview],
-	// 	['unknownOutcome', 'sameScore', false, true, okPreview],
-	// 	['unknownOutcome', 'differentScore', false, true, okPreview],
-	// 	['unknownOutcome', 'nullScore', true, true, okPreview],
-	// 	['unknownOutcome', 'invalidScore', true, true, okPreview],
-	// 	['unknownOutcome', 'sameScore', true, true, okPreview],
-	// 	['unknownOutcome', 'differentScore', true, true, okPreview],
-	// 	['noOutcome', 'nullScore', false, true, okPreview],
-	// 	['noOutcome', 'invalidScore', false, true, okPreview],
-	// 	['noOutcome', 'sameScore', false, true, okPreview],
-	// 	['noOutcome', 'differentScore', false, true, okPreview],
-	// 	['noOutcome', 'nullScore', true, true, okPreview],
-	// 	['noOutcome', 'invalidScore', true, true, okPreview],
-	// 	['noOutcome', 'sameScore', true, true, okPreview],
-	// 	['noOutcome', 'differentScore', true, true, okPreview],
-	// 	['hasOutcome', 'nullScore', false, true, okPreview],
-	// 	['hasOutcome', 'invalidScore', false, true, okPreview],
-	// 	['hasOutcome', 'sameScore', false, true, okPreview],
-	// 	['hasOutcome', 'differentScore', false, true, okPreview],
-	// 	['hasOutcome', 'nullScore', true, true, okPreview],
-	// 	['hasOutcome', 'invalidScore', true, true, okPreview],
-	// 	['hasOutcome', 'sameScore', true, true, okPreview],
-	// 	['hasOutcome', 'differentScore', true, true, okPreview]
-	// ])(
-	// 	'getGradebookStatus(%s, %s, %s, %s) returns %s',
-	// 	(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview, expected) => {
-	// 		expect(
-	// 			lti.getGradebookStatus(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview)
-	// 		).toBe(expected)
-	// 	}
-	// )
+	test.each([
+		['unknownOutcome', 'nullScore', false, false, okNull],
+		['unknownOutcome', 'invalidScore', false, false, unk],
+		['unknownOutcome', 'sameScore', false, false, match],
+		['unknownOutcome', 'differentScore', false, false, unk],
+		['unknownOutcome', 'nullScore', true, false, invalid],
+		['unknownOutcome', 'invalidScore', true, false, invalid],
+		['unknownOutcome', 'sameScore', true, false, invalid],
+		['unknownOutcome', 'differentScore', true, false, invalid],
+		['noOutcome', 'nullScore', false, false, noOutcome],
+		['noOutcome', 'invalidScore', false, false, noOutcome],
+		['noOutcome', 'sameScore', false, false, noOutcome],
+		['noOutcome', 'differentScore', false, false, noOutcome],
+		['noOutcome', 'nullScore', true, false, invalid],
+		['noOutcome', 'invalidScore', true, false, invalid],
+		['noOutcome', 'sameScore', true, false, invalid],
+		['noOutcome', 'differentScore', true, false, invalid],
+		['hasOutcome', 'nullScore', false, false, okNull],
+		['hasOutcome', 'invalidScore', false, false, unk],
+		['hasOutcome', 'sameScore', false, false, match],
+		['hasOutcome', 'differentScore', false, false, unsent],
+		['hasOutcome', 'nullScore', true, false, invalid],
+		['hasOutcome', 'invalidScore', true, false, invalid],
+		['hasOutcome', 'sameScore', true, false, match],
+		['hasOutcome', 'differentScore', true, false, match],
+		['unknownOutcome', 'nullScore', false, true, okPreview],
+		['unknownOutcome', 'invalidScore', false, true, okPreview],
+		['unknownOutcome', 'sameScore', false, true, okPreview],
+		['unknownOutcome', 'differentScore', false, true, okPreview],
+		['unknownOutcome', 'nullScore', true, true, okPreview],
+		['unknownOutcome', 'invalidScore', true, true, okPreview],
+		['unknownOutcome', 'sameScore', true, true, okPreview],
+		['unknownOutcome', 'differentScore', true, true, okPreview],
+		['noOutcome', 'nullScore', false, true, okPreview],
+		['noOutcome', 'invalidScore', false, true, okPreview],
+		['noOutcome', 'sameScore', false, true, okPreview],
+		['noOutcome', 'differentScore', false, true, okPreview],
+		['noOutcome', 'nullScore', true, true, okPreview],
+		['noOutcome', 'invalidScore', true, true, okPreview],
+		['noOutcome', 'sameScore', true, true, okPreview],
+		['noOutcome', 'differentScore', true, true, okPreview],
+		['hasOutcome', 'nullScore', false, true, okPreview],
+		['hasOutcome', 'invalidScore', false, true, okPreview],
+		['hasOutcome', 'sameScore', false, true, okPreview],
+		['hasOutcome', 'differentScore', false, true, okPreview],
+		['hasOutcome', 'nullScore', true, true, okPreview],
+		['hasOutcome', 'invalidScore', true, true, okPreview],
+		['hasOutcome', 'sameScore', true, true, okPreview],
+		['hasOutcome', 'differentScore', true, true, okPreview]
+	])(
+		'getGradebookStatus(%s, %s, %s, %s) returns %s',
+		(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview, expected) => {
+			expect(
+				lti.getGradebookStatus(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview)
+			).toBe(expected)
+		}
+	)
 
-	// test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', () => {
-	// 	const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', () => {
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
-	// 	const mockQueryResults = {
-	// 		id: 'id',
-	// 		user_id: 'user_id',
-	// 		draft_id: 'draft_id',
-	// 		draft_content_id: 'content_id',
-	// 		assessment_id: 'assessment_id',
-	// 		attempt_id: 'attempt_id',
-	// 		score: 'score',
-	// 		is_preview: 'preview',
-	// 		score_details: 'details'
-	// 	}
+		const mockQueryResults = {
+			id: 'id',
+			user_id: 'user_id',
+			draft_id: 'draft_id',
+			draft_content_id: 'content_id',
+			assessment_id: 'assessment_id',
+			attempt_id: 'attempt_id',
+			score: 'score',
+			is_preview: 'preview',
+			score_details: 'details'
+		}
 
-	// 	db.one.mockResolvedValueOnce(mockQueryResults)
+		db.one.mockResolvedValueOnce(mockQueryResults)
 
-	// 	return getLatestHighestAssessmentScoreRecord(
-	// 		'user_id',
-	// 		'draft_id',
-	// 		'assessment_id',
-	// 		false
-	// 	).then(result => {
-	// 		expect(result).toEqual(mockQueryResults)
-	// 	})
-	// })
+		return getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false
+		).then(result => {
+			expect(result).toEqual(mockQueryResults)
+		})
+	})
 
-	// test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', () => {
-	// 	expect.hasAssertions()
-	// 	const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
-	// 	const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', () => {
+		expect.hasAssertions()
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 
-	// 	// simulate pg-promies.one throwing no results error
-	// 	db.one.mockRejectedValueOnce(noDataError)
+		// simulate pg-promies.one throwing no results error
+		db.one.mockRejectedValueOnce(noDataError)
 
-	// 	return expect(getLatestHighestAssessmentScoreRecord(
-	// 		'user_id',
-	// 		'draft_id',
-	// 		'assessment_id',
-	// 		false))
-	// 	.rejects.toThrow('No assessment score found')
-	// })
+		return expect(getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false))
+		.rejects.toThrow('No assessment score found')
+	})
 
-	// test('getLatestHighestAssessmentScoreRecord returns error toomany rows returned', () => {
-	// 	expect.hasAssertions()
-	// 	const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
-	// 	const multipleResultError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.multiple)
+	test('getLatestHighestAssessmentScoreRecord returns error toomany rows returned', () => {
+		expect.hasAssertions()
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const multipleResultError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.multiple)
 
-	// 	// simulate pg-promies.one throwing multiple results error
-	// 	db.one.mockRejectedValueOnce(multipleResultError)
+		// simulate pg-promies.one throwing multiple results error
+		db.one.mockRejectedValueOnce(multipleResultError)
 
-	// 	return expect(getLatestHighestAssessmentScoreRecord(
-	// 		'user_id',
-	// 		'draft_id',
-	// 		'assessment_id',
-	// 		false))
-	// 	.rejects.toBe(multipleResultError) // cant use expect().throws, so match the expected mock error
-	// })
+		return expect(getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false))
+		.rejects.toBe(multipleResultError) // cant use expect().throws, so match the expected mock error
+	})
 
-	// test('getLatestHighestAssessmentScoreRecord returns error if an error occurs', () => {
-	// 	expect.hasAssertions()
-	// 	const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
-	// 	const otherError = new Error('some other error')
+	test('getLatestHighestAssessmentScoreRecord returns error if an error occurs', () => {
+		expect.hasAssertions()
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const otherError = new Error('some other error')
 
-	// 	// simulate some other error
-	// 	db.one.mockRejectedValueOnce(otherError)
+		// simulate some other error
+		db.one.mockRejectedValueOnce(otherError)
 
-	// 	return expect(getLatestHighestAssessmentScoreRecord(
-	// 		'user_id',
-	// 		'draft_id',
-	// 		'assessment_id',
-	// 		false))
-	// 	.rejects.toBe(otherError)
-	// })
+		return expect(getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false))
+		.rejects.toBe(otherError)
+	})
 
-	// test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
-	// 	db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
+	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
+		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
 
-	// 	return lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
-	// 		expect(result).toEqual({
-	// 			properties: 'properties'
-	// 		})
-	// 	})
-	// })
+		return lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
+			expect(result).toEqual({
+				properties: 'properties'
+			})
+		})
+	})
 
 	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)

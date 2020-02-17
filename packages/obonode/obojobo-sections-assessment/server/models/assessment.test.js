@@ -1,12 +1,12 @@
 jest.mock('obojobo-express/server/db')
+jest.mock('obojobo-express/server/lti')
+jest.mock('./assessment-score')
 
-const AssessmentModel = require('./assessment')
-const db = require('obojobo-express/server/db')
 const makeMockAttempt = () => ({
 	attempt_id: 'mockAttemptId',
 	assessment_id: 'mockAssessmentId',
 	draft_content_id: 'mockContentId',
-	created_at: 'mockCreatedAt',
+	created_at: 'mockCreateAssessmentScoredAt',
 	completed_at: 'mockCompletedAt',
 	state: 'mockState',
 	result: {
@@ -20,8 +20,18 @@ const makeMockAttempt = () => ({
 })
 
 describe('AssessmentModel', () => {
+	let db
+	let lti
+	let AssessmentModel
+	let AssessmentScore
+
 	beforeEach(() => {
-		jest.clearAllMocks()
+		jest.resetModules()
+		jest.resetAllMocks()
+		db = require('obojobo-express/server/db')
+		lti = require('obojobo-express/server/lti')
+		AssessmentModel = require('./assessment')
+		AssessmentScore = require('./assessment-score')
 	})
 
 	test('constructor initializes expected properties', () => {
@@ -70,6 +80,20 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
+	test('constructor initializes expected properties with no props', () => {
+		const m = new AssessmentModel({})
+		expect(m).toMatchInlineSnapshot(`
+		AssessmentModel {
+		  "isFinished": true,
+		  "questionResponses": Array [],
+		  "result": Object {
+		    "attemptScore": null,
+		    "questionScores": Array [],
+		  },
+		}
+	`)
+	})
+
 	test('getCompletedAssessmentAttemptHistory calls db.manyOrNone', () => {
 		AssessmentModel.getCompletedAssessmentAttemptHistory(
 			'mock-user-id',
@@ -104,7 +128,7 @@ describe('AssessmentModel', () => {
 		    "attemptId": "mockAttemptId",
 		    "attemptNumber": 12,
 		    "completedAt": "mockCompletedAt",
-		    "createdAt": "mockCreatedAt",
+		    "createdAt": "mockCreateAssessmentScoredAt",
 		    "draftContentId": "mockContentId",
 		    "isFinished": true,
 		    "questionResponses": Array [],
@@ -465,6 +489,12 @@ describe('AssessmentModel', () => {
 		})
 	})
 
+	test('fetchResponsesForAttempts returns and empty array when sent no ids', () => {
+		db.manyOrNone.mockResolvedValueOnce([])
+		const result = AssessmentModel.fetchResponsesForAttempts([])
+		expect(result).toEqual([])
+	})
+
 	test('createNewAttempt', () => {
 		AssessmentModel.createNewAttempt(
 			'mockUserId',
@@ -490,19 +520,414 @@ describe('AssessmentModel', () => {
 	`)
 	})
 
-	test('completeAttempt calls UPDATE/INSERT queries with expected values and returns data object', () => {
-		expect.assertions(3)
+	test('completeAttempt calls UPDATE/INSERT queries with expected values and returns data object', async () => {
+		expect.hasAssertions()
+		AssessmentScore.prototype.create.mockResolvedValueOnce({ id: 'assessmentScoreId' })
 		db.one.mockResolvedValueOnce('attemptData')
 		db.one.mockResolvedValueOnce({ id: 'assessmentScoreId' })
 
-		return AssessmentModel.completeAttempt(1, 2, 3, 4, {}, {}, false).then(result => {
-			expect(result).toEqual({
-				assessmentScoreId: 'assessmentScoreId',
-				attemptData: 'attemptData'
-			})
+		const result = await AssessmentModel.completeAttempt(1, 2, 3, 4, {}, {}, false)
 
-			expect(db.one.mock.calls[0][0]).toContain('UPDATE attempts')
-			expect(db.one.mock.calls[1][0]).toContain('INSERT INTO assessment_scores')
+		expect(result).toEqual({
+			assessmentScoreId: 'assessmentScoreId',
+			attemptData: 'attemptData'
 		})
+
+		expect(db.one).toHaveBeenCalledTimes(1) // complete attempt
+		expect(AssessmentScore.prototype.create).toHaveBeenCalledTimes(1)
+	})
+
+	test('fetchAttemptByID queries and returns a model', async () => {
+		db.oneOrNone.mockResolvedValueOnce(makeMockAttempt())
+		const attempt = await AssessmentModel.fetchAttemptByID('mock-id')
+		expect(attempt).toBeInstanceOf(AssessmentModel)
+		expect(db.oneOrNone.mock.calls[0][1]).toEqual({ attemptId: 'mock-id' })
+	})
+
+	test('fetchAttemptByID errors', async () => {
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+		expect(AssessmentModel.fetchAttemptByID('mock-id')).rejects.toBe('mock-error')
+	})
+
+	test('fetchAttemptHistory errors', async () => {
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		AssessmentModel.fetchAttempts.mockRejectedValueOnce('mock-error')
+		expect(
+			AssessmentModel.fetchAttemptHistory(
+				'mock-user-id',
+				'mock-draft-id',
+				'is-preview',
+				'mock-resource-link',
+				'mock-assessment-id'
+			)
+		).rejects.toBe('mock-error')
+	})
+
+	test('fetchAttemptHistory returns all values', async () => {
+		const mockAttempt = new AssessmentModel(makeMockAttempt())
+		const mockLtiState = {
+			scoreSent: 'scoreSent',
+			sentDate: 'sentDate',
+			status: 'status',
+			gradebookStatus: 'gradebookStatus',
+			statusDetails: 'statusDetails'
+		}
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
+			mockAssessmentId: mockLtiState
+		})
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link'
+		)
+		expect(result).toHaveLength(1)
+		expect(result[0]).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [mockAttempt],
+			ltiState: mockLtiState
+		})
+	})
+
+	test('fetchAttemptHistory returns all values with multiple attempts', async () => {
+		const mockAttempt = new AssessmentModel(makeMockAttempt())
+		const mockLtiState = {
+			scoreSent: 'scoreSent',
+			sentDate: 'sentDate',
+			status: 'status',
+			gradebookStatus: 'gradebookStatus',
+			statusDetails: 'statusDetails'
+		}
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt, mockAttempt])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
+			mockAssessmentId: mockLtiState
+		})
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link'
+		)
+		expect(result).toHaveLength(1)
+		expect(result[0]).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [mockAttempt, mockAttempt],
+			ltiState: mockLtiState
+		})
+	})
+
+	test('fetchAttemptHistory errors when responses dont match attempts', async () => {
+		const mockAttempt = new AssessmentModel(makeMockAttempt())
+		const mockLtiState = {
+			scoreSent: 'scoreSent',
+			sentDate: 'sentDate',
+			status: 'status',
+			gradebookStatus: 'gradebookStatus',
+			statusDetails: 'statusDetails'
+		}
+		const responseMap = new Map()
+		responseMap.set('mockAttemptId', [
+			{
+				question_id: 1,
+				response: 'mock-resp'
+			}
+		])
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt, mockAttempt])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(responseMap)
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
+			mockAssessmentId: mockLtiState
+		})
+
+		expect(
+			AssessmentModel.fetchAttemptHistory(
+				'mock-user-id',
+				'mock-draft-id',
+				'is-preview',
+				'mock-resource-link'
+			)
+		).rejects.toThrow(
+			"Missing attempt responses userid:'mock-user-id', draftId:'mock-draft-id', attemptId:'mockAttemptId'."
+		)
+	})
+
+	test('fetchAttemptHistory errors when responses dont match attempts', async () => {
+		const mockAttempt1 = new AssessmentModel(makeMockAttempt())
+		mockAttempt1.id = 'mockAttemptId'
+
+		// lets setup attempt2 to cover imported attempt lookups
+		const mockAttempt2 = new AssessmentModel(makeMockAttempt())
+		mockAttempt2.id = 'mockAttemptId2'
+		mockAttempt2.isImported = true
+		mockAttempt2.importedAttemptId = 'some-imported-attempt'
+
+		const mockLtiState = {
+			scoreSent: 'scoreSent',
+			sentDate: 'sentDate',
+			status: 'status',
+			gradebookStatus: 'gradebookStatus',
+			statusDetails: 'statusDetails'
+		}
+		const responseMap = new Map()
+		responseMap.set('mockAttemptId', [
+			{
+				question_id: 1,
+				response: 'mock-resp'
+			}
+		])
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt1, mockAttempt2])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(responseMap)
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
+			mockAssessmentId: mockLtiState
+		})
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link'
+		)
+		expect(result).toHaveLength(1)
+		expect(result[0]).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [mockAttempt1, mockAttempt2],
+			ltiState: mockLtiState
+		})
+	})
+
+	test('fetchAttemptHistory returns a single value', async () => {
+		const mockAttempt = new AssessmentModel(makeMockAttempt())
+		const mockLtiState = {
+			scoreSent: 'scoreSent',
+			sentDate: 'sentDate',
+			status: 'status',
+			gradebookStatus: 'gradebookStatus',
+			statusDetails: 'statusDetails'
+		}
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
+			mockAssessmentId: mockLtiState
+		})
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link',
+			'mockAssessmentId' // signifies we want one value back
+		)
+
+		expect(result).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [mockAttempt],
+			ltiState: mockLtiState
+		})
+	})
+
+	test('fetchAttemptHistory returns a single value without ltiState', async () => {
+		const mockAttempt = new AssessmentModel(makeMockAttempt())
+
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([mockAttempt])
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({})
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link',
+			'mockAssessmentId' // signifies we want one value back
+		)
+
+		expect(result).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [mockAttempt],
+			ltiState: null
+		})
+	})
+
+	test('fetchAttemptHistory returns with no history', async () => {
+		jest.spyOn(AssessmentModel, 'fetchAttempts')
+		jest.spyOn(AssessmentModel, 'fetchResponsesForAttempts')
+		jest.spyOn(AssessmentModel, 'removeAllButLastIncompleteAttempts')
+		jest.spyOn(lti, 'getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		AssessmentModel.fetchAttempts.mockResolvedValueOnce([]) // no attempts
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce([])
+
+		const result = await AssessmentModel.fetchAttemptHistory(
+			'mock-user-id',
+			'mock-draft-id',
+			'is-preview',
+			'mock-resource-link',
+			'mockAssessmentId' // signifies we want one value back
+		)
+
+		expect(result).toEqual({
+			assessmentId: 'mockAssessmentId',
+			attempts: [],
+			ltiState: null
+		})
+	})
+
+	test('deletePreviewAttempts returns nothing with no attempt found', async () => {
+		db.manyOrNone.mockResolvedValueOnce([])
+		const result = await AssessmentModel.deletePreviewAttempts({
+			transaction: db,
+			userId: 'mock-user-id',
+			resourceLinkId: 'mock-resource-link'
+		})
+		expect(result).toEqual([])
+	})
+
+	test('deletePreviewAttempts returns 2 promises whith matching attempt', async () => {
+		db.manyOrNone.mockResolvedValueOnce([{ id: 1 }, { id: 10 }])
+		db.none.mockResolvedValueOnce('none-query-result-1')
+		db.none.mockResolvedValueOnce('none-query-result-2')
+		const result = await AssessmentModel.deletePreviewAttempts({
+			transaction: db,
+			userId: 'mock-user-id',
+			resourceLinkId: 'mock-resource-link'
+		})
+		expect(result).toHaveLength(2)
+		// they should both be 'then-able'
+		expect(result[0]).toHaveProperty('then')
+		expect(result[1]).toHaveProperty('then')
+	})
+
+	test('deletePreviewAttemptsAndScores returns with no history', async () => {
+		jest.spyOn(AssessmentModel, 'deletePreviewAttempts')
+		jest.spyOn(AssessmentScore, 'deletePreviewScores')
+		AssessmentScore.deletePreviewScores.mockResolvedValueOnce(['mock-delete-scores-result'])
+		AssessmentModel.deletePreviewAttempts.mockResolvedValueOnce(['mock-delete-attempts-result'])
+
+		const result = await AssessmentModel.deletePreviewAttemptsAndScores(
+			'mock-user-id',
+			'mock-draft-id',
+			'mock-resource-link'
+		)
+
+		expect(result).toEqual(['mock-delete-scores-result', 'mock-delete-attempts-result'])
+		expect(AssessmentModel.deletePreviewAttempts).toHaveBeenCalledTimes(1)
+		expect(AssessmentScore.deletePreviewScores).toHaveBeenCalledTimes(1)
+
+		const expectedQueryArgs = {
+			transaction: db,
+			userId: 'mock-user-id',
+			draftId: 'mock-draft-id',
+			resourceLinkId: 'mock-resource-link'
+		}
+
+		expect(AssessmentModel.deletePreviewAttempts).toHaveBeenCalledWith(expectedQueryArgs)
+		expect(AssessmentScore.deletePreviewScores).toHaveBeenCalledWith(expectedQueryArgs)
+	})
+
+	test('clone does', () => {
+		const m = new AssessmentModel({
+			key_one: 1,
+			keyTwo: 2,
+			assessmentScore: '10.1',
+			attemptNumber: '1.1',
+			completedAt: null
+		})
+
+		const copy = m.clone()
+
+		expect(copy).toBeInstanceOf(AssessmentModel)
+		expect(copy).not.toBe(m) // not ===
+		expect(copy).toEqual(m) // properties are the same
+	})
+
+	test('create throws when the model has an id', () => {
+		const m = new AssessmentModel({
+			id: 'already-have-an-id',
+			key_one: 1,
+			keyTwo: 2,
+			assessmentScore: '10.1',
+			attemptNumber: '1.1',
+			completedAt: null
+		})
+
+		expect(() => m.create()).toThrow('Cannot call create on a model that has an id.')
+	})
+
+	test('create updates after query', async () => {
+		const m = new AssessmentModel({
+			assessmentScore: '10.1',
+			attemptNumber: '1.1',
+			completedAt: null
+		})
+
+		db.one.mockResolvedValueOnce({
+			id: 'mock-new-id',
+			created_at: 'mock-created-at',
+			updated_at: 'mock-updated-at',
+			completed_at: 'mock-completed-at'
+		})
+
+		const result = await m.create()
+		expect(result).toBe(m) // returns a ref to self
+		expect(result).toHaveProperty('id', 'mock-new-id')
+		expect(result).toHaveProperty('createdAt', 'mock-created-at')
+		expect(result).toHaveProperty('updatedAt', 'mock-updated-at')
+		expect(result).toHaveProperty('completedAt', 'mock-completed-at')
+	})
+
+	test('importAsNewAttempt clones and calls ', async () => {
+		const m = new AssessmentModel({
+			id: 'my-id',
+			assessmentScore: '10.1',
+			attemptNumber: '1.1',
+			completedAt: null
+		})
+
+		db.one.mockResolvedValueOnce({
+			id: 'mock-new-id',
+			created_at: 'mock-created-at',
+			updated_at: 'mock-updated-at',
+			completed_at: 'mock-completed-at'
+		})
+
+		jest.spyOn(m, 'create')
+		jest.spyOn(m, 'clone')
+		m.create.mockReturnValueOnce('create-result')
+
+		const result = await m.importAsNewAttempt('mock-resource-link', db)
+		expect(result).toBe('create-result') // returns result of .create()
+
+		const clonedM = m.clone.mock.results[0].value
+
+		expect(clonedM).not.toHaveProperty('id')
+		expect(clonedM).toHaveProperty('isImported', true)
+		expect(clonedM).toHaveProperty('importedAttemptId', 'my-id')
+		expect(clonedM).toHaveProperty('completedAt', expect.any(Date))
 	})
 })

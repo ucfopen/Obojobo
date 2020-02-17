@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 const { SimpleDialog } = Common.components.modal
 
+
 const UnfinishedAttemptDialog = ({ onConfirm }) =>
 	<SimpleDialog
 		ok

@@ -104,12 +104,10 @@ class AssessmentModel {
 
 				return dbTransaction.batch([q1, q2])
 			})
-			.then(result => {
-				return {
-					attemptData: result[0],
-					assessmentScoreId: result[1].id
-				}
-			})
+			.then(result => ({
+				attemptData: result[0],
+				assessmentScoreId: result[1].id
+			}))
 	}
 
 	static fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
@@ -189,97 +187,91 @@ class AssessmentModel {
 	}
 
 	// get attempts for user and resour
-	static fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
+	static async fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
 		const assessments = new Map()
-		let attempts
-		return AssessmentModel.fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId)
-			.then(fetchAttemptsResult => {
-				attempts = fetchAttemptsResult
-				const attemptIds = attempts.map(attemptIdOrImportedId)
-				return AssessmentModel.fetchResponsesForAttempts(attemptIds)
-			})
-			.then(responseHistory => {
-				const attemptMap = new Map()
+		const attempts = await AssessmentModel.fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId)
+		const attemptIds = attempts.map(attemptIdOrImportedId)
+		const responseHistory = await AssessmentModel.fetchResponsesForAttempts(attemptIds)
+		const attemptMap = new Map()
 
-				// build a returnable assessment structure
-				attempts.forEach(attempt => {
-					// map the attempt to the attemptId that the question responses will be looking for
-					// note imported responses will have the id of the original attempt!
-					attemptMap.set(attemptIdOrImportedId(attempt), attempt)
+		// build a returnable assessment structure
+		attempts.forEach(attempt => {
+			// map the attempt to the attemptId that the question responses will be looking for
+			// note imported responses will have the id of the original attempt!
+			attemptMap.set(attemptIdOrImportedId(attempt), attempt)
 
-					// init assessment obj if none exist for this attempt's assessment
-					if (!assessments.has(attempt.assessmentId)) {
-						assessments.set(attempt.assessmentId, {
-							assessmentId: attempt.assessmentId,
-							attempts: []
-						})
-					}
-
-					// add attempt into our assessments object
-					assessments.get(attempt.assessmentId).attempts.push(attempt)
+			// init assessment obj if none exist for this attempt's assessment
+			if (!assessments.has(attempt.assessmentId)) {
+				assessments.set(attempt.assessmentId, {
+					assessmentId: attempt.assessmentId,
+					attempts: []
 				})
+			}
 
-				// remove all the incomplete attempts except the last one
-				// this just filters out any erroniously created incomplete attempts
-				assessments.forEach(a => {
-					a.attempts = AssessmentModel.removeAllButLastIncompleteAttempts(a.attempts)
-				})
+			// add attempt into our assessments object
+			assessments.get(attempt.assessmentId).attempts.push(attempt)
+		})
 
-				// Place the responses from responseHistory into the attempts created above
-				responseHistory.forEach((responses, attemptId) => {
-					const matchingAttempt = attemptMap.get(attemptId)
+		// remove all the incomplete attempts except the last one
+		// this just filters out any erroniously created incomplete attempts
+		assessments.forEach(a => {
+			a.attempts = AssessmentModel.removeAllButLastIncompleteAttempts(a.attempts)
+		})
 
-					if (!matchingAttempt) {
-						throw `Missing attempt responses userid:'${userId}', draftId:'${draftId}', attemptId:'${attemptId}'`
-					}
+		// Place the responses from responseHistory into the attempts created above
+		responseHistory.forEach((responses, attemptId) => {
+			const matchingAttempt = attemptMap.get(attemptId)
 
-					matchingAttempt.questionResponses = responses.map(r => ({questionId: r.question_id, response: r.response }))
-				})
-			})
-			.then(() =>
-				lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
-					userId,
-					draftId,
-					resourceLinkId,
-					optionalAssessmentId
-				)
-			)
-			.then(ltiStates => {
-				assessments.forEach((assessment, assessmentId) => {
-					const ltiState = ltiStates[assessmentId]
+			if (!matchingAttempt) {
+				throw Error(`Missing attempt responses userid:'${userId}', draftId:'${draftId}', attemptId:'${attemptId}'.`)
+			}
 
-					if (!ltiState) {
-						assessment.ltiState = null
-					} else {
-						assessment.ltiState = {
-							scoreSent: ltiState.scoreSent,
-							sentDate: ltiState.sentDate,
-							status: ltiState.status,
-							gradebookStatus: ltiState.gradebookStatus,
-							statusDetails: ltiState.statusDetails
-						}
-					}
-				})
+			matchingAttempt.questionResponses = responses.map(r => ({questionId: r.question_id, response: r.response }))
+		})
 
-				// didn't ask for a specific assessment, return everything
-				if (optionalAssessmentId === null) {
-					return Array.from(assessments.values())
+		const ltiStates = await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+			userId,
+			draftId,
+			resourceLinkId,
+			optionalAssessmentId
+		)
+
+		assessments.forEach((assessment, assessmentId) => {
+
+			const ltiState = ltiStates[assessmentId]
+
+			if (!ltiState) {
+				assessment.ltiState = null
+			} else {
+				assessment.ltiState = {
+					scoreSent: ltiState.scoreSent,
+					sentDate: ltiState.sentDate,
+					status: ltiState.status,
+					gradebookStatus: ltiState.gradebookStatus,
+					statusDetails: ltiState.statusDetails
 				}
+			}
+		})
 
-				// asked for a specific assessment
-				// size should always be 1, just get the first item
-				if (assessments.size > 0) {
-					return assessments.values().next().value
-				}
+		// didn't ask for a specific assessment, return everything
+		if (optionalAssessmentId === null) {
+			return Array.from(assessments.values())
+		}
 
-				// asked for a specific assessment but none found
-				// return a standard structure to be nice
-				return {
-					assessmentId: optionalAssessmentId,
-					attempts: [],
-					ltiState: null
-				}
-			})
+		// asked for a specific assessment
+		// size should always be 1, just get the first item
+		if (assessments.size > 0) {
+
+			return assessments.values().next().value
+		}
+
+		// asked for a specific assessment but none found
+		// return a standard structure to be nice
+		return {
+			assessmentId: optionalAssessmentId,
+			attempts: [],
+			ltiState: null
+		}
 	}
 
 	/*
@@ -454,7 +446,7 @@ class AssessmentModel {
 	}
 
 	create(dbOrTransaction = db){
-		if(this.id) throw 'Cannot call create on a model that has an id'
+		if(this.id) throw Error('Cannot call create on a model that has an id.')
 		return dbOrTransaction.one(`
 			INSERT INTO attempts
 				(completed_at, user_id, draft_id, assessment_id, state, result, is_preview, draft_content_id, resource_link_id, is_imported, imported_attempt_id)
@@ -465,7 +457,7 @@ class AssessmentModel {
 				this.id = result.id
 				this.createdAt = result.created_at
 				this.updatedAt = result.updated_at
-				this.completedAt = result.completedAt
+				this.completedAt = result.completed_at
 				return this
 			})
 	}

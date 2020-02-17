@@ -132,4 +132,27 @@ describe('attempt-end/insert events', () => {
 			userId: 'mockUserId'
 		})
 	})
+
+	test('insertAttemptImportedEvents', async () => {
+		await insertAttemptImportedEvents(
+			mockUser,
+			mockDraftDocument,
+			'mockAssessmentId',
+			'mockAssessmentScoreId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockAttemptScore',
+			'mockAssessmentScore',
+			'mockIsPreview',
+			'mockLtiScoreSent',
+			'mockLtiScoreStatus',
+			'mockLtiStatusDetails',
+			'mockLtiGradebookStatus',
+			'mockLtiAssessmentScoreId',
+			'mockHostname',
+			'mockRemoteAddress',
+			'mockScoreDetails',
+			'mockResourceLinkId'
+		)
+	})
 })

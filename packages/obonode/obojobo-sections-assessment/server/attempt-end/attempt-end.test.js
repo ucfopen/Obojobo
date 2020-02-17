@@ -1,4 +1,3 @@
-jest.mock('obojobo-express/server/logger')
 jest.mock('obojobo-express/server/lti')
 jest.mock('./get-calculated-scores')
 jest.mock('../models/assessment')
@@ -6,7 +5,6 @@ jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
 jest.mock('./insert-events')
-jest.mock('obojobo-express/server/lti')
 jest.mock('obojobo-express/server/models/draft')
 
 describe('attempt-end', () => {

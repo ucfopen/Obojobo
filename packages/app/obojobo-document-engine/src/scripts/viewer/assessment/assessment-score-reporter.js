@@ -14,14 +14,14 @@ class AssessmentScoreReporter {
 	getReportFor(attemptNumber) {
 		if (attemptNumber === 0) {
 			throw new Error(
-				'getReportFor parameter is not zero-indexed - Use "1" for first attempt'
+				'getReportFor parameter is not zero-indexed - Use "1" for first attempt.'
 			)
 		}
 
 		const assessScoreInfoToReport = this.allScoreDetails[attemptNumber - 1]
 
 		if (!assessScoreInfoToReport || !assessScoreInfoToReport.status){
-			throw new Error(`Error, score details for attempt ${attemptNumber} were not loaded`)
+			throw new Error(`Error, score details for attempt ${attemptNumber} were not loaded.`)
 		}
 
 		return {

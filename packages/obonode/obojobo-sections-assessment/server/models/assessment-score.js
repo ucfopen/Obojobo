@@ -72,6 +72,10 @@ class AssessmentScore {
 					return new AssessmentScore(result)
 				}
 			})
+			.catch(error => {
+				logger.error('AssessmentScore getImportableScore Error', error.message)
+				return Promise.reject(error)
+			})
 	}
 
 	static deletePreviewScores({ transaction, userId, draftId, resourceLinkId }) {
@@ -118,7 +122,7 @@ class AssessmentScore {
 	}
 
 	create(dbOrTransaction = db){
-		if(this.id) throw 'Cannot call create on a model that has an id'
+		if(this.id) throw Error('Cannot call create on a model that has an id.')
 		return dbOrTransaction.one(`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
