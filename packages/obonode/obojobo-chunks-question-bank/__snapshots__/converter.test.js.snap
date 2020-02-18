@@ -31,7 +31,9 @@ Object {
   "children": Array [
     Object {
       "children": Array [],
-      "content": undefined,
+      "content": Object {
+        "choose": "1",
+      },
       "id": "mockKey",
       "type": "ObojoboDraft.Chunks.QuestionBank",
     },
@@ -39,25 +41,6 @@ Object {
   ],
   "content": Object {
     "choose": "all",
-  },
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`QuestionBank converter slateToObo converts a Slate node to an OboNode without content 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [],
-      "content": undefined,
-      "id": "mockKey",
-      "type": "ObojoboDraft.Chunks.QuestionBank",
-    },
-    undefined,
-  ],
-  "content": Object {
-    "choose": "1",
   },
   "id": "mockKey",
   "type": "mockType",

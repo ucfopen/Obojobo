@@ -4,6 +4,15 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const getChooseValue = (chooseAll, choose) => {
+	if(chooseAll) return 'all'
+
+	if(!choose) return '1'
+
+	if(!Number.isFinite(parseInt(choose, 10))) return '1'
+
+	return choose
+}
 /**
  * Generates an Obojobo QuestionBank Node from a Slate node.
  * Copies the id, type, triggers, and saves the choose and select 
@@ -33,7 +42,7 @@ const slateToObo = node => {
 		children,
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			choose: node.content.chooseAll ? Infinity : node.content.choose,
+			choose: getChooseValue(node.content.chooseAll, node.content.choose),
 			select: node.content.select
 		})
 	}
