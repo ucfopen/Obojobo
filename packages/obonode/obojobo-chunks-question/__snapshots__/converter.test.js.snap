@@ -62,7 +62,7 @@ Object {
   "children": Array [
     Object {
       "args": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -81,7 +81,7 @@ Object {
   "content": Object {
     "solution": Object {
       "args": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -91,7 +91,7 @@ Object {
       "mock": "slateToObo",
     },
   },
-  "id": "mockKey",
+  "id": undefined,
   "type": "mockType",
 }
 `;
