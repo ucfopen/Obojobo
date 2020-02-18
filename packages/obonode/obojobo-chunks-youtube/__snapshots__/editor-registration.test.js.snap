@@ -1,52 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`YouTube editor oboToSlate converts an OboNode to a Slate node 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "text": "",
-    },
-  ],
-  "content": Object {
-    "width": "large",
-  },
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`YouTube editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "text": "",
-    },
-  ],
-  "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`YouTube editor plugins.renderNode calls next 1`] = `
-<SlateWrapper
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "mockNode",
-    }
-  }
-/>
-`;
-
 exports[`YouTube editor plugins.renderNode renders a button when passed 1`] = `
 <SlateWrapper
   attributes={
@@ -64,13 +17,4 @@ exports[`YouTube editor plugins.renderNode renders a button when passed 1`] = `
     }
   }
 />
-`;
-
-exports[`YouTube editor slateToObo converts a Slate node to an OboNode with content 1`] = `
-Object {
-  "children": Array [],
-  "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
 `;

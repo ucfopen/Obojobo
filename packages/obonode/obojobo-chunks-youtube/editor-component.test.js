@@ -3,94 +3,76 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import YouTube from './editor-component'
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	() => item => item
+)
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
 )
-jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mockId')
-
-let mockNode
-let editor
 
 describe('YouTube Editor Node', () => {
 	beforeEach(() => {
-		const mockNodeDataGet = jest.fn().mockReturnValue({})
-		mockNode = { data: { get: mockNodeDataGet } }
-		editor = { setNodeByKey: jest.fn(), removeNodeByKey: jest.fn() }
+		jest.restoreAllMocks()
+		jest.resetAllMocks()
 	})
 
-	test('YouTube builds the expected component without a videoId', () => {
-		const component = renderer.create(<YouTube node={mockNode} />)
+	test('YouTube component', () => {
+		const component = renderer.create(
+			<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }}/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('YouTube builds the expected component given a videoId', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
-		const component = renderer.create(<YouTube node={mockNode} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('YouTube renders with no id correctly', () => {
+		const component = renderer.create(
+			<YouTube element={{ content: {} }}/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('YouTube component deletes self', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
 		const component = mount(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
+			<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }}/>
 		)
 
-		// locate the delete button
-		const button = component.find('button').at(0)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
-		// click it
-		button.simulate('click')
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('YouTube component edits input', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
+	test('YouTube component edits properties', () => {
 		const component = mount(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
+			<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }}/>
 		)
 
-		// locate the edit button
-		const button = component.find('button').at(1)
-		expect(button.props().children).toBe('Edit')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
-		// click it
-		button.simulate('click')
-
-		const tree = component.html()
-
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('handleSourceChange sets the nodes content', () => {
-		mockNode.key = 'mockNodeKey'
-		const testRenderer = renderer.create(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
+	test('changeProperties sets the nodes content', () => {
+		const component = mount(
+			<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }}/>
 		)
-		const component = testRenderer.root
-		const mockContent = {
-			videoId: 'mockId',
-			startTime: 'mockStartTime',
-			endTime: 'mockEndTime'
-		}
 
-		// execute the instance callback
-		component.instance.handleSourceChange(mockContent)
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockNodeKey', {
-			data: {
-				content: mockContent
-			}
-		})
+		component.instance().handleSourceChange({ mockProperties: 'mock value' })
 
-		const tree = testRenderer.toJSON()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

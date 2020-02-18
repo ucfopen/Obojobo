@@ -1,10 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`YouTube Editor Node YouTube builds the expected component given a videoId 1`] = `
+exports[`YouTube Editor Node YouTube component 1`] = `
 <div>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
     contentEditable={false}
+    onClick={[Function]}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -19,12 +20,7 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
     </div>
     <div
       className="obojobo-draft--chunks-you-tube-player"
-      id="obojobo-draft--chunks-you-tube-player-mockId"
-    />
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
+      id="obojobo-draft--chunks-you-tube-player-14a6efc4-aac2-4eac-b8ef-887410d4cda4"
     />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
@@ -41,11 +37,12 @@ exports[`YouTube Editor Node YouTube builds the expected component given a video
 </div>
 `;
 
-exports[`YouTube Editor Node YouTube builds the expected component without a videoId 1`] = `
+exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
 <div>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
     contentEditable={false}
+    onClick={[Function]}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -65,57 +62,6 @@ exports[`YouTube Editor Node YouTube builds the expected component without a vid
         No Video Id.
       </div>
     </div>
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-    />
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
-    >
-      <button
-        className="button"
-        contentEditable={false}
-        onClick={[Function]}
-      >
-        Edit
-      </button>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`YouTube Editor Node YouTube component edits input 1`] = `"<div><div contenteditable=\\"false\\" class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div contenteditable=\\"true\\" class=\\"editor--hidden-text\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`;
-
-exports[`YouTube Editor Node handleSourceChange sets the nodes content 1`] = `
-<div>
-  <div
-    className="obojobo-draft--chunks--you-tube viewer pad  is-selected"
-    contentEditable={false}
-  >
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-    >
-      <button
-        className="button"
-        contentEditable={false}
-        onClick={[Function]}
-      >
-        ×
-      </button>
-    </div>
-    <div
-      className="empty-frame"
-    >
-      <div>
-        No Video Id.
-      </div>
-    </div>
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-    />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
     >
