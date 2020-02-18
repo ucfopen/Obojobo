@@ -52,12 +52,12 @@ const plugins = {
 					// Get current Cell
 					const [[,cellPath]] = Editor.nodes(editor, {
 						mode: 'lowest',
-						match: nodeMatch => Element.isElement(nodeMatch)
+						match: nodeMatch => Element.isElement(nodeMatch) && !editor.isInline()
 					})
 					// Check if there is a row below this one
 					const siblingPath = Path.next(cellPath.slice(0,-1))
 					if(Node.has(editor, siblingPath)) {
-						// If there is, jump down to the start of the cell 
+						// If there is, jump down to the cell 
 						// below the current one
 						const focus = Editor.start(editor, siblingPath.concat(cellPath[cellPath.length - 1]))
 						const anchor = Editor.end(editor, siblingPath.concat(cellPath[cellPath.length - 1]))

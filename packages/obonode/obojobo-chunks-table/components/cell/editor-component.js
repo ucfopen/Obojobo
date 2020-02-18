@@ -190,12 +190,12 @@ class Cell extends React.Component {
 		const editor = this.props.editor
 
 		const cellPath = ReactEditor.findPath(editor, this.props.element)
-		const [, rowPath] = Editor.parent(editor, cellPath)
+		const [rowParent, rowPath] = Editor.parent(editor, cellPath)
 		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
 		const colIndex = cellPath[cellPath.length - 1]
 
 		// If there is only one column, delete the whole table
-		if (tableParent.children.length === 1) {
+		if (rowParent.children.length === 1) {
 			return Transforms.removeNodes(editor, { at: tablePath })
 		}
 

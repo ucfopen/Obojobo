@@ -12,10 +12,29 @@ const normalizeNode = (entry, editor, next) => {
 	if (Element.isElement(node) && node.type === TABLE_NODE && !node.subtype) {
 		let index = 0
 		for (const [child, childPath] of Node.children(editor, path)) {
-			if(Element.isElement(child) && child.subtype !== TABLE_ROW_NODE){
+			if(Element.isElement(child) && child.subtype !== TABLE_ROW_NODE && child.subtype !== TABLE_CELL_NODE){
 				Transforms.removeNodes(
 					editor,
 					{ at: childPath }
+				)
+				return
+			}
+
+			// Wrap loose Cell children
+			if (Element.isElement(child) && child.subtype === TABLE_CELL_NODE) {
+				NormalizeUtil.wrapOrphanedSiblings(
+					editor, 
+					[child, childPath], 
+					{ 
+						type: TABLE_NODE,
+						subtype: TABLE_ROW_NODE,
+						content: { 
+							header: node.content.header, 
+							numCols: node.content.numCols, 
+						},
+						children: []
+					}, 
+					node => node.subtype === TABLE_CELL_NODE
 				)
 				return
 			}
@@ -42,21 +61,25 @@ const normalizeNode = (entry, editor, next) => {
 				Transforms.setNodes(editor, {
 					content: { ...child.content, numCols: node.content.numCols}
 				}, { at: childPath })
+				return
 			}
 			if(child.content.numCols > node.content.numCols){
 				Transforms.setNodes(editor, {
 					content: { ...node.content, numCols: child.content.numCols}
 				}, { at: path })
+				return
 			}
 			if(index === 0 && child.content.header !== node.content.header){
 				Transforms.setNodes(editor, {
 					content: { ...child.content, header: node.content.header}
 				}, { at: childPath })
+				return
 			}
 			if(index !== 0 && child.content.header){
 				Transforms.setNodes(editor, {
 					content: { ...child.content, header: false}
 				}, { at: childPath })
+				return
 			}
 
 			index++

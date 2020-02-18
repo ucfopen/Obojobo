@@ -3,44 +3,20 @@ import Converter from './converter'
 describe('Table Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: {
-				get: () => ({
-					data: {
-						get: () => ({ header: true })
-					}
-				}),
-				forEach: funct => {
-					funct({
-						nodes: [
-							{
-								text: 'MockText',
-								nodes: [
-									{
-										leaves: [
-											{
-												text: 'MockText',
-												marks: [
-													{
-														type: 'b',
-														data: {
-															toJSON: () => true
-														}
-													}
-												]
-											}
-										]
-									}
-								]
-							}
-						]
-					})
+			content: { header: true },
+			children: [
+				{
+					type: 'mockRow',
+					children: [
+						{
+							type: 'mockCell',
+							children: [{ text: 'MockText', b: true }]
+						}
+					]
 				}
-			}
+			]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

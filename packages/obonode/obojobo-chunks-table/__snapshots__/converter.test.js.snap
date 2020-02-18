@@ -114,14 +114,14 @@ Object {
   "content": Object {
     "header": true,
     "textGroup": Object {
-      "numCols": undefined,
-      "numRows": undefined,
+      "numCols": 1,
+      "numRows": 1,
       "textGroup": Array [
         Object {
           "text": Object {
             "styleList": Array [
               Object {
-                "data": true,
+                "data": Object {},
                 "end": 8,
                 "start": 0,
                 "type": "b",

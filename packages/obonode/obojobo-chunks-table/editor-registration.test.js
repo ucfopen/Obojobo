@@ -1,7 +1,6 @@
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
-import SlateReact from 'slate-react'
-jest.mock('slate-react')
+import { Transforms } from 'slate'
 
 import Table from './editor-registration'
 
@@ -10,103 +9,59 @@ const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 describe('Table editor', () => {
-	test('plugins.onPaste deals with no table', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => false
-				}
-			}
+	test('insertData calls next if pasting a Slate fragment', () => {
+		const data = {
+			types: ['application/x-slate-fragment']
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		const next = jest.fn()
 
-		const event = {
-			preventDefault: jest.fn()
-		}
+		Table.plugins.insertData(data, {}, next)
 
-		Table.plugins.onPaste(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.onPaste deals with pasting into table', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
+	test('insertData calls next if not pasting into Table', () => {
+		const data = {
+			types: ['application/html']
+		}
+		const next = jest.fn()
+
+		Table.plugins.insertData(data, {
+			children: [{
+				type: 'nonTableNode',
+				children: [{text: ''}]
+			}],
+			selection: {
+				anchor: { path: [0,0], offset: 0 },
+				focus: { path: [0,0], offset: 0 }
 			}
-		}
-		editor.insertText = jest.fn().mockReturnValueOnce(editor)
+		}, next)
 
-		SlateReact.getEventTransfer.mockReturnValueOnce({ text: 'mock text' })
-
-		const event = {
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onPaste(event, editor, jest.fn())
-
-		expect(editor.insertText).toHaveBeenCalled()
+		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.onCut deals with no table', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => false
-				}
+	test('insertData inserts all lines as Table Rows if pasting into Table', () => {
+		jest.spyOn(Transforms, 'insertFragment').mockReturnValueOnce(true)
+
+		const data = {
+			types: ['application/html'],
+			getData: () => 'line1 \n line2'
+		}
+		const next = jest.fn()
+
+		Table.plugins.insertData(data, {
+			type: TABLE_NODE,
+			children: [{
+				type: TABLE_NODE,
+				children: [{text: 'mocktext'}]
+			}],
+			selection: {
+				anchor: { path: [0,0], offset: 1 },
+				focus: { path: [0,0], offset: 1 }
 			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		}, next)
 
-		const event = {
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onCut(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onCut deals with cutting from table', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => true
-				},
-				fragment: 'mockFragment'
-			}
-		}
-		editor.insertText = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onCut(event, editor, jest.fn())
-
-		expect(SlateReact.cloneFragment).toHaveBeenCalled()
+		expect(Transforms.insertFragment).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with no table', () => {
@@ -162,187 +117,179 @@ describe('Table editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Enter]', () => {
+	test('plugins.onKeyDown deals with [Enter] and expanded selection on one child', () => {
 		const editor = {
-			value: {
-				document: {
-					getClosest: () => true
-				},
-				blocks: [{ key: 'mockKey' }]
-			}
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0,0,0], offset: 1 },
+				focus: { path: [0,0,0], offset: 3 }
+			},
+			isInline: () => false
 		}
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, editor, jest.fn())
+		Table.plugins.onKeyDown(editor.children[0], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace]', () => {
+	test('plugins.onKeyDown deals with [Enter] and collapsed selection on one child', () => {
 		const editor = {
-			value: {
-				document: {
-					getClosest: () => true
-				},
-				blocks: [{ key: 'mockKey' }]
-			}
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{text: 'mocktext1'}]
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0,0,0,0], offset: 1 },
+				focus: { path: [0,0,0,0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(editor.children[0], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter] and collapsed selection on multiple children', () => {
+		jest.spyOn(Transforms, 'setSelection').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					type: TABLE_NODE,
+					content: {},
+					children: [
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{text: 'mocktext1'}]
+								}
+							]
+						},
+						{
+							type: TABLE_NODE,
+							subtype: TABLE_ROW_NODE,
+							children: [
+								{
+									type: TABLE_NODE,
+									subtype: TABLE_CELL_NODE,
+									children: [{text: 'mocktext2'}]
+								}
+							]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0,0,0,0], offset: 1 },
+				focus: { path: [0,0,0,0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(editor.children[0], editor, event)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.setSelection).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace]', () => {
 		const event = {
 			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, editor, jest.fn())
+		Table.plugins.onKeyDown({}, {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Delete]', () => {
-		const editor = {
-			value: {
-				document: {
-					getClosest: () => true
-				},
-				blocks: [{ key: 'mockKey' }]
-			}
-		}
 		const event = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, editor, jest.fn())
+		Table.plugins.onKeyDown({}, {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a Table when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
+			element: {
 				type: TABLE_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
 			}
 		}
 
-		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a row when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
-				type: TABLE_ROW_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+			element: {
+				subtype: TABLE_ROW_NODE,
 			}
 		}
 
-		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a cell when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
-				type: TABLE_CELL_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+			element: {
+				subtype: TABLE_CELL_NODE,
 			}
 		}
 
-		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Table.plugins.renderNode(props, null, next)).toMatchSnapshot()
-	})
-
-	test('plugins.normalizeNode does nothing if all nodes match schema', () => {
-		const nextFunct = jest.fn()
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Table.plugins.normalizeNode({ object: 'text' }, editor, nextFunct)
-		expect(nextFunct).toHaveBeenCalledTimes(1)
-
-		Table.plugins.normalizeNode({ object: 'block', type: 'mockNode' }, editor, nextFunct)
-		expect(nextFunct).toHaveBeenCalledTimes(2)
-
-		const tableRow = {
-			object: 'block',
-			type: TABLE_ROW_NODE,
-			data: { get: () => ({ numCols: 1 }) },
-			nodes: { size: 1 }
-		}
-		Table.plugins.normalizeNode(tableRow, editor, nextFunct)
-		expect(nextFunct).toHaveBeenCalledTimes(3)
-
-		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
-	})
-
-	test('plugins.normalizeNode fixes rows with too few columns', () => {
-		const nextFunct = jest.fn()
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		const tableRow = {
-			object: 'block',
-			type: TABLE_ROW_NODE,
-			data: { get: () => ({ numCols: 1 }) },
-			nodes: { size: 0 }
-		}
-		const normalizer = Table.plugins.normalizeNode(tableRow, editor, nextFunct)
-		expect(nextFunct).not.toHaveBeenCalled()
-
-		normalizer(editor)
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.normalizeNode fixes rows with too many columns', () => {
-		const nextFunct = jest.fn()
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const tableRow = {
-			object: 'block',
-			type: TABLE_ROW_NODE,
-			data: { get: () => ({ numCols: 1 }) },
-			nodes: { size: 2 }
-		}
-		const normalizer = Table.plugins.normalizeNode(tableRow, editor, nextFunct)
-		expect(nextFunct).not.toHaveBeenCalled()
-
-		normalizer(editor)
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })
