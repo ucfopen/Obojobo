@@ -22,6 +22,29 @@ describe('VariableListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('VariableListModal focus on first-tab when tab', () => {
+		const content = {
+			variables: [
+				{
+					name: 'var1',
+					type: 'mock'
+				},
+				{
+					name: 'var2',
+					type: 'mock'
+				}
+			]
+		}
+		const component = mount(<VariableListModal content={content} />)
+		component
+			.find('.first-tab')
+			.at(0)
+			.simulate('focus')
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('VariableListModal handle invalid variables', () => {
 		const content = {
 			variables: null
@@ -151,7 +174,7 @@ describe('VariableListModal', () => {
 				.at(2)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var2</h4><small><p>static-value</p></small></div>"`
+			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var2</h4><small><b></b></small></div>"`
 		)
 
 		// Click duplicate button
@@ -168,7 +191,7 @@ describe('VariableListModal', () => {
 				.at(3)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var3</h4><small><p>static-value</p></small></div>"`
+			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var3</h4><small><b></b></small></div>"`
 		)
 
 		expect(component.html()).toMatchSnapshot()

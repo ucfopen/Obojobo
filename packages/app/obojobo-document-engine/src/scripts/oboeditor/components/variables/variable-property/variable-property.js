@@ -1,8 +1,8 @@
-import './variable-properties.scss'
+import './variable-property.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import VariableValue from './variable-values'
+import VariableValue from './variable-value'
 import { typeList, mapTypeToString } from '../constants'
 
 const { Button } = Common.components
@@ -36,7 +36,12 @@ const VariableProperties = props => {
 				<label>
 					<strong>Type:</strong>
 				</label>
-				<select className="select-item" name="type" value={variable.type} onChange={props.onChange}>
+				<select
+					className="select-item"
+					name="type"
+					value={variable.type || ''}
+					onChange={props.onChange}
+				>
 					{typeList.map(type => (
 						<option value={type} key={type}>
 							{mapTypeToString[type]}

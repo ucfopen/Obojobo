@@ -1,4 +1,4 @@
-import './variable-values.scss'
+import './variable-value.scss'
 
 import React from 'react'
 import {
@@ -14,20 +14,85 @@ import {
 const VariableValues = props => {
 	const { variable, onChange } = props
 
+	const onChangeMin = e => {
+		props.onChange(e)
+
+		const minName = e.target.name
+		const minValue = e.target.value
+
+		let maxName = ''
+		switch (minName) {
+			case 'valueMin':
+				maxName = 'valueMax'
+				break
+			case 'decimalPlacesMin':
+				maxName = 'decimalPlacesMax'
+				break
+			case 'sizeMin':
+				maxName = 'sizeMax'
+				break
+		}
+
+		const maxValue = variable[maxName]
+		if (!maxValue) {
+			return props.onChange({ target: { name: maxName, value: minValue } })
+		}
+
+		const minValueInt = parseInt(minValue, 10)
+		const maxValueInt = parseInt(maxValue, 10)
+
+		if (minValueInt > maxValueInt) {
+			return props.onChange({ target: { name: maxName, value: minValue } })
+		}
+	}
+
+	const onChangeMax = e => {
+		props.onChange(e)
+
+		const maxName = e.target.name
+		const maxValue = e.target.value
+
+		let minName = ''
+		switch (maxName) {
+			case 'valueMax':
+				minName = 'valueMin'
+				break
+			case 'decimalPlacesMax':
+				minName = 'decimalPlacesMin'
+				break
+			case 'sizeMax':
+				minName = 'sizeMin'
+				break
+		}
+
+		if (!maxValue) {
+			props.onChange({ target: { name: minName, value: maxValue } })
+		}
+
+		const minValue = variable[minName]
+
+		const minValueInt = parseInt(minValue, 10)
+		const maxValueInt = parseInt(maxValue, 10)
+
+		if (minValueInt > maxValueInt) {
+			return props.onChange({ target: { name: minName, value: maxValue } })
+		}
+	}
+
 	switch (variable.type) {
 		case STATIC_VALUE:
 			return (
-				<form className="variable-values">
+				<div className="variable-values">
 					<div className="variable-values--group">
 						<label>Value: </label>
-						<input name="value" value={variable.value || ''} onChange={onChange} />
+						<input type="text" name="value" value={variable.value || ''} onChange={onChange} />
 					</div>
-				</form>
+				</div>
 			)
 
 		case STATIC_LIST:
 			return (
-				<form className="variable-values">
+				<div className="variable-values">
 					<div className="variable-values--group">
 						<label>Values: </label>
 						<input type="text" name="value" value={variable.value || ''} onChange={onChange} />
@@ -35,7 +100,7 @@ const VariableValues = props => {
 					<p className="variable-values--example-text">
 						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
 					</p>
-				</form>
+				</div>
 			)
 
 		case RANDOM_NUMBER:
@@ -47,7 +112,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -56,7 +121,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -65,14 +130,14 @@ const VariableValues = props => {
 							type="number"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 				</div>
@@ -87,14 +152,14 @@ const VariableValues = props => {
 							type="number"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -113,7 +178,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -122,7 +187,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -131,14 +196,14 @@ const VariableValues = props => {
 							type="number"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 				</div>
@@ -153,14 +218,14 @@ const VariableValues = props => {
 							type="number"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 
@@ -170,7 +235,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -179,7 +244,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 
@@ -230,7 +295,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChange}
+							onChange={onChangeMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -239,7 +304,7 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChange}
+							onChange={onChangeMax}
 						/>
 					</div>
 					<div className="variable-values--group">

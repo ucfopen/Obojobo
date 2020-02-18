@@ -3,17 +3,10 @@ import './variable-list-modal.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import VariableProperties from './variable-properties/variable-properties'
+import VariableProperties from './variable-property/variable-property'
 import NewVariable from './new-variable/new-variable'
-import {
-	STATIC_VALUE,
-	RANDOM_NUMBER,
-	STATIC_LIST,
-	RANDOM_LIST,
-	RANDOM_SEQUENCE,
-	PICK_ONE,
-	PICK_LIST
-} from './constants'
+import VariableBlock from './variable-block'
+import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
 
 const { Button } = Common.components
 const { SimpleDialog } = Common.components.modal
@@ -59,7 +52,12 @@ const VariableListModal = props => {
 			index++
 		}
 
-		const updatedVariables = [...variables, { type, name: 'var' + (index === 1 ? '' : index) }]
+		const newVariable = { type, name: 'var' + (index === 1 ? '' : index) }
+		if (type === RANDOM_NUMBER || type === RANDOM_LIST) {
+			newVariable['decimalPlacesMin'] = 0
+			newVariable['decimalPlacesMax'] = 0
+		}
+		const updatedVariables = [...variables, newVariable]
 		setVariables(updatedVariables)
 		setCurrSelect(variables.length)
 		setCreatingVariable(false)
@@ -113,83 +111,17 @@ const VariableListModal = props => {
 			<div className="variable-list-modal">
 				<div className="variable-list">
 					{variables.map((variable, index) => (
-						<div
+						<VariableBlock
 							key={variable.name}
-							className={
-								'single-variable' +
-								(index === currSelect && !creatingVariable ? ' variable-is-selected' : '')
-							}
+							variable={variable}
+							currSelect={currSelect}
+							isSelected={index === currSelect}
+							creatingVariable={creatingVariable}
+							firstRef={index === 0 ? firstRef : null}
+							onClickVarible={onClickVarible}
+							index={index}
 							onClick={() => onClickVarible(index)}
-							tabIndex="0"
-							ref={index === 0 ? firstRef : null}
-						>
-							<h4>${variable.name}</h4>
-							{(() => {
-								switch (variable.type) {
-									case STATIC_VALUE:
-										return (
-											<small>
-												<b>{variable.value || ''}</b>
-											</small>
-										)
-									case RANDOM_NUMBER:
-										return (
-											<small>
-												Random number{' '}
-												<b>
-													({variable.valueMin || ''}-{variable.valueMax || ''})
-												</b>
-											</small>
-										)
-									case STATIC_LIST:
-										if (!variable.value) return null
-										return (
-											<small>
-												<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
-											</small>
-										)
-									case RANDOM_LIST:
-										return (
-											<small>
-												Random list
-												<b>
-													{` (${variable.sizeMin || ''}-${variable.valueMax ||
-														''} items of ${variable.decimalPlacesMin ||
-														''}-${variable.decimalPlacesMax || ''})`}
-												</b>
-											</small>
-										)
-									case RANDOM_SEQUENCE:
-										return (
-											<small>
-												Random seq
-												<b>
-													{` (${variable.sizeMin || ''}-${variable.sizeMax ||
-														''} items starting from ${variable.valueMin || ''})`}
-												</b>
-											</small>
-										)
-									case PICK_ONE:
-										if (!variable.value) return null
-										return (
-											<small>
-												{'Pick from '}
-												<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
-											</small>
-										)
-									case PICK_LIST:
-										if (!variable.value) return null
-
-										return (
-											<small>
-												{variable.valueMin || ''}-{variable.valueMax || ''} item
-												{variable.value.split(',') >= 1 ? 's' : ''} from{' '}
-												<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
-											</small>
-										)
-								}
-							})()}
-						</div>
+						/>
 					))}
 
 					{creatingVariable ? (
