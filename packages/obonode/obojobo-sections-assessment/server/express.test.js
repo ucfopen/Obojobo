@@ -6,6 +6,7 @@ jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
 jest.mock('obojobo-express/server/express_validators')
 jest.mock('./events')
+jest.mock('./attempt-end/attempt-import')
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
 const mockCurrentDocument = { draftId: 'mockDraftId' }
@@ -18,6 +19,7 @@ const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
 const lti = require('obojobo-express/server/lti')
+const attemptImport = require('./attempt-end/attempt-import')
 const {
 	requireCurrentDocument,
 	requireCurrentVisit,
@@ -65,7 +67,7 @@ describe('server/express', () => {
 		app.use(assessmentExpress)
 	})
 
-	test('POST /api/lti/send-assessment-score', () => {
+	test('POST /api/lti/send-assessment-score', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {
 			scoreSent: 'mockReturn',
@@ -76,136 +78,132 @@ describe('server/express', () => {
 		}
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/lti/send-assessment-score')
 			.type('application/json')
 			.send('{"assessmentId":"mockAssessmentId"}')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				// verify validations ran
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireAssessmentId).toHaveBeenCalledTimes(1)
-				// verify external libs were called with correct args
-				expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument,
-					'mockAssessmentId',
-					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id
-				)
-				// verify the response body
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: {
-						score: mockReturnValue.scoreSent,
-						status: mockReturnValue.status,
-						statusDetails: mockReturnValue.statusDetails,
-						dbStatus: mockReturnValue.dbStatus,
-						gradebookStatus: mockReturnValue.gradebookStatus
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		// verify validations ran
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
+		// verify external libs were called with correct args
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
+			mockCurrentUser.id,
+			mockCurrentDocument,
+			'mockAssessmentId',
+			mockCurrentVisit.is_preview,
+			mockCurrentVisit.resource_link_id
+		)
+		// verify the response body
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: {
+				score: mockReturnValue.scoreSent,
+				status: mockReturnValue.status,
+				statusDetails: mockReturnValue.statusDetails,
+				dbStatus: mockReturnValue.dbStatus,
+				gradebookStatus: mockReturnValue.gradebookStatus
+			}
+		})
+
 	})
 
-	test('POST /api/lti/send-assessment-score logs errors', () => {
+	test('POST /api/lti/send-assessment-score logs errors', async () => {
 		expect.hasAssertions()
 		lti.sendHighestAssessmentScore.mockRejectedValueOnce('mock-error')
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/lti/send-assessment-score')
 			.type('application/json')
 			.send('{"assessmentId":"mockAssessmentId"}')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
 	})
 
-	test('POST /api/assessments/attempt/start', () => {
+	test('POST /api/assessments/attempt/start', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		startAttempt.mockImplementationOnce((req, res, next) => {
 			res.success(mockReturnValue)
 		})
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/start')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				// verify validations ran
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireAssessmentId).toHaveBeenCalledTimes(1)
 
-				expect(startAttempt).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+		expect(response.statusCode).toBe(200)
+		// verify validations ran
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
+
+		expect(startAttempt).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/resume', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/resume', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		resumeAttempt.mockReturnValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				// verify validations ran
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(resumeAttempt).toHaveBeenCalledWith(
-					mockCurrentUser,
-					mockCurrentVisit,
-					mockCurrentDocument,
-					'mock-attempt-id',
-					expect.any(String),
-					expect.any(String)
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		// verify validations ran
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+		expect(resumeAttempt).toHaveBeenCalledWith(
+			mockCurrentUser,
+			mockCurrentVisit,
+			mockCurrentDocument,
+			'mock-attempt-id',
+			expect.any(String),
+			expect.any(String)
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/resume', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/resume', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		requireAttemptId.mockImplementationOnce((req, res, next) => {
@@ -214,205 +212,242 @@ describe('server/express', () => {
 			})
 		})
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/end', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		endAttempt.mockResolvedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end fails', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/end fails', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		endAttempt.mockRejectedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end', () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/end', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		endAttempt.mockResolvedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('POST /api/assessments/attempt/review', () => {
+	test('POST /api/assessments/attempt/review', async () => {
 		expect.hasAssertions()
 		const returnValue = {}
 		reviewAttempt.mockResolvedValueOnce(returnValue)
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/attempt/review')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual(returnValue)
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireAttemptId).toHaveBeenCalledTimes(1)
+		expect(response.body).toEqual(returnValue)
 	})
 
-	test('POST /api/assessments/clear-preview-scores', () => {
+	test('POST /api/assessments/clear-preview-scores', async () => {
 		expect.hasAssertions()
 		AssessmentModel.deletePreviewAttemptsAndScores.mockResolvedValueOnce()
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/clear-preview-scores')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledTimes(1)
-				expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledWith(
-					'mockCurrentUserId',
-					'mockDraftId',
-					'mockResourceLinkId'
-				)
-				expect(response.body).toEqual({
-					status: 'ok'
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.deletePreviewAttemptsAndScores).toHaveBeenCalledWith(
+			'mockCurrentUserId',
+			'mockDraftId',
+			'mockResourceLinkId'
+		)
+		expect(response.body).toEqual({
+			status: 'ok'
+		})
 	})
 
-	test('POST /api/assessments/clear-preview-scores fails when not preview', () => {
+	test('POST /api/assessments/clear-preview-scores fails when not preview', async () => {
 		expect.hasAssertions()
 		requireCurrentVisit.mockImplementationOnce((req, res, next) => {
 			req.currentVisit = { is_preview: false }
 			next()
 		})
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/clear-preview-scores')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(401)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: 'Not in preview mode',
-						type: 'notAuthorized'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(401)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: 'Not in preview mode',
+				type: 'notAuthorized'
+			}
+		})
 	})
 
-	test('POST /api/assessments/clear-preview-scores fails on errors', () => {
+	test('POST /api/assessments/clear-preview-scores fails on errors', async () => {
 		expect.hasAssertions()
 		AssessmentModel.deletePreviewAttemptsAndScores.mockRejectedValueOnce('mock-error')
 
-		return request(app)
+		const response = await request(app)
 			.post('/api/assessments/clear-preview-scores')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
 	})
 
-	test('GET /api/assessments/:draftId/attempts', () => {
+	test('GET /api/assessments/:draftId/attempts', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce(mockReturnValue)
 
-		return request(app)
+		const response = await request(app)
 			.get('/api/assessments/:draftId/attempts')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(200)
-				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
-				expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
-				expect(AssessmentModel.fetchAttemptHistory).toHaveBeenCalledWith(
-					mockCurrentUser.id,
-					mockCurrentDocument.draftId,
-					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id
-				)
-				expect(response.body).toEqual({
-					status: 'ok',
-					value: mockReturnValue
-				})
-			})
+
+		expect(response.statusCode).toBe(200)
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(AssessmentModel.fetchAttemptHistory).toHaveBeenCalledWith(
+			mockCurrentUser.id,
+			mockCurrentDocument.draftId,
+			mockCurrentVisit.is_preview,
+			mockCurrentVisit.resource_link_id
+		)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: mockReturnValue
+		})
 	})
 
-	test('GET /api/assessments/:draftId/attempts fails', () => {
+	test('GET /api/assessments/:draftId/attempts fails', async () => {
 		expect.hasAssertions()
 		AssessmentModel.fetchAttemptHistory.mockRejectedValueOnce()
 
-		return request(app)
+		const response = await request(app)
 			.get('/api/assessments/:draftId/attempts')
 			.type('application/json')
-			.then(response => {
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toEqual({
-					status: 'error',
-					value: {
-						message: expect.any(String),
-						type: 'unexpected'
-					}
-				})
-			})
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+	})
+
+	test('POST /api/assessments/:draftId/:assessmentId/import-score', async () => {
+		expect.hasAssertions()
+		requireCurrentVisit.mockImplementationOnce((req, res, next) => {
+			req.currentVisit = { is_preview: false }
+			next()
+		})
+
+		attemptImport.mockResolvedValueOnce('mock-import-result')
+
+		const response = await request(app)
+			.post('/api/assessments/:draftId/:assessmentId/import-score')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(200)
+		expect(response.body).toEqual({
+			status: 'ok',
+			value: 'mock-import-result'
+		})
+
+		expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
+		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
+		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
+	})
+
+	test('POST /api/assessments/:draftId/:assessmentId/import-score errors', async () => {
+		expect.hasAssertions()
+		requireCurrentVisit.mockImplementationOnce((req, res, next) => {
+			req.currentVisit = { is_preview: false }
+			next()
+		})
+
+		attemptImport.mockRejectedValueOnce('mock-error')
+
+		const response = await request(app)
+			.post('/api/assessments/:draftId/55/import-score')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				type: 'unexpected', message: 'Error importing score'
+			}
+		})
 	})
 
 })

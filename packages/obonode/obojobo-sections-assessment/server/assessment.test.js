@@ -30,6 +30,7 @@ let AssessmentScore
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
+		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
 		Assessment = require('./assessment')
 		AssessmentModel = require('./models/assessment')
@@ -82,7 +83,7 @@ describe('Assessment', () => {
 		)
 	})
 
-	test('onStartVisit returns when there is no history', () => {
+	test('onStartVisit returns when there is no history', async () => {
 		const req = {
 			requireCurrentUser: jest.fn().mockResolvedValue(),
 			currentUser: { id: 'mockUser' },
@@ -98,12 +99,11 @@ describe('Assessment', () => {
 
 		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
 
-		return assessment.onStartVisit(req, {}, visitStartExtensions).then(() => {
-			expect(visitStartExtensions).toEqual([])
-		})
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toEqual([])
 	})
 
-	test('onStartVisit returns when there is no history with import option enabled', () => {
+	test('onStartVisit returns when there is no history with import option enabled', async () => {
 		const req = {
 			requireCurrentUser: jest.fn().mockResolvedValue(),
 			currentUser: { id: 'mockUser' },
@@ -127,22 +127,21 @@ describe('Assessment', () => {
 		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
 		jest.spyOn(AssessmentScore, 'getImportableScore').mockResolvedValueOnce(importableScore)
 
-		return assessment.onStartVisit(req, {}, visitStartExtensions).then(() => {
-			expect(visitStartExtensions).toHaveLength(1)
-			expect(visitStartExtensions[0]).toHaveProperty('importableScore')
-			expect(visitStartExtensions[0].importableScore).toMatchInlineSnapshot(`
-			Object {
-			  "assessmentDate": "mock-date",
-			  "assessmentId": "mock-score-assessment-id",
-			  "assessmentScoreId": "mock-score-id",
-			  "attemptId": "mock-score-attempt-id",
-			  "highestScore": 66.6666,
-			}
-		`)
-		})
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toHaveLength(1)
+		expect(visitStartExtensions[0]).toHaveProperty('importableScore')
+		expect(visitStartExtensions[0].importableScore).toMatchInlineSnapshot(`
+		Object {
+		  "assessmentDate": "mock-date",
+		  "assessmentId": "mock-score-assessment-id",
+		  "assessmentScoreId": "mock-score-id",
+		  "attemptId": "mock-score-attempt-id",
+		  "highestScore": 66.6666,
+		}
+	`)
 	})
 
-	test('onStartVisit returns when there IS history', () => {
+	test('onStartVisit returns when there IS history', async () => {
 		const req = {
 			requireCurrentUser: jest.fn().mockResolvedValue(),
 			currentUser: { id: 'mockUser' },
@@ -174,30 +173,29 @@ describe('Assessment', () => {
 
 		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
 
-		return assessment.onStartVisit(req, {}, visitStartExtensions).then(() => {
-			expect(visitStartExtensions).toHaveLength(1)
-			expect(visitStartExtensions).toMatchInlineSnapshot(`
-			Array [
-			  Object {
-			    "assessmentSummary": Array [
-			      Object {
-			        "assessmentId": "mock-assessment-id",
-			        "importUsed": false,
-			        "scores": Array [
-			          10,
-			          88,
-			        ],
-			        "unfinishedAttemptId": undefined,
-			      },
-			    ],
-			    "name": "ObojoboDraft.Sections.Assessment",
-			  },
-			]
-		`)
-		})
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toHaveLength(1)
+		expect(visitStartExtensions).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "assessmentSummary": Array [
+		      Object {
+		        "assessmentId": "mock-assessment-id",
+		        "importUsed": false,
+		        "scores": Array [
+		          10,
+		          88,
+		        ],
+		        "unfinishedAttemptId": undefined,
+		      },
+		    ],
+		    "name": "ObojoboDraft.Sections.Assessment",
+		  },
+		]
+	`)
 	})
 
-	test('onStartVisit returns when there IS history', () => {
+	test('onStartVisit returns when there IS history', async () => {
 		const req = {
 			requireCurrentUser: jest.fn().mockResolvedValue(),
 			currentUser: { id: 'mockUser' },
@@ -241,26 +239,138 @@ describe('Assessment', () => {
 		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
 		jest.spyOn(AssessmentScore, 'getImportableScore').mockResolvedValueOnce(importableScore)
 
-		return assessment.onStartVisit(req, {}, visitStartExtensions).then(() => {
-			expect(visitStartExtensions).toHaveLength(1)
-			expect(visitStartExtensions).toMatchInlineSnapshot(`
-			Array [
-			  Object {
-			    "assessmentSummary": Array [
-			      Object {
-			        "assessmentId": "mock-assessment-id",
-			        "importUsed": false,
-			        "scores": Array [
-			          10,
-			          88,
-			        ],
-			        "unfinishedAttemptId": undefined,
-			      },
-			    ],
-			    "name": "ObojoboDraft.Sections.Assessment",
-			  },
-			]
-		`)
-		})
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toHaveLength(1)
+		expect(visitStartExtensions).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "assessmentSummary": Array [
+		      Object {
+		        "assessmentId": "mock-assessment-id",
+		        "importUsed": false,
+		        "scores": Array [
+		          10,
+		          88,
+		        ],
+		        "unfinishedAttemptId": undefined,
+		      },
+		    ],
+		    "name": "ObojoboDraft.Sections.Assessment",
+		  },
+		]
+	`)
+	})
+
+	test('onStartVisit handles building history for multiple assessment ids', async () => {
+		const req = {
+			requireCurrentUser: jest.fn().mockResolvedValue(),
+			currentUser: { id: 'mockUser' },
+			currentDocument: { draftId: 'draft-doc' },
+			currentVisit: {
+				is_preview: false,
+				score_importable: false,
+				draft_content_id: 'mock-content-id'
+			}
+		}
+		const visitStartExtensions = []
+		const draftTree = { draftTree: true }
+		const node = { node: true }
+		const initFn = jest.fn()
+		const assessment = new Assessment(draftTree, node, initFn)
+		const history = [
+			{
+				assessmentId: 'mock-assessment-id',
+				attempts: [
+					{
+						assessmentScore: 10,
+						isFinished: true,
+						isImported: false
+					}
+				]
+			},
+			{
+				assessmentId: 'mock-assessment-id',
+				attempts: [
+					{
+						assessmentScore: 90,
+						isFinished: true,
+						isImported: false
+					}
+				]
+			},
+			{
+				assessmentId: 'mock-assessment-id2',
+				attempts: [
+					{
+						assessmentScore: 50,
+						isFinished: true,
+						isImported: true // to cover a branch for handling isImported
+					}
+				]
+			}
+		]
+		const importableScore = {
+			id: 'mock-score-id',
+			score: 66.6666,
+			createdAt: 'mock-date',
+			assessmentId: 'mock-score-assessment-id',
+			attemptId: 'mock-score-attempt-id'
+		}
+
+		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
+		jest.spyOn(AssessmentScore, 'getImportableScore').mockResolvedValueOnce(false)
+
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toHaveLength(1)
+		expect(visitStartExtensions).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "assessmentSummary": Array [
+		      Object {
+		        "assessmentId": "mock-assessment-id",
+		        "importUsed": false,
+		        "scores": Array [
+		          10,
+		          90,
+		        ],
+		        "unfinishedAttemptId": null,
+		      },
+		      Object {
+		        "assessmentId": "mock-assessment-id2",
+		        "importUsed": true,
+		        "scores": Array [
+		          50,
+		        ],
+		        "unfinishedAttemptId": null,
+		      },
+		    ],
+		    "name": "ObojoboDraft.Sections.Assessment",
+		  },
+		]
+	`)
+	})
+
+	test('onStartVisit handles no history and no importable scores', async () => {
+		const req = {
+			requireCurrentUser: jest.fn().mockResolvedValue(),
+			currentUser: { id: 'mockUser' },
+			currentDocument: { draftId: 'draft-doc' },
+			currentVisit: {
+				is_preview: false,
+				score_importable: true,
+				draft_content_id: 'mock-content-id'
+			}
+		}
+		const visitStartExtensions = []
+		const draftTree = { draftTree: true }
+		const node = { node: true }
+		const initFn = jest.fn()
+		const assessment = new Assessment(draftTree, node, initFn)
+
+		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce([])
+		jest.spyOn(AssessmentScore, 'getImportableScore').mockResolvedValueOnce(false)
+
+		await assessment.onStartVisit(req, {}, visitStartExtensions)
+		expect(visitStartExtensions).toHaveLength(0)
 	})
 })
