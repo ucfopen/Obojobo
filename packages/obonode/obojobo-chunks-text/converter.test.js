@@ -1,44 +1,30 @@
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
+import { Transforms } from 'slate'
 
 import Converter from './converter'
 
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 describe('Text editor', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+		jest.restoreAllMocks()
+	})
+
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return null
-				}
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					text: 'mockText',
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: [
-						{
-							leaves: [
-								{
-									text: 'mockText',
-									marks: [
-										{
-											type: 'b',
-											data: {}
-										}
-									]
-								}
-							]
-						}
-					]
+					content: {},
+					children: [{ text: 'mockText', b: true }]
 				}
 			]
 		}
@@ -49,36 +35,14 @@ describe('Text editor', () => {
 
 	test('slateToObo converts a Slate node to an OboNode with triggers', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return { triggers: 'mock-triggers' }
-				}
-			},
-			nodes: [
+			content: { triggers: 'mock-triggers' },
+			children: [
 				{
 					text: 'mockText',
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: [
-						{
-							leaves: [
-								{
-									text: 'mockText',
-									marks: [
-										{
-											type: 'b',
-											data: {}
-										}
-									]
-								}
-							]
-						}
-					]
+					content: {},
+					children: [{text: 'mockText', b: true}]
 				}
 			]
 		}
@@ -110,111 +74,150 @@ describe('Text editor', () => {
 	})
 
 	test('switchType[HEADING_NODE] changes leaf blocks to heading nodes', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
+
 		const editor = {
-			setNodeByKey: jest.fn(),
-			value: {}
-		}
-		const node = {
-			key: 'mockKey',
-			data: { get: () => ({}) },
-			getLeafBlocksAtRange: () => [
-				{ key: 'mockKey', data: { toJSON: () => ({}) } }
-			]
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: { 
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false
 		}
 
-		Converter.switchType[HEADING_NODE](editor, node, { level: 1 })
+		Converter.switchType[HEADING_NODE](editor, [editor.children[0], [0]], { headingLevel: 1 })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{ type: HEADING_NODE, content: { headingLevel: 1 }, subtype: null },
+			{ at: [0, 0] }
+		)
 	})
 
 	test('switchType[CODE_NODE] changes leaf blocks to code nodes', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
+
 		const editor = {
-			focus: jest.fn(),
-			removeNodeByKey: jest.fn(),
-			value: {}
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: { 
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false
 		}
 
-		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
-		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
-		const node = {
-			key: 'mockKey',
-			data: { get: () => ({}) },
-			getLeafBlocksAtRange: () => ({
-				// Mock the forEach call
-				forEach: fn => {
-					fn({ toJSON: () => ({ data: {}, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn({ toJSON: () => ({ data: {}, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
-				},
-				get: () => ({ key: 'mock-key'})
-			})
-		}
+		Converter.switchType[CODE_NODE](editor, [editor.children[0], [0]])
 
-		Converter.switchType[CODE_NODE](editor, node)
-
-		expect(editor.replaceNodeByKey).toHaveBeenCalled
-	})
-
-	test('switchType[LIST_NODE] changes leaf blocks to unordered list nodes', () => {
-		const editor = {
-			focus: jest.fn(),
-			removeNodeByKey: jest.fn(),
-			value: {}
-		}
-
-		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
-		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
-		const node = {
-			key: 'mockKey',
-			data: { get: () => ({}) },
-			getLeafBlocksAtRange: () => ({
-				// Mock the forEach call
-				forEach: fn => {
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
-				},
-				reduce: fn => {
-					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
-					return 0
-				},
-				get: () => ({ key: 'mock-key'})
-			})
-		}
-
-		Converter.switchType[LIST_NODE](editor, node, { type: 'unordered', bulletStyle: 'disc'})
-
-		expect(editor.replaceNodeByKey).toHaveBeenCalled
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{ type: CODE_NODE, subtype: CODE_LINE_NODE, content: {} },
+			{ at: [0, 0] }
+		)
 	})
 
 	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+
 		const editor = {
-			focus: jest.fn(),
-			removeNodeByKey: jest.fn(),
-			value: {}
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: { 
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false
 		}
 
-		editor.replaceNodeByKey = jest.fn().mockReturnValue(editor)
-		editor.moveToRangeOfNode = jest.fn().mockReturnValue(editor)
-		const node = {
-			key: 'mockKey',
-			data: { get: () => ({}) },
-			getLeafBlocksAtRange: () => ({
-				// Mock the forEach call
-				forEach: fn => {
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn({ toJSON: () => ({ data: { indent: 1 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
-				},
-				reduce: fn => {
-					fn(20, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 0)
-					fn(0, { toJSON: () => ({ data: { indent: 0 }, object: 'block', key: 'mock-key'}), key: "mock-key"}, 1)
-					return 0
-				},
-				get: () => ({ key: 'mock-key'})
-			})
+		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], { type: 'unordered', bulletStyle: 'disc' })
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes with indent', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 2 },
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: { 
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 2, 0], offset: 1 }
+			},
+			isVoid: () => false
 		}
 
-		Converter.switchType[LIST_NODE](editor, node, { type: 'ordered', bulletStyle: 'disc'})
+		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], { type: 'ordered', bulletStyle: 'alpha' })
 
-		expect(editor.replaceNodeByKey).toHaveBeenCalled
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 })

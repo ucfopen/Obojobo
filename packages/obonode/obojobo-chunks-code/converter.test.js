@@ -131,11 +131,11 @@ describe('Code Converter', () => {
 			isVoid: () => false
 		}
 
-		Converter.switchType[TEXT_NODE](editor, [editor.children[0], [0]], { headingLevel: 1 })
+		Converter.switchType[TEXT_NODE](editor, [editor.children[0], [0]])
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			editor,
-			{ type: TEXT_NODE, subtype: TEXT_LINE_NODE },
+			{ type: TEXT_NODE, subtype: TEXT_LINE_NODE, content: {} },
 			{ at: [0, 0] }
 		)
 	})

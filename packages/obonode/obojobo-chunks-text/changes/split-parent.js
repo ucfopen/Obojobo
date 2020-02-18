@@ -1,5 +1,7 @@
-import { Editor, Transforms, Element, Path, Range } from 'slate'
+import { Editor, Transforms, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
+
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const splitParent = (node, editor, event) => {
 	const [leaf] = Editor.leaf(editor, editor.selection)
@@ -13,10 +15,7 @@ const splitParent = (node, editor, event) => {
 	const nodeRange = Editor.range(editor, nodePath)
 	const [[,linePath]] = Array.from(Editor.nodes(editor, {
 		at: Range.intersection(editor.selection, nodeRange),
-		match: child => {
-			const childPath = ReactEditor.findPath(editor, child)
-			return Element.isElement(child) && Path.isAncestor(nodePath, childPath)
-		}
+		match: child => child.subtype === TEXT_LINE_NODE
 	}))
 
 	Transforms.splitNodes(editor, { at: linePath, height: 1 })

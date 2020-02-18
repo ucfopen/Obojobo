@@ -4,7 +4,11 @@ exports[`Text editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": undefined,
+      "children": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
       "content": Object {
         "align": undefined,
         "indent": 1,
@@ -13,7 +17,11 @@ Object {
       "type": "ObojoboDraft.Chunks.Text",
     },
     Object {
-      "children": undefined,
+      "children": Array [
+        Object {
+          "text": "mockText2",
+        },
+      ],
       "content": Object {
         "align": "left",
         "indent": 0,
@@ -51,12 +59,16 @@ Object {
   "content": Object {
     "textGroup": Array [
       Object {
-        "data": Object {
-          "align": Object {},
-          "indent": Object {},
-        },
+        "data": Object {},
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
@@ -73,12 +85,16 @@ Object {
   "content": Object {
     "textGroup": Array [
       Object {
-        "data": Object {
-          "align": Object {},
-          "indent": Object {},
-        },
+        "data": Object {},
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },

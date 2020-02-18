@@ -26,7 +26,7 @@ const slateToObo = node => {
 	const textGroup = node.children.map(line => {
 		const textLine = {
 			text: { value: "", styleList: [] },
-			data: { indent: line.content.indent, align: line.content.align }
+			data: withoutUndefined({ indent: line.content.indent, align: line.content.align })
 		}
 
 		TextUtil.slateToOboText(line, textLine)
@@ -111,9 +111,9 @@ const switchType = {
 		// Changing each CodeLine to a TextLine will allow normalization
 		// to remove them from the Code node and wrap them in a Text node
 		Editor.withoutNormalizing(editor, () => {
-			list.forEach(([, childPath]) => Transforms.setNodes(
+			list.forEach(([child, childPath]) => Transforms.setNodes(
 				editor,
-				{ type: CODE_NODE, subtype: CODE_LINE_NODE, content: {} },
+				{ type: CODE_NODE, subtype: CODE_LINE_NODE, content: {...child.content} },
 				{ at: childPath }
 			))
 		})

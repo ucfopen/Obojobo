@@ -1,5 +1,7 @@
-import { Editor, Path, Element, Transforms, Range } from 'slate'
+import { Editor, Transforms, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
+
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const increaseIndent = (node, editor, event) => {
 	event.preventDefault()
@@ -9,10 +11,7 @@ const increaseIndent = (node, editor, event) => {
 	// Get only the Element children of the current node that are in the current selection
 	const list = Array.from(Editor.nodes(editor, {
 		at: Range.intersection(editor.selection, nodeRange),
-		match: child => {
-			const childPath = ReactEditor.findPath(editor, child)
-			return Element.isElement(child) && Path.isAncestor(nodePath, childPath)
-		}
+		match: child => child.subtype === TEXT_LINE_NODE
 	}))
 
 	// For each child in the selection, increment the indent without letting it get above 20
