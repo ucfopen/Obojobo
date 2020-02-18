@@ -149,8 +149,8 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getString(big(2)) //"0x2"
-	 * Hexadecimal.getString(big(255)) //"0xFF"
+	 * Hexadecimal.getString(Big(2)) //"0x2"
+	 * Hexadecimal.getString(Big(255)) //"0xFF"
 	 */
 	static getString(bigValue) {
 		return `0x${Number(bigValue)
@@ -163,11 +163,11 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getBigValue('0x2') //big(2)
-	 * Hexadecimal.getBigValue('0xFF') //big(255)
+	 * Hexadecimal.getBigValue('0x2') //Big(2)
+	 * Hexadecimal.getBigValue('0xFF') //Big(255)
 	 */
 	static getBigValue(valueString) {
-		return big(Hexadecimal.getValue(valueString))
+		return Big(Hexadecimal.getValue(valueString))
 	}
 
 	/**

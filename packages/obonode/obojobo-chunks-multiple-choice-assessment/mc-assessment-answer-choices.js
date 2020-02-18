@@ -21,7 +21,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 
 		return (
 			<div role={isTypePickAll ? null : 'radiogroup'}>
-				<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
+				{/* <div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
 					{isAnswerScored ? (
 						<QuestionOutcome
 							score={this.props.score}
@@ -31,7 +31,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 							isForScreenReader
 						/>
 					) : null}
-				</div>
+				</div> */}
 				{this.props.models.map((model, index) => {
 					const Component = model.getComponentClass()
 					return (

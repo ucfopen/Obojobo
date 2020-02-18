@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default class OboQuestionAssessmentComponent extends React.Component {
-	static canRevealAnswer(/*questionModel, questionAssessmentModel*/) {
-		return false
+	static getRevealAnswerDefault(/*questionModel, questionAssessmentModel*/) {
+		return 'never'
 	}
 
 	static getDetails(/*questionModel, questionAssessmentModel, score*/) {
@@ -13,8 +13,8 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 		return null
 	}
 
-	canRevealAnswer() {
-		this.constructor.getDetails(this.props.questionModel, this.props.model)
+	getRevealAnswerDefault() {
+		return this.constructor.getRevealAnswerDefault(this.props.questionModel, this.props.model)
 	}
 
 	getDetails(newScore) {

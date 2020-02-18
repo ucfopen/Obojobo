@@ -327,6 +327,38 @@ export default class Question extends OboQuestionComponent {
 	// 	el.style.height = 0
 	// }
 
+	getShouldShowRevealAnswerButton(mode, type, score, revealAnswerMode, questionAssessmentModel) {
+		// If we don't have a reference yet to the assessment component then abort
+		if (!this.assessmentComponentRef || !this.assessmentComponentRef.current) return false
+
+		// Should never show the Reveal Answer button on survey questions or outside of practice
+		if (mode !== 'practice' || type !== 'default') {
+			return false
+		}
+
+		// If the mode is 'default' then we ask the assessment component what to do:
+		if (revealAnswerMode === 'default') {
+			revealAnswerMode = this.assessmentComponentRef.current.getRevealAnswerDefault(
+				this.props.model,
+				questionAssessmentModel
+			)
+		}
+
+		switch (revealAnswerMode) {
+			case 'always':
+				// Show when the question is unanswered or incorrect:
+				return score !== 100
+
+			case 'when-incorrect':
+				// Show when the question has been answered incorrectly:
+				return score !== null && score < 100
+
+			case 'never':
+			default:
+				return false
+		}
+	}
+
 	render() {
 		if (this.props.showContentOnly) {
 			return this.renderContentOnly()
@@ -337,6 +369,7 @@ export default class Question extends OboQuestionComponent {
 		const questionState = this.props.moduleData.questionState
 		const mode = this.getMode()
 		const type = model.modelState.type
+		const revealAnswer = model.modelState.revealAnswer
 		const score = this.getScore()
 		const scoreClass = QuestionUtil.getScoreClass(score)
 		const response = QuestionUtil.getResponse(
@@ -348,6 +381,13 @@ export default class Question extends OboQuestionComponent {
 		const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 		const isAnswerRevealed = QuestionUtil.isAnswerRevealed(questionState, model, context)
 		const assessment = this.constructor.getQuestionAssessmentModel(model)
+		const shouldShowRevealAnswerButton = this.getShouldShowRevealAnswerButton(
+			mode,
+			type,
+			score,
+			revealAnswer,
+			assessment
+		)
 		const AssessmentComponent = assessment.getComponentClass()
 		console.log('Ass', AssessmentComponent, assessment)
 		const feedbackText = this.getFeedbackText(
@@ -413,27 +453,30 @@ export default class Question extends OboQuestionComponent {
 							<legend className="instructions">
 								{this.getInstructions(/*responseType, this.props.type*/)}
 							</legend>
-							<AssessmentComponent
-								ref={this.assessmentComponentRef}
-								key={assessment.get('id')}
-								model={assessment}
-								moduleData={this.props.moduleData}
-								mode={mode}
-								type={type}
-								isAnswered={isAnswered}
-								// isAnswerRevealed={isAnswerRevealed}
-								score={score}
-								scoreClass={scoreClass}
-								feedbackText={feedbackText}
-								detailedText={detailedText}
-								questionModel={this.props.model}
-								response={response}
-							/>
+							<div className="assessment-component">
+								<AssessmentComponent
+									ref={this.assessmentComponentRef}
+									key={assessment.get('id')}
+									model={assessment}
+									moduleData={this.props.moduleData}
+									mode={mode}
+									type={type}
+									isAnswered={isAnswered}
+									// isAnswerRevealed={isAnswerRevealed}
+									score={score}
+									scoreClass={scoreClass}
+									feedbackText={feedbackText}
+									detailedText={detailedText}
+									questionModel={this.props.model}
+									response={response}
+								/>
+							</div>
 						</fieldset>
 						{!isAssessmentQuestion ? (
 							<QuestionFooter
 								score={score}
 								isAnswered={isAnswered}
+								shouldShowRevealAnswerButton={shouldShowRevealAnswerButton}
 								isAnswerRevealed={isAnswerRevealed}
 								mode={mode}
 								type={type}

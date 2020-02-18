@@ -9,7 +9,9 @@ import NavStore from '../stores/nav-store'
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { uuid } = Common.util
+const { uuid, debounce } = Common.util
+
+const SET_RESPONSE_EVENT_SEND_DELAY_MS = 750
 
 const getNewContextState = () => {
 	return {
@@ -27,16 +29,11 @@ class QuestionStore extends Store {
 		let model
 		super('questionStore')
 
-		Dispatcher.on({
-			'question:setResponse': payload => {
-				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
-				const questionId = id
-				const contextState = this.getOrCreateContextState(context)
-
-				contextState.responses[questionId] = response
-
-				this.triggerChange()
-
+		// Debounce sending the setResponse event to prevent too
+		// many being sent (as in when a student types an answer)
+		this.sendSetResponseEvent = debounce(
+			SET_RESPONSE_EVENT_SEND_DELAY_MS,
+			({ questionId, response, targetId, context, assessmentId, attemptId }) => {
 				APIUtil.postEvent({
 					draftId: OboModel.getRoot().get('draftId'),
 					action: 'question:setResponse',
@@ -51,6 +48,27 @@ class QuestionStore extends Store {
 						attemptId
 					}
 				})
+			}
+		)
+
+		Dispatcher.on({
+			'question:setResponse': payload => {
+				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
+				const questionId = id
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.responses[questionId] = response
+
+				this.triggerChange()
+
+				this.sendSetResponseEvent.bind(this, {
+					questionId,
+					response,
+					targetId,
+					context,
+					assessmentId,
+					attemptId
+				})()
 			},
 
 			'question:clearResponse': payload => {
@@ -336,6 +354,12 @@ class QuestionStore extends Store {
 					visitId: NavStore.getState().visitId,
 					payload: scoreItem
 				})
+			},
+
+			'nav:setContext': payload => {
+				// When a new context is created by the nav go ahead and start
+				// a new context in our store (if it doesn't exist already)
+				this.getOrCreateContextState(payload.value.context)
 			}
 		})
 	}

@@ -9,7 +9,7 @@ const numericAssessmentNodeParser = (node, childrenParser) => {
 
 	return (
 		`<NumericAssessment${attrs}${id}>` +
-		numericChoicesParser(node.content.numericChoices, childrenParser) +
+		numericChoicesParser(node.content.numericChoices || [], childrenParser) +
 		triggersXML +
 		`</NumericAssessment>`
 	)

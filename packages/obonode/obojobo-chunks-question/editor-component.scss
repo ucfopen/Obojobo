@@ -13,6 +13,10 @@
 		font-family: $font-default;
 		font-weight: bold;
 
+		> label {
+			vertical-align: middle;
+		}
+
 		.question-type {
 			position: absolute;
 			top: 2em;
@@ -43,11 +47,31 @@
 		}
 	}
 
+	.show-reveal-answer-container {
+		$color-border: #dfdfdf;
+
+		@include pad();
+
+		font-family: $font-default;
+		border-top: 1px solid $color-border;
+		padding-top: 0.7em;
+		padding-bottom: 1em;
+		text-align: center;
+
+		> label {
+			font-weight: bold;
+			margin-right: 1em;
+			margin-bottom: 0.25em;
+			font-size: 0.8em;
+			display: inline-block;
+		}
+	}
+
 	.add-solution {
 		left: 50%;
 		transform: translate(-50%, 0);
 		position: relative;
-		margin: $dimension-padding / 3;
+		margin: $dimension-padding / 3 0 !important;
 	}
 
 	.delete-button {
@@ -87,6 +111,10 @@
 					padding-top: 0;
 				}
 			}
+		}
+
+		.component.obojobo-draft--chunks--numeric-assessment {
+			display: none;
 		}
 	}
 

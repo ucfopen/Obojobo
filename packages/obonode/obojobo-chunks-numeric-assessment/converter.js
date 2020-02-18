@@ -8,7 +8,7 @@ const slateToObo = node => {
 	// Parse each numericChoice node
 	node.nodes.forEach(child => {
 		switch (child.type) {
-			case NUMERIC_CHOICE_NODE:
+			case NUMERIC_CHOICE_NODE: {
 				let numericChoice = {}
 				child.nodes.forEach(component => {
 					if (component.type === NUMERIC_ANSWER_NODE) {
@@ -23,10 +23,9 @@ const slateToObo = node => {
 				numericChoices.push(numericChoice)
 
 				break
+			}
 		}
 	})
-
-	console.log('s2o', numericChoices)
 
 	return {
 		id: node.key,

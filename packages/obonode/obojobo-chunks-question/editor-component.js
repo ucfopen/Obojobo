@@ -10,6 +10,7 @@ const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 class Question extends React.Component {
 	constructor(props) {
@@ -18,16 +19,27 @@ class Question extends React.Component {
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
 		this.onSetAssessmentType = this.onSetAssessmentType.bind(this)
+		this.onSetRevealAnswer = this.onSetRevealAnswer.bind(this)
+		this.isInAssessment = this.getIsInAssessment()
+	}
+
+	getIsInAssessment() {
+		return (
+			this.props.editor.value.document.getClosest(
+				this.props.node.key,
+				node => node.type === ASSESSMENT_NODE
+			) !== null
+		)
 	}
 
 	onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
-		const mcAssessmentNode = this.props.node.nodes
-			.filter(node => node.type === MCASSESSMENT_NODE)
+		const questionAssessmentNode = this.props.node.nodes
+			.filter(node => node.type === MCASSESSMENT_NODE || node.type === NUMERIC_ASSESSMENT_NODE)
 			.get(0)
-		const mcAssessmentData = mcAssessmentNode.data.toJSON()
+		const questionAssessmentData = questionAssessmentNode.data.toJSON()
 
 		this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
@@ -38,28 +50,33 @@ class Question extends React.Component {
 			}
 		})
 
-		this.props.editor.setNodeByKey(mcAssessmentNode.key, {
+		// This will force an update to the question assessment child:
+		this.props.editor.setNodeByKey(questionAssessmentNode.key, {
 			data: {
-				...mcAssessmentData,
-				questionType: type
+				...questionAssessmentData
+				// questionType: type
+			}
+		})
+	}
+
+	onSetRevealAnswer(event) {
+		const revealAnswer = event.target.value
+
+		const questionData = this.props.node.data
+		const questionDataContent = questionData.get('content')
+
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					...questionDataContent,
+					revealAnswer
+				}
 			}
 		})
 	}
 
 	onSetAssessmentType(event) {
-		console.log(event.target.value)
 		const type = event.target.value
-
-		console.log('key', this.props.node.nodes.last().key)
-
-		// return false
-
-		// const newAssessment = Block.create({
-		// 	type: 'ObojoboDraft.Chunks.YouTube',
-		// 	data: {
-		// 		content: {}
-		// 	}
-		// })
 
 		const newAssessment = Block.create({
 			type,
@@ -85,23 +102,10 @@ class Question extends React.Component {
 			}
 		})
 
-		// this.props.editor.removeNodeByKey(this.props.node.nodes.last())
 		this.props.editor.replaceNodeByKey(
 			this.props.node.nodes.get(this.props.node.nodes.size - 1).key,
 			newAssessment
 		)
-		// return this.props.editor.removeNodeByKey(
-		// 	this.props.node.nodes.get(this.props.node.nodes.size - 1).key
-		// )
-
-		// this.props.editor.setNodeByKey(this.props.node.key, {
-		// 	nodes: [
-		// 		this.props.node.nodes[0],
-		// 		Block.create({
-		// 			type
-		// 		})
-		// 	]
-		// })
 	}
 
 	delete() {
@@ -120,6 +124,8 @@ class Question extends React.Component {
 	render() {
 		const content = this.props.node.data.get('content')
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		const revealAnswer = content.revealAnswer
+		const isTypeSurvey = content.type === 'survey'
 		let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
@@ -144,15 +150,15 @@ class Question extends React.Component {
 									value={questionType}
 									onChange={this.onSetAssessmentType}
 								>
-									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
-									<option value={NUMERIC_ASSESSMENT_NODE}>Numeric</option>
+									<option value={MCASSESSMENT_NODE}>Multiple choice</option>
+									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
 								</select>
 								<label className="question-type" contentEditable={false}>
 									<input
 										type="checkbox"
 										name="survey"
 										value="survey"
-										checked={content.type === 'survey'}
+										checked={isTypeSurvey}
 										onChange={this.onSetType}
 									/>
 									Survey Only
@@ -164,6 +170,21 @@ class Question extends React.Component {
 									Add Solution
 								</Button>
 							)}
+							{!isTypeSurvey && !this.isInAssessment ? (
+								<div className="show-reveal-answer-container" contentEditable={false}>
+									<label>Include a button allowing students to reveal the correct answer?</label>
+									<select value={revealAnswer} onChange={this.onSetRevealAnswer}>
+										<option value="default">
+											(Use the default setting for this question type)
+										</option>
+										<option value="never">No</option>
+										<option value="always">Yes</option>
+										<option value="when-incorrect">
+											Yes, but only after submitting an incorrect answer
+										</option>
+									</select>
+								</div>
+							) : null}
 						</div>
 					</div>
 					<Button className="delete-button" onClick={() => this.delete()}>

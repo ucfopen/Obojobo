@@ -86,7 +86,10 @@ class OboModel extends Backbone.Model {
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
 		this.adapter.construct(this, attrs)
 
-		Variables.addMultiple(this.get('id'), attrs.content.vars)
+		if (attrs.content && attrs.content.vars) {
+			//@TODO
+			// Variables.addMultiple(this.get('id'), attrs.content.vars)
+		}
 
 		this.children.on('remove', this.onChildRemove, this)
 		this.children.on('add', this.onChildAdd, this)
@@ -217,7 +220,7 @@ class OboModel extends Backbone.Model {
 		model.parent = null
 		model.markDirty()
 
-		Variables.removeAll(model.get('id'))
+		//Variables.removeAll(model.get('id'))
 
 		return delete OboModel.models[model.get('id')]
 	}

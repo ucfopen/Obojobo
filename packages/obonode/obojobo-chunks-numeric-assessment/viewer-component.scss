@@ -15,20 +15,102 @@
 	#numeric-assessment--input {
 		@include text-input();
 
-		width: 11.5em * 0.85 * (1 / 0.8);
+		// width: 11.5em * 0.85 * (1 / 0.8);
+		width: 11.3em;
+		margin-right: 1.15em;
+
+		&:disabled {
+			background: transparentize($color-bg, 0.3);
+			border: 1px solid $color-transparent;
+		}
+	}
+
+	.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
+		border-radius: 0.25em;
+		margin-right: 1em;
+		background: rgba(255, 255, 255, 0.5);
+		margin-top: 1em;
 	}
 
 	&.is-correct {
 		background: transparentize($color-correct, 0.9);
+
+		&.is-mode-practice::before {
+			content: '✔';
+			position: absolute;
+			top: 0.75em; //0.65em;
+			display: block;
+			color: $color-correct;
+			font-size: 2.5em;
+			transform: translate(-50%, -50%);
+			left: 0.6em;
+			animation: obojobo-draft--animation--fadein $duration-animation-default * 2;
+
+			@include mq($until: desktop) {
+				font-size: 1.5em;
+				top: 1.3em;
+				left: 0.8em;
+			}
+
+			@include mq($until: tablet) {
+				font-size: 1.2em;
+				top: 0.6em;
+				left: 0.7em;
+			}
+		}
 	}
 
 	&.is-not-correct {
 		background: transparentize($color-incorrect, 0.9);
+
+		&.is-mode-practice::before {
+			content: '✖';
+			position: absolute;
+			top: 0.75em; //0.65em;
+			display: block;
+			color: $color-incorrect;
+			font-size: 2.5em;
+			transform: translate(-50%, -50%);
+			left: 0.6em;
+			animation: obojobo-draft--animation--fadein 0.4s;
+
+			@include mq($until: desktop) {
+				font-size: 1.5em;
+				top: 1.3em;
+				left: 0.75em;
+			}
+
+			@include mq($until: tablet) {
+				font-size: 1.2em;
+				top: 0.5em;
+				left: 0.5em;
+			}
+		}
+	}
+
+	.input-container > .matching-correct-answer {
+		color: $color-correct;
+		// margin-left: 1em;
+		font-size: 0.8em;
+		font-family: $font-default;
+
+		display: inline-block;
+		/* max-width: 34em; */
+		/* overflow: hidden; */
+		/* line-height: 0; */
+		white-space: nowrap;
+		/* overflow: hidden; */
+		vertical-align: middle;
+
+		> .value {
+			font-family: $font-monospace;
+		}
 	}
 
 	.correct-answers {
 		margin-top: 2em;
 		font-size: 0.8em;
+		font-family: $font-default;
 
 		h2 {
 			color: black;

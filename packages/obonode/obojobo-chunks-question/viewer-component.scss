@@ -87,7 +87,7 @@
 				margin: 0;
 				border: none;
 				border-bottom: 1px solid $color-border;
-				background: white;
+				// background: white;
 				border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
 
 				> legend {
@@ -117,6 +117,10 @@
 					background: none;
 					// left: 0;
 					// top: -0.5em;
+				}
+
+				> .assessment-component {
+					background: $color-bg;
 				}
 			}
 

@@ -6,9 +6,17 @@ const Adapter = {
 	construct(model) {
 		model.setStateProp('type', 'default', p => p.toLowerCase(), ['default', 'survey'])
 		model.setStateProp('solution', null, p => (p ? OboModel.create(p) : null))
+		model.setStateProp('revealAnswer', 'default', p => p.toLowerCase(), [
+			'default',
+			'never',
+			'always',
+			'when-incorrect'
+		])
 
 		model.setStateProp('correctLabels', null, p => p.split('|'))
 		model.setStateProp('incorrectLabels', null, p => p.split('|'))
+
+		console.log('model', model)
 
 		// Older versions of the document put correctLabels and incorrectLabels
 		// on MCAssessment. For compatibility we'll use those if they exist

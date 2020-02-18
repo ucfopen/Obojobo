@@ -6,6 +6,7 @@ import './editor-component.scss'
 
 const { Button, Switch } = Common.components
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 class MCAssessment extends React.Component {
 	changeResponseType(event) {
@@ -44,8 +45,14 @@ class MCAssessment extends React.Component {
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newChoice)
 	}
 
+	getParentQuestionNode() {
+		return this.props.editor.value.document.getClosest(this.props.node.key, node => {
+			return node.type === QUESTION_NODE
+		})
+	}
+
 	render() {
-		const questionType = this.props.node.data.get('questionType') || 'default'
+		const questionType = this.getParentQuestionNode().data.get('content').type || 'default'
 		const content = this.props.node.data.get('content')
 
 		return (

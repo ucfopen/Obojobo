@@ -126,8 +126,8 @@ module.exports = class Binary extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Binary.getString(big(2)) //"0b10"
-	 * Binary.getString(big(15)) //"0b1111"
+	 * Binary.getString(Big(2)) //"0b10"
+	 * Binary.getString(Big(15)) //"0b1111"
 	 */
 	static getString(bigValue) {
 		return `0b${Number(bigValue).toString(2)}`
@@ -138,11 +138,11 @@ module.exports = class Binary extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Binary.getBigValue('0b10') //big(2)
-	 * Binary.getBigValue('1111') //big(15)
+	 * Binary.getBigValue('0b10') //Big(2)
+	 * Binary.getBigValue('1111') //Big(15)
 	 */
 	static getBigValue(valueString) {
-		return big(Binary.getValue(valueString))
+		return Big(Binary.getValue(valueString))
 	}
 
 	/**

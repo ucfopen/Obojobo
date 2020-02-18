@@ -1,6 +1,7 @@
 const Big = require('../big')
 const NumericEntryRange = require('../range/numeric-entry-range')
 const BigValueRange = require('../range/big-value-range')
+const ValueRange = require('../range/value-range')
 const NumericEntry = require('../entry/numeric-entry')
 const {
 	ROUND_TYPE_NONE,
@@ -107,7 +108,7 @@ module.exports = class NumericRule {
 				return NumericRule.getRuleAbsoluteError(config)
 
 			case NO_ERROR:
-				return big(0)
+				return Big(0)
 		}
 	}
 
@@ -141,7 +142,7 @@ module.exports = class NumericRule {
 	 * @return {Big}
 	 */
 	static getRuleAbsoluteError(config) {
-		return config.absoluteError ? big(config.absoluteError).abs() : big(0)
+		return config.absoluteError ? Big(config.absoluteError).abs() : Big(0)
 	}
 
 	/**
@@ -200,7 +201,7 @@ module.exports = class NumericRule {
 		if (!config.sigFigs) return new BigValueRange()
 
 		const range = new BigValueRange(config.sigFigs)
-		if (range.getValuePosition(big(0)) !== ValueRange.VALUE_BELOW_MIN) {
+		if (range.getValuePosition(Big(0)) !== ValueRange.VALUE_BELOW_MIN) {
 			throw 'sigFigs range must be larger than 0'
 		}
 
@@ -216,7 +217,7 @@ module.exports = class NumericRule {
 		if (!config.decimals) return new BigValueRange()
 
 		const range = new BigValueRange(config.decimals)
-		const pos = range.getMinValuePosition(big(0))
+		const pos = range.getMinValuePosition(Big(0))
 		if (pos !== ValueRange.VALUE_BELOW && pos !== ValueRange.VALUE_EQUAL) {
 			throw 'decimals range must be 0 or larger'
 		}

@@ -1,4 +1,5 @@
 const ValueRange = require('../range/value-range')
+const Big = require('../big')
 const getPercentError = require('../util/percent-error')
 const {
 	ROUND_TYPE_NONE,
@@ -113,23 +114,52 @@ module.exports = class NumericRuleOutcome {
 
 	/**
 	 * Gets details about how correct a student's answer is
-	 * @param {NumericEntry} numericEntry
+	 * @param {NumericEntry} studentNumericEntry
 	 * @param {NumericRule} rule
 	 * @return {NumericRuleScoreOutcomeObject}
 	 */
-	static getScoreOutcome(numericEntry, rule) {
-		const roundedBigValue = NumericRuleOutcome.getRoundedBigValueForRule(numericEntry, rule)
+	static getScoreOutcome(studentNumericEntry, rule) {
+		const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
+
+		const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
+			studentNumericEntry,
+			rule
+		)
+		const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
+			studentNumericEntry,
+			rule
+		)
+
+		// roundedStudentAnswer.numericInstance.round(
+		// 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
+		// )
+		console.log('rounded correct answer=', roundedBigValueRange.toString())
+		// debugger
+		console.log('students answer=', roundedStudentAnswer.toString())
+		console.log('value=', rule.value.max.numericInstance)
+		console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
+		console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
 		// const errorAmount = {
 		// 	percentError: '@TODO',
 		// 	absoluteError: '@TODO'
 		// }
-		const isWithinError = NumericRuleOutcome.getIsWithinError(rule, roundedBigValue)
+
+		const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
+		// console.log(
+		// 	'rbvr',
+		// 	roundedBigValueRange.toString(),
+		// 	studentNumericEntry.numericInstance.bigValue.toString(),
+		// 	roundedBigValueRange.isValueInRange(studentNumericEntry.numericInstance.bigValue)
+		// )
+		//@TODO
+		//const isWithinError = NumericRuleOutcome.getIsWithinError(rule, roundedBigValueRange)
 
 		return {
-			roundedBigValue,
+			roundedBigValueRange,
 			// errorAmount,
 			isWithinError,
-			errorType: rule.errorType
+			errorType: rule.errorType,
+			isExactlyCorrect
 		}
 	}
 
@@ -208,32 +238,58 @@ module.exports = class NumericRuleOutcome {
 	 * @param {NumericRule} rule
 	 * @return {NumericEntry}
 	 */
-	static getRoundedBigValueForRule(numericEntry, rule) {
-		const roundedInstance = numericEntry.clone().numericInstance
+	static getRoundedCorrectAnswerBigValueRange(studentNumericEntry, rule) {
+		const studentRoundedNumericInstance = studentNumericEntry.clone().numericInstance
+		const roundedCorrectAnswerValueRange = rule.value.clone()
 
 		switch (rule.round) {
 			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
-				const numDecimalDigits = Math.max(
-					rule.value.min.numericInstance.numDecimalDigits,
-					rule.value.max.numericInstance.numDecimalDigits
-				)
+				const numStudentDecimalDigits = studentRoundedNumericInstance.numDecimalDigits
 
-				roundedInstance.round(numDecimalDigits)
+				roundedCorrectAnswerValueRange.min.numericInstance.round(numStudentDecimalDigits)
+				roundedCorrectAnswerValueRange.max.numericInstance.round(numStudentDecimalDigits)
+
 				break
 			}
 
 			case ROUND_TYPE_ROUND_SIG_FIGS: {
-				const numSigFigs = Math.max(
-					rule.value.min.numericInstance.numSigFigs,
-					rule.value.max.numericInstance.numSigFigs
-				)
+				// const numStudentSigFigs = studentRoundedNumericInstance.numSigFigs
+				// debugger
+				// console.log(
+				// 	'rounding',
+				// 	roundedCorrectAnswerValueRange.min.numericInstance.bigValue.toString(),
+				// 	'to',
+				// 	numStudentSigFigs
+				// )
 
-				roundedInstance.round(numSigFigs)
+				const minNumSigFigs = parseInt(rule.sigFigs.min, 10)
+				roundedCorrectAnswerValueRange.min.numericInstance.round(minNumSigFigs)
+				roundedCorrectAnswerValueRange.max.numericInstance.round(minNumSigFigs)
+
 				break
 			}
 		}
 
-		return roundedInstance.bigValue
+		return roundedCorrectAnswerValueRange.toBigValueRange()
+	}
+
+	static getRoundedStudentBigValue(studentNumericEntry, rule) {
+		const roundedStudentNumericInstance = studentNumericEntry.clone().numericInstance
+
+		switch (rule.round) {
+			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
+				roundedStudentNumericInstance.round(parseInt(rule.value.min.numericInstance.decimals, 10))
+				break
+			}
+
+			case ROUND_TYPE_ROUND_SIG_FIGS: {
+				// debugger
+				roundedStudentNumericInstance.round(parseInt(rule.sigFigs.min, 10))
+				break
+			}
+		}
+
+		return roundedStudentNumericInstance.bigValue
 	}
 
 	/**
@@ -242,7 +298,7 @@ module.exports = class NumericRuleOutcome {
 	 * @return {boolean}
 	 */
 	static getIsExpectedNumSigFigs(numericInstance, rule) {
-		return rule.sigFigs.isValueInRange(numericInstance.numSigFigs)
+		return rule.sigFigs.isValueInRange(Big(numericInstance.numSigFigs))
 	}
 
 	/**

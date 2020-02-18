@@ -5,8 +5,8 @@ const Big = require('../big')
  * A type of ValueRange but for Big values instead of numbers.
  * @example
  * const range = new BigValueRange('[2,4]')
- * range.min // Equal to big(2)
- * range.max // Equal to big(4)
+ * range.min // Equal to Big(2)
+ * range.max // Equal to Big(4)
  */
 module.exports = class BigValueRange extends ValueRange {
 	/**
@@ -28,7 +28,7 @@ module.exports = class BigValueRange extends ValueRange {
 	 */
 	static parseValue(inputString) {
 		if (inputString === null) return null
-		return big(inputString)
+		return Big(inputString)
 	}
 
 	/**

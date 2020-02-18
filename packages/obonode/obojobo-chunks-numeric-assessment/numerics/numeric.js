@@ -2,6 +2,8 @@ const Big = require('../big')
 const { INPUT_TYPE_INVALID } = require('./types/input-types')
 const { MATCH_NONE } = require('../entry/match-types')
 
+const validUnitRegex = /^[^0-9,.,/,^].*/
+
 /**
  * The result of parsing a string for a given numeric class
  * @typedef {Object} NumericParseObject
@@ -46,7 +48,8 @@ module.exports = class Numeric {
 		return {
 			matchType: MATCH_NONE,
 			valueString: '',
-			unit: ''
+			unit: '',
+			fullString: ''
 		}
 	}
 
@@ -68,17 +71,7 @@ module.exports = class Numeric {
 	 */
 	static getIsEqual(str, bigValue) {
 		const parsed = this.parse(str)
-		return this.getBigValue(parsed.valueString).eq(bigValue)
-	}
-
-	/**
-	 * Get a string representation of a bigValue with an optional unit appended
-	 * @param {Big} bigValue
-	 * @param {String} [unit]
-	 * @return {string}
-	 */
-	static getStringWithUnit(bigValue, unit) {
-		return this.getString(bigValue) + (unit ? ' ' + unit : '')
+		return this.getBigValueFromString(parsed.valueString).eq(bigValue)
 	}
 
 	/**
@@ -86,7 +79,7 @@ module.exports = class Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 */
-	static getString(bigValue) {
+	static getStringFromBigValue(bigValue) {
 		return bigValue.toString()
 	}
 
@@ -106,7 +99,7 @@ module.exports = class Numeric {
 	 * @param {string} valueString
 	 * @return {null}
 	 */
-	static getBigValue() {
+	static getBigValueFromString() {
 		return null
 	}
 
@@ -118,8 +111,9 @@ module.exports = class Numeric {
 	 * @return {Big}
 	 */
 	static getRoundedBigValue(bigValue, toDigits = null) {
-		if (!toDigits) return big(bigValue)
-		return big(bigValue.toPrecision(toDigits))
+		if (!toDigits) return Big(bigValue)
+		console.log('grbv', bigValue.toString(), toDigits, bigValue.toPrecision(toDigits))
+		return Big(bigValue.toPrecision(toDigits))
 	}
 
 	/**
@@ -165,7 +159,7 @@ module.exports = class Numeric {
 	 */
 	static isValidUnit(unitString) {
 		if (!unitString) return true
-		return /^[^0-9,.,/,^].*/.test(unitString)
+		return validUnitRegex.test(unitString)
 	}
 
 	/**
@@ -174,7 +168,7 @@ module.exports = class Numeric {
 	 */
 	constructor(stringOrBigValue) {
 		if (typeof stringOrBigValue !== 'string') {
-			stringOrBigValue = this.constructor.getString(stringOrBigValue)
+			stringOrBigValue = this.constructor.getStringFromBigValue(stringOrBigValue)
 		}
 
 		this.init(stringOrBigValue)
@@ -184,17 +178,13 @@ module.exports = class Numeric {
 	 * Resets all properties to new properties based on the given numeric string
 	 * @param {string} str
 	 */
-	init(str) {
-		const parsed = this.constructor.parse(str)
-
-		// if (!Numeric.isValidUnit(parsed.unit)) {
-		// 	parsed = this.constructor.getNullParseObject()
-		// }
+	init(inputString) {
+		const parsed = this.constructor.parse(inputString)
 
 		/**
 		 * @type {string}
 		 */
-		this.string = str
+		this.inputString = inputString
 
 		/**
 		 * @type {('exact' | 'inferred' | 'none')}
@@ -211,17 +201,17 @@ module.exports = class Numeric {
 		 */
 		this.valueString = parsed.valueString
 
+		/**
+		 * @type {string}
+		 */
+		this.stringWithUnit = parsed.stringWithUnit
+
 		if (this.matchType === MATCH_NONE) return
 
 		/**
 		 * @type {Big}
 		 */
-		this.bigValue = this.constructor.getBigValue(this.valueString)
-
-		/**
-		 * @type {string}
-		 */
-		this.formattedString = this.constructor.getStringWithUnit(this.bigValue, this.unit)
+		this.bigValue = this.constructor.getBigValueFromString(this.valueString)
 	}
 
 	/**
@@ -229,7 +219,7 @@ module.exports = class Numeric {
 	 * @param {Big} bigValue
 	 */
 	setBigValue(bigValue) {
-		this.init(this.constructor.getStringWithUnit(bigValue, this.unit))
+		this.init(this.constructor.getStringFromBigValue(bigValue) + ' ' + this.unit)
 	}
 
 	/**
@@ -246,7 +236,7 @@ module.exports = class Numeric {
 	 * @param {string} unit
 	 */
 	setUnit(unit) {
-		this.init(this.constructor.getStringWithUnit(this.bigValue, unit))
+		this.init(this.valueString + (unit ? ' ' + unit : ''))
 	}
 
 	/**
@@ -274,7 +264,7 @@ module.exports = class Numeric {
 	}
 
 	toString() {
-		return this.getString()
+		return this.stringWithUnit
 	}
 
 	/**
@@ -282,31 +272,31 @@ module.exports = class Numeric {
 	 * @return {Numeric}
 	 */
 	clone() {
-		return new this.constructor(this.getStringWithUnit())
+		return new this.constructor(this.inputString)
 	}
 
-	/**
-	 * Return a string representation of this value of this instance.
-	 * @return {string}
-	 */
-	getString() {
-		return this.constructor.getString(this.bigValue)
-	}
+	// /**
+	//  * Return a string representation of this value of this instance.
+	//  * @return {string}
+	//  */
+	// getString() {
+	// 	return this.constructor.getString(this.bigValue)
+	// }
 
-	/**
-	 * Return a full string representation of this instance (value and unit)
-	 * @return {string}
-	 */
-	getStringWithUnit() {
-		return this.constructor.getStringWithUnit(this.bigValue, this.unit)
-	}
+	// /**
+	//  * Return a full string representation of this instance (value and unit)
+	//  * @return {string}
+	//  */
+	// getStringWithUnit() {
+	// 	return this.constructor.getStringWithUnit(this.bigValue, this.unit)
+	// }
 
-	/**
-	 * @alias getStringWithUnit
-	 */
-	toString() {
-		return this.getStringWithUnit()
-	}
+	// /**
+	//  * @alias getStringWithUnit
+	//  */
+	// toString() {
+	// 	return this.getStringWithUnit()
+	// }
 
 	/**
 	 * Determine if a given Big instance is equal to this instance
@@ -314,7 +304,7 @@ module.exports = class Numeric {
 	 * @return {boolean}
 	 */
 	isEqual(bigValue) {
-		return this.constructor.getIsEqual(this.string, bigValue)
+		return this.constructor.getIsEqual(this.inputString, bigValue)
 	}
 
 	/**
@@ -328,14 +318,14 @@ module.exports = class Numeric {
 	 * @return {number|null} The number of significant figures of this instance (or null if this numeric type does not define significant figures)
 	 */
 	get numSigFigs() {
-		return this.constructor.getNumSigFigs(this.string)
+		return this.constructor.getNumSigFigs(this.valueString)
 	}
 
 	/**
 	 * @return {boolean} True if the value for this instance is an integer
 	 */
 	get isInteger() {
-		return this.constructor.getIsInteger(this.string)
+		return this.constructor.getIsInteger(this.valueString)
 	}
 
 	/**
@@ -349,7 +339,7 @@ module.exports = class Numeric {
 	 * @return {boolean} The number of digits this value contains
 	 */
 	get numDecimalDigits() {
-		return this.constructor.getNumDecimalDigits(this.string)
+		return this.constructor.getNumDecimalDigits(this.valueString)
 	}
 
 	/**

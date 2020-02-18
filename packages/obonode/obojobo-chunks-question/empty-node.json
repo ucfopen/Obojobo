@@ -4,7 +4,8 @@
 	"isVoid": false,
 	"data": {
 		"content": {
-			"type": "default"
+			"type": "default",
+			"revealAnswer": "default"
 		}
 	},
 	"nodes": [

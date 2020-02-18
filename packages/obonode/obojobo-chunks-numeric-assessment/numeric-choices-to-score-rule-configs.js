@@ -44,7 +44,7 @@ module.exports = numericChoices => {
 					case 'decimals':
 						return {
 							value: choice.answer,
-							digits: choice.precision,
+							decimals: `[${choice.precision},*)`,
 							round: ROUND_TYPE_ROUND_DECIMAL_DIGITS,
 							feedback: choice.feedback || null,
 							score
@@ -53,9 +53,10 @@ module.exports = numericChoices => {
 					case 'sig-figs':
 						return {
 							value: choice.answer,
-							sigFigs: choice.precision,
+							sigFigs: `[${choice.precision},*)`,
 							round: ROUND_TYPE_ROUND_SIG_FIGS,
 							feedback: choice.feedback || null,
+							// types: 'decimal,scientific',
 							score
 						}
 				}

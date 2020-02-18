@@ -133,8 +133,8 @@ module.exports = class Octal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Octal.getString(big(45)) //"0o55"
-	 * Octal.getString(big(80)) //"0o120"
+	 * Octal.getString(Big(45)) //"0o55"
+	 * Octal.getString(Big(80)) //"0o120"
 	 */
 	static getString(bigValue) {
 		return `0o${Number(bigValue).toString(8)}`
@@ -145,11 +145,11 @@ module.exports = class Octal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Octal.getBigValue('0o55') //big(45)
-	 * Octal.getBigValue('120') //big(80)
+	 * Octal.getBigValue('0o55') //Big(45)
+	 * Octal.getBigValue('120') //Big(80)
 	 */
 	static getBigValue(valueString) {
-		return big(Octal.getValue(valueString))
+		return Big(Octal.getValue(valueString))
 	}
 
 	/**

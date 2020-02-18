@@ -23,14 +23,16 @@ const QuestionFooter = props => {
 	const isAnswered = props.isAnswered
 	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 	const detailedText = props.detailedText
+	const isAnswerRevealed = props.isAnswerRevealed
+	const shouldShowRevealAnswerButton = props.shouldShowRevealAnswerButton
 
 	const { buttonSubmitLabel, buttonResetLabel, buttonResetAriaLabel } = buttonLabels[props.type]
 
 	return (
 		<div className="submit-and-result-container">
-			{props.mode === 'practice' || props.isAnswerRevealed ? (
+			{props.mode === 'practice' || isAnswerRevealed ? (
 				<div className="submit">
-					{isAnswerScored ? (
+					{isAnswerScored || isAnswerRevealed ? (
 						<Button
 							altAction
 							onClick={props.onClickReset}
@@ -50,7 +52,7 @@ const QuestionFooter = props => {
 					feedbackText={props.feedbackText}
 				/>
 			) : null}
-			{props.mode === 'practice' && isAnswerScored && score !== 'no-score' && score < 100 ? (
+			{shouldShowRevealAnswerButton ? (
 				<Button
 					className="reveal-answer-button"
 					altAction

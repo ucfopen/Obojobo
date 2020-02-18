@@ -17,6 +17,8 @@ const Big = require('../big')
 //.0%
 //0. %
 const decimalRegex = /^[-+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
+const trailingZeroesRegex = /0+$/
+const removeTrailingDotRegex = /\.$/
 
 /**
  * A decimal numeric type. Units may have whitespace between the value but are not required.
@@ -28,7 +30,7 @@ const decimalRegex = /^[-+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
  * new Decimal("+51.07 mols") // Plus sign optional and is ignored
  * new Decimal("1,024") // Commas optional and are ignored
  */
-module.exports = class Decimal extends Numeric {
+class Decimal extends Numeric {
 	/**
 	 * A string representing this type
 	 * @type {'decimal'}
@@ -46,6 +48,41 @@ module.exports = class Decimal extends Numeric {
 	}
 
 	/**
+	 * Returns any trailing zeroes or a trailing dot from a decimal string.
+	 * This information does not change the actual numerical value of the number,
+	 * but is needed for calculating significant figures.
+	 * @param {string} str A decimal string
+	 * @return {string}
+	 * @example
+	 * Decimal.getTrailingContentFromString("0010.00200") // "00"
+	 * Decimal.getTrailingContentFromString("0010.501") // ""
+	 * Decimal.getTrailingContentFromString("0010") // ""
+	 * Decimal.getTrailingContentFromString("100.") // "."
+	 */
+	static getTrailingContentFromString(str) {
+		const dotPos = str.indexOf('.')
+		if (dotPos === -1) {
+			return ''
+		}
+
+		if (dotPos === str.length - 1) {
+			return '.'
+		}
+
+		const tokens = str.split('.')
+		if (!tokens[1]) {
+			return ''
+		}
+
+		const matches = trailingZeroesRegex.exec(tokens[1])
+		if (!matches || !matches.length) {
+			return ''
+		}
+
+		return matches[0]
+	}
+
+	/**
 	 * Gets details about an answer string.
 	 * @param {string} str A potential string representation of a decimal value
 	 * @return {NumericParseObject|NullNumericParseObject}
@@ -53,6 +90,7 @@ module.exports = class Decimal extends Numeric {
 	 * Decimal.parse("-5") //{ matchType:'exact', valueString:'-5', unit:'' }
 	 * Decimal.parse("0.2g") //{ matchType:'exact', valueString:'0.2', unit:'g' }
 	 * Decimal.parse("2/3 kCal") //{ matchType:'none', valueString:'', unit:'' }
+	 * Decimal.parse("+010.00") //{ matchType:'none', valueString:'10.00', unit:'' }
 	 */
 	static parse(str) {
 		const matches = decimalRegex.exec(str)
@@ -61,10 +99,26 @@ module.exports = class Decimal extends Numeric {
 		const unit = str.substr(matches[0].length).trim()
 
 		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
+
+		const unparsedValueString = matches[0]
+		const bigValueString = Decimal.getStringFromBigValue(
+			Decimal.getBigValueFromString(unparsedValueString)
+		)
+		const trailingContent = Decimal.getTrailingContentFromString(unparsedValueString)
+		let valueString
+		if (bigValueString.indexOf('.') === -1 && trailingContent) {
+			valueString = `${bigValueString}.${trailingContent}`
+		} else {
+			valueString = `${bigValueString}${trailingContent}`
+		}
+
+		console.log('vs', valueString)
+
 		return {
 			matchType: MATCH_EXACT,
-			valueString: matches[0],
-			unit
+			valueString,
+			unit,
+			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -82,8 +136,11 @@ module.exports = class Decimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {Big}
 	 */
-	static getBigValue(valueString) {
-		return big(valueString)
+	static getBigValueFromString(valueString) {
+		// Handle special case where number ends in a dot (e.g. "100.")
+		valueString = valueString.replace(removeTrailingDotRegex, '')
+
+		return Big(valueString)
 	}
 
 	/**
@@ -91,9 +148,9 @@ module.exports = class Decimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Decimal.getString(big(2)) //"2"
+	 * Decimal.getStringFromBigValue(Big(2)) //"2"
 	 */
-	static getString(bigValue) {
+	static getStringFromBigValue(bigValue) {
 		let leftSide
 		let rightSide
 
@@ -128,19 +185,21 @@ module.exports = class Decimal extends Numeric {
 
 		const [leftString, rightString] = valueString.split('.').concat(null)
 
-		const bigLeft = big(leftString !== '' ? leftString : '0').abs()
-		const bigRight = rightString ? big(rightString) : null
+		const bigLeft = Big(leftString !== '' ? leftString : '0').abs()
+		const bigRight = rightString ? Big(rightString) : null
 
 		if (rightString === null) {
-			return Decimal.getString(bigLeft).replace(/0+$/, '').length
+			return Decimal.getStringFromBigValue(bigLeft).replace(/0+$/, '').length
 		}
 
 		if (bigLeft.eq(0)) {
 			if (bigRight && bigRight.eq(0)) return 0
-			return bigRight ? Decimal.getString(bigRight).length : 0
+			return bigRight ? Decimal.getStringFromBigValue(bigRight).length : 0
 		}
 
-		return Decimal.getString(bigLeft).length + rightString.length
+		console.log('gnsf', valueString, Decimal.getStringFromBigValue(bigLeft), rightString)
+
+		return Decimal.getStringFromBigValue(bigLeft).length + rightString.length
 	}
 
 	/**
@@ -152,7 +211,7 @@ module.exports = class Decimal extends Numeric {
 	 * Decimal.getIsInteger('5.1') //false
 	 */
 	static getIsInteger(valueString) {
-		const bigValue = big(valueString)
+		const bigValue = Big(valueString)
 		return bigValue.minus(bigValue.mod(1)).eq(bigValue)
 	}
 
@@ -165,6 +224,10 @@ module.exports = class Decimal extends Numeric {
 	 */
 
 	static getNumDecimalDigits(valueString) {
-		return (Decimal.getString(big(valueString)).split('.')[1] || '').length
+		return (
+			Decimal.getStringFromBigValue(Decimal.getBigValueFromString(valueString)).split('.')[1] || ''
+		).length
 	}
 }
+
+module.exports = Decimal

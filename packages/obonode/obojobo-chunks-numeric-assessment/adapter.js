@@ -4,7 +4,7 @@ const Adapter = {
 	construct(model, attrs) {
 		const content = attrs && attrs.content ? attrs.content : {}
 
-		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(content.numericChoices)
+		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(content.numericChoices || [])
 	},
 
 	clone(model, clone) {},

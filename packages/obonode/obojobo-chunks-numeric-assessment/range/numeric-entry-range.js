@@ -118,7 +118,7 @@ module.exports = class NumericEntryRange extends ValueRange {
 	 * @return {string|null}
 	 */
 	static serializeValue(o) {
-		return o === null ? o : o.numericInstance.getString()
+		return o === null ? o : o.numericInstance.toString()
 	}
 
 	/**
@@ -127,7 +127,7 @@ module.exports = class NumericEntryRange extends ValueRange {
 	 * @return {string}
 	 */
 	static toStringValue(o) {
-		return o === null ? '*' : o.numericInstance.getString()
+		return o === null ? '*' : o.numericInstance.toString()
 	}
 
 	/**

@@ -21,7 +21,6 @@ const TextUtil = {
 
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
-		console.log('line', line)
 		if (!line.text.styleList) return [fullText]
 
 		const fullText = line.text.value

@@ -124,6 +124,7 @@ describe('Decimal', () => {
 		${'08020.0280'}  | ${8}
 		${'-08020.0280'} | ${8}
 		${'+08020.0280'} | ${8}
+		${'09901.010'}   | ${7}
 	`(`getNumSigFigs($input)=$expected`, ({ input, expected }) => {
 		expect(Decimal.getNumSigFigs(input)).toBe(expected)
 	})
