@@ -17,7 +17,7 @@ const Page = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			// If the element is a Actions Node, make sure it has Score children
+			// If the element is a Page node, make sure it has Obonode children
 			if (node.type === PAGE_NODE) {
 				// Code child normalization
 				for (const [child, childPath] of Node.children(editor, path)) {

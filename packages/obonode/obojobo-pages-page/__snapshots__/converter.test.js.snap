@@ -5,7 +5,7 @@ Object {
   "children": Array [
     Object {
       "componentOboToSlateReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -27,7 +27,7 @@ Object {
   "children": Array [
     Object {
       "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -37,25 +37,6 @@ Object {
     },
   ],
   "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`Page Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
-          Object {
-            "type": "mockNode",
-          },
-        ],
-        "type": "oboeditor.component",
-      },
-    },
-  ],
   "id": "mockKey",
   "type": "mockType",
 }

@@ -110,7 +110,7 @@ const switchType = {
 		// Changing each CodeLine to a TextLine will allow normalization
 		// to remove them from the Code node and wrap them in a Text node
 		Editor.withoutNormalizing(editor, () => {
-			list.forEach(([, childPath]) => Transforms.setNodes(
+			list.forEach(([child, childPath]) => Transforms.setNodes(
 				editor,
 				{ type: TEXT_NODE, subtype: TEXT_LINE_NODE, content: {...child.content}  },
 				{ at: childPath }
