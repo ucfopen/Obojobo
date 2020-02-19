@@ -29,12 +29,17 @@ class QuestionStore extends Store {
 		let model
 		super('questionStore')
 
-		// Debounce sending the setResponse event to prevent too
-		// many being sent (as in when a student types an answer)
-		this.sendSetResponseEvent = debounce(
-			SET_RESPONSE_EVENT_SEND_DELAY_MS,
-			({ questionId, response, targetId, context, assessmentId, attemptId }) => {
-				APIUtil.postEvent({
+		Dispatcher.on({
+			'question:setResponse': payload => {
+				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
+				const questionId = id
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.responses[questionId] = response
+
+				this.triggerChange()
+
+				APIUtil.debouncedPostEvent(SET_RESPONSE_EVENT_SEND_DELAY_MS, {
 					draftId: OboModel.getRoot().get('draftId'),
 					action: 'question:setResponse',
 					eventVersion: '2.1.0',
@@ -48,27 +53,6 @@ class QuestionStore extends Store {
 						attemptId
 					}
 				})
-			}
-		)
-
-		Dispatcher.on({
-			'question:setResponse': payload => {
-				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
-				const questionId = id
-				const contextState = this.getOrCreateContextState(context)
-
-				contextState.responses[questionId] = response
-
-				this.triggerChange()
-
-				this.sendSetResponseEvent.bind(this, {
-					questionId,
-					response,
-					targetId,
-					context,
-					assessmentId,
-					attemptId
-				})()
 			},
 
 			'question:clearResponse': payload => {

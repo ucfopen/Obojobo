@@ -1,4 +1,5 @@
 import API from './api'
+import debounce from '../../common/util/debounce'
 
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
@@ -10,31 +11,59 @@ const processJsonResults = res => {
 	})
 }
 
+const createEventObject = ({ draftId, action, eventVersion, visitId, payload = {} }) => {
+	return {
+		draftId,
+		visitId,
+		event: {
+			action,
+			draft_id: draftId,
+			actor_time: new Date().toISOString(),
+			event_version: eventVersion,
+			visitId,
+			payload
+		}
+	}
+}
+
+const postEvent = eventObject => {
+	return (
+		API.post('/api/events', eventObject)
+			.then(processJsonResults)
+			// TODO: Send Caliper event to client host.
+			.then(res => {
+				if (res && res.status === 'ok' && res.value) {
+					parent.postMessage(res.value, '*')
+				}
+
+				return res
+			})
+	)
+}
+
+const debouncedSendFnsByAction = {}
+
 const APIUtil = {
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
-		return (
-			API.post('/api/events', {
-				draftId,
-				visitId,
-				event: {
-					action,
-					draft_id: draftId,
-					actor_time: new Date().toISOString(),
-					event_version: eventVersion,
-					visitId,
-					payload
-				}
-			})
-				.then(processJsonResults)
-				// TODO: Send Caliper event to client host.
-				.then(res => {
-					if (res && res.status === 'ok' && res.value) {
-						parent.postMessage(res.value, '*')
-					}
+		return postEvent(createEventObject({ draftId, action, eventVersion, visitId, payload }))
+	},
 
-					return res
-				})
+	// Allows you to delay sending an event. Events with the same action will be cancelled
+	// and overwritten with the newer event.
+	// The event creation time is stored as `actor_time` in the event, so while the event
+	// may be posted at a later date and out of order the actor_time can be used to determine
+	// the correct sequence of events.
+	debouncedPostEvent(debounceMs, { draftId, action, eventVersion, visitId, payload = {} }) {
+		if (debouncedSendFnsByAction[action]) {
+			debouncedSendFnsByAction[action].cancel()
+		}
+
+		debouncedSendFnsByAction[action] = debounce(
+			debounceMs,
+			postEvent.bind(null, createEventObject({ draftId, action, eventVersion, visitId, payload }))
 		)
+
+		debouncedSendFnsByAction[action]()
 	},
 
 	getDraft(id) {

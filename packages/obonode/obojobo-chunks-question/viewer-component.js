@@ -389,7 +389,6 @@ export default class Question extends OboQuestionComponent {
 			assessment
 		)
 		const AssessmentComponent = assessment.getComponentClass()
-		console.log('Ass', AssessmentComponent, assessment)
 		const feedbackText = this.getFeedbackText(
 			questionState,
 			model,
