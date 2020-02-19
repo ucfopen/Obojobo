@@ -37,7 +37,6 @@
       "src/draft-json-transform.js",
       "src/extension-transform.js",
       "src/generate-id.js",
-      "src/text-group-parser.js",
       "src/html-transform.js",
       "src/list-styles-parser.js",
       "src/triggers-parser.js",
