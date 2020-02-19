@@ -53,7 +53,7 @@ const Assessment = {
 								editor, 
 								[child, childPath], 
 								{ type: PAGE_NODE,  content: {}, children: []}, 
-								node => node.type !== QUESTION_BANK_NODE || node.type !== ACTIONS_NODE || node.type !== RUBRIC_NODE
+								node => node.type !== QUESTION_BANK_NODE && node.type !== ACTIONS_NODE && node.type !== RUBRIC_NODE
 							)
 							return
 						}
@@ -83,7 +83,7 @@ const Assessment = {
 									}, 
 									children: []
 								}, 
-								node => node.type !== PAGE_NODE || node.type !== ACTIONS_NODE || node.type !== RUBRIC_NODE
+								node => node.type !== PAGE_NODE && node.type !== ACTIONS_NODE && node.type !== RUBRIC_NODE
 							)
 							return
 						}
@@ -109,7 +109,7 @@ const Assessment = {
 									content: {}, 
 									children: []
 								}, 
-								node => node.type !== PAGE_NODE || node.type !== QUESTION_BANK_NODE || node.type !== RUBRIC_NODE
+								node => node.type !== PAGE_NODE && node.type !== QUESTION_BANK_NODE && node.type !== RUBRIC_NODE
 							)
 							return
 						}

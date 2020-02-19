@@ -268,7 +268,7 @@ class Rubric extends React.Component {
 						})}
 					</ul>
 				</div>
-				{this.props.children}
+				<span className="invisibleText">{this.props.children}</span>
 			</div>
 		)
 	}

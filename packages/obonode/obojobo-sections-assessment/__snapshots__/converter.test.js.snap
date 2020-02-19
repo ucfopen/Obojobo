@@ -2,17 +2,7 @@
 
 exports[`Assessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "rubric": Object {
-        "attempts": undefined,
-      },
-      "scoreActions": "someScoreActions",
-      "triggers": Array [],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "oboToSlateReturnFor": Object {
         "type": "ObojoboDraft.Pages.Page",
@@ -32,47 +22,20 @@ Object {
       },
     },
   ],
-  "object": "block",
-  "type": "ObojoboDraft.Sections.Assessment",
+  "content": Object {
+    "rubric": Object {
+      "attempts": undefined,
+    },
+    "scoreActions": "someScoreActions",
+    "triggers": Array [],
+  },
+  "id": "mockKey",
 }
 `;
 
 exports[`Assessment Converter oboToSlate converts an OboNode to a Slate node 2`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "rubric": false,
-      "scoreActions": "someScoreActions",
-      "triggers": Array [
-        Object {
-          "actions": Array [
-            Object {
-              "type": "nav:lock",
-            },
-          ],
-          "type": "onNavEnter",
-        },
-        Object {
-          "actions": Array [
-            Object {
-              "type": "nav:unlock",
-            },
-          ],
-          "type": "onEndAttempt",
-        },
-        Object {
-          "actions": Array [
-            Object {
-              "type": "nav:unlock",
-            },
-          ],
-          "type": "onNavExit",
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "oboToSlateReturnFor": Object {
         "type": "ObojoboDraft.Pages.Page",
@@ -97,8 +60,37 @@ Object {
       },
     },
   ],
-  "object": "block",
-  "type": "ObojoboDraft.Sections.Assessment",
+  "content": Object {
+    "rubric": false,
+    "scoreActions": "someScoreActions",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:lock",
+          },
+        ],
+        "type": "onNavEnter",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:unlock",
+          },
+        ],
+        "type": "onEndAttempt",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:unlock",
+          },
+        ],
+        "type": "onNavExit",
+      },
+    ],
+  },
+  "id": "mockKey",
 }
 `;
 

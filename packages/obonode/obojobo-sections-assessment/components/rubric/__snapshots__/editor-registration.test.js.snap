@@ -1,25 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rubric editor plugins.renderNode calls next 1`] = `
-<Rubric
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "mockNode",
-    }
-  }
-/>
-`;
-
-exports[`Rubric editor plugins.renderNode renders the rubric when passed 1`] = `
+exports[`Rubric editor component plugins.renderNode renders the rubric when passed 1`] = `
 <Rubric
   attributes={
     Object {

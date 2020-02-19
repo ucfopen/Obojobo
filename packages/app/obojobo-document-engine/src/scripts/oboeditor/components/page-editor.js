@@ -60,9 +60,33 @@ class PageEditor extends React.Component {
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 
-		this.editor = this.withIds(this.withPlugins(withHistory(withReact(createEditor()))))
+		this.editor = this.withOboNodes(this.withIds(this.withPlugins(withHistory(withReact(createEditor())))))
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
+
+		
+	}
+
+	withOboNodes(editor) {
+		const { normalizeNode } = editor
+		// Override normalize node to restrict base level nodes to Obonodes
+		editor.normalizeNode = (entry) => {
+			const [node, path] = entry
+			if(Editor.isEditor(node)) {
+				for (const [child, childPath] of Node.children(editor, path)) {
+					// Unwrap non-Obojobo children
+					if (!Common.Registry.insertableItems.some(item => item.type === child.type) && child.type !== ASSESSMENT_NODE) {
+						Transforms.unwrapNodes(
+							editor, 
+							{ at: childPath }
+						)
+						return
+					}
+				}
+			}
+			normalizeNode(entry)
+		}
+		return editor
 	}
 
 	withIds(editor) {
@@ -468,7 +492,7 @@ class PageEditor extends React.Component {
 		const json = this.props.page.toJSON()
 
 		if (json.type === ASSESSMENT_NODE) {
-			return [this.assessment.oboToSlate(json)]
+			return [this.assessment.oboToSlate(this.props.page)]
 		} else {
 			return json.children.map(child => Component.helpers.oboToSlate(child))
 		}

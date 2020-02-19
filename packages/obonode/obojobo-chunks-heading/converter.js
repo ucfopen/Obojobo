@@ -26,7 +26,7 @@ const slateToObo = node => {
 	
 	TextUtil.slateToOboText(node, line)
 
-	return {
+	const newNode = {
 		id: node.id,
 		type: node.type,
 		children: [],
@@ -36,6 +36,8 @@ const slateToObo = node => {
 			textGroup: [line]
 		})
 	}
+
+	return newNode
 }
 
 /**
@@ -45,7 +47,7 @@ const slateToObo = node => {
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
-	const slateNode = Object.assign({}, node)
+	const slateNode = JSON.parse(JSON.stringify(node))
 
 	slateNode.children = node.content.textGroup.flatMap(line => {
 		slateNode.content.align = line.data ? line.data.align : 'left'

@@ -69,7 +69,8 @@ const slateToObo = node => {
  * @param {Object} node An Obojobo Assessment node 
  * @returns {Object} A Slate node
  */
-const oboToSlate = node => {
+const oboToSlate = model => {
+	const node = model.attributes
 	const slateNode = Object.assign({}, node)
 
 	slateNode.children = node.children.map(child => {

@@ -7,58 +7,66 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: '$attempt_score',
-					failedType: '$attempt_score',
-					type: 'pass-fail',
-					unableToPassType: 'no-value',
-					mods: []
-				})
+			content: {
+				passedType: '$attempt_score',
+				failedType: '$attempt_score',
+				type: 'pass-fail',
+				unableToPassType: 'no-value',
+				mods: []
 			}
 		}
 
 		const oboNode = Converter.slateToObo(slateNode)
 
-		expect(oboNode).toMatchInlineSnapshot(`""`)
+		expect(oboNode).toMatchInlineSnapshot(`
+		Object {
+		  "failedResult": "$attempt_score",
+		  "passedResult": "$attempt_score",
+		  "type": "pass-fail",
+		  "unableToPassResult": null,
+		}
+	`)
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with set values', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: 'set-value',
-					passedResult: '100',
-					type: 'pass-fail',
-					failedType: 'set-value',
-					failedResult: '100',
-					unableToPassType: 'set-value',
-					unableToPassResult: '100'
-				})
+			content: {
+				passedType: 'set-value',
+				passedResult: '100',
+				type: 'pass-fail',
+				failedType: 'set-value',
+				failedResult: '100',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
 			}
 		}
 
 		const oboNode = Converter.slateToObo(slateNode)
 
-		expect(oboNode).toMatchInlineSnapshot(`""`)
+		expect(oboNode).toMatchInlineSnapshot(`
+		Object {
+		  "failedResult": "100",
+		  "passedResult": "100",
+		  "type": "pass-fail",
+		  "unableToPassResult": "100",
+		}
+	`)
 	})
 
 	test('slateToObo does not convert a Slate node when type is not "pass-fail"', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					type: 'highest',
-					passedType: 'set-value',
-					passedResult: '100',
-					failedType: 'set-value',
-					failedResult: '10',
-					unableToPassType: 'set-value',
-					unableToPassResult: '100'
-				})
+			content: {
+				type: 'highest',
+				passedType: 'set-value',
+				passedResult: '100',
+				failedType: 'set-value',
+				failedResult: '10',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
 			}
 		}
 

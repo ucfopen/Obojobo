@@ -16,21 +16,13 @@ Common.Registry.registerEditorModel({
 describe('PostAssessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return null
-				}
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: [
+					content: {},
+					children: [
 						{
 							key: 'mockPage'
 						}
@@ -42,13 +34,13 @@ describe('PostAssessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-				Array [
-				  Object {
-				    "for": Object {},
-				    "page": "PageChild",
-				  },
-				]
-		`)
+		Array [
+		  Object {
+		    "for": undefined,
+		    "page": "PageChild",
+		  },
+		]
+	`)
 	})
 
 	test('oboToSlate converts an OboComponent to a Slate node', () => {
@@ -70,6 +62,36 @@ describe('PostAssessment Converter', () => {
 		      ],
 		      "content": Object {
 		        "for": "dummyRange",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		    },
+		  ],
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+	})
+
+	test('oboToSlate converts a legacy OboComponent to a Slate node', () => {
+		const oboNode = [
+			{
+				from: '0',
+				to: '100',
+				page: 'dummyPage'
+			}
+		]
+
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchInlineSnapshot(`
+		Object {
+		  "children": Array [
+		    Object {
+		      "children": Array [
+		        "PageOboToSlate",
+		      ],
+		      "content": Object {
+		        "for": "[0,100]",
 		      },
 		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
 		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
