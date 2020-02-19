@@ -81,41 +81,41 @@ describe('attempt-import', () => {
 		}
 	})
 
-	test('throws when currentVisit not marked as importable', async () => {
+	test('throws when currentVisit not marked as importable', () => {
 		mockCurrentVisit.score_importable = false
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Import score used on visit without import enabled.'
 		)
 	})
 
-	test('requires resumed SCORE to belong to current user', async () => {
+	test('requires resumed SCORE to belong to current user', () => {
 		mockAssessmentScore.userId = 'someone-else'
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Imported scores must be owned by the current user.'
 		)
 	})
 
-	test('requires resumed SCORE to match current draftId', async () => {
+	test('requires resumed SCORE to match current draftId', () => {
 		mockAssessmentScore.draftId = 'some-other-draft-id'
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Scores can only be imported for the same module.'
 		)
 	})
 
-	test('requires resumed SCORE to match current draft version', async () => {
+	test('requires resumed SCORE to match current draft version', () => {
 		mockAssessmentScore.draftContentId = 'a-different-version'
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Scores can only be imported for the same version of a module.'
 		)
 	})
 
-	test('requires that no previous attempts were made ', async () => {
+	test('requires that no previous attempts were made ', () => {
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce(['mock-attempt-data'])
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Scores can only be imported if no assessment attempts have been made.'
 		)
 	})
@@ -139,13 +139,13 @@ describe('attempt-import', () => {
 		)
 	})
 
-	test('requires resumed ATTEMPT belongs to current user', async () => {
+	test('requires resumed ATTEMPT belongs to current user', () => {
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
 		mockAttempt.userId = 'not-the-same-user'
 		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
 
-		expect(attemptImport(mockReq)).rejects.toThrowError(
+		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Original attempt was not created by the current user.'
 		)
 	})

@@ -1,6 +1,6 @@
 import Common from 'Common'
 import NavUtil from '../../viewer/util/nav-util'
-import APIUtil from '../../viewer/util/api-util'
+import ViewerAPI from '../../viewer/util/viewer-api'
 import FocusUtil from '../../viewer/util/focus-util'
 import { startHeartBeat } from '../../viewer/util/stop-viewer'
 
@@ -24,7 +24,7 @@ class NavStore extends Store {
 			if (newOpen === this.state.open) return
 
 			const action = newOpen ? 'nav:open' : 'nav:close'
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.draftId,
 				action: action,
 				eventVersion: '1.0.0',
@@ -50,7 +50,7 @@ class NavStore extends Store {
 				'nav:gotoPath': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
-						APIUtil.postEvent({
+						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:gotoPath',
 							eventVersion: '1.0.0',
@@ -71,7 +71,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					const prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
-						APIUtil.postEvent({
+						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:prev',
 							eventVersion: '1.0.0',
@@ -87,7 +87,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					const next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
-						APIUtil.postEvent({
+						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:next',
 							eventVersion: '1.0.0',
@@ -102,7 +102,7 @@ class NavStore extends Store {
 				'nav:goto': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
-						APIUtil.postEvent({
+						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:goto',
 							eventVersion: '1.0.0',
@@ -115,7 +115,7 @@ class NavStore extends Store {
 					}
 				},
 				'nav:lock': () => {
-					APIUtil.postEvent({
+					ViewerAPI.postEvent({
 						draftId: this.state.draftId,
 						action: 'nav:lock',
 						eventVersion: '1.0.0',
@@ -124,7 +124,7 @@ class NavStore extends Store {
 					this.setAndTrigger({ locked: true })
 				},
 				'nav:unlock': () => {
-					APIUtil.postEvent({
+					ViewerAPI.postEvent({
 						draftId: this.state.draftId,
 						action: 'nav:unlock',
 						eventVersion: '1.0.0',

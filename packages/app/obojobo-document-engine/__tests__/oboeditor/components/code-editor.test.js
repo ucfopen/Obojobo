@@ -2,12 +2,12 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import CodeEditor from 'src/scripts/oboeditor/components/code-editor'
 import React from 'react'
-import APIUtil from 'src/scripts/viewer/util/api-util'
+import EditorAPI from 'src/scripts/viewer/util/editor-api'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 
 const mockClickFn = jest.fn().mockImplementation((a, b, c) => c())
 
-jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('react-codemirror2', () => ({
 	Controlled: global.mockReactComponent(this, 'Codemirror')
@@ -194,8 +194,8 @@ describe('CodeEditor', () => {
 	`)
 	})
 
-	test('saveCode calls APIUtil', () => {
-		APIUtil.postDraft.mockResolvedValue({
+	test('saveCode calls EditorAPI', () => {
+		EditorAPI.postDraft.mockResolvedValue({
 			status: 'ok'
 		})
 
@@ -211,11 +211,11 @@ describe('CodeEditor', () => {
 		component.setProps({ mode: JSON_MODE })
 		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
+		expect(EditorAPI.postDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('saveCode() with invalid document', () => {
-		APIUtil.postDraft.mockResolvedValue({
+		EditorAPI.postDraft.mockResolvedValue({
 			status: 'error',
 			value: {
 				message: 'mock_message'
@@ -230,7 +230,7 @@ describe('CodeEditor', () => {
 		const component = mount(<CodeEditor {...props} />)
 		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
+		expect(EditorAPI.postDraft).toHaveBeenCalledTimes(1)
 	})
 
 	test('setEditor changes state', () => {

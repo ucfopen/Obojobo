@@ -1,4 +1,4 @@
-import APIUtil from './util/api-util'
+import ViewerAPI from './util/viewer-api'
 import AssessmentScoreReportView from './assessment/assessment-score-report-view'
 import AssessmentScoreReporter from './assessment/assessment-score-reporter'
 import AssessmentStore from './stores/assessment-store'
@@ -36,7 +36,7 @@ export default {
 	util: {
 		AssessmentUtil,
 		NavUtil,
-		APIUtil,
+		ViewerAPI,
 		MediaUtil,
 		QuestionUtil,
 		FocusUtil,

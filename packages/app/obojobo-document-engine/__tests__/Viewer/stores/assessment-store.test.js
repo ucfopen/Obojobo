@@ -5,7 +5,7 @@ import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../src/scripts/viewer/stores/nav-store'
 import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
 import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
@@ -30,7 +30,7 @@ jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../src/scripts/viewer/stores/nav-store')
 jest.mock('../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../src/scripts/viewer/util/nav-util')
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 jest.mock('../../../src/scripts/viewer/util/assessment-api')
 jest.mock('../../../src/scripts/viewer/util/assessment-util')
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
@@ -111,7 +111,7 @@ describe('AssessmentStore', () => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
-		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.state = {} // reset state
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()

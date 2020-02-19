@@ -14,10 +14,10 @@ class User {
 		createdAt = Date.now(),
 		roles = []
 	} = {}) {
-		if (firstName === null) throw 'Missing first name for new user'
-		if (lastName === null) throw 'Missing last name for new user'
-		if (email === null) throw 'Missing email for new user'
-		if (username === null) throw 'Missing username for new user'
+		if (firstName === null) throw Error('Missing first name for new user')
+		if (lastName === null) throw Error('Missing last name for new user')
+		if (email === null) throw Error('Missing email for new user')
+		if (username === null) throw Error('Missing username for new user')
 
 		this.id = id
 		this.firstName = firstName
@@ -59,14 +59,16 @@ class User {
 			)
 			.then(User.dbResultToModel)
 			.catch(error => {
-				throw logger.logError('Error fetchById', error)
+				logger.logError('Error fetchById', error)
+				throw Error('Error finding user.')
 			})
 	}
 
 	static clearSessionsForUserById(id) {
 		return db.none(`DELETE FROM sessions WHERE sess ->> 'currentUserId' = $[id]`, { id })
 			.catch(error => {
-				throw logger.logError('Error clearSessionsForUserById', error)
+				logger.logError('Error clearSessionsForUserById', error)
+				throw Error('Error clearing session.')
 			})
 	}
 
@@ -96,7 +98,8 @@ class User {
 			})
 			.then(results => results.map(r => User.dbResultToModel(r)))
 			.catch(error => {
-				throw logger.logError('Error searchForUsers', error)
+				logger.logError('Error searchForUsers', error)
+				throw Error('Error searching for users.')
 			})
 	}
 
@@ -127,7 +130,8 @@ class User {
 				return this
 			})
 			.catch(error => {
-				throw logger.logError('Error saveOrCreate', error)
+				logger.logError('Error saveOrCreate', error)
+				throw Error('Error saving user.')
 			})
 	}
 

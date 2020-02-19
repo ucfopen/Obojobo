@@ -544,15 +544,15 @@ describe('AssessmentModel', () => {
 		expect(db.oneOrNone.mock.calls[0][1]).toEqual({ attemptId: 'mock-id' })
 	})
 
-	test('fetchAttemptByID errors', async () => {
+	test('fetchAttemptByID errors', () => {
 		db.oneOrNone.mockRejectedValueOnce('mock-error')
-		expect(AssessmentModel.fetchAttemptByID('mock-id')).rejects.toBe('mock-error')
+		return expect(AssessmentModel.fetchAttemptByID('mock-id')).rejects.toBe('mock-error')
 	})
 
-	test('fetchAttemptHistory errors', async () => {
+	test('fetchAttemptHistory errors', () => {
 		jest.spyOn(AssessmentModel, 'fetchAttempts')
 		AssessmentModel.fetchAttempts.mockRejectedValueOnce('mock-error')
-		expect(
+		return expect(
 			AssessmentModel.fetchAttemptHistory(
 				'mock-user-id',
 				'mock-draft-id',
@@ -629,7 +629,7 @@ describe('AssessmentModel', () => {
 		})
 	})
 
-	test('fetchAttemptHistory errors when responses dont match attempts', async () => {
+	test('fetchAttemptHistory errors when responses dont match attempts', () => {
 		const mockAttempt = new AssessmentModel(makeMockAttempt())
 		const mockLtiState = {
 			scoreSent: 'scoreSent',
@@ -655,7 +655,7 @@ describe('AssessmentModel', () => {
 			mockAssessmentId: mockLtiState
 		})
 
-		expect(
+		return expect(
 			AssessmentModel.fetchAttemptHistory(
 				'mock-user-id',
 				'mock-draft-id',

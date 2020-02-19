@@ -12,7 +12,7 @@ import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/xml-fold.js'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 
-import APIUtil from '../../../scripts/viewer/util/api-util'
+import EditorAPI from '../../../scripts/viewer/util/editor-api'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
@@ -119,7 +119,7 @@ class CodeEditor extends React.Component {
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
 
-		return APIUtil.postDraft(
+		return EditorAPI.postDraft(
 			this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'

@@ -88,4 +88,34 @@ describe('assessment-api', () => {
 		})
 	})
 
+	test('importScore calls fetch', async () => {
+		expect.hasAssertions()
+
+		const args = {
+			draftId: 'mockDraftId',
+			assessmentId: 'mockAssessmentId',
+			visitId: 'mockVisitId',
+			importedAssessmentScoreId: 'mockImportedAssessmentScoreId'
+		}
+
+		const result = await AssessmentAPI.importScore(args)
+		expect(API.post).toHaveBeenCalledWith('/api/assessments/mockDraftId/mockAssessmentId/import-score',  {importedAssessmentScoreId: "mockImportedAssessmentScoreId", visitId: "mockVisitId"})
+		expect(API.processJsonResults).toHaveBeenCalled()
+		expect(result).toEqual(mockJsonResult)
+	})
+
+	test('getAttemptHistory calls fetch', async () => {
+		expect.hasAssertions()
+
+		const args = {
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		}
+
+		const result = await AssessmentAPI.getAttemptHistory(args)
+		expect(API.get).toHaveBeenCalledWith('/api/assessments/mockDraftId/attempts?visitId=mockVisitId')
+		expect(API.processJsonResults).toHaveBeenCalled()
+		expect(result).toEqual(mockJsonResult)
+	})
+
 })

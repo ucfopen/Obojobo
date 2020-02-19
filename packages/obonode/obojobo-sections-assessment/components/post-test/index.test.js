@@ -11,7 +11,7 @@ import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/asses
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-api')
 jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')

@@ -309,13 +309,6 @@ describe('Assessment', () => {
 				]
 			}
 		]
-		const importableScore = {
-			id: 'mock-score-id',
-			score: 66.6666,
-			createdAt: 'mock-date',
-			assessmentId: 'mock-score-assessment-id',
-			attemptId: 'mock-score-attempt-id'
-		}
 
 		jest.spyOn(AssessmentModel, 'fetchAttemptHistory').mockResolvedValueOnce(history)
 		jest.spyOn(AssessmentScore, 'getImportableScore').mockResolvedValueOnce(false)

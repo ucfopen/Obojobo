@@ -4,7 +4,7 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorAPI from 'obojobo-document-engine/src/scripts/viewer/util/editor-api'
 import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
@@ -124,7 +124,7 @@ class EditorApp extends React.Component {
 	}
 
 	reloadDraft(draftId, mode) {
-		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
+		return EditorAPI.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
 				let json
 				switch (mode) {

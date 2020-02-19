@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorUtil from '../../util/editor-util'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorAPI from 'obojobo-document-engine/src/scripts/viewer/util/editor-api'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -32,7 +32,7 @@ class FileMenu extends React.PureComponent {
 	}
 
 	deleteModule() {
-		return APIUtil.deleteDraft(this.props.draftId).then(result => {
+		return EditorAPI.deleteDraft(this.props.draftId).then(result => {
 			if (result.status === 'ok') {
 				window.close()
 			}
@@ -44,7 +44,7 @@ class FileMenu extends React.PureComponent {
 
 		let draftId = null
 
-		APIUtil.createNewDraft()
+		EditorAPI.createNewDraft()
 			.then(result => {
 				draftId = result.value.id
 				return this.props.onSave(draftId)
@@ -70,7 +70,7 @@ class FileMenu extends React.PureComponent {
 				break
 		}
 
-		APIUtil.getFullDraft(draftId, format)
+		EditorAPI.getFullDraft(draftId, format)
 			.then(formatResults)
 			.then(contents => {
 				download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
@@ -89,7 +89,7 @@ class FileMenu extends React.PureComponent {
 				name: 'New',
 				type: 'action',
 				action: () =>
-					APIUtil.createNewDraft().then(result => {
+					EditorAPI.createNewDraft().then(result => {
 						if (result.status === 'ok') {
 							window.open(window.location.origin + '/editor/visual/' + result.value.id, '_blank')
 						}

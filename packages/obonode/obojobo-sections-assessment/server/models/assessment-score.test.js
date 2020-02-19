@@ -57,7 +57,7 @@ describe('AssessmentScore', () => {
 
 	test('fetchById logs errors', () => {
 		db.one.mockRejectedValueOnce('mock-error')
-		expect(AssessmentScore.fetchById('mock-id')).rejects.toBe('mock-error')
+		return expect(AssessmentScore.fetchById('mock-id')).rejects.toBe('mock-error')
 	})
 
 	test('getImportableScore returns AssessmentScore', async () => {
@@ -81,7 +81,7 @@ describe('AssessmentScore', () => {
 
 	test('getImportableScore handles errors', () => {
 		db.oneOrNone.mockRejectedValueOnce('mock-error')
-		expect(
+		return expect(
 			AssessmentScore.getImportableScore('mock-user-id', 'mock-content-id', 'is-preview')
 		).rejects.toBe('mock-error')
 	})

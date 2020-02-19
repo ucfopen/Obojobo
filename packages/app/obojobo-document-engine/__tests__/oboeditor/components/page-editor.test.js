@@ -1,6 +1,6 @@
 import { mount, shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import APIUtil from 'src/scripts/viewer/util/api-util'
+import EditorAPI from 'src/scripts/viewer/util/editor-api'
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
 import mockConsole from 'jest-mock-console'
@@ -9,7 +9,7 @@ import Component from 'src/scripts/oboeditor/components/node/editor'
 import { Value } from 'slate'
 
 jest.mock('slate-react')
-jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 	helpers: {
@@ -383,7 +383,6 @@ describe('PageEditor', () => {
 			}
 		])
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
 		Component.helpers.oboToSlate.mockReturnValueOnce({
 			object: 'block',
 			type: 'oboeditor.component',
@@ -449,7 +448,7 @@ describe('PageEditor', () => {
 			jest.fn()
 		)
 
-		expect(APIUtil.postDraft).toHaveBeenCalled()
+		expect(EditorAPI.postDraft).toHaveBeenCalled()
 	})
 
 	test('sends onChange to the Editor', () => {
@@ -733,7 +732,6 @@ describe('PageEditor', () => {
 			eventMap[event] = cb
 		})
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
 		const props = {
 			page: {
 				attributes: { children: [] },

@@ -289,6 +289,17 @@ describe('AssessmentUtil', () => {
 		expect(attemptsRemaining).toEqual(12)
 	})
 
+	test('getAttemptsRemaining returns 0 when importHasBeenUsed', () => {
+
+		const state = {
+			importHasBeenUsed: true
+		}
+
+		const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(state)
+
+		expect(attemptsRemaining).toEqual(0)
+	})
+
 	test('hasAttemptsRemaining returns if attempts are avalible', () => {
 		const model = {
 			get: jest
@@ -308,6 +319,16 @@ describe('AssessmentUtil', () => {
 		const attemptsRemaining = AssessmentUtil.hasAttemptsRemaining(state, model)
 
 		expect(attemptsRemaining).toEqual(true)
+	})
+
+	test('hasAttemptsRemaining returns false if importHasBeenUsed', () => {
+		const state = {
+			importHasBeenUsed: true
+		}
+
+		const attemptsRemaining = AssessmentUtil.hasAttemptsRemaining(state)
+
+		expect(attemptsRemaining).toEqual(false)
 	})
 
 	test('getLTIStateForModel returns null with no assessment', () => {
@@ -373,37 +394,28 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns false if synced', () => {
-		const model = {
-			get: jest
-				.fn()
-				.mockReturnValueOnce(TYPE_ASSESSMENT)
-				.mockReturnValueOnce('testId'),
-			modelState: {
-				attempts: 12
-			}
-		}
-		const state = {
-			assessments: {
-				testId: {
-					lti: { gradebookStatus: GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT }
-				}
-			}
-		}
+		const getAssessmentForModel = jest.spyOn(AssessmentUtil, 'getAssessmentForModel')
+		const model = 'mock-model'
+		const state = 'mock-state'
 
+		getAssessmentForModel.mockReturnValueOnce({
+			lti: { gradebookStatus: GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE }
+		})
 		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 		expect(ltiState).toEqual(false)
 
-		model.get.mockReturnValueOnce(TYPE_ASSESSMENT).mockReturnValueOnce('testId')
-		state.assessments.testId.lti.gradebookStatus = GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE
-
+		getAssessmentForModel.mockReturnValueOnce({
+			lti: { gradebookStatus: GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT }
+		})
 		ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 		expect(ltiState).toEqual(false)
 
-		model.get.mockReturnValueOnce(TYPE_ASSESSMENT).mockReturnValueOnce('testId')
-		state.assessments.testId.lti.gradebookStatus = GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE
-
+		getAssessmentForModel.mockReturnValueOnce({
+			lti: { gradebookStatus: GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE }
+		})
 		ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 		expect(ltiState).toEqual(false)
+
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns true if not synced', () => {
@@ -557,5 +569,39 @@ describe('AssessmentUtil', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:resendLTIScore', {
 			value: { id: 'testId' }
 		})
+	})
+
+	test('getNumberOfAttemptsCompleted returns score length', () => {
+		const state = {
+			assessmentSummary:[
+				{
+					scores: [1,2,3]
+				}
+			]
+		}
+
+		const result = AssessmentUtil.getNumberOfAttemptsCompleted(state)
+		expect(result).toBe(3)
+	})
+
+	test('getNumberOfAttemptsCompleted returns 0 with invalid state', () => {
+		const state1 = {
+			assessmentSummary:[
+				{}
+			]
+		}
+		const state2 = {
+			assessmentSummary:[]
+		}
+		const state3 = {
+			assessmentSummary:null
+		}
+		const state4 = {}
+
+		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state1)).toBe(0)
+		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state2)).toBe(0)
+		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state3)).toBe(0)
+		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state4)).toBe(0)
+
 	})
 })

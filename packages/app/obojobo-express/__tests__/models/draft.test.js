@@ -296,6 +296,14 @@ describe('Draft Model', () => {
 		})
 	})
 
+	test('deleteByIdAndUser fails as expected', () => {
+		expect.hasAssertions()
+
+		db.none.mockRejectedValueOnce('mock-error')
+
+		return expect(DraftModel.deleteByIdAndUser('draft_id', 'user_id')).rejects.toBe('mock-error')
+	})
+
 	test('getChildNodesByType returns all nodes with a matching type', () => {
 		expect.hasAssertions()
 
@@ -368,4 +376,15 @@ describe('Draft Model', () => {
 				expect(xml).toBe(null)
 			})
 	})
+
+	test('xmlDocument errors with query error', async () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+
+		const draft = await DraftModel.fetchById('whatever')
+		return expect(draft.xmlDocument).rejects.toBe('mock-error')
+	})
+
 })
