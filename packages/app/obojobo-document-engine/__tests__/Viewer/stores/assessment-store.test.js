@@ -7,7 +7,6 @@ import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
 import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
-import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
@@ -38,6 +37,7 @@ jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 describe('AssessmentStore', () => {
 	let restoreConsole
+	let AssessmentStore
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -111,6 +111,7 @@ describe('AssessmentStore', () => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
+		AssessmentStore = jest.requireActual('../../../src/scripts/viewer/stores/assessment-store').default
 		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.state = {} // reset state
 		AssessmentStore.triggerChange = jest.fn()
@@ -873,6 +874,28 @@ describe('AssessmentStore', () => {
 
 		expect(AssessmentUtil.isInAssessment).toHaveBeenCalled()
 		expect(mockFunction).toHaveBeenCalled()
+	})
+
+	test.only('viewer:closeAttempted determines if destination is an assessment', () => {
+		jest.spyOn(AssessmentStore, 'getAttemptHistory')
+		OboModel.create(getExampleAssessment())
+		AssessmentStore.getAttemptHistory.mockReturnValue()
+
+		expect(AssessmentStore).not.toHaveProperty('assessmentIds')
+		Dispatcher.trigger('nav:afterNavChange', {value: {to: 'assessmentId'}})
+		expect(AssessmentStore).toHaveProperty('assessmentIds')
+		expect(AssessmentStore.getAttemptHistory).toHaveBeenCalled()
+	})
+
+	test.only('viewer:closeAttempted determines if destination is not an assessment', () => {
+		jest.spyOn(AssessmentStore, 'getAttemptHistory')
+		OboModel.create(getExampleAssessment())
+		AssessmentStore.getAttemptHistory.mockReturnValue()
+
+		expect(AssessmentStore).not.toHaveProperty('assessmentIds')
+		Dispatcher.trigger('nav:afterNavChange', {value: {to: 'not-going-to-find-me'}})
+		expect(AssessmentStore).toHaveProperty('assessmentIds')
+		expect(AssessmentStore.getAttemptHistory).not.toHaveBeenCalled()
 	})
 
 	test('onCloseResultsDialog hides modal and focuses on nav target content', () => {
