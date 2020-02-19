@@ -1,18 +1,3 @@
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import { Registry } from '../../../src/scripts/common/registry'
-import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
-import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
-import NavStore from '../../../src/scripts/viewer/stores/nav-store'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
-import NavUtil from '../../../src/scripts/viewer/util/nav-util'
-import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
-import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import ModalUtil from '../../../src/scripts/common/util/modal-util'
-import ErrorUtil from '../../../src/scripts/common/util/error-util'
-import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
-import AssessmentScoreReporter from '../../../src/scripts/viewer/assessment/assessment-score-reporter'
 import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
@@ -38,6 +23,21 @@ jest.mock('../../../src/scripts/viewer/util/focus-util')
 describe('AssessmentStore', () => {
 	let restoreConsole
 	let AssessmentStore
+	let Dispatcher
+	let OboModel
+	let AssessmentUtil
+	let QuestionStore
+	let NavStore
+	let FocusUtil
+	let NavUtil
+	let ViewerAPI
+	let AssessmentAPI
+	let ModalUtil
+	let ErrorUtil
+	let QuestionUtil
+	let LTIResyncStates
+	let AssessmentScoreReporter
+	let Registry
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -111,7 +111,24 @@ describe('AssessmentStore', () => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
-		AssessmentStore = jest.requireActual('../../../src/scripts/viewer/stores/assessment-store').default
+		OboModel = require('../../../__mocks__/_obo-model-with-chunks').default
+		AssessmentStore = require('../../../src/scripts/viewer/stores/assessment-store').default
+		Dispatcher = require('../../../src/scripts/common/flux/dispatcher').default
+		Registry = require('../../../src/scripts/common/registry').Registry
+		AssessmentUtil = require('../../../src/scripts/viewer/util/assessment-util').default
+		QuestionStore = require('../../../src/scripts/viewer/stores/question-store').default
+		NavStore = require('../../../src/scripts/viewer/stores/nav-store').default
+		FocusUtil = require('../../../src/scripts/viewer/util/focus-util').default
+		NavUtil = require('../../../src/scripts/viewer/util/nav-util').default
+		ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api').default
+		AssessmentAPI = require('../../../src/scripts/viewer/util/assessment-api').default
+		ModalUtil = require('../../../src/scripts/common/util/modal-util')
+		ErrorUtil = require('../../../src/scripts/common/util/error-util')
+		QuestionUtil = require('../../../src/scripts/viewer/util/question-util').default
+		LTIResyncStates = require('../../../src/scripts/viewer/stores/assessment-store/lti-resync-states')
+			.default
+		AssessmentScoreReporter = require('../../../src/scripts/viewer/assessment/assessment-score-reporter')
+			.default
 		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.state = {} // reset state
 		AssessmentStore.triggerChange = jest.fn()
@@ -848,6 +865,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('question:setResponse calls trySetResponse', () => {
+		OboModel.create(getExampleAssessment())
 		jest.spyOn(AssessmentStore, 'trySetResponse')
 		NavStore.getState.mockReturnValueOnce({
 			draftId: 'mockDraftId',
@@ -876,24 +894,24 @@ describe('AssessmentStore', () => {
 		expect(mockFunction).toHaveBeenCalled()
 	})
 
-	test.only('viewer:closeAttempted determines if destination is an assessment', () => {
+	test('viewer:closeAttempted determines if destination is an assessment', () => {
 		jest.spyOn(AssessmentStore, 'getAttemptHistory')
 		OboModel.create(getExampleAssessment())
 		AssessmentStore.getAttemptHistory.mockReturnValue()
 
 		expect(AssessmentStore).not.toHaveProperty('assessmentIds')
-		Dispatcher.trigger('nav:afterNavChange', {value: {to: 'assessmentId'}})
+		Dispatcher.trigger('nav:afterNavChange', { value: { to: 'assessmentId' } })
 		expect(AssessmentStore).toHaveProperty('assessmentIds')
 		expect(AssessmentStore.getAttemptHistory).toHaveBeenCalled()
 	})
 
-	test.only('viewer:closeAttempted determines if destination is not an assessment', () => {
+	test('viewer:closeAttempted determines if destination is not an assessment', () => {
 		jest.spyOn(AssessmentStore, 'getAttemptHistory')
 		OboModel.create(getExampleAssessment())
 		AssessmentStore.getAttemptHistory.mockReturnValue()
 
 		expect(AssessmentStore).not.toHaveProperty('assessmentIds')
-		Dispatcher.trigger('nav:afterNavChange', {value: {to: 'not-going-to-find-me'}})
+		Dispatcher.trigger('nav:afterNavChange', { value: { to: 'not-going-to-find-me' } })
 		expect(AssessmentStore).toHaveProperty('assessmentIds')
 		expect(AssessmentStore.getAttemptHistory).not.toHaveBeenCalled()
 	})
@@ -903,5 +921,145 @@ describe('AssessmentStore', () => {
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
 		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
+	})
+
+	test('getOrCreateAssessmentSummaryById creates a new assessmentSummary', () => {
+		AssessmentStore.state = {
+			assessmentSummary: [{ assessmentId: 'existing-id1' }, { assessmentId: 'existing-id2, ' }]
+		}
+
+		expect(AssessmentStore.state.assessmentSummary).toHaveLength(2)
+		const result = AssessmentStore.getOrCreateAssessmentSummaryById('mock-assessment-id')
+		expect(AssessmentStore.state.assessmentSummary).toHaveLength(3)
+		expect(result).toBe(AssessmentStore.state.assessmentSummary[2])
+		expect(AssessmentStore.state.assessmentSummary[2]).toMatchInlineSnapshot(`
+		Object {
+		  "assessmentId": "mock-assessment-id",
+		  "importUsed": false,
+		  "scores": Array [],
+		  "unfinishedAttemptId": null,
+		}
+	`)
+	})
+
+	test('getOrCreateAssessmentSummaryById finds an existing assessmentSummary', () => {
+		AssessmentStore.state = {
+			assessmentSummary: [{ assessmentId: 'existing-id1' }, { assessmentId: 'existing-id2, ' }]
+		}
+
+		expect(AssessmentStore.state.assessmentSummary).toHaveLength(2)
+		const result = AssessmentStore.getOrCreateAssessmentSummaryById('existing-id1')
+		expect(AssessmentStore.state.assessmentSummary).toHaveLength(2)
+		expect(result).toBe(AssessmentStore.state.assessmentSummary[0])
+		expect(AssessmentStore.state.assessmentSummary[0]).toMatchInlineSnapshot(`
+		Object {
+		  "assessmentId": "existing-id1",
+		}
+	`)
+	})
+
+	test.only('updateStateAfterAttemptHistory', () => {
+		jest.spyOn(AssessmentStore, 'getOrCreateAssessmentSummaryById')
+		jest.spyOn(AssessmentStore, 'getOrCreateAssessmentById')
+		jest.spyOn(QuestionStore, 'updateStateByContext')
+
+		AssessmentStore.state = {
+			assessmentSummary: [],
+			assessments: []
+		}
+
+		const attemptsByAssessment = [
+			{
+				assessmentId: 'mock-assessment-id',
+				attempts: [
+					{
+						id: 'mock-attempt-id',
+						result: {
+							attemptScore: 10,
+							questionScores: [{ id: 10 }]
+						},
+						questionResponses: [
+							{
+								questionId: 'mock-q-id',
+								response: 'mock-resp'
+							}
+						]
+					}
+				]
+			}
+		]
+		AssessmentStore.state = {
+			assessments: {
+				['mock-assessment-id']: attemptsByAssessment
+			}
+		}
+		AssessmentStore.getOrCreateAssessmentSummaryById.mockReturnValueOnce({})
+		// AssessmentStore.getOrCreateAssessmentById.mockReturnValueOnce()
+		AssessmentStore.updateStateAfterAttemptHistory(attemptsByAssessment)
+		// expect(AssessmentStore.state).toHaveProperty('importHasBeenUsed', true)
+		// expect(AssessmentStore.state).toHaveProperty('importableScore', true)
+		expect(QuestionStore.updateStateByContext).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.updateStateByContext.mock.calls[0]).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "responses": Object {
+		      "mock-q-id": "mock-resp",
+		    },
+		    "scores": Object {
+		      "10": Object {
+		        "id": 10,
+		      },
+		    },
+		  },
+		  "assessmentReview:mock-attempt-id",
+		]
+	`)
+	})
+
+	test('getAttemptHistory does nothing after loading', async () => {
+		jest.spyOn(AssessmentStore, 'updateStateAfterAttemptHistory')
+		AssessmentStore.state = {
+			attemptHistoryLoadState: 'loaded'
+		}
+
+		await AssessmentStore.getAttemptHistory()
+		expect(AssessmentAPI.getAttemptHistory).not.toHaveBeenCalled()
+		expect(AssessmentStore.updateStateAfterAttemptHistory).not.toHaveBeenCalled()
+		expect(AssessmentStore.triggerChange).not.toHaveBeenCalled()
+	})
+
+	test('getAttemptHistory loads history, updates, and triggers change', async () => {
+		jest.spyOn(AssessmentStore, 'updateStateAfterAttemptHistory')
+		AssessmentStore.updateStateAfterAttemptHistory.mockReturnValue()
+		NavStore.getState.mockReturnValue({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+		AssessmentStore.state = {
+			attemptHistoryLoadState: 'none'
+		}
+		AssessmentAPI.getAttemptHistory.mockResolvedValueOnce({
+			status: 'ok',
+			value: 'mock-api-attempt-history'
+		})
+
+		await AssessmentStore.getAttemptHistory()
+		expect(AssessmentAPI.getAttemptHistory).toHaveBeenCalledTimes(1)
+		expect(AssessmentAPI.getAttemptHistory).toHaveBeenCalledWith({draftId: "mockDraftId", visitId: "mockVisitId"})
+		expect(AssessmentStore.updateStateAfterAttemptHistory).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.updateStateAfterAttemptHistory).toHaveBeenCalledWith('mock-api-attempt-history')
+		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.state).toHaveProperty('attemptHistoryLoadState', 'loaded')
+	})
+
+
+	test.only('startImportScoresWithAPICall errors', () => {
+		AssessmentAPI.importScore.mockReturnValueOnce('mock-error')
+		AssessmentStore.state = {
+			importableScore: {
+				assessmentScoreId: 10
+			}
+		}
+		expect(AssessmentStore.startImportScoresWithAPICall()).rejects.toBe('mock-error')
 	})
 })

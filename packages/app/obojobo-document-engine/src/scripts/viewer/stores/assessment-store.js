@@ -142,7 +142,6 @@ class AssessmentStore extends Store {
 
 			// copy ltiState into state
 			stateAssessment.lti = assessmentItem.ltiState
-
 			// find highest attemptScore
 			stateAssessment.highestAttemptScoreAttempts = findItemsWithMaxPropValue(
 				attempts,
