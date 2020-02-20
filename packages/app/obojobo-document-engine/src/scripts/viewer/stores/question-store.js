@@ -274,13 +274,14 @@ class QuestionStore extends Store {
 
 			'question:scoreSet': payload => {
 				const scoreId = uuid()
-				const { itemId, context, score, feedbackText, detailedText } = payload.value
+				const { itemId, context, score, details, feedbackText, detailedText } = payload.value
 
 				const contextState = this.getOrCreateContextState(context)
 
 				contextState.scores[itemId] = {
 					id: scoreId,
 					score,
+					details,
 					feedbackText,
 					detailedText,
 					itemId
@@ -301,12 +302,13 @@ class QuestionStore extends Store {
 				APIUtil.postEvent({
 					draftId: model.getRoot().get('draftId'),
 					action: 'question:scoreSet',
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
 						id: scoreId,
 						itemId: itemId,
 						score: score,
+						details: details,
 						context: context
 					}
 				})

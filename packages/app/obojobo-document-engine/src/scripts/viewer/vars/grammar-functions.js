@@ -191,6 +191,7 @@ class GrammarFunctions {
 
 	// ==== Bitwise Methods ====
 
+	//@TODO: Change these to simple operands '<<', '&', etc
 	bit_lshift(n, amount) {
 		return n << amount
 	}
@@ -272,27 +273,27 @@ class GrammarFunctions {
 	// ==== Print Methods ====
 
 	to_decimal(n) {
-		return Decimal.getString(big(n))
+		return Decimal.getStringForBigValue(big(n))
 	}
 
 	to_scientific(n) {
-		return Scientific.getString(big(n))
+		return Scientific.getStringForBigValue(big(n))
 	}
 
 	to_fraction(n) {
-		return Fractional.getString(big(n))
+		return Fractional.getStringForBigValue(big(n))
 	}
 
 	to_hex(n) {
-		return Hexadecimal.getString(big(n))
+		return Hexadecimal.getStringForBigValue(big(n))
 	}
 
 	to_octal(n) {
-		return Octal.getString(big(n))
+		return Octal.getStringForBigValue(big(n))
 	}
 
 	to_binary(n) {
-		return Binary.getString(big(n))
+		return Binary.getStringForBigValue(big(n))
 	}
 
 	ord(n) {

@@ -110,11 +110,12 @@ const QuestionUtil = {
 		})
 	},
 
-	setScore(itemId, score, feedbackText, detailedText, context) {
+	setScore(itemId, score, details, feedbackText, detailedText, context) {
 		return Dispatcher.trigger('question:scoreSet', {
 			value: {
 				itemId,
 				score,
+				details,
 				feedbackText,
 				detailedText,
 				context
@@ -157,7 +158,7 @@ const QuestionUtil = {
 		return contextState.responses[model.get('id')] || null
 	},
 
-	isAnswered(state, model, context) {
+	hasResponse(state, model, context) {
 		return QuestionUtil.getResponse(state, model, context) !== null
 	},
 
@@ -166,6 +167,17 @@ const QuestionUtil = {
 		if (!contextState) return false
 
 		return contextState.revealedQuestions[model.get('id')] || false
+	},
+
+	isScored(state, model, context) {
+		return QuestionUtil.getScoreForModel(state, model, context) !== null
+	},
+
+	hasUnscoredResponse(state, model, context) {
+		return (
+			QuestionUtil.hasResponse(state, model, context) &&
+			!QuestionUtil.isScored(state, model, context)
+		)
 	},
 
 	getData(state, model, context, key) {
@@ -224,3 +236,74 @@ const QuestionUtil = {
 }
 
 export default QuestionUtil
+
+// x = {
+// 	id: '0a4c69dd-2931-4140-8796-a9dd297413d8',
+// 	score: 100,
+// 	itemId: '65940371-51c3-44c1-bfc7-517ba0f64389',
+// 	context: 'practice',
+// 	details: {
+// 		score: 100,
+// 		matchingOutcome: {
+// 			rule: {
+// 				round: 'none',
+// 				score: 100,
+// 				value: {
+// 					max: '12',
+// 					min: '12',
+// 					unit: '',
+// 					isEmpty: false,
+// 					isMaxInclusive: true,
+// 					isMinInclusive: true
+// 				},
+// 				sigFigs: {
+// 					max: null,
+// 					min: null,
+// 					isEmpty: false,
+// 					isMaxInclusive: null,
+// 					isMinInclusive: null
+// 				},
+// 				allUnits: [''],
+// 				decimals: {
+// 					max: null,
+// 					min: null,
+// 					isEmpty: false,
+// 					isMaxInclusive: null,
+// 					isMinInclusive: null
+// 				},
+// 				feedback: {
+// 					id: 'e04737d6-ec2e-4a11-8a2f-27b40e1fe035',
+// 					type: 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback',
+// 					content: {},
+// 					children: [
+// 						{
+// 							id: '7c71cd13-608a-4950-8e47-6e8619ae0717',
+// 							type: 'ObojoboDraft.Chunks.Text',
+// 							content: {
+// 								textGroup: [{ data: { indent: 0 }, text: { value: 'cool', styleList: [] } }]
+// 							},
+// 							children: []
+// 						}
+// 					]
+// 				},
+// 				errorType: 'percent',
+// 				isInteger: null,
+// 				errorValue: 5,
+// 				unitsMatch: 'matches-unit',
+// 				allowedTypes: ['scientific', 'decimal', 'fractional', 'hex', 'octal', 'binary'],
+// 				scientificTypes: ['apos', 'asterisk', 'e', 'ee', 'x'],
+// 				isFractionReduced: null,
+// 				isValidScientific: null,
+// 				unitsAreCaseSensitive: false
+// 			},
+// 			isMatched: true,
+// 			scoreOutcome: { errorType: 'percent', isWithinError: true, isExactlyCorrect: true },
+// 			isExpectedType: true,
+// 			isExpectedUnits: true,
+// 			isExpectedInteger: true,
+// 			isExpectedNumSigFigs: true,
+// 			isExpectedScientific: true,
+// 			isExpectedFractionReduced: true
+// 		}
+// 	}
+// }

@@ -4,66 +4,15 @@ import {
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,
 	WITHIN_A_RANGE,
-	PRECISE_RESPONSE,
 	requirementDropdown,
 	marginDropdown,
-	precisionDropdown,
 	simplifedToFullText
 } from '../../constants'
 
 const NumericOption = ({ numericChoice, onHandleInputChange, onClickDropdown }) => {
-	const { requirement, answer, start, end, margin, precision, type } = numericChoice
+	const { requirement, answer, start, end, margin, type } = numericChoice
 
 	switch (simplifedToFullText[requirement]) {
-		case PRECISE_RESPONSE:
-			return (
-				<tr>
-					<td>
-						<select
-							className="select-item"
-							name="requirement"
-							value={simplifedToFullText[requirement]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
-						>
-							{requirementDropdown.map(requirement => (
-								<option key={requirement}>{requirement}</option>
-							))}
-						</select>
-					</td>
-					<td>
-						<select
-							className="select-item"
-							name="type"
-							value={simplifedToFullText[type]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
-						>
-							{precisionDropdown.map(requirement => (
-								<option key={requirement}>{requirement}</option>
-							))}
-						</select>
-					</td>
-					<td>
-						<input
-							className="input-item"
-							name="answer"
-							value={answer || ''}
-							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-						/>
-					</td>
-					<td>
-						<input
-							className="input-item"
-							name="precision"
-							value={precision || ''}
-							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-						/>
-					</td>
-				</tr>
-			)
 		case WITHIN_A_RANGE:
 			return (
 				<tr>

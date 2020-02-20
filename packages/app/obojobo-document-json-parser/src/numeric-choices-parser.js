@@ -19,12 +19,6 @@ const numericChoicesParser = (numericChoices, childrenParser) => {
 					attrs.type = rule.type
 					break
 
-				case 'precise':
-					attrs.type = rule.type
-					attrs.precision = rule.precision
-					attrs.answer = rule.answer
-					break
-
 				case 'exact':
 				default:
 					attrs.requirement = 'exact'

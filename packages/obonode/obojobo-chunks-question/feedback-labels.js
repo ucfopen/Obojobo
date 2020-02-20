@@ -10,12 +10,12 @@ const getRandomItem = arrayOfOptions => {
 	return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 }
 
-const getCorrectLabels = (correctLabels, isReview, isSurvey, isAnswered) => {
-	if (isReview && isSurvey && isAnswered) {
+const getCorrectLabels = (correctLabels, isReview, isSurvey, hasResponse) => {
+	if (isReview && isSurvey && hasResponse) {
 		return DEFAULT_SURVEY_REVIEW_LABELS
 	}
 
-	if (isReview && isSurvey && !isAnswered) {
+	if (isReview && isSurvey && !hasResponse) {
 		return DEFAULT_SURVEY_UNANSWERED_LABELS
 	}
 
@@ -46,10 +46,10 @@ const getIncorrectLabels = (incorrectLabels, isReview) => {
 	return DEFAULT_INCORRECT_LABELS
 }
 
-const getLabel = (correctLabels, incorrectLabels, score, isReview, isSurvey, isAnswered) => {
+const getLabel = (correctLabels, incorrectLabels, score, isReview, isSurvey, hasResponse) => {
 	return getRandomItem(
 		score === 100 || score === 'no-score'
-			? getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+			? getCorrectLabels(correctLabels, isReview, isSurvey, hasResponse)
 			: getIncorrectLabels(incorrectLabels, isReview)
 	)
 }

@@ -45,7 +45,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		this.sortIds()
 	}
 
-	getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered) {
+	getCorrectLabels(correctLabels, isReview, isSurvey, hasResponse) {
 		if (correctLabels) {
 			return correctLabels
 		}
@@ -128,7 +128,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all': {
 				if (correct.size !== responses.size) {
-					return 0
+					return { score: 0, details: null }
 				}
 
 				let score = 100
@@ -138,7 +138,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 					}
 				})
 
-				return score
+				return { score, details: null }
 			}
 
 			default: {
@@ -147,11 +147,11 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 
 				for (const id of correctArr) {
 					if (responses.has(id)) {
-						return 100
+						return { score: 100, details: null }
 					}
 				}
 
-				return 0
+				return { score: 0, details: null }
 			}
 		}
 	}
@@ -224,8 +224,8 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 	// 	return QuestionUtil.getScoreClass(this.getScore())
 	// }
 
-	// getIsAnswered() {
-	// 	return QuestionUtil.isAnswered(
+	// gethasResponse() {
+	// 	return QuestionUtil.hasResponse(
 	// 		this.props.moduleData.questionState,
 	// 		this.getQuestionModel(),
 	// 		this.props.moduleData.navState.context
@@ -255,12 +255,12 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 	// 	}
 	// }
 
-	// getFeedbackLabels(isReview, isSurvey, isAnswered) {
+	// getFeedbackLabels(isReview, isSurvey, hasResponse) {
 	// 	const { correctLabels, incorrectLabels } = this.props.model.modelState
 
 	// 	return {
 	// 		correct: this.getRandomItem(
-	// 			this.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+	// 			this.getCorrectLabels(correctLabels, isReview, isSurvey, hasResponse)
 	// 		),
 	// 		incorrect: this.getRandomItem(this.getIncorrectLabels(incorrectLabels, isReview))
 	// 	}
@@ -307,14 +307,14 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		const score = this.props.score
 		const scoreClass = this.props.scoreClass
 		const sortedChoiceModels = this.getSortedChoiceModels()
-		const isAnswered = this.props.isAnswered
+		const hasResponse = this.props.hasResponse
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
 			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
 			` is-type-${this.props.type}` +
-			isOrNot(isAnswered, 'answered') +
+			isOrNot(hasResponse, 'responded-to') +
 			` ${scoreClass}` +
 			// isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')

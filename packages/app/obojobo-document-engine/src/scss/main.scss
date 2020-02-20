@@ -18,6 +18,8 @@ body {
 	margin: 0;
 	-webkit-overflow-scrolling: touch;
 	font-size: $font-size;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 #viewer-app {

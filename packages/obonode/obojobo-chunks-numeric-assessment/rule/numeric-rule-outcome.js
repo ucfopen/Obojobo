@@ -42,7 +42,7 @@ module.exports = class NumericRuleOutcome {
 	 * newRange.toString() // [1,3]
 	 */
 	static getPercentErrorRange(rule) {
-		const percentError = rule.errorValue
+		const percentError = rule.errorValue / 100
 		const bigValueRange = rule.value.toBigValueRange()
 		let min = null
 		let max = null
@@ -121,41 +121,38 @@ module.exports = class NumericRuleOutcome {
 	static getScoreOutcome(studentNumericEntry, rule) {
 		const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
 
-		const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
-			studentNumericEntry,
-			rule
-		)
-		const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
-			studentNumericEntry,
-			rule
-		)
-
-		// roundedStudentAnswer.numericInstance.round(
-		// 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
+		// const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
+		// 	studentNumericEntry,
+		// 	rule
 		// )
-		console.log('rounded correct answer=', roundedBigValueRange.toString())
-		// debugger
-		console.log('students answer=', roundedStudentAnswer.toString())
-		console.log('value=', rule.value.max.numericInstance)
-		console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
-		console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
-		// const errorAmount = {
-		// 	percentError: '@TODO',
-		// 	absoluteError: '@TODO'
-		// }
-
-		const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
-		// console.log(
-		// 	'rbvr',
-		// 	roundedBigValueRange.toString(),
-		// 	studentNumericEntry.numericInstance.bigValue.toString(),
-		// 	roundedBigValueRange.isValueInRange(studentNumericEntry.numericInstance.bigValue)
+		// const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
+		// 	studentNumericEntry,
+		// 	rule
 		// )
-		//@TODO
-		//const isWithinError = NumericRuleOutcome.getIsWithinError(rule, roundedBigValueRange)
+
+		// // roundedStudentAnswer.numericInstance.round(
+		// // 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
+		// // )
+		// console.log('rounded correct answer=', roundedBigValueRange.toString())
+		// // debugger
+		// console.log('students answer=', roundedStudentAnswer.toString())
+		// console.log('value=', rule.value.max.numericInstance)
+		// console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
+		// console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
+		// // const errorAmount = {
+		// // 	percentError: '@TODO',
+		// // 	absoluteError: '@TODO'
+		// // }
+
+		// const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
+
+		const isWithinError = NumericRuleOutcome.getIsWithinError(
+			rule,
+			studentNumericEntry.numericInstance.bigValue
+		)
 
 		return {
-			roundedBigValueRange,
+			// roundedBigValueRange,
 			// errorAmount,
 			isWithinError,
 			errorType: rule.errorType,

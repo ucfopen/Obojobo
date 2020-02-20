@@ -102,45 +102,65 @@ export default class Question extends OboQuestionComponent {
 	}
 
 	onFormSubmit(event) {
+		event.preventDefault()
+
+		if (this.getMode() !== 'practice') {
+			return
+		}
+
+		this.submitResponse()
+
+		event.target.reset()
+	}
+
+	submitResponse() {
 		const model = this.props.model
 		const id = model.get('id')
 		const modelState = model.modelState
 		const context = this.props.moduleData.navState.context
 		const isSurvey = modelState.type === 'survey'
 
-		event.preventDefault()
-
-		if (this.props.isReview) return
-
-		const score = isSurvey ? 'no-score' : this.assessmentComponentRef.current.calculateScore()
-		const detailedText = this.assessmentComponentRef.current.getDetails(score) || null
-		// const feedbackText = getLabel(
-		// 	modelState.correctLabels,
-		// 	modelState.incorrectLabel,
-		// 	score,
-		// 	false,
-		// 	isSurvey,
-		// 	true
-		// )
-
-		const feedbackText = getLabel(
-			modelState.correctLabels,
-			modelState.incorrectLabel,
-			score,
-			this.props.mode === 'review',
-			isSurvey,
-			true
-		)
-
-		QuestionUtil.setScore(id, score, feedbackText, detailedText, context)
+		this.scoreResponse()
 
 		if (isSurvey) {
 			QuestionUtil.submitResponse(id, context)
 		} else {
 			QuestionUtil.checkAnswer(id, context)
 		}
+	}
 
-		event.target.reset()
+	scoreResponse() {
+		if (this.props.isReview) return
+
+		const model = this.props.model
+		const id = model.get('id')
+		const modelState = model.modelState
+		const context = this.props.moduleData.navState.context
+		const isSurvey = modelState.type === 'survey'
+
+		const cacluatedScoreResponse = isSurvey
+			? 'no-score'
+			: this.assessmentComponentRef.current.calculateScore()
+		const detailedText =
+			this.assessmentComponentRef.current.getDetails(cacluatedScoreResponse.score) || null
+
+		const feedbackText = getLabel(
+			modelState.correctLabels,
+			modelState.incorrectLabel,
+			cacluatedScoreResponse.score,
+			this.props.mode === 'review',
+			isSurvey,
+			true
+		)
+
+		QuestionUtil.setScore(
+			id,
+			cacluatedScoreResponse.score,
+			cacluatedScoreResponse.details,
+			feedbackText,
+			detailedText,
+			context
+		)
 	}
 
 	onClickReset(event) {
@@ -154,7 +174,19 @@ export default class Question extends OboQuestionComponent {
 	onClickReveal(event) {
 		event.preventDefault()
 
+		if (
+			QuestionUtil.hasUnscoredResponse(
+				this.props.moduleData.questionState,
+				this.props.model,
+				this.props.moduleData.navState.context
+			)
+		) {
+			this.scoreResponse()
+		}
+
 		this.reveal()
+
+		this.nextFocus = FOCUS_TARGET_RESULTS
 	}
 
 	retry() {
@@ -168,6 +200,7 @@ export default class Question extends OboQuestionComponent {
 		// 	this.props.moduleData.navState.context,
 		// 	this.props.moduleData.navState.context.split(':')[1],
 		// 	this.props.moduleData.navState.context.split(':')[2]
+
 		QuestionUtil.revealAnswer(this.props.model.get('id'), this.props.moduleData.navState.context)
 	}
 
@@ -301,12 +334,12 @@ export default class Question extends OboQuestionComponent {
 		score,
 		isReview,
 		isSurvey,
-		isAnswered
+		hasResponse
 	) {
 		const feedbackText = QuestionUtil.getFeedbackTextForModel(questionState, model, context)
 		if (feedbackText) return feedbackText
 
-		return getLabel(correctLabels, incorrectLabels, score, isReview, isSurvey, isAnswered)
+		return getLabel(correctLabels, incorrectLabels, score, isReview, isSurvey, hasResponse)
 	}
 
 	getInstructions() {
@@ -377,8 +410,8 @@ export default class Question extends OboQuestionComponent {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const isAnswered = QuestionUtil.isAnswered(questionState, model, context)
-		const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
+		const hasResponse = QuestionUtil.hasResponse(questionState, model, context)
+		const isAnswerScored = QuestionUtil.isScored(questionState, model, context)
 		const isAnswerRevealed = QuestionUtil.isAnswerRevealed(questionState, model, context)
 		const assessment = this.constructor.getQuestionAssessmentModel(model)
 		const shouldShowRevealAnswerButton = this.getShouldShowRevealAnswerButton(
@@ -398,7 +431,7 @@ export default class Question extends OboQuestionComponent {
 			score,
 			mode === 'review',
 			type === 'survey',
-			isAnswered
+			hasResponse
 		)
 		const detailedText = QuestionUtil.getDetailedTextForModel(questionState, model, context)
 		const isShowingExplanationValue = this.isShowingExplanation()
@@ -420,7 +453,7 @@ export default class Question extends OboQuestionComponent {
 			` is-${viewState}` +
 			` is-type-${type}` +
 			` is-mode-${mode}` +
-			isOrNot(isAnswered, 'answered') +
+			isOrNot(hasResponse, 'responded-to') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -460,8 +493,7 @@ export default class Question extends OboQuestionComponent {
 									moduleData={this.props.moduleData}
 									mode={mode}
 									type={type}
-									isAnswered={isAnswered}
-									// isAnswerRevealed={isAnswerRevealed}
+									hasResponse={hasResponse}
 									score={score}
 									scoreClass={scoreClass}
 									feedbackText={feedbackText}
@@ -474,7 +506,7 @@ export default class Question extends OboQuestionComponent {
 						{!isAssessmentQuestion ? (
 							<QuestionFooter
 								score={score}
-								isAnswered={isAnswered}
+								hasResponse={hasResponse}
 								shouldShowRevealAnswerButton={shouldShowRevealAnswerButton}
 								isAnswerRevealed={isAnswerRevealed}
 								mode={mode}
@@ -520,7 +552,7 @@ export default class Question extends OboQuestionComponent {
 	renderContentOnly() {
 		const score = this.getScore()
 		const scoreClass = QuestionUtil.getScoreClass(score)
-		const isAnswered = QuestionUtil.isAnswered(
+		const hasResponse = QuestionUtil.hasResponse(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
@@ -534,7 +566,7 @@ export default class Question extends OboQuestionComponent {
 			' is-active' +
 			` is-mode-${mode}` +
 			` is-type-${type}` +
-			isOrNot(isAnswered, 'answered')
+			isOrNot(hasResponse, 'answered')
 
 		return (
 			<OboComponent

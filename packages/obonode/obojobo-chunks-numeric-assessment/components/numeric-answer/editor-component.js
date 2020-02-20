@@ -4,7 +4,7 @@ import React from 'react'
 
 import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
-import { MARGIN_OF_ERROR, PRECISE_RESPONSE, fullTextToSimplifed } from '../../constants'
+import { MARGIN_OF_ERROR, fullTextToSimplifed } from '../../constants'
 
 const NumericInput = props => {
 	const onHandleScoreChange = () => {
@@ -39,18 +39,8 @@ const NumericInput = props => {
 		if (name === 'requirement') {
 			updatenumericChoice = {
 				[name]: fullTextToSimplifed[value],
-				score: numericChoice.score
-			}
-			switch (value) {
-				case PRECISE_RESPONSE: {
-					updatenumericChoice.type = 'sig-figs'
-					break
-				}
-
-				case MARGIN_OF_ERROR: {
-					updatenumericChoice.type = 'percent'
-					break
-				}
+				score: numericChoice.score,
+				type: 'percent'
 			}
 		} else {
 			updatenumericChoice = {

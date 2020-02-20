@@ -20,7 +20,7 @@ const buttonLabels = {
 
 const QuestionFooter = props => {
 	const score = props.score
-	const isAnswered = props.isAnswered
+	const hasResponse = props.hasResponse
 	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 	const detailedText = props.detailedText
 	const isAnswerRevealed = props.isAnswerRevealed
@@ -40,7 +40,7 @@ const QuestionFooter = props => {
 							ariaLabel={buttonResetAriaLabel}
 						/>
 					) : (
-						<Button value={buttonSubmitLabel} disabled={!isAnswered} isSubmittable />
+						<Button value={buttonSubmitLabel} disabled={!hasResponse} isSubmittable />
 					)}
 				</div>
 			) : null}

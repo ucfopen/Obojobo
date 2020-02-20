@@ -155,7 +155,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 				this.setFeedback(feedback)
 
-				return results.details.score
+				return {
+					score: results.details.score,
+					details: results.details
+				}
 			}
 		}
 	}
@@ -446,7 +449,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	render() {
 		const score = this.props.score
 		const scoreClass = this.props.scoreClass
-		const isAnswered = this.props.isAnswered
+		const hasResponse = this.props.hasResponse
 		const isScored = score !== null
 		// const isAnswerRevealed = this.props.isAnswerRevealed
 		const feedback = this.getFeedback()
@@ -468,7 +471,11 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		} catch (e) {
 			results = null
 		}
-		console.log('__r', results)
+		const matchingCorrectRule =
+			results && results.details && results.details.matchingOutcome
+				? results.details.matchingOutcome.rule
+				: null
+		console.log('__r', results, matchingCorrectRule)
 		//@END TODO
 
 		const responseValue =
@@ -487,7 +494,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				!(isScored && !isExactlyCorrect) && responseValue.length >= LONG_RESPONSE_NUM_CHARS,
 				'long-response'
 			) +
-			isOrNot(isAnswered, 'answered') +
+			isOrNot(hasResponse, 'responded-to') +
 			` ${scoreClass}` +
 			// isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
@@ -512,15 +519,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}
 								<span className="value">
-									{this.renderRangeSummary(this.getRangeSummary(correctRules[0].value))}
+									{this.renderRangeSummary(this.getRangeSummary(matchingCorrectRule.value))}
 								</span>
 								)
 							</span>
 						) : null}
-						{responseValue.length > 7 ? (
-							<span class="matching-correct-answer" style={{ color: 'black' }}>
-								&rarr; <span className="value">{responseValue.substr(0, 7)}</span> (Decimal places
-								after 5 are ignored)
+						{!isScored && hasResponse ? (
+							<span className="matching-correct-answer" style={{ color: 'rgba(0, 0, 0, 0.3)' }}>
+								Saved answer: &quot;<span className="value">{responseValue}</span>&quot;
 							</span>
 						) : null}
 					</div>

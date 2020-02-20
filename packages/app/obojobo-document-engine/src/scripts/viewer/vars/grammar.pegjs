@@ -13,6 +13,8 @@ customFunctionDefinition
 		return { name:fnName, args, expression }
 	}
 
+//@TODO: Add bitwise operators
+
 comparision
 	= left:additive _ "<" _ right:comparision { return parseFloat(left) < parseFloat(right) }
 	/ left:additive _ ">" _ right:comparision { return parseFloat(left) > parseFloat(right) }
