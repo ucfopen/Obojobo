@@ -407,6 +407,33 @@ describe('PostTest', () => {
 		})
 	})
 
+	test('PostTest component with review with imported score', () => {
+		model.modelState.review = FULL_REVIEW_AFTER_ALL
+		moduleData.assessmentState = { importHasBeenUsed: true }
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{
+				scoreDetails: { attemptNumber: 'mockAttemptNumber' }
+			}
+		])
+		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(true)
+
+		const component = renderer.create(
+			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
+		)
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
+
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
+	})
+
 	test('PostTest component with review after all attempts - no attempts remaining', () => {
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)

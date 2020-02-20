@@ -1,12 +1,16 @@
 import getScoreComparisionData from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-comparision-data.js'
 
 describe('getScoreChangeData', () => {
+	test('returns when requesting the last item when theres only one', () => {
+		const scoreDetails = [{ assessmentScore: 10 }]
+
+		const result = getScoreComparisionData(scoreDetails, 1)
+		expect(result).toHaveProperty('newInfo', scoreDetails[0])
+		expect(result).toHaveProperty('prevHighestInfo', null)
+	})
 
 	test('returns when requesting an attempt number that doesnt exist', () => {
-		const scoreDetails = [
-			{ assessmentScore: 10 },
-			{ assessmentScore: 20 }
-		]
+		const scoreDetails = [{ assessmentScore: 10 }, { assessmentScore: 20 }]
 
 		const result = getScoreComparisionData(scoreDetails, 50)
 		expect(result).toHaveProperty('newInfo', undefined) //eslint-disable-line no-undefined
@@ -14,10 +18,7 @@ describe('getScoreChangeData', () => {
 	})
 
 	test('Returns when previous score is lower then newest ', () => {
-		const scoreDetails = [
-			{ assessmentScore: 10 },
-			{ assessmentScore: 20 }
-		]
+		const scoreDetails = [{ assessmentScore: 10 }, { assessmentScore: 20 }]
 
 		const result = getScoreComparisionData(scoreDetails, 2)
 		expect(result).toHaveProperty('newInfo', scoreDetails[1])

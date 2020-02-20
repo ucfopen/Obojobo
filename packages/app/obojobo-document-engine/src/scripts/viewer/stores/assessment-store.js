@@ -211,19 +211,20 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	getAttemptHistory() {
+	async getAttemptHistory() {
 		if (this.state.attemptHistoryLoadState === 'none') {
 			this.state.attemptHistoryLoadState = 'loading'
 			const { draftId, visitId } = NavStore.getState()
-			return AssessmentAPI.getAttemptHistory({ draftId, visitId }).then(res => {
-				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res)
-				}
 
-				this.updateStateAfterAttemptHistory(res.value)
-				this.state.attemptHistoryLoadState = 'loaded'
-				this.triggerChange()
-			})
+			const res = await AssessmentAPI.getAttemptHistory({ draftId, visitId })
+
+			if (res.status === 'error') {
+				return ErrorUtil.errorResponse(res)
+			}
+
+			this.updateStateAfterAttemptHistory(res.value)
+			this.state.attemptHistoryLoadState = 'loaded'
+			this.triggerChange()
 		}
 	}
 
@@ -235,7 +236,7 @@ class AssessmentStore extends Store {
 			importedAssessmentScoreId: this.state.importableScore.assessmentScoreId
 		}).then(result => {
 			if (result.status !== 'ok') {
-				throw 'An error occured importing your score.'
+				return ErrorUtil.errorResponse(result)
 			}
 
 			this.state.importHasBeenUsed = true

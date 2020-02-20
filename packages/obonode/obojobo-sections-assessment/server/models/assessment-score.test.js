@@ -174,8 +174,7 @@ describe('AssessmentScore', () => {
 	test('create provides its own db ref', async () => {
 		const props = {
 			id: '55',
-			assessment_score_id: '34',
-			score: '44.6'
+			assessment_score_id: '34'
 		}
 		db.one.mockResolvedValueOnce({ id: 'new-id' })
 		const score = new AssessmentScore(props)
@@ -186,7 +185,6 @@ describe('AssessmentScore', () => {
 		expect(result).toBe(score) // should return itself for chaining
 		expect(result.id).toBe('new-id') // should have the new id
 	})
-
 
 	test('importAsNewScore clones, preps, and creates a new score', async () => {
 		const props = {
@@ -203,13 +201,11 @@ describe('AssessmentScore', () => {
 
 		expect(createFn).toHaveBeenCalledTimes(1) // should have called insert query
 		expect(result).not.toBe(score) // should be a new object
-		expect(result).toHaveProperty('id', "new-id")
+		expect(result).toHaveProperty('id', 'new-id')
 		expect(result).toHaveProperty('scoreDetails.attemptNumber', 1)
-		expect(result).toHaveProperty('resourceLinkId', "mock-resource-id")
+		expect(result).toHaveProperty('resourceLinkId', 'mock-resource-id')
 		expect(result).toHaveProperty('importedAssessmentScoreId', 55)
 		expect(result).toHaveProperty('isImported', true)
 		expect(result).toHaveProperty('attemptId', 'mock-attempt-id')
-
-
 	})
 })

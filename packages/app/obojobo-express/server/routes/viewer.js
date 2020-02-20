@@ -35,6 +35,7 @@ router
 		// fire an event and allow nodes to alter node visit
 		// Warning - I don't thinks async can work in any listeners
 		oboEvents.emit(Visit.EVENT_BEFORE_NEW_VISIT, { req })
+
 		const nodeVisitOptions = req.visitOptions ? req.visitOptions : {}
 
 		return Visit.createVisit(
@@ -81,10 +82,15 @@ router
 // mounted as /view/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, requireCurrentVisit, checkValidationRules])
+	.get([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireVisitId,
+		requireCurrentVisit,
+		checkValidationRules
+	])
 	.get((req, res) => {
-		return req
-			.currentDocument
+		return req.currentDocument
 			.yell('internal:sendToClient', req, res)
 			.then(() => {
 				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
@@ -97,7 +103,10 @@ router
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
 					visitId: req.params.visitId,
-					payload: { visitId: req.params.visitId, isScoreImportable: req.currentDocument.score_importable },
+					payload: {
+						visitId: req.params.visitId,
+						isScoreImportable: req.currentDocument.score_importable
+					},
 					eventVersion: '1.2.0',
 					isPreview: req.currentDocument.is_preview,
 					caliperPayload: createViewerOpenEvent({

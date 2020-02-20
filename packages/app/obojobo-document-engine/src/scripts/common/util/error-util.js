@@ -23,7 +23,6 @@ const ErrorUtil = {
 					return 'Rejected'
 			}
 		})()
-
 		return ErrorUtil.show(title, res.value.message)
 	}
 }

@@ -13,7 +13,7 @@ describe('Assessment server Events', () => {
 		// locate the call with the given event name
 		const matchingCall = oboEvents.on.mock.calls.find(args => args[0] === eventName)
 		// error if not found
-		if(!matchingCall) throw Error(`event listener ${eventName} not found`)
+		if (!matchingCall) throw Error(`event listener ${eventName} not found`)
 		// return the callbackFn
 		return matchingCall[1]
 	}
@@ -115,10 +115,9 @@ describe('Assessment server Events', () => {
 			body: {},
 			params: {}
 		}
-		eventListener({req: mockReq})
+		eventListener({ req: mockReq })
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
-
 	})
 
 	test('EVENT_BEFORE_NEW_VISIT uses config allowImportDefault false', () => {
@@ -128,7 +127,7 @@ describe('Assessment server Events', () => {
 			body: {},
 			params: {}
 		}
-		eventListener({req: mockReq})
+		eventListener({ req: mockReq })
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', false)
 	})
@@ -142,7 +141,7 @@ describe('Assessment server Events', () => {
 			},
 			params: {}
 		}
-		eventListener({req: mockReq})
+		eventListener({ req: mockReq })
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
 	})
@@ -156,7 +155,7 @@ describe('Assessment server Events', () => {
 				score_import: true
 			}
 		}
-		eventListener({req: mockReq})
+		eventListener({ req: mockReq })
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
 	})
@@ -170,8 +169,50 @@ describe('Assessment server Events', () => {
 				['its-a-me']: 'mario'
 			}
 		}
-		eventListener({req: mockReq})
+		eventListener({ req: mockReq })
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.its-a-me', 'mario')
+	})
+
+	test('EVENT_BEFORE_NEW_VISIT handles score_import "true" ', () => {
+		require('obojobo-express/server/config').general.allowImportDefault = false
+		const eventListener = getListenerFor('EVENT_BEFORE_NEW_VISIT')
+		const mockReq = {
+			body: {},
+			params: {
+				score_import: 'true'
+			}
+		}
+		eventListener({ req: mockReq })
+		expect(mockReq).toHaveProperty('visitOptions')
+		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
+	})
+
+	test('EVENT_BEFORE_NEW_VISIT handles score_import 1 ', () => {
+		require('obojobo-express/server/config').general.allowImportDefault = false
+		const eventListener = getListenerFor('EVENT_BEFORE_NEW_VISIT')
+		const mockReq = {
+			body: {},
+			params: {
+				score_import: 1
+			}
+		}
+		eventListener({ req: mockReq })
+		expect(mockReq).toHaveProperty('visitOptions')
+		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
+	})
+
+	test('EVENT_BEFORE_NEW_VISIT handles score_import "1" ', () => {
+		require('obojobo-express/server/config').general.allowImportDefault = false
+		const eventListener = getListenerFor('EVENT_BEFORE_NEW_VISIT')
+		const mockReq = {
+			body: {},
+			params: {
+				score_import: '1'
+			}
+		}
+		eventListener({ req: mockReq })
+		expect(mockReq).toHaveProperty('visitOptions')
+		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
 	})
 })

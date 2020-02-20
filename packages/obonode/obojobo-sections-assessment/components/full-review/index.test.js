@@ -239,7 +239,7 @@ describe('FullReview', () => {
 						{
 							id: 'questionId'
 						}
-					],
+					]
 				},
 				state: {
 					questionModels: {
@@ -294,6 +294,62 @@ describe('FullReview', () => {
 						}
 					],
 					attemptScore: 80.34
+				},
+				state: {
+					questionModels: {
+						questionId: questionJSON
+					}
+				}
+			}
+		]
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(7)
+		AssessmentUtil.getNumCorrect.mockReturnValueOnce(6)
+
+		const component = renderer.create(
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('FullReview component with assessment review context', () => {
+		const moduleData = {
+			assessmentState: 'assessmentReview:mockAssessmentState',
+			navState: {
+				context: 'assessmentReview:mockAttemptId'
+			},
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: [],
+						responses: []
+					}
+				}
+			},
+			focusState: {}
+		}
+		const model = OboModel.create(assessmentJSON)
+
+		// mock last attempt taken
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
+		// mock highest attempt
+		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		// mock attempt taken
+		const attempts = [
+			{
+				id: 'mockAttemptId',
+				attemptNumber: 3,
+				assessmentScore: 50,
+				isImported: true,
+				completedAt: '2018-06-05 20:28:11.228294+00',
+				result: {
+					questionScores: [
+						{
+							id: 'questionId'
+						}
+					],
+					attemptScore: 50
 				},
 				state: {
 					questionModels: {
@@ -387,7 +443,7 @@ describe('FullReview', () => {
 				completedAt: '2018-06-05 20:28:11.228294+00',
 				result: {
 					questionScores: []
-				},
+				}
 			}
 		]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
@@ -414,9 +470,9 @@ describe('FullReview', () => {
 			attemptNumber: 3,
 			assessmentScore: 80.34,
 			completedAt: '2018-06-05 20:28:11.228294+00',
-				result: {
-					questionScores: []
-				},
+			result: {
+				questionScores: []
+			}
 		}
 
 		// mock last attempt taken
