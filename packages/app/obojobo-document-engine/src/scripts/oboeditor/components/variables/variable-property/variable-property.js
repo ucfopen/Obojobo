@@ -12,6 +12,7 @@ const VariableProperties = props => {
 	if (!variable) return null
 
 	const showDeleteModal = () => {
+		// eslint-disable-next-line no-alert, no-undef
 		if (confirm('Are you sure you want to delete this variable?')) {
 			props.onDeleteVariable()
 		}

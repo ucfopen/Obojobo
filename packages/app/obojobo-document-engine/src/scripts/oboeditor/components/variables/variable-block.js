@@ -28,61 +28,77 @@ const VariableBlock = props => {
 					case STATIC_VALUE:
 						return (
 							<small>
+								<span>Static value </span>
 								<b>{variable.value || ''}</b>
 							</small>
 						)
 					case RANDOM_NUMBER:
 						return (
 							<small>
-								Random number{' '}
-								<b>
-									({variable.valueMin || ''}-{variable.valueMax || ''})
-								</b>
+								<span>Random number </span>
+								{variable.valueMin && variable.valueMax ? (
+									<b>
+										({variable.valueMin}-{variable.valueMax})
+									</b>
+								) : null}
 							</small>
 						)
 					case STATIC_LIST:
-						if (!variable.value) return null
 						return (
 							<small>
-								<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
+								<b>[{(variable.value || '').split(',').join(', ')}]</b>
 							</small>
 						)
 					case RANDOM_LIST:
 						return (
 							<small>
-								Random list
-								<b>
-									{` (${variable.sizeMin || ''}-${variable.sizeMax ||
-										''} items of ${variable.valueMin || ''}-${variable.valueMax || ''})`}
-								</b>
+								<span>Random list </span>
+								{variable.sizeMin && variable.sizeMax && variable.valueMin && variable.valueMax ? (
+									<b>
+										{variable.sizeMin === variable.sizeMax
+											? variable.sizeMin
+											: `${variable.sizeMin}-${variable.sizeMax}`}
+
+										{` items of ${variable.valueMin}-${variable.valueMax}`}
+									</b>
+								) : null}
 							</small>
 						)
 					case RANDOM_SEQUENCE:
 						return (
 							<small>
-								Random seq
-								<b>
-									{` (${variable.sizeMin || ''}-${variable.sizeMax ||
-										''} items starting from ${variable.valueMin || ''})`}
-								</b>
+								<span>Random seq </span>
+								{variable.sizeMin && variable.sizeMax && variable.valueMin && variable.valueMax ? (
+									<b>
+										{variable.sizeMin === variable.sizeMax
+											? variable.sizeMin
+											: `${variable.sizeMin}-${variable.sizeMax}`}
+										{` items starting from ${variable.valueMin}`}
+									</b>
+								) : null}
 							</small>
 						)
 					case PICK_ONE:
-						if (!variable.value) return null
 						return (
 							<small>
-								{'Pick from '}
-								<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
+								<span>Pick from </span>
+								<b>[{(variable.value || '').split(',').join(', ')}]</b>
 							</small>
 						)
 					case PICK_LIST:
-						if (!variable.value) return null
+						if (!variable.value) return <small>Pick list </small>
 
 						return (
 							<small>
-								{variable.valueMin || ''}-{variable.valueMax || ''} item
-								{variable.value.split(',').length >= 2 ? 's' : ''} from{' '}
-								<b>{'[' + variable.value.split(',').join(', ') + ']'}</b>
+								{variable.chooseMin && variable.chooseMax && variable.value ? (
+									<b>
+										{variable.chooseMin === variable.chooseMax
+											? variable.chooseMin
+											: `${variable.chooseMin}-${variable.chooseMax}`}
+
+										{` items from [${(variable.value || '').split(',').join(', ')}]`}
+									</b>
+								) : null}
 							</small>
 						)
 				}

@@ -283,8 +283,8 @@ describe('VariableBlock', () => {
 			type: 'pick-list',
 			value: '33, 3, 4, 55, 23, 444',
 			ordered: 'false',
-			valueMax: '40',
-			valueMin: '5'
+			chooseMax: '40',
+			chooseMin: '5'
 		}
 
 		const component = shallow(
@@ -333,5 +333,7 @@ describe('VariableBlock', () => {
 				onClickVarible={jest.fn()}
 			/>
 		)
+
+		expect(component.html()).toMatchSnapshot()
 	})
 })

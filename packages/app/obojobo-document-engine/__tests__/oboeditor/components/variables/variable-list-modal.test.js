@@ -174,7 +174,7 @@ describe('VariableListModal', () => {
 				.at(2)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var2</h4><small><b></b></small></div>"`
+			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var2</h4><small><span>Static value </span><b></b></small></div>"`
 		)
 
 		// Click duplicate button
@@ -191,7 +191,7 @@ describe('VariableListModal', () => {
 				.at(3)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var3</h4><small><b></b></small></div>"`
+			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var3</h4><small><span>Static value </span><b></b></small></div>"`
 		)
 
 		expect(component.html()).toMatchSnapshot()
@@ -202,7 +202,7 @@ describe('VariableListModal', () => {
 			variables: [
 				{
 					name: 'var1',
-					type: 'static-value'
+					type: 'random-list'
 				},
 				{
 					name: 'var2',
@@ -219,6 +219,15 @@ describe('VariableListModal', () => {
 			.simulate('change', { target: { name: 'name', value: 'mockNewName' } })
 
 		expect(content.variables[0].name).toEqual('mockNewName')
+
+		// Simulate checkbox changes
+		component
+			.find('input')
+			.at(3)
+			.simulate('change', { target: { name: 'unique', type: 'checkbox', checked: true } })
+
+		expect(content.variables[0].unique).toEqual(true)
+
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -249,7 +258,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal call onAddVariable', () => {
+	test('VariableListModal calls onAddVariable', () => {
 		const content = {
 			variables: [
 				{
@@ -287,6 +296,49 @@ describe('VariableListModal', () => {
 			.simulate('click')
 
 		expect(component.find('.single-variable').length).toEqual(4)
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('VariableListModal calls onAddVariable - decimalPlacesMin and decimalPlacesMax are default o 0', () => {
+		const content = {
+			variables: [
+				{
+					name: 'mockName1',
+					type: 'random-number'
+				},
+				{
+					name: 'mockName2',
+					type: 'random-list'
+				}
+			]
+		}
+		const component = mount(<VariableListModal content={content} />)
+
+		// Click create new variable and select "random-number" type
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		component
+			.find('.new-variable--type-list--single-item')
+			.at(1)
+			.simulate('click')
+
+		expect(component.find('.single-variable').length).toEqual(3)
+
+		expect(
+			component
+				.find('input')
+				.at(4)
+				.props().value
+		).toEqual('0')
+		expect(
+			component
+				.find('input')
+				.at(5)
+				.props().value
+		).toEqual('0')
 
 		expect(component.html()).toMatchSnapshot()
 	})

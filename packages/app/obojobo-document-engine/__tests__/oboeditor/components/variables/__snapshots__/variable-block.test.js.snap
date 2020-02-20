@@ -1,31 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VariableBlock VariableBlock component is selected" 1`] = `"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><b>3</b></small></div>"`;
+exports[`VariableBlock VariableBlock component is selected" 1`] = `"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><span>Static value </span><b>3</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "pick-list" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$g</h4><small>5-40 items from <b>[33,  3,  4,  55,  23,  444]</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "pick-list" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$g</h4><small><b>5-40 items from [33,  3,  4,  55,  23,  444]</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "pick-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$g</h4></div>"`;
+exports[`VariableBlock VariableBlock with type "pick-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$g</h4><small>Pick list </small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "pick-one" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$f</h4><small>Pick from <b>[3,  4,  5,  3,  5]</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "pick-list" with no default value 2`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$g</h4><small></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "pick-one" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$f</h4></div>"`;
+exports[`VariableBlock VariableBlock with type "pick-one" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$f</h4><small><span>Pick from </span><b>[3,  4,  5,  3,  5]</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-list" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$d</h4><small>Random list<b> (3-5 items of 3-10)</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "pick-one" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$f</h4><small><span>Pick from </span><b>[]</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$d</h4><small>Random list<b> (- items of -)</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "random-list" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$d</h4><small><span>Random list </span><b>3-5 items of 3-10</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-number" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$b</h4><small>Random number <b>(3-10)</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "random-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$d</h4><small><span>Random list </span></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-number" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$b</h4><small>Random number <b>(-)</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "random-number" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$b</h4><small><span>Random number </span><b>(3-10)</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-sequence" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$e</h4><small>Random seq<b> (3-10 items starting from 1)</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "random-number" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$b</h4><small><span>Random number </span></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "random-sequence" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$e</h4><small>Random seq<b> (- items starting from )</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "random-sequence" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$e</h4><small><span>Random seq </span><b>3-10 items starting from 1</b></small></div>"`;
+
+exports[`VariableBlock VariableBlock with type "random-sequence" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$e</h4><small><span>Random seq </span></small></div>"`;
 
 exports[`VariableBlock VariableBlock with type "static-list" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$c</h4><small><b>[4,  5,  6]</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "static-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$c</h4></div>"`;
+exports[`VariableBlock VariableBlock with type "static-list" with no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$c</h4><small><b>[]</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "static-value" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><b>3</b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "static-value" 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><span>Static value </span><b>3</b></small></div>"`;
 
-exports[`VariableBlock VariableBlock with type "static-value" and no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><b></b></small></div>"`;
+exports[`VariableBlock VariableBlock with type "static-value" and no default value 1`] = `"<div class=\\"single-variable\\" tabindex=\\"0\\"><h4>$mock_var</h4><small><span>Static value </span><b></b></small></div>"`;

@@ -28,7 +28,8 @@
 			}
 
 			input {
-				visibility: hidden;
+				position: fixed;
+				opacity: 0;
 			}
 
 			&.is-selected {

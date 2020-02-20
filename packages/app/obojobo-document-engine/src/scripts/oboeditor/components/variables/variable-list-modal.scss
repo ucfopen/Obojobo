@@ -23,10 +23,13 @@
 			text-align: left;
 			padding-left: 1em;
 
-			h4,
-			p {
+			h4 {
 				padding: 0;
 				margin: 0;
+			}
+
+			small {
+				font-size: 0.75em;
 			}
 		}
 

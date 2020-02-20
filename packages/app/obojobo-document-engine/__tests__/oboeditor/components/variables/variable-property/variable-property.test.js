@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 
-import VariableProperties from '../../../../../src/scripts/oboeditor/components/variables/variable-property/variable-property'
+import VariableProperty from '../../../../../src/scripts/oboeditor/components/variables/variable-property/variable-property'
 
 describe('Variable Properties', () => {
 	test('VariableProperties node', () => {
@@ -13,7 +13,7 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = shallow(
-			<VariableProperties variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
 		)
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -29,7 +29,7 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperties variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
 		)
 
 		component
@@ -52,7 +52,7 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperties variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
 		)
 
 		component
@@ -72,7 +72,7 @@ describe('Variable Properties', () => {
 		}
 
 		const onChange = jest.fn()
-		const component = mount(<VariableProperties variable={variable} onChange={onChange} />)
+		const component = mount(<VariableProperty variable={variable} onChange={onChange} />)
 
 		component
 			.find('input')

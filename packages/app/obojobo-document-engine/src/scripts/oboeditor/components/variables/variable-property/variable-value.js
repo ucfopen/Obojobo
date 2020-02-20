@@ -31,6 +31,8 @@ const VariableValues = props => {
 			case 'sizeMin':
 				maxName = 'sizeMax'
 				break
+			case 'chooseMin':
+				maxName = 'chooseMax'
 		}
 
 		const maxValue = variable[maxName]
@@ -63,6 +65,8 @@ const VariableValues = props => {
 			case 'sizeMax':
 				minName = 'sizeMin'
 				break
+			case 'chooseMax':
+				minName = 'chooseMin'
 		}
 
 		if (!maxValue) {
@@ -167,8 +171,7 @@ const VariableValues = props => {
 						<input
 							type="checkbox"
 							name="unique"
-							checked={variable.unique}
-							value={variable.unique}
+							checked={variable.unique === true || variable.unique === 'true'}
 							onChange={onChange}
 						/>
 					</div>
@@ -290,29 +293,28 @@ const VariableValues = props => {
 						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
 					</p>
 					<div className="variable-values--group">
-						<label>Min Value: </label>
+						<label>Choose: </label>
 						<input
 							type="number"
-							name="valueMin"
-							value={variable.valueMin || ''}
+							name="chooseMin"
+							value={variable.chooseMin || ''}
 							onChange={onChangeMin}
 						/>
-					</div>
-					<div className="variable-values--group">
-						<label>Max Value: </label>
+						<span>to</span>
 						<input
 							type="number"
-							name="valueMax"
-							value={variable.valueMax || ''}
+							name="chooseMax"
+							value={variable.chooseMax || ''}
 							onChange={onChangeMax}
 						/>
 					</div>
+
 					<div className="variable-values--group">
 						<label>Order: </label>
 						<input
 							type="checkbox"
 							name="ordered"
-							checked={variable.ordered}
+							checked={variable.ordered === true || variable.ordered === 'true'}
 							value={variable.ordered}
 							onChange={onChange}
 						/>

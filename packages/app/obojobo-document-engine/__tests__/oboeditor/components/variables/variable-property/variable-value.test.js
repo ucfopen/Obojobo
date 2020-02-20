@@ -247,16 +247,16 @@ describe('VariableValue', () => {
 			type: 'pick-list',
 			value: '33, 3, 4, 55, 23, 444',
 			ordered: false,
-			valueMax: '40',
-			valueMin: '5'
+			chooseMax: '40',
+			chooseMin: '5'
 		}
 
 		const component = shallow(<VariableValue variable={variable} onChange={jest.fn()} />)
 
 		const inputs = component.find('input')
 		expect(inputs.at(0).props().value).toEqual(variable.value)
-		expect(inputs.at(1).props().value).toEqual(variable.valueMin)
-		expect(inputs.at(2).props().value).toEqual(variable.valueMax)
+		expect(inputs.at(1).props().value).toEqual(variable.chooseMin)
+		expect(inputs.at(2).props().value).toEqual(variable.chooseMax)
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -336,6 +336,29 @@ describe('VariableValue', () => {
 		inputs.at(2).simulate('change', { target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '7' } })
+	})
+
+	test('onChangeMin (chooseMin, chooseMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
+		const variable = {
+			name: 'g',
+			type: 'pick-list',
+			value: '33, 3, 4, 55, 23, 444',
+			ordered: 'false',
+			chooseMax: '5',
+			chooseMin: '5'
+		}
+
+		const onChange = jest.fn()
+		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
+		const inputs = component.find('input')
+
+		inputs.at(1).simulate('change', { target: { name: 'chooseMin', value: '0' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '0' } })
+		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '0' } })
+
+		inputs.at(1).simulate('change', { target: { name: 'chooseMin', value: '7' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '7' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '7' } })
 	})
 
 	test('onChangeMin - if second value does not exist, it should match the first', () => {
@@ -419,5 +442,28 @@ describe('VariableValue', () => {
 		inputs.at(3).simulate('change', { target: { name: 'sizeMax', value: '' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '' } })
+	})
+
+	test('onChangeMax (chooseMin, chooseMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
+		const variable = {
+			name: 'g',
+			type: 'pick-list',
+			value: '33, 3, 4, 55, 23, 444',
+			ordered: 'false',
+			chooseMax: '5',
+			chooseMin: '5'
+		}
+
+		const onChange = jest.fn()
+		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
+		const inputs = component.find('input')
+
+		inputs.at(2).simulate('change', { target: { name: 'chooseMax', value: '10' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '10' } })
+		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '10' } })
+
+		inputs.at(2).simulate('change', { target: { name: 'chooseMax', value: '1' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '1' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '1' } })
 	})
 })

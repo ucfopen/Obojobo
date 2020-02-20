@@ -9,14 +9,24 @@ const NewVarible = props => {
 
 	useEffect(() => {
 		firstRef.current.focus()
-	})
-
-	const onKeyPress = event => {
-		props.onAddVariable(event.target.value)
-	}
+	}, [])
 
 	const onChange = event => {
 		setCurrSelectType(event.target.value)
+	}
+
+	const handleKeyDown = event => {
+		if (event.key === 'Enter') {
+			props.onAddVariable(currSelectType)
+		}
+	}
+
+	const onClick = (e, type) => {
+		// In Chrome browser, use arrow keys in radio list will trigger onClick()
+		// The following if statement will prevent it from happening
+		if (e.type === 'click' && e.clientX !== 0 && e.clientY !== 0) {
+			props.onAddVariable(type)
+		}
 	}
 
 	return (
@@ -27,9 +37,8 @@ const NewVarible = props => {
 			<form
 				className="new-variable--type-list"
 				value={currSelectType}
-				onKeyPress={onKeyPress}
-				onChange={onChange}
-				ref={firstRef}
+				onKeyDown={handleKeyDown}
+				role="radiogroup"
 			>
 				{typeList.map(type => (
 					<div
@@ -38,11 +47,20 @@ const NewVarible = props => {
 							(type === currSelectType ? ' is-selected' : '')
 						}
 						key={type}
+						tabIndex="0"
+						value={type}
+						onClick={e => onClick(e, type)}
 						onMouseEnter={() => setCurrSelectType(type)}
-						onClick={() => props.onAddVariable(type)}
 					>
-						<label>
-							<input type="radio" id={type} value={type} checked={type === currSelectType} />
+						<label ref={type === currSelectType ? firstRef : null}>
+							<input
+								type="radio"
+								id={type}
+								value={type}
+								checked={type === currSelectType}
+								tabIndex="-1"
+								onChange={onChange}
+							/>
 							<strong htmlFor={type}>{mapTypeToString[type]}</strong>
 							<label htmlFor={type}>{mapTypeToDescription[type]}</label>
 						</label>

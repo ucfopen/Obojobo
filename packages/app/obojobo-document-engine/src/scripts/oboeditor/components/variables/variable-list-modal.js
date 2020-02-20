@@ -24,7 +24,8 @@ const VariableListModal = props => {
 	}
 
 	const onChange = event => {
-		const { name, value } = event.target
+		const name = event.target.name
+		const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
 
 		const updatedVariables = [...variables]
 		updatedVariables[currSelect][name] = value
@@ -54,8 +55,8 @@ const VariableListModal = props => {
 
 		const newVariable = { type, name: 'var' + (index === 1 ? '' : index) }
 		if (type === RANDOM_NUMBER || type === RANDOM_LIST) {
-			newVariable['decimalPlacesMin'] = 0
-			newVariable['decimalPlacesMax'] = 0
+			newVariable['decimalPlacesMin'] = '0'
+			newVariable['decimalPlacesMax'] = '0'
 		}
 		const updatedVariables = [...variables, newVariable]
 		setVariables(updatedVariables)
@@ -113,7 +114,7 @@ const VariableListModal = props => {
 					{variables.map((variable, index) => (
 						<VariableBlock
 							key={variable.name}
-							variable={variable}
+							variable={{ ...variable }}
 							currSelect={currSelect}
 							isSelected={index === currSelect}
 							creatingVariable={creatingVariable}
