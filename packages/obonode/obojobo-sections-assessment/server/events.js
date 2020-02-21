@@ -6,7 +6,10 @@ const db = require('obojobo-express/server/db')
 const eventRecordResponse = 'client:question:setResponse'
 
 const paramToBool = param => {
-	return param && (param === true || param === 'true' || param === 1 || param === '1')
+	return (
+		param &&
+		(param === true || ('' + param).toLowerCase() === 'true' || param === 1 || param === '1')
+	)
 }
 
 // Store question responces

@@ -194,7 +194,7 @@ module.exports = app => {
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
 			resource_link_id,
-			score_import: req.query.score_import ? 1 : 0
+			score_import: req.query.score_import
 		}
 		renderLtiLaunch({ ...ltiContext, ...person, ...params }, method, endpoint, res)
 	})
