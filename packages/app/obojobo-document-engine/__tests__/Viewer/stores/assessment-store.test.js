@@ -160,7 +160,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('init builds default state', () => {
-		AssessmentStore.init([])
+		AssessmentStore.init()
 
 		expect(AssessmentStore.getState()).toMatchInlineSnapshot(`
 		Object {

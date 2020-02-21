@@ -6,15 +6,23 @@ const db = require('obojobo-express/server/db')
 
 const attemptImport = async req => {
 	// @TODO validate req.body.importedAssessmentScoreId
-	if(req.currentVisit.score_importable !== true) throw Error("Import score used on visit without import enabled.")
+	if (req.currentVisit.score_importable !== true) {
+		throw Error('Import score used on visit without import enabled.')
+	}
 
 	// load the AssessmentScore to import
 	const originalScore = await AssessmentScore.fetchById(req.body.importedAssessmentScoreId)
 
 	// verify originalScore against current visit data
-	if(originalScore.userId !== req.currentUser.id) throw Error("Imported scores must be owned by the current user.")
-	if(originalScore.draftId !== req.currentDocument.draftId) throw Error("Scores can only be imported for the same module.")
-	if(originalScore.draftContentId !== req.currentDocument.contentId) throw Error("Scores can only be imported for the same version of a module.")
+	if (originalScore.userId !== req.currentUser.id) {
+		throw Error('Imported scores must be owned by the current user.')
+	}
+	if (originalScore.draftId !== req.currentDocument.draftId) {
+		throw Error('Scores can only be imported for the same module.')
+	}
+	if (originalScore.draftContentId !== req.currentDocument.contentId) {
+		throw Error('Scores can only be imported for the same version of a module.')
+	}
 
 	// check that the student has no attempts for this resource_link yet
 	// @TODO: We don't need the full attemptHistory (lots of work) - optimize
@@ -25,11 +33,15 @@ const attemptImport = async req => {
 		req.currentVisit.resource_link_id
 	)
 
-	if(attemptHistory.length !== 0) throw Error("Scores can only be imported if no assessment attempts have been made.")
+	if (attemptHistory.length !== 0) {
+		throw Error('Scores can only be imported if no assessment attempts have been made.')
+	}
 
 	const originalAttempt = await AssessmentModel.fetchAttemptByID(originalScore.attemptId)
 
-	if(originalAttempt.userId !== req.currentUser.id) throw Error("Original attempt was not created by the current user.")
+	if (originalAttempt.userId !== req.currentUser.id) {
+		throw Error('Original attempt was not created by the current user.')
+	}
 
 	let importedScore
 	let importedAttempt
@@ -38,7 +50,11 @@ const attemptImport = async req => {
 			.importAsNewAttempt(req.currentVisit.resource_link_id, transaction)
 			.then(importedAttemptResult => {
 				importedAttempt = importedAttemptResult
-				return originalScore.importAsNewScore(importedAttemptResult.id, req.currentVisit.resource_link_id, transaction)
+				return originalScore.importAsNewScore(
+					importedAttemptResult.id,
+					req.currentVisit.resource_link_id,
+					transaction
+				)
 			})
 			.then(importedScoreResult => {
 				importedScore = importedScoreResult
@@ -80,9 +96,10 @@ const attemptImport = async req => {
 		req.currentDocument.draftId,
 		req.currentDocument.contentId,
 		req.params.assessmentId,
-		originalScore.attemptId,
 		importedAttempt.id,
 		importedScore.id,
+		originalScore.attemptId,
+		originalScore.id,
 		req.currentVisit.is_preview,
 		ltiRequest.scoreSent,
 		ltiRequest.status,
@@ -94,7 +111,7 @@ const attemptImport = async req => {
 		req.currentVisit.resource_link_id
 	)
 
-	return {history, importedScore}
+	return { history, importedScore }
 }
 
 module.exports = attemptImport

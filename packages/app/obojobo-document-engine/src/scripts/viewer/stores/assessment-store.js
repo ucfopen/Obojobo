@@ -64,7 +64,9 @@ class AssessmentStore extends Store {
 
 	init(extensions) {
 		const ext = { assessmentSummary: [], importableScore: null }
-		const filteredExtArrays = extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
+		const filteredExtArrays = extensions
+			? extensions.filter(val => val.name === ASSESSMENT_NODE_TYPE)
+			: []
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
 		const unfinishedAttempt = this.findUnfinishedAttemptInAssessmentSummary(ext.assessmentSummary)
@@ -211,20 +213,20 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	async getAttemptHistory() {
+	getAttemptHistory() {
 		if (this.state.attemptHistoryLoadState === 'none') {
 			this.state.attemptHistoryLoadState = 'loading'
 			const { draftId, visitId } = NavStore.getState()
 
-			const res = await AssessmentAPI.getAttemptHistory({ draftId, visitId })
+			return AssessmentAPI.getAttemptHistory({ draftId, visitId }).then(res => {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
 
-			if (res.status === 'error') {
-				return ErrorUtil.errorResponse(res)
-			}
-
-			this.updateStateAfterAttemptHistory(res.value)
-			this.state.attemptHistoryLoadState = 'loaded'
-			this.triggerChange()
+				this.updateStateAfterAttemptHistory(res.value)
+				this.state.attemptHistoryLoadState = 'loaded'
+				this.triggerChange()
+			})
 		}
 	}
 

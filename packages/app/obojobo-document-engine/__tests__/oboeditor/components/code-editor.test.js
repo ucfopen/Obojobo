@@ -4,11 +4,14 @@ import CodeEditor from 'src/scripts/oboeditor/components/code-editor'
 import React from 'react'
 import EditorAPI from 'src/scripts/viewer/util/editor-api'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalUtil from 'src/scripts/common/util/modal-util'
 
 const mockClickFn = jest.fn().mockImplementation((a, b, c) => c())
 
 jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/oboeditor/util/editor-util')
+jest.mock('src/scripts/common/util/modal-util')
+jest.mock('src/scripts/common/stores/modal-store') // avoid testing the modal-store here
 jest.mock('react-codemirror2', () => ({
 	Controlled: global.mockReactComponent(this, 'Codemirror')
 }))
@@ -214,7 +217,8 @@ describe('CodeEditor', () => {
 		expect(EditorAPI.postDraft).toHaveBeenCalledTimes(2)
 	})
 
-	test('saveCode() with invalid document', () => {
+	test('saveCode() displays errors on api error results', async () => {
+		// setup
 		EditorAPI.postDraft.mockResolvedValue({
 			status: 'error',
 			value: {
@@ -228,9 +232,29 @@ describe('CodeEditor', () => {
 			model: { title: 'Mock Title' }
 		}
 		const component = mount(<CodeEditor {...props} />)
-		component.instance().saveCode()
 
-		expect(EditorAPI.postDraft).toHaveBeenCalledTimes(1)
+		// execute
+		await component.instance().saveCode()
+
+		// verify
+		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
+	})
+
+	test('saveCode() displays unhandled errors', async () => {
+		// setup
+		EditorAPI.postDraft.mockRejectedValueOnce('mock-error')
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<CodeEditor {...props} />)
+
+		// execute
+		await component.instance().saveCode()
+
+		// verify
+		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
 	})
 
 	test('setEditor changes state', () => {

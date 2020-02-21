@@ -42,6 +42,8 @@ describe('attempt-import', () => {
 		}
 
 		mockAssessmentScore = {
+			id: 'mock-score-id',
+			attemptId: 'mockScoreAttemptId',
 			userId: 'mockCurrentUserId',
 			draftId: 'mockDraftId',
 			draftContentId: 'mockContentId',
@@ -208,6 +210,7 @@ describe('attempt-import', () => {
 	})
 
 	test('inserts attempt import event', async () => {
+		// setup
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
 		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
@@ -216,17 +219,23 @@ describe('attempt-import', () => {
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
 		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+		mockReq.params.assessmentId = 'mock-assessment-id-req-param'
+
+		// execute
 		await attemptImport(mockReq)
+
+		// verify
 		expect(insertEvents.insertAttemptImportedEvents).toHaveBeenCalledTimes(1)
 		expect(insertEvents.insertAttemptImportedEvents.mock.calls[0]).toMatchInlineSnapshot(`
 		Array [
 		  "mockCurrentUserId",
 		  "mockDraftId",
 		  "mockContentId",
-		  undefined,
-		  undefined,
+		  "mock-assessment-id-req-param",
 		  "mock-attempt-id",
 		  "imported-score-id",
+		  "mockScoreAttemptId",
+		  "mock-score-id",
 		  "mockIsPreview",
 		  "mock-lti-scoreSent",
 		  "mock-lti-status",
@@ -241,6 +250,7 @@ describe('attempt-import', () => {
 	})
 
 	test('returns history and importedScore', async () => {
+		// setup
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
 		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
@@ -249,7 +259,11 @@ describe('attempt-import', () => {
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
 		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+
+		// execute
 		const result = await attemptImport(mockReq)
+
+		// verify
 		expect(result).toMatchInlineSnapshot(`
 		Object {
 		  "history": "mock-history",
