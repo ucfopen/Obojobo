@@ -51,7 +51,7 @@ const ViewerApi = {
 			draftId,
 			visitId
 		}).then(API.processJsonResults)
-	},
+	}
 }
 
 export default ViewerApi

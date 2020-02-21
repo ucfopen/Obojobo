@@ -18,7 +18,7 @@ class AssessmentScore {
 		// number format certain fields
 		this.id = parseInt(this.id, 10)
 		this.assessmentScoreId = parseInt(this.assessmentScoreId, 10)
-		if(this.score) this.score = parseFloat(this.score)
+		if (this.score) this.score = parseFloat(this.score)
 	}
 
 	static fetchById(id) {
@@ -42,9 +42,10 @@ class AssessmentScore {
 			})
 	}
 
-	static getImportableScore(userId, draftContentId, isPreview){
+	static getImportableScore(userId, draftContentId, isPreview) {
 		return db
-			.oneOrNone(`
+			.oneOrNone(
+				`
 				SELECT
 					id,
 					created_at,
@@ -66,9 +67,10 @@ class AssessmentScore {
 					userId,
 					isPreview,
 					draftContentId
-				})
+				}
+			)
 			.then(result => {
-				if(result){
+				if (result) {
 					return new AssessmentScore(result)
 				}
 			})
@@ -116,26 +118,30 @@ class AssessmentScore {
 			})
 	}
 
-	clone(){
+	clone() {
 		const clone = Object.assign({}, this)
 		return new AssessmentScore(clone)
 	}
 
-	create(dbOrTransaction = db){
-		if(this.id) throw Error('Cannot call create on a model that has an id.')
-		return dbOrTransaction.one(`
+	create(dbOrTransaction = db) {
+		if (this.id) throw Error('Cannot call create on a model that has an id.')
+		return dbOrTransaction
+			.one(
+				`
 			INSERT INTO assessment_scores
 				(user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, is_imported, imported_assessment_score_id)
 				VALUES($[userId], $[draftId], $[draftContentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview], $[isImported], $[importedAssessmentScoreId])
 				RETURNING id
-			`, this)
+			`,
+				this
+			)
 			.then(result => {
 				this.id = result.id
 				return this
 			})
 	}
 
-	importAsNewScore(attemptId, resourceLinkId, dbTransaction){
+	importAsNewScore(attemptId, resourceLinkId, dbTransaction) {
 		const newScore = this.clone()
 		delete newScore.id
 		newScore.attemptId = attemptId
@@ -147,8 +153,6 @@ class AssessmentScore {
 		// store a caliper event?
 		return newScore.create(dbTransaction)
 	}
-
 }
-
 
 module.exports = AssessmentScore

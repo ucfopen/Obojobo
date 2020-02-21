@@ -319,7 +319,9 @@ describe('user model', () => {
 	test('searchForUsers errors predictably', () => {
 		db.none.mockRejectedValueOnce('mock-error')
 
-		return expect(User.searchForUsers('some-input')).rejects.toThrowError('Error searching for users.')
+		return expect(User.searchForUsers('some-input')).rejects.toThrowError(
+			'Error searching for users.'
+		)
 	})
 
 	test('throws error when not given enough arguments', () => {

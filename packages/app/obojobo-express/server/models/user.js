@@ -35,7 +35,7 @@ class User {
 		}
 	}
 
-	static dbResultToModel(result){
+	static dbResultToModel(result) {
 		return new User({
 			id: result.id,
 			firstName: result.first_name,
@@ -55,7 +55,7 @@ class User {
 				FROM users
 				WHERE id =  $[userId]
 				`,
-				{userId}
+				{ userId }
 			)
 			.then(User.dbResultToModel)
 			.catch(error => {
@@ -65,7 +65,8 @@ class User {
 	}
 
 	static clearSessionsForUserById(id) {
-		return db.none(`DELETE FROM sessions WHERE sess ->> 'currentUserId' = $[id]`, { id })
+		return db
+			.none(`DELETE FROM sessions WHERE sess ->> 'currentUserId' = $[id]`, { id })
 			.catch(error => {
 				logger.logError('Error clearSessionsForUserById', error)
 				throw Error('Error clearing session.')
@@ -73,7 +74,7 @@ class User {
 	}
 
 	// searches by firstname, lastname, and email
-	static searchForUsers(searchInput){
+	static searchForUsers(searchInput) {
 		// Create a quick function for quickly searching users (if missing)
 		return db
 			.none(
@@ -82,7 +83,8 @@ class User {
 				$func$
 				SELECT concat_ws(s, t1, t2)
 				$func$ LANGUAGE sql IMMUTABLE;
-				`)
+				`
+			)
 			.then(() => {
 				return db.manyOrNone(
 					`SELECT

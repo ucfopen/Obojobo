@@ -255,7 +255,13 @@ import '../css/module-selector.scss'
 	}
 
 	function buildLaunchUrl(draftId) {
-		return window.location.origin + '/view/' + draftId + '?score_import=' + (allowScorePassback ? 'true' : 'false')
+		return (
+			window.location.origin +
+			'/view/' +
+			draftId +
+			'?score_import=' +
+			(allowScorePassback ? 'true' : 'false')
+		)
 	}
 
 	// utility
@@ -402,7 +408,8 @@ import '../css/module-selector.scss'
 
 		document.getElementById('finish-button').addEventListener('click', event => {
 			event.preventDefault()
-			allowScorePassback = document.querySelector("input[name='allow_import']:checked").value === '1'
+			allowScorePassback =
+				document.querySelector("input[name='allow_import']:checked").value === '1'
 			gotoSection(SECTION_PRE_PROGRESS)
 		})
 

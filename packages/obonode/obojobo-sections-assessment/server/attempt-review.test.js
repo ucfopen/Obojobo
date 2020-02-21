@@ -53,7 +53,7 @@ describe('attempt review', () => {
 			assessmentId: 'mock-assessment-id',
 			draftContentId: 'mock-content-id',
 			state: {
-				chosen: [{id: 'mock-chosen-id'}]
+				chosen: [{ id: 'mock-chosen-id' }]
 			}
 		})
 
@@ -71,15 +71,16 @@ describe('attempt review', () => {
 		])
 		const questionModels = await attemptReview([1, 2])
 
-		// eslint-disable-next-line no-undef
-		return flushPromises().then(flushPromises).then(() => {
-			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
-			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1) // uses cache!
-			// only called when review !== always
-			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
-			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
-			expect(logger.error).toHaveBeenCalledTimes(0)
-			expect(questionModels).toMatchInlineSnapshot(`
+		return flushPromises() // eslint-disable-line no-undef
+			.then(flushPromises) // eslint-disable-line no-undef
+			.then(() => {
+				expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
+				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1) // uses cache!
+				// only called when review !== always
+				expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
+				expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
+				expect(logger.error).toHaveBeenCalledTimes(0)
+				expect(questionModels).toMatchInlineSnapshot(`
 									Object {
 									  "1": Object {
 									    "mockId": Object {
@@ -93,7 +94,7 @@ describe('attempt review', () => {
 									  },
 									}
 						`)
-		})
+			})
 	})
 
 	test('attemptReview for one attempt without review always', async () => {

@@ -158,7 +158,9 @@ class Assessment extends React.Component {
 	}
 
 	render() {
-		if(this.props.moduleData.assessmentState.attemptHistoryLoadState !== 'loaded') return 'Loading...'
+		if (this.props.moduleData.assessmentState.attemptHistoryLoadState !== 'loaded') {
+			return 'Loading...'
+		}
 
 		const childEl = (() => {
 			switch (this.state.curStep) {

@@ -114,7 +114,9 @@ router
 	.post([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
 	.post((req, res) => {
 		return UserModel.fetchById(req.body.userId)
-			.then(userToAdd => DraftPermissions.addOwnerToDraft(req.currentDocument.draftId, userToAdd.id))
+			.then(userToAdd =>
+				DraftPermissions.addOwnerToDraft(req.currentDocument.draftId, userToAdd.id)
+			)
 			.then(() => {
 				res.success()
 			})
@@ -127,7 +129,9 @@ router
 	.delete([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
 	.delete((req, res) => {
 		return UserModel.fetchById(req.params.userId)
-			.then(userToRemove => DraftPermissions.removeOwnerFromDraft(req.currentDocument.draftId, userToRemove.id))
+			.then(userToRemove =>
+				DraftPermissions.removeOwnerFromDraft(req.currentDocument.draftId, userToRemove.id)
+			)
 			.then(() => {
 				res.success()
 			})

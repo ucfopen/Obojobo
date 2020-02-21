@@ -84,8 +84,6 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls new', done => {
-
-
 		const component = mount(<FileMenu draftId="mockDraft" />)
 		const tree = component.html()
 
@@ -205,7 +203,6 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {
-
 		const model = {
 			title: 'mockTitle'
 		}
@@ -223,7 +220,6 @@ describe('File Menu', () => {
 	})
 
 	test('renameModule renames with blank name', () => {
-
 		const component = mount(<FileMenu draftId="mockDraft" onRename={jest.fn()} />)
 
 		component.instance().renameModule('mockId', '      ')
@@ -240,7 +236,6 @@ describe('File Menu', () => {
 	})
 
 	test('renameAndSaveModule renames and saves draft', () => {
-
 		const onSave = jest.fn()
 
 		const component = mount(<FileMenu draftId="mockDraft" onSave={onSave} />)
@@ -285,7 +280,6 @@ describe('File Menu', () => {
 	})
 
 	test('deleteModule removes draft', () => {
-
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		EditorAPI.deleteDraft.mockResolvedValueOnce({ status: 'ok' })

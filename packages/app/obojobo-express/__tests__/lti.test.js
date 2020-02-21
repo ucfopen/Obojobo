@@ -78,8 +78,7 @@ const mockSendAssessScoreDBCalls = (
 		// mock getLatestHighestAssessmentScoreRecord
 		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 		db.one.mockRejectedValueOnce(noDataError)
-	} else{
-
+	} else {
 		// mock getLatestHighestAssessmentScoreRecord
 		db.one.mockResolvedValueOnce({
 			id: 'assessment-score-id',
@@ -148,7 +147,6 @@ const mockSendAssessScoreDBCalls = (
 	} else {
 		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 		db.one.mockRejectedValueOnce(noDataError)
-
 	}
 
 	// mock insertEvent
@@ -331,28 +329,24 @@ describe('lti', () => {
 		// simulate pg-promies.one throwing no results error
 		db.one.mockRejectedValueOnce(noDataError)
 
-		return expect(getLatestHighestAssessmentScoreRecord(
-			'user_id',
-			'draft_id',
-			'assessment_id',
-			false))
-		.rejects.toThrow('No assessment score found')
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toThrow('No assessment score found')
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns error toomany rows returned', () => {
 		expect.hasAssertions()
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
-		const multipleResultError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.multiple)
+		const multipleResultError = new db.errors.QueryResultError(
+			db.errors.queryResultErrorCode.multiple
+		)
 
 		// simulate pg-promies.one throwing multiple results error
 		db.one.mockRejectedValueOnce(multipleResultError)
 
-		return expect(getLatestHighestAssessmentScoreRecord(
-			'user_id',
-			'draft_id',
-			'assessment_id',
-			false))
-		.rejects.toBe(multipleResultError) // cant use expect().throws, so match the expected mock error
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toBe(multipleResultError) // cant use expect().throws, so match the expected mock error
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns error if an error occurs', () => {
@@ -363,12 +357,9 @@ describe('lti', () => {
 		// simulate some other error
 		db.one.mockRejectedValueOnce(otherError)
 
-		return expect(getLatestHighestAssessmentScoreRecord(
-			'user_id',
-			'draft_id',
-			'assessment_id',
-			false))
-		.rejects.toBe(otherError)
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toBe(otherError)
 	})
 
 	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
@@ -1178,7 +1169,6 @@ describe('lti', () => {
 				logId
 			)
 			expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
-
 		})
 	})
 
@@ -2504,7 +2494,6 @@ describe('lti', () => {
 		}
 
 		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-
 			expect(insertEvent).lastCalledWith({
 				action: 'lti:replaceResult',
 				actorTime: 'MOCKED-ISO-DATE-STRING',

@@ -2,7 +2,6 @@ jest.mock('../../../src/scripts/viewer/util/api')
 const API = require('../../../src/scripts/viewer/util/api')
 const AssessmentAPI = require('../../../src/scripts/viewer/util/assessment-api').default
 
-
 describe('assessment-api', () => {
 	let mockJsonResult
 
@@ -13,7 +12,7 @@ describe('assessment-api', () => {
 		// keep an obj reference of a mock result from calling res.json() from fetch
 		mockJsonResult = {}
 		// build the object that resolves from fetch calls for our json requests
-		const jsonResolve = {json: () => mockJsonResult}
+		const jsonResolve = { json: () => mockJsonResult }
 		API.post.mockResolvedValueOnce(jsonResolve)
 		API.get.mockResolvedValueOnce(jsonResolve)
 		API.postWithFormat.mockResolvedValueOnce(jsonResolve)
@@ -40,7 +39,7 @@ describe('assessment-api', () => {
 
 	test('resumeAttempt calls fetch', () => {
 		expect.hasAssertions()
-		const args = {attemptId:999}
+		const args = { attemptId: 999 }
 		return AssessmentAPI.resumeAttempt(args).then(result => {
 			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/999/resume', args)
 			expect(API.processJsonResults).toHaveBeenCalled()
@@ -99,7 +98,10 @@ describe('assessment-api', () => {
 		}
 
 		const result = await AssessmentAPI.importScore(args)
-		expect(API.post).toHaveBeenCalledWith('/api/assessments/mockDraftId/mockAssessmentId/import-score',  {importedAssessmentScoreId: "mockImportedAssessmentScoreId", visitId: "mockVisitId"})
+		expect(API.post).toHaveBeenCalledWith(
+			'/api/assessments/mockDraftId/mockAssessmentId/import-score',
+			{ importedAssessmentScoreId: 'mockImportedAssessmentScoreId', visitId: 'mockVisitId' }
+		)
 		expect(API.processJsonResults).toHaveBeenCalled()
 		expect(result).toEqual(mockJsonResult)
 	})
@@ -113,9 +115,10 @@ describe('assessment-api', () => {
 		}
 
 		const result = await AssessmentAPI.getAttemptHistory(args)
-		expect(API.get).toHaveBeenCalledWith('/api/assessments/mockDraftId/attempts?visitId=mockVisitId')
+		expect(API.get).toHaveBeenCalledWith(
+			'/api/assessments/mockDraftId/attempts?visitId=mockVisitId'
+		)
 		expect(API.processJsonResults).toHaveBeenCalled()
 		expect(result).toEqual(mockJsonResult)
 	})
-
 })

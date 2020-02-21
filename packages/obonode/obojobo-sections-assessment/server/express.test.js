@@ -108,7 +108,6 @@ describe('server/express', () => {
 				gradebookStatus: mockReturnValue.gradebookStatus
 			}
 		})
-
 	})
 
 	test('POST /api/lti/send-assessment-score logs errors', async () => {
@@ -445,9 +444,9 @@ describe('server/express', () => {
 		expect(response.body).toEqual({
 			status: 'error',
 			value: {
-				type: 'unexpected', message: 'Error importing score'
+				type: 'unexpected',
+				message: 'Error importing score'
 			}
 		})
 	})
-
 })

@@ -921,9 +921,9 @@ describe('OboModel', () => {
 
 	test('getDirectChildrenOfType returns filtered children', () => {
 		const root = new OboModel({})
-		const childA = new OboModel({type: 'typeA'})
-		const childB = new OboModel({type: 'typeB'})
-		const childC = new OboModel({type: 'typeA'})
+		const childA = new OboModel({ type: 'typeA' })
+		const childB = new OboModel({ type: 'typeB' })
+		const childC = new OboModel({ type: 'typeA' })
 
 		root.children.add(childA)
 		root.children.add(childB)

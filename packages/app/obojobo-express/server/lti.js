@@ -159,7 +159,10 @@ const getLatestHighestAssessmentScoreRecord = (
 		.catch(error => {
 			logger.error('Error in getLatestHighestAssessmentScoreRecord')
 			logger.error(error)
-			if (error instanceof db.errors.QueryResultError && error.code === db.errors.queryResultErrorCode.noData) {
+			if (
+				error instanceof db.errors.QueryResultError &&
+				error.code === db.errors.queryResultErrorCode.noData
+			) {
 				throw Error(ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND)
 			}
 			throw error
@@ -627,7 +630,6 @@ const sendHighestAssessmentScore = (
 	isPreview,
 	resourceLinkId
 ) => {
-
 	const logId = uuid()
 	let requiredData = null
 	let outcomeData = null
@@ -721,7 +723,9 @@ const sendHighestAssessmentScore = (
 
 			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
 
-			const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord ? requiredData.assessmentScoreRecord.id : null
+			const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord
+				? requiredData.assessmentScoreRecord.id
+				: null
 			return insertLTIAssessmentScore(
 				assessmentScoreIdOrNull,
 				result.launchId,

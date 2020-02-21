@@ -293,5 +293,4 @@ describe('apiutil', () => {
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
-
 })

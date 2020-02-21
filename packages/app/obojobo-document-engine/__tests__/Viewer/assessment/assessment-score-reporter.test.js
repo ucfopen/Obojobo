@@ -79,8 +79,6 @@ describe('AssessmentScoreReporter', () => {
 		})
 		expect(() => {
 			asr.getReportFor(1)
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"Error, score details for attempt 1 were not loaded."`
-		)
+		}).toThrowErrorMatchingInlineSnapshot(`"Error, score details for attempt 1 were not loaded."`)
 	})
 })

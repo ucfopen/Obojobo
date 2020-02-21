@@ -5,9 +5,9 @@ const lti = require('obojobo-express/server/lti')
 const AssessmentScore = require('./assessment-score')
 
 // if the attempt is imported, return the importedAttemptId, otherwise return this attempt's id
-const attemptIdOrImportedId = attempt => attempt.isImported ? attempt.importedAttemptId : attempt.id
+const attemptIdOrImportedId = attempt =>
+	attempt.isImported ? attempt.importedAttemptId : attempt.id
 const sortByAttemptNumber = (a, b) => a.attemptNumber - b.attemptNumber
-
 
 class AssessmentModel {
 	constructor(props) {
@@ -18,9 +18,9 @@ class AssessmentModel {
 		}
 
 		// establish some default values
-		this.result = this.result || { questionScores: [], attemptScore: null}
-		if(this.assessmentScore) this.assessmentScore = parseFloat(this.assessmentScore)
-		if(this.attemptNumber) this.attemptNumber = parseInt(this.attemptNumber, 10)
+		this.result = this.result || { questionScores: [], attemptScore: null }
+		if (this.assessmentScore) this.assessmentScore = parseFloat(this.assessmentScore)
+		if (this.attemptNumber) this.attemptNumber = parseInt(this.attemptNumber, 10)
 		this.isFinished = this.completedAt !== null
 		this.questionResponses = []
 	}
@@ -168,7 +168,8 @@ class AssessmentModel {
 	}
 
 	static fetchAttemptByID(attemptId) {
-		return db.oneOrNone(
+		return db
+			.oneOrNone(
 				`
 				SELECT *
 				FROM attempts
@@ -187,9 +188,21 @@ class AssessmentModel {
 	}
 
 	// get attempts for user and resour
-	static async fetchAttemptHistory(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId = null) {
+	static async fetchAttemptHistory(
+		userId,
+		draftId,
+		isPreview,
+		resourceLinkId,
+		optionalAssessmentId = null
+	) {
 		const assessments = new Map()
-		const attempts = await AssessmentModel.fetchAttempts(userId, draftId, isPreview, resourceLinkId, optionalAssessmentId)
+		const attempts = await AssessmentModel.fetchAttempts(
+			userId,
+			draftId,
+			isPreview,
+			resourceLinkId,
+			optionalAssessmentId
+		)
 		const attemptIds = attempts.map(attemptIdOrImportedId)
 		const responseHistory = await AssessmentModel.fetchResponsesForAttempts(attemptIds)
 		const attemptMap = new Map()
@@ -223,10 +236,15 @@ class AssessmentModel {
 			const matchingAttempt = attemptMap.get(attemptId)
 
 			if (!matchingAttempt) {
-				throw Error(`Missing attempt responses userid:'${userId}', draftId:'${draftId}', attemptId:'${attemptId}'.`)
+				throw Error(
+					`Missing attempt responses userid:'${userId}', draftId:'${draftId}', attemptId:'${attemptId}'.`
+				)
 			}
 
-			matchingAttempt.questionResponses = responses.map(r => ({questionId: r.question_id, response: r.response }))
+			matchingAttempt.questionResponses = responses.map(r => ({
+				questionId: r.question_id,
+				response: r.response
+			}))
 		})
 
 		const ltiStates = await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
@@ -237,7 +255,6 @@ class AssessmentModel {
 		)
 
 		assessments.forEach((assessment, assessmentId) => {
-
 			const ltiState = ltiStates[assessmentId]
 
 			if (!ltiState) {
@@ -261,7 +278,6 @@ class AssessmentModel {
 		// asked for a specific assessment
 		// size should always be 1, just get the first item
 		if (assessments.size > 0) {
-
 			return assessments.values().next().value
 		}
 
@@ -292,10 +308,10 @@ class AssessmentModel {
 		let incomplete = _attempts.filter(r => !r.isFinished)
 
 		// if both arrays have content
-		if(incomplete.length){
+		if (incomplete.length) {
 			// exit early if there's no complete items
 			// return an array with the last incomplete item
-			if(!complete.length){
+			if (!complete.length) {
 				return incomplete.slice(-1)
 			}
 			// grab the last completed finishTime
@@ -314,7 +330,7 @@ class AssessmentModel {
 	// get all attempts containing an array of responses
 	// { <attemptId>: [ {...question response...} ] }
 	static fetchResponsesForAttempts(attemptIds) {
-		if(attemptIds.length < 1) return []
+		if (attemptIds.length < 1) return []
 		return db
 			.manyOrNone(
 				`
@@ -370,15 +386,18 @@ class AssessmentModel {
 	}
 
 	static getAttemptNumber(userId, draftId, attemptId, resourceLinkId, isPreview) {
-		return AssessmentModel.getAttemptIdsForUserForDraft(userId, draftId, resourceLinkId, isPreview).then(
-			attempts => {
-				for (const attempt of attempts) {
-					if (attempt.id === attemptId) return attempt.attempt_number
-				}
-
-				return null
+		return AssessmentModel.getAttemptIdsForUserForDraft(
+			userId,
+			draftId,
+			resourceLinkId,
+			isPreview
+		).then(attempts => {
+			for (const attempt of attempts) {
+				if (attempt.id === attemptId) return attempt.attempt_number
 			}
-		)
+
+			return null
+		})
 	}
 
 	static deletePreviewAttempts({ transaction, userId, draftId, resourceLinkId }) {
@@ -417,42 +436,44 @@ class AssessmentModel {
 			})
 	}
 
-	static deletePreviewAttemptsAndScores(userId, draftId, resourceLinkId){
-		return db
-			.tx(transaction => {
-				const queryArgs = {
-					transaction,
-					userId,
-					draftId,
-					resourceLinkId
-				}
+	static deletePreviewAttemptsAndScores(userId, draftId, resourceLinkId) {
+		return db.tx(transaction => {
+			const queryArgs = {
+				transaction,
+				userId,
+				draftId,
+				resourceLinkId
+			}
 
-				const queries = [
-					AssessmentScore.deletePreviewScores(queryArgs),
-					AssessmentModel.deletePreviewAttempts(queryArgs)
-				]
+			const queries = [
+				AssessmentScore.deletePreviewScores(queryArgs),
+				AssessmentModel.deletePreviewAttempts(queryArgs)
+			]
 
-				// both queries return an array of queries
-				// when they return combine and batch execute in transaction
-				return Promise.all(queries)
-					.then(([p1, p2]) => transaction.batch(p1.concat(p2)) )
-			})
+			// both queries return an array of queries
+			// when they return combine and batch execute in transaction
+			return Promise.all(queries).then(([p1, p2]) => transaction.batch(p1.concat(p2)))
+		})
 	}
 
 	// @TODO delete the id here
-	clone(){
+	clone() {
 		const clone = Object.assign({}, this)
 		return new AssessmentModel(clone)
 	}
 
-	create(dbOrTransaction = db){
-		if(this.id) throw Error('Cannot call create on a model that has an id.')
-		return dbOrTransaction.one(`
+	create(dbOrTransaction = db) {
+		if (this.id) throw Error('Cannot call create on a model that has an id.')
+		return dbOrTransaction
+			.one(
+				`
 			INSERT INTO attempts
 				(completed_at, user_id, draft_id, assessment_id, state, result, is_preview, draft_content_id, resource_link_id, is_imported, imported_attempt_id)
 				VALUES($[completedAt], $[userId], $[draftId], $[assessmentId], $[state], $[result], $[isPreview], $[draftContentId], $[resourceLinkId], $[isImported], $[importedAttemptId])
 				RETURNING id, created_at, updated_at, completed_at
-			`, this)
+			`,
+				this
+			)
 			.then(result => {
 				this.id = result.id
 				this.createdAt = result.created_at
@@ -462,7 +483,7 @@ class AssessmentModel {
 			})
 	}
 
-	importAsNewAttempt(resourceLinkId, dbTransaction){
+	importAsNewAttempt(resourceLinkId, dbTransaction) {
 		const newAttempt = this.clone()
 		delete newAttempt.id
 		newAttempt.isImported = true
@@ -473,8 +494,6 @@ class AssessmentModel {
 		// store a caliper event?
 		return newAttempt.create(dbTransaction)
 	}
-
-
 }
 
 module.exports = AssessmentModel

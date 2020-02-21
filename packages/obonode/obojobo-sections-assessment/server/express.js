@@ -104,11 +104,11 @@ router
 			req.currentUser.id,
 			req.currentDocument.draftId,
 			req.currentVisit.resource_link_id
-			)
-				.then(() => res.success())
-				.catch(error => {
-					logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
-				})
+		)
+			.then(() => res.success())
+			.catch(error => {
+				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
+			})
 	})
 
 router

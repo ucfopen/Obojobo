@@ -15,8 +15,11 @@ const endAttempt = async (req, res) => {
 	const attempt = await AssessmentModel.fetchAttemptByID(req.params.attemptId)
 
 	// ensure the attempt is for the current module & version
-	if(req.currentDocument.draftId !== attempt.draftId || req.currentDocument.contentId !== attempt.draftContentId) {
-		throw Error("Cannot end an attempt for a different module")
+	if (
+		req.currentDocument.draftId !== attempt.draftId ||
+		req.currentDocument.contentId !== attempt.draftContentId
+	) {
+		throw Error('Cannot end an attempt for a different module')
 	}
 
 	const attemptNumber = await AssessmentModel.getAttemptNumber(
@@ -37,7 +40,9 @@ const endAttempt = async (req, res) => {
 	logSuccess('getAttemptHistory')
 
 	// load all the responses for this attempt from the database
-	const responsesForAttempt = await AssessmentModel.fetchResponsesForAttempts([req.params.attemptId])
+	const responsesForAttempt = await AssessmentModel.fetchResponsesForAttempts([
+		req.params.attemptId
+	])
 	logSuccess('fetchResponsesForAttempt')
 
 	// load the draft document to get the assessment model from the database

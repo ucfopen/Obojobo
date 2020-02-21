@@ -19,12 +19,7 @@ const getDraftAndStartVisitProps = (req, res) => {
 	// allows listeners to add objects the extensions array
 	const visitStartExtensions = []
 	return req.currentDocument
-		.yell(
-			'internal:startVisit',
-			req,
-			res,
-			visitStartExtensions
-		)
+		.yell('internal:startVisit', req, res, visitStartExtensions)
 		.then(() => visitStartExtensions)
 }
 
@@ -46,20 +41,22 @@ router
 	.route('/start')
 	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, checkValidationRules])
 	.post((req, res) => {
-		logger.log(`VISIT: Begin start visit for visitId="${req.currentVisit.id}", draftContentId="${req.currentDocument.contentId}"`)
+		logger.log(
+			`VISIT: Begin start visit for visitId="${req.currentVisit.id}", draftContentId="${req.currentDocument.contentId}"`
+		)
 
 		let viewState
 		let visitStartExtensions
 		let launch
 
 		return Promise.all([
-				viewerState.get(
-					req.currentUser.id,
-					req.currentDocument.contentId,
-					req.currentVisit.resource_link_id
-				),
-				getDraftAndStartVisitProps(req, res)
-			])
+			viewerState.get(
+				req.currentUser.id,
+				req.currentDocument.contentId,
+				req.currentVisit.resource_link_id
+			),
+			getDraftAndStartVisitProps(req, res)
+		])
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
@@ -106,9 +103,7 @@ router
 			})
 			.then(() => {
 				logger.log(
-					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${
-						req.currentUser.id
-					}"`
+					`VISIT: Start visit success for visitId="${req.currentVisit.id}", draftId="${req.currentDocument.draftId}", userId="${req.currentUser.id}"`
 				)
 
 				// Build lti data for return

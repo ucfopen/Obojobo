@@ -71,10 +71,7 @@ class AssessmentReviewView extends React.Component {
 								</h4>
 								<div className="attempt-info-content">
 									<div>
-										{ attempt.isImported
-											? 'Imported '
-											: 'Submitted '
-										}
+										{attempt.isImported ? 'Imported ' : 'Submitted '}
 										<time dateTime={machineDateString} aria-hidden="true">
 											{dateString}
 										</time>
@@ -140,7 +137,6 @@ class AssessmentReviewView extends React.Component {
 				</Button>
 			)
 		})
-
 
 		attempts.forEach(attempt => {
 			attemptReviewComponents[`assessmentReview:${attempt.id}`] = attemptReviewComponent(

@@ -41,10 +41,10 @@ oboEvents.on(eventRecordResponse, async (event, req) => {
 	}
 })
 
-
 // when a new draft is created make sure we create an ownership association
 oboEvents.on(Visit.EVENT_BEFORE_NEW_VISIT, ({ req }) => {
-	const scoreImport = req.body.score_import || req.params.score_import || config.general.allowImportDefault
+	const scoreImport =
+		req.body.score_import || req.params.score_import || config.general.allowImportDefault
 
 	req.visitOptions = req.visitOptions ? req.visitOptions : {}
 	req.visitOptions.isScoreImportable = paramToBool(scoreImport)

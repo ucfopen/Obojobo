@@ -290,7 +290,6 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('getAttemptsRemaining returns 0 when importHasBeenUsed', () => {
-
 		const state = {
 			importHasBeenUsed: true
 		}
@@ -415,7 +414,6 @@ describe('AssessmentUtil', () => {
 		})
 		ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 		expect(ltiState).toEqual(false)
-
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns true if not synced', () => {
@@ -573,9 +571,9 @@ describe('AssessmentUtil', () => {
 
 	test('getNumberOfAttemptsCompleted returns score length', () => {
 		const state = {
-			assessmentSummary:[
+			assessmentSummary: [
 				{
-					scores: [1,2,3]
+					scores: [1, 2, 3]
 				}
 			]
 		}
@@ -586,15 +584,13 @@ describe('AssessmentUtil', () => {
 
 	test('getNumberOfAttemptsCompleted returns 0 with invalid state', () => {
 		const state1 = {
-			assessmentSummary:[
-				{}
-			]
+			assessmentSummary: [{}]
 		}
 		const state2 = {
-			assessmentSummary:[]
+			assessmentSummary: []
 		}
 		const state3 = {
-			assessmentSummary:null
+			assessmentSummary: null
 		}
 		const state4 = {}
 
@@ -602,6 +598,5 @@ describe('AssessmentUtil', () => {
 		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state2)).toBe(0)
 		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state3)).toBe(0)
 		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state4)).toBe(0)
-
 	})
 })

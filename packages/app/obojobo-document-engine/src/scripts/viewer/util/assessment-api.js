@@ -1,7 +1,7 @@
 import API from './api'
 
 const AssessmentAPI = {
-	importScore({draftId, assessmentId, visitId, importedAssessmentScoreId}) {
+	importScore({ draftId, assessmentId, visitId, importedAssessmentScoreId }) {
 		return API.post(`/api/assessments/${draftId}/${assessmentId}/import-score`, {
 			visitId,
 			importedAssessmentScoreId
@@ -14,9 +14,10 @@ const AssessmentAPI = {
 			visitId
 		}).then(API.processJsonResults)
 	},
-	getAttemptHistory({ draftId, visitId }){
-		return API.get(`/api/assessments/${draftId}/attempts?visitId=${visitId}`)
-		.then(API.processJsonResults)
+	getAttemptHistory({ draftId, visitId }) {
+		return API.get(`/api/assessments/${draftId}/attempts?visitId=${visitId}`).then(
+			API.processJsonResults
+		)
 	},
 	startAttempt({ draftId, assessmentId, visitId }) {
 		return API.post('/api/assessments/attempt/start', {
@@ -39,9 +40,8 @@ const AssessmentAPI = {
 		}).then(API.processJsonResults)
 	},
 	reviewAttempt(attemptIds) {
-		return API.post(`/api/assessments/attempt/review`, { attemptIds })
-		.then(API.processJsonResults)
-	},
+		return API.post(`/api/assessments/attempt/review`, { attemptIds }).then(API.processJsonResults)
+	}
 }
 
 export default AssessmentAPI

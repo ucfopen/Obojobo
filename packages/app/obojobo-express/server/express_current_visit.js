@@ -22,9 +22,9 @@ const getCurrentVisitFromRequest = req => {
 	} else if (req.body && req.body.visitId) {
 		// visitId posted directly to body
 		visitId = req.body.visitId
-	} else if (req.params.visitId){
+	} else if (req.params.visitId) {
 		visitId = req.params.visitId
-	} else if (req.query.visitId){
+	} else if (req.query.visitId) {
 		visitId = req.query.visitId
 	}
 

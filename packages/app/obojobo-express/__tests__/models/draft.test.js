@@ -386,5 +386,4 @@ describe('Draft Model', () => {
 		const draft = await DraftModel.fetchById('whatever')
 		return expect(draft.xmlDocument).rejects.toBe('mock-error')
 	})
-
 })

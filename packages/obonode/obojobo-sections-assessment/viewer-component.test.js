@@ -80,7 +80,10 @@ describe('Assessment', () => {
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith(moduleData.assessmentState, model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith(
+			moduleData.assessmentState,
+			model
+		)
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -322,7 +325,10 @@ describe('Assessment', () => {
 
 		const complete = component.instance().isAssessmentComplete()
 
-		expect(AssessmentUtil.hasAttemptsRemaining).toHaveBeenCalledWith(moduleData.assessmentState, model)
+		expect(AssessmentUtil.hasAttemptsRemaining).toHaveBeenCalledWith(
+			moduleData.assessmentState,
+			model
+		)
 		expect(complete).toEqual(true)
 	})
 

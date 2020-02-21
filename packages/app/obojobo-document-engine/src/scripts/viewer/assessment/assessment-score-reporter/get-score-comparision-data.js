@@ -12,7 +12,7 @@ const getScoreComparisionData = (allScoreDetails, attemptNumberToGenerateReportF
 	const highestDetails = findItemsWithMaxPropValue(prevDetails, 'assessmentScore')
 
 	return {
-		prevHighestInfo: highestDetails.length === 0 ? null : highestDetails[highestDetails.length-1],
+		prevHighestInfo: highestDetails.length === 0 ? null : highestDetails[highestDetails.length - 1],
 		newInfo: allScoreDetails[attemptNumberToGenerateReportFor - 1]
 	}
 }

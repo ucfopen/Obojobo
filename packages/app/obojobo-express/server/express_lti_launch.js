@@ -85,7 +85,9 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 // clears all previous sesions created for this user
 // saves the current user id to the session
 const userFromLaunch = (req, ltiBody) => {
-	const username = ltiBody[config.lti.usernameParam] ? ltiBody[config.lti.usernameParam] : ltiBody.user_id
+	const username = ltiBody[config.lti.usernameParam]
+		? ltiBody[config.lti.usernameParam]
+		: ltiBody.user_id
 	// Save/Create the user
 	const newUser = new User({
 		username,

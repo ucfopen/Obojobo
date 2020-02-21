@@ -128,9 +128,9 @@ describe('start attempt route', () => {
 			connection: {
 				remoteAddress: 'mockRemoteAddress'
 			},
-			currentVisit: {is_preview: false},
+			currentVisit: { is_preview: false },
 			currentDocument: mockAssessmentNode,
-			currentUser: {id: 4}
+			currentUser: { id: 4 }
 		}
 
 		const mockAttempt = {
@@ -192,9 +192,9 @@ describe('start attempt route', () => {
 				draftId: 'mockDraftId',
 				assessmentId: 'mockAssessmentId'
 			},
-			currentVisit: {is_preview: false},
+			currentVisit: { is_preview: false },
 			currentDocument: mockAssessmentNode,
-			currentUser: {id: 4}
+			currentUser: { id: 4 }
 		}
 
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce(['oneAttempt'])

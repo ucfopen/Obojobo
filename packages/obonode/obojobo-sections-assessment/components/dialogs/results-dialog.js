@@ -3,7 +3,7 @@ import Common from 'Common'
 import AssessmentScoreReportView from 'obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-report-view'
 const { Dialog } = Common.components.modal
 
-const ResultsDialog = ({ label, attemptNumber, scoreReport, onShowClick }) =>
+const ResultsDialog = ({ label, attemptNumber, scoreReport, onShowClick }) => (
 	<Dialog
 		modalClassName="obojobo-draft--sections--assessment--results-modal"
 		centered
@@ -19,5 +19,6 @@ const ResultsDialog = ({ label, attemptNumber, scoreReport, onShowClick }) =>
 	>
 		<AssessmentScoreReportView report={scoreReport} />
 	</Dialog>
+)
 
 export default ResultsDialog

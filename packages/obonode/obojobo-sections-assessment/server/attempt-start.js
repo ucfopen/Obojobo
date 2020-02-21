@@ -59,7 +59,12 @@ const startAttempt = (req, res) => {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 			}
 			attemptState = getState(assessmentProperties)
-			const toClientPromises = getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
+			const toClientPromises = getSendToClientPromises(
+				assessmentProperties.oboNode,
+				attemptState,
+				req,
+				res
+			)
 			return Promise.all(toClientPromises)
 		})
 		.then(() => {

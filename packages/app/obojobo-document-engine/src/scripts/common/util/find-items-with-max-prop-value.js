@@ -18,7 +18,7 @@ const findItemsWithMaxPropValue = (items, nestedProperty) => {
 	items.forEach(item => {
 		const propValue = dig(item, splitProp)
 
-		if(propValue === undefined) return //eslint-disable-line no-undefined
+		if (propValue === undefined) return //eslint-disable-line no-undefined
 
 		// new max value, reset
 		if (propValue > maxValue) {
@@ -27,7 +27,7 @@ const findItemsWithMaxPropValue = (items, nestedProperty) => {
 		}
 
 		// keep this item
-		if(propValue === maxValue) itemsWithMaxValue.push(item)
+		if (propValue === maxValue) itemsWithMaxValue.push(item)
 	})
 
 	return itemsWithMaxValue
