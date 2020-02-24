@@ -8,20 +8,16 @@ const KeyDownUtil = {
 		// Get only the Element children of the current node that are in the current selection
 		const list = Array.from(Editor.nodes(editor, {
 			at: Range.intersection(editor.selection, nodeRange),
-			match: child => {
-				const childPath = ReactEditor.findPath(editor, child)
-				return Element.isElement(child) && Path.isAncestor(nodePath, childPath)
-			},
+			match: child => Element.isElement(child) && !editor.isInline(child),
 			mode: 'lowest'
 		}))
 
-		// If both ends of the selection are outside the table, simply delete the table
+		// If both ends of the selection are outside the node, simply delete the table
 		const [selStart, selEnd] = Range.edges(editor.selection)
 		const [nodeStart, nodeEnd] = Range.edges(nodeRange)
 		if(Point.isBefore(selStart, nodeStart) && Point.isAfter(selEnd, nodeEnd)) {
 			return
 		}
-
 
 		const [,startPath] = list[0]
 		const [,endPath] = list[list.length - 1]
@@ -35,7 +31,8 @@ const KeyDownUtil = {
 			if(deleteForward && Point.equals(editor.selection.anchor, Editor.end(editor, startPath))){
 				event.preventDefault()
 				return
-			}	
+			}
+			return	
 		}
 
 		// Deletion within a single node works as normal

@@ -17,6 +17,7 @@ jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
 )
+jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mockId')
 
 describe('YouTube Editor Node', () => {
 	beforeEach(() => {

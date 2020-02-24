@@ -6,6 +6,9 @@ exports[`Break Editor Node Node builds the expected component 1`] = `
     className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
   >
     <hr />
+    <span
+      className="invisibleText"
+    />
   </div>
 </div>
 `;

@@ -105,6 +105,7 @@ class PageEditor extends React.Component {
 					if(!Element.isElement(op.node) || editor.isInline(op.node) || op.node.subtype) break
 
 					// create new id
+					op.node = JSON.parse(JSON.stringify(op.node))
 					op.node.id = generateId()
 					// Create the obomodel and set its id to match the block key 
 					// to prevent duplicate keys

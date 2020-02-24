@@ -35,7 +35,7 @@ const Break = props => (
 				props.element.content.width
 			}`}>
 			<hr />
-			{props.children}
+			<span className="invisibleText">{props.children}</span>
 			{props.selected ? renderButton(props.editor, props.element) : null}
 		</div>
 	</Node>

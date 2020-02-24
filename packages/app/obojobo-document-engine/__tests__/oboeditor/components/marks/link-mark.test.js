@@ -45,30 +45,11 @@ describe('LinkMark', () => {
 
 	test('renderMark diplays expected style', () => {
 		expect(
-			LinkMark.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: LINK_MARK }
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('renderMark calls next', () => {
-		const next = jest.fn()
-
-		LinkMark.plugins.renderMark(
-			{
+			LinkMark.plugins.renderNode({
 				children: 'mockChild',
-				mark: { type: 'mockMark' }
-			},
-			null,
-			next
-		)
-
-		expect(next).toHaveBeenCalled()
+				element: { type: LINK_MARK }
+			})
+		).toMatchSnapshot()
 	})
 
 	test('changeLinkValue removes links', () => {
@@ -90,35 +71,59 @@ describe('LinkMark', () => {
 			}
 		}
 
-		LinkMark.plugins.queries.changeLinkValue(editor, '')
+		LinkMark.plugins.commands.changeLinkValue(editor, '')
 
-		expect(editor.removeMark).toHaveBeenCalledTimes(1)
-		expect(editor.addMark).not.toHaveBeenCalled()
+		expect(Transforms.unwrapNodes).toHaveBeenCalledTimes(1)
+		expect(Transforms.wrapNodes).not.toHaveBeenCalled()
+		expect(Transforms.insertNodes).not.toHaveBeenCalled()
 	})
 
 	test('changeLinkValue adds new link', () => {
 		const editor = {
-			removeMark: jest.fn(),
-			addMark: jest.fn(),
-			value: {
-				marks: [
-					{
-						data: { toJSON: () => ({}) },
-						type: LINK_MARK
-					},
-
-					{
-						data: { toJSON: () => ({ content: {} }) },
-						type: 'mockNode'
-					}
-				]
-			}
+			children:[
+				{
+					type: 'mockNode',
+					children: [{
+						type: 'mockChildNode',
+						children: [{ text: ''}]
+					}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 0 },
+				focus: { path: [0, 0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false,
 		}
 
-		LinkMark.plugins.queries.changeLinkValue(editor, 'mockURL')
+		LinkMark.plugins.commands.changeLinkValue(editor, 'mockURL')
 
-		expect(editor.removeMark).toHaveBeenCalledTimes(1)
-		expect(editor.addMark).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('changeLinkValue wraps existing text', () => {
+		const editor = {
+			children:[
+				{
+					type: 'mockNode',
+					children: [{
+						type: 'mockChildNode',
+						children: [{ text: 'mock text'}]
+					}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 0 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isVoid: () => false,
+			isInline: () => false,
+		}
+
+		LinkMark.plugins.commands.changeLinkValue(editor, 'mockURL')
+
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.toggleMark', () => {
