@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Range, Editor, Transforms } from 'slate'
+import { Range, Editor, Transforms, Element } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 import FileMenu from './file-menu'
@@ -9,15 +9,19 @@ import DropDownMenu from './drop-down-menu'
 
 import './file-toolbar.scss'
 
-const insertDisabled = (name, editor, value) => {
+const insertDisabled = (name, editor) => {
 	if(!editor.selection) return true
 	// If the selected area spans across multiple blocks, the selection is deleted before
 	// inserting, colapsing it down to the type of the first block
-	const [first] = Editor.first(editor, editor.selection)
-	if(first.type === 'ObojoboDraft.Chunks.Table.Cell') return true
-	if(!value || !value.blocks) return false
+	// Any node in the tree
+	const list = Array.from(Editor.nodes(editor, {
+		at: Editor.path(editor, editor.selection, { edge: 'start' }),
+		match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+	}))
 
-	if(value.fragment.filterDescendants(node => node.type === 'ObojoboDraft.Chunks.Question').size) {
+	if(list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Table')) return true
+
+	if(list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Question')) {
 		if(name === 'Question' || name === 'Question Bank') return true
 
 		return false
@@ -27,7 +31,7 @@ const insertDisabled = (name, editor, value) => {
 }
 
 const selectAll = (editor) => {
-	if(Editor.isEditor){
+	if(Editor.isEditor(editor)){
 		const edges = Editor.edges(editor, [])
 		Transforms.select(editor, { focus: edges[0], anchor: edges[1] })
 		return ReactEditor.focus(editor)

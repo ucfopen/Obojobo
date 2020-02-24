@@ -471,4 +471,23 @@ describe('Registry', () => {
 
 		expect(Registry.insertableItems.length).toEqual(1)
 	})
+
+	test('contentTypes processes the items the first time its called', () => {
+		Registry.registerModel('content', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isContent: true
+		})
+		expect(Registry.contentTypes.length).toEqual(1)
+
+		Registry.registerModel('content', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isContent: true
+		})
+
+		expect(Registry.contentTypes.length).toEqual(1)
+	})
 })

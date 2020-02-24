@@ -282,11 +282,11 @@ describe('CodeEditor', () => {
 		}
 	`)
 
-		basicEditor.moveToRangeOfDocument()
+		basicEditor.selectAll()
 		expect(basicEditor.lineInfo).toHaveBeenCalled()
 		expect(basicEditor.setSelection).toHaveBeenCalled()
 		basicEditor.focus()
-		basicEditor.delete()
+		basicEditor.deleteFragment()
 		expect(basicEditor.deleteH).toHaveBeenCalled()
 	})
 

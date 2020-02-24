@@ -15,7 +15,6 @@ import React from 'react'
 
 // PLUGINS
 import ClipboardPlugin from '../plugins/clipboard-plugin'
-import EditorSchema from '../plugins/editor-schema'
 import Component from './node/editor'
 import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
@@ -36,7 +35,6 @@ const plugins = [
 	ToggleParameter.plugins,
 	SelectParameter.plugins,
 	TextParameter.plugins,
-	EditorSchema,
 	ClipboardPlugin
 ]
 

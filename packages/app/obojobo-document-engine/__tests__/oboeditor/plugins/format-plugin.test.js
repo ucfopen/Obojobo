@@ -4,9 +4,20 @@ import FormatPlugin from 'src/scripts/oboeditor/plugins/format-plugin'
 
 describe('FormatPlugin', () => {
 	test('changeToType calls item.switchToType', () => {
-		const editor = { value: { document: { getRootBlocksAtRange: () => [
-			{ type: 'mock-node' }
-		]}}}
+		const editor = { 
+			children: [
+				{
+					type: 'mock-node',
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [1, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
 		const item = {
 			switchType: {
 				'mock-type': jest.fn()
@@ -21,9 +32,20 @@ describe('FormatPlugin', () => {
 	})
 
 	test('changeToType does not call item.switchToType when the value doent exist', () => {
-		const editor = { value: { document: { getRootBlocksAtRange: () => [
-			{ type: 'mock-node' }
-		]}}}
+		const editor = { 
+			children: [
+				{
+					type: 'mock-node',
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [1, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
 		const item = {
 			switchType: {
 				'mock-type': jest.fn()

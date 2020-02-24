@@ -4,37 +4,52 @@ import React from 'react'
 import ParagraphStyles from '../../../../src/scripts/oboeditor/components/toolbars/paragraph-styles'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.useFakeTimers()
 
 describe('Paragraph Styles', () => {
 	test('Paragraph Styles node', () => {
-		const value = {
-			blocks: {
-				reduce: fn => {
-					fn('Heading', { type: 'Heading' })
-					fn('Heading', { type: 'Text' })
-					return CODE_LINE_NODE
-				},
-				get: () => ({ type: 'Heading' })
-			}
+		const editor = {
+			children: [
+				{
+					type: CODE_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
-		const component = shallow(<ParagraphStyles value={value} />)
+		const component = shallow(<ParagraphStyles editor={editor} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Paragraph Styles node opens and closes', () => {
-		const value = {
-			blocks: {
-				reduce: () => TEXT_LINE_NODE,
-				get: () => ({ type: 'Heading' })
-			}
+		const editor = {
+			children: [
+				{
+					type: TEXT_NODE,
+					children: [{ text: 'mockText' }]
+				},
+				{
+					type: CODE_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [1, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
-		const component = mount(<ParagraphStyles value={value} />)
+		const component = mount(<ParagraphStyles editor={editor} />)
 
 		component
 			.find('button')
@@ -53,17 +68,21 @@ describe('Paragraph Styles', () => {
 
 	test('Paragraph Styles calls editor.changeToType', () => {
 		const editor = {
-			current: {
-				changeToType: jest.fn()
-			}
+			children: [
+				{
+					type: TEXT_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			changeToType: jest.fn()
 		}
-		const value = {
-			blocks: {
-				reduce: () => TEXT_LINE_NODE,
-				get: () => ({ type: 'Heading' })
-			}
-		}
-		const component = mount(<ParagraphStyles value={value} editor={editor} />)
+		const component = mount(<ParagraphStyles editor={editor} />)
 
 		component
 			.find('button')
@@ -98,17 +117,26 @@ describe('Paragraph Styles', () => {
 			.at(8)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalledTimes(8)
+		expect(editor.changeToType).toHaveBeenCalledTimes(8)
 	})
 
 	test('Paragraph Styles component opens and closes menu with keys', () => {
-		const value = {
-			blocks: {
-				reduce: () => CODE_NODE,
-				get: () => ({ type: 'Heading' })
-			}
+		const editor = {
+			children: [
+				{
+					type: 'MockNode',
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			changeToType: jest.fn()
 		}
-		const component = mount(<ParagraphStyles value={value} />)
+		const component = mount(<ParagraphStyles editor={editor} />)
 
 		component
 			.find('div')
@@ -132,13 +160,22 @@ describe('Paragraph Styles', () => {
 	})
 
 	test('Paragraph Styles component moves up and down with keys', () => {
-		const value = {
-			blocks: {
-				reduce: () => CODE_NODE,
-				get: () => ({ type: 'Heading' })
-			}
+		const editor = {
+			children: [
+				{
+					type: CODE_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			changeToType: jest.fn()
 		}
-		const component = shallow(<ParagraphStyles value={value} />)
+		const component = shallow(<ParagraphStyles editor={editor} />)
 
 		component
 			.find('div')
@@ -162,17 +199,23 @@ describe('Paragraph Styles', () => {
 	})
 
 	test('Paragraph Styles component closes menu when unfocused', () => {
-		const value = {
-			blocks: {
-				reduce: (fn, first) => {
-					fn(0, { type: 'Heading', data: { get: () => ({ level: 1 }) } })
-					fn(1, { type: 'Heading', data: { get: () => ({ level: 1 }) } })
-					return first
-				},
-				get: () => ({ type: HEADING_NODE, data: { get: () => ({ level: 1 }) } })
-			}
+		const editor = {
+			children: [
+				{
+					type: HEADING_NODE,
+					content: { headingLevel: 1},
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			changeToType: jest.fn()
 		}
-		const component = shallow(<ParagraphStyles value={value} />)
+		const component = shallow(<ParagraphStyles editor={editor} />)
 
 		const html = component
 			.find('div')
@@ -186,13 +229,28 @@ describe('Paragraph Styles', () => {
 	})
 
 	test('Paragraph Styles component cancels menu closure when focused', () => {
-		const value = {
-			blocks: {
-				reduce: (fn, first) => first,
-				get: () => ({ type: HEADING_NODE, data: { get: () => ({ level: null }) } })
-			}
+		const editor = {
+			children: [
+				{
+					type: HEADING_NODE,
+					content: { headingLevel:  2 },
+					children: [{ text: 'mockText' }]
+				},
+				{
+					type: HEADING_NODE,
+					content: { headingLevel:  1 },
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [1, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			changeToType: jest.fn()
 		}
-		const component = shallow(<ParagraphStyles value={value} />)
+		const component = shallow(<ParagraphStyles editor={editor} />)
 
 		const html = component
 			.find('div')

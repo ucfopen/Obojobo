@@ -3,7 +3,7 @@ import React from 'react'
 
 import ListDropper from '../../../../src/scripts/oboeditor/components/toolbars/list-dropper'
 
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 jest.useFakeTimers()
 
@@ -19,12 +19,20 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper toggles bullet', () => {
-		const editor = { current: {
-			changeToType: jest.fn()
-		}}
-
-		const value = {
-			blocks: [{ type: 'mock-type' }]
+		const editor = {
+			changeToType: jest.fn(),
+			children: [
+				{
+					type: 'mock-type',
+					children: [{ text: ''}]
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
 		const bullets = [
@@ -32,7 +40,7 @@ describe('List Dropper', () => {
 			{ bulletStyle: 'circle', display: '○'},
 		]
 		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} value={value} editor={editor}/>
+			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
 		)
 		
 		component
@@ -40,21 +48,25 @@ describe('List Dropper', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalled()
+		expect(editor.changeToType).toHaveBeenCalled()
 	})
 
 	test('List Dropper toggles bullet on list', () => {
-		const editor = { current: {
-			changeToType: jest.fn()
-		}}
-
-		const value = {
-			blocks: [{ type: LIST_LINE_NODE }],
-			document: {
-				getRootBlocksAtRange: () => [
-					{ data: { get: () => ({ listStyles: { type: 'unordered' } }) } }
-				]
-			}
+		const editor = {
+			changeToType: jest.fn(),
+			children: [
+				{
+					type: LIST_NODE,
+					content: { listStyles: { type: 'unordered' } },
+					children: [{ text: ''}] 
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
 		const bullets = [
@@ -62,7 +74,7 @@ describe('List Dropper', () => {
 			{ bulletStyle: 'circle', display: '○'},
 		]
 		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} value={value} editor={editor}/>
+			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
 		)
 		
 		component
@@ -70,21 +82,25 @@ describe('List Dropper', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalled()
+		expect(editor.changeToType).toHaveBeenCalled()
 	})
 
 	test('List Dropper toggles bullet to text', () => {
-		const editor = { current: {
-			changeToType: jest.fn()
-		}}
-
-		const value = {
-			blocks: [{ type: LIST_LINE_NODE }],
-			document: {
-				getRootBlocksAtRange: () => [
-					{ data: { get: () => ({ listStyles: { type: 'ordered' } }) } }
-				]
-			}
+		const editor = {
+			changeToType: jest.fn(),
+			children: [
+				{
+					type: LIST_NODE,
+					content: { listStyles: { type: 'ordered' } },
+					children: [{ text: ''}] 
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
 		const bullets = [
@@ -92,7 +108,7 @@ describe('List Dropper', () => {
 			{ bulletStyle: 'circle', display: '○'},
 		]
 		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} value={value} editor={editor}/>
+			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
 		)
 		
 		component
@@ -100,7 +116,7 @@ describe('List Dropper', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalled()
+		expect(editor.changeToType).toHaveBeenCalled()
 	})
 
 	test('List Dropper node opens and closes', () => {
@@ -126,9 +142,9 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper changes bullet', () => {
-		const editor = { current: {
+		const editor = {
 			changeToType: jest.fn()
-		}}
+		}
 		const bullets = [
 			{ bulletStyle: 'disc', display: '●'},
 			{ bulletStyle: 'circle', display: '○'},
@@ -142,7 +158,7 @@ describe('List Dropper', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalled()
+		expect(editor.changeToType).toHaveBeenCalled()
 	})
 
 	test('List Dropper component opens and closes menu with keys', () => {

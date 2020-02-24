@@ -1,4 +1,5 @@
 import { Editor, Element, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 
 import LeftIcon from '../../assets/left-icon'
 import RightIcon from '../../assets/right-icon'
@@ -37,6 +38,8 @@ const AlignMarks = {
 					{ content: {...child.content, align }}, 
 					{ at: path }
 				))
+
+				ReactEditor.focus(editor)
 			}
 		}
 	},

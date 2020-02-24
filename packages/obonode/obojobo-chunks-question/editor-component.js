@@ -119,7 +119,10 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<Button className="add-solution" onClick={this.addSolution}>
+								<Button 
+									className="add-solution" 
+									onClick={this.addSolution} 
+									contentEditable={false}>
 									Add Solution
 								</Button>
 							)}

@@ -14,6 +14,7 @@ const ClipboardPlugin = {
 		const plainText = data.getData('text/plain')
 		const fragment = [{
 			type: TEXT_NODE,
+			content: {},
 			children: plainText.split('\n').map(text => ({
 				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,

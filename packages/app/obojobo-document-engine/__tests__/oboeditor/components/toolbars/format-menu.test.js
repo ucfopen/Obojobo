@@ -1,9 +1,11 @@
 import { mount } from 'enzyme'
 import React from 'react'
 
+jest.mock('slate-react')
+
 import FormatMenu from '../../../../src/scripts/oboeditor/components/toolbars/format-menu'
 
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 describe('Format Menu', () => {
 	test('FormatMenu node', () => {
@@ -19,10 +21,9 @@ describe('Format Menu', () => {
 	})
 
 	test('FormatMenu node toggles mark', () => {
-		const editor = { current: {
-			focus: jest.fn()
-		}}
-		editor.current.toggleMark = jest.fn().mockReturnValue(editor.current)
+		const editor = {
+			toggleMark: jest.fn()
+		}
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
 		}
@@ -34,13 +35,13 @@ describe('Format Menu', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.current.toggleMark).toHaveBeenCalled()
+		expect(editor.toggleMark).toHaveBeenCalled()
 	})
 
 	test('FormatMenu node calls editor.changeToType for each paraggraph style', () => {
-		const editor = { current: {
+		const editor = {
 			changeToType: jest.fn()
-		}}
+		}
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
 		}
@@ -80,15 +81,25 @@ describe('Format Menu', () => {
 			.at(19)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalledTimes(8)
+		expect(editor.changeToType).toHaveBeenCalledTimes(8)
 	})
 
 	test('FormatMenu node sets indent', () => {
-		const editor = { current: {
-			value: { blocks: [{ type: LIST_LINE_NODE }]},
-			unwrapNodeByKey: jest.fn(),
+		const editor = {
+			children: [
+				{
+					type: LIST_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
 			unindentList: jest.fn()
-		}}
+		}
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
 		}
@@ -100,13 +111,13 @@ describe('Format Menu', () => {
 			.at(25)
 			.simulate('click')
 
-		expect(editor.current.unindentList).toHaveBeenCalled()
+		expect(editor.unindentList).toHaveBeenCalled()
 	})
 
 	test('FormatMenu node calls editor.changeToType for each bullet style', () => {
-		const editor = { current: {
+		const editor = {
 			changeToType: jest.fn()
-		}}
+		}
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
 		}
@@ -149,6 +160,6 @@ describe('Format Menu', () => {
 			.at(36)
 			.simulate('click')
 
-		expect(editor.current.changeToType).toHaveBeenCalledTimes(8)
+		expect(editor.changeToType).toHaveBeenCalledTimes(8)
 	})
 })
