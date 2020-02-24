@@ -43,6 +43,46 @@ describe('Code Converter', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
+	test('slateToObo converts a Slate node to an OboNode with triggers', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			data: {
+				get: () => {
+					return { triggers: 'mock-triggers' }
+				}
+			},
+			nodes: [
+				{
+					text: 'mockCode',
+					data: {
+						get: () => {
+							return {}
+						}
+					},
+					nodes: [
+						{
+							leaves: [
+								{
+									text: 'mockCode',
+									marks: [
+										{
+											type: 'b',
+											data: {}
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const oboNode = {
 			id: 'mockKey',
@@ -56,7 +96,8 @@ describe('Code Converter', () => {
 					{
 						text: { value: 'mockCode2' }
 					}
-				]
+				],
+				triggers: 'mock-triggers'
 			}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)

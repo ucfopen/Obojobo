@@ -1,13 +1,17 @@
-jest.mock('../../../models/draft')
-jest.mock('../../../models/user')
-jest.mock('../../../db')
-jest.mock('../../../logger')
+jest.mock('../../../server/models/draft')
+jest.mock('../../../server/models/user')
+jest.mock('../../../server/db')
+jest.mock('../../../server/logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
+jest.mock('obojobo-repository/server/services/permissions', () => ({
+	userHasPermissionToDraft: jest.fn()
+}))
 
-import DraftModel from '../../../models/draft'
+import DraftModel from '../../../server/models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
+const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -27,9 +31,9 @@ const basicXML = `<ObojoboDraftDoc>
 	  </Module>
 	</ObojoboDraftDoc>`
 
-const mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-const db = oboRequire('db')
-const drafts = oboRequire('routes/api/drafts')
+const mockInsertNewDraft = mockVirtual('./server/routes/api/drafts/insert_new_draft')
+const db = oboRequire('server/db')
+const drafts = oboRequire('server/routes/api/drafts')
 
 let mockCurrentUser
 
@@ -38,7 +42,7 @@ const mockGetCurrentUser = jest.fn().mockImplementation(req => {
 	return Promise.resolve(mockCurrentUser)
 })
 
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = mockGetCurrentUser.bind(this, req)
 	req.requireCurrentUser = mockGetCurrentUser.bind(this, req)
 	next()
@@ -47,8 +51,8 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
-app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('express_response_decorator'))
+app.use(oboRequire('server/express_current_user'))
+app.use('/', oboRequire('server/express_response_decorator'))
 app.use('/api/drafts', drafts)
 
 describe('api draft route', () => {
@@ -62,6 +66,8 @@ describe('api draft route', () => {
 		db.any.mockReset()
 		xml.mockReset()
 		jsonToXml.mockReset()
+		userHasPermissionToDraft.mockReset()
+		userHasPermissionToDraft.mockResolvedValue(true)
 	})
 	afterEach(() => {})
 
@@ -278,6 +284,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user is not the author', () => {
 		expect.assertions(5)
+		userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -303,15 +310,9 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
 		expect.assertions(4)
+		userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
-		// mock a yell function that returns a document
-		const mockYell = jest.fn()
-		// mock the document returned by fetchById
-		DraftModel.fetchById.mockResolvedValueOnce({
-			root: { yell: mockYell },
-			document: 'mock-document-json',
-			authorId: 99
-		})
+
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
 			.then(response => {
@@ -714,20 +715,6 @@ describe('api draft route', () => {
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body).toHaveProperty('value')
 				expect(response.body.value).toHaveProperty('type', 'unexpected')
-			})
-	})
-
-	test('raw draft queries the db', () => {
-		expect.hasAssertions()
-		db.one.mockResolvedValueOnce('mock-db-result')
-		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
-		return request(app)
-			.get('/api/drafts/00000000-0000-0000-0000-000000000000/raw')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
 	})
 })

@@ -15,7 +15,7 @@ app.on('mount', app => {
 	app.set('views', viewPaths)
 
 	// =========== ROUTING & CONTROLLERS ===========
-	app.use('/lti', require('./routes/module-selection'))
+	app.use('/lti', require('./routes/module-selector'))
 })
 
 module.exports = app

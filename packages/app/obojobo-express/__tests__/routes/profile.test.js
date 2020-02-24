@@ -3,7 +3,7 @@ jest.unmock('express') // we'll use supertest + express for this
 // override requireCurrentUser to provide our own
 const mockCurrentUser = { username: 'GUEST' }
 const mockResetCurrentUser = jest.fn()
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -16,8 +16,8 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 const request = require('supertest')
 const express = require('express')
 const app = express()
-app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('routes/profile'))
+app.use(oboRequire('server/express_current_user'))
+app.use('/', oboRequire('server/routes/profile'))
 
 describe('profile routes', () => {
 	test('view profile renders current user', () => {

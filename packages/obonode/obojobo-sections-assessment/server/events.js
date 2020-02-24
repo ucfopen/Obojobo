@@ -1,6 +1,6 @@
-const oboEvents = require('obojobo-express/obo_events')
-const logger = require('obojobo-express/logger')
-const db = require('obojobo-express/db')
+const oboEvents = require('obojobo-express/server/obo_events')
+const logger = require('obojobo-express/server/logger')
+const db = require('obojobo-express/server/db')
 const eventRecordResponse = 'client:question:setResponse'
 
 oboEvents.on(eventRecordResponse, async (event, req) => {

@@ -2,7 +2,7 @@ let mockArgs // array of mocked express middleware request arguments
 const userFunctions = ['setCurrentUser', 'getCurrentUser', 'requireCurrentUser']
 
 jest.mock('test_node')
-jest.mock('../models/user')
+jest.mock('../server/models/user')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
@@ -20,7 +20,7 @@ describe('current user middleware', () => {
 			const mockNext = jest.fn()
 			res.status = mockStatus
 
-			const currentUserMiddleware = oboRequire('express_current_user')
+			const currentUserMiddleware = oboRequire('server/express_current_user')
 			currentUserMiddleware(req, res, mockNext)
 			return { res, req, mockJson, mockStatus, mockNext }
 		})()
@@ -52,7 +52,7 @@ describe('current user middleware', () => {
 		expect.assertions(1)
 
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		const mockUser = new User({ id: 999 })
 		req.setCurrentUser(mockUser)
 		expect(req.session.currentUserId).toBe(999)
@@ -61,9 +61,9 @@ describe('current user middleware', () => {
 	test('unsets the curent user', () => {
 		expect.hasAssertions()
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		const mockUser = new User({ id: 8 })
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 
 		User.fetchById = jest.fn().mockResolvedValue(mockUser)
 		req.setCurrentUser(mockUser)
@@ -96,7 +96,7 @@ describe('current user middleware', () => {
 		expect.hasAssertions()
 
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		const mockUser = new User({ id: 8 })
 		User.fetchById = jest.fn().mockResolvedValue(mockUser)
 		req.setCurrentUser(mockUser)
@@ -114,7 +114,7 @@ describe('current user middleware', () => {
 		expect.hasAssertions()
 
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		const mockUser = new User({ id: 8 })
 		User.fetchById = jest.fn().mockResolvedValue(mockUser)
 		req.session.currentUserId = mockUser.id // only set the id, don't set req.currentUser
@@ -132,7 +132,7 @@ describe('current user middleware', () => {
 		expect.hasAssertions()
 
 		const { req } = mockArgs
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 
 		return req.getCurrentUser().then(user => {
 			expect(user.id).toBe(0)
@@ -146,8 +146,8 @@ describe('current user middleware', () => {
 		expect.assertions(2)
 
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
-		const GuestUser = oboRequire('models/guest_user')
+		const User = oboRequire('server/models/user')
+		const GuestUser = oboRequire('server/models/guest_user')
 		User.fetchById = jest.fn().mockRejectedValueOnce('mock-fetch-id-error')
 		req.session.currentUserId = 9
 
@@ -159,7 +159,7 @@ describe('current user middleware', () => {
 
 	test('requireCurrentUser rejects when fetchById fails and login is required', () => {
 		const { req } = mockArgs
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		User.fetchById = jest.fn().mockRejectedValueOnce('mock-fetch-id-error')
 		req.session.currentUserId = 9
 
@@ -175,7 +175,7 @@ describe('current user middleware', () => {
 
 	test('requireCurrentUser rejects current user as guest', () => {
 		expect.assertions(1)
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 		const mockUser = new GuestUser({ id: 999 })
 		const { req } = mockArgs
 		req.setCurrentUser(mockUser)
@@ -185,7 +185,7 @@ describe('current user middleware', () => {
 
 	test('requireCurrentUser returns current user when logged in', () => {
 		expect.assertions(1)
-		const User = oboRequire('models/user')
+		const User = oboRequire('server/models/user')
 		const mockUser = new User({ id: 999 })
 		const { req } = mockArgs
 		req.setCurrentUser(mockUser)

@@ -32,6 +32,7 @@ Object {
           },
         ],
       },
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",

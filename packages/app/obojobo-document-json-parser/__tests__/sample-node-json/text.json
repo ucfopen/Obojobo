@@ -13,6 +13,19 @@
 					"styleList": []
 				}
 			}
+		],
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
 		]
 	},
 	"children": []

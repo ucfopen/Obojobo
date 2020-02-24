@@ -1,0 +1,14 @@
+Jest Tests
+    filter rm_comments_in_strings " /* */
+    filter rm_comments_in_strings " //
+    filter call_regexp_common C++
+    extension test.js
+    3rd_gen_scale 1.48
+    end_of_line_continuation \\$
+Jest Test Snapshots
+    filter rm_comments_in_strings " /* */
+    filter rm_comments_in_strings " //
+    filter call_regexp_common C++
+    extension js.snap
+    3rd_gen_scale 1.48
+    end_of_line_continuation \\$
