@@ -2,6 +2,7 @@ const sig = require('oauth-signature')
 const config = require('./config')
 const oauthKey = Object.keys(config.lti.keys)[0]
 const oauthSecret = config.lti.keys[oauthKey]
+const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 const ltiInstructor = {
 	lis_person_contact_email_primary: 'zach@obojobo.com',
@@ -194,7 +195,7 @@ module.exports = app => {
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
 			resource_link_id,
-			score_import: req.query.score_import
+			score_import: isTrueParam(req.query.score_import) ? 'true' : 'false'
 		}
 		renderLtiLaunch({ ...ltiContext, ...person, ...params }, method, endpoint, res)
 	})

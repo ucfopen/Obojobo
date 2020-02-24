@@ -215,4 +215,13 @@ describe('Assessment server Events', () => {
 		expect(mockReq).toHaveProperty('visitOptions')
 		expect(mockReq).toHaveProperty('visitOptions.isScoreImportable', true)
 	})
+
+	test('EVENT_BEFORE_NEW_VISIT ignores errors gracefully', () => {
+		expect.hasAssertions()
+		require('obojobo-express/server/config').general.allowImportDefault = false
+		const eventListener = getListenerFor('EVENT_BEFORE_NEW_VISIT')
+		const mockReq = {}
+		eventListener({ req: mockReq })
+		expect(mockReq).not.toHaveProperty('visitOptions')
+	})
 })

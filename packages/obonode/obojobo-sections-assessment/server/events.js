@@ -4,13 +4,7 @@ const Visit = require('obojobo-express/server/models/visit')
 const logger = require('obojobo-express/server/logger')
 const db = require('obojobo-express/server/db')
 const eventRecordResponse = 'client:question:setResponse'
-
-const paramToBool = param => {
-	return (
-		param &&
-		(param === true || ('' + param).toLowerCase() === 'true' || param === 1 || param === '1')
-	)
-}
+const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 // Store question responces
 oboEvents.on(eventRecordResponse, async (event, req) => {
@@ -46,9 +40,13 @@ oboEvents.on(eventRecordResponse, async (event, req) => {
 
 // when a new draft is created make sure we create an ownership association
 oboEvents.on(Visit.EVENT_BEFORE_NEW_VISIT, ({ req }) => {
-	const scoreImport =
-		req.body.score_import || req.params.score_import || config.general.allowImportDefault
+	try {
+		const scoreImport =
+			req.body.score_import || req.params.score_import || config.general.allowImportDefault
 
-	req.visitOptions = req.visitOptions ? req.visitOptions : {}
-	req.visitOptions.isScoreImportable = paramToBool(scoreImport)
+		req.visitOptions = req.visitOptions ? req.visitOptions : {}
+		req.visitOptions.isScoreImportable = isTrueParam(scoreImport)
+	} catch (error) {
+		logger.error(error)
+	}
 })
