@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme'
 import VariableProperty from '../../../../../src/scripts/oboeditor/components/variables/variable-property/variable-property'
 
 describe('Variable Properties', () => {
-	test('VariableProperties node', () => {
+	test('VariableProperty node', () => {
 		const variable = {
 			name: 'static_var',
 			type: 'static-value',
@@ -13,12 +13,56 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = shallow(
-			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty
+				variable={variable}
+				onDeleteVariable={onDeleteVariable}
+				onChange={jest.fn()}
+			/>
 		)
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties clicks "delete" will call "onDeleteVariable"', () => {
+	test('VariableProperty node with invalid variable', () => {
+		const variable = null
+
+		const onDeleteVariable = jest.fn()
+		const component = shallow(
+			<VariableProperty
+				variable={variable}
+				onDeleteVariable={onDeleteVariable}
+				onChange={jest.fn()}
+			/>
+		)
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('VariableProperty node without default name or type', () => {
+		const variable = {}
+		const onDeleteVariable = jest.fn()
+		const component = shallow(
+			<VariableProperty
+				variable={variable}
+				onDeleteVariable={onDeleteVariable}
+				onChange={jest.fn()}
+			/>
+		)
+		expect(
+			component
+				.find('input')
+				.at(0)
+				.props().value
+		).toEqual('')
+		expect(
+			component
+				.find('select')
+				.at(0)
+				.props().value
+		).toEqual('')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('VariableProperty clicks "delete" will call "onDeleteVariable"', () => {
 		global.confirm = () => true
 
 		const variable = {
@@ -29,7 +73,11 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty
+				variable={variable}
+				onDeleteVariable={onDeleteVariable}
+				onChange={jest.fn()}
+			/>
 		)
 
 		component
@@ -41,7 +89,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties does not call "onDeleteVariable" when user cancels', () => {
+	test('VariableProperty does not call "onDeleteVariable" when user cancels', () => {
 		global.confirm = () => false
 
 		const variable = {
@@ -52,7 +100,11 @@ describe('Variable Properties', () => {
 
 		const onDeleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperty variable={variable} onDeleteVariable={onDeleteVariable} />
+			<VariableProperty
+				variable={variable}
+				onDeleteVariable={onDeleteVariable}
+				onChange={jest.fn()}
+			/>
 		)
 
 		component
@@ -64,7 +116,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties calls onChange when input changes', () => {
+	test('VariableProperty calls onChange when input changes', () => {
 		const variable = {
 			name: 'static_var',
 			type: 'static-value',

@@ -14,7 +14,10 @@ import {
 const VariableValues = props => {
 	const { variable, onChange } = props
 
-	const onChangeMin = e => {
+	const onBlurMin = e => {
+		if (e.target.name === 'decimalPlacesMin' || e.target.name === 'sizeMin') {
+			e.target.value = '' + parseInt(e.target.value, 10)
+		}
 		props.onChange(e)
 
 		const minName = e.target.name
@@ -36,6 +39,7 @@ const VariableValues = props => {
 		}
 
 		const maxValue = variable[maxName]
+
 		if (!maxValue) {
 			return props.onChange({ target: { name: maxName, value: minValue } })
 		}
@@ -48,7 +52,10 @@ const VariableValues = props => {
 		}
 	}
 
-	const onChangeMax = e => {
+	const onBurMax = e => {
+		if (e.target.name === 'decimalPlacesMax' || e.target.name === 'sizeMax') {
+			e.target.value = '' + parseInt(e.target.value, 10)
+		}
 		props.onChange(e)
 
 		const maxName = e.target.name
@@ -67,10 +74,6 @@ const VariableValues = props => {
 				break
 			case 'chooseMax':
 				minName = 'chooseMin'
-		}
-
-		if (!maxValue) {
-			props.onChange({ target: { name: minName, value: maxValue } })
 		}
 
 		const minValue = variable[minName]
@@ -116,7 +119,8 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -125,23 +129,28 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 					<div className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
 							type="number"
+							min="0"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
+							min="0"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 				</div>
@@ -154,16 +163,20 @@ const VariableValues = props => {
 						<label>List Size: </label>
 						<input
 							type="number"
+							min="1"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
+							min="1"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -181,7 +194,8 @@ const VariableValues = props => {
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 					</div>
 					<div className="variable-values--group">
@@ -190,23 +204,28 @@ const VariableValues = props => {
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 					</div>
 					<div className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
 							type="number"
+							min="0"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
+							min="0"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 				</div>
@@ -219,35 +238,31 @@ const VariableValues = props => {
 						<label>List Size: </label>
 						<input
 							type="number"
+							min="1"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
+							min="1"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 
 					<div className="variable-values--group">
-						<label>Min Value: </label>
+						<label>First value: </label>
 						<input
 							type="number"
-							name="valueMin"
-							value={variable.valueMin || ''}
-							onChange={onChangeMin}
-						/>
-					</div>
-					<div className="variable-values--group">
-						<label>Max Value: </label>
-						<input
-							type="number"
-							name="valueMax"
-							value={variable.valueMax || ''}
-							onChange={onChangeMax}
+							name="start"
+							value={variable.start || ''}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 					</div>
 
@@ -257,8 +272,8 @@ const VariableValues = props => {
 							<option disabled value="">
 								-- select an option --
 							</option>
-							<option value="arithmetic">Arithmetic</option>
-							<option value="geometric">Geometric</option>
+							<option value="arithmetic">Arithmetic (Add)</option>
+							<option value="geometric">Geometric (Multiply)</option>
 						</select>
 					</div>
 
@@ -296,16 +311,20 @@ const VariableValues = props => {
 						<label>Choose: </label>
 						<input
 							type="number"
+							min="1"
 							name="chooseMin"
 							value={variable.chooseMin || ''}
-							onChange={onChangeMin}
+							onChange={onChange}
+							onBlur={onBlurMin}
 						/>
 						<span>to</span>
 						<input
 							type="number"
+							min="1"
 							name="chooseMax"
 							value={variable.chooseMax || ''}
-							onChange={onChangeMax}
+							onChange={onChange}
+							onBlur={onBurMax}
 						/>
 					</div>
 

@@ -194,6 +194,50 @@ describe('VariableBlock', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('VariableBlock with type "random-list" - when sizeMin = sizeMax = 1, item should be singular', () => {
+		const variable = {
+			name: 'd',
+			type: 'random-list',
+			sizeMin: '1',
+			sizeMax: '1',
+			valueMin: '3',
+			valueMax: '33'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('VariableBlock with type "random-list" - when sizeMin > 1, item should be plural', () => {
+		const variable = {
+			name: 'd',
+			type: 'random-list',
+			sizeMin: '4',
+			sizeMax: '4'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('VariableBlock with type "random-sequence"', () => {
 		const variable = {
 			name: 'e',
@@ -201,8 +245,7 @@ describe('VariableBlock', () => {
 			type: 'random-sequence',
 			sizeMax: '10',
 			sizeMin: '3',
-			valueMax: '100',
-			valueMin: '1',
+			start: '3',
 			seriesType: 'geometric'
 		}
 
@@ -243,6 +286,54 @@ describe('VariableBlock', () => {
 			name: 'f',
 			type: 'pick-one',
 			value: '3, 4, 5, 3, 5'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('VariableBlock with type "random-sequence" - when sizeMin = sizeMax = 1, item should be singular', () => {
+		const variable = {
+			name: 'e',
+			step: '1.1',
+			type: 'random-sequence',
+			sizeMax: '1',
+			sizeMin: '1',
+			start: '3',
+			seriesType: 'geometric'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('VariableBlock with type "random-sequence" - when size > 1, item should be plural', () => {
+		const variable = {
+			name: 'e',
+			step: '1.1',
+			type: 'random-sequence',
+			sizeMax: '4',
+			sizeMin: '4',
+			start: '3',
+			seriesType: 'geometric'
 		}
 
 		const component = shallow(
@@ -321,7 +412,8 @@ describe('VariableBlock', () => {
 		variable = {
 			name: 'g',
 			type: 'pick-list',
-			value: '3'
+			chooseMax: '40',
+			chooseMin: '5'
 		}
 
 		component = shallow(
@@ -335,5 +427,51 @@ describe('VariableBlock', () => {
 		)
 
 		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('VariableBlock with type "pick-list" - when chooseMax = choseMin = 1, item should be singular', () => {
+		const variable = {
+			name: 'g',
+			type: 'pick-list',
+			value: '33, 3, 4, 55, 23, 444',
+			ordered: 'false',
+			chooseMax: '1',
+			chooseMin: '1'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('VariableBlock with type "pick-list" - when choose > 1, item should be plural', () => {
+		const variable = {
+			name: 'g',
+			type: 'pick-list',
+			value: '33, 3, 4, 55, 23, 444',
+			ordered: 'false',
+			chooseMax: '4',
+			chooseMin: '4'
+		}
+
+		const component = shallow(
+			<VariableBlock
+				variable={variable}
+				index={0}
+				currSelect={0}
+				creatingVariable={false}
+				onClickVarible={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 })

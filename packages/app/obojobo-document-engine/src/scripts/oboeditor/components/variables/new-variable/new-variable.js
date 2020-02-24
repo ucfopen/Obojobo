@@ -41,7 +41,7 @@ const NewVarible = props => {
 				role="radiogroup"
 			>
 				{typeList.map(type => (
-					<div
+					<button
 						className={
 							'new-variable--type-list--single-item' +
 							(type === currSelectType ? ' is-selected' : '')
@@ -51,8 +51,9 @@ const NewVarible = props => {
 						value={type}
 						onClick={e => onClick(e, type)}
 						onMouseEnter={() => setCurrSelectType(type)}
+						ref={type === currSelectType ? firstRef : null}
 					>
-						<label ref={type === currSelectType ? firstRef : null}>
+						<label>
 							<input
 								type="radio"
 								id={type}
@@ -64,7 +65,7 @@ const NewVarible = props => {
 							<strong htmlFor={type}>{mapTypeToString[type]}</strong>
 							<label htmlFor={type}>{mapTypeToDescription[type]}</label>
 						</label>
-					</div>
+					</button>
 				))}
 			</form>
 		</div>

@@ -5,11 +5,11 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import VariableValue from './variable-value'
 import { typeList, mapTypeToString } from '../constants'
 
-const { Button } = Common.components
+const { Button, MoreInfoButton } = Common.components
 
-const VariableProperties = props => {
-	const { variable } = props
-	if (!variable) return null
+const VariableProperty = props => {
+	const { variable, tabRef } = props
+	if (!variable) return <div className="variable-properties" />
 
 	const showDeleteModal = () => {
 		// eslint-disable-next-line no-alert, no-undef
@@ -24,7 +24,13 @@ const VariableProperties = props => {
 				<label>
 					<strong>Name:</strong>
 				</label>
-				<input className="input-item" name="name" value={variable.name} onChange={props.onChange} />
+				<input
+					ref={tabRef}
+					className="input-item"
+					name="name"
+					value={variable.name || ''}
+					onChange={props.onChange}
+				/>
 				<div className="help-tip">
 					<p>Alphanumeric plus underscore only</p>
 				</div>
@@ -63,4 +69,4 @@ const VariableProperties = props => {
 	)
 }
 
-export default VariableProperties
+export default VariableProperty

@@ -130,7 +130,7 @@ describe('VariableListModal', () => {
 		const component = mount(<VariableListModal content={content} onClose={onClose} />)
 
 		component
-			.find('button')
+			.find('.button')
 			.at(3)
 			.simulate('click')
 
@@ -138,7 +138,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal duplicates variable correct', () => {
+	test('VariableListModal duplicates variable', () => {
 		const content = {
 			variables: [
 				{
@@ -155,12 +155,12 @@ describe('VariableListModal', () => {
 
 		// Click duplicate button
 		component
-			.find('button')
+			.find('.button')
 			.at(2)
 			.simulate('click')
 
 		expect(component.find('.single-variable').length).toEqual(3)
-		// Duplicate element is selected
+		// Check if duplicated element is selected
 		expect(
 			component
 				.find('.single-variable')
@@ -174,30 +174,30 @@ describe('VariableListModal', () => {
 				.at(2)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var2</h4><small><span>Static value </span><b></b></small></div>"`
+			`"<button class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\" aria-label=\\"Jump to variable var2\\"><h4>$var2</h4><small><span>Static value </span><b></b></small></button>"`
 		)
 
 		// Click duplicate button
 		component
-			.find('button')
+			.find('.button')
 			.at(2)
 			.simulate('click')
 
 		expect(component.find('.single-variable').length).toEqual(4)
-		// Duplicate element is selected
+		// check if duplicated element is selected
 		expect(
 			component
 				.find('.single-variable')
 				.at(3)
 				.html()
 		).toMatchInlineSnapshot(
-			`"<div class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\"><h4>$var3</h4><small><span>Static value </span><b></b></small></div>"`
+			`"<button class=\\"single-variable variable-is-selected\\" tabindex=\\"0\\" aria-label=\\"Jump to variable var3\\"><h4>$var3</h4><small><span>Static value </span><b></b></small></button>"`
 		)
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal calls onChange', () => {
+	test('VariableListModal calls "onChange"', () => {
 		const content = {
 			variables: [
 				{
@@ -258,7 +258,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal calls onAddVariable', () => {
+	test('VariableListModal calls "onAddVariable"', () => {
 		const content = {
 			variables: [
 				{
@@ -275,7 +275,7 @@ describe('VariableListModal', () => {
 
 		// Click create new variable and select a type
 		component
-			.find('button')
+			.find('.button')
 			.at(0)
 			.simulate('click')
 		component
@@ -287,7 +287,7 @@ describe('VariableListModal', () => {
 
 		// Click create new variable and select a type
 		component
-			.find('button')
+			.find('.button')
 			.at(0)
 			.simulate('click')
 		component
@@ -300,7 +300,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal calls onAddVariable - decimalPlacesMin and decimalPlacesMax are default o 0', () => {
+	test('VariableListModal calls "onAddVariable" - decimalPlacesMin and decimalPlacesMax are default to 0', () => {
 		const content = {
 			variables: [
 				{
@@ -317,7 +317,7 @@ describe('VariableListModal', () => {
 
 		// Click create new variable and select "random-number" type
 		component
-			.find('button')
+			.find('.button')
 			.at(0)
 			.simulate('click')
 		component
@@ -343,7 +343,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal call onDeleteVariable', () => {
+	test('VariableListModal call "onDeleteVariable"', () => {
 		global.confirm = () => true
 
 		const content = {
@@ -362,7 +362,7 @@ describe('VariableListModal', () => {
 
 		// Click create new variable and select a type
 		component
-			.find('button')
+			.find('.button')
 			.at(1)
 			.simulate('click')
 

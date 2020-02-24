@@ -3,13 +3,13 @@ import { shallow, mount } from 'enzyme'
 
 import NewVariable from '../../../../../src/scripts/oboeditor/components/variables/new-variable/new-variable'
 
-describe('Variable Properties', () => {
-	test('VariableProperties component', () => {
+describe('VariableValue', () => {
+	test('VariableValue component', () => {
 		const component = shallow(<NewVariable onAddVariable={jest.fn()} />)
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties submits for "enter" key', () => {
+	test('VariableValue submits for "enter" key', () => {
 		const onAddVariable = jest.fn()
 		const component = shallow(<NewVariable onAddVariable={onAddVariable} />)
 
@@ -24,7 +24,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties does not submit for every key other than "enter"', () => {
+	test('VariableValue does not submit for every key other than "enter"', () => {
 		const onAddVariable = jest.fn()
 		const component = shallow(<NewVariable onAddVariable={onAddVariable} />)
 
@@ -39,7 +39,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties handles "onChange"', () => {
+	test('VariableValue handles "onChange"', () => {
 		const onAddVariable = jest.fn()
 		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
 
@@ -58,7 +58,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties calls "onAddVariable" on mouse click', () => {
+	test('VariableValue calls "onAddVariable" on mouse click', () => {
 		const onAddVariable = jest.fn()
 		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
 
@@ -72,7 +72,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties does not call "onAddVariable" radio list keyboard click', () => {
+	test('VariableValue does not call "onAddVariable" radio list keyboard click', () => {
 		const onAddVariable = jest.fn()
 		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
 
@@ -86,7 +86,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperties selects item on "hover"', () => {
+	test('VariableValue selects item on "hover"', () => {
 		const onAddVariable = jest.fn()
 		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
 

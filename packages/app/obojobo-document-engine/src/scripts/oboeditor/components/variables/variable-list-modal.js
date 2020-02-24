@@ -1,9 +1,9 @@
 import './variable-list-modal.scss'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import VariableProperties from './variable-property/variable-property'
+import VariableProperty from './variable-property/variable-property'
 import NewVariable from './new-variable/new-variable'
 import VariableBlock from './variable-block'
 import { RANDOM_NUMBER, RANDOM_LIST } from './constants'
@@ -12,7 +12,8 @@ const { Button } = Common.components
 const { SimpleDialog } = Common.components.modal
 
 const VariableListModal = props => {
-	const firstRef = React.createRef()
+	const firstRef = useRef()
+	const tabRef = useRef()
 
 	const [currSelect, setCurrSelect] = React.useState(0)
 	const [creatingVariable, setCreatingVariable] = React.useState(false)
@@ -21,6 +22,7 @@ const VariableListModal = props => {
 	const onClickVarible = index => {
 		setCreatingVariable(false)
 		setCurrSelect(index)
+		tabRef.current.focus()
 	}
 
 	const onChange = event => {
@@ -110,7 +112,7 @@ const VariableListModal = props => {
 			focusOnFirstElement={focusOnFirstElement}
 		>
 			<div className="variable-list-modal">
-				<div className="variable-list">
+				<nav className="variable-list" role="navigation" aria-label="Navigation">
 					{variables.map((variable, index) => (
 						<VariableBlock
 							key={variable.name}
@@ -134,16 +136,17 @@ const VariableListModal = props => {
 							+ Create Variable
 						</Button>
 					)}
-				</div>
+				</nav>
 
 				{creatingVariable ? (
 					<NewVariable onAddVariable={onAddVariable} />
 				) : (
-					<VariableProperties
+					<VariableProperty
 						variable={variables[currSelect]}
 						onChange={onChange}
 						onDuplicateVariable={onDuplicateVariable}
 						onDeleteVariable={onDeleteVariable}
+						tabRef={tabRef}
 					/>
 				)}
 			</div>

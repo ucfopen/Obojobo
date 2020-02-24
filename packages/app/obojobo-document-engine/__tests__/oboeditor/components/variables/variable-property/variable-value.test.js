@@ -175,10 +175,9 @@ describe('VariableValue', () => {
 			name: 'e',
 			step: '1.1',
 			type: 'random-sequence',
+			sizeMin: '1',
 			sizeMax: '10',
-			sizeMin: '3',
-			valueMax: '100',
-			valueMin: '1',
+			start: '10',
 			seriesType: 'geometric'
 		}
 
@@ -187,9 +186,8 @@ describe('VariableValue', () => {
 		const inputs = component.find('input')
 		expect(inputs.at(0).props().value).toEqual(variable.sizeMin)
 		expect(inputs.at(1).props().value).toEqual(variable.sizeMax)
-		expect(inputs.at(2).props().value).toEqual(variable.valueMin)
-		expect(inputs.at(3).props().value).toEqual(variable.valueMax)
-		expect(inputs.at(4).props().value).toEqual(variable.step)
+		expect(inputs.at(2).props().value).toEqual(variable.start)
+		expect(inputs.at(3).props().value).toEqual(variable.step)
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -207,7 +205,6 @@ describe('VariableValue', () => {
 		expect(inputs.at(1).props().value).toEqual('')
 		expect(inputs.at(2).props().value).toEqual('')
 		expect(inputs.at(3).props().value).toEqual('')
-		expect(inputs.at(4).props().value).toEqual('')
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -277,7 +274,7 @@ describe('VariableValue', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('onChangeMin (valueMin, valueMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
+	test('onBlurMin (valueMin, valueMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
 		const variable = {
 			name: 'g',
 			type: 'random-number',
@@ -289,12 +286,12 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(0).simulate('change', { target: { name: 'valueMin', value: '10' } })
+		inputs.at(0).simulate('blur', { target: { name: 'valueMin', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'valueMin', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'valueMax', value: '10' } })
 	})
 
-	test('onChangeMin (decimalPlacesMin, decimalPlacesMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
+	test('onBlurMin (decimalPlacesMin, decimalPlacesMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
 		const variable = {
 			name: 'b',
 			type: 'random-number',
@@ -308,12 +305,12 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(2).simulate('change', { target: { name: 'decimalPlacesMin', value: '10' } })
+		inputs.at(2).simulate('blur', { target: { name: 'decimalPlacesMin', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'decimalPlacesMin', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'decimalPlacesMax', value: '10' } })
 	})
 
-	test('onChangeMin (sizeMin, sizeMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
+	test('onBlurMin (sizeMin, sizeMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
 		const variable = {
 			name: 'e',
 			step: '1.1',
@@ -329,16 +326,16 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(2).simulate('change', { target: { name: 'sizeMin', value: '0' } })
+		inputs.at(2).simulate('blur', { target: { name: 'sizeMin', value: '0' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '0' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '0' } })
 
-		inputs.at(2).simulate('change', { target: { name: 'sizeMin', value: '7' } })
+		inputs.at(2).simulate('blur', { target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '7' } })
 	})
 
-	test('onChangeMin (chooseMin, chooseMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
+	test('onBlurMin (chooseMin, chooseMax) - when both values are equal and the first value is changed then the second value should match the first', () => {
 		const variable = {
 			name: 'g',
 			type: 'pick-list',
@@ -352,11 +349,11 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(1).simulate('change', { target: { name: 'chooseMin', value: '0' } })
+		inputs.at(1).simulate('blur', { target: { name: 'chooseMin', value: '0' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '0' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '0' } })
 
-		inputs.at(1).simulate('change', { target: { name: 'chooseMin', value: '7' } })
+		inputs.at(1).simulate('blur', { target: { name: 'chooseMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '7' } })
 	})
@@ -376,12 +373,12 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(2).simulate('change', { target: { name: 'sizeMin', value: '7' } })
+		inputs.at(2).simulate('blur', { target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '7' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '7' } })
 	})
 
-	test('onChangeMax (valueMin, valueMax) - when both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
+	test('onBlurMax (valueMin, valueMax) - when both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
 		const variable = {
 			name: 'g',
 			type: 'random-number',
@@ -393,16 +390,16 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(1).simulate('change', { target: { name: 'sizeMax', value: '40' } })
+		inputs.at(1).simulate('blur', { target: { name: 'sizeMax', value: '40' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '40' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '40' } })
 
-		inputs.at(1).simulate('change', { target: { name: 'valueMax', value: '1' } })
+		inputs.at(1).simulate('blur', { target: { name: 'valueMax', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'valueMin', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'valueMax', value: '1' } })
 	})
 
-	test('onChangeMax (decimalPlacesMin, decimalPlacesMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
+	test('onBlurMax (decimalPlacesMin, decimalPlacesMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
 		const variable = {
 			name: 'b',
 			type: 'random-number',
@@ -414,37 +411,42 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(3).simulate('change', { target: { name: 'sizeMax', value: '30' } })
+		inputs.at(3).simulate('blur', { target: { name: 'sizeMax', value: '30' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '30' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '30' } })
 
-		inputs.at(3).simulate('change', { target: { name: 'decimalPlacesMax', value: '2' } })
+		inputs.at(3).simulate('blur', { target: { name: 'decimalPlacesMax', value: '2' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'decimalPlacesMax', value: '2' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'decimalPlacesMin', value: '2' } })
 	})
 
-	test('onChangeMax (sizeMin, sizeMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
+	test('onBlurMax (sizeMin, sizeMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
 		const variable = {
-			name: 'e',
-			type: 'random-sequence',
+			name: 'd',
+			type: 'random-list',
+			unique: true,
 			sizeMax: '3',
-			sizeMin: '3'
+			sizeMin: '3',
+			valueMax: '10',
+			valueMin: '3',
+			decimalPlacesMax: '1',
+			decimalPlacesMin: '1'
 		}
 
 		const onChange = jest.fn()
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(3).simulate('change', { target: { name: 'sizeMax', value: '10' } })
+		inputs.at(1).simulate('blur', { target: { name: 'sizeMax', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '10' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '10' } })
 
-		inputs.at(3).simulate('change', { target: { name: 'sizeMax', value: '' } })
-		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '' } })
-		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '' } })
+		inputs.at(1).simulate('blur', { target: { name: 'sizeMax', value: '1' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMin', value: '1' } })
+		expect(onChange).toHaveBeenCalledWith({ target: { name: 'sizeMax', value: '1' } })
 	})
 
-	test('onChangeMax (chooseMin, chooseMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
+	test('onBlurMax (chooseMin, chooseMax) - When both values are equal and the second value is decreased the first value should match the second. Increasing the second value should not update the first', () => {
 		const variable = {
 			name: 'g',
 			type: 'pick-list',
@@ -458,11 +460,11 @@ describe('VariableValue', () => {
 		const component = shallow(<VariableValue variable={variable} onChange={onChange} />)
 		const inputs = component.find('input')
 
-		inputs.at(2).simulate('change', { target: { name: 'chooseMax', value: '10' } })
+		inputs.at(2).simulate('blur', { target: { name: 'chooseMax', value: '10' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '10' } })
 		expect(onChange).not.toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '10' } })
 
-		inputs.at(2).simulate('change', { target: { name: 'chooseMax', value: '1' } })
+		inputs.at(2).simulate('blur', { target: { name: 'chooseMax', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMin', value: '1' } })
 		expect(onChange).toHaveBeenCalledWith({ target: { name: 'chooseMax', value: '1' } })
 	})
