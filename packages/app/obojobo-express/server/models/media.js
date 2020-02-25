@@ -210,7 +210,7 @@ class Media {
 		}
 	}
 
-	static fetchManyById(userId, start, count) {
+	static fetchByUserId(userId, start, count) {
 		if (!userId || !Number.isInteger(start) || !Number.isInteger(count)) {
 			throw new Error('Invalid argument.')
 		}
@@ -219,27 +219,30 @@ class Media {
 			.manyOrNone(
 				`
 					SELECT
-						id as "id",
+						id,
+						file_name as "fileName",
 						created_at as "createdAt"
 					FROM
 						media
 					WHERE
 						user_id = $[userId]
 					ORDER BY
-						"createdAt" DESC
-					LIMIT $[count] OFFSET $[start]
+						created_at DESC
+					LIMIT $[count]
+					OFFSET $[start]
 				`,
 				{
 					userId,
 					start,
-					count: count + 1
+					count: count + 1 // ask for 1 more then we need to determine if there are more
 				}
 			)
 			.then(res => {
 				const hasMore = res.length > count
-				const data = res.splice(0, count)
+				// remove the extra result if it's present
+				const media = hasMore ? res.splice(0, count) : res
 				return {
-					data,
+					media,
 					hasMore
 				}
 			})

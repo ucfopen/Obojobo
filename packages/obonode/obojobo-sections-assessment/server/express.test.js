@@ -25,7 +25,8 @@ const {
 	requireCurrentVisit,
 	requireAttemptId,
 	requireCurrentUser,
-	requireAssessmentId
+	requireAssessmentId,
+	checkValidationRules
 } = require('obojobo-express/server/express_validators')
 const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
@@ -49,6 +50,10 @@ describe('server/express', () => {
 
 		requireCurrentUser.mockImplementation((req, res, next) => {
 			req.currentUser = mockCurrentUser
+			next()
+		})
+
+		checkValidationRules.mockImplementation((req, res, next) => {
 			next()
 		})
 

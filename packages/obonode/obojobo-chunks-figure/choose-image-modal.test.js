@@ -15,8 +15,8 @@ describe('Choose Image Modal', () => {
 			(API.get = jest.fn().mockResolvedValue({
 				json: jest
 					.fn()
-					.mockResolvedValueOnce({ data: [{ id: '1' }], hasMore: true })
-					.mockResolvedValueOnce({ data: [{ id: '2' }], hasMore: false })
+					.mockResolvedValueOnce({ media: [{ id: '1', fileName: 'file-name-1' }], hasMore: true })
+					.mockResolvedValueOnce({ media: [{ id: '2', fileName: 'file-name-2' }], hasMore: false })
 			}))
 	})
 
@@ -87,16 +87,15 @@ describe('Choose Image Modal', () => {
 		return flushPromises().then(() => {
 			expect(component.instance().state.isFetching).toBe(false)
 			expect(API.get).toHaveBeenCalledTimes(1)
-			expect(API.get).toHaveBeenCalledWith('/api/media/many/?start=0&count=11')
-			expect(component.instance().state.medias).toMatchInlineSnapshot(`
+			expect(API.get).toHaveBeenCalledWith('/api/media/all?page=1&per_page=11')
+			expect(component.instance().state.media).toMatchInlineSnapshot(`
 			Array [
 			  Object {
-			    "id": "mock_id",
-			  },
-			  Object {
+			    "fileName": "file-name-1",
 			    "id": "1",
 			  },
 			  Object {
+			    "fileName": "file-name-2",
 			    "id": "2",
 			  },
 			]
@@ -140,7 +139,11 @@ describe('Choose Image Modal', () => {
 		const onCloseChooseImageModal = jest.fn()
 		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
-		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
+		component.setState({
+			media: [{ id: 'mock_id', fileName: 'mock-file-name' }],
+			isFetching: false,
+			hasMore: false
+		})
 		component.find('.image-gallary--single-photo').simulate('click')
 
 		return flushPromises().then(() => {
@@ -153,7 +156,11 @@ describe('Choose Image Modal', () => {
 		const onCloseChooseImageModal = jest.fn()
 		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
-		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
+		component.setState({
+			media: [{ id: 'mock_id', fileName: 'mock-file-name' }],
+			isFetching: false,
+			hasMore: false
+		})
 
 		component
 			.find('.image-gallary--single-photo')
@@ -169,7 +176,11 @@ describe('Choose Image Modal', () => {
 		const onCloseChooseImageModal = jest.fn()
 		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
-		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
+		component.setState({
+			media: [{ id: 'mock_id', fileName: 'mock-file-name' }],
+			isFetching: false,
+			hasMore: false
+		})
 		component
 			.find('.image-gallary--single-photo')
 			.at(0)

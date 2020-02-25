@@ -13,10 +13,10 @@ class ChooseImageModal extends React.Component {
 		super()
 
 		this.state = {
-			medias: [],
+			media: [],
 			isFetching: true,
 			hasMore: true,
-			start: 0,
+			page: 1,
 			url: ''
 		}
 
@@ -42,7 +42,7 @@ class ChooseImageModal extends React.Component {
 			isFetching: true,
 			hasMore: false
 		})
-		API.get(`/api/media/many/?start=${this.state.start}&count=${IMAGE_BATCH_SIZE}`)
+		API.get(`/api/media/all?page=${this.state.page}&per_page=${IMAGE_BATCH_SIZE}`)
 			.then(res => res.json())
 			.then(result => {
 				if (result.status === 'error') {
@@ -50,10 +50,10 @@ class ChooseImageModal extends React.Component {
 				}
 
 				this.setState({
-					medias: [...this.state.medias, ...result.data],
+					media: [...this.state.media, ...result.media],
 					isFetching: false,
 					hasMore: result.hasMore,
-					start: this.state.start + IMAGE_BATCH_SIZE
+					page: this.state.page + 1
 				})
 			})
 			.catch(() => {
@@ -74,7 +74,7 @@ class ChooseImageModal extends React.Component {
 	render() {
 		const imageLoadText = this.state.isFetching
 			? 'Recently uploaded image list loading'
-			: `${this.state.medias.length} Recent Images loaded${this.state.hasMore ? ' with more' : ''}`
+			: `${this.state.media.length} Recent Images loaded${this.state.hasMore ? ' with more' : ''}`
 
 		return (
 			<SimpleDialog
@@ -122,7 +122,7 @@ class ChooseImageModal extends React.Component {
 						aria-atomic="true"
 						aria-label={imageLoadText}
 					>
-						{this.state.medias.map((media, i) => (
+						{this.state.media.map((media, i) => (
 							<img
 								tabIndex={0}
 								className="image-gallary--single-photo"
@@ -134,7 +134,7 @@ class ChooseImageModal extends React.Component {
 									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
 								}
 								role="button"
-								aria-label={`Select image ${i + 1}`}
+								alt={`Select image ${i + 1}: ${media.fileName}`}
 							/>
 						))}
 
