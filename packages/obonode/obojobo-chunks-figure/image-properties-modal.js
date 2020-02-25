@@ -5,7 +5,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import ChooseImageModal from './choose-image-modal'
 import Image from './image'
-import { isUrlUUID } from './utils'
+import { isUUID } from './utils'
 
 const { SimpleDialog } = Common.components.modal
 const { Button } = Common.components
@@ -13,46 +13,49 @@ const { Button } = Common.components
 class ImageProperties extends React.Component {
 	constructor(props) {
 		super(props)
-		const defaultState = {
+		this.inputRef = React.createRef()
+		this.state = {
 			url: '',
 			alt: '',
 			size: 100,
 			height: 100,
-			width: 100
+			width: 100,
+			isChoosingImage: !this.props.content.url && this.props.content.url !== '',
+			urlInputText: isUUID(props.content.url) ? null : props.content.url,
+			...props.content
 		}
-		this.inputRef = React.createRef()
-		this.state = {
-			...defaultState,
-			...props.content,
-			isChoosingImage: !this.props.content.url && this.props.content.url !== ''
-		}
-		if (!isUrlUUID(this.props.content.url)) {
-			this.state.urlInputText = this.props.content.url
-		}
+
+		// optimize bound functions by
+		this.onCheckSize = this.onCheckSize.bind(this)
+		this.handleHeightTextChange = this.handleHeightTextChange.bind(this)
+		this.handleWidthTextChange = this.handleWidthTextChange.bind(this)
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.handleAltTextChange = this.handleAltTextChange.bind(this)
+		this.onOpenChoosingImageModal = this.onOpenChoosingImageModal.bind(this)
 	}
 
 	handleAltTextChange(event) {
 		const alt = event.target.value
 
-		return this.setState({ alt })
+		this.setState({ alt })
 	}
 
 	handleWidthTextChange(event) {
 		const width = event.target.value
 
-		return this.setState({ width })
+		this.setState({ width })
 	}
 
 	handleHeightTextChange(event) {
 		const height = event.target.value
 
-		return this.setState({ height })
+		this.setState({ height })
 	}
 
 	onCheckSize(event) {
 		const size = event.target.value
 
-		return this.setState({ size, width: null, height: null })
+		this.setState({ size, width: null, height: null })
 	}
 
 	focusOnFirstElement() {
@@ -62,21 +65,18 @@ class ImageProperties extends React.Component {
 	}
 
 	onCloseChooseImageModal(mediaId) {
+		const stateChanges = { isChoosingImage: false }
+
 		// Close all modals if no url is specified
 		if (!mediaId && !this.state.url) {
 			this.props.onConfirm(this.state)
 		}
 
 		if (mediaId) {
-			this.setState({
-				...this.state,
-				url: mediaId
-			})
+			stateChanges.url = mediaId
 		}
 
-		this.setState({
-			isChoosingImage: false
-		})
+		this.setState(stateChanges)
 	}
 
 	onOpenChoosingImageModal() {
@@ -84,8 +84,6 @@ class ImageProperties extends React.Component {
 	}
 
 	render() {
-		const size = this.state.size
-
 		if (this.state.isChoosingImage) {
 			return (
 				<ChooseImageModal
@@ -95,12 +93,13 @@ class ImageProperties extends React.Component {
 			)
 		}
 
+		const size = this.state.size
 		return (
 			<SimpleDialog
 				cancelOk
 				title="Image Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="image-properties">
 					<div>
@@ -119,7 +118,7 @@ class ImageProperties extends React.Component {
 
 							<Button
 								className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-								onClick={() => this.onOpenChoosingImageModal()}
+								onClick={this.onOpenChoosingImageModal}
 								ref={this.inputRef}
 							>
 								Change Image...
@@ -131,7 +130,7 @@ class ImageProperties extends React.Component {
 							type="text"
 							id="obojobo-draft--chunks--figure--alt"
 							value={this.state.alt || ''}
-							onChange={this.handleAltTextChange.bind(this)}
+							onChange={this.handleAltTextChange}
 							size="50"
 							placeholder="Describe the Image"
 						/>
@@ -149,7 +148,7 @@ class ImageProperties extends React.Component {
 									value="large"
 									id="obojobo-draft--chunks--figure--size-large"
 									checked={size === 'large'}
-									onChange={this.onCheckSize.bind(this)}
+									onChange={this.onCheckSize}
 								/>
 								<label htmlFor="obojobo-draft--chunks--figure--size-large">Large</label>
 							</div>
@@ -160,7 +159,7 @@ class ImageProperties extends React.Component {
 									value="medium"
 									id="obojobo-draft--chunks--figure--size-medium"
 									checked={size === 'medium'}
-									onChange={this.onCheckSize.bind(this)}
+									onChange={this.onCheckSize}
 								/>
 								<label htmlFor="obojobo-draft--chunks--figure--size-medium">Medium</label>
 							</div>
@@ -171,7 +170,7 @@ class ImageProperties extends React.Component {
 									value="small"
 									id="obojobo-draft--chunks--figure--size-small"
 									checked={size === 'small'}
-									onChange={this.onCheckSize.bind(this)}
+									onChange={this.onCheckSize}
 								/>
 								<label htmlFor="obojobo-draft--chunks--figure--size-small">Small</label>
 							</div>
@@ -182,7 +181,7 @@ class ImageProperties extends React.Component {
 									value="custom"
 									id="obojobo-draft--chunks--figure--size-custom"
 									checked={size === 'custom'}
-									onChange={this.onCheckSize.bind(this)}
+									onChange={this.onCheckSize}
 								/>
 								<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
 								{size === 'custom' ? (
@@ -197,7 +196,7 @@ class ImageProperties extends React.Component {
 											placeholder="Width"
 											aria-label="Width in pixels"
 											value={this.state.width || ''}
-											onChange={this.handleWidthTextChange.bind(this)}
+											onChange={this.handleWidthTextChange}
 										/>
 										<span>px × </span>
 										<input
@@ -210,7 +209,7 @@ class ImageProperties extends React.Component {
 											placeholder="Height"
 											aria-label="Height in pixels"
 											value={this.state.height || ''}
-											onChange={this.handleHeightTextChange.bind(this)}
+											onChange={this.handleHeightTextChange}
 										/>
 										<span>px</span>
 									</div>
