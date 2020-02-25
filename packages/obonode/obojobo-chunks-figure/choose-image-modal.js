@@ -2,7 +2,7 @@ import './choose-image-modal.scss'
 
 import React from 'react'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { SimpleDialog } = Common.components.modal
@@ -31,7 +31,7 @@ class ChooseImageModal extends React.Component {
 		const file = event.target.files[0]
 		const formData = new window.FormData()
 		formData.append('userImage', file, file.name)
-		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
+		API.postMultiPart('/api/media/upload', formData).then(mediaData => {
 			this.props.onCloseChooseImageModal(mediaData.media_id)
 		})
 	}
@@ -43,7 +43,7 @@ class ChooseImageModal extends React.Component {
 			isFetching: true,
 			hasMore: false
 		})
-		APIUtil.get(`/api/media/many/?start=${this.state.start}&count=${this.state.count}`)
+		API.get(`/api/media/many/?start=${this.state.start}&count=${this.state.count}`)
 			.then(res => res.json())
 			.then(result => {
 				if (result.status !== 'error') {

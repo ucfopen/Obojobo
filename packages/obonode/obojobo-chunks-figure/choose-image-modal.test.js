@@ -2,28 +2,27 @@ import React from 'react'
 import { mount } from 'enzyme'
 import ChooseImageModal from './choose-image-modal'
 
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
-	postMultiPart: jest.fn().mockResolvedValue({ media_id: 'mockMediaId' }),
-	get: jest.fn()
-}))
-
-const APIUtil = require('obojobo-document-engine/src/scripts/viewer/util/api-util')
+// mock with empty object
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api', () => ({}))
 
 describe('Choose Image Modal', () => {
+	const flushPromises = global.flushPromises // pevents eslint no-undef errors
+	const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
+
 	beforeEach(() => {
-		jest.clearAllMocks()
-		APIUtil.get.mockResolvedValue({
-			json: jest
-				.fn()
-				.mockResolvedValueOnce({ data: [{ id: '1' }], hasMore: true })
-				.mockResolvedValueOnce({ data: [{ id: '2' }], hasMore: false })
-		})
+		jest.resetAllMocks()
+		;(API.postMultiPart = jest.fn().mockResolvedValue({ media_id: 'mockMediaId' })),
+			(API.get = jest.fn().mockResolvedValue({
+				json: jest
+					.fn()
+					.mockResolvedValueOnce({ data: [{ id: '1' }], hasMore: true })
+					.mockResolvedValueOnce({ data: [{ id: '2' }], hasMore: false })
+			}))
 	})
 
 	test('ChooseImageModal component', () => {
 		const component = mount(<ChooseImageModal />)
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.html()).toMatchSnapshot()
 		})
@@ -34,7 +33,6 @@ describe('Choose Image Modal', () => {
 
 		component.instance().focusOnFirstElement()
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.html()).toMatchSnapshot()
 		})
@@ -47,7 +45,6 @@ describe('Choose Image Modal', () => {
 			.find('#choose-image--image-controls--url')
 			.simulate('change', { target: { value: 'changed url' } })
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.instance().state.url).toBe('changed url')
 		})
@@ -66,17 +63,16 @@ describe('Choose Image Modal', () => {
 			}
 		})
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(APIUtil.postMultiPart).toHaveBeenCalledTimes(1)
-			expect(APIUtil.postMultiPart).toHaveBeenCalledWith('/api/media/upload', expect.any(FormData)) // eslint-disable-line no-undef
+			expect(API.postMultiPart).toHaveBeenCalledTimes(1)
+			// eslint-disable-next-line no-undef
+			expect(API.postMultiPart).toHaveBeenCalledWith('/api/media/upload', expect.any(FormData))
 			expect(onCloseChooseImageModal).toHaveBeenCalledWith('mockMediaId')
 			expect(component.html()).toMatchSnapshot()
 		})
 	})
 
 	test('ImageProperties click on `View More...`', () => {
-		const APIUtil = require('obojobo-document-engine/src/scripts/viewer/util/api-util')
 		const onCloseChooseImageModal = jest.fn()
 		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
@@ -88,11 +84,10 @@ describe('Choose Image Modal', () => {
 		component.find('.choose-image--image-gallary--view-more-btn').simulate('click')
 		expect(component.instance().state.isFetching).toBe(true)
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.instance().state.isFetching).toBe(false)
-			expect(APIUtil.get).toHaveBeenCalledTimes(1)
-			expect(APIUtil.get).toHaveBeenCalledWith('/api/media/many/?start=0&count=11')
+			expect(API.get).toHaveBeenCalledTimes(1)
+			expect(API.get).toHaveBeenCalledWith('/api/media/many/?start=0&count=11')
 			expect(component.instance().state.medias).toMatchInlineSnapshot(`
 			Array [
 			  Object {
@@ -120,7 +115,6 @@ describe('Choose Image Modal', () => {
 			.at(0)
 			.simulate('click')
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(onCloseChooseImageModal).toHaveBeenCalled()
 			expect(component.html()).toMatchSnapshot()
@@ -136,7 +130,6 @@ describe('Choose Image Modal', () => {
 			.at(1)
 			.simulate('click')
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(onCloseChooseImageModal).toHaveBeenCalled()
 			expect(component.html()).toMatchSnapshot()
@@ -150,7 +143,6 @@ describe('Choose Image Modal', () => {
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component.find('.image-gallary--single-photo').simulate('click')
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(onCloseChooseImageModal).toHaveBeenCalled()
 			expect(component.html()).toMatchSnapshot()
@@ -168,7 +160,6 @@ describe('Choose Image Modal', () => {
 			.at(0)
 			.simulate('keypress', { key: 'mock_key' })
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.html()).toMatchSnapshot()
 		})
@@ -184,7 +175,6 @@ describe('Choose Image Modal', () => {
 			.at(0)
 			.simulate('keypress', { key: 'Enter' })
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(onCloseChooseImageModal).toHaveBeenCalled()
 			expect(component.html()).toMatchSnapshot()
@@ -192,8 +182,7 @@ describe('Choose Image Modal', () => {
 	})
 
 	test('ImageProperties handle fetching error', () => {
-		const APIUtil = require('obojobo-document-engine/src/scripts/viewer/util/api-util')
-		APIUtil.get = jest.fn().mockResolvedValue({
+		API.get = jest.fn().mockResolvedValue({
 			json: jest.fn().mockResolvedValue({ status: 'error' })
 		})
 
@@ -201,7 +190,6 @@ describe('Choose Image Modal', () => {
 			<ChooseImageModal onSetIsChoosingImage={jest.fn} onSetMediaUrl={jest.fn} />
 		)
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.instance().state.isFetching).toBe(false)
 			expect(component.instance().state.hasMore).toBe(false)
@@ -210,14 +198,12 @@ describe('Choose Image Modal', () => {
 	})
 
 	test('ImageProperties handle promise rejection', () => {
-		const APIUtil = require('obojobo-document-engine/src/scripts/viewer/util/api-util')
-		APIUtil.get = jest.fn().mockRejectedValueOnce('mock-error')
+		API.get = jest.fn().mockRejectedValueOnce('mock-error')
 
 		const component = mount(
 			<ChooseImageModal onSetIsChoosingImage={jest.fn} onSetMediaUrl={jest.fn} />
 		)
 
-		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
 			expect(component.instance().state.isFetching).toBe(false)
 			expect(component.instance().state.hasMore).toBe(false)
