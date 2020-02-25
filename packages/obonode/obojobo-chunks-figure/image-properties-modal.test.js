@@ -29,7 +29,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
 
 jest.mock('./utils', () => {
 	return {
-		isUrlUUID: require.requireActual('./utils').isUrlUUID
+		isUUID: require.requireActual('./utils').isUUID
 	}
 })
 
@@ -161,7 +161,7 @@ describe('Image Properties Modal', () => {
 			<ImageProperties content={{ url: 'C56A4180-65AA-42EC-A945-5FD21DEC0538' }} />
 		)
 		// if url is uuid do not set state.urlInputText
-		expect(component.instance().state.urlInputText).not.toBeDefined()
+		expect(component.instance().state.urlInputText).toBeNull()
 
 		component = mount(<ImageProperties content={{ url: 'someUrl' }} />)
 		// if url is uuid set state.urlInputText
