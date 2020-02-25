@@ -17,7 +17,7 @@ const NewVarible = props => {
 
 	const handleKeyDown = event => {
 		if (event.key === 'Enter') {
-			props.onAddVariable(currSelectType)
+			props.addVariable(currSelectType)
 		}
 	}
 
@@ -25,7 +25,7 @@ const NewVarible = props => {
 		// In Chrome browser, use arrow keys in radio list will trigger onClick()
 		// The following if statement will prevent it from happening
 		if (e.type === 'click' && e.clientX !== 0 && e.clientY !== 0) {
-			props.onAddVariable(type)
+			props.addVariable(type)
 		}
 	}
 
@@ -34,7 +34,7 @@ const NewVarible = props => {
 			<div className="new-variable--title">
 				<strong>What type of variable do you want to create?</strong>
 			</div>
-			<form
+			<div
 				className="new-variable--type-list"
 				value={currSelectType}
 				onKeyDown={handleKeyDown}
@@ -51,7 +51,6 @@ const NewVarible = props => {
 						value={type}
 						onClick={e => onClick(e, type)}
 						onMouseEnter={() => setCurrSelectType(type)}
-						ref={type === currSelectType ? firstRef : null}
 					>
 						<label>
 							<input
@@ -61,13 +60,14 @@ const NewVarible = props => {
 								checked={type === currSelectType}
 								tabIndex="-1"
 								onChange={onChange}
+								ref={type === currSelectType ? firstRef : null}
 							/>
 							<strong htmlFor={type}>{mapTypeToString[type]}</strong>
 							<label htmlFor={type}>{mapTypeToDescription[type]}</label>
 						</label>
 					</button>
 				))}
-			</form>
+			</div>
 		</div>
 	)
 }

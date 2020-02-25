@@ -1,6 +1,6 @@
 import './variable-list-modal.scss'
 
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import VariableProperty from './variable-property/variable-property'
@@ -12,17 +12,17 @@ const { Button } = Common.components
 const { SimpleDialog } = Common.components.modal
 
 const VariableListModal = props => {
-	const firstRef = useRef()
-	const tabRef = useRef()
+	const firstRef = useRef() // First element to fucus on when open the modal
+	const tabRef = useRef() // First element to focus on when open a variable
 
-	const [currSelect, setCurrSelect] = React.useState(0)
-	const [creatingVariable, setCreatingVariable] = React.useState(false)
-	const [variables, setVariables] = React.useState([...(props.content.variables || [])])
+	const [currSelect, setCurrSelect] = useState(0)
+	const [creatingVariable, setCreatingVariable] = useState(false)
+	const [variables, setVariables] = useState([...(props.content.variables || [])])
 
 	const onClickVarible = index => {
 		setCreatingVariable(false)
 		setCurrSelect(index)
-		tabRef.current.focus()
+		tabRef.current.focus() // Tab focus on the first element
 	}
 
 	const onChange = event => {
@@ -44,7 +44,7 @@ const VariableListModal = props => {
 		setVariables(updatedVariables)
 	}
 
-	const onAddVariable = type => {
+	const addVariable = type => {
 		const nameSet = new Set()
 		for (const variable of variables) {
 			nameSet.add(variable.name)
@@ -66,14 +66,15 @@ const VariableListModal = props => {
 		setCreatingVariable(false)
 	}
 
-	const onDeleteVariable = () => {
+	const deleteVariable = () => {
 		const updatedVariables = [...variables]
 		updatedVariables.splice(currSelect, 1)
 		setVariables(updatedVariables)
 		setCurrSelect(0)
 	}
 
-	const onDuplicateVariable = () => {
+	const duplicateVariable = () => {
+		// Find suffix number for duplicate variable
 		const nameSet = new Set()
 		for (const variable of variables) {
 			nameSet.add(variable.name)
@@ -82,18 +83,18 @@ const VariableListModal = props => {
 		const duplicateVariable = { ...variables[currSelect] }
 
 		const suffixNumList = duplicateVariable.name.match(/\d+$/)
-		let newName = duplicateVariable.name
+		let prefixName = duplicateVariable.name
 
-		let siffixNum = 2
+		let suffixNum = 2
 		if (suffixNumList) {
-			siffixNum = suffixNumList[0]
-			newName = newName.substring(0, newName.length - (siffixNum + '').length)
+			suffixNum = suffixNumList[0]
+			prefixName = prefixName.substring(0, prefixName.length - (suffixNum + '').length)
 		}
 
-		while (nameSet.has(newName + siffixNum)) {
-			siffixNum++
+		while (nameSet.has(prefixName + suffixNum)) {
+			suffixNum++
 		}
-		duplicateVariable.name = newName + siffixNum
+		duplicateVariable.name = prefixName + suffixNum
 
 		setVariables([...variables, duplicateVariable])
 		setCurrSelect(variables.length)
@@ -112,7 +113,7 @@ const VariableListModal = props => {
 			focusOnFirstElement={focusOnFirstElement}
 		>
 			<div className="variable-list-modal">
-				<nav className="variable-list" role="navigation" aria-label="Navigation">
+				<nav className="variable-list" role="navigation">
 					{variables.map((variable, index) => (
 						<VariableBlock
 							key={variable.name}
@@ -139,13 +140,13 @@ const VariableListModal = props => {
 				</nav>
 
 				{creatingVariable ? (
-					<NewVariable onAddVariable={onAddVariable} />
+					<NewVariable addVariable={addVariable} />
 				) : (
 					<VariableProperty
 						variable={variables[currSelect]}
 						onChange={onChange}
-						onDuplicateVariable={onDuplicateVariable}
-						onDeleteVariable={onDeleteVariable}
+						duplicateVariable={duplicateVariable}
+						deleteVariable={deleteVariable}
 						tabRef={tabRef}
 					/>
 				)}

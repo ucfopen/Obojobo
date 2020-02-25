@@ -5,13 +5,13 @@ import NewVariable from '../../../../../src/scripts/oboeditor/components/variabl
 
 describe('VariableValue', () => {
 	test('VariableValue component', () => {
-		const component = shallow(<NewVariable onAddVariable={jest.fn()} />)
+		const component = shallow(<NewVariable addVariable={jest.fn()} />)
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('VariableValue submits for "enter" key', () => {
-		const onAddVariable = jest.fn()
-		const component = shallow(<NewVariable onAddVariable={onAddVariable} />)
+		const addVariable = jest.fn()
+		const component = shallow(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('.new-variable--type-list')
@@ -20,13 +20,13 @@ describe('VariableValue', () => {
 				key: 'Enter'
 			})
 
-		expect(onAddVariable).toHaveBeenCalled()
+		expect(addVariable).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('VariableValue does not submit for every key other than "enter"', () => {
-		const onAddVariable = jest.fn()
-		const component = shallow(<NewVariable onAddVariable={onAddVariable} />)
+		const addVariable = jest.fn()
+		const component = shallow(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('.new-variable--type-list')
@@ -35,13 +35,13 @@ describe('VariableValue', () => {
 				key: 'i'
 			})
 
-		expect(onAddVariable).not.toHaveBeenCalled()
+		expect(addVariable).not.toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('VariableValue handles "onChange"', () => {
-		const onAddVariable = jest.fn()
-		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
+		const addVariable = jest.fn()
+		const component = mount(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('input')
@@ -58,37 +58,37 @@ describe('VariableValue', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableValue calls "onAddVariable" on mouse click', () => {
-		const onAddVariable = jest.fn()
-		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
+	test('VariableValue calls "addVariable" on mouse click', () => {
+		const addVariable = jest.fn()
+		const component = mount(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('.new-variable--type-list--single-item')
 			.at(2)
 			.simulate('click', { type: 'click', clientX: 3, clienty: 3 })
 
-		expect(onAddVariable).toHaveBeenCalled()
+		expect(addVariable).toHaveBeenCalled()
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableValue does not call "onAddVariable" radio list keyboard click', () => {
-		const onAddVariable = jest.fn()
-		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
+	test('VariableValue does not call "addVariable" radio list keyboard click', () => {
+		const addVariable = jest.fn()
+		const component = mount(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('.new-variable--type-list--single-item')
 			.at(2)
 			.simulate('click', { type: 'click', clientX: 0, clienty: 0 })
 
-		expect(onAddVariable).not.toHaveBeenCalled()
+		expect(addVariable).not.toHaveBeenCalled()
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('VariableValue selects item on "hover"', () => {
-		const onAddVariable = jest.fn()
-		const component = mount(<NewVariable onAddVariable={onAddVariable} />)
+		const addVariable = jest.fn()
+		const component = mount(<NewVariable addVariable={addVariable} />)
 
 		component
 			.find('.new-variable--type-list--single-item')

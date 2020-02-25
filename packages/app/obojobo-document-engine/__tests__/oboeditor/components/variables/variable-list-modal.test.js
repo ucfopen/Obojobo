@@ -214,7 +214,7 @@ describe('VariableListModal', () => {
 
 		// Simulate input changes
 		component
-			.find('.input-item')
+			.find('.variable-property--input-item')
 			.at(0)
 			.simulate('change', { target: { name: 'name', value: 'mockNewName' } })
 
@@ -249,7 +249,7 @@ describe('VariableListModal', () => {
 
 		// Simulate input changes
 		component
-			.find('.input-item')
+			.find('.variable-property--input-item')
 			.at(0)
 			.simulate('change', { target: { name: 'type', value: 'random-number' } })
 
@@ -258,7 +258,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal calls "onAddVariable"', () => {
+	test('VariableListModal calls "addVariable"', () => {
 		const content = {
 			variables: [
 				{
@@ -273,7 +273,7 @@ describe('VariableListModal', () => {
 		}
 		const component = mount(<VariableListModal content={content} />)
 
-		// Click create new variable and select a type
+		// Click "create new variable" and select a type
 		component
 			.find('.button')
 			.at(0)
@@ -300,7 +300,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal calls "onAddVariable" - decimalPlacesMin and decimalPlacesMax are default to 0', () => {
+	test('VariableListModal calls "addVariable" - decimalPlacesMin and decimalPlacesMax are default to 0', () => {
 		const content = {
 			variables: [
 				{
@@ -343,7 +343,7 @@ describe('VariableListModal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableListModal call "onDeleteVariable"', () => {
+	test('VariableListModal call "deleteVariable"', () => {
 		global.confirm = () => true
 
 		const content = {

@@ -11,13 +11,9 @@ describe('Variable Properties', () => {
 			value: '3'
 		}
 
-		const onDeleteVariable = jest.fn()
+		const deleteVariable = jest.fn()
 		const component = shallow(
-			<VariableProperty
-				variable={variable}
-				onDeleteVariable={onDeleteVariable}
-				onChange={jest.fn()}
-			/>
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -25,26 +21,18 @@ describe('Variable Properties', () => {
 	test('VariableProperty node with invalid variable', () => {
 		const variable = null
 
-		const onDeleteVariable = jest.fn()
+		const deleteVariable = jest.fn()
 		const component = shallow(
-			<VariableProperty
-				variable={variable}
-				onDeleteVariable={onDeleteVariable}
-				onChange={jest.fn()}
-			/>
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('VariableProperty node without default name or type', () => {
 		const variable = {}
-		const onDeleteVariable = jest.fn()
+		const deleteVariable = jest.fn()
 		const component = shallow(
-			<VariableProperty
-				variable={variable}
-				onDeleteVariable={onDeleteVariable}
-				onChange={jest.fn()}
-			/>
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
 		expect(
 			component
@@ -62,7 +50,7 @@ describe('Variable Properties', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperty clicks "delete" will call "onDeleteVariable"', () => {
+	test('VariableProperty clicks "delete" will call "deleteVariable"', () => {
 		global.confirm = () => true
 
 		const variable = {
@@ -71,25 +59,21 @@ describe('Variable Properties', () => {
 			value: '3'
 		}
 
-		const onDeleteVariable = jest.fn()
+		const deleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperty
-				variable={variable}
-				onDeleteVariable={onDeleteVariable}
-				onChange={jest.fn()}
-			/>
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
-		expect(onDeleteVariable).toHaveBeenCalled()
+		expect(deleteVariable).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('VariableProperty does not call "onDeleteVariable" when user cancels', () => {
+	test('VariableProperty does not call "deleteVariable" when user cancels', () => {
 		global.confirm = () => false
 
 		const variable = {
@@ -98,21 +82,17 @@ describe('Variable Properties', () => {
 			value: '3'
 		}
 
-		const onDeleteVariable = jest.fn()
+		const deleteVariable = jest.fn()
 		const component = mount(
-			<VariableProperty
-				variable={variable}
-				onDeleteVariable={onDeleteVariable}
-				onChange={jest.fn()}
-			/>
+			<VariableProperty variable={variable} deleteVariable={deleteVariable} onChange={jest.fn()} />
 		)
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
-		expect(onDeleteVariable).not.toHaveBeenCalled()
+		expect(deleteVariable).not.toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 

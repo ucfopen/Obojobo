@@ -15,13 +15,14 @@ const VariableValues = props => {
 	const { variable, onChange } = props
 
 	const onBlurMin = e => {
-		if (e.target.name === 'decimalPlacesMin' || e.target.name === 'sizeMin') {
-			e.target.value = '' + parseInt(e.target.value, 10)
-		}
-		props.onChange(e)
-
 		const minName = e.target.name
 		const minValue = e.target.value
+
+		if (minValue && (minName === 'decimalPlacesMin' || minName === 'sizeMin')) {
+			e.target.value = '' + parseInt(e.target.value, 10)
+		}
+
+		props.onChange(e)
 
 		let maxName = ''
 		switch (minName) {
@@ -53,13 +54,13 @@ const VariableValues = props => {
 	}
 
 	const onBurMax = e => {
-		if (e.target.name === 'decimalPlacesMax' || e.target.name === 'sizeMax') {
+		const maxName = e.target.name
+		const maxValue = e.target.value
+
+		if (maxValue && (maxName === 'decimalPlacesMax' || maxName === 'sizeMax')) {
 			e.target.value = '' + parseInt(e.target.value, 10)
 		}
 		props.onChange(e)
-
-		const maxName = e.target.name
-		const maxValue = e.target.value
 
 		let minName = ''
 		switch (maxName) {
@@ -90,20 +91,32 @@ const VariableValues = props => {
 		case STATIC_VALUE:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Value: </label>
-						<input type="text" name="value" value={variable.value || ''} onChange={onChange} />
-					</div>
+						<input
+							className="variable-property--input-item"
+							type="text"
+							name="value"
+							value={variable.value || ''}
+							onChange={onChange}
+						/>
+					</label>
 				</div>
 			)
 
 		case STATIC_LIST:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Values: </label>
-						<input type="text" name="value" value={variable.value || ''} onChange={onChange} />
-					</div>
+						<input
+							className="variable-property--input-item"
+							type="text"
+							name="value"
+							value={variable.value || ''}
+							onChange={onChange}
+						/>
+					</label>
 					<p className="variable-values--example-text">
 						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
 					</p>
@@ -113,184 +126,222 @@ const VariableValues = props => {
 		case RANDOM_NUMBER:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Min Value: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>Max Value: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="0"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
+							aria-label="Enter the minimum number of decimal places"
 						/>
 						<span>to</span>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="0"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
+							aria-label="Enter the maximum number of decimal places"
 						/>
-					</div>
+					</label>
 				</div>
 			)
 
 		case RANDOM_LIST:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>List Size: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
+							aria-label="Enter the minimum size for the list"
 						/>
 						<span>to</span>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
+							aria-label="Enter the maximum size for the list"
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>No duplicate: </label>
 						<input
+							className="variable-property--checkbox-item"
 							type="checkbox"
 							name="unique"
 							checked={variable.unique === true || variable.unique === 'true'}
 							onChange={onChange}
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>Min Value: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							name="valueMin"
 							value={variable.valueMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>Max Value: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							name="valueMax"
 							value={variable.valueMax || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
 						/>
-					</div>
-					<div className="variable-values--group">
+					</label>
+					<label className="variable-values--group">
 						<label>Decimal places: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="0"
 							name="decimalPlacesMin"
 							value={variable.decimalPlacesMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
+							aria-label="Enter the minumum number of decimal places for the variable"
 						/>
 						<span>to</span>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="0"
 							name="decimalPlacesMax"
 							value={variable.decimalPlacesMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
+							aria-label="Enter the maximum number of decimal places for the variable"
 						/>
-					</div>
+					</label>
 				</div>
 			)
 
 		case RANDOM_SEQUENCE:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>List Size: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="sizeMin"
 							value={variable.sizeMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
+							aria-label="Enter the minimum list size for the variable"
 						/>
 						<span>to</span>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="sizeMax"
 							value={variable.sizeMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
+							aria-label="Enter the minimum list size for the variable"
 						/>
-					</div>
+					</label>
 
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>First value: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							name="start"
 							value={variable.start || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
 						/>
-					</div>
+					</label>
 
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Series type: </label>
-						<select name="seriesType" value={variable.seriesType || ''} onChange={onChange}>
+						<select
+							className="variable-property--select-item"
+							name="seriesType"
+							value={variable.seriesType || ''}
+							onChange={onChange}
+						>
 							<option disabled value="">
 								-- select an option --
 							</option>
 							<option value="arithmetic">Arithmetic (Add)</option>
 							<option value="geometric">Geometric (Multiply)</option>
 						</select>
-					</div>
+					</label>
 
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Step by: </label>
-						<input type="number" name="step" value={variable.step || ''} onChange={onChange} />
-					</div>
+						<input
+							className="variable-property--input-item"
+							type="number"
+							name="step"
+							value={variable.step || ''}
+							onChange={onChange}
+						/>
+					</label>
 				</div>
 			)
 
 		case PICK_ONE:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Values: </label>
-						<input name="value" value={variable.value || ''} onChange={onChange} />
-					</div>
+						<input
+							className="variable-property--input-item"
+							name="value"
+							value={variable.value || ''}
+							onChange={onChange}
+						/>
+					</label>
 					<p className="variable-values--example-text">
 						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
 					</p>
@@ -300,44 +351,54 @@ const VariableValues = props => {
 		case PICK_LIST:
 			return (
 				<div className="variable-values">
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Values: </label>
-						<input name="value" value={variable.value || ''} onChange={onChange} />
-					</div>
+						<input
+							className="variable-property--input-item"
+							name="value"
+							value={variable.value || ''}
+							onChange={onChange}
+						/>
+					</label>
 					<p className="variable-values--example-text">
 						{"Enter values, separating each value with a comma (eg. '1, 2, 3')"}
 					</p>
 					<div className="variable-values--group">
 						<label>Choose: </label>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="chooseMin"
 							value={variable.chooseMin || ''}
 							onChange={onChange}
 							onBlur={onBlurMin}
+							aria-label="Enter the minimum number of values to choose from the list."
 						/>
 						<span>to</span>
 						<input
+							className="variable-property--input-item"
 							type="number"
 							min="1"
 							name="chooseMax"
 							value={variable.chooseMax || ''}
 							onChange={onChange}
 							onBlur={onBurMax}
+							aria-label="Enter the maximum number of values to choose from the list."
 						/>
 					</div>
 
-					<div className="variable-values--group">
+					<label className="variable-values--group">
 						<label>Order: </label>
 						<input
+							className="variable-property--checkbox-item"
 							type="checkbox"
 							name="ordered"
 							checked={variable.ordered === true || variable.ordered === 'true'}
 							value={variable.ordered}
 							onChange={onChange}
 						/>
-					</div>
+					</label>
 				</div>
 			)
 
