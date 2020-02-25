@@ -6,119 +6,114 @@ import { Transforms, Path } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
-import generateId from '../../generate-ids'
 
 import './editor-component.scss'
 
 const { OboModel } = Common.models
+class Node extends React.Component {
+	insertBlockAtStart(item) {
+		const newBlock = item.cloneBlankNode()
 
-const insertBlockAtStart = (editor, element, item) => {
-	const newBlock = item.cloneBlankNode()
-
-	// Use the ReactEditor to get the path for the current element
-	// Then use transforms to insert at that path, which effectively inserts above like in arrays
-	const path = ReactEditor.findPath(editor, element)
-	Transforms.insertNodes(editor, newBlock, { at: path })
-}
-
-const insertBlockAtEnd = (editor, element, item) => {
-	const newBlock = item.cloneBlankNode()
-	
-	// Use the ReactEditor to get the path for the current element, and increment the last element
-	// Then use transforms to insert at that path, which effectively inserts below like in arrays
-	const path = ReactEditor.findPath(editor, element)
-	Transforms.insertNodes(editor, newBlock, { at: Path.next(path) })
-}
-
-const saveId = (editor, element, prevId, newId) => {
-	if (prevId === newId) return
-
-	// check against existing nodes for duplicate keys
-	const model = OboModel.models[prevId]
-	if (!model.setId(newId)) {
-		return 'The id "' + newId + '" already exists. Please choose a unique id'
+		// Use the ReactEditor to get the path for the current element
+		// Then use transforms to insert at that path, which effectively inserts above like in arrays
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
 	}
 
-	const path = ReactEditor.findPath(editor, element)
-	Transforms.setNodes(editor, { id: newId }, { at: path })
-}
+	insertBlockAtEnd(item) {
+		const newBlock = item.cloneBlankNode()
+		
+		// Use the ReactEditor to get the path for the current element, and increment the last element
+		// Then use transforms to insert at that path, which effectively inserts below like in arrays
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
+	}
 
-const saveContent = (editor, element, prevContent, newContent) => {
-	const path = ReactEditor.findPath(editor, element)
-	Transforms.setNodes(editor, { content: newContent }, { at: path })
-}
+	saveId(prevId, newId) {
+		if (prevId === newId) return
 
-const deleteNode = (editor, element) => {
-	// Cursor focus is automatically returned to the editor by the onChange function
-	const path = ReactEditor.findPath(editor, element)
-	Transforms.removeNodes(editor, { at: path })
-}
+		// check against existing nodes for duplicate keys
+		const model = OboModel.models[prevId]
+		if (!model.setId(newId)) {
+			return 'The id "' + newId + '" already exists. Please choose a unique id'
+		}
 
-const duplicateNode = (editor, element) => {
-	// ELLI TODO - this has an issue where duplicate nodes steal focus from their projenator
-	const newNode = Object.assign({}, element)
-	newNode.id = generateId()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { id: newId }, { at: path })
+	}
 
-	const newModel = OboModel.create(newNode.type)
-	newModel.setId(newNode.id)
+	saveContent(prevContent, newContent) {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: newContent }, { at: path })
+	}
 
-	const path = ReactEditor.findPath(editor, element)
-	path[path.length - 1]++
-	Transforms.insertNodes(editor, newNode, { at: path })
-}
+	deleteNode() {
+		// Cursor focus is automatically returned to the editor by the onChange function
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
+	}
 
-const onOpen = (editor) => {
-	// Lock the editor into readOnly to prevent it from stealing cursor focus
-	editor.toggleEditable(false)
-}
+	duplicateNode () {
+		const newNode = Object.assign({}, this.props.element)
 
-const onClose = (editor) => {
-	// Give cursor focus back to the editor
-	editor.toggleEditable(true)
-}
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		path[path.length - 1]++
+		Transforms.insertNodes(this.props.editor, newNode, { at: path })
+	}
 
-const Node = (props) => {
-	const selected = props.selected
-	const editor = props.editor
+	onOpen() {
+		// Lock the editor into readOnly to prevent it from stealing cursor focus
+		this.props.editor.toggleEditable(false)
+	}
 
-	return (
-		<div className={'oboeditor-component component'} data-obo-component="true">
-			{selected ? (
-				<div className={'component-toolbar'}>
-					<InsertMenu
-						dropOptions={Common.Registry.insertableItems}
-						className={'align-left top'}
-						icon="+"
-						masterOnClick={insertBlockAtStart.bind(this, editor, props.element)}/>
-					<InsertMenu
-						dropOptions={Common.Registry.insertableItems}
-						className={'align-left bottom'}
-						icon="+"
-						masterOnClick={insertBlockAtEnd.bind(this, editor, props.element)}
-					/>
-				</div>
-			) : null}
+	onClose() {
+		// Give cursor focus back to the editor
+		this.props.editor.toggleEditable(true)
+	}
 
-			{selected ? (
-				<MoreInfoBox
-					className="content-node"
-					id={props.element.id}
-					isFirst
-					isLast
-					type={props.element.type}
-					content={props.element.content || {}}
-					saveId={saveId.bind(this, editor, props.element)}
-					saveContent={saveContent.bind(this, editor, props.element)}
-					contentDescription={props.contentDescription || []}
-					deleteNode={deleteNode.bind(this, editor, props.element)}
-					duplicateNode={duplicateNode.bind(this, editor, props.element)}
-					markUnsaved={editor.markUnsaved}
-					onOpen={onOpen.bind(this, editor)}
-					onClose={onClose.bind(this, editor)}/>
-			) : null}
-			{props.children}
-		</div>
-	)
+	render() {
+		const selected = this.props.selected
+		const editor = this.props.editor
+
+		return (
+			<div className={'oboeditor-component component'} data-obo-component="true">
+				{selected ? (
+					<div className={'component-toolbar'}>
+						<InsertMenu
+							dropOptions={Common.Registry.insertableItems}
+							className={'align-left top'}
+							icon="+"
+							masterOnClick={this.insertBlockAtStart.bind(this)}/>
+						<InsertMenu
+							dropOptions={Common.Registry.insertableItems}
+							className={'align-left bottom'}
+							icon="+"
+							masterOnClick={this.insertBlockAtEnd.bind(this)}
+						/>
+					</div>
+				) : null}
+
+				{selected ? (
+					<MoreInfoBox
+						className="content-node"
+						id={this.props.element.id}
+						isFirst
+						isLast
+						type={this.props.element.type}
+						content={this.props.element.content || {}}
+						saveId={this.saveId.bind(this)}
+						saveContent={this.saveContent.bind(this)}
+						contentDescription={this.props.contentDescription || []}
+						deleteNode={this.deleteNode.bind(this)}
+						duplicateNode={this.duplicateNode.bind(this)}
+						markUnsaved={editor.markUnsaved}
+						onOpen={this.onOpen.bind(this)}
+						onClose={this.onClose.bind(this)}/>
+				) : null}
+				{this.props.children}
+			</div>
+		)
+	}
 }
 
 export default Node

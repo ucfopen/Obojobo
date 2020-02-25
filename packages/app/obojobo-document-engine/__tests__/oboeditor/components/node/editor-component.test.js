@@ -1,10 +1,14 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from '../../../../src/scripts/common'
 
 import Node from 'src/scripts/oboeditor/components/node/editor-component'
 
+jest.mock('slate')
+jest.mock('slate-react')
 jest.mock('Common', () => ({
 	models: {
 		OboModel: {}
@@ -65,13 +69,9 @@ describe('Component Editor Node', () => {
 	})
 	test('Node builds the expected component', () => {
 		const component = renderer.create(
-			<Node
-				node={{
-					data: {
-						get: () => ({})
-					}
-				}}
-			/>
+			<Node 
+				element={{}}
+				editor={{}}/>
 		)
 		const tree = component.toJSON()
 
@@ -79,25 +79,11 @@ describe('Component Editor Node', () => {
 	})
 
 	test('Node component inserts node above', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					}
-				}}
-				parent={{
-					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
-				}}
-				editor={editor}
-			/>
+				selected={true}
+				element={{}}
+				editor={{}}/>
 		)
 		const tree = component.html()
 
@@ -107,29 +93,17 @@ describe('Component Editor Node', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('Node component inserts node below', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 }
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				parent={{
-					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
-				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		const tree = component.html()
 
@@ -139,167 +113,93 @@ describe('Component Editor Node', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('saveId does nothing if the old and new ids are the same', () => {
-		const editor = {
-			insertNodeByKey: jest.fn(),
-			removeNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 }
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		component.instance().saveId('mock-id', 'mock-id')
 
-		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
-		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
 
 	test('saveId does not allow duplicate nodes', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-		editor.insertNodeByKey = jest.fn().mockReturnValue(editor)
-
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 },
-					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				parent={{
-					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
-				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		component.instance().saveId('mock-duplicate-id', 'mock-id2')
 
-		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
-		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
 
-	test('saveId adds and removes the node if ids are not the same', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-		editor.insertNodeByKey = jest.fn().mockReturnValue(editor)
-
+	test('saveId updates the node if ids are not the same', () => {
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 },
-					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				parent={{
-					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
-				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		component.instance().saveId('mock-id', 'mock-id2')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
-	test('saveContent calls setNodeByKey', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+	test('saveContent calls Transforms.setNodes', () => {
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 },
-					toJSON: () => ({})
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		component.instance().saveContent({}, {})
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
-	test('deleteNode calls removeNodeByKey', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
+	test('deleteNode calls Transforms.removeNodes', () => {
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 },
-					toJSON: () => ({})
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
 		component.instance().deleteNode()
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('duplicateNode calls insertNodeByKey', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
+	test('duplicateNode calls Transforms.insertNodes', () => {
 		const component = mount(
 			<Node
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' }),
-						toJSON: () => ({})
-					},
-					nodes: { size: 0 },
-					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				selected={true}
+				element={{
+					content: { width: 'normal' },
 				}}
-				parent={{
-					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
-				}}
-				editor={editor}
-			/>
+				editor={{}}/>
 		)
+		ReactEditor.findPath.mockReturnValue([0])
+
 		component.instance().duplicateNode()
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('onOpen and onClose call toggleEditable', () => {

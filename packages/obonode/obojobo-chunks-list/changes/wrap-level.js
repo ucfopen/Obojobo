@@ -23,6 +23,9 @@ const wrapLevel = (node, editor, event) => {
 	// prevent normalization until all Lines have been indented
 	Editor.withoutNormalizing(editor, () => {
 		for(const [, path] of list) {
+			// Do not allow indenting past 20 (18 levels), because it will cause display errors
+			if(path.length >= 20) continue
+				
 			const [parent,] = Editor.parent(editor, path)
 
 			const bulletList =
