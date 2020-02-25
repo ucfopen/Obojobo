@@ -81,7 +81,7 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown({}, {}, event)
+		HTML.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -94,7 +94,7 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown({}, {}, event)
+		HTML.plugins.onKeyDown([{},[0]], {}, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertText).toHaveBeenCalled()
 	})
@@ -106,7 +106,7 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown({}, {}, event)
+		HTML.plugins.onKeyDown([{},[0]], {}, event)
 		
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertText).toHaveBeenCalled()

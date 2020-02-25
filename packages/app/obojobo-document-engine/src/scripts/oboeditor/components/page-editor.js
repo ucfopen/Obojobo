@@ -56,7 +56,6 @@ class PageEditor extends React.Component {
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
 		this.onKeyDown = this.onKeyDown.bind(this)
-		this.onCut = this.onCut.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 
@@ -333,26 +332,10 @@ class PageEditor extends React.Component {
 		}))
 
 
-		for(const node of list) {
-			const item = Common.Registry.getItemForType(node[0].type)
+		for(const entry of list) {
+			const item = Common.Registry.getItemForType(entry[0].type)
 			if(item && item.plugins.onKeyDown) {
-				item.plugins.onKeyDown(node[0], this.editor, event)
-			}
-		}
-	}
-
-	onCut(event) {
-		const list = Array.from(Editor.nodes(this.editor, {
-			mode: 'highest',
-			match: node => Element.isElement(node)
-		}))
-
-
-		for(const node of list) {
-			const item = Common.Registry.getItemForType(node[0].type)
-			if(item && item.plugins.onCut) {
-				item.plugins.onCut(node[0], this.editor, event)
-				if(event.isDefaultPrevented() || event.isPropagationStopped()) return
+				item.plugins.onKeyDown(entry, this.editor, event)
 			}
 		}
 	}

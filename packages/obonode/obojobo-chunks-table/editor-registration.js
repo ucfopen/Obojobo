@@ -40,11 +40,11 @@ const plugins = {
 	normalizeNode,
 	// Editable Plugins - These are used by the PageEditor component to augment React functions
 	// They affect individual nodes independently of one another
-	onKeyDown(node, editor, event) {
+	onKeyDown(entry, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteNodeContents(event, editor, node, event.key === 'Delete')
+				return KeyDownUtil.deleteNodeContents(event, editor, entry, event.key === 'Delete')
 
 			case 'Enter':
 				event.preventDefault()

@@ -64,31 +64,6 @@ describe('Table editor', () => {
 		expect(Transforms.insertFragment).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with no table', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => false
-				}
-			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'Enter',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
 	test('plugins.onKeyDown deals with random key press', () => {
 		const editor = {
 			value: {
@@ -112,7 +87,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, editor, jest.fn())
+		Table.plugins.onKeyDown([{},[0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -148,7 +123,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(editor.children[0], editor, event)
+		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -185,7 +160,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(editor.children[0], editor, event)
+		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -235,7 +210,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(editor.children[0], editor, event)
+		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setSelection).toHaveBeenCalled()
 	})
@@ -246,7 +221,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown({}, {}, event)
+		Table.plugins.onKeyDown([{},[0]], {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -256,7 +231,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown({}, {}, event)
+		Table.plugins.onKeyDown([{},[0]], {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 

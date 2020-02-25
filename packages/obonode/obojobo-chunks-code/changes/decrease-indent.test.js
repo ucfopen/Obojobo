@@ -36,7 +36,7 @@ describe('Decrease Code Indent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		decreaseIndent(editor.children[0], editor, event)
+		decreaseIndent([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setNodes).toHaveBeenCalledWith(

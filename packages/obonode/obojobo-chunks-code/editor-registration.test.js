@@ -139,14 +139,14 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown({}, {}, event1)
+		Code.plugins.onKeyDown([{},[0]], {}, event1)
 
 		const event2 = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown({}, {}, event2)
+		Code.plugins.onKeyDown([{},[0]], {}, event2)
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
@@ -157,7 +157,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown({}, {}, event)
+		Code.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(decreaseIndent).toHaveBeenCalled()
 	})
@@ -168,7 +168,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown({}, {}, event)
+		Code.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(increaseIndent).toHaveBeenCalled()
 	})

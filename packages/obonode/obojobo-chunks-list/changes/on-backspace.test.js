@@ -42,7 +42,7 @@ describe('On Backspace List', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		onBackspace(editor.children[0], editor, event)
+		onBackspace([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -86,7 +86,7 @@ describe('On Backspace List', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		onBackspace(editor.children[0], editor, event)
+		onBackspace([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -125,7 +125,7 @@ describe('On Backspace List', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		onBackspace(editor.children[0], editor, event)
+		onBackspace([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.removeNodes).toHaveBeenCalled()
@@ -172,7 +172,7 @@ describe('On Backspace List', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		onBackspace(editor.children[0], editor, event)
+		onBackspace([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.liftNodes).toHaveBeenCalled()

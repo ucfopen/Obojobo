@@ -1,5 +1,4 @@
 import { Editor, Transforms, Range } from 'slate'
-import { ReactEditor } from 'slate-react'
 import ListStyles from '../list-styles'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
@@ -7,9 +6,9 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 
-const wrapLevel = (node, editor, event) => {
+const wrapLevel = (entry, editor, event) => {
 	event.preventDefault()
-	const nodePath = ReactEditor.findPath(editor, node)
+	const [, nodePath] = entry
 	const nodeRange = Editor.range(editor, nodePath)
 
 	const list = Array.from(Editor.nodes(editor, {

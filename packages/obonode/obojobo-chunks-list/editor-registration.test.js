@@ -141,7 +141,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown({}, {}, event)
+		List.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -152,15 +152,8 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown({}, {}, event1)
-
-		const event2 = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		List.plugins.onKeyDown({}, {}, event2)
-		expect(onBackspace).toHaveBeenCalledTimes(2)
+		List.plugins.onKeyDown([{},[0]], {}, event1)
+		expect(onBackspace).toHaveBeenCalledTimes(1)
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
@@ -170,7 +163,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown({}, {}, event)
+		List.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(unwrapLevel).toHaveBeenCalled()
 	})
@@ -181,7 +174,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown({}, {}, event)
+		List.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(wrapLevel).toHaveBeenCalled()
 	})

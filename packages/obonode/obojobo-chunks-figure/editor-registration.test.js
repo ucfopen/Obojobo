@@ -3,6 +3,10 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 import { Transforms } from 'slate'
 
 import Figure from './editor-registration'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 describe('Figure editor', () => {
@@ -73,6 +77,29 @@ describe('Figure editor', () => {
 				editor
 			)
 		).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		Figure.plugins.onKeyDown([{},[0]], {}, event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Figure.plugins.onKeyDown([{},[0]], {}, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a figure when passed', () => {

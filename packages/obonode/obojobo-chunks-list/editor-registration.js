@@ -57,21 +57,20 @@ const plugins = {
 
 		return []
 	},
-	onKeyDown(node, editor, event) {
+	onKeyDown(entry, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
-			case 'Delete':
-				return onBackspace(node, editor, event)
+				return onBackspace(entry, editor, event)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return unwrapLevel(node, editor, event)
+				if (event.shiftKey) return unwrapLevel(entry, editor, event)
 
 				// TAB
-				return wrapLevel(node, editor, event)
+				return wrapLevel(entry, editor, event)
 
 			case 'Enter':
-				return insertText(node, editor, event)
+				return insertText(entry, editor, event)
 		}
 	},
 	renderNode(props) {

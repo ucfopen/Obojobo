@@ -31,7 +31,7 @@ describe('List Unwrap Level', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		unwrapLevel(editor.children[0], editor, event)
+		unwrapLevel([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.liftNodes).toHaveBeenCalled()

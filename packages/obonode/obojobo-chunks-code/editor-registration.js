@@ -64,18 +64,18 @@ const Code = {
 
 			return []
 		},
-		onKeyDown(node, editor, event) {
+		onKeyDown(entry, editor, event) {
 			switch (event.key) {
 				case 'Backspace':
 				case 'Delete':
-					return KeyDownUtil.deleteEmptyParent(event, editor, node, event.key === 'Delete')
+					return KeyDownUtil.deleteEmptyParent(event, editor, entry, event.key === 'Delete')
 
 				case 'Tab':
 					// TAB+SHIFT
-					if (event.shiftKey) return decreaseIndent(node, editor, event)
+					if (event.shiftKey) return decreaseIndent(entry, editor, event)
 
 					// TAB
-					return increaseIndent(node, editor, event)
+					return increaseIndent(entry, editor, event)
 			}
 		},
 		renderNode(props) {

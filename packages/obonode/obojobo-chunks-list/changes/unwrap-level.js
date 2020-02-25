@@ -1,11 +1,10 @@
 import { Editor, Transforms, Range } from 'slate'
-import { ReactEditor } from 'slate-react'
 
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
-const unwrapLevel = (node, editor, event) => {
+const unwrapLevel = (entry, editor, event) => {
 	event.preventDefault()
-	const nodePath = ReactEditor.findPath(editor, node)
+	const [, nodePath] = entry
 	const nodeRange = Editor.range(editor, nodePath)
 
 	Transforms.liftNodes(editor, {

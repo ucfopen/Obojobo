@@ -229,6 +229,59 @@ describe('Normalize List', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
+	test('normalizeNode on ListLevel merges consecutive ListLines', () => {
+		jest.spyOn(Transforms, 'mergeNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: {},
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: {},
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockList', b: true }]
+										}
+									]
+								},
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: {},
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockList', b: true }]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
+
+		expect(Transforms.mergeNodes).toHaveBeenCalled()
+	})
+
 	test('normalizeNode on ListLevel calls Transforms on invalid Element children', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 

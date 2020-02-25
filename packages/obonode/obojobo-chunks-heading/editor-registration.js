@@ -53,10 +53,10 @@ const Heading = {
 
 			return []
 		},
-		onKeyDown(node, editor, event) {
+		onKeyDown(entry, editor, event) {
 			switch (event.key) {
 				case 'Enter':
-					return KeyDownUtil.breakToText(event, editor, node)
+					return KeyDownUtil.breakToText(event, editor, entry)
 			}
 		},
 		renderNode(props) {

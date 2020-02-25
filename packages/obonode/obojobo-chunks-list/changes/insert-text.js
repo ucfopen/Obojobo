@@ -1,11 +1,10 @@
 import { Editor, Transforms, Range, Node } from 'slate'
-import { ReactEditor } from 'slate-react'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
-const insertText = (node, editor, event) => {
-	const nodePath = ReactEditor.findPath(editor, node)
+const insertText = (entry, editor, event) => {
+	const [, nodePath] = entry
 	const nodeRange = Editor.range(editor, nodePath)
 	const [startLine] = Array.from(Editor.nodes(editor, {
 		at: Range.intersection(editor.selection, nodeRange),

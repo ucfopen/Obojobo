@@ -1,11 +1,10 @@
 import { Editor, Transforms, Range } from 'slate'
-import { ReactEditor } from 'slate-react'
 
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
-const increaseIndent = (node, editor, event) => {
+const increaseIndent = (entry, editor, event) => {
 	event.preventDefault()
-	const nodePath = ReactEditor.findPath(editor, node)
+	const [, nodePath] = entry
 	const nodeRange = Editor.range(editor, nodePath)
 
 	// Get only the Element children of the current node that are in the current selection

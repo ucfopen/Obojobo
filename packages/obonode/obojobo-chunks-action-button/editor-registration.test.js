@@ -1,6 +1,10 @@
 import { Transforms } from 'slate'
 
 import ActionButton from './editor-registration'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('ActionButton editor', () => {
@@ -71,6 +75,29 @@ describe('ActionButton editor', () => {
 				editor
 			)
 		).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a button when passed', () => {

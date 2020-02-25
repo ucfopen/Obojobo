@@ -52,7 +52,7 @@ const HTML = {
 
 			return []
 		},
-		onKeyDown(node, editor, event) {
+		onKeyDown(entry, editor, event) {
 			switch (event.key) {
 				case 'Enter':
 					event.preventDefault()

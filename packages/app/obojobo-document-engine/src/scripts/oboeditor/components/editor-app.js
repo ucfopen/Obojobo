@@ -13,13 +13,6 @@ import EditorUtil from '../util/editor-util'
 import PageEditor from './page-editor'
 import React from 'react'
 
-// PLUGINS
-import ClipboardPlugin from '../plugins/clipboard-plugin'
-import SelectParameter from './parameter-node/select-parameter'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
-import MarkToolbar from './toolbars/content-toolbar'
-
 const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
@@ -27,14 +20,6 @@ const { OboModel } = Common.models
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-
-const plugins = [
-	MarkToolbar.plugins,
-	ToggleParameter.plugins,
-	SelectParameter.plugins,
-	TextParameter.plugins,
-	ClipboardPlugin
-]
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -51,13 +36,6 @@ class EditorApp extends React.Component {
 			mode: VISUAL_MODE,
 			code: null
 		}
-
-		// register plugins from dynamic registry items
-		Common.Registry.getItems(items => {
-			items.forEach(i => {
-				if (i.plugins) plugins.push(i.plugins)
-			})
-		})
 
 		// Make Slate nodes generate with UUIDs
 		//KeyUtils.setGenerator(generateId)

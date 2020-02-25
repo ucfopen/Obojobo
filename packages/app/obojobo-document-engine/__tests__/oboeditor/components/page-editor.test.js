@@ -376,7 +376,10 @@ describe('PageEditor', () => {
 			get: () => 'ObojoboDraft.Sections.Assessment',
 			set: jest.fn(),
 			children: { set: jest.fn() },
-			toJSON: () => ({ children: [{ type: 'mock node'}] })
+			toJSON: () => ({ 
+				type: 'ObojoboDraft.Sections.Assessment',
+				children: [{ type: 'mock node'}] 
+			})
 		}
 
 		const props = {
@@ -492,31 +495,5 @@ describe('PageEditor', () => {
 
 		// make sure the return matches
 		expect(result).toMatchInlineSnapshot(`undefined`)
-	})
-
-	test.skip('checkIfSaved return', () => {
-		const eventMap = {}
-		window.addEventListener = jest.fn((event, cb) => {
-			eventMap[event] = cb
-		})
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
-		const props = {
-			page: {
-				attributes: { children: [{ type: 'mock node'}] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-		const component = mount(<PageEditor {...props} />)
-
-		// eslint-disable-next-line no-undefined
-		expect(eventMap.beforeunload({})).toEqual(undefined)
-
-		component.setState({ saved: false })
-
-		expect(eventMap.beforeunload({})).toEqual(true)
-
-		component.unmount()
 	})
 })

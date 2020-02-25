@@ -31,8 +31,8 @@ class ActionButton extends React.Component {
 	// user made to the onClick actions by combining the previous content and the current content.
 	closeModal(modalState) {
 		ModalUtil.hide()
-		const path = ReactEditor.findPath(this.editor, this.props.element)
-		Transforms.setNodes(this.editor, { content: {...this.props.element.content, ...modalState} }, { at: path })
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...modalState} }, { at: path })
 	}
 
 	renderTriggers() {

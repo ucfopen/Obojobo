@@ -1,12 +1,11 @@
 import { Text, Editor, Transforms, Range, Path, Element, Point } from 'slate'
-import { ReactEditor } from 'slate-react'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.Line'
 
 const KeyDownUtil = {
-	deleteNodeContents: (event, editor, node, deleteForward) => {
-		const nodePath = ReactEditor.findPath(editor, node)
+	deleteNodeContents: (event, editor, entry, deleteForward) => {
+		const [, nodePath] = entry
 		const nodeRange = Editor.range(editor, nodePath)
 		// Get only the Element children of the current node that are in the current selection
 		const list = Array.from(Editor.nodes(editor, {
@@ -60,11 +59,10 @@ const KeyDownUtil = {
 		if(Text.isText(node)) return node.text === ''
 		return  Editor.isEmpty(editor, node) || (node.children.length === 1 && KeyDownUtil.isDeepEmpty(editor, node.children[0]))
 	},
-	deleteEmptyParent: (event, editor, node, deleteForward) => {
+	deleteEmptyParent: (event, editor, [node, path], deleteForward) => {
 		// Only delete the node if the selection is collapsed and the node is empty
 		if(Range.isCollapsed(editor.selection) && KeyDownUtil.isDeepEmpty(editor, node)) {
 			event.preventDefault()
-			const path = ReactEditor.findPath(editor, node)
 			Transforms.removeNodes(editor, { at: path })
 
 			// By default, the cursor moves to the end of the item before a deleted node
@@ -73,8 +71,8 @@ const KeyDownUtil = {
 			if(deleteForward) Transforms.move(editor)
 		}
 	},
-	breakToText: (event, editor, node) => {
-		const nodePath = ReactEditor.findPath(editor, node)
+	breakToText: (event, editor, entry) => {
+		const [, nodePath] = entry
 		const nodeRange = Editor.range(editor, nodePath)
 		const nodeEnd = Editor.end(editor, nodeRange)
 		const selectionEnd = Editor.end(editor, editor.selection)

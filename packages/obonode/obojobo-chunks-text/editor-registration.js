@@ -55,21 +55,21 @@ const plugins = {
 
 		return []
 	},
-	onKeyDown(node, editor, event) {
+	onKeyDown(entry, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteEmptyParent(event, editor, node, event.key === 'Delete')
+				return KeyDownUtil.deleteEmptyParent(event, editor, entry, event.key === 'Delete')
 
 			case 'Enter':
-				return splitParent(node, editor, event)
+				return splitParent(entry, editor, event)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(node, editor, event)
+				if (event.shiftKey) return decreaseIndent(entry, editor, event)
 
 				// TAB+ALT
-				if (event.altKey) return increaseIndent(node, editor, event)
+				if (event.altKey) return increaseIndent(entry, editor, event)
 
 				// TAB
 				event.preventDefault()

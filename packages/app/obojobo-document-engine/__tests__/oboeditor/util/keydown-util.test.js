@@ -30,11 +30,11 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, editor.children[0], false))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], false))
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(1)
 
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, editor.children[0], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 		expect(Transforms.move).toHaveBeenCalledTimes(1)
@@ -49,14 +49,14 @@ describe('KeyDown Util', () => {
 			}
 		]
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, editor.children[0], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 
 		editor.isVoid = () => true
 
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, editor.children[0], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 	})
@@ -99,7 +99,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[1], false)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[1],[1]], false)
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
@@ -127,7 +127,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[0], false)
+		KeyDownUtil.deleteNodeContents(event, editor,[editor.children[0],[0]], false)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -155,7 +155,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[0], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -183,7 +183,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[0], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
@@ -211,7 +211,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]])
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -249,7 +249,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[0])
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]])
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.delete).toHaveBeenCalled()
@@ -289,7 +289,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, editor.children[0], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.delete).toHaveBeenCalled()

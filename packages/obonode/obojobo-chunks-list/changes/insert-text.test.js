@@ -30,7 +30,7 @@ describe('List Insert Text', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		insertText(editor.children[0], editor, event)
+		insertText([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setNodes).toHaveBeenCalledWith(

@@ -105,7 +105,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, {}, event)
+		Text.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(splitParent).toHaveBeenCalled()
 	})
@@ -116,14 +116,14 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, {}, event1)
+		Text.plugins.onKeyDown([{},[0]], {}, event1)
 
 		const event2 = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, {}, event2)
+		Text.plugins.onKeyDown([{},[0]], {}, event2)
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
@@ -134,7 +134,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, {}, event)
+		Text.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(decreaseIndent).toHaveBeenCalled()
 	})
@@ -146,7 +146,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, {}, event)
+		Text.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(increaseIndent).toHaveBeenCalled()
 	})
@@ -160,7 +160,7 @@ describe('Text editor', () => {
 			insertText: jest.fn()
 		}
 
-		Text.plugins.onKeyDown({}, editor, event)
+		Text.plugins.onKeyDown([{},[0]], editor, event)
 
 		expect(editor.insertText).toHaveBeenCalled()
 	})

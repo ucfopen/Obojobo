@@ -35,7 +35,7 @@ describe('Split Text Parent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		splitParent(editor.children[0], editor, event)
+		splitParent([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -68,7 +68,7 @@ describe('Split Text Parent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		splitParent(editor.children[0], editor, event)
+		splitParent([editor.children[0],[0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.splitNodes).toHaveBeenCalled()
