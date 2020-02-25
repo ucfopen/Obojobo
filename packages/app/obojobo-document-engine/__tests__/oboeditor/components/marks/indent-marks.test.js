@@ -205,7 +205,14 @@ describe('IndentMarks', () => {
 	})
 
 	test('unindentList unindents a list block', () => {
-		jest.spyOn(Transforms, 'liftNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'liftNodes').mockImplementation((editor, opts) => {
+			opts.match({
+				type: LIST_NODE,
+				subtype: LIST_LINE_NODE,
+				content: { indent: 0 }, 
+				children: [{ text: 'mockText' }]
+			})
+		})
 		const editor = {
 			children: [
 				{

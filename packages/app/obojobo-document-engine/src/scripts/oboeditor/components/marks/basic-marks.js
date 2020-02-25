@@ -59,7 +59,7 @@ const BasicMarks = {
 		commands: {
 			toggleMark(editor, format) {
 				const marks = Editor.marks(editor)
-				const isActive = marks ? marks[format] === true : false
+				const isActive = marks[format] === true
 
 				if (isActive) {
 					Editor.removeMark(editor, format)

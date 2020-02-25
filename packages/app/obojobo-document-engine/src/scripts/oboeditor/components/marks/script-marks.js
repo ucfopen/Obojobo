@@ -36,7 +36,7 @@ const ScriptMark = {
 		commands: {
 			toggleScript: (editor, modifier) => {
 				const marks = Editor.marks(editor)
-				const isActive = marks ? marks.sup === true && marks.num === modifier : false
+				const isActive = marks.sup === true && marks.num === modifier
 
 				if (isActive) {
 					Editor.removeMark(editor, 'sup')

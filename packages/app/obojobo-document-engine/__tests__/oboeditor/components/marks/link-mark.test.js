@@ -6,10 +6,22 @@ jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 import LinkMark from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/link-mark'
 
 const LINK_MARK = 'a'
+const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('LinkMark', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
+	})
+
+	test('plugins.isInline to call next if not Link', () => {
+		const next = jest.fn()
+		LinkMark.plugins.isInline({}, {}, next)
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.isInline to return true if the node is a Link', () => {
+		const node = { type: LINK_MARK }
+		expect(LinkMark.plugins.isInline(node, {}, jest.fn())).toEqual(true)
 	})
 
 	test('onKeyDown does not toggle mark if wrong key is pressed', () => {
@@ -57,26 +69,15 @@ describe('LinkMark', () => {
 
 	test('changeLinkValue removes links', () => {
 		jest.spyOn(Transforms, 'select').mockReturnValue(true)
-		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'unwrapNodes').mockImplementation((editor, opts) => {
+			opts.match({ type: LINK_MARK })
+		})
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
 		
 		const editor = {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),
-			value: {
-				marks: [
-					{
-						data: { toJSON: () => ({}) },
-						type: LINK_MARK
-					},
-
-					{
-						data: { toJSON: () => ({ content: {} }) },
-						type: 'mockNode'
-					}
-				]
-			}
 		}
 
 		LinkMark.plugins.commands.changeLinkValue(editor, '')
@@ -141,15 +142,55 @@ describe('LinkMark', () => {
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
-	test('the action in each mark calls editor.toggleMark', () => {
+	test('the action in each mark calls ModalUtil', () => {
 		const editor = {
-			changeLinkValue: jest.fn()
+			children:[
+				{
+					type: 'mockNode',
+					children: [{
+						type: 'mockChildNode',
+						children: [{ text: 'mock text'}]
+					}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 0 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isVoid: () => false,
+			isInline: () => false,
 		}
 
 		LinkMark.marks.forEach(mark => {
 			mark.action(editor)
 		})
 
-		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('the action in each mark calls ModalUtil with ActionButtons', () => {
+		const editor = {
+			children:[
+				{
+					type: BUTTON_NODE,
+					children: [{
+						type: 'mockChildNode',
+						children: [{ text: 'mock text'}]
+					}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 0 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isVoid: () => false,
+			isInline: () => false,
+		}
+
+		LinkMark.marks.forEach(mark => {
+			mark.action(editor)
+		})
+
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 })

@@ -6,10 +6,11 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Link from './link'
 import LinkIcon from '../../assets/link-icon'
 
-const { Prompt } = Common.components.modal
+const { Prompt, SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 const LINK_MARK = 'a'
+const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 const LinkMark = {
 	plugins: {
@@ -36,6 +37,7 @@ const LinkMark = {
 		commands: {
 			changeLinkValue(editor, href) {
 				ModalUtil.hide()
+
 				Transforms.select(editor, editor.prevSelection)
 				Transforms.unwrapNodes(editor, { match: n => n.type === LINK_MARK })
 
@@ -66,14 +68,19 @@ const LinkMark = {
 			name: 'Link',
 			type: LinkMark,
 			icon: LinkIcon,
-			action: editor =>
-				ModalUtil.show(
+			action: editor => {
+				// If we have part of the selection inside a button, prevent links
+				const buttonNodes = Array.from(Editor.nodes(editor, { match: n => n.type === BUTTON_NODE }))
+				if(buttonNodes.length > 0) return ModalUtil.show(<SimpleDialog ok>Links cannot be added to buttons</SimpleDialog>)
+				
+				return ModalUtil.show(
 					<Prompt
 						title="Insert Link"
 						message="Enter the link url:"
 						onConfirm={editor.changeLinkValue}
 					/>
 				)
+			}
 		}
 	]
 }

@@ -22,6 +22,8 @@ const { OboModel } = Common.models
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 import React from 'react'
 import { createEditor, Editor, Element, Transforms, Node } from 'slate'
@@ -72,6 +74,19 @@ class PageEditor extends React.Component {
 		editor.normalizeNode = (entry) => {
 			const [node, path] = entry
 			if(Editor.isEditor(node)) {
+				if(node.children.length === 0) {
+					return Transforms.insertNodes(editor, {
+						type: TEXT_NODE,
+						content: {},
+						children: [{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { align: 'left', indent: 0 },
+							children: [{ text: '' }]
+						}]
+					})
+				}
+
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// Unwrap non-Obojobo children
 					if (!Common.Registry.insertableItems.some(item => item.type === child.type) && child.type !== ASSESSMENT_NODE) {
