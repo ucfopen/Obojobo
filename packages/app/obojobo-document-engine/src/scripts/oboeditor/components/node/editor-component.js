@@ -18,6 +18,7 @@ class Node extends React.Component {
 		// Then use transforms to insert at that path, which effectively inserts above like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
+		Transforms.select(this.props.editor, path)
 	}
 
 	insertBlockAtEnd(item) {
@@ -27,6 +28,7 @@ class Node extends React.Component {
 		// Then use transforms to insert at that path, which effectively inserts below like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
+		Transforms.select(this.props.editor, Path.next(path))
 	}
 
 	saveId(prevId, newId) {
