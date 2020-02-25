@@ -2,33 +2,16 @@
 
 exports[`PageEditor Ensures the plugins work as expected 1`] = `
 Array [
-  Object {},
   Object {
-    "onKeyDown": [Function],
-    "renderMark": [Function],
-  },
-  Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "changeLinkValue": [Function],
-    },
-    "renderMark": [Function],
-  },
-  Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "toggleScript": [Function],
-    },
-    "renderMark": [Function],
-  },
-  Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "setAlign": [Function],
+    "commands": Object {
+      "changeToType": [Function],
     },
   },
   Object {
-    "queries": Object {
+    "insertData": [Function],
+  },
+  Object {
+    "commands": Object {
       "indentCode": [Function],
       "indentList": [Function],
       "indentText": [Function],
@@ -37,108 +20,33 @@ Array [
       "unindentText": [Function],
     },
   },
-  undefined,
   Object {
-    "renderNode": [Function],
-    "schema": Object {
-      "blocks": Object {
-        "oboeditor.toggle-parameter": Object {
-          "isVoid": true,
-        },
-      },
+    "commands": Object {
+      "setAlign": [Function],
     },
+    "onKeyDown": [Function],
   },
   Object {
-    "renderNode": [Function],
-    "schema": Object {
-      "blocks": Object {
-        "oboeditor.select-parameter": Object {
-          "isVoid": true,
-        },
-      },
+    "commands": Object {
+      "toggleScript": [Function],
     },
+    "onKeyDown": [Function],
+    "renderLeaf": [Function],
   },
   Object {
+    "commands": Object {
+      "changeLinkValue": [Function],
+    },
+    "isInline": [Function],
     "onKeyDown": [Function],
     "renderNode": [Function],
   },
   Object {
-    "schema": Object {
-      "document": Object {
-        "nodes": Array [
-          Object {
-            "match": Array [
-              Object {
-                "type": "ObojoboDraft.Chunks.ActionButton",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Break",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Code",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Figure",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Heading",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.HTML",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.IFrame",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.List",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.MathEquation",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Table",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Text",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.YouTube",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.QuestionBank",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Question",
-              },
-              Object {
-                "type": "ObojoboDraft.Sections.Assessment",
-              },
-              Object {
-                "type": "oboeditor.ErrorMessage",
-              },
-            ],
-            "min": 1,
-          },
-        ],
-        "normalize": [Function],
-      },
-    },
-  },
-  Object {
-    "onPaste": [Function],
-  },
-  Object {
     "commands": Object {
-      "changeToType": [Function],
-    },
-  },
-  Object {
-    "commands": Object {
-      "markUnsaved": [Function],
-      "toggleEditable": [Function],
+      "toggleMark": [Function],
     },
     "onKeyDown": [Function],
-    "onKeyUp": [Function],
+    "renderLeaf": [Function],
   },
 ]
 `;

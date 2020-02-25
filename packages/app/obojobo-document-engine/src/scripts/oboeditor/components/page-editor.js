@@ -42,7 +42,7 @@ class PageEditor extends React.Component {
 		this.state = {
 			value: json,
 			saved: true,
-			editable: true,
+			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true
 		}
 
@@ -283,12 +283,7 @@ class PageEditor extends React.Component {
 		// If updating from an existing page to no page, set the user alert message
 		if (prevProps.page && !this.props.page) {
 			return this.setState({
-				value: [
-					{
-						type: 'oboeditor.ErrorMessage',
-						children: [{ text: 'No content available, create a page to start editing' }]
-					}
-				],
+				value: [{ text: 'No content available, create a page to start editing' }],
 				editable: false
 			})
 		}
@@ -402,7 +397,11 @@ class PageEditor extends React.Component {
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<PageEditorErrorBoundry editorRef={this.editorRef}>
-						<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+						<Slate 
+							className="obojobo-draft--pages--page"
+							editor={this.editor} 
+							value={this.state.value} 
+							onChange={this.onChange.bind(this)}>
 							<Editable 
 								renderElement={this.renderElement.bind(this)}
 								renderLeaf={this.renderLeaf}
@@ -488,14 +487,18 @@ class PageEditor extends React.Component {
 	}
 
 	importFromJSON() {
-		if (!this.props.page) return [] // if page is empty, exit
+		if (!this.props.page) {
+			// if page is empty, exit
+			return [{ text: 'No content available, create a page to start editing' }]
+		}
 
 		const json = this.props.page.toJSON()
 
 		if (json.type === ASSESSMENT_NODE) {
 			return [this.assessment.oboToSlate(this.props.page)]
 		} else {
-			return json.children.map(child => Component.helpers.oboToSlate(child))
+			const children = json.children.map(child => Component.helpers.oboToSlate(child))
+			return children
 		}
 	}
 }
