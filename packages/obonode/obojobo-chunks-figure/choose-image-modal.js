@@ -6,6 +6,7 @@ import API from 'obojobo-document-engine/src/scripts/viewer/util/api'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { SimpleDialog } = Common.components.modal
+const IMAGE_BATCH_SIZE = 11 // load 11 images at a time
 
 class ChooseImageModal extends React.Component {
 	constructor() {
@@ -16,8 +17,7 @@ class ChooseImageModal extends React.Component {
 			isFetching: true,
 			hasMore: true,
 			start: 0,
-			url: '',
-			count: 11
+			url: ''
 		}
 
 		this.firstRef = React.createRef()
@@ -39,27 +39,25 @@ class ChooseImageModal extends React.Component {
 	// Fetch `count` number of image
 	fetchMedias() {
 		this.setState({
-			...this.state,
 			isFetching: true,
 			hasMore: false
 		})
-		API.get(`/api/media/many/?start=${this.state.start}&count=${this.state.count}`)
+		API.get(`/api/media/many/?start=${this.state.start}&count=${IMAGE_BATCH_SIZE}`)
 			.then(res => res.json())
 			.then(result => {
-				if (result.status !== 'error') {
-					this.setState({
-						...this.state,
-						medias: [...this.state.medias, ...result.data],
-						isFetching: false,
-						hasMore: result.hasMore,
-						start: this.state.start + this.state.count
-					})
-				} else {
-					this.setState({ ...this.state, isFetching: false, hasMore: false })
+				if (result.status === 'error') {
+					throw Error('Error Loading Media')
 				}
+
+				this.setState({
+					medias: [...this.state.medias, ...result.data],
+					isFetching: false,
+					hasMore: result.hasMore,
+					start: this.state.start + IMAGE_BATCH_SIZE
+				})
 			})
 			.catch(() => {
-				this.setState({ ...this.state, isFetching: false, hasMore: false })
+				this.setState({ isFetching: false, hasMore: false })
 			})
 	}
 
@@ -74,10 +72,14 @@ class ChooseImageModal extends React.Component {
 	}
 
 	render() {
+		const imageLoadText = this.state.isFetching
+			? 'Recently uploaded image list loading'
+			: `${this.state.medias.length} Recent Images loaded${this.state.hasMore ? ' with more' : ''}`
+
 		return (
 			<SimpleDialog
 				cancelOk
-				title="Choose an image"
+				title="Upload or Choose an Image"
 				onConfirm={() => this.props.onCloseChooseImageModal(this.state.url)}
 				onCancel={() => this.props.onCloseChooseImageModal(null)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
@@ -95,7 +97,7 @@ class ChooseImageModal extends React.Component {
 							/>
 							<label htmlFor="fileupload">
 								<span role="button" aria-controls="filename" tabIndex="0" ref={this.firstRef}>
-									Upload new image
+									Upload New Image
 								</span>
 							</label>
 						</div>
@@ -105,17 +107,22 @@ class ChooseImageModal extends React.Component {
 						<input
 							id="choose-image--image-controls--url"
 							type="text"
-							placeholder="Enter URL"
+							placeholder="Enter image URL"
 							value={this.state.url}
 							onChange={e => this.setState({ url: e.target.value })}
 							tabIndex="0"
-							aria-label="Enter image's URL"
+							aria-label="Enter image URL"
 						/>
 					</div>
 					<div className="choose-image--divider" />
-					<small>Recently uploaded</small>
-					<div className="choose-image--image-gallary">
-						{this.state.medias.map(media => (
+					<small>Your Recently Uploaded Images</small>
+					<div
+						className="choose-image--image-gallary"
+						aria-live="polite"
+						aria-atomic="true"
+						aria-label={imageLoadText}
+					>
+						{this.state.medias.map((media, i) => (
 							<img
 								tabIndex={0}
 								className="image-gallary--single-photo"
@@ -127,9 +134,7 @@ class ChooseImageModal extends React.Component {
 									this.onHandleKeyPress(event, () => this.props.onCloseChooseImageModal(media.id))
 								}
 								role="button"
-								aria-label="Select image"
-								aria-live="polite"
-								aria-atomic="false"
+								aria-label={`Select image ${i + 1}`}
 							/>
 						))}
 
@@ -141,8 +146,6 @@ class ChooseImageModal extends React.Component {
 									onClick={() => this.fetchMedias()}
 									tabIndex={0}
 									aria-label="Load more images"
-									aria-live="polite"
-									aria-atomic="false"
 								>
 									Load More...
 								</button>
