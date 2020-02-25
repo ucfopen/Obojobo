@@ -27,8 +27,8 @@ const ScriptMark = {
 			let { children } = props
 			const { leaf } = props
 
-			if (leaf[SCRIPT_MARK] && leaf.num === 1)	children = <sup>{props.children}</sup>
-			if (leaf[SCRIPT_MARK] && leaf.num === -1)	children = <sub>{props.children}</sub>
+			if (leaf[SCRIPT_MARK] && leaf.num > 0)	children = <sup>{props.children}</sup>
+			if (leaf[SCRIPT_MARK] && leaf.num < 0)	children = <sub>{props.children}</sub>
 
 			props.children = children
 			return props

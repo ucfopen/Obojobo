@@ -15,7 +15,6 @@ import React from 'react'
 
 // PLUGINS
 import ClipboardPlugin from '../plugins/clipboard-plugin'
-import Component from './node/editor'
 import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
@@ -30,7 +29,6 @@ const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
 
 const plugins = [
-	Component.plugins,
 	MarkToolbar.plugins,
 	ToggleParameter.plugins,
 	SelectParameter.plugins,

@@ -1,3 +1,6 @@
+import { Transforms } from 'slate'
+jest.mock('slate-react')
+
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 import LinkMark from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/link-mark'
@@ -53,6 +56,11 @@ describe('LinkMark', () => {
 	})
 
 	test('changeLinkValue removes links', () => {
+		jest.spyOn(Transforms, 'select').mockReturnValue(true)
+		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
+		
 		const editor = {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),
@@ -79,6 +87,9 @@ describe('LinkMark', () => {
 	})
 
 	test('changeLinkValue adds new link', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
+
 		const editor = {
 			children:[
 				{
@@ -103,6 +114,10 @@ describe('LinkMark', () => {
 	})
 
 	test('changeLinkValue wraps existing text', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
+
 		const editor = {
 			children:[
 				{

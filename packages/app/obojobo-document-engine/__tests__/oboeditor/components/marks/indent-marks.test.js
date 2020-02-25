@@ -1,6 +1,13 @@
+import { Transforms } from 'slate'
+jest.mock('slate-react')
+
 import IndentMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/indent-marks'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
@@ -10,174 +17,227 @@ describe('IndentMarks', () => {
 	})
 
 	test('indentText indents a text block', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [
+				{
+					type: TEXT_NODE,
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockText' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({}) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.indentText(editor, [{},[0]])
 
-		IndentMarks.plugins.queries.indentText(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
-	test('indentText indents a text block with indent', () => {
+	test('indentText indents a code block', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [
+				{
+					type: CODE_NODE,
+					children: [
+						{
+							type: CODE_NODE,
+							subtype: CODE_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockText' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({ indent: 1 }) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.indentCode(editor, [{},[0]])
 
-		IndentMarks.plugins.queries.indentText(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
-	})
-
-	test('indentCode indents a code block', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
-
-		IndentMarks.plugins.queries.indentCode(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
-	})
-
-	test('indentCode indents a code block with indent', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const block = { data: { toJSON: () => ({ content: { indent: 1 } }) }, key: 'mockKey' }
-
-		IndentMarks.plugins.queries.indentCode(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('indentList indents an ordered list block', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
 		const editor = {
-			wrapBlockByKey: jest.fn(),
-			value: {
-				document: {
-					getClosest: () => ({
-						data: {
-							get: () => ({
-								bulletStyle: 'decimal',
-								type: 'ordered'
-							})
+			children: [
+				{
+					type: LIST_NODE,
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'ordered', bulletStyle: 'alpha' },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: { indent: 0 }, 
+									children: [{ text: 'mockText' }]
+								}
+							]
 						}
-					})
+					]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.indentList(editor, [{}, [0]])
 
-		IndentMarks.plugins.queries.indentList(editor, block)
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('indentList indents an unordered list block', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
 		const editor = {
-			wrapBlockByKey: jest.fn(),
-			value: {
-				document: {
-					getClosest: (key, funct) => {
-						funct({ type: LIST_LEVEL_NODE })
-						return {
-							data: {
-								get: () => ({
-									bulletStyle: 'disc',
-									type: 'unordered'
-								})
-							}
+			children: [
+				{
+					type: LIST_NODE,
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'unordered', bulletStyle: 'disc' },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: { indent: 0 }, 
+									children: [{ text: 'mockText' }]
+								}
+							]
 						}
-					}
+					]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.indentList(editor, [{},[0]])
 
-		IndentMarks.plugins.queries.indentList(editor, block)
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('unindentText unindents a text block', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [
+				{
+					type: TEXT_NODE,
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockText' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({}) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.unindentText(editor, [{}, [0]])
 
-		IndentMarks.plugins.queries.unindentText(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
-	})
-
-	test('unindentText unindents a text block with indent', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const block = { data: { toJSON: () => ({ indent: 1 }) }, key: 'mockKey' }
-
-		IndentMarks.plugins.queries.unindentText(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('unindentCode unindents a code block', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [
+				{
+					type: CODE_NODE,
+					children: [
+						{
+							type: CODE_NODE,
+							subtype: CODE_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockText' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.unindentCode(editor, [{}, [0]])
 
-		IndentMarks.plugins.queries.unindentCode(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
-	})
-
-	test('unindentCode unindents a code block with indent', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const block = { data: { toJSON: () => ({ content: { indent: 1 } }) }, key: 'mockKey' }
-
-		IndentMarks.plugins.queries.unindentCode(editor, block)
-
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('unindentList unindents a list block', () => {
+		jest.spyOn(Transforms, 'liftNodes').mockReturnValue(true)
 		const editor = {
-			unwrapNodeByKey: jest.fn(),
-			value: {
-				document: {
-					getClosest: () => ({
-						data: {
-							get: () => ({
-								bulletStyle: 'disc',
-								type: 'unordered'
-							})
+			children: [
+				{
+					type: LIST_NODE,
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'unordered', bulletStyle: 'disc' },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: { indent: 0 }, 
+									children: [{ text: 'mockText' }]
+								}
+							]
 						}
-					})
+					]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		const block = { data: { toJSON: () => ({ content: {} }) }, key: 'mockKey' }
+		IndentMarks.plugins.commands.unindentList(editor, [{},[0]])
 
-		IndentMarks.plugins.queries.unindentList(editor, block)
-
-		expect(editor.unwrapNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.indent[Type] or editor.unindent[Type]', () => {
@@ -188,9 +248,26 @@ describe('IndentMarks', () => {
 			unindentCode: jest.fn(),
 			unindentList: jest.fn(),
 			unindentText: jest.fn(),
-			value: {
-				blocks: [{ type: CODE_LINE_NODE }, { type: LIST_LINE_NODE }, { type: 'text node' }]
-			}
+			children: [
+				{
+					type: LIST_NODE,
+					children: [{ text: 'mockText' }]
+				},
+				{
+					type: TEXT_NODE,
+					children: [{ text: 'mockText' }]
+				},
+				{
+					type: CODE_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [2, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
 		IndentMarks.marks.forEach(mark => {
