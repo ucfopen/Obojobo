@@ -12,7 +12,7 @@ const ModuleImage = props => (
 					width="150"
 					height="150"
 					dangerouslySetInnerHTML={{
-						__html: `<image xlink:href="/library/module-icon/${props.id}" width="150" height="150" />`
+						__html: `<image href="/library/module-icon/${props.id}" width="150" height="150" />`
 					}}
 				></pattern>
 			</defs>
