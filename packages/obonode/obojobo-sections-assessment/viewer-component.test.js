@@ -190,7 +190,76 @@ describe('Assessment', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:scrollToTop')
 	})
 
-	test('componentWillUnmount calls dispatcher and NavUtil', () => {
+	test('compontent listens to events and sets assessment context when mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		// establish a baseline
+		expect(NavUtil.setContext).not.toHaveBeenCalled()
+		expect(Dispatcher.on).not.toHaveBeenCalled()
+
+		// mount!
+		mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// make sure we're currently listening
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenLastCalledWith('assessment:mockAssessmentId:mockAttemptId')
+	})
+
+	test('compontent listens to events and sets assessment context when RE-mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		// establish a baseline
+		expect(NavUtil.setContext).not.toHaveBeenCalled()
+		expect(Dispatcher.on).not.toHaveBeenCalled()
+
+		// mount!
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// unmount
+		component.unmount()
+
+		// clear all the mocks
+		Dispatcher.on.mockClear()
+		Dispatcher.off.mockClear()
+		NavUtil.setContext.mockClear()
+
+		// RE-mount
+		component.mount()
+
+		// make sure we're currently listening again
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenLastCalledWith('assessment:mockAssessmentId:mockAttemptId')
+	})
+
+	test('unmounting calls dispatcher.off and resets NavUtil context', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -205,6 +274,34 @@ describe('Assessment', () => {
 		expect(NavUtil.resetContext).toHaveBeenCalled()
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+	})
+
+	test('compontent listens to events when mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// make sure we're currently listening!
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)
+		expect(NavUtil.setContext).toHaveBeenCalledWith('assessment:mockAssessmentId:mockAttemptId')
+
+		// unmount to verify
+		component.unmount()
 	})
 
 	test('onEndAttempt alters the state', () => {
