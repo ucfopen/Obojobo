@@ -13,45 +13,49 @@ const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 
-ReactModal.setAppElement('#dashboard-root')
+const renderOptionsDialog = props => (
+	<ModuleOptionsDialog
+		title=""
+		{...props.selectedModule}
+		showModulePermissions={props.showModulePermissions}
+		deleteModule={props.deleteModule}
+		onClose={props.closeModal}
+	/>
+)
+
+const renderPermissionsDialog = props => (
+	<ModulePermissionsDialog
+		title=""
+		{...props.selectedModule}
+		searchState={props.searchPeople}
+		loadUsersForModule={props.loadUsersForModule}
+		onClose={props.closeModal}
+		addUserToModule={props.addUserToModule}
+		draftPermissions={props.draftPermissions}
+		deleteModulePermissions={props.deleteModulePermissions}
+		currentUserId={props.currentUser.id}
+	/>
+)
 
 const renderModalDialog = props => {
-	let child
+	let dialog
 	let title
 	switch (props.dialog) {
 		case 'module-more':
 			title = 'Module Options'
-			child = (
-				<ModuleOptionsDialog
-					title=""
-					{...props.selectedModule}
-					showModulePermissions={props.showModulePermissions}
-					deleteModule={props.deleteModule}
-					onClose={props.closeModal}
-				/>
-			)
+			dialog = renderOptionsDialog(props)
 			break
 
 		case 'module-permissions':
 			title = 'Module Access'
-			child = (
-				<ModulePermissionsDialog
-					title=""
-					{...props.selectedModule}
-					searchState={props.searchPeople}
-					loadUsersForModule={props.loadUsersForModule}
-					onClose={props.closeModal}
-					addUserToModule={props.addUserToModule}
-					draftPermissions={props.draftPermissions}
-					deleteModulePermissions={props.deleteModulePermissions}
-					currentUserId={props.currentUser.id}
-				/>
-			)
+			dialog = renderPermissionsDialog(props)
 			break
 
 		default:
 			return null
 	}
+
+	ReactModal.setAppElement('#dashboard-root')
 
 	return (
 		<ReactModal
@@ -61,7 +65,7 @@ const renderModalDialog = props => {
 			overlayClassName="repository--modal-overlay"
 			onRequestClose={props.closeModal}
 		>
-			{child}
+			{dialog}
 		</ReactModal>
 	)
 }
@@ -149,7 +153,7 @@ const Dashboard = props => {
 					</div>
 				</section>
 			</div>
-			{renderModalDialog(props)}
+			{props.dialog ? renderModalDialog(props) : null}
 		</span>
 	)
 }
