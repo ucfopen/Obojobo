@@ -97,8 +97,6 @@ const TextUtil = {
 				}
 			})
 
-			if(leaf.num) leaf.num = leaf.height > 0 ? 1 : -1
-
 			// finished a range
 			last = point
 			return leaf

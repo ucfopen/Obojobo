@@ -5,8 +5,6 @@ import React from 'react'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 
-const mockClickFn = jest.fn().mockImplementation((a, b, c) => c())
-
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('react-codemirror2', () => ({
@@ -14,10 +12,6 @@ jest.mock('react-codemirror2', () => ({
 }))
 
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/plugins/hot-key-plugin', () => () => ({
-	onKeyDown: mockClickFn,
-	onKeyUp: mockClickFn
-}))
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -233,6 +227,53 @@ describe('CodeEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
 	})
 
+	test('onKeyDown() calls editor functions', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<CodeEditor {...props} />)
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		component.instance().setEditor(editor)
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'z',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'y',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's'
+		})
+
+		expect(editor.undo).toHaveBeenCalled()
+		expect(editor.redo).toHaveBeenCalled()
+	})
+
 	test('setEditor changes state', () => {
 		const props = {
 			initialCode: '',
@@ -288,25 +329,5 @@ describe('CodeEditor', () => {
 		basicEditor.focus()
 		basicEditor.deleteFragment()
 		expect(basicEditor.deleteH).toHaveBeenCalled()
-	})
-
-	test('Key commands call keyBinding', () => {
-		const props = {
-			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
-		}
-		const component = mount(<CodeEditor {...props} />)
-		component.instance().onKeyDown()
-		component.instance().onKeyUp()
-		component.instance().onKeyPress()
-
-		component.setState({ editor: {} })
-
-		component.instance().onKeyDown()
-		component.instance().onKeyUp()
-		component.instance().onKeyPress()
-
-		expect(mockClickFn).toHaveBeenCalledTimes(3)
 	})
 })

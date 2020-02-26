@@ -5,6 +5,17 @@ describe('TextUtil', () => {
 		jest.resetAllMocks()
 	})
 
+	test('parseMarkings converts empty styleList to leaves', () => {
+		const text = {
+			value: '',
+			styleList: []
+		}
+
+		const line = { text }
+
+		expect(TextUtil.parseMarkings(line)).toMatchSnapshot()
+	})
+
 	test('parseMarkings converts styleList to leaves', () => {
 		const text = {
 			value: 'ThisTextIsFormatted',
@@ -27,9 +38,17 @@ describe('TextUtil', () => {
 				{
 					type: 'a',
 					start: 10,
-					end: 19,
+					end: 14,
 					data: {
 						href: 'mockLink'
+					}
+				},
+				{
+					type: 'a',
+					start: 14,
+					end: 19,
+					data: {
+						href: 'mockOtherLink'
 					}
 				},
 				{
@@ -88,6 +107,12 @@ describe('TextUtil', () => {
 					start: 8,
 					end: 14,
 					data: -13
+				},
+				{
+					type: 'sup',
+					start: 8,
+					end: 12,
+					data: 13
 				}
 			]
 		}
@@ -133,7 +158,8 @@ describe('TextUtil', () => {
 						{
 							text: 'Form',
 							sup: true,
-							num: 14
+							num: 14,
+							b: true
 						}
 					]
 				},

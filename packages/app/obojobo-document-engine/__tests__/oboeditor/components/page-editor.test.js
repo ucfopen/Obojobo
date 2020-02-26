@@ -7,6 +7,7 @@ import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
 
+import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/common/util/modal-util')
@@ -39,6 +40,12 @@ describe('PageEditor', () => {
 		jest.resetModules()
 		restoreConsole = mockConsole('error')
 		jest.spyOn(ReactEditor, 'focus').mockReturnValue(true)
+		jest.spyOn(Common.Registry, 'getItems').mockImplementation(fn => fn([
+			{ plugins: {
+				normalizeNode: jest.fn(),
+				isVoid: jest.fn()
+			} }
+		]))
 	})
 
 	afterEach(() => {
@@ -56,6 +63,65 @@ describe('PageEditor', () => {
 		}
 		const component = renderer.create(<PageEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('PageEditor component with decoration', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: {
+				decorate: () => [{
+					placeholder: 'Type your label here',
+					anchor: { path: [0, 0], offset: 0},
+					focus: { path: [0, 0], offset: 0}
+				}]
+			}
+		})
+		const component = mount(<PageEditor {...props} />)
+		expect(component.instance().decorate([{
+			type: BREAK_NODE,
+			children: [{text: ''}]
+		},[0]])).toMatchSnapshot()
+	})
+
+	test('PageEditor component with Elements', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: {
+				renderNode: () => (<p>Mock Content</p>) //eslint-disable-line react/display-name
+			}
+		})
+		const component = mount(<PageEditor {...props} />)
+		expect(component.instance().renderElement({
+			element: {
+				type: 'a',
+				href: 'mockLink',
+				children: [{text: ''}]
+			},
+			children: ''
+		})).toMatchSnapshot()
+
+		expect(component.instance().renderElement({
+			element: {
+				type: 'mock Element',
+				href: 'mockLink',
+				children: [{text: ''}]
+			},
+			children: ''
+		})).toMatchSnapshot()
 	})
 
 	test('PageEditor component with no page', () => {
@@ -88,10 +154,13 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
 				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+				toJSON: () => ({ children: [{ type: 'mockNode' }], type: ASSESSMENT_NODE })
 			},
 			model: { title: 'Mock Title' }
 		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			oboToSlate: () => ({ text: ''})
+		})
 		const thing = renderer.create(<PageEditor {...props} />)
 
 		const instance = thing.getInstance()
@@ -360,6 +429,15 @@ describe('PageEditor', () => {
 		const component = mount(<PageEditor {...props} />)
 		const plugins = component.instance().plugins
 
+		component.instance().editor.normalizeNode([{},[0]])
+		component.instance().editor.isVoid({})
+		component.instance().editor.insertData({
+			types: ['application/x-slate-fragment'],
+			getData: jest.fn()
+		})
+
+		component.unmount()
+
 		expect(plugins).toMatchSnapshot()
 	})
 
@@ -495,5 +573,199 @@ describe('PageEditor', () => {
 
 		// make sure the return matches
 		expect(result).toMatchInlineSnapshot(`undefined`)
+	})
+
+	test('checkIfSaved return', () => {
+		const eventMap = {}
+		window.addEventListener = jest.fn((event, cb) => {
+			eventMap[event] = cb
+		})
+		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
+		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node'}] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<PageEditor {...props} />)
+
+		// eslint-disable-next-line no-undefined
+		expect(eventMap.beforeunload({})).toEqual(undefined)
+
+		component.setState({ saved: false })
+
+		expect(eventMap.beforeunload({})).toEqual(true)
+
+		component.unmount()
+	})
+
+	test('onKeyDown() calls editor functions', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node'}] }),
+				set: jest.fn(),
+				children: { 
+					set: jest.fn()
+				}
+			},
+			model: { 
+				title: 'Mock Title', 
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'z',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'y',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 's'
+		})
+
+		expect(editor.undo).toHaveBeenCalled()
+		expect(editor.redo).toHaveBeenCalled()
+	})
+
+	test('onKeyDown runs through full list of options', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			isInline: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node'}] }),
+				set: jest.fn(),
+				children: { 
+					set: jest.fn()
+				}
+			},
+			model: { 
+				title: 'Mock Title', 
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true,
+			defaultPrevented: true
+		})
+
+		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
+			opts.match({ children: [{ text: ''}] })
+			return [
+				[{ type: ASSESSMENT_NODE, }, [0]],
+				[{ type: BREAK_NODE, }, [0]]
+			]
+		})
+		jest.spyOn(Common.Registry, 'getItemForType')
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		const onKeyDown = jest.fn()
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: { onKeyDown }
+		})
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		expect(onKeyDown).toHaveBeenCalled()
+	})
+
+	test('saveModule calls APIUtil', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node'}] }),
+				set: jest.fn(),
+				children: { 
+					set: jest.fn()
+				}
+			},
+			model: { 
+				title: 'Mock Title', 
+				flatJSON: () => ({ content: {}, children: [] }),
+				children: [
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => ({ children: [] }),
+						children: { 
+							models: [
+								{
+									get: () => 'mock value'
+								}
+							]
+						}
+					},
+					{
+						get: () => ASSESSMENT_NODE
+					}
+				]
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		expect(APIUtil.postDraft).toHaveBeenCalled()
 	})
 })

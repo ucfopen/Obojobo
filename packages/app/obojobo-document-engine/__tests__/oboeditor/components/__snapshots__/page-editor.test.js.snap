@@ -3,6 +3,10 @@
 exports[`PageEditor Ensures the plugins work as expected 1`] = `
 Array [
   Object {
+    "apply": [Function],
+    "normalizeNode": [Function],
+  },
+  Object {
     "commands": Object {
       "changeToType": [Function],
     },
@@ -47,6 +51,440 @@ Array [
     },
     "onKeyDown": [Function],
     "renderLeaf": [Function],
+  },
+  Object {
+    "isVoid": [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "className": "obojobo-draft--pages--page",
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "className": "obojobo-draft--pages--page",
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+        Array [
+          Object {},
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "className": "obojobo-draft--pages--page",
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    },
+    "normalizeNode": [MockFunction] {
+      "calls": Array [
+        Array [
+          Array [
+            Object {},
+            Array [
+              0,
+            ],
+          ],
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "className": "obojobo-draft--pages--page",
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    },
   },
 ]
 `;
@@ -1351,6 +1789,52 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
     role="main"
   />
 </div>
+`;
+
+exports[`PageEditor PageEditor component with Elements 1`] = `
+<SlateWrapper
+  element={
+    Object {
+      "children": Array [
+        Object {
+          "text": "",
+        },
+      ],
+      "href": "mockLink",
+      "type": "a",
+    }
+  }
+>
+  
+</SlateWrapper>
+`;
+
+exports[`PageEditor PageEditor component with Elements 2`] = `
+<p>
+  Mock Content
+</p>
+`;
+
+exports[`PageEditor PageEditor component with decoration 1`] = `
+Array [
+  Object {
+    "anchor": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "focus": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "placeholder": "Type your label here",
+  },
+]
 `;
 
 exports[`PageEditor PageEditor component with no page 1`] = `

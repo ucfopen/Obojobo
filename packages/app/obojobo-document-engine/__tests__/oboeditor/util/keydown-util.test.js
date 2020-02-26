@@ -295,4 +295,66 @@ describe('KeyDown Util', () => {
 		expect(Transforms.delete).toHaveBeenCalled()
 		expect(Transforms.collapse).toHaveBeenCalled()
 	})
+
+	test('breakToText inserts text', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
+		const editor = {
+			children:[
+				{
+					type: 'mockNode',
+					children: [{ text: 'some'}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 4 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0],[0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
+	})
+
+	test('breakToText converts to text', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
+		const editor = {
+			children:[
+				{
+					type: 'mockNode',
+					children: [{ text: 'some'}]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0],[0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
+	})
 })

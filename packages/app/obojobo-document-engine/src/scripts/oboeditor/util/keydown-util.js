@@ -78,7 +78,13 @@ const KeyDownUtil = {
 		const selectionEnd = Editor.end(editor, editor.selection)
 		event.preventDefault()
 
-		if(Range.isCollapsed(editor.selection) && Point.equals(nodeEnd, selectionEnd)){
+		const toEndOfNode = {
+			anchor: selectionEnd,
+			focus: nodeEnd
+		}
+
+		// If the Range is collapsed at the end of the node, just insert text
+		if(Range.isCollapsed(toEndOfNode)){
 			return Transforms.insertNodes(editor, {
 				type: TEXT_NODE,
 				content: {},
@@ -90,13 +96,9 @@ const KeyDownUtil = {
 						children: [{ text: '' }]
 					}
 				]
-			})
+			}, { split: true })
 		}
 
-		const toEndOfNode = {
-			anchor: selectionEnd,
-			focus: nodeEnd
-		}
 		// Set the heading after the selection to text
 		Transforms.setNodes(editor, {
 			type: TEXT_NODE,

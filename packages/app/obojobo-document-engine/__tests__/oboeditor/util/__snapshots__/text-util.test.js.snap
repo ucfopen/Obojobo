@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TextUtil parseMarkings converts empty styleList to leaves 1`] = `
+Array [
+  Object {
+    "text": "",
+  },
+]
+`;
+
 exports[`TextUtil parseMarkings converts styleList to leaves 1`] = `
 Array [
   Object {
@@ -13,7 +21,7 @@ Array [
   },
   Object {
     "del": true,
-    "num": -1,
+    "num": 13,
     "q": true,
     "sup": true,
     "text": "Is",
@@ -21,15 +29,21 @@ Array [
   Object {
     "children": Array [
       Object {
-        "num": -1,
+        "num": 13,
         "sup": true,
         "text": "Form",
       },
+    ],
+    "href": "mockLink",
+    "type": "a",
+  },
+  Object {
+    "children": Array [
       Object {
         "text": "atted",
       },
     ],
-    "href": "mockLink",
+    "href": "mockOtherLink",
     "type": "a",
   },
 ]
@@ -48,7 +62,7 @@ Array [
   },
   Object {
     "del": true,
-    "num": -1,
+    "num": 0,
     "q": true,
     "sup": true,
     "text": "Is",
@@ -56,9 +70,14 @@ Array [
   Object {
     "children": Array [
       Object {
-        "num": -1,
+        "num": 0,
         "sup": true,
-        "text": "Form",
+        "text": "Fo",
+      },
+      Object {
+        "num": -13,
+        "sup": true,
+        "text": "rm",
       },
       Object {
         "text": "atted",
