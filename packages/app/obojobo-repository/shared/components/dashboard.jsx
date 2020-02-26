@@ -2,7 +2,7 @@ require('./modal.scss')
 require('./dashboard.scss')
 
 const React = require('react')
-const { useState } = require('react')
+const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
@@ -66,35 +66,40 @@ const renderModalDialog = props => {
 	)
 }
 
-const sortModules = (modules, sortOrder) => {
+const getSortMethod = sortOrder => {
+	let sortFn
 	switch (sortOrder) {
 		case 'alphabetical':
-			modules.sort((a, b) => a.title.localeCompare(b.title))
+			sortFn = (a, b) => a.title.localeCompare(b.title)
 			break
+
 		case 'newest':
-			modules.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+			sortFn = (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 			break
+
 		case 'last updated':
-			modules.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+			sortFn = (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 			break
 	}
+
+	return sortFn
 }
 
 const renderModules = (modules, sortOrder) => {
-	sortModules(modules, sortOrder)
-	return modules.map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
+	const sortFn = getSortMethod(sortOrder)
+	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
 }
 
 const Dashboard = props => {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 
-	const handleSortChange = sortOrder => {
-		const expires = new Date()
-
-		expires.setFullYear(expires.getFullYear() + 1)
-		document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}`
-
-		setSortOrder(sortOrder)
+	// Set a cookie when sortOrder changes on the client
+	if (typeof document !== 'undefined') {
+		useEffect(() => {
+			const expires = new Date()
+			expires.setFullYear(expires.getFullYear() + 1)
+			document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
+		}, [sortOrder])
 	}
 
 	return (
@@ -123,7 +128,7 @@ const Dashboard = props => {
 						<span>My Modules</span>
 						<div className="repository--main-content--sort">
 							<span>Sort</span>
-							<select value={sortOrder} onChange={event => handleSortChange(event.target.value)}>
+							<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
 								<option value="newest">Newest</option>
 								<option value="alphabetical">Alphabetical</option>
 								<option value="last updated">Last updated</option>
