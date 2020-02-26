@@ -1,0 +1,30 @@
+@import '~styles/includes';
+
+.youtube-video-properties {
+	width: 15em;
+	text-align: left;
+	margin: auto;
+
+	.error {
+		color: $color-error;
+		font-size: 0.8em;
+		font-weight: bold;
+		margin-bottom: 1em;
+		margin-top: 1em;
+		display: inline-block;
+	}
+
+	label {
+		margin-bottom: 0.3em;
+	}
+
+	input {
+		@include text-input();
+
+		width: 100%;
+
+		&#obojobo-draft--chunks--youtube--video-id {
+			margin-bottom: 2em;
+		}
+	}
+}
