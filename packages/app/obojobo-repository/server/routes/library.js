@@ -5,6 +5,7 @@ const UserModel = require('obojobo-express/server/models/user')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const DraftPermissions = require('../models/draft_permissions')
 const Trianglify = require('trianglify')
+const seedrandom = require('seedrandom')
 const {
 	checkValidationRules,
 	requireDraftId,
@@ -39,10 +40,39 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 		return
 	}
 
-	const pattern = Trianglify({width: 200, height: 200, seed: req.params.moduleId})
+	// array of ColorBrewer sequences
+	const colors = ['Blues','Greens','Oranges','Purples','Reds','BuGn','BuPu','GnBu','OrRd','PuBuGn','PuBu','PuRd','RdPu','YlGnBu','YlGn','YlOrBr','YlOrRd']
+	// deterministically choose a 'random' number to select a color scheme
+	const deterministicRandom = seedrandom(req.params.moduleId)()
+	const color = colors[Math.floor(deterministicRandom * colors.length)]
+
+	const pattern = Trianglify({
+		width: 200,
+		height: 200,
+		cell_size: 65,
+		variance: .8,
+		x_colors: color,
+		seed: req.params.moduleId
+	})
+
 	res.setHeader('ETag', req.params.moduleId)
 	res.setHeader('Content-Type', 'image/svg+xml')
-	res.send(pattern.svg({includeNamespace: true}).outerHTML)
+
+	// build the svg
+	const svg = `<svg viewBox="0 0 130 150" xmlns="http://www.w3.org/2000/svg">
+		<mask id="hexagon-mask">
+			<path
+				fill="white"
+				d="M56.29165124598851 4.999999999999999Q64.9519052838329 0 73.61215932167728 4.999999999999999L121.24355652982142 32.5Q129.9038105676658 37.5 129.9038105676658 47.5L129.9038105676658 102.5Q129.9038105676658 112.5 121.24355652982142 117.5L73.61215932167728 145Q64.9519052838329 150 56.29165124598851 145L8.660254037844387 117.5Q0 112.5 0 102.5L0 47.5Q0 37.5 8.660254037844387 32.5Z"
+			/>
+		</mask>
+
+		<g mask="url(#hexagon-mask)">
+			${pattern.svg().innerHTML}
+		</g>
+	</svg>`
+
+	res.send(svg)
 })
 
 router
