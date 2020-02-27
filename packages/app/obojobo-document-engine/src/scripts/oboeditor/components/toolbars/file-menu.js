@@ -77,9 +77,64 @@ class FileMenu extends React.PureComponent {
 			})
 	}
 
+	onChangeFile(event) {
+		const file = event.target.files[0]
+		if (!file) return
+
+		const reader = new FileReader()
+		reader.onload = function(e) {
+			const contents = e.target.result
+
+			let id = null
+			APIUtil.createNewDraft()
+				.then(draftResult => {
+					if (draftResult.status !== 'ok') throw new Error(draftResult)
+					id = draftResult.value.id
+					return APIUtil.postDraft(
+						draftResult.value.id,
+						contents,
+						file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+					)
+				})
+				.then(postResult => {
+					if (postResult.status !== 'ok') throw new Error(postResult)
+
+					window.open(window.location.origin + '/editor/visual/' + id, '_blank')
+				})
+				.catch(() => {
+					ModalUtil.show(
+						<SimpleDialog ok onConfirm={() => ModalUtil.hide()}>
+							Unexpected error occurred
+						</SimpleDialog>
+					)
+				})
+		}
+
+		reader.readAsText(file)
+	}
+
+	buildFileSelector() {
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('multiple', 'multiple')
+		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
+
+		fileSelector.onchange = this.onChangeFile
+
+		return fileSelector
+	}
+
 	render() {
 		const url = window.location.origin + '/view/' + this.props.draftId
 		const menu = [
+			{
+				name: 'Open',
+				type: 'action',
+				action: () => {
+					const fileSelector = this.buildFileSelector()
+					fileSelector.click()
+				}
+			},
 			{
 				name: 'Save',
 				type: 'action',

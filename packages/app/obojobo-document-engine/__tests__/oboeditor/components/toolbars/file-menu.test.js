@@ -25,6 +25,7 @@ describe('File Menu', () => {
 	beforeEach(() => {
 		EditorStore.state.startingId = null
 		jest.clearAllMocks()
+		// APIUtil.clearAllMocks()
 	})
 
 	test('File Menu node', () => {
@@ -35,6 +36,39 @@ describe('File Menu', () => {
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
+
+	// test('FileMenu calls open', done => {
+	// 	const component = mount(<FileMenu draftId="mockDraft" />)
+
+	// 	APIUtil.createNewDraft.mockResolvedValueOnce({
+	// 		status: 'ok',
+	// 		value: {
+	// 			id: 'mock-id'
+	// 		}
+	// 	})
+
+	// 	APIUtil.postDraft.mockResolvedValueOnce({
+	// 		status: 'ok'
+	// 	})
+
+	// 	component
+	// 		.find('button')
+	// 		.at(1)
+	// 		.simulate('click')
+
+	// 	const fileContents = 'file contents'
+	// 	const file = new Blob([fileContents], { type: 'text/plain' })
+
+	// 	component.instance().onChangeFile({ target: { files: [file] } })
+
+	// 	expect(component.html()).toMatchSnapshot()
+
+	// 	setTimeout(() => {
+	// 		component.update()
+	// 		component.unmount()
+	// 		done()
+	// 	})
+	// })
 
 	test('FileMenu calls save', () => {
 		APIUtil.getAllDrafts.mockResolvedValueOnce({
@@ -73,7 +107,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
@@ -83,7 +117,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -105,7 +139,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(3)
 			.simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
@@ -115,7 +149,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(3)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -142,7 +176,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(3)
+			.at(4)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -165,14 +199,14 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(5)
+			.at(6)
 			.simulate('click')
 
 		APIUtil.getFullDraft.mockResolvedValueOnce('{ "item": "value" }')
 
 		component
 			.find('button')
-			.at(6)
+			.at(7)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -201,7 +235,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(7)
+			.at(8)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -222,7 +256,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(8)
+			.at(9)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -243,7 +277,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(9)
+			.at(10)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
