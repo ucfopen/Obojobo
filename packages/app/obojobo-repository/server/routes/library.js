@@ -52,6 +52,7 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 		cell_size: 65,
 		variance: .8,
 		x_colors: color,
+		stroke_width: .5,
 		seed: req.params.moduleId
 	})
 
