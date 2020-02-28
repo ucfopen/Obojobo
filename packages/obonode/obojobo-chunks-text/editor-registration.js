@@ -11,6 +11,7 @@ import normalizeNode from './changes/normalize-node'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
+import indentOrTab from './changes/indent-or-tab'
 import splitParent from './changes/split-parent'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -21,11 +22,11 @@ const plugins = {
 	// They may affect multiple nodes simultaneously
 	insertData(data, editor, next) {
 		// Insert Slate fragments normally
-		if(data.types.includes('application/x-slate-fragment')) return next(data)
+		if (data.types.includes('application/x-slate-fragment')) return next(data)
 
 		// If the node that we will be inserting into is not a Text node use the regular logic
 		const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
-		if(first[0].type !== TEXT_NODE) return next(data)
+		if (first[0].type !== TEXT_NODE) return next(data)
 
 		// When inserting plain text into a Text node insert all lines as code
 		const plainText = data.getData('text/plain')
@@ -43,14 +44,16 @@ const plugins = {
 	// They affect individual nodes independently of one another
 	decorate([node, path], editor) {
 		// Define a placeholder decoration
-		if(Element.isElement(node) && !node.subtype && Node.string(node) === ''){
+		if (Element.isElement(node) && !node.subtype && Node.string(node) === '') {
 			const point = Editor.start(editor, path)
 
-			return [{
-				placeholder: 'Type your text here',
-				anchor: point,
-				focus: point
-			}]
+			return [
+				{
+					placeholder: 'Type your text here',
+					anchor: point,
+					focus: point
+				}
+			]
 		}
 
 		return []
@@ -72,8 +75,7 @@ const plugins = {
 				if (event.altKey) return increaseIndent(entry, editor, event)
 
 				// TAB
-				event.preventDefault()
-				return editor.insertText('\t')
+				return indentOrTab(entry, editor, event)
 		}
 	},
 	renderNode(props) {
@@ -83,7 +85,7 @@ const plugins = {
 			default:
 				return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
+	}
 }
 
 const Text = {

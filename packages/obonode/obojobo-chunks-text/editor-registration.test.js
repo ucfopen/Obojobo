@@ -2,6 +2,7 @@ jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('./changes/increase-indent')
+jest.mock('./changes/indent-or-tab')
 jest.mock('./changes/decrease-indent')
 jest.mock('./changes/split-parent')
 
@@ -9,6 +10,7 @@ import { Editor, Transforms, Element, Node } from 'slate'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
+import indentOrTab from './changes/indent-or-tab'
 import splitParent from './changes/split-parent'
 
 import Text from './editor-registration'
@@ -62,26 +64,16 @@ describe('Text editor', () => {
 			{
 				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,
-				content: { indent: 0, align: 'left'  },
+				content: { indent: 0, align: 'left' },
 				children: [{ text: ' line2' }]
 			}
 		])
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			Text.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Text.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			Text.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Text.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
 	test('plugins.decorate renders a placeholder', () => {
@@ -91,12 +83,7 @@ describe('Text editor', () => {
 		Element.isElement.mockReturnValue(true)
 		Node.string.mockReturnValue('')
 
-		expect(
-			Text.plugins.decorate(
-				[ { children: [{ text: '' }] }, [0]],
-				editor
-			)
-		).toMatchSnapshot()
+		expect(Text.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -105,7 +92,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], {}, event)
+		Text.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(splitParent).toHaveBeenCalled()
 	})
@@ -116,14 +103,14 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], {}, event1)
+		Text.plugins.onKeyDown([{}, [0]], {}, event1)
 
 		const event2 = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], {}, event2)
+		Text.plugins.onKeyDown([{}, [0]], {}, event2)
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
@@ -134,7 +121,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], {}, event)
+		Text.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(decreaseIndent).toHaveBeenCalled()
 	})
@@ -146,7 +133,7 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], {}, event)
+		Text.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(increaseIndent).toHaveBeenCalled()
 	})
@@ -160,15 +147,15 @@ describe('Text editor', () => {
 			insertText: jest.fn()
 		}
 
-		Text.plugins.onKeyDown([{},[0]], editor, event)
+		Text.plugins.onKeyDown([{}, [0]], editor, event)
 
-		expect(editor.insertText).toHaveBeenCalled()
+		expect(indentOrTab).toHaveBeenCalled()
 	})
 
 	test('renderNode renders text when passed', () => {
 		const props = {
 			element: {
-				type: TEXT_NODE,
+				type: TEXT_NODE
 			}
 		}
 
@@ -180,7 +167,7 @@ describe('Text editor', () => {
 			attributes: { dummy: 'dummyData' },
 			element: {
 				type: TEXT_NODE,
-				subtype: TEXT_LINE_NODE,
+				subtype: TEXT_LINE_NODE
 			}
 		}
 
