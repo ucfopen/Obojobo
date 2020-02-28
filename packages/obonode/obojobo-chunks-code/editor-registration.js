@@ -11,6 +11,7 @@ import normalizeNode from './changes/normalize-node'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
+import indentOrTab from './changes/indent-or-tab'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
@@ -74,8 +75,11 @@ const Code = {
 					// TAB+SHIFT
 					if (event.shiftKey) return decreaseIndent(entry, editor, event)
 
+					// TAB+ALT
+					if (event.altKey) return increaseIndent(entry, editor, event)
+
 					// TAB
-					return increaseIndent(entry, editor, event)
+					return indentOrTab(entry, editor, event)
 			}
 		},
 		renderNode(props) {

@@ -3,12 +3,14 @@ jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('./changes/increase-indent')
 jest.mock('./changes/decrease-indent')
+jest.mock('./changes/indent-or-tab')
 
 import { Editor, Transforms, Element, Node } from 'slate'
 import Code from './editor-registration'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
+import indentOrTab from './changes/indent-or-tab'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
@@ -162,6 +164,18 @@ describe('Code editor', () => {
 		expect(decreaseIndent).toHaveBeenCalled()
 	})
 
+	test('plugins.onKeyDown deals with [Alt]+[Tab]', () => {
+		const event = {
+			key: 'Tab',
+			altKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Code.plugins.onKeyDown([{},[0]], {}, event)
+
+		expect(increaseIndent).toHaveBeenCalled()
+	})
+
 	test('plugins.onKeyDown deals with [Tab]', () => {
 		const event = {
 			key: 'Tab',
@@ -170,6 +184,6 @@ describe('Code editor', () => {
 
 		Code.plugins.onKeyDown([{},[0]], {}, event)
 
-		expect(increaseIndent).toHaveBeenCalled()
+		expect(indentOrTab).toHaveBeenCalled()
 	})
 })

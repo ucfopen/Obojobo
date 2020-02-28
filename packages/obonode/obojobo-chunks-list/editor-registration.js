@@ -13,6 +13,7 @@ import onBackspace from './changes/on-backspace'
 import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
+import wrapLevelOrTab from './changes/wrap-level-or-tab'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -66,8 +67,11 @@ const plugins = {
 				// TAB+SHIFT
 				if (event.shiftKey) return unwrapLevel(entry, editor, event)
 
+				// TAB + ALT
+				if (event.altKey) return wrapLevel(entry, editor, event)
+
 				// TAB
-				return wrapLevel(entry, editor, event)
+				return wrapLevelOrTab(entry, editor, event)
 
 			case 'Enter':
 				return insertText(entry, editor, event)

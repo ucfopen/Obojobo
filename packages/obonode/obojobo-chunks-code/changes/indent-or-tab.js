@@ -2,7 +2,7 @@ import { Editor, Transforms, Range } from 'slate'
 
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
-const increaseIndent = (entry, editor, event) => {
+const indentOrTab = (entry, editor, event) => {
 	event.preventDefault()
 	const [, nodePath] = entry
 	const nodeRange = Editor.range(editor, nodePath)
@@ -14,6 +14,13 @@ const increaseIndent = (entry, editor, event) => {
 		match: child => child.subtype === CODE_LINE_NODE
 	}))
 
+	// If there is only one line selected and the selection is not at the start of the line
+	// insert a tab instead of indenting
+	if(Range.equals(selectedInsideNode, editor.selection) && list.length === 1 
+		&& editor.selection.anchor.offset !== 0 && editor.selection.focus.offset !== 0){
+		return editor.insertText('\t')
+	}
+
 	// For each child in the selection, increment the indent without letting it get above 20
 	for(const [child, path] of list){
 		Transforms.setNodes(
@@ -24,4 +31,4 @@ const increaseIndent = (entry, editor, event) => {
 	}
 }
 
-export default increaseIndent
+export default indentOrTab

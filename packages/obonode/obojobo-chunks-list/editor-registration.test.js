@@ -5,6 +5,8 @@ import unwrapLevel from './changes/unwrap-level'
 jest.mock('./changes/unwrap-level')
 import wrapLevel from './changes/wrap-level'
 jest.mock('./changes/wrap-level')
+import wrapLevelOrTab from './changes/wrap-level-or-tab'
+jest.mock('./changes/wrap-level-or-tab')
 import onBackspace from './changes/on-backspace'
 jest.mock('./changes/on-backspace')
 
@@ -168,6 +170,18 @@ describe('List editor', () => {
 		expect(unwrapLevel).toHaveBeenCalled()
 	})
 
+	test('plugins.onKeyDown deals with [Alt]+[Tab]', () => {
+		const event = {
+			key: 'Tab',
+			altKey: true,
+			preventDefault: jest.fn()
+		}
+
+		List.plugins.onKeyDown([{},[0]], {}, event)
+
+		expect(wrapLevel).toHaveBeenCalled()
+	})
+
 	test('plugins.onKeyDown deals with [Tab]', () => {
 		const event = {
 			key: 'Tab',
@@ -176,6 +190,6 @@ describe('List editor', () => {
 
 		List.plugins.onKeyDown([{},[0]], {}, event)
 
-		expect(wrapLevel).toHaveBeenCalled()
+		expect(wrapLevelOrTab).toHaveBeenCalled()
 	})
 })
