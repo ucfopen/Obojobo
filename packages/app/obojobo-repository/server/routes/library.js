@@ -9,6 +9,8 @@ const {
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/server/express_validators')
+const { userHasPermissionToCopy } = require('../services/permissions')
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
 	.route('/')
@@ -56,8 +58,6 @@ router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-
 		return RepositoryCollection.fetchById(publicLibCollectionId)
 			.then(collection => {
 				return collection.loadRelatedDrafts()
@@ -93,13 +93,16 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
+			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+
 			const props = {
 				module,
 				owner,
 				currentUser: req.currentUser,
-				appCSSUrl: webpackAssetPath('repository.css')
+				appCSSUrl: webpackAssetPath('repository.css'),
+				canCopy
 			}
-			res.render('pages/page-module.jsx', props)
+			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {
 			res.unexpected(e)
 		}

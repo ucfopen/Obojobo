@@ -4,6 +4,9 @@ const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const slateToObo = node => {
 	const content = Object.assign({}, node.data.get('content'))
+
+	if (content.type !== 'pass-fail') return ''
+
 	if (content.passedType !== 'set-value') content.passedResult = content.passedType
 	if (content.failedType !== 'set-value') content.failedResult = content.failedType
 	if (content.unableToPassType !== 'set-value') {

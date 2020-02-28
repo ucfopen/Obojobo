@@ -123,13 +123,17 @@ class CodeEditor extends React.Component {
 			this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
-		).then(result => {
-			if (result.status !== 'ok') {
-				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-			} else {
-				this.setState({ saved: true })
-			}
-		})
+		)
+			.then(result => {
+				if (result.status !== 'ok') {
+					ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
+				} else {
+					this.setState({ saved: true })
+				}
+			})
+			.catch(e => {
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + e} />)
+			})
 	}
 
 	// Makes CodeMirror commands match Slate commands

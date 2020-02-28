@@ -139,4 +139,8 @@
 	&.is-previewing {
 		height: calc(100% - 3rem);
 	}
+
+	code {
+		font-family: $font-monospace;
+	}
 }
