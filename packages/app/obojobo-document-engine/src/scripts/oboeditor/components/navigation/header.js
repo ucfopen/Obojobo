@@ -43,6 +43,8 @@ class Header extends React.Component {
 		model.triggers = newContent.triggers ? newContent.triggers : []
 		model.title =
 			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+
+		EditorUtil.setStartPage(newContent.start)
 	}
 
 	render() {
