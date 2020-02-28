@@ -12,6 +12,7 @@ jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('react-codemirror2', () => ({
 	Controlled: global.mockReactComponent(this, 'Codemirror')
 }))
+jest.mock('src/scripts/common/util/modal-util')
 
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/plugins/hot-key-plugin', () => () => ({
