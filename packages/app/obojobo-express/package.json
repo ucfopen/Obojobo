@@ -23,6 +23,7 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
+		"prepublish": "yarn build",
 		"prettier:run": "prettier --write '**/*.{js,scss}'",
 		"precommit": "lint-staged"
 	},
