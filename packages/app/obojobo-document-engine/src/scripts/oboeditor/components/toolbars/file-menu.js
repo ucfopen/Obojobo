@@ -1,10 +1,10 @@
 import React from 'react'
-import download from 'downloadjs'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorUtil from '../../util/editor-util'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import APIUtil from '../../../viewer/util/api-util'
+import { downloadDocument } from '../../../common/util/download-document'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -54,29 +54,6 @@ class FileMenu extends React.PureComponent {
 			})
 	}
 
-	downloadModule(draftId, format) {
-		let formatResults
-
-		switch (format) {
-			case 'json':
-				formatResults = text => {
-					const json = JSON.parse(text).value
-					return JSON.stringify(json, null, 2)
-				}
-				break
-
-			default:
-				formatResults = text => text
-				break
-		}
-
-		APIUtil.getFullDraft(draftId, format)
-			.then(formatResults)
-			.then(contents => {
-				download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
-			})
-	}
-
 	render() {
 		const url = window.location.origin + '/view/' + this.props.draftId
 		const menu = [
@@ -115,12 +92,12 @@ class FileMenu extends React.PureComponent {
 					{
 						name: 'XML Document (.xml)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'xml')
+						action: () => downloadDocument(this.props.draftId, 'xml')
 					},
 					{
 						name: 'JSON Document (.json)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'json')
+						action: () => downloadDocument(this.props.draftId, 'json')
 					}
 				]
 			},
