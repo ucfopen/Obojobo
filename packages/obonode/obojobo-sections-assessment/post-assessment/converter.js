@@ -30,10 +30,16 @@ const oboToSlate = node => {
 	json.type = ACTIONS_NODE
 	json.nodes = []
 	node.forEach(action => {
+		const data = { for: action.for }
+		// Convert legacy from/to attributes to newer 'for' attribute:
+		if (!action.for && action.to && action.from) {
+			data.for = `[${action.from},${action.to}]`
+		}
+
 		const slateAction = {
 			object: 'block',
 			type: SCORE_NODE,
-			data: { for: action.for },
+			data,
 			nodes: []
 		}
 
