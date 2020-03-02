@@ -59,7 +59,7 @@ class Figure extends React.Component {
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.node.data.get('content') || {}
 
 		const isCustom = content.size === 'custom'
 		const imgStyles = {}
@@ -79,7 +79,7 @@ class Figure extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
+				<div className={`obojobo-draft--chunks--figure viewer ${content.size || ''} ${isSelected}`}>
 					<div className="container">
 						{hasAltText ? null : (
 							<div contentEditable={false} className="accessibility-warning">
@@ -101,6 +101,7 @@ class Figure extends React.Component {
 							<Image
 								key={content.url + content.width + content.height + content.size}
 								chunk={{ modelState: content }}
+								lazyLoad={false}
 							/>
 						</div>
 

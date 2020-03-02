@@ -16,15 +16,15 @@ describe('http_server', () => {
 	beforeEach(() => {
 		jest.resetModules()
 		restoreConsole = mockConsole('log')
-		jest.mock('../logger')
-		logger = oboRequire('logger')
+		jest.mock('../server/logger')
+		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 		mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {})
 		http = require('http')
 		https = require('https')
 		http.createServer = jest.fn()
 		https.createServer = jest.fn()
-		httpServer = require('../http_server')
+		httpServer = require('../server/http_server')
 		insecureServer = {
 			on: jest.fn(),
 			listen: jest.fn(),

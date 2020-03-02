@@ -1,4 +1,4 @@
-const iri = require('../iri_builder.js')
+const iri = require('../server/iri_builder.js')
 
 describe('IRI Builder', () => {
 	beforeAll(() => {})

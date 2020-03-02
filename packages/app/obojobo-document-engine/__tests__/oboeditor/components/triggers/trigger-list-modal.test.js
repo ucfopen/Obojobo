@@ -27,6 +27,12 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('TriggerListModal still renders if given no triggers', () => {
+		const component = shallow(<TriggerListModal content={{}} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('TriggerListModal node deletes trigger', () => {
 		const content = {
 			triggers: [
@@ -229,4 +235,27 @@ describe('TriggerListModal', () => {
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test.each`
+		type
+		${'nav:goto'}
+		${'nav:prev'}
+		${'nav:next'}
+		${'nav:openExternalLink'}
+		${'nav:lock'}
+		${'nav:unlock'}
+		${'nav:open'}
+		${'nav:close'}
+		${'nav:toggle'}
+		${'assessment:startAttempt'}
+		${'assessment:endAttempt'}
+		${'viewer:alert'}
+		${'viewer:scrollToTop'}
+		${'focus:component'}
+	`(
+		'createNewDefaultActionValueObject($type) creates a new default action value object',
+		({ type }) => {
+			expect(TriggerListModal.prototype.createNewDefaultActionValueObject(type)).toMatchSnapshot()
+		}
+	)
 })

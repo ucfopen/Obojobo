@@ -32,8 +32,15 @@ describe('List editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('onPaste calls createTextLinesFromText', () => {
+	test('onPaste calls createListLinesFromText', () => {
 		const editor = {
+			props: {
+				value: {
+					focusBlock: {
+						text: ''
+					}
+				}
+			},
 			value: {
 				blocks: [
 					{
@@ -68,6 +75,146 @@ describe('List editor', () => {
 		List.plugins.onPaste(null, editor, next)
 
 		expect(editor.createListLinesFromText).toHaveBeenCalled()
+	})
+
+	test('onPaste inserts text to current non-empty block', () => {
+		const editor = {
+			props: {
+				value: {
+					focusBlock: {
+						text: 'mock'
+					}
+				}
+			},
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createListLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey',
+					text: ''
+				}
+			]),
+			insertText: jest.fn(),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'mock text'
+		})
+
+		List.plugins.onPaste(null, editor, next)
+
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
+	test('onPaste does not call insertBlock for empty line', () => {
+		const editor = {
+			props: {
+				value: {
+					focusBlock: {
+						text: ''
+					}
+				}
+			},
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createListLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey1',
+					text: ''
+				},
+				{
+					key: 'mockBlockKey2',
+					text: ''
+				}
+			]),
+			insertText: jest.fn(),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: '\n\n'
+		})
+
+		List.plugins.onPaste(null, editor, next)
+
+		expect(editor.insertBlock).not.toHaveBeenCalled()
+	})
+
+	test('onPaste call insertBlock for non-empty line', () => {
+		const editor = {
+			props: {
+				value: {
+					focusBlock: {
+						text: ''
+					}
+				}
+			},
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createListLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey1',
+					text: 'line1'
+				},
+				{
+					key: 'mockBlockKey2',
+					text: ''
+				},
+				{
+					key: 'mockBlockKey3',
+					text: 'line2'
+				}
+			]),
+			insertText: jest.fn(),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'line1\n\nline2\n'
+		})
+
+		List.plugins.onPaste(null, editor, next)
+
+		expect(editor.insertBlock).toHaveBeenCalledTimes(2)
 	})
 
 	test('plugins.renderNode renders List', () => {

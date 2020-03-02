@@ -116,7 +116,7 @@ describe('MCAssessment Converter', () => {
 					type: 'NotADefinedNode'
 				}
 			],
-			content: {}
+			content: { triggers: 'mock-triggers' }
 		}
 		OboModel.models = {
 			mockKey: {

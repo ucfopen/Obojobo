@@ -126,6 +126,7 @@ class AssessmentStore extends Store {
 					ok
 					title="Resume Attempt"
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
+					preventEsc
 				>
 					<p>
 						It looks like you were in the middle of an attempt. We&apos;ll resume where you left

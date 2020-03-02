@@ -1,7 +1,7 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const Assessment = require('./assessment')
-const lti = require('obojobo-express/lti')
-const logger = require('obojobo-express/logger')
+const lti = require('obojobo-express/server/lti')
+const logger = require('obojobo-express/server/logger')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
@@ -14,7 +14,7 @@ const {
 	requireAttemptId,
 	requireCurrentUser,
 	requireAssessmentId
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
 
 router
 	.route('/api/lti/state/draft/:draftId')

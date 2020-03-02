@@ -2,7 +2,22 @@
 	"id": "6c869d71-71b7-456b-b0f5-aafa1b17a450",
 	"type": "ObojoboDraft.Chunks.YouTube",
 	"content": {
-		"videoId": "gJ390e5sjHk"
+		"startTime": 10,
+		"endTime": 20,
+		"videoId": "gJ390e5sjHk",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"children": []
 }

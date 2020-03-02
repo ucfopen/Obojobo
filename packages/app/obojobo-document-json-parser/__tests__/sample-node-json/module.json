@@ -6,7 +6,20 @@
 	"index": 0,
 	"content": {
 		"start": null,
-		"title": "Obojobo Visual Editor Tutorial"
+		"title": "Obojobo Visual Editor Tutorial",
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": [
+					{
+						"type": "nav:goto",
+						"value": {
+							"id": "example-id"
+						}
+					}
+				]
+			}
+		]
 	},
 	"draftId": "e2a43166-52d8-4d0f-8bfb-beb093f675d1",
 	"children": [],

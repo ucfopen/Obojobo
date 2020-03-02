@@ -14,7 +14,9 @@ describe('ViewMenu', () => {
 	})
 
 	test('ViewMenu node in XML_MODE', () => {
-		const save = jest.fn()
+		const save = () => ({
+			then: func => func()
+		})
 		const switchMode = jest.fn()
 
 		const component = mount(
@@ -29,7 +31,9 @@ describe('ViewMenu', () => {
 	})
 
 	test('ViewMenu performs actions', () => {
-		const save = jest.fn()
+		const save = () => ({
+			then: func => func()
+		})
 		const switchMode = jest.fn()
 
 		const component = mount(

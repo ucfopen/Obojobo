@@ -17,8 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
-import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
-const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+
 const NAV_CLOSE_DURATION_MS = 400
 
 const { DOMUtil, focus } = Common.page
@@ -492,7 +491,7 @@ export default class ViewerApp extends React.Component {
 			QuestionStore.triggerChange()
 
 			return ModalUtil.show(
-				<SimpleDialog ok width="15em">
+				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
 			)

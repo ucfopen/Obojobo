@@ -1,10 +1,10 @@
 jest.mock('./attempt-end-helpers')
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 
 const endAttempt = require('./attempt-end')
 
 const helpers = require('./attempt-end-helpers')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 
 const mockReq = {
 	params: {

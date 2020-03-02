@@ -153,14 +153,18 @@
 		}
 
 		min-height: 4em;
-		display: table;
+		display: flex;
+
+		@include mq($until: tablet) {
+			text-align: center;
+			display: block;
+		}
 	}
 
 	.submit {
-		margin-left: 0;
-		margin-right: 0;
 		position: relative;
 		display: inline-block;
+		margin: auto 0;
 
 		button {
 			cursor: pointer;
@@ -179,13 +183,19 @@
 	}
 
 	.result-container {
-		display: table-cell;
+		display: flex;
 		position: relative;
 		vertical-align: middle;
-		padding-right: 1em;
+		padding-right: 0;
 		padding-top: 1em;
 		padding-bottom: 1em;
 		line-height: 1em;
+
+		@include mq($until: tablet) {
+			display: block;
+			padding-top: 0;
+			padding-right: 0;
+		}
 
 		@include mq($until: mobile) {
 			display: block;
@@ -198,9 +208,20 @@
 			color: $color-incorrect;
 			max-width: 24em;
 			display: inline-block;
-			line-height: 1.5em;
+			line-height: 1.25em;
 			vertical-align: middle;
 			margin-left: 1.25em;
+			opacity: 0;
+			animation: obojobo-draft--chunks--mc-assessment--fadein 0.4s;
+			animation-delay: $duration-animation-default * 2.5;
+			animation-fill-mode: forwards;
+
+			@include mq($until: tablet) {
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 1em;
+				display: block;
+			}
 		}
 
 		.result {
@@ -208,11 +229,11 @@
 			color: $color-bg;
 			font-weight: bold;
 			box-sizing: border-box;
-			margin: 0;
 			display: inline-block;
 			border-radius: 9999px;
 			padding: 0.5em 1.5em;
 			font-size: 0.8em;
+			margin: auto;
 			transform: scale(0);
 			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
 			animation-delay: $duration-animation-default * 1.5;
@@ -239,6 +260,10 @@
 		border-bottom-right-radius: 0.3em;
 		border-top: 1px solid $color-shadow;
 		padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+
+		@include mq($until: tablet) {
+			text-align: center;
+		}
 
 		> .obojobo-draft--components--button {
 			margin-top: 1em;
@@ -321,7 +346,7 @@
 				font-weight: bold;
 				color: $color-solution-label-text;
 				margin-top: 1em;
-				margin-left: 2em;
+				margin-left: 2.5em;
 				margin-bottom: -1em;
 				display: block;
 				transform: scale(0.7);
@@ -386,11 +411,6 @@
 				overflow: hidden;
 			}
 
-			> div > .component[data-obo-component='true'] {
-				margin-left: -1em;
-				margin-right: -1em;
-			}
-
 			.obojobo-draft--pages--page {
 				font-size: 0.85em;
 
@@ -411,6 +431,10 @@
 
 	.submit .obojobo-draft--components--button:first-child {
 		margin-right: 1em;
+
+		@include mq($until: tablet) {
+			margin-right: 0;
+		}
 	}
 
 	&.is-scored {
@@ -449,6 +473,15 @@
 	}
 
 	&.is-mode-review {
+		.submit-and-result-container {
+			margin-top: 0;
+			min-height: inherit;
+
+			@include mq($until: tablet) {
+				margin-top: 1em;
+			}
+		}
+
 		.result-container .result {
 			animation: none;
 			transform: none;
