@@ -85,11 +85,7 @@ class MathEquation extends React.Component {
 	updateNodeFromState() {
 		const content = this.props.element.content
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor, 
-			{ content: {...content, ...this.state} }, 
-			{ at: path }
-		)
+		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
 	onChangeContent(key, event) {
@@ -193,7 +189,9 @@ class MathEquation extends React.Component {
 						'align-' +
 						(content.align || 'center')
 					}
-					onClick={this.focusEquation}>
+					contentEditable={false}
+					onClick={this.focusEquation}
+				>
 					{this.renderLatex()}
 					{this.props.selected ? this.renderAttributes() : null}
 				</div>
