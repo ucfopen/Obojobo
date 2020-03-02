@@ -64,3 +64,38 @@ Once logged in, visit [https://127.0.0.1:8080/editor](https://127.0.0.1:8080/edi
 ### Special Thanks
 
 Support for this work was provided by the National Science Foundation Scholarships in Science, Technology, Engineering, and Mathematics (S-STEM) program under [Award No.1643835](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1643835). Any opinions, findings, conclusions and recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
+### Contributors
+
+Listed here is everybody who has worked on Obojobo, in alphabetical order:
+
+[ ![Anthony](https://avatars3.githubusercontent.com/u/11856062?s=100&v=4) Anthony Rodriguez](https://github.com/AnthonyRodriguez726)
+
+[ ![Brandon](https://avatars1.githubusercontent.com/u/1275983?s=100&v=4) Brandon Stull](https://github.com/FrenjaminBanklin)
+
+[ ![Cam](https://avatars1.githubusercontent.com/u/7400747?s=100&v=4) Cameron Cuff](https://github.com/ctcuff)
+
+[ ![Corey](https://avatars2.githubusercontent.com/u/1268547?s=100&v=4) Corey Peterson](https://github.com/clpetersonucf)
+
+[ ![Elli](https://avatars1.githubusercontent.com/u/36134301?s=100&v=4) Elli Howard](https://github.com/qwertynerd97)
+
+[ ![Ian](https://avatars2.githubusercontent.com/u/73480?s=100&v=4) Ian Turgeon](https://github.com/iturgeon)
+
+[ ![Jon](https://avatars2.githubusercontent.com/u/9093729?s=100&v=4) Jonathan Guilbe](https://github.com/JonGuilbe)
+
+[ ![Keegan](https://avatars0.githubusercontent.com/u/229935?s=100&v=4) Keegan Berry](https://github.com/keeeeeegan)
+
+[ ![Ralph](https://avatars3.githubusercontent.com/u/22771644?s=100&v=4) Ralph Baird](https://github.com/rmanbaird)
+
+[ ![Ryan](https://avatars3.githubusercontent.com/u/5448785?s=100&v=4) Ryan Eppers](https://github.com/gitnix)
+
+[ ![Sam](https://avatars3.githubusercontent.com/u/17661897?s=100&v=4) Samuel Belcastro](https://github.com/samuel-belcastro)
+
+[ ![Shea](https://avatars.githubusercontent.com/u/1273237?s=100&v=4) Shea Silverman](https://github.com/ssilverm)
+
+[ ![Sid](https://avatars1.githubusercontent.com/u/19176417?s=100&v=4) Sidney Packer](https://github.com/SidTheEngineer)
+
+[ ![Toan](https://avatars2.githubusercontent.com/u/23706824?s=100&v=4) Toan Vu](https://github.com/vutoan1245)
+
+[ ![Zach](https://avatars2.githubusercontent.com/u/73479?s=100&v=4) Zachary Berry](https://github.com/zachberry)
+
