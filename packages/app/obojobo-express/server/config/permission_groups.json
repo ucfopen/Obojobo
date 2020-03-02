@@ -33,7 +33,9 @@
 			"Administrator",
 			"ContentDeveloper",
 			"urn:lti:instrole:ims/lis/Administrator",
-			"urn:lti:role:ims/lis/TeachingAssistant"
+			"urn:lti:role:ims/lis/TeachingAssistant",
+			"Observer",
+			"urn:lti:instrole:ims/lis/Observer"
 		],
 		"canViewAsStudent": ["Learner", "urn:lti:role:ims/lis/Learner"]
 	},

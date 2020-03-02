@@ -43,10 +43,12 @@ module.exports = app => {
 			rolling: true,
 			cookie: {
 				path: '/',
-				sameSite: false, // Seems to be blocking access from webcourses2c.instructure.com to obojobo (though not webcourses.ucf.edu?)
+				maxAge: 10 * 24 * 60 * 60 * 1000, // 30 days
+				// use config.general.secureCookie to determine the next settings
+				// sameSite 'none' is needed to support LTI launches from different domains
+				sameSite: config.general.secureCookie ? 'none' : false,
 				httpOnly: !config.general.secureCookie,
-				secure: config.general.secureCookie,
-				maxAge: 10 * 24 * 60 * 60 * 1000 // 30 days
+				secure: !!config.general.secureCookie
 			}
 		})
 	)
