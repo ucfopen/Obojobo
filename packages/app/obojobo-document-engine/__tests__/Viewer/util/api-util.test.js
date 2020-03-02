@@ -2,7 +2,7 @@
 
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
-const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 const API = require('../../../src/scripts/viewer/util/api')
 import mockConsole from 'jest-mock-console'
 let restoreConsole
@@ -482,13 +482,70 @@ describe('apiutil', () => {
 		})
 	})
 
-	test('createNewDraft calls fetch and returns', async () => {
+	test('createNewDraft calls fetch and returns', () => {
 		expect.hasAssertions()
 
 		return APIUtil.createNewDraft().then(result => {
 			expect(post).toHaveBeenCalledWith('/api/drafts/new')
 			expect(result).toEqual(mockJsonResult)
 		})
+	})
+
+	test('createNewDraftWithContent calls createNewDraft and postDraft', () => {
+		expect.hasAssertions()
+
+		APIUtil.createNewDraft = jest.fn().mockResolvedValue({
+			status: 'ok',
+			value: { id: 'mock-id' }
+		})
+		APIUtil.postDraft = jest.fn().mockResolvedValue({
+			status: 'ok'
+		})
+
+		APIUtil.createNewDraftWithContent('mock-content', 'application/json').then(() => {
+			expect(APIUtil.createNewDraft).toHaveBeenCalled()
+			expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-id', 'mock-content', 'application/json')
+		})
+		APIUtil.createNewDraftWithContent('mock-content', 'text/plain;charset=UTF-8').then(() => {
+			expect(APIUtil.createNewDraft).toHaveBeenCalled()
+			expect(APIUtil.postDraft).toHaveBeenCalledWith(
+				'mock-id',
+				'mock-content',
+				'text/plain;charset=UTF-8'
+			)
+		})
+	})
+
+	test('createNewDraftWithContent reject when status is not "ok"', async () => {
+		expect.hasAssertions()
+
+		APIUtil.createNewDraft = jest.fn().mockResolvedValueOnce({
+			status: 'error'
+		})
+
+		try {
+			await APIUtil.createNewDraftWithContent('mock-content')
+		} catch (error) {
+			expect(error).toEqual({ status: 'error' })
+			expect(APIUtil.createNewDraft).toHaveBeenCalled()
+			expect(APIUtil.postDraft).not.toHaveBeenCalled()
+		}
+
+		APIUtil.createNewDraft = jest.fn().mockResolvedValueOnce({
+			status: 'ok',
+			value: { id: 'mock-id' }
+		})
+		APIUtil.postDraft = jest.fn().mockResolvedValueOnce({
+			status: 'error'
+		})
+
+		try {
+			await APIUtil.createNewDraftWithContent('mock-content', 'text/plain;charset=UTF-8')
+		} catch (error) {
+			expect(error).toEqual({ status: 'error' })
+			expect(APIUtil.createNewDraft).toHaveBeenCalled()
+			expect(APIUtil.postDraft).toHaveBeenCalled()
+		}
 	})
 
 	test('deleteDraft calls fetch and returns', async () => {

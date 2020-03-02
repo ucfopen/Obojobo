@@ -1,4 +1,4 @@
-import API from './api'
+const API = require('./api')
 
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
@@ -105,6 +105,24 @@ const APIUtil = {
 		return API.post(`/api/drafts/new`).then(processJsonResults)
 	},
 
+	createNewDraftWithContent(content, format = 'application/json') {
+		let id = null
+		return this.createNewDraft()
+			.then(draftResult => {
+				if (draftResult.status !== 'ok') throw draftResult
+				id = draftResult.value.id
+				return this.postDraft(
+					id,
+					content,
+					format === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+				)
+			})
+			.then(postResult => {
+				if (postResult.status !== 'ok') throw postResult
+				return id
+			})
+	},
+
 	deleteDraft(draftId) {
 		return API.delete(`/api/drafts/${draftId}`).then(processJsonResults)
 	},
@@ -114,4 +132,4 @@ const APIUtil = {
 	}
 }
 
-export default APIUtil
+module.exports = APIUtil

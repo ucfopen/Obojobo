@@ -12,6 +12,7 @@ const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
+const APIUtil = require('obojobo-document-engine/src/scripts/viewer/util/api-util')
 
 const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
@@ -106,6 +107,33 @@ const Dashboard = props => {
 		}, [sortOrder])
 	}
 
+	const onChangeFile = event => {
+		const file = event.target.files[0]
+		if (!file) return
+
+		const reader = new FileReader()
+		reader.readAsText(file, 'UTF-8')
+		reader.onload = function(e) {
+			const contents = e.target.result
+
+			APIUtil.createNewDraftWithContent(
+				contents,
+				file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+			).then(() => {
+				location.reload()
+			})
+		}
+	}
+
+	const importFile = () => {
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
+
+		fileSelector.onchange = onChangeFile
+		fileSelector.click()
+	}
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -121,6 +149,7 @@ const Dashboard = props => {
 						<MultiButton title="New Module">
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
+							<Button onClick={importFile}>Import from file...</Button>
 						</MultiButton>
 						<Search
 							value={props.moduleSearchString}

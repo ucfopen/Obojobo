@@ -82,41 +82,30 @@ class FileMenu extends React.PureComponent {
 		if (!file) return
 
 		const reader = new FileReader()
+		reader.readAsText(file, 'UTF-8')
 		reader.onload = function(e) {
 			const contents = e.target.result
 
-			let id = null
-			APIUtil.createNewDraft()
-				.then(draftResult => {
-					if (draftResult.status !== 'ok') throw new Error(draftResult)
-					id = draftResult.value.id
-					return APIUtil.postDraft(
-						draftResult.value.id,
-						contents,
-						file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
-					)
-				})
-				.then(postResult => {
-					if (postResult.status !== 'ok') throw new Error(postResult)
-
+			APIUtil.createNewDraftWithContent(
+				contents,
+				file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+			)
+				.then(id => {
 					window.open(window.location.origin + '/editor/visual/' + id, '_blank')
 				})
 				.catch(() => {
 					ModalUtil.show(
-						<SimpleDialog ok onConfirm={() => ModalUtil.hide()}>
-							Unexpected error occurred
+						<SimpleDialog ok onConfirm={ModalUtil.hide}>
+							Unexpected error occurred while uploading
 						</SimpleDialog>
 					)
 				})
 		}
-
-		reader.readAsText(file)
 	}
 
 	buildFileSelector() {
 		const fileSelector = document.createElement('input')
 		fileSelector.setAttribute('type', 'file')
-		fileSelector.setAttribute('multiple', 'multiple')
 		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
 
 		fileSelector.onchange = this.onChangeFile
