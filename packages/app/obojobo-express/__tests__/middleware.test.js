@@ -35,10 +35,18 @@ let mockRes
 let mockApp
 let mockReq
 let mockConsolidateEngines
+let config
 
 describe('middleware', () => {
 	beforeEach(() => {
 		jest.resetModules()
+		config = require('../server/config')
+		config.general.bodyParser = {
+			jsonOptions: 'mockJSON',
+			urlencodedOptions: 'mockURL',
+			textOptions: 'mockTextOptions'
+		}
+		config.general.secureCookie = false
 		delete process.env.IS_WEBPACK
 		mockRes = {
 			status: jest.fn(),
@@ -132,7 +140,32 @@ describe('middleware', () => {
 		    "maxAge": 864000000,
 		    "path": "/",
 		    "sameSite": false,
-		    "secure": undefined,
+		    "secure": false,
+		  },
+		  "name": undefined,
+		  "resave": false,
+		  "rolling": true,
+		  "saveUninitialized": false,
+		  "secret": undefined,
+		  "store": mockConstructor {},
+		}
+	`)
+	})
+
+	test('session handler is initialized with ssl enabled', () => {
+		config.general.secureCookie = true
+		const middleware = require('../server/middleware.default')
+		const session = require('express-session')
+		middleware(mockApp)
+		expect(session).toHaveBeenCalled()
+		expect(session.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "cookie": Object {
+		    "httpOnly": false,
+		    "maxAge": 864000000,
+		    "path": "/",
+		    "sameSite": "none",
+		    "secure": true,
 		  },
 		  "name": undefined,
 		  "resave": false,

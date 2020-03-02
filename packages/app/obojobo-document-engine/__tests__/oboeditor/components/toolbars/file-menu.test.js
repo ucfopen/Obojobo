@@ -3,8 +3,8 @@ import React from 'react'
 
 import FileMenu from '../../../../src/scripts/oboeditor/components/toolbars/file-menu'
 
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import ModalUtil from '../../../../src/scripts/common/util/modal-util'
+jest.mock('../../../../src/scripts/common/util/modal-util')
 import EditorAPI from 'src/scripts/viewer/util/editor-api'
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/editor-api')
 import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
@@ -15,8 +15,8 @@ import EditorStore from '../../../../src/scripts/oboeditor/stores/editor-store'
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
 }))
-import download from 'downloadjs'
-jest.mock('downloadjs')
+import { downloadDocument } from '../../../../src/scripts/common/util/download-document'
+jest.mock('../../../../src/scripts/common/util/download-document')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -135,33 +135,43 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Download', done => {
+		// setup
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
-
 		EditorAPI.getFullDraft.mockResolvedValueOnce('')
-
-		component
-			.find('button')
-			.at(5)
-			.simulate('click')
-
 		EditorAPI.getFullDraft.mockResolvedValueOnce('{ "item": "value" }')
 
-		component
-			.find('button')
-			.at(6)
-			.simulate('click')
+		// render
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
-		expect(tree).toMatchSnapshot()
+		// get references to buttons
+		const downloadXmlButton = component.find('button').at(5)
+		const downloadJSONButton = component.find('button').at(6)
+
+		// Verify references are correct
+		expect(downloadXmlButton.text()).toBe('XML Document (.xml)')
+		expect(downloadJSONButton.text()).toBe('JSON Document (.json)')
+
+		// click
+		downloadJSONButton.simulate('click')
+		downloadXmlButton.simulate('click')
 
 		setTimeout(() => {
 			component.update()
-			expect(EditorAPI.getFullDraft).toHaveBeenCalled()
-			expect(download).toHaveBeenCalled()
+			expect(downloadDocument.mock.calls).toMatchInlineSnapshot(`
+			Array [
+			  Array [
+			    "mockDraft",
+			    "json",
+			  ],
+			  Array [
+			    "mockDraft",
+			    "xml",
+			  ],
+			]
+		`)
 
 			component.unmount()
 			done()

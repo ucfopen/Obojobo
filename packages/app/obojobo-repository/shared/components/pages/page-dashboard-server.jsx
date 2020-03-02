@@ -8,7 +8,6 @@ const PageDashboardServer = props => (
 	<LayoutDefault
 		title="Dashboard"
 		className="repository--dashboard"
-		headerJs={['//cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js']}
 		appScriptUrl={props.appJsUrl}
 		appCSSUrl={props.appCSSUrl}
 	>
