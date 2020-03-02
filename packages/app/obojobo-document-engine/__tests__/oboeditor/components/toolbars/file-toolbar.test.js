@@ -34,20 +34,22 @@ jest.mock('../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu'
 	}
 )
 
-jest.mock('Common', () => ({
+jest.mock('../../../../src/scripts/common', () => ({
 	models: {
 		OboModel: {}
 	},
 	components: {
 		modal: {
 			SimpleDialog: () => 'MockSimpleDialog'
-		}
+		},
+		Button: require('../../../../src/scripts/common/components/button').default
 	},
 	util: {
 		ModalUtil: {
 			hide: jest.fn(),
 			show: jest.fn()
-		}
+		},
+		isOrNot: require('obojobo-document-engine/src/scripts/common/util/isornot').default
 	},
 	flux: {
 		Dispatcher: {
@@ -74,7 +76,7 @@ describe('File Toolbar', () => {
 			redo: jest.fn(),
 			deleteFragment: jest.fn(),
 			toggleMark: jest.fn(),
-			children: [{ text: ''}],
+			children: [{ text: '' }],
 			selection: null,
 			isInline: () => false,
 			isVoid: () => false,
@@ -83,7 +85,9 @@ describe('File Toolbar', () => {
 		}
 		const value = {}
 
-		const component = shallow(<FileToolbar saved editor={editor} insertableItems={[]} value={value}/>)
+		const component = shallow(
+			<FileToolbar saved editor={editor} insertableItems={[]} value={value} />
+		)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -103,14 +107,22 @@ describe('File Toolbar', () => {
 			isVoid: () => false,
 			apply: jest.fn()
 		}
-		const items = [{ 
-			name: 'mock-item', 
-			cloneBlankNode: () => ({ type: 'mock-type' }),
-			insertJSON: { type: TEXT_NODE } 
-		}]
+		const items = [
+			{
+				name: 'mock-item',
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE }
+			}
+		]
 
-		const component = mount(<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children}/>)
+		const component = mount(
+			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
+		)
 		const tree = component.html()
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -118,46 +130,13 @@ describe('File Toolbar', () => {
 		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
 		jest.spyOn(Editor, 'nodes').mockReturnValue([
-			[{
-				type: TABLE_NODE,
-				children: [{ text: 'mockText' }]
-			}, [0]]
-		])
-
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn(),
-			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			changeToType: jest.fn(),
-			children: [{ text: 'mockText' }],
-			selection: {
-				anchor: { path: [0], offset: 0 },
-				focus: { path: [0], offset: 0 }
-			},
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn()
-		}
-		const items = [{ 
-			name: 'mock-item', 
-			cloneBlankNode: () => ({ type: 'mock-type' }),
-			insertJSON: { type: TEXT_NODE } 
-		}]
-
-		const component = mount(<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children}/>)
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('FileToolbar node with question node', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
-		jest.spyOn(Editor, 'nodes').mockReturnValue([
-			[{
-				type: QUESTION_NODE,
-				children: [{ text: 'mockText' }]
-			}, [0]]
+			[
+				{
+					type: TABLE_NODE,
+					children: [{ text: 'mockText' }]
+				},
+				[0]
+			]
 		])
 
 		const editor = {
@@ -176,19 +155,64 @@ describe('File Toolbar', () => {
 			apply: jest.fn()
 		}
 		const items = [
-			{ 
-				name: 'mock-item', 
+			{
+				name: 'mock-item',
 				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE } 
-			},
-			{ 
-				name: 'Question Bank', 
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE } 
+				insertJSON: { type: TEXT_NODE }
 			}
 		]
 
-		const component = mount(<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children}/>)
+		const component = mount(
+			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
+		)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('FileToolbar node with question node', () => {
+		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
+		jest.spyOn(Editor, 'nodes').mockReturnValue([
+			[
+				{
+					type: QUESTION_NODE,
+					children: [{ text: 'mockText' }]
+				},
+				[0]
+			]
+		])
+
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			deleteFragment: jest.fn(),
+			toggleMark: jest.fn(),
+			changeToType: jest.fn(),
+			children: [{ text: 'mockText' }],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn()
+		}
+		const items = [
+			{
+				name: 'mock-item',
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE }
+			},
+			{
+				name: 'Question Bank',
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE }
+			}
+		]
+
+		const component = mount(
+			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
+		)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -203,10 +227,13 @@ describe('File Toolbar', () => {
 				children: [{ text: 'mockText' }]
 			})
 			return [
-				[{
-					type: TEXT_NODE,
-					children: [{ text: 'mockText' }]
-				}, [0]]
+				[
+					{
+						type: TEXT_NODE,
+						children: [{ text: 'mockText' }]
+					},
+					[0]
+				]
 			]
 		})
 
@@ -226,13 +253,17 @@ describe('File Toolbar', () => {
 			apply: jest.fn(),
 			selectAll: jest.fn()
 		}
-		const items = [{ 
-			name: 'mock-item', 
-			cloneBlankNode: () => ({ type: 'mock-type' }),
-			insertJSON: { type: TEXT_NODE } 
-		}]
+		const items = [
+			{
+				name: 'mock-item',
+				cloneBlankNode: () => ({ type: 'mock-type' }),
+				insertJSON: { type: TEXT_NODE }
+			}
+		]
 
-		const component = mount(<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children}/>)
+		const component = mount(
+			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
+		)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
