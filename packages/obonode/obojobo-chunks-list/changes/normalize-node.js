@@ -27,13 +27,14 @@ const normalizeNode = (entry, editor, next) => {
 
 			// Wrap loose ListLine children
 			if (Element.isElement(child) && child.subtype === LIST_LINE_NODE) {
-				const bulletList = node.content.listStyles.type === 'unordered' 
-					? ListStyles.UNORDERED_LIST_BULLETS 
-					: ListStyles.ORDERED_LIST_BULLETS
+				const bulletList =
+					node.content.listStyles.type === 'unordered'
+						? ListStyles.UNORDERED_LIST_BULLETS
+						: ListStyles.ORDERED_LIST_BULLETS
 				const bulletStyle = bulletList[0]
 
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: LIST_NODE,
 						subtype: LIST_LEVEL_NODE,
@@ -45,7 +46,10 @@ const normalizeNode = (entry, editor, next) => {
 			}
 
 			// Unwrap non-ListLevel and ListLine children
-			if (Element.isElement(child) && !(child.subtype === LIST_LEVEL_NODE || child.subtype === LIST_LINE_NODE)) {
+			if (
+				Element.isElement(child) &&
+				!(child.subtype === LIST_LEVEL_NODE || child.subtype === LIST_LINE_NODE)
+			) {
 				Transforms.liftNodes(editor, { at: childPath })
 				return
 			}
@@ -53,7 +57,7 @@ const normalizeNode = (entry, editor, next) => {
 			// Wrap loose text children in a CodeLine
 			if (Text.isText(child)) {
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: LIST_NODE,
 						subtype: LIST_LEVEL_NODE,
@@ -83,8 +87,27 @@ const normalizeNode = (entry, editor, next) => {
 				return
 			}
 
+			// Maintain list type integrity between levels
+			if (child.subtype === LIST_LEVEL_NODE && child.content.type !== node.content.type) {
+				const bulletList =
+					node.content.type === 'unordered'
+						? ListStyles.UNORDERED_LIST_BULLETS
+						: ListStyles.ORDERED_LIST_BULLETS
+				const bulletStyle =
+					bulletList[(bulletList.indexOf(node.content.bulletStyle) + 1) % bulletList.length]
+
+				Transforms.setNodes(
+					editor,
+					{ content: { ...child.content, type: node.content.type, bulletStyle } },
+					{ at: childPath }
+				)
+			}
+
 			// Unwrap non-ListLine children
-			if (Element.isElement(child) && !(child.subtype === LIST_LEVEL_NODE || child.subtype === LIST_LINE_NODE)) {
+			if (
+				Element.isElement(child) &&
+				!(child.subtype === LIST_LEVEL_NODE || child.subtype === LIST_LINE_NODE)
+			) {
 				Transforms.liftNodes(editor, { at: childPath })
 				return
 			}
@@ -92,7 +115,7 @@ const normalizeNode = (entry, editor, next) => {
 			// Wrap loose text children in a CodeLine
 			if (Text.isText(child)) {
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: LIST_NODE,
 						subtype: LIST_LINE_NODE,
@@ -111,17 +134,17 @@ const normalizeNode = (entry, editor, next) => {
 
 		// ListLevel parent normalization
 		const [parent] = Editor.parent(editor, path)
-		if(!Element.isElement(parent) || parent.type !== LIST_NODE) {
+		if (!Element.isElement(parent) || parent.type !== LIST_NODE) {
 			NormalizeUtil.wrapOrphanedSiblings(
-				editor, 
-				entry, 
-				{ 
-					type: LIST_NODE, 
-					content: { 
-						listStyles: { type: node.content.type } 
+				editor,
+				entry,
+				{
+					type: LIST_NODE,
+					content: {
+						listStyles: { type: node.content.type }
 					},
 					children: []
-				}, 
+				},
 				node => node.subtype === LIST_LEVEL_NODE
 			)
 			return
@@ -144,17 +167,17 @@ const normalizeNode = (entry, editor, next) => {
 		// Note - orphaned ListLines are wrapped in a parent List, and then
 		// wrapped in a List Level on a subsequent normalization run
 		const [parent] = Editor.parent(editor, path)
-		if(!Element.isElement(parent) || parent.type !== LIST_NODE) {
+		if (!Element.isElement(parent) || parent.type !== LIST_NODE) {
 			NormalizeUtil.wrapOrphanedSiblings(
-				editor, 
-				entry, 
-				{ 
-					type: LIST_NODE, 
-					content: { 
-						listStyles: { type: 'unordered' } 
+				editor,
+				entry,
+				{
+					type: LIST_NODE,
+					content: {
+						listStyles: { type: 'unordered' }
 					},
 					children: []
-				}, 
+				},
 				node => node.subtype === LIST_LINE_NODE
 			)
 			return

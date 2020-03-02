@@ -19,7 +19,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on List calls next if all List children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -53,7 +53,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'mergeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -100,7 +100,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -127,7 +127,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -154,7 +154,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -181,7 +181,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -199,7 +199,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on ListLevel calls next if all ListLevel children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -232,7 +232,7 @@ describe('Normalize List', () => {
 	test('normalizeNode on ListLevel merges consecutive ListLines', () => {
 		jest.spyOn(Transforms, 'mergeNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -282,11 +282,91 @@ describe('Normalize List', () => {
 		expect(Transforms.mergeNodes).toHaveBeenCalled()
 	})
 
+	test('normalizeNode on ListLevel handles invalid child type unordered', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'ordered', bulletStyle: 'alpha' },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: { type: 'unordered' },
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockList', b: true }]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on ListLevel handles invalid child type ordered', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'unordered', bulletStyle: 'disc' },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: { type: 'ordered' },
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockList', b: true }]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
 	test('normalizeNode on ListLevel calls Transforms on invalid Element children', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -318,7 +398,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -343,7 +423,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on ListLevel calls NormalizeUtil if parent is invalid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -371,15 +451,15 @@ describe('Normalize List', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0])
 		})
-		
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on ListLine calls next if all ListLine children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -413,7 +493,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -450,7 +530,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on ListLine calls NormalizeUtil if parent is invalid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -477,8 +557,8 @@ describe('Normalize List', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0].children[0])
 		})
-		
-		normalizeNode([editor.children[0].children[0].children[0], [0,0,0]], editor, next)
+
+		normalizeNode([editor.children[0].children[0].children[0], [0, 0, 0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})
