@@ -296,13 +296,14 @@ describe('EditorApp', () => {
 		})
 	})
 
-	test('startRenewEditLockInterval is called when ', () => {
+	test.only('startRenewEditLockInterval is called when ', () => {
 		expect.hasAssertions()
 
 		const component = mount(<EditorApp />)
-		const renewInterval = jest.spyOn(component.instance(), 'startRenewEditLockInterval')
+		const instance = component.instance()
+		const renewInterval = jest.spyOn(instance, 'startRenewEditLockInterval')
 		// mock reloadDraft just to simplify the test
-		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
+		jest.spyOn(instance, 'reloadDraft').mockResolvedValueOnce()
 
 		return global.flushPromises().then(() => {
 			// make sure the error is displayed

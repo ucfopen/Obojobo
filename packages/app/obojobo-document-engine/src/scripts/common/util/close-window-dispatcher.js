@@ -14,8 +14,7 @@ const onBeforeWindowClose = event => {
 		// Confirm leaving page
 		event.preventDefault() // Cancel the event as stated by the standard.
 		event.returnValue = '' // Chrome requires returnValue to be set.
-	}
-	else{
+	} else{
 		Dispatcher.trigger('window:closeNow')
 	}
 }

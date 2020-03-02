@@ -11,13 +11,12 @@ const onIdle = () => {
 }
 
 const onReturnFromIdle = () => {
-	console.log('OK OK ')
 	const inactiveDuration = Date.now() - lastActiveTime
 	Dispatcher.trigger('window:returnFromInactive', {lastActiveTime, inactiveDuration})
 	lastActiveTime = null
 }
 
-const ObojoboIdleTimer = ({children, timeout}) => (
+const ObojoboIdleTimer = ({timeout}) => (
 	<IdleTimer
 		ref={idleTimerRef}
 		element={window}

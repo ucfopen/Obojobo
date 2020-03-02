@@ -113,8 +113,8 @@ const APIUtil = {
 		return API.get(`/api/drafts`, 'json').then(processJsonResults)
 	},
 
-	requestEditLock(draftId) {
-		return API.post(`/api/locks/${draftId}`, {}).then(processJsonResults)
+	requestEditLock(draftId, contentId) {
+		return API.post(`/api/locks/${draftId}`, {contentId}).then(processJsonResults)
 	}
 }
 

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const EditLock = oboRequire('server/models/edit_lock')
 const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
-const { checkValidationRules, requireDraftId, requireCanViewEditor } = oboRequire(
+const { checkValidationRules, requireDraftId, requireContentId, requireCanViewEditor } = oboRequire(
 	'server/express_validators'
 )
 
@@ -20,9 +20,10 @@ router
 // mounted as /api/locks/:draftId
 router
 	.route('/:draftId')
-	.post([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.post([requireDraftId, requireCanViewEditor, requireContentId, checkValidationRules])
 	.post(async (req, res) => {
 		try {
+console.log(req.body.contentId)
 			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
 
 			if (!hasPerms) {

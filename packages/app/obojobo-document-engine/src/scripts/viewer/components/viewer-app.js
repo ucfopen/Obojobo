@@ -17,8 +17,10 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 
 const NAV_CLOSE_DURATION_MS = 400
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 0.1 // 30 minutes in milliseconds
 
 const { DOMUtil, focus } = Common.page
 const OboModel = Common.models.OboModel

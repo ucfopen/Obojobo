@@ -15,6 +15,7 @@ import React from 'react'
 import generateId from '../generate-ids'
 import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
+import SimpleDialog from '../../common/components/modal/simple-dialog'
 
 // PLUGINS
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -33,8 +34,8 @@ const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-const RENEW_LOCK_INTERVAL = 60000 * .2 // 4.9 minutes in milliseconds
-const IDLE_TIMEOUT_DURATION_MS = 60000 * .1 // 30 minutes in milliseconds
+const RENEW_LOCK_INTERVAL = 60000 * 0.2 // 4.9 minutes in milliseconds
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 0.1 // 30 minutes in milliseconds
 
 const plugins = [
 	Component.plugins,
@@ -81,9 +82,28 @@ class EditorApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 
 		this.switchMode = this.switchMode.bind(this)
+		this.saveDraft = this.saveDraft.bind(this)
 		this.renewLockInterval = null
 	}
 
+	saveDraft(draftId, draftSrc, xmlOrJSON = 'json'){
+		const mode = xmlOrJSON === 'xml' ? 'text/plain' : 'application/json'
+		return APIUtil.postDraft(draftId, draftSrc, mode)
+			.then(result => {
+				if (result.status !== 'ok') {
+					ModalUtil.show(<SimpleDialog ok title={'Save Error: ' + result.value.message} />)
+					return false
+				} else {
+					this.state.model.get('rev').id = result.value.id
+console.log('UPDATE REV', this.state.model.get('rev'))
+					return true
+				}
+			})
+			.catch(e => {
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + e} />)
+				return false
+			})
+	}
 
 	getVisualEditorState(draftId, draftModel) {
 		const json = JSON.parse(draftModel)
@@ -146,7 +166,7 @@ class EditorApp extends React.Component {
 		return this.createEditLock(draftId)
 			.then(() => {
 				this.renewLockInterval = setInterval(() => {
-					this.createEditLock(this.state.draftId).catch(() => {
+					this.createEditLock(draftId).catch(() => {
 						this.displayLockedModal()
 					})
 				}, RENEW_LOCK_INTERVAL)
@@ -157,9 +177,12 @@ class EditorApp extends React.Component {
 	}
 
 	createEditLock(draftId) {
-		return APIUtil.requestEditLock(draftId).then(json => {
+		const contentId = this.state.model.get('rev').id
+console.log('LOCK WITH', contentId)
+		return APIUtil.requestEditLock(draftId, contentId).then(json => {
 			if (json.status === 'error') throw new Error('Unable to lock module.')
 		})
+
 	}
 
 	reloadDraft(draftId, mode) {
@@ -204,24 +227,24 @@ class EditorApp extends React.Component {
 
 		ModalStore.init()
 
-		return this.startRenewEditLockInterval(draftId)
+		return this.reloadDraft(draftId, this.state.mode)
+			.then(() => this.startRenewEditLockInterval(draftId))
 			.then(() => {
 				enableWindowCloseDispatcher()
 				Dispatcher.on('window:closeNow', this.onWindowInactive.bind(this))
 				Dispatcher.on('window:inactive', this.onWindowInactive.bind(this))
 				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive.bind(this))
-				return this.reloadDraft(draftId, this.state.mode)
 			})
 	}
 
-	onWindowInactive(event){
+	onWindowInactive(){
 		// delete my lock
 		navigator.sendBeacon(`/api/locks/${this.state.draftId}/delete`)
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
 	}
 
-	onWindowReturnFromInactive(event){
+	onWindowReturnFromInactive(){
 		this.startRenewEditLockInterval(this.state.draftId)
 	}
 
@@ -239,6 +262,7 @@ class EditorApp extends React.Component {
 				mode={this.state.mode}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
+				saveDraft={this.saveDraft}
 			/>
 		)
 	}
@@ -254,6 +278,7 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
+				saveDraft={this.saveDraft}
 			/>
 		)
 	}

@@ -152,8 +152,8 @@ module.exports = app => {
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
 		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
-		const person =
-			req.query.instructor == 2 ? ltiInstructor2 : req.query.student ? ltiLearner : ltiInstructor
+		const instructorOneOrTwo = (req.query.instructor === 2) ? ltiInstructor2 : ltiInstructor
+		const person = req.query.student ? ltiLearner : instructorOneOrTwo
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
