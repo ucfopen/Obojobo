@@ -3,12 +3,9 @@ import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-import MathEquationProperties from './math-equation-properties-modal'
-
-const { ModalUtil } = Common.util
-const { Button } = Common.components
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
+import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
 
 const getLatexHtml = latex => {
 	try {
@@ -22,15 +19,25 @@ const getLatexHtml = latex => {
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
+
+		// This debounce is necessary to get slate to update the node data.
+		// I've tried several ways to remove it but haven't been able to
+		// get it work :(
+		// If you have a solution please have at it!
+		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
+
+		// copy the attributes we want into state
+		const content = this.props.node.data.get('content')
+		this.state = this.contentToStateObj(content)
 	}
 
-	showMathEquationPropertiesModal() {
-		ModalUtil.show(
-			<MathEquationProperties
-				content={this.props.node.data.get('content')}
-				onConfirm={this.changeProperties.bind(this)}
-			/>
-		)
+	contentToStateObj(content) {
+		return {
+			latex: content.latex || '',
+			alt: content.alt || '',
+			label: content.label || '',
+			size: content.size || 1
+		}
 	}
 
 	changeProperties(content) {
@@ -39,23 +46,24 @@ class MathEquation extends React.Component {
 		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
+
+		this.setState(this.contentToStateObj(content))
 	}
 
 	renderEmptyEquation() {
 		return (
 			<div className="non-editable-chunk">
 				<div className="katex-display">
-					<span className="placeholder align-center">No Equation</span>
+					<span className="no-equation">No Equation (Click to edit)</span>
 				</div>
 			</div>
 		)
 	}
 
 	renderLatex() {
-		const content = this.props.node.data.get('content')
-		if (!content.latex && !content.label) return this.renderEmptyEquation()
+		if (!this.state.latex && !this.state.label) return this.renderEmptyEquation()
 
-		let katexHtml = getLatexHtml(content.latex)
+		let katexHtml = getLatexHtml(this.state.latex)
 		if (katexHtml.error) {
 			return (
 				<div className={'katex-container katex-error'}>
@@ -68,25 +76,105 @@ class MathEquation extends React.Component {
 
 		return (
 			<div className="non-editable-chunk">
-				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
-				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
+				<div
+					className="katex-container"
+					style={{ fontSize: this.state.size + 'em' }}
+					dangerouslySetInnerHTML={{ __html: katexHtml }}
+				/>
+				{this.state.label === '' ? null : <div className="equation-label">{this.state.label}</div>}
+			</div>
+		)
+	}
+
+	updateNodeFromState() {
+		const content = this.props.node.data.get('content')
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: { content: { ...content, ...this.state } }
+		})
+	}
+
+	onChangeContent(key, event) {
+		const newContent = { [key]: event.target.value }
+		this.setState(newContent) // update the display now
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.isSelected && !this.props.isSelected) {
+			this.updateNodeFromState()
+		} else if (!prevProps.isSelected && this.props.isSelected) {
+			setTimeout(() => {
+				document.getElementById('math-equation-latex').focus()
+			}, 1)
+		}
+	}
+
+	renderAttributes() {
+		return (
+			<div className="attributes-box" contentEditable={false}>
+				<div className="box-border">
+					<div className="attributes-list">
+						<div>
+							<label htmlFor="math-equation-latex">Latex:</label>
+							<input
+								id="math-equation-latex"
+								value={this.state.latex}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'latex')}
+							/>
+						</div>
+						<div>
+							<label htmlFor="math-equation-label">Optional Label:</label>
+							<input
+								id="math-equation-label"
+								value={this.state.label}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'label')}
+							/>
+						</div>
+						<div>
+							<label htmlFor="math-equation-alt">Alt Text:</label>
+							<input
+								id="math-equation-alt"
+								value={this.state.alt}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'alt')}
+							/>
+						</div>
+						<div>
+							<label htmlFor="math-equation-size">Size:</label>
+							<input
+								id="math-equation-size"
+								value={this.state.size}
+								type="number"
+								step="0.1"
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'size')}
+							/>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const { isSelected, node } = this.props
+		const content = node.data.get('content')
 		return (
-			<div
-				className={
-					'component obojobo-draft--chunks--math-equation pad ' +
-					'align-' +
-					(content.align || 'center')
-				}
-			>
-				{this.renderLatex()}
-				<Button onClick={this.showMathEquationPropertiesModal.bind(this)}>Edit</Button>
-			</div>
+			<Node {...this.props}>
+				<div
+					className={
+						'component obojobo-draft--chunks--math-equation pad ' +
+						'align-' +
+						(content.align || 'center')
+					}
+					contentEditable={false}
+				>
+					{this.renderLatex()}
+					{isSelected ? this.renderAttributes() : null}
+					<EditableHiddenText>{this.props.children}</EditableHiddenText>
+				</div>
+			</Node>
 		)
 	}
 }

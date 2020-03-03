@@ -1,24 +1,24 @@
 import '../../../scss/main.scss'
 import './viewer-app.scss'
 
-import APIUtil from '../../viewer/util/api-util'
-import AssessmentStore from '../../viewer/stores/assessment-store'
+import APIUtil from '../util/api-util'
+import AssessmentStore from '../stores/assessment-store'
 import Common from 'Common'
-import FocusStore from '../../viewer/stores/focus-store'
-import FocusUtil from '../../viewer/util/focus-util'
-import Header from '../../viewer/components/header'
+import FocusStore from '../stores/focus-store'
+import FocusUtil from '../util/focus-util'
+import Header from './header'
 import IdleTimer from 'react-idle-timer'
-import InlineNavButton from '../../viewer/components/inline-nav-button'
-import MediaStore from '../../viewer/stores/media-store'
+import InlineNavButton from './inline-nav-button'
+import MediaStore from '../stores/media-store'
 import Nav from './nav'
-import NavStore from '../../viewer/stores/nav-store'
-import NavUtil from '../../viewer/util/nav-util'
-import QuestionStore from '../../viewer/stores/question-store'
+import NavStore from '../stores/nav-store'
+import NavUtil from '../util/nav-util'
+import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
+import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 
-const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
 const { DOMUtil, focus } = Common.page
@@ -91,8 +91,14 @@ export default class ViewerApp extends React.Component {
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
-		this.onWindowClose = this.onWindowClose.bind(this)
+		this.sendCloseEvent = this.sendCloseEvent.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
+		this.onMouseDown = this.onMouseDown.bind(this)
+		this.onFocus = this.onFocus.bind(this)
+		this.onScroll = this.onScroll.bind(this)
+		this.onResize = this.onResize.bind(this)
+		this.unlockNavigation = this.unlockNavigation.bind(this)
+		this.clearPreviewScores = this.clearPreviewScores.bind(this)
 
 		this.state = state
 
@@ -148,8 +154,7 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
-				window.onunload = this.onWindowClose
-				window.onresize = this.onResize.bind(this)
+				window.onresize = this.onResize
 
 				this.boundOnDelayResize = this.onDelayResize.bind(this)
 				Dispatcher.on('nav:open', this.boundOnDelayResize)
@@ -418,7 +423,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onDelayResize() {
-		window.setTimeout(this.onResize.bind(this), NAV_CLOSE_DURATION_MS)
+		window.setTimeout(this.onResize, NAV_CLOSE_DURATION_MS)
 	}
 
 	onIdle() {
@@ -468,17 +473,26 @@ export default class ViewerApp extends React.Component {
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 
+		this.sendCloseEvent()
+
 		/* eslint-disable-next-line */
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose() {
-		APIUtil.postEvent({
+	sendCloseEvent() {
+		const body = {
 			draftId: this.state.model.get('draftId'),
-			action: 'viewer:close',
-			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId
-		})
+			visitId: this.state.navState.visitId,
+			event: {
+				action: 'viewer:close',
+				draft_id: this.state.model.get('draftId'),
+				actor_time: new Date().toISOString(),
+				event_version: '1.0.0',
+				visitId: this.state.navState.visitId
+			}
+		}
+
+		navigator.sendBeacon('/api/events', JSON.stringify(body))
 	}
 
 	clearPreviewScores() {
@@ -503,7 +517,7 @@ export default class ViewerApp extends React.Component {
 			QuestionStore.triggerChange()
 
 			return ModalUtil.show(
-				<SimpleDialog ok width="15em">
+				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
 			)
@@ -617,54 +631,47 @@ export default class ViewerApp extends React.Component {
 		].join(' ')
 
 		return (
-			<IdleTimer
-				ref={this.idleTimerRef}
-				element={window}
-				timeout={IDLE_TIMEOUT_DURATION_MS}
-				idleAction={this.onIdle}
-				activeAction={this.onReturnFromIdle}
+			<div
+				ref={this.containerRef}
+				onMouseDown={this.onMouseDown}
+				onFocus={this.onFocus}
+				onScroll={this.onScroll}
+				className={classNames}
 			>
-				<div
-					ref={this.containerRef}
-					onMouseDown={this.onMouseDown.bind(this)}
-					onFocus={this.onFocus.bind(this)}
-					onScroll={this.onScroll.bind(this)}
-					className={classNames}
-				>
-					{hideViewer ? null : (
-						<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
-					)}
-					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
-					{hideViewer ? null : prevComp}
-					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
-					{hideViewer ? null : nextComp}
-					{this.state.isPreviewing ? (
-						<div className="preview-banner">
-							<span>You are previewing this module</span>
-							<div className="controls">
-								<span>Preview options:</span>
-								<button
-									onClick={this.unlockNavigation.bind(this)}
-									disabled={!this.state.navState.locked}
-								>
-									Unlock navigation
-								</button>
-								<button
-									className="button-clear-scores"
-									onClick={this.clearPreviewScores.bind(this)}
-								>
-									Reset assessments &amp; questions
-								</button>
-							</div>
-							<div className="border" />
+				<IdleTimer
+					ref={this.idleTimerRef}
+					element={window}
+					timeout={IDLE_TIMEOUT_DURATION_MS}
+					onIdle={this.onIdle}
+					onActive={this.onReturnFromIdle}
+				/>
+				{hideViewer ? null : (
+					<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
+				)}
+				{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
+				{hideViewer ? null : prevComp}
+				{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
+				{hideViewer ? null : nextComp}
+				{this.state.isPreviewing ? (
+					<div className="preview-banner">
+						<span>Preview mode</span>
+						<div className="controls">
+							<span>Preview options:</span>
+							<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
+								Unlock navigation
+							</button>
+							<button className="button-clear-scores" onClick={this.clearPreviewScores}>
+								Reset assessments &amp; questions
+							</button>
 						</div>
-					) : null}
-					<FocusBlocker moduleData={this.state} />
-					{modalItem && modalItem.component ? (
-						<ModalContainer>{modalItem.component}</ModalContainer>
-					) : null}
-				</div>
-			</IdleTimer>
+						<div className="border" />
+					</div>
+				) : null}
+				<FocusBlocker moduleData={this.state} />
+				{modalItem && modalItem.component ? (
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null}
+			</div>
 		)
 	}
 }

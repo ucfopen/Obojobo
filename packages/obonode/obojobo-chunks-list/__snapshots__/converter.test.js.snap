@@ -15,7 +15,6 @@ Object {
         },
         Object {
           "data": Object {
-            "hangingIndent": false,
             "indent": 5,
           },
           "text": Object {
@@ -95,7 +94,7 @@ Object {
                           "nodes": Array [
                             Object {
                               "data": Object {
-                                "hangingIndent": false,
+                                "hangingIndent": undefined,
                               },
                               "nodes": Array [
                                 Object {
@@ -149,7 +148,7 @@ Object {
 }
 `;
 
-exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style 1`] = `
+exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style and triggers 1`] = `
 Object {
   "data": Object {
     "content": Object {
@@ -178,6 +177,7 @@ Object {
           },
         },
       ],
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",
@@ -312,7 +312,7 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
-          "hangingIndent": Object {},
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
@@ -322,7 +322,7 @@ Object {
       },
       Object {
         "data": Object {
-          "hangingIndent": false,
+          "hangingIndent": Object {},
           "indent": 1,
         },
         "text": Object {

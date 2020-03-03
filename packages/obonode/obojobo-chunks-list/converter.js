@@ -1,18 +1,19 @@
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import ListStyles from './list-styles'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
-
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.data.get('content')
+
 	node.nodes.forEach(child => {
 		if (child.type === LIST_LEVEL_NODE) {
 			flattenLevels(child, currLevel + 1, textGroup, indents)
 			return
 		}
+
 		const listLine = {
 			text: { value: child.text, styleList: [] },
 			data: { indent: currLevel, hangingIndent: child.data.get('hangingIndent') || false }
@@ -41,7 +42,7 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content
+		content: withoutUndefined(content)
 	}
 }
 
@@ -67,13 +68,15 @@ const validateJSON = json => {
 
 const oboToSlate = node => {
 	const type = node.content.listStyles.type
-	const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
+	const bulletList =
+		type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
 
 	// make sure that indents exists
 	if (!node.content.listStyles.indents) node.content.listStyles.indents = {}
+
 	const nodes = node.content.textGroup.map(line => {
 		let indent = line.data ? line.data.indent : 0
-		let hangingIndent = line.data ? line.data.hangingIndent : false
+		const hangingIndent = line.data ? line.data.hangingIndent : false
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
 			object: 'block',

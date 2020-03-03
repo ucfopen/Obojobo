@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 
 jest.mock('test_node')
-jest.mock('../models/user')
+jest.mock('../server/models/user')
 
 let mockRes
 let mockReq
@@ -9,7 +9,7 @@ let mockNext
 let mockUser
 let mockDocument
 
-const Validators = oboRequire('express_validators')
+const Validators = oboRequire('server/express_validators')
 
 describe('current user middleware', () => {
 	beforeAll(() => {})
@@ -400,22 +400,22 @@ describe('current user middleware', () => {
 		})
 	})
 
-	// requireCanViewDrafts
+	// requireCanPreviewDrafts
 
-	test('requireCanViewDrafts calls next and has no validation errors', () => {
-		mockUser.canViewDrafts = true
+	test('requireCanPreviewDrafts calls next and has no validation errors', () => {
+		mockUser.canPreviewDrafts = true
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
-		return Validators.requireCanViewDrafts(mockReq, mockRes, mockNext).then(() => {
+		return Validators.requireCanPreviewDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(1)
 			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(0)
 			expect(mockReq._validationErrors).toBeUndefined()
 		})
 	})
 
-	test('requireCanViewDrafts doesnt call next and has errors', () => {
-		mockUser.canViewDrafts = false
+	test('requireCanPreviewDrafts doesnt call next and has errors', () => {
+		mockUser.canPreviewDrafts = false
 		mockReq.requireCurrentUser = jest.fn().mockResolvedValue(mockUser)
-		return Validators.requireCanViewDrafts(mockReq, mockRes, mockNext).then(() => {
+		return Validators.requireCanPreviewDrafts(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(0)
 			expect(mockRes.notAuthorized).toHaveBeenCalledTimes(1)
 			expect(mockReq._validationErrors).toBeUndefined()

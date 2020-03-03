@@ -1,0 +1,45 @@
+{
+	"default": {
+		"canViewEditor": [
+			"Instructor",
+			"Administrator",
+			"ContentDeveloper",
+			"urn:lti:instrole:ims/lis/Administrator",
+			"urn:lti:role:ims/lis/TeachingAssistant"
+		],
+		"canEditDrafts": [
+			"Instructor",
+			"Administrator",
+			"ContentDeveloper",
+			"urn:lti:instrole:ims/lis/Administrator",
+			"urn:lti:role:ims/lis/TeachingAssistant"
+		],
+		"canDeleteDrafts": [
+			"Instructor",
+			"Administrator",
+			"ContentDeveloper",
+			"urn:lti:instrole:ims/lis/Administrator",
+			"urn:lti:role:ims/lis/TeachingAssistant"
+		],
+		"canCreateDrafts": [
+			"Instructor",
+			"Administrator",
+			"ContentDeveloper",
+			"urn:lti:instrole:ims/lis/Administrator",
+			"urn:lti:role:ims/lis/TeachingAssistant"
+		],
+		"canPreviewDrafts": [
+			"Instructor",
+			"Administrator",
+			"ContentDeveloper",
+			"urn:lti:instrole:ims/lis/Administrator",
+			"urn:lti:role:ims/lis/TeachingAssistant",
+			"Observer",
+			"urn:lti:instrole:ims/lis/Observer"
+		],
+		"canViewAsStudent": ["Learner", "urn:lti:role:ims/lis/Learner"]
+	},
+	"test": {
+		"canDoThing": ["roleName"]
+	}
+}

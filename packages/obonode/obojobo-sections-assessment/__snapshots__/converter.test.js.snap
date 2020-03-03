@@ -4,7 +4,9 @@ exports[`Assessment Converter oboToSlate converts an OboNode to a Slate node 1`]
 Object {
   "data": Object {
     "content": Object {
-      "rubric": true,
+      "rubric": Object {
+        "attempts": undefined,
+      },
       "scoreActions": "someScoreActions",
       "triggers": Array [],
     },
@@ -12,56 +14,23 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": false,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
+      "oboToSlateReturnFor": Object {
+        "type": "ObojoboDraft.Pages.Page",
+      },
     },
-    "PageOboToSlate",
-    "QuestionBankChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "RubricChildOboToSlate",
+    Object {
+      "oboToSlateReturnFor": Object {
+        "type": "otherType",
+      },
+    },
+    Object {
+      "oboToSlateReturnFor": "someScoreActions",
+    },
+    Object {
+      "oboToSlateReturnFor": Object {
+        "attempts": undefined,
+      },
+    },
   ],
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment",
@@ -105,55 +74,28 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": true,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
+      "oboToSlateReturnFor": Object {
+        "type": "ObojoboDraft.Pages.Page",
+      },
     },
-    "PageOboToSlate",
-    "QuestionBankChildOboToSlate",
-    "ActionsChildOboToSlate",
+    Object {
+      "oboToSlateReturnFor": Object {
+        "type": "otherType",
+      },
+    },
+    Object {
+      "oboToSlateReturnFor": "someScoreActions",
+    },
+    Object {
+      "oboToSlateReturnFor": Object {
+        "failedResult": 0,
+        "mods": Array [],
+        "passedResult": 100,
+        "passingAttemptScore": 100,
+        "type": "highest",
+        "unableToPassResult": null,
+      },
+    },
   ],
   "object": "block",
   "type": "ObojoboDraft.Sections.Assessment",
@@ -163,40 +105,21 @@ Object {
 exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 1`] = `
 Object {
   "children": Array [
-    "PageChild",
-    "QuestionBankChild",
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
-    "rubric": "RubricChild",
-    "scoreActions": "ActionsChild",
-    "triggers": Array [
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onNavEnter",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onEndAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onNavExit",
-      },
-    ],
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
+    "triggers": Array [],
   },
   "id": "mockKey",
   "type": "mockType",
@@ -206,40 +129,20 @@ Object {
 exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 2`] = `
 Object {
   "children": Array [
-    "PageChild",
-    "QuestionBankChild",
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
-    "rubric": "RubricChild",
-    "scoreActions": "ActionsChild",
-    "triggers": Array [
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onNavEnter",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onEndAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onNavExit",
-      },
-    ],
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
   },
   "id": "mockKey",
   "type": "mockType",
@@ -249,31 +152,20 @@ Object {
 exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 3`] = `
 Object {
   "children": Array [
-    "PageChild",
-    "QuestionBankChild",
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
-    "rubric": "RubricChild",
-    "scoreActions": "ActionsChild",
-  },
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 4`] = `
-Object {
-  "children": Array [
-    "PageChild",
-    "QuestionBankChild",
-  ],
-  "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
-    "rubric": "RubricChild",
-    "scoreActions": "ActionsChild",
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
     "triggers": Array [
       Object {
         "type": "someTrigger",
@@ -285,20 +177,77 @@ Object {
 }
 `;
 
-exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 5`] = `
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode with no model 1`] = `
 Object {
   "children": Array [
-    "PageChild",
-    "QuestionBankChild",
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
-    "rubric": "RubricChild",
-    "scoreActions": "ActionsChild",
-    "triggers": undefined,
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
+    "triggers": Array [],
   },
-  "id": "mockKey",
+  "id": "otherMockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode with no model 2`] = `
+Object {
+  "children": Array [
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
+  ],
+  "content": Object {
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
+  },
+  "id": "otherMockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode with no model 3`] = `
+Object {
+  "children": Array [
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "slateToOboReturnFor": "ObojoboDraft.Chunks.QuestionBank",
+    },
+  ],
+  "content": Object {
+    "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    },
+    "triggers": Array [
+      Object {
+        "type": "someTrigger",
+      },
+    ],
+  },
+  "id": "otherMockKey",
   "type": "mockType",
 }
 `;

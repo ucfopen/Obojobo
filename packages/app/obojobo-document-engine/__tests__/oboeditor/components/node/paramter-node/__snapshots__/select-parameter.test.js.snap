@@ -7,7 +7,7 @@ exports[`Select Parameter Node component 1`] = `
   <span
     contentEditable={false}
   >
-    mockType: 
+    mockType
   </span>
   <select
     name="Select"
@@ -29,7 +29,7 @@ exports[`Select Parameter Node component 1`] = `
 </div>
 `;
 
-exports[`Select Parameter Node component edits value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"Option 1\\">Option 1</option><option value=\\"Option 2\\">Option 2</option></select></div>"`;
+exports[`Select Parameter Node component edits value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType</span><select name=\\"Select\\"><option selected=\\"\\" value=\\"Option 1\\">Option 1</option><option value=\\"Option 2\\">Option 2</option></select></div>"`;
 
 exports[`Select Parameter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

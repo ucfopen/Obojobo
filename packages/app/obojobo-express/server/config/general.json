@@ -1,0 +1,34 @@
+{
+	"default": {
+		"cookieName": "obo_next",
+		"secureCookie": true,
+		"bodyParser": {
+			"jsonOptions": {
+				"limit": "2mb"
+			},
+			"textOptions": {
+				"limit": "2mb"
+			},
+			"urlencodedOptions": {
+				"extended": false
+			}
+		},
+		"demoPurgeMode": "none",
+		"demoPurgeDaysAgo": 7
+	},
+	"test": {
+		"key": "value",
+		"hostname": "obojobo.ucf.edu"
+	},
+	"development": {
+		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
+	},
+	"production": {
+		"secureCookie": {"ENV": "OBO_COOKIE_SECURE"},
+		"cookieSecret": {
+			"ENV": "OBO_COOKIE_SECRET"
+		},
+		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"},
+		"demoPurgeDaysAgo": {"ENV": "OBO_DEMO_PURGE_DAYS_AGO"}
+	}
+}

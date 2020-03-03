@@ -1,56 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Table Editor Node Table component 1`] = `
-<div
-  className="obojobo-draft--chunks--table viewer pad"
->
+<div>
   <div
-    className="container"
+    className="obojobo-draft--chunks--table viewer pad"
   >
-    <table
-      className="view"
+    <div
+      className="container"
     >
-      <tbody>
-        <tr>
-          <td
-            className="delete-cell"
-          >
-            <button
-              onClick={[Function]}
-            >
-              X
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div
-    className="table-editor-buttons"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Add Row
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Add Column
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Toggle Header
-    </button>
+      <table
+        className="view"
+      >
+        <tbody />
+      </table>
+    </div>
   </div>
 </div>
 `;
 
-exports[`Table Editor Node Table component adds col 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor-buttons\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
-
-exports[`Table Editor Node Table component adds row 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor-buttons\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
-
-exports[`Table Editor Node Table component removes col 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor-buttons\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
-
-exports[`Table Editor Node Table component toggles header 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor-buttons\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+exports[`Table Editor Node Table component toggles header 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody></tbody></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Header</button></div></div></div></div></div>"`;

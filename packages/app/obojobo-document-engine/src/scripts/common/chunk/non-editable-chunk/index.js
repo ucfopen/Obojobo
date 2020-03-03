@@ -8,7 +8,6 @@ const NonEditableChunk = props => (
 		data-hanging-indent={props.hangingIndent || false}
 	>
 		{props.children}
-	}
 	</div>
 )
 

@@ -24,6 +24,7 @@ exports[`IFrame IFrame component renders 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -35,6 +36,7 @@ exports[`IFrame IFrame component renders 1`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -49,6 +51,7 @@ exports[`IFrame IFrame component renders 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -87,6 +90,7 @@ exports[`IFrame IFrame component renders 2`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -98,6 +102,7 @@ exports[`IFrame IFrame component renders 2`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -112,6 +117,7 @@ exports[`IFrame IFrame component renders 2`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -150,6 +156,7 @@ exports[`IFrame IFrame component renders 3`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -161,6 +168,7 @@ exports[`IFrame IFrame component renders 3`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -175,6 +183,7 @@ exports[`IFrame IFrame component renders 3`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -213,6 +222,7 @@ exports[`IFrame IFrame component renders 4`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -224,6 +234,7 @@ exports[`IFrame IFrame component renders 4`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -238,6 +249,7 @@ exports[`IFrame IFrame component renders 4`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -276,6 +288,7 @@ exports[`IFrame IFrame component renders 5`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -287,6 +300,7 @@ exports[`IFrame IFrame component renders 5`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -301,6 +315,7 @@ exports[`IFrame IFrame component renders 5`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -339,6 +354,7 @@ exports[`IFrame IFrame component renders 6`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -350,6 +366,7 @@ exports[`IFrame IFrame component renders 6`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -364,6 +381,7 @@ exports[`IFrame IFrame component renders 6`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -424,6 +442,7 @@ exports[`IFrame IFrame component renders 7`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -480,6 +499,7 @@ exports[`IFrame IFrame component renders 8`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -536,6 +556,7 @@ exports[`IFrame IFrame component renders 9`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -592,6 +613,7 @@ exports[`IFrame IFrame component renders 10`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -648,6 +670,7 @@ exports[`IFrame IFrame component renders 11`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -704,6 +727,7 @@ exports[`IFrame IFrame component renders 12`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -738,6 +762,7 @@ exports[`IFrame IFrame component renders 13`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -749,6 +774,7 @@ exports[`IFrame IFrame component renders 13`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -763,6 +789,7 @@ exports[`IFrame IFrame component renders 13`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -801,6 +828,7 @@ exports[`IFrame IFrame component renders 14`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -812,6 +840,7 @@ exports[`IFrame IFrame component renders 14`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -826,6 +855,7 @@ exports[`IFrame IFrame component renders 14`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -864,6 +894,7 @@ exports[`IFrame IFrame component renders 15`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -875,6 +906,7 @@ exports[`IFrame IFrame component renders 15`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -889,6 +921,7 @@ exports[`IFrame IFrame component renders 15`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -927,6 +960,7 @@ exports[`IFrame IFrame component renders 16`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -938,6 +972,7 @@ exports[`IFrame IFrame component renders 16`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -952,6 +987,7 @@ exports[`IFrame IFrame component renders 16`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -990,6 +1026,7 @@ exports[`IFrame IFrame component renders 17`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -1001,6 +1038,7 @@ exports[`IFrame IFrame component renders 17`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -1015,6 +1053,7 @@ exports[`IFrame IFrame component renders 17`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -1053,6 +1092,7 @@ exports[`IFrame IFrame component renders 18`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -1064,6 +1104,7 @@ exports[`IFrame IFrame component renders 18`] = `
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
+          loading="lazy"
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -1078,6 +1119,7 @@ exports[`IFrame IFrame component renders 18`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -1138,6 +1180,7 @@ exports[`IFrame IFrame component renders 19`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -1194,6 +1237,7 @@ exports[`IFrame IFrame component renders 20`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -1250,6 +1294,7 @@ exports[`IFrame IFrame component renders 21`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -1306,6 +1351,7 @@ exports[`IFrame IFrame component renders 22`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -1362,6 +1408,7 @@ exports[`IFrame IFrame component renders 23`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>
@@ -1418,6 +1465,7 @@ exports[`IFrame IFrame component renders 24`] = `
           <button
             aria-label="Click to load external content"
             className="button"
+            contentEditable={false}
           >
             View Content
           </button>

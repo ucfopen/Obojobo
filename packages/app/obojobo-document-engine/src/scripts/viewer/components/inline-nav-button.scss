@@ -1,4 +1,4 @@
-@import '../../../scss/includes';
+@import '~styles/includes';
 
 .viewer--components--inline-nav-button {
 	background: transparentize($color-action, 0.95);
@@ -13,7 +13,7 @@
 	cursor: pointer;
 	text-align: center;
 	height: 6em;
-	line-height: 3.5em;
+	line-height: 1.5em;
 	transform: translate(0, -1px);
 
 	&.is-enabled {

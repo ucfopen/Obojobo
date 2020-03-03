@@ -1,0 +1,18 @@
+{
+	"development":{
+		"keys":{
+			"testkey": "testsecret"
+		},
+		"usernameParam": "lis_person_sourcedid"
+	},
+	"test": {
+		"keys":{
+			"jesttestkey":"jesttestsecret"
+		},
+		"usernameParam": "lis_person_sourcedid"
+	},
+	"production":{
+		"keys": {"ENV": "OBO_LTI_KEYS_JSON"},
+		"usernameParam": {"ENV": "OBO_LTI_USERNAME_PARAM"}
+	}
+}

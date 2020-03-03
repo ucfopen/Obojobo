@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Code editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
+<Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Code.CodeLine",
+    }
+  }
+/>
+`;
+
+exports[`Code editor plugins.renderNode renders code when passed 1`] = `
+<Code
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Code",
+    }
+  }
+/>
+`;
+
+exports[`Code editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Code editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Code editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Code editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder"
+  contentEditable={false}
+  data-placeholder="Type Your Code Here"
+/>
+`;
+
+exports[`Code editor queries.createCodeLinesFromText builds text lines 1`] = `
+Array [
+  Immutable.Record {
+    "data": Immutable.Map {
+      "content": Object {
+        "hangingIndent": false,
+        "indent": 0,
+      },
+    },
+    "key": "0",
+    "nodes": Immutable.List [
+      Immutable.Record {
+        "leaves": Immutable.List [
+          Immutable.Record {
+            "marks": Immutable.Set [],
+            "text": "mock text",
+          },
+        ],
+        "key": "1",
+      },
+    ],
+    "type": "ObojoboDraft.Chunks.Code.CodeLine",
+  },
+]
+`;

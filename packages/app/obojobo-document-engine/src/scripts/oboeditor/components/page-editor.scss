@@ -1,113 +1,60 @@
-@import '../../../scss/includes';
+@import '~styles/includes';
 
 .editor--page-editor {
-	margin-top: 3em;
-	margin-bottom: 4.5em;
+	display: flex;
+	margin: 2em;
+	margin-top: 8em;
+	border: 1px solid $color-shadow;
+	background-color: $color-bg;
+	border-radius: $dimension-rounded-radius;
+	min-height: calc(100vh - 10.5em);
+
+	.obojobo-draft--modules--module {
+		margin: 3em auto;
+		width: 100%;
+		display: table-cell;
+		margin-top: 3em;
+		margin-bottom: 1em;
+	}
 
 	.parameter-node {
 		padding-right: 1em;
 	}
 
-	.footer-menu {
-		text-align: center;
-		position: fixed;
-		bottom: 0;
-		z-index: 999;
-		margin: 0 auto;
-		padding-right: 3em;
-		padding-left: 3em;
-		left: $dimension-nav-menu;
-		right: 0;
-		background-color: $color-bg2;
-		border-top: 1px solid $color-shadow;
-
-		.exporter {
-			margin: 0.3em;
-
-			.button {
-				background: $color-obojobo-blue;
-				padding: 0.3em;
-			}
-		}
-	}
-
-	.settings {
-		font-size: 0.8em;
-		padding-left: $dimension-padding * 0.2333333333;
-		padding-right: $dimension-padding * 0.2333333333;
-		background: transparentize($color-preview, 0.95);
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-preview;
-
-		div {
-			div {
-				display: inline;
-			}
-		}
-
-		.label {
-			color: $color-text-minor;
-			transform: scale(0.7);
-			transform-origin: top left;
-			font-family: $font-default;
-		}
-	}
-
-	.buffer {
-		margin: $dimension-padding / 3;
-	}
-
 	.latex-editor {
-		background-color: $color-bg2;
+		background: $color-action;
+		color: $color-bg;
 	}
 
-	.placeholder {
-		display: inline-block;
-		position: absolute;
+	span[data-placeholder] {
 		pointer-events: none;
-		white-space: nowrap;
-		opacity: 0.33;
 
-		&.align-right {
-			transform: translate(-100%);
+		&.required::before {
+			content: attr(data-placeholder);
+			opacity: 0.5;
+			position: absolute;
 		}
 
 		&.align-center {
-			transform: translate(-50%);
+			&::before {
+				transform: translate(-50%, 0);
+			}
+		}
+
+		&.align-right {
+			&::before {
+				right: 2em;
+			}
 		}
 	}
 
-	label {
-		display: block;
-	}
-
-	.delete-node-button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: none;
-		background: inherit;
-	}
-
-	.toolbar button:hover {
-		opacity: 1;
-		background: lighten($color-action, 48%);
-
-		svg path {
-			fill: $color-action;
-		}
-
-		svg line {
-			stroke: $color-action;
+	&.is-show-placeholders {
+		span[data-placeholder] {
+			&::before {
+				content: attr(data-placeholder);
+				opacity: 0.5;
+				position: absolute;
+			}
 		}
 	}
-}
-
-.editor--page-editor--delete-node-button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
-	background: inherit;
-	cursor: pointer;
 }

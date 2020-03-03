@@ -2,12 +2,13 @@ import './logo.scss'
 
 import React from 'react'
 
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import isOrNot from '../../common/util/isornot'
 import rd from './rd'
 
 class Logo extends React.Component {
 	constructor(props) {
 		super(props)
+		this.onClick = this.onClick.bind(this)
 		this.state = { clicks: 0 }
 	}
 
@@ -19,7 +20,7 @@ class Logo extends React.Component {
 	render() {
 		return (
 			<div
-				onClick={this.onClick.bind(this)}
+				onClick={this.onClick}
 				className={`viewer--components--logo${isOrNot(this.props.inverted, 'inverted')}`}
 			>
 				Obojobo

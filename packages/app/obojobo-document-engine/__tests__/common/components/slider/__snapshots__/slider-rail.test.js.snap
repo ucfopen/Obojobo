@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SliderRail SliderRail renders correctly 1`] = `
+Array [
+  <div
+    className="obojobo-draft--components--slider--slider-rail-outer"
+  />,
+  <div
+    className="obojobo-draft--components--slider--slider-rail-inner"
+  />,
+]
+`;

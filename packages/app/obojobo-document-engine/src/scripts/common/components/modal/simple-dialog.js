@@ -2,32 +2,13 @@ import './simple-dialog.scss'
 
 import React from 'react'
 
-import ModalUtil from '../../../common/util/modal-util'
-import Dialog from '../../../common/components/modal/dialog'
+import ModalUtil from '../../util/modal-util'
+import Dialog from './dialog'
 
 class SimpleDialog extends React.Component {
-	constructor() {
-		super()
-		this.boundKeyUp = this.onKeyUp.bind(this)
-	}
-
-	componentDidMount() {
-		document.addEventListener('keyup', this.boundKeyUp)
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('keyup', this.boundKeyUp)
-	}
-
 	focusOnFirstElement() {
 		if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
-		}
-	}
-
-	onKeyUp(event) {
-		if (event.key === 'Enter') {
-			this.props.onConfirm()
 		}
 	}
 
@@ -90,6 +71,7 @@ class SimpleDialog extends React.Component {
 					title={this.props.title}
 					width={this.props.width}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+					preventEsc={this.props.preventEsc}
 				>
 					{this.props.children}
 				</Dialog>
@@ -105,6 +87,7 @@ SimpleDialog.defaultProps = {
 	cancelOk: false,
 	title: null,
 	width: null,
+	preventEsc: false,
 	onCancel() {
 		return ModalUtil.hide()
 	},

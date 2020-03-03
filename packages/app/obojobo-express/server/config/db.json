@@ -1,0 +1,22 @@
+{
+	"development":{
+		"driver": "postgres",
+		"user": "postgres",
+		"password": "mysecretpassword",
+		"host": "127.0.0.1",
+		"database": "postgres",
+		"port": 5432,
+		"ssl": false,
+		"useBluebird": true
+	},
+	"production":{
+		"driver": "postgres",
+		"user":  {"ENV": "DB_USER"},
+		"password": {"ENV": "DB_PASS"},
+		"host": {"ENV": "DB_HOST"},
+		"database": {"ENV": "DB_NAME"},
+		"port": {"ENV": "DB_PORT"},
+		"ssl": {"ENV": "DB_SSL"},
+		"useBluebird": false
+	}
+}

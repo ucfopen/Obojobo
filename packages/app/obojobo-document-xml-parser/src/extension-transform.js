@@ -1,6 +1,4 @@
-let toHTML = el => {
-	// console.log('eth', el);
-
+const toHTML = el => {
 	if (el instanceof Array) {
 		return el
 			.map(childEl => {
@@ -28,28 +26,16 @@ let toHTML = el => {
 	)
 }
 
-let extensionTransform = node => {
-	// console.log('node', node)
+const extensionTransform = node => {
 	if (node.name === 'extension') {
 		switch (node.attributes.type) {
-			case 'edX:multipleChoiceQuestion':
-				let problem = node.elements[0]
-				let multiplechoiceresponse, demandhint, label, description, choicegroup, solution
+			case 'edX:multipleChoiceQuestion': {
+				const problem = node.elements[0]
+				let label, description, choicegroup, solution
 
-				problem.elements.forEach(childEl => {
-					switch (childEl.name) {
-						case 'multiplechoiceresponse':
-							// console.log('set', childEl);
-							multiplechoiceresponse = childEl
-							break
-
-						case 'demandhint':
-							demandhint = childEl
-							break
-					}
-				})
-
-				// console.log('mcr', multiplechoiceresponse);
+				const multiplechoiceresponse = problem.elements.find(
+					childEl => childEl.name === 'multiplechoiceresponse'
+				)
 
 				multiplechoiceresponse.elements.forEach(childEl => {
 					switch (childEl.name) {
@@ -71,7 +57,7 @@ let extensionTransform = node => {
 					}
 				})
 
-				let question = {
+				const question = {
 					type: 'element',
 					name: 'ObojoboDraft.Chunks.Question',
 					elements: [
@@ -130,7 +116,7 @@ let extensionTransform = node => {
 							}
 						})
 
-						let choice = {
+						const choice = {
 							type: 'element',
 							name: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 							attributes: {
@@ -182,9 +168,10 @@ let extensionTransform = node => {
 				node.attributes = question.attributes
 
 				break
+			}
 		}
 	} else if (node.elements) {
-		for (let i in node.elements) {
+		for (const i in node.elements) {
 			extensionTransform(node.elements[i])
 		}
 	}

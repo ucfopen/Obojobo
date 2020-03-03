@@ -250,6 +250,29 @@ describe('OboModel', () => {
 		expect(root.id).not.toEqual(oldId)
 	})
 
+	test('setId returns true if the new id is the same as the old id', () => {
+		const root = new OboModel({})
+
+		const oldId = root.id
+
+		expect(root.setId(oldId)).toEqual(true)
+	})
+
+	test('setId returns false if the id already exists', () => {
+		OboModel.models['mockId'] = {}
+		const root = new OboModel({})
+
+		expect(root.setId('mockId')).toEqual(false)
+	})
+
+	test('setId updates the models id', () => {
+		const root = new OboModel({})
+
+		root.setId('mockId')
+
+		expect(root.id).toEqual('mockId')
+	})
+
 	test("clone (shallow) will clone a model (not it's children)", () => {
 		const root = new OboModel({ a: 1 })
 		const child = new OboModel({ b: 2 })

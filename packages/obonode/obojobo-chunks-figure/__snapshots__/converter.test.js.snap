@@ -3,9 +3,7 @@
 exports[`Figure Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "content": Object {
-      "width": "large",
-    },
+    "content": Object {},
   },
   "key": "mockKey",
   "nodes": Array [
@@ -23,10 +21,11 @@ Object {
 }
 `;
 
-exports[`Figure Converter oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+exports[`Figure Converter oboToSlate converts an OboNode to a Slate node with caption, size and triggers 1`] = `
 Object {
   "data": Object {
     "content": Object {
+      "size": "large",
       "textGroup": Array [
         Object {
           "text": Object {
@@ -34,6 +33,7 @@ Object {
           },
         },
       ],
+      "triggers": "mock-triggers",
     },
   },
   "key": "mockKey",

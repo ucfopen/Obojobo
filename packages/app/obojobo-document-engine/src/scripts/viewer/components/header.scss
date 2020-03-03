@@ -6,14 +6,28 @@
 	font-size: 0.7rem;
 	font-family: $font-default;
 	color: $color-text;
-	padding: 0.8rem $dimension-header-padding;
+	padding: 0.9rem $dimension-header-padding;
 	padding-left: 4rem;
 	box-sizing: border-box;
 	text-align: left;
+	overflow: hidden;
+
+	@include mq($until: tablet) {
+		display: block;
+		margin-left: 0;
+	}
+
+	@include mq($until: desktop) {
+		padding-left: 2.5rem;
+	}
 
 	> .wrapper {
 		position: relative;
 		line-height: 0.9rem;
+
+		@include mq($until: tablet) {
+			margin-top: -0.3rem;
+		}
 	}
 
 	.module-title {
@@ -25,6 +39,11 @@
 		margin-left: 1rem;
 		font-weight: bold;
 		cursor: default;
+
+		@include mq($until: tablet) {
+			display: block;
+			margin-left: 0;
+		}
 	}
 
 	.viewer--components--logo {

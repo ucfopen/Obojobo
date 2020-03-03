@@ -20,7 +20,7 @@ const Node = props => {
 
 	return (
 		<div className={'parameter-node'}>
-			<span contentEditable={false}>{props.node.data.get('display') + ': '}</span>
+			<span contentEditable={false}>{props.node.data.get('display')}</span>
 			<select
 				name={'Select'}
 				value={props.node.data.get('current')}
