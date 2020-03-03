@@ -94,8 +94,7 @@ class EditorApp extends React.Component {
 					ModalUtil.show(<SimpleDialog ok title={'Save Error: ' + result.value.message} />)
 					return false
 				} else {
-					this.state.model.get('rev').id = result.value.id
-console.log('UPDATE REV', this.state.model.get('rev'))
+					this.state.model.set('contentId',  result.value.id)
 					return true
 				}
 			})
@@ -177,8 +176,8 @@ console.log('UPDATE REV', this.state.model.get('rev'))
 	}
 
 	createEditLock(draftId) {
-		const contentId = this.state.model.get('rev').id
-console.log('LOCK WITH', contentId)
+		const contentId = this.state.model.get('contentId')
+
 		return APIUtil.requestEditLock(draftId, contentId).then(json => {
 			if (json.status === 'error') throw new Error('Unable to lock module.')
 		})

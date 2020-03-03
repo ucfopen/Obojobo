@@ -23,7 +23,6 @@ router
 	.post([requireDraftId, requireCanViewEditor, requireContentId, checkValidationRules])
 	.post(async (req, res) => {
 		try {
-console.log(req.body.contentId)
 			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
 
 			if (!hasPerms) {
@@ -36,7 +35,7 @@ console.log(req.body.contentId)
 				return res.notAuthorized('Draft is already locked by someone else.')
 			}
 
-			const myLock = await EditLock.create(req.currentUser.id, req.params.draftId)
+			const myLock = await EditLock.create(req.currentUser.id, req.params.draftId, req.body.contentId)
 
 			if (myLock.userId === req.currentUser.id) {
 				res.success()
