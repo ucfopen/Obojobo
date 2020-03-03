@@ -12,6 +12,25 @@ const { Prompt } = Common.components.modal
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
+const processFile = (e, file) => {
+	const contents = e.target.result
+
+	APIUtil.createNewDraftWithContent(
+		contents,
+		file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+	)
+		.then(id => {
+			window.open(window.location.origin + '/editor/visual/' + id, '_blank')
+		})
+		.catch(() => {
+			ModalUtil.show(
+				<SimpleDialog ok onConfirm={ModalUtil.hide}>
+					Unexpected error occurred while uploading
+				</SimpleDialog>
+			)
+		})
+}
+
 class FileMenu extends React.PureComponent {
 	renameModule(moduleId, label) {
 		ModalUtil.hide()
@@ -82,25 +101,8 @@ class FileMenu extends React.PureComponent {
 		if (!file) return
 
 		const reader = new FileReader()
+		reader.onload = e => processFile(e, file)
 		reader.readAsText(file, 'UTF-8')
-		reader.onload = function(e) {
-			const contents = e.target.result
-
-			APIUtil.createNewDraftWithContent(
-				contents,
-				file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
-			)
-				.then(id => {
-					window.open(window.location.origin + '/editor/visual/' + id, '_blank')
-				})
-				.catch(() => {
-					ModalUtil.show(
-						<SimpleDialog ok onConfirm={ModalUtil.hide}>
-							Unexpected error occurred while uploading
-						</SimpleDialog>
-					)
-				})
-		}
 	}
 
 	buildFileSelector() {
@@ -117,7 +119,7 @@ class FileMenu extends React.PureComponent {
 		const url = window.location.origin + '/view/' + this.props.draftId
 		const menu = [
 			{
-				name: 'Open',
+				name: 'Import from file...',
 				type: 'action',
 				action: () => {
 					const fileSelector = this.buildFileSelector()

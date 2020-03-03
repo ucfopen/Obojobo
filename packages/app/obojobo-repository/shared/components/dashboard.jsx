@@ -149,7 +149,7 @@ const Dashboard = props => {
 						<MultiButton title="New Module">
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
-							<Button onClick={importFile}>Import from file...</Button>
+							<Button onClick={importFile}>Import From File</Button>
 						</MultiButton>
 						<Search
 							value={props.moduleSearchString}
