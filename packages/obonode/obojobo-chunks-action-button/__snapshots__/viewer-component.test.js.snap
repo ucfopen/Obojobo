@@ -18,6 +18,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
       >
@@ -46,6 +47,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         onClick={[Function]}
         tabIndex="0"
       >

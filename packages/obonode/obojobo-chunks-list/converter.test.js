@@ -26,7 +26,9 @@ describe('List Converter', () => {
 						{
 							data: {
 								get: () => {
-									return {}
+									//hack for coverage where child.data.get('hangingIndent') potentially returns undefined
+									// eslint-disable-next-line no-undefined
+									return undefined
 								}
 							},
 							text: 'mockText',
@@ -57,7 +59,7 @@ describe('List Converter', () => {
 								{
 									data: {
 										get: () => {
-											return false
+											return {}
 										}
 									},
 									text: 'mockText',
@@ -86,7 +88,7 @@ describe('List Converter', () => {
 					},
 					{
 						text: { value: 'mockLine1' },
-						data: { indent: 5, hangingIndent: false }
+						data: { indent: 5 }
 					},
 					{
 						text: { value: 'mockLine2' }
@@ -99,11 +101,12 @@ describe('List Converter', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a list style', () => {
+	test('oboToSlate converts an OboNode to a Slate node with a list style and triggers', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			content: {
+				triggers: 'mock-triggers',
 				listStyles: {
 					type: 'unordered',
 					indents: {}

@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "5.0.1",
+	"version": "7.1.5",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -9,10 +9,10 @@
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production --optimize-minimize",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-		"db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
-		"db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
-		"db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
-		"db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
+		"db:reset": "obojobo-migrate reset",
+		"db:migrateup": "obojobo-migrate up",
+		"db:migratedown": "obojobo-migrate down",
+		"db:createmigration": "obojobo-migrate create",
 		"db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
 		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
@@ -23,17 +23,14 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
+		"prepublish": "yarn build",
 		"prettier:run": "prettier --write '**/*.{js,scss}'",
 		"precommit": "lint-staged"
 	},
 	"engines": {
-		"yarn": "^1.0",
-		"node": "^10.4.1"
+		"node": "^12.11.1"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
@@ -43,59 +40,62 @@
 		]
 	},
 	"dependencies": {
-		"body-parser": "^1.17.1",
+		"body-parser": "^1.19.0",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
-		"compression": "^1.6.2",
-		"connect-pg-simple": "^3.1.2",
-		"copy-webpack-plugin": "^5.0.2",
-		"css-loader": "^2.0.0",
-		"db-migrate": "^0.10.0-beta.20",
-		"db-migrate-pg": "^0.1.11",
+		"compression": "^1.7.4",
+		"connect-pg-simple": "^6.0.1",
+		"consolidate": "^0.15.1",
 		"debug": "~4.1.1",
 		"debug-logger": "^0.4.1",
-		"ejs": "^2.5.7",
+		"deep-freeze": "^0.0.1",
+		"ejs": "^2.7.1",
 		"eventemitter": "^0.3.3",
-		"express": "~4.16.4",
+		"express": "~4.17.1",
 		"express-ims-lti": "https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
-		"express-session": "^1.15.1",
+		"express-session": "^1.17.0",
 		"express-validator": "^5.2.0",
-		"file-type": "^10.5.0",
-		"glob": "^7.1.1",
-		"is-svg": "^3.0.0",
+		"file-type": "^12.3.0",
+		"glob": "^7.1.4",
+		"is-svg": "^4.2.0",
 		"json-inflector": "^1.1.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.9.1",
-		"multer": "^1.4.1",
-		"obojobo-document-engine": "^5.0.1",
-		"obojobo-document-xml-parser": "^5.0.1",
-		"obojobo-lib-utils": "^5.0.1",
-		"pg-promise": "^5.5.0",
-		"react-transition-group": "^2.5.3",
+		"multer": "^1.4.2",
+		"obojobo-document-engine": "^7.1.5",
+		"obojobo-document-xml-parser": "^7.1.5",
+		"obojobo-lib-utils": "^7.1.5",
+		"pg-promise": "^9.2.1",
+		"react-transition-group": "^4.3.0",
+		"responsive-loader": "^1.2.0",
 		"serve-favicon": "~2.5.0",
-		"sharp": "0.21.0",
-		"uuid": "^3.3.2"
+		"sharp": "0.23.1",
+		"uuid": "^3.3.3"
 	},
 	"devDependencies": {
-		"babel-loader": "^8.0.4",
+		"babel-loader": "^8.0.6",
 		"babel-polyfill": "^6.26.0",
-		"express-list-endpoints": "^4.0.0",
-		"lint-staged": "^6.1.1",
-		"mini-css-extract-plugin": "^0.5.0",
-		"node-sass": "^4.9.0",
+		"bluebird": "^3.7.2",
+		"copy-webpack-plugin": "^5.0.4",
+		"css-loader": "^3.2.0",
+		"express-list-endpoints": "^4.0.1",
+		"lint-staged": "^9.4.1",
+		"mini-css-extract-plugin": "^0.8.0",
+		"node-sass": "^4.12.0",
 		"oauth-signature": "^1.5.0",
 		"postcss-loader": "^3.0.0",
-		"sass-loader": "^7.1.0",
-		"style-loader": "^0.21.0",
-		"supertest": "^3.1.0",
-		"svg-url-loader": "^2.3.2",
+		"sass-loader": "^8.0.0",
+		"style-loader": "^1.0.0",
+		"supertest": "^4.0.2",
+		"svg-url-loader": "^3.0.2",
 		"url": "^0.11.0",
-		"webpack": "^4.12.0",
-		"webpack-cli": "^3.0.8",
-		"webpack-dev-server": "^3.1.4",
-		"whatwg-fetch": "^3.0.0"
+		"webpack": "^4.41.0",
+		"webpack-cli": "^3.3.9",
+		"webpack-dev-server": "^3.8.2",
+		"webpack-manifest-plugin": "^2.2.0"
 	},
 	"bin": {
-		"start_obojobo_server": "./bin/start_obojobo_server"
+		"start_obojobo_server": "./bin/start_obojobo_server",
+		"obojobo_purge_data": "./bin/obojobo_purge_data.js"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [
@@ -103,21 +103,19 @@
 		],
 		"collectCoverageFrom": [
 			"*.js",
-			"models/**/*.js",
-			"routes/**/*.js",
-			"routes/**/*.js",
-			"controllers/**/*.js",
-			"viewer/**/*.js"
+			"server/models/**/*.js",
+			"server/routes/**/*.js",
+			"server/viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",
-			"<rootDir>/app.js",
+			"<rootDir>/server/app.js",
 			"<rootDir>/webpack.config.js",
-			"<rootDir>/dev_nonce_store.js",
+			"<rootDir>/server/dev_nonce_store.js",
 			"<rootDir>/setup_tests.js",
 			"<rootDir>/babel.config.js",
 			"<rootDir>/prettier.config.js",
-			"<rootDir>/obo_express_dev.js"
+			"<rootDir>/server/obo_express_dev.js"
 		],
 		"coverageReporters": [
 			"text",
@@ -138,11 +136,13 @@
 		"ext": "js ejs",
 		"watch": [
 			"./",
-			"../obojobo-document-engine/server",
 			"../../obonode/obojobo-sections-assessment/server",
 			"../../obonode/multiple-choice-assessment/server",
 			"../../obonode/chunks-question/server",
-			"../../obonode/chunks-question-bank/server"
+			"../../obonode/chunks-question-bank/server",
+			"../obojobo-document-engine/server",
+			"../obojobo-module-selector/server",
+			"../obojobo-repository/server"
 		]
 	}
 }

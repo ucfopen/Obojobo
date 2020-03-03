@@ -3,9 +3,11 @@ import './editor-component.scss'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import Image from './image'
 import ImageProperties from './image-properties-modal'
 import React from 'react'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -57,7 +59,7 @@ class Figure extends React.Component {
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.node.data.get('content') || {}
 
 		const isCustom = content.size === 'custom'
 		const imgStyles = {}
@@ -73,33 +75,41 @@ class Figure extends React.Component {
 		}
 
 		const hasAltText = content.alt && content.alt.length !== 0
+		const isSelected = isOrNot(this.props.isSelected, 'selected')
 
 		return (
-			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
-				<div className="container">
-					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
-					<div className="figure-box">
-						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
-							×
-						</Button>
-						<div className="image-toolbar">
-							<Button
-								className="properties-button"
-								onClick={this.showImagePropertiesModal.bind(this)}
-							>
-								Image Properties
+			<Node {...this.props}>
+				<div className={`obojobo-draft--chunks--figure viewer ${content.size || ''} ${isSelected}`}>
+					<div className="container">
+						{hasAltText ? null : (
+							<div contentEditable={false} className="accessibility-warning">
+								Accessibility Warning: No Alt Text!
+							</div>
+						)}
+						<div className={`figure-box  ${isSelected}`} contentEditable={false}>
+							<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+								×
 							</Button>
+							<div className="image-toolbar">
+								<Button
+									className="properties-button"
+									onClick={this.showImagePropertiesModal.bind(this)}
+								>
+									Image Properties
+								</Button>
+							</div>
+							<Image
+								key={content.url + content.width + content.height + content.size}
+								chunk={{ modelState: content }}
+								lazyLoad={false}
+							/>
 						</div>
-						<Image
-							key={content.url + content.width + content.height + content.size}
-							chunk={{ modelState: content }}
-						/>
-					</div>
 
-					{/* uses children below because the caption is a textgroup */}
-					<figcaption>{this.props.children}</figcaption>
+						{/* uses children below because the caption is a textgroup */}
+						<figcaption>{this.props.children}</figcaption>
+					</div>
 				</div>
-			</div>
+			</Node>
 		)
 	}
 }

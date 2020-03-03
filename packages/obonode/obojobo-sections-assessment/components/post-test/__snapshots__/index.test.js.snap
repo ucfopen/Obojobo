@@ -53,6 +53,7 @@ exports[`PostTest PostTest component 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -134,6 +135,7 @@ exports[`PostTest PostTest component 2`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -222,6 +224,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -288,6 +291,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -388,6 +392,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -454,6 +459,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -551,6 +557,7 @@ exports[`PostTest PostTest component with review 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -617,6 +624,7 @@ exports[`PostTest PostTest component with review 1`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -707,6 +715,7 @@ exports[`PostTest PostTest component with review 2`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -773,6 +782,7 @@ exports[`PostTest PostTest component with review 2`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -870,6 +880,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -936,6 +947,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -1026,6 +1038,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -1092,6 +1105,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -1189,6 +1203,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -1255,6 +1270,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -1345,6 +1361,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -1411,6 +1428,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -1498,6 +1516,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -1564,6 +1583,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -1654,6 +1674,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try again anyway
@@ -1720,6 +1741,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
             >
               <button
                 className="button"
+                contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
               >

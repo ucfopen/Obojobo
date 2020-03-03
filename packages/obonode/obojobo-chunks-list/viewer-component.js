@@ -32,11 +32,10 @@ const renderEl = (props, node, index, indent) => {
 
 	switch (node.nodeType) {
 		case 'text':
-			const data = node.data || {}
 			return (
 				<TextGroupEl
 					parentModel={props.model}
-					textItem={{ text: node.text, data: { hangingIndent:node.hangingIndent} }}
+					textItem={{ text: node.text, data: { hangingIndent: node.hangingIndent } }}
 					key={key}
 					groupIndex={node.index}
 				/>

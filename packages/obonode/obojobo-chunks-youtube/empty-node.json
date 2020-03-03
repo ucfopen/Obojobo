@@ -1,8 +1,14 @@
 {
-	"object":"block",
-	"type":"ObojoboDraft.Chunks.YouTube",
-	"isVoid":true,
-	"data":{
-		"content": { }
-	}
+	"object": "block",
+	"type": "ObojoboDraft.Chunks.YouTube",
+	"isVoid": false,
+	"data": {
+		"content": {}
+	},
+	"nodes": [
+		{
+			"object": "text",
+			"leaves": [{ "object": "leaf", "text": "", "marks": [] }]
+		}
+	]
 }

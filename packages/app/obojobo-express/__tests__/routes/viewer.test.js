@@ -1,11 +1,17 @@
-jest.mock('../../models/visit')
-
-jest.mock('../../insert_event')
-
+jest.mock('../../server/models/visit')
+jest.mock('../../server/insert_event')
+jest.mock(
+	'../../server/asset_resolver',
+	() => ({
+		assetForEnv: path => path,
+		webpackAssetPath: path => path
+	}),
+	{ virtual: true }
+)
 // make sure all Date objects use a static date
 mockStaticDate()
 
-jest.mock('../../db')
+jest.mock('../../server/db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
@@ -13,7 +19,7 @@ jest.unmock('express') // we'll use supertest + express for this
 let mockCurrentUser
 let mockCurrentVisit
 let mockSaveSessionSuccess = true
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -31,7 +37,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		if (!mockCurrentDocument) return Promise.reject()
 		req.currentDocument = mockCurrentDocument
@@ -42,7 +48,7 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockLtiLaunch
-jest.mock('../../express_lti_launch', () => ({
+jest.mock('../../server/express_lti_launch', () => ({
 	assignment: (req, res, next) => {
 		req.lti = { body: mockLtiLaunch }
 		req.oboLti = {
@@ -58,21 +64,21 @@ const request = require('supertest')
 const express = require('express')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '../../../views/')
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/viewer'))
+app.set('views', __dirname + '../../../server/views/')
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/viewer'))
 
 describe('viewer route', () => {
-	const insertEvent = oboRequire('insert_event')
-	const VisitModel = oboRequire('models/visit')
+	const insertEvent = oboRequire('server/insert_event')
+	const VisitModel = oboRequire('server/models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
 		mockCurrentVisit = { is_preview: false }
-		mockCurrentUser = { id: 4 }
+		mockCurrentUser = { id: 4, canViewAsStudent: true }
 		insertEvent.mockReset()
 		VisitModel.createVisit.mockReset()
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
@@ -122,7 +128,7 @@ describe('viewer route', () => {
 			})
 	})
 
-	test('launch visit redirects', () => {
+	test('launch visit redirects to view for students', () => {
 		expect.assertions(3)
 
 		VisitModel.createVisit.mockResolvedValueOnce({
@@ -142,6 +148,28 @@ describe('viewer route', () => {
 				expect(response.text).toBe(
 					'Found. Redirecting to /view/' + validUUID() + '/visit/mocked-visit-id'
 				)
+			})
+	})
+
+	test('launch visit redirects to preview for non-students', () => {
+		expect.assertions(3)
+		mockCurrentUser.canViewAsStudent = false
+		const uuid = validUUID()
+
+		VisitModel.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		mockCurrentDocument = { draftId: uuid }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${uuid}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(response.text).toBe(`Found. Redirecting to /preview/${uuid}`)
 			})
 	})
 

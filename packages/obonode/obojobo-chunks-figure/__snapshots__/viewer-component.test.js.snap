@@ -25,6 +25,7 @@ exports[`Figure Figure component 1`] = `
         <img
           alt="Alt Text"
           className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
           onError={[Function]}
           onLoad={[Function]}
           src="www.example.com/img.jpg"
@@ -54,7 +55,6 @@ exports[`Figure Figure component 1`] = `
         </figcaption>
       </figure>
     </div>
-    }
   </div>
 </div>
 `;
@@ -84,6 +84,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
         <img
           alt="Alt Text"
           className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
           onError={[Function]}
           onLoad={[Function]}
           src="www.example.com/img.jpg"
@@ -97,7 +98,6 @@ exports[`Figure Figure component with no textGroup 1`] = `
         />
       </figure>
     </div>
-    }
   </div>
 </div>
 `;

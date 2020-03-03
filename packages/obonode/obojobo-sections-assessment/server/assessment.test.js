@@ -4,16 +4,14 @@ global.oboRequire = name => {
 	return require(`obojobo-express/${name}`)
 }
 
-jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
-jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
 jest.setMock(
 	'ims-lti/src/extensions/outcomes',
 	require('obojobo-express/__mocks__/ims-lti/src/extensions/outcomes')
 )
-jest.mock('obojobo-express/logger')
-jest.mock('obojobo-express/db')
+jest.mock('obojobo-express/server/logger')
+jest.mock('obojobo-express/server/db')
 jest.mock('ims-lti/src/extensions/outcomes')
-jest.mock('obojobo-express/lti')
+jest.mock('obojobo-express/server/lti')
 jest.mock(
 	'../../__mocks__/models/visit',
 	() => ({
@@ -30,10 +28,10 @@ let logger
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
-		db = require('obojobo-express/db')
-		lti = require('obojobo-express/lti')
+		db = require('obojobo-express/server/db')
+		lti = require('obojobo-express/server/lti')
 		Assessment = require('./assessment')
-		logger = require('obojobo-express/logger')
+		logger = require('obojobo-express/server/logger')
 		db.one.mockReset()
 		db.manyOrNone.mockReset()
 	})

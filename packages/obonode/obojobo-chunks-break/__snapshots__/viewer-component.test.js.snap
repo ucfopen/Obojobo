@@ -17,7 +17,6 @@ exports[`Break Break component with textGroup 1`] = `
     data-indent={0}
   >
     <hr />
-    }
   </div>
 </div>
 `;

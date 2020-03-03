@@ -1,0 +1,287 @@
+@import '../../../../scss/includes';
+
+.visual-editor--draft-nav {
+	$color-nav-bg: #fbfbfb;
+	$color-nav-highlight: $color-obojobo-blue;
+	$color-nav-hover: darken($color-highlight, 25%);
+	$padding: 2rem;
+
+	height: inherit;
+	display: table-cell;
+	z-index: $z-index-above-content;
+	font-family: $font-default;
+	color: $color-text;
+	background: $color-nav-bg;
+	font-size: 1rem;
+	width: $dimension-nav-menu;
+	padding: $padding;
+	padding-top: 0;
+	box-sizing: border-box;
+	transition: left $duration-animation-default $duration-animation-default;
+	border-right: 1px solid transparentize($color-shadow, 0.1);
+	overflow-y: visible;
+	border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
+	align-items: stretch;
+
+	hr {
+		border: none;
+		border-bottom: 1px solid $color-bg;
+		opacity: 0.2;
+	}
+
+	ul {
+		background-color: $color-nav-bg;
+		position: relative;
+		top: 0;
+		padding: 0;
+		margin: 0;
+		z-index: 5; // used to position between the footer logo and the toggle-button
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	li {
+		position: relative;
+		list-style-type: none;
+		padding: 0 0 1rem 0;
+		border-left: solid 1px $color-text-minor;
+	}
+
+	.heading {
+		$color-heading-text: rgba(lighten($color-text, 25%), 0.9);
+
+		position: relative;
+		padding-top: 2em;
+		margin-bottom: 1em;
+		z-index: 5;
+		background: rgba($color-nav-bg, 0.9);
+		top: 0;
+		font-size: 1.1rem;
+		font-weight: bold;
+		color: $color-heading-text;
+		cursor: default;
+		border-left: solid 1px rgba($color-nav-bg, 0.9);
+
+		&::after {
+			content: '';
+			position: relative;
+			display: block;
+			top: 1rem;
+			width: 100%;
+			height: 1px; /* stylelint-disable-line unit-blacklist */
+			background: lighten($color-text, 95%);
+		}
+
+		.visual-editor--more-info {
+			top: 2.3em;
+			font-size: 0.9em;
+		}
+	}
+
+	.sub-link {
+		position: relative;
+		font-size: 0.7rem;
+		border-left-color: $color-nav-highlight;
+
+		.lock-icon {
+			display: none;
+		}
+
+		&.is-last-in-list {
+			&::before {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: -2px; /* stylelint-disable-line unit-blacklist */
+				width: 1.2em;
+				height: 2em;
+				background: $color-nav-bg;
+			}
+		}
+
+		&::after {
+			left: -3px; /* stylelint-disable-line unit-blacklist */
+			width: 5px; /* stylelint-disable-line unit-blacklist */
+			height: 5px; /* stylelint-disable-line unit-blacklist */
+			top: 0.5em;
+			background: $color-nav-highlight;
+			border: none;
+		}
+	}
+
+	.link {
+		margin-left: 0.5rem;
+		padding-left: 1rem;
+		color: $color-text-minor;
+		cursor: pointer;
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: inline-block;
+			border-radius: 0.8em;
+			top: 0;
+			left: -0.55em;
+			width: 0.8em;
+			height: 0.8em;
+			background: $color-bg;
+			border: solid 2px $color-text-minor;
+		}
+
+		&:hover {
+			color: $color-nav-hover;
+
+			&::after {
+				border-color: $color-nav-hover;
+				background: lighten($color-nav-hover, 25%);
+			}
+		}
+
+		&.is-selected {
+			color: $color-nav-highlight;
+			border-left-color: $color-nav-highlight;
+			font-weight: bold;
+
+			&:hover {
+				color: $color-nav-highlight;
+				cursor: default;
+			}
+
+			&::after {
+				background: lighten($color-nav-highlight, 10%);
+				border: solid 2px $color-nav-highlight;
+			}
+
+			.lock-icon {
+				display: none;
+			}
+		}
+
+		&.is-first-in-list {
+			margin-top: 0.75em;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -2px; /* stylelint-disable-line unit-blacklist */
+				width: 1.2em;
+				height: 1em;
+				background: $color-nav-bg;
+			}
+		}
+
+		&.is-last-in-list {
+			border-left: none;
+		}
+
+		> button {
+			border: none;
+			font-size: 1em;
+			background: transparent;
+			font-family: $font-default;
+			cursor: pointer;
+			padding: 0;
+			margin: 0;
+			color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+			font-weight: inherit;
+			text-align: left;
+		}
+	}
+
+	.is-assessment {
+		position: relative;
+
+		&.is-last-in-list {
+			border-left: $dimension-nav-menu-small;
+		}
+
+		&::before {
+			display: none;
+		}
+
+		&::after {
+			$c: lighten($color-text, 60%);
+
+			left: -0.9em;
+			width: 1.2em;
+			height: 1.2em;
+			content: 'Q';
+			padding: 0.2em;
+			color: $c;
+			border: solid 1px lighten($color-text, 60%);
+			border-radius: 4px;
+			font-size: 0.6em;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		&.is-selected {
+			color: $color-nav-highlight;
+
+			&::after {
+				color: $color-bg;
+				background: lighten($color-nav-highlight, 10%);
+				border: solid 1px $color-nav-highlight;
+			}
+		}
+
+		&:hover::after {
+			color: $color-bg;
+		}
+	}
+
+	#start-page {
+		font-weight: normal;
+		margin-right: 0.25em;
+	}
+
+	.delete-button {
+		transform: translate(0, -18%);
+		z-index: 3;
+
+		button {
+			font-size: 0.8em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+		}
+	}
+
+	.no-pages-item {
+		position: relative;
+		margin-top: 1em;
+		margin-left: 0.5em;
+		padding-right: 1em;
+		padding-left: 1em;
+		border-left: none;
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: inline-block;
+			border-radius: 0.8em;
+			top: 0.25em;
+			left: -0.55em;
+			width: 0.8em;
+			height: 0.8em;
+			background: $color-bg;
+			border: solid 2px $color-shadow;
+		}
+	}
+
+	.add-node-button {
+		color: $color-obojobo-blue;
+		font-size: 1em;
+		border: 2px solid $color-obojobo-blue;
+		border-radius: $dimension-rounded-radius;
+		background-color: $color-bg;
+
+		&:hover {
+			background-color: $color-obojobo-blue;
+			color: $color-bg;
+		}
+	}
+}

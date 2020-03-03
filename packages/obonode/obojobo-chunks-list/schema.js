@@ -1,13 +1,11 @@
 import { Block } from 'slate'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
+import ListStyles from './list-styles'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
-
-const unorderedBullets = ['disc', 'circle', 'square']
-const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
 const schema = {
 	blocks: {
@@ -22,15 +20,11 @@ const schema = {
 				const { node, child, index } = error
 				// find type and bullet style
 				const type = node.data.get('content').listStyles.type
-				const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
+				const bulletList =
+					type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
 
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Deal with Paste insertion of top-level nodes
-						if (child.type === 'oboeditor.component') {
-							return editor.unwrapNodeByKey(child.key)
-						}
-
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge && child.type !== LIST_LINE_NODE) {
@@ -63,11 +57,6 @@ const schema = {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Deal with Paste insertion of top-level nodes
-						if (child.type === 'oboeditor.component') {
-							return editor.unwrapNodeByKey(child.key)
-						}
-
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {

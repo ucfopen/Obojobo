@@ -140,4 +140,7 @@ const orderedDefaultBulletStyles = [
 	ListStyles.STYLE_LOWERCASE_ROMAN
 ]
 
+ListStyles.UNORDERED_LIST_BULLETS = unorderedDefaultBulletStyles
+ListStyles.ORDERED_LIST_BULLETS = orderedDefaultBulletStyles
+
 export default ListStyles

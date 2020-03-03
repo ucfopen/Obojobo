@@ -1,7 +1,7 @@
 import React from 'react'
 
-import StyleableTextComponent from '../../../common/text/styleable-text-component'
-import Dispatcher from '../../../common/flux/dispatcher'
+import StyleableTextComponent from '../../text/styleable-text-component'
+import Dispatcher from '../../flux/dispatcher'
 
 const varRegex = /\{\{(.+?)\}\}/
 
@@ -28,6 +28,7 @@ const getText = props => {
 
 	return text
 }
+
 const TextGroupEl = props => (
 	<span
 		className={`text align-${props.textItem.data.align}`}

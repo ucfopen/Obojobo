@@ -1,14 +1,8 @@
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Editor from './index'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-const debounce = function(ms, cb) {
-	clearTimeout(debounce.id)
-	return (debounce.id = setTimeout(cb, ms))
-}
-debounce.id = null
 
 // set up global event listeners
 const { Dispatcher } = Common.flux
@@ -39,6 +33,6 @@ window.__oboEditorRender = (settings = {}) => {
 		<div className="root">
 			<Editor.components.EditorApp settings={settings} />
 		</div>,
-		document.getElementById('viewer-app')
+		document.getElementById('editor-app')
 	)
 }

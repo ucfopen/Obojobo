@@ -174,6 +174,7 @@ exports[`MCAssessment Component not shuffled (survey) 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Submit Response
@@ -360,6 +361,7 @@ exports[`MCAssessment Component not shuffled 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Check Your Answer
@@ -1240,6 +1242,7 @@ exports[`MCAssessment Component pick-all (survey) 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Submit Response
@@ -1430,6 +1433,7 @@ exports[`MCAssessment Component pick-all 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Check Your Answer
@@ -2318,6 +2322,7 @@ exports[`MCAssessment Component pick-one-multiple-correct (survey) 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Submit Response
@@ -2504,6 +2509,7 @@ exports[`MCAssessment Component pick-one-multiple-correct 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Check Your Answer
@@ -3446,6 +3452,7 @@ exports[`MCAssessment Component submitted (survey) 1`] = `
           <button
             aria-label="Change Response"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Change Response
@@ -3983,6 +3990,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
           <button
             aria-label="Change Response"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Change Response
@@ -4827,6 +4835,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct (survey) 1`
           <button
             aria-label="Change Response"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Change Response
@@ -5825,6 +5834,7 @@ exports[`MCAssessment Component with correct score 1`] = `
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -5850,6 +5860,7 @@ exports[`MCAssessment Component with correct score 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -6099,6 +6110,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -6124,6 +6136,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -6417,6 +6430,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -6732,6 +6746,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -7025,6 +7040,7 @@ exports[`MCAssessment Component with correct score, assessment 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -7278,6 +7294,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -7303,6 +7320,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -7552,6 +7570,7 @@ exports[`MCAssessment Component with correct score, pick-all, assessment 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -7823,6 +7842,7 @@ exports[`MCAssessment Component with correct score, pick-all, review 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -8072,6 +8092,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -8097,6 +8118,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -8342,6 +8364,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, a
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -8609,6 +8632,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, r
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -8876,6 +8900,7 @@ exports[`MCAssessment Component with correct score, review 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -9125,6 +9150,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -9150,6 +9176,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -9399,6 +9426,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -9424,6 +9452,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -9717,6 +9746,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -10038,6 +10068,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Hide Explanation
@@ -10331,6 +10362,7 @@ exports[`MCAssessment Component with incorrect score, assessment 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -10640,6 +10672,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -10670,6 +10703,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -10975,6 +11009,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -11313,6 +11348,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -11562,6 +11598,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -11587,6 +11624,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -11832,6 +11870,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -12105,6 +12144,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -12378,6 +12418,7 @@ exports[`MCAssessment Component with incorrect score, review 1`] = `
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -12565,6 +12606,7 @@ exports[`MCAssessment Component with sortedIds (survey) 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Submit Response
@@ -12751,6 +12793,7 @@ exports[`MCAssessment Component with sortedIds 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Check Your Answer
@@ -13631,6 +13674,7 @@ exports[`MCAssessment MCAssessment component (survey) 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Submit Response
@@ -13817,6 +13861,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
         >
           <button
             className="button"
+            contentEditable={false}
             disabled={true}
           >
             Check Your Answer
@@ -14065,6 +14110,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
           <button
             aria-label="Try Question Again"
             className="button"
+            contentEditable={false}
             onClick={[Function]}
           >
             Try Again
@@ -14090,6 +14136,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -14335,6 +14382,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, ass
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -14602,6 +14650,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, rev
       >
         <button
           className="button"
+          contentEditable={false}
           onClick={[Function]}
         >
           Read an explanation of the answer

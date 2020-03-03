@@ -1,6 +1,6 @@
-import BaseCaliper from '../../../../routes/api/events/create_base_caliper_event'
+import BaseCaliper from '../../../../server/routes/api/events/create_base_caliper_event'
 jest.spyOn(BaseCaliper, 'createEvent')
-const caliperEvents = oboRequire('routes/api/events/create_caliper_event')(null, 'testHost')
+const caliperEvents = oboRequire('server/routes/api/events/create_caliper_event')(null, 'testHost')
 
 const actor = { type: 'user', id: 'testUserId' }
 const assessmentId = 'testAssessment'
@@ -641,33 +641,6 @@ describe('Caliper event creator', () => {
 	test('createNavMenuShowedEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuShowedEvent({
-				actor: { type: 'bad' },
-				draftId,
-				contentId,
-				sessionIds,
-				extensions
-			})
-		).toThrow(
-			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
-		)
-	})
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
-	test('createNavMenuToggledEvent', () => {
-		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
-			actor,
-			draftId,
-			contentId,
-			sessionIds,
-			extensions
-		})
-		expect(createNavMenuToggledEvent).toMatchSnapshot()
-	})
-
-	test('createNavMenuToggledEvent - throws error given a bad actor', () => {
-		expect(() =>
-			caliperEvents.createNavMenuToggledEvent({
 				actor: { type: 'bad' },
 				draftId,
 				contentId,

@@ -1,10 +1,12 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-new */
 
-jest.mock('../../db')
+jest.mock('../../server/db')
+jest.mock('../../server/obo_events')
 const originalnow = Date.prototype.now
-const User = oboRequire('models/user')
-const db = oboRequire('db')
+const User = require('../../server/models/user')
+const db = require('../../server/db')
+const oboEvents = require('../../server/obo_events')
 
 describe('user model', () => {
 	beforeAll(() => {
@@ -131,8 +133,8 @@ describe('user model', () => {
 		expect(u.isGuest()).toBe(false)
 	})
 
-	test('saves or creates correctly', () => {
-		expect.assertions(4)
+	test('creates a new user', () => {
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce({ id: 3 })
 
@@ -148,11 +150,36 @@ describe('user model', () => {
 			expect(user.id).toBe(3)
 			expect(db.one).toHaveBeenCalledTimes(1)
 			expect(db.one.mock.calls[0]).toMatchSnapshot()
+			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_NEW_USER', user)
+		})
+	})
+
+	test('saves an existing user', () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce({ id: 10 })
+
+		const u = new User({
+			id: 10,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
+		return u.saveOrCreate().then(user => {
+			expect(user).toBeInstanceOf(User)
+			expect(user.id).toBe(10)
+			expect(db.one).toHaveBeenCalledTimes(1)
+			expect(db.one.mock.calls[0]).toMatchSnapshot()
+			expect(oboEvents.emit).toHaveBeenCalledTimes(1)
+			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_UPDATE_USER', user)
 		})
 	})
 
 	test('fetches one from the database', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce({
 			id: 5,
@@ -236,5 +263,85 @@ describe('user model', () => {
 				username: 'username'
 			})
 		}).not.toThrow()
+	})
+
+	test('Instructor role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['Instructor']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('Administrator role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['urn:lti:instrole:ims/lis/Administrator']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('TeachingAssistant role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['urn:lti:role:ims/lis/TeachingAssistant']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('ContentDeveloper role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['ContentDeveloper']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('Learner role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['Learner']
+		})
+		expect(u.canViewEditor).toBe(false)
+		expect(u.canEditDrafts).toBe(false)
+		expect(u.canDeleteDrafts).toBe(false)
+		expect(u.canCreateDrafts).toBe(false)
+		expect(u.canPreviewDrafts).toBe(false)
 	})
 })

@@ -34,6 +34,7 @@ exports[`Test Test component 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Submit (Not all questions have been answered)
       </button>
@@ -76,6 +77,7 @@ exports[`Test Test component fetching score 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
         disabled={true}
       >
         Loading ...
@@ -119,6 +121,7 @@ exports[`Test Test component with completeAttempt 1`] = `
     >
       <button
         className="button"
+        contentEditable={false}
       >
         Submit
       </button>

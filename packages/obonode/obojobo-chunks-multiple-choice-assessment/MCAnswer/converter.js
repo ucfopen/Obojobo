@@ -1,10 +1,11 @@
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
+import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const slateToObo = node => ({
 	id: node.key,
 	type: node.type,
 	children: node.nodes.map(child => Component.helpers.slateToObo(child)),
-	content: node.data.get('content') || {}
+	content: withoutUndefined(node.data.get('content') || {})
 })
 
 const oboToSlate = node => ({

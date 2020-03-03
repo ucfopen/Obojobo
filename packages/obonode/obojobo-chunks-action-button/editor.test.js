@@ -1,96 +1,29 @@
-import ActionButton from './editor'
-const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
+jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
+	Registry: {
+		registerEditorModel: jest.fn()
+	}
+}))
 
-describe('ActionButton editor', () => {
-	test('plugins.renderNode renders a button when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: BUTTON_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
+jest.mock('./editor-registration', () => ({
+	EditorNode: 1
+}))
+
+import Common from 'obojobo-document-engine/src/scripts/common/index'
+
+describe('Action Button editor script', () => {
+	test('registers node', () => {
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
+
+		require('./editor')
+
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
+
+		expect(Common.Registry.registerEditorModel.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "EditorNode": 1,
 		}
-
-		expect(ActionButton.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(ActionButton.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
-	})
-
-	test('plugins.renderPlaceholder exits when not relevent', () => {
-		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: BUTTON_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('plugins.renderPlaceholder renders a placeholder', () => {
-		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: BUTTON_NODE,
-						text: ''
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
+	`)
 	})
 })

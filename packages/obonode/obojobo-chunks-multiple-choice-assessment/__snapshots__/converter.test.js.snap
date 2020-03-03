@@ -3,47 +3,15 @@
 exports[`MCAssessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "content": Object {},
+    "content": Object {
+      "triggers": "mock-triggers",
+    },
     "questionType": "mock-question-type",
   },
   "key": "mockKey",
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        undefined,
-        undefined,
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
-    },
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Response Type",
-            "name": "responseType",
-            "options": Array [
-              "pick-one",
-              "pick-all",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": undefined,
-            "display": "Shuffle",
-            "name": "shuffle",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
-    },
+    undefined,
+    undefined,
   ],
   "object": "block",
   "type": "mockType",
@@ -57,7 +25,6 @@ Object {
   ],
   "content": Object {
     "responseType": "pick-one",
-    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",
@@ -66,7 +33,9 @@ Object {
 
 exports[`MCAssessment Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
 Object {
-  "children": Array [],
+  "children": Array [
+    undefined,
+  ],
   "content": Object {},
   "id": "mockKey",
   "type": "mockType",
@@ -82,7 +51,6 @@ Object {
   ],
   "content": Object {
     "responseType": "pick-one-multiple-correct",
-    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",

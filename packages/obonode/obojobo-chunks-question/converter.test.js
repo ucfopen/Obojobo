@@ -1,13 +1,27 @@
+import React from 'react'
+import Converter from './converter'
+
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		getItemForType: () => ({
-			slateToObo: jest.fn(),
-			oboToSlate: jest.fn()
+			slateToObo: args => ({ mock: 'slateToObo', args }),
+			oboToSlate: args => ({ mock: 'oboToSlate', args })
 		})
+	},
+	components: {
+		modal: {
+			SimpleDialog: () => 'SimpleDialog'
+		}
+	},
+	util: {
+		ModalUtil: {}
 	}
 }))
 
-import Converter from './converter'
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
@@ -64,7 +78,7 @@ describe('Question editor', () => {
 					type: MCASSESSMENT_NODE
 				}
 			],
-			content: { solution: {} }
+			content: { solution: {}, triggers: 'mock-triggers' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

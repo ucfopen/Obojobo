@@ -1,4 +1,4 @@
-@import '../../../scss/includes';
+@import '~styles/includes';
 
 .viewer--viewer-app--visit-error {
 	width: 100%;
@@ -52,22 +52,32 @@
 		color: $color-bg;
 		font-size: 0.7em;
 		font-weight: bold;
-		line-height: 0;
-		height: $dimension-preview-banner;
+		min-height: $dimension-preview-banner;
 		left: 0;
 		padding: 0.5em 1em;
-		padding-top: 1.5rem;
 		position: fixed;
 		right: 0;
 		bottom: 0;
 		z-index: $z-index-preview;
 		border-top: 2px solid $color-bg;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		@include mq($until: mobileLandscape) {
+			font-size: 0.6em;
+
+			.controls > span {
+				display: none;
+			}
+		}
 
 		> .controls {
-			position: absolute;
-			right: 1em;
-			top: 50%;
-			transform: translate(0, -50%) translate(0, 0.5px);
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			text-align: right;
+			margin-left: 1em;
 
 			button {
 				appearance: none;
@@ -102,8 +112,16 @@
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
 
-		@media screen and (max-width: $breakpoint-nav-small) {
+		@include mq($until: desktop) {
 			padding-left: $dimension-nav-menu-small;
+		}
+
+		@include mq($until: tablet) {
+			padding-left: $dimension-nav-menu-xsmall;
+		}
+
+		@include mq($until: mobileLandscape) {
+			padding-left: 0;
 		}
 
 		> header {
@@ -120,5 +138,9 @@
 
 	&.is-previewing {
 		height: calc(100% - 3rem);
+	}
+
+	code {
+		font-family: $font-monospace;
 	}
 }
