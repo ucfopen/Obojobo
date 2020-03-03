@@ -258,6 +258,7 @@ describe('PageEditor', () => {
 		  "editable": false,
 		  "saved": true,
 		  "showPlaceholders": true,
+		  "title": "Mock Title",
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
@@ -303,6 +304,7 @@ describe('PageEditor', () => {
 		  "editable": true,
 		  "saved": true,
 		  "showPlaceholders": false,
+		  "title": "Mock Title",
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
@@ -348,6 +350,7 @@ describe('PageEditor', () => {
 		  "editable": true,
 		  "saved": false,
 		  "showPlaceholders": true,
+		  "title": "Mock Title",
 		  "value": Immutable.Record {
 		    "data": Immutable.Map {},
 		    "decorations": Immutable.List [],
@@ -406,6 +409,7 @@ describe('PageEditor', () => {
 				children: { set: jest.fn() }
 			},
 			model: {
+				title: 'mockTitle',
 				children: [
 					{
 						get: () => ASSESSMENT_NODE,
@@ -450,6 +454,60 @@ describe('PageEditor', () => {
 		)
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
+	})
+
+	test('changes the Editor title', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		thing
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: 'mock new title' }
+			})
+		thing
+			.find('input')
+			.at(0)
+			.simulate('blur')
+
+		expect(thing.html()).toMatchSnapshot()
+	})
+
+	test('changes the Editor title to blank', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		thing
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: '	' }
+			})
+		thing
+			.find('input')
+			.at(0)
+			.simulate('blur')
+
+		expect(thing.html()).toMatchSnapshot()
 	})
 
 	test('sends onChange to the Editor', () => {

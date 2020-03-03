@@ -1,6 +1,7 @@
 import './page-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -42,7 +43,8 @@ class PageEditor extends React.Component {
 			value: Value.fromJSON(json),
 			saved: true,
 			editable: true,
-			showPlaceholders: true
+			showPlaceholders: true,
+			title: props.model.title
 		}
 
 		this.editorRef = React.createRef()
@@ -161,13 +163,27 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	renameModule(label) {
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
+
+		EditorUtil.renamePage(this.props.model.id, label)
+		this.setState({ title: label })
+	}
+
 	render() {
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className}>
 				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
+					<input
+						className="draft-title"
+						value={this.state.title}
+						onChange={event => this.setState({ title: event.target.value })}
+						size={this.state.title.length}
+						onBlur={() => this.renameModule(this.state.title)}
+					/>
 					<FileToolbar
 						editorRef={this.editorRef}
 						model={this.props.model}
