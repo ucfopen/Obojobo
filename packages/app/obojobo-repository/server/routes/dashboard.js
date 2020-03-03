@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const CollectionSummary = require('../models/collection_summary')
 const DraftSummary = require('../models/draft_summary')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const {
@@ -22,17 +23,25 @@ router
 			sortOrder = cookieSort.split('=')[1]
 		}
 
-		return DraftSummary.fetchByUserId(req.currentUser.id).then(myModules => {
-			const props = {
-				title: 'Dashboard',
-				myModules,
-				sortOrder,
-				currentUser: req.currentUser,
-				appCSSUrl: webpackAssetPath('dashboard.css'),
-				appJsUrl: webpackAssetPath('dashboard.js')
-			}
-			res.render('pages/page-dashboard-server.jsx', props)
-		})
+		let myCollections = []
+
+		return CollectionSummary.fetchByUserId(req.currentUser.id)
+			.then(collections => {
+				myCollections = collections
+
+				return DraftSummary.fetchByUserId(req.currentUser.id)
+			}).then(myModules => {
+				const props = {
+					title: 'Dashboard',
+					myCollections,
+					myModules,
+					sortOrder,
+					currentUser: req.currentUser,
+					appCSSUrl: webpackAssetPath('dashboard.css'),
+					appJsUrl: webpackAssetPath('dashboard.js')
+				}
+				res.render('pages/page-dashboard-server.jsx', props)
+			})
 	})
 
 module.exports = router

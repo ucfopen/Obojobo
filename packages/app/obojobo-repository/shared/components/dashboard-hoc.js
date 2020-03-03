@@ -5,6 +5,7 @@ const {
 	addUserToModule,
 	loadUsersForModule,
 	deleteModulePermissions,
+	createNewCollection,
 	createNewModule,
 	filterModules,
 	deleteModule,
@@ -12,6 +13,7 @@ const {
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
+	createNewCollection,
 	createNewModule,
 	closeModal,
 	addUserToModule,

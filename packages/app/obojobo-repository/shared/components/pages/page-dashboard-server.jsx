@@ -21,6 +21,7 @@ PageDashboardServer.defaultProps = {
 	dialog: null,
 	selectedModule: {},
 	draftPermissions: {},
+	myCollections: [],
 	myModules: [],
 	moduleSearchString: '',
 	shareSearchString: '',

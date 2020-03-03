@@ -32,6 +32,10 @@ const apiDeleteModule = draftId => {
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
+const apiGetMyCollections = () => {
+	return fetch('/api/collections', defaultOptions()).then(res => res.json())
+}
+
 const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
 }
@@ -98,6 +102,12 @@ const deleteModule = draftId => ({
 	promise: apiDeleteModule(draftId).then(apiGetMyModules)
 })
 
+const CREATE_NEW_COLLECTION = 'CREATE_NEW_COLLECTION'
+const createNewCollection = () => ({
+	type: CREATE_NEW_COLLECTION,
+	promise: apiCreateNewCollection().then(apiGetMyCollections)
+})
+
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
 const createNewModule = (useTutorial = false) => ({
 	type: CREATE_NEW_MODULE,
@@ -134,6 +144,7 @@ module.exports = {
 	deleteModulePermissions,
 	searchForUser,
 	addUserToModule,
+	createNewCollection,
 	createNewModule,
 	showModulePermissions,
 	loadUsersForModule,
