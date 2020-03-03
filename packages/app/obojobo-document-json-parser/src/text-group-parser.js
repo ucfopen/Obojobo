@@ -1,16 +1,6 @@
 const StyleableText = require('obojobo-document-engine/src/scripts/common/text/styleable-text')
 const styleableTextRenderer = require('obojobo-document-engine/src/scripts/common/text/styleable-text-renderer')
-
-const escapeCharacters = str => {
-	const replacements = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		"'": '&#39;',
-		'"': '&#34;'
-	}
-	return str.replace(/[&<>'"]/g, match => replacements[match])
-}
+const xmlEncode = require('./xml-encode')
 
 const textGroupParser = textGroup => {
 	if (!textGroup) return ''
@@ -26,7 +16,7 @@ const textGroupParser = textGroup => {
 		// Parse text value
 		const value = textParser(group.text)
 
-		textGroupBodyXML += `<t${dataXML}>${escapeCharacters(value)}</t>`
+		textGroupBodyXML += `<t${dataXML}>${value}</t>`
 	})
 
 	return `<textGroup>` + textGroupBodyXML + `</textGroup>`
@@ -45,7 +35,7 @@ const mockTextNodeParser = mockTextNode => {
 	if (mockTextNode.nodeType === 'text') {
 		const text = mockTextNode.text ? mockTextNode.text : ''
 
-		return mockElementParser(text, mockTextNode.parent)
+		return mockElementParser(xmlEncode(text), mockTextNode.parent)
 	}
 
 	let mockElementChildrenStr = ''
@@ -64,10 +54,10 @@ const mockElementParser = (text, mockElement) => {
 	const type = mockElement.type
 	let attrs = ''
 	for (const attr in mockElement.attrs) {
-		attrs += ` ${attr}="${mockElement.attrs[attr]}"`
+		attrs += ` ${attr}="${xmlEncode(mockElement.attrs[attr])}"`
 
 		if (attr === 'class' && mockElement.attrs[attr] === 'latex') {
-			return mockElementParser(`<latex>${text}</latex>`, mockElement.parent)
+			return mockElementParser(`<latex>${xmlEncode(text)}</latex>`, mockElement.parent)
 		}
 	}
 
