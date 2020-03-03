@@ -5,6 +5,10 @@ import Dispatcher from '../flux/dispatcher'
 const idleTimerRef = React.createRef()
 let lastActiveTime
 
+const onWarnIdle = () => {
+	Dispatcher.trigger('window:inactiveWarning')
+}
+
 const onIdle = () => {
 	lastActiveTime = new Date(idleTimerRef.current.getLastActiveTime())
 	Dispatcher.trigger('window:inactive', {lastActiveTime})
@@ -16,14 +20,24 @@ const onReturnFromIdle = () => {
 	lastActiveTime = null
 }
 
-const ObojoboIdleTimer = ({timeout}) => (
-	<IdleTimer
-		ref={idleTimerRef}
-		element={window}
-		timeout={timeout}
-		onIdle={onIdle}
-		onActive={onReturnFromIdle}
-	/>
+const ObojoboIdleTimer = ({warning, timeout}) => (
+	<React.Fragment>
+		<IdleTimer
+			ref={idleTimerRef}
+			element={window}
+			timeout={timeout}
+			onIdle={onIdle}
+			onActive={onReturnFromIdle}
+		/>
+		{warning
+			? <IdleTimer
+				element={window}
+				timeout={warning}
+				onIdle={onWarnIdle}
+			/>
+			: null
+		}
+	</React.Fragment>
 )
 
 export default ObojoboIdleTimer

@@ -456,19 +456,12 @@ export default class ViewerApp extends React.Component {
 	}
 
 	sendCloseEvent() {
-		const body = {
+		APIUtil.postEventBeacon({
 			draftId: this.state.model.get('draftId'),
+			action: 'viewer:close',
+			eventVersion: '1.0.0',
 			visitId: this.state.navState.visitId,
-			event: {
-				action: 'viewer:close',
-				draft_id: this.state.model.get('draftId'),
-				actor_time: new Date().toISOString(),
-				event_version: '1.0.0',
-				visitId: this.state.navState.visitId
-			}
-		}
-
-		navigator.sendBeacon('/api/events', JSON.stringify(body))
+		})
 	}
 
 	clearPreviewScores() {
@@ -517,6 +510,81 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 
+	buildInlineNavProps(){
+		const canNavigate = NavUtil.canNavigate(this.state.navState)
+		const prevItem = NavUtil.getPrev(this.state.navState)
+		const nextItem = NavUtil.getNext(this.state.navState)
+
+		let prevProps
+		let nextProps
+
+		if(prevItem){
+			const navTitle = (prevItem.label ? 'Go back to ' + prevItem.label : 'Go back')
+			prevProps = {
+				title: navTitle,
+				ariaLabel: navTitle,
+				disabled: !canNavigate
+			}
+		} else {
+			prevProps = {
+				title: `Start of ${this.state.model.title}`,
+				ariaLabel: `This is the start of ${this.state.model.title}.`,
+				disabled: true
+			}
+		}
+
+		if(nextItem){
+			nextProps = {
+				title: (nextItem.label ? 'Next: ' + nextItem.label : 'Next'),
+				ariaLabel: (nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'),
+				disabled: !canNavigate
+			}
+		} else {
+			nextProps = {
+				title: `End of ${this.state.model.title}`,
+				ariaLabel: `You have reached the end of ${this.state.model.title}.`,
+				disabled: true
+			}
+		}
+
+		return {
+			prevProps,
+			nextProps
+		}
+	}
+
+	renderViewer(){
+		NavUtil.isNavEnabled(this.state.navState)
+		const { prevProps, nextProps } = this.buildInlineNavProps()
+		const ModuleComponent = this.state.model.getComponentClass()
+		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
+		let navTargetLabel = ''
+		if (navTargetItem && navTargetItem.label) {
+			navTargetLabel = navTargetItem.label
+		}
+
+		return (
+			<React.Fragment>
+				<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
+				<Nav ref={this.navRef} navState={this.state.navState} />
+				<InlineNavButton ref={this.prevRef} type='prev' {...prevProps} />
+				<ModuleComponent model={this.state.model} moduleData={this.state} />
+				<InlineNavButton ref={this.nextRef} type='next' {...nextProps} />
+			</React.Fragment>
+		)
+	}
+
+	getViewerClassNames(){
+		const s = this.state
+		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
+		return 'viewer--viewer-app ' +
+			(s.isPreviewing ? 'is-previewing' : 'is-not-previewing') + ' ' +
+			(s.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav') + ' ' +
+			(s.navState.open ? 'is-open-nav' : 'is-closed-nav') + ' ' +
+			(s.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav') + ' ' +
+			(visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive')
+	}
+
 	render() {
 		if (this.state.loading) return null
 
@@ -524,87 +592,8 @@ export default class ViewerApp extends React.Component {
 			return this.renderRequestStatusError()
 		}
 
-		let nextComp, nextItem, prevComp, prevItem
-		window.__lo = this.state.model
-		window.__s = this.state
-
-		const ModuleComponent = this.state.model.getComponentClass()
-
-		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
-		let navTargetLabel = ''
-		if (navTargetItem && navTargetItem.label) {
-			navTargetLabel = navTargetItem.label
-		}
-
-		const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
-
-		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
-
-		if (isNavEnabled) {
-			const canNavigate = NavUtil.canNavigate(this.state.navState)
-
-			prevItem = NavUtil.getPrev(this.state.navState)
-			if (prevItem) {
-				const navText = prevItem.label ? 'Back: ' + prevItem.label : 'Back'
-				const navLabel = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={`Start of ${this.state.model.title}`}
-						ariaLabel={`This is the start of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-
-			nextItem = NavUtil.getNext(this.state.navState)
-			if (nextItem) {
-				const navText = nextItem.label ? 'Next: ' + nextItem.label : 'Next'
-				const navLabel = nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={`End of ${this.state.model.title}`}
-						ariaLabel={`You have reached the end of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-		}
-
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		const hideViewer = modalItem && modalItem.hideViewer
-
-		const classNames = [
-			'viewer--viewer-app',
-			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
-			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
-			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
-			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
-			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
-		].join(' ')
 
 		return (
 			<div
@@ -612,16 +601,12 @@ export default class ViewerApp extends React.Component {
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
 				onScroll={this.onScroll}
-				className={classNames}
+				className={this.getViewerClassNames()}
 			>
 				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DURATION_MS} />
-				{hideViewer ? null : (
-					<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
-				)}
-				{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
-				{hideViewer ? null : prevComp}
-				{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
-				{hideViewer ? null : nextComp}
+
+				{hideViewer ? null : this.renderViewer()}
+
 				{this.state.isPreviewing ? (
 					<div className="preview-banner">
 						<span>Preview mode</span>
@@ -637,7 +622,9 @@ export default class ViewerApp extends React.Component {
 						<div className="border" />
 					</div>
 				) : null}
+
 				<FocusBlocker moduleData={this.state} />
+
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
 				) : null}
