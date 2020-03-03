@@ -1,6 +1,17 @@
 const StyleableText = require('obojobo-document-engine/src/scripts/common/text/styleable-text')
 const styleableTextRenderer = require('obojobo-document-engine/src/scripts/common/text/styleable-text-renderer')
 
+const escapeCharacters = str => {
+	const replacements = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		"'": '&#39;',
+		'"': '&#34;'
+	}
+	return str.replace(/[&<>'"]/g, match => replacements[match])
+}
+
 const textGroupParser = textGroup => {
 	if (!textGroup) return ''
 
@@ -15,7 +26,7 @@ const textGroupParser = textGroup => {
 		// Parse text value
 		const value = textParser(group.text)
 
-		textGroupBodyXML += `<t${dataXML}>${value}</t>`
+		textGroupBodyXML += `<t${dataXML}>${escapeCharacters(value)}</t>`
 	})
 
 	return `<textGroup>` + textGroupBodyXML + `</textGroup>`

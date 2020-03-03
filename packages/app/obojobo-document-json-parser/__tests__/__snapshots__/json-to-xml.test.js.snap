@@ -57,14 +57,14 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"c54048b5-2920-41c2-8dc7-5470395b67ce\\">
 				<textGroup>
-					<t align=\\"left\\">The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type u<code>nlimited </code>to allow the student to try as many times as they want.</t>
+					<t align=\\"left\\">The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type u&lt;code&gt;nlimited &lt;/code&gt;to allow the student to try as many times as they want.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"63b4fe5e-e0d7-4909-9819-55bcbde08267\\">
 				<textGroup>
 					<t>The review type describes how answers will be displayed after an attempt has ended.</t>
-					<t>A value of <code>never</code> means that after every attempt, the student will only be able to see if an answered question is incorrect.</t>
-					<t>A value of <code>always</code> means that the student will see both incorrect responses and the correct answers after every attempt.</t>
+					<t>A value of &lt;code&gt;never&lt;/code&gt; means that after every attempt, the student will only be able to see if an answered question is incorrect.</t>
+					<t>A value of &lt;code&gt;always&lt;/code&gt; means that the student will see both incorrect responses and the correct answers after every attempt.</t>
 					<t>A value of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.</t>
 				</textGroup>
 			</Text>
@@ -80,7 +80,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"3f409a67-c623-47c6-9ad1-1d8e4318441a\\">
 				<textGroup>
-					<t indent=\\"0\\">Somewhere on the launch page, there should be an Action Button that executes the <code>assessment:attemptStart</code> action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:</t>
+					<t indent=\\"0\\">Somewhere on the launch page, there should be an Action Button that executes the &lt;code&gt;assessment:attemptStart&lt;/code&gt; action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:</t>
 				</textGroup>
 			</Text>
 			<ActionButton id=\\"6f464ec8-f759-456e-a184-7f4c6a3d4a9e\\">
@@ -119,7 +119,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"35f63b6e-8c05-45d2-91e1-f33c7ece0901\\">
 				<textGroup>
-					<t indent=\\"0\\">To describe a score range, use square brackets to denote an inclusive range, so that <code>[0,100]</code> would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (<code>0, 100)</code> would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0<code>,100), </code>which matches all scores except 100, and (0<code>,100], </code>which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.</t>
+					<t indent=\\"0\\">To describe a score range, use square brackets to denote an inclusive range, so that &lt;code&gt;[0,100]&lt;/code&gt; would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (&lt;code&gt;0, 100)&lt;/code&gt; would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0&lt;code&gt;,100), &lt;/code&gt;which matches all scores except 100, and (0&lt;code&gt;,100], &lt;/code&gt;which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"eff2f957-3a24-4616-9014-5367a9a9886b\\">
@@ -139,24 +139,24 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"04554faa-bcfa-4a36-aa30-782fbab7e0a3\\">
 				<textGroup>
-					<t indent=\\"0\\">When processing the student's score, the assessment first determines their <i>raw score</i> by dividing the number of questions correct by the total number of questions and then multiplying by 100. </t>
-					<t indent=\\"0\\">(<latex>(correct / questions) * 100 = raw score</latex>)</t>
+					<t indent=\\"0\\">When processing the student&#39;s score, the assessment first determines their &lt;i&gt;raw score&lt;/i&gt; by dividing the number of questions correct by the total number of questions and then multiplying by 100. </t>
+					<t indent=\\"0\\">(&lt;latex&gt;(correct / questions) * 100 = raw score&lt;/latex&gt;)</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"5451c527-db4c-43ab-91dc-078a77739c18\\">
 				<textGroup>
-					<t>The Rubric then checks the raw score. If the raw score is greater than or equal to the <i>Passing Score</i>, the rubric declares the student as passed.</t>
-					<t>If the student takes all of their allowed attempts and does not achieve at least one <i>Passing Score</i>, then the <i>Unable to Pass Result</i> will be sent to the grade book.</t>
+					<t>The Rubric then checks the raw score. If the raw score is greater than or equal to the &lt;i&gt;Passing Score&lt;/i&gt;, the rubric declares the student as passed.</t>
+					<t>If the student takes all of their allowed attempts and does not achieve at least one &lt;i&gt;Passing Score&lt;/i&gt;, then the &lt;i&gt;Unable to Pass Result&lt;/i&gt; will be sent to the grade book.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"367a23f3-a67f-425a-87f2-a9eae6a7b6f0\\">
 				<textGroup>
-					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student's score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l</b><b><code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a &lt;i&gt;Passed Result &lt;/i&gt;after the student achieves a &lt;i&gt;Passing Score.&lt;/i&gt; The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in &lt;b&gt;Score Actions&lt;/b&gt;)&lt;b&gt;,&lt;/b&gt; a single value, or as the variable &lt;b&gt;$l&lt;/b&gt;&lt;b&gt;&lt;code&gt;ast_attempt. &lt;/code&gt;&lt;/b&gt;The reward describes how many points to add to the Pas&lt;i&gt;sed Result, w&lt;/i&gt;ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"c39ac706-f041-42e0-b0b4-6414fb69aed0\\">
 				<textGroup>
-					<t indent=\\"0\\">In this assessment, the Rubric lists a 75% as the <i>Passing Score</i> and sets the <i>Passed Result</i> and <i>Failed Result</i> so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.</t>
+					<t indent=\\"0\\">In this assessment, the Rubric lists a 75% as the &lt;i&gt;Passing Score&lt;/i&gt; and sets the &lt;i&gt;Passed Result&lt;/i&gt; and &lt;i&gt;Failed Result&lt;/i&gt; so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.</t>
 				</textGroup>
 			</Text>
 		</Page>
@@ -164,7 +164,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			<Question id=\\"8383da46-ac02-461f-a0a8-002d07483d2f\\">
 				<Text id=\\"97c23788-8ae7-4c28-9c21-c440de2fa878\\">
 					<textGroup>
-						<t indent=\\"0\\">Here is an example question inside of an Assessment's question bank.</t>
+						<t indent=\\"0\\">Here is an example question inside of an Assessment&#39;s question bank.</t>
 					</textGroup>
 				</Text>
 				<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"d9a152e4-503c-42fb-a3bb-d6553b2ea941\\">
@@ -264,11 +264,9 @@ exports[`JSON to XML Parser Converts code.json to xml 1`] = `
 <ObojoboDraftDoc>
 	<Code id=\\"1fbeedbe-a92d-4716-a614-9e6ce06c6804\\">
 		<textGroup>
-			<t indent=\\"0\\">
-				<i>// Sample code</i>
-			</t>
+			<t indent=\\"0\\">&lt;i&gt;// Sample code&lt;/i&gt;</t>
 			<t indent=\\"0\\">function main() {</t>
-			<t indent=\\"1\\">print(\\"Hello world\\");</t>
+			<t indent=\\"1\\">print(&#34;Hello world&#34;);</t>
 			<t indent=\\"0\\">}</t>
 		</textGroup>
 		<triggers>
