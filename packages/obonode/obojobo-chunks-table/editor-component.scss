@@ -2,6 +2,10 @@
 
 .obojobo-draft--chunks--table.viewer {
 	.view {
+		.obojobo-draft--chunks--table--caption {
+			text-align: center;
+			width: 200%;
+		}
 		th {
 			position: relative;
 		}

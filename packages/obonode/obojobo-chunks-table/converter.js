@@ -6,24 +6,28 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 const slateToObo = node => {
 	const content = node.data.get('content') || { textGroup: {} }
-	content.header = node.nodes.get(0).data.get('content').header
 
-	content.textGroup.numRows = node.nodes.size
-	content.textGroup.numCols = node.nodes.get(0).data.get('content').numCols
+	content.header = node.nodes.get(1).data.get('content').header
+
+	content.textGroup.caption = node.nodes.get(0).text
+	content.textGroup.numRows = node.nodes.size - 1
+	content.textGroup.numCols = node.nodes.get(1).data.get('content').numCols
 	content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
-		row.nodes.forEach(cell => {
-			const cellLine = {
-				text: { value: cell.text, styleList: [] }
-			}
+		if (row.type !== 'ObojoboDraft.Chunks.Table.Caption') {
+			row.nodes.forEach(cell => {
+				const cellLine = {
+					text: { value: cell.text, styleList: [] }
+				}
 
-			cell.nodes.forEach(text => {
-				TextUtil.slateToOboText(text, cellLine)
+				cell.nodes.forEach(text => {
+					TextUtil.slateToOboText(text, cellLine)
+				})
+
+				content.textGroup.textGroup.push(cellLine)
 			})
-
-			content.textGroup.textGroup.push(cellLine)
-		})
+		}
 	})
 
 	return {

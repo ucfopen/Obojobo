@@ -13,6 +13,11 @@ const Table = props => {
 	const data = model.modelState
 	const { numCols } = data.textGroup
 
+	console.log(props)
+	console.log(data.textGroup)
+	console.log(data)
+	console.log(model)
+
 	if (data.header) {
 		row = data.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
 			<th

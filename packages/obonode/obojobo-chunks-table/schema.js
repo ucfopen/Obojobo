@@ -6,11 +6,17 @@ const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.Table': {
 			nodes: [
+				{
+					match: [{ type: TABLE_CAPTION_NODE }],
+					min: 1,
+					max: 1
+				},
 				{
 					match: [{ type: TABLE_ROW_NODE }],
 					min: 1
@@ -38,9 +44,14 @@ const schema = {
 						})
 					}
 					case CHILD_MIN_INVALID: {
-						const block = Block.create({
+						let block = Block.create({
 							type: TABLE_ROW_NODE,
 							data: { content: { header, numCols } }
+						})
+						// editor.insertNodeByKey(node.key, index, block)
+
+						block = Block.create({
+							type: TABLE_CAPTION_NODE
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
@@ -80,6 +91,20 @@ const schema = {
 							data: { content: { header } }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
+					}
+				}
+			}
+		},
+		[TABLE_CAPTION_NODE]: {
+			nodes: [{ match: [{ object: 'text' }] }],
+			normalize: (editor, error) => {
+				const { node, child, index } = error
+				switch (error.code) {
+					case CHILD_TYPE_INVALID: {
+						// Allow inserting of new nodes by unwrapping unexpected blocks at end
+						if (child.object === 'block' && index === node.nodes.size - 1) {
+							return editor.unwrapNodeByKey(child.key)
+						}
 					}
 				}
 			}

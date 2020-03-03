@@ -7,12 +7,14 @@ import Icon from './icon'
 import Node from './editor-component'
 import Row from './components/row/editor-component'
 import Cell from './components/cell/editor-component'
+import Caption from './components/caption/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 const isType = editor =>
 	editor.value.blocks.some(
@@ -60,6 +62,19 @@ const plugins = {
 				return next()
 		}
 	},
+	renderPlaceholder(props, editor, next) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== TABLE_CAPTION_NODE) return next()
+		if (node.text !== '') return next()
+
+		return (
+			<span
+				className="placeholder align-center required"
+				contentEditable={false}
+				data-placeholder="Type Your Caption Here"
+			/>
+		)
+	},
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TABLE_NODE:
@@ -68,6 +83,8 @@ const plugins = {
 				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
 				return <Cell {...props} {...props.attributes} />
+			case TABLE_CAPTION_NODE:
+				return <Caption {...props} {...props.attributes} />
 			default:
 				return next()
 		}
