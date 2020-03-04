@@ -11,7 +11,7 @@ const onIdleWarn = () => {
 
 const onIdle = () => {
 	lastActiveTime = new Date(idleTimerRef.current.getLastActiveTime())
-	Dispatcher.trigger('window:inactive', {lastActiveTime})
+	Dispatcher.trigger('window:inactive', { lastActiveTime })
 }
 
 const onReturnFromIdleWarn = () => {
@@ -20,11 +20,11 @@ const onReturnFromIdleWarn = () => {
 
 const onReturnFromIdle = () => {
 	const inactiveDuration = Date.now() - lastActiveTime
-	Dispatcher.trigger('window:returnFromInactive', {lastActiveTime, inactiveDuration})
+	Dispatcher.trigger('window:returnFromInactive', { lastActiveTime, inactiveDuration })
 	lastActiveTime = null
 }
 
-const ObojoboIdleTimer = ({timeout, warning = false}) => (
+const ObojoboIdleTimer = ({ timeout, warning = false }) => (
 	<React.Fragment>
 		<IdleTimer
 			ref={idleTimerRef}
@@ -33,15 +33,14 @@ const ObojoboIdleTimer = ({timeout, warning = false}) => (
 			onIdle={onIdle}
 			onActive={onReturnFromIdle}
 		/>
-		{warning
-			? <IdleTimer
+		{warning ? (
+			<IdleTimer
 				element={window}
 				timeout={warning}
 				onIdle={onIdleWarn}
 				onActive={onReturnFromIdleWarn}
 			/>
-			: null
-		}
+		) : null}
 	</React.Fragment>
 )
 

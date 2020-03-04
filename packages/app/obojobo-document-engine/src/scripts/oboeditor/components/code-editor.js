@@ -117,13 +117,10 @@ class CodeEditor extends React.Component {
 		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
-		return this.props.saveDraft(
-			this.props.draftId,
-			this.state.code,
-			this.props.mode
-		)
+		return this.props
+			.saveDraft(this.props.draftId, this.state.code, this.props.mode)
 			.then(success => {
-				this.setState({saved: success})
+				this.setState({ saved: success })
 			})
 	}
 

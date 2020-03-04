@@ -460,7 +460,7 @@ export default class ViewerApp extends React.Component {
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:close',
 			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId,
+			visitId: this.state.navState.visitId
 		})
 	}
 
@@ -510,7 +510,7 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 
-	buildInlineNavProps(){
+	buildInlineNavProps() {
 		const canNavigate = NavUtil.canNavigate(this.state.navState)
 		const prevItem = NavUtil.getPrev(this.state.navState)
 		const nextItem = NavUtil.getNext(this.state.navState)
@@ -518,8 +518,8 @@ export default class ViewerApp extends React.Component {
 		let prevProps
 		let nextProps
 
-		if(prevItem){
-			const navTitle = (prevItem.label ? 'Go back to ' + prevItem.label : 'Go back')
+		if (prevItem) {
+			const navTitle = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
 			prevProps = {
 				title: navTitle,
 				ariaLabel: navTitle,
@@ -533,10 +533,10 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		if(nextItem){
+		if (nextItem) {
 			nextProps = {
-				title: (nextItem.label ? 'Next: ' + nextItem.label : 'Next'),
-				ariaLabel: (nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'),
+				title: nextItem.label ? 'Next: ' + nextItem.label : 'Next',
+				ariaLabel: nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward',
 				disabled: !canNavigate
 			}
 		} else {
@@ -553,7 +553,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	renderViewer(){
+	renderViewer() {
 		NavUtil.isNavEnabled(this.state.navState)
 		const { prevProps, nextProps } = this.buildInlineNavProps()
 		const ModuleComponent = this.state.model.getComponentClass()
@@ -567,22 +567,28 @@ export default class ViewerApp extends React.Component {
 			<React.Fragment>
 				<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 				<Nav ref={this.navRef} navState={this.state.navState} />
-				<InlineNavButton ref={this.prevRef} type='prev' {...prevProps} />
+				<InlineNavButton ref={this.prevRef} type="prev" {...prevProps} />
 				<ModuleComponent model={this.state.model} moduleData={this.state} />
-				<InlineNavButton ref={this.nextRef} type='next' {...nextProps} />
+				<InlineNavButton ref={this.nextRef} type="next" {...nextProps} />
 			</React.Fragment>
 		)
 	}
 
-	getViewerClassNames(){
+	getViewerClassNames() {
 		const s = this.state
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
-		return 'viewer--viewer-app ' +
-			(s.isPreviewing ? 'is-previewing' : 'is-not-previewing') + ' ' +
-			(s.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav') + ' ' +
-			(s.navState.open ? 'is-open-nav' : 'is-closed-nav') + ' ' +
-			(s.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav') + ' ' +
+		return (
+			'viewer--viewer-app ' +
+			(s.isPreviewing ? 'is-previewing' : 'is-not-previewing') +
+			' ' +
+			(s.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav') +
+			' ' +
+			(s.navState.open ? 'is-open-nav' : 'is-closed-nav') +
+			' ' +
+			(s.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav') +
+			' ' +
 			(visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive')
+		)
 	}
 
 	render() {

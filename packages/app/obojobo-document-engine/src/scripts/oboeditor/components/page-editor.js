@@ -263,11 +263,10 @@ class PageEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 
-		return this.props.saveDraft(draftId, JSON.stringify(json))
-			.then(success => {
-				this.setState({saved: success})
-				return success
-			})
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(success => {
+			this.setState({ saved: success })
+			return success
+		})
 	}
 
 	exportToJSON(page, value) {

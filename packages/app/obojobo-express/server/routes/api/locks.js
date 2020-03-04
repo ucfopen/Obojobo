@@ -35,7 +35,11 @@ router
 				return res.notAuthorized('Draft is already locked by someone else.')
 			}
 
-			const myLock = await EditLock.create(req.currentUser.id, req.params.draftId, req.body.contentId)
+			const myLock = await EditLock.create(
+				req.currentUser.id,
+				req.params.draftId,
+				req.body.contentId
+			)
 
 			// send response to user
 			if (myLock.userId === req.currentUser.id) {

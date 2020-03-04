@@ -82,12 +82,13 @@ class EditLock {
 				ORDER BY drafts_content.created_at DESC
 				LIMIT 1
 				`,
-					{ draftId }
-				)
+				{ draftId }
+			)
 
 			// verify the newest version is the same as the version requested
 			// if it is not - that means the draft has been updated unexpectedly
-			if(currentContentId.contentId !== contentId) throw Error('Current version of draft does not match requested lock.')
+			if (currentContentId.contentId !== contentId)
+				throw Error('Current version of draft does not match requested lock.')
 
 			return await t.one(
 				`INSERT INTO edit_locks (user_id, draft_id)

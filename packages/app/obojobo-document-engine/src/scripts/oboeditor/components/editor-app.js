@@ -35,7 +35,6 @@ const Dispatcher = Common.flux.Dispatcher
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
 
-
 const plugins = [
 	Component.plugins,
 	MarkToolbar.plugins,
@@ -68,9 +67,9 @@ class EditorApp extends React.Component {
 		const msPerMin = 60000
 		const locks = props.settings.editLocks
 		this.editLocks = {
-			autoExpireMs:msPerMin * locks.autoExpireMinutes * .9,
+			autoExpireMs: msPerMin * locks.autoExpireMinutes * 0.9,
 			warnMs: msPerMin * locks.warnMinutes,
-			idleMs: msPerMin * locks.idleMinutes,
+			idleMs: msPerMin * locks.idleMinutes
 		}
 
 		// register plugins from dynamic registry items
@@ -98,7 +97,7 @@ class EditorApp extends React.Component {
 		this.renewLockInterval = null
 	}
 
-	saveDraft(draftId, draftSrc, xmlOrJSON = 'json'){
+	saveDraft(draftId, draftSrc, xmlOrJSON = 'json') {
 		const mode = xmlOrJSON === 'xml' ? 'text/plain' : 'application/json'
 		return APIUtil.postDraft(draftId, draftSrc, mode)
 			.then(result => {
@@ -106,7 +105,7 @@ class EditorApp extends React.Component {
 					ModalUtil.show(<SimpleDialog ok title={'Save Error: ' + result.value.message} />)
 					return false
 				} else {
-					this.state.model.set('contentId',  result.value.id)
+					this.state.model.set('contentId', result.value.id)
 					return true
 				}
 			})
@@ -168,13 +167,14 @@ class EditorApp extends React.Component {
 			requestStatus: 'invalid',
 			requestError: {
 				title: 'Module is Being Edited.',
-				message: 'Someone else is currently editing this module. Reload this window later to try again.'
+				message:
+					'Someone else is currently editing this module. Reload this window later to try again.'
 			}
 		})
 	}
 
 	startRenewEditLockInterval(draftId) {
-		if(this._isCreatingEditLock === true) return Promise.resolve()
+		if (this._isCreatingEditLock === true) return Promise.resolve()
 		this._isCreatingEditLock = true
 
 		return this.createEditLock(draftId, this.state.model.get('contentId'))
@@ -182,8 +182,9 @@ class EditorApp extends React.Component {
 				// only create the lock interval when we've got a successful lock
 				clearInterval(this.renewLockInterval) // clear any existing interval
 				this.renewLockInterval = setInterval(() => {
-					this.createEditLock(draftId, this.state.model.get('contentId'))
-						.catch(() => this.displayLockedState())
+					this.createEditLock(draftId, this.state.model.get('contentId')).catch(() =>
+						this.displayLockedState()
+					)
 				}, this.editLocks.autoExpireMs)
 
 				this._isCreatingEditLock = false
@@ -255,25 +256,33 @@ class EditorApp extends React.Component {
 			})
 	}
 
-	onWindowClose(){
+	onWindowClose() {
 		APIUtil.deleteLockBeacon(this.state.draftId)
 	}
 
-	onWindowInactive(){
+	onWindowInactive() {
 		APIUtil.deleteLockBeacon(this.state.draftId)
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
 		ModalUtil.hide()
-		ModalUtil.show(<SimpleDialog ok title='Editor Session Expired'>Collaborators may edit this module while you're away. We'll attempt to renew your session when you return.</SimpleDialog>)
+		ModalUtil.show(
+			<SimpleDialog ok title="Editor Session Expired">
+				Collaborators may edit this module while you're away. We'll attempt to renew your session
+				when you return.
+			</SimpleDialog>
+		)
 	}
 
-	onWindowInactiveWarning(){
-		ModalUtil.show(<SimpleDialog ok title='Editor Idle Warning'>Interact with this window soon to keep your edit session.</SimpleDialog>)
+	onWindowInactiveWarning() {
+		ModalUtil.show(
+			<SimpleDialog ok title="Editor Idle Warning">
+				Interact with this window soon to keep your edit session.
+			</SimpleDialog>
+		)
 	}
 
-	onWindowReturnFromInactive(){
-		this.startRenewEditLockInterval(this.state.draftId)
-		.then(() => {
+	onWindowReturnFromInactive() {
+		this.startRenewEditLockInterval(this.state.draftId).then(() => {
 			ModalUtil.hide()
 		})
 	}
@@ -329,7 +338,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				<ObojoboIdleTimer timeout={this.editLocks.idleMs} warning={this.editLocks.warnMs}/>
+				<ObojoboIdleTimer timeout={this.editLocks.idleMs} warning={this.editLocks.warnMs} />
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
