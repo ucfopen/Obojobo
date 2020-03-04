@@ -34,9 +34,9 @@ const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-const RENEW_LOCK_INTERVAL = 60000 * 0.03 // 4.9 minutes in milliseconds
-const IDLE_TIMEOUT_DELAY_MS = 60000 * 0.02 // 30 minutes in milliseconds
-const IDLE_WARNING_DELAY_MS = 60000 * 0.01 // 30 minutes in milliseconds
+const RENEW_LOCK_INTERVAL = 60000 * 0.3 // 4.9 minutes in milliseconds
+const IDLE_TIMEOUT_DELAY_MS = 60000 * 0.2 // 30 minutes in milliseconds
+const IDLE_WARNING_DELAY_MS = 60000 * 0.1 // 30 minutes in milliseconds
 
 const plugins = [
 	Component.plugins,
@@ -84,6 +84,10 @@ class EditorApp extends React.Component {
 
 		this.switchMode = this.switchMode.bind(this)
 		this.saveDraft = this.saveDraft.bind(this)
+		this.onWindowClose = this.onWindowClose.bind(this)
+		this.onWindowInactiveWarning = this.onWindowInactiveWarning.bind(this)
+		this.onWindowReturnFromInactive = this.onWindowReturnFromInactive.bind(this)
+		this.onWindowInactive = this.onWindowInactive.bind(this)
 		this.renewLockInterval = null
 	}
 
@@ -163,13 +167,24 @@ class EditorApp extends React.Component {
 	}
 
 	startRenewEditLockInterval(draftId) {
-		this.createEditLock(draftId)
-			.catch(() => this.displayLockedModal())
+		if(this._isCreatingEditLock === true) return Promise.resolve()
+		this._isCreatingEditLock = true
 
-		this.renewLockInterval = setInterval(() => {
-			this.createEditLock(draftId)
-				.catch(() => this.displayLockedModal())
-		}, RENEW_LOCK_INTERVAL)
+		return this.createEditLock(draftId)
+			.then(() => {
+				// only create the lock interval when we've got a successful lock
+				clearInterval(this.renewLockInterval) // clear any existing interval
+				this.renewLockInterval = setInterval(() => {
+					this.createEditLock(draftId)
+						.catch(() => this.displayLockedModal())
+				}, RENEW_LOCK_INTERVAL)
+
+				this._isCreatingEditLock = false
+			})
+			.catch(() => {
+				this.displayLockedModal()
+				this._isCreatingEditLock = false
+			})
 	}
 
 	createEditLock(draftId) {
@@ -226,27 +241,36 @@ class EditorApp extends React.Component {
 			.then(() => this.startRenewEditLockInterval(draftId))
 			.then(() => {
 				enableWindowCloseDispatcher()
-				Dispatcher.on('window:closeNow', this.onWindowInactive.bind(this))
-				Dispatcher.on('window:inactive', this.onWindowInactive.bind(this))
-				Dispatcher.on('window:inactiveWarning', this.onWindowInactiveWarning.bind(this))
-				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive.bind(this))
+				Dispatcher.on('window:closeNow', this.onWindowClose)
+
+				Dispatcher.on('window:inactiveWarning', this.onWindowInactiveWarning)
+				Dispatcher.on('window:returnFromInactiveWarning', this.onWindowReturnFromInactive)
+				Dispatcher.on('window:inactive', this.onWindowInactive)
+				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
 			})
 	}
 
+	onWindowClose(){
+		APIUtil.deleteLockBeacon(this.state.draftId)
+	}
+
 	onWindowInactive(){
-		// delete my lock
 		APIUtil.deleteLockBeacon(this.state.draftId)
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
+		ModalUtil.hide()
+		ModalUtil.show(<SimpleDialog ok title='Editor Session Expired'>Collaborators may edit this module while you're away. Interacting with this window will attempt to renew your session.</SimpleDialog>)
 	}
 
 	onWindowInactiveWarning(){
-		ModalUtil.show(<SimpleDialog ok title='Idle Warning' />)
+		ModalUtil.show(<SimpleDialog ok title='Editor Idle Warning'>Interact with this window soon to keep your edit session.</SimpleDialog>)
 	}
 
 	onWindowReturnFromInactive(){
-		ModalUtil.hide()
 		this.startRenewEditLockInterval(this.state.draftId)
+		.then(() => {
+			ModalUtil.hide()
+		})
 	}
 
 	componentWillUnmount() {
