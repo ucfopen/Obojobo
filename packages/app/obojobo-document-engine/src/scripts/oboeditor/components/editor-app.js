@@ -64,10 +64,14 @@ class EditorApp extends React.Component {
 			requestError: null
 		}
 
-		const sPerMin = 60000
-		this.RENEW_LOCK_INTERVAL = sPerMin * props.settings.editLockExpireMinutes
-		this.IDLE_WARNING_DELAY_MS = sPerMin * props.settings.editWarnIdleMinutes
-		this.IDLE_LOCKOUT_DELAY_MS = sPerMin * props.settings.editLockIdleMinutes
+		// caluclate edit lock settings
+		const msPerMin = 60000
+		const locks = props.settings.editLocks
+		this.editLocks = {
+			autoExpireMs:msPerMin * locks.autoExpireMinutes * .9,
+			warnMs: msPerMin * locks.warnMinutes,
+			idleMs: msPerMin * locks.idleMinutes,
+		}
 
 		// register plugins from dynamic registry items
 		Common.Registry.getItems(items => {
@@ -164,7 +168,7 @@ class EditorApp extends React.Component {
 			requestStatus: 'invalid',
 			requestError: {
 				title: 'Module is Being Edited.',
-				message: 'Someone else is currently editing this module, please try again later.'
+				message: 'Someone else is currently editing this module. Reload this window later to try again.'
 			}
 		})
 	}
@@ -180,7 +184,7 @@ class EditorApp extends React.Component {
 				this.renewLockInterval = setInterval(() => {
 					this.createEditLock(draftId, this.state.model.get('contentId'))
 						.catch(() => this.displayLockedState())
-				}, this.RENEW_LOCK_INTERVAL)
+				}, this.editLocks.autoExpireMs)
 
 				this._isCreatingEditLock = false
 			})
@@ -325,7 +329,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				<ObojoboIdleTimer timeout={this.IDLE_LOCKOUT_DELAY_MS} warning={this.IDLE_WARNING_DELAY_MS}/>
+				<ObojoboIdleTimer timeout={this.editLocks.idleMs} warning={this.editLocks.warnMs}/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>

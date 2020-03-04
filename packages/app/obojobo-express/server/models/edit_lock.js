@@ -1,5 +1,5 @@
 const db = require('../db')
-const editLockExpireMinutes = oboRequire('server/config').general.editLockExpireMinutes
+const editLockExpireMinutes = oboRequire('server/config').general.editLocks.autoExpireMinutes
 const DraftModel = oboRequire('server/models/draft')
 
 class EditLock {

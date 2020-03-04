@@ -11,7 +11,7 @@ describe('Edit Lock Model', () => {
 		jest.resetAllMocks()
 		db = require('../../db')
 		config = require('../../config')
-		config.general.editLockExpireMinutes = MOCK_EXPIRE_MINUTES
+		config.general.editLocks.autoExpireMinutes = MOCK_EXPIRE_MINUTES
 		EditLock = require('../../models/edit_lock')
 	})
 	afterEach(() => {})

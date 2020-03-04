@@ -35,45 +35,45 @@ describe('Purge Data', () => {
 
 	test('isPurgeEnabled is false when config isnt set', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		delete config.general.demoPurgeMode
-		expect(config.general.demoPurgeMode).toBeUndefined()
+		delete config.general.demoMode.purgeDaysAgo
+		expect(config.general.demoMode.purgeDaysAgo).toBeUndefined()
 		expect(isPurgeEnabled()).toBe(false)
 	})
 
 	test('isPurgeEnabled is false when config is none', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = 'none'
+		config.general.demoMode.purgeDaysAgo = 'none'
 		expect(isPurgeEnabled()).toBe(false)
 	})
 
 	test('isPurgeEnabled is false when config is 0', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = 0
+		config.general.demoMode.purgeDaysAgo = 0
 		expect(isPurgeEnabled()).toBe(false)
 	})
 
 	test('isPurgeEnabled is false when config is 1', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = 1
+		config.general.demoMode.purgeDaysAgo = 1
 		expect(isPurgeEnabled()).toBe(false)
 	})
 
 	test('isPurgeEnabled is true when config purge mode set to history', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = MODE_PURGE_HISTORY
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
 		expect(isPurgeEnabled()).toBe(true)
 	})
 
 	test('isPurgeEnabled is true when config purge mode set to all', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = MODE_PURGE_ALL
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_ALL
 		expect(isPurgeEnabled()).toBe(true)
 	})
 
 	test('purgeData doesnt delete data with purge mode empty', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		delete config.general.demoPurgeMode
+		delete config.general.demoMode.purgeDaysAgo
 		purgeData().then(() => {
 			expect(db.none).not.toHaveBeenCalled()
 		})
@@ -82,7 +82,7 @@ describe('Purge Data', () => {
 	test('purgeData doesnt delete data with purge mode none', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = 'none'
+		config.general.demoMode.purgeDaysAgo = 'none'
 		purgeData().then(() => {
 			expect(db.none).not.toHaveBeenCalled()
 		})
@@ -91,7 +91,7 @@ describe('Purge Data', () => {
 	test('purgeData deletes data with purge mode history', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = MODE_PURGE_HISTORY
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
 		purgeData().then(() => {
 			expect(db.none).toHaveBeenCalledTimes(9)
 		})
@@ -100,7 +100,7 @@ describe('Purge Data', () => {
 	test('purgeData deletes data with purge mode all', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoPurgeMode = MODE_PURGE_ALL
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_ALL
 		purgeData().then(() => {
 			expect(db.none).toHaveBeenCalledTimes(15)
 		})
@@ -110,7 +110,7 @@ describe('Purge Data', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
 		const expectedDate = calculateDaysAgo(7)
-		config.general.demoPurgeMode = MODE_PURGE_HISTORY
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
 		purgeData().then(() => {
 			expect(db.none).toHaveBeenCalled()
 			const sampleQueryVars = db.none.mock.calls[0][1]
@@ -124,7 +124,7 @@ describe('Purge Data', () => {
 		delete config.general.demoPurgeDaysAgo
 		const { purgeData } = oboRequire('server/util/purge_data')
 		const expectedDate = calculateDaysAgo(7)
-		config.general.demoPurgeMode = MODE_PURGE_HISTORY
+		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
 		purgeData().then(() => {
 			expect(db.none).toHaveBeenCalled()
 			const sampleQueryVars = db.none.mock.calls[0][1]

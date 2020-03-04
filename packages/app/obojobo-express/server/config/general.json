@@ -13,11 +13,15 @@
 				"extended": false
 			}
 		},
-		"demoPurgeMode": "none",
-		"demoPurgeDaysAgo": 7,
-		"editLockIdleMinutes": 0.75,
-		"editLockExpireMinutes": 1,
-		"editWarnIdleMinutes": 0.5
+		"demoMode":{
+			"purgeMode": "none",
+			"purgeDaysAgo": 7
+		},
+		"editLocks": {
+			"idleMinutes": 45,
+			"warnMinutes": 40,
+			"autoExpireMinutes":5
+		}
 	},
 	"test": {
 		"key": "value",
@@ -31,7 +35,14 @@
 		"cookieSecret": {
 			"ENV": "OBO_COOKIE_SECRET"
 		},
-		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"},
-		"demoPurgeDaysAgo": {"ENV": "OBO_DEMO_PURGE_DAYS_AGO"}
+		"demoMode":{
+			"purgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"},
+			"purgeDaysAgo": {"ENV": "OBO_DEMO_PURGE_DAYS_AGO"}
+		},
+		"editLocks": {
+			"idleMinutes": {"ENV": "OBO_EDITLOCK_IDLE_MINUTES"},
+			"warnMinutes": {"ENV": "OBO_EDITLOCK_IDLE_WARN_MINUTES"},
+			"autoExpireMinutes": {"ENV": "OBO_EDITLOCK_EXPIRE_MINUTES"}
+		}
 	}
 }

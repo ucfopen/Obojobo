@@ -37,6 +37,7 @@ router
 
 			const myLock = await EditLock.create(req.currentUser.id, req.params.draftId, req.body.contentId)
 
+			// send response to user
 			if (myLock.userId === req.currentUser.id) {
 				res.success()
 			} else {
