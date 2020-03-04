@@ -169,6 +169,7 @@ class PageEditor extends React.Component {
 
 		EditorUtil.renamePage(this.props.model.id, label)
 		this.setState({ title: label })
+		this.saveModule(this.props.draftId)
 	}
 
 	render() {

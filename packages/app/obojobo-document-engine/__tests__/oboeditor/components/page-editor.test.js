@@ -460,9 +460,17 @@ describe('PageEditor', () => {
 		const props = {
 			page: {
 				attributes: { children: [] },
-				get: jest.fn()
+				get: jest.fn(),
+				set: jest.fn(),
+				children: { set: jest.fn() }
 			},
-			model: { title: 'Mock Title' }
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => {
+					return { content: {}, children: [] }
+				},
+				children: []
+			}
 		}
 
 		// render
@@ -487,9 +495,17 @@ describe('PageEditor', () => {
 		const props = {
 			page: {
 				attributes: { children: [] },
-				get: jest.fn()
+				get: jest.fn(),
+				set: jest.fn(),
+				children: { set: jest.fn() }
 			},
-			model: { title: 'Mock Title' }
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => {
+					return { content: {}, children: [] }
+				},
+				children: []
+			}
 		}
 
 		// render
