@@ -47,7 +47,6 @@ class PageEditor extends React.Component {
 			title: props.model.title
 		}
 
-		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
@@ -184,6 +183,7 @@ class PageEditor extends React.Component {
 						onChange={event => this.setState({ title: event.target.value })}
 						size={this.state.title.length}
 						onBlur={() => this.renameModule(this.state.title)}
+						aria-label="Rename Module"
 					/>
 					<FileToolbar
 						editorRef={this.editorRef}

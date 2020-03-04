@@ -15,6 +15,10 @@
 			margin-top: 0.5em;
 			font-family: $font-default;
 			border: 1px solid $color-bg;
+			max-width: 50em;
+			overflow: hidden;
+			white-space: nowrap;
+			position: absolute;
 
 			&:hover {
 				border: 1px solid $color-shadow;
