@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const mediaConfig = oboRequire('server/config').media
+const { general: generalConfig, media: mediaConfig } = oboRequire('server/config')
 const { requireCanViewEditor, requireCurrentDocument } = oboRequire('server/express_validators')
 const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
 const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
@@ -13,7 +13,17 @@ router
 	.route('/visual|classic/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
 	.get((req, res) => {
-		res.render('editor', { settings: { allowedUploadTypes }, assetForEnv, webpackAssetPath })
+		const options = {
+			settings: {
+				allowedUploadTypes,
+				editLockIdleMinutes: parseFloat(generalConfig.editLockIdleMinutes),
+				editLockExpireMinutes: parseFloat(generalConfig.editLockExpireMinutes),
+				editWarnIdleMinutes: parseFloat(generalConfig.editWarnIdleMinutes)
+			},
+			assetForEnv,
+			webpackAssetPath
+		}
+		res.render('editor', options)
 	})
 
 module.exports = router

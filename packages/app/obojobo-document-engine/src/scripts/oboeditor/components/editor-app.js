@@ -34,9 +34,7 @@ const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-const RENEW_LOCK_INTERVAL = 60000 * 0.3 // 4.9 minutes in milliseconds
-const IDLE_TIMEOUT_DELAY_MS = 60000 * 0.2 // 30 minutes in milliseconds
-const IDLE_WARNING_DELAY_MS = 60000 * 0.1 // 30 minutes in milliseconds
+
 
 const plugins = [
 	Component.plugins,
@@ -65,6 +63,11 @@ class EditorApp extends React.Component {
 			requestStatus: null,
 			requestError: null
 		}
+
+		const sPerMin = 60000
+		this.RENEW_LOCK_INTERVAL = sPerMin * props.settings.editLockExpireMinutes
+		this.IDLE_WARNING_DELAY_MS = sPerMin * props.settings.editWarnIdleMinutes
+		this.IDLE_LOCKOUT_DELAY_MS = sPerMin * props.settings.editLockIdleMinutes
 
 		// register plugins from dynamic registry items
 		Common.Registry.getItems(items => {
@@ -156,7 +159,7 @@ class EditorApp extends React.Component {
 		this.reloadDraft(this.state.draftId, mode)
 	}
 
-	displayLockedModal() {
+	displayLockedState() {
 		this.setState({
 			requestStatus: 'invalid',
 			requestError: {
@@ -170,26 +173,24 @@ class EditorApp extends React.Component {
 		if(this._isCreatingEditLock === true) return Promise.resolve()
 		this._isCreatingEditLock = true
 
-		return this.createEditLock(draftId)
+		return this.createEditLock(draftId, this.state.model.get('contentId'))
 			.then(() => {
 				// only create the lock interval when we've got a successful lock
 				clearInterval(this.renewLockInterval) // clear any existing interval
 				this.renewLockInterval = setInterval(() => {
-					this.createEditLock(draftId)
-						.catch(() => this.displayLockedModal())
-				}, RENEW_LOCK_INTERVAL)
+					this.createEditLock(draftId, this.state.model.get('contentId'))
+						.catch(() => this.displayLockedState())
+				}, this.RENEW_LOCK_INTERVAL)
 
 				this._isCreatingEditLock = false
 			})
 			.catch(() => {
-				this.displayLockedModal()
+				this.displayLockedState()
 				this._isCreatingEditLock = false
 			})
 	}
 
-	createEditLock(draftId) {
-		const contentId = this.state.model.get('contentId')
-
+	createEditLock(draftId, contentId) {
 		return APIUtil.requestEditLock(draftId, contentId).then(json => {
 			if (json.status === 'error') throw new Error('Unable to lock module.')
 		})
@@ -259,7 +260,7 @@ class EditorApp extends React.Component {
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
 		ModalUtil.hide()
-		ModalUtil.show(<SimpleDialog ok title='Editor Session Expired'>Collaborators may edit this module while you're away. Interacting with this window will attempt to renew your session.</SimpleDialog>)
+		ModalUtil.show(<SimpleDialog ok title='Editor Session Expired'>Collaborators may edit this module while you're away. We'll attempt to renew your session when you return.</SimpleDialog>)
 	}
 
 	onWindowInactiveWarning(){
@@ -324,7 +325,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DELAY_MS} warning={IDLE_WARNING_DELAY_MS}/>
+				<ObojoboIdleTimer timeout={this.IDLE_LOCKOUT_DELAY_MS} warning={this.IDLE_WARNING_DELAY_MS}/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
