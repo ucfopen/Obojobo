@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
@@ -54,7 +55,7 @@ module.exports =
 					},
 					{
 						test: /\.(js|jsx)$/,
-						exclude: '/node_modules',
+						exclude: /node_modules/,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -105,7 +106,9 @@ module.exports =
 			plugins: [
 				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new ManifestPlugin({ publicPath: '/static/' })
+				new ManifestPlugin({ publicPath: '/static/' }),
+				// Ignore all locale files of moment.js
+				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

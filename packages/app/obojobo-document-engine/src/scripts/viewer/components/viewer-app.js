@@ -20,14 +20,13 @@ import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostna
 import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 
 const NAV_CLOSE_DURATION_MS = 400
-const IDLE_TIMEOUT_DURATION_MS = 60000 * 0.1 // 30 minutes in milliseconds
-
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 30 // 30 minutes in milliseconds
 const { DOMUtil, focus } = Common.page
+const { FocusBlocker, ModalContainer } = Common.components
+const { ModalUtil, isOrNot } = Common.util
 const OboModel = Common.models.OboModel
 const Dispatcher = Common.flux.Dispatcher
-const { FocusBlocker, ModalContainer } = Common.components
 const SimpleDialog = Common.components.modal.SimpleDialog
-const ModalUtil = Common.util.ModalUtil
 const ModalStore = Common.stores.ModalStore
 
 Dispatcher.on('viewer:alert', payload =>
@@ -39,14 +38,10 @@ Dispatcher.on('viewer:alert', payload =>
 )
 
 export default class ViewerApp extends React.Component {
-	// === REACT LIFECYCLE METHODS ===
-
 	constructor(props) {
 		super(props)
 
 		this.navRef = React.createRef()
-		this.nextRef = React.createRef()
-		this.prevRef = React.createRef()
 		this.containerRef = React.createRef()
 
 		Dispatcher.on('viewer:scrollToTop', payload => {
@@ -57,39 +52,25 @@ export default class ViewerApp extends React.Component {
 		Dispatcher.on('window:inactive', this.onIdle.bind(this))
 		Dispatcher.on('window:returnFromInactive', this.onReturnFromIdle.bind(this))
 
-		const state = {
+		this.state = {
 			model: null,
-			navState: null,
-			mediaState: null,
-			questionState: null,
-			assessmentState: null,
-			modalState: null,
-			focusState: null,
 			loading: true,
 			requestStatus: 'unknown',
 			isPreviewing: false,
 			lti: { outcomeServiceHostname: null },
 			viewSessionId: null
 		}
-		this.navTargetId = null
-		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
-		this.onAssessmentStoreChange = () =>
-			this.setState({
-				assessmentState: AssessmentStore.getState()
-			})
-		this.onModalStoreChange = () =>
-			this.setState({
-				modalState: ModalStore.getState()
-			})
-		this.onFocusStoreChange = () =>
-			this.setState({
-				focusState: FocusStore.getState()
-			})
-		this.onMediaStoreChange = () =>
-			this.setState({
-				mediaState: MediaStore.getState()
-			})
+
+		// setup store listeners
+		// be sure to unregister stores on unMount
+		this.stores = {}
+		this.storeListeners = {}
+		this.registerStore(NavStore, 'navState')
+		this.registerStore(QuestionStore, 'questionState')
+		this.registerStore(AssessmentStore, 'assessmentState')
+		this.registerStore(ModalStore, 'modalState')
+		this.registerStore(FocusStore, 'focusState')
+		this.registerStore(MediaStore, 'mediaState')
 
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 		this.onMouseDown = this.onMouseDown.bind(this)
@@ -98,18 +79,8 @@ export default class ViewerApp extends React.Component {
 		this.onResize = this.onResize.bind(this)
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
-
-		this.state = state
-
-		// === SET UP DATA STORES ===
-		NavStore.onChange(this.onNavStoreChange)
-		QuestionStore.onChange(this.onQuestionStoreChange)
-		AssessmentStore.onChange(this.onAssessmentStoreChange)
-		ModalStore.onChange(this.onModalStoreChange)
-		FocusStore.onChange(this.onFocusStoreChange)
-		MediaStore.onChange(this.onMediaStoreChange)
+		this.onDelayResize = this.onDelayResize.bind(this)
 	}
-
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
@@ -143,7 +114,7 @@ export default class ViewerApp extends React.Component {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
-					OboModel.getRoot().get('draftId'),
+					this.props.draftId,
 					model,
 					model.modelState.start,
 					window.location.pathname,
@@ -154,10 +125,9 @@ export default class ViewerApp extends React.Component {
 				enableWindowCloseDispatcher()
 				window.onresize = this.onResize
 
-				this.boundOnDelayResize = this.onDelayResize.bind(this)
-				Dispatcher.on('nav:open', this.boundOnDelayResize)
-				Dispatcher.on('nav:close', this.boundOnDelayResize)
-				Dispatcher.on('nav:toggle', this.boundOnDelayResize)
+				Dispatcher.on('nav:open', this.onDelayResize)
+				Dispatcher.on('nav:close', this.onDelayResize)
+				Dispatcher.on('nav:toggle', this.onDelayResize)
 
 				this.setState(
 					{
@@ -188,18 +158,33 @@ export default class ViewerApp extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavStore.offChange(this.onNavStoreChange)
-		QuestionStore.offChange(this.onQuestionStoreChange)
-		AssessmentStore.offChange(this.onAssessmentStoreChange)
-		ModalStore.offChange(this.onModalStoreChange)
-		FocusStore.offChange(this.onFocusStoreChange)
-		MediaStore.offChange(this.onMediaStoreChange)
-
+		this.unRegisterStores()
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return !nextState.loading
+	}
+
+	registerStore(store, stateName){
+		const storePair = {
+			store,
+			listener: () => this.setState({ [stateName]: store.getState() })
+		}
+		this.stores[stateName] = storePair
+		store.onChange(this.stores[stateName].listener)
+	}
+
+	unRegisterStores(store, stateName){
+		for(const stateName in this.stores){
+			const {store, listener} = this.stores[stateName]
+			store.offChange(listener)
+			delete this.stores[stateName]
+		}
+	}
+
+	onStoreChange(stateProp, store){
+		this.setState( {[stateProp]: store.getState() })
 	}
 
 	isDOMFocusInsideNav() {
@@ -510,7 +495,7 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 
-	buildInlineNavProps() {
+	builPageNavProps() {
 		const canNavigate = NavUtil.canNavigate(this.state.navState)
 		const prevItem = NavUtil.getPrev(this.state.navState)
 		const nextItem = NavUtil.getNext(this.state.navState)
@@ -555,7 +540,7 @@ export default class ViewerApp extends React.Component {
 
 	renderViewer() {
 		NavUtil.isNavEnabled(this.state.navState)
-		const { prevProps, nextProps } = this.buildInlineNavProps()
+		const { prevProps, nextProps } = this.builPageNavProps()
 		const ModuleComponent = this.state.model.getComponentClass()
 		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
 		let navTargetLabel = ''
@@ -567,9 +552,9 @@ export default class ViewerApp extends React.Component {
 			<React.Fragment>
 				<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 				<Nav ref={this.navRef} navState={this.state.navState} />
-				<InlineNavButton ref={this.prevRef} type="prev" {...prevProps} />
+				<InlineNavButton type="prev" {...prevProps} />
 				<ModuleComponent model={this.state.model} moduleData={this.state} />
-				<InlineNavButton ref={this.nextRef} type="next" {...nextProps} />
+				<InlineNavButton type="next" {...nextProps} />
 			</React.Fragment>
 		)
 	}
@@ -578,16 +563,10 @@ export default class ViewerApp extends React.Component {
 		const s = this.state
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
 		return (
-			'viewer--viewer-app ' +
-			(s.isPreviewing ? 'is-previewing' : 'is-not-previewing') +
-			' ' +
-			(s.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav') +
-			' ' +
-			(s.navState.open ? 'is-open-nav' : 'is-closed-nav') +
-			' ' +
-			(s.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav') +
-			' ' +
-			(visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive')
+			isOrNot(s.isPreviewing, 'previewing') +
+			isOrNot(s.navState.open, 'open-nav') +
+			isOrNot(s.navState.disabled, 'disabled-nav') +
+			isOrNot(visuallyFocussedModel, 'focus-state-active')
 		)
 	}
 
@@ -607,7 +586,7 @@ export default class ViewerApp extends React.Component {
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
 				onScroll={this.onScroll}
-				className={this.getViewerClassNames()}
+				className={'viewer--viewer-app' + this.getViewerClassNames()}
 			>
 				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DURATION_MS} />
 
