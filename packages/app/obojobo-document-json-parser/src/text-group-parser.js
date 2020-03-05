@@ -10,7 +10,7 @@ const textGroupParser = textGroup => {
 	textGroup.forEach(group => {
 		let dataXML = ''
 		for (const d in group.data) {
-			dataXML += ` ${d}="${group.data[d]}"`
+			dataXML += ` ${d}="${xmlEncode(group.data[d])}"`
 		}
 
 		// Parse text value
@@ -33,9 +33,7 @@ const textParser = text => {
 
 const mockTextNodeParser = mockTextNode => {
 	if (mockTextNode.nodeType === 'text') {
-		const text = mockTextNode.text ? mockTextNode.text : ''
-
-		return mockElementParser(xmlEncode(text), mockTextNode.parent)
+		return mockElementParser(xmlEncode(mockTextNode.text || ''), mockTextNode.parent)
 	}
 
 	let mockElementChildrenStr = ''
@@ -57,7 +55,7 @@ const mockElementParser = (text, mockElement) => {
 		attrs += ` ${attr}="${xmlEncode(mockElement.attrs[attr])}"`
 
 		if (attr === 'class' && mockElement.attrs[attr] === 'latex') {
-			return mockElementParser(`<latex>${xmlEncode(text)}</latex>`, mockElement.parent)
+			return mockElementParser(`<latex>${text}</latex>`, mockElement.parent)
 		}
 	}
 
