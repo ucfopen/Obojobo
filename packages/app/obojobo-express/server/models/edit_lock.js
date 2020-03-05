@@ -1,6 +1,5 @@
 const db = require('../db')
 const editLockExpireMinutes = oboRequire('server/config').general.editLocks.autoExpireMinutes
-const DraftModel = oboRequire('server/models/draft')
 
 class EditLock {
 	constructor(props) {
@@ -87,8 +86,9 @@ class EditLock {
 
 			// verify the newest version is the same as the version requested
 			// if it is not - that means the draft has been updated unexpectedly
-			if (currentContentId.contentId !== contentId)
+			if (currentContentId.contentId !== contentId){
 				throw Error('Current version of draft does not match requested lock.')
+			}
 
 			return await t.one(
 				`INSERT INTO edit_locks (user_id, draft_id)

@@ -267,7 +267,7 @@ class EditorApp extends React.Component {
 		ModalUtil.hide()
 		ModalUtil.show(
 			<SimpleDialog ok title="Editor Session Expired">
-				Collaborators may edit this module while you're away. We'll attempt to renew your session
+				Collaborators may edit this module while you&apos;re away. We&apos;ll attempt to renew your session
 				when you return.
 			</SimpleDialog>
 		)

@@ -1,6 +1,5 @@
 import './page-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'

@@ -127,30 +127,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('ViewerApp component with no update removal', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		// This will be reset by jestReset, and is called multiple times
-		NavUtil.canNavigate.mockImplementation(() => {
-			// keeps loading element
-			component.instance().needsRemoveLoadingElement = false
-			// Sets up scrolling
-			return 'mockNav'
-		})
-
-		setTimeout(() => {
-			component.update()
-
-			expect(component.html()).toMatchSnapshot()
-
-			component.unmount()
-			done()
-		})
-	})
-
 	test('ViewerApp component displays error when the requestStatus is invalid', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -293,7 +269,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onNavStoreChange calls setState', done => {
+	test('NavStore Change listener calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -303,7 +279,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			component.instance().onNavStoreChange()
+			component.instance().stores.navState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				navState: {}
@@ -325,7 +301,7 @@ describe('ViewerApp', () => {
 			QuestionStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onQuestionStoreChange()
+			component.instance().stores.questionState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				questionState: {}
@@ -347,7 +323,7 @@ describe('ViewerApp', () => {
 			AssessmentStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onAssessmentStoreChange()
+			component.instance().stores.assessmentState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				assessmentState: {}
@@ -369,7 +345,7 @@ describe('ViewerApp', () => {
 			ModalStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onModalStoreChange()
+			component.instance().stores.modalState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				modalState: {}
@@ -391,7 +367,7 @@ describe('ViewerApp', () => {
 			FocusStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onFocusStoreChange()
+			component.instance().stores.focusState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				focusState: {}
@@ -413,7 +389,7 @@ describe('ViewerApp', () => {
 			MediaStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onMediaStoreChange()
+			component.instance().stores.mediaState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				mediaState: {}

@@ -12,11 +12,9 @@ import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/xml-fold.js'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 
-import APIUtil from '../../../scripts/viewer/util/api-util'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
-import ModalUtil from '../../common/util/modal-util'
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'

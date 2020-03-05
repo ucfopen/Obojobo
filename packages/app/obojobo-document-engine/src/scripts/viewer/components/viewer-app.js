@@ -81,6 +81,7 @@ export default class ViewerApp extends React.Component {
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
 		this.onDelayResize = this.onDelayResize.bind(this)
 	}
+
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
@@ -175,7 +176,7 @@ export default class ViewerApp extends React.Component {
 		store.onChange(this.stores[stateName].listener)
 	}
 
-	unRegisterStores(store, stateName){
+	unRegisterStores() {
 		for(const stateName in this.stores){
 			const {store, listener} = this.stores[stateName]
 			store.offChange(listener)
@@ -504,10 +505,9 @@ export default class ViewerApp extends React.Component {
 		let nextProps
 
 		if (prevItem) {
-			const navTitle = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
 			prevProps = {
-				title: navTitle,
-				ariaLabel: navTitle,
+				title: prevItem.label ? 'Back: ' + prevItem.label : 'Back',
+				ariaLabel: prevItem.label ? 'Go back to ' + prevItem.label : 'Go back',
 				disabled: !canNavigate
 			}
 		} else {
