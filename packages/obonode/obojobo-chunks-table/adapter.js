@@ -1,10 +1,20 @@
+import Common from 'obojobo-document-engine/src/scripts/common'
 import GridTextGroup from './grid-text-group'
+
+const TextGroup = Common.textGroup.TextGroup
 
 const Adapter = {
 	construct(model, attrs) {
 		model.setStateProp('header', true)
 
 		if (attrs && attrs.content && attrs.content.textGroup) {
+			model.modelState.caption = TextGroup.fromDescriptor(
+				[attrs.content.textGroup.caption],
+				Infinity,
+				{
+					indent: 0
+				}
+			)
 			model.modelState.textGroup = GridTextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			})
@@ -15,11 +25,13 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.textGroup = model.modelState.textGroup.clone()
+		clone.modelState.caption = model.modelState.caption.clone()
 		return (clone.modelState.header = model.modelState.header)
 	},
 
 	toJSON(model, json) {
 		json.content.textGroup = model.modelState.textGroup.toDescriptor()
+		json.content.caption = model.modelState.captiontoDescriptor()
 		return (json.content.header = model.modelState.header)
 	},
 

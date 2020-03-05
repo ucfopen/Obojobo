@@ -3,31 +3,43 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 const slateToObo = node => {
 	const content = node.data.get('content') || { textGroup: {} }
 
 	content.header = node.nodes.get(1).data.get('content').header
 
-	content.textGroup.caption = node.nodes.get(0).text
 	content.textGroup.numRows = node.nodes.size - 1
 	content.textGroup.numCols = node.nodes.get(1).data.get('content').numCols
 	content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
-		if (row.type !== 'ObojoboDraft.Chunks.Table.Caption') {
-			row.nodes.forEach(cell => {
-				const cellLine = {
-					text: { value: cell.text, styleList: [] }
-				}
+		if (row.type === TABLE_CAPTION_NODE) {
+			content.caption = true
+			const cellLine = {
+				text: { value: row.text, styleList: [] }
+			}
 
-				cell.nodes.forEach(text => {
-					TextUtil.slateToOboText(text, cellLine)
-				})
-
-				content.textGroup.textGroup.push(cellLine)
+			row.nodes.forEach(text => {
+				TextUtil.slateToOboText(text, cellLine)
 			})
+
+			content.textGroup.caption = cellLine
+			return
 		}
+
+		row.nodes.forEach(cell => {
+			const cellLine = {
+				text: { value: cell.text, styleList: [] }
+			}
+
+			cell.nodes.forEach(text => {
+				TextUtil.slateToOboText(text, cellLine)
+			})
+
+			content.textGroup.textGroup.push(cellLine)
+		})
 	})
 
 	return {
@@ -49,6 +61,18 @@ const oboToSlate = node => {
 	// Add the numCols and NumRows to the content, for more efficent normalization
 	content.numCols = numCols
 	content.numRows = numRows
+
+	nodes.push({
+		object: 'block',
+		type: TABLE_CAPTION_NODE,
+		data: { content: { header: hasHeader && nodes.length === 0, numCols } },
+		nodes: [
+			{
+				object: 'text',
+				leaves: TextUtil.parseMarkings(node.content.textGroup.caption)
+			}
+		]
+	})
 
 	node.content.textGroup.textGroup.forEach((line, index) => {
 		// create a new row every numCols

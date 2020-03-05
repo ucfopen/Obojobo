@@ -13,11 +13,6 @@ const Table = props => {
 	const data = model.modelState
 	const { numCols } = data.textGroup
 
-	console.log(props)
-	console.log(data.textGroup)
-	console.log(data)
-	console.log(model)
-
 	if (data.header) {
 		row = data.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
 			<th
@@ -55,11 +50,16 @@ const Table = props => {
 		return <tr key={rowNum}>{row}</tr>
 	})
 
+	const caption = data.caption ? data.caption.first : ''
+
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<div className="obojobo-draft--chunks--table viewer pad">
 				<div className="container">
 					<table className="view" key="table">
+						<caption>
+							<TextGroupEl textItem={caption} />
+						</caption>
 						<thead key="thead">{header}</thead>
 						<tbody key="tbody">{rows}</tbody>
 					</table>
