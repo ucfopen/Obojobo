@@ -168,7 +168,7 @@ class EditorApp extends React.Component {
 			requestError: {
 				title: 'Module is Being Edited.',
 				message:
-					'Someone else is currently editing this module. Reload this window later to try again.'
+					'Someone else is currently editing this module. Try reloading this tab in a few minutes (' + this.props.settings.editLocks.autoExpireMinutes + ' or more).'
 			}
 		})
 	}
@@ -227,7 +227,8 @@ class EditorApp extends React.Component {
 			.catch(err => {
 				// eslint-disable-next-line no-console
 				console.error(err)
-				return this.setState({ requestStatus: 'invalid', requestError: err, mode })
+				this.setState({ requestStatus: 'invalid', requestError: err, mode })
+				throw err
 			})
 	}
 
@@ -254,6 +255,7 @@ class EditorApp extends React.Component {
 				Dispatcher.on('window:inactive', this.onWindowInactive)
 				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
 			})
+			.catch(() => {})
 	}
 
 	onWindowClose() {
