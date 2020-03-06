@@ -13,7 +13,10 @@ const {
 	DELETE_MODULE,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
-	SHOW_MODULE_MORE
+	SHOW_MODULE_MORE,
+	CREATE_NEW_COLLECTION,
+	SHOW_COLLECTION_RENAME,
+	RENAME_COLLECTION
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -40,6 +43,15 @@ function filterModules(modules, searchString) {
 
 function DashboardReducer(state, action) {
 	switch (action.type) {
+		case CREATE_NEW_COLLECTION:
+		case RENAME_COLLECTION:
+			return handle(state, action, {
+				success: prevState => ({
+					...prevState,
+					myCollections: action.payload.value
+				})
+			})
+
 		case CREATE_NEW_MODULE:
 			return handle(state, action, {
 				// update my modules list & remove filtering because the new module could be filtered
@@ -122,6 +134,13 @@ function DashboardReducer(state, action) {
 				start: prevState => ({ ...prevState, shareSearchString: action.meta.searchString }),
 				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.value } })
 			})
+
+		case SHOW_COLLECTION_RENAME:
+			return {
+				...state,
+				dialog: 'collection-rename',
+				collection: action.collection
+			}
 
 		default:
 			return state

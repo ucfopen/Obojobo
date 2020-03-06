@@ -5,6 +5,8 @@ const React = require('react')
 const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
+const Collection = require('./collection')
+const CollectionRenameDialog = require('./collection-rename-dialog')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
@@ -37,6 +39,15 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
+const renderCollectionRenameDialog = props => (
+	<CollectionRenameDialog
+		title="Rename Collection"
+		collection={props.collection}
+		onClose={props.closeModal}
+		onAccept={props.renameCollection}
+	/>
+)
+
 const renderModalDialog = props => {
 	let dialog
 	let title
@@ -49,6 +60,11 @@ const renderModalDialog = props => {
 		case 'module-permissions':
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
+			break
+
+		case 'collection-rename':
+			title = 'Rename Collection'
+			dialog = renderCollectionRenameDialog(props)
 			break
 
 		default:
@@ -96,7 +112,9 @@ const renderModules = (modules, sortOrder) => {
 
 const renderCollections = (collections, sortOrder) => {
 	const sortFn = getSortMethod(sortOrder)
-	return collections.sort(sortFn).map(collection => <div key={collection.id}>{collection.title}</div>)
+	return collections
+		.sort(sortFn)
+		.map(collection => <Collection key={collection.id} hasMenu={true} {...collection} />)
 }
 
 const Dashboard = props => {
@@ -126,7 +144,7 @@ const Dashboard = props => {
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="New Module">
 							<Button onClick={() => props.createNewCollection()}>New Collection</Button>
-							<hr/>
+							<hr />
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
 						</MultiButton>
@@ -141,7 +159,10 @@ const Dashboard = props => {
 						<span>My Collections</span>
 						<div className="repository--main-content--sort">
 							<span>Sort</span>
-							<select value={collectionSortOrder} onChange={event => setCollectionSortOrder(event.target.value)}>
+							<select
+								value={collectionSortOrder}
+								onChange={event => setCollectionSortOrder(event.target.value)}
+							>
 								<option value="newest">Newest</option>
 								<option value="alphabetical">Alphabetical</option>
 							</select>
@@ -164,7 +185,10 @@ const Dashboard = props => {
 						<span>My Modules</span>
 						<div className="repository--main-content--sort">
 							<span>Sort</span>
-							<select value={moduleSortOrder} onChange={event => setModuleSortOrder(event.target.value)}>
+							<select
+								value={moduleSortOrder}
+								onChange={event => setModuleSortOrder(event.target.value)}
+							>
 								<option value="newest">Newest</option>
 								<option value="alphabetical">Alphabetical</option>
 								<option value="last updated">Last updated</option>
@@ -183,7 +207,6 @@ const Dashboard = props => {
 							</div>
 						</div>
 					</div>
-
 				</section>
 			</div>
 			{props.dialog ? renderModalDialog(props) : null}

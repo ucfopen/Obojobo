@@ -30,7 +30,8 @@ router
 				myCollections = collections
 
 				return DraftSummary.fetchByUserId(req.currentUser.id)
-			}).then(myModules => {
+			})
+			.then(myModules => {
 				const props = {
 					title: 'Dashboard',
 					myCollections,

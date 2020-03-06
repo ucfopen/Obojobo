@@ -6,6 +6,7 @@ const {
 	loadUsersForModule,
 	deleteModulePermissions,
 	createNewCollection,
+	renameCollection,
 	createNewModule,
 	filterModules,
 	deleteModule,
@@ -14,6 +15,7 @@ const {
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
 	createNewCollection,
+	renameCollection,
 	createNewModule,
 	closeModal,
 	addUserToModule,

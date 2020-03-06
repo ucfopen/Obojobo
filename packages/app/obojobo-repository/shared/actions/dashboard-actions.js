@@ -32,12 +32,25 @@ const apiDeleteModule = draftId => {
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
-const apiGetMyCollections = () => {
+const apiGetMyCollections = uhh => {
 	return fetch('/api/collections', defaultOptions()).then(res => res.json())
 }
 
 const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
+}
+
+const apiCreateNewCollection = () => {
+	const url = '/api/collections/new'
+	const options = { ...defaultOptions(), method: 'POST' }
+	return fetch(url, options).then(res => res.json())
+}
+
+const apiRenameCollection = (id, title) => {
+	const url = '/api/collections/rename'
+	const body = JSON.stringify({ id, title })
+	const options = { ...defaultOptions(), method: 'POST', body }
+	return fetch(url, options).then(res => res.json())
 }
 
 const apiCreateNewModule = useTutorial => {
@@ -126,6 +139,18 @@ const showModuleMore = module => ({
 	module
 })
 
+const SHOW_COLLECTION_RENAME = 'SHOW_COLLECTION_RENAME'
+const showCollectionRename = collection => ({
+	type: SHOW_COLLECTION_RENAME,
+	collection
+})
+
+const RENAME_COLLECTION = 'RENAME_COLLECTION'
+const renameCollection = (id, newTitle) => ({
+	type: RENAME_COLLECTION,
+	promise: apiRenameCollection(id, newTitle).then(apiGetMyCollections)
+})
+
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
 	LOAD_USER_SEARCH,
@@ -138,6 +163,9 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
+	CREATE_NEW_COLLECTION,
+	SHOW_COLLECTION_RENAME,
+	RENAME_COLLECTION,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -149,5 +177,7 @@ module.exports = {
 	showModulePermissions,
 	loadUsersForModule,
 	clearPeopleSearchResults,
-	showModuleMore
+	showModuleMore,
+	showCollectionRename,
+	renameCollection
 }

@@ -16,8 +16,8 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db.addColumn('repository_collections', 'visibility_type', {
-    type: 'text',
-    defaultValue: 'public'
+		type: 'text',
+		defaultValue: 'public'
 	})
 }
 

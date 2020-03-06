@@ -1,7 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL) => {
+const buildQueryWhere = whereSQL => {
 	return `
 		SELECT *
 		FROM repository_collections
@@ -11,15 +11,8 @@ const buildQueryWhere = (whereSQL) => {
 }
 
 class CollectionSummary {
-	constructor({
-		collection_id,
-		title,
-		group_type,
-		user_id,
-		created_at,
-		visibility_type
-	}) {
-		this.draftId = collection_id
+	constructor({ id, title, group_type, user_id, created_at, visibility_type }) {
+		this.id = id
 		this.title = title
 		this.groupType = group_type
 		this.userId = user_id
@@ -33,15 +26,14 @@ class CollectionSummary {
 			.then(CollectionSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchById Error', error.message)
-				return Promise.reject('Error Loading CollectionSummary by id')
+				return Promise.reject('Error Loading CollectionSummary by user id')
 			})
 	}
 
 	static fetchByUserId(userId) {
-		return CollectionSummary.fetchWhere(
-			`visibility_type = 'private' AND user_id = $[userId]`,
-			{ userId }
-		)
+		return CollectionSummary.fetchWhere(`visibility_type = 'private' AND user_id = $[userId]`, {
+			userId
+		})
 	}
 
 	static fetchWhere(whereSQL, queryValues) {

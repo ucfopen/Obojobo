@@ -1,6 +1,7 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const insertEvent = require('obojobo-express/server/insert_event')
 const RepositoryCollection = require('../models/collection')
+const CollectionSummary = require('../models/collection_summary')
 const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
 const DraftsMetadata = require('../models/drafts_metadata')
@@ -29,6 +30,17 @@ router.route('/drafts-public').get((req, res) => {
 		})
 		.catch(res.unexpected)
 })
+
+// List my collections
+// mounted as /api/collections
+router
+	.route('/collections')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		return CollectionSummary.fetchByUserId(req.currentUser.id)
+			.then(collections => res.success(collections))
+			.catch(res.unexpected)
+	})
 
 // List my drafts
 // mounted as /api/drafts

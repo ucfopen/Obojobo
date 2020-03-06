@@ -46,6 +46,19 @@ const draftIsPublic = async draftId => {
 }
 
 // returns a boolean
+const userHasPermissionToCollection = async (userId, collectionId) => {
+	const result = await db.oneOrNone(
+		`SELECT user_id
+		FROM repository_collections
+		WHERE id = $[collectionId]
+		AND user_id = $[userId]`,
+		{ userId, collectionId }
+	)
+
+	return result !== null
+}
+
+// returns a boolean
 const userHasPermissionToDraft = async (userId, draftId) => {
 	const result = await db.oneOrNone(
 		`SELECT user_id
@@ -83,6 +96,7 @@ const removeUserPermissionToDraft = async (userId, draftId) => {
 
 module.exports = {
 	addUserPermissionToDraft,
+	userHasPermissionToCollection,
 	userHasPermissionToDraft,
 	fetchAllUsersWithPermissionToDraft,
 	removeUserPermissionToDraft,
