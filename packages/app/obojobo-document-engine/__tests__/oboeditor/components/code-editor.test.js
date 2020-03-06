@@ -57,6 +57,62 @@ describe('CodeEditor', () => {
 		})
 	})
 
+	test('changes the Editor title', () => {
+		const props = {
+			initialCode: '{ "content": {} }',
+			mode: JSON_MODE,
+			model: { title: 'Mock Title' }
+		}
+		APIUtil.postDraft.mockResolvedValue({
+			status: 'ok'
+		})
+
+		// render
+		const thing = mount(<CodeEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		thing
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: 'mock new title' }
+			})
+		thing
+			.find('input')
+			.at(0)
+			.simulate('blur')
+
+		expect(thing.html()).toMatchSnapshot()
+	})
+
+	test('changes the Editor title to blank', () => {
+		const props = {
+			initialCode: '{ "content": {} }',
+			mode: JSON_MODE,
+			model: { title: 'Mock Title' }
+		}
+		APIUtil.postDraft.mockResolvedValue({
+			status: 'ok'
+		})
+
+		// render
+		const thing = mount(<CodeEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		thing
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: '	' }
+			})
+		thing
+			.find('input')
+			.at(0)
+			.simulate('blur')
+
+		expect(thing.html()).toMatchSnapshot()
+	})
+
 	test('checkIfSaved return', () => {
 		const eventMap = {}
 		window.addEventListener = jest.fn((event, cb) => {
@@ -109,6 +165,7 @@ describe('CodeEditor', () => {
 		    "theme": "monokai",
 		  },
 		  "saved": false,
+		  "title": "Mock Title",
 		}
 	`)
 	})
@@ -147,6 +204,7 @@ describe('CodeEditor', () => {
 		    "theme": "monokai",
 		  },
 		  "saved": true,
+		  "title": "Mock Title",
 		}
 	`)
 	})
@@ -190,6 +248,7 @@ describe('CodeEditor', () => {
 		    "theme": "monokai",
 		  },
 		  "saved": true,
+		  "title": "Mock Title",
 		}
 	`)
 	})
@@ -281,6 +340,7 @@ describe('CodeEditor', () => {
 		    "theme": "monokai",
 		  },
 		  "saved": true,
+		  "title": "Mock Title",
 		}
 	`)
 

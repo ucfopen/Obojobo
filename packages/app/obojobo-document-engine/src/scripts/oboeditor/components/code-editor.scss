@@ -10,6 +10,8 @@
 	.react-codemirror2 {
 		height: 100%;
 		font-size: 11pt;
+		position: relative;
+		top: 0.5em;
 
 		.CodeMirror {
 			border-left: 1px solid black;

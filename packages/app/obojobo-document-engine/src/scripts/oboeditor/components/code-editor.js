@@ -45,7 +45,8 @@ class CodeEditor extends React.Component {
 				indentUnit: 4,
 				gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
 				theme: 'monokai'
-			}
+			},
+			title: props.model.title
 		}
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
@@ -111,6 +112,16 @@ class CodeEditor extends React.Component {
 					return this.setXMLTitle(state.code, title)
 			}
 		})
+	}
+
+	renameModule(label) {
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
+
+		EditorUtil.renamePage(this.props.model.id, label)
+		this.setTitle(label)
+		this.setState({ title: label })
+		this.saveCode(this.props.draftId)
 	}
 
 	saveCode() {
@@ -192,7 +203,14 @@ class CodeEditor extends React.Component {
 				onKeyPress={this.onKeyPress}
 			>
 				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
+					<input
+						className="draft-title"
+						value={this.state.title}
+						onChange={event => this.setState({ title: event.target.value })}
+						size={this.state.title.length}
+						onBlur={() => this.renameModule(this.state.title)}
+						aria-label="Rename Module"
+					/>
 					{this.state.editor ? (
 						<FileToolbar
 							editorRef={this.state.editor}
