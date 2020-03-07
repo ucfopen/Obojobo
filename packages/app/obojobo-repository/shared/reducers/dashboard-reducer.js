@@ -16,7 +16,8 @@ const {
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
 	SHOW_COLLECTION_RENAME,
-	RENAME_COLLECTION
+	RENAME_COLLECTION,
+	DELETE_COLLECTION
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -45,6 +46,7 @@ function DashboardReducer(state, action) {
 	switch (action.type) {
 		case CREATE_NEW_COLLECTION:
 		case RENAME_COLLECTION:
+		case DELETE_COLLECTION:
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,

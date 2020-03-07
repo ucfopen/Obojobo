@@ -31,9 +31,12 @@ class CollectionSummary {
 	}
 
 	static fetchByUserId(userId) {
-		return CollectionSummary.fetchWhere(`visibility_type = 'private' AND user_id = $[userId]`, {
-			userId
-		})
+		return CollectionSummary.fetchWhere(
+			`visibility_type = 'private' AND user_id = $[userId] AND deleted = FALSE`,
+			{
+				userId
+			}
+		)
 	}
 
 	static fetchWhere(whereSQL, queryValues) {

@@ -47,6 +47,19 @@ class Collection {
 				return updatedCollection
 			})
 	}
+
+	static delete(id) {
+		return db
+			.none(
+				`UPDATE repository_collections
+				SET deleted = TRUE
+				WHERE id = $[id]`,
+				{ id }
+			)
+			.then(() => {
+				oboEvents.emit(Collection.EVENT_COLLECTION_UPDATED, { id })
+			})
+	}
 }
 
 Collection.EVENT_NEW_COLLECTION_CREATED = 'EVENT_NEW_COLLECTION_CREATED'

@@ -1,7 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL, joinSQL = '') => {
+const buildQueryWhere = (whereSQL, joinSQL = '', limitSQL = '') => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -27,6 +27,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
 		)
 		ORDER BY updated_at DESC
+		${limitSQL}
 	`
 }
 
@@ -68,6 +69,26 @@ class DraftSummary {
 			`repository_map_user_to_draft.user_id = $[userId]`,
 			{ userId }
 		)
+	}
+
+	static fetchRecentByUserId(userId) {
+		return DraftSummary.fetchAndJoinWhereLimit(
+			`JOIN repository_map_user_to_draft
+					ON repository_map_user_to_draft.draft_id = drafts.id`,
+			`repository_map_user_to_draft.user_id = $[userId]`,
+			'LIMIT 5',
+			{ userId }
+		)
+	}
+
+	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
+		return db
+			.any(buildQueryWhere(whereSQL, joinSQL, limitSQL), queryValues)
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				return Promise.reject('Error loading DraftSummary by query')
+			})
 	}
 
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {

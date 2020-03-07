@@ -32,7 +32,7 @@ const apiDeleteModule = draftId => {
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
-const apiGetMyCollections = uhh => {
+const apiGetMyCollections = () => {
 	return fetch('/api/collections', defaultOptions()).then(res => res.json())
 }
 
@@ -51,6 +51,11 @@ const apiRenameCollection = (id, title) => {
 	const body = JSON.stringify({ id, title })
 	const options = { ...defaultOptions(), method: 'POST', body }
 	return fetch(url, options).then(res => res.json())
+}
+
+const apiDeleteCollection = collection => {
+	const options = { ...defaultOptions(), method: 'DELETE' }
+	return fetch(`/api/collections/${collection.id}`, options).then(res => res.json())
 }
 
 const apiCreateNewModule = useTutorial => {
@@ -151,6 +156,12 @@ const renameCollection = (id, newTitle) => ({
 	promise: apiRenameCollection(id, newTitle).then(apiGetMyCollections)
 })
 
+const DELETE_COLLECTION = 'DELETE_COLLECTION'
+const deleteCollection = id => ({
+	type: DELETE_COLLECTION,
+	promise: apiDeleteCollection(id).then(apiGetMyCollections)
+})
+
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
 	LOAD_USER_SEARCH,
@@ -166,6 +177,7 @@ module.exports = {
 	CREATE_NEW_COLLECTION,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
+	DELETE_COLLECTION,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -179,5 +191,6 @@ module.exports = {
 	clearPeopleSearchResults,
 	showModuleMore,
 	showCollectionRename,
-	renameCollection
+	renameCollection,
+	deleteCollection
 }

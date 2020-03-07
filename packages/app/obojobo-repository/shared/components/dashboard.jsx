@@ -11,9 +11,12 @@ const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
 const Button = require('./button')
+const ButtonLink = require('./button-link')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
+
+const { MODE_DASHBOARD, MODE_MODULES, MODE_COLLECTION } = require('../repository-constants')
 
 const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
@@ -110,24 +113,102 @@ const renderModules = (modules, sortOrder) => {
 	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
 }
 
-const renderCollections = (collections, sortOrder) => {
-	const sortFn = getSortMethod(sortOrder)
-	return collections
-		.sort(sortFn)
-		.map(collection => <Collection key={collection.id} hasMenu={true} {...collection} />)
+const renderCollections = collections => {
+	return collections.map(collection => (
+		<Collection key={collection.id} hasMenu={true} {...collection} />
+	))
 }
 
 const Dashboard = props => {
-	const [collectionSortOrder, setCollectionSortOrder] = useState(props.collectionSortOrder)
 	const [moduleSortOrder, setModuleSortOrder] = useState(props.moduleSortOrder)
 
-	// Set a cookie when sortOrder changes on the client
+	// Set a cookie when moduleSortOrder changes on the client
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()
 			expires.setFullYear(expires.getFullYear() + 1)
 			document.cookie = `moduleSortOrder=${moduleSortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
 		}, [moduleSortOrder])
+	}
+
+	// Components to render for 'New Collection' option in New Module... button
+	// Will only be visible when dashboard is in 'default' mode
+	let newCollectionRender = (
+		<React.Fragment>
+			<Button onClick={() => props.createNewCollection()}>New Collection</Button>
+			<hr />
+		</React.Fragment>
+	)
+
+	// Text content of the dashboard collection section's title
+	// Either 'My Collections' (default/module mode) or the title
+	//  of the chosen collection (collection mode)
+	let collectionsTitle = 'My Collections'
+
+	// Text content of the dashboard module section's title
+	// Either 'My Recent Modules' (default) or 'My Modules' (module mode)
+	//  or 'Modules in Collection' (collection mode)
+	let modulesTitle = 'My Recent Modules'
+
+	// Extra class to apply to module section's title
+	// Will be 'stretch-width' when module sort component is not present
+	//  or an empty string when it is
+	let modulesTitleExtraClass = ''
+
+	// Components to render for module sort options
+	// Will not be necessary when dashboard is in 'default' mode
+	let moduleSortRender = (
+		<div className="repository--main-content--sort">
+			<span>Sort</span>
+			<select value={moduleSortOrder} onChange={event => setModuleSortOrder(event.target.value)}>
+				<option value="newest">Newest</option>
+				<option value="alphabetical">Alphabetical</option>
+				<option value="last updated">Last updated</option>
+			</select>
+		</div>
+	)
+
+	// Components to render for module filter input
+	// Will not be necessary when dashboard is in 'default' mode
+	let moduleFilterRender = (
+		<Search
+			value={props.moduleSearchString}
+			placeholder="Filter..."
+			onChange={props.filterModules}
+		/>
+	)
+
+	// Components to render an 'All Modules' button (default/collection mode)
+	// Will not be necessary when dashboard is in 'module' mode
+	let moduleModeRender = (
+		<ButtonLink
+			className="repository--all-modules--button"
+			url="/dashboard/modules"
+			target="_blank"
+		>
+			All Modules
+		</ButtonLink>
+	)
+
+	switch (props.mode) {
+		// url is /dashboard/collections/collection-name-and-short-uuid
+		case MODE_COLLECTION:
+			newCollectionRender = null
+			collectionsTitle = `Collection "Collection Title Here - Soon!"`
+			modulesTitle = 'Modules in Collection'
+			break
+		// url is /dashboard/modules
+		case MODE_MODULES:
+			newCollectionRender = null
+			modulesTitle = 'My Modules'
+			moduleModeRender = null
+			break
+		// url is /dashboard
+		case MODE_DASHBOARD:
+		default:
+			moduleFilterRender = null
+			moduleSortRender = null
+			modulesTitleExtraClass = 'stretch-width'
 	}
 
 	return (
@@ -143,57 +224,31 @@ const Dashboard = props => {
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="New Module">
-							<Button onClick={() => props.createNewCollection()}>New Collection</Button>
-							<hr />
+							{newCollectionRender}
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
 						</MultiButton>
-						<Search
-							value={props.moduleSearchString}
-							placeholder="Filter..."
-							onChange={props.filterModules}
-						/>
+						{moduleFilterRender}
 					</div>
 
-					<div className="repository--main-content--title">
-						<span>My Collections</span>
-						<div className="repository--main-content--sort">
-							<span>Sort</span>
-							<select
-								value={collectionSortOrder}
-								onChange={event => setCollectionSortOrder(event.target.value)}
-							>
-								<option value="newest">Newest</option>
-								<option value="alphabetical">Alphabetical</option>
-							</select>
-						</div>
+					<div className="repository--main-content--title stretch-width">
+						<span>{collectionsTitle}</span>
 					</div>
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
 									{renderCollections(
-										props.filteredCollections ? props.filteredCollections : props.myCollections,
-										collectionSortOrder
+										props.filteredCollections ? props.filteredCollections : props.myCollections
 									)}
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="repository--main-content--title">
-						<span>My Modules</span>
-						<div className="repository--main-content--sort">
-							<span>Sort</span>
-							<select
-								value={moduleSortOrder}
-								onChange={event => setModuleSortOrder(event.target.value)}
-							>
-								<option value="newest">Newest</option>
-								<option value="alphabetical">Alphabetical</option>
-								<option value="last updated">Last updated</option>
-							</select>
-						</div>
+					<div className={`repository--main-content--title ${modulesTitleExtraClass}`}>
+						<span>{modulesTitle}</span>
+						{moduleSortRender}
 					</div>
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
@@ -203,6 +258,7 @@ const Dashboard = props => {
 										props.filteredModules ? props.filteredModules : props.myModules,
 										moduleSortOrder
 									)}
+									{moduleModeRender}
 								</div>
 							</div>
 						</div>
