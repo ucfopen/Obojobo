@@ -195,14 +195,11 @@ describe('CodeEditor', () => {
 	})
 
 	test('saveCode calls APIUtil', () => {
-		APIUtil.postDraft.mockResolvedValue({
-			status: 'ok'
-		})
-
 		const props = {
 			initialCode: '',
 			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			model: { title: 'Mock Title' },
+			saveDraft: jest.fn().mockResolvedValue(true)
 		}
 		const component = mount(<CodeEditor {...props} />)
 		EditorUtil.getTitleFromString.mockReturnValueOnce('     ')
@@ -211,7 +208,7 @@ describe('CodeEditor', () => {
 		component.setProps({ mode: JSON_MODE })
 		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
+		expect(props.saveDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('saveCode() with invalid document', () => {
@@ -225,12 +222,13 @@ describe('CodeEditor', () => {
 		const props = {
 			initialCode: '',
 			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			model: { title: 'Mock Title' },
+			saveDraft: jest.fn().mockResolvedValue(true)
 		}
 		const component = mount(<CodeEditor {...props} />)
 		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
+		expect(props.saveDraft).toHaveBeenCalledTimes(1)
 	})
 
 	test('setEditor changes state', () => {

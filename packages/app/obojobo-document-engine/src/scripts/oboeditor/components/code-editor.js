@@ -59,7 +59,7 @@ class CodeEditor extends React.Component {
 
 	componentDidMount() {
 		// Setup unload to prompt user before closing
-		// window.addEventListener('beforeunload', this.checkIfSaved)
+		window.addEventListener('beforeunload', this.checkIfSaved)
 	}
 
 	componentWillUnmount() {

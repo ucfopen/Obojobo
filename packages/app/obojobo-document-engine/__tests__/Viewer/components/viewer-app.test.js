@@ -742,7 +742,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
-			component.instance().onIdle()
+			component.instance().onIdle({lastActiveEpoch: 'now'})
 
 			expect(APIUtil.postEvent).toHaveBeenCalled()
 
@@ -761,11 +761,14 @@ describe('ViewerApp', () => {
 			component.instance().inactiveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance().lastActiveEpoch = 999
+			component.instance()
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
-			component.instance().onReturnFromIdle()
+			component.instance().onReturnFromIdle({
+				lastActiveEpoch: 999,
+				inactiveDuration: 1
+			})
 
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:returnFromInactive',
@@ -785,52 +788,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onBeforeWindowClose returns undefined', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		global.navigator.sendBeacon = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			const spy = jest.spyOn(Dispatcher, 'trigger')
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(undefined)
-
-			component.unmount()
-			spy.mockRestore()
-			done()
-		})
-	})
-
-	test('onBeforeWindowClose calls closePrevented', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-		const originalTrigger = Dispatcher.trigger
-		Dispatcher.trigger = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			Dispatcher.trigger.mockImplementationOnce((type, funct) => {
-				funct()
-			})
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(true)
-
-			component.unmount()
-			Dispatcher.trigger = originalTrigger
-			done()
-		})
-	})
-
 	test('sendCloseEvent calls navigator.sendBeacon', done => {
 		global.navigator.sendBeacon = jest.fn()
 
@@ -843,7 +800,7 @@ describe('ViewerApp', () => {
 
 			component.instance().sendCloseEvent()
 
-			expect(navigator.sendBeacon).toHaveBeenCalled()
+			expect(APIUtil.postEventBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -990,15 +947,15 @@ describe('ViewerApp', () => {
 
 			expect(Dispatcher.on).toHaveBeenCalledWith(
 				'nav:open',
-				component.instance().boundOnDelayResize
+				component.instance().onDelayResize
 			)
 			expect(Dispatcher.on).toHaveBeenCalledWith(
 				'nav:close',
-				component.instance().boundOnDelayResize
+				component.instance().onDelayResize
 			)
 			expect(Dispatcher.on).toHaveBeenCalledWith(
 				'nav:toggle',
-				component.instance().boundOnDelayResize
+				component.instance().onDelayResize
 			)
 
 			component.unmount()
@@ -1647,7 +1604,7 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			expect(component.find('.is-focus-state-inactive').length).toBe(1)
+			expect(component.find('.is-not-focus-state-active').length).toBe(1)
 			expect(component.find('.is-focus-state-active').length).toBe(0)
 
 			component.unmount()

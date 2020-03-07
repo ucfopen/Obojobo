@@ -390,6 +390,7 @@ describe('PageEditor', () => {
 			nodes: []
 		})
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			page: {
 				id: 2,
 				set: jest.fn(),
@@ -449,7 +450,7 @@ describe('PageEditor', () => {
 			jest.fn()
 		)
 
-		expect(APIUtil.postDraft).toHaveBeenCalled()
+		expect(props.saveDraft).toHaveBeenCalled()
 	})
 
 	test('sends onChange to the Editor', () => {
