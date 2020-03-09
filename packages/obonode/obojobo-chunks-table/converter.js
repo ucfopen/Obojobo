@@ -7,8 +7,7 @@ const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 const slateToObo = node => {
 	const content = node.data.get('content') || { textGroup: {} }
-
-	content.header = node.nodes.get(1).data.get('content').header
+	content.header = node.nodes.get(0).data.get('content').header
 
 	content.textGroup.numRows = node.nodes.size - 1
 	content.textGroup.numCols = node.nodes.get(1).data.get('content').numCols
@@ -80,7 +79,7 @@ const oboToSlate = node => {
 			currRow = {
 				object: 'block',
 				type: TABLE_ROW_NODE,
-				data: { content: { header: hasHeader && nodes.length === 0, numCols } },
+				data: { content: { header: hasHeader && nodes.length === 1, numCols } },
 				nodes: []
 			}
 			nodes.push(currRow)

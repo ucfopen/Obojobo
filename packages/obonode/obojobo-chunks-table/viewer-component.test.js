@@ -16,6 +16,12 @@ describe('Table', () => {
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
+					caption: {
+						text: {
+							value: 'caption',
+							styleList: []
+						}
+					},
 					textGroup: [
 						{
 							text: {
@@ -60,6 +66,12 @@ describe('Table', () => {
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
+					caption: {
+						text: {
+							value: 'caption',
+							styleList: []
+						}
+					},
 					textGroup: [
 						{
 							text: {

@@ -15,7 +15,7 @@ class Table extends React.Component {
 	toggleHeader() {
 		const editor = this.props.editor
 
-		const topRow = this.props.node.nodes.get(0)
+		const topRow = this.props.node.nodes.get(1)
 		const content = topRow.data.get('content')
 		const toggledHeader = !content.header
 

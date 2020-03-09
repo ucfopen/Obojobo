@@ -14,6 +14,7 @@ describe('Table Converter', () => {
 						get: () => ({ header: true })
 					}
 				}),
+				size: 2,
 				forEach: funct => {
 					funct({
 						nodes: [
@@ -55,6 +56,12 @@ describe('Table Converter', () => {
 				header: true,
 				textGroup: {
 					numCols: 2,
+					caption: {
+						text: {
+							value: 'caption',
+							styleList: []
+						}
+					},
 					textGroup: [
 						{
 							text: { value: 'Mock1' }

@@ -25,13 +25,13 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.textGroup = model.modelState.textGroup.clone()
-		clone.modelState.caption = model.modelState.caption.clone()
+		if (model.modelState.caption) clone.modelState.caption = model.modelState.caption.clone()
 		return (clone.modelState.header = model.modelState.header)
 	},
 
 	toJSON(model, json) {
 		json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		json.content.caption = model.modelState.captiontoDescriptor()
+		if (model.modelState.caption) json.content.caption = model.modelState.caption.toDescriptor()
 		return (json.content.header = model.modelState.header)
 	},
 

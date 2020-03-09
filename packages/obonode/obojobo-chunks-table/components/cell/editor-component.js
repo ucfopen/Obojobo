@@ -40,7 +40,7 @@ class Cell extends React.Component {
 			type: TABLE_ROW_NODE,
 			data: {
 				content: {
-					header: rowIndex === 0 && isHeader,
+					header: rowIndex === 1 && isHeader,
 					numCols: tableParent.data.get('content').numCols
 				}
 			}
@@ -94,6 +94,7 @@ class Cell extends React.Component {
 			})
 
 			tableParent.nodes.forEach(row => {
+				if (row.type === '"ObojoboDraft.Chunks.Table.Caption"') return // Table Caption
 				const newCell = Block.create({
 					type: TABLE_CELL_NODE,
 					data: { content: { header: row.data.get('content').header } }
@@ -130,6 +131,8 @@ class Cell extends React.Component {
 			})
 
 			tableParent.nodes.forEach(row => {
+				if (row.type === '"ObojoboDraft.Chunks.Table.Caption"') return // Table Caption
+
 				const newCell = Block.create({
 					type: TABLE_CELL_NODE,
 					data: { content: { header: row.data.get('content').header } }

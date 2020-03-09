@@ -19,6 +19,20 @@ exports[`Table Table component 1`] = `
       <table
         className="view"
       >
+        <caption>
+          <span
+            className="text align-undefined"
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  caption
+                </span>
+              </span>
+            </span>
+          </span>
+        </caption>
         <thead>
           <tr>
             <th
@@ -124,6 +138,20 @@ exports[`Table Table component without header 1`] = `
       <table
         className="view"
       >
+        <caption>
+          <span
+            className="text align-undefined"
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  caption
+                </span>
+              </span>
+            </span>
+          </span>
+        </caption>
         <thead />
         <tbody>
           <tr>

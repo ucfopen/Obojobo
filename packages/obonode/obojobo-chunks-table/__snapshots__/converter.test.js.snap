@@ -8,6 +8,12 @@ Object {
       "numCols": 2,
       "numRows": undefined,
       "textGroup": Object {
+        "caption": Object {
+          "text": Object {
+            "styleList": Array [],
+            "value": "caption",
+          },
+        },
         "numCols": 2,
         "textGroup": Array [
           Object {
@@ -37,6 +43,27 @@ Object {
   },
   "key": "mockKey",
   "nodes": Array [
+    Object {
+      "data": Object {
+        "content": Object {
+          "header": true,
+          "numCols": 2,
+        },
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "marks": Array [],
+              "text": "caption",
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Table.Caption",
+    },
     Object {
       "data": Object {
         "content": Object {
@@ -142,7 +169,7 @@ Object {
     "header": true,
     "textGroup": Object {
       "numCols": undefined,
-      "numRows": undefined,
+      "numRows": 1,
       "textGroup": Array [
         Object {
           "text": Object {
