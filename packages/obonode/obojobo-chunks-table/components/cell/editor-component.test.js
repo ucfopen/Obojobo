@@ -112,7 +112,7 @@ describe('Cell Editor Node', () => {
 					getClosest: (key, fn) => {
 						fn({ type: 'mock-node' })
 						return {
-							getPath: () => ({ get: () => 0 }),
+							getPath: () => ({ get: () => 1 }),
 							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
@@ -182,6 +182,11 @@ describe('Cell Editor Node', () => {
 							parent={{
 								data: { get: () => ({ header: true }) },
 								nodes: [
+									{
+										key: 'mock-key',
+										type: 'ObojoboDraft.Chunks.Table.Caption',
+										data: { get: () => ({}) }
+									},
 									{
 										key: 'mock-key',
 										data: { get: () => ({}) }
@@ -263,6 +268,10 @@ describe('Cell Editor Node', () => {
 							data: { get: () => ({ numCols: 1 }) },
 							nodes: [
 								{
+									type: 'ObojoboDraft.Chunks.Table.Caption',
+									data: { get: () => ({}) }
+								},
+								{
 									data: { get: () => ({}) }
 								}
 							]
@@ -316,6 +325,10 @@ describe('Cell Editor Node', () => {
 							getPath: () => ({ get: () => 0 }),
 							data: { get: () => ({ numCols: 1 }) },
 							nodes: [
+								{
+									type: 'ObojoboDraft.Chunks.Table.Caption',
+									data: { get: () => ({}) }
+								},
 								{
 									data: { get: () => ({}) }
 								}

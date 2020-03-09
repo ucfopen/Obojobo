@@ -21,6 +21,25 @@ exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 />
 `;
 
+exports[`Table editor plugins.renderNode renders a caption when passed 1`] = `
+<Memo(Caption)
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table.Caption",
+    }
+  }
+/>
+`;
+
 exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 <Cell
   attributes={
@@ -56,5 +75,19 @@ exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
       "type": "ObojoboDraft.Chunks.Table.Row",
     }
   }
+/>
+`;
+
+exports[`Table editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Table editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Table editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Table editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-center required"
+  contentEditable={false}
+  data-placeholder="Type Your Caption Here"
 />
 `;

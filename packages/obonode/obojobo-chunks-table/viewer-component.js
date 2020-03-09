@@ -50,7 +50,7 @@ const Table = props => {
 		return <tr key={rowNum}>{row}</tr>
 	})
 
-	const caption = data.caption ? data.caption.first : ''
+	const caption = data.caption.first
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>

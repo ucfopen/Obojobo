@@ -6,6 +6,7 @@ import Schema from './schema'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 describe('Table Schema', () => {
 	test('plugins.schema.normalize fixes last invalid child in table', () => {
@@ -53,14 +54,45 @@ describe('Table Schema', () => {
 		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds missing first child in table', () => {
+	test('plugins.schema.normalize adds missing caption child in table', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
 		Schema.blocks[TABLE_NODE].normalize(editor, {
 			code: CHILD_MIN_INVALID,
-			node: { data: { get: () => ({ header: false, numCols: 1 }) }, nodes: { size: 3 } },
+			node: {
+				data: { get: () => ({ header: false, numCols: 1 }) },
+				nodes: {
+					size: 3,
+					get: () => ({
+						type: 'mockInvalidType'
+					})
+				}
+			},
+			child: null,
+			index: 0
+		})
+
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing row child in table', () => {
+		const editor = {
+			insertNodeByKey: jest.fn()
+		}
+
+		Schema.blocks[TABLE_NODE].normalize(editor, {
+			code: CHILD_MIN_INVALID,
+			node: {
+				data: { get: () => ({ header: false, numCols: 1 }) },
+				nodes: {
+					size: 3,
+					get: () => ({
+						type: 'ObojoboDraft.Chunks.Table.Caption'
+					})
+				}
+			},
 			child: null,
 			index: 0
 		})
@@ -151,6 +183,36 @@ describe('Table Schema', () => {
 		}
 
 		Schema.blocks[TABLE_CELL_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { data: { get: () => ({ header: false, numCols: 1 }) }, nodes: { size: 2 } },
+			child: { key: 'mockKey', object: 'block' },
+			index: 1
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid child in cell', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Schema.blocks[TABLE_CAPTION_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { data: { get: () => ({ header: false, numCols: 1 }) }, nodes: { size: 1 } },
+			child: { key: 'mockKey', object: 'block' },
+			index: 1
+		})
+
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid last block in cell', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Schema.blocks[TABLE_CAPTION_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { data: { get: () => ({ header: false, numCols: 1 }) }, nodes: { size: 2 } },
 			child: { key: 'mockKey', object: 'block' },

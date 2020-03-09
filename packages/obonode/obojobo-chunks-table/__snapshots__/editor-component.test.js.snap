@@ -10,12 +10,10 @@ exports[`Table Editor Node Table component 1`] = `
     >
       <table
         className="view"
-      >
-        <tbody />
-      </table>
+      />
     </div>
   </div>
 </div>
 `;
 
-exports[`Table Editor Node Table component toggles header 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody></tbody></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Header</button></div></div></div></div></div>"`;
+exports[`Table Editor Node Table component toggles header 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Header</button></div></div></div></div></div>"`;

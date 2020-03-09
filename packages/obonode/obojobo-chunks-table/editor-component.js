@@ -52,7 +52,8 @@ class Table extends React.Component {
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
 						<table className="view" key="table">
-							<tbody>{this.props.children}</tbody>
+							{this.props.children}
+							{/* <tbody>{this.props.children}</tbody> */}
 						</table>
 					</div>
 					{this.props.isSelected ? this.renderButton() : null}

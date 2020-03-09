@@ -15,7 +15,6 @@ const slateToObo = node => {
 
 	node.nodes.forEach(row => {
 		if (row.type === TABLE_CAPTION_NODE) {
-			content.caption = true
 			const cellLine = {
 				text: { value: row.text, styleList: [] }
 			}
@@ -61,17 +60,19 @@ const oboToSlate = node => {
 	content.numCols = numCols
 	content.numRows = numRows
 
-	nodes.push({
-		object: 'block',
-		type: TABLE_CAPTION_NODE,
-		data: { content: { header: hasHeader && nodes.length === 0, numCols } },
-		nodes: [
-			{
-				object: 'text',
-				leaves: TextUtil.parseMarkings(node.content.textGroup.caption)
-			}
-		]
-	})
+	if (node.content.textGroup.caption) {
+		nodes.push({
+			object: 'block',
+			type: TABLE_CAPTION_NODE,
+			data: { content: { header: hasHeader && nodes.length === 0, numCols } },
+			nodes: [
+				{
+					object: 'text',
+					leaves: TextUtil.parseMarkings(node.content.textGroup.caption)
+				}
+			]
+		})
+	}
 
 	node.content.textGroup.textGroup.forEach((line, index) => {
 		// create a new row every numCols

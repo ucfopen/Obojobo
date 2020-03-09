@@ -8,6 +8,7 @@ import Table from './editor-registration'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 
 describe('Table editor', () => {
 	test('plugins.onPaste deals with no table', () => {
@@ -264,6 +265,22 @@ describe('Table editor', () => {
 		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
+	test('plugins.renderNode renders a caption when passed', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: TABLE_CAPTION_NODE,
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
 	test('plugins.renderNode calls next', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -280,6 +297,63 @@ describe('Table editor', () => {
 		const next = jest.fn()
 
 		expect(Table.plugins.renderNode(props, null, next)).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			Table.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			Table.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			Table.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: TABLE_CAPTION_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			Table.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: TABLE_CAPTION_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 
 	test('plugins.normalizeNode does nothing if all nodes match schema', () => {

@@ -8,13 +8,21 @@ const Adapter = {
 		model.setStateProp('header', true)
 
 		if (attrs && attrs.content && attrs.content.textGroup) {
-			model.modelState.caption = TextGroup.fromDescriptor(
-				[attrs.content.textGroup.caption],
-				Infinity,
-				{
-					indent: 0
-				}
-			)
+			if (attrs.content.textGroup.caption) {
+				model.modelState.caption = TextGroup.fromDescriptor(
+					[attrs.content.textGroup.caption],
+					Infinity,
+					{
+						indent: 0
+					}
+				)
+			} else {
+				model.modelState.caption = TextGroup.create(Infinity, {
+					indent: 0,
+					align: 'left'
+				})
+			}
+
 			model.modelState.textGroup = GridTextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			})
@@ -25,13 +33,13 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.textGroup = model.modelState.textGroup.clone()
-		if (model.modelState.caption) clone.modelState.caption = model.modelState.caption.clone()
+		clone.modelState.caption = model.modelState.caption.clone()
 		return (clone.modelState.header = model.modelState.header)
 	},
 
 	toJSON(model, json) {
 		json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		if (model.modelState.caption) json.content.caption = model.modelState.caption.toDescriptor()
+		json.content.caption = model.modelState.caption.toDescriptor()
 		return (json.content.header = model.modelState.header)
 	},
 

@@ -26,6 +26,7 @@ const schema = {
 				const { node, child, index } = error
 				const header = index === 0 && node.data.get('content').header
 				const numCols = node.data.get('content').numCols
+
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
@@ -44,15 +45,19 @@ const schema = {
 						})
 					}
 					case CHILD_MIN_INVALID: {
-						let block = Block.create({
-							type: TABLE_ROW_NODE,
+						let type = TABLE_ROW_NODE
+						if (
+							error.node.nodes.size === 0 ||
+							error.node.nodes.get(0).type !== TABLE_CAPTION_NODE
+						) {
+							type = TABLE_CAPTION_NODE
+						}
+
+						const block = Block.create({
+							type,
 							data: { content: { header, numCols } }
 						})
-						// editor.insertNodeByKey(node.key, index, block)
 
-						block = Block.create({
-							type: TABLE_CAPTION_NODE
-						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}

@@ -65,8 +65,91 @@ describe('Table adapter', () => {
 		expect(model.modelState.textGroup).toEqual(tempGridTextGroup)
 	})
 
+	test('construct builds with no caption', () => {
+		const attrs = {
+			content: {
+				header: true,
+				textGroup: {
+					numRows: 2,
+					numCols: 2,
+					textGroup: [
+						{
+							text: {
+								value: 'First column heading'
+							}
+						},
+						{
+							text: {
+								value: 'Second column heading'
+							}
+						},
+						{
+							text: {
+								value: 'First column second row'
+							}
+						},
+						{
+							text: {
+								value: 'Second column second row'
+							}
+						}
+					]
+				}
+			}
+		}
+		const model = new OboModel(attrs)
+
+		TableAdapter.construct(model, attrs)
+		const tempGridTextGroup = GridTextGroup.create(2, 2, { indent: 0 })
+		tempGridTextGroup.set(0, new StylableText('First column heading'))
+		tempGridTextGroup.set(1, new StylableText('Second column heading'))
+		tempGridTextGroup.set(2, new StylableText('First column second row'))
+		tempGridTextGroup.set(3, new StylableText('Second column second row'))
+
+		expect(model.modelState.textGroup).toEqual(tempGridTextGroup)
+	})
+
 	test('clone creates a copy', () => {
-		const a = new OboModel({ header: 'mockHeader' })
+		const attrs = {
+			content: {
+				header: true,
+				textGroup: {
+					numRows: 2,
+					numCols: 2,
+					caption: {
+						text: {
+							value: 'caption',
+							styleList: []
+						}
+					},
+					textGroup: [
+						{
+							text: {
+								value: 'First column heading'
+							}
+						},
+						{
+							text: {
+								value: 'Second column heading'
+							}
+						},
+						{
+							text: {
+								value: 'First column second row'
+							}
+						},
+						{
+							text: {
+								value: 'Second column second row'
+							}
+						}
+					]
+				}
+			}
+		}
+		const a = new OboModel(attrs)
+		TableAdapter.construct(a, attrs)
+
 		const b = new OboModel({})
 
 		TableAdapter.construct(a)
@@ -77,7 +160,45 @@ describe('Table adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		const a = new OboModel({ modelState: { header: 'mockHeader' } })
+		const attrs = {
+			content: {
+				header: true,
+				textGroup: {
+					numRows: 2,
+					numCols: 2,
+					caption: {
+						text: {
+							value: 'caption',
+							styleList: []
+						}
+					},
+					textGroup: [
+						{
+							text: {
+								value: 'First column heading'
+							}
+						},
+						{
+							text: {
+								value: 'Second column heading'
+							}
+						},
+						{
+							text: {
+								value: 'First column second row'
+							}
+						},
+						{
+							text: {
+								value: 'Second column second row'
+							}
+						}
+					]
+				}
+			}
+		}
+		const a = new OboModel(attrs)
+		TableAdapter.construct(a, attrs)
 		const b = { content: {} }
 
 		TableAdapter.construct(a)

@@ -2,8 +2,6 @@ import '../../viewer-component.scss'
 
 import React, { memo } from 'react'
 
-const Caption = props => (
-	<div className="obojobo-draft--chunks--table--caption">{props.children}</div>
-)
+const Caption = props => <caption>{props.children}</caption>
 
 export default memo(Caption)
