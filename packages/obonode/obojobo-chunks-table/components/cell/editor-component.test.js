@@ -591,6 +591,9 @@ describe('Cell Editor Node', () => {
 							data: { get: () => ({ numCols: 1 }) },
 							nodes: [
 								{
+									type: 'ObojoboDraft.Chunks.Table.Caption'
+								},
+								{
 									nodes: { get: () => ({}) },
 									data: { get: () => ({}) }
 								}

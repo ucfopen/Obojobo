@@ -204,6 +204,8 @@ class Cell extends React.Component {
 			})
 
 			tableParent.nodes.forEach(row => {
+				if (row.type === 'ObojoboDraft.Chunks.Table.Caption') return // Table Caption
+
 				const cell = row.nodes.get(colIndex)
 				editor.setNodeByKey(row.key, {
 					data: {
