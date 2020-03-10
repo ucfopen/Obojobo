@@ -80,4 +80,119 @@ describe('PostAssessment Converter', () => {
 		}
 	`)
 	})
+
+	test('oboToSlate converts an OboComponent to a Slate node with legacy to/from attributes', () => {
+		const oboNode = [
+			{
+				to: 'mock-to',
+				from: 'mock-from',
+				page: 'dummyPage'
+			}
+		]
+
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchInlineSnapshot(`
+		Object {
+		  "nodes": Array [
+		    Object {
+		      "data": Object {
+		        "for": "[mock-from,mock-to]",
+		      },
+		      "nodes": Array [
+		        "PageOboToSlate",
+		      ],
+		      "object": "block",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		    },
+		  ],
+		  "object": "block",
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+	})
+
+	test('oboToSlate converts an OboComponent to a Slate node but ignores legacy to/from attributes if for attribute is defined', () => {
+		expect(
+			Converter.oboToSlate([
+				{
+					to: 'mock-to',
+					from: 'mock-from',
+					for: 'mock-for',
+					page: 'dummyPage'
+				}
+			])
+		).toMatchInlineSnapshot(`
+		Object {
+		  "nodes": Array [
+		    Object {
+		      "data": Object {
+		        "for": "mock-for",
+		      },
+		      "nodes": Array [
+		        "PageOboToSlate",
+		      ],
+		      "object": "block",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		    },
+		  ],
+		  "object": "block",
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+
+		expect(
+			Converter.oboToSlate([
+				{
+					to: 'mock-to',
+					for: 'mock-for',
+					page: 'dummyPage'
+				}
+			])
+		).toMatchInlineSnapshot(`
+		Object {
+		  "nodes": Array [
+		    Object {
+		      "data": Object {
+		        "for": "mock-for",
+		      },
+		      "nodes": Array [
+		        "PageOboToSlate",
+		      ],
+		      "object": "block",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		    },
+		  ],
+		  "object": "block",
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+
+		expect(
+			Converter.oboToSlate([
+				{
+					from: 'mock-from',
+					for: 'mock-for',
+					page: 'dummyPage'
+				}
+			])
+		).toMatchInlineSnapshot(`
+		Object {
+		  "nodes": Array [
+		    Object {
+		      "data": Object {
+		        "for": "mock-for",
+		      },
+		      "nodes": Array [
+		        "PageOboToSlate",
+		      ],
+		      "object": "block",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		    },
+		  ],
+		  "object": "block",
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+	})
 })

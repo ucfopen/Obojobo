@@ -15,7 +15,8 @@ const {
 	requireDraftId,
 	requireCanViewEditor,
 	requireCanCreateDrafts,
-	requireCanDeleteDrafts
+	requireCanDeleteDrafts,
+	checkContentId
 } = oboRequire('server/express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -25,10 +26,11 @@ const isNoDataFromQueryError = e => {
 }
 
 // Get a complete Draft Document Tree (for editing)
+// optional query variable: contentId=<draftContentId>
 // mounted as /api/drafts/:draftId/full
 router
 	.route('/:draftId/full')
-	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.get([requireDraftId, requireCanViewEditor, checkContentId, checkValidationRules])
 	.get(async (req, res) => {
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
@@ -40,7 +42,14 @@ router
 				)
 			}
 
-			const draftModel = await DraftModel.fetchById(req.params.draftId)
+			let draftModel
+			if (req.query.contentId) {
+				// a specific verion is requested
+				draftModel = await DraftModel.fetchDraftByVersion(req.params.draftId, req.query.contentId)
+			} else {
+				// get the current version
+				draftModel = await DraftModel.fetchById(req.params.draftId)
+			}
 
 			res.format({
 				'application/xml': async () => {

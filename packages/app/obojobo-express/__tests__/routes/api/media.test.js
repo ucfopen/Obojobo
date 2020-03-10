@@ -150,7 +150,7 @@ describe('api media route', () => {
 				expect(response.body).toHaveProperty('value.type', 'badInput')
 				expect(response.body).toHaveProperty(
 					'value.message',
-					'page must be a valid number 1 or above, got 0'
+					'page must be a valid int 1 or above, got 0'
 				)
 				expect(MediaModel.fetchByUserId).not.toHaveBeenCalled()
 			})
@@ -167,7 +167,7 @@ describe('api media route', () => {
 				expect(response.body).toHaveProperty('value.type', 'badInput')
 				expect(response.body).toHaveProperty(
 					'value.message',
-					'per_page must be a valid int between 0 and 100, got 101'
+					'per_page must be a valid int between 1 and 100, got 101'
 				)
 				expect(MediaModel.fetchByUserId).not.toHaveBeenCalled()
 			})
