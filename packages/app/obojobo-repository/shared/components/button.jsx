@@ -10,6 +10,7 @@ const Button = props => (
 		}}
 		aria-label={props.ariaLabel}
 		className={`repository--button ${props.className || ''}`}
+		disabled={props.disabled}
 	>
 		{props.children}
 	</button>

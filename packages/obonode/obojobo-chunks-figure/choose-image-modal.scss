@@ -83,6 +83,7 @@
 			width: 100%;
 			height: 5rem;
 			object-fit: contain;
+			overflow: scroll; // keeps alt text on broken images from messing up the grid
 
 			&:hover {
 				opacity: 0.9;

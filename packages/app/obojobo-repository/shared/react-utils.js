@@ -3,6 +3,13 @@ const { Provider } = require('react-redux')
 const { createStore, applyMiddleware } = require('redux')
 const { middleware } = require('redux-pack')
 
+function hydrateElWithoutStore(Component, domSelector) {
+	const domEl = document.querySelector(domSelector)
+	const initialState = JSON.parse(domEl.dataset.reactProps)
+	const app = React.createElement(Component, initialState)
+	ReactDOM.hydrate(app, domEl) //eslint-disable-line no-undef
+}
+
 function hydrateEl(Component, reducers, domSelector) {
 	const domEl = document.querySelector(domSelector)
 	const initialState = JSON.parse(domEl.dataset.reactProps)
@@ -32,6 +39,7 @@ function convertPropsToString(props) {
 
 module.exports = {
 	hydrateEl,
+	hydrateElWithoutStore,
 	propsToStore,
 	createCommonReactApp,
 	convertPropsToString

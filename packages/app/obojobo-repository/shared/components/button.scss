@@ -1,6 +1,13 @@
 @import '../../client/css/defaults';
 
 .repository--button {
+	@mixin disabled() {
+		cursor: not-allowed;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid $color-transparent;
+		opacity: 0.4;
+	}
+
 	border: 0;
 	background: $color-button-bg;
 	color: white;
@@ -10,6 +17,10 @@
 	cursor: pointer;
 	text-decoration: none;
 	font-size: 0.7em;
+
+	&:disabled {
+		@include disabled();
+	}
 
 	&:hover {
 		background: $color-action;

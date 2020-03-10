@@ -360,31 +360,31 @@ describe('media model', () => {
 		})
 	})
 
-	test('fetchManyById throws error for invalid argument', () => {
+	test('fetchByUserId throws error for invalid argument', () => {
 		expect.assertions(1)
 
 		const mockStart = null
 		const mockCount = null
 		const testInvalidArgument = () => {
-			MediaModel.fetchManyById(mockUserId, mockStart, mockCount)
+			MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)
 		}
 
 		expect(testInvalidArgument).toThrowError('Invalid argument.')
 	})
 
-	test('fetchManyById correctly catches errors', async () => {
+	test('fetchByUserId correctly catches errors', async () => {
 		expect.assertions(1)
 
 		const mockStart = 0
 		const mockCount = 1
 		db.manyOrNone.mockRejectedValueOnce(new Error('Mock error'))
 
-		await expect(MediaModel.fetchManyById(mockUserId, mockStart, mockCount)).rejects.toMatchObject({
+		await expect(MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)).rejects.toMatchObject({
 			message: 'Mock error'
 		})
 	})
 
-	test('fetchManyById retrieves correct data', async () => {
+	test('fetchByUserId retrieves correct data', async () => {
 		expect.hasAssertions()
 
 		const mockStart = 0
@@ -392,9 +392,23 @@ describe('media model', () => {
 		const mockResults = []
 		db.manyOrNone.mockResolvedValueOnce(mockResults)
 
-		await MediaModel.fetchManyById(mockUserId, mockStart, mockCount).then(results => {
-			expect(results.data.length).toEqual(0)
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(0)
 			expect(results.hasMore).toEqual(false)
+		})
+	})
+
+	test('fetchByUserId retrieves results', async () => {
+		expect.hasAssertions()
+
+		const mockStart = 0
+		const mockCount = 1
+		const mockResults = ['mock-media-item', 'mock-media-item-2']
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(1)
+			expect(results.hasMore).toEqual(true)
 		})
 	})
 

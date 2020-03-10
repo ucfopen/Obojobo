@@ -1,5 +1,5 @@
 module.exports = {
 	obojobo: {
-		migrations: 'migrations'
+		migrations: 'server/migrations'
 	}
 }

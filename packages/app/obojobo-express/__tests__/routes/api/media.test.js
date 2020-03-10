@@ -65,12 +65,12 @@ describe('api media route', () => {
 		jest.clearAllMocks()
 		db.none.mockReset()
 		db.any.mockReset()
+		mockCurrentUser = { id: 99 } // mock current logged in user
 	})
 	afterEach(() => {})
 
 	test('POST /api/media/upload returns the results of MediaModel.createAndSave', () => {
 		const mockCreateAndSaveResults = { mockResults: true }
-		mockCurrentUser = { id: 99 } // mock current logged in user
 		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
 		return request(app)
@@ -86,7 +86,6 @@ describe('api media route', () => {
 
 	test('POST /api/media/upload catches error from Multer', () => {
 		const mockCreateAndSaveResults = { mockResults: true }
-		mockCurrentUser = { id: 99 } // mock current logged in user
 
 		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
@@ -105,8 +104,6 @@ describe('api media route', () => {
 	})
 
 	test('GET api/media/:id/:dimensions', () => {
-		mockCurrentUser = { id: 99 } // mock current logged in user
-
 		MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
 			mimeType: 'text/html',
 			binaryData: 'mockBinaryImageData'
@@ -120,17 +117,59 @@ describe('api media route', () => {
 			})
 	})
 
-	test('GET /api/media/many', () => {
-		mockCurrentUser = { id: 99 } // mock current logged in user
-		const mockStart = 0
-		const mockCount = 1
-
-		MediaModel.fetchManyById = jest.fn().mockResolvedValueOnce([])
+	test('GET /api/media/all queries with default page values', () => {
+		MediaModel.fetchByUserId = jest.fn().mockResolvedValueOnce([])
 
 		return request(app)
-			.get(`/api/media/many/?start=${mockStart}&count=${mockCount}`)
-			.then(() => {
-				expect(MediaModel.fetchManyById).toBeCalledWith(mockCurrentUser.id, mockStart, mockCount)
+			.get(`/api/media/all`)
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(MediaModel.fetchByUserId).toBeCalledWith(mockCurrentUser.id, 0, 10)
+			})
+	})
+
+	test('GET /api/media/all queries the correct offset and limit values', () => {
+		MediaModel.fetchByUserId = jest.fn().mockResolvedValueOnce([])
+
+		return request(app)
+			.get(`/api/media/all?page=3&per_page=50`)
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(MediaModel.fetchByUserId).toBeCalledWith(mockCurrentUser.id, 100, 50)
+			})
+	})
+
+	test('GET /api/media/all with invalid page', () => {
+		MediaModel.fetchByUserId = jest.fn().mockResolvedValueOnce([])
+
+		return request(app)
+			.get(`/api/media/all?page=0&per_page=55`)
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value.type', 'badInput')
+				expect(response.body).toHaveProperty(
+					'value.message',
+					'page must be a valid number 1 or above, got 0'
+				)
+				expect(MediaModel.fetchByUserId).not.toHaveBeenCalled()
+			})
+	})
+
+	test('GET /api/media/all with invalid page', () => {
+		MediaModel.fetchByUserId = jest.fn().mockResolvedValueOnce([])
+
+		return request(app)
+			.get(`/api/media/all?page=1&per_page=101`)
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value.type', 'badInput')
+				expect(response.body).toHaveProperty(
+					'value.message',
+					'per_page must be a valid int between 0 and 100, got 101'
+				)
+				expect(MediaModel.fetchByUserId).not.toHaveBeenCalled()
 			})
 	})
 })
