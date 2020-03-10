@@ -167,7 +167,7 @@ export default class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
-	registerStore(store, stateName){
+	registerStore(store, stateName) {
 		const storePair = {
 			store,
 			listener: () => this.setState({ [stateName]: store.getState() })
@@ -177,15 +177,11 @@ export default class ViewerApp extends React.Component {
 	}
 
 	unRegisterStores() {
-		for(const stateName in this.stores){
-			const {store, listener} = this.stores[stateName]
+		for (const stateName in this.stores) {
+			const { store, listener } = this.stores[stateName]
 			store.offChange(listener)
 			delete this.stores[stateName]
 		}
-	}
-
-	onStoreChange(stateProp, store){
-		this.setState( {[stateProp]: store.getState() })
 	}
 
 	isDOMFocusInsideNav() {

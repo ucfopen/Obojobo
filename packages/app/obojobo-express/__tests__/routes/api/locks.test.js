@@ -1,5 +1,12 @@
-jest.mock('../../../models/edit_lock')
-jest.mock('obojobo-repository/server/services/permissions')
+jest.mock('../../../server/models/edit_lock', () => ({
+	fetchByDraftId: jest.fn(),
+	create: jest.fn(),
+	deleteExpiredLocks: jest.fn(),
+	deleteByDraftIdandUser: jest.fn()
+}))
+jest.mock('obojobo-repository/server/services/permissions', () => ({
+	userHasPermissionToDraft: jest.fn()
+}))
 jest.unmock('express') // needed to use supertest
 
 const mockCurrentUser = { id: 'mock-current-user-id' }
@@ -8,28 +15,34 @@ const mockValidatorThatPasses = jest.fn().mockImplementation((req, res, next) =>
 	next()
 })
 
-jest.mock('../../../express_validators', () => ({
+jest.mock('../../../server/express_validators', () => ({
 	checkValidationRules: mockValidatorThatPasses,
 	requireDraftId: mockValidatorThatPasses,
+	requireContentId: mockValidatorThatPasses,
 	requireCanViewEditor: mockValidatorThatPasses
 }))
 
-// setup express serve
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
-const request = require('supertest')
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
-const EditLock = require('../../../models/edit_lock')
-
-app.use(bodyParser.json())
-app.use('', oboRequire('express_response_decorator'))
-app.use('/api/locks', oboRequire('routes/api/locks')) // mounting under api so response_decorator assumes json content type
-
 describe('Route api/locks', () => {
+	let userHasPermissionToDraft
+	let request
+	let bodyParser
+	let EditLock
+	let app
+
 	beforeEach(() => {
 		jest.clearAllMocks()
 		// jest.resetModules()
+		global.oboJestMockConfig()
+		userHasPermissionToDraft = require('obojobo-repository/server/services/permissions')
+			.userHasPermissionToDraft
+		request = require('supertest')
+		const express = require('express')
+		bodyParser = require('body-parser')
+		app = express()
+		EditLock = require('../../../server/models/edit_lock')
+		app.use(bodyParser.json())
+		app.use('', oboRequire('server/express_response_decorator'))
+		app.use('/api/locks', oboRequire('server/routes/api/locks')) // mounting under api so response_decorator assumes json content type
 	})
 
 	test('get lock calls expected validators', () => {
@@ -72,7 +85,7 @@ describe('Route api/locks', () => {
 			.post('/api/locks/mock-draft-id')
 			.then(response => {
 				expect(response.statusCode).toBe(200)
-				expect(mockValidatorThatPasses).toHaveBeenCalledTimes(3)
+				expect(mockValidatorThatPasses).toHaveBeenCalledTimes(4)
 			})
 	})
 
@@ -174,6 +187,21 @@ describe('Route api/locks', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(EditLock.deleteExpiredLocks).toHaveBeenCalledTimes(1)
+			})
+	})
+
+	test('post delete calls deleteByDraftIdAndUser', () => {
+		expect.hasAssertions()
+
+		return request(app)
+			.post('/api/locks/mock-draft-id/delete')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(EditLock.deleteByDraftIdandUser).toHaveBeenCalledTimes(1)
+				expect(EditLock.deleteByDraftIdandUser).toHaveBeenCalledWith(
+					'mock-current-user-id',
+					'mock-draft-id'
+				)
 			})
 	})
 })

@@ -1,4 +1,5 @@
 const env_node = process.env.NODE_ENV
+const ogConsoleError = console.error // eslint-disable-line no-console
 const path = require('path')
 let logger
 
@@ -11,10 +12,9 @@ describe('config', () => {
 		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 	})
-	afterEach(() => {})
-	beforeAll(() => {})
-	afterAll(() => {
+	afterEach(() => {
 		process.env.NODE_ENV = env_node
+		console.error = ogConsoleError // eslint-disable-line no-console
 	})
 
 	test('db to have expected props and vals', () => {
@@ -73,6 +73,7 @@ describe('config', () => {
 	})
 
 	test('config logs errors when expected env not set', () => {
+		console.error = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
@@ -91,6 +92,7 @@ describe('config', () => {
 	})
 
 	test('processes DATABASE_URL env variable 2', () => {
+		console.error = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
@@ -122,6 +124,7 @@ describe('config', () => {
 	})
 
 	test('logs error when env var ending in _JSON doesnt contain valid json', () => {
+		console.error = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {

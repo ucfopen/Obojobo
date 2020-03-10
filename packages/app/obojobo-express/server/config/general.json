@@ -25,7 +25,12 @@
 	},
 	"test": {
 		"key": "value",
-		"hostname": "obojobo.ucf.edu"
+		"hostname": "obojobo.ucf.edu",
+		"editLocks": {
+			"idleMinutes": 45,
+			"warnMinutes": 40,
+			"autoExpireMinutes":5
+		}
 	},
 	"development": {
 		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"

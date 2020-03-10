@@ -1,6 +1,7 @@
 describe('Edit Lock Model', () => {
-	jest.mock('../../db')
-	jest.mock('../../config') // to allow us to alter general.editLockExpireMinutes
+	jest.mock('../../server/db')
+	jest.mock('../../server/config', () => ({}))
+
 	const MOCK_EXPIRE_MINUTES = 'mock-expire-minutes'
 	let db
 	let EditLock
@@ -9,10 +10,10 @@ describe('Edit Lock Model', () => {
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
-		db = require('../../db')
-		config = require('../../config')
-		config.general.editLocks.autoExpireMinutes = MOCK_EXPIRE_MINUTES
-		EditLock = require('../../models/edit_lock')
+		db = require('../../server/db')
+		config = require('../../server/config')
+		config.general = { editLocks: { autoExpireMinutes: MOCK_EXPIRE_MINUTES } }
+		EditLock = require('../../server/models/edit_lock')
 	})
 	afterEach(() => {})
 
@@ -193,22 +194,18 @@ describe('Edit Lock Model', () => {
 	})
 
 	test('create checks for existing locks', () => {
-		return EditLock.create().then(() => {
-			expect(db.one).toHaveBeenCalledTimes(1)
-			expect(db.one).toHaveBeenCalledWith(
-				expect.stringContaining('created_at > now() - interval'),
-				expect.anything()
-			)
-			expect(db.one).toHaveBeenCalledWith(
-				expect.stringContaining('WHERE NOT EXISTS'),
-				expect.anything()
-			)
-		})
+		db.one.mockResolvedValueOnce({ contentId: 'a-newer-version' })
+		return expect(EditLock.create()).rejects.toThrow(
+			'Current version of draft does not match requested lock'
+		)
 	})
 
 	test('create uses editLockExpireMinutes from config', () => {
-		return EditLock.create().then(() => {
-			expect(db.one).toHaveBeenCalledTimes(1)
+		// make sure the first quiery returns a matching contentId
+		db.one.mockResolvedValueOnce({ contentId: 3 })
+
+		return EditLock.create(1, 2, 3).then(() => {
+			expect(db.one).toHaveBeenCalledTimes(2)
 			expect(db.one).toHaveBeenCalledWith(
 				expect.stringContaining(`${MOCK_EXPIRE_MINUTES} minutes`),
 				expect.anything()
@@ -217,10 +214,11 @@ describe('Edit Lock Model', () => {
 	})
 
 	test('create calls the expected query with arguments', () => {
-		return EditLock.create('mock-user-id', 'mock-draft-id').then(() => {
-			expect(db.one).toHaveBeenCalledTimes(1)
+		db.one.mockResolvedValueOnce({ contentId: 'mock-content-id' })
+		return EditLock.create('mock-user-id', 'mock-draft-id', 'mock-content-id').then(() => {
+			expect(db.one).toHaveBeenCalledTimes(2)
 			expect(db.one).toHaveBeenCalledWith(expect.stringContaining('INSERT'), expect.anything())
-			expect(db.one).toHaveBeenCalledWith(expect.anything(), {
+			expect(db.one).toHaveBeenLastCalledWith(expect.anything(), {
 				userId: 'mock-user-id',
 				draftId: 'mock-draft-id'
 			})
@@ -228,9 +226,10 @@ describe('Edit Lock Model', () => {
 	})
 
 	test('create returns result from db.one', () => {
+		db.one.mockResolvedValueOnce({ contentId: 3 }).mockResolvedValueOnce('mock-result')
 		db.one.mockResolvedValueOnce('mock-result')
-		return EditLock.create('mock-draft-id').then(result => {
-			expect(db.one).toHaveBeenCalledTimes(1)
+		return EditLock.create(1, 2, 3).then(result => {
+			expect(db.one).toHaveBeenCalledTimes(2)
 			expect(result).toBe('mock-result')
 		})
 	})

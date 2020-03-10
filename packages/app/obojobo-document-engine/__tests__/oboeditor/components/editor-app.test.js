@@ -42,7 +42,8 @@ describe('EditorApp', () => {
 
 		defaultModel = {
 			modelState: { start: 'mockStart' },
-			get: jest.fn()
+			get: jest.fn(),
+			set: jest.fn()
 		}
 
 		defaultProps = {
@@ -76,6 +77,12 @@ describe('EditorApp', () => {
 	test('component renders', () => {
 		expect.hasAssertions()
 
+		// mock some plugins
+		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
+		spyGetItems.mockImplementationOnce(cb => {
+			cb([{ plugins: 'mock-plugin' }, { noplugins: 'mock-plugin' }])
+		})
+
 		// mock api calls
 		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
 
@@ -88,6 +95,25 @@ describe('EditorApp', () => {
 
 			expect(component.html()).toMatchSnapshot()
 
+			component.unmount()
+		})
+	})
+
+	test('component should request null draft when draftid not in pathname', () => {
+		expect.hasAssertions()
+
+		// mock api calls
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		// update document.location to cause no draftId
+		window.history.pushState({}, null, '/pathname?k=v')
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+
+		// verify
+		return global.flushPromises().then(() => {
+			component.update()
+			expect(APIUtil.getFullDraft).toHaveBeenCalledWith(null, 'json')
 			component.unmount()
 		})
 	})
@@ -108,7 +134,6 @@ describe('EditorApp', () => {
 			component.unmount()
 		})
 	})
-
 
 	test('onEditorStoreChange calls Editor.getState', () => {
 		expect.hasAssertions()
@@ -154,14 +179,15 @@ describe('EditorApp', () => {
 		)
 
 		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
 		console.error = jest.fn() // eslint-disable-line no-console
 
 		return global.flushPromises().then(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()
 			expect(console.error).toHaveBeenCalled() // eslint-disable-line no-console
-			expect(component.instance().state).toHaveProperty('requestStatus', 'invalid')
-			expect(component.instance().state).toHaveProperty('requestError', mockError)
+			expect(instance.state).toHaveProperty('requestStatus', 'invalid')
+			expect(instance.state).toHaveProperty('requestError', mockError)
 			component.unmount()
 		})
 	})
@@ -176,12 +202,13 @@ describe('EditorApp', () => {
 		})
 
 		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
 
 		return global.flushPromises().then(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()
-			expect(component.instance().state).toHaveProperty('requestStatus', null)
-			expect(component.instance().state).toHaveProperty('requestError', null)
+			expect(instance.state).toHaveProperty('requestStatus', null)
+			expect(instance.state).toHaveProperty('requestError', null)
 			// eslint-disable-next-line no-console
 			component.unmount()
 		})
@@ -194,15 +221,16 @@ describe('EditorApp', () => {
 		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
 		return global.flushPromises().then(() => {
 			component.update()
 			// make sure the error is displayed
 			expect(component.html()).toContain('Module is Being Edited')
 
 			// make sure state has the error message
-			expect(component.instance().state).toHaveProperty('requestStatus', 'invalid')
-			expect(component.instance().state).toHaveProperty('requestError')
-			expect(component.instance().state.requestError).toMatchInlineSnapshot(`
+			expect(instance.state).toHaveProperty('requestStatus', 'invalid')
+			expect(instance.state).toHaveProperty('requestError')
+			expect(instance.state.requestError).toMatchInlineSnapshot(`
 			Object {
 			  "message": "Someone else is currently editing this module. Try reloading this tab in a few minutes (1 or more).",
 			  "title": "Module is Being Edited.",
@@ -259,20 +287,44 @@ describe('EditorApp', () => {
 		})
 	})
 
+	test('startRenewEditLockInterval skips createEditLock when already locking', () => {
+		expect.hasAssertions()
+		jest.useFakeTimers()
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		// mock reloadDraft just to simplify the test
+		jest.spyOn(instance, 'reloadDraft').mockResolvedValueOnce()
+		jest.spyOn(instance, 'createEditLock').mockResolvedValueOnce()
+		instance._isCreatingEditLock = true
+
+		return global.flushPromises().then(() => {
+			expect(instance.createEditLock).not.toHaveBeenCalled()
+
+			// now turn it off and call the function directy to test that it does get called
+			instance._isCreatingEditLock = false
+			instance.startRenewEditLockInterval('test')
+			expect(instance.createEditLock).toHaveBeenCalled()
+
+			component.unmount()
+		})
+	})
+
 	test('startRenewEditLockInterval displays error when unable to secure lock', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
 		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
 		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
 		// mock reloadDraft just to simplify the test
-		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
+		jest.spyOn(instance, 'reloadDraft').mockResolvedValueOnce()
 
 		return global.flushPromises().then(() => {
 			// now simulate not being able to obtain a lock
 			APIUtil.requestEditLock.mockResolvedValueOnce({ status: 'error' })
 
 			// make sure we're not in an error state
-			expect(component.instance().state).toHaveProperty('requestStatus', null)
+			expect(instance.state).toHaveProperty('requestStatus', null)
 
 			//move forward to the next timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9)
@@ -280,9 +332,9 @@ describe('EditorApp', () => {
 
 			return global.flushPromises().then(() => {
 				// make sure state has the error message
-				expect(component.instance().state).toHaveProperty('requestStatus', 'invalid')
-				expect(component.instance().state).toHaveProperty('requestError')
-				expect(component.instance().state.requestError).toMatchInlineSnapshot(`
+				expect(instance.state).toHaveProperty('requestStatus', 'invalid')
+				expect(instance.state).toHaveProperty('requestError')
+				expect(instance.state.requestError).toMatchInlineSnapshot(`
 				Object {
 				  "message": "Someone else is currently editing this module. Try reloading this tab in a few minutes (1 or more).",
 				  "title": "Module is Being Edited.",
@@ -290,6 +342,148 @@ describe('EditorApp', () => {
 			`)
 				component.unmount()
 			})
+		})
+	})
+
+	test('saveDraft updates the models content id', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		APIUtil.postDraft.mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				id: 'mock-content-id'
+			}
+		})
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		instance.state.model = defaultModel
+
+		// verify
+		return instance.saveDraft('mock-draft-id', 'mock-data-src').then(success => {
+			expect(success).toBe(true)
+			expect(defaultModel.set).toHaveBeenCalledWith('contentId', 'mock-content-id')
+			expect(APIUtil.postDraft).toHaveBeenCalledWith(
+				'mock-draft-id',
+				'mock-data-src',
+				'application/json'
+			)
+			component.unmount()
+		})
+	})
+
+	test('saveDraft shows dialog on ', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		APIUtil.postDraft.mockResolvedValueOnce({
+			status: 'error',
+			value: {
+				message: 'mock-error-message'
+			}
+		})
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		instance.state.model = defaultModel
+
+		// verify
+		return instance.saveDraft('mock-draft-id', 'mock-data-src', 'json').then(success => {
+			expect(success).toBe(false)
+			expect(defaultModel.set).not.toHaveBeenCalled()
+			expect(ModalUtil.show).toHaveBeenCalled()
+			component.unmount()
+		})
+	})
+
+	test('saveDraft sends correct mode to postDraft for xml', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		APIUtil.postDraft.mockResolvedValueOnce({
+			status: 'error',
+			value: {
+				message: 'mock-error-message'
+			}
+		})
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+
+		// verify
+		return instance.saveDraft('mock-draft-id', 'mock-data-src', 'xml').then(() => {
+			expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-draft-id', 'mock-data-src', 'text/plain')
+			component.unmount()
+		})
+	})
+
+	test('onWindowClose sends becon', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		instance.state.draftId = 'mock-draft-id'
+
+		// verify
+		instance.onWindowClose()
+		expect(APIUtil.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
+	})
+
+	test('onWindowInactive sends becon, hides modal and shows expiration modal', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		instance.state.draftId = 'mock-draft-id'
+
+		// verify
+		instance.onWindowInactive()
+		expect(APIUtil.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('onWindowInactiveWarning shows a modal', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		instance.state.draftId = 'mock-draft-id'
+
+		// verify
+		instance.onWindowInactiveWarning()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('onWindowReturnFromInactive renews lock interval and hides modals', () => {
+		expect.hasAssertions()
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+
+		// mount
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		jest.spyOn(instance, 'startRenewEditLockInterval')
+		instance.startRenewEditLockInterval.mockResolvedValueOnce()
+		instance.state.draftId = 'mock-draft-id'
+
+		// verify
+		return instance.onWindowReturnFromInactive().then(() => {
+			expect(instance.startRenewEditLockInterval).toHaveBeenCalledWith('mock-draft-id')
+			expect(ModalUtil.hide).toHaveBeenCalled()
 		})
 	})
 })

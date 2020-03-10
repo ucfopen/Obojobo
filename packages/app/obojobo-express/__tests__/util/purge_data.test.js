@@ -1,5 +1,12 @@
 jest.mock('../../server/db')
-jest.mock('../../server/config')
+jest.mock('../../server/config', () => ({
+	general: {
+		demoMode: {
+			purgeMode: 'none',
+			purgeDaysAgo: 8
+		}
+	}
+}))
 jest.mock('../../server/logger')
 jest.mock('../../server/obo_events')
 
@@ -26,7 +33,12 @@ describe('Purge Data', () => {
 		config = oboRequire('server/config')
 		db = oboRequire('server/db')
 	})
-	afterEach(() => {})
+
+	test('isPurgeEnabled defaults to false with no config purgeMode', () => {
+		delete config.general.demoMode.purgeMode
+		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
+		expect(isPurgeEnabled()).toBe(false)
+	})
 
 	test('isPurgeEnabled is false by default', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
@@ -60,21 +72,22 @@ describe('Purge Data', () => {
 
 	test('isPurgeEnabled is true when config purge mode set to history', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
+		config.general.demoMode.purgeMode = MODE_PURGE_HISTORY
 		expect(isPurgeEnabled()).toBe(true)
 	})
 
 	test('isPurgeEnabled is true when config purge mode set to all', () => {
 		const { isPurgeEnabled } = oboRequire('server/util/purge_data')
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_ALL
+		config.general.demoMode.purgeMode = MODE_PURGE_ALL
 		expect(isPurgeEnabled()).toBe(true)
 	})
 
 	test('purgeData doesnt delete data with purge mode empty', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		delete config.general.demoMode.purgeDaysAgo
-		purgeData().then(() => {
+		delete config.general.demoMode.purgeMode
+
+		return purgeData().then(() => {
 			expect(db.none).not.toHaveBeenCalled()
 		})
 	})
@@ -82,8 +95,9 @@ describe('Purge Data', () => {
 	test('purgeData doesnt delete data with purge mode none', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoMode.purgeDaysAgo = 'none'
-		purgeData().then(() => {
+		config.general.demoMode.purgeMode = 'none'
+
+		return purgeData().then(() => {
 			expect(db.none).not.toHaveBeenCalled()
 		})
 	})
@@ -91,8 +105,9 @@ describe('Purge Data', () => {
 	test('purgeData deletes data with purge mode history', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
-		purgeData().then(() => {
+		config.general.demoMode.purgeMode = MODE_PURGE_HISTORY
+
+		return purgeData().then(() => {
 			expect(db.none).toHaveBeenCalledTimes(9)
 		})
 	})
@@ -100,8 +115,9 @@ describe('Purge Data', () => {
 	test('purgeData deletes data with purge mode all', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_ALL
-		purgeData().then(() => {
+		config.general.demoMode.purgeMode = MODE_PURGE_ALL
+
+		return purgeData().then(() => {
 			expect(db.none).toHaveBeenCalledTimes(15)
 		})
 	})
@@ -109,9 +125,10 @@ describe('Purge Data', () => {
 	test('demoPurgeDaysAgo deletes with the expected calculated date', () => {
 		expect.hasAssertions()
 		const { purgeData } = oboRequire('server/util/purge_data')
-		const expectedDate = calculateDaysAgo(7)
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
-		purgeData().then(() => {
+		const expectedDate = calculateDaysAgo(8)
+		config.general.demoMode.purgeMode = MODE_PURGE_HISTORY
+
+		return purgeData().then(() => {
 			expect(db.none).toHaveBeenCalled()
 			const sampleQueryVars = db.none.mock.calls[0][1]
 			expect(sampleQueryVars).toHaveProperty('purgeDate')
@@ -121,11 +138,12 @@ describe('Purge Data', () => {
 
 	test('demoPurgeDaysAgo defaults to 7', () => {
 		expect.hasAssertions()
-		delete config.general.demoPurgeDaysAgo
 		const { purgeData } = oboRequire('server/util/purge_data')
 		const expectedDate = calculateDaysAgo(7)
-		config.general.demoMode.purgeDaysAgo = MODE_PURGE_HISTORY
-		purgeData().then(() => {
+		config.general.demoMode.purgeMode = MODE_PURGE_HISTORY
+		delete config.general.demoMode.purgeDaysAgo
+
+		return purgeData().then(() => {
 			expect(db.none).toHaveBeenCalled()
 			const sampleQueryVars = db.none.mock.calls[0][1]
 			expect(sampleQueryVars).toHaveProperty('purgeDate')

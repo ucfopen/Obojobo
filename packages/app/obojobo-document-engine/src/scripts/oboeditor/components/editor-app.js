@@ -102,12 +102,11 @@ class EditorApp extends React.Component {
 		return APIUtil.postDraft(draftId, draftSrc, mode)
 			.then(result => {
 				if (result.status !== 'ok') {
-					ModalUtil.show(<SimpleDialog ok title={'Save Error: ' + result.value.message} />)
-					return false
-				} else {
-					this.state.model.set('contentId', result.value.id)
-					return true
+					throw Error(result.value.message)
 				}
+
+				this.state.model.set('contentId', result.value.id)
+				return true
 			})
 			.catch(e => {
 				ModalUtil.show(<SimpleDialog ok title={'Error: ' + e} />)
@@ -168,7 +167,9 @@ class EditorApp extends React.Component {
 			requestError: {
 				title: 'Module is Being Edited.',
 				message:
-					'Someone else is currently editing this module. Try reloading this tab in a few minutes (' + this.props.settings.editLocks.autoExpireMinutes + ' or more).'
+					'Someone else is currently editing this module. Try reloading this tab in a few minutes (' +
+					this.props.settings.editLocks.autoExpireMinutes +
+					' or more).'
 			}
 		})
 	}
@@ -238,10 +239,6 @@ class EditorApp extends React.Component {
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
 
-		// get the mode from the location
-		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if (mode === 'classic') mode = XML_MODE // convert classic to xml
-
 		ModalStore.init()
 
 		return this.reloadDraft(draftId, this.state.mode)
@@ -269,8 +266,8 @@ class EditorApp extends React.Component {
 		ModalUtil.hide()
 		ModalUtil.show(
 			<SimpleDialog ok title="Editor Session Expired">
-				Collaborators may edit this module while you&apos;re away. We&apos;ll attempt to renew your session
-				when you return.
+				Collaborators may edit this module while you&apos;re away. We&apos;ll attempt to renew your
+				session when you return.
 			</SimpleDialog>
 		)
 	}
@@ -284,7 +281,7 @@ class EditorApp extends React.Component {
 	}
 
 	onWindowReturnFromInactive() {
-		this.startRenewEditLockInterval(this.state.draftId).then(() => {
+		return this.startRenewEditLockInterval(this.state.draftId).then(() => {
 			ModalUtil.hide()
 		})
 	}
