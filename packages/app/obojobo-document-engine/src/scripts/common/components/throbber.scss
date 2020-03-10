@@ -1,0 +1,35 @@
+.viewer--components--throbber {
+	position: relative;
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+
+	> .throbber {
+		@keyframes viewer--components--throbber--rotate {
+			from {
+				transform: translate(-50%, -50%) rotate(0deg);
+			}
+
+			to {
+				transform: translate(-50%, -50%) rotate(360deg);
+			}
+		}
+
+		width: 1em;
+		height: 1em;
+		display: inline-block;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		animation: viewer--components--throbber--rotate 1.5s linear infinite;
+
+		> svg {
+			width: 1em;
+			height: 1em;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: none;
+		}
+	}
+}

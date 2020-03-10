@@ -4,7 +4,7 @@
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
-	transition: background 0.1s ease;
+	// transition: background 0.1s ease;
 	font-family: $font-default;
 	cursor: pointer;
 	padding-bottom: 1em;
@@ -96,7 +96,7 @@
 		}
 	}
 
-	&:hover {
+	&.is-not-selected:hover {
 		background: transparentize($color-highlight, 0.85);
 	}
 }

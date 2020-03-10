@@ -6,12 +6,15 @@ import FocusUtil from '../util/focus-util'
 
 import NavStore from '../stores/nav-store'
 
+import QuestionResponseSendStates from './question-store/question-response-send-states'
+
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { uuid, debounce } = Common.util
+const { uuid, timeoutPromise } = Common.util
 
-const SET_RESPONSE_EVENT_SEND_DELAY_MS = 750
+// const SET_RESPONSE_EVENT_SEND_DELAY_MS = 4750
+const SEND_RESPONSE_TIMEOUT_MS = 6000
 
 const getNewContextState = () => {
 	return {
@@ -20,6 +23,8 @@ const getNewContextState = () => {
 		revealedQuestions: {},
 		scores: {},
 		responses: {},
+		responseMetadata: {},
+		sendingResponsePromises: {},
 		data: {}
 	}
 }
@@ -30,29 +35,186 @@ class QuestionStore extends Store {
 		super('questionStore')
 
 		Dispatcher.on({
-			'question:setResponse': payload => {
-				const { context, id, response, targetId, assessmentId, attemptId } = payload.value
-				const questionId = id
-				const contextState = this.getOrCreateContextState(context)
+			'question:forceSendAllResponses': payload => {
+				const { context } = payload.value
 
-				contextState.responses[questionId] = response
+				const contextState = this.getContextState(context)
+				if (!contextState) return
+
+				const sendingResponsePromises = Object.values(contextState.sendingResponsePromises)
+
+				const sendErrorResponsesPromises = Object.values(contextState.responseMetadata)
+					.filter(responseMetadata => {
+						return responseMetadata.sendState === QuestionResponseSendStates.ERROR
+					})
+					.map(responseMetadata => {
+						return this.sendResponse(responseMetadata.details.questionId, context)
+					})
+
+				const promises = sendingResponsePromises.concat(sendErrorResponsesPromises)
+
+				timeoutPromise(
+					SEND_RESPONSE_TIMEOUT_MS,
+					Promise.all(promises)
+						.then(() => {
+							Dispatcher.trigger('question:forceSentAllResponses', {
+								value: { context, success: true }
+							})
+						})
+						.catch(() => {
+							Dispatcher.trigger('question:forceSentAllResponses', {
+								value: { context, success: false }
+							})
+						})
+				)
+			},
+			'question:sendResponse': payload => {
+				const { context, id } = payload.value
+
+				const contextState = this.getContextState(context)
+				if (!contextState) return
+
+				const responseMetadata = contextState.responseMetadata[id]
+				if (!responseMetadata) return
+
+				// // If force is false then we only want to re-sendResponse if the response
+				// // is in an error state.
+				// if (!force && responseMetadata.sendState !== QuestionResponseSendStates.ERROR) {
+				// 	return
+				// }
+
+				const sendResponsePromise = this.sendResponse(id, context)
+
+				responseMetadata.sendState = QuestionResponseSendStates.SENDING
+				contextState.sendingResponsePromises[id] = sendResponsePromise
+
+				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise)
+
+				// APIUtil.postEvent({
+				// 	draftId: OboModel.getRoot().get('draftId'),
+				// 	action: 'question:setResponse',
+				// 	eventVersion: '2.2.0',
+				// 	visitId: NavStore.getState().visitId,
+				// 	payload: responseMetadata.details,
+				// 	actorTime: responseMetadata.time
+				// }).then(result => {
+				// 	if (result.response.status === 'ok') {
+				// 		Dispatcher.trigger('question:responseSet', result.sent.event.payload)
+
+				// 		const contextState = this.getOrCreateContextState(context)
+
+				// 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.RECORDED
+				// 	} else {
+				// 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+				// 	}
+
+				// 	this.triggerChange()
+				// })
 
 				this.triggerChange()
+			},
 
-				APIUtil.debouncedPostEvent(SET_RESPONSE_EVENT_SEND_DELAY_MS, {
-					draftId: OboModel.getRoot().get('draftId'),
-					action: 'question:setResponse',
-					eventVersion: '2.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId,
-						response,
-						targetId,
-						context,
-						assessmentId,
-						attemptId
-					}
+			'question:setResponse': payload => {
+				console.log('q:sR', payload)
+				const {
+					context,
+					id,
+					response,
+					targetId,
+					assessmentId,
+					attemptId,
+					sendResponseImmediately
+				} = payload.value
+				const questionId = id
+				// const contextState = this.getOrCreateContextState(context)
+
+				this.setResponse({
+					questionId,
+					response,
+					targetId,
+					context,
+					assessmentId,
+					attemptId,
+					sendResponseImmediately
 				})
+
+				if (sendResponseImmediately) {
+					QuestionUtil.sendResponse(id, context)
+				}
+
+				// contextState.responses[questionId] = response
+				// contextState.responseTimes[questionId] = new Date()
+				// contextState.responseSendState[questionId] = QuestionResponseSendStates.NOT_SENT
+
+				// console.log('SR', payload)
+
+				// if (debounce) {
+				// 	APIUtil.debouncedPostEvent(
+				// 		SET_RESPONSE_EVENT_SEND_DELAY_MS,
+				// 		() => {
+				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.SENDING
+				// 			this.triggerChange()
+				// 		},
+				// 		{
+				// 			draftId: OboModel.getRoot().get('draftId'),
+				// 			action: 'question:setResponse',
+				// 			eventVersion: '2.2.0',
+				// 			visitId: NavStore.getState().visitId,
+				// 			payload: {
+				// 				questionId,
+				// 				response,
+				// 				targetId,
+				// 				context,
+				// 				assessmentId,
+				// 				attemptId,
+				// 				debounce
+				// 			}
+				// 		},
+				// 		result => {
+				// 			if (result.response.status === 'ok') {
+				// 				Dispatcher.trigger('question:responseSet', result.sent.event.payload)
+
+				// 				const contextState = this.getOrCreateContextState(context)
+
+				// 				contextState.responseSendState[questionId] = QuestionResponseSendStates.RECORDED
+				// 			} else {
+				// 				contextState.responseSendState[questionId] = QuestionResponseSendStates.ERROR
+				// 			}
+
+				// 			this.triggerChange()
+				// 		}
+				// 	)
+				// } else {
+				// 	APIUtil.postEvent({
+				// 		draftId: OboModel.getRoot().get('draftId'),
+				// 		action: 'question:setResponse',
+				// 		eventVersion: '2.2.0',
+				// 		visitId: NavStore.getState().visitId,
+				// 		payload: {
+				// 			questionId,
+				// 			response,
+				// 			targetId,
+				// 			context,
+				// 			assessmentId,
+				// 			attemptId,
+				// 			debounce
+				// 		}
+				// 	}).then(result => {
+				// 		if (result.response.status === 'ok') {
+				// 			Dispatcher.trigger('question:responseSet', result.sent.event.payload)
+
+				// 			const contextState = this.getOrCreateContextState(context)
+
+				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.RECORDED
+				// 		} else {
+				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.ERROR
+				// 		}
+
+				// 		this.triggerChange()
+				// 	})
+				// }
+
+				this.triggerChange()
 			},
 
 			'question:clearResponse': payload => {
@@ -111,7 +273,7 @@ class QuestionStore extends Store {
 			'question:clearData': payload => {
 				const { context, key } = payload.value
 
-				if (!this.state.contexts[context]) return
+				if (!this.hasContextState(context)) return
 
 				const contextState = this.getOrCreateContextState(context)
 
@@ -122,7 +284,7 @@ class QuestionStore extends Store {
 			'question:hide': payload => {
 				const { id, context } = payload.value
 
-				if (!this.state.contexts[context]) return
+				if (!this.hasContextState(context)) return
 
 				const contextState = this.getOrCreateContextState(context)
 
@@ -173,7 +335,7 @@ class QuestionStore extends Store {
 				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
 
-				if (!this.state.contexts[context]) return
+				if (!this.hasContextState(context)) return
 
 				const contextState = this.getOrCreateContextState(context)
 				const scoreInfo = contextState.scores[id]
@@ -198,7 +360,7 @@ class QuestionStore extends Store {
 				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
 
-				if (!this.state.contexts[context]) return
+				if (!this.hasContextState(context)) return
 
 				const contextState = this.getOrCreateContextState(context)
 
@@ -216,7 +378,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:retry': payload => {
-				const { id, context, response } = payload.value
+				const { id, context } = payload.value
 				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
 
@@ -224,7 +386,8 @@ class QuestionStore extends Store {
 
 				const contextState = this.getOrCreateContextState(context)
 
-				contextState.responses[id] = response
+				// contextState.responses[id] = response
+				this.clearResponse(id, context)
 				delete contextState.revealedQuestions[id]
 
 				this.triggerChange()
@@ -317,7 +480,7 @@ class QuestionStore extends Store {
 			'question:scoreClear': payload => {
 				const { itemId, context } = payload.value
 
-				if (!this.state.contexts[context]) return
+				if (!this.hasContextState(context)) return
 
 				const contextState = this.getOrCreateContextState(context)
 
@@ -350,20 +513,93 @@ class QuestionStore extends Store {
 		})
 	}
 
-	clearResponse(questionId, context) {
-		if (!this.state.contexts[context]) return false
+	sendResponse(id, context) {
+		const contextState = this.getContextState(context)
+		const responseMetadata = contextState.responseMetadata[id]
+
+		return APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:setResponse',
+			eventVersion: '2.2.0',
+			visitId: NavStore.getState().visitId,
+			payload: responseMetadata.details,
+			actorTime: responseMetadata.time
+		})
+			.then(result => {
+				// if (result.response.status === 'ok') {
+				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.RECORDED
+				// } else {
+				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+				// }
+
+				const successful = result.response.status === 'ok'
+				// const successful = Math.random() > 0.5
+
+				contextState.responseMetadata[id].sendState = successful
+					? QuestionResponseSendStates.RECORDED
+					: QuestionResponseSendStates.ERROR
+
+				delete contextState.sendingResponsePromises[id]
+
+				Dispatcher.trigger('question:responseSent', {
+					successful,
+					id
+				})
+
+				this.triggerChange()
+			})
+			.catch(e => {
+				console.error('ERROR', e)
+
+				delete contextState.sendingResponsePromises[id]
+				contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+				// delete contextState.responses[id]
+
+				Dispatcher.trigger('question:responseSent', {
+					successful: false,
+					id
+				})
+
+				this.triggerChange()
+			})
+	}
+
+	setResponse({
+		questionId,
+		response,
+		targetId,
+		context,
+		assessmentId,
+		attemptId,
+		sendResponseImmediately
+	}) {
+		if (!this.hasContextState(context)) return false
 
 		const contextState = this.getOrCreateContextState(context)
-		delete contextState.responses[questionId]
+		contextState.responses[questionId] = response
+		contextState.responseMetadata[questionId] = {
+			time: new Date(),
+			sendState: QuestionResponseSendStates.NOT_SENT,
+			details: {
+				questionId,
+				response,
+				targetId,
+				context,
+				assessmentId,
+				attemptId,
+				sendResponseImmediately
+			}
+		}
 
 		return true
 	}
 
-	clearResponses(questionId, context) {
-		if (!this.state.contexts[context]) return false
+	clearResponse(questionId, context) {
+		if (!this.hasContextState(context)) return false
 
 		const contextState = this.getOrCreateContextState(context)
 		delete contextState.responses[questionId]
+		delete contextState.responseMetadata[questionId]
 
 		return true
 	}
@@ -376,12 +612,23 @@ class QuestionStore extends Store {
 		}
 	}
 
+	getContextState(context) {
+		return this.state.contexts[context] || null
+	}
+
+	hasContextState(context) {
+		return this.getContextState(context) !== null
+	}
+
 	getOrCreateContextState(context) {
-		if (!this.state.contexts[context]) {
-			this.state.contexts[context] = getNewContextState()
+		let contextState = this.getContextState(context)
+
+		if (!contextState) {
+			contextState = getNewContextState()
+			this.state.contexts[context] = contextState
 		}
 
-		return this.state.contexts[context]
+		return contextState
 	}
 
 	updateStateByContext(stateToUpdate, context) {

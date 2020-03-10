@@ -10,8 +10,9 @@ import { getLabel } from './feedback-labels'
 
 const { OboComponent, OboQuestionComponent } = Viewer.components
 const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
-const { Button } = Common.components
+const { Button, Throbber } = Common.components
 const { focus } = Common.page
+const { QuestionResponseSendStates } = Viewer.stores.questionStore
 
 import QuestionContent from './Content/viewer-component'
 import QuestionFooter from './question-footer'
@@ -20,8 +21,8 @@ import QuestionOutcome from './question-outcome'
 
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
-// const ANIMATION_TRANSITION_TIME_MS = 800
-const ANIMATION_TRANSITION_TIME_MS = 3000
+const ANIMATION_TRANSITION_TIME_MS = 800
+// const ANIMATION_TRANSITION_TIME_MS = 3000
 
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
@@ -88,14 +89,14 @@ export default class Question extends OboQuestionComponent {
 		const response = this.assessmentComponentRef.current.handleFormChange(event, prevResponse)
 
 		// const response = this.assessmentComponentRef.current.composeResponse(event, prevResponse)
-
 		QuestionUtil.setResponse(
 			this.props.model.get('id'),
 			response.state,
 			response.targetId,
 			this.props.moduleData.navState.context,
 			this.props.moduleData.navState.context.split(':')[1],
-			this.props.moduleData.navState.context.split(':')[2]
+			this.props.moduleData.navState.context.split(':')[2],
+			response.sendResponseImmediately
 		)
 
 		this.nextFocus = FOCUS_TARGET_RESULTS
@@ -392,6 +393,30 @@ export default class Question extends OboQuestionComponent {
 		}
 	}
 
+	renderResponseSendState(responseSendState) {
+		switch (responseSendState) {
+			case QuestionResponseSendStates.NOT_SENT:
+				return <span className="is-response-state-not-sent">&nbsp;</span>
+
+			case QuestionResponseSendStates.SENDING:
+				return (
+					<span className="is-response-state-sending">
+						<Throbber />
+					</span>
+				)
+
+			case QuestionResponseSendStates.RECORDED:
+				return <span className="is-response-state-recorded">Answer Saved</span>
+
+			case QuestionResponseSendStates.ERROR:
+				return <span className="is-response-state-error">✖ Error sending response, try again</span>
+
+			case null:
+			default:
+				return <span className="is-response-state-other">&nbsp;</span>
+		}
+	}
+
 	render() {
 		if (this.props.showContentOnly) {
 			return this.renderContentOnly()
@@ -437,6 +462,9 @@ export default class Question extends OboQuestionComponent {
 		const isShowingExplanationValue = this.isShowingExplanation()
 		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
 		const isAssessmentQuestion = mode === 'assessment'
+		const responseSendState = QuestionUtil.getResponseSendState(questionState, model, context)
+		const isResponseSending = responseSendState === QuestionResponseSendStates.SENDING
+		const isFormDisabled = isResponseSending && isAssessmentQuestion
 		const viewState =
 			mode === 'review' ? 'active' : QuestionUtil.getViewState(questionState, model, context)
 		const startQuestionAriaLabel =
@@ -453,6 +481,7 @@ export default class Question extends OboQuestionComponent {
 			` is-${viewState}` +
 			` is-type-${type}` +
 			` is-mode-${mode}` +
+			isOrNot(isFormDisabled, 'form-disabled') +
 			isOrNot(hasResponse, 'responded-to') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
@@ -481,7 +510,7 @@ export default class Question extends OboQuestionComponent {
 								/>
 							</div>
 						) : null}
-						<fieldset>
+						<fieldset disabled={isFormDisabled}>
 							<legend className="instructions">
 								{this.getInstructions(/*responseType, this.props.type*/)}
 							</legend>
@@ -500,6 +529,7 @@ export default class Question extends OboQuestionComponent {
 									detailedText={detailedText}
 									questionModel={this.props.model}
 									response={response}
+									disabled={isFormDisabled}
 								/>
 							</div>
 						</fieldset>
@@ -545,6 +575,57 @@ export default class Question extends OboQuestionComponent {
 						/>
 					</div>
 				</div>
+
+				{/* <CSSTransition
+					in={responseSendState}
+					classNames="response-status"
+					timeout={ANIMATION_TRANSITION_TIME_MS}
+				> */}
+				{isAssessmentQuestion ? (
+					<div className="response-status-container">
+						<CSSTransition
+							in={responseSendState === QuestionResponseSendStates.NOT_SENT}
+							classNames="response-status"
+							timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+							<span className="is-response-state-not-sent">&nbsp;</span>
+						</CSSTransition>
+
+						<CSSTransition
+							in={responseSendState === QuestionResponseSendStates.SENDING}
+							classNames="response-status"
+							timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+							<span className="is-response-state-sending">
+								<Throbber />
+							</span>
+						</CSSTransition>
+
+						<CSSTransition
+							in={responseSendState === QuestionResponseSendStates.RECORDED}
+							classNames="response-status"
+							timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+							<span className="is-response-state-recorded">Answer Saved</span>
+						</CSSTransition>
+
+						<CSSTransition
+							in={responseSendState === QuestionResponseSendStates.ERROR}
+							classNames="response-status"
+							timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+							<span className="is-response-state-error">✖ Error sending response</span>
+						</CSSTransition>
+
+						<CSSTransition
+							in={!responseSendState}
+							classNames="response-status"
+							timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+							<span className="is-response-state-other">&nbsp;</span>
+						</CSSTransition>
+					</div>
+				) : null}
 			</OboComponent>
 		)
 	}

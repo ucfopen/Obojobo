@@ -13,6 +13,10 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 		return null
 	}
 
+	static isResponseEmpty(/*response*/) {
+		return true
+	}
+
 	getRevealAnswerDefault() {
 		return this.constructor.getRevealAnswerDefault(this.props.questionModel, this.props.model)
 	}
@@ -39,7 +43,8 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 	handleFormChange(/*event, prevResponse*/) {
 		return {
 			state: null,
-			targetId: null
+			targetId: null,
+			sendResponseImmediately: false
 		}
 	}
 }

@@ -33,6 +33,12 @@
 	animation-duration: $duration-animation-default;
 	animation-name: obojobo-draft--components--modal-container;
 
+	&.is-not-active {
+		display: none;
+		// pointer-events: none;
+		// opacity: 0;
+	}
+
 	> .content {
 		position: absolute;
 		left: 50%;

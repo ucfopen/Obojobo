@@ -11,14 +11,21 @@ const processJsonResults = res => {
 	})
 }
 
-const createEventObject = ({ draftId, action, eventVersion, visitId, payload = {} }) => {
+const createEventObject = ({
+	draftId,
+	action,
+	eventVersion,
+	visitId,
+	payload = {},
+	actorTime = null
+}) => {
 	return {
 		draftId,
 		visitId,
 		event: {
 			action,
 			draft_id: draftId,
-			actor_time: new Date().toISOString(),
+			actor_time: (actorTime || new Date()).toISOString(),
 			event_version: eventVersion,
 			visitId,
 			payload
@@ -36,7 +43,10 @@ const postEvent = eventObject => {
 					parent.postMessage(res.value, '*')
 				}
 
-				return res
+				return {
+					response: res,
+					sent: eventObject
+				}
 			})
 	)
 }
@@ -44,8 +54,10 @@ const postEvent = eventObject => {
 const debouncedSendFnsByAction = {}
 
 const APIUtil = {
-	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
-		return postEvent(createEventObject({ draftId, action, eventVersion, visitId, payload }))
+	postEvent({ draftId, action, eventVersion, visitId, payload = {}, actorTime = null }) {
+		return postEvent(
+			createEventObject({ draftId, action, eventVersion, visitId, payload, actorTime })
+		)
 	},
 
 	// Allows you to delay sending an event. Events with the same action will be cancelled
@@ -53,15 +65,29 @@ const APIUtil = {
 	// The event creation time is stored as `actor_time` in the event, so while the event
 	// may be posted at a later date and out of order the actor_time can be used to determine
 	// the correct sequence of events.
-	debouncedPostEvent(debounceMs, { draftId, action, eventVersion, visitId, payload = {} }) {
+	debouncedPostEvent(
+		debounceMs,
+		beforeCallback,
+		{ draftId, action, eventVersion, visitId, payload = {} },
+		optionalCallback = null
+	) {
 		if (debouncedSendFnsByAction[action]) {
 			debouncedSendFnsByAction[action].cancel()
 		}
 
-		debouncedSendFnsByAction[action] = debounce(
-			debounceMs,
-			postEvent.bind(null, createEventObject({ draftId, action, eventVersion, visitId, payload }))
+		const postEventFn = postEvent.bind(
+			null,
+			createEventObject({ draftId, action, eventVersion, visitId, payload })
 		)
+
+		debouncedSendFnsByAction[action] = debounce(debounceMs, () => {
+			beforeCallback()
+			postEventFn().then(res => {
+				if (typeof optionalCallback === 'function') {
+					optionalCallback(res)
+				}
+			})
+		})
 
 		debouncedSendFnsByAction[action]()
 	},

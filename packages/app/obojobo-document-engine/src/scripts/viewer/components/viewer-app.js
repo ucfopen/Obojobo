@@ -342,8 +342,8 @@ export default class ViewerApp extends React.Component {
 				action: 'viewer:leave',
 				eventVersion: '1.0.0',
 				visitId: this.state.navState.visitId
-			}).then(res => {
-				this.leaveEvent = res.value
+			}).then(result => {
+				this.leaveEvent = result.response.value
 			})
 		} else {
 			APIUtil.postEvent({
@@ -459,8 +459,8 @@ export default class ViewerApp extends React.Component {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}
-		}).then(res => {
-			this.inactiveEvent = res.value
+		}).then(result => {
+			this.inactiveEvent = result.response.value
 		})
 	}
 
@@ -689,9 +689,10 @@ export default class ViewerApp extends React.Component {
 					</div>
 				) : null}
 				<FocusBlocker moduleData={this.state} />
-				{modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null}
+				{/* {true || (modalItem && modalItem.component) ? ( */}
+				{/* // <ModalContainer>{modalItem.component}</ModalContainer> */}
+				<ModalContainer modalItem={modalItem} />
+				{/* ) : null} */}
 			</div>
 		)
 	}

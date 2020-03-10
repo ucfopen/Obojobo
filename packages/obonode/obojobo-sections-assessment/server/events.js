@@ -1,14 +1,25 @@
 const oboEvents = require('obojobo-express/server/obo_events')
 const logger = require('obojobo-express/server/logger')
 const db = require('obojobo-express/server/db')
+const assessment = require('./assessment')
 const eventRecordResponse = 'client:question:setResponse'
 
 oboEvents.on(eventRecordResponse, async (event, req) => {
 	try {
 		if (!event.payload.attemptId) return // assume we're in practice
 		if (!event.payload.assessmentId) throw Error('Missing Assessment Id')
-		if (!event.payload.questionId) throw Error('Missing Question ID')
+		if (!event.payload.questionId) throw Error('Missing Question Id')
 		if (!event.payload.response) throw Error('Missing Response')
+
+		const attemptData = await assessment.getAttempt(event.payload.attemptId)
+
+		if (!attemptData) {
+			throw Error('Invalid Attempt Id')
+		}
+
+		if (attemptData.completed_at !== null) {
+			throw Error('Attempt is closed')
+		}
 
 		await db.none(
 			`

@@ -5,10 +5,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
-const onCancel = () => {
-	ModalUtil.hide()
-}
-
 const onSubmit = submitProp => {
 	ModalUtil.hide()
 	submitProp()
@@ -26,7 +22,7 @@ const AttemptIncompleteDialog = props => (
 			'or',
 			{
 				value: 'Resume assessment',
-				onClick: onCancel,
+				onClick: props.onCancel,
 				default: true
 			}
 		]}

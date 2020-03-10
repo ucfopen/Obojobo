@@ -31,6 +31,10 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		return null
 	}
 
+	static isResponseEmpty(response) {
+		return response.ids.length === 0
+	}
+
 	constructor(props) {
 		super(props)
 		this.answerChoicesRef = React.createRef()
@@ -195,7 +199,8 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 
 		return {
 			state: response,
-			targetId: mcChoiceId
+			targetId: mcChoiceId,
+			sendResponseImmediately: true
 		}
 	}
 

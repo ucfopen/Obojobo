@@ -34,6 +34,7 @@ import StyleType from './text/style-type'
 import StyleableText from './text/styleable-text'
 import StyleableTextComponent from './text/styleable-text-component'
 import StyleableTextRenderer from './text/styleable-text-renderer'
+import StateMachine from './util/state-machine'
 import TextChunk from './chunk/text-chunk'
 import TextGroup from './text-group/text-group'
 import TextGroupAdapter from './chunk/text-chunk/text-group-adapter'
@@ -41,12 +42,14 @@ import TextGroupEl from './chunk/text-chunk/text-group-el'
 import TextGroupItem from './text-group/text-group-item'
 import TextGroupUtil from './text-group/text-group-util'
 import TextMenu from './components/text-menu'
+import Throbber from './components/throbber'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
 import isOrNot from './util/isornot'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
 import debounce from './util/debounce'
+import timeoutPromise from './util/timeout-promise'
 import withoutUndefined from './util/without-undefined'
 
 export default {
@@ -68,6 +71,7 @@ export default {
 		ButtonBar,
 		MoreInfoButton,
 		Switch,
+		Throbber,
 		modal: {
 			bubble: {
 				Bubble,
@@ -136,6 +140,8 @@ export default {
 		cloneProps,
 		isOrNot,
 		debounce,
-		withoutUndefined
+		timeoutPromise,
+		withoutUndefined,
+		StateMachine
 	}
 }

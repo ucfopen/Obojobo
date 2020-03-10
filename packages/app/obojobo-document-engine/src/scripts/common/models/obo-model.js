@@ -99,25 +99,26 @@ class OboModel extends Backbone.Model {
 	}
 
 	getTextForVariable(expression, recur = true) {
+		return 'NOT IMPLEMENTED NOW'
 		// Compute all variables
-		const varNames = Object.keys(Variables.varNamesByOwnerId.m)
-		const variables = {}
-		const customFns = {}
-		varNames.forEach(varName => {
-			if (!Variables.isValueComputed('m', varName)) {
-				const def = Variables.getDefinition('m', varName)
+		// const varNames = Object.keys(Variables.varNamesByOwnerId.m)
+		// const variables = {}
+		// const customFns = {}
+		// varNames.forEach(varName => {
+		// 	if (!Variables.isValueComputed('m', varName)) {
+		// 		const def = Variables.getDefinition('m', varName)
 
-				// if (def.type === 'fn') {
-				// 	const fn = parse(def.value)
-				// 	customFns[fn.name] = fn
-				// }
+		// 		// if (def.type === 'fn') {
+		// 		// 	const fn = parse(def.value)
+		// 		// 	customFns[fn.name] = fn
+		// 		// }
 
-				const newValue = VariableGenerator.generateOne(def)
-				Variables.setValue('m', varName, newValue)
-			}
+		// 		const newValue = VariableGenerator.generateOne(def)
+		// 		Variables.setValue('m', varName, newValue)
+		// 	}
 
-			variables[varName] = Variables.getValue('m', varName)
-		})
+		// 	variables[varName] = Variables.getValue('m', varName)
+		// })
 
 		try {
 			const parsed = parse(expression, variables, customFns)

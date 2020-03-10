@@ -1,9 +1,19 @@
 import Common from 'Common'
 
+import QuestionResponseSendStates from '../stores/question-store/question-response-send-states'
+
 const { Dispatcher } = Common.flux
 
 const QuestionUtil = {
-	setResponse(id, response, targetId, context, assessmentId, attemptId) {
+	setResponse(
+		id,
+		response,
+		targetId,
+		context,
+		assessmentId,
+		attemptId,
+		sendResponseImmediately = true
+	) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
@@ -11,7 +21,25 @@ const QuestionUtil = {
 				targetId,
 				context,
 				assessmentId,
-				attemptId
+				attemptId,
+				sendResponseImmediately
+			}
+		})
+	},
+
+	sendResponse(id, context) {
+		return Dispatcher.trigger('question:sendResponse', {
+			value: {
+				id,
+				context
+			}
+		})
+	},
+
+	forceSendAllResponsesForContext(context) {
+		return Dispatcher.trigger('question:forceSendAllResponses', {
+			value: {
+				context
 			}
 		})
 	},
@@ -162,6 +190,21 @@ const QuestionUtil = {
 		return QuestionUtil.getResponse(state, model, context) !== null
 	},
 
+	isResponseEmpty(state, model, context) {
+		const response = QuestionUtil.getResponse(state, model, context)
+		if (!response) return false
+
+		// Get the assessment model
+		const assessmentModel = model.children.at(model.children.length - 1)
+
+		const componentClass = assessmentModel.getComponentClass()
+		if (!componentClass) return false
+
+		// debugger
+
+		return componentClass.isResponseEmpty(response)
+	},
+
 	isAnswerRevealed(state, model, context) {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return false
@@ -177,6 +220,29 @@ const QuestionUtil = {
 		return (
 			QuestionUtil.hasResponse(state, model, context) &&
 			!QuestionUtil.isScored(state, model, context)
+		)
+	},
+
+	getResponseMetadata(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return null
+
+		return contextState.responseMetadata[model.get('id')] || null
+	},
+
+	// @TODO: Name?
+	// True if the question:setResponse recieved an answer
+	getResponseSendState(state, model, context) {
+		const responseMetadata = QuestionUtil.getResponseMetadata(state, model, context)
+		if (!responseMetadata) return null
+
+		return responseMetadata.sendState || null
+	},
+
+	isResponseRecorded(state, model, context) {
+		return (
+			QuestionUtil.getResponseSendState(state, model, context) ===
+			QuestionResponseSendStates.RECORDED
 		)
 	},
 

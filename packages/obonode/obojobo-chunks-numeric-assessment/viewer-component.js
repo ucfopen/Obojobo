@@ -25,6 +25,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		// this.onMatchMediaChanged = this.onMatchMediaChanged.bind(this)
 		// this.matchMedia.addListener(this.onMatchMediaChanged)
 
+		this.onInputBlur = this.onInputBlur.bind(this)
+
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
@@ -69,6 +71,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				Input your answer
 			</React.Fragment>
 		)
+	}
+
+	static isResponseEmpty(response) {
+		return response.value === ''
 	}
 
 	// static getDerivedStateFromProps(props, state) {
@@ -179,8 +185,16 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			state: {
 				value: event.target.value
 			},
-			targetId: null
+			targetId: null,
+			sendResponseImmediately: false
 		}
+	}
+
+	onInputBlur() {
+		QuestionUtil.sendResponse(
+			this.props.questionModel.get('id'),
+			NavUtil.getContext(this.props.moduleData.navState)
+		)
 	}
 
 	getRangeSummary(range) {
@@ -513,6 +527,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							placeholder={this.props.mode !== 'review' ? 'Your answer...' : '(No answer given)'}
 							value={responseValue}
 							disabled={this.props.mode === 'review'}
+							onBlur={this.onInputBlur}
 							// onChange={this.onInputChange}
 						/>
 						{score === 100 && !isExactlyCorrect ? (
@@ -522,11 +537,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 									{this.renderRangeSummary(this.getRangeSummary(matchingCorrectRule.value))}
 								</span>
 								)
-							</span>
-						) : null}
-						{!isScored && hasResponse ? (
-							<span className="matching-correct-answer" style={{ color: 'rgba(0, 0, 0, 0.3)' }}>
-								Saved answer: &quot;<span className="value">{responseValue}</span>&quot;
 							</span>
 						) : null}
 					</div>

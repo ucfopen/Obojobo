@@ -1,23 +1,13 @@
 @import '~styles/includes';
 
-// .explanation-enter {
-// 	transition: background 8s;
-// 	background: red !important;
-// }
-
-// .explanation-leave {
-// 	transition: background 8s;
-// 	background: green !important;
-// }
-
-// .explanation-exit {
-// 	transition: background 8s;
-// 	background: blue !important;
-// }
-
 .obojobo-draft--chunks--question {
 	perspective: 1000px;
 	margin: 0 auto;
+
+	&.is-form-disabled > .flipper {
+		opacity: 0.5;
+		pointer-events: none;
+	}
 
 	//@TODO - duplicated color also in MCAssessment
 	// $color-survey: #48b8b9;
@@ -39,6 +29,53 @@
 
 		100% {
 			transform: scale(1);
+		}
+	}
+
+	> .response-status-container {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0.8em;
+		font-family: $font-default;
+		color: $color-text;
+		font-size: 0.7em;
+		height: 2em;
+
+		> span {
+			position: absolute;
+			display: inline-block;
+			left: 0;
+			top: 0;
+			opacity: 0;
+			transition: opacity $duration-animation-default, color $duration-animation-default;
+		}
+
+		> .response-status-exit {
+			transition: none;
+		}
+
+		> .response-status-enter {
+			opacity: 0.5;
+		}
+
+		> .response-status-enter-done {
+			opacity: 0.5;
+		}
+
+		> .response-status-recorded {
+			&.response-status-enter-done {
+				opacity: 0.3;
+			}
+		}
+
+		> .is-response-state-error {
+			color: $color-error;
+
+			&.response-status-enter,
+			&.response-status-enter-done {
+				opacity: 1;
+			}
 		}
 	}
 
@@ -73,6 +110,7 @@
 		border: 1px solid transparentize($color-shadow, 0.2);
 		max-width: $dimension-column-width;
 		background: $color-bg;
+		transition: opacity $duration-animation-default;
 
 		@include mq($until: desktop) {
 			border-radius: 0;
