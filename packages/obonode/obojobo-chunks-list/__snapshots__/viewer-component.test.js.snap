@@ -82,7 +82,6 @@ exports[`List List component with ascending indents 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={0}
-                data-hanging-indent={null}
               >
                 <span>
                   <span>
@@ -110,7 +109,6 @@ exports[`List List component with ascending indents 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-hanging-indent={null}
                   >
                     <span>
                       <span>
@@ -138,7 +136,6 @@ exports[`List List component with ascending indents 1`] = `
                       <span
                         className="text align-undefined"
                         data-group-index={2}
-                        data-hanging-indent={null}
                       >
                         <span>
                           <span>
@@ -166,7 +163,6 @@ exports[`List List component with ascending indents 1`] = `
                           <span
                             className="text align-undefined"
                             data-group-index={3}
-                            data-hanging-indent={null}
                           >
                             <span>
                               <span>
@@ -194,7 +190,6 @@ exports[`List List component with ascending indents 1`] = `
                               <span
                                 className="text align-undefined"
                                 data-group-index={4}
-                                data-hanging-indent={null}
                               >
                                 <span>
                                   <span>
@@ -222,7 +217,6 @@ exports[`List List component with ascending indents 1`] = `
                                   <span
                                     className="text align-undefined"
                                     data-group-index={5}
-                                    data-hanging-indent={null}
                                   >
                                     <span>
                                       <span>
@@ -283,7 +277,6 @@ exports[`List List component with inverse indentation 1`] = `
           <span
             className="text align-undefined"
             data-group-index={0}
-            data-hanging-indent={null}
           >
             <span>
               <span>
@@ -326,7 +319,6 @@ exports[`List List component with inverse indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-hanging-indent={null}
                   >
                     <span>
                       <span>
@@ -349,7 +341,6 @@ exports[`List List component with inverse indentation 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={2}
-                data-hanging-indent={null}
               >
                 <span>
                   <span>
@@ -400,7 +391,6 @@ exports[`List List component with irregular indentation 1`] = `
           <span
             className="text align-undefined"
             data-group-index={0}
-            data-hanging-indent={null}
           >
             <span>
               <span>
@@ -443,7 +433,6 @@ exports[`List List component with irregular indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-hanging-indent={null}
                   >
                     <span>
                       <span>
@@ -516,7 +505,6 @@ exports[`List List component with irregular indentation 1`] = `
                                   <span
                                     className="text align-undefined"
                                     data-group-index={2}
-                                    data-hanging-indent={null}
                                   >
                                     <span>
                                       <span>
@@ -545,7 +533,6 @@ exports[`List List component with irregular indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={3}
-                    data-hanging-indent={null}
                   >
                     <span>
                       <span>
@@ -588,7 +575,6 @@ exports[`List List component with irregular indentation 1`] = `
                           <span
                             className="text align-undefined"
                             data-group-index={4}
-                            data-hanging-indent={null}
                           >
                             <span>
                               <span>
@@ -611,7 +597,6 @@ exports[`List List component with irregular indentation 1`] = `
                       <span
                         className="text align-undefined"
                         data-group-index={5}
-                        data-hanging-indent={null}
                       >
                         <span>
                           <span>

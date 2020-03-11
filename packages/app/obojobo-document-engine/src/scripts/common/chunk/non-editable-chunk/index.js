@@ -5,7 +5,7 @@ const NonEditableChunk = props => (
 		className={`non-editable-chunk${props.className ? ` ${props.className}` : ''}`}
 		contentEditable={false}
 		data-indent={props.indent || 0}
-		data-hanging-indent={props.hangingIndent || null}
+		{...(props.hangingIndent ? { 'data-hanging-indent': true } : {})}
 	>
 		{props.children}
 	</div>

@@ -28,7 +28,6 @@ exports[`Table Table component 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={0}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -47,7 +46,6 @@ exports[`Table Table component 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={1}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -70,7 +68,6 @@ exports[`Table Table component 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={2}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -89,7 +86,6 @@ exports[`Table Table component 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={3}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -138,7 +134,6 @@ exports[`Table Table component without header 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={0}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -157,7 +152,6 @@ exports[`Table Table component without header 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={1}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -178,7 +172,6 @@ exports[`Table Table component without header 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={2}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>
@@ -197,7 +190,6 @@ exports[`Table Table component without header 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={3}
-                data-hanging-indent={null}
                 data-indent={0}
               >
                 <span>

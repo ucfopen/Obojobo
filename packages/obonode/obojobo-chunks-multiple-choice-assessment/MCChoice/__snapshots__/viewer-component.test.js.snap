@@ -48,7 +48,6 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -123,7 +122,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -198,7 +196,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -273,7 +270,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -342,7 +338,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -411,7 +406,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - survey qu
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -486,7 +480,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - survey qu
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -555,7 +548,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -630,7 +622,6 @@ exports[`MCChoice viewer-component MCChoice component in review mode with no sco
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -705,7 +696,6 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -780,7 +770,6 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -855,7 +844,6 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -924,7 +912,6 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -992,7 +979,6 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1060,7 +1046,6 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1135,7 +1120,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1182,7 +1166,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1254,7 +1237,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1301,7 +1283,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1373,7 +1354,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1420,7 +1400,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1492,7 +1471,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1539,7 +1517,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1611,7 +1588,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted - sur
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1658,7 +1634,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted - sur
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1730,7 +1705,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>
@@ -1777,7 +1751,6 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
             <span
               className="text align-left"
               data-group-index={0}
-              data-hanging-indent={null}
               data-indent={0}
             >
               <span>

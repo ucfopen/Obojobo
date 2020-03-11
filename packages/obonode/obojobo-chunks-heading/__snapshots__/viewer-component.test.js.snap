@@ -17,7 +17,6 @@ exports[`Heading Heading component 1`] = `
       <span
         className="text align-left"
         data-group-index="0"
-        data-hanging-indent={null}
         data-indent={0}
       >
         <span>
@@ -50,7 +49,6 @@ exports[`Heading Heading component level 2 1`] = `
       <span
         className="text align-left"
         data-group-index="0"
-        data-hanging-indent={null}
         data-indent={0}
       >
         <span>
@@ -83,7 +81,6 @@ exports[`Heading Heading component level 3 1`] = `
       <span
         className="text align-left"
         data-group-index="0"
-        data-hanging-indent={null}
         data-indent={0}
       >
         <span>

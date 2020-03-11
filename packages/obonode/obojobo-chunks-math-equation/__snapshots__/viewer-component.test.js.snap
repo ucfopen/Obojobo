@@ -15,7 +15,6 @@ exports[`MathEquation MathEquation component 1`] = `
   <div
     className="non-editable-chunk"
     contentEditable={false}
-    data-hanging-indent={null}
     data-indent={0}
   >
     <div
@@ -51,7 +50,6 @@ exports[`MathEquation MathEquation component with alt 1`] = `
   <div
     className="non-editable-chunk"
     contentEditable={false}
-    data-hanging-indent={null}
     data-indent={0}
   >
     <div
@@ -89,7 +87,6 @@ exports[`MathEquation MathEquation component with label 1`] = `
   <div
     className="non-editable-chunk"
     contentEditable={false}
-    data-hanging-indent={null}
     data-indent={0}
   >
     <div
@@ -131,7 +128,6 @@ exports[`MathEquation MathEquation component with label AND alt 1`] = `
   <div
     className="non-editable-chunk"
     contentEditable={false}
-    data-hanging-indent={null}
     data-indent={0}
   >
     <div
