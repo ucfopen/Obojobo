@@ -13,7 +13,7 @@ exports[`Figure Figure component 1`] = `
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
     contentEditable={false}
-    data-hanging-indent={false}
+    data-hanging-indent={null}
     data-indent={0}
   >
     <div
@@ -41,7 +41,7 @@ exports[`Figure Figure component 1`] = `
           <span
             className="text align-left"
             data-group-index="0"
-            data-hanging-indent={false}
+            data-hanging-indent={null}
             data-indent={0}
           >
             <span>
@@ -72,7 +72,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
     contentEditable={false}
-    data-hanging-indent={false}
+    data-hanging-indent={null}
     data-indent={0}
   >
     <div

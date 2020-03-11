@@ -34,7 +34,7 @@ const TextGroupEl = props => (
 		className={`text align-${props.textItem.data.align}`}
 		data-group-index={props.groupIndex}
 		data-indent={props.textItem.data.indent}
-		data-hanging-indent={props.textItem.data.hangingIndent}
+		data-hanging-indent={props.textItem.data.hangingIndent || null}
 	>
 		<StyleableTextComponent text={getText(props)} />
 	</span>

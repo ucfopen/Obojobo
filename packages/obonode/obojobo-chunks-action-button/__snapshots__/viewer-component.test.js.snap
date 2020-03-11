@@ -54,7 +54,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
         <span
           className="text align-undefined"
           data-group-index="0"
-          data-hanging-indent={false}
+          data-hanging-indent={null}
           data-indent={0}
         >
           <span>

@@ -25,7 +25,7 @@ exports[`MCAnswer MCAnswer component 1`] = `
       <span
         className="text align-left"
         data-group-index={0}
-        data-hanging-indent={false}
+        data-hanging-indent={null}
         data-indent={0}
       >
         <span>
