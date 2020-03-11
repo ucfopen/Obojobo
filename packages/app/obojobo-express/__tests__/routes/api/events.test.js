@@ -1,5 +1,5 @@
 jest.mock('../../../server/models/draft')
-jest.mock('../../../server/db')
+jest.mock('../../../server/db', () => require('obojobo-document-engine/__mocks__/db'))
 
 jest.unmock('express') // we'll use supertest + express for this
 
