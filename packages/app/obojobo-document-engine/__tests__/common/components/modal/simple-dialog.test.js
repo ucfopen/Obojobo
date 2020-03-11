@@ -63,6 +63,23 @@ describe('SimpleDialog', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Other keys dont close modal', () => {
+		const onConfirm = jest.fn()
+		const component = mount(
+			<SimpleDialog onCancel={jest.fn()} onConfirm={onConfirm}>
+				Content
+			</SimpleDialog>
+		)
+
+		expect(onConfirm).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'r' }))
+
+		expect(onConfirm).toHaveBeenCalledTimes(0)
+
+		component.unmount()
+	})
+
 	test('SimpleDialog ok click', () => {
 		const onCancel = jest.fn()
 		const onConfirm = jest.fn()

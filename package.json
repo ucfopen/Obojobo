@@ -13,7 +13,7 @@
 		"lint": "lerna run lint",
 		"lint:css": "lerna run lint:css",
 		"lint:js": "lerna run  lint:js",
-		"precommit": "lerna run precommit && yarn test:ci",
+		"precommit": "lerna run precommit && yarn test:ci --bail",
 		"release:publish": "lerna publish from-package",
 		"release:tag": "lerna version --no-push --sign-git-commit --sign-git-tag --no-commit-hooks --force-publish",
 		"start": "start_obojobo_server",
