@@ -2,7 +2,7 @@
   "packages": [
     "packages/**/*"
   ],
-  "version": "7.1.6-alpha0",
+  "version": "7.1.6-alpha1",
   "command": {
     "command": {
       "run": {
