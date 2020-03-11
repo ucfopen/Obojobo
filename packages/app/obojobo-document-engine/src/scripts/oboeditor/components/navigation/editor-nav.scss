@@ -63,6 +63,7 @@
 		color: $color-heading-text;
 		cursor: default;
 		border-left: solid 1px rgba($color-nav-bg, 0.9);
+		text-align: center;
 		word-wrap: break-word;
 
 		&::after {

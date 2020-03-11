@@ -109,6 +109,7 @@
 		cursor: default;
 		border-left: solid 1px $color-nav-bg;
 		text-align: center;
+		word-wrap: break-word;
 
 		&::after {
 			content: '';
