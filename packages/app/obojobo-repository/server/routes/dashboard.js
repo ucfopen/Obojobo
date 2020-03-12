@@ -28,6 +28,7 @@ router
 				myModules,
 				sortOrder,
 				currentUser: req.currentUser,
+				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('dashboard.css'),
 				appJsUrl: webpackAssetPath('dashboard.js')
 			}
