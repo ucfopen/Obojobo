@@ -38,6 +38,9 @@ describe('server/express', () => {
 		jest.resetAllMocks()
 
 		// mock all the validators
+		const commonValidationMock = (req, res, next) => {
+			next()
+		}
 		requireCurrentDocument.mockImplementation((req, res, next) => {
 			req.currentDocument = mockCurrentDocument
 			next()
@@ -52,18 +55,9 @@ describe('server/express', () => {
 			req.currentUser = mockCurrentUser
 			next()
 		})
-
-		checkValidationRules.mockImplementation((req, res, next) => {
-			next()
-		})
-
-		requireAssessmentId.mockImplementation((req, res, next) => {
-			next()
-		})
-
-		requireAttemptId.mockImplementation((req, res, next) => {
-			next()
-		})
+		checkValidationRules.mockImplementation(commonValidationMock)
+		requireAssessmentId.mockImplementation(commonValidationMock)
+		requireAttemptId.mockImplementation(commonValidationMock)
 
 		// init the server
 		app = express()
@@ -334,6 +328,7 @@ describe('server/express', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
+				expect(checkValidationRules).toHaveBeenCalledTimes(1)
 				expect(response.body).toEqual(returnValue)
 			})
 	})
