@@ -28,6 +28,7 @@ let logger
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
+		jest.clearAllMocks()
 		db = require('obojobo-express/server/db')
 		lti = require('obojobo-express/server/lti')
 		Assessment = require('./assessment')
@@ -518,6 +519,15 @@ describe('Assessment', () => {
 
 		expect(db.oneOrNone.mock.calls[0][1]).toEqual({
 			attemptId: 'mockAttemptId'
+		})
+	})
+
+	test('fetchAttemptByIdAndUserId retrieves the Attempt by its id', () => {
+		Assessment.fetchAttemptByIdAndUserId('mockAttemptId', 'mockUserId')
+
+		expect(db.oneOrNone.mock.calls[0][1]).toEqual({
+			attemptId: 'mockAttemptId',
+			userId: 'mockUserId'
 		})
 	})
 

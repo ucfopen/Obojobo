@@ -275,6 +275,19 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	static fetchAttemptByIdAndUserId(attemptId, userId) {
+		return db.oneOrNone(
+			`
+			SELECT *
+			FROM attempts
+			WHERE
+				id = $[attemptId]
+				AND user_id = $[userId]
+			`,
+			{ attemptId, userId }
+		)
+	}
+
 	static getAttempt(attemptId) {
 		return db.oneOrNone(
 			`

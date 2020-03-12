@@ -66,7 +66,10 @@ exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
 exports.requireAssessmentId = check('assessmentId', 'must not be empty')
 	.exists({ checkNull: true, checkFalsy: true })
 	.isString()
-
+exports.requireMultipleAttemptIds = [
+	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
+	check('attemptIds.*', 'must be a valid UUID').isUUID()
+]
 exports.validPageNumber = check('page', 'must be a valid int 1 or above')
 	.optional()
 	.isInt({ min: 1, allow_leading_zeroes: false })
