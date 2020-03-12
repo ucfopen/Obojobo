@@ -38,7 +38,6 @@ describe('attempt review', () => {
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(0)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(0)
 			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(0)
@@ -67,9 +66,7 @@ describe('attempt review', () => {
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(2)
-			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
 			expect(logger.error).toHaveBeenCalledTimes(0)
 			expect(questionModels).toMatchInlineSnapshot(`
@@ -110,9 +107,7 @@ describe('attempt review', () => {
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(1)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1)
-			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(1)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 			expect(logger.error).toHaveBeenCalledTimes(0)
 			expect(questionModels).toMatchInlineSnapshot(`
@@ -149,9 +144,7 @@ describe('attempt review', () => {
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(0)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1)
-			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(0)
 			expect(logger.error).toHaveBeenCalledTimes(2)
 			expect(questionModels).toBe(undefined) //eslint-disable-line no-undefined
