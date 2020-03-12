@@ -120,13 +120,12 @@ router
 			)
 	})
 
-// @TODO make sure i own
 // seems like attemptid should be in the url and swithc to get?
 router
 	.route('/api/assessments/attempt/review')
 	.post([requireCurrentUser, requireMultipleAttemptIds, checkValidationRules])
 	.post(async (req, res) => {
-		const questionModels = await reviewAttempt(req.body.attemptIds)
+		const questionModels = await reviewAttempt(req.body.attemptIds, req.currentUser.id)
 		res.send(questionModels)
 	})
 

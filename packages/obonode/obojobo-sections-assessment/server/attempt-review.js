@@ -3,46 +3,49 @@ const DraftModel = require('obojobo-express/server/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/server/logger')
 
-const getQuestionModelsFromAttempt = async attemptId => {
-	const attempt = await Assessment.getAttempt(attemptId)
+const getQuestionModelsFromAttempt = async (attemptId, userId) => {
+	try {
+		const attempt = await Assessment.fetchAttemptByIdAndUserId(attemptId, userId)
 
-	// @TODO: memoize or cache this
-	const draftDocument = await DraftModel.fetchDraftByVersion(
-		attempt.draft_id,
-		attempt.draft_content_id
-	)
+		if (!attempt) throw Error(`Unable to load attempt ${attemptId} for user ${userId}`)
 
-	const attemptQuestionModels = getFullQuestionsFromDraftTree(draftDocument, attempt.state.chosen)
-	const attemptQuestionModelsMap = {}
-	for (const questionModel of attemptQuestionModels) {
-		attemptQuestionModelsMap[questionModel.id] = questionModel
+		// @TODO: memoize or cache this
+		const draftDocument = await DraftModel.fetchDraftByVersion(
+			attempt.draft_id,
+			attempt.draft_content_id
+		)
+
+		const attemptQuestionModels = getFullQuestionsFromDraftTree(draftDocument, attempt.state.chosen)
+		const attemptQuestionModelsMap = {}
+		for (const questionModel of attemptQuestionModels) {
+			attemptQuestionModelsMap[questionModel.id] = questionModel
+		}
+
+		return attemptQuestionModelsMap
+	} catch (error) {
+		logger.error('getQuestionModelsFromAttempt Error')
+		logger.error(error)
+		return {}
 	}
-
-	return attemptQuestionModelsMap
 }
 
-const reviewAttempt = async attemptIds => {
-	try {
-		// aysnc, let's get all the attmpts
-		const promises = []
-		for (const attemptId of attemptIds) {
-			promises.push(getQuestionModelsFromAttempt(attemptId))
-		}
-		const results = await Promise.all(promises)
-		// now build an object
-		// { <attemptId>: questionModels }
-		let n = 0
-		const questionModels = {}
-		for (const attemptId of attemptIds) {
-			questionModels[attemptId] = results[n]
-			n++
-		}
-
-		return questionModels
-	} catch (error) {
-		logger.error('reviewAttempt Error')
-		logger.error(error)
+const reviewAttempt = async (attemptIds, userId) => {
+	// aysnc, let's get all the attmpts
+	const promises = []
+	for (const attemptId of attemptIds) {
+		promises.push(getQuestionModelsFromAttempt(attemptId, userId))
 	}
+	const results = await Promise.all(promises)
+	// now build an object
+	// { <attemptId>: questionModels }
+	let n = 0
+	const questionModels = {}
+	for (const attemptId of attemptIds) {
+		questionModels[attemptId] = results[n]
+		n++
+	}
+
+	return questionModels
 }
 
 module.exports = {

@@ -278,6 +278,39 @@ describe('current user middleware', () => {
 		})
 	})
 
+	test('requireMultipleAttemptIds rejects when given a uuid not in an array', () => {
+		mockReq.body.attemptIds = validUUID()
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(37)
+			expect(mockReq._validationErrors[0]).toEqual({
+				location: 'body',
+				msg: 'must be an array of UUIDs',
+				param: 'attemptIds',
+				value: mockReq.body.attemptIds
+			})
+		})
+	})
+
+	// @TODO: add in the future
+	test.skip('requireMultipleAttemptIds rejects when empty', () => {
+		mockReq.body.attemptIds = []
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(1)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be an array of UUIDs',
+				param: 'attemptIds',
+				value: undefined
+			})
+		})
+	})
+
 	// requireVisitId tests
 
 	test('requireVisitId resolves in body', () => {
