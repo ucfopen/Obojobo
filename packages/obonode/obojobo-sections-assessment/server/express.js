@@ -123,7 +123,7 @@ router
 // seems like attemptid should be in the url and swithc to get?
 router
 	.route('/api/assessments/attempt/review')
-	.post([requireCurrentUser, requireAttemptId, checkValidationRules])
+	.post([requireCurrentUser, checkValidationRules])
 	.post(async (req, res) => {
 		const questionModels = await reviewAttempt(req.body.attemptIds)
 		res.send(questionModels)

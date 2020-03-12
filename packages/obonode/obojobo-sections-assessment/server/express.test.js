@@ -334,7 +334,6 @@ describe('server/express', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
 				expect(response.body).toEqual(returnValue)
 			})
 	})
