@@ -8,7 +8,6 @@ class RepositoryCollection {
 		this.title = title
 		this.userId = user_id
 		this.createdAt = created_at
-		this.drafts = []
 	}
 
 	static fetchById(id) {

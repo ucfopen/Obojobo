@@ -1,16 +1,12 @@
 const db = oboRequire('server/db')
-const logger = oboRequire('server/logger.js')
 const oboEvents = oboRequire('server/obo_events')
 
 class Collection {
-	constructor() {
-		this.draftId = rawDraft.draftId
-	}
-
-	yell() {
-		return Promise.all(this.root.yell.apply(this.root, arguments)).then(() => {
-			return this
-		})
+	constructor({ id = null, title = '', user_id, created_at = null }) {
+		this.id = id
+		this.title = title
+		this.userId = user_id
+		this.createdAt = created_at
 	}
 
 	static createWithUser(userId) {
@@ -25,7 +21,7 @@ class Collection {
 				{ userId }
 			)
 			.then(newCollection => {
-				oboEvents.emit(Collection.EVENT_NEW_COLLECTION_CREATED, { id: newCollection.id })
+				oboEvents.emit(Collection.EVENT_COLLECTION_CREATED, { id: newCollection.id })
 				return newCollection
 			})
 	}
@@ -48,6 +44,42 @@ class Collection {
 			})
 	}
 
+	static addModule(collectionId, draftId, userId) {
+		return db
+			.none(
+				`INSERT INTO repository_map_drafts_to_collections
+					(draft_id, collection_id, user_id)
+				VALUES
+					($[draftId], $[collectionId], $[userId])
+				`,
+				{ collectionId, draftId, userId }
+			)
+			.then(() => {
+				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_ADDED, {
+					collectionId,
+					draftId
+				})
+			})
+	}
+
+	static removeModule(collectionId, draftId) {
+		return db
+			.none(
+				`DELETE FROM repository_map_drafts_to_collections
+				WHERE
+					draft_id = $[draftId]
+					AND collection_id = $[collectionId]
+				`,
+				{ collectionId, draftId }
+			)
+			.then(() => {
+				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_REMOVED, {
+					collectionId,
+					draftId
+				})
+			})
+	}
+
 	static delete(id) {
 		return db
 			.none(
@@ -62,8 +94,10 @@ class Collection {
 	}
 }
 
-Collection.EVENT_NEW_COLLECTION_CREATED = 'EVENT_NEW_COLLECTION_CREATED'
+Collection.EVENT_COLLECTION_CREATED = 'EVENT_COLLECTION_CREATED'
 Collection.EVENT_COLLECTION_DELETED = 'EVENT_COLLECTION_DELETED'
 Collection.EVENT_COLLECTION_UPDATED = 'EVENT_COLLECTION_UPDATED'
+Collection.EVENT_COLLECTION_MODULE_ADDED = 'EVENT_COLLECTION_MODULE_ADDED'
+Collection.EVENT_COLLECTION_MODULE_REMOVED = 'EVENT_COLLECTION_MODULE_REMOVED'
 
 module.exports = Collection

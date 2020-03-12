@@ -15,6 +15,10 @@ const {
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
+	SHOW_MODULE_MANAGE_COLLECTIONS,
+	LOAD_MODULE_COLLECTIONS,
+	ADD_MODULE_TO_COLLECTION,
+	REMOVE_MODULE_FROM_COLLECTION,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION
@@ -131,11 +135,29 @@ function DashboardReducer(state, action) {
 				}
 			})
 
+		case LOAD_MODULE_COLLECTIONS:
+		case ADD_MODULE_TO_COLLECTION:
+		case REMOVE_MODULE_FROM_COLLECTION:
+			return handle(state, action, {
+				success: prevState => {
+					const newState = { ...prevState }
+					newState.draftCollections = action.payload.value
+					return newState
+				}
+			})
+
 		case LOAD_USER_SEARCH:
 			return handle(state, action, {
 				start: prevState => ({ ...prevState, shareSearchString: action.meta.searchString }),
 				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.value } })
 			})
+
+		case SHOW_MODULE_MANAGE_COLLECTIONS:
+			return {
+				...state,
+				dialog: 'module-manage-collections',
+				selectedModule: action.module
+			}
 
 		case SHOW_COLLECTION_RENAME:
 			return {

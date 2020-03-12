@@ -6,6 +6,10 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: $size-spacing-vertical-big;
+
+		.repository--main-content--new-module-button {
+			width: 11em;
+		}
 	}
 }
 

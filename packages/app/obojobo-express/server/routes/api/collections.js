@@ -51,4 +51,38 @@ router
 			.catch(res.unexpected)
 	})
 
+// Add a module to a collection
+// mounted as api/collections/:id/module/add
+router
+	.route('/:id/module/add')
+	.post([requireCanCreateDrafts, checkValidationRules])
+	.post(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the creator of this collection to add modules to it')
+		}
+
+		return CollectionModel.addModule(req.params.id, req.body.draftId, req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Remove a module from a collection
+// mounted as api/collections/:id/module/remove
+router
+	.route('/:id/module/remove')
+	.delete([requireCanDeleteDrafts, checkValidationRules])
+	.delete(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
+		if (!hasPerms) {
+			return res.notAuthorized(
+				'You must be the creator of this collection to remove modules from it'
+			)
+		}
+
+		return CollectionModel.removeModule(req.params.id, req.body.draftId)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
 module.exports = router

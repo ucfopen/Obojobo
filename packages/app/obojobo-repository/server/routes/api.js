@@ -19,6 +19,7 @@ const {
 	removeUserPermissionToDraft,
 	userHasPermissionToCopy
 } = require('../services/permissions')
+const { fetchAllCollectionsForDraft } = require('../services/collections')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 // List public drafts
@@ -183,6 +184,16 @@ router
 		} catch (error) {
 			res.unexpected(error)
 		}
+	})
+
+// list the collections a draft is in
+router
+	.route('/drafts/:draftId/collections')
+	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return fetchAllCollectionsForDraft(req.params.draftId)
+			.then(res.success)
+			.catch(res.unexpected)
 	})
 
 module.exports = router

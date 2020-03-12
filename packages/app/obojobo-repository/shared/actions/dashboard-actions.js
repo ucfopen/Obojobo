@@ -22,6 +22,19 @@ const apiGetPermissionsForModule = draftId => {
 	return fetch(`/api/drafts/${draftId}/permission`, defaultOptions()).then(res => res.json())
 }
 
+const apiGetCollectionsForModule = draftId => {
+	return fetch(`/api/drafts/${draftId}/collections`, defaultOptions()).then(res => res.json())
+}
+
+const apiAddModuleToCollection = (draftId, collectionId) => {
+	const options = { ...defaultOptions(), method: 'POST', body: `{"draftId":"${draftId}"}` }
+	return fetch(`/api/collections/${collectionId}/module/add`, options).then(res => res.json())
+}
+const apiRemoveModuleFromCollection = (draftId, collectionId) => {
+	const options = { ...defaultOptions(), method: 'DELETE', body: `{"draftId":"${draftId}"}` }
+	return fetch(`/api/collections/${collectionId}/module/remove`, options).then(res => res.json())
+}
+
 const apiDeletePermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'DELETE' }
 	return fetch(`/api/drafts/${draftId}/permission/${userId}`, options).then(res => res.json())
@@ -144,6 +157,34 @@ const showModuleMore = module => ({
 	module
 })
 
+const SHOW_MODULE_MANAGE_COLLECTIONS = 'SHOW_MODULE_MANAGE_COLLECTIONS'
+const showModuleManageCollections = module => ({
+	type: SHOW_MODULE_MANAGE_COLLECTIONS,
+	module
+})
+
+const LOAD_MODULE_COLLECTIONS = 'LOAD_MODULE_COLLECTIONS'
+const loadModuleCollections = draftId => ({
+	type: LOAD_MODULE_COLLECTIONS,
+	promise: apiGetCollectionsForModule(draftId)
+})
+
+const ADD_MODULE_TO_COLLECTION = 'ADD_MODULE_TO_COLLECTION'
+const addModuleToCollection = (draftId, collectionId) => ({
+	type: ADD_MODULE_TO_COLLECTION,
+	promise: apiAddModuleToCollection(draftId, collectionId).then(() => {
+		return apiGetCollectionsForModule(draftId)
+	})
+})
+
+const REMOVE_MODULE_FROM_COLLECTION = 'REMOVE_MODULE_FROM_COLLECTION'
+const removeModuleFromCollection = (draftId, collectionId) => ({
+	type: REMOVE_MODULE_FROM_COLLECTION,
+	promise: apiRemoveModuleFromCollection(draftId, collectionId).then(() => {
+		return apiGetCollectionsForModule(draftId)
+	})
+})
+
 const SHOW_COLLECTION_RENAME = 'SHOW_COLLECTION_RENAME'
 const showCollectionRename = collection => ({
 	type: SHOW_COLLECTION_RENAME,
@@ -175,6 +216,10 @@ module.exports = {
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
+	SHOW_MODULE_MANAGE_COLLECTIONS,
+	LOAD_MODULE_COLLECTIONS,
+	ADD_MODULE_TO_COLLECTION,
+	REMOVE_MODULE_FROM_COLLECTION,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
@@ -191,6 +236,10 @@ module.exports = {
 	clearPeopleSearchResults,
 	showModuleMore,
 	showCollectionRename,
+	showModuleManageCollections,
+	loadModuleCollections,
+	addModuleToCollection,
+	removeModuleFromCollection,
 	renameCollection,
 	deleteCollection
 }

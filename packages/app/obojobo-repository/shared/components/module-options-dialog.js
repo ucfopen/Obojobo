@@ -48,6 +48,16 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Add or remove collaborators.</div>
 
 				<Button
+					className="manage-collections-button"
+					onClick={() => {
+						props.showModuleManageCollections(props)
+					}}
+				>
+					Manage Collections
+				</Button>
+				<div className="label">Add to or remove from private collections.</div>
+
+				<Button
 					className="new-button"
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')

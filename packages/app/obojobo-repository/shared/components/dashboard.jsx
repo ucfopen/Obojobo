@@ -8,6 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Collection = require('./collection')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const Module = require('./module')
+const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
 const Button = require('./button')
@@ -22,6 +23,7 @@ const renderOptionsDialog = props => (
 	<ModuleOptionsDialog
 		title=""
 		{...props.selectedModule}
+		showModuleManageCollections={props.showModuleManageCollections}
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
@@ -39,6 +41,19 @@ const renderPermissionsDialog = props => (
 		draftPermissions={props.draftPermissions}
 		deleteModulePermissions={props.deleteModulePermissions}
 		currentUserId={props.currentUser.id}
+	/>
+)
+
+const renderModuleManageCollectionsDialog = props => (
+	<ModuleManageCollectionsDialog
+		title=""
+		{...props.selectedModule}
+		collections={props.myCollections}
+		onClose={props.closeModal}
+		loadModuleCollections={props.loadModuleCollections}
+		draftCollections={props.draftCollections}
+		addModuleToCollection={props.addModuleToCollection}
+		removeModuleFromCollection={props.removeModuleFromCollection}
 	/>
 )
 
@@ -63,6 +78,11 @@ const renderModalDialog = props => {
 		case 'module-permissions':
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
+			break
+
+		case 'module-manage-collections':
+			title = 'Module Collections'
+			dialog = renderModuleManageCollectionsDialog(props)
 			break
 
 		case 'collection-rename':
@@ -131,20 +151,6 @@ const Dashboard = props => {
 		}, [moduleSortOrder])
 	}
 
-	// Components to render for 'New Collection' option in New Module... button
-	// Will only be visible when dashboard is in 'default' mode
-	let newCollectionRender = (
-		<React.Fragment>
-			<Button onClick={() => props.createNewCollection()}>New Collection</Button>
-			<hr />
-		</React.Fragment>
-	)
-
-	// Text content of the dashboard collection section's title
-	// Either 'My Collections' (default/module mode) or the title
-	//  of the chosen collection (collection mode)
-	let collectionsTitle = 'My Collections'
-
 	// Text content of the dashboard module section's title
 	// Either 'My Recent Modules' (default) or 'My Modules' (module mode)
 	//  or 'Modules in Collection' (collection mode)
@@ -193,13 +199,10 @@ const Dashboard = props => {
 	switch (props.mode) {
 		// url is /dashboard/collections/collection-name-and-short-uuid
 		case MODE_COLLECTION:
-			newCollectionRender = null
-			collectionsTitle = `Collection "Collection Title Here - Soon!"`
-			modulesTitle = 'Modules in Collection'
+			modulesTitle = 'Modules in Collection "Collection Title Here"'
 			break
 		// url is /dashboard/modules
 		case MODE_MODULES:
-			newCollectionRender = null
 			modulesTitle = 'My Modules'
 			moduleModeRender = null
 			break
@@ -223,8 +226,9 @@ const Dashboard = props => {
 			<div className="repository--section-wrapper">
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
-						<MultiButton title="New Module">
-							{newCollectionRender}
+						<MultiButton title="Create New" className="repository--main-content--new-module-button">
+							<Button onClick={() => props.createNewCollection()}>New Collection</Button>
+							<hr />
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
 						</MultiButton>
@@ -232,7 +236,7 @@ const Dashboard = props => {
 					</div>
 
 					<div className="repository--main-content--title stretch-width">
-						<span>{collectionsTitle}</span>
+						<span>My Collections</span>
 					</div>
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
