@@ -1,5 +1,4 @@
 const Assessment = require('./assessment')
-const attemptStart = require('./attempt-start')
 const DraftModel = require('obojobo-express/server/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/server/logger')
@@ -12,15 +11,6 @@ const getQuestionModelsFromAttempt = async attemptId => {
 		attempt.draft_id,
 		attempt.draft_content_id
 	)
-
-	const assessmentNode = draftDocument.getChildNodeById(attempt.assessment_id)
-
-	if (assessmentNode.node.content.review !== 'always') {
-		// @TODO: are res & req needed for OboModel.yell()?!
-		const res = {}
-		const req = {}
-		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
-	}
 
 	const attemptQuestionModels = getFullQuestionsFromDraftTree(draftDocument, attempt.state.chosen)
 	const attemptQuestionModelsMap = {}
