@@ -1,11 +1,11 @@
 const CollectionMenu = require('./collection-menu')
 const connect = require('react-redux').connect
 const {
-	showCollectionAddModule,
+	showCollectionManageModules,
 	showCollectionRename,
 	deleteCollection
 } = require('../actions/dashboard-actions')
-const mapActionsToProps = { showCollectionAddModule, showCollectionRename, deleteCollection }
+const mapActionsToProps = { showCollectionManageModules, showCollectionRename, deleteCollection }
 module.exports = connect(
 	null,
 	mapActionsToProps

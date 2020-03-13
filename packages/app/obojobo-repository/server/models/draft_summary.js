@@ -81,6 +81,15 @@ class DraftSummary {
 		)
 	}
 
+	static fetchInCollection(collectionId) {
+		return DraftSummary.fetchAndJoinWhere(
+			`JOIN repository_map_drafts_to_collections
+				ON repository_map_drafts_to_collections.draft_id = drafts.id`,
+			`repository_map_drafts_to_collections.collection_id = $[collectionId]`,
+			{ collectionId }
+		)
+	}
+
 	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
 		return db
 			.any(buildQueryWhere(whereSQL, joinSQL, limitSQL), queryValues)

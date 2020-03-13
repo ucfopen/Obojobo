@@ -3,10 +3,12 @@ require('./collection-menu.scss')
 
 const React = require('react')
 const Button = require('./button')
+const ButtonLink = require('./button-link')
+const short = require('short-uuid')
 
 const CollectionMenu = props => {
 	const onAddModule = () => {
-		props.showCollectionAddModule(props.collection)
+		props.showCollectionManageModules(props.collection)
 	}
 
 	const onRename = () => {
@@ -22,11 +24,22 @@ const CollectionMenu = props => {
 		props.deleteCollection(props.collection)
 	}
 
+	const collectionTitleToUrl = encodeURI(props.collection.title.replace(/\s+/g, '-').toLowerCase())
+	const translator = short()
+	const collectionIdToUrl = translator.fromUUID(props.collection.id)
+
 	return (
 		<div className="repository--module-icon--menu-wrapper">
 			<div className={`repository--module-icon--menu ${props.className || ''}`}>
-				<Button onClick={onAddModule} className="add-module">
-					Add Module
+				<ButtonLink
+					className="collection-link-button"
+					url={`/dashboard/collections/${collectionTitleToUrl}-${collectionIdToUrl}`}
+					target="_blank"
+				>
+					Collection Modules
+				</ButtonLink>
+				<Button onClick={onAddModule} className="manage-modules">
+					Manage Modules
 				</Button>
 				<Button onClick={onRename} className="rename">
 					Rename

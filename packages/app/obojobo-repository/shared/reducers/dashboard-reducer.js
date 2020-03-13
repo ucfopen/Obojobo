@@ -19,6 +19,7 @@ const {
 	LOAD_MODULE_COLLECTIONS,
 	ADD_MODULE_TO_COLLECTION,
 	REMOVE_MODULE_FROM_COLLECTION,
+	SHOW_COLLECTION_MANAGE_MODULES,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION
@@ -157,6 +158,13 @@ function DashboardReducer(state, action) {
 				...state,
 				dialog: 'module-manage-collections',
 				selectedModule: action.module
+			}
+
+		case SHOW_COLLECTION_MANAGE_MODULES:
+			return {
+				...state,
+				dialog: 'collection-manage-modules',
+				collection: action.collection
 			}
 
 		case SHOW_COLLECTION_RENAME:

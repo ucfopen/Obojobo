@@ -57,6 +57,8 @@ const renderModuleManageCollectionsDialog = props => (
 	/>
 )
 
+const renderCollectionManageModulesDialog = props => null
+
 const renderCollectionRenameDialog = props => (
 	<CollectionRenameDialog
 		title="Rename Collection"
@@ -83,6 +85,11 @@ const renderModalDialog = props => {
 		case 'module-manage-collections':
 			title = 'Module Collections'
 			dialog = renderModuleManageCollectionsDialog(props)
+			break
+
+		case 'collection-manage-modules':
+			title = ''
+			dialog = renderCollectionManageModulesDialog(props)
 			break
 
 		case 'collection-rename':

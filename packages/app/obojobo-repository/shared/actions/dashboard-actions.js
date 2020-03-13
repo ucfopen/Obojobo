@@ -185,6 +185,12 @@ const removeModuleFromCollection = (draftId, collectionId) => ({
 	})
 })
 
+const SHOW_COLLECTION_MANAGE_MODULES = 'SHOW_COLLECTION_MANAGE_MODULES'
+const showCollectionManageModules = collection => ({
+	type: SHOW_COLLECTION_MANAGE_MODULES,
+	collection
+})
+
 const SHOW_COLLECTION_RENAME = 'SHOW_COLLECTION_RENAME'
 const showCollectionRename = collection => ({
 	type: SHOW_COLLECTION_RENAME,
@@ -220,6 +226,7 @@ module.exports = {
 	LOAD_MODULE_COLLECTIONS,
 	ADD_MODULE_TO_COLLECTION,
 	REMOVE_MODULE_FROM_COLLECTION,
+	SHOW_COLLECTION_MANAGE_MODULES,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
@@ -235,6 +242,7 @@ module.exports = {
 	loadUsersForModule,
 	clearPeopleSearchResults,
 	showModuleMore,
+	showCollectionManageModules,
 	showCollectionRename,
 	showModuleManageCollections,
 	loadModuleCollections,

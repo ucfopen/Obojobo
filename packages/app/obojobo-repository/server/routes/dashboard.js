@@ -13,8 +13,11 @@ const {
 	MODE_COLLECTION
 } = require('../../shared/repository-constants')
 
+const short = require('short-uuid')
+
 const defaultOptions = {
 	recentModules: false,
+	collectionId: null,
 	mode: MODE_DASHBOARD
 }
 
@@ -33,7 +36,12 @@ const renderDashboard = (req, res, options) => {
 		.then(collections => {
 			myCollections = collections
 
-			if (options.recentModules) return DraftSummary.fetchRecentByUserId(req.currentUser.id)
+			if (options.recentModules && !options.collectionId) {
+				return DraftSummary.fetchRecentByUserId(req.currentUser.id)
+			} else if (options.collectionId) {
+				console.log(options.collectionId)
+				return DraftSummary.fetchInCollection(options.collectionId)
+			}
 			return DraftSummary.fetchByUserId(req.currentUser.id)
 		})
 		.then(myModules => {
@@ -61,6 +69,8 @@ router
 		renderDashboard(req, res, { ...defaultOptions, recentModules: true })
 	})
 
+// Dashboard page - all modules
+// mounted as /dashboard/modules
 router
 	.route('/dashboard/modules')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
@@ -68,12 +78,23 @@ router
 		renderDashboard(req, res, { ...defaultOptions, mode: MODE_MODULES })
 	})
 
+// Dashboard page - modules in collection
+// mounted as /dashboard/collection/:nameOrId
 router
-	.route('/dashboard/collection/:nameOrId')
+	.route('/dashboard/collections/:nameOrId')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		console.log(req.params)
-		renderDashboard(req, res, { ...defaultOptions, mode: MODE_COLLECTION })
+		const urlParts = req.params.nameOrId.split('-')
+		const translator = short()
+		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
+
+		const options = {
+			...defaultOptions,
+			collectionId,
+			mode: MODE_COLLECTION
+		}
+
+		renderDashboard(req, res, options)
 	})
 
 module.exports = router
