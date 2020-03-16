@@ -71,6 +71,11 @@ describe('Component Editor Node', () => {
 						get: () => ({})
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -157,6 +162,11 @@ describe('Component Editor Node', () => {
 					},
 					nodes: { size: 0 }
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 				editor={editor}
 			/>
 		)
@@ -242,6 +252,11 @@ describe('Component Editor Node', () => {
 					nodes: { size: 0 },
 					toJSON: () => ({})
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 				editor={editor}
 			/>
 		)
@@ -265,6 +280,11 @@ describe('Component Editor Node', () => {
 					},
 					nodes: { size: 0 },
 					toJSON: () => ({})
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={editor}
 			/>
@@ -302,6 +322,36 @@ describe('Component Editor Node', () => {
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
+	test('Node component move node up/down', () => {
+		const editor = {
+			moveNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					}
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
+				}}
+				editor={editor}
+			/>
+		)
+		const tree = component.html()
+
+		component.instance().moveNode(0)
+
+		expect(editor.moveNodeByKey).toHaveBeenCalled()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('onOpen and onClose call toggleEditable', () => {
 		const editor = {
 			toggleEditable: jest.fn()
@@ -316,6 +366,11 @@ describe('Component Editor Node', () => {
 						toJSON: () => ({})
 					},
 					nodes: { size: 0 }
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={editor}
 			/>

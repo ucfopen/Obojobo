@@ -15,6 +15,11 @@ describe('List Editor Node', () => {
 						}
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -47,6 +52,11 @@ describe('List Editor Node', () => {
 							}
 						]
 					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={editor}
 			/>
@@ -83,6 +93,11 @@ describe('List Editor Node', () => {
 							}
 						]
 					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={editor}
 			/>

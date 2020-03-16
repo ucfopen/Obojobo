@@ -26,6 +26,11 @@ describe('QuestionBank editor', () => {
 						return {}
 					}
 				}
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				})
 			}
 		}
 
@@ -50,6 +55,11 @@ describe('QuestionBank editor', () => {
 						}
 					}
 				}
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				})
 			},
 			editor: {
 				removeNodeByKey: jest.fn()
@@ -84,6 +94,11 @@ describe('QuestionBank editor', () => {
 				},
 				nodes: []
 			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				})
+			},
 			editor: {
 				insertNodeByKey: jest.fn()
 			}
@@ -109,6 +124,11 @@ describe('QuestionBank editor', () => {
 					}
 				},
 				nodes: []
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				})
 			},
 			editor: {
 				insertNodeByKey: jest.fn()

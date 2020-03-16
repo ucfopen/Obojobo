@@ -30,6 +30,11 @@ describe('Figure Editor Node', () => {
 						})
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -52,6 +57,11 @@ describe('Figure Editor Node', () => {
 						})
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -67,6 +77,11 @@ describe('Figure Editor Node', () => {
 							height: 'customHeight'
 						})
 					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 			/>
 		)
@@ -84,6 +99,11 @@ describe('Figure Editor Node', () => {
 						})
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		expect(componentNoHeight.toJSON()).toMatchSnapshot()
@@ -97,6 +117,11 @@ describe('Figure Editor Node', () => {
 					data: {
 						get: () => ({})
 					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={mockEditor}
 			/>
@@ -121,6 +146,11 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					},
 					text: 'Your Title Here'
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 			/>
 		)
@@ -157,6 +187,11 @@ describe('Figure Editor Node', () => {
 					},
 					text: 'Your Title Here'
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 
@@ -175,6 +210,11 @@ describe('Figure Editor Node', () => {
 						get: () => mockContent
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 				editor={mockEditor}
 			/>
 		)
@@ -192,6 +232,11 @@ describe('Figure Editor Node', () => {
 					data: {
 						get: () => ({})
 					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
 				}}
 				editor={mockEditor}
 			/>

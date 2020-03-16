@@ -14,6 +14,11 @@ describe('Code Editor Node', () => {
 						}
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					})
+				}}
 			/>
 		)
 		const tree = component.toJSON()
