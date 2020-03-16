@@ -91,7 +91,15 @@ class Node extends React.Component {
 		this.props.editor.toggleEditable(true)
 	}
 
+	moveNode(index) {
+		const editor = this.props.editor
+
+		editor.moveNodeByKey(this.props.node.key, this.props.parent.key, index)
+	}
+
 	render() {
+		const index = this.props.parent.getPath(this.props.node.key).get(0)
+
 		return (
 			<div className={'oboeditor-component component'} data-obo-component="true">
 				{this.props.isSelected ? (
@@ -115,8 +123,7 @@ class Node extends React.Component {
 					<MoreInfoBox
 						className="content-node"
 						id={this.props.node.key}
-						isFirst
-						isLast
+						index={index}
 						type={this.props.node.type}
 						content={this.props.node.data.toJSON().content || {}}
 						saveId={this.saveId.bind(this)}
@@ -127,6 +134,7 @@ class Node extends React.Component {
 						markUnsaved={this.props.editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
 						onClose={this.onClose.bind(this)}
+						moveNode={this.moveNode.bind(this)}
 					/>
 				) : null}
 				{this.props.children}
