@@ -22,6 +22,8 @@
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
 	overflow-y: auto;
+	word-wrap: break-word;
+	hyphens: auto;
 
 	&:focus {
 		outline: none;
@@ -109,6 +111,7 @@
 		cursor: default;
 		border-left: solid 1px $color-nav-bg;
 		text-align: center;
+		word-wrap: break-word;
 
 		&::after {
 			content: '';

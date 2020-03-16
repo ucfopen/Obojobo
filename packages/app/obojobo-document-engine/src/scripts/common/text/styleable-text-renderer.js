@@ -159,7 +159,7 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			)
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
-			const html = katex.renderToString(text)
+			const html = katex.renderToString(text, { throwOnError: false })
 			nodeToWrap.html = `<span aria-hidden="true">${html}</span>`
 			nodeToWrap.text = text
 			return newChild

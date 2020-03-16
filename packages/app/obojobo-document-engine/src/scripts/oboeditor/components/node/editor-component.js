@@ -23,7 +23,7 @@ class Node extends React.Component {
 
 	insertBlockAtEnd(item) {
 		const newBlock = item.cloneBlankNode()
-		
+
 		// Use the ReactEditor to get the path for the current element, and increment the last element
 		// Then use transforms to insert at that path, which effectively inserts below like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -55,7 +55,7 @@ class Node extends React.Component {
 		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
-	duplicateNode () {
+	duplicateNode() {
 		const newNode = Object.assign({}, this.props.element)
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -76,16 +76,18 @@ class Node extends React.Component {
 	render() {
 		const selected = this.props.selected
 		const editor = this.props.editor
+		const className = `oboeditor-component component ${this.props.className || ''}`
 
 		return (
-			<div className={'oboeditor-component component'} data-obo-component="true">
-				{selected ? (
+			<div className={className.trim()} data-obo-component="true">
+				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
-							masterOnClick={this.insertBlockAtStart.bind(this)}/>
+							masterOnClick={this.insertBlockAtStart.bind(this)}
+						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
@@ -110,7 +112,8 @@ class Node extends React.Component {
 						duplicateNode={this.duplicateNode.bind(this)}
 						markUnsaved={editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
-						onClose={this.onClose.bind(this)}/>
+						onClose={this.onClose.bind(this)}
+					/>
 				) : null}
 				{this.props.children}
 			</div>

@@ -29,14 +29,14 @@ class Question extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, type } },
 			{ at: path }
 		)
 
 		const lastChildIndex = this.props.element.children.length - 1
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
 		)
@@ -95,7 +95,7 @@ class Question extends React.Component {
 		}
 
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
 				<div
 					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
 				>
@@ -119,10 +119,7 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<Button 
-									className="add-solution" 
-									onClick={this.addSolution} 
-									contentEditable={false}>
+								<Button className="add-solution" onClick={this.addSolution} contentEditable={false}>
 									Add Solution
 								</Button>
 							)}
@@ -137,4 +134,4 @@ class Question extends React.Component {
 	}
 }
 
-export default withSlateWrapper(Question) 
+export default withSlateWrapper(Question)

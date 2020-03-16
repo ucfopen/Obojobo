@@ -1,0 +1,15 @@
+diff a/packages/app/obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component.js b/packages/app/obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component.js	(rejected hunks)
+@@ -26 +26 @@ class Node extends React.Component {
+-		
++
+@@ -58 +58 @@ class Node extends React.Component {
+-	duplicateNode () {
++	duplicateNode() {
+@@ -89 +89,2 @@ class Node extends React.Component {
+-							masterOnClick={this.insertBlockAtStart.bind(this)}/>
++							masterOnClick={this.insertBlockAtStart.bind(this)}
++						/>
+@@ -114 +115,2 @@ class Node extends React.Component {
+-						onClose={this.onClose.bind(this)}/>
++						onClose={this.onClose.bind(this)}
++					/>

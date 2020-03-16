@@ -3,28 +3,45 @@ import React from 'react'
 import StyleableTextComponent from '../../text/styleable-text-component'
 import Dispatcher from '../../flux/dispatcher'
 
-const varRegex = /\{\{(.+?)\}\}/
+const varRegex = /\{\{(.+?)\}\}/g
 
 const getText = props => {
 	let { text } = props.textItem
 
-	if (props.parentModel && text.value.indexOf('{{')) {
-		let match = null
-		text = text.clone()
+	// Quickly exit if the text has no double brackets, since we
+	// know there are no variables to substitue:
+	if (!props.parentModel || text.value.indexOf('{{') === -1) {
+		return text
+	}
 
-		while ((match = varRegex.exec(text.value)) !== null) {
-			const variable = match[1]
-			const event = { text: '' }
-			Dispatcher.trigger('getTextForVariable', event, variable, props.parentModel)
-			if (event.text === null) {
-				event.text = match[1]
-			}
-			event.text = `${event.text}`
+	const substitutions = []
+	let match = null
 
-			const startIndex = text.value.indexOf(match[0], varRegex.lastIndex)
-			text.replaceText(startIndex, startIndex + match[0].length, event.text)
+	text = text.clone()
+
+	// Collect all of the potential variables:
+	while ((match = varRegex.exec(text.value)) !== null) {
+		const variableText = match[1]
+		const event = { text: '' }
+
+		// Ask the system if anything is aware of `variableText`:
+		Dispatcher.trigger('getTextForVariable', event, variableText, props.parentModel)
+
+		// If there is a substitution add it to our list (in backwards order so text
+		// replacement doesn't mangle the original text)
+		if (event.text !== null) {
+			substitutions.unshift({
+				index: match.index,
+				length: match[0].length,
+				replacementText: '' + event.text
+			})
 		}
 	}
+
+	// Loop through the text, replacing every substitution in substitutions
+	substitutions.forEach(sub => {
+		text.replaceText(sub.index, sub.index + sub.length, sub.replacementText)
+	})
 
 	return text
 }
