@@ -2,6 +2,7 @@ import React from 'react'
 import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import ClipboardUtil from '../../util/clipboard-util'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 import './link.scss'
@@ -27,6 +28,12 @@ class Link extends React.Component {
 		Transforms.setNodes(editor, { href }, { at: path })
 	}
 
+	removeLink() {
+		const editor = this.props.editor
+		const path = ReactEditor.findPath(editor, this.props.element)
+		return Transforms.unwrapNodes(editor, { at: path })
+	}
+
 	showLinkModal() {
 		ModalUtil.show(
 			<Prompt
@@ -44,11 +51,31 @@ class Link extends React.Component {
 				<a href={this.props.element.href} title={this.props.element.href}>
 					{this.props.children}
 				</a>
-				<button
-					className="link-edit"
-					aria-label="Edit Link"
-					onClick={this.showLinkModal.bind(this)}
-				/>
+				{this.props.selected ? (
+					<span className="href-menu" contentEditable={false}>
+						<a href={this.props.element.href} target="_blank" rel="noopener noreferrer">
+							{this.props.element.href}
+						</a>
+						<button
+							className="link-copy"
+							title="Copy"
+							aria-label="Copy"
+							onClick={() => ClipboardUtil.copyToClipboard(this.props.element.href)}
+						/>
+						<button
+							className="link-edit"
+							title="Edit"
+							aria-label="Edit"
+							onClick={() => this.showLinkModal()}
+						/>
+						<button
+							className="link-remove"
+							title="Remove"
+							aria-label="Remove"
+							onClick={() => this.removeLink()}
+						/>
+					</span>
+				) : null}
 			</span>
 		)
 	}

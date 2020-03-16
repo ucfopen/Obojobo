@@ -9,8 +9,10 @@ import Link from 'obojobo-document-engine/src/scripts/oboeditor/components/marks
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
+jest.mock('src/scripts/oboeditor/util/clipboard-util')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
@@ -24,27 +26,46 @@ describe('EditorNav', () => {
 	})
 
 	test('Link component', () => {
-		const component = renderer.create(
-			<Link element={{ href: 'mock href' }}/>
-		)
+		const component = renderer.create(<Link element={{ href: 'mock href' }} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Link component edits', () => {
-		const component = mount(
-			<Link element={{ href: 'mock href' }}/>
-		)
+		const component = mount(<Link element={{ href: 'mock href' }} selected={true} />)
 
-		component.find('button').simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
+	})
+
+	test('Link component edits', () => {
+		const component = mount(<Link element={{ href: 'mock href' }} selected={true} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
+	test('Link component edits', () => {
+		const component = mount(<Link element={{ href: 'mock href' }} selected={true} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(Transforms.unwrapNodes).toHaveBeenCalled()
+	})
+
 	test('changeLinkValue edits the href with empty href', () => {
-		const component = mount(
-			<Link element={{ href: 'mock href' }}/>
-		)
+		const component = mount(<Link element={{ href: 'mock href' }} />)
 
 		component.instance().changeLinkValue(' ')
 
@@ -52,9 +73,7 @@ describe('EditorNav', () => {
 	})
 
 	test('changeLinkValue edits the href', () => {
-		const component = mount(
-			<Link element={{ href: 'mock href' }}/>
-		)
+		const component = mount(<Link element={{ href: 'mock href' }} />)
 
 		component.instance().changeLinkValue('mock href')
 

@@ -8,10 +8,5 @@ exports[`EditorNav Link component 1`] = `
     href="mock href"
     title="mock href"
   />
-  <button
-    aria-label="Edit Link"
-    className="link-edit"
-    onClick={[Function]}
-  />
 </span>
 `;

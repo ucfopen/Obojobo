@@ -12,18 +12,65 @@
 		z-index: 3;
 		background-color: $color-bg;
 		border-radius: $dimension-rounded-radius;
-		padding: 0.2em;
+		padding: 0.5em;
+	}
+
+	.link-copy {
+		display: inline;
+		background-color: $color-bg;
+		background-image: url('./copy.svg');
+		background-position: center;
+		background-repeat: no-repeat;
+		border: none;
+		height: 2em;
+		width: 2em;
+		vertical-align: top;
+		padding: 0;
+		margin: 0.4em;
 	}
 
 	.link-edit {
 		display: inline;
 		background-color: $color-bg;
 		background-image: url('./edit.svg');
+		background-position: center;
+		background-repeat: no-repeat;
 		border: none;
 		height: 2em;
-		width: 1.5em;
+		width: 2em;
 		vertical-align: top;
-		background-position: left top;
 		padding: 0;
+		margin: 0.4em;
+	}
+
+	.link-remove {
+		display: inline;
+		background-color: $color-bg;
+		background-image: url('./unlink.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+		border: none;
+		height: 2em;
+		width: 2em;
+		vertical-align: top;
+		padding: 0;
+		margin: 0.4em;
+	}
+
+	.href-menu {
+		background: $color-bg;
+		font-size: 1rem;
+		border-radius: $dimension-rounded-radius;
+		position: absolute;
+		bottom: -2em;
+		left: -1em;
+		box-shadow: $box-shadow-overlay;
+		user-select: none;
+		white-space: nowrap;
+
+		a {
+			padding-left: 1em;
+			padding-right: 1em;
+		}
 	}
 }
