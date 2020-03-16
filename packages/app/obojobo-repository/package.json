@@ -34,7 +34,7 @@
 		"ignore-styles": "^5.0.1",
 		"js-beautify": "^1.7.3",
 		"lodash.escaperegexp": "^4.1.2",
-		"moment": "2.24.0",
+		"dayjs": "1.8.22",
 		"object-assign": "^4.1.1",
 		"obojobo-express": "^7.1.6-alpha2",
 		"obojobo-lib-utils": "^7.1.6-alpha2",
