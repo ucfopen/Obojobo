@@ -26,7 +26,7 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: CODE_LINE_NODE,
-							data: { content: { indent: 0, hangingIndent: false } }
+							data: { content: { indent: 0 } }
 						})
 					}
 					case CHILD_MIN_INVALID: {
