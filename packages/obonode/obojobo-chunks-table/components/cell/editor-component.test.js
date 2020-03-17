@@ -431,7 +431,7 @@ describe('Cell Editor Node', () => {
 					getClosest: (key, fn) => {
 						fn({ type: 'mock-node' })
 						return {
-							getPath: () => ({ get: () => 0 }),
+							getPath: () => ({ get: () => 1 }),
 							data: { get: () => ({ numCols: 1 }) },
 							nodes: {
 								get: () => ({
@@ -481,7 +481,7 @@ describe('Cell Editor Node', () => {
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
-	test('Cell component deletes non-first row', () => {
+	test('Cell component deletes last row', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
@@ -491,6 +491,58 @@ describe('Cell Editor Node', () => {
 						fn({ type: 'mock-node' })
 						return {
 							getPath: () => ({ get: () => 1 }),
+							data: { get: () => ({ numCols: 1 }) },
+							nodes: {
+								get: () => null
+							}
+						}
+					}
+				}
+			}
+		}
+		const component = mount(
+			<table>
+				<tbody>
+					<tr>
+						<Cell
+							node={{
+								data: {
+									get: () => {
+										return { header: false }
+									}
+								}
+							}}
+							editor={editor}
+							parent={{
+								data: { get: () => ({ header: false }) },
+								getPath: () => ({ get: () => 0 })
+							}}
+							isSelected={true}
+						/>
+					</tr>
+				</tbody>
+			</table>
+		)
+
+		component
+			.find('button')
+			.at(5)
+			.simulate('click')
+
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('Cell component deletes non-first row', () => {
+		const editor = {
+			removeNodeByKey: jest.fn(),
+			setNodeByKey: jest.fn(),
+			value: {
+				document: {
+					getClosest: (key, fn) => {
+						fn({ type: 'mock-node' })
+						return {
+							getPath: () => ({ get: () => 2 }),
 							data: { get: () => ({ numCols: 1 }) }
 						}
 					}
@@ -529,7 +581,7 @@ describe('Cell Editor Node', () => {
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
-	test('Cell component deletes only col', () => {
+	test('Cell component cannot delete the last col', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),
@@ -575,7 +627,7 @@ describe('Cell Editor Node', () => {
 			.at(6)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
 	})
 
 	test('Cell component deletes col', () => {

@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Caption Editor Node Caption component 1`] = `<caption />`;
+exports[`Caption Editor Node Caption component 1`] = `
+<caption>
+  <b />
+</caption>
+`;

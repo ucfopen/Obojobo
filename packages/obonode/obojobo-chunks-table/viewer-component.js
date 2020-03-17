@@ -58,7 +58,9 @@ const Table = props => {
 				<div className="container">
 					<table className="view" key="table">
 						<caption>
-							<TextGroupEl textItem={caption} />
+							<b>
+								<TextGroupEl textItem={caption} />
+							</b>
 						</caption>
 						<thead key="thead">{header}</thead>
 						<tbody key="tbody">{rows}</tbody>

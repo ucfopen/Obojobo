@@ -44,21 +44,24 @@ const schema = {
 							data: { content: { header, numCols } }
 						})
 					}
+
 					case CHILD_MIN_INVALID: {
-						let type = TABLE_ROW_NODE
 						if (
 							error.node.nodes.size === 0 ||
 							error.node.nodes.get(0).type !== TABLE_CAPTION_NODE
 						) {
-							type = TABLE_CAPTION_NODE
+							const block = Block.create({
+								type: TABLE_CAPTION_NODE,
+								data: { content: { header, numCols } }
+							})
+							return editor.insertNodeByKey(node.key, index, block)
+						} else {
+							const block = Block.create({
+								type: TABLE_ROW_NODE,
+								data: { content: { header, numCols } }
+							})
+							return editor.insertNodeByKey(node.key, index, block)
 						}
-
-						const block = Block.create({
-							type,
-							data: { content: { header, numCols } }
-						})
-
-						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}

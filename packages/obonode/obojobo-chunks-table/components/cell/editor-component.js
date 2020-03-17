@@ -157,12 +157,12 @@ class Cell extends React.Component {
 		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
 		const rowIndex = tableParent.getPath(this.props.parent.key).get(0)
 
-		if (rowIndex === 0) {
-			const sibling = tableParent.nodes.get(1)
+		if (rowIndex === 1) {
+			const sibling = tableParent.nodes.get(2)
 
-			// If this is the only row in the table, delete the table
+			// Cannot delete the last row
 			if (!sibling) {
-				return editor.removeNodeByKey(tableParent.key)
+				return
 			}
 
 			// Set sibling as new header
@@ -187,9 +187,9 @@ class Cell extends React.Component {
 		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
 		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
 
-		// If there is only one column, delete the whole table
+		// Cannot delete the last column
 		if (this.props.parent.nodes.size === 1) {
-			return editor.removeNodeByKey(tableParent.key)
+			return
 		}
 
 		return editor.withoutNormalizing(() => {
