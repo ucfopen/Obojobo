@@ -56,6 +56,7 @@ exports.getCurrentUser = (req, res, next) => {
 }
 
 // Valitator Middleware
+// NOTE: YOU MUST RUN checkValidationRules AFTER THESE TO ENFORCE these check functions
 exports.checkContentId = check('contentId', 'must be a valid UUID')
 	.isUUID()
 	.optional()
@@ -65,6 +66,17 @@ exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
 exports.requireAssessmentId = check('assessmentId', 'must not be empty')
 	.exists({ checkNull: true, checkFalsy: true })
 	.isString()
+exports.requireMultipleAttemptIds = [
+	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
+	check('attemptIds.*', 'must be a valid UUID').isUUID()
+]
+exports.validPageNumber = check('page', 'must be a valid int 1 or above')
+	.optional()
+	.isInt({ min: 1, allow_leading_zeroes: false })
+
+exports.validPerPageNumber = check('per_page', 'must be a valid int between 1 and 100')
+	.optional()
+	.isInt({ min: 1, max: 100, allow_leading_zeroes: false })
 
 exports.requireEvent = [
 	check('event.action', 'must not be empty')

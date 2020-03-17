@@ -1,5 +1,9 @@
 @import '~styles/includes';
 
+.obojobo-draft--chunks--question--wrapper {
+	z-index: 1;
+}
+
 .obojobo-draft--chunks--question {
 	> .flipper {
 		&.question-editor {
