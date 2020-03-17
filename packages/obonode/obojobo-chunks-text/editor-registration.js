@@ -11,6 +11,7 @@ import Schema from './schema'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 import insertTab from './changes/insert-tab'
 import splitParent from './changes/split-parent'
 
@@ -70,6 +71,11 @@ const plugins = {
 
 				// TAB
 				return insertTab(event, editor, next)
+
+			case 'T': // t + shiftKey
+			case 't':
+				if(event.ctrlKey) return toggleHangingIndent(event, editor, next)
+				return next()
 
 			default:
 				return next()

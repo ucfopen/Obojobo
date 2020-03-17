@@ -14,6 +14,7 @@ import onBackspace from './changes/on-backspace'
 import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -75,6 +76,11 @@ const plugins = {
 
 				// TAB
 				return unwrapLevel(event, editor, next)
+
+			case 'T': // t + shiftKey
+			case 't':
+				if(event.ctrlKey) return toggleHangingIndent(event, editor, next)
+				return next()
 
 			default:
 				return next()

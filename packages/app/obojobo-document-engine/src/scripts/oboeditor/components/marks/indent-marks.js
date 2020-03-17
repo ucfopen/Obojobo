@@ -108,10 +108,8 @@ const AlignMarks = {
 					const dataJSON = block.data.toJSON()
 
 					switch (block.type) {
-						case TEXT_LINE_NODE:
-							dataJSON.hangingIndent = !dataJSON.hangingIndent
-							return editor.setNodeByKey(block.key, { data: dataJSON })
 						case LIST_LINE_NODE:
+						case TEXT_LINE_NODE:
 							dataJSON.hangingIndent = !dataJSON.hangingIndent
 							return editor.setNodeByKey(block.key, { data: dataJSON })
 					}
