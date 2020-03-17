@@ -4,16 +4,11 @@ exports[`Table Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
     "content": Object {
+      "caption": true,
       "header": true,
       "numCols": 2,
       "numRows": undefined,
       "textGroup": Object {
-        "caption": Object {
-          "text": Object {
-            "styleList": Array [],
-            "value": "caption",
-          },
-        },
         "numCols": 2,
         "textGroup": Array [
           Object {
@@ -46,8 +41,8 @@ Object {
     Object {
       "data": Object {
         "content": Object {
+          "caption": true,
           "header": true,
-          "numCols": 2,
         },
       },
       "nodes": Array [
@@ -202,7 +197,7 @@ Object {
     Object {
       "data": Object {
         "content": Object {
-          "header": false,
+          "header": true,
           "numCols": 2,
         },
       },
@@ -248,7 +243,7 @@ Object {
     Object {
       "data": Object {
         "content": Object {
-          "header": true,
+          "header": false,
           "numCols": 2,
         },
       },
@@ -301,24 +296,26 @@ exports[`Table Converter slateToObo converts a Slate node to an OboNode with cap
 Object {
   "children": Array [],
   "content": Object {
+    "caption": true,
     "header": true,
     "textGroup": Object {
-      "caption": Object {
-        "text": Object {
-          "styleList": Array [
-            Object {
-              "data": true,
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
-          "value": undefined,
-        },
-      },
       "numCols": undefined,
       "numRows": 1,
-      "textGroup": Array [],
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "styleList": Array [
+              Object {
+                "data": true,
+                "end": 8,
+                "start": 0,
+                "type": "b",
+              },
+            ],
+            "value": undefined,
+          },
+        },
+      ],
     },
   },
   "id": "mockKey",
@@ -330,6 +327,7 @@ exports[`Table Converter slateToObo converts a Slate node to an OboNode with con
 Object {
   "children": Array [],
   "content": Object {
+    "caption": true,
     "header": true,
     "textGroup": Object {
       "numCols": undefined,

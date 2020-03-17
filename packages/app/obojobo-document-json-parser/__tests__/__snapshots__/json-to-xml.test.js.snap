@@ -608,7 +608,7 @@ exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 exports[`JSON to XML Parser Converts table.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"true\\" id=\\"640648f0-26d4-4f7f-a92a-e0c1f75141a6\\">
+	<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"true\\" caption=\\"false\\" id=\\"640648f0-26d4-4f7f-a92a-e0c1f75141a6\\">
 		<textGroup>
 			<t>Header 1</t>
 			<t>Header 2</t>

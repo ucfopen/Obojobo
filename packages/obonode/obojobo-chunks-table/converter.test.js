@@ -97,15 +97,16 @@ describe('Table Converter', () => {
 			type: 'mockType',
 			content: {
 				header: true,
+				caption: true,
 				textGroup: {
 					numCols: 2,
-					caption: {
-						text: {
-							value: 'caption',
-							styleList: []
-						}
-					},
 					textGroup: [
+						{
+							text: {
+								value: 'caption',
+								styleList: []
+							}
+						},
 						{
 							text: { value: 'Mock1' }
 						},

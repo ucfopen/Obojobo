@@ -5,6 +5,7 @@ const tableNodeParser = node => {
 	const id = node.id ? ` id="${node.id}"` : ''
 
 	const header = Boolean(node.content.header)
+	const caption = Boolean(node.content.caption)
 	const numRows = node.content.textGroup.numRows
 	const numCols = node.content.textGroup.numCols
 
@@ -12,7 +13,7 @@ const tableNodeParser = node => {
 	const triggersXML = processTriggers(node.content.triggers)
 
 	return (
-		`<Table numRows="${numRows}" numCols="${numCols}" header="${header}"${id}>` +
+		`<Table numRows="${numRows}" numCols="${numCols}" header="${header}" caption="${caption}"${id}>` +
 		textGroupXML +
 		triggersXML +
 		`</Table>`

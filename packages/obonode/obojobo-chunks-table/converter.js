@@ -8,6 +8,7 @@ const TABLE_CAPTION_NODE = 'ObojoboDraft.Chunks.Table.Caption'
 const slateToObo = node => {
 	const content = node.data.get('content') || { textGroup: {} }
 	content.header = node.nodes.get(0).data.get('content').header
+	content.caption = true
 
 	content.textGroup.numRows = node.nodes.size - 1
 	content.textGroup.numCols = node.nodes.get(1).data.get('content').numCols
@@ -23,7 +24,7 @@ const slateToObo = node => {
 				TextUtil.slateToOboText(text, cellLine)
 			})
 
-			content.textGroup.caption = cellLine
+			content.textGroup.textGroup.push(cellLine)
 			return
 		}
 
@@ -54,24 +55,26 @@ const oboToSlate = node => {
 	const numCols = node.content.textGroup.numCols
 	const numRows = node.content.textGroup.numRows
 	const hasHeader = node.content.header
+	const hasCaption = node.content.caption
 	let currRow
 
 	// Add the numCols and NumRows to the content, for more efficent normalization
 	content.numCols = numCols
 	content.numRows = numRows
 
-	if (node.content.textGroup.caption) {
+	if (hasCaption) {
 		nodes.push({
 			object: 'block',
 			type: TABLE_CAPTION_NODE,
-			data: { content: { header: hasHeader && nodes.length === 0, numCols } },
+			data: { content: { header: hasHeader && nodes.length === 0, caption: hasCaption } },
 			nodes: [
 				{
 					object: 'text',
-					leaves: TextUtil.parseMarkings(node.content.textGroup.caption)
+					leaves: TextUtil.parseMarkings(node.content.textGroup.textGroup[0])
 				}
 			]
 		})
+		node.content.textGroup.textGroup.shift()
 	}
 
 	node.content.textGroup.textGroup.forEach((line, index) => {
@@ -80,7 +83,7 @@ const oboToSlate = node => {
 			currRow = {
 				object: 'block',
 				type: TABLE_ROW_NODE,
-				data: { content: { header: hasHeader && nodes.length === 1, numCols } },
+				data: { content: { header: hasHeader && nodes.length === (hasCaption ? 1 : 0), numCols } },
 				nodes: []
 			}
 			nodes.push(currRow)

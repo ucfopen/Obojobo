@@ -21,13 +21,13 @@ exports[`Table Table component 1`] = `
       >
         <caption>
           <span
-            className="text align-undefined"
+            className="text align-left"
             data-indent={0}
           >
             <span>
               <span>
                 <span>
-                  caption
+                  ​
                 </span>
               </span>
             </span>
@@ -140,13 +140,13 @@ exports[`Table Table component without header 1`] = `
       >
         <caption>
           <span
-            className="text align-undefined"
+            className="text align-left"
             data-indent={0}
           >
             <span>
               <span>
                 <span>
-                  caption
+                  ​
                 </span>
               </span>
             </span>

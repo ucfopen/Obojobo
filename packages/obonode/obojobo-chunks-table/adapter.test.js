@@ -19,16 +19,17 @@ describe('Table adapter', () => {
 		const attrs = {
 			content: {
 				header: true,
+				caption: true,
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
-					caption: {
-						text: {
-							value: 'caption',
-							styleList: []
-						}
-					},
 					textGroup: [
+						{
+							text: {
+								value: 'caption',
+								styleList: []
+							}
+						},
 						{
 							text: {
 								value: 'First column heading'
@@ -113,16 +114,17 @@ describe('Table adapter', () => {
 		const attrs = {
 			content: {
 				header: true,
+				caption: true,
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
-					caption: {
-						text: {
-							value: 'caption',
-							styleList: []
-						}
-					},
 					textGroup: [
+						{
+							text: {
+								value: 'caption',
+								styleList: []
+							}
+						},
 						{
 							text: {
 								value: 'First column heading'
@@ -163,16 +165,17 @@ describe('Table adapter', () => {
 		const attrs = {
 			content: {
 				header: true,
+				caption: true,
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
-					caption: {
-						text: {
-							value: 'caption',
-							styleList: []
-						}
-					},
 					textGroup: [
+						{
+							text: {
+								value: 'caption',
+								styleList: []
+							}
+						},
 						{
 							text: {
 								value: 'First column heading'
@@ -212,16 +215,17 @@ describe('Table adapter', () => {
 		const attrs = {
 			content: {
 				header: true,
+				caption: true,
 				textGroup: {
 					numRows: 2,
 					numCols: 2,
-					caption: {
-						text: {
-							value: 'caption',
-							styleList: []
-						}
-					},
 					textGroup: [
+						{
+							text: {
+								value: 'caption',
+								styleList: []
+							}
+						},
 						{
 							text: {
 								value: 'First column heading'

@@ -6,23 +6,25 @@ const TextGroup = Common.textGroup.TextGroup
 const Adapter = {
 	construct(model, attrs) {
 		model.setStateProp('header', true)
+		model.setStateProp('caption', true)
+
+		if (attrs && attrs.content && attrs.content.caption) {
+			model.modelState.caption = TextGroup.fromDescriptor(
+				[attrs.content.textGroup.textGroup[0]],
+				Infinity,
+				{
+					indent: 0
+				}
+			)
+			attrs.content.textGroup.textGroup.shift()
+		} else {
+			model.modelState.caption = TextGroup.create(Infinity, {
+				indent: 0,
+				align: 'left'
+			})
+		}
 
 		if (attrs && attrs.content && attrs.content.textGroup) {
-			if (attrs.content.textGroup.caption) {
-				model.modelState.caption = TextGroup.fromDescriptor(
-					[attrs.content.textGroup.caption],
-					Infinity,
-					{
-						indent: 0
-					}
-				)
-			} else {
-				model.modelState.caption = TextGroup.create(Infinity, {
-					indent: 0,
-					align: 'left'
-				})
-			}
-
 			model.modelState.textGroup = GridTextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			})
