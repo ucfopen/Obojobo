@@ -15,11 +15,14 @@ const { ModalUtil } = Common.util
 const processFile = (e, file) => {
 	const contents = e.target.result
 
-	APIUtil.createNewDraftWithContent(
+	APIUtil.createNewDraft(
 		contents,
-		file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+		file.type === 'application/json' ? 'application/json' : 'application/xml'
 	)
-		.then(id => {
+		.then(draftResult => {
+			if (draftResult.status !== 'ok') throw draftResult
+			const id = draftResult.value.id
+
 			window.open(window.location.origin + '/editor/visual/' + id, '_blank')
 		})
 		.catch(() => {

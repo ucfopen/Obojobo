@@ -37,7 +37,7 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls open', () => {
-		APIUtil.createNewDraftWithContent.mockResolvedValueOnce('mock_id')
+		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'ok', value: { id: 'mockId' } })
 
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
@@ -51,27 +51,16 @@ describe('File Menu', () => {
 
 		component.instance().onChangeFile({ target: { files: [file] } })
 
-		setTimeout(() => {
-			expect(APIUtil.createNewDraftWithContent).toBeCalledWith('file contents', 'application/json')
-		}, 1000)
-
 		file = new Blob([fileContents], { type: 'text/plain;charset=UTF-8' })
 
 		component.instance().onChangeFile({ target: { files: [file] } })
-
-		setTimeout(() => {
-			expect(APIUtil.createNewDraftWithContent).toBeCalledWith(
-				'file contents',
-				'text/plain;charset=UTF-8'
-			)
-		}, 1000)
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls open - stop when there is no file', () => {
-		APIUtil.createNewDraftWithContent.mockResolvedValueOnce('mock_id')
+		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'error', message: 'error' })
 
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
@@ -82,13 +71,13 @@ describe('File Menu', () => {
 
 		component.instance().onChangeFile({ target: { files: [] } })
 
-		expect(APIUtil.createNewDraftWithContent).not.toHaveBeenCalled()
+		expect(APIUtil.createNewDraft).not.toHaveBeenCalled()
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls open - fail', () => {
-		APIUtil.createNewDraftWithContent.mockRejectedValueOnce('mock_id')
+		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'error', message: 'error' })
 
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
@@ -102,9 +91,6 @@ describe('File Menu', () => {
 
 		component.instance().onChangeFile({ target: { files: [file] } })
 
-		setTimeout(() => {
-			expect(APIUtil.createNewDraftWithContent).toHaveBeenCalled()
-		}, 1000)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
