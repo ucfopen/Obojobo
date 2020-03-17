@@ -15,7 +15,6 @@ exports[`CodeEditor CodeEditor component 1`] = `
       className="draft-title"
       onBlur={[Function]}
       onChange={[Function]}
-      size={10}
       value="Mock Title"
     />
   </div>
@@ -23,8 +22,8 @@ exports[`CodeEditor CodeEditor component 1`] = `
 </div>
 `;
 
-exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" size=\\"10\\" aria-label=\\"Rename Module\\" value=\\"Mock Title\\"></div>Codemirror</div>"`;
+exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" aria-label=\\"Rename Module\\" value=\\"Mock Title\\"></div>Codemirror</div>"`;
 
-exports[`CodeEditor changes the Editor title 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" size=\\"14\\" aria-label=\\"Rename Module\\" value=\\"mock new title\\"></div>Codemirror</div>"`;
+exports[`CodeEditor changes the Editor title 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" aria-label=\\"Rename Module\\" value=\\"mock new title\\"></div>Codemirror</div>"`;
 
-exports[`CodeEditor changes the Editor title to blank 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" size=\\"16\\" aria-label=\\"Rename Module\\" value=\\"(Unnamed Module)\\"></div>Codemirror</div>"`;
+exports[`CodeEditor changes the Editor title to blank 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"draft-title\\" aria-label=\\"Rename Module\\" value=\\"	\\"></div>Codemirror</div>"`;

@@ -26,6 +26,12 @@ const getFlatList = function(item) {
 }
 
 const EditorUtil = {
+	renameModule(moduleId, label) {
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
+
+		EditorUtil.renamePage(moduleId, label)
+	},
 	rebuildMenu(model) {
 		return Dispatcher.trigger('editor:rebuildMenu', {
 			value: {

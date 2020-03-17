@@ -234,7 +234,7 @@ describe('File Menu', () => {
 
 		component.instance().renameModule('mockId', '      ')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(EditorUtil.renameModule).toHaveBeenCalled()
 	})
 
 	test('renameModule renames with new name', () => {
@@ -242,7 +242,7 @@ describe('File Menu', () => {
 
 		component.instance().renameModule('mockId', 'mock title')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(EditorUtil.renameModule).toHaveBeenCalled()
 	})
 
 	test('renameAndSaveModule renames and saves draft', () => {
@@ -252,7 +252,7 @@ describe('File Menu', () => {
 
 		component.instance().renameAndSaveModule('mockId', 'mock title')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(EditorUtil.renameModule).toHaveBeenCalled()
 		expect(onSave).toHaveBeenCalled()
 	})
 

@@ -15,11 +15,7 @@ const { ModalUtil } = Common.util
 class FileMenu extends React.PureComponent {
 	renameModule(moduleId, label) {
 		ModalUtil.hide()
-
-		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-
-		EditorUtil.renamePage(moduleId, label)
+		EditorUtil.renameModule(moduleId, label)
 
 		if (this.props.onRename) {
 			this.props.onRename(label)

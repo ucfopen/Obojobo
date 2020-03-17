@@ -115,10 +115,7 @@ class CodeEditor extends React.Component {
 	}
 
 	renameModule(label) {
-		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-
-		EditorUtil.renamePage(this.props.model.id, label)
+		EditorUtil.renameModule(this.props.model.id, label)
 		this.setTitle(label)
 		this.setState({ title: label })
 		this.saveCode(this.props.draftId)
@@ -207,7 +204,6 @@ class CodeEditor extends React.Component {
 						className="draft-title"
 						value={this.state.title}
 						onChange={event => this.setState({ title: event.target.value })}
-						size={this.state.title.length}
 						onBlur={() => this.renameModule(this.state.title)}
 						aria-label="Rename Module"
 					/>
