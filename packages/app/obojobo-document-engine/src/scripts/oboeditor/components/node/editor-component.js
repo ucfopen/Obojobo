@@ -77,9 +77,11 @@ class Node extends React.Component {
 		const selected = this.props.selected
 		const editor = this.props.editor
 
+		const className = `oboeditor-component component ${this.props.className || ''}`
+
 		return (
-			<div className={'oboeditor-component component'} data-obo-component="true">
-				{selected ? (
+			<div className={className.trim()} data-obo-component="true">
+				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}

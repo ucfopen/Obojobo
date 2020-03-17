@@ -95,7 +95,7 @@ class Question extends React.Component {
 		}
 
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
 				<div
 					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
 				>

@@ -4,12 +4,18 @@ import CodeEditor from 'src/scripts/oboeditor/components/code-editor'
 import React from 'react'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalUtil from 'src/scripts/common/util/modal-util'
+import SimpleDialog from 'src/scripts/common/components/modal/simple-dialog'
 
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/oboeditor/util/editor-util')
+jest.mock('src/scripts/common/components/modal/simple-dialog', () =>
+	global.mockReactComponent(this, 'SimpleDialog')
+)
 jest.mock('react-codemirror2', () => ({
 	Controlled: global.mockReactComponent(this, 'Codemirror')
 }))
+jest.mock('src/scripts/common/util/modal-util')
 
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 
@@ -209,6 +215,8 @@ describe('CodeEditor', () => {
 	})
 
 	test('saveCode() with invalid document', () => {
+		expect.hasAssertions()
+
 		APIUtil.postDraft.mockResolvedValue({
 			status: 'error',
 			value: {
@@ -222,9 +230,43 @@ describe('CodeEditor', () => {
 			model: { title: 'Mock Title' }
 		}
 		const component = mount(<CodeEditor {...props} />)
-		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
+		expect(ModalUtil.show).toHaveBeenCalledTimes(0)
+		return component
+			.instance()
+			.saveCode()
+			.then(() => {
+				expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
+				expect(ModalUtil.show).toHaveBeenCalledTimes(1)
+				expect(ModalUtil.show).toHaveBeenCalledWith(
+					<SimpleDialog ok={true} title="Error: mock_message" />
+				)
+			})
+	})
+
+	test('saveCode() handles save errors', () => {
+		expect.hasAssertions()
+
+		APIUtil.postDraft.mockRejectedValueOnce('mock-error')
+
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<CodeEditor {...props} />)
+
+		expect(ModalUtil.show).toHaveBeenCalledTimes(0)
+		return component
+			.instance()
+			.saveCode()
+			.then(() => {
+				expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
+				expect(ModalUtil.show).toHaveBeenCalledTimes(1)
+				expect(ModalUtil.show).toHaveBeenCalledWith(
+					<SimpleDialog ok={true} title="Error: mock-error" />
+				)
+			})
 	})
 
 	test('onKeyDown() calls editor functions', () => {

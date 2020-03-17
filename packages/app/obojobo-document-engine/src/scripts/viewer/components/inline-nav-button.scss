@@ -12,9 +12,11 @@
 	transition: color $duration-animation-default, background $duration-animation-default;
 	cursor: pointer;
 	text-align: center;
-	height: 6em;
+	min-height: 6em;
 	line-height: 1.5em;
 	transform: translate(0, -1px);
+	word-wrap: break-word;
+	hyphens: auto;
 
 	&.is-enabled {
 		&.is-prev {
