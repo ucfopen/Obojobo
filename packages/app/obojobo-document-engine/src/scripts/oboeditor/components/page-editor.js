@@ -62,8 +62,6 @@ class PageEditor extends React.Component {
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
 		this.editor.markUnsaved = this.markUnsaved
-
-		
 	}
 
 	toggleEditable(editable) {
@@ -80,32 +78,32 @@ class PageEditor extends React.Component {
 	// The default method
 	addPlugin(editor, plugin) {
 		const { normalizeNode, isVoid, insertData, apply } = editor
-		if(plugin.normalizeNode) {
+		if (plugin.normalizeNode) {
 			editor.normalizeNode = entry => plugin.normalizeNode(entry, editor, normalizeNode)
 		}
 
-		if(plugin.isVoid) {
+		if (plugin.isVoid) {
 			editor.isVoid = element => plugin.isVoid(element, editor, isVoid)
 		}
 
-		if(plugin.isInline) {
+		if (plugin.isInline) {
 			editor.isInline = element => plugin.isInline(element, editor, isVoid)
 		}
 
-		if(plugin.insertData) {
+		if (plugin.insertData) {
 			editor.insertData = data => plugin.insertData(data, editor, insertData)
 		}
 
-		if(plugin.commands) {
-			for(const [name, funct] of Object.entries(plugin.commands)) {
+		if (plugin.commands) {
+			for (const [name, funct] of Object.entries(plugin.commands)) {
 				editor[name] = funct.bind(this, editor)
 			}
 		}
 
-		if(plugin.apply) {
+		if (plugin.apply) {
 			editor.apply = op => plugin.apply(op, editor, apply)
 		}
-		
+
 		return editor
 	}
 
@@ -122,23 +120,15 @@ class PageEditor extends React.Component {
 			IndentMarks.plugins
 		]
 
-		this.globalPlugins = [
-			...markPlugins, 
-			ClipboardPlugin,
-			FormatPlugin,
-			OboNodePlugin
-		]
+		this.globalPlugins = [...markPlugins, ClipboardPlugin, FormatPlugin, OboNodePlugin]
 
 		// Plugins are listed in order of priority
-		// The plugins list is reversed after building because the editor functions 
+		// The plugins list is reversed after building because the editor functions
 		// are built from the bottom up to the top
-		this.plugins = [
-			...nodePlugins,
-			...this.globalPlugins
-		].reverse()
+		this.plugins = [...nodePlugins, ...this.globalPlugins].reverse()
 
 		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)
-		
+
 		return this.plugins.reduce(this.addPlugin, editor)
 	}
 
@@ -168,17 +158,17 @@ class PageEditor extends React.Component {
 	}
 
 	onKeyDownGlobal(event) {
-		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.saveModule(this.props.draftId)
 		}
 
-		if(event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.editor.undo()
 		}
 
-		if(event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.editor.redo()
 		}
@@ -187,12 +177,12 @@ class PageEditor extends React.Component {
 	onChange(value) {
 		// Save the previous selection in case the editor is unfocused
 		// This mostly happens with MoreInfoBoxes and void nodes
-		if(this.editor.selection) this.editor.prevSelection = this.editor.selection
-			
+		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
+
 		this.setState({ value, saved: false })
 	}
 
-// Methods that handle movement between pages
+	// Methods that handle movement between pages
 
 	componentDidUpdate(prevProps, prevState) {
 		// Do nothing when updating state from empty page
@@ -269,7 +259,7 @@ class PageEditor extends React.Component {
 			const json = this.assessment.slateToObo(value[0])
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
-			page.children.set(childrenModels)
+			page.children.reset(childrenModels)
 			page.set('content', json.content)
 			return json
 		} else {
@@ -284,8 +274,8 @@ class PageEditor extends React.Component {
 
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
-			page.children.set(childrenModels)
-			
+			page.children.reset(childrenModels)
+
 			return json
 		}
 	}
@@ -311,32 +301,33 @@ class PageEditor extends React.Component {
 		}
 	}
 
-// All the 'plugin' methods that allow the obonodes to extend the default functionality
+	// All the 'plugin' methods that allow the obonodes to extend the default functionality
 
 	onKeyDown(event) {
 		// Run the global keydowns, stopping if one executes
 		this.onKeyDownGlobal(event)
 
-		for(const plugin of this.globalPlugins){
-			if(plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
-			if(event.defaultPrevented) return
+		for (const plugin of this.globalPlugins) {
+			if (plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
+			if (event.defaultPrevented) return
 		}
 
 		// If none of the global plugins caught the key event,
-		// Get each component (non-subtype) node that is selected, 
+		// Get each component (non-subtype) node that is selected,
 		// and run keydown on each
-		// The event will always run on every selected node, but 
-		// if one node does something special, it will prevent the 
+		// The event will always run on every selected node, but
+		// if one node does something special, it will prevent the
 		// default Slate action from occurring on any selected node
-		const list = Array.from(Editor.nodes(this.editor, {
-			mode: 'lowest',
-			match: node => Element.isElement(node) && !this.editor.isInline(node) && !node.subtype
-		}))
+		const list = Array.from(
+			Editor.nodes(this.editor, {
+				mode: 'lowest',
+				match: node => Element.isElement(node) && !this.editor.isInline(node) && !node.subtype
+			})
+		)
 
-
-		for(const entry of list) {
+		for (const entry of list) {
 			const item = Common.Registry.getItemForType(entry[0].type)
-			if(item && item.plugins.onKeyDown) {
+			if (item && item.plugins.onKeyDown) {
 				item.plugins.onKeyDown(entry, this.editor, event)
 			}
 		}
@@ -345,14 +336,14 @@ class PageEditor extends React.Component {
 	// Generates any necessary decorations, such as place holders
 	decorate(entry) {
 		const item = Common.Registry.getItemForType(entry[0].type)
-		if(item && item.plugins.decorate) {
+		if (item && item.plugins.decorate) {
 			return item.plugins.decorate(entry, this.editor)
 		}
 
 		return []
 	}
 
-// All the render methods that allow the editor to display properly
+	// All the render methods that allow the editor to display properly
 
 	renderLeaf(props) {
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
@@ -361,9 +352,7 @@ class PageEditor extends React.Component {
 		if (leaf.placeholder) {
 			return (
 				<span {...props} {...attributes}>
-					<span
-						contentEditable={false}
-						data-placeholder={leaf.placeholder}/>
+					<span contentEditable={false} data-placeholder={leaf.placeholder} />
 					{children}
 				</span>
 			)
@@ -373,10 +362,10 @@ class PageEditor extends React.Component {
 	}
 
 	renderElement(props) {
-		if(props.element.type === 'a') return LinkMark.plugins.renderNode(props)
+		if (props.element.type === 'a') return LinkMark.plugins.renderNode(props)
 
 		const item = Common.Registry.getItemForType(props.element.type)
-		if(item) {
+		if (item) {
 			return item.plugins.renderNode(props)
 		}
 	}
@@ -386,48 +375,48 @@ class PageEditor extends React.Component {
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className}>
-				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
-					<FileToolbar
-						editor={this.editor}
-						selection={this.editor.selection}
+				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+					<div className="draft-toolbars">
+						<div className="draft-title">{this.props.model.title}</div>
+						<FileToolbar
+							editor={this.editor}
+							selection={this.editor.selection}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							onSave={this.saveModule}
+							switchMode={this.props.switchMode}
+							saved={this.state.saved}
+							mode={'visual'}
+							insertableItems={this.props.insertableItems}
+							togglePlaceholders={this.togglePlaceholders}
+							showPlaceholders={this.state.showPlaceholders}
+							value={this.state.value}
+						/>
+						<ContentToolbar editor={this.editor} value={this.state.value} />
+					</div>
+
+					<EditorNav
+						navState={this.props.navState}
 						model={this.props.model}
 						draftId={this.props.draftId}
-						onSave={this.saveModule}
-						switchMode={this.props.switchMode}
-						saved={this.state.saved}
-						mode={'visual'}
-						insertableItems={this.props.insertableItems}
-						togglePlaceholders={this.togglePlaceholders}
-						showPlaceholders={this.state.showPlaceholders}
-						value={this.state.value}/>
-					<ContentToolbar editor={this.editor} value={this.state.value}/>
-				</div>
+						savePage={this.exportCurrentToJSON}
+						markUnsaved={this.markUnsaved}
+					/>
 
-				<EditorNav
-					navState={this.props.navState}
-					model={this.props.model}
-					draftId={this.props.draftId}
-					savePage={this.exportCurrentToJSON}
-					markUnsaved={this.markUnsaved}/>
-
-				<div className="component obojobo-draft--modules--module" role="main">
-					<PageEditorErrorBoundry editorRef={this.editorRef}>
-						<Slate 
-							className="obojobo-draft--pages--page"
-							editor={this.editor} 
-							value={this.state.value} 
-							onChange={this.onChange.bind(this)}>
-							<Editable 
+					<div className="component obojobo-draft--modules--module" role="main">
+						<PageEditorErrorBoundry editorRef={this.editorRef}>
+							<Editable
+								className="obojobo-draft--pages--page"
 								renderElement={this.renderElement.bind(this)}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
 								readOnly={!this.state.editable}
 								onKeyDown={this.onKeyDown}
-								onCut={this.onCut}/>
-						</Slate>
-					</PageEditorErrorBoundry>
-				</div>
+								onCut={this.onCut}
+							/>
+						</PageEditorErrorBoundry>
+					</div>
+				</Slate>
 			</div>
 		)
 	}

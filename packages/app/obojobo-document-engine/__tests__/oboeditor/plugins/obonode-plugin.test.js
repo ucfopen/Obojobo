@@ -2,12 +2,12 @@ import { Transforms, createEditor } from 'slate'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		insertableItems: [ 'ObojoboDraft.Chunks.Break' ]
+		insertableItems: ['ObojoboDraft.Chunks.Break']
 	},
 	models: {
 		OboModel: {
-			create: jest.fn().mockReturnValue({
-				setId: jest.fn()
+			create: jest.fn().mockImplementation(type => {
+				if (type) return { setId: jest.fn() }
 			})
 		}
 	}
@@ -23,9 +23,9 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 describe('ClipboardPlugin', () => {
 	beforeAll(() => {
 		OboModel.models = {
-			mockId1: { type: 'mockNode1'},
-			mockId2: { type: 'mockNode2'},
-			mockId3: { type: 'mockNode3'}
+			mockId1: { type: 'mockNode1' },
+			mockId2: { type: 'mockNode2' },
+			mockId3: { type: 'mockNode3' }
 		}
 	})
 	test('plugins.normalizeNode calls next if the node is not an Editor', () => {
@@ -37,7 +37,7 @@ describe('ClipboardPlugin', () => {
 
 	test('plugins.normalizeNode calls next if all Editor children are valid', () => {
 		const editor = createEditor()
-		editor.children = [ 
+		editor.children = [
 			{
 				type: ASSESSMENT_NODE,
 				children: [{ text: '' }]
@@ -45,7 +45,7 @@ describe('ClipboardPlugin', () => {
 		]
 		const next = jest.fn()
 
-		OboNodePlugin.normalizeNode([ editor, [] ], editor, next)
+		OboNodePlugin.normalizeNode([editor, []], editor, next)
 		expect(next).toHaveBeenCalled()
 	})
 
@@ -56,7 +56,7 @@ describe('ClipboardPlugin', () => {
 		editor.children = []
 		const next = jest.fn()
 
-		OboNodePlugin.normalizeNode([ editor, [] ], editor, next)
+		OboNodePlugin.normalizeNode([editor, []], editor, next)
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
@@ -64,7 +64,7 @@ describe('ClipboardPlugin', () => {
 		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValueOnce(true)
 
 		const editor = createEditor()
-		editor.children = [ 
+		editor.children = [
 			{
 				type: 'invalid node',
 				children: [{ text: '' }]
@@ -72,7 +72,7 @@ describe('ClipboardPlugin', () => {
 		]
 		const next = jest.fn()
 
-		OboNodePlugin.normalizeNode([ editor, [] ], editor, next)
+		OboNodePlugin.normalizeNode([editor, []], editor, next)
 		expect(Transforms.unwrapNodes).toHaveBeenCalled()
 	})
 
@@ -85,29 +85,37 @@ describe('ClipboardPlugin', () => {
 
 	test('plugins.apply calls next if not creating or deleting', () => {
 		const next = jest.fn()
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'set_node'
-		}, {}, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'set_node'
+			},
+			{},
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.apply calls next when inserting  non-Obo nodes', () => {
+	test('plugins.apply calls next when inserting non-Obo nodes', () => {
 		const next = jest.fn()
 
 		const editor = {
 			isInline: () => false
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'insert_node',
-			node: {
-				subtype: 'mock minor node',
-				children: [{ text: '' }]
-			}
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'insert_node',
+				node: {
+					subtype: 'mock minor node',
+					children: [{ text: '' }]
+				}
+			},
+			editor,
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -119,15 +127,24 @@ describe('ClipboardPlugin', () => {
 			isInline: () => false
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'insert_node',
-			node: {
-				type: 'mock obo node',
-				id: 'overwritten id',
-				children: [{ text: '' }]
-			}
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'insert_node',
+				node: {
+					type: 'mock obo node',
+					id: 'overwritten id',
+					children: [
+						{
+							type: 'not a type',
+							children: [{ text: '' }]
+						}
+					]
+				}
+			},
+			editor,
+			next
+		)
 
 		expect(OboModel.create).toHaveBeenCalled()
 	})
@@ -137,20 +154,26 @@ describe('ClipboardPlugin', () => {
 
 		const editor = {
 			isInline: () => false,
-			children: [{
-				subtype: 'mock minor node',
-				children: [{ text: '' }]
-			}]
+			children: [
+				{
+					subtype: 'mock minor node',
+					children: [{ text: '' }]
+				}
+			]
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'split_node',
-			properties: {
-				subtype: 'mock minor node',
-				children: [{ text: '' }]
-			}
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'split_node',
+				properties: {
+					subtype: 'mock minor node',
+					children: [{ text: '' }]
+				}
+			},
+			editor,
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -169,15 +192,19 @@ describe('ClipboardPlugin', () => {
 			]
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'split_node',
-			properties: {
-				type: 'mock obo node',
-				id: 'overwritten id',
-				children: [{ text: '' }]
-			}
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'split_node',
+				properties: {
+					type: 'mock obo node',
+					id: 'overwritten id',
+					children: [{ text: '' }]
+				}
+			},
+			editor,
+			next
+		)
 
 		expect(OboModel.create).toHaveBeenCalled()
 	})
@@ -187,17 +214,23 @@ describe('ClipboardPlugin', () => {
 
 		const editor = {
 			isInline: () => false,
-			children: [{
-				subtype: 'mock minor node',
-				id: 'mockId1',
-				children: [{ text: '' }]
-			}]
+			children: [
+				{
+					subtype: 'mock minor node',
+					id: 'mockId1',
+					children: [{ text: '' }]
+				}
+			]
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'merge_node',
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'merge_node'
+			},
+			editor,
+			next
+		)
 
 		expect(OboModel.models).toMatchSnapshot()
 	})
@@ -207,17 +240,23 @@ describe('ClipboardPlugin', () => {
 
 		const editor = {
 			isInline: () => false,
-			children: [{
-				type: 'mock minor node',
-				id: 'mockId2',
-				children: [{ text: '' }]
-			}]
+			children: [
+				{
+					type: 'mock minor node',
+					id: 'mockId2',
+					children: [{ text: '' }]
+				}
+			]
 		}
 
-		OboNodePlugin.apply({
-			path: [0],
-			type: 'remove_node',
-		}, editor, next)
+		OboNodePlugin.apply(
+			{
+				path: [0],
+				type: 'remove_node'
+			},
+			editor,
+			next
+		)
 
 		expect(OboModel.models).toMatchSnapshot()
 	})

@@ -56,7 +56,10 @@ const FileToolbar = props => {
 	const editor = props.editor
 	const insertMenu = props.insertableItems.map(item => ({
 		name: item.name,
-		action: () => Transforms.insertNodes(editor, item.cloneBlankNode()),
+		action: () => {
+			Transforms.insertNodes(editor, item.cloneBlankNode())
+			ReactEditor.focus(editor)
+		},
 		disabled: insertDisabled(item.name, editor, props.value)
 	}))
 

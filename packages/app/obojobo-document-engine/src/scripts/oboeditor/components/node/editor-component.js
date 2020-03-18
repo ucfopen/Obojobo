@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { ReactEditor } from 'slate-react'
 
-import { Transforms, Path } from 'slate'
+import { Transforms, Path, Editor } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -18,17 +18,17 @@ class Node extends React.Component {
 		// Then use transforms to insert at that path, which effectively inserts above like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
-		Transforms.select(this.props.editor, path)
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
 	}
 
 	insertBlockAtEnd(item) {
 		const newBlock = item.cloneBlankNode()
-		
+
 		// Use the ReactEditor to get the path for the current element, and increment the last element
 		// Then use transforms to insert at that path, which effectively inserts below like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
-		Transforms.select(this.props.editor, Path.next(path))
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
 	}
 
 	saveId(prevId, newId) {
@@ -55,7 +55,7 @@ class Node extends React.Component {
 		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
-	duplicateNode () {
+	duplicateNode() {
 		const newNode = Object.assign({}, this.props.element)
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -87,7 +87,8 @@ class Node extends React.Component {
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
-							masterOnClick={this.insertBlockAtStart.bind(this)}/>
+							masterOnClick={this.insertBlockAtStart.bind(this)}
+						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
@@ -112,7 +113,8 @@ class Node extends React.Component {
 						duplicateNode={this.duplicateNode.bind(this)}
 						markUnsaved={editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
-						onClose={this.onClose.bind(this)}/>
+						onClose={this.onClose.bind(this)}
+					/>
 				) : null}
 				{this.props.children}
 			</div>
