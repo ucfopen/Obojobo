@@ -12,7 +12,7 @@
 	transition: color $duration-animation-default, background $duration-animation-default;
 	cursor: pointer;
 	text-align: center;
-	min-height: 6em;
+	min-height: $dimension-prev-next-button-height;
 	line-height: 1.5em;
 	transform: translate(0, -1px);
 	word-wrap: break-word;
