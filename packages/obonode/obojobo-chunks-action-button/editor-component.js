@@ -64,7 +64,8 @@ class ActionButton extends React.Component {
 				<div className="text-chunk obojobo-draft--chunks--action-button pad">
 					<div
 						className={
-							'obojobo-draft--components--button align-' + this.props.element.content.align
+							'obojobo-draft--components--button align-' +
+							(this.props.element.content.align || 'center')
 						}
 					>
 						<div className="button">{this.props.children}</div>
