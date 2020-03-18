@@ -15,24 +15,26 @@ const { Button } = Common.components
 
 /**
  * Display an Obojobo Action button node.  Users can type into the main body of the Action Button
- * to change the label text. When the node is selected, display a menu that contains a list of 
- * actions associated with the onClick trigger, as well a a button to launch the Trigger Dialog so 
+ * to change the label text. When the node is selected, display a menu that contains a list of
+ * actions associated with the onClick trigger, as well a a button to launch the Trigger Dialog so
  * that users can edit the onClick actions.
  */
 class ActionButton extends React.Component {
 	showTriggersModal() {
 		ModalUtil.show(
-			<TriggerListModal 
-				content={this.props.element.content}
-				onClose={this.closeModal.bind(this)}/>
+			<TriggerListModal content={this.props.element.content} onClose={this.closeModal.bind(this)} />
 		)
 	}
-	// Hide the popup modal, and then use Slate's Transforms library to save any changes that the 
+	// Hide the popup modal, and then use Slate's Transforms library to save any changes that the
 	// user made to the onClick actions by combining the previous content and the current content.
 	closeModal(modalState) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...modalState} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...modalState } },
+			{ at: path }
+		)
 	}
 
 	renderTriggers() {
@@ -56,11 +58,15 @@ class ActionButton extends React.Component {
 		)
 	}
 
-	render(){
+	render() {
 		return (
 			<Node {...this.props}>
 				<div className="text-chunk obojobo-draft--chunks--action-button pad">
-					<div className="obojobo-draft--components--button align-center">
+					<div
+						className={
+							'obojobo-draft--components--button align-' + this.props.element.content.align
+						}
+					>
 						<div className="button">{this.props.children}</div>
 					</div>
 					{this.props.selected ? this.renderTriggers(this.props, this.props.editor) : null}

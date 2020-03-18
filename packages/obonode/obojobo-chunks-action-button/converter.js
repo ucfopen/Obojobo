@@ -3,14 +3,14 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 
 /**
  * Generates an Obojobo Action Button from a Slate node.
- * Copies the id, type, triggers, and converts text children (including marks)
+ * Copies the id, type, triggers, align, and converts text children (including marks)
  * into a textGroup
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Action Bution node 
+ * @returns {Object} An Obojobo Action Bution node
  */
 const slateToObo = node => {
 	const labelLine = {
-		text: { value: "", styleList: [] },
+		text: { value: '', styleList: [] },
 		data: null
 	}
 	TextUtil.slateToOboText(node, labelLine)
@@ -21,7 +21,8 @@ const slateToObo = node => {
 		children: [],
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			textGroup: [labelLine]
+			textGroup: [labelLine],
+			align: node.content.align
 		})
 	}
 }
@@ -31,7 +32,7 @@ const slateToObo = node => {
  * Copies all attributes, and converts a label or textGroup into Slate Text children
  * The conversion also ensures that the Slate node has an onClick trigger so that
  * the user can easily add onClick actions
- * @param {Object} node An Obojobo Action Button node 
+ * @param {Object} node An Obojobo Action Button node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
