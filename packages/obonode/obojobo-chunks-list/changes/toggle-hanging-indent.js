@@ -1,10 +1,8 @@
+import toggle from 'obojobo-chunks-text/util/toggle-hanging-indent'
+
 const toggleHangingIndent = (event, editor) => {
 	event.preventDefault()
-	editor.value.blocks.forEach(block => {
-		const dataJSON = block.data.toJSON()
-		dataJSON.hangingIndent = !dataJSON.hangingIndent
-		editor.setNodeByKey(block.key, { data: dataJSON })
-	})
+	toggle(editor)
 	return true
 }
 
