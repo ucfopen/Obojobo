@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "iturgeon",
+      "name": "Ian Turgeon",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73480?v=4",
+      "profile": "https://ianturgeon.com",
+      "contributions": [
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
