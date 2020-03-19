@@ -216,6 +216,8 @@ body {
 	}
 
 	.text {
+		display: block;
+
 		&.align-left {
 			text-align: left;
 		}

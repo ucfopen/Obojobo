@@ -7,12 +7,14 @@ Object {
   "textGroup": TextGroup {
     "dataTemplate": Object {
       "align": "left",
+      "hangingIndent": false,
       "indent": 0,
     },
     "items": Array [
       TextGroupItem {
         "data": Object {
           "align": "left",
+          "hangingIndent": false,
           "indent": 0,
         },
         "parent": [Circular],
@@ -36,12 +38,14 @@ Object {
   "textGroup": TextGroup {
     "dataTemplate": Object {
       "align": "left",
+      "hangingIndent": false,
       "indent": 0,
     },
     "items": Array [
       TextGroupItem {
         "data": Object {
           "align": "left",
+          "hangingIndent": false,
           "indent": 0,
         },
         "parent": [Circular],
@@ -67,6 +71,7 @@ Object {
       Object {
         "data": Object {
           "align": "left",
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
