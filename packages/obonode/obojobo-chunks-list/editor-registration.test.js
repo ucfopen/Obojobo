@@ -650,7 +650,7 @@ describe('List editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown ignores [t]', () => {
+	test('plugins.onKeyDown ignores [h]', () => {
 		// setup
 		const editor = {
 			value: {
@@ -668,7 +668,7 @@ describe('List editor', () => {
 		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
-			key: 't',
+			key: 'h',
 			ctrlKey: false,
 			preventDefault: jest.fn()
 		}
@@ -683,7 +683,7 @@ describe('List editor', () => {
 		expect(toggleHangingIndent).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [ctrl]+[t]', () => {
+	test('plugins.onKeyDown deals with [ctrl]+[h]', () => {
 		// setup
 		const editor = {
 			value: {
@@ -701,42 +701,8 @@ describe('List editor', () => {
 		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
-			key: 't',
+			key: 'h',
 			ctrlKey: true,
-			preventDefault: jest.fn()
-		}
-
-		// pre-execute verification
-		expect(toggleHangingIndent).not.toHaveBeenCalled()
-
-		// execute
-		List.plugins.onKeyDown(event, editor, jest.fn())
-
-		// verify
-		expect(toggleHangingIndent).toHaveBeenCalledWith(event, editor, expect.any(Function))
-	})
-
-	test('plugins.onKeyDown deals with [ctrl]+[T]', () => {
-		// setup
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: { toJSON: () => ({ hangingIndent: true }) }
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'T',
-			ctrlKey: true,
-			shiftKey: true,
 			preventDefault: jest.fn()
 		}
 

@@ -72,9 +72,8 @@ const plugins = {
 				// TAB
 				return insertTab(event, editor, next)
 
-			case 'T': // t + shiftKey
-			case 't':
-				if(event.ctrlKey) return toggleHangingIndent(event, editor, next)
+			case 'h':
+				if (event.ctrlKey) return toggleHangingIndent(event, editor, next)
 				return next()
 
 			default:
