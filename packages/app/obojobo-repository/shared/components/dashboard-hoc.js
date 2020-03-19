@@ -6,6 +6,9 @@ const {
 	loadUsersForModule,
 	deleteModulePermissions,
 	createNewCollection,
+	loadCollectionModules,
+	collectionAddModule,
+	collectionRemoveModule,
 	renameCollection,
 	createNewModule,
 	filterModules,
@@ -13,12 +16,15 @@ const {
 	showModulePermissions,
 	showModuleManageCollections,
 	loadModuleCollections,
-	addModuleToCollection,
-	removeModuleFromCollection
+	moduleAddToCollection,
+	moduleRemoveFromCollection
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
 	createNewCollection,
+	loadCollectionModules,
+	collectionAddModule,
+	collectionRemoveModule,
 	renameCollection,
 	createNewModule,
 	closeModal,
@@ -30,8 +36,8 @@ const mapActionsToProps = {
 	showModulePermissions,
 	showModuleManageCollections,
 	loadModuleCollections,
-	addModuleToCollection,
-	removeModuleFromCollection
+	moduleAddToCollection,
+	moduleRemoveFromCollection
 }
 module.exports = connect(
 	mapStoreStateToProps,

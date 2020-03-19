@@ -17,15 +17,26 @@ const {
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
-	ADD_MODULE_TO_COLLECTION,
-	REMOVE_MODULE_FROM_COLLECTION,
+	MODULE_ADD_TO_COLLECTION,
+	MODULE_REMOVE_FROM_COLLECTION,
 	SHOW_COLLECTION_MANAGE_MODULES,
+	LOAD_COLLECTION_MODULES,
+	COLLECTION_ADD_MODULE,
+	COLLECTION_REMOVE_MODULE,
+	LOAD_MODULE_SEARCH,
+	CLEAR_MODULE_SEARCH_RESULTS,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
+	items,
+	hasFetched,
+	isFetching
+})
+
+const searchModuleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
 	hasFetched,
 	isFetching
@@ -50,13 +61,24 @@ function filterModules(modules, searchString) {
 function DashboardReducer(state, action) {
 	switch (action.type) {
 		case CREATE_NEW_COLLECTION:
-		case RENAME_COLLECTION:
 		case DELETE_COLLECTION:
 			return handle(state, action, {
 				success: prevState => ({
 					...prevState,
 					myCollections: action.payload.value
 				})
+			})
+		case RENAME_COLLECTION:
+			return handle(state, action, {
+				success: prevState => {
+					const newState = { ...prevState }
+					newState.myCollections = action.payload.value
+					console.log(action.meta)
+					if (action.meta.changedCollectionId === action.meta.currentCollectionId) {
+						newState.collection.title = action.meta.changedCollectionTitle
+					}
+					return newState
+				}
 			})
 
 		case CREATE_NEW_MODULE:
@@ -137,8 +159,8 @@ function DashboardReducer(state, action) {
 			})
 
 		case LOAD_MODULE_COLLECTIONS:
-		case ADD_MODULE_TO_COLLECTION:
-		case REMOVE_MODULE_FROM_COLLECTION:
+		case MODULE_ADD_TO_COLLECTION:
+		case MODULE_REMOVE_FROM_COLLECTION:
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
@@ -164,14 +186,41 @@ function DashboardReducer(state, action) {
 			return {
 				...state,
 				dialog: 'collection-manage-modules',
-				collection: action.collection
+				selectedCollection: action.collection,
+				searchModules: searchModuleResultsState()
 			}
+
+		case LOAD_MODULE_SEARCH:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					collectionModuleSearchString: action.meta.searchString
+				}),
+				success: prevState => ({ ...prevState, searchModules: { items: action.payload.value } })
+			})
+
+		case CLEAR_MODULE_SEARCH_RESULTS:
+			return { ...state, searchPeople: searchModuleResultsState(), shareSearchString: '' }
+
+		case COLLECTION_ADD_MODULE:
+		case COLLECTION_REMOVE_MODULE:
+		case LOAD_COLLECTION_MODULES:
+			return handle(state, action, {
+				success: prevState => {
+					const newState = { ...prevState }
+					newState.collectionModules = action.payload.value
+					if (action.meta.changedCollectionId === action.meta.currentCollectionId) {
+						newState.myModules = action.payload.value
+					}
+					return newState
+				}
+			})
 
 		case SHOW_COLLECTION_RENAME:
 			return {
 				...state,
 				dialog: 'collection-rename',
-				collection: action.collection
+				selectedCollection: action.collection
 			}
 
 		default:

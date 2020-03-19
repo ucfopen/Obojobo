@@ -2,6 +2,11 @@ const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
 const buildQueryWhere = (whereSQL, joinSQL = '', limitSQL = '') => {
+	let andWhereSQL = ''
+	if (whereSQL !== '') {
+		andWhereSQL = `AND ${whereSQL}`
+	}
+
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -21,7 +26,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '', limitSQL = '') => {
 			ON drafts_content.draft_id = drafts.id
 		${joinSQL}
 		WHERE drafts.deleted = FALSE
-		AND ${whereSQL}
+		${andWhereSQL}
 		WINDOW wnd AS (
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
 			ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
@@ -65,7 +70,7 @@ class DraftSummary {
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
 			`JOIN repository_map_user_to_draft
-					ON repository_map_user_to_draft.draft_id = drafts.id`,
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
 			{ userId }
 		)
@@ -74,7 +79,7 @@ class DraftSummary {
 	static fetchRecentByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhereLimit(
 			`JOIN repository_map_user_to_draft
-					ON repository_map_user_to_draft.draft_id = drafts.id`,
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
 			'LIMIT 5',
 			{ userId }
@@ -88,6 +93,57 @@ class DraftSummary {
 			`repository_map_drafts_to_collections.collection_id = $[collectionId]`,
 			{ collectionId }
 		)
+	}
+
+	static fetchInCollectionForUser(collectionId, userId) {
+		return DraftSummary.fetchAndJoinWhere(
+			`JOIN repository_map_drafts_to_collections
+				ON repository_map_drafts_to_collections.draft_id = drafts.id
+			JOIN repository_map_user_to_draft
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
+			`repository_map_drafts_to_collections.collection_id = $[collectionId]
+			AND repository_map_user_to_draft.user_id = $[userId]`,
+			{ collectionId, userId }
+		)
+	}
+
+	//TODO: Figure this out and finish it - the query is being a real bitch to write
+	static fetchByDraftTitleAndUserNotInCollection(searchString, userId, collectionId) {
+		searchString = `%${searchString}%`
+		const whereSQL = `repository_map_user_to_draft.user_id = $[userId]
+		AND (
+			repository_map_drafts_to_collections.collection_id != $[collectionId]
+			OR repository_map_drafts_to_collections.collection_id IS NULL
+		)`
+
+		const joinSQL = `JOIN repository_map_user_to_draft
+			ON repository_map_user_to_draft.draft_id = drafts.id
+		LEFT JOIN repository_map_drafts_to_collections
+			ON repository_map_drafts_to_collections.draft_id = drafts.id`
+
+		const innerQuery = buildQueryWhere(whereSQL, joinSQL)
+		const query = `
+			SELECT inner_query.*
+			FROM (
+				${innerQuery}
+			) AS inner_query
+			WHERE inner_query.title ILIKE $[searchString]
+		`
+
+		const queryValues = { userId, collectionId, searchString }
+
+		return db
+			.any(query, queryValues)
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				logger.error(
+					'fetchByDraftTItleAndUserNotInCollection Error',
+					error.message,
+					query,
+					queryValues
+				)
+				return Promise.reject('Error loading DraftSummary by query')
+			})
 	}
 
 	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {

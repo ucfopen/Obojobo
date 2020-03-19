@@ -13,35 +13,42 @@ const ModuleManageCollectionsDialog = props => {
 		setSelectedCollectionId(event.target.value)
 	}
 
-	// Pass an empty array as useEffect's second argument so it only runs once
-	// Effectively mimics 'componentDidMount', won't run again on re-renders etc.
+	// Load collections this module is in on the initial render
 	useEffect(() => {
 		props.loadModuleCollections(props.draftId)
 	}, [])
 
 	const onAddClick = () => {
-		props.addModuleToCollection(props.draftId, selectedCollectionId)
+		props.moduleAddToCollection(props.draftId, selectedCollectionId).then(() => {
+			setSelectedCollectionId(null)
+		})
 	}
 
 	const onRemoveCollectionClick = collectionId => {
-		props.removeModuleFromCollection(props.draftId, collectionId)
+		props.moduleRemoveFromCollection(props.draftId, collectionId)
 	}
 
+	//this is still being dumb
 	const renderCollectionOptions = () => {
-		return props.collections
+		let firstValidOption = selectedCollectionId
+
+		const options = props.collections
 			.filter(collection => {
 				const omitCollectionsModuleIsIn = draftCollection => {
 					return collection.id === draftCollection.id
 				}
 
 				if (props.draftCollections && props.draftCollections.some(omitCollectionsModuleIsIn)) {
+					if (firstValidOption === collection.id) {
+						firstValidOption = null
+					}
 					return false
 				}
 				return true
 			})
 			.map(collection => {
-				if (!selectedCollectionId) {
-					setSelectedCollectionId(collection.id)
+				if (!firstValidOption) {
+					firstValidOption = collection.id
 				}
 				return (
 					<option key={`add-${collection.id}`} value={collection.id}>
@@ -49,6 +56,12 @@ const ModuleManageCollectionsDialog = props => {
 					</option>
 				)
 			})
+
+		// if we have something to set the selected option to, do it
+		if (selectedCollectionId !== firstValidOption) {
+			setSelectedCollectionId(firstValidOption)
+		}
+		return options
 	}
 
 	const renderModuleCollections = () => {
@@ -74,7 +87,9 @@ const ModuleManageCollectionsDialog = props => {
 		<React.Fragment>
 			<div className="module-manage-collections-dialog--select-collection-container">
 				<label>Select a Collection:</label>
-				<select onChange={onSelectChange}>{collectionOptionsRender}</select>
+				<select value={selectedCollectionId} onChange={onSelectChange}>
+					{collectionOptionsRender}
+				</select>
 			</div>
 			<Button className="add-button" onClick={onAddClick}>
 				Add to Selected Collection

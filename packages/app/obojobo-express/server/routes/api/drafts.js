@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const router = express.Router()
+const CollectionModel = oboRequire('server/models/collection')
 const DraftModel = oboRequire('server/models/draft')
 const logger = oboRequire('server/logger')
 const pgp = require('pg-promise')
@@ -9,7 +10,10 @@ const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xm
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const {
+	userHasPermissionToCollection,
+	userHasPermissionToDraft
+} = require('obojobo-repository/server/services/permissions')
 const {
 	checkValidationRules,
 	requireDraftId,
@@ -102,8 +106,18 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res, next) => {
+	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
+			.then(async newDraft => {
+				if (req.body.collectionId) {
+					const hasPerms = await userHasPermissionToCollection(
+						req.currentUser.id,
+						req.body.collectionId
+					)
+					if (!hasPerms) return
+					CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+				}
+			})
 			.then(res.success)
 			.catch(res.unexpected)
 	})

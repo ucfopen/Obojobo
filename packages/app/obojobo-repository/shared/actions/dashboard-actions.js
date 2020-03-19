@@ -1,3 +1,5 @@
+const { MODE_DASHBOARD, MODE_MODULES, MODE_COLLECTION } = require('../repository-constants')
+
 // =================== API =======================
 
 const defaultOptions = () => ({
@@ -8,6 +10,10 @@ const defaultOptions = () => ({
 		'Content-Type': 'application/json'
 	}
 })
+
+const defaultModuleModeOptions = {
+	mode: null
+}
 
 const apiSearchForUser = searchString => {
 	return fetch(`/api/users/search?q=${searchString}`, defaultOptions()).then(res => res.json())
@@ -40,8 +46,9 @@ const apiDeletePermissionsToModule = (draftId, userId) => {
 	return fetch(`/api/drafts/${draftId}/permission/${userId}`, options).then(res => res.json())
 }
 
-const apiDeleteModule = draftId => {
-	const options = { ...defaultOptions(), method: 'DELETE' }
+const apiDeleteModule = (draftId, collectionId = null) => {
+	const body = JSON.stringify({ collectionId })
+	const options = { ...defaultOptions(), method: 'DELETE', body }
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
 }
 
@@ -53,10 +60,25 @@ const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
 }
 
+const apiGetMyRecentModules = () => {
+	return fetch('/api/recent/drafts', defaultOptions()).then(res => res.json())
+}
+
 const apiCreateNewCollection = () => {
 	const url = '/api/collections/new'
 	const options = { ...defaultOptions(), method: 'POST' }
 	return fetch(url, options).then(res => res.json())
+}
+
+const apiGetModulesForCollection = collectionId => {
+	return fetch(`/api/collections/${collectionId}/modules`, defaultOptions()).then(res => res.json())
+}
+
+const apiSearchForModuleNotInCollection = (searchString, collectionId) => {
+	return fetch(
+		`/api/collections/${collectionId}/modules/search?q=${searchString}`,
+		defaultOptions()
+	).then(res => res.json())
 }
 
 const apiRenameCollection = (id, title) => {
@@ -71,9 +93,10 @@ const apiDeleteCollection = collection => {
 	return fetch(`/api/collections/${collection.id}`, options).then(res => res.json())
 }
 
-const apiCreateNewModule = useTutorial => {
+const apiCreateNewModule = (useTutorial, collectionId = null) => {
 	const url = useTutorial ? '/api/drafts/tutorial' : '/api/drafts/new'
-	const options = { ...defaultOptions(), method: 'POST' }
+	const body = JSON.stringify({ collectionId })
+	const options = { ...defaultOptions(), method: 'POST', body }
 	return fetch(url, options).then(res => res.json())
 }
 
@@ -109,17 +132,36 @@ const addUserToModule = (draftId, userId) => ({
 })
 
 const DELETE_MODULE_PERMISSIONS = 'DELETE_MODULE_PERMISSIONS'
-const deleteModulePermissions = (draftId, userId) => ({
-	type: DELETE_MODULE_PERMISSIONS,
-	promise: apiDeletePermissionsToModule(draftId, userId)
-		.then(() => {
-			return Promise.all([apiGetMyModules(), apiGetPermissionsForModule(draftId)])
-		})
-		.then(results => ({
-			value: results[1].value,
-			modules: results[0].value
-		}))
-})
+const deleteModulePermissions = (draftId, userId, options = { ...defaultModuleModeOptions }) => {
+	let apiModuleGetCall
+
+	switch (options.mode) {
+		case MODE_COLLECTION:
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
+		case MODE_DASHBOARD:
+			apiModuleGetCall = apiGetMyRecentModules
+			break
+		case MODE_MODULES:
+		default:
+			apiModuleGetCall = apiGetMyModules
+			break
+	}
+
+	return {
+		type: DELETE_MODULE_PERMISSIONS,
+		promise: apiDeletePermissionsToModule(draftId, userId)
+			.then(() => {
+				return Promise.all([apiModuleGetCall(), apiGetPermissionsForModule(draftId)])
+			})
+			.then(results => ({
+				value: results[1].value,
+				modules: results[0].value
+			}))
+	}
+}
 
 const LOAD_USERS_FOR_MODULE = 'LOAD_USERS_FOR_MODULE'
 const loadUsersForModule = draftId => ({
@@ -128,10 +170,31 @@ const loadUsersForModule = draftId => ({
 })
 
 const DELETE_MODULE = 'DELETE_MODULE'
-const deleteModule = draftId => ({
-	type: DELETE_MODULE,
-	promise: apiDeleteModule(draftId).then(apiGetMyModules)
-})
+const deleteModule = (draftId, options = { ...defaultModuleModeOptions }) => {
+	let apiModuleGetCall
+	let collectionId = null
+
+	switch (options.mode) {
+		case MODE_COLLECTION:
+			collectionId = options.collectionId
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
+		case MODE_DASHBOARD:
+			apiModuleGetCall = apiGetMyRecentModules
+			break
+		case MODE_MODULES:
+		default:
+			apiModuleGetCall = apiGetMyModules
+			break
+	}
+
+	return {
+		type: DELETE_MODULE,
+		promise: apiDeleteModule(draftId, collectionId).then(apiModuleGetCall)
+	}
+}
 
 const CREATE_NEW_COLLECTION = 'CREATE_NEW_COLLECTION'
 const createNewCollection = () => ({
@@ -140,10 +203,30 @@ const createNewCollection = () => ({
 })
 
 const CREATE_NEW_MODULE = 'CREATE_NEW_MODULE'
-const createNewModule = (useTutorial = false) => ({
-	type: CREATE_NEW_MODULE,
-	promise: apiCreateNewModule(useTutorial).then(apiGetMyModules)
-})
+const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOptions }) => {
+	let apiModuleGetCall
+	let collectionId = null
+
+	switch (options.mode) {
+		case MODE_COLLECTION:
+			collectionId = options.collectionId
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
+		case MODE_DASHBOARD:
+			apiModuleGetCall = apiGetMyRecentModules
+			break
+		case MODE_MODULES:
+		default:
+			apiModuleGetCall = apiGetMyModules
+			break
+	}
+	return {
+		type: CREATE_NEW_MODULE,
+		promise: apiCreateNewModule(useTutorial, collectionId).then(apiModuleGetCall)
+	}
+}
 
 const FILTER_MODULES = 'FILTER_MODULES'
 const filterModules = searchString => ({
@@ -169,17 +252,17 @@ const loadModuleCollections = draftId => ({
 	promise: apiGetCollectionsForModule(draftId)
 })
 
-const ADD_MODULE_TO_COLLECTION = 'ADD_MODULE_TO_COLLECTION'
-const addModuleToCollection = (draftId, collectionId) => ({
-	type: ADD_MODULE_TO_COLLECTION,
+const MODULE_ADD_TO_COLLECTION = 'MODULE_ADD_TO_COLLECTION'
+const moduleAddToCollection = (draftId, collectionId) => ({
+	type: MODULE_ADD_TO_COLLECTION,
 	promise: apiAddModuleToCollection(draftId, collectionId).then(() => {
 		return apiGetCollectionsForModule(draftId)
 	})
 })
 
-const REMOVE_MODULE_FROM_COLLECTION = 'REMOVE_MODULE_FROM_COLLECTION'
-const removeModuleFromCollection = (draftId, collectionId) => ({
-	type: REMOVE_MODULE_FROM_COLLECTION,
+const MODULE_REMOVE_FROM_COLLECTION = 'MODULE_REMOVE_FROM_COLLECTION'
+const moduleRemoveFromCollection = (draftId, collectionId) => ({
+	type: MODULE_REMOVE_FROM_COLLECTION,
 	promise: apiRemoveModuleFromCollection(draftId, collectionId).then(() => {
 		return apiGetCollectionsForModule(draftId)
 	})
@@ -191,6 +274,56 @@ const showCollectionManageModules = collection => ({
 	collection
 })
 
+const LOAD_COLLECTION_MODULES = 'LOAD_COLLECTION_MODULES'
+const loadCollectionModules = collectionId => ({
+	type: LOAD_COLLECTION_MODULES,
+	promise: apiGetModulesForCollection(collectionId)
+})
+
+const COLLECTION_ADD_MODULE = 'COLLECTION_ADD_MODULE'
+const collectionAddModule = (draftId, collectionId, options = { ...defaultModuleModeOptions }) => {
+	return {
+		type: COLLECTION_ADD_MODULE,
+		meta: {
+			changedCollectionId: collectionId,
+			currentCollectionId: options.collectionId
+		},
+		promise: apiAddModuleToCollection(draftId, collectionId).then(() => {
+			return apiGetModulesForCollection(collectionId)
+		})
+	}
+}
+
+const COLLECTION_REMOVE_MODULE = 'COLLECTION_REMOVE_MODULE'
+const collectionRemoveModule = (
+	draftId,
+	collectionId,
+	options = { ...defaultModuleModeOptions }
+) => {
+	return {
+		type: COLLECTION_REMOVE_MODULE,
+		meta: {
+			changedCollectionId: collectionId,
+			currentCollectionId: options.collectionId
+		},
+		promise: apiRemoveModuleFromCollection(draftId, collectionId).then(() => {
+			return apiGetModulesForCollection(collectionId)
+		})
+	}
+}
+
+const LOAD_MODULE_SEARCH = 'LOAD_MODULE_SEARCH'
+const searchForModuleNotInCollection = (searchString, collectionId) => ({
+	type: LOAD_MODULE_SEARCH,
+	meta: {
+		searchString
+	},
+	promise: apiSearchForModuleNotInCollection(searchString, collectionId)
+})
+
+const CLEAR_MODULE_SEARCH_RESULTS = 'CLEAR_MODULE_SEARCH_RESULTS'
+const clearModuleSearchResults = () => ({ type: CLEAR_MODULE_SEARCH_RESULTS })
+
 const SHOW_COLLECTION_RENAME = 'SHOW_COLLECTION_RENAME'
 const showCollectionRename = collection => ({
 	type: SHOW_COLLECTION_RENAME,
@@ -198,10 +331,17 @@ const showCollectionRename = collection => ({
 })
 
 const RENAME_COLLECTION = 'RENAME_COLLECTION'
-const renameCollection = (id, newTitle) => ({
-	type: RENAME_COLLECTION,
-	promise: apiRenameCollection(id, newTitle).then(apiGetMyCollections)
-})
+const renameCollection = (collectionId, newTitle, options = { ...defaultModuleModeOptions }) => {
+	return {
+		type: RENAME_COLLECTION,
+		meta: {
+			changedCollectionTitle: newTitle,
+			changedCollectionId: collectionId,
+			currentCollectionId: options.collectionId
+		},
+		promise: apiRenameCollection(collectionId, newTitle).then(apiGetMyCollections)
+	}
+}
 
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
 const deleteCollection = id => ({
@@ -224,9 +364,14 @@ module.exports = {
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
 	LOAD_MODULE_COLLECTIONS,
-	ADD_MODULE_TO_COLLECTION,
-	REMOVE_MODULE_FROM_COLLECTION,
+	MODULE_ADD_TO_COLLECTION,
+	MODULE_REMOVE_FROM_COLLECTION,
 	SHOW_COLLECTION_MANAGE_MODULES,
+	LOAD_COLLECTION_MODULES,
+	COLLECTION_ADD_MODULE,
+	COLLECTION_REMOVE_MODULE,
+	LOAD_MODULE_SEARCH,
+	CLEAR_MODULE_SEARCH_RESULTS,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
@@ -243,11 +388,16 @@ module.exports = {
 	clearPeopleSearchResults,
 	showModuleMore,
 	showCollectionManageModules,
+	loadCollectionModules,
+	collectionAddModule,
+	collectionRemoveModule,
+	searchForModuleNotInCollection,
+	clearModuleSearchResults,
 	showCollectionRename,
 	showModuleManageCollections,
 	loadModuleCollections,
-	addModuleToCollection,
-	removeModuleFromCollection,
+	moduleAddToCollection,
+	moduleRemoveFromCollection,
 	renameCollection,
 	deleteCollection
 }

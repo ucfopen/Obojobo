@@ -43,6 +43,17 @@ router
 			.catch(res.unexpected)
 	})
 
+// List my recently modified drafts
+// mounted as /api/recent/drafts
+router
+	.route('/recent/drafts')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchRecentByUserId(req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
 // List my drafts
 // mounted as /api/drafts
 router
@@ -192,6 +203,35 @@ router
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return fetchAllCollectionsForDraft(req.params.draftId)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// list the modules a collection has
+router
+	.route('/collections/:collectionId/modules')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchInCollectionForUser(req.params.collectionId, req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
+	.route('/collections/:collectionId/modules/search')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		// empty search string? return empty array
+		if (!req.query.q || !req.query.q.trim()) {
+			res.success([])
+			return
+		}
+
+		return DraftSummary.fetchByDraftTitleAndUserNotInCollection(
+			req.query.q,
+			req.currentUser.id,
+			req.params.collectionId
+		)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

@@ -6,6 +6,7 @@ const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Collection = require('./collection')
+const CollectionManageModulesDialog = require('./collection-manage-modules')
 const CollectionRenameDialog = require('./collection-rename-dialog')
 const Module = require('./module')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
@@ -19,18 +20,18 @@ const ReactModal = require('react-modal')
 
 const { MODE_DASHBOARD, MODE_MODULES, MODE_COLLECTION } = require('../repository-constants')
 
-const renderOptionsDialog = props => (
+const renderOptionsDialog = (props, extension) => (
 	<ModuleOptionsDialog
 		title=""
 		{...props.selectedModule}
 		showModuleManageCollections={props.showModuleManageCollections}
 		showModulePermissions={props.showModulePermissions}
-		deleteModule={props.deleteModule}
+		deleteModule={extension.deleteModule}
 		onClose={props.closeModal}
 	/>
 )
 
-const renderPermissionsDialog = props => (
+const renderPermissionsDialog = (props, extension) => (
 	<ModulePermissionsDialog
 		title=""
 		{...props.selectedModule}
@@ -39,7 +40,7 @@ const renderPermissionsDialog = props => (
 		onClose={props.closeModal}
 		addUserToModule={props.addUserToModule}
 		draftPermissions={props.draftPermissions}
-		deleteModulePermissions={props.deleteModulePermissions}
+		deleteModulePermissions={extension.deleteModulePermissions}
 		currentUserId={props.currentUser.id}
 	/>
 )
@@ -52,34 +53,86 @@ const renderModuleManageCollectionsDialog = props => (
 		onClose={props.closeModal}
 		loadModuleCollections={props.loadModuleCollections}
 		draftCollections={props.draftCollections}
-		addModuleToCollection={props.addModuleToCollection}
-		removeModuleFromCollection={props.removeModuleFromCollection}
+		moduleAddToCollection={props.moduleAddToCollection}
+		moduleRemoveFromCollection={props.moduleRemoveFromCollection}
 	/>
 )
 
-const renderCollectionManageModulesDialog = props => null
+const renderCollectionManageModulesDialog = (props, extension) => (
+	<CollectionManageModulesDialog
+		title=""
+		collection={props.selectedCollection}
+		loadCollectionModules={props.loadCollectionModules}
+		collectionModules={props.collectionModules}
+		collectionAddModule={extension.collectionAddModule}
+		collectionRemoveModule={extension.collectionRemoveModule}
+		onClose={props.closeModal}
+	/>
+)
 
-const renderCollectionRenameDialog = props => (
+const renderCollectionRenameDialog = (props, extension) => (
 	<CollectionRenameDialog
 		title="Rename Collection"
-		collection={props.collection}
+		collection={props.selectedCollection}
 		onClose={props.closeModal}
-		onAccept={props.renameCollection}
+		onAccept={extension.renameCollection}
 	/>
 )
+
+const extendedPropsDefault = props => ({
+	renameCollection: props.renameCollection,
+	collectionAddModule: props.collectionAddModule,
+	collectionRemoveModule: props.collectionRemoveModule,
+	deleteModule: props.deleteModule,
+	deleteModulePermissions: props.deleteModulePermissions
+})
 
 const renderModalDialog = props => {
 	let dialog
 	let title
+	const extendedOptions = {
+		mode: props.mode
+	}
+	const extendedProps = extendedPropsDefault(props)
+	switch (props.mode) {
+		case MODE_COLLECTION:
+			extendedOptions.collectionId = props.collection.id
+			extendedProps.renameCollection = (collectionId, newTitle) => {
+				props.renameCollection(collectionId, newTitle, extendedOptions)
+			}
+			extendedProps.collectionAddModule = (draftId, collectionId) => {
+				props.collectionAddModule(draftId, collectionId, extendedOptions)
+			}
+			extendedProps.collectionRemoveModule = (draftId, collectionId) => {
+				props.collectionRemoveModule(draftId, collectionId, extendedOptions)
+			}
+			extendedProps.deleteModule = draftId => {
+				props.deleteModule(draftId, extendedOptions)
+			}
+			extendedProps.deleteModulePermissions = (draftId, userId) => {
+				props.deleteModulePermissions(draftId, userId, extendedOptions)
+			}
+
+			break
+		case MODE_DASHBOARD:
+		default:
+			extendedProps.deleteModule = draftId => {
+				props.deleteModule(draftId, extendedOptions)
+			}
+			extendedProps.deleteModulePermissions = (draftId, userId) => {
+				props.deleteModulePermissions(draftId, userId, extendedOptions)
+			}
+	}
+
 	switch (props.dialog) {
 		case 'module-more':
 			title = 'Module Options'
-			dialog = renderOptionsDialog(props)
+			dialog = renderOptionsDialog(props, extendedProps)
 			break
 
 		case 'module-permissions':
 			title = 'Module Access'
-			dialog = renderPermissionsDialog(props)
+			dialog = renderPermissionsDialog(props, extendedProps)
 			break
 
 		case 'module-manage-collections':
@@ -89,12 +142,12 @@ const renderModalDialog = props => {
 
 		case 'collection-manage-modules':
 			title = ''
-			dialog = renderCollectionManageModulesDialog(props)
+			dialog = renderCollectionManageModulesDialog(props, extendedProps)
 			break
 
 		case 'collection-rename':
 			title = 'Rename Collection'
-			dialog = renderCollectionRenameDialog(props)
+			dialog = renderCollectionRenameDialog(props, extendedProps)
 			break
 
 		default:
@@ -203,10 +256,19 @@ const Dashboard = props => {
 		</ButtonLink>
 	)
 
+	if (props.myModules.length === props.moduleCount) {
+		moduleModeRender = null
+	}
+
+	const createNewModuleOptions = {
+		mode: props.mode
+	}
+
 	switch (props.mode) {
 		// url is /dashboard/collections/collection-name-and-short-uuid
 		case MODE_COLLECTION:
-			modulesTitle = 'Modules in Collection "Collection Title Here"'
+			createNewModuleOptions.collectionId = props.collection.id
+			modulesTitle = `Modules in '${props.collection.title}'`
 			break
 		// url is /dashboard/modules
 		case MODE_MODULES:
@@ -219,6 +281,10 @@ const Dashboard = props => {
 			moduleFilterRender = null
 			moduleSortRender = null
 			modulesTitleExtraClass = 'stretch-width'
+	}
+
+	const onNewModuleClick = useTutorial => {
+		props.createNewModule(useTutorial, createNewModuleOptions)
 	}
 
 	return (
@@ -236,8 +302,8 @@ const Dashboard = props => {
 						<MultiButton title="Create New" className="repository--main-content--new-module-button">
 							<Button onClick={() => props.createNewCollection()}>New Collection</Button>
 							<hr />
-							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
-							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
+							<Button onClick={() => onNewModuleClick(false)}>New Module</Button>
+							<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
 						</MultiButton>
 						{moduleFilterRender}
 					</div>
