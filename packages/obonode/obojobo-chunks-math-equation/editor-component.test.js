@@ -128,25 +128,4 @@ describe('MathEquation Editor Node', () => {
 		]
 	`)
 	})
-
-	test.skip('MathEquation focuses on the first input when the edit dialog appears', () => {
-		const mockFocus = jest.fn()
-		const spy = jest.spyOn(document, 'getElementById').mockReturnValue({
-			focus: mockFocus
-		})
-
-		const component = mount(
-			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={false} />
-		)
-
-		expect(mockFocus).not.toHaveBeenCalled()
-
-		component.setProps({ selected: true })
-
-		expect(mockFocus).not.toHaveBeenCalled()
-		jest.runAllTimers()
-		expect(mockFocus).toHaveBeenCalled()
-
-		spy.mockRestore()
-	})
 })

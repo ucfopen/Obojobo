@@ -68,23 +68,14 @@ describe('Component Editor Node', () => {
 		Common.models.OboModel.create = jest.fn().mockReturnValue({ setId: () => true })
 	})
 	test('Node builds the expected component', () => {
-		const component = renderer.create(
-			<Node 
-				element={{}}
-				editor={{}}/>
-		)
+		const component = renderer.create(<Node element={{}} editor={{}} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Node component inserts node above', () => {
-		const component = mount(
-			<Node
-				selected={true}
-				element={{}}
-				editor={{}}/>
-		)
+		const component = mount(<Node selected={true} element={{}} editor={{}} />)
 		const tree = component.html()
 
 		component
@@ -101,9 +92,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		const tree = component.html()
 
@@ -121,9 +113,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		component.instance().saveId('mock-id', 'mock-id')
 
@@ -135,9 +128,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		component.instance().saveId('mock-duplicate-id', 'mock-id2')
 
@@ -149,9 +143,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		component.instance().saveId('mock-id', 'mock-id2')
 
@@ -183,19 +178,15 @@ describe('Component Editor Node', () => {
 		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
 	})
 
-	test('saveContent calls setNodeByKey', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-   
 	test('saveContent calls Transforms.setNodes', () => {
 		const component = mount(
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		component.instance().saveContent({}, {})
 
@@ -207,9 +198,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		component.instance().deleteNode()
 
@@ -221,9 +213,10 @@ describe('Component Editor Node', () => {
 			<Node
 				selected={true}
 				element={{
-					content: { width: 'normal' },
+					content: { width: 'normal' }
 				}}
-				editor={{}}/>
+				editor={{}}
+			/>
 		)
 		ReactEditor.findPath.mockReturnValue([0])
 
