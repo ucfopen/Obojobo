@@ -111,15 +111,13 @@ class DraftSummary {
 	static fetchByDraftTitleAndUserNotInCollection(searchString, userId, collectionId) {
 		searchString = `%${searchString}%`
 		const whereSQL = `repository_map_user_to_draft.user_id = $[userId]
-		AND (
-			repository_map_drafts_to_collections.collection_id != $[collectionId]
-			OR repository_map_drafts_to_collections.collection_id IS NULL
-		)`
+		AND repository_map_drafts_to_collections.id IS NULL`
 
 		const joinSQL = `JOIN repository_map_user_to_draft
 			ON repository_map_user_to_draft.draft_id = drafts.id
 		LEFT JOIN repository_map_drafts_to_collections
-			ON repository_map_drafts_to_collections.draft_id = drafts.id`
+			ON repository_map_drafts_to_collections.draft_id = drafts.id
+			AND repository_map_drafts_to_collections.collection_id != $[collectionId]`
 
 		const innerQuery = buildQueryWhere(whereSQL, joinSQL)
 		const query = `
@@ -137,7 +135,7 @@ class DraftSummary {
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error(
-					'fetchByDraftTItleAndUserNotInCollection Error',
+					'fetchByDraftTitleAndUserNotInCollection Error',
 					error.message,
 					query,
 					queryValues

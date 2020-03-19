@@ -73,8 +73,11 @@ function DashboardReducer(state, action) {
 				success: prevState => {
 					const newState = { ...prevState }
 					newState.myCollections = action.payload.value
-					console.log(action.meta)
-					if (action.meta.changedCollectionId === action.meta.currentCollectionId) {
+
+					if (
+						action.meta.currentCollectionId &&
+						action.meta.changedCollectionId === action.meta.currentCollectionId
+					) {
 						newState.collection.title = action.meta.changedCollectionTitle
 					}
 					return newState
@@ -200,7 +203,7 @@ function DashboardReducer(state, action) {
 			})
 
 		case CLEAR_MODULE_SEARCH_RESULTS:
-			return { ...state, searchPeople: searchModuleResultsState(), shareSearchString: '' }
+			return { ...state, searchModules: searchModuleResultsState(), shareSearchString: '' }
 
 		case COLLECTION_ADD_MODULE:
 		case COLLECTION_REMOVE_MODULE:
@@ -209,7 +212,10 @@ function DashboardReducer(state, action) {
 				success: prevState => {
 					const newState = { ...prevState }
 					newState.collectionModules = action.payload.value
-					if (action.meta.changedCollectionId === action.meta.currentCollectionId) {
+					if (
+						action.meta.currentCollectionId &&
+						action.meta.changedCollectionId === action.meta.currentCollectionId
+					) {
 						newState.myModules = action.payload.value
 					}
 					return newState
