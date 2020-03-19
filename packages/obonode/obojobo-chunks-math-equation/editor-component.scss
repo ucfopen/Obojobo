@@ -23,16 +23,20 @@
 		text-align: center;
 		border-radius: $dimension-rounded-radius;
 		font-size: 0.75em;
-		bottom: -23em;
 		left: 50%;
+		bottom: -6em;
 		transform: translate(-50%, 0);
 		font-family: $font-default;
 		box-sizing: border-box;
 		min-height: 2.5em;
-		width: 40em;
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
+
+		&.is-open {
+			bottom: -26.5em;
+			width: 23em;
+		}
 
 		@mixin point() {
 			content: ' ';
@@ -61,7 +65,11 @@
 			background-color: $color-bg;
 			border-radius: $dimension-rounded-radius;
 
-			div {
+			.obojobo-draft--components--button {
+				padding-bottom: 0.5em;
+			}
+
+			.attribute {
 				display: inline-block;
 				padding: 0.5em;
 			}
