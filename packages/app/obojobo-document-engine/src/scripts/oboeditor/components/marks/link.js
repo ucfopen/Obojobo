@@ -28,6 +28,23 @@ class Link extends React.Component {
 		Transforms.setNodes(editor, { href }, { at: path })
 	}
 
+	createSrc(src) {
+		src = '' + src
+
+		const lcSrc = src.toLowerCase()
+		if (
+			!(
+				lcSrc.indexOf('http://') === 0 ||
+				lcSrc.indexOf('https://') === 0 ||
+				lcSrc.indexOf('//') === 0
+			)
+		) {
+			src = '//' + src
+		}
+
+		return src
+	}
+
 	removeLink() {
 		const editor = this.props.editor
 		const path = ReactEditor.findPath(editor, this.props.element)
@@ -53,8 +70,12 @@ class Link extends React.Component {
 				</a>
 				{this.props.selected ? (
 					<span className="href-menu" contentEditable={false}>
-						<a href={this.props.element.href} target="_blank" rel="noopener noreferrer">
-							{this.props.element.href}
+						<a
+							href={this.createSrc(this.props.element.href)}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Go to {this.props.element.href}
 						</a>
 						<button
 							className="link-copy"

@@ -26,13 +26,13 @@ describe('EditorNav', () => {
 	})
 
 	test('Link component', () => {
-		const component = renderer.create(<Link element={{ href: 'mock href' }} />)
+		const component = renderer.create(<Link element={{ href: 'http://mock href' }} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Link component edits', () => {
-		const component = mount(<Link element={{ href: 'mock href' }} selected={true} />)
+		const component = mount(<Link element={{ href: 'http://mock href' }} selected={true} />)
 
 		component
 			.find('button')

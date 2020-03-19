@@ -5,8 +5,8 @@ exports[`EditorNav Link component 1`] = `
   className="editor--components--mark--link"
 >
   <a
-    href="mock href"
-    title="mock href"
+    href="http://mock href"
+    title="http://mock href"
   />
 </span>
 `;

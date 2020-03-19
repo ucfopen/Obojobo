@@ -27,6 +27,12 @@
 		vertical-align: top;
 		padding: 0;
 		margin: 0.4em;
+		cursor: pointer;
+		opacity: 0.6;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 
 	.link-edit {
@@ -41,6 +47,12 @@
 		vertical-align: top;
 		padding: 0;
 		margin: 0.4em;
+		cursor: pointer;
+		opacity: 0.6;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 
 	.link-remove {
@@ -55,6 +67,12 @@
 		vertical-align: top;
 		padding: 0;
 		margin: 0.4em;
+		cursor: pointer;
+		opacity: 0.6;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 
 	.href-menu {
