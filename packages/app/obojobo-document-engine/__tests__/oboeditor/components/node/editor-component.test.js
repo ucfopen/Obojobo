@@ -158,6 +158,36 @@ describe('Component Editor Node', () => {
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
+	test('saveId does not allow an empty id', () => {
+		const editor = {
+			insertNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 }
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().saveId('mock-id', '')
+
+		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('saveContent calls setNodeByKey', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+   
 	test('saveContent calls Transforms.setNodes', () => {
 		const component = mount(
 			<Node

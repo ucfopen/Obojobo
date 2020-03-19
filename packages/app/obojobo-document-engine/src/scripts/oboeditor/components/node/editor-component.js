@@ -36,6 +36,11 @@ class Node extends React.Component {
 
 		// check against existing nodes for duplicate keys
 		const model = OboModel.models[prevId]
+
+		if (!newId) {
+			return 'Please enter an id'
+		}
+
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
 		}
