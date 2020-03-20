@@ -57,6 +57,9 @@ class StyleRange {
 		if (this.type !== otherType) return false
 
 		if (this.data instanceof Object) {
+			if (Object.keys(this.data).length !== Object.keys(otherData).length) {
+				return false
+			}
 			for (const k in this.data) {
 				const v = this.data[k]
 				if (otherData[k] === null || typeof otherData[k] === 'undefined' || otherData[k] !== v) {

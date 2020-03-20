@@ -5,17 +5,16 @@ const oboEvents = require('../obo_events')
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
 // them from being used again
-const deactivateOldVisitsAndCreateNewVisit = (
+const deactivateOldVisitsAndCreateNewVisit = async (
 	userId,
 	draftId,
 	resourceLinkId,
 	launchId,
 	isPreview
 ) => {
-	let deactivatedVisitIds
-	return db
-		.manyOrNone(
-			// deactivate all my visits for this draft
+	return db.taskIf(async t => {
+		// deactivate all my visits for this draft
+		const deactivatedVisits = await t.manyOrNone(
 			`UPDATE visits
 			SET is_active = false
 			WHERE user_id = $[userId]
@@ -29,54 +28,52 @@ const deactivateOldVisitsAndCreateNewVisit = (
 				resourceLinkId
 			}
 		)
-		.then(deactivatedVisits => {
-			deactivatedVisitIds = deactivatedVisits ? deactivatedVisits.map(visit => visit.id) : null
 
-			return db.one(
-				// get id of the newest version of the draft
-				`SELECT id
-						FROM drafts_content
-						WHERE draft_id = $[draftId]
-						ORDER BY created_at DESC
-						LIMIT 1`,
-				{
-					draftId
-				}
-			)
-		})
-		.then(draftsContent =>
-			db.one(
-				// Create a new visit
-				`INSERT INTO visits
-					(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
-					VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
-					RETURNING id`,
-				{
-					draftId,
-					draftContentId: draftsContent.id,
-					userId,
-					resourceLinkId,
-					launchId,
-					isPreview
-				}
-			)
+		const deactivatedVisitIds = deactivatedVisits ? deactivatedVisits.map(visit => visit.id) : null
+
+		// get id of the newest version of the draft
+		const draftsContent = await t.one(
+			`SELECT id
+			FROM drafts_content
+			WHERE draft_id = $[draftId]
+			ORDER BY created_at DESC
+			LIMIT 1`,
+			{
+				draftId
+			}
 		)
-		.then(visit => {
-			oboEvents.emit(Visit.EVENT_NEW_VISIT, {
-				visitId: visit.id,
-				userId,
+
+		// Create a new visit
+		const visit = await t.one(
+			`INSERT INTO visits
+			(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
+			VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
+			RETURNING id`,
+			{
 				draftId,
+				draftContentId: draftsContent.id,
+				userId,
 				resourceLinkId,
 				launchId,
-				isPreview,
-				deactivatedVisitIds
-			})
-
-			return {
-				visitId: visit.id,
-				deactivatedVisitIds
+				isPreview
 			}
+		)
+
+		oboEvents.emit(Visit.EVENT_NEW_VISIT, {
+			visitId: visit.id,
+			userId,
+			draftId,
+			resourceLinkId,
+			launchId,
+			isPreview,
+			deactivatedVisitIds
 		})
+
+		return {
+			visitId: visit.id,
+			deactivatedVisitIds
+		}
+	})
 }
 
 class Visit {

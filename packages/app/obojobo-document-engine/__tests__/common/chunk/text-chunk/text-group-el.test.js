@@ -12,7 +12,7 @@ describe('TextGroupEl', () => {
 	let tg
 
 	beforeEach(() => {
-		tg = TextGroup.create()
+		tg = TextGroup.create(Infinity, { hangingIndent: false })
 		tg.clear()
 
 		// first item, no formatting:
@@ -21,7 +21,7 @@ describe('TextGroupEl', () => {
 		// second item, some formatting and a variable:
 		const st = new StyleableText('Some BOLD text with a {{variable}} included')
 		st.styleText('b', 5, 9)
-		tg.add(st)
+		tg.add(st, { hangingIndent: true })
 	})
 
 	test('TextGroupEl unformatted', () => {
@@ -67,6 +67,6 @@ describe('TextGroupEl', () => {
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
 
-		expect(component.text()).toBe('Some BOLD text with a variable included')
+		expect(component.text()).toBe('Some BOLD text with a {{variable}} included')
 	})
 })

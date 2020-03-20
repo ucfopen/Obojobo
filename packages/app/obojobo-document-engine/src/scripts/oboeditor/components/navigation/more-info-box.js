@@ -143,7 +143,7 @@ class MoreInfoBox extends React.Component {
 		switch (description.type) {
 			case 'input':
 				return (
-					<div key={description.type}>
+					<div key={description.description}>
 						<label>{description.description}</label>
 						<input
 							type="text"
@@ -155,7 +155,7 @@ class MoreInfoBox extends React.Component {
 				)
 			case 'select':
 				return (
-					<div key={description.type}>
+					<div key={description.description}>
 						<label>{description.description}</label>
 						<select
 							className="select-item"
@@ -174,7 +174,7 @@ class MoreInfoBox extends React.Component {
 			case 'toggle':
 				return (
 					<Switch
-						key={description.type}
+						key={description.description}
 						title={description.description}
 						initialChecked={this.state.content[description.name]}
 						handleCheckChange={this.handleSwitchChange.bind(this, description.name)}
@@ -184,7 +184,7 @@ class MoreInfoBox extends React.Component {
 			case 'abstract-toggle':
 				return (
 					<Switch
-						key={description.type}
+						key={description.description}
 						title={description.description}
 						initialChecked={description.value(this.state.content)}
 						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}

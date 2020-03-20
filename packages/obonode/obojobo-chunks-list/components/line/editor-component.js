@@ -5,7 +5,7 @@ import React from 'react'
 const Line = props => {
 	return (
 		<div>
-			<li>{props.children}</li>
+			<li data-hanging-indent={props.node.data.get('hangingIndent')}>{props.children}</li>
 		</div>
 	)
 }

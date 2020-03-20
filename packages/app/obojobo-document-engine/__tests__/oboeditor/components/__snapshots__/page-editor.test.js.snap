@@ -408,6 +408,24 @@ exports[`PageEditor PageEditor component 1`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
     </div>
   </div>
   <div
@@ -684,6 +702,24 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
           <path
             className="icon"
             d="M13.8 8H25v1H13.8zM7 13h18v1H7zm0 5h18v1H7zm0 5h18v1H7z"
+          />
+        </svg>
+      </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
           />
         </svg>
       </button>
@@ -966,6 +1002,24 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
     </div>
   </div>
   <div
@@ -1242,6 +1296,24 @@ exports[`PageEditor PageEditor component with no page 1`] = `
           <path
             className="icon"
             d="M13.8 8H25v1H13.8zM7 13h18v1H7zm0 5h18v1H7zm0 5h18v1H7z"
+          />
+        </svg>
+      </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
           />
         </svg>
       </button>

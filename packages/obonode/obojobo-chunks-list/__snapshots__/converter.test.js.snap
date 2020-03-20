@@ -40,6 +40,9 @@ Object {
       },
       "nodes": Array [
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -90,6 +93,9 @@ Object {
                           },
                           "nodes": Array [
                             Object {
+                              "data": Object {
+                                "hangingIndent": undefined,
+                              },
                               "nodes": Array [
                                 Object {
                                   "leaves": undefined,
@@ -120,6 +126,9 @@ Object {
           "type": "ObojoboDraft.Chunks.List.Level",
         },
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -160,6 +169,7 @@ Object {
         },
         Object {
           "data": Object {
+            "hangingIndent": false,
             "indent": 5,
           },
           "text": Object {
@@ -181,6 +191,9 @@ Object {
       },
       "nodes": Array [
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -191,6 +204,9 @@ Object {
           "type": "ObojoboDraft.Chunks.List.Line",
         },
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -241,6 +257,9 @@ Object {
                           },
                           "nodes": Array [
                             Object {
+                              "data": Object {
+                                "hangingIndent": false,
+                              },
                               "nodes": Array [
                                 Object {
                                   "leaves": undefined,
@@ -293,6 +312,7 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
@@ -302,6 +322,7 @@ Object {
       },
       Object {
         "data": Object {
+          "hangingIndent": Object {},
           "indent": 1,
         },
         "text": Object {

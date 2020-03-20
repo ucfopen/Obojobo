@@ -16,7 +16,7 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 
 		const listLine = {
 			text: { value: child.text, styleList: [] },
-			data: { indent: currLevel }
+			data: { indent: currLevel, hangingIndent: child.data.get('hangingIndent') || false }
 		}
 
 		child.nodes.forEach(text => {
@@ -76,6 +76,7 @@ const oboToSlate = node => {
 
 	const nodes = node.content.textGroup.map(line => {
 		let indent = line.data ? line.data.indent : 0
+		const hangingIndent = line.data ? line.data.hangingIndent : false
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
 			object: 'block',
@@ -85,6 +86,7 @@ const oboToSlate = node => {
 				{
 					object: 'block',
 					type: LIST_LINE_NODE,
+					data: { hangingIndent },
 					nodes: [
 						{
 							object: 'text',

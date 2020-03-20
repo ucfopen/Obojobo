@@ -24,6 +24,7 @@ exports[`BasicReview Basic component correct 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -54,6 +55,7 @@ exports[`BasicReview Basic component correct 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -95,6 +97,7 @@ exports[`BasicReview Basic component correct 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -125,6 +128,7 @@ exports[`BasicReview Basic component correct 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -178,6 +182,7 @@ exports[`BasicReview Basic component correct 1`] = `
                     Object {
                       "data": Object {
                         "align": "left",
+                        "hangingIndent": false,
                         "indent": 0,
                       },
                       "text": Object {
@@ -242,6 +247,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -272,6 +278,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -313,6 +320,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -343,6 +351,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -396,6 +405,7 @@ exports[`BasicReview Basic component incorrect 1`] = `
                     Object {
                       "data": Object {
                         "align": "left",
+                        "hangingIndent": false,
                         "indent": 0,
                       },
                       "text": Object {
@@ -460,6 +470,7 @@ exports[`BasicReview Basic component survey 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -490,6 +501,7 @@ exports[`BasicReview Basic component survey 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -531,6 +543,7 @@ exports[`BasicReview Basic component survey 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -561,6 +574,7 @@ exports[`BasicReview Basic component survey 1`] = `
                             Object {
                               "data": Object {
                                 "align": "left",
+                                "hangingIndent": false,
                                 "indent": 0,
                               },
                               "text": Object {
@@ -614,6 +628,7 @@ exports[`BasicReview Basic component survey 1`] = `
                     Object {
                       "data": Object {
                         "align": "left",
+                        "hangingIndent": false,
                         "indent": 0,
                       },
                       "text": Object {

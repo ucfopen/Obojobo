@@ -1,14 +1,20 @@
-import SlateReact from 'slate-react'
 jest.mock('slate-react')
+jest.mock('./changes/toggle-hanging-indent')
 
+import SlateReact from 'slate-react'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
-
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 import List from './editor-registration'
+
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 describe('List editor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('onPaste calls next if not pasting text into a LIST_NODE', () => {
 		const editor = {
 			value: {
@@ -642,6 +648,72 @@ describe('List editor', () => {
 
 		expect(editor.unwrapBlock).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown ignores [h]', () => {
+		// setup
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						data: { toJSON: () => ({ hangingIndent: true }) }
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			key: 'h',
+			ctrlKey: false,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown(event, editor, jest.fn())
+
+		// verify
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [ctrl]+[h]', () => {
+		// setup
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						data: { toJSON: () => ({ hangingIndent: true }) }
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			key: 'h',
+			ctrlKey: true,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown(event, editor, jest.fn())
+
+		// verify
+		expect(toggleHangingIndent).toHaveBeenCalledWith(event, editor, expect.any(Function))
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
