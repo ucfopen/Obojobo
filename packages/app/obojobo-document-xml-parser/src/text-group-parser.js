@@ -1,8 +1,8 @@
 const parseTg = el => {
 	const tg = []
 
-	for (const i in el.elements) {
-		tg.push(parseT(el.elements[i]))
+	for (const element of el.elements) {
+		tg.push(parseT(element))
 	}
 
 	return tg
@@ -17,19 +17,15 @@ const parseT = el => {
 		data: el.attributes || null
 	}
 
-	for (const i in el.value) {
-		parseText(el.value[i], t.text)
+	for (const value of el.value) {
+		parseText(value, t.text)
 	}
 
 	return t
 }
 
-const parseText = (node, textItem, foundText) => {
+const parseText = (node, textItem) => {
 	if (node.type === 'text') {
-		if (!foundText && typeof node.text === 'string') {
-			foundText = true
-		}
-
 		textItem.value += node.text
 		return
 	}
@@ -63,6 +59,13 @@ const parseText = (node, textItem, foundText) => {
 		case 'code':
 			type = 'monospace'
 			break
+
+		// Preserve any abnormal attribution
+		default:
+			if (node.attributes) {
+				data = node.attributes
+			}
+			break
 	}
 
 	const styleRange = {
@@ -74,8 +77,8 @@ const parseText = (node, textItem, foundText) => {
 
 	textItem.styleList.push(styleRange)
 
-	for (const i in node.value) {
-		parseText(node.value[i], textItem)
+	for (const value of node.value) {
+		parseText(value, textItem)
 	}
 
 	styleRange.end = textItem.value.length

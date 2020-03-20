@@ -5,8 +5,11 @@ const RepositoryNav = require('../repository-nav')
 const RepositoryBanner = require('../repository-banner')
 const ModuleImage = require('../module-image')
 const Button = require('../button')
-const moment = require('moment')
 const APIUtil = require('../../api-util')
+const dayjs = require('dayjs')
+const relativeTime = require('dayjs/plugin/relativeTime')
+
+dayjs.extend(relativeTime)
 
 const PageModule = props => (
 	<div>
@@ -35,8 +38,8 @@ const PageModule = props => (
 				<b>
 					{props.owner.firstName} {props.owner.lastName}
 				</b>{' '}
-				on <b>{moment(props.module.createdAt).format('ll')}</b> and updated{' '}
-				{moment(props.module.updatedAt).fromNow()}.
+				on <b>{dayjs(props.module.createdAt).format('MMM D, YYYY')}</b> and updated{' '}
+				{dayjs(props.module.updatedAt).fromNow()}.
 			</div>
 
 			<h2>Use this Module in your Canvas Course</h2>
