@@ -4,6 +4,23 @@ import styleableTextRenderer from './styleable-text-renderer'
 
 const emptyChar = String.fromCharCode(8203)
 
+const createSrc = src => {
+	src = '' + src
+
+	const lcSrc = src.toLowerCase()
+	if (
+		!(
+			lcSrc.indexOf('http://') === 0 ||
+			lcSrc.indexOf('https://') === 0 ||
+			lcSrc.indexOf('//') === 0
+		)
+	) {
+		src = '//' + src
+	}
+
+	return src
+}
+
 export default class StyleableTextComponent extends React.Component {
 	createChild(el, key) {
 		const attrs = { key: key.counter++ }
@@ -11,7 +28,7 @@ export default class StyleableTextComponent extends React.Component {
 		switch (el.type) {
 			case 'a':
 				if (el.attrs && el.attrs.href) {
-					attrs.href = el.attrs.href
+					attrs.href = createSrc(el.attrs.href)
 					attrs.target = '_blank'
 				}
 				break
