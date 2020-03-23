@@ -1,6 +1,7 @@
 import React from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
+import katex from 'katex'
 
 import BoldIcon from '../../assets/bold-icon'
 import ItalicIcon from '../../assets/italic-icon'
@@ -51,7 +52,26 @@ const BasicMarks = {
 			if (leaf[STRIKE_MARK]) children = <del>{children}</del>
 			if (leaf[QUOTE_MARK]) children = <q>{children}</q>
 			if (leaf[MONOSPACE_MARK]) children = <code>{children}</code>
-			if (leaf[LATEX_MARK]) children = <span className={'latex-editor'}>{children}</span>
+			if (leaf[LATEX_MARK]) {
+				//@TODO: We probably want to move the JSX below into its own component.
+				//For now I'm being lazy!
+				children = (
+					<div className={'latex-editor'} contentEditable={true}>
+						{children}
+						<div contentEditable={false} className="preview">
+							<p>Preview:</p>
+							<span
+								className="preview-latex"
+								dangerouslySetInnerHTML={{
+									__html: katex.renderToString(children.props.text.text, {
+										throwOnError: false
+									})
+								}}
+							/>
+						</div>
+					</div>
+				)
+			}
 
 			props.children = children
 			return props
