@@ -74,7 +74,13 @@ module.exports =
 									plugins: [require('autoprefixer')]
 								}
 							},
-							'sass-loader'
+							{
+								loader: 'sass-loader',
+								options: {
+									// expose SASS variable for build environment
+									prependData: `$is_production: '${is_production}';`
+								}
+							}
 						]
 					},
 					{
