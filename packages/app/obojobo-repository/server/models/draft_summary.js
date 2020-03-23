@@ -107,17 +107,12 @@ class DraftSummary {
 		)
 	}
 
-	//TODO: Figure this out and finish it - the query is being a real bitch to write
-	static fetchByDraftTitleAndUserNotInCollection(searchString, userId, collectionId) {
+	static fetchByDraftTitleAndUser(searchString, userId) {
 		searchString = `%${searchString}%`
-		const whereSQL = `repository_map_user_to_draft.user_id = $[userId]
-		AND repository_map_drafts_to_collections.id IS NULL`
+		const whereSQL = `repository_map_user_to_draft.user_id = $[userId]`
 
 		const joinSQL = `JOIN repository_map_user_to_draft
-			ON repository_map_user_to_draft.draft_id = drafts.id
-		LEFT JOIN repository_map_drafts_to_collections
-			ON repository_map_drafts_to_collections.draft_id = drafts.id
-			AND repository_map_drafts_to_collections.collection_id != $[collectionId]`
+			ON repository_map_user_to_draft.draft_id = drafts.id`
 
 		const innerQuery = buildQueryWhere(whereSQL, joinSQL)
 		const query = `
@@ -128,18 +123,13 @@ class DraftSummary {
 			WHERE inner_query.title ILIKE $[searchString]
 		`
 
-		const queryValues = { userId, collectionId, searchString }
+		const queryValues = { userId, searchString }
 
 		return db
 			.any(query, queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error(
-					'fetchByDraftTitleAndUserNotInCollection Error',
-					error.message,
-					query,
-					queryValues
-				)
+				logger.error('fetchByDraftTitleAndUser Error', error.message, query, queryValues)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}

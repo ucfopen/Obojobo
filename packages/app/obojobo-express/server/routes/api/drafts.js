@@ -114,9 +114,11 @@ router
 						req.currentUser.id,
 						req.body.collectionId
 					)
-					if (!hasPerms) return
-					CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+					if (hasPerms) {
+						CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+					}
 				}
+				return newDraft
 			})
 			.then(res.success)
 			.catch(res.unexpected)

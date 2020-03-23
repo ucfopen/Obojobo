@@ -188,12 +188,33 @@ const getSortMethod = sortOrder => {
 	return sortFn
 }
 
-const renderModules = (modules, sortOrder) => {
+const renderModules = (modules, sortOrder, newModuleButton) => {
+	if (modules.length < 1) {
+		return (
+			<p className="repository--item-list--collection--empty-placeholder">
+				<span className="repository--item-list--collection--empty-placeholder--text">
+					Nothing to see here!
+				</span>
+				{newModuleButton}
+			</p>
+		)
+	}
+
 	const sortFn = getSortMethod(sortOrder)
 	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
 }
 
-const renderCollections = collections => {
+const renderCollections = (collections, newCollectionButton) => {
+	if (collections.length < 1) {
+		return (
+			<p className="repository--item-list--collection--empty-placeholder">
+				<span className="repository--item-list--collection--empty-placeholder--text">
+					Nothing to see here!
+				</span>
+				{newCollectionButton}
+			</p>
+		)
+	}
 	return collections.map(collection => (
 		<Collection key={collection.id} hasMenu={true} {...collection} />
 	))
@@ -287,6 +308,11 @@ const Dashboard = props => {
 		props.createNewModule(useTutorial, createNewModuleOptions)
 	}
 
+	const newCollectionButtonRender = (
+		<Button onClick={() => props.createNewCollection()}>New Collection</Button>
+	)
+	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -300,9 +326,9 @@ const Dashboard = props => {
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="Create New" className="repository--main-content--new-module-button">
-							<Button onClick={() => props.createNewCollection()}>New Collection</Button>
+							{newCollectionButtonRender}
 							<hr />
-							<Button onClick={() => onNewModuleClick(false)}>New Module</Button>
+							{newModuleButtonRender}
 							<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
 						</MultiButton>
 						{moduleFilterRender}
@@ -316,7 +342,8 @@ const Dashboard = props => {
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
 									{renderCollections(
-										props.filteredCollections ? props.filteredCollections : props.myCollections
+										props.filteredCollections ? props.filteredCollections : props.myCollections,
+										newCollectionButtonRender
 									)}
 								</div>
 							</div>
@@ -333,7 +360,8 @@ const Dashboard = props => {
 								<div className="repository--item-list--collection--item--multi-wrapper">
 									{renderModules(
 										props.filteredModules ? props.filteredModules : props.myModules,
-										moduleSortOrder
+										moduleSortOrder,
+										newModuleButtonRender
 									)}
 									{moduleModeRender}
 								</div>

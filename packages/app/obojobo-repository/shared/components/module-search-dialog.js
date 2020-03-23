@@ -21,13 +21,29 @@ const ModuleSearchDialog = props => {
 	}
 
 	const renderModuleList = () => {
-		return props.searchModules.map(module => (
-			<CollectionModuleListItem key={module.draftId} {...module}>
+		return props.searchModules.map(module => {
+			let buttonRender = (
 				<Button className="select-button" onClick={() => onSelectModule(module)}>
 					Select
 				</Button>
-			</CollectionModuleListItem>
-		))
+			)
+			let alreadyInCollection = false
+
+			if (props.collectionModules.some(m => module.draftId === m.draftId)) {
+				buttonRender = null
+				alreadyInCollection = true
+			}
+
+			return (
+				<CollectionModuleListItem
+					key={module.draftId}
+					{...module}
+					alreadyInCollection={alreadyInCollection}
+				>
+					{buttonRender}
+				</CollectionModuleListItem>
+			)
+		})
 	}
 
 	return (

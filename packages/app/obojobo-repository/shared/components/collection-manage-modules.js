@@ -46,6 +46,7 @@ const CollectionManageModulesDialog = props => {
 			>
 				<ModuleSearchDialog
 					collectionId={props.collection.id}
+					collectionModules={props.collectionModules}
 					onClose={closeModulePicker}
 					onSelectModule={addModule}
 				/>

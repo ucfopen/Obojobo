@@ -227,11 +227,7 @@ router
 			return
 		}
 
-		return DraftSummary.fetchByDraftTitleAndUserNotInCollection(
-			req.query.q,
-			req.currentUser.id,
-			req.params.collectionId
-		)
+		return DraftSummary.fetchByDraftTitleAndUser(req.query.q, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

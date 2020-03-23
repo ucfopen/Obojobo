@@ -3,11 +3,12 @@
 .module-list-item {
 	$dimensions-image: 1.8em;
 	$dimensions-close-button: 1.2em;
+	$dimensions-border-radius: 0.25em;
 
 	padding: 0.3em;
 	margin: 0 auto;
 	position: relative;
-	border-radius: 0.25em;
+	border-radius: $dimensions-border-radius;
 
 	&:hover {
 		background-color: lighten($color-banner-bg, 2%);
@@ -44,5 +45,26 @@
 		right: 0.5em;
 		top: 50%;
 		transform: translate(0, -50%);
+	}
+
+	&.is-already-in-collection {
+		color: $color-text-minor;
+
+		&:hover::before {
+			width: 100%;
+			height: 100%;
+			background-color: $color-bg-overlay;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: $dimensions-border-radius;
+			content: 'Already in collection';
+			line-height: 2em;
+			text-align: center;
+			color: $color-text;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 	}
 }
