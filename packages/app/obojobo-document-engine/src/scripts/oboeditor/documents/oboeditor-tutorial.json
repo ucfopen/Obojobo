@@ -4308,9 +4308,7 @@
 								"fit": "scale",
 								"src": "https://www.ucf.edu/",
 								"type": "media",
-								"width": "999999",
 								"border": false,
-								"height": "500",
 								"autoload": false,
 								"controls": "reload",
 								"initialZoom": 1
