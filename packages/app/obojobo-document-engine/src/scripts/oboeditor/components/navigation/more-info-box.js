@@ -241,8 +241,22 @@ class MoreInfoBox extends React.Component {
 									Delete
 								</Button>
 								<Button onClick={this.props.duplicateNode}>Duplicate</Button>
-								<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
-								<Button onClick={() => this.props.moveNode(this.props.index + 1)}>Move Down</Button>
+								{this.props.isAssessment ? null : (
+									<>
+										<Button
+											disabled={this.props.isFirst}
+											onClick={() => this.props.moveNode(this.props.index - 1)}
+										>
+											Move Up
+										</Button>
+										<Button
+											disabled={this.props.isLast}
+											onClick={() => this.props.moveNode(this.props.index + 1)}
+										>
+											Move Down
+										</Button>
+									</>
+								)}
 							</div>
 						)}
 					</div>

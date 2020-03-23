@@ -98,7 +98,13 @@ class Node extends React.Component {
 	}
 
 	render() {
+		let size = this.props.parent.nodes.size
 		const index = this.props.parent.getPath(this.props.node.key).get(0)
+
+		// A node inside a question cannot move pass multiple choices
+		if (this.props.parent.type === 'ObojoboDraft.Chunks.Question') {
+			size--
+		}
 
 		return (
 			<div className={'oboeditor-component component'} data-obo-component="true">
@@ -135,6 +141,8 @@ class Node extends React.Component {
 						onOpen={this.onOpen.bind(this)}
 						onClose={this.onClose.bind(this)}
 						moveNode={this.moveNode.bind(this)}
+						isFirst={index === 0}
+						isLast={index === size - 1}
 					/>
 				) : null}
 				{this.props.children}
