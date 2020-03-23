@@ -4378,7 +4378,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "All IFrames have 5 options that determine how they are displayed. None of these options are required; they simply alter the IFrame from its default display.",
+											"value": "All IFrames have options that determine how they are displayed. None of these options are required; they simply alter the IFrame from its default display.",
 											"styleList": []
 										}
 									}
@@ -4387,69 +4387,129 @@
 							"children": []
 						},
 						{
-							"id": "7c572576-7ec6-494d-8212-0421c0e5a8a6",
-							"type": "ObojoboDraft.Chunks.Text",
+							"id": "c0d13481-431d-4797-adb3-3767e36bc197",
+							"type": "ObojoboDraft.Chunks.List",
 							"content": {
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
-											"value": "The dimensions option sets the width and height that the IFrame will be displayed at. ",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The border option toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document.",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The autoload option determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The fit option sets how content will be scaled within the IFrame. The scale value will cause both width, height, and contents to be scaled down inside the IFrame. The scroll value will scale down only the width, insuring that all content is the same size.",
+											"value": "Dimensions: set the width and height that the IFrame will be displayed at. ",
 											"styleList": [
 												{
-													"end": 75,
+													"end": 10,
 													"data": {},
-													"type": "monospace",
-													"start": 70
-												},
-												{
-													"end": 173,
-													"data": {},
-													"type": "monospace",
-													"start": 167
+													"type": "b",
+													"start": 0
 												}
 											]
 										}
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
-											"value": "The inital zoom option sets a scale multiplier on the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
+											"value": "Border: toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document",
+											"styleList": [
+												{
+													"end": 6,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Autoload: determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
+											"styleList": [
+												{
+													"end": 8,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Fit: how content will be scaled within the IFrame",
+											"styleList": [
+												{
+													"end": 3,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Scale: size of content inside the iframe will scale up and down to fit (much like scaling an image)",
 											"styleList": []
 										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Scroll: content within the frame remains at it's original size. When too large to fit, the contents will scroll instead of scale down.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Initial Zoom: sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
+											"styleList": [
+												{
+													"end": 12,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
 									}
-								]
+								],
+								"listStyles": {
+									"type": "ordered",
+									"indents": [
+										{
+											"type": "ordered",
+											"bulletStyle": "decimal"
+										},
+										{
+											"type": "ordered",
+											"bulletStyle": "upper-alpha"
+										}
+									]
+								}
 							},
 							"children": []
 						},
