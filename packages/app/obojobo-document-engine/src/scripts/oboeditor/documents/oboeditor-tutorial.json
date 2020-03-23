@@ -9,8 +9,8 @@
   },
   "draftId": "aabb3346-3cec-4c1f-94c2-8ee3a523416a",
   "metadata": {},
-  "contentId": "e069608e-f63e-42b5-a7d8-d3038cd79007",
-  "Rev": "e069608e-f63e-42b5-a7d8-d3038cd79007",
+  "contentId": "af9d1b35-80be-49da-8eca-49217a3212ee",
+  "Rev": "af9d1b35-80be-49da-8eca-49217a3212ee",
   "children": [
     {
       "id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
@@ -185,8 +185,45 @@
                       "indent": 0
                     },
                     "text": {
-                      "value": "When a page is selected in the Navigation menu, a + Page button will appear beneath it.  Clicking this button will create a new page below the current page, and then open the up the new page, temporarily saving the content of the current page.  Similarly, if all pages or assessments are deleted, a + Add Page or + Add Assessment button will appear, allowing you to create a new page or assessment.",
-                      "styleList": []
+                      "value": "When a page is selected in the Navigation menu, a +Page button will appear beneath it.  Clicking this button will create a new page below the current page, and then open the new page, temporarily saving the content of the current page.  Similarly, if all pages or assessments are deleted, a +Add Page or +Add Assessment button will appear, allowing you to create a new page or assessment.",
+                      "styleList": [
+                        {
+                          "end": 55,
+                          "data": {},
+                          "type": "b",
+                          "start": 50
+                        },
+                        {
+                          "end": 55,
+                          "data": {},
+                          "type": "monospace",
+                          "start": 50
+                        },
+                        {
+                          "end": 300,
+                          "data": {},
+                          "type": "monospace",
+                          "start": 291
+                        },
+                        {
+                          "end": 300,
+                          "data": {},
+                          "type": "b",
+                          "start": 291
+                        },
+                        {
+                          "end": 319,
+                          "data": {},
+                          "type": "monospace",
+                          "start": 304
+                        },
+                        {
+                          "end": 319,
+                          "data": {},
+                          "type": "b",
+                          "start": 304
+                        }
+                      ]
                     }
                   }
                 ]
