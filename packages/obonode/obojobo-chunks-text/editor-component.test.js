@@ -15,7 +15,10 @@ describe('Text Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)

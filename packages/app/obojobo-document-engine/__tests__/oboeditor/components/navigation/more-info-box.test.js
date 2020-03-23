@@ -367,6 +367,7 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				moveNode={moveNode}
+				showMoveButtons
 			/>
 		)
 		component.setState({ isOpen: true })

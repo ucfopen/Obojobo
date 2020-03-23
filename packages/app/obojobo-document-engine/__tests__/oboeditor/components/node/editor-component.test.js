@@ -74,7 +74,10 @@ describe('Component Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -99,7 +102,10 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -131,7 +137,10 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -165,7 +174,10 @@ describe('Component Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -195,7 +207,10 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -225,7 +240,10 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -255,7 +273,10 @@ describe('Component Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -284,7 +305,10 @@ describe('Component Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -312,7 +336,10 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -338,7 +365,11 @@ describe('Component Editor Node', () => {
 				}}
 				parent={{
 					key: 'mock-key',
-					getPath: () => ({ get: jest.fn() })
+					type: 'ObojoboDraft.Chunks.Question',
+					getPath: () => ({ get: jest.fn() }),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -370,7 +401,10 @@ describe('Component Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>

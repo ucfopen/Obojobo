@@ -18,7 +18,10 @@ describe('List Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -56,7 +59,10 @@ describe('List Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -97,7 +103,10 @@ describe('List Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>

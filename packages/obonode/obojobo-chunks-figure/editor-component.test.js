@@ -33,7 +33,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -60,7 +63,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -81,7 +87,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -102,7 +111,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -121,7 +133,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={mockEditor}
 			/>
@@ -150,7 +165,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -190,7 +208,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -213,7 +234,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={mockEditor}
 			/>
@@ -236,7 +260,10 @@ describe('Figure Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={mockEditor}
 			/>

@@ -141,6 +141,7 @@ class Node extends React.Component {
 						onOpen={this.onOpen.bind(this)}
 						onClose={this.onClose.bind(this)}
 						moveNode={this.moveNode.bind(this)}
+						showMoveButtons
 						isFirst={index === 0}
 						isLast={index === size - 1}
 					/>

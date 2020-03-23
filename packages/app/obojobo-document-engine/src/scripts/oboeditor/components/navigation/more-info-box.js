@@ -231,27 +231,31 @@ class MoreInfoBox extends React.Component {
 									</span>
 								) : null}
 							</span>
-							<Button className="trigger-button" onClick={this.showTriggersModal}>
+							<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
 								✎ Edit
 							</Button>
 						</div>
 						{this.props.hideButtonBar ? null : (
 							<div className="button-bar">
-								<Button className="delete-page-button" onClick={this.props.deleteNode}>
+								<Button altAction isDangerous onClick={this.props.deleteNode}>
 									Delete
 								</Button>
-								<Button onClick={this.props.duplicateNode}>Duplicate</Button>
-								{this.props.isAssessment ? null : (
+								<Button altAction onClick={this.props.duplicateNode}>
+									Duplicate
+								</Button>
+								{!this.props.showMoveButtons ? null : (
 									<>
 										<Button
 											disabled={this.props.isFirst}
 											onClick={() => this.props.moveNode(this.props.index - 1)}
+											altAction
 										>
 											Move Up
 										</Button>
 										<Button
 											disabled={this.props.isLast}
 											onClick={() => this.props.moveNode(this.props.index + 1)}
+											altAction
 										>
 											Move Down
 										</Button>

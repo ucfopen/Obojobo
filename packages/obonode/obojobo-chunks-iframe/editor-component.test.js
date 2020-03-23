@@ -31,7 +31,10 @@ describe('IFrame Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -56,7 +59,10 @@ describe('IFrame Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -83,7 +89,10 @@ describe('IFrame Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>
@@ -115,7 +124,10 @@ describe('IFrame Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 			/>
 		)
@@ -149,7 +161,10 @@ describe('IFrame Editor Node', () => {
 				parent={{
 					getPath: () => ({
 						get: () => 0
-					})
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				editor={editor}
 			/>

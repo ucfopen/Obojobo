@@ -90,7 +90,7 @@ exports[`SubMenu SubMenu component selected as assessment 1`] = `
       "type": "abstract-toggle"
     }
   ],
-  "showMoveButtons": true
+  "showMoveButtons": false
 }
   </div>
 </li>
