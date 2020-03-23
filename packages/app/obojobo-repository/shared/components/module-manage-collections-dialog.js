@@ -1,12 +1,17 @@
 require('./module-manage-collections-dialog.scss')
 
+const whitespaceRegex = /\s+/g
+
 const React = require('react')
-const { useEffect } = require('react')
+const { useEffect, useState } = require('react')
 const ModuleImage = require('./module-image')
 const Button = require('./button')
 const Checkbox = require('./checkbox')
+const Search = require('./search')
 
 const ModuleManageCollectionsDialog = props => {
+	const [filterString, setfilterString] = useState('')
+
 	// Load collections this module is in on the initial render
 	useEffect(() => {
 		props.loadModuleCollections(props.draftId)
@@ -17,8 +22,20 @@ const ModuleManageCollectionsDialog = props => {
 	const removeCollection = collectionId =>
 		props.moduleRemoveFromCollection(props.draftId, collectionId)
 
-	const renderModuleCollections = () =>
-		props.collections.map(collection => {
+	const filterCollections = collection => {
+		const searchString = ('' + filterString).replace(whitespaceRegex, '').toLowerCase()
+		if (!searchString) return true
+
+		return (collection.title || '')
+			.replace(whitespaceRegex, '')
+			.toLowerCase()
+			.includes(searchString)
+	}
+
+	const renderModuleCollections = () => {
+		if (!props.collections) return null
+
+		return props.collections.filter(filterCollections).map(collection => {
 			const checkIfInCollection = draftCollection => collection.id === draftCollection.id
 
 			const moduleInCollection =
@@ -40,20 +57,7 @@ const ModuleManageCollectionsDialog = props => {
 				</li>
 			)
 		})
-
-	// return (
-	// 	<li key={collection.id} className="collection-list--collection">
-	// 		<span>{collection.title}</span>
-	// 		<CheckboxButton
-	// 			className="close-button"
-	// 			onClick={() => {
-	// 				onRemoveCollectionClick(collection.id)
-	// 			}}
-	// 		>
-	// 			×
-	// 		</CheckboxButton>
-	// 	</li>
-	// )
+	}
 
 	return (
 		<div className="module-manage-collections-dialog">
@@ -69,6 +73,7 @@ const ModuleManageCollectionsDialog = props => {
 				<div className="sub-title">
 					Add this module to or remove this module from private collections
 				</div>
+				<Search placeholder="Filter..." onChange={setfilterString} />
 			</div>
 			<div className="collection-list-wrapper">
 				<ul className="collection-list">{renderModuleCollections()}</ul>
