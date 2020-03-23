@@ -83,7 +83,7 @@
 		li {
 			display: flex;
 			max-width: 75%;
-			margin: 1em auto;
+			margin: 0.5em auto;
 			padding: 0.25em;
 			align-items: center;
 
@@ -114,18 +114,6 @@
 			display: inline-block;
 			text-align: center;
 			margin-right: 1em;
-		}
-	}
-
-	.module-manage-collections-dialog--select-collection-container {
-		display: flex;
-		align-items: center;
-		margin-bottom: 0.5em;
-
-		select {
-			flex-grow: 1;
-			margin-left: 1em;
-			height: 2em;
 		}
 	}
 }
