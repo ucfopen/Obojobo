@@ -112,12 +112,16 @@ class PageEditor extends React.Component {
 	}
 
 	checkIfSaved(event) {
+		if (this.props.readOnly) {
+			//eslint-disable-next-line
+			return undefined // Returning undefined will allow browser to close normally
+		}
 		if (!this.state.saved) {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 		//eslint-disable-next-line
-		return undefined // Returning undefined will allow browser to close normally
+		return undefined
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -163,25 +167,31 @@ class PageEditor extends React.Component {
 
 	render() {
 		const className =
-			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+			'editor--page-editor ' +
+			isOrNot(this.state.showPlaceholders, 'show-placeholders') +
+			isOrNot(this.props.readOnly, 'read-only')
+
 		return (
 			<div className={className}>
-				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
-					<FileToolbar
-						editorRef={this.editorRef}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						onSave={this.saveModule}
-						switchMode={this.props.switchMode}
-						saved={this.state.saved}
-						mode={'visual'}
-						insertableItems={this.props.insertableItems}
-						togglePlaceholders={this.togglePlaceholders}
-						showPlaceholders={this.state.showPlaceholders}
-					/>
-					<ContentToolbar editorRef={this.editorRef} />
-				</div>
+				{this.props.readOnly ? null : (
+					<div className="draft-toolbars">
+						<div className="draft-title">{this.props.model.title}</div>
+						<FileToolbar
+							editorRef={this.editorRef}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							onSave={this.saveModule}
+							switchMode={this.props.switchMode}
+							saved={this.state.saved}
+							mode={'visual'}
+							insertableItems={this.props.insertableItems}
+							togglePlaceholders={this.togglePlaceholders}
+							showPlaceholders={this.state.showPlaceholders}
+							readOnly={this.props.readOnly}
+						/>
+						<ContentToolbar editorRef={this.editorRef} />
+					</div>
+				)}
 
 				<EditorNav
 					navState={this.props.navState}
@@ -230,6 +240,10 @@ class PageEditor extends React.Component {
 	}
 
 	saveModule(draftId) {
+		if (this.props.readOnly) {
+			return
+		}
+
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId

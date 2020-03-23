@@ -42,6 +42,24 @@ router
 	})
 
 router
+	.route('/drafts/:draftId/revisions/all')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchAllDraftRevisions(req.params.draftId)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
+	.route('/drafts/:draftId/revisions/:revisionId')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get((req, res) => {
+		return DraftSummary.fetchDraftRevisionById(req.params.draftId, req.params.revisionId)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
 	.route('/users/search')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get(async (req, res) => {

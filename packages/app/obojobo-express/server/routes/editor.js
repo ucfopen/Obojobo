@@ -13,7 +13,15 @@ router
 	.route('/visual|classic/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
 	.get((req, res) => {
-		res.render('editor', { settings: { allowedUploadTypes }, assetForEnv, webpackAssetPath })
+		res.render('editor', {
+			settings: {
+				allowedUploadTypes,
+				readOnly: !!req.query.read_only,
+				revisionId: req.query.revision_id || ''
+			},
+			assetForEnv,
+			webpackAssetPath
+		})
 	})
 
 module.exports = router

@@ -111,6 +111,10 @@ const APIUtil = {
 
 	getAllDrafts() {
 		return API.get(`/api/drafts`, 'json').then(processJsonResults)
+	},
+
+	getDraftRevision(draftId, revisionId) {
+		return API.get(`/api/drafts/${draftId}/revisions/${revisionId}`).then(processJsonResults)
 	}
 }
 

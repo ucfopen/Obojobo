@@ -39,7 +39,11 @@ class DraftSummary {
 		created_at,
 		updated_at,
 		revision_count,
-		editor
+		editor,
+		content,
+		id,
+		first_name,
+		last_name
 	}) {
 		this.draftId = draft_id
 		this.title = title
@@ -49,6 +53,9 @@ class DraftSummary {
 		this.latestVersion = latest_version
 		this.revisionCount = Number(revision_count)
 		this.editor = editor
+		this.json = content
+		this.revisionId = id
+		this.userFullName = `${first_name} ${last_name}`
 	}
 
 	static fetchById(id) {
@@ -86,6 +93,49 @@ class DraftSummary {
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				return Promise.reject('Error loading DraftSummary by query')
+			})
+	}
+
+	static fetchAllDraftRevisions(draftId) {
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				repository_map_user_to_draft.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN repository_map_user_to_draft
+				ON repository_map_user_to_draft.draft_id=drafts_content.draft_id
+			JOIN users
+				ON repository_map_user_to_draft.user_id=users.id
+			WHERE drafts_content.draft_id=$[draftId]
+			ORDER BY drafts_content.created_at DESC;
+		`
+
+		return db
+			.any(query, { draftId })
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				logger.error('fetchAllDraftRevisions', error.message, query, draftId)
+				return Promise.reject('Error loading DraftSummary by query')
+			})
+	}
+
+	static fetchDraftRevisionById(draftId, revisionId) {
+		const query = `
+			SELECT id, draft_id, created_at, content FROM drafts_content
+			WHERE draft_id = $[draftId] AND id = $[revisionId]
+		`
+
+		return db
+			.one(query, { draftId, revisionId })
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				logger.error('fetchAllDraftVersions', error.message, query, draftId)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}

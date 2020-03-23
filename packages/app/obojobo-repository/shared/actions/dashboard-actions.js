@@ -50,6 +50,12 @@ const showModulePermissions = module => ({
 	module
 })
 
+const SHOW_RESTORATION_DIALOG = 'SHOW_RESTORATION_DIALOG'
+const showRestorationDialog = module => ({
+	type: SHOW_RESTORATION_DIALOG,
+	module
+})
+
 const CLOSE_MODAL = 'CLOSE_MODAL'
 const closeModal = () => ({ type: CLOSE_MODAL })
 
@@ -128,6 +134,7 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_RESTORATION_DIALOG,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -138,5 +145,6 @@ module.exports = {
 	showModulePermissions,
 	loadUsersForModule,
 	clearPeopleSearchResults,
-	showModuleMore
+	showModuleMore,
+	showRestorationDialog
 }

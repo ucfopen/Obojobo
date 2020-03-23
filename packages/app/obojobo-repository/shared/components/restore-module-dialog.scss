@@ -1,0 +1,202 @@
+@import '../../client/css/defaults';
+
+$border-color: rgba(0, 0, 0, 0.1);
+$border: 1px solid $border-color;
+
+.restore-module-dialog {
+	font-family: $font-default;
+	width: calc(100vw - 3em);
+}
+
+.restore-module-dialog--header {
+	height: 3em;
+	border-bottom: 1px solid;
+	box-sizing: border-box;
+	position: relative;
+	border-bottom: $border;
+
+	.repository--module-icon--image {
+		width: 1.5em;
+		height: 1.75em;
+		display: inline-block;
+		vertical-align: middle;
+		position: absolute;
+		left: 0.75em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.title {
+		position: absolute;
+		left: 4em;
+		font-size: 0.725em;
+		font-weight: bold;
+		color: black;
+		margin: 0;
+		max-width: 50%;
+		vertical-align: middle;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.close-button {
+		position: absolute;
+		right: 0.5em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+}
+
+.restore-module-dialog--body {
+	background-color: #f2f2f2;
+	display: flex;
+	height: calc(95vh - 3em);
+
+	.toggle-button {
+		background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/arrow.svg');
+		background-color: transparent;
+		background-position: center center;
+		background-repeat: no-repeat;
+		border: none;
+		cursor: pointer;
+		height: 1.32rem;
+		overflow: hidden;
+		text-indent: -9999px;
+		transition: background-color 0.2s;
+		width: 1.6rem;
+		margin-right: 0.5em;
+		z-index: 6;
+		transform: none;
+		float: left;
+
+		&.is-not-open {
+			transform: rotate(180deg);
+
+			&:not(:hover) {
+				background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/hamburger.svg');
+			}
+		}
+	}
+
+	span {
+		display: block;
+		background-color: white;
+	}
+}
+
+.revision-history {
+	flex: 1;
+	border-right: $border;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	transition: flex 0.2s;
+
+	&.is-closed {
+		flex: 0;
+	}
+}
+
+.revision-history--title {
+	padding: 0.9em 1.5em;
+	font-weight: bold;
+	font-size: 0.8em;
+	min-width: 14em;
+}
+
+.revision-history--item {
+	border-top: $border;
+	border-bottom: $border;
+	padding: 1em 1.5em;
+	background-color: white;
+	font-size: 0.75em;
+	min-width: 14em;
+	cursor: pointer;
+
+	.date {
+		margin-bottom: 0.4em;
+		font-weight: bold;
+	}
+
+	.username {
+		color: $color-text-minor;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.latest-version {
+		background-color: #cde0f9;
+		// color: #4884da;
+		color: $color-obojobo-blue;
+		font-size: 0.8em;
+		width: 8.5em;
+		text-align: center;
+		border-radius: 5em;
+		padding: 0.2em 0;
+		margin-top: 0.6em;
+	}
+
+	.is-selected {
+		// color: #2457C2;
+		color: $color-obojobo-blue;
+	}
+
+	&:hover {
+		background-color: #f2f2f2;
+
+		span:not(.latest-version) {
+			background-color: #f2f2f2;
+		}
+	}
+}
+
+.editor-preview {
+	flex: 4;
+	padding: 1em;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+
+	iframe {
+		border: 2px solid $color-action;
+		border-bottom-right-radius: 0.4em;
+		border-bottom-left-radius: 0.4em;
+		width: 100%;
+		height: calc(100% - 4em);
+	}
+
+	.preview-button {
+		margin-right: 1em;
+	}
+
+	.restore-button,
+	.toggle-nav-button,
+	.preview-button {
+		float: right;
+	}
+
+	.restore-button:disabled {
+		// Prevents the button from adjusting its size
+		// when it's disabled
+		border: 0;
+	}
+}
+
+.editor-preview--header {
+	height: 2.5em;
+	padding: 0.8em;
+	margin-right: -4px;
+	border: $border;
+	border-bottom: none;
+
+	span {
+		font-weight: bold;
+		margin-bottom: 0.5em;
+	}
+
+	small {
+		display: block;
+		color: $color-text-minor;
+		font-size: 0.7em;
+	}
+}

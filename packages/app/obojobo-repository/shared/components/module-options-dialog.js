@@ -71,7 +71,8 @@ const ModuleOptionsDialog = props => (
 					Public Page
 				</ButtonLink>
 				<div className="label">Visit this modules public page.</div>
-
+				<Button onClick={() => props.showRestorationDialog(props)}>Restore</Button>
+				<div className="label">Revert this module to a previous version.</div>
 				<Button
 					className="new-button dangerous-button"
 					onClick={() => {

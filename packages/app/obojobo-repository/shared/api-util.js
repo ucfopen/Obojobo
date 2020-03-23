@@ -11,6 +11,21 @@ const APIUtil = {
 				window.alert('Something went wrong while copying') //eslint-disable-line no-alert
 			}
 		})
+	},
+	getAllDraftRevisions(draftId) {
+		return API.get(`/api/drafts/${draftId}/revisions/all`)
+			.then(res => res.json())
+			.then(json => json.value)
+			.catch(err => console.error(err)) // eslint-disable-line no-console
+	},
+	getDraftRevision(draftId, revisionId) {
+		return API.get(`/api/drafts/${draftId}/revisions/${revisionId}`)
+			.then(res => res.json())
+			.then(json => json.value)
+			.catch(err => console.error(err)) // eslint-disable-line no-console
+	},
+	postDraft(id, draftString, format = 'application/json') {
+		return API.postWithFormat(`/api/drafts/${id}`, draftString, format)
 	}
 }
 

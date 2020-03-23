@@ -8,6 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const RestoreModuleDialog = require('./restore-module-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -20,6 +21,7 @@ const renderOptionsDialog = props => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
+		showRestorationDialog={props.showRestorationDialog}
 	/>
 )
 
@@ -37,6 +39,10 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
+const renderRestorationDialog = props => (
+	<RestoreModuleDialog {...props.selectedModule} onClose={props.closeModal} />
+)
+
 const renderModalDialog = props => {
 	let dialog
 	let title
@@ -50,7 +56,10 @@ const renderModalDialog = props => {
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
 			break
-
+		case 'restore-module':
+			title = 'Restore Module'
+			dialog = renderRestorationDialog(props)
+			break
 		default:
 			return null
 	}
