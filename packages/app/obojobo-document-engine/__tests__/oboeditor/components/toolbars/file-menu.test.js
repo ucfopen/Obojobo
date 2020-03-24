@@ -36,60 +36,51 @@ describe('File Menu', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('FileMenu calls open', () => {
-		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'ok', value: { id: 'mockId' } })
+	test('FileMenu - processFileContent', () => {
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok', value: { id: 'mockId' } })
 
-		const component = mount(<FileMenu draftId="mockDraft" />)
+		const reload = jest.fn()
+		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)
 
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		const fileContents = 'file contents'
-		let file = new Blob([fileContents], { type: 'application/json' })
+		const mockId = 'mockId'
+		const content = 'mockContent'
 
-		component.instance().onChangeFile({ target: { files: [file] } })
+		component.instance().processFileContent(mockId, content, 'application/json')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'application/json')
 
-		file = new Blob([fileContents], { type: 'text/plain;charset=UTF-8' })
-
-		component.instance().onChangeFile({ target: { files: [file] } })
+		component.instance().processFileContent(mockId, content, 'text')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'text/plain')
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('FileMenu calls open - stop when there is no file', () => {
-		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'error', message: 'error' })
-
+	test('FileMenu calls Import', () => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
+		expect(ModalUtil.show).toHaveBeenCalled()
 
-		component.instance().onChangeFile({ target: { files: [] } })
+		component.instance().buildFileSelector()
+		expect(ModalUtil.hide).toHaveBeenCalled()
 
-		expect(APIUtil.createNewDraft).not.toHaveBeenCalled()
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('FileMenu calls open - fail', () => {
-		APIUtil.createNewDraft.mockResolvedValueOnce({ status: 'error', message: 'error' })
+	test('FileMenu calls onFileChange', () => {
+		const component = mount(<FileMenu draftId="mockDraft" reload={jest.fn} />)
 
-		const component = mount(<FileMenu draftId="mockDraft" />)
-
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
-
-		const fileContents = 'file contents'
-		const file = new Blob([fileContents], { type: 'text/plain' })
-
-		component.instance().onChangeFile({ target: { files: [file] } })
+		const file = new Blob(['fileContents'], { type: 'text/plain' })
+		component.instance().onFileChange({ target: { files: [file] } })
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()

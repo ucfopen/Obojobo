@@ -111,6 +111,7 @@ const FileToolbar = props => {
 				model={props.model}
 				draftId={props.draftId}
 				onSave={props.onSave}
+				reload={props.reload}
 				onRename={props.onRename}
 				mode={props.mode}
 			/>

@@ -752,4 +752,23 @@ describe('PageEditor', () => {
 
 		component.unmount()
 	})
+
+	test('PageEditor component call reload', () => {
+		window.removeEventListener = jest.fn()
+		location.reload = jest.fn()
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<PageEditor {...props} />)
+
+		component.getInstance().reload()
+		expect(window.removeEventListener).toHaveBeenCalled()
+		expect(location.reload).toHaveBeenCalled()
+		expect(component.toJSON()).toMatchSnapshot()
+	})
 })

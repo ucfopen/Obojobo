@@ -9,30 +9,8 @@ import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import DropDownMenu from './drop-down-menu'
 
 const { Prompt } = Common.components.modal
-const { SimpleDialog } = Common.components.modal
+const { SimpleDialog, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
-
-const processFile = (e, file) => {
-	const contents = e.target.result
-
-	APIUtil.createNewDraft(
-		contents,
-		file.type === 'application/json' ? 'application/json' : 'application/xml'
-	)
-		.then(draftResult => {
-			if (draftResult.status !== 'ok') throw draftResult
-			const id = draftResult.value.id
-
-			window.open(window.location.origin + '/editor/visual/' + id, '_blank')
-		})
-		.catch(() => {
-			ModalUtil.show(
-				<SimpleDialog ok onConfirm={ModalUtil.hide}>
-					Unexpected error occurred while uploading
-				</SimpleDialog>
-			)
-		})
-}
 
 class FileMenu extends React.PureComponent {
 	renameModule(moduleId, label) {
@@ -99,23 +77,36 @@ class FileMenu extends React.PureComponent {
 			})
 	}
 
-	onChangeFile(event) {
+	processFileContent(id, content, type) {
+		APIUtil.postDraft(
+			id,
+			content,
+			type === 'application/json' ? 'application/json' : 'text/plain'
+		).then(() => {
+			this.props.reload()
+		})
+	}
+
+	onFileChange(event) {
 		const file = event.target.files[0]
-		if (!file) return
 
 		const reader = new FileReader()
-		reader.onload = e => processFile(e, file)
 		reader.readAsText(file, 'UTF-8')
+		reader.onload = e => {
+			this.processFileContent(this.props.draftId, e.target.result, file.type)
+		}
 	}
 
 	buildFileSelector() {
+		ModalUtil.hide()
+
 		const fileSelector = document.createElement('input')
 		fileSelector.setAttribute('type', 'file')
 		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
 
-		fileSelector.onchange = this.onChangeFile
+		fileSelector.onchange = this.onFileChange.bind(this)
 
-		return fileSelector
+		fileSelector.click()
 	}
 
 	render() {
@@ -125,8 +116,23 @@ class FileMenu extends React.PureComponent {
 				name: 'Import from file...',
 				type: 'action',
 				action: () => {
-					const fileSelector = this.buildFileSelector()
-					fileSelector.click()
+					const buttons = [
+						{
+							value: 'Cancel',
+							altAction: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'Yes - Import document',
+							onClick: this.buildFileSelector.bind(this),
+							default: true
+						}
+					]
+					ModalUtil.show(
+						<Dialog buttons={buttons} title="Wait! Import will replace this document.">
+							Your work will be lost. Are you sure you want to continue?
+						</Dialog>
+					)
 				}
 			},
 			{

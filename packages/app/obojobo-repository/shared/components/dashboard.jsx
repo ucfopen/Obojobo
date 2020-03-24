@@ -116,9 +116,9 @@ const Dashboard = props => {
 		reader.onload = function(e) {
 			const contents = e.target.result
 
-			APIUtil.createNewDraftWithContent(
+			APIUtil.createNewDraft(
 				contents,
-				file.type === 'application/json' ? 'application/json' : 'text/plain;charset=UTF-8'
+				file.type === 'application/json' ? 'application/json' : 'application/xml'
 			).then(() => {
 				location.reload()
 			})
