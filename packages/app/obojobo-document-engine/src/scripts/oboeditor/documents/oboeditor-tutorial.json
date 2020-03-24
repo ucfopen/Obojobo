@@ -7,10 +7,10 @@
 			"start": null,
 			"title": "Obojobo Visual Editor Tutorial"
 	},
-	"draftId": "446ec654-1c5f-4caa-a4d4-2ea0d0c00d06",
+	"draftId": "3303e23a-25f4-4c3b-be5a-17583a95f12f",
 	"metadata": {},
-	"contentId": "786482cd-72f3-4b8a-8308-be4a6542ef11",
-	"Rev": "786482cd-72f3-4b8a-8308-be4a6542ef11",
+	"contentId": "29363ade-c7d0-4b02-8b3a-d8027a54650f",
+	"Rev": "29363ade-c7d0-4b02-8b3a-d8027a54650f",
 	"children": [
 			{
 					"id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
@@ -27,7 +27,7 @@
 									},
 									"children": [
 											{
-													"id": "cb446cb0-1528-45a8-8f67-f344a1d044a5",
+													"id": "56367e43-607b-425b-8a4b-079dd33c7ba1",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -46,7 +46,7 @@
 													"children": []
 											},
 											{
-													"id": "6b0dc582-4758-47e2-af17-1c920d59d255",
+													"id": "a7f0e986-64e0-47fa-b3db-0b2b2ccfc66e",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -72,7 +72,7 @@
 													"children": []
 											},
 											{
-													"id": "0b8e36e1-2e7a-4069-80fb-df81755fe1b4",
+													"id": "c4565a11-4c96-4162-819c-96b299e8dfc8",
 													"type": "ObojoboDraft.Chunks.Break",
 													"content": {
 															"width": "normal"
@@ -80,7 +80,7 @@
 													"children": []
 											},
 											{
-													"id": "663ef005-f994-48a6-aa37-0205ca2d42ca",
+													"id": "2d793c81-89d6-4ddf-8fcb-7171a9e07392",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -97,7 +97,7 @@
 													"children": []
 											},
 											{
-													"id": "478d2759-4af1-4486-bf54-8c9b527d25c9",
+													"id": "8cd836ed-347d-47dc-8b45-63a223e2bafe",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -115,7 +115,7 @@
 													"children": []
 											},
 											{
-													"id": "709fb0b4-9cc1-4cb7-89a7-096c5a516a06",
+													"id": "d26958d2-335a-4d4d-bb42-8774d59952a8",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -133,7 +133,7 @@
 													"children": []
 											},
 											{
-													"id": "091b0e0a-2fe7-45b2-ac19-0fd62d893304",
+													"id": "184ffec1-f6d6-431f-b891-c65a54cf0b8b",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -170,7 +170,7 @@
 													"children": []
 											},
 											{
-													"id": "e2aff387-1926-4653-aa8e-e77d3afa5fc6",
+													"id": "5fa8875a-6f11-4027-8cd7-32daa316c8f5",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -187,7 +187,7 @@
 													"children": []
 											},
 											{
-													"id": "a5eb6860-e51f-45cf-9f5b-ab497c8a8641",
+													"id": "6d087906-59ae-490e-b840-fdb5316e435f",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -205,7 +205,7 @@
 													"children": []
 											},
 											{
-													"id": "381fd26a-1769-47b5-8233-7929d9d57f62",
+													"id": "f8c43840-b3f8-4480-a072-95f6cd48d4ad",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -223,7 +223,7 @@
 													"children": []
 											},
 											{
-													"id": "5f8ea7ac-2fe8-4491-ae58-67fbdec74ae3",
+													"id": "0bedd503-f790-4746-b1d2-c5cbce724d90",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -240,7 +240,7 @@
 													"children": []
 											},
 											{
-													"id": "31ab601a-358f-476b-8dd3-8d6ab4c6ccdb",
+													"id": "3f4ac4f9-7fc4-4a0a-bf30-d527aca99916",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -295,7 +295,7 @@
 													"children": []
 											},
 											{
-													"id": "d0c5d9ec-db29-4e50-9186-a4541071f1db",
+													"id": "9713b5d6-b641-4d88-99ce-082f92680683",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -312,7 +312,7 @@
 													"children": []
 											},
 											{
-													"id": "8bf17337-1c17-4e07-abf7-a1266b554b8c",
+													"id": "f27d6d56-cc3e-459c-9ef4-23e0f9a9a92c",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -330,7 +330,7 @@
 													"children": []
 											},
 											{
-													"id": "e4ae85aa-680d-46f8-b6e7-deedcf7a553c",
+													"id": "de7b30d7-ecd1-4c4d-b673-d6a686239948",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -348,7 +348,7 @@
 													"children": []
 											},
 											{
-													"id": "f5c9839f-2cdd-4294-b001-8bbd77b7665b",
+													"id": "d9830dda-837b-4064-a5d0-c019288b7201",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -366,7 +366,7 @@
 													"children": []
 											},
 											{
-													"id": "60928bc6-b4ac-4e67-b25e-db25c04c49b3",
+													"id": "f6b3c8da-950e-455d-aa4a-2912b0d4b3ba",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -383,7 +383,7 @@
 													"children": []
 											},
 											{
-													"id": "aa0b6bdb-f198-498a-9cde-879ffa51984a",
+													"id": "bdf78683-5027-4767-a122-09b86dafda1c",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -401,7 +401,7 @@
 													"children": []
 											},
 											{
-													"id": "91c3d600-b02e-4287-a991-510b6c79f9d2",
+													"id": "8e5f9bf5-1bc5-4fb6-9d57-864f62b299c0",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -418,7 +418,7 @@
 													"children": []
 											},
 											{
-													"id": "404e69c0-0894-459a-bc94-8c5e828f3bf1",
+													"id": "6c245df0-e901-4493-93a6-0d79724ee7f9",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -436,7 +436,7 @@
 													"children": []
 											},
 											{
-													"id": "645a2e30-217d-4be9-8889-fef33fb882a3",
+													"id": "3b63b6f9-8ee4-4d98-9345-9ef8eeff27b2",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -453,7 +453,7 @@
 													"children": []
 											},
 											{
-													"id": "4b0a95f5-c0e6-4c1b-b256-4fd3a36b5c8b",
+													"id": "48796666-5a99-45a0-841a-39681524597d",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -471,7 +471,7 @@
 													"children": []
 											},
 											{
-													"id": "39079b2c-502d-4bdb-9d6b-cd2f7ed13880",
+													"id": "99022c9b-fb33-487c-a6f5-359deb8bceff",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -496,7 +496,7 @@
 													"children": []
 											},
 											{
-													"id": "8d91df1f-edc7-4103-9874-310d96bc93ce",
+													"id": "3953c76b-abdb-4cdd-876b-97810d85c802",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -533,7 +533,7 @@
 													"children": []
 											},
 											{
-													"id": "da1e3713-91d6-4e45-9dd2-63ce425e2722",
+													"id": "81062e30-5b01-44f2-882e-a62afb8fc96d",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -551,7 +551,7 @@
 													"children": []
 											},
 											{
-													"id": "ce799c06-aedd-47d9-b55c-c231029148ee",
+													"id": "c663f0ad-c830-464d-b741-729324736e4f",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -570,7 +570,7 @@
 													"children": []
 											},
 											{
-													"id": "ff9965a4-e66c-47ae-a8ae-7f9ebdaacd74",
+													"id": "be5874ed-a75f-44e4-a86f-895a223bff89",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -587,7 +587,7 @@
 													"children": []
 											},
 											{
-													"id": "cab8bd54-6a20-41b4-88f9-192800bbbce7",
+													"id": "7ce89273-0450-4c41-b65c-e7a0f03b72d3",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -613,7 +613,7 @@
 													"children": []
 											},
 											{
-													"id": "09d1d344-e8ea-4578-b7c4-79f25f44db70",
+													"id": "e7251589-d80e-4779-ae15-fc34622bf7db",
 													"type": "ObojoboDraft.Chunks.Heading",
 													"content": {
 															"textGroup": [
@@ -630,7 +630,7 @@
 													"children": []
 											},
 											{
-													"id": "207e3177-94b5-46cf-8c5a-b857933a41eb",
+													"id": "47345309-198e-4768-92ac-4358275ac0c1",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -648,7 +648,7 @@
 													"children": []
 											},
 											{
-													"id": "42b07e1a-bacc-4679-a2ff-a3a74fe144d3",
+													"id": "db3c7188-6526-4474-9ede-2d8fc84049d2",
 													"type": "ObojoboDraft.Chunks.Text",
 													"content": {
 															"textGroup": [
@@ -3407,14 +3407,23 @@
 																					"value": "To change a math equation, click on the Math Equation. A box will pop up, with four input fields. Type the LaTeX representation of the equation into the Latex field, and then click OK. The Math Equation will be updated, and will display next to the edit button.",
 																					"styleList": []
 																			}
-																	},
+																	}
+															]
+													},
+													"children": []
+											},
+											{
+													"id": "bed2297e-cc0d-41ea-ab27-8a90d62c4891",
+													"type": "ObojoboDraft.Chunks.Text",
+													"content": {
+															"textGroup": [
 																	{
 																			"data": {
 																					"align": 0,
 																					"indent": 0
 																			},
 																			"text": {
-																					"value": "Try it! Click on the Edit button and then type y=mx+b into the Latex Equation input.",
+																					"value": "Try it! Click on the empty Math Equation chunk below and enter y=mx+b into the input box labeled \"Latex\".",
 																					"styleList": [
 																							{
 																									"end": 7,
@@ -3423,10 +3432,10 @@
 																									"start": 0
 																							},
 																							{
-																									"end": 53,
+																									"end": 69,
 																									"data": {},
 																									"type": "monospace",
-																									"start": 47
+																									"start": 63
 																							}
 																					]
 																			}
@@ -3456,18 +3465,35 @@
 																					"indent": 0
 																			},
 																			"text": {
-																					"value": "If the LaTeX equation is mis-typed, an error will appear at the bottom of the dialog when OK is pressed. This error must be corrected before the Math Equation can be updated.",
+																					"value": "If the LaTeX equation is mis-typed, an error message will appear. Fix the following Math Equation by correcting the spelling of thata to theta.",
 																					"styleList": [
 																							{
-																									"end": 120,
+																									"end": 133,
 																									"data": {},
-																									"type": "i",
-																									"start": 116
+																									"type": "monospace",
+																									"start": 128
+																							},
+																							{
+																									"end": 143,
+																									"data": {},
+																									"type": "monospace",
+																									"start": 137
 																							}
 																					]
 																			}
 																	}
 															]
+													},
+													"children": []
+											},
+											{
+													"id": "70ed7dec-0c10-4ab2-8a2a-48d5d611fb78",
+													"type": "ObojoboDraft.Chunks.MathEquation",
+													"content": {
+															"alt": "",
+															"size": 1,
+															"label": "",
+															"latex": "\\thata + \\pi"
 													},
 													"children": []
 											},
@@ -3571,8 +3597,62 @@
 													"content": {
 															"alt": "",
 															"size": "1.5",
+															"align": "center",
 															"label": "",
 															"latex": "\\underset{acid\\ 1}{H-A}+\\underset{base\\ 1}{B^-} \\rightleftharpoons \\underset{base\\ 2}{A^-} + \\underset{acid\\ 2}{B-H}"
+													},
+													"children": []
+											},
+											{
+													"id": "49242bf4-971d-4bc0-b220-807376064de2",
+													"type": "ObojoboDraft.Chunks.Text",
+													"content": {
+															"textGroup": [
+																	{
+																			"data": {
+																					"indent": 0
+																			},
+																			"text": {
+																					"value": "Math Equation chunks can also be aligned to the left or right. Here's a few examples",
+																					"styleList": []
+																			}
+																	}
+															]
+													},
+													"children": []
+											},
+											{
+													"id": "27a711e0-3c02-4040-b043-138919444304",
+													"type": "ObojoboDraft.Chunks.MathEquation",
+													"content": {
+															"alt": "",
+															"size": 1,
+															"align": "left",
+															"label": "A left aligned Matrix",
+															"latex": "M = \\begin{bmatrix} \\frac{5}{6} & \\frac{1}{6} & 0 \\\\[0.3em] \\frac{5}{6} & 0 & \\frac{1}{6} \\\\[0.3em] 0 & \\frac{5}{6} & \\frac{1}{6}\\end{bmatrix}"
+													},
+													"children": []
+											},
+											{
+													"id": "92f1cca7-c70e-48eb-9154-b7a74e6ca932",
+													"type": "ObojoboDraft.Chunks.MathEquation",
+													"content": {
+															"alt": "",
+															"size": 1,
+															"align": "right",
+															"label": "A right aligned fraction",
+															"latex": "\\left(\\frac{1}{\\sqrt{x}}\\right)"
+													},
+													"children": []
+											},
+											{
+													"id": "9179d3c5-ea3b-48df-8a62-9d24c041966e",
+													"type": "ObojoboDraft.Chunks.MathEquation",
+													"content": {
+															"alt": "",
+															"size": 1,
+															"label": "A center aligned equation (default)",
+															"latex": "F(x) = \\int^a_b \\frac{1}{3}x^3"
 													},
 													"children": []
 											}
@@ -6075,7 +6155,7 @@
 																	"id": "d99da2ae-a655-46c3-89a2-48d5cb86792d",
 																	"type": "ObojoboDraft.Chunks.MCAssessment",
 																	"content": {
-																			"shuffle": true,
+																			"shuffle": false,
 																			"responseType": "pick-one"
 																	},
 																	"children": [
@@ -6479,7 +6559,7 @@
 													"children": []
 											},
 											{
-													"id": "4c17f789-5896-443a-8420-e7886cdb393c",
+													"id": "90b78a4d-1e01-43f4-b21c-c702370b8b41",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "2",
@@ -6584,7 +6664,7 @@
 																					"indent": 0
 																			},
 																			"text": {
-																					"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. The How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
+																					"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
 																					"styleList": []
 																			}
 																	}
@@ -6603,7 +6683,14 @@
 																			},
 																			"text": {
 																					"value": "A Question Bank also has a How should questions be selected? property, which determines how it picks children to display. ",
-																					"styleList": []
+																					"styleList": [
+																							{
+																									"end": 60,
+																									"data": {},
+																									"type": "q",
+																									"start": 27
+																							}
+																					]
 																			}
 																	}
 															]
@@ -6644,7 +6731,7 @@
 													"children": []
 											},
 											{
-													"id": "68759955-9872-4d80-9a88-618715f2b53c",
+													"id": "40dc80ba-a9cb-47e8-a694-1dc8889623de",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
@@ -6825,7 +6912,7 @@
 													"children": []
 											},
 											{
-													"id": "83c32587-c193-4c49-9999-d50a56b2fb55",
+													"id": "2c992865-7713-4f26-91a6-849a4c44708d",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
@@ -7013,7 +7100,7 @@
 													"children": []
 											},
 											{
-													"id": "5d50bed2-2a52-4673-9486-264e9beb3edd",
+													"id": "561c667c-8449-4d98-8696-c0326470c26a",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
@@ -7836,7 +7923,7 @@
 																									"start": 378
 																							},
 																							{
-																									"end": 458,
+																									"end": 455,
 																									"data": {},
 																									"type": "i",
 																									"start": 445
@@ -7888,7 +7975,7 @@
 									]
 							},
 							{
-									"id": "0e056f74-bcba-4a61-b882-751722fe312f",
+									"id": "fae3efd0-0ca0-44c0-ab4a-112c554b227b",
 									"type": "ObojoboDraft.Chunks.QuestionBank",
 									"content": {
 											"choose": "2",
