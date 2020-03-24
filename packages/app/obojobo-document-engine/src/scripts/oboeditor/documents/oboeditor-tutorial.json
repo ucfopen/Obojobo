@@ -4645,7 +4645,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Dimensions: set the width and height that the IFrame will be displayed at. ",
+																					"value": "Dimensions: Set the width and height that the IFrame will be displayed at. ",
 																					"styleList": [
 																							{
 																									"end": 10,
@@ -4662,7 +4662,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Border: toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document",
+																					"value": "Border: Toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document",
 																					"styleList": [
 																							{
 																									"end": 6,
@@ -4679,7 +4679,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Autoload: determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
+																					"value": "Autoload: Determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
 																					"styleList": [
 																							{
 																									"end": 8,
@@ -4696,7 +4696,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Fit: how content will be scaled within the IFrame",
+																					"value": "Fit: How content will be scaled within the IFrame",
 																					"styleList": [
 																							{
 																									"end": 3,
@@ -4713,7 +4713,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Scale: size of content inside the iframe will scale up and down to fit (much like scaling an image)",
+																					"value": "Scale: Size of content inside the iframe will scale up and down to fit (much like scaling an image)",
 																					"styleList": []
 																			}
 																	},
@@ -4723,7 +4723,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Scroll: content within the frame remains at it's original size. When too large to fit, the contents will scroll instead of scale down.",
+																					"value": "Scroll: Content within the frame remains at its original size. When too large to fit, the contents will scroll instead of scale down.",
 																					"styleList": []
 																			}
 																	},
@@ -4733,7 +4733,7 @@
 																					"hangingIndent": false
 																			},
 																			"text": {
-																					"value": "Initial Zoom: sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
+																					"value": "Initial Zoom: Sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
 																					"styleList": [
 																							{
 																									"end": 12,
