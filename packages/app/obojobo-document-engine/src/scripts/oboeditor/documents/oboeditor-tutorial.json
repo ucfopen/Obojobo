@@ -9,8 +9,8 @@
 	},
 	"draftId": "3303e23a-25f4-4c3b-be5a-17583a95f12f",
 	"metadata": {},
-	"contentId": "29363ade-c7d0-4b02-8b3a-d8027a54650f",
-	"Rev": "29363ade-c7d0-4b02-8b3a-d8027a54650f",
+	"contentId": "5017a23b-9ce2-4af1-842c-f17e8541cbc8",
+	"Rev": "5017a23b-9ce2-4af1-842c-f17e8541cbc8",
 	"children": [
 			{
 					"id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
@@ -6559,7 +6559,7 @@
 													"children": []
 											},
 											{
-													"id": "90b78a4d-1e01-43f4-b21c-c702370b8b41",
+													"id": "54a8eeaf-04b7-41bc-8bd2-ea41c91bd378",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "2",
@@ -6665,7 +6665,14 @@
 																			},
 																			"text": {
 																					"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
-																					"styleList": []
+																					"styleList": [
+																							{
+																									"end": 122,
+																									"data": {},
+																									"type": "q",
+																									"start": 83
+																							}
+																					]
 																			}
 																	}
 															]
@@ -6731,7 +6738,7 @@
 													"children": []
 											},
 											{
-													"id": "40dc80ba-a9cb-47e8-a694-1dc8889623de",
+													"id": "091c9b06-54cd-463a-a637-1bb61bca1801",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
@@ -6912,7 +6919,7 @@
 													"children": []
 											},
 											{
-													"id": "2c992865-7713-4f26-91a6-849a4c44708d",
+													"id": "67553f87-da63-4097-8d4d-27c3a586a17d",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
@@ -7100,7 +7107,7 @@
 													"children": []
 											},
 											{
-													"id": "561c667c-8449-4d98-8696-c0326470c26a",
+													"id": "8ecba80a-7a73-46c7-b088-ddca1807c2c8",
 													"type": "ObojoboDraft.Chunks.QuestionBank",
 													"content": {
 															"choose": "1",
