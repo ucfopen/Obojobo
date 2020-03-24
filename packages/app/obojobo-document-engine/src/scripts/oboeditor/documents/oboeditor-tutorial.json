@@ -214,7 +214,7 @@
 																					"indent": 0
 																			},
 																			"text": {
-																					"value": "Clicking an item in the navigation menu displays it's contents on the right - the area this paragraph is in right now. Navigating to other pages while editing will not erase your changes.",
+																					"value": "Clicking an item in the navigation menu displays its contents on the right - the area this paragraph is in right now. Navigating to other pages while editing will not erase your changes.",
 																					"styleList": []
 																			}
 																	}
@@ -6664,13 +6664,13 @@
 																					"indent": 0
 																			},
 																			"text": {
-																					"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
+																					"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. The How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
 																					"styleList": [
 																							{
-																									"end": 122,
+																									"end": 126,
 																									"data": {},
 																									"type": "q",
-																									"start": 83
+																									"start": 87
 																							}
 																					]
 																			}
