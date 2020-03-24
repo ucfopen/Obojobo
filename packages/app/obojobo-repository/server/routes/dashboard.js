@@ -7,11 +7,10 @@ const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
 } = require('obojobo-express/server/express_validators')
-const {
-	MODE_DASHBOARD,
-	MODE_MODULES,
-	MODE_COLLECTION
-} = require('../../shared/repository-constants')
+// const {
+// 	userHasPermissionToCollection
+// } = require('obojobo-repository/server/services/permissions')
+const { MODE_RECENT, MODE_ALL } = require('../../shared/repository-constants')
 const { getUserModuleCount } = require('../services/count')
 
 const short = require('short-uuid')
@@ -21,16 +20,21 @@ const defaultOptions = {
 		id: null,
 		title: null
 	},
-	mode: MODE_DASHBOARD
+	mode: MODE_RECENT
 }
 
 const renderDashboard = (req, res, options) => {
 	let moduleSortOrder = 'alphabetical'
+	let collectionSortOrder = 'alphabetical'
 	const cookies = req.headers.cookie.split(';')
-	const cookieSort = cookies.find(cookie => cookie.includes('moduleSortOrder'))
+	const cookieModuleSort = cookies.find(cookie => cookie.includes('moduleSortOrder'))
+	const cookieCollectionSort = cookies.find(cookie => cookie.includes('collectionSortOrder'))
 
-	if (cookieSort) {
-		moduleSortOrder = cookieSort.split('=')[1]
+	if (cookieModuleSort) {
+		moduleSortOrder = cookieModuleSort.split('=')[1]
+	}
+	if (cookieCollectionSort) {
+		collectionSortOrder = cookieCollectionSort.split('=')[1]
 	}
 
 	let myCollections = []
@@ -45,11 +49,11 @@ const renderDashboard = (req, res, options) => {
 			myCollections = collections
 
 			switch (options.mode) {
-				case MODE_COLLECTION:
-					return DraftSummary.fetchInCollectionForUser(options.collection.id, req.currentUser.id)
-				case MODE_MODULES:
+				// case MODE_COLLECTION:
+				// 	return DraftSummary.fetchInCollection(options.collection.id, req.currentUser.id)
+				case MODE_ALL:
 					return DraftSummary.fetchByUserId(req.currentUser.id)
-				case MODE_DASHBOARD:
+				case MODE_RECENT:
 				default:
 					return DraftSummary.fetchRecentByUserId(req.currentUser.id)
 			}
@@ -61,6 +65,7 @@ const renderDashboard = (req, res, options) => {
 				myModules,
 				moduleCount,
 				moduleSortOrder,
+				collectionSortOrder,
 				currentUser: req.currentUser,
 				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('dashboard.css'),
@@ -83,33 +88,41 @@ router
 	})
 
 // Dashboard page - all modules
-// mounted as /dashboard/modules
+// mounted as /dashboard/all
 router
-	.route('/dashboard/modules')
+	.route('/dashboard/all')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		renderDashboard(req, res, { ...defaultOptions, mode: MODE_MODULES })
+		renderDashboard(req, res, { ...defaultOptions, mode: MODE_ALL })
 	})
 
 // Dashboard page - modules in collection
 // mounted as /dashboard/collection/:nameOrId
-router
-	.route('/dashboard/collections/:nameOrId')
-	.get([requireCurrentUser, requireCanPreviewDrafts])
-	.get((req, res) => {
-		const urlParts = req.params.nameOrId.split('-')
-		const translator = short()
-		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
+// router
+// 	.route('/dashboard/collections/:nameOrId')
+// 	.get([requireCurrentUser, requireCanPreviewDrafts])
+// 	.get(async (req, res) => {
+// 		const urlParts = req.params.nameOrId.split('-')
+// 		const translator = short()
+// 		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
 
-		CollectionSummary.fetchById(collectionId).then(collection => {
-			const options = {
-				...defaultOptions,
-				collection,
-				mode: MODE_COLLECTION
-			}
+// 		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, collectionId)
 
-			renderDashboard(req, res, options)
-		})
-	})
+// 		if (!hasPerms) {
+// 			return res.notAuthorized(
+// 				'You must be the author of this collection to view this page'
+// 			)
+// 		}
+
+// 		CollectionSummary.fetchById(collectionId).then(collection => {
+// 			const options = {
+// 				...defaultOptions,
+// 				collection,
+// 				mode: MODE_COLLECTION
+// 			}
+
+// 			renderDashboard(req, res, options)
+// 		})
+// 	})
 
 module.exports = router

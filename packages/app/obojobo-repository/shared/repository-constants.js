@@ -1,9 +1,7 @@
-const MODE_DASHBOARD = 'dashboard'
-const MODE_MODULES = 'modules'
-const MODE_COLLECTION = 'collection'
+const MODE_RECENT = 'recent'
+const MODE_ALL = 'all'
 
 module.exports = {
-	MODE_DASHBOARD,
-	MODE_MODULES,
-	MODE_COLLECTION
+	MODE_RECENT,
+	MODE_ALL
 }

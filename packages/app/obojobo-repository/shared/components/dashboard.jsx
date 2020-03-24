@@ -18,7 +18,7 @@ const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 
-const { MODE_DASHBOARD, MODE_MODULES, MODE_COLLECTION } = require('../repository-constants')
+const { MODE_RECENT, MODE_ALL } = require('../repository-constants')
 
 const renderOptionsDialog = (props, extension) => (
 	<ModuleOptionsDialog
@@ -95,26 +95,26 @@ const renderModalDialog = props => {
 	}
 	const extendedProps = extendedPropsDefault(props)
 	switch (props.mode) {
-		case MODE_COLLECTION:
-			extendedOptions.collectionId = props.collection.id
-			extendedProps.renameCollection = (collectionId, newTitle) => {
-				props.renameCollection(collectionId, newTitle, extendedOptions)
-			}
-			extendedProps.collectionAddModule = (draftId, collectionId) => {
-				props.collectionAddModule(draftId, collectionId, extendedOptions)
-			}
-			extendedProps.collectionRemoveModule = (draftId, collectionId) => {
-				props.collectionRemoveModule(draftId, collectionId, extendedOptions)
-			}
-			extendedProps.deleteModule = draftId => {
-				props.deleteModule(draftId, extendedOptions)
-			}
-			extendedProps.deleteModulePermissions = (draftId, userId) => {
-				props.deleteModulePermissions(draftId, userId, extendedOptions)
-			}
+		// case MODE_COLLECTION:
+		// 	extendedOptions.collectionId = props.collection.id
+		// 	extendedProps.renameCollection = (collectionId, newTitle) => {
+		// 		props.renameCollection(collectionId, newTitle, extendedOptions)
+		// 	}
+		// 	extendedProps.collectionAddModule = (draftId, collectionId) => {
+		// 		props.collectionAddModule(draftId, collectionId, extendedOptions)
+		// 	}
+		// 	extendedProps.collectionRemoveModule = (draftId, collectionId) => {
+		// 		props.collectionRemoveModule(draftId, collectionId, extendedOptions)
+		// 	}
+		// 	extendedProps.deleteModule = draftId => {
+		// 		props.deleteModule(draftId, extendedOptions)
+		// 	}
+		// 	extendedProps.deleteModulePermissions = (draftId, userId) => {
+		// 		props.deleteModulePermissions(draftId, userId, extendedOptions)
+		// 	}
 
-			break
-		case MODE_DASHBOARD:
+		// 	break
+		case MODE_RECENT:
 		default:
 			extendedProps.deleteModule = draftId => {
 				props.deleteModule(draftId, extendedOptions)
@@ -204,7 +204,7 @@ const renderModules = (modules, sortOrder, newModuleButton) => {
 	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
 }
 
-const renderCollections = (collections, newCollectionButton) => {
+const renderCollections = (collections, sortOrder, newCollectionButton) => {
 	if (collections.length < 1) {
 		return (
 			<p className="repository--item-list--collection--empty-placeholder">
@@ -215,26 +215,73 @@ const renderCollections = (collections, newCollectionButton) => {
 			</p>
 		)
 	}
-	return collections.map(collection => (
-		<Collection key={collection.id} hasMenu={true} {...collection} />
-	))
+
+	const sortFn = getSortMethod(sortOrder)
+	return collections
+		.sort(sortFn)
+		.map(collection => <Collection key={collection.id} hasMenu={true} {...collection} />)
 }
 
 const Dashboard = props => {
 	const [moduleSortOrder, setModuleSortOrder] = useState(props.moduleSortOrder)
+	const [collectionSortOrder, setCollectionSortOrder] = useState(props.collectionSortOrder)
 
-	// Set a cookie when moduleSortOrder changes on the client
+	// Set a cookie when moduleSortOrder or collectionSortOrder change on the client
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()
 			expires.setFullYear(expires.getFullYear() + 1)
-			document.cookie = `moduleSortOrder=${moduleSortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
-		}, [moduleSortOrder])
+			const modeUrlString = props.mode === MODE_ALL ? '/all' : ''
+			const commonCookieString = `expires=${expires.toUTCString()}; path=/dashboard${modeUrlString}`
+			document.cookie = `moduleSortOrder=${moduleSortOrder}; ${commonCookieString}`
+			document.cookie = `collectionSortOrder=${collectionSortOrder}; ${commonCookieString}`
+		}, [moduleSortOrder, collectionSortOrder])
 	}
 
+	const onNewModuleClick = useTutorial => {
+		props.createNewModule(useTutorial, { mode: props.mode })
+	}
+
+	const newCollectionButtonRender = (
+		<Button onClick={() => props.createNewCollection()}>New Collection</Button>
+	)
+	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
+
+	// Elements to render in the 'My Collections' part of the page
+	// Will not appear when dashboard is in 'all' mode
+	let collectionAreaRender = (
+		<React.Fragment>
+			<div className="repository--main-content--title">
+				<span>My Collections</span>
+				<div className="repository--main-content--sort">
+					<span>Sort</span>
+					<select
+						value={collectionSortOrder}
+						onChange={event => setCollectionSortOrder(event.target.value)}
+					>
+						<option value="newest">Newest</option>
+						<option value="alphabetical">Alphabetical</option>
+					</select>
+				</div>
+			</div>
+			<div className="repository--item-list--collection">
+				<div className="repository--item-list--collection--item-wrapper">
+					<div className="repository--item-list--row">
+						<div className="repository--item-list--collection--item--multi-wrapper">
+							{renderCollections(
+								props.filteredCollections ? props.filteredCollections : props.myCollections,
+								collectionSortOrder,
+								newCollectionButtonRender
+							)}
+						</div>
+					</div>
+				</div>
+			</div>
+		</React.Fragment>
+	)
+
 	// Text content of the dashboard module section's title
-	// Either 'My Recent Modules' (default) or 'My Modules' (module mode)
-	//  or 'Modules in Collection' (collection mode)
+	// Either 'My Recent Modules' (recent) or 'My Modules' (all)
 	let modulesTitle = 'My Recent Modules'
 
 	// Extra class to apply to module section's title
@@ -243,7 +290,7 @@ const Dashboard = props => {
 	let modulesTitleExtraClass = ''
 
 	// Components to render for module sort options
-	// Will not be necessary when dashboard is in 'default' mode
+	// Will not be necessary when dashboard is in 'recent' mode
 	let moduleSortRender = (
 		<div className="repository--main-content--sort">
 			<span>Sort</span>
@@ -256,7 +303,7 @@ const Dashboard = props => {
 	)
 
 	// Components to render for module filter input
-	// Will not be necessary when dashboard is in 'default' mode
+	// Will not be necessary when dashboard is in 'recent' mode
 	let moduleFilterRender = (
 		<Search
 			value={props.moduleSearchString}
@@ -268,11 +315,7 @@ const Dashboard = props => {
 	// Components to render an 'All Modules' button (default/collection mode)
 	// Will not be necessary when dashboard is in 'module' mode
 	let moduleModeRender = (
-		<ButtonLink
-			className="repository--all-modules--button"
-			url="/dashboard/modules"
-			target="_blank"
-		>
+		<ButtonLink className="repository--all-modules--button" url="/dashboard/all" target="_blank">
 			All Modules
 		</ButtonLink>
 	)
@@ -281,37 +324,33 @@ const Dashboard = props => {
 		moduleModeRender = null
 	}
 
-	const createNewModuleOptions = {
-		mode: props.mode
-	}
+	let newCollectionOptionsRender = (
+		<React.Fragment>
+			{newCollectionButtonRender}
+			<hr />
+		</React.Fragment>
+	)
 
 	switch (props.mode) {
 		// url is /dashboard/collections/collection-name-and-short-uuid
-		case MODE_COLLECTION:
-			createNewModuleOptions.collectionId = props.collection.id
-			modulesTitle = `Modules in '${props.collection.title}'`
-			break
+		// case MODE_COLLECTION:
+		// 	createNewModuleOptions.collectionId = props.collection.id
+		// 	modulesTitle = `Modules in '${props.collection.title}'`
+		// 	break
 		// url is /dashboard/modules
-		case MODE_MODULES:
+		case MODE_ALL:
+			collectionAreaRender = null
+			newCollectionOptionsRender = null
 			modulesTitle = 'My Modules'
 			moduleModeRender = null
 			break
 		// url is /dashboard
-		case MODE_DASHBOARD:
+		case MODE_RECENT:
 		default:
 			moduleFilterRender = null
 			moduleSortRender = null
 			modulesTitleExtraClass = 'stretch-width'
 	}
-
-	const onNewModuleClick = useTutorial => {
-		props.createNewModule(useTutorial, createNewModuleOptions)
-	}
-
-	const newCollectionButtonRender = (
-		<Button onClick={() => props.createNewCollection()}>New Collection</Button>
-	)
-	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
 
 	return (
 		<span id="dashboard-root">
@@ -326,29 +365,14 @@ const Dashboard = props => {
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="Create New" className="repository--main-content--new-module-button">
-							{newCollectionButtonRender}
-							<hr />
+							{newCollectionOptionsRender}
 							{newModuleButtonRender}
 							<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
 						</MultiButton>
 						{moduleFilterRender}
 					</div>
 
-					<div className="repository--main-content--title stretch-width">
-						<span>My Collections</span>
-					</div>
-					<div className="repository--item-list--collection">
-						<div className="repository--item-list--collection--item-wrapper">
-							<div className="repository--item-list--row">
-								<div className="repository--item-list--collection--item--multi-wrapper">
-									{renderCollections(
-										props.filteredCollections ? props.filteredCollections : props.myCollections,
-										newCollectionButtonRender
-									)}
-								</div>
-							</div>
-						</div>
-					</div>
+					{collectionAreaRender}
 
 					<div className={`repository--main-content--title ${modulesTitleExtraClass}`}>
 						<span>{modulesTitle}</span>

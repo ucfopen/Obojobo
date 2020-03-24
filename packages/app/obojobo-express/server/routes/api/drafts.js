@@ -190,7 +190,13 @@ router
 router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
-	.delete((req, res) => {
+	.delete(async (req, res) => {
+		const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the author of this draft to retrieve this information')
+		}
+
 		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)

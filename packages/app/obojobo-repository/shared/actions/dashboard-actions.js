@@ -1,4 +1,4 @@
-const { MODE_DASHBOARD, MODE_MODULES, MODE_COLLECTION } = require('../repository-constants')
+const { MODE_RECENT, MODE_ALL } = require('../repository-constants')
 
 // =================== API =======================
 
@@ -136,15 +136,15 @@ const deleteModulePermissions = (draftId, userId, options = { ...defaultModuleMo
 	let apiModuleGetCall
 
 	switch (options.mode) {
-		case MODE_COLLECTION:
-			apiModuleGetCall = () => {
-				return apiGetModulesForCollection(options.collectionId)
-			}
-			break
-		case MODE_DASHBOARD:
+		// case MODE_COLLECTION:
+		// 	apiModuleGetCall = () => {
+		// 		return apiGetModulesForCollection(options.collectionId)
+		// 	}
+		// 	break
+		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
-		case MODE_MODULES:
+		case MODE_ALL:
 		default:
 			apiModuleGetCall = apiGetMyModules
 			break
@@ -175,16 +175,16 @@ const deleteModule = (draftId, options = { ...defaultModuleModeOptions }) => {
 	let collectionId = null
 
 	switch (options.mode) {
-		case MODE_COLLECTION:
-			collectionId = options.collectionId
-			apiModuleGetCall = () => {
-				return apiGetModulesForCollection(options.collectionId)
-			}
-			break
-		case MODE_DASHBOARD:
+		// case MODE_COLLECTION:
+		// 	collectionId = options.collectionId
+		// 	apiModuleGetCall = () => {
+		// 		return apiGetModulesForCollection(options.collectionId)
+		// 	}
+		// 	break
+		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
-		case MODE_MODULES:
+		case MODE_ALL:
 		default:
 			apiModuleGetCall = apiGetMyModules
 			break
@@ -208,16 +208,16 @@ const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOp
 	let collectionId = null
 
 	switch (options.mode) {
-		case MODE_COLLECTION:
-			collectionId = options.collectionId
-			apiModuleGetCall = () => {
-				return apiGetModulesForCollection(options.collectionId)
-			}
-			break
-		case MODE_DASHBOARD:
+		// case MODE_COLLECTION:
+		// 	collectionId = options.collectionId
+		// 	apiModuleGetCall = () => {
+		// 		return apiGetModulesForCollection(options.collectionId)
+		// 	}
+		// 	break
+		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
-		case MODE_MODULES:
+		case MODE_ALL:
 		default:
 			apiModuleGetCall = apiGetMyModules
 			break
