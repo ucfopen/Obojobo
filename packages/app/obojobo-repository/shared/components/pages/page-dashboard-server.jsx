@@ -24,6 +24,7 @@ PageDashboardServer.defaultProps = {
 	myCollections: [],
 	myModules: [],
 	moduleSearchString: '',
+	collectionSearchString: '',
 	shareSearchString: '',
 	searchPeople: {
 		hasFetched: false,

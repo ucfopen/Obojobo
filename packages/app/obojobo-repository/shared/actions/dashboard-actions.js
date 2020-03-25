@@ -234,6 +234,12 @@ const filterModules = searchString => ({
 	searchString
 })
 
+const FILTER_COLLECTIONS = 'FILTER_COLLECTIONS'
+const filterCollections = searchString => ({
+	type: FILTER_COLLECTIONS,
+	searchString
+})
+
 const SHOW_MODULE_MORE = 'SHOW_MODULE_MORE'
 const showModuleMore = module => ({
 	type: SHOW_MODULE_MORE,
@@ -364,6 +370,7 @@ module.exports = {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	FILTER_MODULES,
+	FILTER_COLLECTIONS,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
@@ -380,6 +387,7 @@ module.exports = {
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
 	filterModules,
+	filterCollections,
 	deleteModule,
 	closeModal,
 	deleteModulePermissions,

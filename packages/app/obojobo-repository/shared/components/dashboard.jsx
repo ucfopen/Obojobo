@@ -261,7 +261,7 @@ const renderCollectionManageArea = props => {
 				Rename
 			</Button>
 			<Button onClick={onDeleteButtonClick} className="dangerous-button">
-				Delete
+				Delete Collection
 			</Button>
 		</React.Fragment>
 	)
@@ -335,8 +335,16 @@ const Dashboard = props => {
 	let moduleFilterRender = (
 		<Search
 			value={props.moduleSearchString}
-			placeholder="Filter..."
+			placeholder="Filter Modules..."
 			onChange={props.filterModules}
+		/>
+	)
+
+	let collectionFilterRender = (
+		<Search
+			value={props.collectionSearchString}
+			placeholder="Filter Collections..."
+			onChange={props.filterCollections}
 		/>
 	)
 
@@ -367,6 +375,7 @@ const Dashboard = props => {
 	switch (props.mode) {
 		// url is /collections/collection-name-and-short-uuid
 		case MODE_COLLECTION:
+			collectionFilterRender = null
 			collectionManageAreaRender = renderCollectionManageArea(props)
 			createNewModuleOptions.collectionId = props.collection.id
 			modulesTitle = `Modules in '${props.collection.title}'`
@@ -374,6 +383,7 @@ const Dashboard = props => {
 			break
 		// url is /dashboard/modules
 		case MODE_ALL:
+			collectionFilterRender = null
 			collectionAreaRender = null
 			newCollectionOptionsRender = null
 			modulesTitle = 'My Modules'
@@ -403,6 +413,7 @@ const Dashboard = props => {
 							</select>
 						</div>
 					</div>
+					{collectionFilterRender}
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
@@ -448,9 +459,6 @@ const Dashboard = props => {
 						{collectionManageAreaRender}
 						{moduleFilterRender}
 					</div>
-
-					{collectionAreaRender}
-
 					<div className={`repository--main-content--title ${modulesTitleExtraClass}`}>
 						<span>{modulesTitle}</span>
 						{moduleSortRender}
@@ -469,6 +477,7 @@ const Dashboard = props => {
 							</div>
 						</div>
 					</div>
+					{collectionAreaRender}
 				</section>
 			</div>
 			{props.dialog ? renderModalDialog(props) : null}

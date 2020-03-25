@@ -13,6 +13,7 @@ const {
 	DELETE_MODULE,
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
+	FILTER_COLLECTIONS,
 	SHOW_MODULE_MORE,
 	CREATE_NEW_COLLECTION,
 	SHOW_MODULE_MANAGE_COLLECTIONS,
@@ -57,23 +58,44 @@ function filterModules(modules, searchString) {
 			.includes(searchString)
 	)
 }
+function filterCollections(collections, searchString) {
+	searchString = ('' + searchString).replace(whitespaceRegex, '').toLowerCase()
+
+	return collections.filter(c =>
+		((c.title || '') + c.id)
+			.replace(whitespaceRegex, '')
+			.toLowerCase()
+			.includes(searchString)
+	)
+}
 
 function DashboardReducer(state, action) {
 	switch (action.type) {
 		case CREATE_NEW_COLLECTION:
 		case DELETE_COLLECTION:
 			return handle(state, action, {
-				success: prevState => ({
-					...prevState,
-					myCollections: action.payload.value
-				})
+				success: prevState => {
+					const filteredCollections = filterCollections(
+						action.payload.value,
+						state.collectionSearchString
+					)
+					return {
+						...prevState,
+						collectionSearchString: '',
+						myCollections: action.payload.value,
+						filteredCollections
+					}
+				}
 			})
 		case RENAME_COLLECTION:
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
 					newState.myCollections = action.payload.value
-
+					newState.filteredCollections = filterCollections(
+						action.payload.value,
+						state.collectionSearchString
+					)
 					if (
 						action.meta.currentCollectionId &&
 						action.meta.changedCollectionId === action.meta.currentCollectionId
@@ -132,6 +154,12 @@ function DashboardReducer(state, action) {
 				...state,
 				filteredModules: filterModules(state.myModules, action.searchString),
 				moduleSearchString: action.searchString
+			}
+		case FILTER_COLLECTIONS:
+			return {
+				...state,
+				filteredCollections: filterCollections(state.myCollections, action.searchString),
+				collectionSearchString: action.searchString
 			}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:
