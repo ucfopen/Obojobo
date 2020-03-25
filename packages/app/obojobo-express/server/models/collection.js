@@ -1,4 +1,5 @@
 const db = oboRequire('server/db')
+const logger = oboRequire('server/logger.js')
 const oboEvents = oboRequire('server/obo_events')
 
 class Collection {
@@ -22,6 +23,7 @@ class Collection {
 			)
 			.then(newCollection => {
 				oboEvents.emit(Collection.EVENT_COLLECTION_CREATED, { id: newCollection.id })
+				logger.info('user created collection', { userId, collectionId: newCollection.id })
 				return newCollection
 			})
 	}
@@ -36,10 +38,12 @@ class Collection {
 				{ id, newTitle }
 			)
 			.then(updatedCollection => {
-				oboEvents.emit(Collection.EVENT_COLLECTION_UPDATED, {
+				const infoObject = {
 					id: updatedCollection.id,
 					title: updatedCollection.title
-				})
+				}
+				oboEvents.emit(Collection.EVENT_COLLECTION_UPDATED, infoObject)
+				logger.info('collection renamed', infoObject)
 				return updatedCollection
 			})
 	}
@@ -55,10 +59,13 @@ class Collection {
 				{ collectionId, draftId, userId }
 			)
 			.then(() => {
-				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_ADDED, {
+				const infoObject = {
+					userId,
 					collectionId,
 					draftId
-				})
+				}
+				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_ADDED, infoObject)
+				logger.info('user added module to collection', infoObject)
 			})
 	}
 
@@ -73,10 +80,12 @@ class Collection {
 				{ collectionId, draftId }
 			)
 			.then(() => {
-				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_REMOVED, {
+				const infoObject = {
 					collectionId,
 					draftId
-				})
+				}
+				oboEvents.emit(Collection.EVENT_COLLECTION_MODULE_REMOVED, infoObject)
+				logger.info('module removed from collection', infoObject)
 			})
 	}
 
@@ -90,6 +99,7 @@ class Collection {
 			)
 			.then(() => {
 				oboEvents.emit(Collection.EVENT_COLLECTION_UPDATED, { id })
+				logger.info('collection deleted ', { id })
 			})
 	}
 }

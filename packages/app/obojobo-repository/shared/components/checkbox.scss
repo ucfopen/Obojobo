@@ -2,38 +2,26 @@
 
 .repository--checkbox {
 	display: block;
+	position: relative;
+	cursor: pointer;
+	user-select: none;
+	width: 2em;
+	height: 2em;
+	border: 3px solid $color-bg3;
+	background-color: $color-bg2;
+	border-radius: 0.25em;
+	padding: 0;
+	padding-bottom: 0.3em;
+	margin-right: 0.5em;
 
-	.repository--checkbox--wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
-		cursor: pointer;
-		user-select: none;
-		width: 1em;
-		height: 1em;
-		border: 3px solid $color-bg3;
-		background-color: $color-bg2;
-		border-radius: 0.25em;
-		margin-right: 0.5em;
-
-		.repository--checkbox--input {
-			position: absolute;
-			opacity: 0;
-			height: 0;
-			width: 0;
-		}
-
-		.repository--checkbox--indicator {
-			&.is-checked {
-				color: $color-correct;
-				height: 0.25em;
-				width: 0.5em;
-				border-top: 3px solid $color-correct;
-				border-right: 3px solid $color-correct;
-				transform: rotate(135deg);
-				margin-bottom: 0.1em;
-			}
-		}
+	&.is-checked::after {
+		display: block;
+		margin: auto;
+		content: '';
+		height: 0.45em;
+		width: 0.9em;
+		border-top: 3px solid $color-correct;
+		border-right: 3px solid $color-correct;
+		transform: rotate(135deg);
 	}
 }

@@ -175,12 +175,12 @@ const deleteModule = (draftId, options = { ...defaultModuleModeOptions }) => {
 	let collectionId = null
 
 	switch (options.mode) {
-		// case MODE_COLLECTION:
-		// 	collectionId = options.collectionId
-		// 	apiModuleGetCall = () => {
-		// 		return apiGetModulesForCollection(options.collectionId)
-		// 	}
-		// 	break
+		case MODE_COLLECTION:
+			collectionId = options.collectionId
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
 		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
