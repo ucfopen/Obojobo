@@ -346,6 +346,7 @@ class PageEditor extends React.Component {
 	// All the render methods that allow the editor to display properly
 
 	renderLeaf(props) {
+		console.log('rerendering', props.leaf.placeholder)
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
 		const { attributes, children, leaf } = props
 

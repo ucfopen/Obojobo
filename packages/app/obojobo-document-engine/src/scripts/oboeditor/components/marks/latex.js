@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import katex from 'katex'
 import { Editor } from 'slate'
 import { useSlate } from 'slate-react'
@@ -6,7 +6,7 @@ import isOrNot from '../../../common/util/isornot'
 
 import './link.scss'
 
-const Latex = props => {
+const Latex = memo(props => {
 	const editor = useSlate()
 
 	// Some of the nested properties don't deep equals properly
@@ -32,6 +32,6 @@ const Latex = props => {
 			</div>
 		</div>
 	)
-}
+})
 
 export default Latex
