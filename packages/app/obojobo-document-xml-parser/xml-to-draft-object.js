@@ -59,14 +59,41 @@ const __finalPass = o => {
 	}
 }
 
+const pattern = /^[\r\n\t ]+$/g
+const filterSpaceAroundText = (o, isChildOfText = false) => {
+	if (o.elements) {
+		if (isChildOfText) {
+			const first = o.elements[0]
+			const last = o.elements[o.elements.length - 1]
+			const removeFirst = first.type === 'text' && first.text.match(pattern)
+			const removeLast = last.type === 'text' && last.text.match(pattern)
+			if (removeFirst) o.elements.splice(0, 1)
+			if (removeLast) o.elements.splice(o.elements.length - 1, 1)
+		}
+		o.elements.forEach(e => filterSpaceAroundText(e, o.name === 't'))
+	}
+}
+
+const filterEmptyTextOutsideOfTs = o => {
+	if (o.name === 't') return
+	if (o.elements) {
+		o.elements = o.elements.filter(e => !(e.type === 'text' && e.text.match(pattern)))
+		o.elements.forEach(e => filterEmptyTextOutsideOfTs(e))
+	}
+}
+
 module.exports = (xml, generateIds = false) => {
 	const root = convert.xml2js(xml, {
 		compact: false,
 		trim: false,
 		nativeType: false,
 		ignoreComment: true,
-		ignoreDeclaration: true
+		ignoreDeclaration: true,
+		captureSpacesBetweenElements: true
 	})
+
+	filterSpaceAroundText(root)
+	filterEmptyTextOutsideOfTs(root)
 	nameTransform(root)
 	extensionTransform(root)
 	htmlTransform(root)
