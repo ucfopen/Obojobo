@@ -7,10 +7,8 @@ const {
 	requireCurrentUser,
 	requireCanPreviewDrafts
 } = require('obojobo-express/server/express_validators')
-// const {
-// 	userHasPermissionToCollection
-// } = require('obojobo-repository/server/services/permissions')
-const { MODE_RECENT, MODE_ALL } = require('../../shared/repository-constants')
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../../shared/repository-constants')
+const { userHasPermissionToCollection } = require('obojobo-repository/server/services/permissions')
 const { getUserModuleCount } = require('../services/count')
 
 const short = require('short-uuid')
@@ -39,6 +37,7 @@ const renderDashboard = (req, res, options) => {
 
 	let myCollections = []
 	let moduleCount = 0
+	let pageTitle = 'Dashboard'
 
 	return getUserModuleCount(req.currentUser.id)
 		.then(count => {
@@ -49,18 +48,20 @@ const renderDashboard = (req, res, options) => {
 			myCollections = collections
 
 			switch (options.mode) {
-				// case MODE_COLLECTION:
-				// 	return DraftSummary.fetchInCollection(options.collection.id, req.currentUser.id)
+				case MODE_COLLECTION:
+					pageTitle = 'View Collection'
+					return DraftSummary.fetchInCollection(options.collection.id, req.currentUser.id)
 				case MODE_ALL:
 					return DraftSummary.fetchByUserId(req.currentUser.id)
 				case MODE_RECENT:
 				default:
+					moduleSortOrder = 'last_updated'
 					return DraftSummary.fetchRecentByUserId(req.currentUser.id)
 			}
 		})
 		.then(myModules => {
 			const props = {
-				title: 'Dashboard',
+				title: pageTitle,
 				myCollections,
 				myModules,
 				moduleCount,
@@ -96,33 +97,36 @@ router
 		renderDashboard(req, res, { ...defaultOptions, mode: MODE_ALL })
 	})
 
-// Dashboard page - modules in collection
-// mounted as /dashboard/collection/:nameOrId
-// router
-// 	.route('/dashboard/collections/:nameOrId')
-// 	.get([requireCurrentUser, requireCanPreviewDrafts])
-// 	.get(async (req, res) => {
-// 		const urlParts = req.params.nameOrId.split('-')
-// 		const translator = short()
-// 		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
+// Collection page - modules in collection
+// mounted as /collections/:nameOrId
+// virtually identical to a dashboard page, hence inclusion here
+router
+	.route('/collections/:nameOrId')
+	.get([requireCurrentUser, requireCanPreviewDrafts])
+	.get(async (req, res) => {
+		const urlParts = req.params.nameOrId.split('-')
+		const translator = short()
+		const collectionId = translator.toUUID(urlParts[urlParts.length - 1])
 
-// 		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, collectionId)
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, collectionId)
 
-// 		if (!hasPerms) {
-// 			return res.notAuthorized(
-// 				'You must be the author of this collection to view this page'
-// 			)
-// 		}
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the author of this collection to view this page')
+		}
 
-// 		CollectionSummary.fetchById(collectionId).then(collection => {
-// 			const options = {
-// 				...defaultOptions,
-// 				collection,
-// 				mode: MODE_COLLECTION
-// 			}
+		CollectionSummary.fetchById(collectionId)
+			.then(collection => {
+				const options = {
+					...defaultOptions,
+					collection,
+					mode: MODE_COLLECTION
+				}
 
-// 			renderDashboard(req, res, options)
-// 		})
-// 	})
+				renderDashboard(req, res, options)
+			})
+			.catch(() => {
+				return res.missing()
+			})
+	})
 
 module.exports = router

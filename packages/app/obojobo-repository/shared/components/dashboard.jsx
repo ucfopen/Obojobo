@@ -18,7 +18,9 @@ const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 
-const { MODE_RECENT, MODE_ALL } = require('../repository-constants')
+const short = require('short-uuid')
+
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 const renderOptionsDialog = (props, extension) => (
 	<ModuleOptionsDialog
@@ -45,7 +47,7 @@ const renderPermissionsDialog = (props, extension) => (
 	/>
 )
 
-const renderModuleManageCollectionsDialog = props => (
+const renderModuleManageCollectionsDialog = (props, extension) => (
 	<ModuleManageCollectionsDialog
 		title=""
 		{...props.selectedModule}
@@ -53,8 +55,8 @@ const renderModuleManageCollectionsDialog = props => (
 		onClose={props.closeModal}
 		loadModuleCollections={props.loadModuleCollections}
 		draftCollections={props.draftCollections}
-		moduleAddToCollection={props.moduleAddToCollection}
-		moduleRemoveFromCollection={props.moduleRemoveFromCollection}
+		moduleAddToCollection={extension.moduleAddToCollection}
+		moduleRemoveFromCollection={extension.moduleRemoveFromCollection}
 	/>
 )
 
@@ -83,6 +85,8 @@ const extendedPropsDefault = props => ({
 	renameCollection: props.renameCollection,
 	collectionAddModule: props.collectionAddModule,
 	collectionRemoveModule: props.collectionRemoveModule,
+	moduleAddToCollection: props.moduleAddToCollection,
+	moduleRemoveFromCollection: props.moduleRemoveFromCollection,
 	deleteModule: props.deleteModule,
 	deleteModulePermissions: props.deleteModulePermissions
 })
@@ -95,25 +99,35 @@ const renderModalDialog = props => {
 	}
 	const extendedProps = extendedPropsDefault(props)
 	switch (props.mode) {
-		// case MODE_COLLECTION:
-		// 	extendedOptions.collectionId = props.collection.id
-		// 	extendedProps.renameCollection = (collectionId, newTitle) => {
-		// 		props.renameCollection(collectionId, newTitle, extendedOptions)
-		// 	}
-		// 	extendedProps.collectionAddModule = (draftId, collectionId) => {
-		// 		props.collectionAddModule(draftId, collectionId, extendedOptions)
-		// 	}
-		// 	extendedProps.collectionRemoveModule = (draftId, collectionId) => {
-		// 		props.collectionRemoveModule(draftId, collectionId, extendedOptions)
-		// 	}
-		// 	extendedProps.deleteModule = draftId => {
-		// 		props.deleteModule(draftId, extendedOptions)
-		// 	}
-		// 	extendedProps.deleteModulePermissions = (draftId, userId) => {
-		// 		props.deleteModulePermissions(draftId, userId, extendedOptions)
-		// 	}
+		case MODE_COLLECTION:
+			extendedOptions.collectionId = props.collection.id
+			extendedProps.renameCollection = (collectionId, newTitle) => {
+				props.renameCollection(collectionId, newTitle, extendedOptions)
+			}
+			extendedProps.collectionAddModule = (draftId, collectionId) => {
+				props.collectionAddModule(draftId, collectionId, extendedOptions)
+			}
+			extendedProps.collectionRemoveModule = (draftId, collectionId) => {
+				props.collectionRemoveModule(draftId, collectionId, extendedOptions)
+			}
+			extendedProps.moduleAddToCollection = (draftId, collectionId) => {
+				props
+					.moduleAddToCollection(draftId, collectionId)
+					.then(() => props.loadCollectionModules(collectionId, extendedOptions))
+			}
+			extendedProps.moduleRemoveFromCollection = (draftId, collectionId) => {
+				props
+					.moduleRemoveFromCollection(draftId, collectionId)
+					.then(() => props.loadCollectionModules(collectionId, extendedOptions))
+			}
+			extendedProps.deleteModule = draftId => {
+				props.deleteModule(draftId, extendedOptions)
+			}
+			extendedProps.deleteModulePermissions = (draftId, userId) => {
+				props.deleteModulePermissions(draftId, userId, extendedOptions)
+			}
+			break
 
-		// 	break
 		case MODE_RECENT:
 		default:
 			extendedProps.deleteModule = draftId => {
@@ -137,7 +151,7 @@ const renderModalDialog = props => {
 
 		case 'module-manage-collections':
 			title = 'Module Collections'
-			dialog = renderModuleManageCollectionsDialog(props)
+			dialog = renderModuleManageCollectionsDialog(props, extendedProps)
 			break
 
 		case 'collection-manage-modules':
@@ -222,6 +236,37 @@ const renderCollections = (collections, sortOrder, newCollectionButton) => {
 		.map(collection => <Collection key={collection.id} hasMenu={true} {...collection} />)
 }
 
+const renderCollectionManageArea = props => {
+	const onManageButtonClick = () => props.showCollectionManageModules(props.collection)
+
+	const onRenameButtonClick = () => props.showCollectionRename(props.collection)
+
+	const onDeleteButtonClick = () => {
+		//eslint-disable-next-line no-alert, no-undef
+		const response = confirm(
+			`Delete collection "${props.collection.title}"? Modules in this collection will not be deleted.`
+		)
+		if (!response) return
+		props.deleteCollection(props.collection).then(() => {
+			window.location.href = '/dashboard'
+		})
+	}
+
+	return (
+		<React.Fragment>
+			<Button onClick={onManageButtonClick} className="manage-modules">
+				Manage Modules
+			</Button>
+			<Button onClick={onRenameButtonClick} className="rename">
+				Rename
+			</Button>
+			<Button onClick={onDeleteButtonClick} className="dangerous-button">
+				Delete
+			</Button>
+		</React.Fragment>
+	)
+}
+
 const Dashboard = props => {
 	const [moduleSortOrder, setModuleSortOrder] = useState(props.moduleSortOrder)
 	const [collectionSortOrder, setCollectionSortOrder] = useState(props.collectionSortOrder)
@@ -231,57 +276,40 @@ const Dashboard = props => {
 		useEffect(() => {
 			const expires = new Date()
 			expires.setFullYear(expires.getFullYear() + 1)
-			const modeUrlString = props.mode === MODE_ALL ? '/all' : ''
-			const commonCookieString = `expires=${expires.toUTCString()}; path=/dashboard${modeUrlString}`
+			let modeUrlString = '/dashboard'
+
+			// Placeholder variable - will be set to an instance of shortUUID if needed
+			let translator = null
+
+			switch (props.mode) {
+				case MODE_COLLECTION:
+					translator = short()
+					modeUrlString =
+						'/collections/' +
+						encodeURI(props.collection.title.replace(/\s+/g, '-').toLowerCase()) +
+						'-' +
+						translator.fromUUID(props.collection.id)
+					break
+				case MODE_ALL:
+					modeUrlString = `${modeUrlString}/all`
+					break
+			}
+			const commonCookieString = `expires=${expires.toUTCString()}; path=${modeUrlString}`
 			document.cookie = `moduleSortOrder=${moduleSortOrder}; ${commonCookieString}`
 			document.cookie = `collectionSortOrder=${collectionSortOrder}; ${commonCookieString}`
 		}, [moduleSortOrder, collectionSortOrder])
 	}
 
-	const onNewModuleClick = useTutorial => {
-		props.createNewModule(useTutorial, { mode: props.mode })
-	}
-
 	const newCollectionButtonRender = (
 		<Button onClick={() => props.createNewCollection()}>New Collection</Button>
 	)
-	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
 
 	// Elements to render in the 'My Collections' part of the page
-	// Will not appear when dashboard is in 'all' mode
-	let collectionAreaRender = (
-		<React.Fragment>
-			<div className="repository--main-content--title">
-				<span>My Collections</span>
-				<div className="repository--main-content--sort">
-					<span>Sort</span>
-					<select
-						value={collectionSortOrder}
-						onChange={event => setCollectionSortOrder(event.target.value)}
-					>
-						<option value="newest">Newest</option>
-						<option value="alphabetical">Alphabetical</option>
-					</select>
-				</div>
-			</div>
-			<div className="repository--item-list--collection">
-				<div className="repository--item-list--collection--item-wrapper">
-					<div className="repository--item-list--row">
-						<div className="repository--item-list--collection--item--multi-wrapper">
-							{renderCollections(
-								props.filteredCollections ? props.filteredCollections : props.myCollections,
-								collectionSortOrder,
-								newCollectionButtonRender
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-		</React.Fragment>
-	)
+	// Will only appear when dashboard is in 'recent' mode
+	let collectionAreaRender = null
 
 	// Text content of the dashboard module section's title
-	// Either 'My Recent Modules' (recent) or 'My Modules' (all)
+	// Either 'My Recent Modules' (recent), 'My Modules' (all), or 'Modules In <collection title' (collection)
 	let modulesTitle = 'My Recent Modules'
 
 	// Extra class to apply to module section's title
@@ -314,43 +342,91 @@ const Dashboard = props => {
 
 	// Components to render an 'All Modules' button (default/collection mode)
 	// Will not be necessary when dashboard is in 'module' mode
-	let moduleModeRender = (
+	let allModulesButtonRender = (
 		<ButtonLink className="repository--all-modules--button" url="/dashboard/all" target="_blank">
 			All Modules
 		</ButtonLink>
 	)
 
 	if (props.myModules.length === props.moduleCount) {
-		moduleModeRender = null
+		allModulesButtonRender = null
 	}
 
-	let newCollectionOptionsRender = (
-		<React.Fragment>
-			{newCollectionButtonRender}
-			<hr />
-		</React.Fragment>
-	)
+	// 'New Collection' button and horizontal divider
+	// Will only appear when dashboard is in 'recent' mode
+	let newCollectionOptionsRender = null
+
+	const createNewModuleOptions = {
+		mode: props.mode
+	}
+
+	// Components for managing the current collection
+	// Will only appear when dashboard is in 'collection' mode
+	let collectionManageAreaRender = null
 
 	switch (props.mode) {
-		// url is /dashboard/collections/collection-name-and-short-uuid
-		// case MODE_COLLECTION:
-		// 	createNewModuleOptions.collectionId = props.collection.id
-		// 	modulesTitle = `Modules in '${props.collection.title}'`
-		// 	break
+		// url is /collections/collection-name-and-short-uuid
+		case MODE_COLLECTION:
+			collectionManageAreaRender = renderCollectionManageArea(props)
+			createNewModuleOptions.collectionId = props.collection.id
+			modulesTitle = `Modules in '${props.collection.title}'`
+			allModulesButtonRender = null
+			break
 		// url is /dashboard/modules
 		case MODE_ALL:
 			collectionAreaRender = null
 			newCollectionOptionsRender = null
 			modulesTitle = 'My Modules'
-			moduleModeRender = null
+			allModulesButtonRender = null
 			break
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
+			newCollectionOptionsRender = (
+				<React.Fragment>
+					{newCollectionButtonRender}
+					<hr />
+				</React.Fragment>
+			)
+			collectionAreaRender = (
+				<React.Fragment>
+					<div className="repository--main-content--title">
+						<span>My Collections</span>
+						<div className="repository--main-content--sort">
+							<span>Sort</span>
+							<select
+								value={collectionSortOrder}
+								onChange={event => setCollectionSortOrder(event.target.value)}
+							>
+								<option value="newest">Newest</option>
+								<option value="alphabetical">Alphabetical</option>
+							</select>
+						</div>
+					</div>
+					<div className="repository--item-list--collection">
+						<div className="repository--item-list--collection--item-wrapper">
+							<div className="repository--item-list--row">
+								<div className="repository--item-list--collection--item--multi-wrapper">
+									{renderCollections(
+										props.filteredCollections ? props.filteredCollections : props.myCollections,
+										collectionSortOrder,
+										newCollectionButtonRender
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</React.Fragment>
+			)
 			moduleFilterRender = null
 			moduleSortRender = null
 			modulesTitleExtraClass = 'stretch-width'
 	}
+
+	const onNewModuleClick = useTutorial => {
+		props.createNewModule(useTutorial, createNewModuleOptions)
+	}
+	const newModuleButtonRender = <Button onClick={() => onNewModuleClick(false)}>New Module</Button>
 
 	return (
 		<span id="dashboard-root">
@@ -369,6 +445,7 @@ const Dashboard = props => {
 							{newModuleButtonRender}
 							<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
 						</MultiButton>
+						{collectionManageAreaRender}
 						{moduleFilterRender}
 					</div>
 
@@ -387,7 +464,7 @@ const Dashboard = props => {
 										moduleSortOrder,
 										newModuleButtonRender
 									)}
-									{moduleModeRender}
+									{allModulesButtonRender}
 								</div>
 							</div>
 						</div>

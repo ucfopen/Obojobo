@@ -2,10 +2,16 @@ const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
 const buildQueryWhere = whereSQL => {
+	let andWhereSQL = ''
+	if (whereSQL !== '') {
+		andWhereSQL = `AND ${whereSQL}`
+	}
+
 	return `
 		SELECT *
 		FROM repository_collections
-		WHERE ${whereSQL}
+		WHERE deleted = FALSE
+		${andWhereSQL}
 		ORDER BY title ASC
 	`
 }
@@ -26,7 +32,7 @@ class CollectionSummary {
 			.then(CollectionSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchById Error', error.message)
-				return Promise.reject('Error Loading CollectionSummary by user id')
+				return Promise.reject('Error Loading CollectionSummary by id')
 			})
 	}
 

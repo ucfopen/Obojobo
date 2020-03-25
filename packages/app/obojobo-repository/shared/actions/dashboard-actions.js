@@ -1,4 +1,4 @@
-const { MODE_RECENT, MODE_ALL } = require('../repository-constants')
+const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 // =================== API =======================
 
@@ -136,11 +136,11 @@ const deleteModulePermissions = (draftId, userId, options = { ...defaultModuleMo
 	let apiModuleGetCall
 
 	switch (options.mode) {
-		// case MODE_COLLECTION:
-		// 	apiModuleGetCall = () => {
-		// 		return apiGetModulesForCollection(options.collectionId)
-		// 	}
-		// 	break
+		case MODE_COLLECTION:
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
 		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
@@ -208,12 +208,12 @@ const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOp
 	let collectionId = null
 
 	switch (options.mode) {
-		// case MODE_COLLECTION:
-		// 	collectionId = options.collectionId
-		// 	apiModuleGetCall = () => {
-		// 		return apiGetModulesForCollection(options.collectionId)
-		// 	}
-		// 	break
+		case MODE_COLLECTION:
+			collectionId = options.collectionId
+			apiModuleGetCall = () => {
+				return apiGetModulesForCollection(options.collectionId)
+			}
+			break
 		case MODE_RECENT:
 			apiModuleGetCall = apiGetMyRecentModules
 			break
@@ -275,8 +275,12 @@ const showCollectionManageModules = collection => ({
 })
 
 const LOAD_COLLECTION_MODULES = 'LOAD_COLLECTION_MODULES'
-const loadCollectionModules = collectionId => ({
+const loadCollectionModules = (collectionId, options = { ...defaultModuleModeOptions }) => ({
 	type: LOAD_COLLECTION_MODULES,
+	meta: {
+		changedCollectionId: collectionId,
+		currentCollectionId: options.collectionId || null
+	},
 	promise: apiGetModulesForCollection(collectionId)
 })
 

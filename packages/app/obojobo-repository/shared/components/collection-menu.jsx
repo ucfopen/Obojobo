@@ -33,10 +33,10 @@ const CollectionMenu = props => {
 			<div className={`repository--module-icon--menu ${props.className || ''}`}>
 				<ButtonLink
 					className="collection-link-button"
-					url={`/dashboard/collections/${collectionTitleToUrl}-${collectionIdToUrl}`}
+					url={`/collections/${collectionTitleToUrl}-${collectionIdToUrl}`}
 					target="_blank"
 				>
-					Collection Modules
+					View Collection
 				</ButtonLink>
 				<Button onClick={onAddModule} className="manage-modules">
 					Manage Modules
