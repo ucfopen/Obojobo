@@ -121,8 +121,15 @@
 			opacity: 0.5;
 		}
 
+		&.is-selected {
+			.preview {
+				display: block;
+			}
+		}
+
 		&:hover,
-		&:focus {
+		&:focus,
+		&:focus-within {
 			.preview {
 				display: block;
 			}

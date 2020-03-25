@@ -10,6 +10,8 @@ import QuoteIcon from '../../assets/quote-icon'
 import MonoIcon from '../../assets/mono-icon'
 import LatexIcon from '../../assets/latex-icon'
 
+import Latex from './latex'
+
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
 const STRIKE_MARK = 'del'
@@ -47,31 +49,16 @@ const BasicMarks = {
 			let { children } = props
 			const { leaf } = props
 
+			if (leaf[LATEX_MARK]) {
+				//@TODO: We probably want to move the JSX below into its own component.
+				//For now I'm being lazy!
+				children = <Latex {...props.attributes} {...props} />
+			}
 			if (leaf[BOLD_MARK]) children = <strong>{children}</strong>
 			if (leaf[ITALIC_MARK]) children = <em>{children}</em>
 			if (leaf[STRIKE_MARK]) children = <del>{children}</del>
 			if (leaf[QUOTE_MARK]) children = <q>{children}</q>
 			if (leaf[MONOSPACE_MARK]) children = <code>{children}</code>
-			if (leaf[LATEX_MARK]) {
-				//@TODO: We probably want to move the JSX below into its own component.
-				//For now I'm being lazy!
-				children = (
-					<div className={'latex-editor'} contentEditable={true}>
-						{children}
-						<div contentEditable={false} className="preview">
-							<p>Preview:</p>
-							<span
-								className="preview-latex"
-								dangerouslySetInnerHTML={{
-									__html: katex.renderToString(children.props.text.text, {
-										throwOnError: false
-									})
-								}}
-							/>
-						</div>
-					</div>
-				)
-			}
 
 			props.children = children
 			return props
