@@ -7,7 +7,7 @@ import katex from 'katex'
 import './hovering-preview.scss'
 
 const Portal = ({ children }) => {
-  return ReactDOM.createPortal(children, document.body)
+	return ReactDOM.createPortal(children, document.body)
 }
 
 const HoveringPreview = () => {
@@ -22,10 +22,7 @@ const HoveringPreview = () => {
 			return
 		}
 
-		if (
-			!selection ||
-			!ReactEditor.isFocused(editor)
-		) {
+		if (!selection || !ReactEditor.isFocused(editor)) {
 			console.log('in here')
 			el.removeAttribute('style')
 			return
@@ -39,10 +36,7 @@ const HoveringPreview = () => {
 		// Special styling to make the preview box appear above the content
 		el.style.opacity = 1
 		el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 6}px`
-		el.style.left = `${rect.left +
-			window.pageXOffset -
-			el.offsetWidth / 2 +
-			rect.width / 2}px`
+		el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`
 	})
 
 	return (
