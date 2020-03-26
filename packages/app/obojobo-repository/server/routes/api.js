@@ -1,6 +1,6 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const insertEvent = require('obojobo-express/server/insert_event')
-const RepositoryCollection = require('../models/collection')
+const Collection = require('../models/collection')
 const CollectionSummary = require('../models/collection_summary')
 const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
@@ -8,7 +8,10 @@ const DraftsMetadata = require('../models/drafts_metadata')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
-	requireCurrentDocument
+	requireCurrentDocument,
+	checkValidationRules,
+	requireCanCreateDrafts,
+	requireCanDeleteDrafts
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -17,14 +20,15 @@ const {
 	userHasPermissionToDraft,
 	fetchAllUsersWithPermissionToDraft,
 	removeUserPermissionToDraft,
-	userHasPermissionToCopy
+	userHasPermissionToCopy,
+	userHasPermissionToCollection
 } = require('../services/permissions')
 const { fetchAllCollectionsForDraft } = require('../services/collections')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 // List public drafts
 router.route('/drafts-public').get((req, res) => {
-	return RepositoryCollection.fetchById(publicLibCollectionId)
+	return Collection.fetchById(publicLibCollectionId)
 		.then(collection => collection.loadRelatedDrafts())
 		.then(collection => {
 			res.success(collection.drafts)
@@ -228,6 +232,83 @@ router
 		}
 
 		return DraftSummary.fetchByDraftTitleAndUser(req.query.q, req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Create a Collection
+// mounted as /api/collections/new
+router
+	.route('/collections/new')
+	.post([requireCanCreateDrafts, checkValidationRules])
+	.post((req, res, next) => {
+		return Collection.createWithUser(req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Rename a Collection
+// mounted as /api/collections/rename
+router
+	.route('/collections/rename')
+	.post([requireCanCreateDrafts, checkValidationRules])
+	.post(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.body.id)
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the creator of this collection to rename it')
+		}
+
+		return Collection.rename(req.body.id, req.body.title)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Delete a collection
+// mounted as api/collections/:id
+router
+	.route('/collections/:id')
+	.delete([requireCanDeleteDrafts, checkValidationRules])
+	.delete(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the creator of this collection to delete it')
+		}
+
+		return Collection.delete(req.params.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Add a module to a collection
+// mounted as api/collections/:id/module/add
+router
+	.route('/collections/:id/module/add')
+	.post([requireCanCreateDrafts, checkValidationRules])
+	.post(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
+		if (!hasPerms) {
+			return res.notAuthorized('You must be the creator of this collection to add modules to it')
+		}
+
+		return Collection.addModule(req.params.id, req.body.draftId, req.currentUser.id)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+// Remove a module from a collection
+// mounted as api/collections/:id/module/remove
+router
+	.route('/collections/:id/module/remove')
+	.delete([requireCanDeleteDrafts, checkValidationRules])
+	.delete(async (req, res, next) => {
+		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
+		if (!hasPerms) {
+			return res.notAuthorized(
+				'You must be the creator of this collection to remove modules from it'
+			)
+		}
+
+		return Collection.removeModule(req.params.id, req.body.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

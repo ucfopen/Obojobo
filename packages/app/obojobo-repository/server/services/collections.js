@@ -1,5 +1,5 @@
 const db = require('obojobo-express/server/db')
-const CollectionModel = require('obojobo-express/server/models/collection')
+const CollectionModel = require('../models/collection')
 
 const fetchAllCollectionsForDraft = async draftId => {
 	const collections = await db.manyOrNone(
