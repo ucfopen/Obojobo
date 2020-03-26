@@ -69,7 +69,8 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent)
+			content: Object.assign(prevState.content, newContent),
+			needsUpdate: true
 		}))
 	}
 
@@ -253,9 +254,9 @@ class MoreInfoBox extends React.Component {
 						)}
 					</div>
 					<div className="box-controls">
-						{this.state.error ? <p>{this.state.error}</p> : null}
+						{this.state.error ? <p className="error">{this.state.error}</p> : null}
 						<Button onClick={this.onSave} className="cancel-button">
-							Save &amp; Close
+							Done
 						</Button>
 					</div>
 				</div>
