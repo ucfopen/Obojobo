@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "7.1.6-alpha3",
+	"version": "8.0.0-rc1",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
