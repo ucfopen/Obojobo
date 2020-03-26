@@ -6,18 +6,9 @@ import isOrNot from '../../../common/util/isornot'
 
 import './link.scss'
 
-const Latex = memo(props => {
-	const editor = useSlate()
-
-	// Some of the nested properties don't deep equals properly
-	// So a JSON stringify allows for proper comparison
-	const leaf = Editor.leaf(editor, editor.selection || [], { edge: 'start' })
-	const selected = JSON.stringify(leaf[0]) === JSON.stringify(props.leaf)
-
-	const className = 'latex-editor ' + isOrNot(selected, 'selected')
-
+const Latex = props => {
 	return (
-		<div className={className}>
+		<div className={'latex-editor '}>
 			{props.children}
 			<div contentEditable={false} className="preview">
 				<p>Preview:</p>
@@ -32,6 +23,6 @@ const Latex = memo(props => {
 			</div>
 		</div>
 	)
-})
+}
 
 export default Latex

@@ -1,0 +1,24 @@
+@import '~styles/includes';
+
+.hovering-preview {
+	position: absolute;
+	top: 8em;
+
+	pointer-events: none;
+	width: auto;
+	background: white;
+	white-space: nowrap;
+	overflow: visible;
+	color: black;
+	padding: 0.3rem 1rem;
+	border-radius: 0.25rem;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	z-index: 1;
+
+	p {
+		font-family: $font-default;
+		font-size: 0.8rem;
+		margin-bottom: -0.3rem;
+		opacity: 0.5;
+	}
+}

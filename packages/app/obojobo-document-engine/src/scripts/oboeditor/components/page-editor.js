@@ -17,6 +17,7 @@ import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
+import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 
@@ -346,7 +347,6 @@ class PageEditor extends React.Component {
 	// All the render methods that allow the editor to display properly
 
 	renderLeaf(props) {
-		console.log('rerendering', props.leaf.placeholder)
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
 		const { attributes, children, leaf } = props
 
@@ -395,6 +395,8 @@ class PageEditor extends React.Component {
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
+
+					<HoveringPreview />
 
 					<EditorNav
 						navState={this.props.navState}
