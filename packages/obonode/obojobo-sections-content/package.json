@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-sections-content",
-	"version": "8.0.0-rc2",
+	"version": "8.0.0-rc3",
 	"license": "AGPL-3.0-only",
 	"description": "Content section chunk for Obojobo",
 	"scripts": {
@@ -28,7 +28,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^8.0.0-rc2"
+		"obojobo-lib-utils": "^8.0.0-rc3"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
