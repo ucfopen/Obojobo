@@ -19,9 +19,12 @@ Object {
       "questionScores": Array [
         "mockScore",
       ],
-      "responses": Object {
-        "mockQuestionId": "mockResponse",
-      },
+      "responses": Array [
+        Object {
+          "id": "mockQuestionId",
+          "response": "mockResponse",
+        },
+      ],
       "startTime": "mockCreatedAt",
       "state": "mockState",
       "userId": "mockUserId",
@@ -57,7 +60,7 @@ Array [
         "questionScores": Array [
           "mockScore",
         ],
-        "responses": Object {},
+        "responses": Array [],
         "startTime": "mockCreatedAt",
         "state": "mockState",
         "userId": "mockUserId",
@@ -87,7 +90,7 @@ Object {
       "questionScores": Array [
         "mockScore",
       ],
-      "responses": Object {},
+      "responses": Array [],
       "startTime": "mockCreatedAt",
       "state": "mockState",
       "userId": "mockUserId",
@@ -124,7 +127,7 @@ Object {
       "questionScores": Array [
         "mockScore",
       ],
-      "responses": Object {},
+      "responses": Array [],
       "startTime": "mockCreatedAt",
       "state": "mockState",
       "userId": "mockUserId",
@@ -144,7 +147,7 @@ Object {
       "questionScores": Array [
         "mockScore",
       ],
-      "responses": Object {},
+      "responses": Array [],
       "startTime": "mockCreatedAt",
       "state": "mockState",
       "userId": "mockUserId",
@@ -180,7 +183,7 @@ Array [
         "questionScores": Array [
           "mockScore",
         ],
-        "responses": Object {},
+        "responses": Array [],
         "startTime": "mockCreatedAt",
         "state": "mockState",
         "userId": "mockUserId",
@@ -216,7 +219,7 @@ Object {
       "questionScores": Array [
         "mockScore",
       ],
-      "responses": Object {},
+      "responses": Array [],
       "startTime": "mockCreatedAt",
       "state": "mockState",
       "userId": "mockUserId",
