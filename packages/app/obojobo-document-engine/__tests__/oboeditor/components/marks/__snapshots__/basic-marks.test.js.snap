@@ -57,16 +57,22 @@ Object {
 
 exports[`BasicMarks renderLeaf diplays expected style 6`] = `
 Object {
-  "children": <span
-    className="latex-editor"
+  "children": <Latex
+    leaf={
+      Object {
+        "_latex": true,
+      }
+    }
   >
     mockChild
-  </span>,
+  </Latex>,
   "leaf": Object {
     "_latex": true,
   },
 }
 `;
+
+exports[`BasicMarks renderLeaf diplays expected style 7`] = `ShallowWrapper {}`;
 
 exports[`BasicMarks renderLeaf does nothing 1`] = `
 Object {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
-import katex from 'katex'
 
 import BoldIcon from '../../assets/bold-icon'
 import ItalicIcon from '../../assets/italic-icon'

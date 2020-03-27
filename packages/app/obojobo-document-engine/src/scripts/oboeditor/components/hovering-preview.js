@@ -1,18 +1,17 @@
 import React, { useRef, useEffect } from 'react'
 import { ReactEditor, useSlate } from 'slate-react'
-import { Editor, Range } from 'slate'
-import ReactDOM from 'react-dom'
+import { Editor } from 'slate'
 import katex from 'katex'
 
 import './hovering-preview.scss'
-
-const Portal = ({ children }) => {
-	return ReactDOM.createPortal(children, document.body)
-}
+const LATEX_MARK = '_latex'
 
 const HoveringPreview = () => {
 	const ref = useRef()
 	const editor = useSlate()
+	const [leaf] = editor.selection
+		? Editor.leaf(editor, editor.selection, { edge: 'start' })
+		: [{ text: '' }, []]
 
 	useEffect(() => {
 		const el = ref.current
@@ -22,17 +21,23 @@ const HoveringPreview = () => {
 			return
 		}
 
-		if (!selection || !ReactEditor.isFocused(editor)) {
-			console.log('in here')
+		if (!selection || !ReactEditor.isFocused(editor) || !leaf[LATEX_MARK]) {
 			el.removeAttribute('style')
 			return
 		}
 
-		console.log('go team rocket!')
-
 		const domSelection = window.getSelection()
 		const domRange = domSelection.getRangeAt(0)
-		const rect = domRange.commonAncestorContainer.parentNode.getBoundingClientRect()
+		const parent = domRange.commonAncestorContainer.parentNode
+
+		// If the parent is not a span, we have selected across multiple pieces of text
+		// so we should hide the preview to prevent chaos as multiple previews pop up
+		if (parent.tagName !== 'span') {
+			el.removeAttribute('style')
+			return
+		}
+
+		const rect = parent.getBoundingClientRect()
 		// Special styling to make the preview box appear above the content
 		el.style.opacity = 1
 		el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 6}px`
@@ -45,7 +50,7 @@ const HoveringPreview = () => {
 			<span
 				className="preview-latex"
 				dangerouslySetInnerHTML={{
-					__html: katex.renderToString('mock\\ text', {
+					__html: katex.renderToString(leaf.text, {
 						throwOnError: false
 					})
 				}}

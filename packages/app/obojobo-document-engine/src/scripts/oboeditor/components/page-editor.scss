@@ -3,6 +3,7 @@
 .editor--page-editor {
 	$latex-editor-background: #e8eef9;
 	$latex-editor-color: #124386;
+	$latex-defaults: inherit !important;
 
 	display: flex;
 	margin: 2em;
@@ -30,6 +31,59 @@
 		font-family: $font-monospace;
 		border-radius: 0.15em;
 		font-size: 0.95em;
+		display: inline;
+		position: relative;
+		cursor: text;
+
+		.preview {
+			pointer-events: none;
+			user-select: none;
+			position: absolute;
+			left: 50%;
+			top: 0;
+			transform: translate(-50%, -110%);
+			display: none;
+			width: auto;
+			background: white;
+			white-space: nowrap;
+			overflow: visible;
+			color: $color-text;
+			padding: 0.3rem 1rem;
+			border-radius: 0.25rem;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			z-index: 1;
+			font-family: $font-monospace;
+			font-size: 1rem;
+			cursor: text;
+			line-height: 1.5rem;
+			font-weight: normal;
+
+			p {
+				font-family: $font-default;
+				font-size: 0.8rem;
+				margin-top: 0.1em;
+				margin-bottom: -0.3rem;
+				opacity: 0.5;
+			}
+		}
+
+		.preview-latex .katex-error {
+			font-family: $latex-defaults;
+		}
+
+		&.is-selected {
+			.preview {
+				display: block;
+			}
+		}
+
+		&:hover,
+		&:focus,
+		&:focus-within {
+			.preview {
+				display: block;
+			}
+		}
 	}
 
 	span[data-placeholder] {
@@ -76,62 +130,6 @@
 				&::before {
 					right: 2em;
 				}
-			}
-		}
-	}
-
-	//@TODO: This is the SCSS code needed to make the latex inline preview work.
-	// For now I put it all here instead of putting it in the classes above.
-	// Once we figure it out we'd want to consolidate the styles.
-	.latex-editor {
-		background: $latex-editor-background;
-		color: $latex-editor-color;
-		font-family: $font-monospace;
-		border-radius: 0.15em;
-		font-size: 0.95em;
-		display: inline;
-		position: relative;
-		cursor: text;
-
-		.preview {
-			pointer-events: none;
-			position: absolute;
-			left: 50%;
-			top: 0;
-			transform: translate(-50%, -110%);
-			display: none;
-			width: auto;
-			background: white;
-			white-space: nowrap;
-			overflow: visible;
-			color: black;
-			padding: 0.3rem 1rem;
-			border-radius: 0.25rem;
-			border: 1px solid rgba(0, 0, 0, 0.2);
-		}
-
-		.preview-latex .katex-error {
-			font-family: inherit !important;
-		}
-
-		p {
-			font-family: $font-default;
-			font-size: 0.8rem;
-			margin-bottom: -0.3rem;
-			opacity: 0.5;
-		}
-
-		&.is-selected {
-			.preview {
-				display: block;
-			}
-		}
-
-		&:hover,
-		&:focus,
-		&:focus-within {
-			.preview {
-				display: block;
 			}
 		}
 	}

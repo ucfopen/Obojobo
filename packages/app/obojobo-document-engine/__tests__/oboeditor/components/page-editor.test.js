@@ -317,6 +317,72 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
+		jest.spyOn(Editor, 'leaf').mockReturnValueOnce([{ text: '' }, []])
+		const component = mount(<PageEditor {...props} />)
+
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
+			}
+		]
+
+		component.instance().onChange(value)
+	})
+
+	test('PageEditor component alters value majorly with multi-select', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		window.getSelection = jest.fn().mockReturnValue({
+			getRangeAt: () => ({
+				commonAncestorContainer: {
+					parentNode: {
+						getBoundingClientRect: () => ({})
+					}
+				}
+			})
+		})
+		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: 'mock text', _latex: true }, []])
+		const component = mount(<PageEditor {...props} />)
+
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
+			}
+		]
+
+		component.instance().onChange(value)
+	})
+
+	test('PageEditor component alters value majorly with latex', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		window.getSelection = jest.fn().mockReturnValue({
+			getRangeAt: () => ({
+				commonAncestorContainer: {
+					parentNode: {
+						tagName: 'span',
+						getBoundingClientRect: () => ({})
+					}
+				}
+			})
+		})
+		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: 'mock text', _latex: true }, []])
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [

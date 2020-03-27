@@ -1,8 +1,5 @@
-import React, { memo } from 'react'
+import React from 'react'
 import katex from 'katex'
-import { Editor } from 'slate'
-import { useSlate } from 'slate-react'
-import isOrNot from '../../../common/util/isornot'
 
 import './link.scss'
 

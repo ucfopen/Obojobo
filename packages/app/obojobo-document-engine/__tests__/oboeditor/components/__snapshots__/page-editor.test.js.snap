@@ -913,6 +913,22 @@ exports[`PageEditor PageEditor component 1`] = `
     </div>
   </div>
   <div
+    className="hovering-preview"
+    contentEditable={false}
+  >
+    <p>
+      Preview:
+    </p>
+    <span
+      className="preview-latex"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+        }
+      }
+    />
+  </div>
+  <div
     className="component obojobo-draft--modules--module"
     role="main"
   />
@@ -1347,6 +1363,22 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
     </div>
   </div>
   <div
+    className="hovering-preview"
+    contentEditable={false}
+  >
+    <p>
+      Preview:
+    </p>
+    <span
+      className="preview-latex"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+        }
+      }
+    />
+  </div>
+  <div
     className="component obojobo-draft--modules--module"
     role="main"
   />
@@ -1779,6 +1811,22 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    className="hovering-preview"
+    contentEditable={false}
+  >
+    <p>
+      Preview:
+    </p>
+    <span
+      className="preview-latex"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+        }
+      }
+    />
   </div>
   <div
     className="component obojobo-draft--modules--module"
@@ -2259,6 +2307,22 @@ exports[`PageEditor PageEditor component with no page 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    className="hovering-preview"
+    contentEditable={false}
+  >
+    <p>
+      Preview:
+    </p>
+    <span
+      className="preview-latex"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+        }
+      }
+    />
   </div>
   <div
     className="component obojobo-draft--modules--module"

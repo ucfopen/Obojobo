@@ -2,22 +2,28 @@
 
 .hovering-preview {
 	position: absolute;
-	top: 8em;
-
 	pointer-events: none;
+	user-select: none;
 	width: auto;
 	background: white;
 	white-space: nowrap;
 	overflow: visible;
-	color: black;
+	color: $color-text;
 	padding: 0.3rem 1rem;
+	padding-top: -0.3rem;
 	border-radius: 0.25rem;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	z-index: 1;
+	font-family: $font-monospace;
+	font-size: 1rem;
+	cursor: text;
+	line-height: 1.5rem;
+	opacity: 0;
 
 	p {
 		font-family: $font-default;
 		font-size: 0.8rem;
+		margin: 0;
 		margin-bottom: -0.3rem;
 		opacity: 0.5;
 	}
