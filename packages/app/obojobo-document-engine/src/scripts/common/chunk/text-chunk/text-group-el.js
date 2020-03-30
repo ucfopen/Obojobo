@@ -46,17 +46,23 @@ const getText = props => {
 	return text
 }
 
-const TextGroupEl = props => (
-	<span
-		className={`text align-${props.textItem.data.align}`}
-		data-group-index={props.groupIndex}
-		data-indent={props.textItem.data.indent}
-		{...(('' + props.textItem.data.hangingIndent).toLowerCase() === 'true'
-			? { 'data-hanging-indent': true }
-			: {})}
-	>
-		<StyleableTextComponent text={getText(props)} />
-	</span>
-)
+const TextGroupEl = props => {
+	const indent = parseInt(props.textItem.data.indent, 10)
+	const hangingIndent = ('' + props.textItem.data.hangingIndent).toLowerCase()
+
+	const txtProps = {
+		className: `text align-${props.textItem.data.align}`,
+		'data-group-index': props.groupIndex
+	}
+
+	if (indent >= 0) txtProps['data-indent'] = indent
+	if (hangingIndent === 'true') txtProps['data-hanging-indent'] = true
+
+	return (
+		<span {...txtProps}>
+			<StyleableTextComponent text={getText(props)} />
+		</span>
+	)
+}
 
 export default TextGroupEl
