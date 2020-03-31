@@ -29,22 +29,30 @@ class PostAssessment extends React.Component {
 		ModalUtil.hide()
 		const actionsPath = ReactEditor.findPath(this.props.editor, this.props.element)
 
-		Transforms.insertNodes(this.props.editor, {
-			type: ACTIONS_NODE,
-			subtype: SCORE_NODE,
-			content: {
-				for: rangeString
+		Transforms.insertNodes(
+			this.props.editor,
+			{
+				type: ACTIONS_NODE,
+				subtype: SCORE_NODE,
+				content: {
+					for: rangeString
+				},
+				children: [
+					{
+						type: PAGE_NODE,
+						content: {},
+						children: [
+							{
+								type: TEXT_NODE,
+								content: {},
+								children: [{ text: '' }]
+							}
+						]
+					}
+				]
 			},
-			children: [{ 
-				type: PAGE_NODE,
-				content: {},
-				children: [{ 
-					type: TEXT_NODE,
-					content: {},
-					children: [{ text: ''}]
-				}]
-			}]
-		}, { at: actionsPath.concat(this.props.element.children.length) })
+			{ at: actionsPath.concat(this.props.element.children.length) }
+		)
 	}
 
 	render() {
@@ -52,7 +60,9 @@ class PostAssessment extends React.Component {
 			<div className={'scoreactions'}>
 				<h1 contentEditable={false}>Score Actions</h1>
 				{this.props.children}
-				<Button onClick={this.showRangeModal}>Add Action</Button>
+				<Button onClick={this.showRangeModal} contentEditable={false}>
+					Add Action
+				</Button>
 			</div>
 		)
 	}

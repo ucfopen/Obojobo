@@ -35,7 +35,7 @@ const renderEl = (props, node, index, indent) => {
 			return (
 				<TextGroupEl
 					parentModel={props.model}
-					textItem={{ text: node.text, data: {} }}
+					textItem={{ text: node.text, data: { hangingIndent: node.hangingIndent } }}
 					key={key}
 					groupIndex={node.index}
 				/>
@@ -113,6 +113,7 @@ const List = props => {
 
 		const text = new MockTextNode(item.text)
 		text.index = curIndex
+		text.hangingIndent = item.data.hangingIndent
 		curIndex++
 
 		curUl.lastChild.addChild(text)

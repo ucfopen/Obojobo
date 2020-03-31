@@ -14,26 +14,6 @@ describe('Paragraph Styles', () => {
 		const editor = {
 			children: [
 				{
-					type: CODE_NODE,
-					children: [{ text: 'mockText' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		const component = shallow(<ParagraphStyles editor={editor} />)
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Paragraph Styles node opens and closes', () => {
-		const editor = {
-			children: [
-				{
 					type: TEXT_NODE,
 					children: [{ text: 'mockText' }]
 				},
@@ -45,6 +25,26 @@ describe('Paragraph Styles', () => {
 			selection: {
 				anchor: { path: [0, 0], offset: 1 },
 				focus: { path: [1, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		const component = mount(<ParagraphStyles editor={editor} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Paragraph Styles node opens and closes', () => {
+		const editor = {
+			children: [
+				{
+					type: CODE_NODE,
+					children: [{ text: 'mockText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
 			},
 			isInline: () => false,
 			isVoid: () => false
@@ -167,10 +167,7 @@ describe('Paragraph Styles', () => {
 					children: [{ text: 'mockText' }]
 				}
 			],
-			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
-			},
+			selection: null,
 			isInline: () => false,
 			isVoid: () => false,
 			changeToType: jest.fn()
@@ -203,7 +200,7 @@ describe('Paragraph Styles', () => {
 			children: [
 				{
 					type: HEADING_NODE,
-					content: { headingLevel: 1},
+					content: { headingLevel: 1 },
 					children: [{ text: 'mockText' }]
 				}
 			],
@@ -233,12 +230,12 @@ describe('Paragraph Styles', () => {
 			children: [
 				{
 					type: HEADING_NODE,
-					content: { headingLevel:  2 },
+					content: { headingLevel: 2 },
 					children: [{ text: 'mockText' }]
 				},
 				{
 					type: HEADING_NODE,
-					content: { headingLevel:  1 },
+					content: { headingLevel: 1 },
 					children: [{ text: 'mockText' }]
 				}
 			],

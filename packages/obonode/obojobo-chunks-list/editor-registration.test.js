@@ -9,13 +9,19 @@ import wrapLevelOrTab from './changes/wrap-level-or-tab'
 jest.mock('./changes/wrap-level-or-tab')
 import onBackspace from './changes/on-backspace'
 jest.mock('./changes/on-backspace')
-
+import toggleHangingIndent from './changes/toggle-hanging-indent'
+jest.mock('./changes/toggle-hanging-indent')
 import List from './editor-registration'
+
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 describe('List editor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('insertData calls next if pasting a Slate fragment', () => {
 		const data = {
 			types: ['application/x-slate-fragment']
@@ -191,5 +197,40 @@ describe('List editor', () => {
 		List.plugins.onKeyDown([{},[0]], {}, event)
 
 		expect(wrapLevelOrTab).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown ignores [h]', () => {
+		// setup
+		const event = {
+			key: 'h',
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown([{},[0]], {}, event)
+
+		// verify
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [ctrl]+[h]', () => {
+		// setup
+		const event = {
+			key: 'h',
+			metaKey: true,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown([{},[0]], {}, event)
+
+		// verify
+		expect(toggleHangingIndent).toHaveBeenCalled()
 	})
 })

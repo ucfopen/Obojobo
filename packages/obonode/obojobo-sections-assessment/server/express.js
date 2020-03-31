@@ -120,13 +120,20 @@ router
 			)
 	})
 
-// seems like attemptid should be in the url and swithc to get?
+// @TODO: seems like attemptid should be in the url and switch to GET?
 router
 	.route('/api/assessments/attempt/review')
 	.post([requireCurrentUser, requireMultipleAttemptIds, checkValidationRules])
 	.post(async (req, res) => {
 		const questionModels = await reviewAttempt(req.body.attemptIds, req.currentUser.id)
-		res.send(questionModels)
+		// convert key based objects to arrays for use in the api
+		const attemptsArray = []
+		for (const [attemptId, questionsMap] of Object.entries(questionModels)) {
+			const questions = Object.values(questionsMap)
+			attemptsArray.push({ attemptId, questions })
+		}
+
+		res.send(attemptsArray)
 	})
 
 router

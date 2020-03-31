@@ -1,10 +1,12 @@
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 jest.mock('./changes/increase-indent')
 jest.mock('./changes/indent-or-tab')
 jest.mock('./changes/decrease-indent')
 jest.mock('./changes/split-parent')
+jest.mock('./changes/toggle-hanging-indent')
 
 import { Editor, Transforms, Element, Node } from 'slate'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -13,11 +15,16 @@ import increaseIndent from './changes/increase-indent'
 import indentOrTab from './changes/indent-or-tab'
 import splitParent from './changes/split-parent'
 
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 import Text from './editor-registration'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('Text editor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('insertData calls next if pasting a Slate fragment', () => {
 		const data = {
 			types: ['application/x-slate-fragment']
@@ -143,6 +150,7 @@ describe('Text editor', () => {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
+
 		const editor = {
 			insertText: jest.fn()
 		}
@@ -150,6 +158,72 @@ describe('Text editor', () => {
 		Text.plugins.onKeyDown([{}, [0]], editor, event)
 
 		expect(indentOrTab).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown ignores [h]', () => {
+		// setup
+		const event = {
+			key: 'h',
+			ctrlKey: false,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		Text.plugins.onKeyDown([{}, [0]], {}, event)
+
+		// verify
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [ctrl]+[h]', () => {
+		// setup
+		const event = {
+			key: 'h',
+			metaKey: true,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(toggleHangingIndent).not.toHaveBeenCalled()
+
+		// execute
+		Text.plugins.onKeyDown([{}, [0]], {}, event)
+
+		// verify
+		expect(toggleHangingIndent).toHaveBeenCalled()
+	})
+
+	test.skip('plugins.onKeyDown deals with random keys', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						data: { get: () => 0 }
+					}
+				],
+				document: {
+					getClosest: (key, funct) => {
+						funct({ type: 'mockType' })
+						return true
+					}
+				}
+			}
+		}
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			key: 'e',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, editor, jest.fn())
+
+		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('renderNode renders text when passed', () => {

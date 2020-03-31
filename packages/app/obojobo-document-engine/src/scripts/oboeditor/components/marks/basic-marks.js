@@ -46,12 +46,12 @@ const BasicMarks = {
 			let { children } = props
 			const { leaf } = props
 
-			if (leaf[BOLD_MARK])	children = <strong>{children}</strong>
-			if (leaf[ITALIC_MARK])	children = <em>{children}</em>
-			if (leaf[STRIKE_MARK])	children = <del>{props.children}</del>
-			if (leaf[QUOTE_MARK])	children = <q>{props.children}</q>
-			if (leaf[MONOSPACE_MARK])	children = <code>{props.children}</code>
-			if (leaf[LATEX_MARK])	children = <span className={'latex-editor'}>{props.children}</span>
+			if (leaf[BOLD_MARK]) children = <strong>{children}</strong>
+			if (leaf[ITALIC_MARK]) children = <em>{children}</em>
+			if (leaf[STRIKE_MARK]) children = <del>{children}</del>
+			if (leaf[QUOTE_MARK]) children = <q>{children}</q>
+			if (leaf[MONOSPACE_MARK]) children = <code>{children}</code>
+			if (leaf[LATEX_MARK]) children = <span className={'latex-editor'}>{children}</span>
 
 			props.children = children
 			return props

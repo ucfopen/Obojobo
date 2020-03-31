@@ -6,7 +6,8 @@
 				"type": "onClick",
 				"actions": []
 			}
-		]
+		],
+		"align": "center"
 	},
 	"children": [
 		{ "text": "" }

@@ -6,6 +6,7 @@ Object {
     Object {
       "children": undefined,
       "content": Object {
+        "hangingIndent": undefined,
         "indent": 1,
       },
       "subtype": "ObojoboDraft.Chunks.Code.CodeLine",
@@ -14,6 +15,7 @@ Object {
     Object {
       "children": undefined,
       "content": Object {
+        "hangingIndent": undefined,
         "indent": 0,
       },
       "subtype": "ObojoboDraft.Chunks.Code.CodeLine",

@@ -10,6 +10,17 @@ exports[`NonEditableChunk renders NonEditableChunk component with className, ind
 </div>
 `;
 
+exports[`NonEditableChunk renders NonEditableChunk component with hangingIndent 1`] = `
+<div
+  className="non-editable-chunk testClass"
+  contentEditable={false}
+  data-hanging-indent={true}
+  data-indent={0}
+>
+  Stuff here
+</div>
+`;
+
 exports[`NonEditableChunk renders NonEditableChunk component without className, indent, and children 1`] = `
 <div
   className="non-editable-chunk"

@@ -192,6 +192,10 @@
 
 	.box-controls {
 		text-align: center;
+
+		.error {
+			color: $color-error;
+		}
 	}
 
 	.select-item {

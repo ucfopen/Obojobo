@@ -17,6 +17,10 @@ const parseT = el => {
 		data: el.attributes || null
 	}
 
+	// check for null and undefined
+	// eslint-disable-next-line eqeqeq
+	if (el.value == null) return t
+
 	for (const value of el.value) {
 		parseText(value, t.text)
 	}

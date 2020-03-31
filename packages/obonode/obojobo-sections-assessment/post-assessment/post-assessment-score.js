@@ -17,15 +17,17 @@ class PostAssessmentScore extends React.Component {
 	}
 
 	showRangeModal() {
-		ModalUtil.show(
-			<RangeModal for={this.props.element.content.for} onConfirm={this.changeRange} />
-		)
+		ModalUtil.show(<RangeModal for={this.props.element.content.for} onConfirm={this.changeRange} />)
 	}
 
 	changeRange(newRangeString) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, for: newRangeString} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, for: newRangeString } },
+			{ at: path }
+		)
 	}
 
 	deleteNode() {
@@ -38,17 +40,19 @@ class PostAssessmentScore extends React.Component {
 		return (
 			<div>
 				<div className={'action-data'}>
-					<h2>{'Score Range: ' + dataFor + ' '}</h2>
+					<h2 contentEditable={false}>{'Score Range: ' + dataFor + ' '}</h2>
 					<button
 						className="range-edit"
 						onClick={this.showRangeModal}
-						aria-label="Edit Score Range">
+						aria-label="Edit Score Range"
+						contentEditable={false}
+					>
 						✎
 					</button>
 				</div>
 				<div className={'score-actions-page pad'}>
 					{this.props.children}
-					<Button className={'delete-button'} onClick={this.deleteNode}>
+					<Button className={'delete-button'} onClick={this.deleteNode} contentEditable={false}>
 						×
 					</Button>
 				</div>

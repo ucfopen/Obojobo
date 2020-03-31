@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { ReactEditor } from 'slate-react'
 
-import { Transforms, Path } from 'slate'
+import { Transforms, Path, Editor } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -18,7 +18,7 @@ class Node extends React.Component {
 		// Then use transforms to insert at that path, which effectively inserts above like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
-		Transforms.select(this.props.editor, path)
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
 	}
 
 	insertBlockAtEnd(item) {
@@ -28,7 +28,7 @@ class Node extends React.Component {
 		// Then use transforms to insert at that path, which effectively inserts below like in arrays
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
-		Transforms.select(this.props.editor, Path.next(path))
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
 	}
 
 	saveId(prevId, newId) {
@@ -81,6 +81,7 @@ class Node extends React.Component {
 	render() {
 		const selected = this.props.selected
 		const editor = this.props.editor
+
 		const className = `oboeditor-component component ${this.props.className || ''}`
 
 		return (
