@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-html",
-	"version": "8.0.0",
+	"version": "8.0.1",
 	"license": "AGPL-3.0-only",
 	"description": "HTML content chunk for Obojobo",
 	"scripts": {
@@ -28,7 +28,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^8.0.0"
+		"obojobo-lib-utils": "^8.0.1"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
