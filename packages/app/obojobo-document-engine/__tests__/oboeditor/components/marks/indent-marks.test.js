@@ -18,6 +18,7 @@ describe('IndentMarks', () => {
 
 	test('indentText indents a text block', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+
 		const editor = {
 			children: [
 				{
@@ -40,7 +41,7 @@ describe('IndentMarks', () => {
 			isInline: () => false
 		}
 
-		IndentMarks.plugins.commands.indentText(editor, [{},[0]])
+		IndentMarks.plugins.commands.indentText(editor, [{}, [0]])
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
@@ -69,7 +70,7 @@ describe('IndentMarks', () => {
 			isInline: () => false
 		}
 
-		IndentMarks.plugins.commands.indentCode(editor, [{},[0]])
+		IndentMarks.plugins.commands.indentCode(editor, [{}, [0]])
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
@@ -89,7 +90,7 @@ describe('IndentMarks', () => {
 								{
 									type: LIST_NODE,
 									subtype: LIST_LINE_NODE,
-									content: { indent: 0 }, 
+									content: { indent: 0 },
 									children: [{ text: 'mockText' }]
 								}
 							]
@@ -125,7 +126,7 @@ describe('IndentMarks', () => {
 								{
 									type: LIST_NODE,
 									subtype: LIST_LINE_NODE,
-									content: { indent: 0 }, 
+									content: { indent: 0 },
 									children: [{ text: 'mockText' }]
 								}
 							]
@@ -141,7 +142,7 @@ describe('IndentMarks', () => {
 			isInline: () => false
 		}
 
-		IndentMarks.plugins.commands.indentList(editor, [{},[0]])
+		IndentMarks.plugins.commands.indentList(editor, [{}, [0]])
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
@@ -209,7 +210,7 @@ describe('IndentMarks', () => {
 			opts.match({
 				type: LIST_NODE,
 				subtype: LIST_LINE_NODE,
-				content: { indent: 0 }, 
+				content: { indent: 0 },
 				children: [{ text: 'mockText' }]
 			})
 		})
@@ -226,7 +227,7 @@ describe('IndentMarks', () => {
 								{
 									type: LIST_NODE,
 									subtype: LIST_LINE_NODE,
-									content: { indent: 0 }, 
+									content: { indent: 0 },
 									children: [{ text: 'mockText' }]
 								}
 							]
@@ -242,7 +243,7 @@ describe('IndentMarks', () => {
 			isInline: () => false
 		}
 
-		IndentMarks.plugins.commands.unindentList(editor, [{},[0]])
+		IndentMarks.plugins.commands.unindentList(editor, [{}, [0]])
 
 		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
