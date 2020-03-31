@@ -14,6 +14,7 @@ import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
 import wrapLevelOrTab from './changes/wrap-level-or-tab'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -75,6 +76,9 @@ const plugins = {
 
 			case 'Enter':
 				return insertText(entry, editor, event)
+
+			case 'h':
+				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
 		}
 	},
 	renderNode(props) {

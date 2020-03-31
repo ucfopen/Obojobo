@@ -3,9 +3,12 @@ import { ReactEditor } from 'slate-react'
 
 import IndentIcon from '../../assets/indent-icon'
 import UnindentIcon from '../../assets/unindent-icon'
+import HangingIndentIcon from '../../assets/hanging-indent-icon'
+import toggleHangingIndent from 'obojobo-chunks-text/util/toggle-hanging-indent'
 
 const INDENT = 'indent'
 const UNINDENT = 'unindent'
+const HANGING_INDENT = 'hanging-indent'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -185,6 +188,19 @@ const AlignMarks = {
 				})
 
 				ReactEditor.focus(editor)
+			}
+		},
+		{
+			name: 'Hanging Indent',
+			type: HANGING_INDENT,
+			icon: HangingIndentIcon,
+			action: editor => {
+				const list = Array.from(Editor.nodes(editor, {
+					mode: 'lowest',
+					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+				}))
+
+				list.forEach(entry => toggleHangingIndent(entry, editor))
 			}
 		}
 	]

@@ -4,6 +4,7 @@ exports[`TextGroupEl TextGroupEl formatted 1`] = `
 <span
   className="text align-undefined"
   data-group-index={1}
+  data-hanging-indent={true}
 >
   <span>
     <span>

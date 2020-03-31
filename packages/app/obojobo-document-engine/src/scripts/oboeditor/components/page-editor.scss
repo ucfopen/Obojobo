@@ -103,9 +103,14 @@
 
 		&.align-right {
 			&::before {
-				right: 2em;
+				right: 3em;
 			}
 		}
+	}
+
+	*[data-hanging-indent='true'] span[data-placeholder]::before {
+		text-indent: -2em;
+		padding-left: 2em;
 	}
 
 	&.is-show-placeholders {

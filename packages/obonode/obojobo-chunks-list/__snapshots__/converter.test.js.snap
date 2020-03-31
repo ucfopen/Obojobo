@@ -11,6 +11,9 @@ Object {
               "text": "mockLine1",
             },
           ],
+          "content": Object {
+            "hangingIndent": false,
+          },
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -30,6 +33,9 @@ Object {
                                   "text": "mockLine1",
                                 },
                               ],
+                              "content": Object {
+                                "hangingIndent": undefined,
+                              },
                               "subtype": "ObojoboDraft.Chunks.List.Line",
                               "type": "ObojoboDraft.Chunks.List",
                             },
@@ -79,6 +85,9 @@ Object {
               "text": "mockLine2",
             },
           ],
+          "content": Object {
+            "hangingIndent": false,
+          },
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -132,6 +141,9 @@ Object {
               "text": "mockLine1",
             },
           ],
+          "content": Object {
+            "hangingIndent": false,
+          },
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -141,6 +153,9 @@ Object {
               "text": "mockLine2",
             },
           ],
+          "content": Object {
+            "hangingIndent": false,
+          },
           "subtype": "ObojoboDraft.Chunks.List.Line",
           "type": "ObojoboDraft.Chunks.List",
         },
@@ -160,6 +175,9 @@ Object {
                                   "text": "mockLine3",
                                 },
                               ],
+                              "content": Object {
+                                "hangingIndent": false,
+                              },
                               "subtype": "ObojoboDraft.Chunks.List.Line",
                               "type": "ObojoboDraft.Chunks.List",
                             },
@@ -230,6 +248,7 @@ Object {
       },
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 5,
         },
         "text": Object {
@@ -258,6 +277,7 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
@@ -274,6 +294,7 @@ Object {
       },
       Object {
         "data": Object {
+          "hangingIndent": undefined,
           "indent": 1,
         },
         "text": Object {
