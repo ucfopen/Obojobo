@@ -1,21 +1,37 @@
 import React from 'react'
+import { Editor, Element, Transforms } from 'slate'
 
 import RubricComponent from './editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const plugins = {
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case RUBRIC_NODE:
-				return <RubricComponent {...props} {...props.attributes} />
-			default:
-				return next()
+	// Editor Plugins - These get attached to the editor object an override it's default functions
+	// They may affect multiple nodes simultaneously
+	normalizeNode(entry, editor, next) {
+		const [node, path] = entry
+
+		// If the element is a Rubric Node, make sure it has an Assessment parent
+		if (node.type === RUBRIC_NODE && !node.subtype) {
+			const [parent] = Editor.parent(editor, path)
+			if(!Element.isElement(parent) || parent.type !== ASSESSMENT_NODE) {
+				Transforms.removeNodes(
+					editor, 
+					{ at: path }
+				)
+				return
+			}
 		}
+
+		next(entry, editor)
 	},
-	schema: Schema
+	// Editable Plugins - These are used by the PageEditor component to augment React functions
+	// They affect individual nodes independently of one another
+	renderNode(props) {
+		return <RubricComponent {...props} {...props.attributes} />
+	}
 }
 
 const Rubric = {

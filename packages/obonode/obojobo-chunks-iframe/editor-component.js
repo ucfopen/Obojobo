@@ -1,8 +1,12 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import { ReactEditor } from 'slate-react'
+import { Editor, Transforms } from 'slate'
+
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 import IframeProperties from './iframe-properties-modal'
 
@@ -13,27 +17,27 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class IFrame extends React.Component {
-	constructor(props) {
-		super(props)
+	focusIframe() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
 	}
 
 	showIFramePropertiesModal() {
 		ModalUtil.show(
 			<IframeProperties
-				content={this.props.node.data.get('content')}
-				onConfirm={this.changeProperties.bind(this)}
-			/>
+				content={this.props.element.content}
+				onConfirm={this.changeProperties.bind(this)}/>
 		)
 	}
 
 	changeProperties(content) {
-		const editor = this.props.editor
-
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content
-			}
-		})
+		ModalUtil.hide()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
 	}
 
 	getTitle(src, title) {
@@ -47,15 +51,17 @@ class IFrame extends React.Component {
 	}
 
 	deleteNode() {
-		const editor = this.props.editor
-		editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
+		const { selected } = this.props
 
 		const previewStyle = {
-			height: (content.height || '500') + 'px'
+			height: (content.height || '500') + 'px',
+			userSelect: 'none'
 		}
 
 		const className =
@@ -66,12 +72,15 @@ class IFrame extends React.Component {
 			isOrNot(!content.src, 'missing-src') +
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
-		const isSelected = isOrNot(this.props.isSelected, 'selected')
+		const isSelected = isOrNot(selected, 'selected')
 
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div className={`editor-container  ${isSelected}`} style={previewStyle}>
+					<div 
+						className={`editor-container  ${isSelected}`} 
+						style={previewStyle}
+						onClick={this.focusIframe.bind(this)}>
 						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 							×
 						</Button>
@@ -81,16 +90,16 @@ class IFrame extends React.Component {
 							</span>
 							<Button
 								className="properties-button"
-								onClick={this.showIFramePropertiesModal.bind(this)}
-							>
+								onClick={this.showIFramePropertiesModal.bind(this)}>
 								IFrame Properties
 							</Button>
 						</div>
 					</div>
 				</div>
+				{this.props.children}
 			</Node>
 		)
 	}
 }
 
-export default IFrame
+export default withSlateWrapper(IFrame)

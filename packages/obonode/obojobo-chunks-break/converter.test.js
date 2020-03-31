@@ -3,11 +3,9 @@ import Converter from './converter'
 describe('Break Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({})
-			}
+			content: {}
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 
@@ -32,6 +30,6 @@ describe('Break Converter', () => {
 			content: {} // not sending width here
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
-		expect(slateNode).toHaveProperty('data.content.width', 'normal')
+		expect(slateNode).toHaveProperty('content.width', 'normal')
 	})
 })

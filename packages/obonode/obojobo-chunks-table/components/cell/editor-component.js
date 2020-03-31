@@ -1,8 +1,10 @@
 import '../../viewer-component.scss'
 
 import React from 'react'
-import { Block } from 'slate'
+import { Transforms, Node, Editor, Path } from 'slate'
+import { ReactEditor } from 'slate-react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
@@ -31,187 +33,185 @@ class Cell extends React.Component {
 	addRowAbove() {
 		const editor = this.props.editor
 
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const rowIndex = tableParent.getPath(this.props.parent.key).get(0)
-		const isHeader = this.props.parent.data.get('content').header
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [rowParent, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent] = Editor.parent(editor, rowPath)
+		const rowIndex = rowPath[rowPath.length - 1]
+		const isHeader = tableParent.content.header
 
-		const newRow = Block.create({
-			type: TABLE_ROW_NODE,
-			data: {
-				content: {
-					header: rowIndex === 0 && isHeader,
-					numCols: tableParent.data.get('content').numCols
-				}
-			}
-		})
-
-		editor.insertNodeByKey(tableParent.key, rowIndex, newRow)
-
+		// Remove any existing header marks on the current row
 		if (isHeader) {
 			const noHeader = { header: false }
-			this.props.parent.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, {
-					data: { content: { ...cell.data.get('content'), ...noHeader } }
-				})
-			})
-			editor.setNodeByKey(this.props.parent.key, {
-				data: { content: { ...this.props.parent.data.get('content'), ...noHeader } }
-			})
+			for(const [sibling, siblingPath] of Node.children(editor, rowPath)){
+				Transforms.setNodes(editor, {
+					content: { ...sibling.content, ...noHeader }
+				}, { at: siblingPath })
+			}
+
+			Transforms.setNodes(editor, {
+				content: { ...rowParent.content, ...noHeader }
+			}, { at: rowPath })
 		}
+
+		// Add in the new row once the existing row is finished with its updates
+		Transforms.insertNodes(editor, {
+			type: TABLE_NODE,
+			subtype: TABLE_ROW_NODE,
+			content: {
+				header: rowIndex === 0 && isHeader,
+				numCols: tableParent.content.numCols
+			},
+			children: [{ text: '' }]
+		}, { at: rowPath })
 	}
 
 	addRowBelow() {
 		const editor = this.props.editor
 
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const rowIndex = tableParent.getPath(this.props.parent.key).get(0)
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent] = Editor.parent(editor, rowPath)
 
-		const newRow = Block.create({
-			type: TABLE_ROW_NODE,
-			data: { content: { header: false, numCols: tableParent.data.get('content').numCols } }
-		})
-
-		editor.insertNodeByKey(tableParent.key, rowIndex + 1, newRow)
+		Transforms.insertNodes(editor, {
+			type: TABLE_NODE,
+			subtype: TABLE_ROW_NODE,
+			content: {
+				header: false,
+				numCols: tableParent.content.numCols
+			},
+			children: [{ text: '' }]
+		}, { at: Path.next(rowPath) })
 	}
 
 	addColLeft() {
 		const editor = this.props.editor
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
 
-		return editor.withoutNormalizing(() => {
-			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, {
-				data: {
-					content: {
-						...tableParent.data.get('content'),
-						numCols: tableContent.numCols + 1
-					}
-				}
-			})
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
+		const colIndex = cellPath[cellPath.length - 1]
 
-			tableParent.nodes.forEach(row => {
-				const newCell = Block.create({
-					type: TABLE_CELL_NODE,
-					data: { content: { header: row.data.get('content').header } }
-				})
+		// Do all the edits before normalizing to prevent the new column from being
+		// added on to the end of every row
+		return Editor.withoutNormalizing(editor, () => {
+			const colIncrease = { numCols: tableParent.content.numCols + 1 }
+			Transforms.setNodes(editor, {
+				content: { ...tableParent.content, ...colIncrease }
+			}, { at: tablePath })
 
-				editor.setNodeByKey(row.key, {
-					data: {
-						content: {
-							...row.data.get('content'),
-							numCols: tableContent.numCols + 1
-						}
-					}
-				})
-				editor.insertNodeByKey(row.key, colIndex, newCell)
-			})
+			for(const [row, path] of Node.children(editor, tablePath)){
+				Transforms.setNodes(editor, {
+					content: { ...row.content, ...colIncrease }
+				}, { at: path })
+
+				Transforms.insertNodes(editor, {
+					type: TABLE_NODE,
+					subtype: TABLE_CELL_NODE,
+					content: { 
+						header: row.content.header,
+					},
+					children: [{ text: '' }]
+				}, { at: path.concat(colIndex) })
+			}
 		})
 	}
 
 	addColRight() {
 		const editor = this.props.editor
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
 
-		return editor.withoutNormalizing(() => {
-			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, {
-				data: {
-					content: {
-						...tableParent.data.get('content'),
-						numCols: tableContent.numCols + 1
-					}
-				}
-			})
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
+		const colIndex = cellPath[cellPath.length - 1]
 
-			tableParent.nodes.forEach(row => {
-				const newCell = Block.create({
-					type: TABLE_CELL_NODE,
-					data: { content: { header: row.data.get('content').header } }
-				})
+		// Do all the edits before normalizing to prevent the new column from being
+		// added on to the end of every row
+		return Editor.withoutNormalizing(editor, () => {
+			const colIncrease = { numCols: tableParent.content.numCols + 1 }
+			Transforms.setNodes(editor, {
+				content: { ...tableParent.content, ...colIncrease }
+			}, { at: tablePath })
 
-				editor.setNodeByKey(row.key, {
-					data: {
-						content: {
-							...row.data.get('content'),
-							numCols: tableContent.numCols + 1
-						}
-					}
-				})
-				editor.insertNodeByKey(row.key, colIndex + 1, newCell)
-			})
+			for(const [row, path] of Node.children(editor, tablePath)){
+				Transforms.setNodes(editor, {
+					content: { ...row.content, ...colIncrease }
+				}, { at: path })
+
+				Transforms.insertNodes(editor, {
+					type: TABLE_NODE,
+					subtype: TABLE_CELL_NODE,
+					content: { 
+						header: row.content.header,
+					},
+					children: [{ text: '' }]
+				}, { at: path.concat(colIndex + 1) })
+			}
 		})
 	}
 
 	deleteRow() {
 		const editor = this.props.editor
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const rowIndex = tableParent.getPath(this.props.parent.key).get(0)
+
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
+		const rowIndex = rowPath[rowPath.length - 1]
 
 		if (rowIndex === 0) {
-			const sibling = tableParent.nodes.get(1)
-
 			// If this is the only row in the table, delete the table
-			if (!sibling) {
-				return editor.removeNodeByKey(tableParent.key)
+			if (tableParent.children.length === 1) {
+				return Transforms.removeNodes(editor, { at: tablePath })
 			}
 
 			// Set sibling as new header
+			const sibling = tableParent.children[1]
+			const siblingPath = tablePath.concat(rowIndex + 1)
+			const header = { header: tableParent.content.header }
 
-			const yesHeader = { header: true }
-			sibling.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, {
-					data: { content: { ...cell.data.get('content'), ...yesHeader } }
-				})
-			})
-			editor.setNodeByKey(sibling.key, {
-				data: { content: { ...sibling.data.get('content'), ...yesHeader } }
-			})
+			for(const [child, childPath] of Node.children(editor, siblingPath)){
+				Transforms.setNodes(editor, {
+					content: { ...child.content, ...header }
+				}, { at: childPath })
+			}
+
+			Transforms.setNodes(editor, {
+				content: { ...sibling.content, ...header }
+			}, { at: siblingPath })
 		}
 
-		return this.props.editor.removeNodeByKey(this.props.parent.key)
+		Transforms.setNodes(editor, {
+			content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
+		}, { at: tablePath })
+
+		return Transforms.removeNodes(editor, { at: rowPath })
 	}
 
 	deleteCol() {
 		const editor = this.props.editor
-		const doc = editor.value.document
-		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
-		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
+
+		const cellPath = ReactEditor.findPath(editor, this.props.element)
+		const [rowParent, rowPath] = Editor.parent(editor, cellPath)
+		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
+		const colIndex = cellPath[cellPath.length - 1]
 
 		// If there is only one column, delete the whole table
-		if (this.props.parent.nodes.size === 1) {
-			return editor.removeNodeByKey(tableParent.key)
+		if (rowParent.children.length === 1) {
+			return Transforms.removeNodes(editor, { at: tablePath })
 		}
 
-		return editor.withoutNormalizing(() => {
-			const tableContent = tableParent.data.get('content')
-			editor.setNodeByKey(tableParent.key, {
-				data: {
-					content: {
-						...tableParent.data.get('content'),
-						numCols: tableContent.numCols - 1
-					}
-				}
-			})
+		return Editor.withoutNormalizing(editor, () => {
+			const colDecrease = { numCols: tableParent.content.numCols - 1 }
+			Transforms.setNodes(editor, {
+				content: { ...tableParent.content, ...colDecrease }
+			}, { at: tablePath })
 
-			tableParent.nodes.forEach(row => {
-				const cell = row.nodes.get(colIndex)
-				editor.setNodeByKey(row.key, {
-					data: {
-						content: {
-							...row.data.get('content'),
-							numCols: tableContent.numCols - 1
-						}
-					}
-				})
-				editor.removeNodeByKey(cell.key)
-			})
+			for(const [row, path] of Node.children(editor, tablePath)){
+				Transforms.setNodes(editor, {
+					content: { ...row.content, ...colDecrease }
+				}, { at: path })
+
+				Transforms.removeNodes(editor, { at: path.concat(colIndex) })
+			}
 		})
 	}
 
@@ -234,21 +234,21 @@ class Cell extends React.Component {
 	}
 
 	render() {
-		if (this.props.node.data.get('content').header) {
+		if (this.props.element.content.header) {
 			return (
 				<th>
-					{this.props.isSelected ? this.renderDropdown() : null}
+					{this.props.selected ? this.renderDropdown() : null}
 					{this.props.children}
 				</th>
 			)
 		}
 		return (
 			<td>
-				{this.props.isSelected ? this.renderDropdown() : null}
+				{this.props.selected ? this.renderDropdown() : null}
 				{this.props.children}
 			</td>
 		)
 	}
 }
 
-export default Cell
+export default withSlateWrapper(Cell)

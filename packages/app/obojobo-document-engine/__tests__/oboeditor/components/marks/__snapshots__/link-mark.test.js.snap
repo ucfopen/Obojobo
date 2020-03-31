@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LinkMark renderMark diplays expected style 1`] = `
-<Link
-  mark={
+<SlateWrapper
+  element={
     Object {
       "type": "a",
     }
   }
 >
   mockChild
-</Link>
+</SlateWrapper>
 `;

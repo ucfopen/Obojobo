@@ -3,7 +3,7 @@
 exports[`Line Editor Node Line component 1`] = `
 <div>
   <li
-    data-hanging-indent={Object {}}
+    data-hanging-indent={true}
   />
 </div>
 `;

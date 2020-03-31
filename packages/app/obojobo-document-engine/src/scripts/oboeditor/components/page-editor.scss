@@ -67,5 +67,21 @@
 				position: absolute;
 			}
 		}
+
+		.align-center {
+			span[data-placeholder] {
+				&::before {
+					transform: translate(-50%, 0);
+				}
+			}
+		}
+
+		.align-right {
+			span[data-placeholder] {
+				&::before {
+					right: 2em;
+				}
+			}
+		}
 	}
 }
