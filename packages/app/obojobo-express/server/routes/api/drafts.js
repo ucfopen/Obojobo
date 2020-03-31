@@ -194,7 +194,7 @@ router
 		const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
 
 		if (!hasPerms) {
-			return res.notAuthorized('You must be the author of this draft to retrieve this information')
+			return res.notAuthorized('You must be the author of this draft to delete it')
 		}
 
 		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)

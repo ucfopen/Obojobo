@@ -258,7 +258,7 @@ router
 			return res.notAuthorized('You must be the creator of this collection to rename it')
 		}
 
-		return Collection.rename(req.body.id, req.body.title)
+		return Collection.rename(req.body.id, req.body.title, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
@@ -274,7 +274,7 @@ router
 			return res.notAuthorized('You must be the creator of this collection to delete it')
 		}
 
-		return Collection.delete(req.params.id)
+		return Collection.delete(req.params.id, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
@@ -308,7 +308,7 @@ router
 			)
 		}
 
-		return Collection.removeModule(req.params.id, req.body.draftId)
+		return Collection.removeModule(req.params.id, req.body.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

@@ -3,7 +3,7 @@ describe('Server Events', () => {
 	jest.mock('obojobo-express/server/obo_events')
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/models/draft')
-	jest.mock('../../obojobo-express/server/public/compiled/manifest.json', () => ({}), {
+	jest.mock('../../../obojobo-express/server/public/compiled/manifest.json', () => ({}), {
 		virtual: true
 	})
 
@@ -16,14 +16,14 @@ describe('Server Events', () => {
 		oboEvents = require('obojobo-express/server/obo_events')
 		DraftModel = require('obojobo-express/server/models/draft')
 		db = require('obojobo-express/server/db')
-		require('./events')
+		require('../../server/events')
 	})
 
 	test('registers expected listeners', () => {
 		const oboEvents = require('obojobo-express/server/obo_events')
 		const DraftModel = require('obojobo-express/server/models/draft')
 
-		require('./events')
+		require('../../server/events')
 
 		expect(oboEvents.on).toHaveBeenCalledTimes(5)
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_AUTHORIZED', expect.any(Function))

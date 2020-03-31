@@ -2,16 +2,11 @@ const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
 const buildQueryWhere = whereSQL => {
-	let andWhereSQL = ''
-	if (whereSQL !== '') {
-		andWhereSQL = `AND ${whereSQL}`
-	}
-
 	return `
 		SELECT *
 		FROM repository_collections
 		WHERE deleted = FALSE
-		${andWhereSQL}
+		AND ${whereSQL}
 		ORDER BY title ASC
 	`
 }
@@ -39,9 +34,7 @@ class CollectionSummary {
 	static fetchByUserId(userId) {
 		return CollectionSummary.fetchWhere(
 			`visibility_type = 'private' AND user_id = $[userId] AND deleted = FALSE`,
-			{
-				userId
-			}
+			{ userId }
 		)
 	}
 

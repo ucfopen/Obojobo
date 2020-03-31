@@ -34,29 +34,6 @@ class Collection {
 			})
 	}
 
-	static create({ title = '', user_id }) {
-		return db
-			.one(
-				`
-				INSERT INTO repository_collections
-					(title, user_id)
-				VALUES
-					($[title], $[user_id])
-				RETURNING
-					id,
-					title,
-					user_id as userId,
-					created_at as createdAt`,
-				{
-					title,
-					user_id
-				}
-			)
-			.then(insertResult => {
-				return new Collection(insertResult)
-			})
-	}
-
 	static createWithUser(userId) {
 		return db
 			.one(
@@ -70,11 +47,11 @@ class Collection {
 			)
 			.then(newCollection => {
 				logger.info('user created collection', { userId, collectionId: newCollection.id })
-				return newCollection
+				return new Collection(newCollection)
 			})
 	}
 
-	static rename(id, newTitle) {
+	static rename(id, newTitle, userId) {
 		return db
 			.one(
 				`UPDATE repository_collections
@@ -85,6 +62,7 @@ class Collection {
 			)
 			.then(updatedCollection => {
 				const infoObject = {
+					userId,
 					id: updatedCollection.id,
 					title: updatedCollection.title
 				}
@@ -113,7 +91,7 @@ class Collection {
 			})
 	}
 
-	static removeModule(collectionId, draftId) {
+	static removeModule(collectionId, draftId, userId) {
 		return db
 			.none(
 				`DELETE FROM repository_map_drafts_to_collections
@@ -125,14 +103,15 @@ class Collection {
 			)
 			.then(() => {
 				const infoObject = {
+					userId,
 					collectionId,
 					draftId
 				}
-				logger.info('module removed from collection', infoObject)
+				logger.info('user removed module from collection', infoObject)
 			})
 	}
 
-	static delete(id) {
+	static delete(id, userId) {
 		return db
 			.none(
 				`UPDATE repository_collections
@@ -141,7 +120,7 @@ class Collection {
 				{ id }
 			)
 			.then(() => {
-				logger.info('collection deleted ', { id })
+				logger.info('collection deleted by user', { id, userId })
 			})
 	}
 

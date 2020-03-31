@@ -1,12 +1,7 @@
 const db = require('obojobo-express/server/db')
 const logger = require('obojobo-express/server/logger')
 
-const buildQueryWhere = (whereSQL, joinSQL = '', limitSQL = '') => {
-	let andWhereSQL = ''
-	if (whereSQL !== '') {
-		andWhereSQL = `AND ${whereSQL}`
-	}
-
+const buildQuery = (whereSQL, joinSQL = '', limitSQL = '') => {
 	return `
 		SELECT
 			DISTINCT drafts_content.draft_id AS draft_id,
@@ -26,7 +21,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '', limitSQL = '') => {
 			ON drafts_content.draft_id = drafts.id
 		${joinSQL}
 		WHERE drafts.deleted = FALSE
-		${andWhereSQL}
+		AND ${whereSQL}
 		WINDOW wnd AS (
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
 			ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
@@ -59,7 +54,7 @@ class DraftSummary {
 
 	static fetchById(id) {
 		return db
-			.one(buildQueryWhere('drafts.id = $[id]'), { id })
+			.one(buildQuery('drafts.id = $[id]'), { id })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchById Error', error.message)
@@ -114,7 +109,7 @@ class DraftSummary {
 		const joinSQL = `JOIN repository_map_user_to_draft
 			ON repository_map_user_to_draft.draft_id = drafts.id`
 
-		const innerQuery = buildQueryWhere(whereSQL, joinSQL)
+		const innerQuery = buildQuery(whereSQL, joinSQL)
 		const query = `
 			SELECT inner_query.*
 			FROM (
@@ -136,27 +131,34 @@ class DraftSummary {
 
 	static fetchAndJoinWhereLimit(joinSQL, whereSQL, limitSQL, queryValues) {
 		return db
-			.any(buildQueryWhere(whereSQL, joinSQL, limitSQL), queryValues)
+			.any(buildQuery(whereSQL, joinSQL, limitSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				logger.error(
+					'fetchAndJoinWhereLimit Error',
+					error.message,
+					joinSQL,
+					whereSQL,
+					limitSQL,
+					queryValues
+				)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
 
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
 		return db
-			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
+			.any(buildQuery(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				logger.error('fetchAndJoinWhere Error', error.message, joinSQL, whereSQL, queryValues)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
 
 	static fetchWhere(whereSQL, queryValues) {
 		return db
-			.any(buildQueryWhere(whereSQL), queryValues)
+			.any(buildQuery(whereSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
