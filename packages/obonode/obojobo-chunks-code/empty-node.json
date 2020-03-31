@@ -5,7 +5,7 @@
 		{
 			"type":"ObojoboDraft.Chunks.Code",
 			"subtype":"ObojoboDraft.Chunks.Code.CodeLine",
-			"content":{ "indent": 0 },
+			"content":{ "indent": 0, "hangingIndent": 0 },
 			"children":[{ "text": ""}]
 		}
 	]

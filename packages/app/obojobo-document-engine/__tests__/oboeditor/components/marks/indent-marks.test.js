@@ -247,7 +247,7 @@ describe('IndentMarks', () => {
 		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
 
-	test('the action in each mark calls editor.indent[Type] or editor.unindent[Type]', () => {
+	test('the action in the indent and unindent marks call editor.indent[Type] or editor.unindent[Type]', () => {
 		const editor = {
 			indentCode: jest.fn(),
 			indentList: jest.fn(),
@@ -278,7 +278,7 @@ describe('IndentMarks', () => {
 		}
 
 		IndentMarks.marks.forEach(mark => {
-			mark.action(editor)
+			if (mark.type !== 'hanging-indent') mark.action(editor)
 		})
 
 		expect(editor.indentText).toHaveBeenCalledTimes(1)
@@ -287,5 +287,39 @@ describe('IndentMarks', () => {
 		expect(editor.unindentText).toHaveBeenCalledTimes(1)
 		expect(editor.unindentCode).toHaveBeenCalledTimes(1)
 		expect(editor.unindentList).toHaveBeenCalledTimes(1)
+	})
+
+	test("the hanging indent mark action toggles the given block's data.hangingIndent property to false if it starts at true and calls editor.setNodeByKey", () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+		const editor = {
+			children: [
+				{
+					type: TEXT_NODE,
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockText' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
+		}
+
+		//is there a better way of doing this?
+		IndentMarks.marks.forEach(mark => {
+			if (mark.type === 'hanging-indent') {
+				mark.action(editor)
+			}
+		})
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

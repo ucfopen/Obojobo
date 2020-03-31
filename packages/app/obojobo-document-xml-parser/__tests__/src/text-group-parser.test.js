@@ -131,4 +131,18 @@ describe('TextGroup parser', () => {
 		checkStyleExpectations(parsedStyles[0], 'extra', 0, 3, { prop: 'val' })
 		checkStyleExpectations(parsedStyles[1], 'extra', 3, 7, {})
 	})
+
+	test('Handles undefined values', () => {
+		textGroup.elements[0].value = undefined //eslint-disable-line no-undefined
+		const parsed = textGroupParser(textGroup)
+
+		expect(parsed[0].text.value).toBe('')
+	})
+
+	test('Handles null values', () => {
+		textGroup.elements[0].value = null
+		const parsed = textGroupParser(textGroup)
+
+		expect(parsed[0].text.value).toBe('')
+	})
 })

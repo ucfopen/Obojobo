@@ -127,22 +127,18 @@ describe('Format Menu', () => {
 		// Unordered lists
 		component
 			.find('button')
-			.at(28)
-			.simulate('click')
-		component
-			.find('button')
 			.at(29)
 			.simulate('click')
 		component
 			.find('button')
 			.at(30)
 			.simulate('click')
-
-		// Ordered lists
 		component
 			.find('button')
-			.at(32)
+			.at(31)
 			.simulate('click')
+
+		// Ordered lists
 		component
 			.find('button')
 			.at(33)
@@ -158,6 +154,10 @@ describe('Format Menu', () => {
 		component
 			.find('button')
 			.at(36)
+			.simulate('click')
+		component
+			.find('button')
+			.at(37)
 			.simulate('click')
 
 		expect(editor.changeToType).toHaveBeenCalledTimes(8)

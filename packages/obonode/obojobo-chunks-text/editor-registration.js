@@ -12,6 +12,7 @@ import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
 import indentOrTab from './changes/indent-or-tab'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 import splitParent from './changes/split-parent'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -76,6 +77,9 @@ const plugins = {
 
 				// TAB
 				return indentOrTab(entry, editor, event)
+
+			case 'h':
+				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
 		}
 	},
 	renderNode(props) {

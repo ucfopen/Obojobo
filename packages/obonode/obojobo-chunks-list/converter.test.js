@@ -24,6 +24,7 @@ describe('List Converter', () => {
 						{
 							type: LIST_NODE,
 							subtype: LIST_LINE_NODE,
+							content: { hangingIndent: false},
 							children: [{ text: 'mockText', b:true }]
 						},
 						{
@@ -92,7 +93,7 @@ describe('List Converter', () => {
 					},
 					{
 						text: { value: 'mockLine3' },
-						data: { indent: 5 }
+						data: { indent: 5, hangingIndent: false }
 					}
 				]
 			}

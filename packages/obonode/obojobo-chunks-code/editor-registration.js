@@ -31,18 +31,18 @@ const Code = {
 		// They may affect multiple nodes simultaneously
 		insertData(data, editor, next) {
 			// Insert Slate fragments normally
-			if(data.types.includes('application/x-slate-fragment')) return next(data)
+			if (data.types.includes('application/x-slate-fragment')) return next(data)
 
 			// If the node that we will be inserting into is not a Code node use the regular logic
 			const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
-			if(first[0].type !== CODE_NODE) return next(data)
+			if (first[0].type !== CODE_NODE) return next(data)
 
 			// When inserting plain text into a Code node insert all lines as code
 			const plainText = data.getData('text/plain')
 			const fragment = plainText.split('\n').map(text => ({
 				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { indent: 0 },
+				content: { indent: 0, hangingIndent: false },
 				children: [{ text }]
 			}))
 
@@ -53,14 +53,16 @@ const Code = {
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {
 			// Define a placeholder decoration
-			if(Element.isElement(node) && !node.subtype && Node.string(node) === ''){
+			if (Element.isElement(node) && !node.subtype && Node.string(node) === '') {
 				const point = Editor.start(editor, path)
 
-				return [{
-					placeholder: 'Type your code here',
-					anchor: point,
-					focus: point
-				}]
+				return [
+					{
+						placeholder: 'Type your code here',
+						anchor: point,
+						focus: point
+					}
+				]
 			}
 
 			return []
@@ -89,7 +91,7 @@ const Code = {
 				default:
 					return <EditorComponent {...props} {...props.attributes} />
 			}
-		},
+		}
 	}
 }
 

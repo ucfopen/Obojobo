@@ -11,6 +11,7 @@ Object {
       ],
       "content": Object {
         "align": undefined,
+        "hangingIndent": undefined,
         "indent": 1,
       },
       "subtype": "ObojoboDraft.Chunks.Text.TextLine",
@@ -24,6 +25,7 @@ Object {
       ],
       "content": Object {
         "align": "left",
+        "hangingIndent": false,
         "indent": 0,
       },
       "subtype": "ObojoboDraft.Chunks.Text.TextLine",

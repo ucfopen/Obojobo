@@ -56,13 +56,13 @@ describe('Code editor', () => {
 			{
 				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { indent: 0 },
+				content: { indent: 0, hangingIndent: false },
 				children: [{ text: 'line1 ' }]
 			},
 			{
 				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { indent: 0 },
+				content: { indent: 0, hangingIndent: false },
 				children: [{ text: ' line2' }]
 			}
 		])
@@ -94,19 +94,9 @@ describe('Code editor', () => {
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			Code.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Code.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			Code.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Code.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
 	test('plugins.decorate renders a placeholder', () => {
@@ -116,12 +106,7 @@ describe('Code editor', () => {
 		Element.isElement.mockReturnValue(true)
 		Node.string.mockReturnValue('')
 
-		expect(
-			Code.plugins.decorate(
-				[ { children: [{ text: '' }] }, [0]],
-				editor
-			)
-		).toMatchSnapshot()
+		expect(Code.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -141,14 +126,14 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown([{},[0]], {}, event1)
+		Code.plugins.onKeyDown([{}, [0]], {}, event1)
 
 		const event2 = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown([{},[0]], {}, event2)
+		Code.plugins.onKeyDown([{}, [0]], {}, event2)
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
@@ -159,7 +144,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown([{},[0]], {}, event)
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(decreaseIndent).toHaveBeenCalled()
 	})
@@ -171,7 +156,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown([{},[0]], {}, event)
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(increaseIndent).toHaveBeenCalled()
 	})
@@ -182,7 +167,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown([{},[0]], {}, event)
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(indentOrTab).toHaveBeenCalled()
 	})

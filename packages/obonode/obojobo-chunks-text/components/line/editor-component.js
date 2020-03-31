@@ -5,7 +5,9 @@ import React from 'react'
 const Line = props => (
 	<span
 		className={'text align-' + props.element.content.align}
-		data-indent={props.element.content.indent}>
+		data-indent={props.element.content.indent}
+		data-hanging-indent={props.element.content.hangingIndent}
+	>
 		{props.children}
 	</span>
 )
