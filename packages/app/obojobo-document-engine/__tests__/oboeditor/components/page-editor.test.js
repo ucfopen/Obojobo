@@ -344,6 +344,7 @@ describe('PageEditor', () => {
 			getRangeAt: () => ({
 				commonAncestorContainer: {
 					parentNode: {
+						tagName: 'fakeTag',
 						getBoundingClientRect: () => ({})
 					}
 				}

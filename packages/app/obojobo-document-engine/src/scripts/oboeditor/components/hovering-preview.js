@@ -32,7 +32,7 @@ const HoveringPreview = () => {
 
 		// If the parent is not a span, we have selected across multiple pieces of text
 		// so we should hide the preview to prevent chaos as multiple previews pop up
-		if (parent.tagName !== 'span') {
+		if (parent.tagName.toLowerCase() !== 'span') {
 			el.removeAttribute('style')
 			return
 		}

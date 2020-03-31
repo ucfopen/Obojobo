@@ -395,9 +395,7 @@ class PageEditor extends React.Component {
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
-
 					<HoveringPreview />
-
 					<EditorNav
 						navState={this.props.navState}
 						model={this.props.model}
