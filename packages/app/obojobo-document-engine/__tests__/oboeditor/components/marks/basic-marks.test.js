@@ -1,10 +1,7 @@
-import React from 'react'
-import { shallow } from 'enzyme'
 import { Editor } from 'slate'
 jest.mock('slate-react')
 
 import BasicMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/basic-marks'
-import Latex from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/latex'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
@@ -110,8 +107,6 @@ describe('BasicMarks', () => {
 				children: 'mockChild'
 			})
 		).toMatchSnapshot()
-
-		expect(shallow(<Latex leaf={{ text: '' }}>Hello</Latex>)).toMatchSnapshot()
 	})
 
 	test('renderLeaf does nothing', () => {

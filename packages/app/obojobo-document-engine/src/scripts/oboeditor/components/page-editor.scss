@@ -32,58 +32,7 @@
 		border-radius: 0.15em;
 		font-size: 0.95em;
 		display: inline;
-		position: relative;
 		cursor: text;
-
-		.preview {
-			pointer-events: none;
-			user-select: none;
-			position: absolute;
-			left: 50%;
-			top: 0;
-			transform: translate(-50%, -110%);
-			display: none;
-			width: auto;
-			background: white;
-			white-space: nowrap;
-			overflow: visible;
-			color: $color-text;
-			padding: 0.3rem 1rem;
-			border-radius: 0.25rem;
-			border: 1px solid rgba(0, 0, 0, 0.2);
-			z-index: 1;
-			font-family: $font-monospace;
-			font-size: 1rem;
-			cursor: text;
-			line-height: 1.5rem;
-			font-weight: normal;
-
-			p {
-				font-family: $font-default;
-				font-size: 0.8rem;
-				margin-top: 0.1em;
-				margin-bottom: -0.3rem;
-				opacity: 0.5;
-			}
-		}
-
-		.preview-latex .katex-error {
-			font-family: $latex-defaults;
-		}
-
-		&.is-selected {
-			.preview {
-				display: block;
-			}
-		}
-
-		&:hover,
-		&:focus,
-		&:focus-within {
-			.preview {
-				display: block;
-			}
-		}
 	}
 
 	span[data-placeholder] {
