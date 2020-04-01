@@ -624,6 +624,8 @@ describe('PageEditor', () => {
 	})
 
 	test('onKeyDown() calls editor functions', () => {
+		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
+
 		const editor = {
 			undo: jest.fn(),
 			redo: jest.fn()
@@ -666,6 +668,11 @@ describe('PageEditor', () => {
 			preventDefault: jest.fn(),
 			key: 'y',
 			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'Escape'
 		})
 
 		instance.onKeyDownGlobal({
@@ -732,6 +739,68 @@ describe('PageEditor', () => {
 			key: 's',
 			metaKey: true
 		})
+
+		expect(onKeyDown).toHaveBeenCalled()
+	})
+
+	test('onKeyDown exits to defaults', () => {
+		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
+
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			isInline: jest.fn(),
+			insertText: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true,
+			defaultPrevented: true
+		})
+
+		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
+			opts.match({ children: [{ text: '' }] })
+			return [[{ type: ASSESSMENT_NODE }, [0]], [{ type: BREAK_NODE }, [0]]]
+		})
+
+		const event = {
+			defaultPrevented: false,
+			preventDefault: jest.fn(),
+			key: 'Tab',
+			metaKey: true
+		}
+		instance.onKeyDown(event)
+
+		const onKeyDown = jest.fn().mockImplementation(() => {
+			event.defaultPrevented = true
+		})
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: { onKeyDown }
+		})
+		instance.onKeyDown(event)
 
 		expect(onKeyDown).toHaveBeenCalled()
 	})

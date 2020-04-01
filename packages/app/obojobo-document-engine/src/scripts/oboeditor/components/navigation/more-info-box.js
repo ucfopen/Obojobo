@@ -270,6 +270,7 @@ class MoreInfoBox extends React.Component {
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}
+					tabIndex={this.props.tabIndex || 0}
 				>
 					<MoreInfoIcon />
 				</button>

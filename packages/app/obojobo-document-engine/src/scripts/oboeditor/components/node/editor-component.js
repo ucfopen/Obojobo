@@ -119,6 +119,7 @@ class Node extends React.Component {
 						markUnsaved={editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
 						onClose={this.onClose.bind(this)}
+						tabIndex="-1"
 					/>
 				) : null}
 				{this.props.children}

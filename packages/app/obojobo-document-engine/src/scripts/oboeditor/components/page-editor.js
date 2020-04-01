@@ -172,6 +172,18 @@ class PageEditor extends React.Component {
 			event.preventDefault()
 			this.editor.redo()
 		}
+
+		if (event.key === 'Escape') {
+			event.preventDefault()
+			ReactEditor.blur(this.editor)
+		}
+	}
+
+	onKeyDownDefaults(event) {
+		if (event.key === 'Tab') {
+			event.preventDefault()
+			this.editor.insertText('\t')
+		}
 	}
 
 	onChange(value) {
@@ -302,7 +314,6 @@ class PageEditor extends React.Component {
 	}
 
 	// All the 'plugin' methods that allow the obonodes to extend the default functionality
-
 	onKeyDown(event) {
 		// Run the global keydowns, stopping if one executes
 		this.onKeyDownGlobal(event)
@@ -330,6 +341,10 @@ class PageEditor extends React.Component {
 			if (item && item.plugins.onKeyDown) {
 				item.plugins.onKeyDown(entry, this.editor, event)
 			}
+		}
+
+		if (!event.defaultPrevented) {
+			this.onKeyDownDefaults(event)
 		}
 	}
 

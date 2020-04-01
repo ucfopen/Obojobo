@@ -132,6 +132,7 @@ class InsertMenu extends React.PureComponent {
 						this.mainButton = button
 					}}
 					onClick={this.openMenu}
+					tabIndex="-1"
 				>
 					{this.props.icon}
 				</button>

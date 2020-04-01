@@ -46,6 +46,7 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
         <button
           className="more-info-button "
           onClick={[Function]}
+          tabIndex={0}
         >
           <svg
             fill="none"
