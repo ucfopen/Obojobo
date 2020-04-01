@@ -783,10 +783,7 @@ describe('PageEditor', () => {
 
 		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
 			opts.match({ children: [{ text: '' }] })
-			return [
-				[{ type: ASSESSMENT_NODE }, [0]],
-				[{ type: BREAK_NODE }, [0]]
-			]
+			return [[{ type: ASSESSMENT_NODE }, [0]], [{ type: BREAK_NODE }, [0]]]
 		})
 		jest.spyOn(Common.Registry, 'getItemForType')
 		instance.onKeyDown({
@@ -932,5 +929,16 @@ describe('PageEditor', () => {
 		expect(observeSpy).toHaveBeenCalledWith(pageEditorContainerRefCurrent)
 
 		window.ResizeObserver = originalResizeObserver
+	})
+
+	test('componentWillUnmount disconnects the resizeObserver', () => {
+		const disconnect = jest.fn()
+
+		PageEditor.prototype.componentWillUnmount.bind({
+			checkIfSaved: jest.fn(),
+			resizeObserver: { disconnect }
+		})()
+
+		expect(disconnect).toHaveBeenCalled()
 	})
 })
