@@ -783,7 +783,10 @@ describe('PageEditor', () => {
 
 		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
 			opts.match({ children: [{ text: '' }] })
-			return [[{ type: ASSESSMENT_NODE }, [0]], [{ type: BREAK_NODE }, [0]]]
+			return [
+				[{ type: ASSESSMENT_NODE }, [0]],
+				[{ type: BREAK_NODE }, [0]]
+			]
 		})
 		jest.spyOn(Common.Registry, 'getItemForType')
 		instance.onKeyDown({
@@ -854,5 +857,80 @@ describe('PageEditor', () => {
 		})
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
+	})
+
+	test('onResized sets state.contentRect', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<PageEditor {...props} />)
+
+		expect(component.state().contentRect).toBe(null)
+		component.instance().onResized({ contentRect: 'mock-content-rect' })
+		expect(component.state().contentRect).toBe('mock-content-rect')
+	})
+
+	test('setupResizeObserver does nothing if the browser does not support ResizeObserver', () => {
+		const originalResizeObserver = window.ResizeObserver
+
+		window.ResizeObserver = undefined //eslint-disable-line no-undefined
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = {}
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: {} }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: { observe: jest.fn() } }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: { disconnect: jest.fn() } }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = jest.fn()
+		window.ResizeObserver.prototype = { observe: jest.fn(), disconnect: jest.fn() }
+		expect(
+			PageEditor.prototype.setupResizeObserver.bind({
+				onResized: jest.fn(),
+				pageEditorContainerRef: { current: jest.fn() }
+			})()
+		).toBe(true)
+
+		window.ResizeObserver = originalResizeObserver
+	})
+
+	test('setupResizeObserver creates a new ResizeObserver and observes the container ref', () => {
+		const originalResizeObserver = window.ResizeObserver
+
+		const onResized = jest.fn()
+		const pageEditorContainerRefCurrent = jest.fn()
+		window.ResizeObserver = class ResizeObserver {
+			constructor(fn) {
+				this.__callback = fn
+			}
+
+			observe() {}
+
+			disconnect() {}
+		}
+		const observeSpy = jest.spyOn(window.ResizeObserver.prototype, 'observe')
+
+		const thisValue = {
+			onResized,
+			pageEditorContainerRef: { current: pageEditorContainerRefCurrent }
+		}
+		expect(PageEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
+
+		expect(thisValue.resizeObserver).toBeInstanceOf(window.ResizeObserver)
+		expect(thisValue.resizeObserver.__callback).toBe(onResized)
+		expect(observeSpy).toHaveBeenCalledWith(pageEditorContainerRefCurrent)
+
+		window.ResizeObserver = originalResizeObserver
 	})
 })

@@ -146,16 +146,23 @@ class PageEditor extends React.Component {
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
 		ReactEditor.focus(this.editor)
+		this.setupResizeObserver()
+	}
 
+	setupResizeObserver() {
 		if (
-			window.ResizeObserver &&
-			window.ResizeObserver.prototype &&
-			window.ResizeObserver.prototype.observe &&
-			window.ResizeObserver.prototype.disconnect
+			!window.ResizeObserver ||
+			!window.ResizeObserver.prototype ||
+			!window.ResizeObserver.prototype.observe ||
+			!window.ResizeObserver.prototype.disconnect
 		) {
-			this.resizeObserver = new ResizeObserver(this.onResized)
-			this.resizeObserver.observe(this.pageEditorContainerRef.current)
+			return false
 		}
+
+		this.resizeObserver = new ResizeObserver(this.onResized)
+		this.resizeObserver.observe(this.pageEditorContainerRef.current)
+
+		return true
 	}
 
 	componentWillUnmount() {
