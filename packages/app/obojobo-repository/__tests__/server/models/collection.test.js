@@ -28,7 +28,7 @@ describe('Collection Model', () => {
 
 		expect(c.id).toBe(null)
 		expect(c.title).toBe('')
-		expect(c.userId).toBe(0)
+		expect(c.userId).toBe(null)
 		expect(c.createdAt).toBe(null)
 	})
 

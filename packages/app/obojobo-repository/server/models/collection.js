@@ -3,7 +3,7 @@ const logger = require('obojobo-express/server/logger')
 const DraftSummary = require('./draft_summary')
 
 class Collection {
-	constructor({ id = null, title = '', user_id = 0, created_at = null }) {
+	constructor({ id = null, title = '', user_id = null, created_at = null }) {
 		this.id = id
 		this.title = title
 		this.userId = user_id

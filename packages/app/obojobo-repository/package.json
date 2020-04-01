@@ -46,6 +46,16 @@
 		"short-uuid": "^3.1.1"
 	},
 	"jest": {
+		"setupFilesAfterEnv": [
+			"./setupTests.js"
+		],
+		"moduleNameMapper": {
+			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.css$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
+		},
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
 		"collectCoverageFrom": [
 			"*.js",
 			"client/**/*.js",
