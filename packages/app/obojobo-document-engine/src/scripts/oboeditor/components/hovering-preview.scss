@@ -13,7 +13,7 @@
 	padding-top: -0.3rem;
 	border-radius: 0.25rem;
 	border: 1px solid rgba(0, 0, 0, 0.2);
-	z-index: 1;
+	z-index: $z-index-above-all;
 	font-family: $font-monospace;
 	font-size: 1rem;
 	cursor: text;

@@ -412,6 +412,7 @@ describe('PageEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "contentRect": null,
 		  "editable": false,
 		  "saved": true,
 		  "showPlaceholders": true,
@@ -440,6 +441,7 @@ describe('PageEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "contentRect": null,
 		  "editable": true,
 		  "saved": false,
 		  "showPlaceholders": true,

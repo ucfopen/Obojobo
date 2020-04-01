@@ -6,7 +6,8 @@ import katex from 'katex'
 import './hovering-preview.scss'
 const LATEX_MARK = '_latex'
 
-const HoveringPreview = () => {
+const HoveringPreview = props => {
+	const pageEditorContainerRef = props.pageEditorContainerRef
 	const ref = useRef()
 	const editor = useSlate()
 	const [leaf] = editor.selection
@@ -15,6 +16,7 @@ const HoveringPreview = () => {
 
 	useEffect(() => {
 		const el = ref.current
+		const pageEditorContainerEl = pageEditorContainerRef.current
 		const { selection } = editor
 
 		if (!el) {
@@ -37,11 +39,12 @@ const HoveringPreview = () => {
 			return
 		}
 
+		const pageEditorRect = pageEditorContainerEl.getBoundingClientRect()
 		const rect = parent.getBoundingClientRect()
 		// Special styling to make the preview box appear above the content
 		el.style.opacity = 1
-		el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 6}px`
-		el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`
+		el.style.top = `${rect.top - pageEditorRect.top - el.offsetHeight - 6}px`
+		el.style.left = `${rect.left - pageEditorRect.left - el.offsetWidth / 2 + rect.width / 2}px`
 	})
 
 	return (
