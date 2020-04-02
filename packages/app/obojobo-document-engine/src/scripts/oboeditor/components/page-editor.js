@@ -55,6 +55,7 @@ class PageEditor extends React.Component {
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
+		this.onKeyDownGlobal = this.onKeyDownGlobal.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
@@ -139,6 +140,9 @@ class PageEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		// Setup global keydown to listen to all global keys
+		document.addEventListener('keydown', this.onKeyDownGlobal)
+
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
 		ReactEditor.focus(this.editor)
@@ -146,6 +150,7 @@ class PageEditor extends React.Component {
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
+		window.removeEventListener('keydown', this.onKeyDownGlobal)
 	}
 
 	checkIfSaved(event) {
