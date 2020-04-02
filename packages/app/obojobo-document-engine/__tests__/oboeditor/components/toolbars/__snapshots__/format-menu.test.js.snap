@@ -1,3 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Format Menu FormatMenu node 1`] = `"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Equation</button><button>Link</button><button>Superscript</button><button>Subscript</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Paragraph styles</button><div class=\\"menu-items\\"><button>Normal Text</button><button>Heading 1</button><button>Heading 2</button><button>Heading 3</button><button>Heading 4</button><button>Heading 5</button><button>Heading 6</button><button>Code</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Align &amp; indent</button><div class=\\"menu-items\\"><button>Left Align</button><button>Center Align</button><button>Right Align</button><button>Indent</button><button>Unindent</button><button>Hanging Indent</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Bullets &amp; numbering</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Bulleted List</button><div class=\\"menu-items\\"><button>● Disc</button><button>○ Circle</button><button>■ Square</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Numbered List</button><div class=\\"menu-items\\"><button>Numbers</button><button>Lowercase Alphabet</button><button>Lowercase Roman Numerals</button><button>Uppercase Alphabet</button><button>Uppercase Roman Numerals</button></div></div></div></div></div></div></div>"`;
+exports[`Format Menu FormatMenu node 1`] = `
+"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold<span>
+CTRL+B</span></button><button>Italic<span>
+CTRL+I</span></button><button>Strikethrough<span>
+CTRL+D</span></button><button>Quote<span>
+CTRL+\\"</span></button><button>Monospace<span>
+CTRL+M</span></button><button>Equation<span>
+CTRL+/</span></button><button>Link<span>
+CTRL+K</span></button><button>Superscript<span>
+CTRL+.</span></button><button>Subscript<span>
+CTRL+,</span></button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Paragraph styles</button><div class=\\"menu-items\\"><button>Normal Text</button><button>Heading 1</button><button>Heading 2</button><button>Heading 3</button><button>Heading 4</button><button>Heading 5</button><button>Heading 6</button><button>Code</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Align &amp; indent</button><div class=\\"menu-items\\"><button>Left Align<span>
+CTRL+L</span></button><button>Center Align<span>
+CTRL+R</span></button><button>Right Align<span>
+CTRL+E</span></button><button>Indent<span>
+ALT+TAB</span></button><button>Unindent<span>
+SHIFT+TAB</span></button><button>Hanging Indent<span>
+CTRL+H</span></button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Bullets &amp; numbering</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Bulleted List</button><div class=\\"menu-items\\"><button>● Disc</button><button>○ Circle</button><button>■ Square</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Numbered List</button><div class=\\"menu-items\\"><button>Numbers</button><button>Lowercase Alphabet</button><button>Lowercase Roman Numerals</button><button>Uppercase Alphabet</button><button>Uppercase Roman Numerals</button></div></div></div></div></div></div></div>"
+`;

@@ -27,8 +27,9 @@ describe('Drop Down Menu', () => {
 	})
 
 	test('DropDownMenu node with sub-menu', () => {
+		navigator.__defineGetter__('appVersion', () => 'Mock Mac')
 		const menu = [
-			{ name: 'Undo', type: 'action', action: jest.fn() },
+			{ name: 'Undo', type: 'action', action: jest.fn(), shortcutMac: 'mock shortcut' },
 			{
 				name: 'subMenu',
 				type: 'sub-menu',

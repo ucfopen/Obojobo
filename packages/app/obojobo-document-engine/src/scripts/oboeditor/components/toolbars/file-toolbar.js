@@ -64,15 +64,33 @@ const FileToolbar = props => {
 	}))
 
 	const editMenu = [
-		{ name: 'Undo', type: 'action', action: () => editor.undo() },
-		{ name: 'Redo', type: 'action', action: () => editor.redo() },
+		{
+			name: 'Undo',
+			shortcut: 'CTRL+Z',
+			shortcutMac: '⌘Z',
+			type: 'action',
+			action: () => editor.undo()
+		},
+		{
+			name: 'Redo',
+			shortcut: 'CTRL+Y',
+			shortcutMac: '⌘Y',
+			type: 'action',
+			action: () => editor.redo()
+		},
 		{
 			name: 'Delete',
 			type: 'action',
 			action: () => editor.deleteFragment(),
 			disabled: props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection)
 		},
-		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
+		{
+			name: 'Select all',
+			shortcut: 'CTRL+A',
+			shortcutMac: '⌘A',
+			type: 'action',
+			action: () => selectAll(editor)
+		}
 	]
 
 	const saved = props.saved ? 'saved' : ''
