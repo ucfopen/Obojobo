@@ -69,7 +69,7 @@ $border: 1px solid $border-color;
 		transform: none;
 		float: left;
 
-		&.is-not-open {
+		&.is-closed {
 			transform: rotate(180deg);
 
 			&:not(:hover) {
@@ -115,6 +115,9 @@ $border: 1px solid $border-color;
 	.date {
 		margin-bottom: 0.4em;
 		font-weight: bold;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	.username {
@@ -124,10 +127,14 @@ $border: 1px solid $border-color;
 		overflow: hidden;
 	}
 
+	.version {
+		color: #0d4fa7;
+		margin-top: 0.4em;
+	}
+
 	.latest-version {
-		background-color: #cde0f9;
-		// color: #4884da;
-		color: $color-obojobo-blue;
+		background-color: #a1c1f578;
+		color: #0d4fa7;
 		font-size: 0.8em;
 		width: 8.5em;
 		text-align: center;
@@ -136,16 +143,19 @@ $border: 1px solid $border-color;
 		margin-top: 0.6em;
 	}
 
-	.is-selected {
-		// color: #2457C2;
-		color: $color-obojobo-blue;
+	span {
+		background: transparent;
 	}
 
-	&:hover {
-		background-color: #f2f2f2;
+	&.is-selected {
+		background: url('/images/hex_transparent.svg') right no-repeat;
+	}
 
-		span:not(.latest-version) {
-			background-color: #f2f2f2;
+	&.is-selected,
+	&:hover {
+		background-color: #e5ecf7;
+		.date {
+			color: $color-obojobo-blue;
 		}
 	}
 }
@@ -198,5 +208,40 @@ $border: 1px solid $border-color;
 		display: block;
 		color: $color-text-minor;
 		font-size: 0.7em;
+	}
+}
+
+.restoration-confirm-dialog {
+	padding: 1.5em 3em;
+	max-width: 23em;
+
+	.dialog-title {
+		font-weight: bold;
+		font-size: 1.25em;
+		text-align: center;
+		margin: 0 0 1em 0;
+	}
+
+	.dialog-content {
+		margin-bottom: 1.5em;
+		text-align: center;
+
+		small {
+			display: block;
+			margin-top: 1.5em;
+			color: $color-text-minor;
+			font-size: 0.7em;
+		}
+	}
+
+	.dialog-controls {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.repository--button {
+			margin: 0 0.5em;
+			font-size: 0.75em;
+		}
 	}
 }
