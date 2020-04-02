@@ -502,7 +502,8 @@ exports[`PageEditor PageEditor component 1`] = `
     >
       <button
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+CTRL+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -516,7 +517,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+CTRL+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -530,7 +532,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+CTRL+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -556,7 +559,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+CTRL+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -576,7 +580,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+CTRL+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -599,7 +604,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+CTRL+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -625,7 +631,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Link"
+        title="Link
+CTRL+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -643,7 +650,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+CTRL+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -661,7 +669,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+CTRL+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -679,7 +688,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+CTRL+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -693,7 +703,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+CTRL+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -707,7 +718,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+CTRL+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -721,7 +733,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+ALT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -739,7 +752,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+SHIFT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -757,7 +771,8 @@ exports[`PageEditor PageEditor component 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+CTRL+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -954,7 +969,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
     >
       <button
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+CTRL+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -968,7 +984,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+CTRL+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -982,7 +999,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+CTRL+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1008,7 +1026,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+CTRL+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1028,7 +1047,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+CTRL+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1051,7 +1071,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+CTRL+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1077,7 +1098,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Link"
+        title="Link
+CTRL+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1095,7 +1117,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+CTRL+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1113,7 +1136,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+CTRL+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1131,7 +1155,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+CTRL+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1145,7 +1170,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+CTRL+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1159,7 +1185,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+CTRL+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1173,7 +1200,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+ALT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1191,7 +1219,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+SHIFT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1209,7 +1238,8 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+CTRL+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1406,7 +1436,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
     >
       <button
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+CTRL+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1420,7 +1451,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+CTRL+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1434,7 +1466,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+CTRL+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1460,7 +1493,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+CTRL+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1480,7 +1514,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+CTRL+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1503,7 +1538,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+CTRL+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1529,7 +1565,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Link"
+        title="Link
+CTRL+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1547,7 +1584,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+CTRL+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1565,7 +1603,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+CTRL+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1583,7 +1622,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+CTRL+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1597,7 +1637,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+CTRL+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1611,7 +1652,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+CTRL+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1625,7 +1667,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+ALT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1643,7 +1686,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+SHIFT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1661,7 +1705,8 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+CTRL+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1904,7 +1949,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
     >
       <button
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+CTRL+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1918,7 +1964,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+CTRL+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1932,7 +1979,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+CTRL+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1958,7 +2006,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+CTRL+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1978,7 +2027,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+CTRL+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2001,7 +2051,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+CTRL+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -2027,7 +2078,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Link"
+        title="Link
+CTRL+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2045,7 +2097,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+CTRL+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -2063,7 +2116,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+CTRL+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2081,7 +2135,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+CTRL+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2095,7 +2150,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+CTRL+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2109,7 +2165,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+CTRL+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2123,7 +2180,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+ALT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2141,7 +2199,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+SHIFT+TAB"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2159,7 +2218,8 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       </button>
       <button
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+CTRL+H"
       >
         <svg
           viewBox="0 0 32 32"

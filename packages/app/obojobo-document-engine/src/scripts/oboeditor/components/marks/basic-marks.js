@@ -37,7 +37,7 @@ const BasicMarks = {
 				case 'm':
 					event.preventDefault()
 					return editor.toggleMark(MONOSPACE_MARK)
-				case 'q':
+				case '/':
 					event.preventDefault()
 					return editor.toggleMark(LATEX_MARK)
 			}
@@ -74,36 +74,48 @@ const BasicMarks = {
 	marks: [
 		{
 			name: 'Bold',
+			shortcut: 'CTRL+B',
+			shortcutMac: '⌘B',
 			type: BOLD_MARK,
 			icon: BoldIcon,
 			action: editor => editor.toggleMark(BOLD_MARK)
 		},
 		{
 			name: 'Italic',
+			shortcut: 'CTRL+I',
+			shortcutMac: '⌘I',
 			type: ITALIC_MARK,
 			icon: ItalicIcon,
 			action: editor => editor.toggleMark(ITALIC_MARK)
 		},
 		{
 			name: 'Strikethrough',
+			shortcut: 'CTRL+D',
+			shortcutMac: '⌘D',
 			type: STRIKE_MARK,
 			icon: StrikeIcon,
 			action: editor => editor.toggleMark(STRIKE_MARK)
 		},
 		{
 			name: 'Quote',
+			shortcut: 'CTRL+"',
+			shortcutMac: '⌘"',
 			type: QUOTE_MARK,
 			icon: QuoteIcon,
 			action: editor => editor.toggleMark(QUOTE_MARK)
 		},
 		{
 			name: 'Monospace',
+			shortcut: 'CTRL+M',
+			shortcutMac: '⌘M',
 			type: MONOSPACE_MARK,
 			icon: MonoIcon,
 			action: editor => editor.toggleMark(MONOSPACE_MARK)
 		},
 		{
 			name: 'Equation',
+			shortcut: 'CTRL+/',
+			shortcutMac: '⌘/',
 			type: LATEX_MARK,
 			icon: LatexIcon,
 			action: editor => editor.toggleMark(LATEX_MARK)

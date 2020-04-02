@@ -15,7 +15,7 @@ const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 const LinkMark = {
 	plugins: {
 		isInline(element, editor, next) {
-			if(element.type === LINK_MARK) return true
+			if (element.type === LINK_MARK) return true
 
 			return next(element)
 		},
@@ -48,7 +48,7 @@ const LinkMark = {
 				const link = {
 					type: LINK_MARK,
 					href,
-					children: isCollapsed ? [{ text: href }] : [],
+					children: isCollapsed ? [{ text: href }] : []
 				}
 
 				Editor.withoutNormalizing(editor, () => {
@@ -58,7 +58,6 @@ const LinkMark = {
 						Transforms.wrapNodes(editor, link, { split: true })
 						Transforms.collapse(editor, { edge: 'end' })
 					}
-
 				})
 			}
 		}
@@ -66,13 +65,17 @@ const LinkMark = {
 	marks: [
 		{
 			name: 'Link',
+			shortcut: 'CTRL+K',
+			shortcutMac: '⌘K',
 			type: LinkMark,
 			icon: LinkIcon,
 			action: editor => {
 				// If we have part of the selection inside a button, prevent links
 				const buttonNodes = Array.from(Editor.nodes(editor, { match: n => n.type === BUTTON_NODE }))
-				if(buttonNodes.length > 0) return ModalUtil.show(<SimpleDialog ok>Links cannot be added to buttons</SimpleDialog>)
-				
+				if (buttonNodes.length > 0) {
+					return ModalUtil.show(<SimpleDialog ok>Links cannot be added to buttons</SimpleDialog>)
+				}
+
 				return ModalUtil.show(
 					<Prompt
 						title="Insert Link"

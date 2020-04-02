@@ -28,16 +28,18 @@ const AlignMarks = {
 			indentText(editor, [, path]) {
 				const nodeRange = Editor.range(editor, path)
 				// Get only the Element children of the current node that are in the current selection
-				const list = Array.from(Editor.nodes(editor, {
-					at: Range.intersection(editor.selection, nodeRange),
-					match: child => child.subtype === TEXT_LINE_NODE
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						at: Range.intersection(editor.selection, nodeRange),
+						match: child => child.subtype === TEXT_LINE_NODE
+					})
+				)
 
 				// For each child in the selection, increment the indent without letting it get above 20
-				for(const [child, path] of list){
+				for (const [child, path] of list) {
 					Transforms.setNodes(
-						editor, 
-						{ content: {...child.content, indent: Math.min(child.content.indent + 1, 20)} }, 
+						editor,
+						{ content: { ...child.content, indent: Math.min(child.content.indent + 1, 20) } },
 						{ at: path }
 					)
 				}
@@ -45,48 +47,53 @@ const AlignMarks = {
 			indentCode(editor, [, path]) {
 				const nodeRange = Editor.range(editor, path)
 				// Get only the Element children of the current node that are in the current selection
-				const list = Array.from(Editor.nodes(editor, {
-					at: Range.intersection(editor.selection, nodeRange),
-					match: child => child.subtype === CODE_LINE_NODE
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						at: Range.intersection(editor.selection, nodeRange),
+						match: child => child.subtype === CODE_LINE_NODE
+					})
+				)
 
 				// For each child in the selection, increment the indent without letting it get above 20
-				for(const [child, path] of list){
+				for (const [child, path] of list) {
 					Transforms.setNodes(
-						editor, 
-						{ content: {...child.content, indent: Math.min(child.content.indent + 1, 20)} }, 
+						editor,
+						{ content: { ...child.content, indent: Math.min(child.content.indent + 1, 20) } },
 						{ at: path }
 					)
 				}
 			},
 			indentList(editor, [, path]) {
 				const nodeRange = Editor.range(editor, path)
-				const list = Array.from(Editor.nodes(editor, {
-					at: Range.intersection(editor.selection, nodeRange),
-					mode: 'lowest',
-					match: child => child.subtype === LIST_LINE_NODE
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						at: Range.intersection(editor.selection, nodeRange),
+						mode: 'lowest',
+						match: child => child.subtype === LIST_LINE_NODE
+					})
+				)
 
 				// Normalization will merge consecutive ListLevels into a single node,
 				// which can change the paths of subsequent ListLines. To keep the paths consistant,
 				// prevent normalization until all Lines have been indented
 				Editor.withoutNormalizing(editor, () => {
-					for(const [, path] of list) {
-						const [parent,] = Editor.parent(editor, path)
+					for (const [, path] of list) {
+						const [parent] = Editor.parent(editor, path)
 
 						const bulletList =
-						parent.content.type === 'unordered' ? unorderedBullets : orderedBullets
-						const bulletStyle = bulletList[(bulletList.indexOf(parent.content.bulletStyle) + 1) % bulletList.length]
-						
+							parent.content.type === 'unordered' ? unorderedBullets : orderedBullets
+						const bulletStyle =
+							bulletList[(bulletList.indexOf(parent.content.bulletStyle) + 1) % bulletList.length]
+
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: LIST_NODE,
 								subtype: LIST_LEVEL_NODE,
 								content: { type: parent.content.type, bulletStyle }
 							},
 							{
-								at: path,
+								at: path
 							}
 						)
 					}
@@ -96,16 +103,18 @@ const AlignMarks = {
 				const nodeRange = Editor.range(editor, path)
 
 				// Get only the Element children of the current node that are in the current selection
-				const list = Array.from(Editor.nodes(editor, {
-					at: Range.intersection(editor.selection, nodeRange),
-					match: child => child.subtype === TEXT_LINE_NODE
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						at: Range.intersection(editor.selection, nodeRange),
+						match: child => child.subtype === TEXT_LINE_NODE
+					})
+				)
 
 				// For each child in the selection, decrement the indent without letting it drop below 0
-				for(const [child, path] of list){
+				for (const [child, path] of list) {
 					Transforms.setNodes(
-						editor, 
-						{ content: {...child.content, indent: Math.max(child.content.indent - 1, 0)} }, 
+						editor,
+						{ content: { ...child.content, indent: Math.max(child.content.indent - 1, 0) } },
 						{ at: path }
 					)
 				}
@@ -114,16 +123,18 @@ const AlignMarks = {
 				const nodeRange = Editor.range(editor, path)
 
 				// Get only the Element children of the current node that are in the current selection
-				const list = Array.from(Editor.nodes(editor, {
-					at: Range.intersection(editor.selection, nodeRange),
-					match: child => child.subtype === CODE_LINE_NODE
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						at: Range.intersection(editor.selection, nodeRange),
+						match: child => child.subtype === CODE_LINE_NODE
+					})
+				)
 
 				// For each child in the selection, decrement the indent without letting it drop below 0
-				for(const [child, path] of list){
+				for (const [child, path] of list) {
 					Transforms.setNodes(
-						editor, 
-						{ content: {...child.content, indent: Math.max(child.content.indent - 1, 0)} }, 
+						editor,
+						{ content: { ...child.content, indent: Math.max(child.content.indent - 1, 0) } },
 						{ at: path }
 					)
 				}
@@ -142,13 +153,16 @@ const AlignMarks = {
 	marks: [
 		{
 			name: 'Indent',
+			shortcut: 'ALT+TAB',
 			type: INDENT,
 			icon: IndentIcon,
 			action: editor => {
-				const list = Array.from(Editor.nodes(editor, {
-					mode: 'lowest',
-					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						mode: 'lowest',
+						match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+					})
+				)
 
 				list.forEach(entry => {
 					switch (entry[0].type) {
@@ -166,14 +180,17 @@ const AlignMarks = {
 		},
 		{
 			name: 'Unindent',
+			shortcut: 'SHIFT+TAB',
 			type: UNINDENT,
 			icon: UnindentIcon,
 			action: editor => {
 				Editor.withoutNormalizing(editor, () => {
-					const list = Array.from(Editor.nodes(editor, {
-						mode: 'lowest',
-						match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-					}))
+					const list = Array.from(
+						Editor.nodes(editor, {
+							mode: 'lowest',
+							match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+						})
+					)
 
 					list.forEach(entry => {
 						switch (entry[0].type) {
@@ -192,13 +209,17 @@ const AlignMarks = {
 		},
 		{
 			name: 'Hanging Indent',
+			shortcut: 'CTRL+H',
+			shortcutMac: '⌘H',
 			type: HANGING_INDENT,
 			icon: HangingIndentIcon,
 			action: editor => {
-				const list = Array.from(Editor.nodes(editor, {
-					mode: 'lowest',
-					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						mode: 'lowest',
+						match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+					})
+				)
 
 				list.forEach(entry => toggleHangingIndent(entry, editor))
 			}
