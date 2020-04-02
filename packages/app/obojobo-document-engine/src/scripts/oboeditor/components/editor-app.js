@@ -174,7 +174,7 @@ class EditorApp extends React.Component {
 
 	componentDidMount() {
 		const urlTokens = document.location.pathname.split('/')
-		const revisionId = this.props.settings.revisionId
+		const revisionId = this.props.settings && this.props.settings.revisionId
 
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
