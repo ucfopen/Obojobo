@@ -78,3 +78,93 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
   </div>
 </div>
 `;
+
+exports[`MCChoice Editor Node MCChoice component is selected 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct editor-mc-choice"
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      ✔ Correct
+    </button>
+  </div>
+  <div
+    className="children"
+  >
+    <div />
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center add-feedback"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Add Feedback
+    </button>
+  </div>
+  <div
+    className="visual-editor--more-info "
+  >
+    <button
+      className="more-info-button "
+      onClick={[Function]}
+    >
+      <svg
+        fill="none"
+        stroke="#000"
+        viewBox="0 0 214 214"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="107"
+          cy="107"
+          r="100"
+          strokeWidth="14"
+        />
+        <circle
+          cx="57"
+          cy="107"
+          fill="#000"
+          r="7"
+          strokeWidth="16"
+        />
+        <circle
+          cx="107"
+          cy="107"
+          fill="#000"
+          r="7"
+          strokeWidth="16"
+        />
+        <circle
+          cx="157"
+          cy="107"
+          fill="#000"
+          r="7"
+          strokeWidth="16"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`MCChoice Editor Node MCChoice component with MoreInfoBox 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center correct-button\\"><button class=\\"button\\" contenteditable=\\"false\\">✔ Correct</button></div><div class=\\"children\\"><div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-feedback\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Feedback</button></div><div class=\\"visual-editor--more-info \\"><button class=\\"more-info-button is-open\\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><circle cy=\\"107\\" cx=\\"107\\" r=\\"100\\" stroke-width=\\"14\\"></circle><circle cy=\\"107\\" cx=\\"57\\" r=\\"7\\" stroke-width=\\"16\\" fill=\\"#000\\"></circle><circle cy=\\"107\\" cx=\\"107\\" r=\\"7\\" stroke-width=\\"16\\" fill=\\"#000\\"></circle><circle cy=\\"107\\" cx=\\"157\\" r=\\"7\\" stroke-width=\\"16\\" fill=\\"#000\\"></circle></svg></button><div class=\\"more-info-box\\"><div class=\\"container\\"><div class=\\"properties\\"><div></div><div><div><label for=\\"oboeditor--components--more-info-box--id-input\\">Id</label><input type=\\"text\\" id=\\"oboeditor--components--more-info-box--id-input\\" class=\\"id-input\\" value=\\"\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center input-aligned-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Copy Id</button></div></div></div><div><span class=\\"triggers\\">Triggers:</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center trigger-button\\"><button class=\\"button\\" contenteditable=\\"false\\">✎ Edit</button></div></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-page-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Delete</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Duplicate</button></div></div></div><div class=\\"box-controls\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center cancel-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Done</button></div></div></div></div></div></div>"`;
