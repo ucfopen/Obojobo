@@ -2,48 +2,36 @@
 
 exports[`Figure Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {},
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "",
-        },
-      ],
-      "object": "text",
+      "text": "",
     },
   ],
-  "object": "block",
+  "content": Object {},
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`Figure Converter oboToSlate converts an OboNode to a Slate node with caption, size and triggers 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "size": "large",
-      "textGroup": Array [
-        Object {
-          "text": Object {
-            "value": "mockCaption",
-          },
-        },
-      ],
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": undefined,
-      "object": "text",
+      "text": "mockCaption",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "size": "large",
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "mockCaption",
+        },
+      },
+    ],
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -56,7 +44,14 @@ Object {
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },

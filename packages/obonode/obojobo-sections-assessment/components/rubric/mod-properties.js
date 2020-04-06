@@ -13,7 +13,7 @@ class ModProperties extends React.Component {
 		super(props)
 
 		this.state = {
-			mods: props.mods
+			mods: JSON.parse(JSON.stringify(props.mods))
 		}
 
 		this.inputRef = React.createRef()

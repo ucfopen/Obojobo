@@ -33,7 +33,7 @@ jest.mock('./utils', () => {
 	}
 })
 
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api', () => ({
 	postMultiPart: jest.fn().mockResolvedValue({ mediaId: 'mockMediaId' }),
 	get: jest
 		.fn()

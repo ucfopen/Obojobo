@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HTML Editor Node HTML builds the expected component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--html html-editor viewer pad"
   >

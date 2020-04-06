@@ -4,8 +4,6 @@ exports[`CodeEditor CodeEditor component 1`] = `
 <div
   className="component editor--code-editor"
   onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
 >
   <div
     className="draft-toolbars"

@@ -1,5 +1,7 @@
+import { Transforms } from 'slate'
+jest.mock('slate-react')
+
 import AlignMarks from '../../../../src/scripts/oboeditor/components/marks/align-marks'
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
@@ -72,28 +74,29 @@ describe('AlignMarks', () => {
 	})
 
 	test('setAlign changes the alignment of Text nodes and other nodes', () => {
-		const editor = {
-			setNodeByKey: jest.fn(),
-			value: {
-				blocks: {
-					forEach: funct => {
-						funct({
-							data: { toJSON: () => ({}) },
-							type: TEXT_LINE_NODE
-						})
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 
-						funct({
-							data: { toJSON: () => ({ content: {} }) },
-							type: 'mockNode'
-						})
-					}
+		const editor = {
+			children:[
+				{
+					type: 'mockNode',
+					children: [{
+						type: 'mockChildNode',
+						children: [{ text: ''}]
+					}]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false,
 		}
 
-		AlignMarks.plugins.queries.setAlign(editor, ALIGN_CENTER)
+		AlignMarks.plugins.commands.setAlign(editor, ALIGN_CENTER)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.setAlign', () => {

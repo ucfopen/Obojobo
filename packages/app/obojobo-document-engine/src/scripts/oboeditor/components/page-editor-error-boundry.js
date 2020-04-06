@@ -2,8 +2,8 @@ import React from 'react'
 
 class PageEditorErrorBoundry extends React.Component {
 	componentDidCatch() {
-		if (this.props.editorRef.current) {
-			this.props.editorRef.current.undo()
+		if (this.props.editorRef) {
+			this.props.editorRef.undo()
 		}
 	}
 

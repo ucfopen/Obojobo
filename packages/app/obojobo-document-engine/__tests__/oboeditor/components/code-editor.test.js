@@ -7,8 +7,6 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalUtil from 'src/scripts/common/util/modal-util'
 import SimpleDialog from 'src/scripts/common/components/modal/simple-dialog'
 
-const mockClickFn = jest.fn().mockImplementation((a, b, c) => c())
-
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('src/scripts/common/components/modal/simple-dialog', () =>
@@ -20,10 +18,6 @@ jest.mock('react-codemirror2', () => ({
 jest.mock('src/scripts/common/util/modal-util')
 
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/plugins/hot-key-plugin', () => () => ({
-	onKeyDown: mockClickFn,
-	onKeyUp: mockClickFn
-}))
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -334,6 +328,53 @@ describe('CodeEditor', () => {
 			})
 	})
 
+	test('onKeyDown() calls editor functions', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<CodeEditor {...props} />)
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		component.instance().setEditor(editor)
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'z',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'y',
+			metaKey: true
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's'
+		})
+
+		expect(editor.undo).toHaveBeenCalled()
+		expect(editor.redo).toHaveBeenCalled()
+	})
+
 	test('setEditor changes state', () => {
 		const props = {
 			initialCode: '',
@@ -354,16 +395,14 @@ describe('CodeEditor', () => {
 		Object {
 		  "code": "",
 		  "editor": Object {
-		    "current": Object {
-		      "delete": [Function],
-		      "deleteH": [MockFunction],
-		      "firstLine": [MockFunction],
-		      "focus": [Function],
-		      "lastLine": [MockFunction],
-		      "lineInfo": [MockFunction],
-		      "moveToRangeOfDocument": [Function],
-		      "setSelection": [MockFunction],
-		    },
+		    "deleteFragment": [Function],
+		    "deleteH": [MockFunction],
+		    "firstLine": [MockFunction],
+		    "focus": [Function],
+		    "lastLine": [MockFunction],
+		    "lineInfo": [MockFunction],
+		    "selectAll": [Function],
+		    "setSelection": [MockFunction],
 		  },
 		  "mode": "xml",
 		  "options": Object {
@@ -386,31 +425,11 @@ describe('CodeEditor', () => {
 		}
 	`)
 
-		basicEditor.moveToRangeOfDocument()
+		basicEditor.selectAll()
 		expect(basicEditor.lineInfo).toHaveBeenCalled()
 		expect(basicEditor.setSelection).toHaveBeenCalled()
 		basicEditor.focus()
-		basicEditor.delete()
+		basicEditor.deleteFragment()
 		expect(basicEditor.deleteH).toHaveBeenCalled()
-	})
-
-	test('Key commands call keyBinding', () => {
-		const props = {
-			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
-		}
-		const component = mount(<CodeEditor {...props} />)
-		component.instance().onKeyDown()
-		component.instance().onKeyUp()
-		component.instance().onKeyPress()
-
-		component.setState({ editor: {} })
-
-		component.instance().onKeyDown()
-		component.instance().onKeyUp()
-		component.instance().onKeyPress()
-
-		expect(mockClickFn).toHaveBeenCalledTimes(3)
 	})
 })

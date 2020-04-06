@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-repository",
 	"license": "AGPL-3.0-only",
-	"version": "7.1.6-alpha2",
+	"version": "8.0.1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -27,6 +27,7 @@
 		]
 	},
 	"dependencies": {
+		"dayjs": "1.8.22",
 		"express": "~4.16.4",
 		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
 		"express-validator": "^5.2.0",
@@ -34,10 +35,9 @@
 		"ignore-styles": "^5.0.1",
 		"js-beautify": "^1.7.3",
 		"lodash.escaperegexp": "^4.1.2",
-		"dayjs": "1.8.22",
 		"object-assign": "^4.1.1",
-		"obojobo-express": "^7.1.6-alpha2",
-		"obojobo-lib-utils": "^7.1.6-alpha2",
+		"obojobo-express": "^8.0.1",
+		"obojobo-lib-utils": "^8.0.1",
 		"react-modal": "^3.8.2",
 		"react-redux": "^6.0.1",
 		"redux": "^4.0.1",

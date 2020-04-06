@@ -32,12 +32,10 @@ describe('PageEditorErrorBoundry', () => {
 		}
 
 		const editorRef = {
-			current: {
-				undo: jest.fn()
-			}
+			undo: jest.fn()
 		}
 
-		expect(editorRef.current.undo).toHaveBeenCalledTimes(0)
+		expect(editorRef.undo).toHaveBeenCalledTimes(0)
 
 		renderer.create(
 			<PageEditorErrorBoundry editorRef={editorRef}>
@@ -45,7 +43,7 @@ describe('PageEditorErrorBoundry', () => {
 			</PageEditorErrorBoundry>
 		)
 
-		expect(editorRef.current.undo).toHaveBeenCalledTimes(1)
+		expect(editorRef.undo).toHaveBeenCalledTimes(1)
 	})
 
 	test('PageEditorErrorBoundry still works if editorRef is null', () => {
@@ -53,23 +51,12 @@ describe('PageEditorErrorBoundry', () => {
 			throw new Error('I am a bad component')
 		}
 
-		const editorRef = {}
-		const mockEditorRefCurrentGetter = jest.fn()
-		Object.defineProperty(editorRef, 'current', {
-			get: () => {
-				mockEditorRefCurrentGetter()
-				return null
-			}
-		})
-
-		expect(mockEditorRefCurrentGetter).toHaveBeenCalledTimes(0)
+		const editorRef = null
 
 		renderer.create(
 			<PageEditorErrorBoundry editorRef={editorRef}>
 				<BadComponent />
 			</PageEditorErrorBoundry>
 		)
-
-		expect(mockEditorRefCurrentGetter).toHaveBeenCalledTimes(1)
 	})
 })
