@@ -8,7 +8,7 @@ describe('Count Services', () => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
-		CountServices = require('../../../server/services/count')
+		CountServices = require('./count')
 	})
 	afterEach(() => {})
 

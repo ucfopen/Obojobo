@@ -1,7 +1,7 @@
 describe('Collection Model', () => {
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')
-	jest.mock('../../../server/models/draft_summary')
+	jest.mock('./draft_summary')
 	let db
 	let logger
 	let CollectionModel
@@ -19,7 +19,7 @@ describe('Collection Model', () => {
 		db = require('obojobo-express/server/db')
 		logger = require('obojobo-express/server/logger')
 
-		CollectionModel = require('../../../server/models/collection')
+		CollectionModel = require('./collection')
 	})
 	afterEach(() => {})
 
@@ -172,7 +172,7 @@ describe('Collection Model', () => {
 	})
 
 	test('loadRelatedDrafts calls DraftSummary.fetchAndJoinWhere with the correct arguments', () => {
-		const DraftSummary = require('../../../server/models/draft_summary')
+		const DraftSummary = require('./draft_summary')
 		DraftSummary.fetchAndJoinWhere = jest.fn()
 
 		const mockDrafts = { draftId: 'whatever' }
@@ -197,7 +197,7 @@ describe('Collection Model', () => {
 	test('loadRelatedDrafts returns errors if DraftSummary.fetchAndJoinWhere fails', () => {
 		logger.error = jest.fn()
 
-		const DraftSummary = require('../../../server/models/draft_summary')
+		const DraftSummary = require('./draft_summary')
 		DraftSummary.fetchAndJoinWhere = jest.fn()
 
 		db.one.mockResolvedValueOnce(mockRawCollection)

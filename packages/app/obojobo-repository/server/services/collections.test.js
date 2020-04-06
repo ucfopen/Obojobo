@@ -1,9 +1,9 @@
 describe('Collection Services', () => {
 	jest.mock('obojobo-express/server/db')
-	jest.mock('../../../server/models/collection')
+	jest.mock('../models/collection')
 
 	let db
-	const CollectionModel = require('../../../server/models/collection')
+	const CollectionModel = require('../models/collection')
 	let CollectionServices
 
 	const mockRawCollection = {
@@ -17,7 +17,7 @@ describe('Collection Services', () => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
-		CollectionServices = require('../../../server/services/collections')
+		CollectionServices = require('./collections')
 	})
 	afterEach(() => {})
 

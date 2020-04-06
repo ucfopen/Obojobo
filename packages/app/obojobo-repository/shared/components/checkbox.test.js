@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-
 import React from 'react'
-import Checkbox from '../../../shared/components/checkbox'
-import renderer from 'react-test-renderer'
+import Checkbox from './checkbox'
 import { mount } from 'enzyme'
 
 describe('Checkbox', () => {

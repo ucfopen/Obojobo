@@ -25,7 +25,7 @@ describe('DraftsMetadata Model', () => {
 		db = require('obojobo-express/server/db')
 		logger = require('obojobo-express/server/logger')
 
-		DraftsMetadata = require('../../../server/models/drafts_metadata')
+		DraftsMetadata = require('./drafts_metadata')
 	})
 	afterEach(() => {})
 

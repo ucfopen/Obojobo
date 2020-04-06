@@ -106,23 +106,24 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res) => {
+	.post(async (req, res) => {
+		if (req.body.collectionId) {
+			const hasPermsToCollection = await userHasPermissionToCollection(
+				req.currentUser.id,
+				req.body.collectionId
+			)
+			if (!hasPermsToCollection) {
+				return res.notAuthorized('You must be the author of this draft to delete it')
+			}
+		}
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
-			.then(async newDraft => {
-				if (req.body.collectionId) {
-					const hasPerms = await userHasPermissionToCollection(
-						req.currentUser.id,
-						req.body.collectionId
-					)
-					if (hasPerms) {
-						CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
-					}
-				}
-				return newDraft
+			.then(newDraft => {
+				CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
+				return res.success(newDraft)
 			})
-			.then(res.success)
 			.catch(res.unexpected)
 	})
+
 // Create an editable tutorial document
 // mounted as /api/drafts/tutorial
 router

@@ -20,7 +20,7 @@ describe('Search Services', () => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
-		SearchServices = require('../../../server/services/search')
+		SearchServices = require('./search')
 		UserModel = require('obojobo-express/server/models/user')
 	})
 	afterEach(() => {})

@@ -54,7 +54,7 @@
 			"\\.css$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"testMatch": [
-			"**/__tests__/**/*.js?(x)"
+			"/**/*.test.js?(x)"
 		],
 		"collectCoverageFrom": [
 			"*.js",

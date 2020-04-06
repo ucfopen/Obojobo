@@ -20,7 +20,7 @@ describe('CollectionSummary Model', () => {
 		db = require('obojobo-express/server/db')
 		logger = require('obojobo-express/server/logger')
 
-		CollectionSummary = require('../../../server/models/collection_summary')
+		CollectionSummary = require('./collection_summary')
 	})
 	afterEach(() => {})
 

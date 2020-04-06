@@ -22,7 +22,7 @@ describe.only('DraftSummary Model', () => {
 		db = require('obojobo-express/server/db')
 		logger = require('obojobo-express/server/logger')
 
-		DraftSummary = require('../../../server/models/draft_summary')
+		DraftSummary = require('./draft_summary')
 	})
 	afterEach(() => {})
 

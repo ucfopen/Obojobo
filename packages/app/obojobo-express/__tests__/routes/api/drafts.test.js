@@ -574,13 +574,13 @@ describe('api draft route', () => {
 
 	//when the request body has a 'collectionId' corresponding to a collection
 	// not owned by the current user
-	test('new draft is not automatically added to a specified collection', () => {
+	test('new draft is not created if specified collection is not owned by user', () => {
 		const CollectionModel = require('obojobo-repository/server/models/collection')
 
 		userHasPermissionToCollection.mockResolvedValueOnce(false)
 		CollectionModel.addModule = jest.fn()
 
-		expect.assertions(6)
+		expect.assertions(7)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
@@ -590,9 +590,10 @@ describe('api draft route', () => {
 				expect(CollectionModel.addModule).not.toHaveBeenCalled()
 
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 

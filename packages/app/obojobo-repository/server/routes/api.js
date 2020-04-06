@@ -91,11 +91,11 @@ router
 // mounted as /api/drafts/:draftId/copy
 router
 	.route('/drafts/:draftId/copy')
-	.post([requireCanPreviewDrafts, requireCurrentUser])
+	.post([requireCanPreviewDrafts, requireCurrentUser, requireCurrentDocument])
 	.post(async (req, res) => {
 		try {
 			const userId = req.currentUser.id
-			const draftId = req.params.draftId
+			const draftId = req.currentDocument.draftId
 
 			const canCopy = await userHasPermissionToCopy(userId, draftId)
 			if (!canCopy) {
@@ -140,7 +140,7 @@ router
 	.route('/drafts/:draftId/permission')
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return fetchAllUsersWithPermissionToDraft(req.params.draftId)
+		return fetchAllUsersWithPermissionToDraft(req.currentDocument.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
@@ -206,7 +206,7 @@ router
 	.route('/drafts/:draftId/collections')
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return fetchAllCollectionsForDraft(req.params.draftId)
+		return fetchAllCollectionsForDraft(req.currentDocument.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

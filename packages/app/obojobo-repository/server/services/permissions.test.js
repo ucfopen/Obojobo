@@ -6,7 +6,7 @@ describe('Permissions Services', () => {
 	let PermissionsServices
 	let UserModel
 
-	const publicLibCollectionId = require('../../../shared/publicLibCollectionId')
+	const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 	const mockRawUser = {
 		id: 0,
@@ -36,7 +36,7 @@ describe('Permissions Services', () => {
 		jest.resetModules()
 		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
-		PermissionsServices = require('../../../server/services/permissions')
+		PermissionsServices = require('./permissions')
 		UserModel = require('obojobo-express/server/models/user')
 	})
 	afterEach(() => {})
