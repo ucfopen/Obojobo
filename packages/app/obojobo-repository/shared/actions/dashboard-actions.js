@@ -9,8 +9,15 @@ const defaultOptions = () => ({
 	}
 })
 
+const throwIfNotOk = res => {
+	if (!res.ok) throw Error(`Error requesting ${res.url}, status code: ${res.status}`)
+	return res
+}
+
 const apiSearchForUser = searchString => {
-	return fetch(`/api/users/search?q=${searchString}`, defaultOptions()).then(res => res.json())
+	return fetch(`/api/users/search?q=${searchString}`, defaultOptions())
+		.then(throwIfNotOk)
+		.then(res => res.json())
 }
 
 const apiAddPermissionsToModule = (draftId, userId) => {
