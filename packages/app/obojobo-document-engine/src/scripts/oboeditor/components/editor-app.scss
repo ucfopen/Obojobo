@@ -8,24 +8,6 @@
 		right: 0;
 		z-index: $z-index-above-all;
 		background-color: $color-bg;
-
-		.draft-title {
-			font-size: 1.2em;
-			margin-left: 0.5em;
-			margin-top: 0.5em;
-			font-family: $font-default;
-			border: 1px solid $color-bg;
-			width: 30em;
-			max-height: 1em;
-			line-height: 1em;
-			overflow: hidden;
-			white-space: nowrap;
-			position: absolute;
-
-			&:hover {
-				border: 1px solid $color-shadow;
-			}
-		}
 	}
 
 	code {

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorTitleInput PageEditor component 1`] = `
+<input
+  aria-label="Rename Module"
+  className="editor--components--editor-title-input"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  value="mock-title"
+/>
+`;

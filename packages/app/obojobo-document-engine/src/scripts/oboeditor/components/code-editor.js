@@ -19,6 +19,8 @@ import hotKeyPlugin from '../plugins/hot-key-plugin'
 import ModalUtil from '../../common/util/modal-util'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 
+import EditorTitleInput from './editor-title-input'
+
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
 
@@ -200,12 +202,10 @@ class CodeEditor extends React.Component {
 				onKeyPress={this.onKeyPress}
 			>
 				<div className="draft-toolbars">
-					<input
-						className="draft-title"
-						value={this.state.title}
-						onChange={event => this.setState({ title: event.target.value })}
-						onBlur={() => this.renameModule(this.state.title)}
-						aria-label="Rename Module"
+					<EditorTitleInput
+						title={this.state.title}
+						onChange={newTitle => this.setState({ title: newTitle })}
+						renameModule={this.renameModule.bind(this)}
 					/>
 					{this.state.editor ? (
 						<FileToolbar

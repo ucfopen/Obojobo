@@ -24,6 +24,7 @@ import { Value } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
+import EditorTitleInput from './editor-title-input'
 
 const { ModalUtil } = Common.util
 
@@ -174,12 +175,10 @@ class PageEditor extends React.Component {
 		return (
 			<div className={className}>
 				<div className="draft-toolbars">
-					<input
-						className="draft-title"
-						value={this.state.title}
-						onChange={event => this.setState({ title: event.target.value })}
-						onBlur={() => this.renameModule(this.state.title)}
-						aria-label="Rename Module"
+					<EditorTitleInput
+						title={this.state.title}
+						onChange={newTitle => this.setState({ title: newTitle })}
+						renameModule={this.renameModule.bind(this)}
 					/>
 					<FileToolbar
 						editorRef={this.editorRef}
