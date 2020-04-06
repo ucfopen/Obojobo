@@ -1,27 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`List editor plugins.decorate exits when not relevent 1`] = `Array []`;
 
-exports[`List editor plugins.renderNode renders List 1`] = `
-<List
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.List",
-    }
-  }
-/>
+exports[`List editor plugins.decorate exits when not relevent 2`] = `Array []`;
+
+exports[`List editor plugins.decorate renders a placeholder 1`] = `
+Array [
+  Object {
+    "anchor": undefined,
+    "focus": undefined,
+    "placeholder": "Type your text here",
+  },
+]
 `;
 
-exports[`List editor plugins.renderNode renders a List level 1`] = `
+exports[`List editor plugins.renderNode renders a level when passed 1`] = `
 <Level
   attributes={
     Object {
@@ -29,18 +22,17 @@ exports[`List editor plugins.renderNode renders a List level 1`] = `
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.List.Level",
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.List.Level",
+      "type": "ObojoboDraft.Chunks.List",
     }
   }
 />
 `;
 
-exports[`List editor plugins.renderNode renders a list line 1`] = `
+exports[`List editor plugins.renderNode renders a line when passed 1`] = `
 <Line
   attributes={
     Object {
@@ -48,48 +40,29 @@ exports[`List editor plugins.renderNode renders a list line 1`] = `
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.List.Line",
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.List.Line",
+      "type": "ObojoboDraft.Chunks.List",
     }
   }
 />
 `;
 
-exports[`List editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
-
-exports[`List editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
-
-exports[`List editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
-
-exports[`List editor plugins.renderPlaceholder renders a placeholder 1`] = `
-<span
-  className="placeholder"
-  contentEditable={false}
-  data-placeholder="Type Your Text Here"
+exports[`List editor plugins.renderNode renders code when passed 1`] = `
+<SlateWrapper
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  element={
+    Object {
+      "content": Object {},
+      "type": "ObojoboDraft.Chunks.List",
+    }
+  }
 />
-`;
-
-exports[`List editor queries.createCodeLinesFromText builds text lines 1`] = `
-Array [
-  Immutable.Record {
-    "data": Immutable.Map {},
-    "key": "2",
-    "nodes": Immutable.List [
-      Immutable.Record {
-        "leaves": Immutable.List [
-          Immutable.Record {
-            "marks": Immutable.Set [],
-            "text": "mock text",
-          },
-        ],
-        "key": "3",
-      },
-    ],
-    "type": "ObojoboDraft.Chunks.List.Line",
-  },
-]
 `;

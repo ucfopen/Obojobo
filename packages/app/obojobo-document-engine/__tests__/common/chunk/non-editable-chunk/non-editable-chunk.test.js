@@ -16,6 +16,18 @@ describe('NonEditableChunk', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('renders NonEditableChunk component with hangingIndent', () => {
+		const componentContents = (
+			<NonEditableChunk className="testClass" hangingIndent={true}>
+				Stuff here
+			</NonEditableChunk>
+		)
+		const component = renderer.create(componentContents)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('renders NonEditableChunk component without className, indent, and children', () => {
 		const componentContents = <NonEditableChunk />
 		const component = renderer.create(componentContents)

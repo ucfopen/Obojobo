@@ -2,14 +2,16 @@
 
 exports[`Break Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-      "width": "large",
+  "children": Array [
+    Object {
+      "text": "",
     },
+  ],
+  "content": Object {
+    "triggers": "mock-triggers",
+    "width": "large",
   },
-  "key": "mockKey",
-  "object": "block",
+  "id": "mockKey",
   "type": "mockType",
 }
 `;

@@ -108,6 +108,7 @@ class DropDownMenu extends React.PureComponent {
 										onRef={item => {
 											this.menu.push(item)
 										}}
+										disabled={this.props.disabled}
 									/>
 								)
 							case 'toggle-action':
@@ -115,7 +116,7 @@ class DropDownMenu extends React.PureComponent {
 									<button
 										key={index}
 										onClick={item.action}
-										disabled={item.disabled}
+										disabled={this.props.disabled || item.disabled}
 										ref={item => {
 											this.menu.push(item)
 										}}
@@ -129,7 +130,7 @@ class DropDownMenu extends React.PureComponent {
 									<button
 										key={index}
 										onClick={item.action}
-										disabled={item.disabled}
+										disabled={this.props.disabled || item.disabled}
 										ref={item => {
 											this.menu.push(item)
 										}}

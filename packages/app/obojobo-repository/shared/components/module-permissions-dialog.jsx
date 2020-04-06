@@ -68,7 +68,9 @@ class ModulePermissionsDialog extends React.Component {
 			<div className="module-permissions-dialog">
 				<div className="top-bar">
 					<ModuleIamge id={this.props.draftId} />
-					<div className="module-title">{this.props.title}</div>
+					<div className="module-title" title={this.props.title}>
+						{this.props.title}
+					</div>
 					<Button className="close-button" onClick={this.props.onClose}>
 						×
 					</Button>

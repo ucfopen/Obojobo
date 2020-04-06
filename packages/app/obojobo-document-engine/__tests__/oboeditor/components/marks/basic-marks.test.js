@@ -1,3 +1,6 @@
+import { Editor } from 'slate'
+jest.mock('slate-react')
+
 import BasicMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/basic-marks'
 
 const BOLD_MARK = 'b'
@@ -62,87 +65,91 @@ describe('BasicMarks', () => {
 		expect(editor.toggleMark).toHaveBeenCalledWith(LATEX_MARK)
 	})
 
-	test('renderMark diplays expected style', () => {
+	test('renderLeaf diplays expected style', () => {
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: BOLD_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { b: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: ITALIC_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { i: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: STRIKE_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { del: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: QUOTE_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { q: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: MONOSPACE_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { monospace: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 
 		expect(
-			BasicMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: LATEX_MARK }
-				},
-				null,
-				jest.fn()
-			)
+			BasicMarks.plugins.renderLeaf({
+				leaf: { _latex: true },
+				children: 'mockChild'
+			})
 		).toMatchSnapshot()
 	})
 
-	test('renderMark calls next', () => {
-		const next = jest.fn()
+	test('renderLeaf does nothing', () => {
+		expect(BasicMarks.plugins.renderLeaf({
+			leaf: { },
+			children: 'mockChild'
+		})).toMatchSnapshot()
+	})
 
-		BasicMarks.plugins.renderMark(
-			{
-				children: 'mockChild',
-				mark: { type: 'mockMark' }
-			},
-			null,
-			next
-		)
+	test('toggleMarks removes links', () => {
+		jest.spyOn(Editor, 'removeMark').mockReturnValue(true)
+		
+		const editor = {
+			removeMark: jest.fn(),
+			addMark: jest.fn(),
+			children: [{ text: 'mockText', b: true}],
+			selection: {
+				anchor: { path: [0], offset: 1 },
+				focus: { path: [0], offset: 1 }
+			}
+		}
 
-		expect(next).toHaveBeenCalled()
+		BasicMarks.plugins.commands.toggleMark(editor, BOLD_MARK)
+
+		expect(Editor.removeMark).toHaveBeenCalled()
+	})
+
+	test('toggleMarks adds links', () => {
+		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
+		
+		const editor = {
+			removeMark: jest.fn(),
+			addMark: jest.fn(),
+			children: [{ text: 'mockText' }],
+			selection: {
+				anchor: { path: [0], offset: 1 },
+				focus: { path: [0], offset: 1 }
+			}
+		}
+
+		BasicMarks.plugins.commands.toggleMark(editor, BOLD_MARK)
+
+		expect(Editor.addMark).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.toggleMark', () => {

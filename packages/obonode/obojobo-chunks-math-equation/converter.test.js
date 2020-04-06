@@ -5,9 +5,7 @@ describe('MathEquation Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
+			content: {},
 			text: 'mockText'
 		}
 		const oboNode = Converter.slateToObo(slateNode)

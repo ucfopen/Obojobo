@@ -16,21 +16,13 @@ Common.Registry.registerEditorModel({
 describe('PostAssessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return null
-				}
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: [
+					content: {},
+					children: [
 						{
 							key: 'mockPage'
 						}
@@ -42,13 +34,13 @@ describe('PostAssessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-				Array [
-				  Object {
-				    "for": Object {},
-				    "page": "PageChild",
-				  },
-				]
-		`)
+		Array [
+		  Object {
+		    "for": undefined,
+		    "page": "PageChild",
+		  },
+		]
+	`)
 	})
 
 	test('oboToSlate converts an OboComponent to a Slate node', () => {
@@ -63,19 +55,48 @@ describe('PostAssessment Converter', () => {
 
 		expect(slateNode).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "dummyRange",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "dummyRange",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
+		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		}
+	`)
+	})
+
+	test('oboToSlate converts a legacy OboComponent to a Slate node', () => {
+		const oboNode = [
+			{
+				from: '0',
+				to: '100',
+				page: 'dummyPage'
+			}
+		]
+
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchInlineSnapshot(`
+		Object {
+		  "children": Array [
+		    Object {
+		      "children": Array [
+		        "PageOboToSlate",
+		      ],
+		      "content": Object {
+		        "for": "[0,100]",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+		    },
+		  ],
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)
@@ -94,19 +115,18 @@ describe('PostAssessment Converter', () => {
 
 		expect(slateNode).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "[mock-from,mock-to]",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "[mock-from,mock-to]",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)
@@ -124,19 +144,18 @@ describe('PostAssessment Converter', () => {
 			])
 		).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "mock-for",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "mock-for",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)
@@ -151,19 +170,18 @@ describe('PostAssessment Converter', () => {
 			])
 		).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "mock-for",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "mock-for",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)
@@ -178,19 +196,18 @@ describe('PostAssessment Converter', () => {
 			])
 		).toMatchInlineSnapshot(`
 		Object {
-		  "nodes": Array [
+		  "children": Array [
 		    Object {
-		      "data": Object {
-		        "for": "mock-for",
-		      },
-		      "nodes": Array [
+		      "children": Array [
 		        "PageOboToSlate",
 		      ],
-		      "object": "block",
-		      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "content": Object {
+		        "for": "mock-for",
+		      },
+		      "subtype": "ObojoboDraft.Sections.Assessment.ScoreAction",
+		      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		    },
 		  ],
-		  "object": "block",
 		  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
 		}
 	`)

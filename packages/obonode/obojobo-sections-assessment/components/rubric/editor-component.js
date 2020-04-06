@@ -1,8 +1,11 @@
 import './editor-component.scss'
 
 import React from 'react'
+import { ReactEditor } from 'slate-react'
+import { Transforms, Editor } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import ModProperties from './mod-properties'
 
 const getParsedRange = Common.util.RangeParsing.getParsedRange
@@ -10,51 +13,58 @@ const { Button } = Common.components
 const { ModalUtil } = Common.util
 
 class Rubric extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.unfreezeEditor = this.unfreezeEditor.bind(this)
+		this.freezeEditor = this.freezeEditor.bind(this)
+	}
+
 	changeRubricType(event) {
 		const type = event.target.value
 
-		return this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...this.props.node.data.get('content'),
-					type
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor, 
+			{ content: {...this.props.element.content, type }}, 
+			{ at: path }
+		)
 	}
 
 	changeScoreType(typeName, event) {
 		const content = {}
 		content[typeName] = event.target.value
-		return this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...this.props.node.data.get('content'),
-					...content
-				}
-			}
-		})
+
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor, 
+			{ content: {...this.props.element.content, ...content }}, 
+			{ at: path }
+		)
 	}
 
 	showModModal() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const [parent] = Editor.parent(this.props.editor, path)
+
 		ModalUtil.show(
 			<ModProperties
-				mods={this.props.node.data.get('content').mods}
-				attempts={this.props.parent.data.get('content').attempts}
+				mods={this.props.element.content.mods}
+				attempts={parent.content.attempts}
 				onConfirm={this.changeMods.bind(this)}
 			/>
 		)
 	}
 
 	changeMods(content) {
-		return this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...this.props.node.data.get('content'),
-					mods: content.mods
-				}
-			}
-		})
+		ModalUtil.hide()
+
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor, 
+			{ content: {...this.props.element.content, mods: content.mods }}, 
+			{ at: path }
+		)
 	}
 
 	printRange(range) {
@@ -73,8 +83,16 @@ class Rubric extends React.Component {
 		)
 	}
 
+	freezeEditor() {
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		this.props.editor.toggleEditable(true)
+	}
+
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
 		const className = 'rubric pad ' + 'is-type-' + content.type
 
 		return (
@@ -126,7 +144,8 @@ class Rubric extends React.Component {
 								value={content.passingAttemptScore}
 								onChange={this.changeScoreType.bind(this, 'passingAttemptScore')}
 								onClick={event => event.stopPropagation()}
-							/>
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}/>
 							%
 						</label>
 					</div>
@@ -151,6 +170,8 @@ class Rubric extends React.Component {
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'passedResult')}
 								disabled={content.passedType !== 'set-value'}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 							%
 						</label>
@@ -181,6 +202,8 @@ class Rubric extends React.Component {
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'failedResult')}
 								disabled={content.failedType !== 'set-value'}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 							%
 						</label>
@@ -214,6 +237,8 @@ class Rubric extends React.Component {
 								onClick={event => event.stopPropagation()}
 								onChange={this.changeScoreType.bind(this, 'unableToPassResult')}
 								disabled={content.unableToPassType !== 'set-value'}
+								onFocus={this.freezeEditor}
+								onBlur={this.unfreezeEditor}
 							/>
 							%
 						</label>
@@ -243,9 +268,10 @@ class Rubric extends React.Component {
 						})}
 					</ul>
 				</div>
+				<span className="invisibleText">{this.props.children}</span>
 			</div>
 		)
 	}
 }
 
-export default Rubric
+export default withSlateWrapper(Rubric)

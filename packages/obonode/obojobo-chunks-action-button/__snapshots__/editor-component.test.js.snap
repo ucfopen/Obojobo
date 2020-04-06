@@ -161,11 +161,80 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
 
 exports[`ActionButton Editor Node builds the expected component when selected 2`] = `
 Object {
-  "isFocused": true,
-  "isSelected": true,
-  "node": Object {
-    "data": Object {},
+  "element": Object {
+    "content": Object {
+      "actions": Array [
+        Object {
+          "type": "mockType",
+          "value": "mockValue",
+        },
+      ],
+      "triggers": Array [
+        Object {
+          "actions": Array [
+            Object {
+              "type": "nav:goto",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:prev",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:next",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:openExternalLink",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:lock",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:unlock",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:toggle",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:close",
+              "value": Object {},
+            },
+            Object {
+              "type": "nav:open",
+              "value": Object {},
+            },
+            Object {
+              "type": "assessment:startAttempt",
+              "value": Object {},
+            },
+            Object {
+              "type": "assessment:endAttempt",
+              "value": Object {},
+            },
+            Object {
+              "type": "viewer:alert",
+              "value": Object {},
+            },
+            Object {
+              "type": "viewer:scrollToTop",
+              "value": Object {},
+            },
+            Object {
+              "type": "focus:component",
+              "value": Object {},
+            },
+          ],
+          "type": "onClick",
+        },
+      ],
+    },
   },
+  "selected": true,
 }
 `;
 

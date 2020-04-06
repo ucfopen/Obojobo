@@ -6,7 +6,7 @@ const StyleType = require('./style-type')
 const MockElement = require('../mockdom/mock-element')
 const MockTextNode = require('../mockdom/mock-text-node')
 
-const ORDER = [
+const STYLE_ORDER = [
 	StyleType.COMMENT,
 	StyleType.LATEX,
 	StyleType.LINK,
@@ -98,7 +98,9 @@ const getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex
 
 const wrapElement = function(styleRange, nodeToWrap, text) {
 	let newChild, node, root
-	switch (styleRange.type) {
+	// The style type actually rendered may not always match the style range's type text
+	let styleType = styleRange.type
+	switch (styleType) {
 		case 'sup': {
 			let level = styleRange.data
 			if (level > 0) {
@@ -159,18 +161,18 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			)
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
-			const html = katex.renderToString(text)
+			const html = katex.renderToString(text, { throwOnError: false })
 			nodeToWrap.html = `<span aria-hidden="true">${html}</span>`
 			nodeToWrap.text = text
 			return newChild
 		}
 
 		case StyleType.MONOSPACE:
-			styleRange.type = 'code'
+			styleType = 'code'
 		// Intentional fallthrough
 
 		default:
-			newChild = new MockElement(styleRange.type, Object.assign({}, styleRange.data))
+			newChild = new MockElement(styleType, Object.assign({}, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			nodeToWrap.text = text
@@ -225,7 +227,26 @@ const getMockElement = function(styleableText) {
 	const root = new MockElement('span')
 	root.addChild(new MockTextNode(styleableText.value))
 
-	for (const styleType of Array.from(ORDER)) {
+	// If any unexpected style ranges are encountered, they'll be stored here for later use
+	const unhandledTypes = []
+
+	// Loop through the style types we track explicitly in a predictable order
+	// This will apply all the <b>'s before all the <del>'s etc.
+	// The resulting output will make sure tag order is the same everywhere
+	for (const styleType of STYLE_ORDER) {
+		for (const styleRange of styleableText.styleList.styles) {
+			if (styleRange.type === styleType) {
+				applyStyle(root, styleRange)
+			} else if (!STYLE_ORDER.includes(styleRange.type)) {
+				// If we encounter a style that's not in the style order list,
+				// put it in the list of unhandled styles we already have
+				unhandledTypes[styleRange.type] = true
+			}
+		}
+	}
+
+	// Same as above, but for any unexpected styles encountered
+	for (const styleType in unhandledTypes) {
 		for (const styleRange of Array.from(styleableText.styleList.styles)) {
 			if (styleRange.type === styleType) {
 				applyStyle(root, styleRange)

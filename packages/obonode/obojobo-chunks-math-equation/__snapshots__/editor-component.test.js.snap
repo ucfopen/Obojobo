@@ -1,12 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MathEquation Editor Node MathEquation component edits properties 1`] = `"<div><div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\" contenteditable=\\"false\\"><div class=\\"non-editable-chunk\\"><div class=\\"katex-container\\" style=\\"font-size: 1em;\\"><span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"mord\\">1</span></span></span></span></span></div><div class=\\"equation-label\\">mockValue</div></div><div class=\\"attributes-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"attributes-list\\"><div><label for=\\"math-equation-latex\\">Latex:</label><input id=\\"math-equation-latex\\" value=\\"1\\"></div><div><label for=\\"math-equation-label\\">Optional Label:</label><input id=\\"math-equation-label\\" value=\\"mockValue\\"></div><div><label for=\\"math-equation-alt\\">Alt Text:</label><input id=\\"math-equation-alt\\" value=\\"\\"></div><div><label for=\\"math-equation-size\\">Size:</label><input id=\\"math-equation-size\\" type=\\"number\\" step=\\"0.1\\" value=\\"1\\"></div></div></div></div><div contenteditable=\\"true\\" class=\\"editor--hidden-text\\"></div></div></div>"`;
+exports[`MathEquation Editor Node MathEquation component edits properties 1`] = `"<div><div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\" contenteditable=\\"false\\"><div class=\\"non-editable-chunk\\"><div class=\\"katex-container\\" style=\\"font-size: 1em;\\"><span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"mord\\">1</span></span></span></span></span></div><div class=\\"equation-label\\">mockValue</div></div><div class=\\"attributes-box  is-open\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"attributes-list\\"><div class=\\"attribute\\"><label for=\\"math-equation-latex\\">Latex:</label><input id=\\"math-equation-latex\\" value=\\"1\\"></div><div class=\\"attribute\\"><label for=\\"math-equation-label\\">Optional Label:</label><input id=\\"math-equation-label\\" value=\\"mockValue\\"></div><div class=\\"attribute\\"><label for=\\"math-equation-alt\\">Alt Text:</label><input id=\\"math-equation-alt\\" value=\\"\\"></div><div class=\\"attribute\\"><label for=\\"math-equation-size\\">Size:</label><input id=\\"math-equation-size\\" type=\\"number\\" step=\\"0.1\\" value=\\"1\\"></div><div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Done</button></div></div></div></div></div></div></div>"`;
 
 exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 <div>
   <div
     className="component obojobo-draft--chunks--math-equation pad align-center"
     contentEditable={false}
+    onClick={[Function]}
   >
     <div
       className="katex-container katex-error"
@@ -15,11 +16,6 @@ exports[`MathEquation Editor Node MathEquation component with error 1`] = `
         KaTeX parse error: Double subscript at position 4: x_0_̲0
       </p>
     </div>
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-    />
   </div>
 </div>
 `;
@@ -29,6 +25,7 @@ exports[`MathEquation Editor Node MathEquation component with label 1`] = `
   <div
     className="component obojobo-draft--chunks--math-equation pad align-center"
     contentEditable={false}
+    onClick={[Function]}
   >
     <div
       className="non-editable-chunk"
@@ -47,11 +44,6 @@ exports[`MathEquation Editor Node MathEquation component with label 1`] = `
         }
       />
     </div>
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-    />
   </div>
 </div>
 `;
@@ -61,6 +53,7 @@ exports[`MathEquation Editor Node renders with no latex 1`] = `
   <div
     className="component obojobo-draft--chunks--math-equation pad align-center"
     contentEditable={false}
+    onClick={[Function]}
   >
     <div
       className="non-editable-chunk"
@@ -75,11 +68,6 @@ exports[`MathEquation Editor Node renders with no latex 1`] = `
         </span>
       </div>
     </div>
-    <div
-      className="editor--hidden-text"
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-    />
   </div>
 </div>
 `;

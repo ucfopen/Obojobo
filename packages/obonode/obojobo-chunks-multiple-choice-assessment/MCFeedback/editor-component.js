@@ -3,13 +3,16 @@ import './editor-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 
 const { Button } = Common.components
 
 class MCFeedback extends React.Component {
 	delete() {
-		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
 	render() {
 		return (
@@ -26,4 +29,4 @@ class MCFeedback extends React.Component {
 	}
 }
 
-export default MCFeedback
+export default withSlateWrapper(MCFeedback)
