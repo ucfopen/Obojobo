@@ -109,14 +109,14 @@ class CodeEditor extends React.Component {
 		})
 	}
 
-	saveCode() {
+	saveCode(draftId) {
 		// Update the title in the File Toolbar
 		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
 
 		return APIUtil.postDraft(
-			this.props.draftId,
+			draftId || this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
 		)
