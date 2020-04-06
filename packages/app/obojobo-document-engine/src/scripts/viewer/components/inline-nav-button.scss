@@ -12,7 +12,8 @@
 	transition: color $duration-animation-default, background $duration-animation-default;
 	cursor: pointer;
 	text-align: center;
-	min-height: $dimension-prev-next-button-height;
+	height: $dimension-prev-next-button-height;
+	overflow: hidden;
 	line-height: 1.5em;
 	transform: translate(0, -1px);
 	word-wrap: break-word;
