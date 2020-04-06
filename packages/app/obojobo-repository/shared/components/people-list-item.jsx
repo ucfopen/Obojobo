@@ -10,7 +10,7 @@ const PeopleListItem = props => (
 			<div className="user-name">
 				{`${props.firstName} ${props.lastName}`} {props.isMe ? <i>(me)</i> : null}
 			</div>
-			<div className="email">{props.email}</div>
+			<div className="user-username">{props.username}</div>
 		</div>
 		{props.children}
 	</li>
