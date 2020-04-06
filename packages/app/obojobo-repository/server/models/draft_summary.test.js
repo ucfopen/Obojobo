@@ -126,7 +126,7 @@ describe.only('DraftSummary Model', () => {
 		})
 	})
 
-	test('fetchInCollection generates the correct query and returns a DraftSummary object', () => {
+	test('fetchAllInCollection generates the correct query and returns a DraftSummary object', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
@@ -135,7 +135,7 @@ describe.only('DraftSummary Model', () => {
 				ON repository_map_drafts_to_collections.draft_id = drafts.id`
 		const query = queryBuilder(whereSQL, joinSQL)
 
-		return DraftSummary.fetchInCollection('whatever').then(summary => {
+		return DraftSummary.fetchAllInCollection('whatever').then(summary => {
 			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'whatever' })
 			checkAgainstMockRawSummary(summary)
 		})

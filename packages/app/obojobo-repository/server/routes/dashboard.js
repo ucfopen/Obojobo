@@ -50,7 +50,7 @@ const renderDashboard = (req, res, options) => {
 			switch (options.mode) {
 				case MODE_COLLECTION:
 					pageTitle = 'View Collection'
-					return DraftSummary.fetchInCollection(options.collection.id, req.currentUser.id)
+					return DraftSummary.fetchAllInCollection(options.collection.id, req.currentUser.id)
 				case MODE_ALL:
 					return DraftSummary.fetchByUserId(req.currentUser.id)
 				case MODE_RECENT:

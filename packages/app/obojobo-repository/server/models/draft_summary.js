@@ -81,7 +81,7 @@ class DraftSummary {
 		)
 	}
 
-	static fetchInCollection(collectionId) {
+	static fetchAllInCollection(collectionId) {
 		return DraftSummary.fetchAndJoinWhere(
 			`JOIN repository_map_drafts_to_collections
 				ON repository_map_drafts_to_collections.draft_id = drafts.id`,
