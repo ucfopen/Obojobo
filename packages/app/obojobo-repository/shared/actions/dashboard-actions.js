@@ -1,3 +1,5 @@
+const debouncePromise = require('debounce-promise')
+
 // =================== API =======================
 
 const defaultOptions = () => ({
@@ -19,6 +21,8 @@ const apiSearchForUser = searchString => {
 		.then(throwIfNotOk)
 		.then(res => res.json())
 }
+
+const apiSearchForUserDebounced = debouncePromise(apiSearchForUser, 300)
 
 const apiAddPermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'POST', body: `{"userId":${userId}}` }
@@ -69,7 +73,7 @@ const searchForUser = searchString => ({
 	meta: {
 		searchString
 	},
-	promise: apiSearchForUser(searchString)
+	promise: apiSearchForUserDebounced(searchString)
 })
 
 const ADD_USER_TO_MODULE = 'ADD_USER_TO_MODULE'
