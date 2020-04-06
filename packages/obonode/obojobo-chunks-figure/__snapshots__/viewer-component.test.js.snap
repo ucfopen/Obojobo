@@ -38,7 +38,7 @@ exports[`Figure Figure component 1`] = `
         />
         <figcaption>
           <span
-            className="text align-undefined"
+            className="text"
             data-group-index="0"
           >
             <span>
