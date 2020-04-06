@@ -27,33 +27,13 @@ import Converter from './converter'
 describe('Page Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: { get: () => null },
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
-						{
-							type: 'mockNode'
-						}
-					]
-				}
-			]
-		}
-		const oboNode = Converter.slateToObo(slateNode)
-
-		expect(oboNode).toMatchSnapshot()
-	})
-
-	test('slateToObo converts a Slate node to an OboNode with no content', () => {
-		const slateNode = {
-			key: 'mockKey',
-			type: 'mockType',
-			nodes: [
-				{
-					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}
@@ -73,7 +53,7 @@ describe('Page Converter', () => {
 			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}

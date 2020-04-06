@@ -1,6 +1,7 @@
-import ScriptMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/script-marks'
+import { Editor } from 'slate'
+jest.mock('slate-react')
 
-const SCRIPT_MARK = 'sup'
+import ScriptMarks from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/script-marks'
 
 describe('ScriptMarks', () => {
 	test('onKeyDown does not toggle mark if wrong key is pressed', () => {
@@ -49,73 +50,73 @@ describe('ScriptMarks', () => {
 		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 	})
 
-	test('renderMark diplays expected style', () => {
+	test('renderLeaf diplays expected style', () => {
 		expect(
-			ScriptMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: SCRIPT_MARK, data: { get: () => 1 } }
+			ScriptMarks.plugins.renderLeaf({
+				leaf: {
+					sup: true,
+					num: 1
 				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			ScriptMarks.plugins.renderMark(
-				{
-					children: 'mockChild',
-					mark: { type: SCRIPT_MARK, data: { get: () => -1 } }
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('renderMark calls next', () => {
-		const next = jest.fn()
-
-		ScriptMarks.plugins.renderMark(
-			{
 				children: 'mockChild',
-				mark: { type: 'mockMark' }
+			})
+		).toMatchSnapshot()
+
+		expect(
+			ScriptMarks.plugins.renderLeaf({
+				leaf: {
+					sup: true,
+					num: -1
+				},
+				children: 'mockChild'
+			})
+		).toMatchSnapshot()
+	})
+
+	test('renderLeaf does nothing', () => {
+		expect(ScriptMarks.plugins.renderLeaf({
+			leaf: {},
+			children: 'mockChild'
+		})).toMatchSnapshot()
+	})
+
+	test('toggleScript removes marks', () => {
+		jest.spyOn(Editor, 'removeMark').mockReturnValue(true)
+
+		const editor = {
+			children: [
+				{ text: 'mockText', sup: true, num: 1 }
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
 			},
-			null,
-			next
-		)
-
-		expect(next).toHaveBeenCalled()
-	})
-
-	test('toggleScript removes marks', () => {
-		const editor = {
-			removeMark: jest.fn(),
-			addMark: jest.fn(),
-			value: {
-				marks: [{ type: SCRIPT_MARK, data: { get: () => 1 } }]
-			}
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		ScriptMarks.plugins.queries.toggleScript(editor, 1)
+		ScriptMarks.plugins.commands.toggleScript(editor, 1)
 
-		expect(editor.removeMark).toHaveBeenCalled()
-		expect(editor.addMark).not.toHaveBeenCalled()
+		expect(Editor.removeMark).toHaveBeenCalled()
 	})
 
-	test('toggleScript removes marks', () => {
+	test('toggleScript adds marks', () => {
+		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
+
 		const editor = {
-			removeMark: jest.fn(),
-			addMark: jest.fn(),
-			value: {
-				marks: [{ type: 'mockMark', data: { get: () => 1 } }]
-			}
+			children: [
+				{ text: 'mockText', sup: true, num: -1 }
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
+			},
+			isVoid: () => false,
+			isInline: () => false
 		}
 
-		ScriptMarks.plugins.queries.toggleScript(editor, 1)
+		ScriptMarks.plugins.commands.toggleScript(editor, 1)
 
-		expect(editor.removeMark).not.toHaveBeenCalled()
-		expect(editor.addMark).toHaveBeenCalled()
+		expect(Editor.addMark).toHaveBeenCalled()
 	})
 
 	test('the action in each mark calls editor.toggleScript', () => {

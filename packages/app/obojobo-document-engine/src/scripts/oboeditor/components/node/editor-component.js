@@ -1,6 +1,8 @@
 import React from 'react'
-import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import { ReactEditor } from 'slate-react'
+
+import { Transforms, Path, Editor } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -8,34 +10,25 @@ import MoreInfoBox from '../navigation/more-info-box'
 import './editor-component.scss'
 
 const { OboModel } = Common.models
-
 class Node extends React.Component {
 	insertBlockAtStart(item) {
-		const newBlock = Block.create(item.cloneBlankNode())
-		// Create the obomodel and set its id to match the block key to prevent duplicate keys
-		const newModel = OboModel.create(item.insertJSON.type)
-		newModel.setId(newBlock.key)
+		const newBlock = item.cloneBlankNode()
 
-		// Inserts a sibling node before the current node
-		return this.props.editor.insertNodeByKey(
-			this.props.parent.key,
-			this.props.parent.getPath(this.props.node.key).get(0),
-			newBlock
-		)
+		// Use the ReactEditor to get the path for the current element
+		// Then use transforms to insert at that path, which effectively inserts above like in arrays
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
 	}
 
 	insertBlockAtEnd(item) {
-		const newBlock = Block.create(item.cloneBlankNode())
-		// Create the obomodel and set its id to match the block key to prevent duplicate keys
-		const newModel = OboModel.create(item.insertJSON.type)
-		newModel.setId(newBlock.key)
+		const newBlock = item.cloneBlankNode()
 
-		// Inserts a sibling node after the current node
-		return this.props.editor.insertNodeByKey(
-			this.props.parent.key,
-			this.props.parent.getPath(this.props.node.key).get(0) + 1,
-			newBlock
-		)
+		// Use the ReactEditor to get the path for the current element, and increment the last element
+		// Then use transforms to insert at that path, which effectively inserts below like in arrays
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
 	}
 
 	saveId(prevId, newId) {
@@ -43,42 +36,36 @@ class Node extends React.Component {
 
 		// check against existing nodes for duplicate keys
 		const model = OboModel.models[prevId]
+
+		if (!newId) {
+			return 'Please enter an id'
+		}
+
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
 		}
 
-		const jsonNode = this.props.node.toJSON()
-		jsonNode.key = newId
-
-		this.props.editor
-			.insertNodeByKey(
-				this.props.parent.key,
-				this.props.parent.getPath(this.props.node.key).get(0),
-				Block.create(jsonNode)
-			)
-			.removeNodeByKey(prevId)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { id: newId }, { at: path })
 	}
 
 	saveContent(prevContent, newContent) {
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: { ...this.props.node.data.toJSON(), content: newContent }
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: newContent }, { at: path })
 	}
 
 	deleteNode() {
 		// Cursor focus is automatically returned to the editor by the onChange function
-		this.props.editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
 	duplicateNode() {
-		const editor = this.props.editor
+		const newNode = Object.assign({}, this.props.element)
 
-		// Inserts a sibling node after the current node
-		return editor.insertNodeByKey(
-			this.props.parent.key,
-			this.props.parent.getPath(this.props.node.key).get(0) + 1,
-			Block.create(this.props.node.toJSON())
-		)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		path[path.length - 1]++
+		Transforms.insertNodes(this.props.editor, newNode, { at: path })
 	}
 
 	onOpen() {
@@ -92,11 +79,14 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const selected = this.props.selected
+		const editor = this.props.editor
+
 		const className = `oboeditor-component component ${this.props.className || ''}`
 
 		return (
 			<div className={className.trim()} data-obo-component="true">
-				{this.props.isSelected ? (
+				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
@@ -113,20 +103,20 @@ class Node extends React.Component {
 					</div>
 				) : null}
 
-				{this.props.isSelected ? (
+				{selected ? (
 					<MoreInfoBox
 						className="content-node"
-						id={this.props.node.key}
+						id={this.props.element.id}
 						isFirst
 						isLast
-						type={this.props.node.type}
-						content={this.props.node.data.toJSON().content || {}}
+						type={this.props.element.type}
+						content={this.props.element.content || {}}
 						saveId={this.saveId.bind(this)}
 						saveContent={this.saveContent.bind(this)}
 						contentDescription={this.props.contentDescription || []}
 						deleteNode={this.deleteNode.bind(this)}
 						duplicateNode={this.duplicateNode.bind(this)}
-						markUnsaved={this.props.editor.markUnsaved}
+						markUnsaved={editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
 						onClose={this.onClose.bind(this)}
 					/>

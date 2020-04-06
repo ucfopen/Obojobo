@@ -3,7 +3,7 @@
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const slateToObo = node => {
-	const content = Object.assign({}, node.data.get('content'))
+	const content = Object.assign({}, node.content)
 
 	if (content.type !== 'pass-fail') return ''
 
@@ -67,10 +67,9 @@ const oboToSlate = node => {
 	if (!node.mods) node.mods = []
 
 	return {
-		object: 'block',
 		type: RUBRIC_NODE,
-		data: { content: node },
-		isVoid: true
+		content: node,
+		children: [{ text: '' }]
 	}
 }
 

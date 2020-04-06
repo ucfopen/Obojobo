@@ -1,38 +1,28 @@
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
+// jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
 import Converter from './converter'
 
 describe('ActionButton Converter', () => {
 	test('slateToObo converts a Slate node', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return {
+			content: {
+				triggers: [
+					{
+						type: 'onClick',
 						actions: [
 							{ type: 'mockType', value: '{"id":"mockId"}' },
 							{ type: 'mockType', value: '' }
-						]
+						],
 					}
-				}
+				]
 			},
 			text: 'mockText',
-			nodes: [
-				{
-					leaves: [
-						{
-							text: 'mockText',
-							marks: [
-								{
-									type: 'b',
-									data: {}
-								}
-							]
-						}
-					]
-				}
-			]
+			children: [{
+				text: 'mockText',
+				b: true
+			}]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

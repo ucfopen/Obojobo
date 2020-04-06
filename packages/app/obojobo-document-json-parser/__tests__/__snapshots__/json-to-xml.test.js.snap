@@ -534,7 +534,16 @@ exports[`JSON to XML Parser Converts page.json to xml 1`] = `
 exports[`JSON to XML Parser Converts question.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<Question id=\\"c2eee86c-9c6a-480e-85c4-99a38c8e3ec0\\">
+	<Question type=\\"survey\\" id=\\"c2eee86c-9c6a-480e-85c4-99a38c8e3ec0\\">
+		<solution>
+			<Page id=\\"fffffff-ac7f-4553-bfaa-e90b00dd7e07\\">
+				<Text id=\\"c7b8f541-6318-4b4a-babf-ac760e3aa982\\">
+					<textGroup>
+						<t>test</t>
+					</textGroup>
+				</Text>
+			</Page>
+		</solution>
 		<Heading headingLevel=\\"1\\" id=\\"f20a3dfd-8a98-4e49-a24e-74b1a03214af\\">
 			<textGroup>
 				<t>A Simple Question</t>

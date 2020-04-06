@@ -10,6 +10,11 @@ div.non-editable-chunk.obojobo-draft--chunks--break.viewer {
 		}
 	}
 
+	.invisibleText {
+		height: 0;
+		width: 0;
+	}
+
 	.buttonbox-box {
 		position: absolute;
 		text-align: center;

@@ -2,13 +2,7 @@
 
 exports[`MCFeedback Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "componentOboToSlateReturnFor": Object {
         "type": "ObojoboDraft.Chunks.Break",
@@ -20,7 +14,10 @@ Object {
       },
     },
   ],
-  "object": "block",
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -30,7 +27,7 @@ Object {
   "children": Array [
     Object {
       "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -40,7 +37,7 @@ Object {
     },
   ],
   "content": Object {},
-  "id": "mockKey",
+  "id": undefined,
   "type": "mockType",
 }
 `;

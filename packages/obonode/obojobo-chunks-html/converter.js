@@ -1,42 +1,35 @@
+import { Node } from 'slate'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
-const slateToObo = node => {
-	const content = {
-		html: node.text
-	}
-
-	const nodeContent = node.data.get('content')
-	if (nodeContent && nodeContent.triggers) {
-		content.triggers = nodeContent.triggers
-	}
-
-	return {
-		id: node.key,
-		type: node.type,
-		children: [],
-		content: withoutUndefined(content)
-	}
-}
-
-const oboToSlate = node => ({
-	object: 'block',
-	key: node.id,
+/**
+ * Generates an Obojobo HTML node from a Slate node.
+ * Copies the id, type, triggers, and converts text children (including marks)
+ * into the html attribute. 
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo HTML node 
+ */
+const slateToObo = node => ({
+	id: node.id,
 	type: node.type,
-	nodes: [
-		{
-			object: 'text',
-			leaves: [
-				{
-					text: node.content.html
-				}
-			]
-		}
-	],
-	data: {
-		content: {
-			triggers: node.content.triggers
-		}
-	}
+	children: [],
+	content: withoutUndefined({
+		triggers: node.content.triggers,
+		html: Node.string(node)
+	})
 })
+
+/**
+ * Generates a Slate node from an Obojobo HTML node.
+ * Copies all attributes, and converts the HTML attribute into Slate Text children
+ * @param {Object} node An Obojobo HTML node 
+ * @returns {Object} A Slate node
+ */
+const oboToSlate = node => {
+	const slateNode = Object.assign({}, node)
+
+	slateNode.children = [{ text: node.content.html }]
+
+	return slateNode
+}
 
 export default { slateToObo, oboToSlate }

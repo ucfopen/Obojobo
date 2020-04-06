@@ -2,6 +2,7 @@
 	"id": "c2eee86c-9c6a-480e-85c4-99a38c8e3ec0",
 	"type": "ObojoboDraft.Chunks.Question",
 	"content": {
+		"type": "survey",
 		"triggers": [
 			{
 				"type": "onClick",
@@ -14,7 +15,30 @@
 					}
 				]
 			}
-		]
+		],
+		"solution": {
+			"id": "fffffff-ac7f-4553-bfaa-e90b00dd7e07",
+			"type": "ObojoboDraft.Pages.Page",
+			"content": {},
+			"children": [
+				{
+					"id": "c7b8f541-6318-4b4a-babf-ac760e3aa982",
+					"type": "ObojoboDraft.Chunks.Text",
+					"content": {
+						"textGroup": [
+							{
+								"data": {},
+								"text": {
+									"value": "test",
+									"styleList": []
+								}
+							}
+						]
+					},
+					"children": []
+				}
+			]
+		}
 	},
 	"children": [
 		{

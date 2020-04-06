@@ -1,96 +1,114 @@
+import { Transforms } from 'slate'
+
 import ActionButton from './editor-registration'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('ActionButton editor', () => {
-	test('plugins.renderNode renders a button when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: BUTTON_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		expect(ActionButton.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
+	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
 		const next = jest.fn()
+		ActionButton.plugins.normalizeNode([ {},[] ], {}, next)
 
-		expect(ActionButton.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.renderPlaceholder exits when not relevent', () => {
+	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
+		const button = {
+			type: BUTTON_NODE,
+			children: [{ text: '' }]
+		}
+		const next = jest.fn()
+
+		ActionButton.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode calls Transforms on an invalid child', () => {
+		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
+
+		const button = {
+			type: BUTTON_NODE,
+			children: [
+				{ 
+					type: 'mockElement',
+					children: [{ text: '' }]
+				}
+			]
+		}
+		const editor = {
+			isInline: () => false,
+			children: [button]
+		}
+		const next = jest.fn()
+
+		ActionButton.plugins.normalizeNode([ button,[0] ], editor, next)
+		expect(Transforms.liftNodes).toHaveBeenCalled()
+	})
+
+	test('plugins.decorate exits when not relevent', () => {
 		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
+			ActionButton.plugins.decorate(
+				[{ text: 'mock text' }],
+				{}
 			)
 		).toMatchSnapshot()
 
 		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: BUTTON_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
+			ActionButton.plugins.decorate(
+				[{ children: [{ text: 'mock text' }] }],
+				{}
 			)
 		).toMatchSnapshot()
 	})
 
-	test('plugins.renderPlaceholder renders a placeholder', () => {
+	test('plugins.decorate renders a placeholder', () => {
+		const editor = {
+			children: [{ children: [{ text: '' }] }]
+		}
+
 		expect(
-			ActionButton.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: BUTTON_NODE,
-						text: ''
-					}
-				},
-				null,
-				jest.fn()
+			ActionButton.plugins.decorate(
+				[{ children: [{ text: '' }] }, [0]],
+				editor
 			)
 		).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
+	})
+
+	test('plugins.renderNode renders a button when passed', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			element: {
+				type: BUTTON_NODE,
+				content: {}
+			}
+		}
+
+		expect(ActionButton.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })
