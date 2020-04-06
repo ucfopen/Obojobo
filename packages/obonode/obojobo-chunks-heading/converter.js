@@ -1,4 +1,4 @@
-import { Transforms } from 'slate'
+import { Transforms, Editor, Range } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
@@ -64,7 +64,7 @@ const switchType = {
 			{ 
 				type: TEXT_NODE, 
 				subtype: TEXT_LINE_NODE,
-				content: { ...node.content, indent: 0 }
+				content: { ...node.content, indent: 0, hangingIndent: false }
 			},
 			{ at: path }
 		)
@@ -84,27 +84,27 @@ const switchType = {
 			{ 
 				type: CODE_NODE, 
 				subtype: CODE_LINE_NODE,
-				content: { ...node.content, indent: 0 }
+				content: { ...node.content, indent: 0, hangingIndent: false }
 			},
 			{ at: path }
 		)
 	},
 	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
+		const nodeRange = Editor.range(editor, path)
+		const [start, end] = Range.edges(editor.selection)
+		const containsStart = Range.includes(nodeRange, start) 
+		const containsEnd = Range.includes(nodeRange, end)
+
 		const newList = { 
 			type: LIST_NODE, 
-			content: { listStyles: data },
+			subtype: LIST_LEVEL_NODE, 
+			content: data,
 			children: [
 				{ 
 					type: LIST_NODE, 
-					subtype: LIST_LEVEL_NODE, 
-					content: data,
-					children: [
-						{ 
-							type: LIST_NODE, 
-							subtype: LIST_LINE_NODE, 
-							children: node.children
-						}
-					]
+					subtype: LIST_LINE_NODE, 
+					content: { hangingIndent: false },
+					children: node.children
 				}
 			]
 		}
@@ -115,6 +115,52 @@ const switchType = {
 			newList,
 			{ at: path }
 		)
+
+		if(containsStart) {
+			// Find the final path to the starting line node
+			// Because normalization has not yet run, there will be exactly
+			// 1 line node for the starting path
+			const [startLine] = Editor.nodes(editor, {
+				at: path, 
+				match: n => n.subtype === LIST_LINE_NODE,
+			})
+			// The difference between path and start Point indicates what inline
+			// and what text leaf is currently selected
+			const leafDepth = start.path.length - path.length
+			const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
+
+			// Therefore, the point to focus on is 
+			// the line's path 
+			// + the relative leaf path
+			// + the original offset
+			Transforms.setPoint(editor, {
+				path: startLine[1].concat(relativeLeafPath),
+				offset: start.offset
+			}, { edge: 'start' })
+		}
+
+		if(containsEnd) {
+			// Find the final path to the ending line node
+			// Because normalization has not yet run, there will be exactly
+			// 1 line node for the endinging path
+			const [endLine] = Editor.nodes(editor, {
+				at: path, 
+				match: n => n.subtype === LIST_LINE_NODE,
+			})
+			// The difference between path and end Point indicates what inline
+			// and what text leaf is currently selected
+			const leafDepth = end.path.length - path.length
+			const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
+
+			// Therefore, the point to focus on is 
+			// the line's path 
+			// + the relative leaf path
+			// + the original offset
+			Transforms.setPoint(editor, {
+				path: endLine[1].concat(relativeLeafPath),
+				offset: end.offset
+			}, { edge: 'end' })
+		}
 	},
 }
 

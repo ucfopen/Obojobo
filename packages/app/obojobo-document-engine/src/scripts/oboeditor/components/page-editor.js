@@ -196,7 +196,11 @@ class PageEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
+		console.log(this.editor.selection)
+
 		this.setState({ value, saved: false })
+
+		if(!ReactEditor.isFocused(this.editor)) ReactEditor.focus(this.editor)
 	}
 
 	// Methods that handle movement between pages

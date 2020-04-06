@@ -12,6 +12,7 @@ const ALIGN_LEFT = 'left'
 const AlignMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {

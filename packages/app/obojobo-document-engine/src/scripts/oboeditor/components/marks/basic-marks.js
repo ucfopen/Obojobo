@@ -19,6 +19,7 @@ const LATEX_MARK = '_latex'
 const BasicMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {

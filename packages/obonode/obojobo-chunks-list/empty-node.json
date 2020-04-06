@@ -11,7 +11,7 @@
 				{
 					"type":"ObojoboDraft.Chunks.List",
 					"subtype":"ObojoboDraft.Chunks.List.Line",
-					"content": { "hangingIndent": true },
+					"content": { "hangingIndent": false },
 					"children":[{ "text": ""}]
 				}
 			]

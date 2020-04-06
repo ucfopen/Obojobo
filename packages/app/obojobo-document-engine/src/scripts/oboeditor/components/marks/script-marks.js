@@ -10,6 +10,7 @@ const SCRIPT_MARK = 'sup'
 const ScriptMark = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {

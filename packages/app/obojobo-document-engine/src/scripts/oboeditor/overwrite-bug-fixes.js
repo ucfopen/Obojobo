@@ -132,3 +132,28 @@ Transforms.mergeNodes = (editor, options) => Editor.withoutNormalizing(editor, (
 		emptyRef.unref()
 	}
 })
+
+// This one is directly copied from Slate's master branch, but it has not been released yet
+Transforms.setPoint = (editor, props, options) => {
+	const { selection } = editor
+	let { edge = 'both' } = options
+
+	if (!selection) {
+		return
+	}
+
+	if (edge === 'start') {
+		edge = Range.isBackward(selection) ? 'focus' : 'anchor'
+	}
+
+	if (edge === 'end') {
+		edge = Range.isBackward(selection) ? 'anchor' : 'focus'
+	}
+
+	const { anchor, focus } = selection
+	const point = edge === 'anchor' ? anchor : focus
+
+	Transforms.setSelection(editor, {
+		[edge === 'anchor' ? 'anchor' : 'focus']: { ...point, ...props },
+	})
+}
