@@ -36,16 +36,17 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(moduleId, label) {
-		this.renameModule(moduleId, label)
-
+		const oldLabel = this.props.model.title
 		let draftId = null
 
 		APIUtil.createNewDraft()
 			.then(result => {
 				draftId = result.value.id
+				this.renameModule(moduleId, label)
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
+				this.renameModule(moduleId, oldLabel)
 				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
 			})
 	}

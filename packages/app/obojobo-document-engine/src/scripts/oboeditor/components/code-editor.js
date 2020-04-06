@@ -119,14 +119,14 @@ class CodeEditor extends React.Component {
 		this.saveCode(this.props.draftId)
 	}
 
-	saveCode() {
+	saveCode(draftId) {
 		// Update the title in the File Toolbar
 		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
 
 		return APIUtil.postDraft(
-			this.props.draftId,
+			draftId || this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
 		)
@@ -171,19 +171,19 @@ class CodeEditor extends React.Component {
 	}
 
 	onKeyDown(event) {
-		if(!this.state.editor) return 
+		if (!this.state.editor) return
 
-		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.saveCode(this.props.draftId)
 		}
 
-		if(event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.state.editor.undo()
 		}
 
-		if(event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.state.editor.redo()
 		}
@@ -195,9 +195,7 @@ class CodeEditor extends React.Component {
 
 	render() {
 		return (
-			<div
-				className={'component editor--code-editor'}
-				onKeyDown={this.onKeyDown}>
+			<div className={'component editor--code-editor'} onKeyDown={this.onKeyDown}>
 				<div className="draft-toolbars">
 					<EditorTitleInput
 						title={this.state.title}
