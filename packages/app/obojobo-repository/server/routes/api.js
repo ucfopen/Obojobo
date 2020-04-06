@@ -216,7 +216,7 @@ router
 	.route('/collections/:collectionId/modules')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return DraftSummary.fetchInCollectionForUser(req.params.collectionId, req.currentUser.id)
+		return DraftSummary.fetchAllInCollectionForUser(req.params.collectionId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

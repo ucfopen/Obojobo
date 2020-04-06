@@ -61,12 +61,11 @@ class Collection {
 				{ id, newTitle }
 			)
 			.then(updatedCollection => {
-				const infoObject = {
+				logger.info('collection renamed', {
 					userId,
 					id: updatedCollection.id,
 					title: updatedCollection.title
-				}
-				logger.info('collection renamed', infoObject)
+				})
 				return updatedCollection
 			})
 	}
@@ -82,12 +81,7 @@ class Collection {
 				{ collectionId, draftId, userId }
 			)
 			.then(() => {
-				const infoObject = {
-					userId,
-					collectionId,
-					draftId
-				}
-				logger.info('user added module to collection', infoObject)
+				logger.info('user added module to collection', { userId, collectionId, draftId })
 			})
 	}
 
@@ -102,12 +96,7 @@ class Collection {
 				{ collectionId, draftId }
 			)
 			.then(() => {
-				const infoObject = {
-					userId,
-					collectionId,
-					draftId
-				}
-				logger.info('user removed module from collection', infoObject)
+				logger.info('user removed module from collection', { userId, collectionId, draftId })
 			})
 	}
 

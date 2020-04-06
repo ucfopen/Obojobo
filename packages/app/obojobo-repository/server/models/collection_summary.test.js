@@ -74,7 +74,7 @@ describe('CollectionSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawCollectionSummary)
 
-		const whereSQL = `visibility_type = 'private' AND user_id = $[userId] AND deleted = FALSE`
+		const whereSQL = `visibility_type = 'private' AND user_id = $[userId]`
 		const query = queryBuilder(whereSQL)
 
 		return CollectionSummary.fetchByUserId(0).then(summary => {

@@ -532,15 +532,15 @@ describe('repository api route', () => {
 			{ draftId: 'mockDraftId3' }
 		]
 
-		DraftSummary.fetchInCollectionForUser = jest.fn()
-		DraftSummary.fetchInCollectionForUser.mockResolvedValueOnce(mockResult)
+		DraftSummary.fetchAllInCollectionForUser = jest.fn()
+		DraftSummary.fetchAllInCollectionForUser.mockResolvedValueOnce(mockResult)
 
 		expect.hasAssertions()
 
 		return request(app)
 			.get('/collections/mockCollectionId/modules')
 			.then(response => {
-				expect(DraftSummary.fetchInCollectionForUser).toHaveBeenCalledWith(
+				expect(DraftSummary.fetchAllInCollectionForUser).toHaveBeenCalledWith(
 					'mockCollectionId',
 					mockCurrentUser.id
 				)
