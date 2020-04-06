@@ -380,29 +380,33 @@ class PageEditor extends React.Component {
 
 	render() {
 		const className =
-			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+			'editor--page-editor ' +
+			isOrNot(this.state.showPlaceholders, 'show-placeholders') +
+			isOrNot(this.props.readOnly, 'read-only')
+
 		return (
 			<div className={className}>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
-					<div className="draft-toolbars">
-						<div className="draft-title">{this.props.model.title}</div>
-						<FileToolbar
-							editor={this.editor}
-							selection={this.editor.selection}
-							model={this.props.model}
-							draftId={this.props.draftId}
-							onSave={this.saveModule}
-							switchMode={this.props.switchMode}
-							saved={this.state.saved}
-							mode={'visual'}
-							insertableItems={this.props.insertableItems}
-							togglePlaceholders={this.togglePlaceholders}
-							showPlaceholders={this.state.showPlaceholders}
-							value={this.state.value}
-						/>
-						<ContentToolbar editor={this.editor} value={this.state.value} />
-					</div>
-
+					{this.props.readOnly ? null : (
+						<div className="draft-toolbars">
+							<div className="draft-title">{this.props.model.title}</div>
+							<FileToolbar
+								editor={this.editor}
+								selection={this.editor.selection}
+								model={this.props.model}
+								draftId={this.props.draftId}
+								onSave={this.saveModule}
+								switchMode={this.props.switchMode}
+								saved={this.state.saved}
+								mode={'visual'}
+								insertableItems={this.props.insertableItems}
+								togglePlaceholders={this.togglePlaceholders}
+								showPlaceholders={this.state.showPlaceholders}
+								value={this.state.value}
+							/>
+							<ContentToolbar editor={this.editor} value={this.state.value} />
+						</div>
+					)}
 					<EditorNav
 						navState={this.props.navState}
 						model={this.props.model}
