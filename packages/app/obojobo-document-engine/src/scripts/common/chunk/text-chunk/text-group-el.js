@@ -51,10 +51,11 @@ const TextGroupEl = props => {
 	const hangingIndent = ('' + props.textItem.data.hangingIndent).toLowerCase()
 
 	const txtProps = {
-		className: `text align-${props.textItem.data.align}`,
+		className: 'text',
 		'data-group-index': props.groupIndex
 	}
 
+	if (props.textItem.data.align) txtProps.className += ` align-${props.textItem.data.align}`
 	if (indent >= 0) txtProps['data-indent'] = indent
 	if (hangingIndent === 'true') txtProps['data-hanging-indent'] = true
 
