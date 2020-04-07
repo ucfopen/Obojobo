@@ -25,8 +25,8 @@ describe('Count Services', () => {
 		AND user_id = $[userId]
 	`
 
-		CountServices.getUserModuleCount('whatever').then(response => {
-			expect(db.one).toHaveBeenCalledWith(queryString)
+		CountServices.getUserModuleCount('mockUserId').then(response => {
+			expect(db.one).toHaveBeenCalledWith(queryString, { userId: 'mockUserId' })
 			expect(response).toBe(1)
 		})
 	})

@@ -1,4 +1,3 @@
-jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/express_validators')
 jest.mock('../services/collections')
 jest.mock('../models/collection_summary')
@@ -79,7 +78,7 @@ app.set('view engine', 'jsx')
 
 let viewPaths = app.get('views')
 if (!Array.isArray(viewPaths)) viewPaths = [viewPaths]
-viewPaths.push(path.resolve(`${__dirname}/../shared/components`)) // add the components dir so babel can transpile the jsx
+viewPaths.push(path.resolve(`${__dirname}/../../shared/components`)) // add the components dir so babel can transpile the jsx
 app.set('views', viewPaths)
 
 app.use(bodyParser.json())

@@ -6,12 +6,12 @@ describe.only('DraftSummary Model', () => {
 	let DraftSummary
 
 	const mockRawDraftSummary = {
-		draft_id: 'whatever',
+		draft_id: 'mockDraftId',
 		updated_at: new Date().toISOString(),
 		created_at: new Date().toISOString(),
-		latest_version: 'whatever else',
+		latest_version: 'mockLatestVersionId',
 		revision_count: 1,
-		title: 'whatever',
+		title: 'mockDraftTitle',
 		user_id: 0,
 		editor: 'visual'
 	}
@@ -60,12 +60,12 @@ describe.only('DraftSummary Model', () => {
 
 	const checkAgainstMockRawSummary = summary => {
 		expect(summary).toBeInstanceOf(DraftSummary)
-		expect(summary.draftId).toBe('whatever')
-		expect(summary.title).toBe('whatever')
+		expect(summary.draftId).toBe('mockDraftId')
+		expect(summary.title).toBe('mockDraftTitle')
 		expect(summary.userId).toBe(0)
 		expect(summary.createdAt).toBe(mockRawDraftSummary.created_at)
 		expect(summary.updatedAt).toBe(mockRawDraftSummary.updated_at)
-		expect(summary.latestVersion).toBe('whatever else')
+		expect(summary.latestVersion).toBe('mockLatestVersionId')
 		expect(summary.revisionCount).toBe(1)
 		expect(summary.editor).toBe('visual')
 	}
@@ -76,8 +76,8 @@ describe.only('DraftSummary Model', () => {
 
 		const query = queryBuilder('drafts.id = $[id]')
 
-		DraftSummary.fetchById('whatever').then(summary => {
-			expect(db.one).toHaveBeenCalledWith(query, { id: 'whatever' })
+		DraftSummary.fetchById('mockDraftId').then(summary => {
+			expect(db.one).toHaveBeenCalledWith(query, { id: 'mockDraftId' })
 			checkAgainstMockRawSummary(summary)
 		})
 	})
@@ -89,7 +89,7 @@ describe.only('DraftSummary Model', () => {
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return DraftSummary.fetchById('whatever').catch(err => {
+		return DraftSummary.fetchById('mockDraftId').catch(err => {
 			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
 			expect(err).toBe('Error Loading DraftSummary by id')
 		})
@@ -135,8 +135,8 @@ describe.only('DraftSummary Model', () => {
 				ON repository_map_drafts_to_collections.draft_id = drafts.id`
 		const query = queryBuilder(whereSQL, joinSQL)
 
-		return DraftSummary.fetchAllInCollection('whatever').then(summary => {
-			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'whatever' })
+		return DraftSummary.fetchAllInCollection('mockCollectionId').then(summary => {
+			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'mockCollectionId' })
 			checkAgainstMockRawSummary(summary)
 		})
 	})
@@ -153,8 +153,8 @@ describe.only('DraftSummary Model', () => {
 				ON repository_map_user_to_draft.draft_id = drafts.id`
 		const query = queryBuilder(whereSQL, joinSQL)
 
-		return DraftSummary.fetchAllInCollectionForUser('whatever', 0).then(summary => {
-			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'whatever', userId: 0 })
+		return DraftSummary.fetchAllInCollectionForUser('mockCollectionId', 0).then(summary => {
+			expect(db.any).toHaveBeenCalledWith(query, { collectionId: 'mockCollectionId', userId: 0 })
 			checkAgainstMockRawSummary(summary)
 		})
 	})
@@ -175,8 +175,8 @@ describe.only('DraftSummary Model', () => {
 			WHERE inner_query.title ILIKE $[searchString]
 		`
 
-		return DraftSummary.fetchByDraftTitleAndUser('whatever', 0).then(summary => {
-			expect(db.any).toHaveBeenCalledWith(query, { searchString: '%whatever%', userId: 0 })
+		return DraftSummary.fetchByDraftTitleAndUser('searchString', 0).then(summary => {
+			expect(db.any).toHaveBeenCalledWith(query, { searchString: '%searchString%', userId: 0 })
 			checkAgainstMockRawSummary(summary)
 		})
 	})
@@ -200,12 +200,12 @@ describe.only('DraftSummary Model', () => {
 			WHERE inner_query.title ILIKE $[searchString]
 		`
 
-		return DraftSummary.fetchByDraftTitleAndUser('whatever', 0).catch(err => {
+		return DraftSummary.fetchByDraftTitleAndUser('mockDraftTitle', 0).catch(err => {
 			expect(logger.error).toHaveBeenCalledWith(
 				'fetchByDraftTitleAndUser Error',
 				'not found in db',
 				query,
-				{ searchString: '%whatever%', userId: 0 }
+				{ searchString: '%mockDraftTitle%', userId: 0 }
 			)
 			expect(err).toBe('Error loading DraftSummary by query')
 		})
@@ -219,7 +219,7 @@ describe.only('DraftSummary Model', () => {
 		const whereSQL = ''
 		const joinSQL = ''
 		const limitSQL = ''
-		const mockQueryValues = { id: 'whatever' }
+		const mockQueryValues = { id: 'mockDraftId' }
 
 		return DraftSummary.fetchAndJoinWhereLimit(whereSQL, joinSQL, limitSQL, mockQueryValues).catch(
 			err => {
@@ -243,7 +243,7 @@ describe.only('DraftSummary Model', () => {
 
 		const whereSQL = ''
 		const joinSQL = ''
-		const mockQueryValues = { id: 'whatever' }
+		const mockQueryValues = { id: 'mockDraftId' }
 
 		return DraftSummary.fetchAndJoinWhere(whereSQL, joinSQL, mockQueryValues).catch(err => {
 			expect(logger.error).toHaveBeenCalledWith(
@@ -263,7 +263,7 @@ describe.only('DraftSummary Model', () => {
 		db.any.mockRejectedValueOnce(new Error('not found in db'))
 
 		const whereSQL = ''
-		const mockQueryValues = { id: 'whatever' }
+		const mockQueryValues = { id: 'mockDraftId' }
 
 		return DraftSummary.fetchWhere(whereSQL, mockQueryValues).catch(err => {
 			expect(logger.error).toHaveBeenCalledWith(
@@ -279,15 +279,15 @@ describe.only('DraftSummary Model', () => {
 	test('resultsToObjects renders a list of raw query results into DraftSummary objects', () => {
 		const results = [
 			{ ...mockRawDraftSummary },
-			{ ...mockRawDraftSummary, draft_id: 'whatever-2' },
-			{ ...mockRawDraftSummary, draft_id: 'whatever-3' }
+			{ ...mockRawDraftSummary, draft_id: 'mockDraftId2' },
+			{ ...mockRawDraftSummary, draft_id: 'mockDraftId3' }
 		]
 
 		const summaries = DraftSummary.resultsToObjects(results)
 
 		expect(summaries.length).toBe(3)
-		expect(summaries[0].draftId).toBe('whatever')
-		expect(summaries[1].draftId).toBe('whatever-2')
-		expect(summaries[2].draftId).toBe('whatever-3')
+		expect(summaries[0].draftId).toBe('mockDraftId')
+		expect(summaries[1].draftId).toBe('mockDraftId2')
+		expect(summaries[2].draftId).toBe('mockDraftId3')
 	})
 })

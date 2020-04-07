@@ -34,19 +34,19 @@ class Collection {
 			})
 	}
 
-	static createWithUser(userId) {
+	static createWithUser(userId, title = 'New Collection') {
 		return db
 			.one(
 				`
 					INSERT INTO repository_collections
 						(title, group_type, user_id, visibility_type)
 					VALUES
-						('New Collection', 'tag', $[userId], 'private')
+						($[title], 'tag', $[userId], 'private')
 					RETURNING *`,
-				{ userId }
+				{ title, userId }
 			)
 			.then(newCollection => {
-				logger.info('user created collection', { userId, collectionId: newCollection.id })
+				logger.info('user created collection', { userId, collectionId: newCollection.id, title })
 				return new Collection(newCollection)
 			})
 	}

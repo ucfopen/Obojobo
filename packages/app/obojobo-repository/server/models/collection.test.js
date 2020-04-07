@@ -7,8 +7,8 @@ describe('Collection Model', () => {
 	let CollectionModel
 
 	const mockRawCollection = {
-		id: 'whatever',
-		title: 'whatever',
+		id: 'mockCollectionId',
+		title: 'mockCollectionTitle',
 		user_id: 0,
 		created_at: new Date().toISOString()
 	}
@@ -35,8 +35,8 @@ describe('Collection Model', () => {
 	test('constructor initializes expected properties from provided object', () => {
 		const c = new CollectionModel(mockRawCollection)
 
-		expect(c.id).toBe('whatever')
-		expect(c.title).toBe('whatever')
+		expect(c.id).toBe('mockCollectionId')
+		expect(c.title).toBe('mockCollectionTitle')
 		expect(c.userId).toBe(0)
 		expect(c.createdAt).toBe(mockRawCollection.created_at)
 	})
@@ -46,10 +46,10 @@ describe('Collection Model', () => {
 
 		db.one.mockResolvedValueOnce(mockRawCollection)
 
-		CollectionModel.fetchById('whatever').then(model => {
+		CollectionModel.fetchById('mockCollectionId').then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
-			expect(model.id).toBe('whatever')
-			expect(model.title).toBe('whatever')
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('mockCollectionTitle')
 			expect(model.userId).toBe(0)
 			expect(model.createdAt).toBe(mockRawCollection.created_at)
 		})
@@ -62,21 +62,21 @@ describe('Collection Model', () => {
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return CollectionModel.fetchById('whatever').catch(err => {
+		return CollectionModel.fetchById('mockCollectionId').catch(err => {
 			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
 			expect(err).toBeInstanceOf(Error)
 			expect(err.message).toBe('not found in db')
 		})
 	})
 
-	test('createWithUser returns a collection and logs its creation', () => {
+	test('createWithUser with no title returns a collection and logs its creation', () => {
 		logger.info = jest.fn()
 
 		expect.hasAssertions()
 		const userId = 1
 		const mockNewRawCollection = {
-			id: 'whatever',
-			title: 'New Collection',
+			id: 'mockCollectionId',
+			title: 'mockCollectionTitle',
 			user_id: userId,
 			created_at: new Date().toISOString()
 		}
@@ -85,13 +85,43 @@ describe('Collection Model', () => {
 
 		return CollectionModel.createWithUser(userId).then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
-			expect(model.id).toBe('whatever')
-			expect(model.title).toBe('New Collection')
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('mockCollectionTitle')
 			expect(model.userId).toBe(userId)
 			expect(model.createdAt).toBe(mockNewRawCollection.created_at)
 			expect(logger.info).toHaveBeenCalledWith('user created collection', {
 				userId,
-				collectionId: 'whatever'
+				collectionId: 'mockCollectionId',
+				//this is the default if no title is provided - despite the mocked DB response
+				title: 'New Collection'
+			})
+		})
+	})
+
+	test('createWithUser with title returns a collection and logs its creation', () => {
+		logger.info = jest.fn()
+
+		expect.hasAssertions()
+		const userId = 1
+		const mockNewRawCollection = {
+			id: 'mockCollectionId',
+			title: 'New Collection Title',
+			user_id: userId,
+			created_at: new Date().toISOString()
+		}
+
+		db.one.mockResolvedValueOnce(mockNewRawCollection)
+
+		return CollectionModel.createWithUser(userId, 'New Collection Title').then(model => {
+			expect(model).toBeInstanceOf(CollectionModel)
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('New Collection Title')
+			expect(model.userId).toBe(userId)
+			expect(model.createdAt).toBe(mockNewRawCollection.created_at)
+			expect(logger.info).toHaveBeenCalledWith('user created collection', {
+				userId,
+				collectionId: 'mockCollectionId',
+				title: model.title
 			})
 		})
 	})
@@ -101,19 +131,19 @@ describe('Collection Model', () => {
 
 		expect.hasAssertions()
 
-		db.one.mockResolvedValueOnce({ ...mockRawCollection, title: 'whatever else' })
+		db.one.mockResolvedValueOnce({ ...mockRawCollection, title: 'mockCollectionTitle' })
 
 		const userId = 0
 
-		CollectionModel.rename('whatever', 'whatever else', userId).then(model => {
+		CollectionModel.rename('mockCollectionId', 'mockCollectionTitle', userId).then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
-			expect(model.id).toBe('whatever')
-			expect(model.title).toBe('whatever else')
+			expect(model.id).toBe('mockCollectionId')
+			expect(model.title).toBe('mockCollectionTitle')
 			expect(model.userId).toBe(0)
 			expect(model.createdAt).toBe(mockRawCollection.created_at)
 			expect(logger.info).toHaveBeenCalledWith('collection renamed', {
-				id: 'whatever',
-				title: 'whatever else',
+				id: 'mockCollectionId',
+				title: 'mockCollectionTitle',
 				userId
 			})
 		})
@@ -124,8 +154,8 @@ describe('Collection Model', () => {
 
 		expect.hasAssertions()
 
-		const collectionId = 'whatever'
-		const draftId = 'whatever'
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
 		const userId = 0
 
 		const mockPayload = { collectionId, draftId, userId }
@@ -142,8 +172,8 @@ describe('Collection Model', () => {
 
 		expect.hasAssertions()
 
-		const collectionId = 'whatever'
-		const draftId = 'whatever'
+		const collectionId = 'mockCollectionId'
+		const draftId = 'mockDraftId'
 		const userId = 0
 
 		const mockPayload = { collectionId, draftId, userId }
@@ -160,7 +190,7 @@ describe('Collection Model', () => {
 
 		expect.hasAssertions()
 
-		const collectionId = 'whatever'
+		const collectionId = 'mockCollectionId'
 		const userId = 0
 
 		CollectionModel.delete(collectionId, userId).then(() => {
@@ -175,7 +205,7 @@ describe('Collection Model', () => {
 		const DraftSummary = require('./draft_summary')
 		DraftSummary.fetchAndJoinWhere = jest.fn()
 
-		const mockDrafts = { draftId: 'whatever' }
+		const mockDrafts = { draftId: 'mockDraftId' }
 
 		db.one.mockResolvedValueOnce(mockRawCollection)
 		DraftSummary.fetchAndJoinWhere.mockResolvedValueOnce(mockDrafts)
@@ -186,10 +216,10 @@ describe('Collection Model', () => {
 		JOIN repository_collections
 			ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
 
-		CollectionModel.fetchById('whatever')
+		CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.then(collection => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'whatever')
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'mockDraftId')
 				expect(collection.drafts).toEqual(mockDrafts)
 			})
 	})
@@ -209,10 +239,10 @@ describe('Collection Model', () => {
 		JOIN repository_collections
 			ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
 
-		CollectionModel.fetchById('whatever')
+		CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.catch(error => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'whatever')
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'mockDraftId')
 				expect(error).toBeInstanceOf(Error)
 				expect(error.message).toBe('not found in db')
 				expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')

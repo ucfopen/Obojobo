@@ -64,7 +64,7 @@ const ModuleManageCollectionsDialog = props => {
 			<div className="top-bar">
 				<ModuleImage id={props.draftId} />
 				<div className="module-title">{props.title}</div>
-				<Button className="close-button" onClick={props.onClose}>
+				<Button ariaLabel="Close" className="close-button" onClick={props.onClose}>
 					×
 				</Button>
 			</div>

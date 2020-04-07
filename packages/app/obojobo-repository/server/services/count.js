@@ -5,7 +5,7 @@ const getUserModuleCount = async userId => {
 		`
 		SELECT COUNT(id) AS count
 		FROM drafts
-		WHERE deleted = false
+		WHERE deleted = FALSE
 		AND user_id = $[userId]
 	`,
 		{ userId }

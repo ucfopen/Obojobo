@@ -6,13 +6,13 @@ describe('DraftsMetadata Model', () => {
 	let DraftsMetadata
 
 	const mockRawDraftsMetadata = {
-		draft_id: 'whatever',
+		draft_id: 'mockDraftId',
 		key: 'key',
 		value: 'value'
 	}
 
 	const expectMatchesRawMock = draftMetadata => {
-		expect(draftMetadata.draftId).toBe('whatever')
+		expect(draftMetadata.draftId).toBe('mockDraftId')
 		expect(draftMetadata.createdAt).toBeUndefined()
 		expect(draftMetadata.updatedAt).toBeUndefined()
 		expect(draftMetadata.key).toBe('key')

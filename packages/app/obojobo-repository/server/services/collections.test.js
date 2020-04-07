@@ -7,8 +7,8 @@ describe('Collection Services', () => {
 	let CollectionServices
 
 	const mockRawCollection = {
-		id: 'whatever',
-		title: 'whatever',
+		id: 'mockCollectionId',
+		title: 'mockCollectionTitle',
 		user_id: 0,
 		created_at: new Date().toISOString()
 	}
@@ -24,8 +24,8 @@ describe('Collection Services', () => {
 	test('fetchAllCollectionsForDraft returns a list of collection objects', () => {
 		const mockResponse = [
 			{ ...mockRawCollection },
-			{ ...mockRawCollection, id: 'whatever-2' },
-			{ ...mockRawCollection, id: 'whatever-3' }
+			{ ...mockRawCollection, id: 'mockCollectionId2' },
+			{ ...mockRawCollection, id: 'mockCollectionId3' }
 		]
 
 		db.manyOrNone = jest.fn()
@@ -46,20 +46,20 @@ describe('Collection Services', () => {
 		ORDER BY repository_collections.title
 		`
 
-		CollectionServices.fetchAllCollectionsForDraft('whatever').then(response => {
+		CollectionServices.fetchAllCollectionsForDraft('mockDraftId').then(response => {
 			expect(db.manyOrNone).toHaveBeenCalledWith(queryString)
 
 			expect(response[0]).toBeInstanceOf(CollectionModel)
-			expect(response[0].id).toBe('whatever')
-			expect(response[0].title).toBe('whatever')
+			expect(response[0].id).toBe('mockCollectionId')
+			expect(response[0].title).toBe('mockCollectionTitle')
 			expect(response[0].userId).toBe(0)
 			expect(response[0].createdAt).toBe(mockRawCollection.created_at)
 
 			expect(response[1]).toBeInstanceOf(CollectionModel)
-			expect(response[1].id).toBe('whatever-2')
+			expect(response[1].id).toBe('mockCollectionId2')
 
 			expect(response[2]).toBeInstanceOf(CollectionModel)
-			expect(response[2].id).toBe('whatever-3')
+			expect(response[2].id).toBe('mockCollectionId3')
 		})
 	})
 })

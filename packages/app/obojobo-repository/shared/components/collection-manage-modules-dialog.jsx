@@ -60,6 +60,7 @@ const CollectionManageModulesDialog = props => {
 		modulesRender = props.collectionModules.map(module => (
 			<CollectionModuleListItem key={module.draftId} {...module}>
 				<Button
+					ariaLabel="Close"
 					className="close-button"
 					onClick={() => {
 						removeModule(module.draftId)
@@ -76,7 +77,7 @@ const CollectionManageModulesDialog = props => {
 			<div className="top-bar">
 				<CollectionImage id={props.collection.id} />
 				<div className="collection-title">{props.collection.title}</div>
-				<Button className="close-button" onClick={props.onClose}>
+				<Button ariaLabel="Close" className="close-button" onClick={props.onClose}>
 					×
 				</Button>
 			</div>

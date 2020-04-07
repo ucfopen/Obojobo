@@ -6,8 +6,8 @@ describe('CollectionSummary Model', () => {
 	let CollectionSummary
 
 	const mockRawCollectionSummary = {
-		id: 'whatever',
-		title: 'whatever',
+		id: 'mockCollectionId',
+		title: 'mockCollectionTitle',
 		group_type: 'tag',
 		user_id: 0,
 		created_at: new Date().toISOString(),
@@ -38,8 +38,8 @@ describe('CollectionSummary Model', () => {
 
 	const checkAgainstMockRawSummary = summary => {
 		expect(summary).toBeInstanceOf(CollectionSummary)
-		expect(summary.id).toBe('whatever')
-		expect(summary.title).toBe('whatever')
+		expect(summary.id).toBe('mockCollectionId')
+		expect(summary.title).toBe('mockCollectionTitle')
 		expect(summary.groupType).toBe('tag')
 		expect(summary.createdAt).toBe(mockRawCollectionSummary.created_at)
 		expect(summary.visibilityType).toBe('private')
@@ -51,8 +51,8 @@ describe('CollectionSummary Model', () => {
 
 		const query = queryBuilder('id = $[id]')
 
-		CollectionSummary.fetchById('whatever').then(summary => {
-			expect(db.one).toHaveBeenCalledWith(query, { id: 'whatever' })
+		CollectionSummary.fetchById('mockCollectionId').then(summary => {
+			expect(db.one).toHaveBeenCalledWith(query, { id: 'mockCollectionId' })
 			checkAgainstMockRawSummary(summary)
 		})
 	})
@@ -64,7 +64,7 @@ describe('CollectionSummary Model', () => {
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return CollectionSummary.fetchById('whatever').catch(err => {
+		return CollectionSummary.fetchById('mockCollectionId').catch(err => {
 			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
 			expect(err).toBe('Error Loading CollectionSummary by id')
 		})
@@ -89,7 +89,7 @@ describe('CollectionSummary Model', () => {
 		db.any.mockRejectedValueOnce(new Error('not found in db'))
 
 		const whereSQL = ''
-		const mockQueryValues = { id: 'whatever' }
+		const mockQueryValues = { id: 'mockCollectionId' }
 
 		return CollectionSummary.fetchWhere(whereSQL, mockQueryValues).catch(err => {
 			expect(logger.error).toHaveBeenCalledWith(
@@ -105,15 +105,15 @@ describe('CollectionSummary Model', () => {
 	test('resultsToObjects renders a list of raw query results into CollectionSummary objects', () => {
 		const results = [
 			{ ...mockRawCollectionSummary },
-			{ ...mockRawCollectionSummary, id: 'whatever-2' },
-			{ ...mockRawCollectionSummary, id: 'whatever-3' }
+			{ ...mockRawCollectionSummary, id: 'mockCollectionId2' },
+			{ ...mockRawCollectionSummary, id: 'mockCollectionId3' }
 		]
 
 		const summaries = CollectionSummary.resultsToObjects(results)
 
 		expect(summaries.length).toBe(3)
-		expect(summaries[0].id).toBe('whatever')
-		expect(summaries[1].id).toBe('whatever-2')
-		expect(summaries[2].id).toBe('whatever-3')
+		expect(summaries[0].id).toBe('mockCollectionId')
+		expect(summaries[1].id).toBe('mockCollectionId2')
+		expect(summaries[2].id).toBe('mockCollectionId3')
 	})
 })
