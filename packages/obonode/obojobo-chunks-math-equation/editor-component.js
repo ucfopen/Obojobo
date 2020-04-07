@@ -3,9 +3,15 @@ import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'
+import { Transforms, Editor } from 'slate'
+import { ReactEditor } from 'slate-react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
-import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
+
+const { Button } = Common.components
+const isOrNot = Common.util.isOrNot
 
 const getLatexHtml = latex => {
 	try {
@@ -27,8 +33,12 @@ class MathEquation extends React.Component {
 		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
 
 		// copy the attributes we want into state
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
+
+		this.freezeEditor = this.freezeEditor.bind(this)
+		this.unfreezeEditor = this.unfreezeEditor.bind(this)
+		this.focusEquation = this.focusEquation.bind(this)
 	}
 
 	contentToStateObj(content) {
@@ -36,18 +46,9 @@ class MathEquation extends React.Component {
 			latex: content.latex || '',
 			alt: content.alt || '',
 			label: content.label || '',
-			size: content.size || 1
+			size: content.size || 1,
+			open: false
 		}
-	}
-
-	changeProperties(content) {
-		const editor = this.props.editor
-
-		editor.setNodeByKey(this.props.node.key, {
-			data: { content }
-		})
-
-		this.setState(this.contentToStateObj(content))
 	}
 
 	renderEmptyEquation() {
@@ -87,10 +88,10 @@ class MathEquation extends React.Component {
 	}
 
 	updateNodeFromState() {
-		const content = this.props.node.data.get('content')
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: { content: { ...content, ...this.state } }
-		})
+		const content = this.props.element.content
+		delete this.state.open
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
 	onChangeContent(key, event) {
@@ -99,67 +100,104 @@ class MathEquation extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.isSelected && !this.props.isSelected) {
+		if (prevProps.selected && !this.props.selected) {
 			this.updateNodeFromState()
-		} else if (!prevProps.isSelected && this.props.isSelected) {
-			setTimeout(() => {
-				document.getElementById('math-equation-latex').focus()
-			}, 1)
 		}
+	}
+
+	freezeEditor() {
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		this.props.editor.toggleEditable(true)
 	}
 
 	renderAttributes() {
 		return (
-			<div className="attributes-box" contentEditable={false}>
-				<div className="box-border">
-					<div className="attributes-list">
-						<div>
-							<label htmlFor="math-equation-latex">Latex:</label>
-							<input
-								id="math-equation-latex"
-								value={this.state.latex}
-								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'latex')}
-							/>
-						</div>
-						<div>
-							<label htmlFor="math-equation-label">Optional Label:</label>
-							<input
-								id="math-equation-label"
-								value={this.state.label}
-								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'label')}
-							/>
-						</div>
-						<div>
-							<label htmlFor="math-equation-alt">Alt Text:</label>
-							<input
-								id="math-equation-alt"
-								value={this.state.alt}
-								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'alt')}
-							/>
-						</div>
-						<div>
-							<label htmlFor="math-equation-size">Size:</label>
-							<input
-								id="math-equation-size"
-								value={this.state.size}
-								type="number"
-								step="0.1"
-								onClick={event => event.stopPropagation()}
-								onChange={this.onChangeContent.bind(this, 'size')}
-							/>
-						</div>
-					</div>
+			<div className="attributes-list">
+				<div className="attribute">
+					<label htmlFor="math-equation-latex">Latex:</label>
+					<input
+						id="math-equation-latex"
+						value={this.state.latex}
+						onClick={event => event.stopPropagation()}
+						onChange={this.onChangeContent.bind(this, 'latex')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
+					/>
+				</div>
+				<div className="attribute">
+					<label htmlFor="math-equation-label">Optional Label:</label>
+					<input
+						id="math-equation-label"
+						value={this.state.label}
+						onClick={event => event.stopPropagation()}
+						onChange={this.onChangeContent.bind(this, 'label')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
+					/>
+				</div>
+				<div className="attribute">
+					<label htmlFor="math-equation-alt">Alt Text:</label>
+					<input
+						id="math-equation-alt"
+						value={this.state.alt}
+						onClick={event => event.stopPropagation()}
+						onChange={this.onChangeContent.bind(this, 'alt')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
+					/>
+				</div>
+				<div className="attribute">
+					<label htmlFor="math-equation-size">Size:</label>
+					<input
+						id="math-equation-size"
+						value={this.state.size}
+						type="number"
+						step="0.1"
+						onClick={event => event.stopPropagation()}
+						onChange={this.onChangeContent.bind(this, 'size')}
+						onFocus={this.freezeEditor}
+						onBlur={this.unfreezeEditor}
+					/>
+				</div>
+				<div>
+					<Button onClick={() => this.setState({ open: false })}>Done</Button>
 				</div>
 			</div>
 		)
 	}
 
+	renderEditBox() {
+		const className = 'attributes-box ' + isOrNot(this.state.open, 'open')
+
+		return (
+			<div className={className} contentEditable={false}>
+				<div className="box-border">
+					{!this.state.open ? (
+						<Button onClick={() => this.setState({ open: true })}>Edit</Button>
+					) : (
+						this.renderAttributes()
+					)}
+				</div>
+			</div>
+		)
+	}
+
+	focusEquation(event) {
+		event.preventDefault()
+		event.stopPropagation()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
+	}
+
 	render() {
-		const { isSelected, node } = this.props
-		const content = node.data.get('content')
+		const content = this.props.element.content
 		return (
 			<Node {...this.props}>
 				<div
@@ -169,14 +207,15 @@ class MathEquation extends React.Component {
 						(content.align || 'center')
 					}
 					contentEditable={false}
+					onClick={this.focusEquation}
 				>
 					{this.renderLatex()}
-					{isSelected ? this.renderAttributes() : null}
-					<EditableHiddenText>{this.props.children}</EditableHiddenText>
+					{this.props.selected ? this.renderEditBox() : null}
 				</div>
+				{this.props.children}
 			</Node>
 		)
 	}
 }
 
-export default MathEquation
+export default withSlateWrapper(MathEquation)

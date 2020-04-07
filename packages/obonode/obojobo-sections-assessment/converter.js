@@ -3,12 +3,19 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 
 const { OboModel } = Common.models
 
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
+/**
+ * Generates an Obojobo Assessment Node from a Slate node.
+ * Copies the id, type, and triggers. It also calls the appropriate
+ * slateToObo methods for each of its child components, and converts
+ * any rubric and score action children back into attributes
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Assessment node 
+ */
 const slateToObo = node => {
 	let Page
 	let QuestionBank
@@ -16,16 +23,16 @@ const slateToObo = node => {
 	let ScoreActions
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
-	const model = OboModel.models[node.key]
+	const model = OboModel.models[node.id]
 	const content = model
-		? { ...node.data.get('content'), ...model.get('content') }
-		: node.data.get('content')
+		? { ...node.content, ...model.get('content') }
+		: node.content
 
 	// Remove rubric if it has been deleted
 	delete content.rubric
 
 	const children = []
-	node.nodes.forEach(child => {
+	node.children.forEach(child => {
 		switch (child.type) {
 			case PAGE_NODE:
 				Page = Common.Registry.getItemForType(PAGE_NODE)
@@ -47,17 +54,26 @@ const slateToObo = node => {
 	})
 
 	return {
-		id: node.key,
+		id: node.id,
 		type: node.type,
 		content: withoutUndefined(content),
 		children
 	}
 }
 
-const oboToSlate = node => {
-	const content = node.get('content')
+/**
+ * Generates a Slate node from an Obojobo Assessment node.
+ * Copies all attributes, and calls the appropriate converters for the children.
+ * It also converts the rubric and the score actions into Slate nodes for easy
+ * editing.
+ * @param {Object} node An Obojobo Assessment node 
+ * @returns {Object} A Slate node
+ */
+const oboToSlate = model => {
+	const node = model.attributes
+	const slateNode = Object.assign({}, node)
 
-	const nodes = node.attributes.children.map(child => {
+	slateNode.children = node.children.map(child => {
 		if (child.type === PAGE_NODE) {
 			const Page = Common.Registry.getItemForType(PAGE_NODE)
 			return Page.oboToSlate(child)
@@ -68,16 +84,16 @@ const oboToSlate = node => {
 	})
 
 	const ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
-	nodes.push(ScoreActions.oboToSlate(content.scoreActions))
+	slateNode.children.push(ScoreActions.oboToSlate(node.content.scoreActions))
 
 	const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
-	if (content.rubric) {
-		content.rubric.attempts = content.attempts
-		nodes.push(Rubric.oboToSlate(content.rubric))
+	if (node.content.rubric) {
+		node.content.rubric.attempts = node.content.attempts
+		slateNode.children.push(Rubric.oboToSlate(node.content.rubric))
 	} else {
 		// Although highest rubrics do not use the rubric properties,
 		// setting them allows the defaults to be avalible if/when a user switches to pass-fail
-		nodes.push(
+		slateNode.children.push(
 			Rubric.oboToSlate({
 				type: 'highest',
 				passingAttemptScore: 100,
@@ -89,13 +105,7 @@ const oboToSlate = node => {
 		)
 	}
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: ASSESSMENT_NODE,
-		data: { content },
-		nodes
-	}
+	return slateNode
 }
 
 export default { slateToObo, oboToSlate }

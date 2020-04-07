@@ -3,6 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 const HTML = props => {
 	return (
@@ -14,4 +15,4 @@ const HTML = props => {
 	)
 }
 
-export default HTML
+export default withSlateWrapper(HTML)

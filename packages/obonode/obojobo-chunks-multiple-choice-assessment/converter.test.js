@@ -20,15 +20,13 @@ const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 describe('MCAssessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with no content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'NotADefinedNode',
-					data: { get: () => ({}) }
+					content: {}
 				}
 			]
 		}
@@ -39,21 +37,13 @@ describe('MCAssessment Converter', () => {
 
 	test('slateToObo converts a Slate node to an OboNode', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return { responseType: 'pick-one-multiple-correct' }
-				}
-			},
-			nodes: [
+			content: { responseType: 'pick-one-multiple-correct' },
+			children: [
 				{
 					type: MCCHOICE_NODE,
-					data: {
-						get: () => {
-							return { score: 100 }
-						}
-					}
+					content: { score: 100 }
 				}
 			]
 		}
@@ -64,37 +54,21 @@ describe('MCAssessment Converter', () => {
 
 	test('slateToObo converts a Slate node to an OboNode with two correct', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return { responseType: 'pick-one' }
-				}
-			},
-			nodes: [
+			content: { responseType: 'pick-one' },
+			children: [
 				{
 					type: MCCHOICE_NODE,
-					data: {
-						get: () => {
-							return { score: 100 }
-						}
-					}
+					content: { score: 100 }
 				},
 				{
 					type: MCCHOICE_NODE,
-					data: {
-						get: () => {
-							return { score: 100 }
-						}
-					}
+					content: { score: 100 }
 				},
 				{
 					type: MCCHOICE_NODE,
-					data: {
-						get: () => {
-							return { score: 0 }
-						}
-					}
+					content: { score: 0 }
 				}
 			]
 		}

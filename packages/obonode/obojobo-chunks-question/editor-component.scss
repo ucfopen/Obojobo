@@ -1,5 +1,9 @@
 @import '~styles/includes';
 
+.obojobo-draft--chunks--question--wrapper {
+	z-index: 1;
+}
+
 .obojobo-draft--chunks--question {
 	> .flipper {
 		&.question-editor {
@@ -22,7 +26,6 @@
 			padding: 0.18em;
 			padding-right: 0.5em;
 			font-weight: normal;
-			font-size: 1rem;
 			cursor: pointer;
 
 			&:hover {
@@ -48,6 +51,7 @@
 		transform: translate(-50%, 0);
 		position: relative;
 		margin: $dimension-padding / 3;
+		user-select: none;
 	}
 
 	.delete-button {

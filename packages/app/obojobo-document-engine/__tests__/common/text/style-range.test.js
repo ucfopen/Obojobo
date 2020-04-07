@@ -132,6 +132,12 @@ describe('StyleRange', () => {
 		expect(item.isMergeable('mockType', { a: 1 })).toEqual(false)
 	})
 
+	test('isMergeable returns false when data objects have a different number of keys', () => {
+		const item = new StyleRange(5, 10, 'mockType', {})
+
+		expect(item.isMergeable('mockType', { a: 1 })).toEqual(false)
+	})
+
 	test('isMergeable returns true when type and data is the same', () => {
 		const item = new StyleRange(5, 10, 'mockType', 17)
 

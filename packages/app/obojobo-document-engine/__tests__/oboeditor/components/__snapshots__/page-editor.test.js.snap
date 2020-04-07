@@ -2,33 +2,20 @@
 
 exports[`PageEditor Ensures the plugins work as expected 1`] = `
 Array [
-  Object {},
   Object {
-    "onKeyDown": [Function],
-    "renderMark": [Function],
+    "apply": [Function],
+    "normalizeNode": [Function],
   },
   Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "changeLinkValue": [Function],
-    },
-    "renderMark": [Function],
-  },
-  Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "toggleScript": [Function],
-    },
-    "renderMark": [Function],
-  },
-  Object {
-    "onKeyDown": [Function],
-    "queries": Object {
-      "setAlign": [Function],
+    "commands": Object {
+      "changeToType": [Function],
     },
   },
   Object {
-    "queries": Object {
+    "insertData": [Function],
+  },
+  Object {
+    "commands": Object {
       "indentCode": [Function],
       "indentList": [Function],
       "indentText": [Function],
@@ -37,103 +24,463 @@ Array [
       "unindentText": [Function],
     },
   },
-  undefined,
   Object {
-    "renderNode": [Function],
-    "schema": Object {
-      "blocks": Object {
-        "oboeditor.toggle-parameter": Object {
-          "isVoid": true,
-        },
-      },
+    "commands": Object {
+      "setAlign": [Function],
     },
-  },
-  Object {
-    "renderNode": [Function],
-    "schema": Object {
-      "blocks": Object {
-        "oboeditor.select-parameter": Object {
-          "isVoid": true,
-        },
-      },
-    },
-  },
-  Object {
     "onKeyDown": [Function],
-    "renderNode": [Function],
-  },
-  Object {
-    "schema": Object {
-      "document": Object {
-        "nodes": Array [
-          Object {
-            "match": Array [
-              Object {
-                "type": "ObojoboDraft.Chunks.ActionButton",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Break",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Code",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Figure",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Heading",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.HTML",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.IFrame",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.List",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.MathEquation",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Table",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Text",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.YouTube",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.QuestionBank",
-              },
-              Object {
-                "type": "ObojoboDraft.Chunks.Question",
-              },
-              Object {
-                "type": "ObojoboDraft.Sections.Assessment",
-              },
-              Object {
-                "type": "oboeditor.ErrorMessage",
-              },
-            ],
-            "min": 1,
-          },
-        ],
-        "normalize": [Function],
-      },
-    },
-  },
-  Object {
-    "onPaste": [Function],
   },
   Object {
     "commands": Object {
-      "markUnsaved": [Function],
-      "toggleEditable": [Function],
+      "toggleScript": [Function],
     },
     "onKeyDown": [Function],
-    "onKeyUp": [Function],
+    "renderLeaf": [Function],
+  },
+  Object {
+    "commands": Object {
+      "changeLinkValue": [Function],
+    },
+    "isInline": [Function],
+    "onKeyDown": [Function],
+    "renderNode": [Function],
+  },
+  Object {
+    "commands": Object {
+      "toggleMark": [Function],
+    },
+    "onKeyDown": [Function],
+    "renderLeaf": [Function],
+  },
+  Object {
+    "isVoid": [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+        Array [
+          Object {},
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    },
+    "normalizeNode": [MockFunction] {
+      "calls": Array [
+        Array [
+          Array [
+            Object {},
+            Array [
+              0,
+            ],
+          ],
+          Object {
+            "addMark": [Function],
+            "apply": [Function],
+            "changeLinkValue": [Function],
+            "changeToType": [Function],
+            "children": Array [
+              Object {
+                "text": "",
+              },
+            ],
+            "deleteBackward": [Function],
+            "deleteForward": [Function],
+            "deleteFragment": [Function],
+            "history": Object {
+              "redos": Array [],
+              "undos": Array [
+                Array [
+                  Object {
+                    "newProperties": Object {
+                      "anchor": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                      "focus": Object {
+                        "offset": 0,
+                        "path": Array [
+                          0,
+                        ],
+                      },
+                    },
+                    "properties": null,
+                    "type": "set_selection",
+                  },
+                ],
+              ],
+            },
+            "indentCode": [Function],
+            "indentList": [Function],
+            "indentText": [Function],
+            "insertBreak": [Function],
+            "insertData": [Function],
+            "insertFragment": [Function],
+            "insertNode": [Function],
+            "insertText": [Function],
+            "isInline": [Function],
+            "isVoid": [Function],
+            "markUnsaved": [Function],
+            "marks": null,
+            "normalizeNode": [Function],
+            "onChange": [Function],
+            "operations": Array [
+              Object {
+                "newProperties": Object {
+                  "anchor": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                  "focus": Object {
+                    "offset": 0,
+                    "path": Array [
+                      0,
+                    ],
+                  },
+                },
+                "properties": null,
+                "type": "set_selection",
+              },
+            ],
+            "redo": [Function],
+            "removeMark": [Function],
+            "selection": Object {
+              "anchor": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+              "focus": Object {
+                "offset": 0,
+                "path": Array [
+                  0,
+                ],
+              },
+            },
+            "setAlign": [Function],
+            "toggleEditable": [Function],
+            "toggleMark": [Function],
+            "toggleScript": [Function],
+            "undo": [Function],
+            "unindentCode": [Function],
+            "unindentList": [Function],
+            "unindentText": [Function],
+          },
+          [Function],
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    },
   },
 ]
 `;
@@ -408,6 +755,179 @@ exports[`PageEditor PageEditor component 1`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="unordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.8,8.5c0,0.8-0.6,1.4-1.4,1.4S7,9.3,7,8.5s0.6-1.4,1.4-1.4S9.8,7.7,9.8,8.5z M9.8,16c0,0.8-0.6,1.4-1.4,1.4S7,16.8,7,16 c0-0.8,0.6-1.4,1.4-1.4S9.8,15.2,9.8,16z M9.8,23.5c0,0.8-0.6,1.4-1.4,1.4S7,24.3,7,23.5s0.6-1.4,1.4-1.4S9.8,22.7,9.8,23.5z"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="15"
+            />
+          </svg>
+        </button>
+        <button
+          aria-label="Open unordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            ●
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ○
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ■
+          </button>
+        </div>
+      </div>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="ordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+          >
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="15"
+            />
+            <g>
+              <path
+                d="M10.7,10.2v0.7c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0H7.8c-0.1,0-0.1,0-0.1-0.1v-0.7c0-0.1,0-0.1,0.1-0.1h0.7c0.1,0,0.1,0,0.1,0 V7.1c0,0,0-0.1,0-0.1s0,0-0.1,0L7.8,7.2l0,0c-0.1,0-0.1,0-0.1-0.1V6.7c0,0,0-0.1,0-0.1c0,0,0,0,0.1-0.1l1.2-0.6 C9,5.9,9,5.9,9.1,5.8c0,0,0.1,0,0.1,0h0.5c0,0,0.1,0,0.1,0c0,0,0,0.1,0,0.1V10c0,0,0,0.1,0.1,0.1h0.7 C10.7,10.1,10.7,10.1,10.7,10.2z"
+              />
+            </g>
+            <g>
+              <path
+                d="M8.6,16c0.3-0.3,0.5-0.5,0.7-0.6s0.3-0.3,0.3-0.4c0.1-0.1,0.1-0.2,0.1-0.4c0-0.2-0.1-0.4-0.2-0.5s-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0.1-0.5,0.2c-0.2,0.1-0.3,0.3-0.5,0.6c0,0,0,0.1-0.1,0.1c0,0-0.1,0-0.1,0L7,14.3c-0.1,0-0.1-0.1-0.1-0.1 c0,0,0-0.1,0-0.1c0.5-0.7,1.1-1.1,2-1.1c0.4,0,0.7,0.1,1,0.2s0.5,0.3,0.7,0.5c0.2,0.2,0.2,0.5,0.2,0.8c0,0.3-0.1,0.5-0.2,0.8 c-0.2,0.2-0.4,0.5-0.8,0.8l-1.3,1c0,0,0,0,0,0c0,0,0,0,0.1,0h2.2c0.1,0,0.1,0,0.1,0.1v0.8c0,0.1,0,0.1-0.1,0.1H7.1 c-0.1,0-0.1,0-0.1,0c0,0,0-0.1,0-0.1v-0.5c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.3-0.2L8.6,16z"
+              />
+            </g>
+            <g>
+              <path
+                d="M7,21.5C7,21.5,7,21.5,7,21.5c0.2-0.3,0.5-0.5,0.8-0.6c0.3-0.1,0.7-0.2,1-0.2c0.4,0,0.8,0.1,1,0.2s0.5,0.3,0.7,0.5 c0.2,0.2,0.2,0.4,0.2,0.7c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.3,0.3-0.6,0.4c-0.1,0-0.1,0-0.1,0.1c0,0,0,0,0.1,0.1 c0.3,0.1,0.5,0.3,0.7,0.5c0.2,0.2,0.3,0.5,0.3,0.7c0,0.5-0.2,0.9-0.6,1.2S9.5,26,8.7,26C8.3,26,8,26,7.6,25.8S7,25.4,6.8,25.2 c0,0,0-0.1,0-0.1c0,0,0-0.1,0.1-0.1l0.5-0.4c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0C7.8,24.8,8,25,8.1,25c0.2,0.1,0.4,0.1,0.7,0.1 c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.2-0.3,0.2-0.5c0-0.2-0.1-0.4-0.3-0.5c-0.2-0.1-0.4-0.2-0.7-0.2l-0.6,0c-0.1,0-0.1,0-0.1-0.1V23 c0-0.1,0-0.1,0.1-0.1l0.5,0c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.3-0.3,0.3-0.5c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0-0.6,0.1c-0.2,0.1-0.4,0.2-0.5,0.4c0,0-0.1,0-0.1,0c0,0,0,0-0.1,0L7,21.5C7,21.6,7,21.5,7,21.5z"
+              />
+            </g>
+          </svg>
+        </button>
+        <button
+          aria-label="Open ordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            1.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            a.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            i.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            A.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            I.
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -687,6 +1207,179 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="unordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.8,8.5c0,0.8-0.6,1.4-1.4,1.4S7,9.3,7,8.5s0.6-1.4,1.4-1.4S9.8,7.7,9.8,8.5z M9.8,16c0,0.8-0.6,1.4-1.4,1.4S7,16.8,7,16 c0-0.8,0.6-1.4,1.4-1.4S9.8,15.2,9.8,16z M9.8,23.5c0,0.8-0.6,1.4-1.4,1.4S7,24.3,7,23.5s0.6-1.4,1.4-1.4S9.8,22.7,9.8,23.5z"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="15"
+            />
+          </svg>
+        </button>
+        <button
+          aria-label="Open unordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            ●
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ○
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ■
+          </button>
+        </div>
+      </div>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="ordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+          >
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="15"
+            />
+            <g>
+              <path
+                d="M10.7,10.2v0.7c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0H7.8c-0.1,0-0.1,0-0.1-0.1v-0.7c0-0.1,0-0.1,0.1-0.1h0.7c0.1,0,0.1,0,0.1,0 V7.1c0,0,0-0.1,0-0.1s0,0-0.1,0L7.8,7.2l0,0c-0.1,0-0.1,0-0.1-0.1V6.7c0,0,0-0.1,0-0.1c0,0,0,0,0.1-0.1l1.2-0.6 C9,5.9,9,5.9,9.1,5.8c0,0,0.1,0,0.1,0h0.5c0,0,0.1,0,0.1,0c0,0,0,0.1,0,0.1V10c0,0,0,0.1,0.1,0.1h0.7 C10.7,10.1,10.7,10.1,10.7,10.2z"
+              />
+            </g>
+            <g>
+              <path
+                d="M8.6,16c0.3-0.3,0.5-0.5,0.7-0.6s0.3-0.3,0.3-0.4c0.1-0.1,0.1-0.2,0.1-0.4c0-0.2-0.1-0.4-0.2-0.5s-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0.1-0.5,0.2c-0.2,0.1-0.3,0.3-0.5,0.6c0,0,0,0.1-0.1,0.1c0,0-0.1,0-0.1,0L7,14.3c-0.1,0-0.1-0.1-0.1-0.1 c0,0,0-0.1,0-0.1c0.5-0.7,1.1-1.1,2-1.1c0.4,0,0.7,0.1,1,0.2s0.5,0.3,0.7,0.5c0.2,0.2,0.2,0.5,0.2,0.8c0,0.3-0.1,0.5-0.2,0.8 c-0.2,0.2-0.4,0.5-0.8,0.8l-1.3,1c0,0,0,0,0,0c0,0,0,0,0.1,0h2.2c0.1,0,0.1,0,0.1,0.1v0.8c0,0.1,0,0.1-0.1,0.1H7.1 c-0.1,0-0.1,0-0.1,0c0,0,0-0.1,0-0.1v-0.5c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.3-0.2L8.6,16z"
+              />
+            </g>
+            <g>
+              <path
+                d="M7,21.5C7,21.5,7,21.5,7,21.5c0.2-0.3,0.5-0.5,0.8-0.6c0.3-0.1,0.7-0.2,1-0.2c0.4,0,0.8,0.1,1,0.2s0.5,0.3,0.7,0.5 c0.2,0.2,0.2,0.4,0.2,0.7c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.3,0.3-0.6,0.4c-0.1,0-0.1,0-0.1,0.1c0,0,0,0,0.1,0.1 c0.3,0.1,0.5,0.3,0.7,0.5c0.2,0.2,0.3,0.5,0.3,0.7c0,0.5-0.2,0.9-0.6,1.2S9.5,26,8.7,26C8.3,26,8,26,7.6,25.8S7,25.4,6.8,25.2 c0,0,0-0.1,0-0.1c0,0,0-0.1,0.1-0.1l0.5-0.4c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0C7.8,24.8,8,25,8.1,25c0.2,0.1,0.4,0.1,0.7,0.1 c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.2-0.3,0.2-0.5c0-0.2-0.1-0.4-0.3-0.5c-0.2-0.1-0.4-0.2-0.7-0.2l-0.6,0c-0.1,0-0.1,0-0.1-0.1V23 c0-0.1,0-0.1,0.1-0.1l0.5,0c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.3-0.3,0.3-0.5c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0-0.6,0.1c-0.2,0.1-0.4,0.2-0.5,0.4c0,0-0.1,0-0.1,0c0,0,0,0-0.1,0L7,21.5C7,21.6,7,21.5,7,21.5z"
+              />
+            </g>
+          </svg>
+        </button>
+        <button
+          aria-label="Open ordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            1.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            a.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            i.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            A.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            I.
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -966,6 +1659,179 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="unordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.8,8.5c0,0.8-0.6,1.4-1.4,1.4S7,9.3,7,8.5s0.6-1.4,1.4-1.4S9.8,7.7,9.8,8.5z M9.8,16c0,0.8-0.6,1.4-1.4,1.4S7,16.8,7,16 c0-0.8,0.6-1.4,1.4-1.4S9.8,15.2,9.8,16z M9.8,23.5c0,0.8-0.6,1.4-1.4,1.4S7,24.3,7,23.5s0.6-1.4,1.4-1.4S9.8,22.7,9.8,23.5z"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="15"
+            />
+          </svg>
+        </button>
+        <button
+          aria-label="Open unordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            ●
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ○
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ■
+          </button>
+        </div>
+      </div>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="ordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+          >
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="15"
+            />
+            <g>
+              <path
+                d="M10.7,10.2v0.7c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0H7.8c-0.1,0-0.1,0-0.1-0.1v-0.7c0-0.1,0-0.1,0.1-0.1h0.7c0.1,0,0.1,0,0.1,0 V7.1c0,0,0-0.1,0-0.1s0,0-0.1,0L7.8,7.2l0,0c-0.1,0-0.1,0-0.1-0.1V6.7c0,0,0-0.1,0-0.1c0,0,0,0,0.1-0.1l1.2-0.6 C9,5.9,9,5.9,9.1,5.8c0,0,0.1,0,0.1,0h0.5c0,0,0.1,0,0.1,0c0,0,0,0.1,0,0.1V10c0,0,0,0.1,0.1,0.1h0.7 C10.7,10.1,10.7,10.1,10.7,10.2z"
+              />
+            </g>
+            <g>
+              <path
+                d="M8.6,16c0.3-0.3,0.5-0.5,0.7-0.6s0.3-0.3,0.3-0.4c0.1-0.1,0.1-0.2,0.1-0.4c0-0.2-0.1-0.4-0.2-0.5s-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0.1-0.5,0.2c-0.2,0.1-0.3,0.3-0.5,0.6c0,0,0,0.1-0.1,0.1c0,0-0.1,0-0.1,0L7,14.3c-0.1,0-0.1-0.1-0.1-0.1 c0,0,0-0.1,0-0.1c0.5-0.7,1.1-1.1,2-1.1c0.4,0,0.7,0.1,1,0.2s0.5,0.3,0.7,0.5c0.2,0.2,0.2,0.5,0.2,0.8c0,0.3-0.1,0.5-0.2,0.8 c-0.2,0.2-0.4,0.5-0.8,0.8l-1.3,1c0,0,0,0,0,0c0,0,0,0,0.1,0h2.2c0.1,0,0.1,0,0.1,0.1v0.8c0,0.1,0,0.1-0.1,0.1H7.1 c-0.1,0-0.1,0-0.1,0c0,0,0-0.1,0-0.1v-0.5c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.3-0.2L8.6,16z"
+              />
+            </g>
+            <g>
+              <path
+                d="M7,21.5C7,21.5,7,21.5,7,21.5c0.2-0.3,0.5-0.5,0.8-0.6c0.3-0.1,0.7-0.2,1-0.2c0.4,0,0.8,0.1,1,0.2s0.5,0.3,0.7,0.5 c0.2,0.2,0.2,0.4,0.2,0.7c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.3,0.3-0.6,0.4c-0.1,0-0.1,0-0.1,0.1c0,0,0,0,0.1,0.1 c0.3,0.1,0.5,0.3,0.7,0.5c0.2,0.2,0.3,0.5,0.3,0.7c0,0.5-0.2,0.9-0.6,1.2S9.5,26,8.7,26C8.3,26,8,26,7.6,25.8S7,25.4,6.8,25.2 c0,0,0-0.1,0-0.1c0,0,0-0.1,0.1-0.1l0.5-0.4c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0C7.8,24.8,8,25,8.1,25c0.2,0.1,0.4,0.1,0.7,0.1 c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.2-0.3,0.2-0.5c0-0.2-0.1-0.4-0.3-0.5c-0.2-0.1-0.4-0.2-0.7-0.2l-0.6,0c-0.1,0-0.1,0-0.1-0.1V23 c0-0.1,0-0.1,0.1-0.1l0.5,0c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.3-0.3,0.3-0.5c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0-0.6,0.1c-0.2,0.1-0.4,0.2-0.5,0.4c0,0-0.1,0-0.1,0c0,0,0,0-0.1,0L7,21.5C7,21.6,7,21.5,7,21.5z"
+              />
+            </g>
+          </svg>
+        </button>
+        <button
+          aria-label="Open ordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            1.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            a.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            i.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            A.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            I.
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -973,6 +1839,52 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
     role="main"
   />
 </div>
+`;
+
+exports[`PageEditor PageEditor component with Elements 1`] = `
+<SlateWrapper
+  element={
+    Object {
+      "children": Array [
+        Object {
+          "text": "",
+        },
+      ],
+      "href": "mockLink",
+      "type": "a",
+    }
+  }
+>
+  
+</SlateWrapper>
+`;
+
+exports[`PageEditor PageEditor component with Elements 2`] = `
+<p>
+  Mock Content
+</p>
+`;
+
+exports[`PageEditor PageEditor component with decoration 1`] = `
+Array [
+  Object {
+    "anchor": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "focus": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "placeholder": "Type your label here",
+  },
+]
 `;
 
 exports[`PageEditor PageEditor component with no page 1`] = `
@@ -1245,6 +2157,179 @@ exports[`PageEditor PageEditor component with no page 1`] = `
           />
         </svg>
       </button>
+      <button
+        onClick={[Function]}
+        title="Hanging Indent"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="icon"
+            d="M7,8H25V9H7Zm6.25,5H25v1H13.25Zm0,5H25v1H13.25Zm0,5H25v1H13.25Z"
+          />
+          <path
+            className="icon"
+            d="M10.7,13.48,8.8,15,7,16.48v-6L8.8,12Z"
+          />
+        </svg>
+      </button>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="unordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.8,8.5c0,0.8-0.6,1.4-1.4,1.4S7,9.3,7,8.5s0.6-1.4,1.4-1.4S9.8,7.7,9.8,8.5z M9.8,16c0,0.8-0.6,1.4-1.4,1.4S7,16.8,7,16 c0-0.8,0.6-1.4,1.4-1.4S9.8,15.2,9.8,16z M9.8,23.5c0,0.8-0.6,1.4-1.4,1.4S7,24.3,7,23.5s0.6-1.4,1.4-1.4S9.8,22.7,9.8,23.5z"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="12.5"
+              x="12.5"
+              y="15"
+            />
+          </svg>
+        </button>
+        <button
+          aria-label="Open unordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            ●
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ○
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            ■
+          </button>
+        </div>
+      </div>
+      <div
+        className="list-dropper"
+        contentEditable={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-label="ordered list"
+          className="icon"
+          onClick={[Function]}
+        >
+          <svg
+            version="1.1"
+            viewBox="0 0 32 32"
+          >
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="8"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="23"
+            />
+            <rect
+              height="1"
+              width="11.7"
+              x="13.3"
+              y="15"
+            />
+            <g>
+              <path
+                d="M10.7,10.2v0.7c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0H7.8c-0.1,0-0.1,0-0.1-0.1v-0.7c0-0.1,0-0.1,0.1-0.1h0.7c0.1,0,0.1,0,0.1,0 V7.1c0,0,0-0.1,0-0.1s0,0-0.1,0L7.8,7.2l0,0c-0.1,0-0.1,0-0.1-0.1V6.7c0,0,0-0.1,0-0.1c0,0,0,0,0.1-0.1l1.2-0.6 C9,5.9,9,5.9,9.1,5.8c0,0,0.1,0,0.1,0h0.5c0,0,0.1,0,0.1,0c0,0,0,0.1,0,0.1V10c0,0,0,0.1,0.1,0.1h0.7 C10.7,10.1,10.7,10.1,10.7,10.2z"
+              />
+            </g>
+            <g>
+              <path
+                d="M8.6,16c0.3-0.3,0.5-0.5,0.7-0.6s0.3-0.3,0.3-0.4c0.1-0.1,0.1-0.2,0.1-0.4c0-0.2-0.1-0.4-0.2-0.5s-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0.1-0.5,0.2c-0.2,0.1-0.3,0.3-0.5,0.6c0,0,0,0.1-0.1,0.1c0,0-0.1,0-0.1,0L7,14.3c-0.1,0-0.1-0.1-0.1-0.1 c0,0,0-0.1,0-0.1c0.5-0.7,1.1-1.1,2-1.1c0.4,0,0.7,0.1,1,0.2s0.5,0.3,0.7,0.5c0.2,0.2,0.2,0.5,0.2,0.8c0,0.3-0.1,0.5-0.2,0.8 c-0.2,0.2-0.4,0.5-0.8,0.8l-1.3,1c0,0,0,0,0,0c0,0,0,0,0.1,0h2.2c0.1,0,0.1,0,0.1,0.1v0.8c0,0.1,0,0.1-0.1,0.1H7.1 c-0.1,0-0.1,0-0.1,0c0,0,0-0.1,0-0.1v-0.5c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.3-0.2L8.6,16z"
+              />
+            </g>
+            <g>
+              <path
+                d="M7,21.5C7,21.5,7,21.5,7,21.5c0.2-0.3,0.5-0.5,0.8-0.6c0.3-0.1,0.7-0.2,1-0.2c0.4,0,0.8,0.1,1,0.2s0.5,0.3,0.7,0.5 c0.2,0.2,0.2,0.4,0.2,0.7c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.3,0.3-0.6,0.4c-0.1,0-0.1,0-0.1,0.1c0,0,0,0,0.1,0.1 c0.3,0.1,0.5,0.3,0.7,0.5c0.2,0.2,0.3,0.5,0.3,0.7c0,0.5-0.2,0.9-0.6,1.2S9.5,26,8.7,26C8.3,26,8,26,7.6,25.8S7,25.4,6.8,25.2 c0,0,0-0.1,0-0.1c0,0,0-0.1,0.1-0.1l0.5-0.4c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0C7.8,24.8,8,25,8.1,25c0.2,0.1,0.4,0.1,0.7,0.1 c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.2-0.3,0.2-0.5c0-0.2-0.1-0.4-0.3-0.5c-0.2-0.1-0.4-0.2-0.7-0.2l-0.6,0c-0.1,0-0.1,0-0.1-0.1V23 c0-0.1,0-0.1,0.1-0.1l0.5,0c0.3,0,0.5-0.1,0.7-0.2c0.2-0.1,0.3-0.3,0.3-0.5c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.6-0.2 c-0.2,0-0.4,0-0.6,0.1c-0.2,0.1-0.4,0.2-0.5,0.4c0,0-0.1,0-0.1,0c0,0,0,0-0.1,0L7,21.5C7,21.6,7,21.5,7,21.5z"
+              />
+            </g>
+          </svg>
+        </button>
+        <button
+          aria-label="Open ordered list type menu"
+          className="dropdown  is-not-open"
+          onClick={[Function]}
+        >
+          ⌃
+        </button>
+        <div
+          className="list-dropper-menu  is-not-open"
+        >
+          <button
+            onClick={[Function]}
+          >
+            1.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            a.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            i.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            A.
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            I.
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div

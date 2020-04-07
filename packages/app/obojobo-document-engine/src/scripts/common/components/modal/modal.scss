@@ -6,7 +6,7 @@
 	min-width: 15em;
 	box-shadow: 0 1px 1px $color-shadow;
 	border-radius: 2px;
-	max-height: 80vh;
+	max-height: 85vh;
 	overflow: auto;
 
 	@include mq($until: tablet) {

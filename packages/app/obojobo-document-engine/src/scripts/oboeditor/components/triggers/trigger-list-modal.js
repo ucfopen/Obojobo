@@ -10,7 +10,7 @@ class TriggerListModal extends React.Component {
 	constructor(props) {
 		super(props)
 		this.inputRef = React.createRef()
-		this.state = { ...props.content }
+		this.state = { ...JSON.parse(JSON.stringify(props.content)) }
 		if (!this.state.triggers) this.state.triggers = []
 
 		this.createTrigger = this.createTrigger.bind(this)
@@ -179,7 +179,7 @@ class TriggerListModal extends React.Component {
 							<label>Item Id</label>
 							<input
 								className="input-item"
-								value={action.value.id}
+								value={action.value.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 						</div>
@@ -192,7 +192,7 @@ class TriggerListModal extends React.Component {
 							<label>URL</label>
 							<input
 								className="input-item"
-								value={action.value.url}
+								value={action.value.url || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'url')}
 							/>
 						</div>
@@ -206,7 +206,7 @@ class TriggerListModal extends React.Component {
 							<label>Assessment Id</label>
 							<input
 								className="input-item"
-								value={action.value.id}
+								value={action.value.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 						</div>
@@ -219,7 +219,7 @@ class TriggerListModal extends React.Component {
 							<label>Title</label>
 							<input
 								className="input-item"
-								value={action.value.title}
+								value={action.value.title || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'title')}
 							/>
 						</div>
@@ -227,7 +227,7 @@ class TriggerListModal extends React.Component {
 							<label>Message</label>
 							<input
 								className="input-item"
-								value={action.value.message}
+								value={action.value.message || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'message')}
 							/>
 						</div>
@@ -255,13 +255,13 @@ class TriggerListModal extends React.Component {
 							<label>Item Id</label>
 							<input
 								className="input-item"
-								value={action.value.id}
+								value={action.value.id || ''}
 								onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'id')}
 							/>
 						</div>
 						<Switch
 							title="Fade Out Other Items"
-							initialChecked={action.value.fade}
+							initialChecked={action.value.fade || false}
 							handleCheckChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
@@ -271,7 +271,7 @@ class TriggerListModal extends React.Component {
 						/>
 						<Switch
 							title="Animate Scroll"
-							initialChecked={action.value.animateScroll}
+							initialChecked={action.value.animateScroll || false}
 							handleCheckChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,

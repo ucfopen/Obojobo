@@ -1,167 +1,378 @@
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
+
 import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('KeyDown Util', () => {
 	test('deleteEmptyParent', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'move').mockReturnValue(true)
+
 		const editor = {
-			value: {
-				endBlock: {
-					text: ''
-				},
-				document: {
-					getClosest: (key, fn) => {
-						// some
-						fn({ type: 'someType' })
-						return { nodes: { size: 1 } }
-					}
-				},
-				blocks: { get: () => ({ key: 'mockKey', text: '' }) }
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: '' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 0 }
 			},
-			removeNodeByKey: jest.fn()
+			isVoid: () => false
 		}
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, jest.fn(), 'someType')).toBe(true)
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], false))
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
-		expect(editor.removeNodeByKey).toHaveBeenCalledTimes(1)
+		expect(Transforms.removeNodes).toHaveBeenCalledTimes(1)
 
-		editor.value.blocks = { get: () => ({ key: 'mockKey', text: 'mocktext' }) }
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
+		expect(event.preventDefault).toHaveBeenCalledTimes(2)
+		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
+		expect(Transforms.move).toHaveBeenCalledTimes(1)
+
+		editor.children = [
+			{
+				type: 'mockNode',
+				children: [
+					{
+						type: 'mockChildNode',
+						children: [{ text: 'mockText' }]
+					}
+				]
+			}
+		]
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, jest.fn(), 'someType')).toBe(undefined)
-		expect(event.preventDefault).toHaveBeenCalledTimes(1)
-		expect(editor.removeNodeByKey).toHaveBeenCalledTimes(1)
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
+		expect(event.preventDefault).toHaveBeenCalledTimes(2)
+		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
+
+		editor.isVoid = () => true
+
+		/* eslint-disable-next-line */
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
+		expect(event.preventDefault).toHaveBeenCalledTimes(2)
+		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 	})
 
-	test('deleteNodeContents deals with selection collapsed at start of block', () => {
+	test('deleteNodeContents deals with selection outside of table', () => {
 		const editor = {
-			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: true
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				},
-				blocks: [{ key: 'mockKey' }]
-			}
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
+				},
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [2, 0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
+		ReactEditor.findPath.mockReturnValueOnce([1])
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[1], [1]], false)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('deleteNodeContents deals with delete backward selection collapsed at start of block', () => {
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [0, 0, 0], offset: 0 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], false)
 		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('deleteNodeContents deals with delete forward selection collapsed at end of block', () => {
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 4 },
+				focus: { path: [0, 0, 0], offset: 4 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('deleteNodeContents deals with delete forward selection collapsed in block', () => {
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 3 },
+				focus: { path: [0, 0, 0], offset: 3 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
+		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection inside cell', () => {
 		const editor = {
-			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false
-				},
-				blocks: [{ key: 'mockKey' }]
-			}
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [0, 0, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]])
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('deleteNodeContents deals with selection across cells without first cell', () => {
+	test('deleteNodeContents deals with selection across cells', () => {
+		jest.spyOn(Transforms, 'delete').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
 		const editor = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => false,
-						last: () => true,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						},
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
 						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
+					]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [0, 1, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
-		editor.removeNodeByKey = jest.fn()
+		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]])
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.delete).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
 	})
 
-	test('deleteNodeContents deals with selection across cells without last cell', () => {
+	test('deleteNodeContents deals with selection across cells deleting forward', () => {
+		jest.spyOn(Transforms, 'delete').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
 		const editor = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => true,
-						last: () => false,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
+			children: [
+				{
+					type: 'mockNode',
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						},
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
 						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
+					]
 				}
-			}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [0, 1, 0], offset: 5 }
+			},
+			isInline: () => false,
+			isVoid: () => false
 		}
-		editor.removeNodeByKey = jest.fn()
+		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.delete).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
+	})
+
+	test('breakToText inserts text', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [{ text: 'some' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 4 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
+	})
+
+	test('breakToText converts to text', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [{ text: 'some' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
 	})
 })

@@ -4,25 +4,24 @@ import renderer from 'react-test-renderer'
 
 import MCFeedback from './editor-component'
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	components: {
 		// eslint-disable-next-line react/display-name
 		Button: props => <button {...props}>{props.children}</button>
 	}
 }))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	() => item => item
+)
 
 describe('MCFeedback Editor Node', () => {
 	test('MCFeedback builds the expected component', () => {
 		const component = renderer.create(
-			<MCFeedback
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-			/>
+			<MCFeedback element={{ content: {} }}/>
 		)
 		const tree = component.toJSON()
 
@@ -30,29 +29,12 @@ describe('MCFeedback Editor Node', () => {
 	})
 
 	test('MCFeedback component deletes itself', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
 		const component = shallow(
-			<MCFeedback
-				node={{
-					key: 'mockKey',
-					nodes: [],
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
+			<MCFeedback element={{ content: {} }}/>
 		)
-		const tree = component.html()
 
 		component.find('Button').simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 })
