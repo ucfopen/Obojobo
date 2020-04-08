@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import Recommendations from 'obojobo-document-engine/src/scripts/viewer/components/recommendation-component'
 
 const { OboComponent } = Viewer.components
 const { NavUtil } = Viewer.util
@@ -23,6 +24,7 @@ const Module = props => {
 			role="main"
 		>
 			<div>{childEl}</div>
+			<Recommendations moduleData={props.moduleData} />
 		</OboComponent>
 	)
 }

@@ -1,0 +1,169 @@
+@import '~styles/includes';
+
+.recommendation-parent {
+	width: $dimension-column-width - (2 * $dimension-padding);
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+	margin: auto;
+
+	display: block;
+
+	border-radius: $dimension-rounded-radius;
+
+	font-family: $font-default;
+
+	.recommendation-box {
+		width: 100%;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		padding-top: 1em;
+		padding-bottom: 1em;
+		background-color: transparentize($color-unchosen-correct, $amount:0.96);
+
+		border: 1px solid transparentize($color: #000000, $amount: 0.9);
+		border-radius: $dimension-rounded-radius;
+
+		text-align: center;
+
+		.title {
+			padding-bottom: 1em;
+			border-bottom: 1px solid transparentize($color: #000000, $amount: 0.9);
+			font-size: 1.1em;
+		}
+
+		.recommendation {
+			width: 75%;
+			margin-left: 11%;
+			margin-right: 11%;
+			margin-top: 1.5em;
+			margin-bottom: 1em;
+			padding: 1em 1em 1em 0em;
+
+			position: relative;
+			display: flex;
+			flex-direction: row;
+
+			border-radius: $dimension-rounded-radius;
+
+			text-align: left;
+
+			&.red {
+				background-color: transparentize($color: #ad271a, $amount: 0.87);
+			}
+
+			&.light-green {
+				background-color: transparentize($color: #64bc49, $amount: 0.87);
+			}
+
+			&.green {
+				background-color: transparentize($color: #4c9b33, $amount: 0.87);
+			}
+
+			&.dark-green {
+				background-color: transparentize($color: #316f1e, $amount: 0.87);
+			}
+
+			&.neutral {
+				background-color: transparentize($color: $color-action, $amount: 0.94);
+			}
+
+			&:hover { 
+				transform: scale(1.005, 1.005);
+				cursor: pointer;
+
+				&.red {
+					background-color: transparentize($color: #ad271a, $amount: 0.95);
+				}
+
+				&.light-green {
+					background-color: transparentize($color: #64bc49, $amount: 0.95);
+				}
+
+				&.green {
+					background-color: transparentize($color: #4c9b33, $amount: 0.95);
+				}
+
+				&.dark-green {
+					background-color: transparentize($color: #316f1e, $amount: 0.95);
+				}
+
+				&.neutral {
+					background-color: transparentize($color: $color-action, $amount: 0.96);
+				}
+			}
+
+			.number {
+				width: 10%;
+				margin-top: auto;
+				margin-bottom: auto;
+				margin-left: 0.75em;
+				margin-right: 0.75em;
+				text-align: center;
+				vertical-align: middle;
+				font-size: 1em;
+			}
+
+			.rec {
+				width: 90%;
+				height: 100%;
+
+				&.top-recommendation {
+					display: inline;
+					font-size: 0.65em;
+					line-height: normal;
+					color: #ad271a;
+				}
+
+				&.name {
+					display: inline;
+					font-size: 0.85em;
+					line-height: normal;
+
+					.link {
+						text-decoration: underline;
+					}
+				}
+
+				&.message {
+					display: inline-block;
+					font-size: 0.65em;
+					line-height: 1.3;
+				}
+			}
+		}
+	}
+
+	.summary-box {
+		width: 100%;
+
+		display: block;
+
+		background-color: transparentize($color-unchosen-correct, $amount:0.96);
+		border: 1px solid transparentize($color: #000000, $amount: 0.9);
+		border-radius: $dimension-rounded-radius;
+
+		text-align: center;
+
+		.summary {
+			width: 47%;
+			height: 100%;
+			margin-top: 1em;
+
+			display: inline-block;
+
+			&.this-page {
+				padding-left: 3%;
+			}
+
+			&.overall {
+				padding-right: 3%;
+			}
+
+			.gauge {
+				width: 85%;
+				height: 75%;
+				margin-top: 0em;
+			}
+		}
+	}
+}

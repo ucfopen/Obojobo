@@ -16,6 +16,7 @@ import NavUtil from '../util/nav-util'
 import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import RecommendationStore from '../../viewer/stores/recommendation-store'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
@@ -60,6 +61,7 @@ export default class ViewerApp extends React.Component {
 			mediaState: null,
 			questionState: null,
 			assessmentState: null,
+			recommendationState: null,
 			modalState: null,
 			focusState: null,
 			loading: true,
@@ -71,6 +73,10 @@ export default class ViewerApp extends React.Component {
 		this.navTargetId = null
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
+		this.onRecommendationStoreChange = () =>
+			this.setState({
+				recommendationState: RecommendationStore.getState()
+			})
 		this.onAssessmentStoreChange = () =>
 			this.setState({
 				assessmentState: AssessmentStore.getState()
@@ -104,6 +110,7 @@ export default class ViewerApp extends React.Component {
 
 		// === SET UP DATA STORES ===
 		NavStore.onChange(this.onNavStoreChange)
+		RecommendationStore.onChange(this.onRecommendationStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -152,6 +159,7 @@ export default class ViewerApp extends React.Component {
 					viewState
 				)
 				AssessmentStore.init(attemptHistory)
+				RecommendationStore.init(NavStore.getState())
 
 				window.onbeforeunload = this.onBeforeWindowClose
 				window.onresize = this.onResize
@@ -165,6 +173,7 @@ export default class ViewerApp extends React.Component {
 					{
 						model,
 						navState: NavStore.getState(),
+						recommendationState: RecommendationStore.getState(),
 						mediaState: MediaStore.getState(),
 						questionState: QuestionStore.getState(),
 						assessmentState: AssessmentStore.getState(),
@@ -191,6 +200,7 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUnmount() {
 		NavStore.offChange(this.onNavStoreChange)
+		RecommendationStore.offChange(this.onRecommendationStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
