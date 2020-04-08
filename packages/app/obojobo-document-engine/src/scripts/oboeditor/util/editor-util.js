@@ -7,7 +7,6 @@ const serial = new XMLSerializer()
 
 const XML_MODE = 'xml'
 const XML_MIME = 'application/xml'
-const UNNAMED_MODULE = '(Unnamed Module)'
 const MODULE_NODE_NAME = 'ObojoboDraft.Modules.Module'
 
 const getFlatList = function(item) {
@@ -30,14 +29,7 @@ const getFlatList = function(item) {
 }
 
 const EditorUtil = {
-	cleanModuleName(newName){
-		if (!newName || !/[^\s]/.test(newName)) newName = UNNAMED_MODULE
-		return newName.trim()
-	},
 	renameModule(moduleId, newName) {
-		// If the module name is empty or just whitespace, provide a default value
-		newName = EditorUtil.cleanModuleName(newName)
-
 		return Dispatcher.trigger('editor:renameModule', {
 			value: {
 				moduleId,
@@ -175,31 +167,26 @@ const EditorUtil = {
 	getTitleFromJSON(draftModel) {
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return UNNAMED_MODULE
+			if (!json.content || this.isEmptyString(json.content.title)) return ''
 
 			return json.content.title
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return UNNAMED_MODULE
+			return ''
 		}
 	},
 	isEmptyString(string) {
 		return !string || !/[^\s]/.test(string)
 	},
 	getTitleFromString(draftModel, mode) {
-		let title
 		switch (mode) {
 			case XML_MODE:
-				title = this.getTitleFromXML(draftModel)
-				break
+				return this.getTitleFromXML(draftModel)
 
 			default:
-				title = this.getTitleFromJSON(draftModel)
-				break
+				return this.getTitleFromJSON(draftModel)
 		}
-
-		return this.cleanModuleName(title)
 	},
 	setModuleTitleInJSON(code, title) {
 		const json = JSON.parse(code)

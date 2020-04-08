@@ -13,6 +13,7 @@ const EditorTitleInput = ({renameModule, title}) => {
 		<input
 			className="editor--components--editor-title-input"
 			value={stateTitle}
+			placeholder="(Untitled Module)"
 			onChange={event => {setStateTitle(event.target.value)}}
 			onBlur={() => { if(stateTitle !== title) renameModule(stateTitle.trim()) }}
 			onKeyDown={event => {

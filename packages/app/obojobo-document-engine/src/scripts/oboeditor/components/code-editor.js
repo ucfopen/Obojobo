@@ -31,7 +31,6 @@ class CodeEditor extends React.Component {
 			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
 			saved: true,
 			editor: null,
-			mode: props.mode,
 			options: {
 				lineNumbers: true,
 				mode: this.getCodeMirrorMode(props.mode),
@@ -50,7 +49,7 @@ class CodeEditor extends React.Component {
 		this.saveAndGetTitleFromCode = this.saveAndGetTitleFromCode.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
-		this.saveAndSetNewTitle = this.saveAndSetNewTitle.bind(this)
+		this.saveAndSetNewTitleInCode = this.saveAndSetNewTitleInCode.bind(this)
 
 		this.setEditor = this.setEditor.bind(this)
 	}
@@ -87,12 +86,13 @@ class CodeEditor extends React.Component {
 		}
 	}
 
-	saveAndSetNewTitle(newTitle){
-		this.setState(state => ({
+	saveAndSetNewTitleInCode(newTitle){
+		this.setState({
 			title: newTitle,
-			code: this.setTitleInCode(state.code, state.mode, newTitle)
-		}))
-		this.sendSave(this.props.draftId, this.state.code, this.props.mode)
+			code: this.setTitleInCode(this.state.code, this.props.mode, newTitle)
+		})
+
+		return this.sendSave(this.props.draftId, this.state.code, this.props.mode)
 	}
 
 	saveAndGetTitleFromCode() {
@@ -173,7 +173,7 @@ class CodeEditor extends React.Component {
 				<div className="draft-toolbars">
 					<EditorTitleInput
 						title={this.state.title}
-						renameModule={this.saveAndSetNewTitle}
+						renameModule={this.saveAndSetNewTitleInCode}
 					/>
 					{this.state.editor ? (
 						<FileToolbar
