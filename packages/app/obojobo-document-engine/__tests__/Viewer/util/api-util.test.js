@@ -529,4 +529,13 @@ describe('apiutil', () => {
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
+
+	test('getDraftRevision calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getDraftRevision('mock-draft-id', 'mock-revision-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mock-draft-id/revisions/mock-revision-id')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
 })

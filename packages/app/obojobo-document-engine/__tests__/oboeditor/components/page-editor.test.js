@@ -786,4 +786,20 @@ describe('PageEditor', () => {
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
 	})
+
+	test('PageEditor component doesnt save if readOnly is enabled', () => {
+		const props = { readOnly: true }
+		const mockFn = jest.fn()
+		const spy = jest.spyOn(PageEditor.prototype, 'exportCurrentToJSON')
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		// eslint-disable-next-line no-undefined
+		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
+		expect(spy).not.toHaveBeenCalled()
+		expect(instance.state.saved).toBe(false)
+	})
 })

@@ -196,7 +196,7 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
-				readOnly={this.props.settings.readOnly}
+				readOnly={this.props.settings && this.props.settings.readOnly}
 			/>
 		)
 	}
