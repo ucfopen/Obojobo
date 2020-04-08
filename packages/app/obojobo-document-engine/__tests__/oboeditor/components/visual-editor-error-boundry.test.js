@@ -1,9 +1,9 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import mockConsole from 'jest-mock-console'
-import PageEditorErrorBoundry from 'src/scripts/oboeditor/components/page-editor-error-boundry'
+import VisualEditorErrorBoundry from 'src/scripts/oboeditor/components/visual-editor-error-boundry'
 
-describe('PageEditorErrorBoundry', () => {
+describe('VisualEditorErrorBoundry', () => {
 	let restoreConsole
 
 	beforeEach(() => {
@@ -17,16 +17,16 @@ describe('PageEditorErrorBoundry', () => {
 		restoreConsole()
 	})
 
-	test('PageEditorErrorBoundry component', () => {
+	test('VisualEditorErrorBoundry component', () => {
 		const component = renderer.create(
-			<PageEditorErrorBoundry editorRef={{}}>
+			<VisualEditorErrorBoundry editorRef={{}}>
 				<div>Contents...</div>
-			</PageEditorErrorBoundry>
+			</VisualEditorErrorBoundry>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('PageEditorErrorBoundry calls undo if a child throws an error', () => {
+	test('VisualEditorErrorBoundry calls undo if a child throws an error', () => {
 		const BadComponent = () => {
 			throw new Error('I am a bad component')
 		}
@@ -38,15 +38,15 @@ describe('PageEditorErrorBoundry', () => {
 		expect(editorRef.undo).toHaveBeenCalledTimes(0)
 
 		renderer.create(
-			<PageEditorErrorBoundry editorRef={editorRef}>
+			<VisualEditorErrorBoundry editorRef={editorRef}>
 				<BadComponent />
-			</PageEditorErrorBoundry>
+			</VisualEditorErrorBoundry>
 		)
 
 		expect(editorRef.undo).toHaveBeenCalledTimes(1)
 	})
 
-	test('PageEditorErrorBoundry still works if editorRef is null', () => {
+	test('VisualEditorErrorBoundry still works if editorRef is null', () => {
 		const BadComponent = () => {
 			throw new Error('I am a bad component')
 		}
@@ -54,9 +54,9 @@ describe('PageEditorErrorBoundry', () => {
 		const editorRef = null
 
 		renderer.create(
-			<PageEditorErrorBoundry editorRef={editorRef}>
+			<VisualEditorErrorBoundry editorRef={editorRef}>
 				<BadComponent />
-			</PageEditorErrorBoundry>
+			</VisualEditorErrorBoundry>
 		)
 	})
 })

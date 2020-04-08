@@ -1,4 +1,4 @@
-import './page-editor.scss'
+import './visual-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from '../util/editor-util'
@@ -17,7 +17,7 @@ import OboNodePlugin from '../plugins/obonode-plugin'
 import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import PageEditorErrorBoundry from './page-editor-error-boundry'
+import VisualEditorErrorBoundry from './visual-editor-error-boundry'
 import EditorTitleInput from './editor-title-input'
 
 const { OboModel } = Common.models
@@ -34,7 +34,7 @@ import { withHistory } from 'slate-history'
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
 
-class PageEditor extends React.Component {
+class VisualEditor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
@@ -413,7 +413,7 @@ class PageEditor extends React.Component {
 					/>
 
 					<div className="component obojobo-draft--modules--module" role="main">
-						<PageEditorErrorBoundry editorRef={this.editor}>
+						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
 								renderElement={this.renderElement.bind(this)}
@@ -423,7 +423,7 @@ class PageEditor extends React.Component {
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>
-						</PageEditorErrorBoundry>
+						</VisualEditorErrorBoundry>
 					</div>
 
 				</Slate>
@@ -432,4 +432,4 @@ class PageEditor extends React.Component {
 	}
 }
 
-export default PageEditor
+export default VisualEditor
