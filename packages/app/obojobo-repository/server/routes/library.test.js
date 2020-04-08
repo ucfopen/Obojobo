@@ -272,16 +272,22 @@ describe('repository library route', () => {
 		expect.hasAssertions()
 
 		const mockDraft = {
-			userId: 0,
+			userId: '0',
 			draftId: 'mockDraftId',
 			title: 'mockDraftTitle'
+		}
+
+		const mockUser = {
+			id: 99,
+			firstName: 'mockUserFirstName',
+			lastName: 'mockUserLastName'
 		}
 
 		DraftSummary.fetchById = jest.fn()
 		DraftSummary.fetchById.mockResolvedValueOnce(mockDraft)
 
 		UserModel.fetchById = jest.fn()
-		UserModel.fetchById.mockRejectedValueOnce(new Error('database error'))
+		UserModel.fetchById.mockResolvedValueOnce(mockUser)
 
 		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
 
