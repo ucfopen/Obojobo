@@ -85,10 +85,30 @@
 		box-shadow: $box-shadow-overlay;
 		user-select: none;
 		white-space: nowrap;
+		font-family: $font-default;
+		height: 1.9rem;
+		z-index: $z-index-above-all;
+		border: 1px solid $color-shadow;
 
 		a {
-			padding-left: 1em;
-			padding-right: 1em;
+			height: 1.9rem;
+			padding-left: 0.8em;
+			padding-right: 0.8em;
+			display: inline-block;
+			border-radius: 0.25rem;
+			font-weight: normal;
+			border: 2px solid white;
+			box-sizing: border-box;
+			vertical-align: top;
+			line-height: 0;
+			padding-top: 0.9rem;
+			max-width: 20rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			&:hover {
+				background: transparentize($color: $color-action, $amount: 0.9);
+			}
 		}
 	}
 }

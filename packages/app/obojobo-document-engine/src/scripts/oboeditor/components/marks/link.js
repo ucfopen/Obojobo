@@ -1,3 +1,5 @@
+import './link.scss'
+
 import React from 'react'
 import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -5,14 +7,25 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import ClipboardUtil from '../../util/clipboard-util'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
-import './link.scss'
-
 const { Prompt } = Common.components.modal
-const { ModalUtil } = Common.util
+const { ModalUtil, withProtocol } = Common.util
 
 class Link extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.hrefMenuRef = React.createRef()
+		this.onIntersectionChange = this.onIntersectionChange.bind(this)
+		this.startObservingForIntersectionChanges = this.startObservingForIntersectionChanges.bind(this)
+		this.stopObserveringForIntersectionChanges = this.stopObserveringForIntersectionChanges.bind(
+			this
+		)
+
+		this.state = {
+			// This property is for how many pixels to push the menu towards the left, ensuring
+			// that it stays completely visible by reamining inside the viewport
+			menuTranslateX: 0
+		}
 	}
 
 	changeLinkValue(href) {
@@ -26,23 +39,6 @@ class Link extends React.Component {
 		}
 
 		Transforms.setNodes(editor, { href }, { at: path })
-	}
-
-	createSrc(src) {
-		src = '' + src
-
-		const lcSrc = src.toLowerCase()
-		if (
-			!(
-				lcSrc.indexOf('http://') === 0 ||
-				lcSrc.indexOf('https://') === 0 ||
-				lcSrc.indexOf('//') === 0
-			)
-		) {
-			src = '//' + src
-		}
-
-		return src
 	}
 
 	removeLink() {
@@ -62,6 +58,68 @@ class Link extends React.Component {
 		)
 	}
 
+	componentDidUpdate(prevProps) {
+		// If this component is no longer "selected" stop the Intersection Observer and reset
+		// any translation
+		if (!this.props.selected && prevProps.selected) {
+			this.stopObserveringForIntersectionChanges()
+
+			this.setState({
+				menuTranslateX: 0
+			})
+			// Else if this component is being "selected" then after update we need to start our
+			// Intersection Observer
+		} else if (this.props.selected && !prevProps.selected) {
+			this.startObservingForIntersectionChanges()
+		}
+	}
+
+	startObservingForIntersectionChanges() {
+		this.observer = new IntersectionObserver(this.onIntersectionChange, {
+			root: null,
+			rootMargin: '0px',
+			threshold: 1
+		})
+
+		this.observer.observe(this.hrefMenuRef.current)
+	}
+
+	stopObserveringForIntersectionChanges() {
+		if (!this.observer) return false
+
+		this.observer.disconnect()
+		delete this.observer
+
+		return true
+	}
+
+	onIntersectionChange(changes) {
+		// If we need to move the element we stop checking, otherwise we can get in an infinite
+		// loop of moving the menu over and over again
+		if (this.state.menuTranslateX > 0) {
+			return false
+		}
+
+		// We only have a single threshold so we should only have one change entry
+		const change = changes[0]
+
+		if (change.intersectionRatio < 1) {
+			// Element is at least partially outside of the viewport
+			this.setState({
+				menuTranslateX:
+					(1 - change.intersectionRatio) * this.hrefMenuRef.current.getBoundingClientRect().width +
+					1
+			})
+		} else {
+			// Element is completely within the viewport
+			this.setState({
+				menuTranslateX: 0
+			})
+		}
+
+		return true
+	}
+
 	render() {
 		return (
 			<span className="editor--components--mark--link">
@@ -69,13 +127,20 @@ class Link extends React.Component {
 					{this.props.children}
 				</a>
 				{this.props.selected ? (
-					<span className="href-menu" contentEditable={false}>
+					<span
+						className="href-menu"
+						contentEditable={false}
+						ref={this.hrefMenuRef}
+						style={{
+							transform: `translate(-${this.state.menuTranslateX}px, 0px)`
+						}}
+					>
 						<a
-							href={this.createSrc(this.props.element.href)}
+							href={withProtocol(this.props.element.href)}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							Go to {this.props.element.href}
+							Open {this.props.element.href}
 						</a>
 						<button
 							className="link-copy"
@@ -91,8 +156,8 @@ class Link extends React.Component {
 						/>
 						<button
 							className="link-remove"
-							title="Remove"
-							aria-label="Remove"
+							title="Remove link"
+							aria-label="Remove link"
 							onClick={() => this.removeLink()}
 						/>
 					</span>

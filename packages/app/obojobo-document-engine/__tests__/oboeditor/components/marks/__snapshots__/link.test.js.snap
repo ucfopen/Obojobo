@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditorNav Link component 1`] = `
+exports[`Link Link component 1`] = `
 <span
   className="editor--components--mark--link"
 >
