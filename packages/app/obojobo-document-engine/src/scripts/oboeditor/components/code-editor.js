@@ -17,21 +17,18 @@ import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import ModalUtil from '../../common/util/modal-util'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
-
 import EditorTitleInput from './editor-title-input'
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
-
-const domParser = new DOMParser()
-const serial = new XMLSerializer()
 
 class CodeEditor extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			code: this.props.initialCode,
+			code: props.initialCode,
+			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
 			saved: true,
 			editor: null,
 			mode: props.mode,
@@ -46,15 +43,14 @@ class CodeEditor extends React.Component {
 				indentUnit: 4,
 				gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
 				theme: 'monokai'
-			},
-			title: props.model.title
+			}
 		}
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
-		this.saveCode = this.saveCode.bind(this)
-		this.setTitle = this.setTitle.bind(this)
+		this.saveAndGetTitleFromCode = this.saveAndGetTitleFromCode.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.saveAndSetNewTitle = this.saveAndSetNewTitle.bind(this)
 
 		this.setEditor = this.setEditor.bind(this)
 	}
@@ -81,64 +77,42 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
-	setJSONTitle(code, title) {
-		const json = JSON.parse(code)
-		json.content.title = title
-		return { code: JSON.stringify(json, null, 4) }
-	}
+	setTitleInCode(code, mode, title){
+		switch (mode) {
+			case JSON_MODE:
+				return EditorUtil.setModuleTitleInJSON(code, title)
 
-	setXMLTitle(code, title) {
-		const doc = domParser.parseFromString(code, 'application/xml')
-		let els = doc.getElementsByTagName('Module')
-		if (els.length === 0) {
-			els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+			case XML_MODE:
+				return EditorUtil.setModuleTitleInXML(code, title)
 		}
-		if (els.length > 0) {
-			const el = els[0]
-			el.setAttribute('title', title)
-		}
-		return { code: serial.serializeToString(doc) }
 	}
 
-	setTitle(title) {
-		return this.setState((state, props) => {
-			switch (props.mode) {
-				case JSON_MODE:
-					return this.setJSONTitle(state.code, title)
-
-				case XML_MODE:
-					return this.setXMLTitle(state.code, title)
-			}
-		})
+	saveAndSetNewTitle(newTitle){
+		this.setState(state => ({
+			title: newTitle,
+			code: this.setTitleInCode(state.code, state.mode, newTitle)
+		}))
+		this.sendSave(this.props.draftId, this.state.code, this.props.mode)
 	}
 
-	renameModule(label) {
-		EditorUtil.renameModule(this.props.model.id, label)
-		this.setTitle(label)
-		this.setState({ title: label })
-		this.saveCode(this.props.draftId)
-	}
-
-	saveCode(draftId) {
+	saveAndGetTitleFromCode() {
 		// Update the title in the File Toolbar
-		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-		EditorUtil.renamePage(this.props.model.id, label)
+		const title = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
+		this.setState({title})
 
-		return APIUtil.postDraft(
-			draftId || this.props.draftId,
-			this.state.code,
-			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
-		)
+		return this.sendSave(this.props.draftId, this.state.code, this.props.mode)
+	}
+
+	sendSave(draftId, code, mode){
+		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
+		return APIUtil.postDraft(draftId, code, format)
 			.then(result => {
-				if (result.status !== 'ok') {
-					ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-				} else {
-					this.setState({ saved: true })
-				}
+				if (result.status !== 'ok') throw Error(result.value.message)
+
+				this.setState({ saved: true })
 			})
 			.catch(e => {
-				ModalUtil.show(<SimpleDialog ok title={'Error: ' + e} />)
+				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
 			})
 	}
 
@@ -175,7 +149,7 @@ class CodeEditor extends React.Component {
 
 		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
-			this.saveCode(this.props.draftId)
+			this.saveAndGetTitleFromCode()
 		}
 
 		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
@@ -199,16 +173,14 @@ class CodeEditor extends React.Component {
 				<div className="draft-toolbars">
 					<EditorTitleInput
 						title={this.state.title}
-						onChange={newTitle => this.setState({ title: newTitle })}
-						renameModule={this.renameModule.bind(this)}
+						renameModule={this.saveAndSetNewTitle}
 					/>
 					{this.state.editor ? (
 						<FileToolbar
 							editor={this.state.editor}
-							model={this.props.model}
+							title={this.state.title}
 							draftId={this.props.draftId}
-							onSave={this.saveCode}
-							onRename={this.setTitle}
+							onSave={this.saveAndGetTitleFromCode}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
 							mode={this.props.mode}

@@ -125,6 +125,10 @@ const APIUtil = {
 
 	getAllDrafts() {
 		return API.get(`/api/drafts`, 'json').then(processJsonResults)
+	},
+
+	copyDraft(draftId, newTitle){
+		return API.post(`/api/drafts/${draftId}/copy`, {title: newTitle}).then(processJsonResults)
 	}
 }
 

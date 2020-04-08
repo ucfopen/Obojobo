@@ -13,20 +13,6 @@ const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
-	renameModule(moduleId, label) {
-		ModalUtil.hide()
-		EditorUtil.renameModule(moduleId, label)
-
-		if (this.props.onRename) {
-			this.props.onRename(label)
-		}
-	}
-
-	renameAndSaveModule(moduleId, label) {
-		this.renameModule(moduleId, label)
-		this.props.onSave(this.props.draftId)
-	}
-
 	deleteModule() {
 		return APIUtil.deleteDraft(this.props.draftId).then(result => {
 			if (result.status === 'ok') {
@@ -35,19 +21,11 @@ class FileMenu extends React.PureComponent {
 		})
 	}
 
-	copyModule(moduleId, label) {
-		const oldLabel = this.props.model.title
-		let draftId = null
-
-		APIUtil.createNewDraft()
+	copyModule(newTitle) {
+		APIUtil.copyDraft(this.props.draftId, newTitle)
 			.then(result => {
-				draftId = result.value.id
-				this.renameModule(moduleId, label)
-				return this.props.onSave(draftId)
-			})
-			.then(() => {
-				this.renameModule(moduleId, oldLabel)
-				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
+				ModalUtil.hide()
+				window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
 			})
 	}
 
@@ -77,8 +55,8 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Copy Module"
 							message="Enter the title for the copied module:"
-							value={this.props.model.title + ' - Copy'}
-							onConfirm={this.copyModule.bind(this, this.props.model.id)}
+							value={this.props.title + ' - Copy'}
+							onConfirm={this.copyModule.bind(this)}
 						/>
 					)
 			},
@@ -99,27 +77,14 @@ class FileMenu extends React.PureComponent {
 				]
 			},
 			{
-				name: 'Rename',
-				type: 'action',
-				action: () =>
-					ModalUtil.show(
-						<Prompt
-							title="Rename Module"
-							message="Enter the new title for the module:"
-							value={this.props.model.title}
-							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
-						/>
-					)
-			},
-			{
 				name: 'Delete Module',
 				type: 'action',
 				action: () =>
 					ModalUtil.show(
 						<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
-							{'Are you sure you want to delete ' +
-								this.props.model.title +
-								'? This will permanately delete all content in the module'}
+							{'Are you sure you want to delete "' +
+								this.props.title +
+								'"? This will permanately delete all content in the module'}
 						</SimpleDialog>
 					)
 			},

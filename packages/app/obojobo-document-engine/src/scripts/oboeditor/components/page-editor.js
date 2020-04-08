@@ -45,8 +45,7 @@ class PageEditor extends React.Component {
 			value: json,
 			saved: true,
 			editable: json && json.length >= 1 && !json[0].text,
-			showPlaceholders: true,
-			title: props.model.title
+			showPlaceholders: true
 		}
 
 		this.onChange = this.onChange.bind(this)
@@ -60,6 +59,7 @@ class PageEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
+		this.renameModule = this.renameModule.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -219,7 +219,6 @@ class PageEditor extends React.Component {
 
 	renameModule(label) {
 		EditorUtil.renameModule(this.props.model.id, label)
-		this.setState({ title: label })
 		this.saveModule(this.props.draftId)
 	}
 
@@ -385,14 +384,13 @@ class PageEditor extends React.Component {
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
 					<div className="draft-toolbars">
 						<EditorTitleInput
-							title={this.state.title}
-							onChange={newTitle => this.setState({ title: newTitle })}
-							renameModule={this.renameModule.bind(this)}
+							title={this.props.model.title}
+							renameModule={this.renameModule}
 						/>
 						<FileToolbar
 							editor={this.editor}
 							selection={this.editor.selection}
-							model={this.props.model}
+							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
 							switchMode={this.props.switchMode}
@@ -427,6 +425,7 @@ class PageEditor extends React.Component {
 							/>
 						</PageEditorErrorBoundry>
 					</div>
+
 				</Slate>
 			</div>
 		)

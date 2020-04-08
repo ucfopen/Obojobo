@@ -79,10 +79,9 @@ const FileToolbar = props => {
 	return (
 		<div className={`visual-editor--file-toolbar`}>
 			<FileMenu
-				model={props.model}
+				title={props.title}
 				draftId={props.draftId}
 				onSave={props.onSave}
-				onRename={props.onRename}
 				mode={props.mode}
 			/>
 			<div className="visual-editor--drop-down-menu">

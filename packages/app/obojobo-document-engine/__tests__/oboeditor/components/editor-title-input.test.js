@@ -52,4 +52,25 @@ describe('EditorTitleInput', () => {
 
 		expect(blur).toHaveBeenCalled()
 	})
+
+	test('PageEditor calls cancel when escape is pressed', () => {
+		const onCancel = jest.fn()
+		const component = renderer.create(
+			<EditorTitleInput
+				title="mock-title"
+				renameModule={jest.fn()}
+				onChange={jest.fn()}
+				onCancel={onCancel}
+			/>
+		)
+		const inputEl = component.root.findByType('input')
+
+		inputEl.props.onKeyDown({ key: 'NotEscape' })
+
+		expect(onCancel).not.toHaveBeenCalled()
+
+		inputEl.props.onKeyDown({ key: 'Escape' })
+
+		expect(onCancel).toHaveBeenCalled()
+	})
 })
