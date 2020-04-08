@@ -46,7 +46,9 @@ class YouTube extends React.Component {
 	renderNoVideo() {
 		return (
 			<div className="empty-frame">
-				<div>No Video Id.</div>
+				<div>
+					<p>No video specified. Click &apos;Edit&apos; to add one.</p>
+				</div>
 			</div>
 		)
 	}
@@ -93,14 +95,9 @@ class YouTube extends React.Component {
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
-					onClick={this.focusYoutube}
+					onClick={this.focusYoutube.bind(this)}
 				>
-					<Button
-						className="delete-button"
-						onClick={this.deleteNode}
-						onKeyDown={this.returnFocusOnShiftTab}
-						tabIndex={this.props.selected ? 0 : -1}
-					>
+					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo() : this.renderNoVideo()}

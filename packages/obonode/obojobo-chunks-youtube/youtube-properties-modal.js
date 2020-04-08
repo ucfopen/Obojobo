@@ -1,5 +1,9 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+// import EditorUtil from 'obojobo-document-engine/src/scripts/obeditor/util/editor-util'
+
+import EditorUtil from '../../app/obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
+
 import './youtube-properties-modal.scss'
 
 const { SimpleDialog } = Common.components.modal
@@ -24,16 +28,38 @@ class YouTubeProperties extends React.Component {
 		return this.idInputRef.current.focus()
 	}
 
+	/////////////////////////////////////////////////////////////
 	handleIdChange(event) {
-		const videoId = event.target.value
+		// const videoId = event.target.value
 
-		this.setState({
-			...this.state,
-			content: {
-				...this.state.content,
-				videoId
-			}
-		})
+		const videoInfo = EditorUtil.youTubeParseUrl(event.target.value)
+
+		console.log('this', this)
+
+		console.log('videoInfo', videoInfo)
+
+		const videoId = videoInfo.videoId
+		const startTime = this.state.content.startTime
+
+		if (videoInfo.startTime) {
+			const startTime = videoInfo.startTime
+			this.setState({
+				...this.state,
+				content: {
+					...this.state.content,
+					videoId,
+					startTime
+				}
+			})
+		} else {
+			this.setState({
+				...this.state,
+				content: {
+					...this.state.content,
+					videoId
+				}
+			})
+		}
 	}
 
 	handleStartTimeChange(event) {
@@ -62,8 +88,23 @@ class YouTubeProperties extends React.Component {
 		})
 	}
 
+	// youtube_parser(url){
+	// 	var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+	// 	var match = url.match(regExp);
+	// 	return (match&&match[7].length==11)? match[7] : false;
+	// }
+
 	onConfirm() {
-		const { startTime, endTime } = this.state.content
+		const { startTime, endTime, videoId } = this.state.content
+
+		const videoInfo = EditorUtil.youTubeParseUrl(videoId)
+
+		console.log('videoInfo', videoInfo)
+
+		if (videoInfo.videoId) {
+			console.log('we have a video')
+			this.state.content.videoId = videoInfo.videoId
+		}
 
 		if (startTime < 0) {
 			return this.setState({ startTimeError: 'Start time must be > 0' })
