@@ -41,8 +41,6 @@ let PermissionsServices
 let CountServices
 
 let short
-let mockShortFromUUID
-let mockShortToUUID
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
@@ -94,6 +92,8 @@ app.use('/', require('obojobo-express/server/express_response_decorator'))
 app.use('/', require('obojobo-repository/server/routes/dashboard'))
 
 describe('repository dashboard route', () => {
+	const mockSingleCollection = { id: 'mockCollectionId', title: 'mockCollectionTitle' }
+
 	const mockCollectionSummary = [
 		{
 			id: 'mockCollectionId',
@@ -148,23 +148,14 @@ describe('repository dashboard route', () => {
 			return ''
 		})
 
-		mockShortFromUUID = jest.fn()
-		mockShortFromUUID.mockReturnValue('shortCollectionUUID')
-		mockShortToUUID = jest.fn()
-		mockShortToUUID.mockReturnValue('longCollectionUUID')
-
 		short = require('short-uuid')
-		short.mockReturnValue({
-			fromUUID: mockShortFromUUID,
-			toUUID: mockShortToUUID
-		})
 	})
 
 	const generateCookie = (type = 'module', path = 'dashboard', order = 'alphabetical') => {
 		const expires = new Date()
 		expires.setFullYear(expires.getFullYear() + 1)
 		const commonCookieString = `expires=${expires.toUTCString()}; path=${path}`
-		document.cookie = `${type}SortOrder=${order}; ${commonCookieString}`
+		return `${type}SortOrder=${order}; ${commonCookieString}`
 	}
 
 	test('get /dashboard sends the correct props to the Dashboard component', () => {
@@ -232,7 +223,56 @@ describe('repository dashboard route', () => {
 
 		return request(app)
 			.get('/dashboard/all')
-			.set('cookie', [generateCookie()])
+			.set('cookie', [generateCookie('module', 'dashboard/all', 'last updated')])
+			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledTimes(1)
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledTimes(1)
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(DraftSummary.fetchByUserId).toHaveBeenCalledTimes(1)
+				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
+
+				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
+				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
+					title: 'Dashboard',
+					collection: {
+						id: null,
+						title: null
+					},
+					currentUser: mockCurrentUser,
+					mode: MODE_ALL,
+					moduleCount: 5,
+					moduleSortOrder: 'last updated',
+					collectionSortOrder: 'alphabetical',
+					myCollections: mockCollectionSummary,
+					myModules: mockModuleSummary
+				})
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('get /dashboard/all sends the correct props to the Dashboard component with no cookies', () => {
+		expect.hasAssertions()
+
+		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
+
+		CollectionSummary.fetchByUserId = jest.fn()
+		CollectionSummary.fetchByUserId.mockResolvedValueOnce(mockCollectionSummary)
+
+		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchRecentByUserId = jest.fn()
+
+		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockModuleSummary)
+
+		return request(app)
+			.get('/dashboard/all')
+			.set('cookie', [''])
 			.then(response => {
 				expect(CountServices.getUserModuleCount).toHaveBeenCalledTimes(1)
 				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
@@ -262,6 +302,180 @@ describe('repository dashboard route', () => {
 					myModules: mockModuleSummary
 				})
 				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('get /collections/:nameOrId sends the correct props to the Dashboard component with cookies set and the collection exists and the user owns the collection', () => {
+		expect.hasAssertions()
+
+		const mockShortToUUID = jest.fn()
+		mockShortToUUID.mockReturnValue('mockCollectionLongId')
+		short.mockReturnValue({
+			toUUID: mockShortToUUID
+		})
+
+		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(true)
+
+		CountServices.getUserModuleCount.mockResolvedValueOnce(5)
+
+		CollectionSummary.fetchById = jest.fn()
+		CollectionSummary.fetchById.mockResolvedValueOnce(mockSingleCollection)
+
+		CollectionSummary.fetchByUserId = jest.fn()
+		CollectionSummary.fetchByUserId.mockResolvedValueOnce(mockCollectionSummary)
+
+		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchRecentByUserId = jest.fn()
+
+		DraftSummary.fetchAllInCollection.mockResolvedValueOnce(mockModuleSummary)
+
+		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
+
+		return request(app)
+			.get(`/${path}`)
+			.set('cookie', [generateCookie('collection', path, 'newest')])
+			.then(response => {
+				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
+				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
+
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					'mockCollectionLongId'
+				)
+
+				expect(CollectionSummary.fetchById).toHaveBeenCalledTimes(1)
+				expect(CollectionSummary.fetchById).toHaveBeenCalledWith('mockCollectionLongId')
+
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledTimes(1)
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledTimes(1)
+				expect(CollectionSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
+				expect(DraftSummary.fetchAllInCollection).toHaveBeenCalledTimes(1)
+				expect(DraftSummary.fetchAllInCollection).toHaveBeenCalledWith(
+					mockSingleCollection.id,
+					mockCurrentUser.id
+				)
+
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
+
+				expect(mockDashboardComponent).toHaveBeenCalledTimes(1)
+				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
+					title: 'View Collection',
+					collection: mockSingleCollection,
+					currentUser: mockCurrentUser,
+					mode: MODE_COLLECTION,
+					moduleCount: 5,
+					moduleSortOrder: 'alphabetical',
+					collectionSortOrder: 'newest',
+					myCollections: mockCollectionSummary,
+					myModules: mockModuleSummary
+				})
+				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('get /collections/:nameOrId sends the correct response when the collection exists but the user does not own the collection', () => {
+		expect.hasAssertions()
+
+		const mockShortToUUID = jest.fn()
+		mockShortToUUID.mockReturnValue('mockCollectionLongId')
+		short.mockReturnValue({
+			toUUID: mockShortToUUID
+		})
+
+		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(false)
+
+		CollectionSummary.fetchById = jest.fn()
+
+		CollectionSummary.fetchByUserId = jest.fn()
+
+		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchRecentByUserId = jest.fn()
+
+		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
+
+		return request(app)
+			.get(`/${path}`)
+			.set('cookie', [''])
+			.then(response => {
+				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
+				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
+
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					'mockCollectionLongId'
+				)
+
+				expect(CollectionSummary.fetchById).not.toHaveBeenCalled()
+
+				expect(CountServices.getUserModuleCount).not.toHaveBeenCalled()
+
+				expect(CollectionSummary.fetchByUserId).not.toHaveBeenCalled()
+
+				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
+
+				expect(mockDashboardComponent).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(401)
+			})
+	})
+
+	test('get /collections/:nameOrId sends the correct response when the user owns the collection but a database error occurs', () => {
+		expect.hasAssertions()
+
+		const mockShortToUUID = jest.fn()
+		mockShortToUUID.mockReturnValue('mockCollectionLongId')
+		short.mockReturnValue({
+			toUUID: mockShortToUUID
+		})
+
+		PermissionsServices.userHasPermissionToCollection.mockResolvedValueOnce(true)
+
+		CollectionSummary.fetchById = jest.fn()
+		CollectionSummary.fetchById.mockRejectedValueOnce(new Error('database error'))
+
+		CollectionSummary.fetchByUserId = jest.fn()
+
+		DraftSummary.fetchAllInCollection = jest.fn()
+		DraftSummary.fetchByUserId = jest.fn()
+		DraftSummary.fetchRecentByUserId = jest.fn()
+
+		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
+
+		return request(app)
+			.get(`/${path}`)
+			.set('cookie', [''])
+			.then(response => {
+				expect(mockShortToUUID).toHaveBeenCalledTimes(1)
+				expect(mockShortToUUID).toHaveBeenCalledWith('mockCollectionShortId')
+
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledTimes(1)
+				expect(PermissionsServices.userHasPermissionToCollection).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					'mockCollectionLongId'
+				)
+
+				expect(CollectionSummary.fetchById).toHaveBeenCalledTimes(1)
+				expect(CollectionSummary.fetchById).toHaveBeenCalledWith('mockCollectionLongId')
+
+				expect(CountServices.getUserModuleCount).not.toHaveBeenCalled()
+
+				expect(CollectionSummary.fetchByUserId).not.toHaveBeenCalled()
+
+				expect(DraftSummary.fetchAllInCollection).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchByUserId).not.toHaveBeenCalled()
+				expect(DraftSummary.fetchRecentByUserId).not.toHaveBeenCalled()
+
+				expect(mockDashboardComponent).not.toHaveBeenCalled()
+				expect(response.statusCode).toBe(404)
 			})
 	})
 })
