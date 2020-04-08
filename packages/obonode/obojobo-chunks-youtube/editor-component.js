@@ -30,13 +30,19 @@ class YouTube extends React.Component {
 	handleSourceChange(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
 	}
 
 	renderNoVideo() {
 		return (
 			<div className="empty-frame">
-				<div>No Video Id.</div>
+				<div>
+					<p>No video specified. Click &apos;Edit&apos; to add one.</p>
+				</div>
 			</div>
 		)
 	}
@@ -69,7 +75,8 @@ class YouTube extends React.Component {
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
-					onClick={this.focusYoutube.bind(this)}>
+					onClick={this.focusYoutube.bind(this)}
+				>
 					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 						×
 					</Button>
