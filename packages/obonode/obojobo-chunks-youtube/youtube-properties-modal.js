@@ -33,7 +33,7 @@ class YouTubeProperties extends React.Component {
 
 		console.log('videoInfo', videoInfo)
 
-		const videoId = videoInfo.videoId
+		const videoId = videoInfo.videoId ? videoInfo.videoId : event.target.value;
 		const startTime = this.state.content.startTime
 
 		if (videoInfo.startTime) {
@@ -125,7 +125,7 @@ class YouTubeProperties extends React.Component {
 				onConfirm={this.onConfirm.bind(this)}
 			>
 				<div className="youtube-video-properties">
-					<label>Youtube video id:</label>
+					<label>Youtube video id or url:</label>
 					<input
 						id="obojobo-draft--chunks--youtube--video-id"
 						type="text"
