@@ -68,10 +68,10 @@ router
 			res.success([])
 			return
 		}
-
 		try {
 			const users = await searchForUserByString(req.query.q)
-			res.success(users)
+			const filteredUsers = users.map(u => u.toJSON())
+			res.success(filteredUsers)
 		} catch (error) {
 			res.unexpected(error)
 		}
