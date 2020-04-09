@@ -16,8 +16,8 @@ describe('CollectionManageModulesDialog', () => {
 
 		defaultProps = {
 			collection: {
-				id: 'whatever',
-				title: 'whatever'
+				id: 'mockCollectionId',
+				title: 'mockCollectionTitle'
 			},
 			collectionModules: [],
 			loadCollectionModules: jest.fn(),
@@ -32,7 +32,7 @@ describe('CollectionManageModulesDialog', () => {
 		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
 
 		expect(defaultProps.loadCollectionModules).toHaveBeenCalledTimes(1)
-		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('whatever')
+		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('mockCollectionId')
 		expect(component.find(CollectionModuleListItem).length).toBe(0)
 	})
 
@@ -40,20 +40,20 @@ describe('CollectionManageModulesDialog', () => {
 		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
 
 		expect(defaultProps.loadCollectionModules).toHaveBeenCalledTimes(1)
-		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('whatever')
+		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('mockCollectionId')
 		expect(component.find(CollectionModuleListItem).length).toBe(0)
 	})
 
 	test('renders with collection modules', () => {
 		defaultProps.collectionModules = [
-			{ draftId: 'whatever' },
-			{ draftId: 'whatever-2' },
-			{ draftId: 'whatever-3' }
+			{ draftId: 'mockDraftId' },
+			{ draftId: 'mockDraftId2' },
+			{ draftId: 'mockDraftId3' }
 		]
 		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
 
 		expect(defaultProps.loadCollectionModules).toHaveBeenCalledTimes(1)
-		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('whatever')
+		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('mockCollectionId')
 		expect(component.find(CollectionModuleListItem).length).toBe(3)
 	})
 

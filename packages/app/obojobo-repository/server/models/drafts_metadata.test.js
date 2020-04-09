@@ -53,7 +53,7 @@ describe('DraftsMetadata Model', () => {
 					updated_at = 'now()'
 				`
 
-		draftMetadata.saveOrCreate().then(dm => {
+		return draftMetadata.saveOrCreate().then(dm => {
 			expect(db.none).toHaveBeenCalledWith(query, draftMetadata)
 			expect(dm).toBeInstanceOf(DraftsMetadata)
 			expectMatchesRawMock(dm)

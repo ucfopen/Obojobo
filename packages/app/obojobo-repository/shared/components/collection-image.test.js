@@ -4,8 +4,8 @@ import { mount } from 'enzyme'
 
 describe('CollectionImage', () => {
 	test('CollectionImage renders correctly with provided id in props', () => {
-		const component = mount(<CollectionImage id="whatever" />)
+		const component = mount(<CollectionImage id="mockCollectionId" />)
 
-		expect(component.find('pattern').is('#collection-img-id-whatever')).toBe(true)
+		expect(component.find('pattern').is('#collection-img-id-mockCollectionId')).toBe(true)
 	})
 })

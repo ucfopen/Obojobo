@@ -57,9 +57,11 @@ describe('Search Services', () => {
 				ORDER BY first_name, last_name
 				LIMIT 25`
 
-		SearchServices.searchForUserByString('whatever').then(response => {
+		return SearchServices.searchForUserByString('searchString').then(response => {
 			expect(db.none).toHaveBeenCalledWith(noneQueryString)
-			expect(db.manyOrNone).toHaveBeenCalledWith(manyOrNoneQueryString, { search: '%whatever%' })
+			expect(db.manyOrNone).toHaveBeenCalledWith(manyOrNoneQueryString, {
+				search: '%searchString%'
+			})
 
 			expect(response[0]).toBeInstanceOf(UserModel)
 			expect(response[0].id).toBe(1)

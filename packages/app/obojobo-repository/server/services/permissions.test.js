@@ -9,7 +9,7 @@ describe('Permissions Services', () => {
 	const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 	const mockRawUser = {
-		id: 0,
+		id: 1,
 		firstName: 'first',
 		lastName: 'last',
 		email: 'email@obojobo.com',
@@ -61,32 +61,40 @@ describe('Permissions Services', () => {
 		WHERE draft_id = $[draftId]
 		ORDER BY users.first_name, users.last_name`
 
-		PermissionsServices.fetchAllUsersWithPermissionToDraft('whatever').then(response => {
-			expect(db.manyOrNone).toHaveBeenCalledWith(queryString, { draftId: 'whatever' })
+		return PermissionsServices.fetchAllUsersWithPermissionToDraft('mockDraftId').then(response => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(queryString, { draftId: 'mockDraftId' })
 			expect(response.length).toBe(1)
 			const um = response[0]
 			expect(um).toBeInstanceOf(UserModel)
-			expect(um.id).toBe(0)
-			expect(um.firstName).toBe('first')
-			expect(um.lastName).toBe('last')
-			expect(um.email).toBe('email@obojobo.com')
+			expect(um.id).toBe(mockRawUser.id)
+			expect(um.firstName).toBe(mockRawUser.firstName)
+			expect(um.lastName).toBe(mockRawUser.lastName)
+			expect(um.email).toBe(mockRawUser.email)
 		})
 	})
 
 	test('userHasPermissionToCopy returns true when a draft is public, but a user does not have access', () => {
 		db.oneOrNone = jest.fn()
-		db.oneOrNone.mockResolvedValueOnce('whatever').mockResolvedValueOnce(null)
+		db.oneOrNone.mockResolvedValueOnce('mockDraftId').mockResolvedValueOnce(null)
 
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCopy(1, 'whatever').then(response => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(2)
-			expect(db.oneOrNone.mock.calls).toStrictEqual([
-				[publicDraftQueryString, { draftId: 'whatever' }],
-				[userDraftPermissionQueryString, { userId: 1 }]
-			])
-			expect(response).toBe(true)
-		})
+		return PermissionsServices.userHasPermissionToCopy(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(2)
+
+				expect(db.oneOrNone.mock.calls[0]).toEqual([
+					publicDraftQueryString,
+					{ draftId: 'mockDraftId', publicLibCollectionId }
+				])
+				expect(db.oneOrNone.mock.calls[1]).toEqual([
+					userDraftPermissionQueryString,
+					{ userId: mockRawUser.id, draftId: 'mockDraftId' }
+				])
+
+				expect(response).toBe(true)
+			}
+		)
 	})
 
 	test('userHasPermissionToCopy returns true when a draft is not public, but a user has access', () => {
@@ -95,14 +103,22 @@ describe('Permissions Services', () => {
 
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCopy(1, 'whatever').then(response => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(2)
-			expect(db.oneOrNone.mock.calls).toStrictEqual([
-				[publicDraftQueryString, { draftId: 'whatever', publicLibCollectionId }],
-				[userDraftPermissionQueryString, { userId: 1, draftId: 'whatever' }]
-			])
-			expect(response).toBe(true)
-		})
+		return PermissionsServices.userHasPermissionToCopy(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(2)
+
+				expect(db.oneOrNone.mock.calls[0]).toEqual([
+					publicDraftQueryString,
+					{ draftId: 'mockDraftId', publicLibCollectionId }
+				])
+				expect(db.oneOrNone.mock.calls[1]).toEqual([
+					userDraftPermissionQueryString,
+					{ userId: mockRawUser.id, draftId: 'mockDraftId' }
+				])
+
+				expect(response).toBe(true)
+			}
+		)
 	})
 
 	test('userHasPermissionToCopy returns false when a draft is not public and a user does not have access', () => {
@@ -111,46 +127,94 @@ describe('Permissions Services', () => {
 
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCopy(1, 'whatever').then(response => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(2)
-			expect(db.oneOrNone.mock.calls).toStrictEqual([
-				[publicDraftQueryString, { draftId: 'whatever', publicLibCollectionId }],
-				[userDraftPermissionQueryString, { userId: 1, draftId: 'whatever' }]
-			])
-			expect(response).toBe(false)
-		})
+		return PermissionsServices.userHasPermissionToCopy(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(2)
+
+				expect(db.oneOrNone.mock.calls[0]).toEqual([
+					publicDraftQueryString,
+					{ draftId: 'mockDraftId', publicLibCollectionId }
+				])
+				expect(db.oneOrNone.mock.calls[1]).toEqual([
+					userDraftPermissionQueryString,
+					{ userId: mockRawUser.id, draftId: 'mockDraftId' }
+				])
+
+				expect(response).toBe(false)
+			}
+		)
 	})
 
-	test('userHasPermissionToDraft returns a boolean value', () => {
+	test('userHasPermissionToDraft returns true when the user has permission', () => {
 		db.oneOrNone = jest.fn()
-		db.oneOrNone.mockResolvedValueOnce(1)
+		db.oneOrNone.mockResolvedValueOnce(mockRawUser.id)
 
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft(1, 'whatever').then(response => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
-			expect(db.oneOrNone).toHaveBeenCalledWith(userDraftPermissionQueryString, {
-				userId: 1,
-				draftId: 'whatever'
-			})
-			expect(response).toBe(false)
-		})
+		return PermissionsServices.userHasPermissionToDraft(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+				expect(db.oneOrNone).toHaveBeenCalledWith(userDraftPermissionQueryString, {
+					userId: mockRawUser.id,
+					draftId: 'mockDraftId'
+				})
+				expect(response).toBe(true)
+			}
+		)
 	})
 
-	test('userHasPermissionToCollection returns a boolean value', () => {
+	test('userHasPermissionToDraft returns false when the user does not have permission', () => {
 		db.oneOrNone = jest.fn()
-		db.oneOrNone.mockResolvedValueOnce(1)
+		db.oneOrNone.mockResolvedValueOnce(null)
 
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCollection(1, 'whatever').then(response => {
-			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
-			expect(db.oneOrNone).toHaveBeenCalledWith(userCollectionPermissionQueryString, {
-				userId: 1,
-				collectionId: 'whatever'
-			})
-			expect(response).toBeInstanceOf(Boolean)
-		})
+		return PermissionsServices.userHasPermissionToDraft(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+				expect(db.oneOrNone).toHaveBeenCalledWith(userDraftPermissionQueryString, {
+					userId: mockRawUser.id,
+					draftId: 'mockDraftId'
+				})
+				expect(response).toBe(false)
+			}
+		)
+	})
+
+	test('userHasPermissionToCollection returns true when the user has permission', () => {
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce(mockRawUser.id)
+
+		expect.hasAssertions()
+
+		return PermissionsServices.userHasPermissionToCollection(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+				expect(db.oneOrNone).toHaveBeenCalledWith(userCollectionPermissionQueryString, {
+					userId: mockRawUser.id,
+					collectionId: 'mockDraftId'
+				})
+				expect(response).toBe(true)
+			}
+		)
+	})
+
+	test('userHasPermissionToCollection returns false when the user does not have permission', () => {
+		db.oneOrNone = jest.fn()
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		expect.hasAssertions()
+
+		return PermissionsServices.userHasPermissionToCollection(mockRawUser.id, 'mockDraftId').then(
+			response => {
+				expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+				expect(db.oneOrNone).toHaveBeenCalledWith(userCollectionPermissionQueryString, {
+					userId: mockRawUser.id,
+					collectionId: 'mockDraftId'
+				})
+				expect(response).toBe(false)
+			}
+		)
 	})
 
 	test('addUserPermissionToDraft runs the correct query', () => {
@@ -164,9 +228,12 @@ describe('Permissions Services', () => {
 		VALUES($[draftId], $[userId])
 		ON CONFLICT DO NOTHING`
 
-		PermissionsServices.addUserPermissionToDraft(1, 'whatever').then(() => {
+		return PermissionsServices.addUserPermissionToDraft(mockRawUser.id, 'mockDraftId').then(() => {
 			expect(db.none).toHaveBeenCalledTimes(1)
-			expect(db.none).toHaveBeenCalledWith(queryString, { userId: 1, draftId: 'whatever' })
+			expect(db.none).toHaveBeenCalledWith(queryString, {
+				userId: mockRawUser.id,
+				draftId: 'mockDraftId'
+			})
 		})
 	})
 
@@ -181,9 +248,14 @@ describe('Permissions Services', () => {
 		AND user_id = $[userId]
 		`
 
-		PermissionsServices.removeUserPermissionToDraft(1, 'whatever').then(() => {
-			expect(db.none).toHaveBeenCalledTimes(1)
-			expect(db.none).toHaveBeenCalledWith(queryString, { userId: 1, draftId: 'whatever' })
-		})
+		return PermissionsServices.removeUserPermissionToDraft(mockRawUser.id, 'mockDraftId').then(
+			() => {
+				expect(db.none).toHaveBeenCalledTimes(1)
+				expect(db.none).toHaveBeenCalledWith(queryString, {
+					userId: mockRawUser.id,
+					draftId: 'mockDraftId'
+				})
+			}
+		)
 	})
 })

@@ -76,7 +76,7 @@ describe.only('DraftSummary Model', () => {
 
 		const query = queryBuilder('drafts.id = $[id]')
 
-		DraftSummary.fetchById('mockDraftId').then(summary => {
+		return DraftSummary.fetchById('mockDraftId').then(summary => {
 			expect(db.one).toHaveBeenCalledWith(query, { id: 'mockDraftId' })
 			checkAgainstMockRawSummary(summary)
 		})

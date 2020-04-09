@@ -1,9 +1,8 @@
 describe('Collection Services', () => {
 	jest.mock('obojobo-express/server/db')
-	jest.mock('../models/collection')
 
 	let db
-	const CollectionModel = require('../models/collection')
+	const Collection = require('../models/collection')
 	let CollectionServices
 
 	const mockRawCollection = {
@@ -14,14 +13,13 @@ describe('Collection Services', () => {
 	}
 
 	beforeEach(() => {
-		jest.resetModules()
 		jest.resetAllMocks()
 		db = require('obojobo-express/server/db')
 		CollectionServices = require('./collections')
 	})
 	afterEach(() => {})
 
-	test('fetchAllCollectionsForDraft returns a list of collection objects', () => {
+	test('fetchAllCollectionsForDraft returns a list of Collection objects', () => {
 		const mockResponse = [
 			{ ...mockRawCollection },
 			{ ...mockRawCollection, id: 'mockCollectionId2' },
@@ -46,19 +44,19 @@ describe('Collection Services', () => {
 		ORDER BY repository_collections.title
 		`
 
-		CollectionServices.fetchAllCollectionsForDraft('mockDraftId').then(response => {
-			expect(db.manyOrNone).toHaveBeenCalledWith(queryString)
+		return CollectionServices.fetchAllCollectionsForDraft('mockDraftId').then(response => {
+			expect(db.manyOrNone).toHaveBeenCalledWith(queryString, { draftId: 'mockDraftId' })
 
-			expect(response[0]).toBeInstanceOf(CollectionModel)
+			expect(response[0]).toBeInstanceOf(Collection)
 			expect(response[0].id).toBe('mockCollectionId')
 			expect(response[0].title).toBe('mockCollectionTitle')
-			expect(response[0].userId).toBe(0)
+			expect(response[0].userId).toBe(mockRawCollection.user_id)
 			expect(response[0].createdAt).toBe(mockRawCollection.created_at)
 
-			expect(response[1]).toBeInstanceOf(CollectionModel)
+			expect(response[1]).toBeInstanceOf(Collection)
 			expect(response[1].id).toBe('mockCollectionId2')
 
-			expect(response[2]).toBeInstanceOf(CollectionModel)
+			expect(response[2]).toBeInstanceOf(Collection)
 			expect(response[2].id).toBe('mockCollectionId3')
 		})
 	})

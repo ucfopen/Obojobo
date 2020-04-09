@@ -14,20 +14,20 @@ describe('Count Services', () => {
 
 	test('getUserModuleCount returns a list of collection objects', () => {
 		db.one = jest.fn()
-		db.one.mockResolvedValueOnce(1)
+		db.one.mockResolvedValueOnce({ count: 10 })
 
 		expect.hasAssertions()
 
 		const queryString = `
 		SELECT COUNT(id) AS count
 		FROM drafts
-		WHERE deleted = false
+		WHERE deleted = FALSE
 		AND user_id = $[userId]
 	`
 
-		CountServices.getUserModuleCount('mockUserId').then(response => {
+		return CountServices.getUserModuleCount('mockUserId').then(response => {
 			expect(db.one).toHaveBeenCalledWith(queryString, { userId: 'mockUserId' })
-			expect(response).toBe(1)
+			expect(response).toBe(10)
 		})
 	})
 })

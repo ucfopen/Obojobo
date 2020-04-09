@@ -46,7 +46,7 @@ describe('Collection Model', () => {
 
 		db.one.mockResolvedValueOnce(mockRawCollection)
 
-		CollectionModel.fetchById('mockCollectionId').then(model => {
+		return CollectionModel.fetchById('mockCollectionId').then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
 			expect(model.id).toBe('mockCollectionId')
 			expect(model.title).toBe('mockCollectionTitle')
@@ -135,7 +135,7 @@ describe('Collection Model', () => {
 
 		const userId = 0
 
-		CollectionModel.rename('mockCollectionId', 'mockCollectionTitle', userId).then(model => {
+		return CollectionModel.rename('mockCollectionId', 'mockCollectionTitle', userId).then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
 			expect(model.id).toBe('mockCollectionId')
 			expect(model.title).toBe('mockCollectionTitle')
@@ -162,7 +162,7 @@ describe('Collection Model', () => {
 
 		db.none.mockResolvedValueOnce(mockPayload)
 
-		CollectionModel.addModule(collectionId, draftId, userId).then(() => {
+		return CollectionModel.addModule(collectionId, draftId, userId).then(() => {
 			expect(logger.info).toHaveBeenCalledWith('user added module to collection', mockPayload)
 		})
 	})
@@ -180,7 +180,7 @@ describe('Collection Model', () => {
 
 		db.none.mockResolvedValueOnce(mockPayload)
 
-		CollectionModel.removeModule(collectionId, draftId).then(() => {
+		return CollectionModel.removeModule(collectionId, draftId, userId).then(() => {
 			expect(logger.info).toHaveBeenCalledWith('user removed module from collection', mockPayload)
 		})
 	})
@@ -193,9 +193,9 @@ describe('Collection Model', () => {
 		const collectionId = 'mockCollectionId'
 		const userId = 0
 
-		CollectionModel.delete(collectionId, userId).then(() => {
+		return CollectionModel.delete(collectionId, userId).then(() => {
 			expect(logger.info).toHaveBeenCalledWith('collection deleted by user', {
-				collectionId,
+				id: collectionId,
 				userId
 			})
 		})
@@ -211,15 +211,19 @@ describe('Collection Model', () => {
 		DraftSummary.fetchAndJoinWhere.mockResolvedValueOnce(mockDrafts)
 
 		const joinSQL = `
-		JOIN repository_map_drafts_to_collections
-			ON repository_map_drafts_to_collections.draft_id = drafts.id
-		JOIN repository_collections
-			ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
+			JOIN repository_map_drafts_to_collections
+				ON repository_map_drafts_to_collections.draft_id = drafts.id
+			JOIN repository_collections
+				ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
 
-		CollectionModel.fetchById('mockCollectionId')
+		const whereSQL = `repository_collections.id = $[collectionId]`
+
+		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.then(collection => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'mockDraftId')
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+					collectionId: 'mockCollectionId'
+				})
 				expect(collection.drafts).toEqual(mockDrafts)
 			})
 	})
@@ -234,18 +238,22 @@ describe('Collection Model', () => {
 		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(new Error('not found in db'))
 
 		const joinSQL = `
-		JOIN repository_map_drafts_to_collections
-			ON repository_map_drafts_to_collections.draft_id = drafts.id
-		JOIN repository_collections
-			ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
+			JOIN repository_map_drafts_to_collections
+				ON repository_map_drafts_to_collections.draft_id = drafts.id
+			JOIN repository_collections
+				ON repository_collections.id = repository_map_drafts_to_collections.collection_id`
 
-		CollectionModel.fetchById('mockCollectionId')
+		const whereSQL = `repository_collections.id = $[collectionId]`
+
+		return CollectionModel.fetchById('mockCollectionId')
 			.then(collection => collection.loadRelatedDrafts())
 			.catch(error => {
-				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, 'mockDraftId')
+				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
+					collectionId: 'mockCollectionId'
+				})
 				expect(error).toBeInstanceOf(Error)
 				expect(error.message).toBe('not found in db')
-				expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
+				expect(logger.error).toHaveBeenCalledWith('loadModules Error', 'not found in db')
 			})
 	})
 })

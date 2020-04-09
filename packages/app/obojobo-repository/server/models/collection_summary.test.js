@@ -51,7 +51,7 @@ describe('CollectionSummary Model', () => {
 
 		const query = queryBuilder('id = $[id]')
 
-		CollectionSummary.fetchById('mockCollectionId').then(summary => {
+		return CollectionSummary.fetchById('mockCollectionId').then(summary => {
 			expect(db.one).toHaveBeenCalledWith(query, { id: 'mockCollectionId' })
 			checkAgainstMockRawSummary(summary)
 		})

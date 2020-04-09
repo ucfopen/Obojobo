@@ -66,7 +66,7 @@ class Collection {
 					id: updatedCollection.id,
 					title: updatedCollection.title
 				})
-				return updatedCollection
+				return new Collection(updatedCollection)
 			})
 	}
 
