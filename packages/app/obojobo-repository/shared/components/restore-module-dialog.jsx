@@ -63,7 +63,8 @@ class RestoreModuleDialog extends React.Component {
 
 	loadDraftRevisions() {
 		APIUtil.getAllDraftRevisions(this.props.draftId).then(drafts => {
-			const revisions = drafts.filter(draft => draft.json !== null)
+			const revisions = drafts
+				.filter(draft => draft.json !== null)
 				.map((draft, index) => ({
 					createdAt: new Date(draft.createdAt),
 					id: draft.revisionId,
@@ -75,8 +76,8 @@ class RestoreModuleDialog extends React.Component {
 			// Set selectedIndex to 0 to make sure the first draft
 			// is selected when a draft gets restored
 			this.setState({
-				revisions,
-				selectedIndex: 0
+				selectedIndex: 0,
+				revisions
 			})
 		})
 	}
