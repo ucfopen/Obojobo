@@ -500,7 +500,7 @@ exports[`PageEditor PageEditor component 1`] = `
       className="preview-latex"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+          "__html": "",
         }
       }
     />
@@ -968,7 +968,7 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       className="preview-latex"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+          "__html": "",
         }
       }
     />
@@ -1436,7 +1436,7 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       className="preview-latex"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+          "__html": "",
         }
       }
     />
@@ -1950,7 +1950,7 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       className="preview-latex"
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow></mrow><annotation encoding=\\"application/x-tex\\"></annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"></span></span>",
+          "__html": "",
         }
       }
     />

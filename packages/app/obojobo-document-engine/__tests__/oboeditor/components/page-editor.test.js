@@ -317,7 +317,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		jest.spyOn(Editor, 'leaf').mockReturnValueOnce([{ text: '' }, []])
+		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: '' }, []])
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [
