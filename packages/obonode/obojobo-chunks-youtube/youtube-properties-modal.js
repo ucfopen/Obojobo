@@ -28,21 +28,15 @@ class YouTubeProperties extends React.Component {
 		return this.idInputRef.current.focus()
 	}
 
-	/////////////////////////////////////////////////////////////
 	handleIdChange(event) {
-		// const videoId = event.target.value
 
 		const videoInfo = EditorUtil.youTubeParseUrl(event.target.value)
+		const videoId = videoInfo.videoId === false ? event.target.value : videoInfo.videoId;
 
-		console.log('this', this)
-
-		console.log('videoInfo', videoInfo)
-
-		const videoId = videoInfo.videoId ? videoInfo.videoId : event.target.value;
-		const startTime = this.state.content.startTime
+		let startTime = this.state.content.startTime
 
 		if (videoInfo.startTime) {
-			const startTime = videoInfo.startTime
+			startTime = videoInfo.startTime
 			this.setState({
 				...this.state,
 				content: {
@@ -99,10 +93,7 @@ class YouTubeProperties extends React.Component {
 
 		const videoInfo = EditorUtil.youTubeParseUrl(videoId)
 
-		console.log('videoInfo', videoInfo)
-
 		if (videoInfo.videoId) {
-			console.log('we have a video')
 			this.state.content.videoId = videoInfo.videoId
 		}
 
@@ -138,6 +129,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.videoId || ''}
 						onChange={this.handleIdChange}
 					/>
+
 					<label>Start time in seconds (optional):</label>
 					<input
 						type="number"
