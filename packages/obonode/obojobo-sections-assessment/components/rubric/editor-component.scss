@@ -100,6 +100,11 @@
 		}
 	}
 
+	.invisibleText {
+		height: 0;
+		width: 0;
+	}
+
 	&.is-type-highest {
 		.pass-fail,
 		.mods {

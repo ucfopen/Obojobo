@@ -3,11 +3,9 @@ import Converter from './converter'
 describe('YouTube Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
+			content: {},
 			text: 'mockText'
 		}
 		const oboNode = Converter.slateToObo(slateNode)

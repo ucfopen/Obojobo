@@ -1,146 +1,96 @@
 import React from 'react'
-import { getEventTransfer } from 'slate-react'
-import { Block } from 'slate'
+import { Editor, Node, Element, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import Level from './components/level/editor-component'
 import Line from './components/line/editor-component'
-import Schema from './schema'
 import Converter from './converter'
 
+import normalizeNode from './changes/normalize-node'
 import onBackspace from './changes/on-backspace'
 import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
+import wrapLevelOrTab from './changes/wrap-level-or-tab'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const isType = editor => {
-	return editor.value.blocks.some(block => {
-		return !!editor.value.document.getClosest(block.key, parent => {
-			return parent.type === LIST_NODE
-		})
-	})
-}
-
 const plugins = {
-	onPaste(event, editor, next) {
-		const isList = isType(editor)
-		const transfer = getEventTransfer(event)
-		if (transfer.type === 'fragment' || !isList) return next()
+	// Editor Plugins - These get attached to the editor object and override it's default functions
+	// They may affect multiple nodes simultaneously
+	insertData(data, editor, next) {
+		// Insert Slate fragments normally
+		if(data.types.includes('application/x-slate-fragment')) return next(data)
 
-		const saveBlocks = editor.value.blocks
+		// If the node that we will be inserting into is not a Code node use the regular logic
+		const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
+		if(first[0].type !== LIST_NODE) return next(data)
 
-		editor
-			.createListLinesFromText(transfer.text.split('\n'))
-			.forEach(line => editor.insertBlock(line))
+		// When inserting plain text into a Code node insert all lines as code
+		const plainText = data.getData('text/plain')
+		const fragment = plainText.split('\n').map(text => ({
+			type: LIST_NODE,
+			subtype: LIST_LINE_NODE,
+			content: {},
+			children: [{ text }]
+		}))
 
-		saveBlocks.forEach(node => {
-			if (node.text === '') {
-				editor.removeNodeByKey(node.key)
-			}
-		})
+		Transforms.insertFragment(editor, fragment)
 	},
-	onKeyDown(event, editor, next) {
-		// See if any of the selected nodes have a LIST_NODE parent
-		const isLine = isType(editor)
-		if (!isLine) return next()
+	normalizeNode,
+	// Editable Plugins - These are used by the PageEditor component to augment React functions
+	// They affect individual nodes independently of one another
+	decorate([node, path], editor) {
+		// Define a placeholder decoration
+		if(Element.isElement(node) && !node.subtype && Node.string(node) === ''){
+			const point = Editor.start(editor, path)
 
+			return [{
+				placeholder: 'Type your text here',
+				anchor: point,
+				focus: point
+			}]
+		}
+
+		return []
+	},
+	onKeyDown(entry, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
-			case 'Delete':
-				return onBackspace(event, editor, next)
-
-			case 'Enter':
-				// Text lines will be changed to list lines by the schema unless
-				// they are at the end of the list
-				return insertText(event, editor, next)
+				return onBackspace(entry, editor, event)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return wrapLevel(event, editor, next)
+				if (event.shiftKey) return unwrapLevel(entry, editor, event)
+
+				// TAB + ALT
+				if (event.altKey) return wrapLevel(entry, editor, event)
 
 				// TAB
-				return unwrapLevel(event, editor, next)
+				return wrapLevelOrTab(entry, editor, event)
 
-			default:
-				return next()
+			case 'Enter':
+				return insertText(entry, editor, event)
+
+			case 'h':
+				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
 		}
 	},
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case LIST_NODE:
-				return <Node {...props} {...props.attributes} />
+	renderNode(props) {
+		switch (props.element.subtype) {
 			case LIST_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
 			case LIST_LEVEL_NODE:
 				return <Level {...props} {...props.attributes} />
 			default:
-				return next()
+				return <EditorComponent {...props} {...props.attributes} />
 		}
 	},
-	renderPlaceholder(props, editor, next) {
-		const { node } = props
-		if (node.object !== 'block' || node.type !== LIST_LINE_NODE || node.text !== '') return next()
-
-		return (
-			<span
-				className="placeholder"
-				contentEditable={false}
-				data-placeholder="Type Your Text Here"
-			/>
-		)
-	},
-	normalizeNode(node, editor, next) {
-		if (node.object !== 'block') return next()
-		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
-		if (node.nodes.size <= 1) return next()
-
-		// Checks children for two consecutive list levels
-		// If consecutive levels are found, return the second one so it can be
-		// merged into its previous sibling
-		const invalids = node.nodes
-			.map((child, i) => {
-				const nextNode = node.nodes.get(i + 1)
-				if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) {
-					return false
-				}
-				return nextNode
-			})
-			.filter(Boolean)
-
-		if (invalids.size === 0) return next()
-
-		return editor => {
-			return editor.withoutNormalizing(e => {
-				invalids.forEach(n => {
-					e.mergeNodeByKey(n.key)
-				})
-			})
-		}
-	},
-	schema: Schema,
-	queries: {
-		createListLinesFromText(editor, textList) {
-			return textList.map(textLine =>
-				Block.create({
-					object: 'block',
-					type: LIST_LINE_NODE,
-					data: {},
-					nodes: [
-						{
-							object: 'text',
-							leaves: [{ object: 'leaf', text: textLine, marks: [] }]
-						}
-					]
-				})
-			)
-		}
-	}
 }
 
 const List = {
@@ -148,11 +98,8 @@ const List = {
 	menuLabel: 'List',
 	icon: Icon,
 	isInsertable: true,
-	helpers: {
-		isType, //@TODO check if this is needed?
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	isContent: true,
+	helpers: Converter,
 	json: {
 		emptyNode
 	},

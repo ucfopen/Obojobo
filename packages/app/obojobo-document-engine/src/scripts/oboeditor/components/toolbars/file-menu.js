@@ -1,10 +1,10 @@
 import React from 'react'
-import download from 'downloadjs'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorUtil from '../../util/editor-util'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import APIUtil from '../../../viewer/util/api-util'
+import { downloadDocument } from '../../../common/util/download-document'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -40,40 +40,18 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(moduleId, label) {
-		this.renameModule(moduleId, label)
-
+		const oldLabel = this.props.model.title
 		let draftId = null
 
 		APIUtil.createNewDraft()
 			.then(result => {
 				draftId = result.value.id
+				this.renameModule(moduleId, label)
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
+				this.renameModule(moduleId, oldLabel)
 				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
-			})
-	}
-
-	downloadModule(draftId, format) {
-		let formatResults
-
-		switch (format) {
-			case 'json':
-				formatResults = text => {
-					const json = JSON.parse(text)
-					return JSON.stringify(json, null, 2)
-				}
-				break
-
-			default:
-				formatResults = text => text
-				break
-		}
-
-		APIUtil.getFullDraft(draftId, format)
-			.then(formatResults)
-			.then(contents => {
-				download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
 			})
 	}
 
@@ -95,6 +73,8 @@ class FileMenu extends React.PureComponent {
 		reader.onload = e => {
 			this.processFileContent(this.props.draftId, e.target.result, file.type)
 		}
+
+		return reader // return for test access
 	}
 
 	buildFileSelector() {
@@ -170,12 +150,12 @@ class FileMenu extends React.PureComponent {
 					{
 						name: 'XML Document (.xml)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'xml')
+						action: () => downloadDocument(this.props.draftId, 'xml')
 					},
 					{
 						name: 'JSON Document (.json)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'json')
+						action: () => downloadDocument(this.props.draftId, 'json')
 					}
 				]
 			},
@@ -193,7 +173,7 @@ class FileMenu extends React.PureComponent {
 					)
 			},
 			{
-				name: 'Delete',
+				name: 'Delete Module',
 				type: 'action',
 				action: () =>
 					ModalUtil.show(

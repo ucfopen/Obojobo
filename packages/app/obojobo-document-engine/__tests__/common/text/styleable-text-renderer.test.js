@@ -232,4 +232,36 @@ describe('styleableTextRenderer', () => {
 		`.replace(/[\t\n]/g, '')
 		)
 	})
+
+	test('Unexpected tags with and without data', () => {
+		const st = new StyleableText('dog fox cat')
+		st.styleText('extra', 0, 3, { prop: 'val1' })
+		st.styleText('extra', 3, 7)
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>
+				<extra prop="val1">dog</extra>
+				<extra> fox</extra> cat
+			</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
+	test('Unexpected tags mixed with expected tags', () => {
+		const st = new StyleableText('dog fox cat')
+		st.styleText('b', 0, 3)
+		st.styleText('extra', 3, 7)
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>
+				<b>dog</b>
+				<extra> fox</extra> cat
+			</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
 })

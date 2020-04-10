@@ -13,7 +13,7 @@ const createMarkup = html => {
 	const latexes = div.querySelectorAll('.latex')
 
 	for (const el of Array.from(latexes)) {
-		el.innerHTML = katex.renderToString(el.innerHTML)
+		el.innerHTML = katex.renderToString(el.innerHTML, { throwOnError: false })
 	}
 
 	return { __html: div.innerHTML }

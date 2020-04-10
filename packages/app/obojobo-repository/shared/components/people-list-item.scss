@@ -14,10 +14,13 @@
 	}
 
 	.user-name {
-		max-width: calc(100% - #{$dimensions-avatar + $dimensions-close-button + 1.6em});
-		display: inline-block;
-		margin: 0 $dimensions-close-button + 0.8em 0 0.8em;
-		vertical-align: middle;
+		display: block;
+	}
+
+	.user-username {
+		display: block;
+		font-size: 0.7em;
+		opacity: 0.3;
 	}
 
 	.avatar {
@@ -26,6 +29,15 @@
 		margin: 0;
 		vertical-align: middle;
 		display: inline-block;
+		position: absolute;
+		left: 0.3em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.user-info {
+		padding-left: 2.5em;
+		padding-right: 2.5em;
 	}
 
 	> button {

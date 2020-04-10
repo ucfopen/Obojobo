@@ -1,19 +1,17 @@
-jest.mock('../server/db')
+jest.mock('../server/db', () => require('obojobo-document-engine/__mocks__/db'))
+const db = oboRequire('server/db')
+const insertEvent = oboRequire('server/insert_event')
+const expectedCreatedAt = new Date().toISOString()
 
 describe('insert_event', () => {
-	beforeAll(() => {})
-	afterAll(() => {})
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
+		jest.restoreAllMocks()
 	})
-	afterEach(() => {})
 
 	test('inserts the expected values', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
-		const db = oboRequire('server/db')
-		const insertEvent = oboRequire('server/insert_event')
-		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
 			actorTime: new Date().toISOString(),
@@ -43,11 +41,8 @@ describe('insert_event', () => {
 	})
 
 	test('inserts the expected values with a caliper event', () => {
-		expect.assertions(5)
+		expect.hasAssertions()
 
-		const db = oboRequire('server/db')
-		const insertEvent = oboRequire('server/insert_event')
-		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
 			actorTime: new Date().toISOString(),
@@ -78,11 +73,8 @@ describe('insert_event', () => {
 	})
 
 	test('inserts the expected values with a caliper event (with extensions)', () => {
-		expect.assertions(5)
+		expect.hasAssertions()
 
-		const db = oboRequire('server/db')
-		const insertEvent = oboRequire('server/insert_event')
-		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
 			actorTime: new Date().toISOString(),
@@ -113,10 +105,8 @@ describe('insert_event', () => {
 	})
 
 	test('insert event handles visitId correctly', () => {
-		expect.assertions(2)
+		expect.hasAssertions()
 
-		const db = oboRequire('server/db')
-		const insertEvent = oboRequire('server/insert_event')
 		const insertObject = {}
 		db.one.mockResolvedValue({})
 
@@ -130,10 +120,8 @@ describe('insert_event', () => {
 	})
 
 	test('Returns promise rejection', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
-		const db = oboRequire('server/db')
-		const insertEvent = oboRequire('server/insert_event')
 		const err = new Error('const error')
 		// mock insert
 		db.one.mockRejectedValueOnce(err)

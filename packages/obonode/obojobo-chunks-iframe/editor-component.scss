@@ -2,6 +2,7 @@
 
 .obojobo-draft--chunks--iframe {
 	position: relative;
+	user-select: none;
 
 	.obojobo-draft--components--button {
 		display: block;
@@ -51,6 +52,7 @@
 		overflow: hidden;
 		margin: 0 auto;
 		cursor: pointer;
+		user-select: none;
 
 		&::before {
 			content: ' ';
@@ -63,6 +65,7 @@
 			right: 3.3em;
 			bottom: 0;
 			transition: transform $duration-animation-default, opacity $duration-animation-default;
+			user-select: none;
 		}
 
 		.delete-button {

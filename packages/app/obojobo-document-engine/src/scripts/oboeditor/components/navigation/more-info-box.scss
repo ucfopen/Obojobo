@@ -20,7 +20,7 @@
 		cursor: pointer;
 
 		svg {
-			opacity: 0.4;
+			opacity: 0.6;
 		}
 
 		&:hover {
@@ -46,6 +46,7 @@
 		z-index: $z-index-above-content;
 		box-shadow: $box-shadow-overlay;
 		width: 28em;
+		text-align: left;
 
 		&::before {
 			position: absolute;
@@ -191,6 +192,10 @@
 
 	.box-controls {
 		text-align: center;
+
+		.error {
+			color: $color-error;
+		}
 	}
 
 	.select-item {

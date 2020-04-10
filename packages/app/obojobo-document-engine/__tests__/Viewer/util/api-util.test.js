@@ -367,12 +367,33 @@ describe('apiutil', () => {
 
 	test('reviewAttempt calls fetch', () => {
 		expect.hasAssertions()
+		mockJsonResult = [
+			{
+				attemptId: 'mock-attempt-id',
+				questions: [
+					{
+						id: 'mock-question-id'
+					}
+				]
+			},
+			{
+				attemptId: 'mock-attempt-id2',
+				questions: [{ id: 'mock-question-id-2' }, { id: 'mock-question-id-3' }]
+			}
+		]
 
 		return APIUtil.reviewAttempt('mockAttemptIds', {}).then(result => {
 			expect(post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
 				attemptIds: 'mockAttemptIds'
 			})
-			expect(result).toEqual(mockJsonResult)
+
+			expect(result).toEqual({
+				'mock-attempt-id': { 'mock-question-id': { id: 'mock-question-id' } },
+				'mock-attempt-id2': {
+					'mock-question-id-2': { id: 'mock-question-id-2' },
+					'mock-question-id-3': { id: 'mock-question-id-3' }
+				}
+			})
 		})
 	})
 

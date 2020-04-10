@@ -1,35 +1,36 @@
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
+import { Editor, Transforms, Range, Node } from 'slate'
+
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
-const onBackspace = (event, editor, next) => {
-	const last = editor.value.endBlock
+const onBackspace = (entry, editor, event) => {
+	const [, nodePath] = entry
+	const nodeRange = Editor.range(editor, nodePath)
+	const [startLine] = Array.from(Editor.nodes(editor, {
+		at: Range.intersection(editor.selection, nodeRange),
+		match: child => child.subtype === LIST_LINE_NODE
+	}))
+	const [lineNode, linePath] = startLine
 
-	// If the block is not empty or we are deleting multiple things, delete normally
-	if (!editor.value.selection.isCollapsed || last.text !== '') return next()
-
-	// Get the deepest level that contains this line
-	const listLevel = editor.value.document.getClosest(last.key, par => par.type === LIST_LEVEL_NODE)
-
-	// levels with more than one child should delete normally
-	if (listLevel.nodes.size > 1) return
-
-	// Get the deepest level that holds the listLevel
-	const oneLevelUp = editor.value.document.getClosest(
-		listLevel.key,
-		par => par.type === LIST_LEVEL_NODE
-	)
-
-	// If it is a nested item, move it up one layer
-	if (oneLevelUp) {
-		event.preventDefault()
-		return editor.unwrapNodeByKey(last.key)
+	// If we are deleting multiple things or the line is not empty, stop here
+	// Returning before the preventDefault allows Slate to handle the delete
+	if (!Range.isCollapsed(editor.selection) || Node.string(lineNode) !== '') {
+		return 
 	}
 
-	// If it is at the top level of an empty list, delete the whole list
-	const parent = editor.value.document.getClosest(last.key, par => par.type === LIST_NODE)
+	// Get the deepest level that contains this line
+	const [listLevel, levelPath] = Editor.parent(editor, linePath)
+	if (listLevel.children.length > 1) return
 
 	event.preventDefault()
-	return editor.removeNodeByKey(parent.key)
+
+	// Get the deepest level that holds the listLevel
+	const [oneLevelUp, oneLevelUpPath] = Editor.parent(editor, levelPath)
+	if (oneLevelUp.subtype === LIST_LEVEL_NODE) {
+		Transforms.liftNodes(editor, { at: linePath })
+	} else {
+		Transforms.removeNodes(editor, { at: oneLevelUpPath })
+	}
 }
 
 export default onBackspace

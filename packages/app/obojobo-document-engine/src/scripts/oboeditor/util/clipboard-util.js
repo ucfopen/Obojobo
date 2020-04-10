@@ -19,7 +19,7 @@ const ClipboardUtil = {
 		document.body.removeChild(el)
 
 		ModalUtil.show(<SimpleDialog ok>{'Copied ' + str + ' to the clipboard'}</SimpleDialog>)
-	}
+	},
 }
 
 export default ClipboardUtil

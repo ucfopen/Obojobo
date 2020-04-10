@@ -4,36 +4,19 @@ import renderer from 'react-test-renderer'
 
 import MCAssessment from './editor-component'
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	() => item => item
+)
+
 describe('MCAssessment Editor Node', () => {
 	test('MCAssessment builds the expected component', () => {
 		const component = renderer.create(
-			<MCAssessment
-				node={{
-					data: {
-						get: () => {
-							return 'mock-question-type'
-						}
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('MCAssessment builds the expected component with defaults', () => {
-		const component = renderer.create(
-			<MCAssessment
-				node={{
-					data: {
-						get: key => {
-							if (key === 'questionType') return null
-							return {}
-						}
-					}
-				}}
-			/>
+			<MCAssessment element={{ content: {} }}/>
 		)
 		const tree = component.toJSON()
 
@@ -41,49 +24,31 @@ describe('MCAssessment Editor Node', () => {
 	})
 
 	test('MCAssessment adds a new choice', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
 		const component = mount(
-			<MCAssessment
-				node={{
-					data: {
-						get: key => {
-							if (key === 'questionType') return null
-							return {}
-						}
-					},
-					nodes: { size: 1 }
-				}}
-				editor={editor}
-			/>
+			<MCAssessment 
+				element={{ 
+					questionType: 'mock-question-type', 
+					content: {},
+					children: []
+				}}/>
 		)
+		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('MCAssessment changes response type', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<MCAssessment
-				node={{
-					data: {
-						get: key => {
-							if (key === 'questionType') return null
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
+			<MCAssessment 
+				element={{ 
+					questionType: 'mock-question-type', 
+					content: {} 
+				}}/>
 		)
 
 		component
@@ -91,27 +56,16 @@ describe('MCAssessment Editor Node', () => {
 			.at(0)
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'pick-all' } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('MCAssessment toggles shuffle', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<MCAssessment
-				node={{
-					data: {
-						get: key => {
-							if (key === 'questionType') return null
-							return {}
-						},
-						toJSON: () => ({})
-					}
-				}}
-				editor={editor}
-			/>
+			<MCAssessment 
+				element={{ 
+					questionType: 'mock-question-type', 
+					content: {} 
+				}}/>
 		)
 
 		component
@@ -119,6 +73,6 @@ describe('MCAssessment Editor Node', () => {
 			.at(0)
 			.simulate('change', { stopPropagation: jest.fn(), target: { checked: true } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

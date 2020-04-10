@@ -18,6 +18,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('homepage.css')
 		}
 		res.render('pages/page-homepage.jsx', props)
@@ -49,6 +50,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('repository.css')
 		}
 		res.render('pages/page-login.jsx', props)
@@ -68,6 +70,7 @@ router
 					page: 1,
 					pageCount: 1,
 					currentUser: req.currentUser,
+					// must use webpackAssetPath for all webpack assets to work in dev and production!
 					appCSSUrl: webpackAssetPath('repository.css')
 				}
 				res.render('pages/page-library.jsx', props)
@@ -99,7 +102,9 @@ router
 				module,
 				owner,
 				currentUser: req.currentUser,
+				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('repository.css'),
+				appJsUrl: webpackAssetPath('page-module.js'),
 				canCopy
 			}
 			res.render('pages/page-module-server.jsx', props)

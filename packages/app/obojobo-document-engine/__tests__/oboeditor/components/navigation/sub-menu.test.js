@@ -326,6 +326,9 @@ describe('SubMenu', () => {
 
 		component.instance().saveId('7', 'mock-id')
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+
+		component.instance().saveId('7', '')
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
 	test('saveId calls rebuildMenu with good id', () => {

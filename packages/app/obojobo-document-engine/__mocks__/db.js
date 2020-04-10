@@ -21,4 +21,7 @@ db.tx.mockImplementation(cb => cb(db))
 db.batch = jest.fn()
 db.batch.mockImplementation(queries => Promise.all(queries))
 
+db.taskIf = jest.fn()
+db.taskIf.mockImplementation(cb => cb(db))
+
 module.exports = db

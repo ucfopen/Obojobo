@@ -15,7 +15,6 @@ import { Controlled as CodeMirror } from 'react-codemirror2'
 import APIUtil from '../../../scripts/viewer/util/api-util'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
-import hotKeyPlugin from '../plugins/hot-key-plugin'
 import ModalUtil from '../../common/util/modal-util'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 
@@ -53,11 +52,8 @@ class CodeEditor extends React.Component {
 		this.reload = this.reload.bind(this)
 		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
-		this.onKeyUp = this.onKeyUp.bind(this)
-		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 
-		this.keyBinding = hotKeyPlugin(this.saveCode)
 		this.setEditor = this.setEditor.bind(this)
 	}
 
@@ -119,14 +115,14 @@ class CodeEditor extends React.Component {
 		location.reload()
 	}
 
-	saveCode() {
+	saveCode(draftId) {
 		// Update the title in the File Toolbar
 		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 		EditorUtil.renamePage(this.props.model.id, label)
 
 		return APIUtil.postDraft(
-			this.props.draftId,
+			draftId || this.props.draftId,
 			this.state.code,
 			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
 		)
@@ -145,7 +141,7 @@ class CodeEditor extends React.Component {
 	// Makes CodeMirror commands match Slate commands
 	convertCodeMirrorToEditor(codeMirror) {
 		const editor = codeMirror
-		editor.moveToRangeOfDocument = () => {
+		editor.selectAll = () => {
 			const lastInfo = editor.lineInfo(editor.lastLine())
 			editor.setSelection(
 				{ line: editor.firstLine(), ch: 0 },
@@ -154,11 +150,11 @@ class CodeEditor extends React.Component {
 			return editor
 		}
 		editor.focus = () => editor
-		editor.delete = () => {
+		editor.deleteFragment = () => {
 			editor.deleteH(1, 'char')
 			return editor
 		}
-		return { current: editor }
+		return editor
 	}
 
 	getCodeMirrorMode(mode) {
@@ -172,17 +168,21 @@ class CodeEditor extends React.Component {
 
 	onKeyDown(event) {
 		if (!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
-	}
 
-	onKeyUp(event) {
-		if (!this.state.editor) return
-		this.keyBinding.onKeyUp(event, this.state.editor.current, () => null)
-	}
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.saveCode(this.props.draftId)
+		}
 
-	onKeyPress(event) {
-		if (!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.state.editor.undo()
+		}
+
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.state.editor.redo()
+		}
 	}
 
 	setEditor(editor) {
@@ -193,15 +193,12 @@ class CodeEditor extends React.Component {
 		return (
 			<div
 				className={'component editor--code-editor'}
-				onKeyDown={this.onKeyDown}
-				onKeyUp={this.onKeyUp}
-				onKeyPress={this.onKeyPress}
-			>
+				onKeyDown={this.onKeyDown}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					{this.state.editor ? (
 						<FileToolbar
-							editorRef={this.state.editor}
+							editor={this.state.editor}
 							model={this.props.model}
 							draftId={this.props.draftId}
 							onSave={this.saveCode}

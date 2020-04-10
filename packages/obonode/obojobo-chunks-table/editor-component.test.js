@@ -4,23 +4,22 @@ import renderer from 'react-test-renderer'
 
 import Table from './editor-component'
 
+import { Transforms, Node } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
+)
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	() => item => item
 )
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
 		const component = renderer.create(
-			<Table
-				node={{
-					data: {
-						get: () => {
-							return { textGroup: { textGroup: [] } }
-						}
-					}
-				}}
-			/>
+			<Table/>
 		)
 		const tree = component.toJSON()
 
@@ -28,48 +27,24 @@ describe('Table Editor Node', () => {
 	})
 
 	test('Table component toggles header', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<Table
-				node={{
-					data: {
-						get: () => {
-							return { textGroup: { numCols: 1 } }
-						}
-					},
-					nodes: {
-						get: () => {
-							return {
-								data: {
-									get: () => ({
-										header: true
-									})
-								},
-								key: 'topRow',
-								nodes: [
-									{
-										key: 'mockCell'
-									}
-								]
-							}
-						}
-					}
-				}}
-				editor={editor}
-				isSelected
-			/>
+			<Table 
+				selected={true} 
+				element={{ 
+					content: { header: true },
+					children: [{ content: {} }]
+				}}/>
 		)
-		const tree = component.html()
+
+		Node.children.mockReturnValue([
+			[{ content: {} }, [0]]
+		])
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

@@ -4,11 +4,11 @@ import renderer from 'react-test-renderer'
 import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 import QuestionBank from './editor-component'
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
 jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
-jest.mock('./components/settings/editor-component', () =>
-	global.mockReactComponent(this, 'Settings')
-)
-jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('obojobo-document-engine/src/scripts/common/registry', () => ({
 	Registry: {
@@ -16,22 +16,101 @@ jest.mock('obojobo-document-engine/src/scripts/common/registry', () => ({
 		getItemForType: jest.fn()
 	}
 }))
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	() => item => item
+)
 
 describe('QuestionBank editor', () => {
 	test('QuestionBank builds the expected component', () => {
 		const props = {
-			node: {
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
+			element: { content: {} }
 		}
 
 		const component = renderer.create(<QuestionBank {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('QuestionBank component changes choose type', () => {
+		const props = {
+			element: {
+				content: { choose: 8, select: 'sequential' }
+			}
+		}
+
+		const component = mount(<QuestionBank {...props} />)
+		component
+			.find('input')
+			.at(0)
+			.simulate('click')
+		component
+			.find('input')
+			.at(0)
+			.simulate('change', {target: { value: 'all' }})
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('QuestionBank component changes choose amount', () => {
+		const props = {
+			element: {
+				content: { choose: 8, select: 'sequential'}
+			},
+			editor: {
+				toggleEditable: jest.fn(),
+			}
+		}
+
+		const component = mount(<QuestionBank {...props} />)
+		component
+			.find('input')
+			.at(1)
+			.simulate('click')
+		component
+			.find('input')
+			.at(1)
+			.simulate('change', {target: { value: 'pick' }})
+
+
+		component
+			.find('input')
+			.at(2)
+			.simulate('focus')
+		component
+			.find('input')
+			.at(2)
+			.simulate('click')
+		component
+			.find('input')
+			.at(2)
+			.simulate('change', {target: { value: '7' }})
+		component
+			.find('input')
+			.at(2)
+			.simulate('blur')
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('QuestionBank component changes select type', () => {
+		const props = {
+			element: {
+				content: { choose: 8, select: 'sequential'}
+			}
+		}
+
+		const component = mount(<QuestionBank {...props} />)
+		component
+			.find('select')
+			.at(0)
+			.simulate('click')
+		component
+			.find('select')
+			.at(0)
+			.simulate('change', {target: { value: 'pick' }})
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('QuestionBank component deletes self', () => {
@@ -42,30 +121,19 @@ describe('QuestionBank editor', () => {
 		})
 
 		const props = {
-			node: {
-				data: {
-					data: {
-						get: () => {
-							return { choose: 8, select: 'sequential' }
-						}
-					}
-				}
-			},
-			editor: {
-				removeNodeByKey: jest.fn()
+			element: {
+				content: { choose: 8, select: 'sequential' }
 			}
 		}
 
 		const component = mount(<QuestionBank {...props} />)
-		const tree = component.html()
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(props.editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('QuestionBank component adds question', () => {
@@ -76,53 +144,45 @@ describe('QuestionBank editor', () => {
 		})
 
 		const props = {
-			node: {
-				data: {
-					data: {
-						get: () => ({ content: {} })
-					}
-				},
-				nodes: []
+			element: { 
+				content: {},
+				children: []
 			},
-			editor: {
-				insertNodeByKey: jest.fn()
-			}
+			editor: {}
 		}
 
+		ReactEditor.findPath.mockReturnValueOnce([])
+
 		const component = mount(<QuestionBank {...props} />)
-		const tree = component.html()
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(props.editor.insertNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.insertNodes).toHaveBeenCalledWith({}, {"type": "Mock"}, {"at": [0]})
 	})
 
 	test('QuestionBank component adds question bank', () => {
 		const props = {
-			node: {
-				data: {
-					data: {
-						get: () => ({ choose: 8, select: 'sequential' })
-					}
-				},
-				nodes: []
+			element: { 
+				content: {},
+				children: []
 			},
-			editor: {
-				insertNodeByKey: jest.fn()
-			}
+			editor: {}
 		}
 
+		ReactEditor.findPath.mockReturnValueOnce([])
+
 		const component = mount(<QuestionBank {...props} />)
-		const tree = component.html()
 		component
 			.find('button')
 			.at(2)
 			.simulate('click')
 
-		expect(props.editor.insertNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(
+			{}, 
+			expect.objectContaining({"type": "ObojoboDraft.Chunks.QuestionBank"}), 
+			{"at": [0]}
+		)
 	})
 })
