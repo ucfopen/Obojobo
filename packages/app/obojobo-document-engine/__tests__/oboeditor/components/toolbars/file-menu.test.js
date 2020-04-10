@@ -21,6 +21,18 @@ jest.mock('../../../../src/scripts/common/util/download-document')
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
+const buttonIndex = {
+	save: 1,
+	new: 2,
+	copy: 3,
+	rename: 4,
+	xml: 6,
+	json: 7,
+	import: 8,
+	delete: 9,
+	lti: 10
+}
+
 describe('File Menu', () => {
 	beforeEach(() => {
 		EditorStore.state.startingId = null
@@ -58,7 +70,6 @@ describe('File Menu', () => {
 				onSave={APIUtil.postDraft}
 			/>
 		)
-		const tree = component.html()
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'ok'
@@ -66,7 +77,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(buttonIndex.save)
 			.simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
@@ -76,16 +87,14 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(buttonIndex.save)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('FileMenu calls new', done => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
-		const tree = component.html()
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'ok',
@@ -94,7 +103,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(3)
+			.at(buttonIndex.new)
 			.simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
@@ -104,10 +113,9 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(3)
+			.at(buttonIndex.new)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		setTimeout(() => {
 			component.update()
 			expect(APIUtil.createNewDraft).toHaveBeenCalledTimes(2)
@@ -123,14 +131,12 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
 			.find('button')
-			.at(4)
+			.at(buttonIndex.copy)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
@@ -147,8 +153,8 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		// get references to buttons
-		const downloadXmlButton = component.find('button').at(6)
-		const downloadJSONButton = component.find('button').at(7)
+		const downloadXmlButton = component.find('button').at(buttonIndex.xml)
+		const downloadJSONButton = component.find('button').at(buttonIndex.json)
 
 		// Verify references are correct
 		expect(downloadXmlButton.text()).toBe('XML Document (.xml)')
@@ -184,14 +190,12 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
 			.find('button')
-			.at(8)
+			.at(buttonIndex.rename)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
@@ -201,14 +205,12 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
 			.find('button')
-			.at(9)
+			.at(buttonIndex.delete)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
@@ -218,14 +220,12 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
 			.find('button')
-			.at(10)
+			.at(buttonIndex.lti)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
@@ -317,7 +317,7 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(buttonIndex.import)
 			.simulate('click')
 
 		const mockId = 'mockId'
@@ -328,9 +328,6 @@ describe('File Menu', () => {
 
 		component.instance().processFileContent(mockId, content, 'text')
 		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'text/plain')
-
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls Import', () => {
@@ -338,15 +335,12 @@ describe('File Menu', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(buttonIndex.import)
 			.simulate('click')
 		expect(ModalUtil.show).toHaveBeenCalled()
 
 		component.instance().buildFileSelector()
 		expect(ModalUtil.hide).toHaveBeenCalled()
-
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls onFileChange', () => {
