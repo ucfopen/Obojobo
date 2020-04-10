@@ -46,4 +46,8 @@ const PageLibrary = props => (
 	</LayoutDefault>
 )
 
+PageLibrary.defaultProps = {
+	collections: []
+}
+
 module.exports = PageLibrary

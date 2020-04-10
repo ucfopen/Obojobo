@@ -1,10 +1,6 @@
-/* eslint-disable no-console */
 import React from 'react'
 import LayoutDefault from './default'
-import {
-	// mount,
-	shallow
-} from 'enzyme'
+import { shallow } from 'enzyme'
 
 describe('LayoutDefault', () => {
 	test('renders correctly with default props', () => {
