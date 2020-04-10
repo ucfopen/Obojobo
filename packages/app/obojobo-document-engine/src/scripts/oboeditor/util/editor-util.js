@@ -179,52 +179,20 @@ const EditorUtil = {
 	youTubeParseUrl(videoUrl) {
 		let newVideoId = false
 		let videoStartTime = false
-		let videoEndTime = false
 
-
-// [&t=]*(([0-9]*m)*
-// [&|?]start=([0-9]*)
-//
-		// const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)[&t=]*(([0-9]*m)*([0-9]*s)*)*.*/;
-		// const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)[&t=]*(([0-9]*m)*([0-9]*s)*)*[[&|?]	start=]*(([0-9]*m)*([0-9]*s)*)*[[&|?]end=]*(([0-9]*m)*([0-9]*s)*)*.*/;
-		// const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)[&t=]*(([0-9]*m)*([0-9]*s)*)*[&|?]start=([0-9]*)[&|?]end=([0-9]*).*/;
-		// const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)[&|?][t=|start=]*(([0-9]*m?)*([0-9]*s?)*)*[&|?][end=]*(([0-9]*m?)*([0-9]*s?)*)*.*/;
-		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)[&t=]*(([0-9]*m)*([0-9]*s)*)*.*/;
+		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?^\s]*)*[&?t=sar]*([0-9]*)*.*/;
 		const youTubeSiteRegexMatch = videoUrl.match(youTubeSiteRegex)
-
-		// match 7 is the ID
-		// match 8 is the m and s
-		// match 9 is the m
-		// match 10 is the s
-		// match 11 is the start time in seconds
-		// match 12 is the end time in seconds
 
 		console.log("youTubeSiteRegexMatch", youTubeSiteRegexMatch);
 
-
 		if (youTubeSiteRegexMatch) {
-				// min will be match[9] or match[11]
-				// seconds will be match[10] or match[12]
-
-
-
-				const min = youTubeSiteRegexMatch[9]? parseInt(youTubeSiteRegexMatch[9],10) : 0
-				const sec = youTubeSiteRegexMatch[10]? parseInt(youTubeSiteRegexMatch[10],10) : 0
-
-				videoStartTime = 60*min + sec
-
+				videoStartTime = youTubeSiteRegexMatch[8]? parseInt(youTubeSiteRegexMatch[8],10) : 0
 				newVideoId = (youTubeSiteRegexMatch[7].length==11)? youTubeSiteRegexMatch[7] : false;
 		}
 
-
-		console.log("newVideoId", newVideoId);
-		console.log("videoStartTime", videoStartTime);
-		console.log("videoEndTime", videoEndTime);
-
 		return {
 			videoId: newVideoId,
-			startTime: videoStartTime,
-			endTime: videoEndTime
+			startTime: videoStartTime
 		}
 
 	}
