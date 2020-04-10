@@ -53,7 +53,7 @@ class Assessment extends DraftNode {
 			isFinished: attempt.completed_at !== null,
 			state: attempt.state,
 			questionScores: attempt.result ? attempt.result.questionScores : [],
-			responses: {},
+			responses: [],
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseFloat(attempt.assessment_score),
 			assessmentScoreDetails: attempt.score_details
@@ -190,8 +190,10 @@ class Assessment extends DraftNode {
 							return
 						}
 
-						// asessments.<assessmentId>.attempts
-						attemptForResponse.responses[response.question_id] = response.response
+						attemptForResponse.responses.push({
+							id: response.question_id,
+							response: response.response
+						})
 					})
 				}
 			})
@@ -272,6 +274,19 @@ class Assessment extends DraftNode {
 
 				return null
 			}
+		)
+	}
+
+	static fetchAttemptByIdAndUserId(attemptId, userId) {
+		return db.oneOrNone(
+			`
+			SELECT *
+			FROM attempts
+			WHERE
+				id = $[attemptId]
+				AND user_id = $[userId]
+			`,
+			{ attemptId, userId }
 		)
 	}
 

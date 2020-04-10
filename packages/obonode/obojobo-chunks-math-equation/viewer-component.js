@@ -20,13 +20,9 @@ const getLatexHtml = function(latex) {
 const MathEquation = props => {
 	let katexHtml = getLatexHtml(props.model.modelState.latex)
 	if (katexHtml.error) {
-		katexHtml = ''
+		katexHtml = `<div class="katex-error" title="${katexHtml.error.message}">${props.model.modelState.latex}</div>`
 	} else {
 		katexHtml = katexHtml.html
-	}
-
-	if (katexHtml.length === 0) {
-		return null
 	}
 
 	/*

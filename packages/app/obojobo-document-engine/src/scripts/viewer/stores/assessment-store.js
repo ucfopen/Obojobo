@@ -156,6 +156,15 @@ class AssessmentStore extends Store {
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 
+				// Server returns responses in an array, but we use a object keyed by the questionId:
+				if (Array.isArray(attempt.responses)) {
+					const responsesById = {}
+					attempt.responses.forEach(r => {
+						responsesById[r.id] = r.response
+					})
+					attempt.responses = responsesById
+				}
+
 				if (!attempt.isFinished) {
 					// unfinishedAttempt = attempt
 					assessment.unfinishedAttempt = attempt

@@ -54,6 +54,7 @@ $dimension-avatar-icon: 90px;
 $dimension-padding: 1.5em;
 $dimension-width: 42em;
 $dimension-nav-height: 3.75em;
+$dimension-rounded-radius: 0.25em;
 
 @mixin text-input() {
 	box-sizing: border-box;
@@ -83,6 +84,21 @@ $dimension-nav-height: 3.75em;
 	&:last-child::after {
 		display: none;
 	}
+}
+
+@mixin select-input() {
+	font-family: $font-default;
+	border-radius: $dimension-rounded-radius;
+	background-color: $color-bg;
+	padding: 0.7em 2em 0.7em 0.5em;
+	appearance: none;
+	//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+	background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+		linear-gradient(135deg, gray 50%, transparent 50%);
+	//stylelint-disable-next-line declaration-colon-newline-after, value-list-comma-newline-after
+	background-position: calc(100% - 1.5em) 1.1em, calc(100% - 1.1em) 1.1em, calc(100% - 2.5em) 0.5em;
+	background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
+	background-repeat: no-repeat;
 }
 
 html,

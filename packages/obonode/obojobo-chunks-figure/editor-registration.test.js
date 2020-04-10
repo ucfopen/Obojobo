@@ -1,5 +1,7 @@
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
+jest.mock('slate-react')
 
+import SlateReact from 'slate-react'
 import Figure from './editor-registration'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
@@ -94,5 +96,33 @@ describe('Figure editor', () => {
 				jest.fn()
 			)
 		).toMatchSnapshot()
+	})
+
+	test('onPaste handler calls next if transfer type is not text', () => {
+		const editor = {
+			insertText: jest.fn()
+		}
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'fragment' })
+
+		Figure.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+		expect(editor.insertText).not.toHaveBeenCalled()
+	})
+
+	test('onPaste handler calls editor.insertText if item is text', () => {
+		const editor = {
+			insertText: jest.fn()
+		}
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text', text: 'mock-text' })
+
+		Figure.plugins.onPaste(null, editor, next)
+
+		expect(next).not.toHaveBeenCalled()
+		expect(editor.insertText).toHaveBeenCalledWith('mock-text')
 	})
 })

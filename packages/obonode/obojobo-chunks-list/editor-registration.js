@@ -14,6 +14,7 @@ import onBackspace from './changes/on-backspace'
 import insertText from './changes/insert-text'
 import unwrapLevel from './changes/unwrap-level'
 import wrapLevel from './changes/wrap-level'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -35,9 +36,18 @@ const plugins = {
 
 		const saveBlocks = editor.value.blocks
 
-		editor
-			.createListLinesFromText(transfer.text.split('\n'))
-			.forEach(line => editor.insertBlock(line))
+		const blocks = editor.createListLinesFromText(transfer.text.split('\n'))
+
+		// If the current block exists, insert first text line into that block
+		const currText = editor.props.value.focusBlock.text
+		if (currText) {
+			editor.insertText(blocks[0].text)
+			blocks.shift()
+		}
+
+		blocks.forEach(block => {
+			if (block.text) editor.insertBlock(block)
+		})
 
 		saveBlocks.forEach(node => {
 			if (node.text === '') {
@@ -66,6 +76,10 @@ const plugins = {
 
 				// TAB
 				return unwrapLevel(event, editor, next)
+
+			case 'h':
+				if (event.ctrlKey) return toggleHangingIndent(event, editor, next)
+				return next()
 
 			default:
 				return next()

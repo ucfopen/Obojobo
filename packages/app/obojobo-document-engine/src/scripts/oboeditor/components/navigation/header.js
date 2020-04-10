@@ -27,6 +27,11 @@ class Header extends React.Component {
 
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
+
+		if (!newId) {
+			return 'Please enter an id'
+		}
+
 		// prettier-ignore
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
@@ -43,6 +48,8 @@ class Header extends React.Component {
 		model.triggers = newContent.triggers ? newContent.triggers : []
 		model.title =
 			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+
+		EditorUtil.setStartPage(newContent.start)
 	}
 
 	render() {

@@ -1,8 +1,11 @@
 import IndentIcon from '../../assets/indent-icon'
 import UnindentIcon from '../../assets/unindent-icon'
+import HangingIndentIcon from '../../assets/hanging-indent-icon'
+import toggleHangingIndent from 'obojobo-chunks-text/util/toggle-hanging-indent'
 
 const INDENT = 'indent'
 const UNINDENT = 'unindent'
+const HANGING_INDENT = 'hanging-indent'
 
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -95,6 +98,12 @@ const AlignMarks = {
 							return editor.unindentText(block)
 					}
 				})
+		},
+		{
+			name: 'Hanging Indent',
+			type: HANGING_INDENT,
+			icon: HangingIndentIcon,
+			action: toggleHangingIndent
 		}
 	]
 }

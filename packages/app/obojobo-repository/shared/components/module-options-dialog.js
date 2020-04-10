@@ -4,7 +4,10 @@ const React = require('react')
 const ModuleIamge = require('./module-image')
 const Button = require('./button')
 const ButtonLink = require('./button-link')
-const { urlForEditor, downloadDocument } = require('../repository-utils')
+const { urlForEditor } = require('../repository-utils')
+const {
+	downloadDocument
+} = require('obojobo-document-engine/src/scripts/common/util/download-document')
 
 const deleteModule = (title, draftId, deleteFn) => {
 	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
@@ -47,12 +50,22 @@ const ModuleOptionsDialog = props => (
 				<Button
 					className="new-button"
 					onClick={() => {
-						downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')
+						downloadDocument(props.draftId, 'json')
 					}}
 				>
-					Download
+					Download JSON
 				</Button>
-				<div className="label">Download a copy.</div>
+				<div className="label">Download a copy in JSON format.</div>
+
+				<Button
+					className="new-button"
+					onClick={() => {
+						downloadDocument(props.draftId, 'xml')
+					}}
+				>
+					Download XML
+				</Button>
+				<div className="label">Download a copy in XML format.</div>
 
 				<ButtonLink url={`/library/${props.draftId}`} target="_blank">
 					Public Page

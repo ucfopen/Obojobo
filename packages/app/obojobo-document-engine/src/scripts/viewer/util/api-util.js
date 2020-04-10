@@ -134,7 +134,21 @@ const APIUtil = {
 	},
 
 	reviewAttempt(attemptIds) {
-		return API.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
+		return API.post(`/api/assessments/attempt/review`, { attemptIds })
+			.then(processJsonResults)
+			.then(attemptArray => {
+				// quick fix - converts arrays sent by the api to expected object hash with ids as keys
+				const attemptHash = {}
+				attemptArray.forEach(attempt => {
+					const questionHash = {}
+					attempt.questions.forEach(question => {
+						questionHash[question.id] = question
+					})
+					attemptHash[attempt.attemptId] = questionHash
+				})
+
+				return attemptHash
+			})
 	},
 
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {

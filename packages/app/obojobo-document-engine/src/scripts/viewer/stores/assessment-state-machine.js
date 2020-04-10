@@ -54,6 +54,17 @@ const {
 // 	isShowingAttemptHistory: false
 // })
 
+// {
+// 	[NOT_IN_ATTEMPT]: [
+// 		'promptForImport',
+// 		'tryStartAttempt',
+// 		'tryResumeAttempt'
+// 	],
+// 	[AWAITING_START_ATTEMPT_RESPONSE]: [
+// 		'onEnter'
+// 	]
+// }
+
 class AssessmentStateMachine extends StateMachine {
 	constructor(assessmentObject, onStateTransition, onEndAttempt) {
 		super({
@@ -67,18 +78,9 @@ class AssessmentStateMachine extends StateMachine {
 						AWAITING_START_ATTEMPT_RESPONSE
 					],
 					promptForImport: function() {
-						//@TODO
-
 						this.gotoStep(PROMPT_FOR_IMPORT)
 					},
 					tryStartAttempt: function() {
-						// const model = OboModel.models[this.state.assessmentId]
-						// const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
-
-						// if (!assessment) {
-						// 	this.state.assessments[assessmentId] = getNewAssessmentObject(assessmentId)
-						// }
-
 						this.gotoStep(AWAITING_START_ATTEMPT_RESPONSE)
 					},
 					tryResumeAttempt: function() {
@@ -99,48 +101,33 @@ class AssessmentStateMachine extends StateMachine {
 				},
 				[WILL_RESUME_ATTEMPT]: {
 					canTransitionTo: [AWAITING_RESUME_ATTEMPT_RESPONSE],
-					// onEnter() {
-
-					// },
 					tryResumeAttempt() {
 						this.gotoStep(AWAITING_RESUME_ATTEMPT_RESPONSE)
 					}
 				},
 				[AWAITING_START_ATTEMPT_RESPONSE]: {
 					canTransitionTo: [START_ATTEMPT_FAILED, IN_ATTEMPT],
-					onEnter() {
-						// const assessmentId = this.state.assessmentId
-						// const model = OboModel.models[assessmentId]
+					async onEnter() {
 						const assessment = this.state.assessment
 						const model = OboModel.models[assessment.id]
-						// debugger
 
-						return APIUtil.startAttempt({
-							draftId: model.getRoot().get('draftId'),
-							assessmentId: model.get('id'),
-							visitId: NavStore.getState().visitId
-						})
-							.then(res => {
-								switch (res.status) {
-									case 'ok': {
-										// debugger
-										this.dispatch('_startAttempt', res.value)
-										break
-									}
-
-									case 'error': {
-										this.dispatch('_onError', res)
-									}
-								}
+						try {
+							const res = await APIUtil.startAttempt({
+								draftId: model.getRoot().get('draftId'),
+								assessmentId: model.get('id'),
+								visitId: NavStore.getState().visitId
 							})
-							.catch(e => {
-								console.error(e) /* eslint-disable-line no-console */
 
-								//assessment.state = START_ATTEMPT_FAILED
-								//this.triggerChange()
-								this.gotoStep(START_ATTEMPT_FAILED)
-								// this.dispatch('_onError')
-							})
+							if (res.status === 'ok') {
+								this.dispatch('_startAttempt', res.value)
+							} else {
+								this.dispatch('_onError', res)
+							}
+						} catch (e) {
+							console.error(e) /* eslint-disable-line no-console */
+
+							this.gotoStep(START_ATTEMPT_FAILED)
+						}
 					},
 					_onError: function(res = null) {
 						switch (res.value.message.toLowerCase()) {

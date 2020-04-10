@@ -99,6 +99,28 @@ describe('Header', () => {
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
+	test('saveId does not allow an empty id', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		component.instance().saveId('5', '')
+
+		expect(Common.models.OboModel.models['5'].setId).not.toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+	})
+
 	test('saveId does not update the model', () => {
 		const props = {
 			index: 0,

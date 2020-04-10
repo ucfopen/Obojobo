@@ -107,7 +107,7 @@
 		border-radius: $dimension-rounded-radius;
 		padding: 0;
 		margin-bottom: 1em;
-		border: 1px solid transparentize($color-shadow, 0.2);
+		border: 1.25px solid transparentize($color-shadow, 0.2);
 		max-width: $dimension-column-width;
 		background: $color-bg;
 		transition: opacity $duration-animation-default;

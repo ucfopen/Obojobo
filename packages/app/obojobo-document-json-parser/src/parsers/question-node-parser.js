@@ -1,9 +1,10 @@
 const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
+const processAttrs = require('../process-attrs')
 
 const questionNodeParser = (node, childrenParser) => {
 	const id = node.id ? ` id="${node.id}"` : ''
-	const attrs = processAttrs(node.content, ['triggers', 'actions'])
+	const attrs = processAttrs(node.content, ['triggers', 'actions', 'solution'])
 	const solution = node.content.solution
 	let solutionXML = ''
 
