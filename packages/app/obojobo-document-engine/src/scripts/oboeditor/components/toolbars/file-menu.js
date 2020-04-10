@@ -2,7 +2,6 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
-import EditorUtil from '../../util/editor-util'
 import APIUtil from '../../../viewer/util/api-util'
 import { downloadDocument } from '../../../common/util/download-document'
 
@@ -22,11 +21,10 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(newTitle) {
-		APIUtil.copyDraft(this.props.draftId, newTitle)
-			.then(result => {
-				ModalUtil.hide()
-				window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
-			})
+		return APIUtil.copyDraft(this.props.draftId, newTitle).then(result => {
+			ModalUtil.hide()
+			window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
+		})
 	}
 
 	render() {

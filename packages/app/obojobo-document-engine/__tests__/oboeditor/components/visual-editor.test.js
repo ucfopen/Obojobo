@@ -348,7 +348,6 @@ describe('VisualEditor', () => {
 		  "editable": false,
 		  "saved": true,
 		  "showPlaceholders": true,
-		  "title": "Mock Title",
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -377,7 +376,6 @@ describe('VisualEditor', () => {
 		  "editable": true,
 		  "saved": false,
 		  "showPlaceholders": true,
-		  "title": "Mock Title",
 		  "value": Array [
 		    Object {
 		      "text": "",
@@ -451,7 +449,8 @@ describe('VisualEditor', () => {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
 				get: jest.fn(),
-				set: jest.fn(),children: {
+				set: jest.fn(),
+				children: {
 					reset: jest.fn()
 				},
 				toJSON: () => ({ children: [{ type: 'mockNode' }] })

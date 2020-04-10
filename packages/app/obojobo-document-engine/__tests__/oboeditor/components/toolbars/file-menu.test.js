@@ -9,8 +9,6 @@ import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('../../../../src/scripts/viewer/util/api-util')
 import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
 jest.mock('../../../../src/scripts/oboeditor/util/clipboard-util')
-import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
-jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
 import EditorStore from '../../../../src/scripts/oboeditor/stores/editor-store'
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
@@ -64,20 +62,14 @@ describe('File Menu', () => {
 			status: 'ok'
 		})
 
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
+		component.find({ children: 'Save' }).simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
+		component.find({ children: 'Save' }).simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
@@ -92,20 +84,14 @@ describe('File Menu', () => {
 			value: { id: 'mock-id' }
 		})
 
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
+		component.find({ children: 'New' }).simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
+		component.find({ children: 'New' }).simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		setTimeout(() => {
@@ -125,10 +111,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(3)
-			.simulate('click')
+		component.find({ children: 'Make a copy' }).simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -147,12 +130,8 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		// get references to buttons
-		const downloadXmlButton = component.find('button').at(5)
-		const downloadJSONButton = component.find('button').at(6)
-
-		// Verify references are correct
-		expect(downloadXmlButton.text()).toBe('XML Document (.xml)')
-		expect(downloadJSONButton.text()).toBe('JSON Document (.json)')
+		const downloadXmlButton = component.find({ children: 'XML Document (.xml)' })
+		const downloadJSONButton = component.find({ children: 'JSON Document (.json)' })
 
 		// click
 		downloadJSONButton.simulate('click')
@@ -178,23 +157,6 @@ describe('File Menu', () => {
 		})
 	})
 
-	test('FileMenu calls Rename', () => {
-		const model = {
-			title: 'mockTitle'
-		}
-
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(7)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(ModalUtil.show).toHaveBeenCalled()
-	})
-
 	test('FileMenu calls Delete', () => {
 		const model = {
 			title: 'mockTitle'
@@ -203,10 +165,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(8)
-			.simulate('click')
+		component.find({ children: 'Delete Module' }).simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -220,43 +179,13 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(9)
-			.simulate('click')
+		component.find({ children: 'Copy LTI Link' }).simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
-	test('renameModule renames with blank name', () => {
-		const component = mount(<FileMenu draftId="mockDraft" onRename={jest.fn()} />)
-
-		component.instance().renameModule('mockId', '      ')
-
-		expect(EditorUtil.renameModule).toHaveBeenCalled()
-	})
-
-	test('renameModule renames with new name', () => {
-		const component = mount(<FileMenu draftId="mockDraft" />)
-
-		component.instance().renameModule('mockId', 'mock title')
-
-		expect(EditorUtil.renameModule).toHaveBeenCalled()
-	})
-
-	test('renameAndSaveModule renames and saves draft', () => {
-		const onSave = jest.fn()
-
-		const component = mount(<FileMenu draftId="mockDraft" onSave={onSave} />)
-
-		component.instance().renameAndSaveModule('mockId', 'mock title')
-
-		expect(EditorUtil.renameModule).toHaveBeenCalled()
-		expect(onSave).toHaveBeenCalled()
-	})
-
-	test('copyModule creates a copy of the current draft', () => {
+	test('copyModule calls copyDraft api', () => {
 		const model = {
 			flatJSON: () => ({ children: [] }),
 			children: [
@@ -274,22 +203,30 @@ describe('File Menu', () => {
 		const exportToJSON = jest.fn()
 
 		const component = mount(
-			<FileMenu draftId="mockDraft" model={model} exportToJSON={exportToJSON} onSave={jest.fn()} />
+			<FileMenu
+				draftId="mockDraftId"
+				model={model}
+				exportToJSON={exportToJSON}
+				onSave={jest.fn()}
+			/>
 		)
 
-		APIUtil.createNewDraft.mockResolvedValueOnce({
-			value: { id: 'mockId' }
-		})
-		APIUtil.postDraft.mockResolvedValueOnce({
-			status: 'ok'
+		APIUtil.copyDraft.mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				draftId: 'new-copy-draft-id'
+			}
 		})
 
-		component.instance().copyModule('mockId', 'mock title - copy')
-
-		expect(APIUtil.createNewDraft).toHaveBeenCalled()
+		return component
+			.instance()
+			.copyModule('new title')
+			.then(() => {
+				expect(APIUtil.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title')
+			})
 	})
 
-	test('deleteModule removes draft', () => {
+	test('deleteModule calls deleteDraft api', () => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'ok' })

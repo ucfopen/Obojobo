@@ -26,13 +26,15 @@ describe('CodeEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.resetModules()
+		EditorUtil.getTitleFromString.mockReturnValue('Mock Title')
+		EditorUtil.setModuleTitleInJSON.mockReturnValue('mock-setModuleTitleInJSON-return-value')
+		EditorUtil.setModuleTitleInXML.mockReturnValue('mock-setModuleTitleInXML-return-value')
 	})
 
 	test('CodeEditor component', () => {
 		const props = {
 			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			mode: XML_MODE
 		}
 		const component = renderer.create(<CodeEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -41,8 +43,7 @@ describe('CodeEditor', () => {
 	test('CodeEditor component in JSON_MODE', done => {
 		const props = {
 			initialCode: '',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			mode: JSON_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 		component.setState({ editor: {} })
@@ -60,8 +61,7 @@ describe('CodeEditor', () => {
 	test('changes the Editor title', () => {
 		const props = {
 			initialCode: '{ "content": {} }',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			mode: JSON_MODE
 		}
 		APIUtil.postDraft.mockResolvedValue({
 			status: 'ok'
@@ -88,8 +88,7 @@ describe('CodeEditor', () => {
 	test('changes the Editor title to blank', () => {
 		const props = {
 			initialCode: '{ "content": {} }',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			mode: JSON_MODE
 		}
 		APIUtil.postDraft.mockResolvedValue({
 			status: 'ok'
@@ -120,8 +119,7 @@ describe('CodeEditor', () => {
 		})
 		const props = {
 			initialCode: '',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			mode: JSON_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 
@@ -138,8 +136,7 @@ describe('CodeEditor', () => {
 	test('onBeforeChange sets state', () => {
 		const props = {
 			initialCode: '',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			mode: JSON_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 		component.instance().onBeforeChange({}, null, 'mock-code')
@@ -148,7 +145,6 @@ describe('CodeEditor', () => {
 		Object {
 		  "code": "mock-code",
 		  "editor": null,
-		  "mode": "json",
 		  "options": Object {
 		    "foldGutter": true,
 		    "gutters": Array [
@@ -170,110 +166,127 @@ describe('CodeEditor', () => {
 	`)
 	})
 
-	test('setTitle for JSON', () => {
+	test('saveAndSetNewTitleInCode for JSON', () => {
+		expect.hasAssertions()
+		const code = '{ "content": { "title": "Initial Title"} }'
 		const props = {
-			initialCode: '{ "content": {} }',
-			mode: JSON_MODE,
-			model: { title: 'Mock Title' }
+			initialCode: code,
+			mode: JSON_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
-		component.instance().setTitle('Mock Title')
-
-		expect(component.state()).toMatchInlineSnapshot(`
-		Object {
-		  "code": "{
-		    \\"content\\": {
-		        \\"title\\": \\"Mock Title\\"
-		    }
-		}",
-		  "editor": null,
-		  "mode": "json",
-		  "options": Object {
-		    "foldGutter": true,
-		    "gutters": Array [
-		      "CodeMirror-linenumbers",
-		      "CodeMirror-foldgutter",
-		    ],
-		    "indentUnit": 4,
-		    "indentWithTabs": true,
-		    "lineNumbers": true,
-		    "lineWrapping": true,
-		    "matchTags": true,
-		    "mode": "application/json",
-		    "tabSize": 4,
-		    "theme": "monokai",
-		  },
-		  "saved": true,
-		  "title": "Mock Title",
-		}
-	`)
+		return component
+			.instance()
+			.saveAndSetNewTitleInCode('New Title')
+			.then(() => {
+				expect(component.state()).toMatchInlineSnapshot(`
+			Object {
+			  "code": "mock-setModuleTitleInJSON-return-value",
+			  "editor": null,
+			  "options": Object {
+			    "foldGutter": true,
+			    "gutters": Array [
+			      "CodeMirror-linenumbers",
+			      "CodeMirror-foldgutter",
+			    ],
+			    "indentUnit": 4,
+			    "indentWithTabs": true,
+			    "lineNumbers": true,
+			    "lineWrapping": true,
+			    "matchTags": true,
+			    "mode": "application/json",
+			    "tabSize": 4,
+			    "theme": "monokai",
+			  },
+			  "saved": true,
+			  "title": "New Title",
+			}
+		`)
+			})
 	})
 
-	test('setTitle for XML', () => {
+	test('saveAndSetNewTitleInCode for XML', () => {
+		expect.hasAssertions()
+		const code = '<?xml version="1.0" encoding="utf-8"?><Module title="Initial Title"></Module>'
 		const props = {
-			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			initialCode: code,
+			mode: XML_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
-		component.instance().setTitle('Mock Title')
-		component.setState({
-			code: '<?xml version="1.0" encoding="utf-8"?><Module title="My XML"></Module>'
-		})
-		component.instance().setTitle('Mock Second Title')
-		component.setState({
-			code:
-				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraft.Modules.Module title="My XML"></ObojoboDraft.Modules.Module>'
-		})
-		component.instance().setTitle('Mock Third Title')
 
-		expect(component.state()).toMatchInlineSnapshot(`
-		Object {
-		  "code": "<mockSerializedToString/>",
-		  "editor": null,
-		  "mode": "xml",
-		  "options": Object {
-		    "foldGutter": true,
-		    "gutters": Array [
-		      "CodeMirror-linenumbers",
-		      "CodeMirror-foldgutter",
-		    ],
-		    "indentUnit": 4,
-		    "indentWithTabs": true,
-		    "lineNumbers": true,
-		    "lineWrapping": true,
-		    "matchTags": true,
-		    "mode": "text/xml",
-		    "tabSize": 4,
-		    "theme": "monokai",
-		  },
-		  "saved": true,
-		  "title": "Mock Title",
-		}
-	`)
+		return component
+			.instance()
+			.saveAndSetNewTitleInCode('New Title')
+			.then(() => {
+				const state = component.state()
+				expect(state.code).toBe('mock-setModuleTitleInXML-return-value')
+				expect(state.title).toBe('New Title')
+
+				// throw in a snapshot for extra fun
+				expect(component.state()).toMatchInlineSnapshot(`
+			Object {
+			  "code": "mock-setModuleTitleInXML-return-value",
+			  "editor": null,
+			  "options": Object {
+			    "foldGutter": true,
+			    "gutters": Array [
+			      "CodeMirror-linenumbers",
+			      "CodeMirror-foldgutter",
+			    ],
+			    "indentUnit": 4,
+			    "indentWithTabs": true,
+			    "lineNumbers": true,
+			    "lineWrapping": true,
+			    "matchTags": true,
+			    "mode": "text/xml",
+			    "tabSize": 4,
+			    "theme": "monokai",
+			  },
+			  "saved": true,
+			  "title": "New Title",
+			}
+		`)
+			})
 	})
 
-	test('saveCode calls APIUtil', () => {
+	test('saveAndGetTitleFromCode calls APIUtil', () => {
+		expect.hasAssertions()
+		const code = '{ "content": { "title": "Initial Title"} }'
+		const props = {
+			draftId: 'mock-draft-id',
+			initialCode: code,
+			mode: JSON_MODE
+		}
 		APIUtil.postDraft.mockResolvedValue({
 			status: 'ok'
 		})
-
-		const props = {
-			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
-		}
 		const component = mount(<CodeEditor {...props} />)
-		EditorUtil.getTitleFromString.mockReturnValueOnce('     ')
-		component.instance().saveCode()
-		EditorUtil.getTitleFromString.mockReturnValueOnce('Mock Title')
-		component.setProps({ mode: JSON_MODE })
-		component.instance().saveCode()
 
-		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
+		return component
+			.instance()
+			.saveAndGetTitleFromCode()
+			.then(() => {
+				expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-draft-id', code, 'application/json')
+			})
 	})
 
-	test('saveCode() with invalid document', () => {
+	test('saveAndGetTitleFromCode calls APIUtil', () => {
+		expect.hasAssertions()
+		const code = '{ "content": { "title": "Initial Title"} }'
+		const props = {
+			draftId: 'mock-draft-id',
+			initialCode: code,
+			mode: JSON_MODE
+		}
+		APIUtil.postDraft.mockResolvedValue({
+			status: 'ok'
+		})
+		const component = mount(<CodeEditor {...props} />)
+		component.instance().saveAndGetTitleFromCode()
+
+		expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-draft-id', code, 'application/json')
+	})
+
+	test('sendSave() handles api returning an error', () => {
 		expect.hasAssertions()
 
 		APIUtil.postDraft.mockResolvedValue({
@@ -285,15 +298,14 @@ describe('CodeEditor', () => {
 
 		const props = {
 			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			mode: XML_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 
 		expect(ModalUtil.show).toHaveBeenCalledTimes(0)
 		return component
 			.instance()
-			.saveCode()
+			.sendSave()
 			.then(() => {
 				expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
 				expect(ModalUtil.show).toHaveBeenCalledTimes(1)
@@ -303,22 +315,21 @@ describe('CodeEditor', () => {
 			})
 	})
 
-	test('saveCode() handles save errors', () => {
+	test('saveCode() handles postDraft rejecting', () => {
 		expect.hasAssertions()
 
 		APIUtil.postDraft.mockRejectedValueOnce('mock-error')
 
 		const props = {
 			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			mode: XML_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 
 		expect(ModalUtil.show).toHaveBeenCalledTimes(0)
 		return component
 			.instance()
-			.saveCode()
+			.sendSave()
 			.then(() => {
 				expect(APIUtil.postDraft).toHaveBeenCalledTimes(1)
 				expect(ModalUtil.show).toHaveBeenCalledTimes(1)
@@ -336,8 +347,7 @@ describe('CodeEditor', () => {
 
 		const props = {
 			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			mode: XML_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 		component.instance().onKeyDown({
@@ -378,8 +388,7 @@ describe('CodeEditor', () => {
 	test('setEditor changes state', () => {
 		const props = {
 			initialCode: '',
-			mode: XML_MODE,
-			model: { title: 'Mock Title' }
+			mode: XML_MODE
 		}
 		const component = mount(<CodeEditor {...props} />)
 		const basicEditor = {
@@ -404,7 +413,6 @@ describe('CodeEditor', () => {
 		    "selectAll": [Function],
 		    "setSelection": [MockFunction],
 		  },
-		  "mode": "xml",
 		  "options": Object {
 		    "foldGutter": true,
 		    "gutters": Array [

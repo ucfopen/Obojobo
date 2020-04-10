@@ -76,7 +76,7 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
-	setTitleInCode(code, mode, title){
+	setTitleInCode(code, mode, title) {
 		switch (mode) {
 			case JSON_MODE:
 				return EditorUtil.setModuleTitleInJSON(code, title)
@@ -86,7 +86,7 @@ class CodeEditor extends React.Component {
 		}
 	}
 
-	saveAndSetNewTitleInCode(newTitle){
+	saveAndSetNewTitleInCode(newTitle) {
 		this.setState({
 			title: newTitle,
 			code: this.setTitleInCode(this.state.code, this.props.mode, newTitle)
@@ -98,12 +98,12 @@ class CodeEditor extends React.Component {
 	saveAndGetTitleFromCode() {
 		// Update the title in the File Toolbar
 		const title = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
-		this.setState({title})
+		this.setState({ title })
 
 		return this.sendSave(this.props.draftId, this.state.code, this.props.mode)
 	}
 
-	sendSave(draftId, code, mode){
+	sendSave(draftId, code, mode) {
 		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
 		return APIUtil.postDraft(draftId, code, format)
 			.then(result => {
@@ -112,6 +112,7 @@ class CodeEditor extends React.Component {
 				this.setState({ saved: true })
 			})
 			.catch(e => {
+				if (e instanceof Error) e = e.message
 				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
 			})
 	}
@@ -171,10 +172,7 @@ class CodeEditor extends React.Component {
 		return (
 			<div className={'component editor--code-editor'} onKeyDown={this.onKeyDown}>
 				<div className="draft-toolbars">
-					<EditorTitleInput
-						title={this.state.title}
-						renameModule={this.saveAndSetNewTitleInCode}
-					/>
+					<EditorTitleInput title={this.state.title} renameModule={this.saveAndSetNewTitleInCode} />
 					{this.state.editor ? (
 						<FileToolbar
 							editor={this.state.editor}

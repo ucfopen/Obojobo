@@ -1,21 +1,30 @@
 import './editor-title-input.scss'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-const EditorTitleInput = ({renameModule, title}) => {
+const EditorTitleInput = ({ renameModule, title }) => {
+	title = title || '' // in case title is null or undefined
+
+	// eslint-disable-next-line prefer-const
 	let [stateTitle, setStateTitle] = useState(title)
 
 	// update state.title when props.title changes
 	// because useState doesn't do that
-	useEffect(() => { setStateTitle(title)}, [title])
+	useEffect(() => {
+		setStateTitle(title)
+	}, [title])
 
 	return (
 		<input
 			className="editor--components--editor-title-input"
 			value={stateTitle}
 			placeholder="(Untitled Module)"
-			onChange={event => {setStateTitle(event.target.value)}}
-			onBlur={() => { if(stateTitle !== title) renameModule(stateTitle.trim()) }}
+			onChange={event => {
+				setStateTitle(event.target.value)
+			}}
+			onBlur={() => {
+				if (stateTitle !== title) renameModule(stateTitle.trim())
+			}}
 			onKeyDown={event => {
 				switch (event.key) {
 					case 's':
