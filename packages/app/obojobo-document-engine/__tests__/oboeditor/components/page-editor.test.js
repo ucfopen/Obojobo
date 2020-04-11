@@ -25,8 +25,9 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
-// jest.mock('src/scripts/oboeditor/components/toolbars/content-toolbar')
-//jest.mock('obojobo-document-engine/src/scripts/common/registry')
+jest.mock('src/scripts/oboeditor/components/hovering-preview', () => props => (
+	<div {...props} className={'mockHoveringPreview'} />
+))
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -317,7 +318,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: '' }, []])
+
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [
@@ -350,7 +351,6 @@ describe('PageEditor', () => {
 				}
 			})
 		})
-		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: 'mock text', _latex: true }, []])
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [
@@ -383,7 +383,6 @@ describe('PageEditor', () => {
 				}
 			})
 		})
-		jest.spyOn(Editor, 'leaf').mockReturnValue([{ text: 'mock text', _latex: true }, []])
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [

@@ -490,21 +490,13 @@ exports[`PageEditor PageEditor component 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
-    className="hovering-preview"
-    contentEditable={false}
-  >
-    <p>
-      Preview:
-    </p>
-    <span
-      className="preview-latex"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "",
-        }
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
       }
-    />
-  </div>
+    }
+  />
   <div
     className="draft-toolbars"
   >
@@ -958,21 +950,13 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
-    className="hovering-preview"
-    contentEditable={false}
-  >
-    <p>
-      Preview:
-    </p>
-    <span
-      className="preview-latex"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "",
-        }
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
       }
-    />
-  </div>
+    }
+  />
   <div
     className="draft-toolbars"
   >
@@ -1426,21 +1410,13 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
-    className="hovering-preview"
-    contentEditable={false}
-  >
-    <p>
-      Preview:
-    </p>
-    <span
-      className="preview-latex"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "",
-        }
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
       }
-    />
-  </div>
+    }
+  />
   <div
     className="draft-toolbars"
   >
@@ -1940,21 +1916,13 @@ exports[`PageEditor PageEditor component with no page 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
-    className="hovering-preview"
-    contentEditable={false}
-  >
-    <p>
-      Preview:
-    </p>
-    <span
-      className="preview-latex"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "",
-        }
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
       }
-    />
-  </div>
+    }
+  />
   <div
     className="draft-toolbars"
   >

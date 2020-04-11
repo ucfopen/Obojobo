@@ -41,6 +41,7 @@ const HoveringPreview = ({ pageEditorContainerRef }) => {
 		// Calculate styles to set display location
 		const pageEditorRect = pageEditorContainerRef.current.getBoundingClientRect()
 		const rect = parent.getBoundingClientRect()
+
 		el.style.opacity = 1
 		el.style.top = `${rect.top - pageEditorRect.top - el.offsetHeight - 6}px`
 		el.style.left = `${rect.left - pageEditorRect.left - el.offsetWidth / 2 + rect.width / 2}px`
