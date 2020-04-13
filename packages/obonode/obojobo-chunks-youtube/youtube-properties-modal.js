@@ -137,6 +137,9 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange}
 					/>
+					<small>
+						Seconds or MM:SS format (e.g. 135 or 2:15)
+					</small>
 					<span className="error">{this.state.startTimeError}</span>
 					<label>End time in seconds (optional):</label>
 					<input
