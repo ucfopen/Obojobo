@@ -50,6 +50,7 @@ class PageEditor extends React.Component {
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
@@ -343,6 +344,11 @@ class PageEditor extends React.Component {
 		return []
 	}
 
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
+	}
+
 	// All the render methods that allow the editor to display properly
 
 	renderLeaf(props) {
@@ -384,6 +390,7 @@ class PageEditor extends React.Component {
 							model={this.props.model}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
+							reload={this.reload}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
 							mode={'visual'}
@@ -394,7 +401,6 @@ class PageEditor extends React.Component {
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
-
 					<EditorNav
 						navState={this.props.navState}
 						model={this.props.model}

@@ -372,4 +372,21 @@ describe('CodeEditor', () => {
 		basicEditor.deleteFragment()
 		expect(basicEditor.deleteH).toHaveBeenCalled()
 	})
+
+	test('reload disables event listener and calls location.reload', () => {
+		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
+		jest.spyOn(location, 'reload').mockReturnValueOnce()
+
+		const props = {
+			initialCode: '',
+			mode: XML_MODE,
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<CodeEditor {...props} />)
+
+		component.getInstance().reload()
+		expect(window.removeEventListener).toHaveBeenCalled()
+		expect(location.reload).toHaveBeenCalled()
+	})
+
 })

@@ -103,7 +103,31 @@ router
 	.route('/new')
 	.post(requireCanCreateDrafts)
 	.post((req, res, next) => {
-		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
+		const content = req.body.content
+		const format = req.body.format
+
+		let draftJson = !format ? draftTemplate : null
+		let draftXml = !format ? draftTemplateXML : null
+
+		if (format === 'application/json') {
+			draftJson = content
+		} else if (format === 'application/xml') {
+			draftXml = content
+			try {
+				const convertedXml = xmlToDraftObject(draftXml, true)
+				if (convertedXml) {
+					draftJson = convertedXml
+				} else {
+					logger.error('Parse XML non-error?', convertedXml)
+					return res.unexpected()
+				}
+			} catch (e) {
+				logger.error('Parse XML Failed:', e, content)
+				return res.unexpected(e)
+			}
+		}
+
+		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
 			.then(res.success)
 			.catch(res.unexpected)
 	})

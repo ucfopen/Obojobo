@@ -49,6 +49,7 @@ class CodeEditor extends React.Component {
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
 		this.saveCode = this.saveCode.bind(this)
+		this.reload = this.reload.bind(this)
 		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
@@ -109,6 +110,11 @@ class CodeEditor extends React.Component {
 		})
 	}
 
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
+	}
+
 	saveCode(draftId) {
 		// Update the title in the File Toolbar
 		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
@@ -161,19 +167,19 @@ class CodeEditor extends React.Component {
 	}
 
 	onKeyDown(event) {
-		if(!this.state.editor) return 
+		if (!this.state.editor) return
 
-		if(event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.saveCode(this.props.draftId)
 		}
 
-		if(event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.state.editor.undo()
 		}
 
-		if(event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			this.state.editor.redo()
 		}
@@ -196,6 +202,7 @@ class CodeEditor extends React.Component {
 							model={this.props.model}
 							draftId={this.props.draftId}
 							onSave={this.saveCode}
+							reload={this.reload}
 							onRename={this.setTitle}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
