@@ -81,17 +81,17 @@ const CollectionManageModulesDialog = props => {
 					×
 				</Button>
 			</div>
-			<div className="wrapper">
+			<div className="wrapper manage-modules-wrapper">
 				<h1 className="title">Manage Modules</h1>
 				<div className="sub-title">Add modules to or remove modules from this collection</div>
-				<Button className="new-button" onClick={openModulePicker}>
+				<Button className="add-module-button" onClick={openModulePicker}>
 					Add Module
 				</Button>
 			</div>
 
 			<ul className="module-list">{modulesRender}</ul>
 
-			<div className="wrapper">
+			<div className="wrapper module-search-wrapper">
 				{searchModalRender}
 				<Button className="done-button secondary-button" onClick={props.onClose}>
 					Done

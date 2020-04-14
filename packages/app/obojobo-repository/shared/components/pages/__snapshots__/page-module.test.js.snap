@@ -143,11 +143,11 @@ exports[`PageModule renders when given props 1`] = `
        
       on 
       <b>
-        Apr 10, 2020
+        Jan 1, 1970
       </b>
        and updated
        
-      a few seconds ago
+      A long time ago
       .
     </div>
     <h2>
