@@ -46,7 +46,6 @@ class PageEditor extends React.Component {
 			showPlaceholders: true
 		}
 
-		this.imported = false
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
