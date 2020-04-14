@@ -138,7 +138,7 @@ const switchType = {
 
 		const nodeRange = Editor.range(editor, path)
 		const [start, end] = Range.edges(editor.selection)
-		const containsStart = Range.includes(nodeRange, start) 
+		const containsStart = Range.includes(nodeRange, start)
 		const containsEnd = Range.includes(nodeRange, end)
 
 		const list = Array.from(
@@ -156,13 +156,12 @@ const switchType = {
 		// Changing each CodeLine to a ListLevel will allow normalization
 		// to remove them from the Code node and wrap them in a List node
 		// Indents in the CodeLine are transfered into nested Levels
-		let startPath = list[0][1]
+		const startPath = list[0][1]
 		let endPath = list[0][1]
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([child, childPath]) => {
 				// Save the start and end child paths to fix the selection once all nodes are moved
-				if(Path.isBefore(childPath, startPath)) startPath = childPath
-				if(Path.isAfter(childPath, endPath)) endPath = childPath
+				if (Path.isAfter(childPath, endPath)) endPath = childPath
 
 				Transforms.removeNodes(editor, { at: childPath })
 				// Use the topmost indent as the starting bullet style
@@ -194,50 +193,58 @@ const switchType = {
 				)
 			})
 
-			if(containsStart) {
+			if (containsStart) {
 				// Find the final path to the starting line node
 				// Because normalization has not yet run, there will be exactly
 				// 1 line node for the starting path
 				const [startLine] = Editor.nodes(editor, {
-					at: startPath, 
-					match: n => n.subtype === LIST_LINE_NODE,
+					at: startPath,
+					match: n => n.subtype === LIST_LINE_NODE
 				})
 				// The difference between startPath and start Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = start.path.length - startPath.length
 				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
 
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: startLine[1].concat(relativeLeafPath),
-					offset: start.offset
-				}, { edge: 'start' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: startLine[1].concat(relativeLeafPath),
+						offset: start.offset
+					},
+					{ edge: 'start' }
+				)
 			}
 
-			if(containsEnd) {
+			if (containsEnd) {
 				// Find the final path to the ending line node
 				// Because normalization has not yet run, there will be exactly
 				// 1 line node for the endinging path
 				const [endLine] = Editor.nodes(editor, {
-					at: endPath, 
-					match: n => n.subtype === LIST_LINE_NODE,
+					at: endPath,
+					match: n => n.subtype === LIST_LINE_NODE
 				})
 				// The difference between endPath and end Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = end.path.length - endPath.length
 				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
 
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: endLine[1].concat(relativeLeafPath),
-					offset: end.offset
-				}, { edge: 'end' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: endLine[1].concat(relativeLeafPath),
+						offset: end.offset
+					},
+					{ edge: 'end' }
+				)
 			}
 		})
 	}

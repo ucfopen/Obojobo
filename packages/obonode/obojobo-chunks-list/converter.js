@@ -22,7 +22,7 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
  * @param {Integer} currLevel The indent level that is being flattened
  * @param {Array} textGroup The array that the ListLine text will be saved to
  * @param {Array} indents The array that the ListLevel styles will be saved to
- * @returns {Object} An Obojobo List node 
+ * @returns {Object} An Obojobo List node
  */
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.content
@@ -48,11 +48,11 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 
 /**
  * Generates an Obojobo List Node from a Slate node.
- * Copies the id, type, triggers, and condenses ListLine children and their 
+ * Copies the id, type, triggers, and condenses ListLine children and their
  * text children (including marks) into a single textGroup.  ListLevels are
  * flattened into the listStyles of the Obojobo node
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo List node 
+ * @returns {Object} An Obojobo List node
  */
 const slateToObo = node => {
 	const textGroup = []
@@ -106,11 +106,11 @@ const normalizeJSON = json => {
 /**
  * Generates a Slate node from an Obojobo List node.
  * Copies all attributes, and converts a textGroup into Slate List children
- * Each textItem in the textgroup becomes a separate ListLine, and indents 
- * are turned into nested ListLevel parents of the ListLine to properly 
+ * Each textItem in the textgroup becomes a separate ListLine, and indents
+ * are turned into nested ListLevel parents of the ListLine to properly
  * leverage the Slate Editor's capabilities.  The generated node is then normalized
  * to combine any adjacent ListLevel nodes
- * @param {Object} node An Obojobo Line node 
+ * @param {Object} node An Obojobo Line node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
@@ -162,23 +162,27 @@ const switchType = {
 	'ObojoboDraft.Chunks.Heading': (editor, [, path], data) => {
 		const nodeRange = Editor.range(editor, path)
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		Editor.withoutNormalizing(editor, () => {
-			list.forEach(([child, childPath]) => Transforms.setNodes(
-				editor,
-				{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },
-				{ at: childPath }
-			))
+			list.forEach(([child, childPath]) =>
+				Transforms.setNodes(
+					editor,
+					{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },
+					{ at: childPath }
+				)
+			)
 		})
 	},
 	'ObojoboDraft.Chunks.Text': (editor, [, path]) => {
 		const nodeRange = Editor.range(editor, path)
 		const [start, end] = Range.edges(editor.selection)
-		const containsStart = Range.includes(nodeRange, start) 
+		const containsStart = Range.includes(nodeRange, start)
 		const containsEnd = Range.includes(nodeRange, end)
 
 		const textNode = {
@@ -188,26 +192,27 @@ const switchType = {
 		}
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		// Changing each ListLine to a TextLine and wrapping them in a Text node
-		// will allow normalization to remove them from the List node 
+		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
-		let startPath = list[0][1]
+		const startPath = list[0][1]
 		let endPath = list[0][1]
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([child, childPath]) => {
 				// Save the start and end child paths to fix the selection once all nodes are moved
-				if(Path.isBefore(childPath, startPath)) startPath = childPath
-				if(Path.isAfter(childPath, endPath)) endPath = childPath
+				if (Path.isAfter(childPath, endPath)) endPath = childPath
 
-				// The difference between the path lengths informs how 
-				// nested the ListLine is. The -2 accounts for the base 
+				// The difference between the path lengths informs how
+				// nested the ListLine is. The -2 accounts for the base
 				// ListLevel and the ListLine node itself
-				const indent = (childPath.length - path.length) - 2
+				const indent = childPath.length - path.length - 2
 				const jsonNode = {
 					type: TEXT_NODE,
 					subtype: TEXT_LINE_NODE,
@@ -221,57 +226,90 @@ const switchType = {
 
 				textNode.children.push(jsonNode)
 			})
-			
-			Transforms.removeNodes(editor, { at: path})
-			Transforms.insertNodes(
-				editor,
-				textNode,
-				{ at: path }
-			)
 
-			if(containsStart) {
+			// In order to properly handle the replacement without breaking normalization
+			// First delete all text that is going to be replaced
+			// This leaves us with an empty ListLine at the start path
+			// Then we delete that empty ListLine, and insert the new TextNode in its place
+			const initalPoint = Editor.start(editor, startPath)
+			const finalPoint = Editor.end(editor, endPath)
+			Transforms.delete(editor, {
+				at: {
+					anchor: initalPoint,
+					focus: finalPoint
+				}
+			})
+			Transforms.removeNodes(editor, { at: startPath })
+			Transforms.insertNodes(editor, textNode, {
+				at: startPath
+			})
+
+			if (containsStart) {
+				// Since list paths have the possibility of being N deep,
+				// we use the list path to find any line children
+				// this works because there will only be one text node within a single list
+				const [firstLine] = Array.from(
+					Editor.nodes(editor, {
+						at: path,
+						match: n => n.subtype === TEXT_LINE_NODE
+					})
+				)
+
 				// The difference between startPath and start Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = start.path.length - startPath.length
 				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
 
-				// Since list paths have the possibility of being N deep,
-				// we cannot use the startPath, but the first textline path 
-				// garunteed to be at path.concat[0]
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: path.concat([0]).concat(relativeLeafPath),
-					offset: start.offset
-				}, { edge: 'anchor' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: firstLine[1].concat(relativeLeafPath),
+						offset: start.offset
+					},
+					{ edge: 'anchor' }
+				)
 			}
 
-			if(containsEnd) {
+			if (containsEnd) {
+				// Since list paths have the possibility of being N deep,
+				// we use the list path to find any line children
+				// this works because there will only be one text node within a single list
+				const [lastLine] = Array.from(
+					Editor.nodes(editor, {
+						at: path,
+						match: n => n.subtype === TEXT_LINE_NODE,
+						reverse: true
+					})
+				)
+
 				// The difference between endPath and end Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = end.path.length - endPath.length
 				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
 
-				// Since list paths have the possibility of being N deep,
-				// we cannot use the endPath, but the last line path 
-				// garunteed to be at path.concat[numLines - 1]
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: path.concat([list.length - 1]).concat(relativeLeafPath),
-					offset: end.offset
-				}, { edge: 'focus' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: lastLine[1].concat(relativeLeafPath),
+						offset: end.offset
+					},
+					{ edge: 'focus' }
+				)
 			}
 		})
 	},
 	'ObojoboDraft.Chunks.Code': (editor, [, path]) => {
 		const nodeRange = Editor.range(editor, path)
 		const [start, end] = Range.edges(editor.selection)
-		const containsStart = Range.includes(nodeRange, start) 
+		const containsStart = Range.includes(nodeRange, start)
 		const containsEnd = Range.includes(nodeRange, end)
 
 		const codeNode = {
@@ -281,26 +319,27 @@ const switchType = {
 		}
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		// Changing each ListLine to a CodeLine and wrapping them in a Code node
-		// will allow normalization to remove them from the List node 
+		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
-		let startPath = list[0][1]
+		const startPath = list[0][1]
 		let endPath = list[0][1]
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([child, childPath]) => {
 				// Save the start and end child paths to fix the selection once all nodes are moved
-				if(Path.isBefore(childPath, startPath)) startPath = childPath
-				if(Path.isAfter(childPath, endPath)) endPath = childPath
+				if (Path.isAfter(childPath, endPath)) endPath = childPath
 
-				// The difference between the path lengths informs how 
-				// nested the ListLine is. The -2 accounts for the base 
+				// The difference between the path lengths informs how
+				// nested the ListLine is. The -2 accounts for the base
 				// ListLevel and the ListLine node itself
-				const indent = (childPath.length - path.length) - 2
+				const indent = childPath.length - path.length - 2
 				const jsonNode = {
 					type: CODE_NODE,
 					subtype: CODE_LINE_NODE,
@@ -314,48 +353,83 @@ const switchType = {
 
 				codeNode.children.push(jsonNode)
 			})
-			
-			Transforms.removeNodes(editor, { at: path})
-			Transforms.insertNodes(
-				editor,
-				codeNode,
-				{ at: path }
-			)
 
-			if(containsStart) {
+			// In order to properly handle the replacement without breaking normalization
+			// First delete all text that is going to be replaced
+			// This leaves us with an empty ListLine at the start path
+			// Then we delete that empty ListLine, and insert the new CodeNode in its place
+			const initalPoint = Editor.start(editor, startPath)
+			const finalPoint = Editor.end(editor, endPath)
+			Transforms.delete(editor, {
+				at: {
+					anchor: initalPoint,
+					focus: finalPoint
+				}
+			})
+			Transforms.removeNodes(editor, { at: startPath })
+			Transforms.insertNodes(editor, codeNode, {
+				at: startPath
+			})
+
+			if (containsStart) {
+				// Since list paths have the possibility of being N deep,
+				// we use the list path to find any line children
+				// this works because there will only be one text node within a single list
+				const [firstLine] = Array.from(
+					Editor.nodes(editor, {
+						at: path,
+						match: n => n.subtype === CODE_LINE_NODE
+					})
+				)
+
 				// The difference between startPath and start Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = start.path.length - startPath.length
 				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
 
-
-				// Since list paths have the possibility of being N deep,
-				// we cannot use the startPath, but the first line path is
-				// garunteed to be at path.concat[0]
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: path.concat([0]).concat(relativeLeafPath),
-					offset: start.offset
-				}, { edge: 'anchor' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: firstLine[1].concat(relativeLeafPath),
+						offset: start.offset
+					},
+					{ edge: 'anchor' }
+				)
 			}
 
-			if(containsEnd) {
+			if (containsEnd) {
+				// Since list paths have the possibility of being N deep,
+				// we use the list path to find any line children
+				// this works because there will only be one text node within a single list
+				const [lastLine] = Array.from(
+					Editor.nodes(editor, {
+						at: path,
+						match: n => n.subtype === CODE_LINE_NODE,
+						reverse: true
+					})
+				)
+
 				// The difference between endPath and end Point indicates what inline
 				// and what text leaf is currently selected
 				const leafDepth = end.path.length - endPath.length
 				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
 
-				// Therefore, the point to focus on is 
-				// the line's path 
+				// Therefore, the point to focus on is
+				// the line's path
 				// + the relative leaf path
 				// + the original offset
-				Transforms.setPoint(editor, {
-					path: path.concat([list.length - 1]).concat(relativeLeafPath),
-					offset: end.offset
-				}, { edge: 'focus' })
+				Transforms.setPoint(
+					editor,
+					{
+						path: lastLine[1].concat(relativeLeafPath),
+						offset: end.offset
+					},
+					{ edge: 'focus' }
+				)
 			}
 		})
 	},
@@ -366,22 +440,23 @@ const switchType = {
 		// If we are toggling between ordered and unordered lists
 		// Then we need to change the type on the root node
 		if (swapType) {
-			Transforms.setNodes(
-				editor,
-				{ content: { ...node.content, listStyles: data }},
-				{ at: path }
-			)
+			Transforms.setNodes(editor, { content: { ...node.content, listStyles: data } }, { at: path })
 		}
 
 		// Find the bullet list and starting index for the selection
-		const bulletList = data.type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
+		const bulletList =
+			data.type === 'unordered'
+				? ListStyles.UNORDERED_LIST_BULLETS
+				: ListStyles.ORDERED_LIST_BULLETS
 		const bulletIndex = bulletList.indexOf(data.bulletStyle)
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		const shortestPath = list.reduce((accum, [, childPath]) => {
 			if (childPath.length < accum) return childPath.length
@@ -395,14 +470,14 @@ const switchType = {
 
 				// If we are not swapping the list type, we don't want to change
 				// any bullets that are not visibly selected. The visibly selected
-				// ListLevels can be found by comparing the pathlength to the 
-				// shortestPath. The -2 accounts for the base List and the 
+				// ListLevels can be found by comparing the pathlength to the
+				// shortestPath. The -2 accounts for the base List and the
 				// ListLine node itself
-				if(!swapType && index < (shortestPath - 2)) return
+				if (!swapType && index < shortestPath - 2) return
 
 				// If we are swapping the list type, we want to make sure to not
 				// overwrite the List content
-				if(swapType && index === 0) return 
+				if (swapType && index === 0) return
 
 				const linePath = childPath.slice(0, index + 1)
 				const bulletStyle =

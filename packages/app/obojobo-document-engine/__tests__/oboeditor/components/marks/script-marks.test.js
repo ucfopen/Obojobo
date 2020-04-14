@@ -14,6 +14,16 @@ describe('ScriptMarks', () => {
 		expect(editor.toggleScript).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			toggleScript: jest.fn()
+		}
+
+		ScriptMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.toggleScript).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			toggleScript: jest.fn()
@@ -57,7 +67,7 @@ describe('ScriptMarks', () => {
 					sup: true,
 					num: 1
 				},
-				children: 'mockChild',
+				children: 'mockChild'
 			})
 		).toMatchSnapshot()
 
@@ -73,19 +83,19 @@ describe('ScriptMarks', () => {
 	})
 
 	test('renderLeaf does nothing', () => {
-		expect(ScriptMarks.plugins.renderLeaf({
-			leaf: {},
-			children: 'mockChild'
-		})).toMatchSnapshot()
+		expect(
+			ScriptMarks.plugins.renderLeaf({
+				leaf: {},
+				children: 'mockChild'
+			})
+		).toMatchSnapshot()
 	})
 
 	test('toggleScript removes marks', () => {
 		jest.spyOn(Editor, 'removeMark').mockReturnValue(true)
 
 		const editor = {
-			children: [
-				{ text: 'mockText', sup: true, num: 1 }
-			],
+			children: [{ text: 'mockText', sup: true, num: 1 }],
 			selection: {
 				anchor: { path: [0], offset: 0 },
 				focus: { path: [0], offset: 0 }
@@ -103,9 +113,7 @@ describe('ScriptMarks', () => {
 		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
 
 		const editor = {
-			children: [
-				{ text: 'mockText', sup: true, num: -1 }
-			],
+			children: [{ text: 'mockText', sup: true, num: -1 }],
 			selection: {
 				anchor: { path: [0], offset: 0 },
 				focus: { path: [0], offset: 0 }

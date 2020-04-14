@@ -3,6 +3,8 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 
 const FormatPlugin = {
 	onKeyDown(event, editor, next) {
@@ -11,18 +13,57 @@ const FormatPlugin = {
 		switch (event.key) {
 			case 'k':
 				event.preventDefault()
-				return editor.toggleBullet('unordered', 'disc')
+				return editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 			case 'l':
 				event.preventDefault()
-				return editor.toggleBullet('ordered', 'decimal')
+				return editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
+			case 'c':
+				event.preventDefault()
+				return editor.changeToType(CODE_NODE)
+			// Matches clear formatting commands
+			case ' ':
+				event.preventDefault()
+				return editor.changeToType(TEXT_NODE)
+
+			// Handle the cases where the shift key causes a change in the number
+			// This happens sporadically
+			// NOTE: CMD+SHIFT+3, CMD+SHIFT+4, CMD+SHIFT+5 have special meanings
+			// on MasOS that cannot be overridden by event.preventDefault()
+			// Mac users can use CTRL insead of CMD for those headings
+			case '1':
+			case '!':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 1 })
+			case '2':
+			case '@':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 2 })
+			case '3':
+			case '#':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 3 })
+			case '4':
+			case '$':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 4 })
+			case '5':
+			case '%':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 5 })
+			case '6':
+			case '^':
+				event.preventDefault()
+				return editor.changeToType(HEADING_NODE, { headingLevel: 6 })
 		}
 	},
 	commands: {
 		changeToType: (editor, type, data) => {
-			const list = Array.from(Editor.nodes(editor, {
-				mode: 'lowest',
-				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-			}))
+			const list = Array.from(
+				Editor.nodes(editor, {
+					mode: 'lowest',
+					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+				})
+			)
 
 			Editor.withoutNormalizing(editor, () => {
 				list.forEach(entry => {
@@ -33,24 +74,6 @@ const FormatPlugin = {
 					}
 				})
 			})
-		},
-		toggleBullet(editor, type, bulletStyle) {
-			const nodes = Array.from(Editor.nodes(editor, {
-				mode: 'lowest',
-				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-			}))
-			const isList = nodes.every(([block]) => block.type === LIST_NODE)
-
-			if(!isList) {
-				return editor.changeToType(LIST_NODE, { type, bulletStyle })
-			}
-
-			const isSameType = nodes.every(([block]) => block.content.listStyles.type === type)
-			if(!isSameType) {
-				return editor.changeToType(LIST_NODE, { type, bulletStyle })
-			}
-
-			editor.changeToType(TEXT_NODE)
 		}
 	}
 }

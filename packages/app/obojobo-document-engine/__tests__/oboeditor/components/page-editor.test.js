@@ -329,6 +329,29 @@ describe('PageEditor', () => {
 		component.instance().onChange(value)
 	})
 
+	test('PageEditor component alters value majorly while focused', () => {
+		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<PageEditor {...props} />)
+
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
+			}
+		]
+
+		component.instance().onChange(value)
+	})
+
 	test('toggleEditable changes the state', () => {
 		const props = {
 			page: {

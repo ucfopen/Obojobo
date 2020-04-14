@@ -34,6 +34,16 @@ describe('LinkMark', () => {
 		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			changeLinkValue: jest.fn()
+		}
+
+		LinkMark.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			changeLinkValue: jest.fn()
@@ -74,10 +84,10 @@ describe('LinkMark', () => {
 		})
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValue(true)
-		
+
 		const editor = {
 			removeMark: jest.fn(),
-			addMark: jest.fn(),
+			addMark: jest.fn()
 		}
 
 		LinkMark.plugins.commands.changeLinkValue(editor, '')
@@ -92,13 +102,15 @@ describe('LinkMark', () => {
 		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: ''}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: '' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -106,7 +118,7 @@ describe('LinkMark', () => {
 				focus: { path: [0, 0], offset: 0 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		LinkMark.plugins.commands.changeLinkValue(editor, 'mockURL')
@@ -120,13 +132,15 @@ describe('LinkMark', () => {
 		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'mock text'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'mock text' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -134,7 +148,7 @@ describe('LinkMark', () => {
 				focus: { path: [0, 0], offset: 4 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		LinkMark.plugins.commands.changeLinkValue(editor, 'mockURL')
@@ -144,13 +158,15 @@ describe('LinkMark', () => {
 
 	test('the action in each mark calls ModalUtil', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'mock text'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'mock text' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -158,7 +174,7 @@ describe('LinkMark', () => {
 				focus: { path: [0, 0], offset: 4 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		LinkMark.marks.forEach(mark => {
@@ -170,13 +186,15 @@ describe('LinkMark', () => {
 
 	test('the action in each mark calls ModalUtil with ActionButtons', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: BUTTON_NODE,
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'mock text'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'mock text' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -184,7 +202,7 @@ describe('LinkMark', () => {
 				focus: { path: [0, 0], offset: 4 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		LinkMark.marks.forEach(mark => {

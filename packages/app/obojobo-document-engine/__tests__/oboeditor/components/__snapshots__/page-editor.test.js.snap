@@ -10,6 +10,7 @@ Array [
     "commands": Object {
       "changeToType": [Function],
     },
+    "onKeyDown": [Function],
   },
   Object {
     "insertData": [Function],
