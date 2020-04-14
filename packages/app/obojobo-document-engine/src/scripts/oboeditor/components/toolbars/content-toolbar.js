@@ -55,6 +55,7 @@ const ContentToolbar = props => {
 						key={mark.name}
 						onClick={() => mark.action(props.editor)}
 						title={mark.name + shortcut}
+						aria-label={mark.name + shortcut}
 					>
 						<Icon />
 					</button>
@@ -65,12 +66,16 @@ const ContentToolbar = props => {
 				type="unordered"
 				bullets={unorderedList}
 				defaultStyle="disc"
+				shortcut="Ctrl+Shift+K"
+				shortcutMac="⌘+Shift+K"
 			/>
 			<ListDropper
 				editor={props.editor}
 				type="ordered"
 				bullets={orderedList}
 				defaultStyle="decimal"
+				shortcut="Ctrl+Shift+L"
+				shortcutMac="⌘+Shift+L"
 			/>
 		</div>
 	)

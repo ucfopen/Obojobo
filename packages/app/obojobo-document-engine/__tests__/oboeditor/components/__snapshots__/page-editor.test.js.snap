@@ -502,9 +502,11 @@ exports[`PageEditor PageEditor component 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
         onClick={[Function]}
         title="Bold
-CTRL+B"
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -517,9 +519,11 @@ CTRL+B"
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
         onClick={[Function]}
         title="Italic
-CTRL+I"
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -532,9 +536,11 @@ CTRL+I"
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
         onClick={[Function]}
         title="Strikethrough
-CTRL+D"
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -559,9 +565,11 @@ CTRL+D"
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
         onClick={[Function]}
         title="Quote
-CTRL+\\""
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -580,9 +588,11 @@ CTRL+\\""
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
         onClick={[Function]}
         title="Monospace
-CTRL+M"
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -604,9 +614,11 @@ CTRL+M"
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
         onClick={[Function]}
         title="Equation
-CTRL+/"
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -631,9 +643,11 @@ CTRL+/"
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
         onClick={[Function]}
         title="Link
-CTRL+K"
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -650,9 +664,11 @@ CTRL+K"
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
         onClick={[Function]}
         title="Superscript
-CTRL+."
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -669,9 +685,11 @@ CTRL+."
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
         onClick={[Function]}
         title="Subscript
-CTRL+,"
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -688,9 +706,11 @@ CTRL+,"
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+L"
         onClick={[Function]}
         title="Left Align
-CTRL+L"
+Ctrl+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -703,9 +723,11 @@ CTRL+L"
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+R"
         onClick={[Function]}
         title="Center Align
-CTRL+R"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -718,9 +740,11 @@ CTRL+R"
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+E"
         onClick={[Function]}
         title="Right Align
-CTRL+E"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -733,9 +757,11 @@ CTRL+E"
         </svg>
       </button>
       <button
+        aria-label="Indent
+Alt+Tab"
         onClick={[Function]}
         title="Indent
-ALT+TAB"
+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -752,9 +778,11 @@ ALT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-SHIFT+TAB"
+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -771,9 +799,11 @@ SHIFT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
         onClick={[Function]}
         title="Hanging Indent
-CTRL+H"
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -800,6 +830,8 @@ CTRL+H"
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -867,6 +899,8 @@ CTRL+H"
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -969,9 +1003,11 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
         onClick={[Function]}
         title="Bold
-CTRL+B"
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -984,9 +1020,11 @@ CTRL+B"
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
         onClick={[Function]}
         title="Italic
-CTRL+I"
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -999,9 +1037,11 @@ CTRL+I"
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
         onClick={[Function]}
         title="Strikethrough
-CTRL+D"
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1026,9 +1066,11 @@ CTRL+D"
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
         onClick={[Function]}
         title="Quote
-CTRL+\\""
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1047,9 +1089,11 @@ CTRL+\\""
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
         onClick={[Function]}
         title="Monospace
-CTRL+M"
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1071,9 +1115,11 @@ CTRL+M"
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
         onClick={[Function]}
         title="Equation
-CTRL+/"
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1098,9 +1144,11 @@ CTRL+/"
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
         onClick={[Function]}
         title="Link
-CTRL+K"
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1117,9 +1165,11 @@ CTRL+K"
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
         onClick={[Function]}
         title="Superscript
-CTRL+."
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1136,9 +1186,11 @@ CTRL+."
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
         onClick={[Function]}
         title="Subscript
-CTRL+,"
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1155,9 +1207,11 @@ CTRL+,"
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+L"
         onClick={[Function]}
         title="Left Align
-CTRL+L"
+Ctrl+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1170,9 +1224,11 @@ CTRL+L"
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+R"
         onClick={[Function]}
         title="Center Align
-CTRL+R"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1185,9 +1241,11 @@ CTRL+R"
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+E"
         onClick={[Function]}
         title="Right Align
-CTRL+E"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1200,9 +1258,11 @@ CTRL+E"
         </svg>
       </button>
       <button
+        aria-label="Indent
+Alt+Tab"
         onClick={[Function]}
         title="Indent
-ALT+TAB"
+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1219,9 +1279,11 @@ ALT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-SHIFT+TAB"
+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1238,9 +1300,11 @@ SHIFT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
         onClick={[Function]}
         title="Hanging Indent
-CTRL+H"
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1267,6 +1331,8 @@ CTRL+H"
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -1334,6 +1400,8 @@ CTRL+H"
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -1436,9 +1504,11 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
         onClick={[Function]}
         title="Bold
-CTRL+B"
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1451,9 +1521,11 @@ CTRL+B"
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
         onClick={[Function]}
         title="Italic
-CTRL+I"
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1466,9 +1538,11 @@ CTRL+I"
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
         onClick={[Function]}
         title="Strikethrough
-CTRL+D"
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1493,9 +1567,11 @@ CTRL+D"
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
         onClick={[Function]}
         title="Quote
-CTRL+\\""
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1514,9 +1590,11 @@ CTRL+\\""
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
         onClick={[Function]}
         title="Monospace
-CTRL+M"
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1538,9 +1616,11 @@ CTRL+M"
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
         onClick={[Function]}
         title="Equation
-CTRL+/"
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1565,9 +1645,11 @@ CTRL+/"
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
         onClick={[Function]}
         title="Link
-CTRL+K"
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1584,9 +1666,11 @@ CTRL+K"
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
         onClick={[Function]}
         title="Superscript
-CTRL+."
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1603,9 +1687,11 @@ CTRL+."
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
         onClick={[Function]}
         title="Subscript
-CTRL+,"
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1622,9 +1708,11 @@ CTRL+,"
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+L"
         onClick={[Function]}
         title="Left Align
-CTRL+L"
+Ctrl+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1637,9 +1725,11 @@ CTRL+L"
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+R"
         onClick={[Function]}
         title="Center Align
-CTRL+R"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1652,9 +1742,11 @@ CTRL+R"
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+E"
         onClick={[Function]}
         title="Right Align
-CTRL+E"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1667,9 +1759,11 @@ CTRL+E"
         </svg>
       </button>
       <button
+        aria-label="Indent
+Alt+Tab"
         onClick={[Function]}
         title="Indent
-ALT+TAB"
+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1686,9 +1780,11 @@ ALT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-SHIFT+TAB"
+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1705,9 +1801,11 @@ SHIFT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
         onClick={[Function]}
         title="Hanging Indent
-CTRL+H"
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1734,6 +1832,8 @@ CTRL+H"
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -1801,6 +1901,8 @@ CTRL+H"
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -1949,9 +2051,11 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
         onClick={[Function]}
         title="Bold
-CTRL+B"
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1964,9 +2068,11 @@ CTRL+B"
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
         onClick={[Function]}
         title="Italic
-CTRL+I"
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1979,9 +2085,11 @@ CTRL+I"
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
         onClick={[Function]}
         title="Strikethrough
-CTRL+D"
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2006,9 +2114,11 @@ CTRL+D"
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
         onClick={[Function]}
         title="Quote
-CTRL+\\""
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -2027,9 +2137,11 @@ CTRL+\\""
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
         onClick={[Function]}
         title="Monospace
-CTRL+M"
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2051,9 +2163,11 @@ CTRL+M"
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
         onClick={[Function]}
         title="Equation
-CTRL+/"
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -2078,9 +2192,11 @@ CTRL+/"
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
         onClick={[Function]}
         title="Link
-CTRL+K"
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2097,9 +2213,11 @@ CTRL+K"
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
         onClick={[Function]}
         title="Superscript
-CTRL+."
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -2116,9 +2234,11 @@ CTRL+."
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
         onClick={[Function]}
         title="Subscript
-CTRL+,"
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2135,9 +2255,11 @@ CTRL+,"
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+L"
         onClick={[Function]}
         title="Left Align
-CTRL+L"
+Ctrl+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2150,9 +2272,11 @@ CTRL+L"
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+R"
         onClick={[Function]}
         title="Center Align
-CTRL+R"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2165,9 +2289,11 @@ CTRL+R"
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+E"
         onClick={[Function]}
         title="Right Align
-CTRL+E"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2180,9 +2306,11 @@ CTRL+E"
         </svg>
       </button>
       <button
+        aria-label="Indent
+Alt+Tab"
         onClick={[Function]}
         title="Indent
-ALT+TAB"
+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2199,9 +2327,11 @@ ALT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-SHIFT+TAB"
+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2218,9 +2348,11 @@ SHIFT+TAB"
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
         onClick={[Function]}
         title="Hanging Indent
-CTRL+H"
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2247,6 +2379,8 @@ CTRL+H"
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -2314,6 +2448,8 @@ CTRL+H"
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"

@@ -153,7 +153,7 @@ const AlignMarks = {
 	marks: [
 		{
 			name: 'Indent',
-			shortcut: 'ALT+TAB',
+			shortcut: 'Alt+Tab',
 			type: INDENT,
 			icon: IndentIcon,
 			action: editor => {
@@ -180,7 +180,7 @@ const AlignMarks = {
 		},
 		{
 			name: 'Unindent',
-			shortcut: 'SHIFT+TAB',
+			shortcut: 'Shift+Tab',
 			type: UNINDENT,
 			icon: UnindentIcon,
 			action: editor => {
@@ -209,7 +209,7 @@ const AlignMarks = {
 		},
 		{
 			name: 'Hanging Indent',
-			shortcut: 'CTRL+H',
+			shortcut: 'Ctrl+H',
 			shortcutMac: '⌘H',
 			type: HANGING_INDENT,
 			icon: HangingIndentIcon,

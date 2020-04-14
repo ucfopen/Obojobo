@@ -66,7 +66,7 @@ const LinkMark = {
 	marks: [
 		{
 			name: 'Link',
-			shortcut: 'CTRL+K',
+			shortcut: 'Ctrl+K',
 			shortcutMac: '⌘K',
 			type: LinkMark,
 			icon: LinkIcon,

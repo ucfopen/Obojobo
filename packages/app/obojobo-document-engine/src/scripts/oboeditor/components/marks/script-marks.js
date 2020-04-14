@@ -54,7 +54,7 @@ const ScriptMark = {
 	marks: [
 		{
 			name: 'Superscript',
-			shortcut: 'CTRL+.',
+			shortcut: 'Ctrl+.',
 			shortcutMac: '⌘.',
 			type: SCRIPT_MARK,
 			icon: SupIcon,
@@ -62,7 +62,7 @@ const ScriptMark = {
 		},
 		{
 			name: 'Subscript',
-			shortcut: 'CTRL+,',
+			shortcut: 'Ctrl+,',
 			shortcutMac: '⌘,',
 			type: SCRIPT_MARK,
 			icon: SubIcon,

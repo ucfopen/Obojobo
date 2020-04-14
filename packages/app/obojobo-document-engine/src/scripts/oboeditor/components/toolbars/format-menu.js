@@ -36,43 +36,53 @@ const FormatMenu = props => {
 		type: 'sub-menu',
 		menu: [
 			{
-				name: 'Normal Text',
+				name: 'Text',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+Space',
+				shortcutMac: '⌘+Shift+Space',
 				action: () => props.editor.changeToType(TEXT_NODE)
 			},
 			{
 				name: 'Heading 1',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+1',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })
 			},
 			{
 				name: 'Heading 2',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+2',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })
 			},
 			{
 				name: 'Heading 3',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+3',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })
 			},
 			{
 				name: 'Heading 4',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+4',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })
 			},
 			{
 				name: 'Heading 5',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+5',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })
 			},
 			{
 				name: 'Heading 6',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+6',
 				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })
 			},
 			{
 				name: 'Code',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+C',
+				shortcutMac: '⌘+Shift+C',
 				action: () => props.editor.changeToType(CODE_NODE)
 			}
 		]
@@ -101,6 +111,8 @@ const FormatMenu = props => {
 					{
 						name: '● Disc',
 						type: 'action',
+						shortcut: 'Ctrl+Shift+K',
+						shortcutMac: '⌘+Shift+K',
 						action: () =>
 							props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 					},
@@ -125,6 +137,8 @@ const FormatMenu = props => {
 					{
 						name: 'Numbers',
 						type: 'action',
+						shortcut: 'Ctrl+Shift+L',
+						shortcutMac: '⌘+Shift+L',
 						action: () =>
 							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
 					},
