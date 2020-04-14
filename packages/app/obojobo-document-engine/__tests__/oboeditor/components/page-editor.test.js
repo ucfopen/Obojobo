@@ -308,6 +308,23 @@ describe('PageEditor', () => {
 		spy.mockClear()
 	})
 
+	test('PageEditor component refocuses on editor', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<PageEditor {...props} />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+	})
+
 	test('PageEditor component alters value majorly', () => {
 		const props = {
 			page: {

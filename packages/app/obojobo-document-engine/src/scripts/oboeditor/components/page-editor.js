@@ -19,6 +19,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
 
 const { OboModel } = Common.models
+const { Button } = Common.components
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -400,6 +401,9 @@ class PageEditor extends React.Component {
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
 					<div className="draft-toolbars">
 						<div className="draft-title">{this.props.model.title}</div>
+						<Button className="skip-nav" onClick={() => ReactEditor.focus(this.editor)}>
+							Skip to Editor
+						</Button>
 						<FileToolbar
 							editor={this.editor}
 							selection={this.editor.selection}

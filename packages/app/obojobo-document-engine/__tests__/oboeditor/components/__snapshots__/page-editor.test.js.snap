@@ -499,6 +499,17 @@ exports[`PageEditor PageEditor component 1`] = `
       Mock Title
     </div>
     <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
       className="visual-editor--content-toolbar"
     >
       <button
@@ -1000,6 +1011,17 @@ exports[`PageEditor PageEditor component changes pages 1`] = `
       Mock Title
     </div>
     <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
       className="visual-editor--content-toolbar"
     >
       <button
@@ -1499,6 +1521,17 @@ exports[`PageEditor PageEditor component changes pages 2`] = `
       className="draft-title"
     >
       Mock Title
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
     </div>
     <div
       className="visual-editor--content-toolbar"
@@ -2046,6 +2079,17 @@ exports[`PageEditor PageEditor component with no page 1`] = `
       className="draft-title"
     >
       Mock Title
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
     </div>
     <div
       className="visual-editor--content-toolbar"
