@@ -214,6 +214,7 @@
 		padding-left: 1rem;
 		color: $color-text-minor;
 		cursor: pointer;
+		word-wrap: break-word;
 
 		&.is-selected:hover {
 			color: $color-nav-highlight;
@@ -264,6 +265,7 @@
 			color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
 			font-weight: inherit;
 			text-align: left;
+			width: 100%;
 		}
 	}
 
