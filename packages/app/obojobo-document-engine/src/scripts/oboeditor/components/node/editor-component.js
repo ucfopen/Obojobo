@@ -92,12 +92,14 @@ class Node extends React.Component {
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
+							open={this.props.element.open === 'top'}
 							masterOnClick={this.insertBlockAtStart.bind(this)}
 						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
 							icon="+"
+							open={this.props.element.open === 'bottom'}
 							masterOnClick={this.insertBlockAtEnd.bind(this)}
 						/>
 					</div>
@@ -109,6 +111,7 @@ class Node extends React.Component {
 						id={this.props.element.id}
 						isFirst
 						isLast
+						open={this.props.element.open === 'info'}
 						type={this.props.element.type}
 						content={this.props.element.content || {}}
 						saveId={this.saveId.bind(this)}

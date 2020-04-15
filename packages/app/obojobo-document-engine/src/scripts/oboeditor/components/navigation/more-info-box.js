@@ -274,7 +274,7 @@ class MoreInfoBox extends React.Component {
 				>
 					<MoreInfoIcon />
 				</button>
-				{this.state.isOpen ? this.renderInfoBox() : null}
+				{this.state.isOpen || this.props.open ? this.renderInfoBox() : null}
 			</div>
 		)
 	}

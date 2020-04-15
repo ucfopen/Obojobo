@@ -117,15 +117,14 @@ class InsertMenu extends React.PureComponent {
 			<div
 				className={
 					'editor--component--insert-menu ' +
-					isOrNot(this.state.isOpen, 'open') +
+					isOrNot(this.state.isOpen || this.props.open, 'open') +
 					' ' +
 					this.props.className
 				}
 				contentEditable={false}
 				onKeyDown={this.onKeyDown}
 				onBlur={this.onBlurHandler}
-				onFocus={this.onFocusHandler}
-			>
+				onFocus={this.onFocusHandler}>
 				<button
 					className={'drop-icon'}
 					ref={button => {
