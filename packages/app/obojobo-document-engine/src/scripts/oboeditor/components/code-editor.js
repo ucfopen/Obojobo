@@ -191,9 +191,7 @@ class CodeEditor extends React.Component {
 
 	render() {
 		return (
-			<div
-				className={'component editor--code-editor'}
-				onKeyDown={this.onKeyDown}>
+			<div className={'component editor--code-editor'} onKeyDown={this.onKeyDown}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					{this.state.editor ? (
