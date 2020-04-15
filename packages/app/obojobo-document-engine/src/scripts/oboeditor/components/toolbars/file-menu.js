@@ -9,7 +9,7 @@ import { downloadDocument } from '../../../common/util/download-document'
 import DropDownMenu from './drop-down-menu'
 
 const { Prompt } = Common.components.modal
-const { SimpleDialog } = Common.components.modal
+const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
@@ -40,18 +40,53 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(moduleId, label) {
-		this.renameModule(moduleId, label)
-
+		const oldLabel = this.props.model.title
 		let draftId = null
 
 		APIUtil.createNewDraft()
 			.then(result => {
 				draftId = result.value.id
+				this.renameModule(moduleId, label)
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
+				this.renameModule(moduleId, oldLabel)
 				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
 			})
+	}
+
+	processFileContent(id, content, type) {
+		APIUtil.postDraft(
+			id,
+			content,
+			type === 'application/json' ? 'application/json' : 'text/plain'
+		).then(() => {
+			this.props.reload()
+		})
+	}
+
+	onFileChange(event) {
+		const file = event.target.files[0]
+
+		const reader = new FileReader()
+		reader.readAsText(file, 'UTF-8')
+		reader.onload = e => {
+			this.processFileContent(this.props.draftId, e.target.result, file.type)
+		}
+
+		return reader // return for test access
+	}
+
+	buildFileSelector() {
+		ModalUtil.hide()
+
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
+
+		fileSelector.onchange = this.onFileChange.bind(this)
+
+		fileSelector.click()
 	}
 
 	render() {
@@ -73,7 +108,7 @@ class FileMenu extends React.PureComponent {
 					})
 			},
 			{
-				name: 'Make a copy',
+				name: 'Make a copy...',
 				type: 'action',
 				action: () =>
 					ModalUtil.show(
@@ -82,6 +117,19 @@ class FileMenu extends React.PureComponent {
 							message="Enter the title for the copied module:"
 							value={this.props.model.title + ' - Copy'}
 							onConfirm={this.copyModule.bind(this, this.props.model.id)}
+						/>
+					)
+			},
+			{
+				name: 'Rename...',
+				type: 'action',
+				action: () =>
+					ModalUtil.show(
+						<Prompt
+							title="Rename Module"
+							message="Enter the new title for the module:"
+							value={this.props.model.title}
+							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
 						/>
 					)
 			},
@@ -102,29 +150,51 @@ class FileMenu extends React.PureComponent {
 				]
 			},
 			{
-				name: 'Rename',
+				name: 'Import from file...',
 				type: 'action',
-				action: () =>
+				action: () => {
+					const buttons = [
+						{
+							value: 'Cancel',
+							altAction: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'Yes - Choose file...',
+							onClick: this.buildFileSelector.bind(this),
+							default: true
+						}
+					]
 					ModalUtil.show(
-						<Prompt
-							title="Rename Module"
-							message="Enter the new title for the module:"
-							value={this.props.model.title}
-							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
-						/>
+						<Dialog buttons={buttons} title="Import From File">
+							Importing replaces the contents of this module. Continue?
+						</Dialog>
 					)
+				}
 			},
 			{
-				name: 'Delete Module',
+				name: 'Delete Module...',
 				type: 'action',
-				action: () =>
+				action: () => {
+					const buttons = [
+						{
+							value: 'Cancel',
+							altAction: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'Delete Now',
+							isDangerous: true,
+							onClick: this.deleteModule.bind(this),
+							default: true
+						}
+					]
 					ModalUtil.show(
-						<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
-							{'Are you sure you want to delete ' +
-								this.props.model.title +
-								'? This will permanately delete all content in the module'}
-						</SimpleDialog>
+						<Dialog buttons={buttons} title="Delete Module">
+							Deleting is permanent, continue?
+						</Dialog>
 					)
+				}
 			},
 			{
 				name: 'Copy LTI Link',

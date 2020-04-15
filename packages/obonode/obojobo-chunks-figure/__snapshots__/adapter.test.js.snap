@@ -6,18 +6,10 @@ Object {
   "height": 100,
   "size": "custom",
   "textGroup": TextGroup {
-    "dataTemplate": Object {
-      "align": "left",
-      "hangingIndent": false,
-      "indent": 0,
-    },
+    "dataTemplate": Object {},
     "items": Array [
       TextGroupItem {
-        "data": Object {
-          "align": "left",
-          "hangingIndent": false,
-          "indent": 0,
-        },
+        "data": Object {},
         "parent": [Circular],
         "text": StyleableText {
           "styleList": ChunkStyleList {
@@ -40,18 +32,10 @@ Object {
   "height": null,
   "size": "small",
   "textGroup": TextGroup {
-    "dataTemplate": Object {
-      "align": "left",
-      "hangingIndent": false,
-      "indent": 0,
-    },
+    "dataTemplate": Object {},
     "items": Array [
       TextGroupItem {
-        "data": Object {
-          "align": "left",
-          "hangingIndent": false,
-          "indent": 0,
-        },
+        "data": Object {},
         "parent": [Circular],
         "text": StyleableText {
           "styleList": ChunkStyleList {
