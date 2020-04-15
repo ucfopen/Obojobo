@@ -170,6 +170,7 @@ describe('CodeEditor', () => {
 		expect.hasAssertions()
 		const code = '{ "content": { "title": "Initial Title"} }'
 		const props = {
+			draftId: 'mock-draft-id',
 			initialCode: code,
 			mode: JSON_MODE
 		}
@@ -178,29 +179,14 @@ describe('CodeEditor', () => {
 			.instance()
 			.saveAndSetNewTitleInCode('New Title')
 			.then(() => {
-				expect(component.state()).toMatchInlineSnapshot(`
-			Object {
-			  "code": "mock-setModuleTitleInJSON-return-value",
-			  "editor": null,
-			  "options": Object {
-			    "foldGutter": true,
-			    "gutters": Array [
-			      "CodeMirror-linenumbers",
-			      "CodeMirror-foldgutter",
-			    ],
-			    "indentUnit": 4,
-			    "indentWithTabs": true,
-			    "lineNumbers": true,
-			    "lineWrapping": true,
-			    "matchTags": true,
-			    "mode": "application/json",
-			    "tabSize": 4,
-			    "theme": "monokai",
-			  },
-			  "saved": true,
-			  "title": "New Title",
-			}
-		`)
+				const state = component.state()
+				expect(state).toHaveProperty('code', 'mock-setModuleTitleInJSON-return-value')
+				expect(state).toHaveProperty('title', 'New Title')
+				expect(APIUtil.postDraft).toHaveBeenCalledWith(
+					'mock-draft-id',
+					'mock-setModuleTitleInJSON-return-value',
+					'application/json'
+				)
 			})
 	})
 
@@ -208,6 +194,7 @@ describe('CodeEditor', () => {
 		expect.hasAssertions()
 		const code = '<?xml version="1.0" encoding="utf-8"?><Module title="Initial Title"></Module>'
 		const props = {
+			draftId: 'mock-draft-id',
 			initialCode: code,
 			mode: XML_MODE
 		}
@@ -218,33 +205,13 @@ describe('CodeEditor', () => {
 			.saveAndSetNewTitleInCode('New Title')
 			.then(() => {
 				const state = component.state()
-				expect(state.code).toBe('mock-setModuleTitleInXML-return-value')
-				expect(state.title).toBe('New Title')
-
-				// throw in a snapshot for extra fun
-				expect(component.state()).toMatchInlineSnapshot(`
-			Object {
-			  "code": "mock-setModuleTitleInXML-return-value",
-			  "editor": null,
-			  "options": Object {
-			    "foldGutter": true,
-			    "gutters": Array [
-			      "CodeMirror-linenumbers",
-			      "CodeMirror-foldgutter",
-			    ],
-			    "indentUnit": 4,
-			    "indentWithTabs": true,
-			    "lineNumbers": true,
-			    "lineWrapping": true,
-			    "matchTags": true,
-			    "mode": "text/xml",
-			    "tabSize": 4,
-			    "theme": "monokai",
-			  },
-			  "saved": true,
-			  "title": "New Title",
-			}
-		`)
+				expect(state).toHaveProperty('code', 'mock-setModuleTitleInXML-return-value')
+				expect(state).toHaveProperty('title', 'New Title')
+				expect(APIUtil.postDraft).toHaveBeenCalledWith(
+					'mock-draft-id',
+					'mock-setModuleTitleInXML-return-value',
+					'text/plain'
+				)
 			})
 	})
 

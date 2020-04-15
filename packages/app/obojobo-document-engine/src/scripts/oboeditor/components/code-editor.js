@@ -1,7 +1,6 @@
 import React from 'react'
 
 import './code-editor.scss'
-// Allows codemirror to work properly
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import 'codemirror/mode/xml/xml'
@@ -87,12 +86,15 @@ class CodeEditor extends React.Component {
 	}
 
 	saveAndSetNewTitleInCode(newTitle) {
+		const { mode, draftId } = this.props
+		const newCode = this.setTitleInCode(this.state.code, mode, newTitle)
+
 		this.setState({
 			title: newTitle,
-			code: this.setTitleInCode(this.state.code, this.props.mode, newTitle)
+			code: newCode
 		})
 
-		return this.sendSave(this.props.draftId, this.state.code, this.props.mode)
+		return this.sendSave(draftId, newCode, mode)
 	}
 
 	saveAndGetTitleFromCode() {
