@@ -56,7 +56,6 @@ describe('File Menu', () => {
 				onSave={APIUtil.postDraft}
 			/>
 		)
-		const tree = component.html()
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'ok'
@@ -71,13 +70,11 @@ describe('File Menu', () => {
 
 		component.find({ children: 'Save' }).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('FileMenu calls new', done => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
-		const tree = component.html()
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'ok',
@@ -93,7 +90,6 @@ describe('File Menu', () => {
 
 		component.find({ children: 'New' }).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		setTimeout(() => {
 			component.update()
 			expect(APIUtil.createNewDraft).toHaveBeenCalledTimes(2)
@@ -109,11 +105,9 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
-		component.find({ children: 'Make a copy' }).simulate('click')
+		component.find({ children: 'Make a copy...' }).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
@@ -163,11 +157,9 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
-		component.find({ children: 'Delete Module' }).simulate('click')
+		component.find({ children: 'Delete Module...' }).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
@@ -177,15 +169,14 @@ describe('File Menu', () => {
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component.find({ children: 'Copy LTI Link' }).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
 	test('copyModule calls copyDraft api', () => {
+		expect.hasAssertions()
 		const model = {
 			flatJSON: () => ({ children: [] }),
 			children: [
@@ -227,14 +218,63 @@ describe('File Menu', () => {
 	})
 
 	test('deleteModule calls deleteDraft api', () => {
+		expect.hasAssertions()
+		// make sure window.close doesn't break further tests
+		jest.spyOn(window, 'close').mockReturnValueOnce()
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'ok' })
 		component.instance().deleteModule('mockId', '      ')
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'error' })
-		component.instance().deleteModule('mockId', '      ')
+		return component
+			.instance()
+			.deleteModule('mockId', '      ')
+			.then(() => {
+				expect(APIUtil.deleteDraft).toHaveBeenCalled()
+			})
+	})
 
-		expect(APIUtil.deleteDraft).toHaveBeenCalled()
+	test('FileMenu - processFileContent', () => {
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok', value: { id: 'mockId' } })
+
+		const reload = jest.fn()
+		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)
+
+		component.find({ children: 'Import from file...' }).simulate('click')
+
+		const mockId = 'mockId'
+		const content = 'mockContent'
+
+		component.instance().processFileContent(mockId, content, 'application/json')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'application/json')
+
+		component.instance().processFileContent(mockId, content, 'text')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'text/plain')
+	})
+
+	test('FileMenu calls Import', () => {
+		const component = mount(<FileMenu draftId="mockDraft" />)
+
+		component.find({ children: 'Import from file...' }).simulate('click')
+		expect(ModalUtil.show).toHaveBeenCalled()
+
+		component.instance().buildFileSelector()
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('FileMenu calls onFileChange', () => {
+		const fileReaderReadAsText = jest.spyOn(FileReader.prototype, 'readAsText')
+		fileReaderReadAsText.mockReturnValueOnce()
+		const file = new Blob(['fileContents'], { type: 'text/plain' })
+		const component = mount(<FileMenu draftId="mockDraft" reload={jest.fn} />)
+		const processFileContent = jest.spyOn(component.instance(), 'processFileContent')
+		processFileContent.mockReturnValueOnce()
+
+		const fileReader = component.instance().onFileChange({ target: { files: [file] } })
+
+		expect(fileReaderReadAsText).toHaveBeenCalledWith(file, 'UTF-8')
+		fileReader.onload({ target: { result: 'mock-content' } })
+		expect(processFileContent).toHaveBeenCalledWith('mockDraft', 'mock-content', 'text/plain')
 	})
 })

@@ -82,6 +82,7 @@ const FileToolbar = props => {
 				title={props.title}
 				draftId={props.draftId}
 				onSave={props.onSave}
+				reload={props.reload}
 				mode={props.mode}
 			/>
 			<div className="visual-editor--drop-down-menu">

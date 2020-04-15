@@ -46,6 +46,7 @@ class CodeEditor extends React.Component {
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
 		this.saveAndGetTitleFromCode = this.saveAndGetTitleFromCode.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.saveAndSetNewTitleInCode = this.saveAndSetNewTitleInCode.bind(this)
@@ -95,6 +96,11 @@ class CodeEditor extends React.Component {
 		})
 
 		return this.sendSave(draftId, newCode, mode)
+	}
+
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
 	}
 
 	saveAndGetTitleFromCode() {
@@ -180,7 +186,7 @@ class CodeEditor extends React.Component {
 							editor={this.state.editor}
 							title={this.state.title}
 							draftId={this.props.draftId}
-							onSave={this.saveAndGetTitleFromCode}
+
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
 							mode={this.props.mode}

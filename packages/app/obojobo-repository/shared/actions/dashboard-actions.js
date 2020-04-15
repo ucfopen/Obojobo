@@ -1,11 +1,13 @@
 // =================== API =======================
 
+const JSON_MIME_TYPE = 'application/json'
+const XML_MIME_TYPE = 'application/xml'
 const defaultOptions = () => ({
 	method: 'GET',
 	credentials: 'include',
 	headers: {
-		Accept: 'application/json',
-		'Content-Type': 'application/json'
+		Accept: JSON_MIME_TYPE,
+		'Content-Type': JSON_MIME_TYPE
 	}
 })
 
@@ -36,9 +38,9 @@ const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
 }
 
-const apiCreateNewModule = useTutorial => {
+const apiCreateNewModule = (useTutorial, body = {}) => {
 	const url = useTutorial ? '/api/drafts/tutorial' : '/api/drafts/new'
-	const options = { ...defaultOptions(), method: 'POST' }
+	const options = { ...defaultOptions(), method: 'POST', body: JSON.stringify(body) }
 	return fetch(url, options).then(res => res.json())
 }
 
@@ -116,6 +118,46 @@ const showModuleMore = module => ({
 	module
 })
 
+const IMPORT_MODULE_FILE = 'IMPORT_MODULE_FILE'
+const importModuleFile = searchString => ({
+	type: IMPORT_MODULE_FILE,
+	promise: promptUserForModuleFileUpload(searchString)
+})
+
+const promptUserForModuleFileUpload = async () => {
+	return new Promise((resolve, reject) => {
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE}`)
+		fileSelector.onchange = moduleUploadFileSelected.bind(this, resolve, reject)
+		fileSelector.click()
+	})
+}
+
+const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
+	const file = event.target.files[0]
+	if (!file) boundResolve()
+
+	const reader = new global.FileReader()
+	reader.readAsText(file, 'UTF-8')
+	reader.onload = moduleUploadFileLoaded.bind(this, boundResolve, boundReject, file.type)
+}
+
+const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) => {
+	try {
+		const body = {
+			content: e.target.result,
+			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
+		}
+
+		await apiCreateNewModule(false, body)
+		window.location.reload()
+		boundResolve()
+	} catch (e) {
+		boundReject()
+	}
+}
+
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
 	LOAD_USER_SEARCH,
@@ -128,6 +170,7 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
+	IMPORT_MODULE_FILE,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -138,5 +181,6 @@ module.exports = {
 	showModulePermissions,
 	loadUsersForModule,
 	clearPeopleSearchResults,
-	showModuleMore
+	showModuleMore,
+	importModuleFile
 }

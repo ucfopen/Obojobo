@@ -25,8 +25,6 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
-// jest.mock('src/scripts/oboeditor/components/toolbars/content-toolbar')
-//jest.mock('obojobo-document-engine/src/scripts/common/registry')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -904,5 +902,21 @@ describe('VisualEditor', () => {
 		})
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
+	})
+
+	test('reload disables event listener and calls location.reload', () => {
+		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
+		jest.spyOn(location, 'reload').mockReturnValueOnce()
+
+		const props = {
+			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<VisualEditor {...props} />)
+
+		component.getInstance().reload()
+		expect(window.removeEventListener).toHaveBeenCalled()
+		expect(location.reload).toHaveBeenCalled()
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 })

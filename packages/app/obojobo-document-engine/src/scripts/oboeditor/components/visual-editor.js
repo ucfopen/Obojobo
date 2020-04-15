@@ -51,6 +51,7 @@ class VisualEditor extends React.Component {
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
@@ -350,6 +351,11 @@ class VisualEditor extends React.Component {
 		return []
 	}
 
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
+	}
+
 	// All the render methods that allow the editor to display properly
 	renderLeaf(props) {
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
@@ -393,6 +399,7 @@ class VisualEditor extends React.Component {
 							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
+							reload={this.reload}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
 							mode={'visual'}
@@ -403,7 +410,6 @@ class VisualEditor extends React.Component {
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
-
 					<EditorNav
 						navState={this.props.navState}
 						model={this.props.model}

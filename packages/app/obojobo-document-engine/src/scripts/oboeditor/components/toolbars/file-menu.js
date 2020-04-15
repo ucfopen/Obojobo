@@ -8,7 +8,7 @@ import { downloadDocument } from '../../../common/util/download-document'
 import DropDownMenu from './drop-down-menu'
 
 const { Prompt } = Common.components.modal
-const { SimpleDialog } = Common.components.modal
+const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
@@ -25,6 +25,40 @@ class FileMenu extends React.PureComponent {
 			ModalUtil.hide()
 			window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
 		})
+	}
+
+	processFileContent(id, content, type) {
+		APIUtil.postDraft(
+			id,
+			content,
+			type === 'application/json' ? 'application/json' : 'text/plain'
+		).then(() => {
+			this.props.reload()
+		})
+	}
+
+	onFileChange(event) {
+		const file = event.target.files[0]
+
+		const reader = new FileReader()
+		reader.readAsText(file, 'UTF-8')
+		reader.onload = e => {
+			this.processFileContent(this.props.draftId, e.target.result, file.type)
+		}
+
+		return reader // return for test access
+	}
+
+	buildFileSelector() {
+		ModalUtil.hide()
+
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', 'application/JSON, application/XML')
+
+		fileSelector.onchange = this.onFileChange.bind(this)
+
+		fileSelector.click()
 	}
 
 	render() {
@@ -46,7 +80,7 @@ class FileMenu extends React.PureComponent {
 					})
 			},
 			{
-				name: 'Make a copy',
+				name: 'Make a copy...',
 				type: 'action',
 				action: () =>
 					ModalUtil.show(
@@ -75,16 +109,51 @@ class FileMenu extends React.PureComponent {
 				]
 			},
 			{
-				name: 'Delete Module',
+				name: 'Import from file...',
 				type: 'action',
-				action: () =>
+				action: () => {
+					const buttons = [
+						{
+							value: 'Cancel',
+							altAction: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'Yes - Choose file...',
+							onClick: this.buildFileSelector.bind(this),
+							default: true
+						}
+					]
 					ModalUtil.show(
-						<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
-							{'Are you sure you want to delete "' +
-								this.props.title +
-								'"? This will permanately delete all content in the module'}
-						</SimpleDialog>
+						<Dialog buttons={buttons} title="Import From File">
+							Importing replaces the contents of this module. Continue?
+						</Dialog>
 					)
+				}
+			},
+			{
+				name: 'Delete Module...',
+				type: 'action',
+				action: () => {
+					const buttons = [
+						{
+							value: 'Cancel',
+							altAction: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'Delete Now',
+							isDangerous: true,
+							onClick: this.deleteModule.bind(this),
+							default: true
+						}
+					]
+					ModalUtil.show(
+						<Dialog buttons={buttons} title="Delete Module">
+							Deleting is permanent, continue?
+						</Dialog>
+					)
+				}
 			},
 			{
 				name: 'Copy LTI Link',
