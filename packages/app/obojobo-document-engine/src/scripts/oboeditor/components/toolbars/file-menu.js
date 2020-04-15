@@ -65,7 +65,7 @@ class FileMenu extends React.PureComponent {
 		const url = window.location.origin + '/view/' + this.props.draftId
 		const menu = [
 			{
-				name: 'Save',
+				name: 'Save Module',
 				type: 'action',
 				action: () => this.props.onSave(this.props.draftId)
 			},

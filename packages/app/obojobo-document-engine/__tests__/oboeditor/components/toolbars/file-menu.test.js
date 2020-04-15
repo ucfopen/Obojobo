@@ -61,14 +61,14 @@ describe('File Menu', () => {
 			status: 'ok'
 		})
 
-		component.find({ children: 'Save' }).simulate('click')
+		component.find({ children: 'Save Module' }).simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component.find({ children: 'Save' }).simulate('click')
+		component.find({ children: 'Save Module' }).simulate('click')
 
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
