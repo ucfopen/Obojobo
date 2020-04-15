@@ -6,6 +6,7 @@ import React from 'react'
 import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -22,6 +23,7 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: 'mock-id' }
 }))
 
+jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
@@ -394,7 +396,9 @@ describe('VisualEditor', () => {
 				},
 				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
+			draftId: 'mock-draft-id',
 			model: {
+				id: 'mock-draft-id',
 				title: 'Mock Title',
 				children: [
 					{
@@ -424,22 +428,21 @@ describe('VisualEditor', () => {
 			}
 		}
 
+		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
+
 		// render
 		const thing = mount(<VisualEditor {...props} />)
 
-		// make sure onChange is registered with the Editor
-		thing
-			.find('input')
-			.at(0)
-			.simulate('change', {
-				target: { value: 'mock new title' }
-			})
-		thing
-			.find('input')
-			.at(0)
-			.simulate('blur')
+		// simulate clicking on the input
+		thing.find('.editor--components--editor-title-input').simulate('change', {
+			target: { value: 'mock new title' }
+		})
 
-		expect(thing.html()).toMatchSnapshot()
+		thing.find('.editor--components--editor-title-input').simulate('blur')
+
+		// verify save and rename are called
+		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', 'mock new title')
+		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
 	})
 
 	test('changes the Editor title to blank', () => {
@@ -453,7 +456,9 @@ describe('VisualEditor', () => {
 				},
 				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
+			draftId: 'mock-draft-id',
 			model: {
+				id: 'mock-draft-id',
 				title: 'Mock Title',
 				children: [
 					{
@@ -483,22 +488,21 @@ describe('VisualEditor', () => {
 			}
 		}
 
+		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
+
 		// render
 		const thing = mount(<VisualEditor {...props} />)
 
-		// make sure onChange is registered with the Editor
-		thing
-			.find('input')
-			.at(0)
-			.simulate('change', {
-				target: { value: '	' }
-			})
-		thing
-			.find('input')
-			.at(0)
-			.simulate('blur')
+		// simulate changing the title input
+		thing.find('.editor--components--editor-title-input').simulate('change', {
+			target: { value: '	' }
+		})
 
-		expect(thing.html()).toMatchSnapshot()
+		thing.find('.editor--components--editor-title-input').simulate('blur')
+
+		// verify save and rename are called
+		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', '')
+		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
 	})
 
 	test('Ensures the plugins work as expected', () => {

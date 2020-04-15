@@ -389,10 +389,7 @@ class VisualEditor extends React.Component {
 			<div className={className}>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
 					<div className="draft-toolbars">
-						<EditorTitleInput
-							title={this.props.model.title}
-							renameModule={this.renameModule}
-						/>
+						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
 						<FileToolbar
 							editor={this.editor}
 							selection={this.editor.selection}
@@ -431,7 +428,6 @@ class VisualEditor extends React.Component {
 							/>
 						</VisualEditorErrorBoundry>
 					</div>
-
 				</Slate>
 			</div>
 		)

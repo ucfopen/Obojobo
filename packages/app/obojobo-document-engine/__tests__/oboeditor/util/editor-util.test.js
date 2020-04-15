@@ -33,6 +33,17 @@ describe('EditorUtil', () => {
 		restoreConsole()
 	})
 
+	test('renameModule dispatches editor:renameModule', () => {
+		EditorUtil.renameModule('mock-draft-id', 'New Name')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:renameModule', {
+			value: {
+				moduleId: 'mock-draft-id',
+				name: 'New Name'
+			}
+		})
+	})
+
 	test('rebuildMenu calls editor:rebuildMenu', () => {
 		EditorUtil.rebuildMenu('mockOboModel')
 

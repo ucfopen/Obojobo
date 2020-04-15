@@ -423,5 +423,4 @@ describe('CodeEditor', () => {
 		expect(window.removeEventListener).toHaveBeenCalled()
 		expect(location.reload).toHaveBeenCalled()
 	})
-
 })

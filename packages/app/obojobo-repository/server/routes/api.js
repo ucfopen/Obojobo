@@ -104,7 +104,7 @@ router
 				})
 			])
 
-			res.success({draftId: newDraft.id,})
+			res.success({ draftId: newDraft.id })
 		} catch (e) {
 			res.unexpected(e)
 		}
