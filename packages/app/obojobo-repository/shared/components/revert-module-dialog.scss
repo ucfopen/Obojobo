@@ -3,14 +3,13 @@
 $border-color: rgba(0, 0, 0, 0.1);
 $border: 1px solid $border-color;
 
-.restore-module-dialog {
+.revert-module-dialog {
 	font-family: $font-default;
 	width: calc(100vw - 3em);
 }
 
-.restore-module-dialog--header {
+.revert-module-dialog--header {
 	height: 3em;
-	border-bottom: 1px solid;
 	box-sizing: border-box;
 	position: relative;
 	border-bottom: $border;
@@ -47,7 +46,7 @@ $border: 1px solid $border-color;
 	}
 }
 
-.restore-module-dialog--body {
+.revert-module-dialog--body {
 	background-color: #f2f2f2;
 	display: flex;
 	height: calc(95vh - 3em);
@@ -148,12 +147,15 @@ $border: 1px solid $border-color;
 	}
 
 	&.is-selected {
-		background: url('/images/hex_transparent.svg') right no-repeat;
+		background: url('/images/hex_transparent.svg') no-repeat;
+		background-origin: content-box;
+		background-position-x: 10.8em;
 	}
 
 	&.is-selected,
 	&:hover {
 		background-color: #e5ecf7;
+
 		.date {
 			color: $color-obojobo-blue;
 		}
@@ -179,13 +181,13 @@ $border: 1px solid $border-color;
 		margin-right: 1em;
 	}
 
-	.restore-button,
+	.revert-button,
 	.toggle-nav-button,
 	.preview-button {
 		float: right;
 	}
 
-	.restore-button:disabled {
+	.revert-button:disabled {
 		// Prevents the button from adjusting its size
 		// when it's disabled
 		border: 0;
@@ -211,7 +213,7 @@ $border: 1px solid $border-color;
 	}
 }
 
-.restoration-confirm-dialog {
+.revert-confirm-dialog {
 	padding: 1.5em 3em;
 	max-width: 23em;
 

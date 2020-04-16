@@ -14,7 +14,7 @@ const {
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
-	SHOW_RESTORATION_DIALOG
+	SHOW_REVERT_DIALOG
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -124,10 +124,10 @@ function DashboardReducer(state, action) {
 				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.value } })
 			})
 
-		case SHOW_RESTORATION_DIALOG:
+		case SHOW_REVERT_DIALOG:
 			return {
 				...state,
-				dialog: 'restore-module',
+				dialog: 'revert-module',
 				selectedModule: action.module
 			}
 

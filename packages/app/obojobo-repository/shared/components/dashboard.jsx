@@ -8,7 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
-const RestoreModuleDialog = require('./restore-module-dialog')
+const RevertModuleDialog = require('./revert-module-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -21,7 +21,7 @@ const renderOptionsDialog = props => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
-		showRestorationDialog={props.showRestorationDialog}
+		showRevertDialog={props.showRevertDialog}
 	/>
 )
 
@@ -39,8 +39,8 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
-const renderRestorationDialog = props => (
-	<RestoreModuleDialog {...props.selectedModule} onClose={props.closeModal} />
+const renderRevertDialog = props => (
+	<RevertModuleDialog {...props.selectedModule} onClose={props.closeModal} />
 )
 
 const renderModalDialog = props => {
@@ -56,9 +56,9 @@ const renderModalDialog = props => {
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
 			break
-		case 'restore-module':
-			title = 'Restore Module'
-			dialog = renderRestorationDialog(props)
+		case 'revert-module':
+			title = 'Revert Module'
+			dialog = renderRevertDialog(props)
 			break
 		default:
 			return null

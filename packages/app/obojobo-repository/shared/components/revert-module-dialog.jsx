@@ -1,4 +1,4 @@
-require('./restore-module-dialog.scss')
+require('./revert-module-dialog.scss')
 
 const React = require('react')
 const ModuleImage = require('./module-image')
@@ -33,7 +33,7 @@ const Revision = props => {
 	)
 }
 
-class RestoreModuleDialog extends React.Component {
+class RevertModuleDialog extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -47,7 +47,7 @@ class RestoreModuleDialog extends React.Component {
 			selectedIndex: 0
 		}
 
-		this.restoreModule = this.restoreModule.bind(this)
+		this.revertModule = this.revertModule.bind(this)
 		this.setSelectedRevision = this.setSelectedRevision.bind(this)
 		this.toggleMenu = this.toggleMenu.bind(this)
 		this.loadDraftRevisions = this.loadDraftRevisions.bind(this)
@@ -74,7 +74,7 @@ class RestoreModuleDialog extends React.Component {
 				}))
 
 			// Set selectedIndex to 0 to make sure the first draft
-			// is selected when a draft gets restored
+			// is selected when a draft gets reverted
 			this.setState({
 				selectedIndex: 0,
 				revisions
@@ -95,9 +95,9 @@ class RestoreModuleDialog extends React.Component {
 		})
 	}
 
-	restoreModule() {
+	revertModule() {
 		if (this.state.selectedIndex === 0) {
-			// Prevent restoring a module that's already
+			// Prevent reverting a module that's already
 			// the latest version
 			return
 		}
@@ -118,9 +118,7 @@ class RestoreModuleDialog extends React.Component {
 	}
 
 	toggleMenu() {
-		const isMenuOpen = this.state.isMenuOpen
-
-		this.setState({ isMenuOpen: !isMenuOpen })
+		this.setState({ isMenuOpen: !this.state.isMenuOpen })
 	}
 
 	openConfirmDialog() {
@@ -143,13 +141,13 @@ class RestoreModuleDialog extends React.Component {
 			<ReactModal
 				isOpen={true}
 				onRequestClose={this.closeConfirmDialog}
-				className="repository--modal restoration-confirm-dialog"
+				className="repository--modal revert-confirm-dialog"
 				overlayClassName="repository--modal-overlay"
 			>
-				<h1 className="dialog-title">Restore Document</h1>
+				<h1 className="dialog-title">Revert Document</h1>
 				<div className="dialog-content">
-					This will restore the document from {date} and save it as the latest version.
-					<small>You can always undo this action by restoring another version.</small>
+					This will revert the document from {date} and save it as the latest version.
+					<small>You can always undo this action by reverting another version.</small>
 				</div>
 				<div className="dialog-controls">
 					<Button className="secondary-button" onClick={this.closeConfirmDialog}>
@@ -158,10 +156,10 @@ class RestoreModuleDialog extends React.Component {
 					<Button
 						onClick={() => {
 							this.closeConfirmDialog()
-							this.restoreModule()
+							this.revertModule()
 						}}
 					>
-						Yes - Restore
+						Yes - Revert
 					</Button>
 				</div>
 			</ReactModal>
@@ -193,27 +191,28 @@ class RestoreModuleDialog extends React.Component {
 
 	render() {
 		const menuClass = this.state.isMenuOpen ? 'is-open' : 'is-closed'
+		console.log(this.props)
 
 		return (
-			<div className="restore-module-dialog">
+			<div className="revert-module-dialog">
 				{this.renderConfirmDialog()}
-				<div className="restore-module-dialog--header">
+				<div className="revert-module-dialog--header">
 					<ModuleImage id={this.props.draftId} />
 					<div className="title">{this.props.title}</div>
 					<Button className="close-button" onClick={this.props.onClose}>
 						×
 					</Button>
 				</div>
-				<div className="restore-module-dialog--body">
+				<div className="revert-module-dialog--body">
 					{this.renderRevisionHistoryMenu()}
 					<div className="editor-preview">
 						<div className="editor-preview--header">
 							<Button
-								className="restore-button"
+								className="revert-button"
 								onClick={this.openConfirmDialog}
 								disabled={this.state.selectedIndex === 0}
 							>
-								Restore document to this version
+								Revert document to this version
 							</Button>
 							<ButtonLink
 								url={`/preview/${this.props.draftId}`}
@@ -236,4 +235,4 @@ class RestoreModuleDialog extends React.Component {
 	}
 }
 
-module.exports = RestoreModuleDialog
+module.exports = RevertModuleDialog
