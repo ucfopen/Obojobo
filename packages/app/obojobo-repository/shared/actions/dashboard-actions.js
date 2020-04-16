@@ -1,3 +1,5 @@
+const debouncePromise = require('debounce-promise')
+
 // =================== API =======================
 
 const JSON_MIME_TYPE = 'application/json'
@@ -11,9 +13,18 @@ const defaultOptions = () => ({
 	}
 })
 
-const apiSearchForUser = searchString => {
-	return fetch(`/api/users/search?q=${searchString}`, defaultOptions()).then(res => res.json())
+const throwIfNotOk = res => {
+	if (!res.ok) throw Error(`Error requesting ${res.url}, status code: ${res.status}`)
+	return res
 }
+
+const apiSearchForUser = searchString => {
+	return fetch(`/api/users/search?q=${searchString}`, defaultOptions())
+		.then(throwIfNotOk)
+		.then(res => res.json())
+}
+
+const apiSearchForUserDebounced = debouncePromise(apiSearchForUser, 300)
 
 const apiAddPermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'POST', body: `{"userId":${userId}}` }
@@ -64,7 +75,7 @@ const searchForUser = searchString => ({
 	meta: {
 		searchString
 	},
-	promise: apiSearchForUser(searchString)
+	promise: apiSearchForUserDebounced(searchString)
 })
 
 const ADD_USER_TO_MODULE = 'ADD_USER_TO_MODULE'
