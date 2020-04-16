@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useMemo } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { ReactEditor, useSlate } from 'slate-react'
 import { Editor } from 'slate'
 import katex from 'katex'
@@ -15,7 +15,7 @@ const HoveringPreview = ({ pageEditorContainerRef }) => {
 
 	// SHOW, HIDE, AND UPDATE LOCATION ON SCREEN
 	// only runs when text changes OR window width changes
-	useLayoutEffect(() => {
+	useEffect(() => {
 		// bail if nothing selected
 		const el = ref.current
 		if (!el) return
