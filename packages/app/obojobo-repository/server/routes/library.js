@@ -1,14 +1,16 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
-const UserModel = require('obojobo-express/models/user')
-const { webpackAssetPath } = require('obojobo-express/asset_resolver')
+const UserModel = require('obojobo-express/server/models/user')
+const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
-} = require('obojobo-express/express_validators')
+} = require('obojobo-express/server/express_validators')
+const { userHasPermissionToCopy } = require('../services/permissions')
+const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
 	.route('/')
@@ -16,6 +18,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('homepage.css')
 		}
 		res.render('pages/page-homepage.jsx', props)
@@ -47,6 +50,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('repository.css')
 		}
 		res.render('pages/page-login.jsx', props)
@@ -56,8 +60,6 @@ router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-
 		return RepositoryCollection.fetchById(publicLibCollectionId)
 			.then(collection => {
 				return collection.loadRelatedDrafts()
@@ -68,6 +70,7 @@ router
 					page: 1,
 					pageCount: 1,
 					currentUser: req.currentUser,
+					// must use webpackAssetPath for all webpack assets to work in dev and production!
 					appCSSUrl: webpackAssetPath('repository.css')
 				}
 				res.render('pages/page-library.jsx', props)
@@ -93,13 +96,18 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
+			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+
 			const props = {
 				module,
 				owner,
 				currentUser: req.currentUser,
-				appCSSUrl: webpackAssetPath('repository.css')
+				// must use webpackAssetPath for all webpack assets to work in dev and production!
+				appCSSUrl: webpackAssetPath('repository.css'),
+				appJsUrl: webpackAssetPath('page-module.js'),
+				canCopy
 			}
-			res.render('pages/page-module.jsx', props)
+			res.render('pages/page-module-server.jsx', props)
 		} catch (e) {
 			res.unexpected(e)
 		}

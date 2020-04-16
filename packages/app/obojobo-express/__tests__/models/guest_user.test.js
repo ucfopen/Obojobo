@@ -1,4 +1,4 @@
-jest.mock('../../db')
+jest.mock('../../server/db')
 
 describe('guest user model', () => {
 	beforeAll(() => {})
@@ -7,21 +7,21 @@ describe('guest user model', () => {
 	afterEach(() => {})
 
 	test('extends user', () => {
-		const GuestUser = oboRequire('models/guest_user')
-		const User = oboRequire('models/user')
+		const GuestUser = oboRequire('server/models/guest_user')
+		const User = oboRequire('server/models/user')
 		const g = new GuestUser()
 		expect(g).toBeInstanceOf(GuestUser)
 		expect(g).toBeInstanceOf(User)
 	})
 
 	test('responds to isGuest', () => {
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 		const g = new GuestUser()
 		expect(g.isGuest()).toBe(true)
 	})
 
 	test('throws error using saveOrCreate', () => {
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 		const g = new GuestUser()
 
 		expect(() => {
@@ -30,7 +30,7 @@ describe('guest user model', () => {
 	})
 
 	test('throws error using fetchById', () => {
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 
 		expect(() => {
 			GuestUser.fetchById(44)
@@ -38,7 +38,7 @@ describe('guest user model', () => {
 	})
 
 	test('all permissions are falsy', () => {
-		const GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('server/models/guest_user')
 		const g = new GuestUser()
 
 		expect(g.canViewEditor).toBe(false)

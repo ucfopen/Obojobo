@@ -24,6 +24,13 @@ describe('List Converter', () => {
 					},
 					nodes: [
 						{
+							data: {
+								get: () => {
+									//hack for coverage where child.data.get('hangingIndent') potentially returns undefined
+									// eslint-disable-next-line no-undefined
+									return undefined
+								}
+							},
 							text: 'mockText',
 							nodes: [
 								{
@@ -50,6 +57,11 @@ describe('List Converter', () => {
 							},
 							nodes: [
 								{
+									data: {
+										get: () => {
+											return {}
+										}
+									},
 									text: 'mockText',
 									nodes: []
 								}
@@ -108,7 +120,7 @@ describe('List Converter', () => {
 					},
 					{
 						text: { value: 'mockLine3' },
-						data: { indent: 5 }
+						data: { indent: 5, hangingIndent: false }
 					}
 				]
 			}

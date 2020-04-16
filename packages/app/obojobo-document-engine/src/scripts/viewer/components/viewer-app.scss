@@ -32,6 +32,7 @@
 		z-index: $z-index-above-content;
 		border-bottom: 1px solid transparentize($color-shadow, 0.2);
 		opacity: 0.95;
+		word-wrap: break-word;
 
 		/* prettier-ignore */
 		transition:
@@ -138,5 +139,9 @@
 
 	&.is-previewing {
 		height: calc(100% - 3rem);
+	}
+
+	code {
+		font-family: $font-monospace;
 	}
 }

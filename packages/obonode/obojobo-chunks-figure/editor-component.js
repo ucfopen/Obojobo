@@ -101,6 +101,7 @@ class Figure extends React.Component {
 							<Image
 								key={content.url + content.width + content.height + content.size}
 								chunk={{ modelState: content }}
+								lazyLoad={false}
 							/>
 						</div>
 

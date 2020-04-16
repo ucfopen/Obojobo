@@ -1,14 +1,14 @@
-jest.mock('../../../models/draft')
-jest.mock('../../../models/user')
-jest.mock('../../../db')
-jest.mock('../../../logger')
+jest.mock('../../../server/models/draft')
+jest.mock('../../../server/models/user')
+jest.mock('../../../server/db')
+jest.mock('../../../server/logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
 jest.mock('obojobo-repository/server/services/permissions', () => ({
 	userHasPermissionToDraft: jest.fn()
 }))
 
-import DraftModel from '../../../models/draft'
+import DraftModel from '../../../server/models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
 const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
@@ -31,9 +31,9 @@ const basicXML = `<ObojoboDraftDoc>
 	  </Module>
 	</ObojoboDraftDoc>`
 
-const mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-const db = oboRequire('db')
-const drafts = oboRequire('routes/api/drafts')
+const mockInsertNewDraft = mockVirtual('./server/routes/api/drafts/insert_new_draft')
+const db = oboRequire('server/db')
+const drafts = oboRequire('server/routes/api/drafts')
 
 let mockCurrentUser
 
@@ -42,7 +42,7 @@ const mockGetCurrentUser = jest.fn().mockImplementation(req => {
 	return Promise.resolve(mockCurrentUser)
 })
 
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = mockGetCurrentUser.bind(this, req)
 	req.requireCurrentUser = mockGetCurrentUser.bind(this, req)
 	next()
@@ -51,8 +51,8 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
-app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('express_response_decorator'))
+app.use(oboRequire('server/express_current_user'))
+app.use('/', oboRequire('server/express_response_decorator'))
 app.use('/api/drafts', drafts)
 
 describe('api draft route', () => {
@@ -62,6 +62,7 @@ describe('api draft route', () => {
 		mockInsertNewDraft.mockReset()
 		DraftModel.fetchById.mockReset()
 		DraftModel.findDuplicateIds.mockReset()
+		DraftModel.fetchDraftByVersion.mockReset()
 		db.none.mockReset()
 		db.any.mockReset()
 		xml.mockReset()
@@ -164,6 +165,80 @@ describe('api draft route', () => {
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body).toHaveProperty('value', 'mock-document-json')
 				expect(jsonToXml).not.toHaveBeenCalled()
+			})
+	})
+
+	test('get full draft returns a specific version when requested', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get(
+				'/api/drafts/00000000-0000-0000-0000-000000000000/full?contentId=00000000-0000-0000-0000-000000000001'
+			)
+			.set('Accept', 'application/json')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledWith(
+					'00000000-0000-0000-0000-000000000000',
+					'00000000-0000-0000-0000-000000000001'
+				)
+				expect(DraftModel.fetchById).not.toHaveBeenCalled()
+			})
+	})
+
+	test('get full draft errors on invalid contentId query value', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchDraftByVersion.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full?contentId=myFavorite')
+			.set('Accept', 'application/json')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty(
+					'value.message',
+					'contentId must be a valid UUID, got myFavorite'
+				)
+				expect(DraftModel.fetchDraftByVersion).not.toHaveBeenCalled()
+				expect(DraftModel.fetchById).not.toHaveBeenCalled()
 			})
 	})
 

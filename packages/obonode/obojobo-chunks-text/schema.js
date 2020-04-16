@@ -26,13 +26,13 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: TEXT_LINE_NODE,
-							data: { indent: 0 }
+							data: { indent: 0, hangingIndent: false }
 						})
 					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TEXT_LINE_NODE,
-							data: { indent: 0 }
+							data: { indent: 0, hangingIndent: false }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}

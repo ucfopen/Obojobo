@@ -1,10 +1,10 @@
 import React from 'react'
-import download from 'downloadjs'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
 import EditorUtil from '../../util/editor-util'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import APIUtil from '../../../viewer/util/api-util'
+import { downloadDocument } from '../../../common/util/download-document'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -50,30 +50,7 @@ class FileMenu extends React.PureComponent {
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
-				window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draftId, '_blank')
-			})
-	}
-
-	downloadModule(draftId, format) {
-		let formatResults
-
-		switch (format) {
-			case 'json':
-				formatResults = text => {
-					const json = JSON.parse(text)
-					return JSON.stringify(json, null, 2)
-				}
-				break
-
-			default:
-				formatResults = text => text
-				break
-		}
-
-		APIUtil.getFullDraft(draftId, format)
-			.then(formatResults)
-			.then(contents => {
-				download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
+				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
 			})
 	}
 
@@ -91,10 +68,7 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					APIUtil.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(
-								window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id,
-								'_blank'
-							)
+							window.open(window.location.origin + '/editor/visual/' + result.value.id, '_blank')
 						}
 					})
 			},
@@ -118,12 +92,12 @@ class FileMenu extends React.PureComponent {
 					{
 						name: 'XML Document (.xml)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'xml')
+						action: () => downloadDocument(this.props.draftId, 'xml')
 					},
 					{
 						name: 'JSON Document (.json)',
 						type: 'action',
-						action: () => this.downloadModule(this.props.draftId, 'json')
+						action: () => downloadDocument(this.props.draftId, 'json')
 					}
 				]
 			},

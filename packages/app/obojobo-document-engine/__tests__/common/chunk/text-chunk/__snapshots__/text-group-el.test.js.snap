@@ -1,9 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TextGroupEl String values of hangingIndent work as expected 1`] = `
+<span
+  className="text"
+  data-group-index={0}
+>
+  <span>
+    <span>
+      <span>
+        First line
+      </span>
+    </span>
+  </span>
+</span>
+`;
+
+exports[`TextGroupEl String values of hangingIndent work as expected 2`] = `
+<span
+  className="text"
+  data-group-index={1}
+  data-hanging-indent={true}
+>
+  <span>
+    <span>
+      <span>
+        Second line
+      </span>
+    </span>
+  </span>
+</span>
+`;
+
 exports[`TextGroupEl TextGroupEl formatted 1`] = `
 <span
-  className="text align-undefined"
+  className="text"
   data-group-index={1}
+  data-hanging-indent={true}
 >
   <span>
     <span>
@@ -25,7 +57,7 @@ exports[`TextGroupEl TextGroupEl formatted 1`] = `
 
 exports[`TextGroupEl TextGroupEl unformatted 1`] = `
 <span
-  className="text align-undefined"
+  className="text"
   data-group-index={0}
 >
   <span>

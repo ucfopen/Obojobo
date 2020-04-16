@@ -43,6 +43,11 @@ class Node extends React.Component {
 
 		// check against existing nodes for duplicate keys
 		const model = OboModel.models[prevId]
+
+		if (!newId) {
+			return 'Please enter an id'
+		}
+
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
 		}
@@ -92,8 +97,10 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const className = `oboeditor-component component ${this.props.className || ''}`
+
 		return (
-			<div className={'oboeditor-component component'} data-obo-component="true">
+			<div className={className.trim()} data-obo-component="true">
 				{this.props.isSelected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu

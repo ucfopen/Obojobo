@@ -16,7 +16,7 @@ const defaultId = '00000000-0000-0000-0000-000000000000'
 const sampleJsonPath = require.resolve('obojobo-document-engine/test-object.json')
 
 const writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 
 try {
 	if (process.argv.length <= 2) throw usageError

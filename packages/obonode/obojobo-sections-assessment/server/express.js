@@ -1,7 +1,7 @@
 const router = require('express').Router() //eslint-disable-line new-cap
 const Assessment = require('./assessment')
-const lti = require('obojobo-express/lti')
-const logger = require('obojobo-express/logger')
+const lti = require('obojobo-express/server/lti')
+const logger = require('obojobo-express/server/logger')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
@@ -12,9 +12,11 @@ const {
 	requireCurrentDocument,
 	requireCurrentVisit,
 	requireAttemptId,
+	requireMultipleAttemptIds,
 	requireCurrentUser,
-	requireAssessmentId
-} = require('obojobo-express/express_validators')
+	requireAssessmentId,
+	checkValidationRules
+} = require('obojobo-express/server/express_validators')
 
 router
 	.route('/api/lti/state/draft/:draftId')
@@ -31,7 +33,13 @@ router
 
 router
 	.route('/api/lti/send-assessment-score')
-	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
+	.post([
+		requireCurrentVisit,
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.post(async (req, res) => {
 		try {
 			logger.info(
@@ -60,12 +68,24 @@ router
 // @TODO: break startAttempt out so it doesn't need req, res
 router
 	.route('/api/assessments/attempt/start')
-	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument, requireAssessmentId])
+	.post([
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireCurrentDocument,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.post(startAttempt)
 
 router
 	.route('/api/assessments/attempt/:attemptId/resume')
-	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAttemptId])
+	.post([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireCurrentVisit,
+		requireAttemptId,
+		checkValidationRules
+	])
 	.post(async (req, res) => {
 		try {
 			const attempt = await resumeAttempt(
@@ -85,7 +105,13 @@ router
 
 router
 	.route('/api/assessments/attempt/:attemptId/end')
-	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAttemptId])
+	.post([
+		requireCurrentVisit,
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireAttemptId,
+		checkValidationRules
+	])
 	.post((req, res) => {
 		return endAttempt(req, res)
 			.then(res.success)
@@ -94,14 +120,20 @@ router
 			)
 	})
 
-// @TODO make sure i own
-// seems like attemptid should be in the url and swithc to get?
+// @TODO: seems like attemptid should be in the url and switch to GET?
 router
 	.route('/api/assessments/attempt/review')
-	.post([requireCurrentUser, requireAttemptId])
+	.post([requireCurrentUser, requireMultipleAttemptIds, checkValidationRules])
 	.post(async (req, res) => {
-		const questionModels = await reviewAttempt(req.body.attemptIds)
-		res.send(questionModels)
+		const questionModels = await reviewAttempt(req.body.attemptIds, req.currentUser.id)
+		// convert key based objects to arrays for use in the api
+		const attemptsArray = []
+		for (const [attemptId, questionsMap] of Object.entries(questionModels)) {
+			const questions = Object.values(questionsMap)
+			attemptsArray.push({ attemptId, questions })
+		}
+
+		res.send(attemptsArray)
 	})
 
 router
@@ -126,7 +158,13 @@ router
 // update getAttempt to take isPreview
 router
 	.route('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
-	.get([requireCurrentUser, requireCurrentDocument, requireAttemptId, requireAssessmentId])
+	.get([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireAttemptId,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.get((req, res) => {
 		return Assessment.getAttempt(
 			req.currentUser.id,
@@ -165,7 +203,13 @@ router
 // update getAttempts to take isPreview
 router
 	.route('/api/assessment/:draftId/:assessmentId/attempts')
-	.get([requireCurrentDocument, requireCurrentUser, requireCurrentVisit, requireAssessmentId])
+	.get([
+		requireCurrentDocument,
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.get((req, res) => {
 		return Assessment.getAttempts(
 			req.currentUser.id,

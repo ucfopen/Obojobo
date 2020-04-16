@@ -24,6 +24,7 @@ exports[`Figure Figure component 1`] = `
         <img
           alt="Alt Text"
           className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
           onError={[Function]}
           onLoad={[Function]}
           src="www.example.com/img.jpg"
@@ -37,9 +38,8 @@ exports[`Figure Figure component 1`] = `
         />
         <figcaption>
           <span
-            className="text align-left"
+            className="text"
             data-group-index="0"
-            data-indent={0}
           >
             <span>
               <span>
@@ -80,6 +80,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
         <img
           alt="Alt Text"
           className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
           onError={[Function]}
           onLoad={[Function]}
           src="www.example.com/img.jpg"

@@ -3,6 +3,7 @@
 exports[`Line Editor Node Line builds the expected component 1`] = `
 <span
   className="text align-0"
+  data-hanging-indent={0}
   data-indent={0}
 />
 `;

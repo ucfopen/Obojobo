@@ -24,9 +24,9 @@ module.exports =
 				host: '127.0.0.1',
 				before: app => {
 					// add utilities for dev env (visit /dev)
-					require('./obo_express_dev')(app)
+					require('./server/obo_express_dev')(app)
 					// add obojobo express server to webpack
-					require('./middleware.default')(app)
+					require('./server/middleware.default')(app)
 				},
 				publicPath: '/static/',
 				watchContentBase: true,
@@ -37,7 +37,7 @@ module.exports =
 			},
 			entry: entriesFromObojoboModules,
 			output: {
-				path: path.join(__dirname, 'public', 'compiled'),
+				path: path.join(__dirname, 'server', 'public', 'compiled'),
 				filename: `${filename}.js`
 			},
 			module: {
@@ -54,7 +54,7 @@ module.exports =
 					},
 					{
 						test: /\.(js|jsx)$/,
-						exclude: '/node_modules',
+						exclude: /node_modules/,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -74,7 +74,13 @@ module.exports =
 									plugins: [require('autoprefixer')]
 								}
 							},
-							'sass-loader'
+							{
+								loader: 'sass-loader',
+								options: {
+									// expose SASS variable for build environment
+									prependData: `$is_production: '${is_production}';`
+								}
+							}
 						]
 					},
 					{
@@ -103,7 +109,9 @@ module.exports =
 				immutable: 'Immutable'
 			},
 			plugins: [
-				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
+				new WatchIgnorePlugin([
+					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
+				]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
 				new ManifestPlugin({ publicPath: '/static/' })
 			],

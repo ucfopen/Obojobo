@@ -1,12 +1,12 @@
-jest.mock('../../../models/draft')
-jest.mock('../../../db')
+jest.mock('../../../server/models/draft')
+jest.mock('../../../server/db', () => require('obojobo-document-engine/__mocks__/db'))
 
 jest.unmock('express') // we'll use supertest + express for this
 
 // override requireCurrentUser to provide our own
 let mockCurrentUser
 let mockCurrentVisit
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -20,7 +20,7 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../../express_current_document', () => (req, res, next) => {
+jest.mock('../../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
@@ -39,17 +39,17 @@ const validEvent = {
 	draftId: validUUID()
 }
 // setup express server
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
 app.use(bodyParser.json())
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('', oboRequire('express_response_decorator'))
-app.use('/api/events', oboRequire('routes/api/events')) // mounting under api so response_decorator assumes json content type
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('', oboRequire('server/express_response_decorator'))
+app.use('/api/events', oboRequire('server/routes/api/events')) // mounting under api so response_decorator assumes json content type
 
 describe('api draft events route', () => {
 	beforeAll(() => {})

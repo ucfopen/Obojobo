@@ -1,10 +1,10 @@
-let parseScoreActions = el => {
+const parseScoreActions = el => {
 	return el.elements.map(child => {
 		return child.value
 	})
 }
 
-let parseScoreAction = el => {
+const parseScoreAction = el => {
 	return {
 		from: el.attributes.from,
 		to: el.attributes.to,
