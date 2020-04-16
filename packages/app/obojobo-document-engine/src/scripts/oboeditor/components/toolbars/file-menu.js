@@ -21,8 +21,8 @@ class FileMenu extends React.PureComponent {
 	}
 
 	copyModule(newTitle) {
+		ModalUtil.hide()
 		return APIUtil.copyDraft(this.props.draftId, newTitle).then(result => {
-			ModalUtil.hide()
 			window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
 		})
 	}
