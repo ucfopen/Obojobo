@@ -57,7 +57,7 @@ describe('PageEditor', () => {
 		restoreConsole()
 	})
 
-	test('PageEditor component', () => {
+	test('component renders', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -70,7 +70,7 @@ describe('PageEditor', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('PageEditor component with decoration', () => {
+	test('component renders with decoration', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -102,7 +102,7 @@ describe('PageEditor', () => {
 		).toMatchSnapshot()
 	})
 
-	test('PageEditor component with Elements', () => {
+	test('component renders with Elements', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -140,7 +140,7 @@ describe('PageEditor', () => {
 		).toMatchSnapshot()
 	})
 
-	test('PageEditor component with no page', () => {
+	test('component renders with no page', () => {
 		const props = {
 			page: null,
 			model: { title: 'Mock Title' }
@@ -206,7 +206,7 @@ describe('PageEditor', () => {
 		expect(spyExport).not.toHaveBeenCalled()
 	})
 
-	test('PageEditor component changes pages', () => {
+	test('component changes pages', () => {
 		const props = {
 			page: {
 				id: 1,
@@ -235,7 +235,7 @@ describe('PageEditor', () => {
 		expect(thing.toJSON()).toMatchSnapshot()
 	})
 
-	test('PageEditor component with page updating to another page', () => {
+	test('component with page updating to another page', () => {
 		const prevProps = {
 			page: {
 				id: 122,
@@ -309,7 +309,7 @@ describe('PageEditor', () => {
 		spy.mockClear()
 	})
 
-	test('PageEditor component alters value majorly', () => {
+	test('component alters value majorly', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -853,6 +853,22 @@ describe('PageEditor', () => {
 		})
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
+	})
+
+	test('reload disables event listener and calls location.reload', () => {
+		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
+		jest.spyOn(location, 'reload').mockReturnValueOnce()
+
+		const props = {
+			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<PageEditor {...props} />)
+
+		component.getInstance().reload()
+		expect(window.removeEventListener).toHaveBeenCalled()
+		expect(location.reload).toHaveBeenCalled()
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('onResized sets state.contentRect', () => {

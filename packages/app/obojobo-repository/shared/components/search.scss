@@ -22,8 +22,6 @@ $search-input-height: 30px;
 	}
 
 	input {
-		position: relative;
-
 		@include text-input;
 
 		z-index: 1;
@@ -39,6 +37,8 @@ $search-input-height: 30px;
 		padding-left: 23px;
 		padding-right: 10px;
 		outline: none;
+		position: relative;
+		-webkit-appearance: none;
 
 		&::-webkit-search-cancel-button {
 			color: red;
