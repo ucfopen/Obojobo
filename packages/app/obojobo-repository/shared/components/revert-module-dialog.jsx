@@ -19,7 +19,7 @@ const Revision = props => {
 			onClick={() => {
 				// Pass the index so the revision history
 				// menu knows which item is currently selected
-				props.onClickRevision(props.revisionId, props.index)
+				props.onClickRevision(props.index)
 			}}
 		>
 			<span className="date">{date}</span>
@@ -82,7 +82,7 @@ class RevertModuleDialog extends React.Component {
 		})
 	}
 
-	setSelectedRevision(revisionId, index) {
+	setSelectedRevision(index) {
 		if (this.state.selectedIndex === index) {
 			// Prevent the iframe from reloading if
 			// the same revision was clicked
@@ -90,7 +90,7 @@ class RevertModuleDialog extends React.Component {
 		}
 
 		this.setState({
-			editorUrl: `${this.baseUrl}&revision_id=${revisionId}`,
+			editorUrl: `${this.baseUrl}&revision_id=${this.state.revisions[index].id}`,
 			selectedIndex: index
 		})
 	}
@@ -109,10 +109,7 @@ class RevertModuleDialog extends React.Component {
 		APIUtil.getDraftRevision(draftId, revision.id).then(res => {
 			APIUtil.postDraft(draftId, JSON.stringify(res.json)).then(() => {
 				this.loadDraftRevisions()
-				this.menuRef.current.scroll({
-					top: 0,
-					behavior: 'smooth'
-				})
+				this.menuRef.current.scrollTop = 0
 			})
 		})
 	}
@@ -179,7 +176,6 @@ class RevertModuleDialog extends React.Component {
 						createdAt={revision.createdAt}
 						username={revision.username}
 						onClickRevision={this.setSelectedRevision}
-						revisionId={revision.id}
 						isSelected={this.state.selectedIndex === index}
 						index={index}
 						versionNumber={revision.versionNumber}
@@ -191,7 +187,6 @@ class RevertModuleDialog extends React.Component {
 
 	render() {
 		const menuClass = this.state.isMenuOpen ? 'is-open' : 'is-closed'
-		console.log(this.props)
 
 		return (
 			<div className="revert-module-dialog">
@@ -199,7 +194,7 @@ class RevertModuleDialog extends React.Component {
 				<div className="revert-module-dialog--header">
 					<ModuleImage id={this.props.draftId} />
 					<div className="title">{this.props.title}</div>
-					<Button className="close-button" onClick={this.props.onClose}>
+					<Button className="close-button" onClick={this.props.onClose} ariaLabel="Close dialog">
 						×
 					</Button>
 				</div>
