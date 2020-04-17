@@ -117,7 +117,9 @@ const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	const type = node.content.listStyles.type
 	const bulletList =
-		type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
+		type === ListStyles.TYPE_UNORDERED
+			? ListStyles.UNORDERED_LIST_BULLETS
+			: ListStyles.ORDERED_LIST_BULLETS
 
 	// Make sure that indents exists
 	if (!slateNode.content.listStyles.indents) slateNode.content.listStyles.indents = {}
@@ -445,7 +447,7 @@ const switchType = {
 
 		// Find the bullet list and starting index for the selection
 		const bulletList =
-			data.type === 'unordered'
+			data.type === ListStyles.TYPE_UNORDERED
 				? ListStyles.UNORDERED_LIST_BULLETS
 				: ListStyles.ORDERED_LIST_BULLETS
 		const bulletIndex = bulletList.indexOf(data.bulletStyle)

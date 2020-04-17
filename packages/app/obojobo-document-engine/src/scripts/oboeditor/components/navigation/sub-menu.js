@@ -276,6 +276,7 @@ class SubMenu extends React.Component {
 						markUnsaved={this.props.markUnsaved}
 						moveNode={this.movePage.bind(this, item.id)}
 						showMoveButtons
+						isAssessment={item.flags.assessment}
 					/>
 				) : null}
 				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}

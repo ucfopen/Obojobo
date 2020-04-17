@@ -1,11 +1,15 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { TextGroupAdapter } = Common.chunk.textChunk
+const { TextGroup } = Common.textGroup
 
 const Adapter = {
 	construct(model, attrs) {
-		TextGroupAdapter.construct(model, attrs)
-		model.modelState.textGroup.maxItems = 1
+		if (attrs && attrs.content && attrs.content.textGroup) {
+			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 1, {})
+		} else {
+			model.modelState.textGroup = TextGroup.create(1, {})
+		}
 
 		model.setStateProp('url', null)
 		model.setStateProp('size', 'small', p => p.toLowerCase(), [

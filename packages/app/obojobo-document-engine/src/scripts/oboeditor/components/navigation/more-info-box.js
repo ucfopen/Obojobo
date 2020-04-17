@@ -66,7 +66,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	onKeyDown(event) {
-		if(event.key === 'Escape'){
+		if (event.key === 'Escape') {
 			return this.onSave()
 		}
 	}
@@ -224,7 +224,9 @@ class MoreInfoBox extends React.Component {
 									onChange={this.handleIdChange}
 									className="id-input"
 									onClick={event => event.stopPropagation()}
-									ref={ref => { this.idInput = ref }}
+									ref={ref => {
+										this.idInput = ref
+									}}
 								/>
 								<Button
 									className="input-aligned-button"
@@ -255,7 +257,9 @@ class MoreInfoBox extends React.Component {
 								<Button className="delete-page-button" onClick={this.props.deleteNode}>
 									Delete
 								</Button>
-								<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								{!this.props.isAssessment ? (
+									<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								) : null}
 								{this.props.isFirst ? null : (
 									<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
 								)}
@@ -280,10 +284,11 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div 
-				ref={this.node} 
+			<div
+				ref={this.node}
 				className={'visual-editor--more-info ' + (this.props.className || '')}
-				onKeyDown={this.onKeyDown}>
+				onKeyDown={this.onKeyDown}
+			>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}

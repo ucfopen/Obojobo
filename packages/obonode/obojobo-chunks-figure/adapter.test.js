@@ -60,11 +60,7 @@ describe('Figure adapter', () => {
 							value: 'mock-tg',
 							styleList: null
 						},
-						data: {
-							align: 'left',
-							indent: 0,
-							hangingIndent: false
-						}
+						data: {}
 					}
 				],
 				url: 'http://website.com/image.jpg',
