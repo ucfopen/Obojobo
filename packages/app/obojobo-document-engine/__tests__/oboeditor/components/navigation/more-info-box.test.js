@@ -53,6 +53,27 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
+	test('More Info Box for assessment', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+				isAssessment
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('More Info Box opens and closes', () => {
 		const saveId = jest.fn()
 		const saveContent = jest.fn()

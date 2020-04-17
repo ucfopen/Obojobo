@@ -249,8 +249,8 @@ class MoreInfoBox extends React.Component {
 								{!this.props.showMoveButtons ? null : (
 									<Button
 										disabled={this.props.isFirst}
-										onClick={() => this.props.moveNode(this.props.index - 1)}
 										altAction
+										onClick={() => this.props.moveNode(this.props.index - 1)}
 									>
 										Move Up
 									</Button>
@@ -258,8 +258,8 @@ class MoreInfoBox extends React.Component {
 								{!this.props.showMoveButtons ? null : (
 									<Button
 										disabled={this.props.isLast}
-										onClick={() => this.props.moveNode(this.props.index + 1)}
 										altAction
+										onClick={() => this.props.moveNode(this.props.index + 1)}
 									>
 										Move Down
 									</Button>
