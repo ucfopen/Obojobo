@@ -277,7 +277,6 @@ class PageEditor extends React.Component {
 	}
 
 	// Methods that handle movement between pages
-
 	componentDidUpdate(prevProps, prevState) {
 		// Do nothing when updating state from empty page
 		if (!prevProps.page && !this.props.page) {
@@ -296,7 +295,10 @@ class PageEditor extends React.Component {
 		if (!prevProps.page && this.props.page) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			return this.setState({ value: this.importFromJSON(), editable: true })
+			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+				Transforms.select(this.editor, Editor.start(this.editor, []))
+				ReactEditor.focus(this.editor)
+			})
 		}
 
 		// Both page and previous page are garunteed to not be null here
@@ -305,7 +307,10 @@ class PageEditor extends React.Component {
 			this.editor.selection = null
 			this.editor.prevSelection = null
 			this.exportToJSON(prevProps.page, prevState.value)
-			return this.setState({ value: this.importFromJSON(), editable: true })
+			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+				Transforms.select(this.editor, Editor.start(this.editor, []))
+				ReactEditor.focus(this.editor)
+			})
 		}
 	}
 

@@ -15,7 +15,7 @@ class Node extends React.Component {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 
 		// Change the node so that the top insert menu is closed
-		// Also, toggle editable back on so that users can continue editing once 
+		// Also, toggle editable back on so that users can continue editing once
 		// the new node is inserted
 		Transforms.setNodes(this.props.editor, { open: null }, { at: path })
 		this.props.editor.toggleEditable(true)
@@ -31,14 +31,14 @@ class Node extends React.Component {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 
 		// Change the node so that the bottom insert menu is closed
-		// Also, toggle editable back on so that users can continue editing once 
+		// Also, toggle editable back on so that users can continue editing once
 		// the new node is inserted
 		Transforms.setNodes(this.props.editor, { open: null }, { at: path })
 		this.props.editor.toggleEditable(true)
 
 		const newBlock = item.cloneBlankNode()
 
-		// Increment the last elementof the path, then use transforms to insert at that path, 
+		// Increment the last elementof the path, then use transforms to insert at that path,
 		// which effectively inserts below like in arrays
 		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
@@ -91,19 +91,24 @@ class Node extends React.Component {
 	onBlur() {
 		// clear the open attribute on the top and bottom nodes
 		const nodes = Array.from(
-			Editor.nodes(this.props.editor, { 
+			Editor.nodes(this.props.editor, {
 				at: this.props.editor.selection || this.props.editor.prevSelection,
 				match: n => Element.isElement(n) && !n.subtype,
-				mode: 'lowest',
+				mode: 'lowest'
 			})
 		)
+
+		// Handle cases where no nodes are selected because the page is changing
+		if (nodes.length === 0) {
+			return this.props.editor.toggleEditable(true)
+		}
 
 		// Clear anything open on the first node
 		// This could be an insert menu or a more info box
 		Transforms.setNodes(
-			this.props.editor, 
-			{ open: null }, 
-			{ 
+			this.props.editor,
+			{ open: null },
+			{
 				at: nodes[0][1]
 			}
 		)
@@ -111,16 +116,16 @@ class Node extends React.Component {
 		// Clear anything open on the last node
 		// This will only be an insert menu
 		Transforms.setNodes(
-			this.props.editor, 
-			{ open: null }, 
-			{ 
-				at: nodes[nodes.length-1][1]
+			this.props.editor,
+			{ open: null },
+			{
+				at: nodes[nodes.length - 1][1]
 			}
 		)
 
 		// Give cursor focus back to the editor, reselecting the previous
 		// selection if it got nulled
-		if(!this.props.editor.selection) {
+		if (!this.props.editor.selection) {
 			Transforms.select(this.props.editor, this.props.editor.prevSelection)
 		}
 		this.props.editor.toggleEditable(true)
