@@ -29,7 +29,8 @@ exports[`SubMenu SubMenu component adds page 1`] = `
       \\"type\\": \\"input\\"
     }
   ],
-  \\"showMoveButtons\\": true
+  \\"showMoveButtons\\": true,
+  \\"isAssessment\\": false
 }</div><div class=\\"add-page\\"><button class=\\"add-page-button\\">+ Page</button></div></li>"
 `;
 
@@ -90,7 +91,8 @@ exports[`SubMenu SubMenu component selected as assessment 1`] = `
       "type": "abstract-toggle"
     }
   ],
-  "showMoveButtons": false
+  "showMoveButtons": true,
+  "isAssessment": true
 }
   </div>
 </li>
