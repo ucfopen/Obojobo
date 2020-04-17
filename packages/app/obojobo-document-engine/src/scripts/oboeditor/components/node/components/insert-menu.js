@@ -40,7 +40,7 @@ class InsertMenu extends React.PureComponent {
 		})
 
 		// When the menu is open, focus on the current dropdown item
-		if (this.state.isOpen) {
+		if (this.state.isOpen || this.props.open) {
 			this.menu[this.state.currentFocus].focus()
 		}
 	}
@@ -52,12 +52,12 @@ class InsertMenu extends React.PureComponent {
 				this.setState({
 					isOpen: false
 				})
-				this.mainButton.focus()
+				this.props.onBlur()
 				break
 
 			// Move right/down through the insert menu
 			// Right is logical for sighted keyboard users; down is a standard
-			// navigation principle for submenus
+			// navigation principle for submenus, and therefore logical to screenreaders
 			case 'ArrowRight':
 			case 'ArrowDown':
 				event.preventDefault()
@@ -68,7 +68,7 @@ class InsertMenu extends React.PureComponent {
 
 			// Move left/up through the insert menu
 			// Left is logical for sighted keyboard users; up is a standard
-			// navigation principle for submenus
+			// navigation principle for submenus, and therefore logical to screenreaders
 			case 'ArrowLeft':
 			case 'ArrowUp':
 				event.preventDefault()
@@ -85,6 +85,8 @@ class InsertMenu extends React.PureComponent {
 			this.setState({
 				isOpen: false
 			})
+
+			this.props.onBlur()
 		})
 	}
 
@@ -127,12 +129,8 @@ class InsertMenu extends React.PureComponent {
 				onFocus={this.onFocusHandler}>
 				<button
 					className={'drop-icon'}
-					ref={button => {
-						this.mainButton = button
-					}}
 					onClick={this.openMenu}
-					tabIndex="-1"
-				>
+					tabIndex="-1">
 					{this.props.icon}
 				</button>
 				{this.props.dropOptions.map(item => this.renderItem(item))}

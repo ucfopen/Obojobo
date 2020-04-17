@@ -668,7 +668,8 @@ describe('PageEditor', () => {
 
 		const editor = {
 			undo: jest.fn(),
-			redo: jest.fn()
+			redo: jest.fn(),
+			toggleEditable: jest.fn()
 		}
 
 		const props = {
@@ -718,6 +719,25 @@ describe('PageEditor', () => {
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: 's'
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: '-',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: '=',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'i',
+			metaKey: true,
+			shiftKey: true
 		})
 
 		expect(editor.undo).toHaveBeenCalled()

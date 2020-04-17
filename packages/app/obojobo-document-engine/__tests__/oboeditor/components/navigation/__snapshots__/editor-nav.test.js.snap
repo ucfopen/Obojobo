@@ -42,6 +42,7 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
       </span>
       <div
         className="visual-editor--more-info "
+        onKeyDown={[Function]}
       >
         <button
           className="more-info-button "

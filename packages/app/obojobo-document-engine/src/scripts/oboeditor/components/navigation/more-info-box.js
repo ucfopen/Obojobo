@@ -31,6 +31,7 @@ class MoreInfoBox extends React.Component {
 		}
 
 		this.handleClick = this.handleClick.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.toggleOpen = this.toggleOpen.bind(this)
 		this.close = this.close.bind(this)
@@ -48,13 +49,26 @@ class MoreInfoBox extends React.Component {
 		this.close()
 	}
 
+	componentDidUpdate() {
+		// This autofocuses the id input box when the node is opened
+		// for easy use by keyboard users
+		if (this.state.isOpen || this.props.open) {
+			document.addEventListener('mousedown', this.handleClick, false)
+			this.idInput.focus()
+		}
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
 		// When the click is outside the box, close the box
-		if (this.state.needsUpdate) return this.onSave()
+		return this.onSave()
+	}
 
-		this.close()
+	onKeyDown(event) {
+		if(event.key === 'Escape'){
+			return this.onSave()
+		}
 	}
 
 	handleIdChange(event) {
@@ -113,15 +127,14 @@ class MoreInfoBox extends React.Component {
 				this.close()
 			}
 		} else {
-			document.addEventListener('mousedown', this.handleClick, false)
-			if (this.props.onOpen) this.props.onOpen()
 			this.setState({ isOpen: true })
+			if (this.props.onOpen) this.props.onOpen()
 		}
 	}
 
 	close() {
 		document.removeEventListener('mousedown', this.handleClick, false)
-		if (this.props.onClose) this.props.onClose()
+		if (this.props.onBlur) this.props.onBlur()
 		return this.setState({ isOpen: false })
 	}
 
@@ -211,6 +224,7 @@ class MoreInfoBox extends React.Component {
 									onChange={this.handleIdChange}
 									className="id-input"
 									onClick={event => event.stopPropagation()}
+									ref={ref => { this.idInput = ref }}
 								/>
 								<Button
 									className="input-aligned-button"
@@ -266,7 +280,10 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className={'visual-editor--more-info ' + (this.props.className || '')}>
+			<div 
+				ref={this.node} 
+				className={'visual-editor--more-info ' + (this.props.className || '')}
+				onKeyDown={this.onKeyDown}>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}

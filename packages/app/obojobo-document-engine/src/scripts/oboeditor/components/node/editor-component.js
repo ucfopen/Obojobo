@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { ReactEditor } from 'slate-react'
 
-import { Transforms, Path, Editor } from 'slate'
+import { Transforms, Path, Editor, Element } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -12,21 +12,34 @@ import './editor-component.scss'
 const { OboModel } = Common.models
 class Node extends React.Component {
 	insertBlockAtStart(item) {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
+		// Change the node so that the top insert menu is closed
+		// Also, toggle editable back on so that users can continue editing once 
+		// the new node is inserted
+		Transforms.setNodes(this.props.editor, { open: null }, { at: path })
+		this.props.editor.toggleEditable(true)
+
 		const newBlock = item.cloneBlankNode()
 
-		// Use the ReactEditor to get the path for the current element
 		// Then use transforms to insert at that path, which effectively inserts above like in arrays
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
 	}
 
 	insertBlockAtEnd(item) {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
+		// Change the node so that the bottom insert menu is closed
+		// Also, toggle editable back on so that users can continue editing once 
+		// the new node is inserted
+		Transforms.setNodes(this.props.editor, { open: null }, { at: path })
+		this.props.editor.toggleEditable(true)
+
 		const newBlock = item.cloneBlankNode()
 
-		// Use the ReactEditor to get the path for the current element, and increment the last element
-		// Then use transforms to insert at that path, which effectively inserts below like in arrays
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		// Increment the last elementof the path, then use transforms to insert at that path, 
+		// which effectively inserts below like in arrays
 		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
 	}
@@ -73,8 +86,43 @@ class Node extends React.Component {
 		this.props.editor.toggleEditable(false)
 	}
 
-	onClose() {
-		// Give cursor focus back to the editor
+	// This method allows the keyboard shortcuts to open and close
+	// menus (insert and more info) to play nice with mouse users
+	onBlur() {
+		// clear the open attribute on the top and bottom nodes
+		const nodes = Array.from(
+			Editor.nodes(this.props.editor, { 
+				at: this.props.editor.selection || this.props.editor.prevSelection,
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest',
+			})
+		)
+
+		// Clear anything open on the first node
+		// This could be an insert menu or a more info box
+		Transforms.setNodes(
+			this.props.editor, 
+			{ open: null }, 
+			{ 
+				at: nodes[0][1]
+			}
+		)
+
+		// Clear anything open on the last node
+		// This will only be an insert menu
+		Transforms.setNodes(
+			this.props.editor, 
+			{ open: null }, 
+			{ 
+				at: nodes[nodes.length-1][1]
+			}
+		)
+
+		// Give cursor focus back to the editor, reselecting the previous
+		// selection if it got nulled
+		if(!this.props.editor.selection) {
+			Transforms.select(this.props.editor, this.props.editor.prevSelection)
+		}
 		this.props.editor.toggleEditable(true)
 	}
 
@@ -94,6 +142,7 @@ class Node extends React.Component {
 							icon="+"
 							open={this.props.element.open === 'top'}
 							masterOnClick={this.insertBlockAtStart.bind(this)}
+							onBlur={this.onBlur.bind(this)}
 						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
@@ -101,6 +150,7 @@ class Node extends React.Component {
 							icon="+"
 							open={this.props.element.open === 'bottom'}
 							masterOnClick={this.insertBlockAtEnd.bind(this)}
+							onBlur={this.onBlur.bind(this)}
 						/>
 					</div>
 				) : null}
@@ -121,7 +171,7 @@ class Node extends React.Component {
 						duplicateNode={this.duplicateNode.bind(this)}
 						markUnsaved={editor.markUnsaved}
 						onOpen={this.onOpen.bind(this)}
-						onClose={this.onClose.bind(this)}
+						onBlur={this.onBlur.bind(this)}
 						tabIndex="-1"
 					/>
 				) : null}

@@ -25,7 +25,7 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element, Transforms } from 'slate'
+import { createEditor, Editor, Element, Transforms, Range } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
 
@@ -182,6 +182,79 @@ class PageEditor extends React.Component {
 		if (event.key === 'Escape') {
 			event.preventDefault()
 			ReactEditor.blur(this.editor)
+		}
+
+		// Open top insert menu
+		if(event.key === '-' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, { 
+				at: Range.start(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest',
+			})
+
+			// Change the node so that the top insert menu is open
+			Transforms.setNodes(
+				this.editor, 
+				{ open: 'top' }, 
+				{ 
+					at: nodeEntry[1]
+				}
+			)
+		}
+
+		// Open bottom insert menu
+		if(event.key === '=' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, { 
+				at: Range.end(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest',
+				reverse: true
+			})
+
+			// Change the node so that the top insert menu is open
+			Transforms.setNodes(
+				this.editor, 
+				{ open: 'bottom' }, 
+				{ 
+					at: nodeEntry[1]
+				}
+			)
+		}
+
+		// Open top insert menu
+		if(event.key === 'i' && (event.ctrlKey || event.metaKey) && event.shiftKey) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, { 
+				at: Range.start(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest',
+			})
+
+			// Change the node so that the more info box is open
+			Transforms.setNodes(
+				this.editor, 
+				{ open: 'info' }, 
+				{ 
+					at: nodeEntry[1]
+				}
+			)
 		}
 	}
 

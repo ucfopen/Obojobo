@@ -34,7 +34,7 @@ describe('MoreInfoBox', () => {
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const onOpen = jest.fn()
-		const onClose = jest.fn()
+		const onBlur = jest.fn()
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
@@ -44,7 +44,7 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				onOpen={onOpen}
-				onClose={onClose}
+				onBlur={onBlur}
 			/>
 		)
 
@@ -65,7 +65,7 @@ describe('MoreInfoBox', () => {
 		expect(saveId).not.toHaveBeenCalled()
 		expect(saveContent).not.toHaveBeenCalled()
 		expect(markUnsaved).not.toHaveBeenCalled()
-		expect(onClose).toHaveBeenCalled()
+		expect(onBlur).toHaveBeenCalled()
 
 		component.unmount()
 	})
@@ -500,12 +500,6 @@ describe('MoreInfoBox', () => {
 		nodeInstance.handleClick({ target: true }) // click inside
 		let tree = component.html()
 		expect(tree).toMatchSnapshot()
-
-		nodeInstance.node.current = { contains: value => value }
-		nodeInstance.handleClick({ target: false }) // click outside
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
-		expect(saveId).not.toHaveBeenCalled()
 
 		nodeInstance.node.current = { contains: value => value }
 		nodeInstance.state.needsUpdate = true

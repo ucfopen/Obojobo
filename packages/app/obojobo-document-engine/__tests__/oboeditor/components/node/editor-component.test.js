@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from '../../../../src/scripts/common'
 
@@ -75,7 +75,10 @@ describe('Component Editor Node', () => {
 	})
 
 	test('Node component inserts node above', () => {
-		const component = mount(<Node selected={true} element={{}} editor={{}} />)
+		const editor = {
+			toggleEditable: jest.fn()
+		}
+		const component = mount(<Node selected={true} element={{}} editor={editor} />)
 		const tree = component.html()
 
 		component
@@ -88,13 +91,16 @@ describe('Component Editor Node', () => {
 	})
 
 	test('Node component inserts node below', () => {
+		const editor = {
+			toggleEditable: jest.fn()
+		}
 		const component = mount(
 			<Node
 				selected={true}
 				element={{
 					content: { width: 'normal' }
 				}}
-				editor={{}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -226,6 +232,8 @@ describe('Component Editor Node', () => {
 	})
 
 	test('onOpen and onClose call toggleEditable', () => {
+		Editor.nodes.mockReturnValue([[{}, []]])
+
 		const editor = {
 			toggleEditable: jest.fn()
 		}
@@ -244,7 +252,7 @@ describe('Component Editor Node', () => {
 			/>
 		)
 		component.instance().onOpen()
-		component.instance().onClose()
+		component.instance().onBlur()
 
 		expect(editor.toggleEditable).toHaveBeenCalledTimes(2)
 	})
