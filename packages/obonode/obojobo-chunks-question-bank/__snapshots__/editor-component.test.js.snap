@@ -2,7 +2,7 @@
 
 exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
 <div
-  className="oboeditor-component component"
+  className="oboeditor-component component "
   data-obo-component="true"
 >
   <div

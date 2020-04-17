@@ -9,26 +9,29 @@ import MoreInfoBox from '../navigation/more-info-box'
 
 import './editor-component.scss'
 
+const INSERT_BEFORE = true
+const INSERT_AFTER = false
+
+const getSlatePath = props => {
+	return ReactEditor.findPath(props.editor, props.element)
+}
+
+const pathToSiblingIndex = path => path[path.length - 1]
+
 const { OboModel } = Common.models
 class Node extends React.Component {
-	insertBlockAtStart(item) {
-		const newBlock = item.cloneBlankNode()
-
-		// Use the ReactEditor to get the path for the current element
-		// Then use transforms to insert at that path, which effectively inserts above like in arrays
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.insertNodes(this.props.editor, newBlock, { at: path })
-		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
+	constructor(props) {
+		super(props)
+		this.insertBlockBefore = this.insertBlockAt.bind(this, INSERT_BEFORE)
+		this.insertBlockAfter = this.insertBlockAt.bind(this, INSERT_AFTER)
 	}
 
-	insertBlockAtEnd(item) {
+	insertBlockAt(where, item) {
 		const newBlock = item.cloneBlankNode()
-
-		// Use the ReactEditor to get the path for the current element, and increment the last element
-		// Then use transforms to insert at that path, which effectively inserts below like in arrays
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.insertNodes(this.props.editor, newBlock, { at: Path.next(path) })
-		Transforms.select(this.props.editor, Editor.start(this.props.editor, Path.next(path)))
+		const thisPath = getSlatePath(this.props)
+		const targetPath = where === INSERT_BEFORE ? thisPath : Path.next(thisPath)
+		Transforms.insertNodes(this.props.editor, newBlock, { at: targetPath })
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, targetPath))
 	}
 
 	saveId(prevId, newId) {
@@ -38,34 +41,33 @@ class Node extends React.Component {
 		const model = OboModel.models[prevId]
 
 		if (!newId) {
-			return 'Please enter an id'
+			return 'Please enter an id.'
 		}
 
 		if (!model.setId(newId)) {
-			return 'The id "' + newId + '" already exists. Please choose a unique id'
+			return `The id "${newId}" already exists. Please choose a unique id.`
 		}
 
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { id: newId }, { at: path })
+		const thisPath = getSlatePath(this.props)
+		Transforms.setNodes(this.props.editor, { id: newId }, { at: thisPath })
 	}
 
 	saveContent(prevContent, newContent) {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: newContent }, { at: path })
+		const thisPath = getSlatePath(this.props)
+		Transforms.setNodes(this.props.editor, { content: newContent }, { at: thisPath })
 	}
 
 	deleteNode() {
 		// Cursor focus is automatically returned to the editor by the onChange function
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.removeNodes(this.props.editor, { at: path })
+		const thisPath = getSlatePath(this.props)
+		Transforms.removeNodes(this.props.editor, { at: thisPath })
 	}
 
 	duplicateNode() {
-		const newNode = Object.assign({}, this.props.element)
-
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		path[path.length - 1]++
-		Transforms.insertNodes(this.props.editor, newNode, { at: path })
+		const newNode = { ...this.props.element }
+		const thisPath = getSlatePath(this.props)
+		const nextPath = Path.next(thisPath)
+		Transforms.insertNodes(this.props.editor, newNode, { at: nextPath })
 	}
 
 	onOpen() {
@@ -78,65 +80,77 @@ class Node extends React.Component {
 		this.props.editor.toggleEditable(true)
 	}
 
-	moveNode(index) {
-		const editor = this.props.editor
+	moveNode(targetIndex) {
+		const thisPath = getSlatePath(this.props)
+		const thisSiblingIndex = pathToSiblingIndex(thisPath)
+		const targetPath =
+			thisSiblingIndex < targetIndex ? Path.next(thisPath) : Path.previous(thisPath)
 
-		editor.moveNodeByKey(this.props.node.key, this.props.parent.key, index)
+		const options = {
+			at: thisPath,
+			to: targetPath
+		}
+
+		Transforms.moveNodes(this.props.editor, options)
+	}
+
+	renderMoreInfo() {
+		const thisPath = getSlatePath(this.props)
+		const [parentNode] = Editor.parent(this.props.editor, thisPath)
+		let siblingCount = parentNode.children.length
+		const thisSiblingIndex = pathToSiblingIndex(thisPath)
+
+		// A node inside a question content cannot move past multiple choices
+		if (parentNode.type === 'ObojoboDraft.Chunks.Question') {
+			siblingCount--
+		}
+
+		return (
+			<MoreInfoBox
+				className="content-node"
+				index={thisSiblingIndex}
+				type={this.props.element.type}
+				id={this.props.element.id}
+				content={this.props.element.content || {}}
+				saveId={this.saveId.bind(this)}
+				saveContent={this.saveContent.bind(this)}
+				contentDescription={this.props.contentDescription || []}
+				deleteNode={this.deleteNode.bind(this)}
+				duplicateNode={this.duplicateNode.bind(this)}
+				markUnsaved={this.props.editor.markUnsaved}
+				onOpen={this.onOpen.bind(this)}
+				onClose={this.onClose.bind(this)}
+				moveNode={this.moveNode.bind(this)}
+				showMoveButtons
+				isFirst={thisSiblingIndex === 0}
+				isLast={thisSiblingIndex >= siblingCount - 1}
+			/>
+		)
 	}
 
 	render() {
-		let size = this.props.parent.nodes.size
-		const index = this.props.parent.getPath(this.props.node.key).get(0)
-
-		// A node inside a question cannot move pass multiple choices
-		if (this.props.parent.type === 'ObojoboDraft.Chunks.Question') {
-			size--
-		}
-		const selected = this.props.selected
-		const editor = this.props.editor
-
 		const className = `oboeditor-component component ${this.props.className || ''}`
 
 		return (
-			<div className={className.trim()} data-obo-component="true">
+			<div className={className} data-obo-component="true">
 				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
-							masterOnClick={this.insertBlockAtStart.bind(this)}
+							masterOnClick={this.insertBlockBefore}
 						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
 							icon="+"
-							masterOnClick={this.insertBlockAtEnd.bind(this)}
+							masterOnClick={this.insertBlockAfter}
 						/>
 					</div>
 				) : null}
+				{this.props.selected ? this.renderMoreInfo() : null}
 
-				{selected ? (
-					<MoreInfoBox
-						className="content-node"
-						index={index}
-						type={this.props.node.type}
-						id={this.props.element.id}
-						content={this.props.element.content || {}}
-						saveId={this.saveId.bind(this)}
-						saveContent={this.saveContent.bind(this)}
-						contentDescription={this.props.contentDescription || []}
-						deleteNode={this.deleteNode.bind(this)}
-						duplicateNode={this.duplicateNode.bind(this)}
-						markUnsaved={editor.markUnsaved}
-						onOpen={this.onOpen.bind(this)}
-						onClose={this.onClose.bind(this)}
-						moveNode={this.moveNode.bind(this)}
-						showMoveButtons
-						isFirst={index === 0}
-						isLast={index === size - 1}
-					/>
-				) : null}
 				{this.props.children}
 			</div>
 		)
