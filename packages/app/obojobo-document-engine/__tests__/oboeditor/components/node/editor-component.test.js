@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { Transforms, Editor } from 'slate'
+import { Transforms, Editor, Element } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from '../../../../src/scripts/common'
 
@@ -232,7 +232,11 @@ describe('Component Editor Node', () => {
 	})
 
 	test('onOpen and onClose call toggleEditable', () => {
-		Editor.nodes.mockReturnValue([[{}, []]])
+		Editor.nodes.mockImplementation((editor, options) => {
+			options.match({})
+			return [[{}, []]]
+		})
+		Element.isElement.mockReturnValue(true)
 
 		const editor = {
 			toggleEditable: jest.fn()
@@ -254,6 +258,10 @@ describe('Component Editor Node', () => {
 		component.instance().onOpen()
 		component.instance().onBlur()
 
-		expect(editor.toggleEditable).toHaveBeenCalledTimes(2)
+		// Onblur with selection
+		editor.selection = {}
+		component.instance().onBlur()
+
+		expect(editor.toggleEditable).toHaveBeenCalledTimes(3)
 	})
 })

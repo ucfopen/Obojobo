@@ -669,7 +669,19 @@ describe('PageEditor', () => {
 		const editor = {
 			undo: jest.fn(),
 			redo: jest.fn(),
-			toggleEditable: jest.fn()
+			toggleEditable: jest.fn(),
+			children: [
+				{
+					type: 'Mock Node',
+					children: [{ text: 'mock text' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 3 }
+			},
+			isVoid: jest.fn(),
+			isInline: jest.fn()
 		}
 
 		const props = {

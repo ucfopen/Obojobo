@@ -457,6 +457,35 @@ describe('MoreInfoBox', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
+	test('More Info Box handles escape click', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'k'
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'Escape'
+		})
+
+		expect(saveId).toHaveBeenCalled()
+		expect(saveContent).toHaveBeenCalled()
+	})
+
 	test('More Info Box closes the TriggersModal', () => {
 		const component = mount(
 			<MoreInfoBox
