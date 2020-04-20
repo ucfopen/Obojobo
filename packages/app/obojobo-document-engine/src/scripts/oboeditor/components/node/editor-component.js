@@ -98,11 +98,17 @@ class Node extends React.Component {
 		const thisPath = getSlatePath(this.props)
 		const [parentNode] = Editor.parent(this.props.editor, thisPath)
 		let siblingCount = parentNode.children.length
-		const thisSiblingIndex = pathToSiblingIndex(thisPath)
+		let thisSiblingIndex = pathToSiblingIndex(thisPath)
 
 		// A node inside a question content cannot move past multiple choices
 		if (parentNode.type === 'ObojoboDraft.Chunks.Question') {
-			siblingCount--
+			siblingCount = thisSiblingIndex + 1
+		}
+
+		// Direct children of Asssessment cannot be moved
+		if (parentNode.type === 'ObojoboDraft.Sections.Assessment') {
+			thisSiblingIndex = 0
+			siblingCount = 1
 		}
 
 		return (
