@@ -196,7 +196,11 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
-				readOnly={this.props.settings && this.props.settings.readOnly}
+				readOnly={
+					// Prevents editing a draft that's a revision,
+					// even if the url was visited manually
+					this.props.settings && (this.props.settings.readOnly || this.props.settings.revisionId)
+				}
 			/>
 		)
 	}

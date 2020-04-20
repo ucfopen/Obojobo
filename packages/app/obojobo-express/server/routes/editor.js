@@ -13,10 +13,12 @@ router
 	.route('/visual|classic/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
 	.get((req, res) => {
+		const readOnly = req.query.read_only && '' + req.query.read_only.toLowerCase()
+
 		res.render('editor', {
 			settings: {
 				allowedUploadTypes,
-				readOnly: !!req.query.read_only,
+				readOnly: readOnly === '1' || readOnly === 'true',
 				revisionId: req.query.revision_id || ''
 			},
 			assetForEnv,
