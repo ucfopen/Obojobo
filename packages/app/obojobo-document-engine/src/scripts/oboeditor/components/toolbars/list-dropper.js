@@ -122,16 +122,13 @@ class ListDropper extends React.Component {
 	}
 
 	render() {
-		const isMac = navigator.appVersion.indexOf('Mac') !== -1
+		const isMac = navigator.platform.indexOf('Mac') !== -1
 		// Decide whether or not to use the mac shortcut
 		// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
 		// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
 		// for keyboard shortcuts
-		const shortcutMac = isMac && this.props.shortcutMac ? '\n' + this.props.shortcutMac : ''
-		// If the Mac shortcut exists, use it
-		// If there is no Mac shortcut and no mark.shortcut, the mac shortcut will be
-		// the blank string, so just use it
-		const shortcut = shortcutMac || !this.props.shortcut ? shortcutMac : '\n' + this.props.shortcut
+		const hotKey = isMac ? '⌘+' : 'Ctrl+'
+		const shortcut = this.props.shortcut ? '\n' + hotKey + this.props.shortcut : ''
 
 		return (
 			<div

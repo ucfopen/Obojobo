@@ -209,8 +209,7 @@ const AlignMarks = {
 		},
 		{
 			name: 'Hanging Indent',
-			shortcut: 'Ctrl+H',
-			shortcutMac: '⌘H',
+			shortcut: 'H',
 			type: HANGING_INDENT,
 			icon: HangingIndentIcon,
 			action: editor => {

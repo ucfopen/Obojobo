@@ -769,10 +769,10 @@ Ctrl+E"
       </button>
       <button
         aria-label="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
         onClick={[Function]}
         title="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -790,10 +790,10 @@ Alt+Tab"
       </button>
       <button
         aria-label="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1281,10 +1281,10 @@ Ctrl+E"
       </button>
       <button
         aria-label="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
         onClick={[Function]}
         title="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1302,10 +1302,10 @@ Alt+Tab"
       </button>
       <button
         aria-label="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1793,10 +1793,10 @@ Ctrl+E"
       </button>
       <button
         aria-label="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
         onClick={[Function]}
         title="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1814,10 +1814,10 @@ Alt+Tab"
       </button>
       <button
         aria-label="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2351,10 +2351,10 @@ Ctrl+E"
       </button>
       <button
         aria-label="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
         onClick={[Function]}
         title="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2372,10 +2372,10 @@ Alt+Tab"
       </button>
       <button
         aria-label="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2863,10 +2863,10 @@ Ctrl+E"
       </button>
       <button
         aria-label="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
         onClick={[Function]}
         title="Indent
-Alt+Tab"
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2884,10 +2884,10 @@ Alt+Tab"
       </button>
       <button
         aria-label="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
         onClick={[Function]}
         title="Unindent
-Shift+Tab"
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"

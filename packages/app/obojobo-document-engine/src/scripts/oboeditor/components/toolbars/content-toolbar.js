@@ -44,11 +44,8 @@ const ContentToolbar = props => {
 				// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
 				// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
 				// for keyboard shortcuts
-				const shortcutMac = isMac && mark.shortcutMac ? '\n' + mark.shortcutMac : ''
-				// If the Mac shortcut exists, use it
-				// If there is no Mac shortcut and no mark.shortcut, the mac shortcut will be
-				// the blank string, so just use it
-				const shortcut = shortcutMac || !mark.shortcut ? shortcutMac : '\n' + mark.shortcut
+				const hotKey = isMac ? '⌘+' : 'Ctrl+'
+				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
 
 				return (
 					<button
@@ -66,17 +63,13 @@ const ContentToolbar = props => {
 				type="unordered"
 				bullets={unorderedList}
 				defaultStyle="disc"
-				shortcut="Ctrl+Shift+K"
-				shortcutMac="⌘+Shift+K"
-			/>
+				shortcut="Shift+K"/>
 			<ListDropper
 				editor={props.editor}
 				type="ordered"
 				bullets={orderedList}
 				defaultStyle="decimal"
-				shortcut="Ctrl+Shift+L"
-				shortcutMac="⌘+Shift+L"
-			/>
+				shortcut="Shift+L"/>
 		</div>
 	)
 }

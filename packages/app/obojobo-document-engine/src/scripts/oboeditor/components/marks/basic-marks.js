@@ -75,48 +75,42 @@ const BasicMarks = {
 	marks: [
 		{
 			name: 'Bold',
-			shortcut: 'Ctrl+B',
-			shortcutMac: '⌘B',
+			shortcut: 'B',
 			type: BOLD_MARK,
 			icon: BoldIcon,
 			action: editor => editor.toggleMark(BOLD_MARK)
 		},
 		{
 			name: 'Italic',
-			shortcut: 'Ctrl+I',
-			shortcutMac: '⌘I',
+			shortcut: 'I',
 			type: ITALIC_MARK,
 			icon: ItalicIcon,
 			action: editor => editor.toggleMark(ITALIC_MARK)
 		},
 		{
 			name: 'Strikethrough',
-			shortcut: 'Ctrl+D',
-			shortcutMac: '⌘D',
+			shortcut: 'D',
 			type: STRIKE_MARK,
 			icon: StrikeIcon,
 			action: editor => editor.toggleMark(STRIKE_MARK)
 		},
 		{
 			name: 'Quote',
-			shortcut: 'Ctrl+"',
-			shortcutMac: '⌘"',
+			shortcut: '"',
 			type: QUOTE_MARK,
 			icon: QuoteIcon,
 			action: editor => editor.toggleMark(QUOTE_MARK)
 		},
 		{
 			name: 'Monospace',
-			shortcut: 'Ctrl+M',
-			shortcutMac: '⌘M',
+			shortcut: 'M',
 			type: MONOSPACE_MARK,
 			icon: MonoIcon,
 			action: editor => editor.toggleMark(MONOSPACE_MARK)
 		},
 		{
 			name: 'Equation',
-			shortcut: 'Ctrl+/',
-			shortcutMac: '⌘/',
+			shortcut: '/',
 			type: LATEX_MARK,
 			icon: LatexIcon,
 			action: editor => editor.toggleMark(LATEX_MARK)

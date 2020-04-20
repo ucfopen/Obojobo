@@ -47,24 +47,21 @@ const AlignMarks = {
 	marks: [
 		{
 			name: 'Left Align',
-			shortcut: 'Ctrl+L',
-			shortcutMac: '⌘L',
+			shortcut: 'L',
 			type: ALIGN_LEFT,
 			icon: LeftIcon,
 			action: editor => editor.setAlign(ALIGN_LEFT)
 		},
 		{
 			name: 'Center Align',
-			shortcut: 'Ctrl+R',
-			shortcutMac: '⌘R',
+			shortcut: 'R',
 			type: ALIGN_CENTER,
 			icon: CenterIcon,
 			action: editor => editor.setAlign(ALIGN_CENTER)
 		},
 		{
 			name: 'Right Align',
-			shortcut: 'Ctrl+E',
-			shortcutMac: '⌘E',
+			shortcut: 'E',
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)

@@ -54,16 +54,14 @@ const ScriptMark = {
 	marks: [
 		{
 			name: 'Superscript',
-			shortcut: 'Ctrl+.',
-			shortcutMac: '⌘.',
+			shortcut: '.',
 			type: SCRIPT_MARK,
 			icon: SupIcon,
 			action: editor => editor.toggleScript(1)
 		},
 		{
 			name: 'Subscript',
-			shortcut: 'Ctrl+,',
-			shortcutMac: '⌘,',
+			shortcut: ',',
 			type: SCRIPT_MARK,
 			icon: SubIcon,
 			action: editor => editor.toggleScript(-1)

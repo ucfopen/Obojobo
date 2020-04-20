@@ -43,18 +43,27 @@ class MoreInfoBox extends React.Component {
 		this.closeModal = this.closeModal.bind(this)
 
 		this.node = React.createRef()
+		this.idInput = React.createRef()
 	}
 
 	componentWillUnmount() {
 		this.close()
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
+		if(this.props.open && this.props.open !== prevProps.open) {
+			// When props are toggled open, set the state to open
+			// This way state can handle actually opening the MoreInfoBox
+			// imporving the consistency of the UI
+			return this.setState({ isOpen: true})
+		}
+
 		// This autofocuses the id input box when the node is opened
 		// for easy use by keyboard users
-		if (this.state.isOpen || this.props.open) {
+		if (this.state.isOpen && this.state.isOpen !== prevState.isOpen) {
 			document.addEventListener('mousedown', this.handleClick, false)
-			this.idInput.focus()
+			this.idInput.current.focus()
+			setTimeout(() => { this.idInput.current.select() }, 10)
 		}
 	}
 
@@ -209,6 +218,7 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
+
 		return (
 			<div className="more-info-box">
 				<div className="container">
@@ -218,15 +228,14 @@ class MoreInfoBox extends React.Component {
 							<div>
 								<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
 								<input
+									autoFocus
 									type="text"
 									id="oboeditor--components--more-info-box--id-input"
 									value={this.state.currentId}
 									onChange={this.handleIdChange}
 									className="id-input"
 									onClick={event => event.stopPropagation()}
-									ref={ref => {
-										this.idInput = ref
-									}}
+									ref={this.idInput}
 								/>
 								<Button
 									className="input-aligned-button"
@@ -287,16 +296,15 @@ class MoreInfoBox extends React.Component {
 			<div
 				ref={this.node}
 				className={'visual-editor--more-info ' + (this.props.className || '')}
-				onKeyDown={this.onKeyDown}
-			>
+				onKeyDown={this.onKeyDown}>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}
 					tabIndex={this.props.tabIndex || 0}
-				>
+					aria-label="Toggle More Info Box">
 					<MoreInfoIcon />
 				</button>
-				{this.state.isOpen || this.props.open ? this.renderInfoBox() : null}
+				{this.state.isOpen ? this.renderInfoBox() : null}
 			</div>
 		)
 	}

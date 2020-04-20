@@ -106,6 +106,7 @@ class InsertMenu extends React.PureComponent {
 					}}
 					onClick={() => this.props.masterOnClick(item)}
 					disabled={item.disabled}
+					aria-label={"Insert " + item.name}
 				>
 					{Icon ? <Icon /> : item.name}
 				</button>

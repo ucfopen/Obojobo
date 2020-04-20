@@ -178,6 +178,7 @@ describe('MoreInfoBox', () => {
 	})
 
 	test('More Info Box edits values', () => {
+		//jest.useFakeTimers()
 		// mocks extracting custom content prop for value
 		const abstractValue = jest.fn().mockImplementation(contentState => contentState.abstractValue)
 		// mocks using checked to change custom content prop
@@ -237,14 +238,17 @@ describe('MoreInfoBox', () => {
 				]}
 			/>
 		)
+		jest.runAllTimers()
 
 		// click to open
 		expect(component.state()).toHaveProperty('isOpen', false)
+		jest.runAllTimers()
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 		expect(component.state()).toHaveProperty('isOpen', true)
+		jest.runAllTimers()
 
 		// Change the current id
 		expect(component.state()).toHaveProperty('currentId', 'mock-id')
@@ -255,6 +259,7 @@ describe('MoreInfoBox', () => {
 		idInputBox.simulate('click') // used to cover internal onClick Handler
 		expect(component.state()).toHaveProperty('currentId', 'new-mock-id')
 		expect(component.html()).toMatchSnapshot()
+		jest.runAllTimers()
 
 		// Change mockInput
 		expect(component.state()).toHaveProperty('content.mockInput', 'mockInputValue1')
@@ -265,6 +270,7 @@ describe('MoreInfoBox', () => {
 		mockInput.simulate('click') // used to cover internal onClick Handler
 		expect(component.state()).toHaveProperty('content.mockInput', 'changed value')
 		expect(component.html()).toMatchSnapshot()
+		jest.runAllTimers()
 
 		// Change mockSelect
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue2')
@@ -275,6 +281,7 @@ describe('MoreInfoBox', () => {
 		selectItem.simulate('click') // used to cover internal onClick Handler
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue1')
 		expect(component.html()).toMatchSnapshot()
+		jest.runAllTimers()
 
 		// Change mockToggle
 		expect(component.state()).toHaveProperty('content.mockToggle', false)
@@ -284,6 +291,7 @@ describe('MoreInfoBox', () => {
 		})
 		expect(component.state()).toHaveProperty('content.mockToggle', true)
 		expect(component.html()).toMatchSnapshot()
+		jest.runAllTimers()
 
 		// Change the Mock Abstract Toggle
 		expect(abstractOnChangeFn).not.toHaveBeenCalled()
@@ -303,6 +311,7 @@ describe('MoreInfoBox', () => {
 			true
 		)
 		expect(component.html()).toMatchSnapshot()
+		jest.runAllTimers()
 
 		component
 			.find('button')
