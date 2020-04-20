@@ -9,32 +9,17 @@ import ReactModal from 'react-modal'
 import CollectionManageModulesDialog from './collection-manage-modules-dialog'
 import CollectionModuleListItem from './collection-module-list-item'
 import ModuleSearchDialog from './module-search-dialog-hoc'
+import Button from './button'
 
-import { mount } from 'enzyme'
+import { create, act } from 'react-test-renderer'
 
 describe('CollectionManageModulesDialog', () => {
 	jest.mock('./collection-module-list-item')
 
 	let defaultProps
 
-	// running any code that changes state throws a console error
-	//  despite the tests passing and everything working
-	// there does not appear to be any satisfactory way of avoiding this
-	//  without also breaking the tests
-	// next best thing is to just shut the console up for now
-	// eslint-disable-next-line no-console
-	const originalError = console.error
-	beforeAll(() => {
-		// eslint-disable-next-line no-console
-		console.error = jest.fn()
-	})
-	afterAll(() => {
-		// eslint-disable-next-line no-console
-		console.error = originalError
-	})
-
 	beforeEach(() => {
-		jest.clearAllMocks()
+		jest.resetAllMocks()
 
 		defaultProps = {
 			collection: {
@@ -49,29 +34,35 @@ describe('CollectionManageModulesDialog', () => {
 		}
 	})
 
-	const checkLoadCollectionModulesCall = () => {
+	const expectLoadCollectionModulesToBeCalledOnceWithId = () => {
 		expect(defaultProps.loadCollectionModules).toHaveBeenCalledTimes(1)
 		expect(defaultProps.loadCollectionModules).toHaveBeenCalledWith('mockCollectionId')
 	}
 
-	const checkModuleSearchModalDialogRendered = (component, isRendered) => {
-		expect(component.find(ReactModal).length).toBe(isRendered ? 1 : 0)
-		expect(component.find(ModuleSearchDialog).length).toBe(isRendered ? 1 : 0)
+	const expectModuleSearchModalToBeRendered = (component, isRendered) => {
+		expect(component.root.findAllByType(ReactModal).length).toBe(isRendered ? 1 : 0)
+		expect(component.root.findAllByType(ModuleSearchDialog).length).toBe(isRendered ? 1 : 0)
 	}
 
 	test('renders with "null" collection modules', () => {
 		defaultProps.collectionModules = null
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		let component
+		act(() => {
+			component = create(<CollectionManageModulesDialog {...defaultProps} />)
+		})
 
-		checkLoadCollectionModulesCall()
-		expect(component.find(CollectionModuleListItem).length).toBe(0)
+		expectLoadCollectionModulesToBeCalledOnceWithId()
+		expect(component.root.findAllByType(CollectionModuleListItem).length).toBe(0)
 	})
 
 	test('renders with no collection modules', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		let component
+		act(() => {
+			component = create(<CollectionManageModulesDialog {...defaultProps} />)
+		})
 
-		checkLoadCollectionModulesCall()
-		expect(component.find(CollectionModuleListItem).length).toBe(0)
+		expectLoadCollectionModulesToBeCalledOnceWithId()
+		expect(component.root.findAllByType(CollectionModuleListItem).length).toBe(0)
 	})
 
 	test('renders with collection modules', () => {
@@ -80,48 +71,78 @@ describe('CollectionManageModulesDialog', () => {
 			{ draftId: 'mockDraftId2' },
 			{ draftId: 'mockDraftId3' }
 		]
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		let component
+		act(() => {
+			component = create(<CollectionManageModulesDialog {...defaultProps} />)
+		})
 
-		checkLoadCollectionModulesCall()
-		expect(component.find(CollectionModuleListItem).length).toBe(3)
+		expectLoadCollectionModulesToBeCalledOnceWithId()
+		expect(component.root.findAllByType(CollectionModuleListItem).length).toBe(3)
 	})
 
 	test('"Add Module" button opens the module search modal', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		const reusableComponent = <CollectionManageModulesDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 
-		component.find('Button.add-module-button').invoke('onClick')()
+		act(() => {
+			component.root.findByProps({ className: 'add-module-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, true)
+		expectModuleSearchModalToBeRendered(component, true)
 	})
 
 	test('modal closes the module search modal when callback is called', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		const reusableComponent = <CollectionManageModulesDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 
-		component.find('Button.add-module-button').invoke('onClick')()
+		act(() => {
+			component.root.findByProps({ className: 'add-module-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, true)
+		expectModuleSearchModalToBeRendered(component, true)
 
-		component.find(ReactModal).invoke('onRequestClose')()
+		act(() => {
+			component.root.findByType(ReactModal).props.onRequestClose()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 	})
 
 	test('module search dialog closes the module search modal when callback is called', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		const reusableComponent = <CollectionManageModulesDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 
-		component.find('Button.add-module-button').invoke('onClick')()
+		act(() => {
+			component.root.findByProps({ className: 'add-module-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, true)
+		expectModuleSearchModalToBeRendered(component, true)
 
-		component.find(ModuleSearchDialog).invoke('onClose')()
+		act(() => {
+			component.root.findByType(ModuleSearchDialog).props.onClose()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 	})
 
 	test('props.collectionRemoveModule is called when a module list item "x" button is clicked', () => {
@@ -130,20 +151,23 @@ describe('CollectionManageModulesDialog', () => {
 			{ draftId: 'mockDraftId2' },
 			{ draftId: 'mockDraftId3' }
 		]
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		const reusableComponent = <CollectionManageModulesDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
-		checkLoadCollectionModulesCall()
+		expectLoadCollectionModulesToBeCalledOnceWithId()
 
-		const moduleListItems = component.find(CollectionModuleListItem)
+		const moduleListItems = component.root.findAllByType(CollectionModuleListItem)
 		expect(moduleListItems.length).toBe(3)
-		expect(moduleListItems.at(0).prop('draftId')).toBe('mockDraftId')
-		expect(moduleListItems.at(1).prop('draftId')).toBe('mockDraftId2')
-		expect(moduleListItems.at(2).prop('draftId')).toBe('mockDraftId3')
+		expect(moduleListItems[0].props.draftId).toBe('mockDraftId')
+		expect(moduleListItems[1].props.draftId).toBe('mockDraftId2')
+		expect(moduleListItems[2].props.draftId).toBe('mockDraftId3')
 
-		moduleListItems
-			.at(1)
-			.find('Button')
-			.invoke('onClick')()
+		act(() => {
+			moduleListItems[1].findByType(Button).props.onClick()
+		})
 
 		expect(defaultProps.collectionRemoveModule).toHaveBeenCalledTimes(1)
 		expect(defaultProps.collectionRemoveModule).toHaveBeenCalledWith(
@@ -153,27 +177,41 @@ describe('CollectionManageModulesDialog', () => {
 	})
 
 	test('props.collectionAddModule is called when ModuleSearchDialog.onSelectModule is called', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		const reusableComponent = <CollectionManageModulesDialog {...defaultProps} />
+		let component
+		act(() => {
+			component = create(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 
-		component.find('Button.add-module-button').invoke('onClick')()
+		act(() => {
+			component.root.findByProps({ className: 'add-module-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
 
-		checkModuleSearchModalDialogRendered(component, true)
+		expectModuleSearchModalToBeRendered(component, true)
 
-		component.find(ModuleSearchDialog).invoke('onSelectModule')('mockDraftId')
+		act(() => {
+			component.root.findByType(ModuleSearchDialog).props.onSelectModule('mockDraftId')
+			component.update(reusableComponent)
+		})
 		expect(defaultProps.collectionAddModule).toHaveBeenCalledTimes(1)
 		expect(defaultProps.collectionAddModule).toHaveBeenCalledWith('mockDraftId', 'mockCollectionId')
 
-		// adding a new module also closes the module search dialog
-		checkModuleSearchModalDialogRendered(component, false)
+		expectModuleSearchModalToBeRendered(component, false)
 	})
 
 	test('"close" and "done" buttons call props.onClose', () => {
-		const component = mount(<CollectionManageModulesDialog {...defaultProps} />)
+		let component
+		act(() => {
+			component = create(<CollectionManageModulesDialog {...defaultProps} />)
+		})
 
-		component.find('Button.close-button').invoke('onClick')()
-		component.find('Button.done-button').invoke('onClick')()
+		act(() => {
+			component.root.findByProps({ className: 'close-button' }).props.onClick()
+			component.root.findByProps({ className: 'done-button secondary-button' }).props.onClick()
+		})
 		expect(defaultProps.onClose).toHaveBeenCalledTimes(2)
 	})
 })

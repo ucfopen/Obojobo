@@ -248,7 +248,7 @@ const renderCollectionManageArea = props => {
 		)
 		if (!response) return
 		props.deleteCollection(props.collection).then(() => {
-			window.location.href = '/dashboard'
+			window.location.assign('/dashboard')
 		})
 	}
 
@@ -272,6 +272,8 @@ const Dashboard = props => {
 	const [collectionSortOrder, setCollectionSortOrder] = useState(props.collectionSortOrder)
 
 	// Set a cookie when moduleSortOrder or collectionSortOrder change on the client
+	// can't undefine document to test this 'else' case without breaking everything
+	/* istanbul ignore else */
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()
@@ -320,7 +322,7 @@ const Dashboard = props => {
 	// Components to render for module sort options
 	// Will not be necessary when dashboard is in 'recent' mode
 	let moduleSortRender = (
-		<div className="repository--main-content--sort">
+		<div className="repository--main-content--sort repository--module-sort">
 			<span>Sort</span>
 			<select value={moduleSortOrder} onChange={event => setModuleSortOrder(event.target.value)}>
 				<option value="newest">Newest</option>
@@ -340,25 +342,9 @@ const Dashboard = props => {
 		/>
 	)
 
-	let collectionFilterRender = (
-		<Search
-			value={props.collectionSearchString}
-			placeholder="Filter Collections..."
-			onChange={props.filterCollections}
-		/>
-	)
-
-	// Components to render an 'All Modules' button (default/collection mode)
-	// Will not be necessary when dashboard is in 'module' mode
-	let allModulesButtonRender = (
-		<ButtonLink className="repository--all-modules--button" url="/dashboard/all" target="_blank">
-			All Modules
-		</ButtonLink>
-	)
-
-	if (props.myModules.length === props.moduleCount) {
-		allModulesButtonRender = null
-	}
+	// Components to render an 'All Modules' button (default mode)
+	// Will not be necessary when dashboard is in 'all' or 'collection' modes
+	let allModulesButtonRender = null
 
 	// 'New Collection' button and horizontal divider
 	// Will only appear when dashboard is in 'recent' mode
@@ -375,23 +361,30 @@ const Dashboard = props => {
 	switch (props.mode) {
 		// url is /collections/collection-name-and-short-uuid
 		case MODE_COLLECTION:
-			collectionFilterRender = null
 			collectionManageAreaRender = renderCollectionManageArea(props)
 			createNewModuleOptions.collectionId = props.collection.id
 			modulesTitle = `Modules in '${props.collection.title}'`
-			allModulesButtonRender = null
 			break
 		// url is /dashboard/modules
 		case MODE_ALL:
-			collectionFilterRender = null
 			collectionAreaRender = null
-			newCollectionOptionsRender = null
 			modulesTitle = 'My Modules'
-			allModulesButtonRender = null
 			break
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
+			if (props.myModules.length < props.moduleCount) {
+				allModulesButtonRender = (
+					<ButtonLink
+						className="repository--all-modules--button"
+						url="/dashboard/all"
+						target="_blank"
+					>
+						All Modules
+					</ButtonLink>
+				)
+			}
+
 			newCollectionOptionsRender = (
 				<React.Fragment>
 					{newCollectionButtonRender}
@@ -400,9 +393,9 @@ const Dashboard = props => {
 			)
 			collectionAreaRender = (
 				<React.Fragment>
-					<div className="repository--main-content--title">
+					<div className="repository--main-content--title repository--my-collections-title">
 						<span>My Collections</span>
-						<div className="repository--main-content--sort">
+						<div className="repository--main-content--sort repository--collection-sort">
 							<span>Sort</span>
 							<select
 								value={collectionSortOrder}
@@ -413,7 +406,11 @@ const Dashboard = props => {
 							</select>
 						</div>
 					</div>
-					{collectionFilterRender}
+					<Search
+						value={props.collectionSearchString}
+						placeholder="Filter Collections..."
+						onChange={props.filterCollections}
+					/>
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
@@ -459,7 +456,9 @@ const Dashboard = props => {
 						{collectionManageAreaRender}
 						{moduleFilterRender}
 					</div>
-					<div className={`repository--main-content--title ${modulesTitleExtraClass}`}>
+					<div
+						className={`repository--main-content--title repository--my-modules-title ${modulesTitleExtraClass}`}
+					>
 						<span>{modulesTitle}</span>
 						{moduleSortRender}
 					</div>

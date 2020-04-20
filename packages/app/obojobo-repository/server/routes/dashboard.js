@@ -55,7 +55,7 @@ const renderDashboard = (req, res, options) => {
 					return DraftSummary.fetchByUserId(req.currentUser.id)
 				case MODE_RECENT:
 				default:
-					moduleSortOrder = 'last_updated'
+					moduleSortOrder = 'last updated'
 					return DraftSummary.fetchRecentByUserId(req.currentUser.id)
 			}
 		})

@@ -10,11 +10,14 @@ const short = require('short-uuid')
 const Collection = props => {
 	let timeOutId
 	const [isMenuOpen, setMenuOpen] = useState(false)
-	const onCloseMenu = () => setMenuOpen(false)
+
 	const onToggleMenu = e => {
 		setMenuOpen(!isMenuOpen)
 		e.preventDefault() // block the event from bubbling out to the parent href
 	}
+
+	const onMouseLeaveHandler = () => setMenuOpen(false)
+
 	// Handle keyboard focus
 	const onBlurHandler = () => {
 		timeOutId = setTimeout(() => {
@@ -53,7 +56,7 @@ const Collection = props => {
 
 	return (
 		<div
-			onMouseLeave={onCloseMenu}
+			onMouseLeave={onMouseLeaveHandler}
 			className={'repository--collection-icon ' + (isMenuOpen ? 'is-open' : 'is-not-open')}
 			onBlur={onBlurHandler}
 			onFocus={onFocusHandler}

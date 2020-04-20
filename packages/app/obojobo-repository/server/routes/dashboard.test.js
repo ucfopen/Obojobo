@@ -198,7 +198,7 @@ describe('repository dashboard route', () => {
 					currentUser: mockCurrentUser,
 					mode: MODE_RECENT,
 					moduleCount: 5,
-					moduleSortOrder: 'last_updated',
+					moduleSortOrder: 'last updated',
 					collectionSortOrder: 'alphabetical',
 					myCollections: mockCollectionSummary,
 					myModules: mockModuleSummary
