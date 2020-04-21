@@ -133,7 +133,8 @@ Transforms.mergeNodes = (editor, options) => Editor.withoutNormalizing(editor, (
 	}
 })
 
-// This one is directly copied from Slate's master branch, but it has not been released yet
+// This one is directly copied from Slate's master branch, and should be released once slate
+// updates past v0.57.1 (https://github.com/ianstormtaylor/slate/releases)
 Transforms.setPoint = (editor, props, options) => {
 	const { selection } = editor
 	let { edge = 'both' } = options

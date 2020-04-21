@@ -1,6 +1,7 @@
 import { Editor, Transforms, Range, Path } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import SelectionUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/selection-util'
 import ListStyles from './list-styles'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
@@ -247,64 +248,11 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				// Since list paths have the possibility of being N deep,
-				// we use the list path to find any line children
-				// this works because there will only be one text node within a single list
-				const [firstLine] = Array.from(
-					Editor.nodes(editor, {
-						at: path,
-						match: n => n.subtype === TEXT_LINE_NODE
-					})
-				)
-
-				// The difference between startPath and start Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = start.path.length - startPath.length
-				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: firstLine[1].concat(relativeLeafPath),
-						offset: start.offset
-					},
-					{ edge: 'anchor' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, start, startPath, TEXT_LINE_NODE, 'anchor')
 			}
 
 			if (containsEnd) {
-				// Since list paths have the possibility of being N deep,
-				// we use the list path to find any line children
-				// this works because there will only be one text node within a single list
-				const [lastLine] = Array.from(
-					Editor.nodes(editor, {
-						at: path,
-						match: n => n.subtype === TEXT_LINE_NODE,
-						reverse: true
-					})
-				)
-
-				// The difference between endPath and end Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = end.path.length - endPath.length
-				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: lastLine[1].concat(relativeLeafPath),
-						offset: end.offset
-					},
-					{ edge: 'focus' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, end, endPath, TEXT_LINE_NODE, 'focus')
 			}
 		})
 	},
@@ -374,64 +322,11 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				// Since list paths have the possibility of being N deep,
-				// we use the list path to find any line children
-				// this works because there will only be one text node within a single list
-				const [firstLine] = Array.from(
-					Editor.nodes(editor, {
-						at: path,
-						match: n => n.subtype === CODE_LINE_NODE
-					})
-				)
-
-				// The difference between startPath and start Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = start.path.length - startPath.length
-				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: firstLine[1].concat(relativeLeafPath),
-						offset: start.offset
-					},
-					{ edge: 'anchor' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, start, startPath, CODE_LINE_NODE, 'anchor')
 			}
 
 			if (containsEnd) {
-				// Since list paths have the possibility of being N deep,
-				// we use the list path to find any line children
-				// this works because there will only be one text node within a single list
-				const [lastLine] = Array.from(
-					Editor.nodes(editor, {
-						at: path,
-						match: n => n.subtype === CODE_LINE_NODE,
-						reverse: true
-					})
-				)
-
-				// The difference between endPath and end Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = end.path.length - endPath.length
-				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: lastLine[1].concat(relativeLeafPath),
-						offset: end.offset
-					},
-					{ edge: 'focus' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, end, endPath, CODE_LINE_NODE, 'focus')
 			}
 		})
 	},

@@ -63,7 +63,7 @@ class MoreInfoBox extends React.Component {
 		if (this.state.isOpen && this.state.isOpen !== prevState.isOpen) {
 			document.addEventListener('mousedown', this.handleClick, false)
 			this.idInput.current.focus()
-			setTimeout(() => { this.idInput.current.select() }, 10)
+			setTimeout(() => { this.idInput.current.select() }, 200)
 		}
 	}
 
@@ -117,10 +117,8 @@ class MoreInfoBox extends React.Component {
 			this.props.saveId(this.props.id, this.state.currentId)
 		if (!error) {
 			// Wrapping these methods in a Timeout prevents a race condition with editor updates
-			return setTimeout(() => {
-				this.props.markUnsaved()
-				return this.close()
-			}, 0)
+			this.props.markUnsaved()
+			return this.close()
 		}
 
 		this.setState({ error })
@@ -143,7 +141,7 @@ class MoreInfoBox extends React.Component {
 
 	close() {
 		document.removeEventListener('mousedown', this.handleClick, false)
-		if (this.props.onBlur) this.props.onBlur()
+		if (this.props.onBlur) this.props.onBlur('info')
 		return this.setState({ isOpen: false })
 	}
 

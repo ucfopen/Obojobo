@@ -1,6 +1,7 @@
 import { Editor, Transforms, Range, Path } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import SelectionUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/selection-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -194,57 +195,11 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				// Find the final path to the starting line node
-				// Because normalization has not yet run, there will be exactly
-				// 1 line node for the starting path
-				const [startLine] = Editor.nodes(editor, {
-					at: startPath,
-					match: n => n.subtype === LIST_LINE_NODE
-				})
-				// The difference between startPath and start Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = start.path.length - startPath.length
-				const relativeLeafPath = start.path.slice(start.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: startLine[1].concat(relativeLeafPath),
-						offset: start.offset
-					},
-					{ edge: 'start' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, start, startPath, LIST_LINE_NODE, 'anchor')
 			}
 
 			if (containsEnd) {
-				// Find the final path to the ending line node
-				// Because normalization has not yet run, there will be exactly
-				// 1 line node for the endinging path
-				const [endLine] = Editor.nodes(editor, {
-					at: endPath,
-					match: n => n.subtype === LIST_LINE_NODE
-				})
-				// The difference between endPath and end Point indicates what inline
-				// and what text leaf is currently selected
-				const leafDepth = end.path.length - endPath.length
-				const relativeLeafPath = end.path.slice(end.path.length - leafDepth)
-
-				// Therefore, the point to focus on is
-				// the line's path
-				// + the relative leaf path
-				// + the original offset
-				Transforms.setPoint(
-					editor,
-					{
-						path: endLine[1].concat(relativeLeafPath),
-						offset: end.offset
-					},
-					{ edge: 'end' }
-				)
+				SelectionUtil.resetPointAtUncertianDepth(editor, path, end, endPath, LIST_LINE_NODE, 'focus')
 			}
 		})
 	}

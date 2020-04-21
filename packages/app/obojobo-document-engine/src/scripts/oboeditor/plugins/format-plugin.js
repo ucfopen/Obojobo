@@ -11,13 +11,18 @@ const FormatPlugin = {
 		if (!(event.ctrlKey || event.metaKey) || !event.shiftKey) return
 
 		switch (event.key) {
+			// Using both the lower and uppercase letters to accunt for systems
+			// where the shiftKey affects the key
 			case 'k':
+			case 'K':
 				event.preventDefault()
 				return editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 			case 'l':
+			case 'L':
 				event.preventDefault()
 				return editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
 			case 'c':
+			case 'C':
 				event.preventDefault()
 				return editor.changeToType(CODE_NODE)
 			// Matches clear formatting commands

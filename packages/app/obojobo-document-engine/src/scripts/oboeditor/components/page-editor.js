@@ -167,26 +167,27 @@ class PageEditor extends React.Component {
 	onKeyDownGlobal(event) {
 		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
-			this.saveModule(this.props.draftId)
+			return this.saveModule(this.props.draftId)
+		}
+
+		if ((event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
+			((event.key === 'z' || event.key === 'Z') && (event.ctrlKey || event.metaKey) && event.shiftKey)) {
+			event.preventDefault()
+			return this.editor.redo()
 		}
 
 		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
-			this.editor.undo()
-		}
-
-		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.editor.redo()
+			return this.editor.undo()
 		}
 
 		if (event.key === 'Escape') {
 			event.preventDefault()
-			ReactEditor.blur(this.editor)
+			return ReactEditor.blur(this.editor)
 		}
 
-		// Open top insert menu
-		if (event.key === '-' && (event.ctrlKey || event.metaKey)) {
+		// Open top insert menu: - and _ account for users potentially using the shift key
+		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -200,7 +201,7 @@ class PageEditor extends React.Component {
 			})
 
 			// Change the node so that the top insert menu is open
-			Transforms.setNodes(
+			return Transforms.setNodes(
 				this.editor,
 				{ open: 'top' },
 				{
@@ -209,8 +210,8 @@ class PageEditor extends React.Component {
 			)
 		}
 
-		// Open bottom insert menu
-		if (event.key === '=' && (event.ctrlKey || event.metaKey)) {
+		// Open bottom insert menu: = and + account for users potentially using the shift key
+		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -225,7 +226,7 @@ class PageEditor extends React.Component {
 			})
 
 			// Change the node so that the top insert menu is open
-			Transforms.setNodes(
+			return Transforms.setNodes(
 				this.editor,
 				{ open: 'bottom' },
 				{
@@ -234,8 +235,8 @@ class PageEditor extends React.Component {
 			)
 		}
 
-		// Open top insert menu
-		if (event.key === 'i' && (event.ctrlKey || event.metaKey) && event.shiftKey) {
+		// Open top insert menu: i and I occur on different systems as the key when shift is held
+		if ((event.key === 'i' || event.key === 'I') && (event.ctrlKey || event.metaKey) && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -249,7 +250,7 @@ class PageEditor extends React.Component {
 			})
 
 			// Change the node so that the more info box is open
-			Transforms.setNodes(
+			return Transforms.setNodes(
 				this.editor,
 				{ open: 'info' },
 				{

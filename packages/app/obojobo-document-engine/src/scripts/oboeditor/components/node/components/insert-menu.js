@@ -86,7 +86,7 @@ class InsertMenu extends React.PureComponent {
 				isOpen: false
 			})
 
-			this.props.onBlur()
+			this.props.onBlur(this.props.menu)
 		})
 	}
 

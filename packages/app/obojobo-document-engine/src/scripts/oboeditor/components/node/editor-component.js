@@ -88,7 +88,7 @@ class Node extends React.Component {
 
 	// This method allows the keyboard shortcuts to open and close
 	// menus (insert and more info) to play nice with mouse users
-	onBlur() {
+	onBlur(menu) {
 		// clear the open attribute on the top and bottom nodes
 		const nodes = Array.from(
 			Editor.nodes(this.props.editor, {
@@ -103,32 +103,42 @@ class Node extends React.Component {
 			return this.props.editor.toggleEditable(true)
 		}
 
-		// Clear anything open on the first node
-		// This could be an insert menu or a more info box
-		Transforms.setNodes(
-			this.props.editor,
-			{ open: null },
-			{
-				at: nodes[0][1]
-			}
-		)
-
-		// Clear anything open on the last node
-		// This will only be an insert menu
-		Transforms.setNodes(
-			this.props.editor,
-			{ open: null },
-			{
-				at: nodes[nodes.length - 1][1]
-			}
-		)
-
-		// Give cursor focus back to the editor, reselecting the previous
-		// selection if it got nulled
-		if (!this.props.editor.selection) {
-			Transforms.select(this.props.editor, this.props.editor.prevSelection)
+		// If the first or last node's open attribute matches the menu we are
+		// blurring, we need to clear the open attribute
+		if(menu === nodes[0][0].open) {
+			// Clear anything open on the first node
+			// This could be an insert menu or a more info box
+			Transforms.setNodes(
+				this.props.editor,
+				{ open: null },
+				{
+					at: nodes[0][1]
+				}
+			)
 		}
-		this.props.editor.toggleEditable(true)
+
+		if(menu === nodes[nodes.length - 1][0].open) {
+			// Clear anything open on the last node
+			// This will only be an insert menu
+			Transforms.setNodes(
+				this.props.editor,
+				{ open: null },
+				{
+					at: nodes[nodes.length - 1][1]
+				}
+			)
+		}
+
+		// If the only open menu was closed by blurring, return the focus & selection to the editor
+		if((!nodes[0][0].open || menu === nodes[0][0].open) && 
+			(!nodes[nodes.length - 1][0].open || menu === nodes[nodes.length - 1][0].open)){
+			// Give cursor focus back to the editor, reselecting the previous
+			// selection if it got nulled
+			if (!this.props.editor.selection) {
+				Transforms.select(this.props.editor, this.props.editor.prevSelection)
+			}
+			this.props.editor.toggleEditable(true)
+		}	
 	}
 
 	render() {
@@ -148,6 +158,7 @@ class Node extends React.Component {
 							open={this.props.element.open === 'top'}
 							masterOnClick={this.insertBlockAtStart.bind(this)}
 							onBlur={this.onBlur.bind(this)}
+							menu="top"
 						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
@@ -156,6 +167,7 @@ class Node extends React.Component {
 							open={this.props.element.open === 'bottom'}
 							masterOnClick={this.insertBlockAtEnd.bind(this)}
 							onBlur={this.onBlur.bind(this)}
+							menu="bottom"
 						/>
 					</div>
 				) : null}
