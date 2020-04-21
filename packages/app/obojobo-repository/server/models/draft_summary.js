@@ -103,7 +103,6 @@ class DraftSummary {
 				drafts_content.id,
 				drafts_content.draft_id,
 				drafts_content.created_at,
-				drafts_content.content,
 				repository_map_user_to_draft.user_id,
 				users.first_name,
 				users.last_name
