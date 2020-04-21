@@ -179,6 +179,12 @@ $border: 1px solid $border-color;
 
 	.preview-button {
 		margin-right: 1em;
+
+		&.disabled {
+			cursor: default;
+			pointer-events: none;
+			opacity: 0.4;
+		}
 	}
 
 	.revert-button,

@@ -187,6 +187,7 @@ class RevertModuleDialog extends React.Component {
 
 	render() {
 		const menuClass = this.state.isMenuOpen ? 'is-open' : 'is-closed'
+		const isFirstSelected = this.state.selectedIndex === 0
 
 		return (
 			<div className="revert-module-dialog">
@@ -205,14 +206,14 @@ class RevertModuleDialog extends React.Component {
 							<Button
 								className="revert-button"
 								onClick={this.openConfirmDialog}
-								disabled={this.state.selectedIndex === 0}
+								disabled={isFirstSelected}
 							>
 								Revert document to this version
 							</Button>
 							<ButtonLink
 								url={`/preview/${this.props.draftId}`}
 								target="_blank"
-								className="preview-button"
+								className={`preview-button ${!isFirstSelected ? 'disabled' : ''}`}
 							>
 								Preview module
 							</ButtonLink>
