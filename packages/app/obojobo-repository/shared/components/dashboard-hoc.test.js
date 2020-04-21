@@ -1,22 +1,29 @@
 jest.mock('react-redux')
 jest.mock('../actions/dashboard-actions')
-jest.mock('./dashboard')
+jest.mock('./dashboard', () => ({}))
 
 import DashboardActions from '../actions/dashboard-actions'
 import Dashboard from './dashboard'
 
 describe('Dashboard HOC', () => {
-	test('react-redux.collect is called with the correct arguments', () => {
+	test('redux collect is called with the correct arguments', () => {
 		const ReactRedux = require('react-redux')
 
 		const mockReduxConnectReturn = jest.fn()
-		ReactRedux.connect = jest.fn()
-		ReactRedux.connect.mockReturnValue(mockReduxConnectReturn)
+		ReactRedux.connect = jest.fn(mapStoreStateToProps => {
+			//the first argument to 'connect' is a private (untestable) method in the HOC
+			//that method will never be 'covered' unless we call it like this
+			//since we also know that it should just return what it's given, we can test that too
+			const mapStoreStateToPropsArgs = { testKey: 'testProp' }
+			const mapStoreStateToPropsReturn = mapStoreStateToProps(mapStoreStateToPropsArgs)
+			expect(mapStoreStateToPropsReturn).toStrictEqual(mapStoreStateToPropsArgs)
+			return mockReduxConnectReturn
+		})
 
 		require('./dashboard-hoc')
 
 		expect(ReactRedux.connect).toHaveBeenCalledTimes(1)
-		expect(ReactRedux.connect).toHaveBeenCalledWith(null, {
+		expect(ReactRedux.connect).toHaveBeenCalledWith(expect.any(Function), {
 			createNewCollection: DashboardActions.createNewCollection,
 			loadCollectionModules: DashboardActions.loadCollectionModules,
 			showCollectionManageModules: DashboardActions.showCollectionManageModules,

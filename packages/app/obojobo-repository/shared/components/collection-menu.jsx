@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 require('./collection-menu.scss')
 
 const React = require('react')

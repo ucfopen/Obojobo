@@ -5,7 +5,7 @@ import ModuleManageCollectionsDialog from './module-manage-collections-dialog'
 import Checkbox from './checkbox'
 import Search from './search'
 
-describe('', () => {
+describe('ModuleManageCollectionsDialog', () => {
 	let defaultProps
 
 	beforeEach(() => {

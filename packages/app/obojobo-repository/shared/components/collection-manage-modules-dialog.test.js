@@ -199,6 +199,7 @@ describe('CollectionManageModulesDialog', () => {
 		expect(defaultProps.collectionAddModule).toHaveBeenCalledTimes(1)
 		expect(defaultProps.collectionAddModule).toHaveBeenCalledWith('mockDraftId', 'mockCollectionId')
 
+		//should also close the search modal
 		expectModuleSearchModalToBeRendered(component, false)
 	})
 

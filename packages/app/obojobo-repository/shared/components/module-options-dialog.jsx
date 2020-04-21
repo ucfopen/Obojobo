@@ -1,7 +1,7 @@
 require('./module-permissions-dialog.scss')
 
 const React = require('react')
-const ModuleIamge = require('./module-image')
+const ModuleImage = require('./module-image')
 const Button = require('./button')
 const ButtonLink = require('./button-link')
 const { urlForEditor } = require('../repository-utils')
@@ -18,7 +18,7 @@ const deleteModule = (title, draftId, deleteFn) => {
 const ModuleOptionsDialog = props => (
 	<div className="module-permissions-dialog">
 		<div className="top-bar">
-			<ModuleIamge id={props.draftId} />
+			<ModuleImage id={props.draftId} />
 			<div className="module-title">{props.title}</div>
 			<Button className="close-button" ariaLabel="Close" onClick={props.onClose}>
 				×

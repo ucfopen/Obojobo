@@ -1,11 +1,11 @@
 jest.mock('react-redux')
 jest.mock('../actions/dashboard-actions')
-jest.mock('./collection-menu', () => ({}))
+jest.mock('./module-menu', () => ({}))
 
 import DashboardActions from '../actions/dashboard-actions'
-import CollectionMenu from './collection-menu'
+import ModuleMenu from './module-menu'
 
-describe('CollectionMenu HOC', () => {
+describe('ModuleMenu HOC', () => {
 	test('redux collect is called with the correct arguments', () => {
 		const ReactRedux = require('react-redux')
 
@@ -13,16 +13,16 @@ describe('CollectionMenu HOC', () => {
 		ReactRedux.connect = jest.fn()
 		ReactRedux.connect.mockReturnValue(mockReduxConnectReturn)
 
-		require('./collection-menu-hoc')
+		require('./module-menu-hoc')
 
 		expect(ReactRedux.connect).toHaveBeenCalledTimes(1)
 		expect(ReactRedux.connect).toHaveBeenCalledWith(null, {
-			showCollectionManageModules: DashboardActions.showCollectionManageModules,
-			showCollectionRename: DashboardActions.showCollectionRename,
-			deleteCollection: DashboardActions.deleteCollection
+			showModulePermissions: DashboardActions.showModulePermissions,
+			deleteModule: DashboardActions.deleteModule,
+			showModuleMore: DashboardActions.showModuleMore
 		})
 
 		expect(mockReduxConnectReturn).toHaveBeenCalledTimes(1)
-		expect(mockReduxConnectReturn).toHaveBeenCalledWith(CollectionMenu)
+		expect(mockReduxConnectReturn).toHaveBeenCalledWith(ModuleMenu)
 	})
 })

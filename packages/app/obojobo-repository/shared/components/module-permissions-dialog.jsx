@@ -1,7 +1,7 @@
 require('./module-permissions-dialog.scss')
 
 const React = require('react')
-const ModuleIamge = require('./module-image')
+const ModuleImage = require('./module-image')
 const ReactModal = require('react-modal')
 const Button = require('./button')
 const PeopleSearchDialog = require('./people-search-dialog-hoc')
@@ -67,7 +67,7 @@ class ModulePermissionsDialog extends React.Component {
 		return (
 			<div className="module-permissions-dialog">
 				<div className="top-bar">
-					<ModuleIamge id={this.props.draftId} />
+					<ModuleImage id={this.props.draftId} />
 					<div className="module-title" title={this.props.title}>
 						{this.props.title}
 					</div>
