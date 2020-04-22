@@ -23,7 +23,7 @@ describe('Content Toolbar', () => {
 	})
 
 	test('Toolbar node for Mac', () => {
-		navigator.__defineGetter__('appVersion', () => 'Mock Mac')
+		navigator.__defineGetter__('platform', () => 'Mock Mac')
 
 		const editor = {
 			children: [

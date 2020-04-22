@@ -32,7 +32,7 @@ const orderedList = [
 ]
 
 const ContentToolbar = props => {
-	const isMac = navigator.appVersion.indexOf('Mac') !== -1
+	const isMac = navigator.platform.indexOf('Mac') !== -1
 
 	return (
 		<div className={`visual-editor--content-toolbar`}>
@@ -45,7 +45,7 @@ const ContentToolbar = props => {
 				// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
 				// for keyboard shortcuts
 				const hotKey = isMac ? '⌘+' : 'Ctrl+'
-				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
+				const shortcut = '\n' + hotKey + mark.shortcut
 
 				return (
 					<button
@@ -63,13 +63,15 @@ const ContentToolbar = props => {
 				type="unordered"
 				bullets={unorderedList}
 				defaultStyle="disc"
-				shortcut="Shift+K"/>
+				shortcut="Shift+K"
+			/>
 			<ListDropper
 				editor={props.editor}
 				type="ordered"
 				bullets={orderedList}
 				defaultStyle="decimal"
-				shortcut="Shift+L"/>
+				shortcut="Shift+L"
+			/>
 		</div>
 	)
 }

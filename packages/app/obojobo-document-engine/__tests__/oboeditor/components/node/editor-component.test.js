@@ -237,9 +237,13 @@ describe('Component Editor Node', () => {
 				options.match({})
 				return []
 			})
+			.mockImplementationOnce((editor, options) => {
+				options.match({})
+				return [[{ open: 'top' }, []]]
+			})
 			.mockImplementation((editor, options) => {
 				options.match({})
-				return [[{}, []]]
+				return [[{ open: 'info' }, []]]
 			})
 		Element.isElement.mockReturnValue(true)
 
@@ -261,12 +265,13 @@ describe('Component Editor Node', () => {
 			/>
 		)
 		component.instance().onOpen()
-		component.instance().onBlur()
-		component.instance().onBlur()
+		component.instance().onBlur('info')
+		component.instance().onBlur('top')
 
 		// Onblur with selection
 		editor.selection = {}
-		component.instance().onBlur()
+		component.instance().onBlur('info')
+		component.instance().onBlur('bottom')
 
 		expect(editor.toggleEditable).toHaveBeenCalledTimes(4)
 	})

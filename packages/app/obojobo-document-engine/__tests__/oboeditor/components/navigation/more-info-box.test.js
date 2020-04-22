@@ -178,7 +178,11 @@ describe('MoreInfoBox', () => {
 	})
 
 	test('More Info Box edits values', () => {
-		//jest.useFakeTimers()
+		jest.spyOn(React, 'createRef').mockReturnValue({
+			current: {
+				select: jest.fn()
+			}
+		})
 		// mocks extracting custom content prop for value
 		const abstractValue = jest.fn().mockImplementation(contentState => contentState.abstractValue)
 		// mocks using checked to change custom content prop
@@ -304,7 +308,6 @@ describe('MoreInfoBox', () => {
 			true
 		)
 		expect(component.html()).toMatchSnapshot()
-		jest.runAllTimers()
 
 		component
 			.find('button')
@@ -314,7 +317,6 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 		expect(saveId).toHaveBeenCalled()
 		expect(saveContent).toHaveBeenCalled()
-		jest.runAllTimers()
 		expect(markUnsaved).toHaveBeenCalled()
 	})
 
@@ -356,6 +358,29 @@ describe('MoreInfoBox', () => {
 		expect(markUnsaved).not.toHaveBeenCalled()
 	})
 
+	test('More Info Box runs select on Timeout', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				hideButtonBar
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(jest.runAllTimers).toThrow()
+	})
+
 	test('More Info Box with no button bar', () => {
 		const saveId = jest.fn()
 		const saveContent = jest.fn()
@@ -372,6 +397,27 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 		component.setState({ isOpen: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box changes to open', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				hideButtonBar
+				open={false}
+			/>
+		)
+		component.setProps({ open: true })
 
 		expect(component.html()).toMatchSnapshot()
 	})
