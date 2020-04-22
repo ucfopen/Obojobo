@@ -422,7 +422,7 @@ class PageEditor extends React.Component {
 								renderElement={this.renderElement.bind(this)}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
-								readOnly={!this.state.editable}
+								readOnly={!this.state.editable || this.props.readOnly}
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>
