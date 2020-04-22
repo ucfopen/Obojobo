@@ -7,10 +7,15 @@ const ButtonLink = require('./button-link')
 const { urlForEditor } = require('../repository-utils')
 const APIUtil = require('../api-util')
 const ReactModal = require('react-modal')
-const moment = require('moment')
+const dayjs = require('dayjs')
+const advancedFormat = require('dayjs/plugin/advancedFormat')
+const weekOfYear = require('dayjs/plugin/weekOfYear')
+
+dayjs.extend(advancedFormat)
+dayjs.extend(weekOfYear)
 
 const Revision = props => {
-	const date = moment(props.createdAt).format('MMMM Do - h:mm A')
+	const date = dayjs(props.createdAt).format('MMMM wo - h:mm A')
 	const selectedClass = props.isSelected ? 'is-selected' : ''
 
 	return (
@@ -132,7 +137,7 @@ class RevertModuleDialog extends React.Component {
 		}
 
 		const revision = this.state.revisions[this.state.selectedIndex]
-		const date = moment(revision.createdAt).format('MMMM Do')
+		const date = dayjs(revision.createdAt).format('MMMM wo')
 
 		return (
 			<ReactModal
