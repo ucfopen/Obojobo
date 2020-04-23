@@ -13,15 +13,19 @@
 		box-sizing: border-box;
 		height: 3em;
 
+		.repository--collection-icon--image svg,
 		.repository--collection-icon--image {
 			width: 1.5em;
 			height: 1.75em;
-			display: inline-block;
-			vertical-align: middle;
-			position: absolute;
-			left: 0.75em;
-			top: 50%;
-			transform: translate(0, -50%);
+
+			&.repository--collection-icon--image {
+				display: inline-block;
+				vertical-align: middle;
+				position: absolute;
+				left: 0.75em;
+				top: 50%;
+				transform: translate(0, -50%);
+			}
 		}
 
 		.collection-title {

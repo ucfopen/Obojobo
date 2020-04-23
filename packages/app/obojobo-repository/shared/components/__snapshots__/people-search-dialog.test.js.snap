@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PeopleSearchDialog renders with no people 1`] = `
+<div
+  className="people-search-dialog"
+>
+  <div
+    className="wrapper"
+  >
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+    <h1
+      className="title"
+    >
+      Find Users to Share With
+    </h1>
+    <div
+      className="sub-title"
+    >
+      People who can edit this module
+    </div>
+    <mock-Search
+      focusOnMount={true}
+      onChange={[MockFunction]}
+      placeholder="Search..."
+    />
+  </div>
+  <div
+    className="access-list-wrapper"
+  >
+    <ul
+      className="access-list"
+    />
+  </div>
+</div>
+`;
+
+exports[`PeopleSearchDialog renders with people 1`] = `
+<div
+  className="people-search-dialog"
+>
+  <div
+    className="wrapper"
+  >
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+    <h1
+      className="title"
+    >
+      Find Users to Share With
+    </h1>
+    <div
+      className="sub-title"
+    >
+      People who can edit this module
+    </div>
+    <mock-Search
+      focusOnMount={true}
+      onChange={[MockFunction]}
+      placeholder="Search..."
+    />
+  </div>
+  <div
+    className="access-list-wrapper"
+  >
+    <ul
+      className="access-list"
+    >
+      <li
+        className="people-list-item"
+      >
+        <div
+          className="avatar "
+        >
+          <div
+            className="avatar--image"
+          >
+            <img
+              alt=""
+            />
+          </div>
+        </div>
+        <div
+          className="user-name"
+        >
+           
+           
+        </div>
+        <button
+          className="repository--button select-button"
+          onClick={[Function]}
+        >
+          Select
+        </button>
+      </li>
+      <li
+        className="people-list-item"
+      >
+        <div
+          className="avatar "
+        >
+          <div
+            className="avatar--image"
+          >
+            <img
+              alt=""
+            />
+          </div>
+        </div>
+        <div
+          className="user-name"
+        >
+           
+           
+        </div>
+        <button
+          className="repository--button select-button"
+          onClick={[Function]}
+        >
+          Select
+        </button>
+      </li>
+      <li
+        className="people-list-item"
+      >
+        <div
+          className="avatar "
+        >
+          <div
+            className="avatar--image"
+          >
+            <img
+              alt=""
+            />
+          </div>
+        </div>
+        <div
+          className="user-name"
+        >
+           
+           
+          <i>
+            (me)
+          </i>
+        </div>
+        <button
+          className="repository--button select-button"
+          onClick={[Function]}
+        >
+          Select
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

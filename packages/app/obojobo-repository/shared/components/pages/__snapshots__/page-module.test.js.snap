@@ -79,7 +79,7 @@ exports[`PageModule renders when given props 1`] = `
     </nav>
   </div>
   <div
-    className="repository--section-wrapper--full-width repository--section-wrapper--grey undefined"
+    className="repository--section-wrapper--full-width repository--section-wrapper--grey "
   >
     <div
       className="repository--section-wrapper--full-width-bg"
