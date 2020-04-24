@@ -82,7 +82,7 @@ class DropDownMenu extends React.PureComponent {
 	}
 
 	renderAction(index, item) {
-		const isMac = navigator.appVersion.indexOf('Mac') !== -1
+		const isMac = navigator.platform.indexOf('Mac') !== -1
 		// Decide whether or not to use the mac shortcut
 		// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
 		// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
