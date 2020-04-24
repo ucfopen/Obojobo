@@ -34,8 +34,12 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 		}
 
 		const listLine = {
-			text: { value: '', styleList: [] },
-			data: { indent: currLevel, hangingIndent: child.content.hangingIndent }
+			text: { value: '' },
+			data: { indent: currLevel }
+		}
+
+		if (child.content && typeof child.content.hangingIndent !== 'undefined') {
+			listLine.data.hangingIndent = child.content.hangingIndent
 		}
 
 		TextUtil.slateToOboText(child, listLine)
@@ -56,7 +60,7 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
  */
 const slateToObo = node => {
 	const textGroup = []
-	const indents = []
+	const indents = {}
 
 	node.children.forEach(level => {
 		flattenLevels(level, 0, textGroup, indents)
@@ -125,7 +129,7 @@ const oboToSlate = node => {
 	if (!slateNode.content.listStyles.indents) slateNode.content.listStyles.indents = {}
 
 	slateNode.children = node.content.textGroup.map(line => {
-		let indent = line.data ? line.data.indent : 0
+		let indent = line.data && line.data.indent ? parseInt(line.data.indent, 10) : 0
 		const hangingIndent = line.data ? line.data.hangingIndent : false
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
@@ -136,10 +140,14 @@ const oboToSlate = node => {
 				{
 					type: LIST_NODE,
 					subtype: LIST_LINE_NODE,
-					content: { hangingIndent },
+					content: {},
 					children: TextUtil.parseMarkings(line)
 				}
 			]
+		}
+
+		if (line.data && typeof line.data.hangingIndent !== 'undefined') {
+			listLine.children[0].content.hangingIndent = line.data.hangingIndent
 		}
 
 		while (indent > 0) {
