@@ -13,6 +13,8 @@ const { Button } = Common.components
 class Table extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 	}
 
 	toggleHeader() {
@@ -49,11 +51,22 @@ class Table extends React.Component {
 		}
 	}
 
+	// Only return on tab - the table cell menu returns on shift+tab
+	returnFocusOnTab(event) {
+		if(event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	renderButton() {
 		return (
 			<div className="buttonbox-box" contentEditable={false}>
 				<div className="box-border">
-					<Button className="toggle-header" onClick={this.toggleHeader.bind(this)}>
+					<Button 
+						className="toggle-header" 
+						onClick={this.toggleHeader.bind(this)}
+						onKeyDown={this.returnFocusOnTab}>
 						Toggle Header
 					</Button>
 				</div>

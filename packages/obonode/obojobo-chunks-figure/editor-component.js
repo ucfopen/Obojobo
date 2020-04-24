@@ -50,6 +50,20 @@ class Figure extends React.Component {
 		)
 	}
 
+	returnFocusOnTab(event) {
+		if(event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if(event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	changeProperties(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -80,13 +94,17 @@ class Figure extends React.Component {
 							onClick={this.focusFigure.bind(this)}>
 							<Button 
 								className="delete-button" 
-								onClick={this.deleteNode.bind(this)}>
+								onClick={this.deleteNode.bind(this)}
+								onKeyDown={this.returnFocusOnShiftTab.bind(this)}
+								tabIndex={selected ? '0' : '-1'}>
 								×
 							</Button>
 							<div className="image-toolbar">
 								<Button
 									className="properties-button"
-									onClick={this.showImagePropertiesModal.bind(this)}>
+									onClick={this.showImagePropertiesModal.bind(this)}
+									onKeyDown={this.returnFocusOnTab.bind(this)}
+									tabIndex={selected ? '0' : '-1'}>
 									Image Properties
 								</Button>
 							</div>

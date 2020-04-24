@@ -16,11 +16,23 @@ const toggleSize = (editor, element) => {
 	Transforms.setNodes(editor, { content: {...element.content, width} }, { at: path })
 }
 
+
+const returnFocusOnTab = (editor, event) => {
+	// Since there is only one button, return on both tab and shift-tab
+	if(event.key === 'Tab') {
+		event.preventDefault()
+		return ReactEditor.focus(editor)
+	}
+}
+
 const renderButton = (editor, element) => {
 	return (
 		<div className="buttonbox-box" contentEditable={false}>
 			<div className="box-border">
-				<Button className="toggle-size" onClick={toggleSize.bind(this, editor, element)}>
+				<Button 
+					className="toggle-size" 
+					onClick={toggleSize.bind(this, editor, element)}
+					onKeyDown={returnFocusOnTab.bind(this, editor)}>
 					Toggle Size
 				</Button>
 			</div>

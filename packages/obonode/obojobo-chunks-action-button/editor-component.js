@@ -37,6 +37,14 @@ class ActionButton extends React.Component {
 		)
 	}
 
+	returnFocusOnTab(event) {
+		// Since there is only one button, return on both tab and shift-tab
+		if(event.key === 'Tab') {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	renderTriggers() {
 		const content = this.props.element.content
 		const onClickTrigger = content.triggers.find(trigger => trigger.type === 'onClick')
@@ -50,7 +58,10 @@ class ActionButton extends React.Component {
 							<ActionButtonEditorAction key={action.type} {...action} />
 						))}
 					</div>
-					<Button className="add-action" onClick={this.showTriggersModal.bind(this)}>
+					<Button 
+						className="add-action" 
+						onClick={this.showTriggersModal.bind(this)}
+						onKeyDown={this.returnFocusOnTab.bind(this)}>
 						Edit Triggers
 					</Button>
 				</div>

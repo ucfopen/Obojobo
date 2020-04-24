@@ -260,13 +260,6 @@ class PageEditor extends React.Component {
 		}
 	}
 
-	onKeyDownDefaults(event) {
-		if (event.key === 'Tab') {
-			event.preventDefault()
-			this.editor.insertText('\t')
-		}
-	}
-
 	onChange(value) {
 		// Save the previous selection in case the editor is unfocused
 		// This mostly happens with MoreInfoBoxes and void nodes
@@ -429,10 +422,6 @@ class PageEditor extends React.Component {
 			if (item && item.plugins.onKeyDown) {
 				item.plugins.onKeyDown(entry, this.editor, event)
 			}
-		}
-
-		if (!event.defaultPrevented) {
-			this.onKeyDownDefaults(event)
 		}
 	}
 

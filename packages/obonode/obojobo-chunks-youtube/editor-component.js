@@ -59,6 +59,20 @@ class YouTube extends React.Component {
 		})
 	}
 
+	returnFocusOnTab(event) {
+		if(event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if(event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	render() {
 		const content = this.props.element.content
 
@@ -70,14 +84,21 @@ class YouTube extends React.Component {
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
 					onClick={this.focusYoutube.bind(this)}>
-					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+					<Button 
+						className="delete-button" 
+						onClick={this.deleteNode.bind(this)}
+						onKeyDown={this.returnFocusOnShiftTab.bind(this)}
+						tabIndex={this.props.selected ? 0 : -1}>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
-					{this.props.children}
-					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
+					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}
+						onKeyDown={this.returnFocusOnTab.bind(this)}
+						tabIndex={this.props.selected ? 0 : -1}>
 						Edit
 					</Button>
+					
+					{this.props.children}
 				</div>
 			</Node>
 		)

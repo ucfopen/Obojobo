@@ -39,6 +39,8 @@ class MathEquation extends React.Component {
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.focusEquation = this.focusEquation.bind(this)
+
+		this.equationInput = React.createRef()
 	}
 
 	contentToStateObj(content) {
@@ -50,6 +52,15 @@ class MathEquation extends React.Component {
 			open: false
 		}
 	}
+
+	returnFocusOnTab(event) {
+		// Since there is only one button, return on both tab and shift-tab
+		if(event.key === 'Tab') {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 
 	renderEmptyEquation() {
 		return (
@@ -106,11 +117,26 @@ class MathEquation extends React.Component {
 	}
 
 	freezeEditor() {
+		this.setState({ open: true })
 		this.props.editor.toggleEditable(false)
+		// Waits for the readOnly state to percolate before focusing
+		setTimeout(() => {
+			this.equationInput.current.focus()
+			this.equationInput.current.select()
+		}, 200)
 	}
 
 	unfreezeEditor() {
+		this.setState({ open: false })
 		this.props.editor.toggleEditable(true)
+		// Waits for the readOnly state to percolate before focusing
+		setTimeout(() => {
+			// Focusing on the input causes the editor to lose selection
+			if (!this.props.editor.selection) {
+				Transforms.select(this.props.editor, this.props.editor.prevSelection)
+			}
+			ReactEditor.focus(this.props.editor)
+		}, 200)
 	}
 
 	renderAttributes() {
@@ -121,10 +147,9 @@ class MathEquation extends React.Component {
 					<input
 						id="math-equation-latex"
 						value={this.state.latex}
+						ref={this.equationInput}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'latex')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</div>
 				<div className="attribute">
@@ -134,8 +159,6 @@ class MathEquation extends React.Component {
 						value={this.state.label}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'label')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</div>
 				<div className="attribute">
@@ -145,8 +168,6 @@ class MathEquation extends React.Component {
 						value={this.state.alt}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'alt')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</div>
 				<div className="attribute">
@@ -158,12 +179,10 @@ class MathEquation extends React.Component {
 						step="0.1"
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'size')}
-						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
 					/>
 				</div>
 				<div>
-					<Button onClick={() => this.setState({ open: false })}>Done</Button>
+					<Button onClick={this.unfreezeEditor.bind(this)}>Done</Button>
 				</div>
 			</div>
 		)
@@ -176,7 +195,11 @@ class MathEquation extends React.Component {
 			<div className={className} contentEditable={false}>
 				<div className="box-border">
 					{!this.state.open ? (
-						<Button onClick={() => this.setState({ open: true })}>Edit</Button>
+						<Button 
+							onClick={this.freezeEditor.bind(this)}
+							onKeyDown={this.returnFocusOnTab.bind(this)}>
+							Edit
+						</Button>
 					) : (
 						this.renderAttributes()
 					)}
