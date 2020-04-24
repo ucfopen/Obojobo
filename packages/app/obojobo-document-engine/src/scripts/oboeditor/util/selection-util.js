@@ -14,7 +14,7 @@ const SelectionUtil = {
 	 * @param {start | anchor | end | focus} edge Which selection point is being set
 	 */
 
-	resetPointAtUncertianDepth(editor, path, point, leafPath, leafSubtype, edge) {
+	resetPointAtUncertainDepth(editor, path, point, leafPath, leafSubtype, edge) {
 		// Since the depth is uncertian, we use the given path to find any matching children
 		// If we are resetting the start || anchor, we want the first node
 		// Otherwise (resetting end or focus), we want the last node
