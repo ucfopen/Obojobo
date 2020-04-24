@@ -149,6 +149,7 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
           >
             Edit Triggers
           </button>

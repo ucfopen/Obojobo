@@ -20,6 +20,8 @@ exports[`Figure Editor Node Figure component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -34,6 +36,8 @@ exports[`Figure Editor Node Figure component 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -78,6 +82,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -92,6 +98,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -141,6 +149,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -155,6 +165,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -203,6 +215,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -217,6 +231,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>

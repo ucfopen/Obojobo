@@ -22,6 +22,8 @@ exports[`IFrame Editor Node IFrame component 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          onKeyDown={[Function]}
+          tabIndex={-1}
         >
           ×
         </button>
@@ -42,6 +44,8 @@ exports[`IFrame Editor Node IFrame component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
           >
             IFrame Properties
           </button>
@@ -74,6 +78,8 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          onKeyDown={[Function]}
+          tabIndex={-1}
         >
           ×
         </button>
@@ -94,6 +100,8 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
           >
             IFrame Properties
           </button>

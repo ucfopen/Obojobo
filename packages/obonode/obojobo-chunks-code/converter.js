@@ -195,11 +195,11 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				SelectionUtil.resetPointAtUncertianDepth(editor, path, start, startPath, LIST_LINE_NODE, 'anchor')
+				SelectionUtil.resetPointAtUncertainDepth(editor, path, start, startPath, LIST_LINE_NODE, 'anchor')
 			}
 
 			if (containsEnd) {
-				SelectionUtil.resetPointAtUncertianDepth(editor, path, end, endPath, LIST_LINE_NODE, 'focus')
+				SelectionUtil.resetPointAtUncertainDepth(editor, path, end, endPath, LIST_LINE_NODE, 'focus')
 			}
 		})
 	}

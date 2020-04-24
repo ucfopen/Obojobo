@@ -30,9 +30,6 @@ exports[`Drop Down Menu DropDownMenu node opens and closes 1`] = `"<div class=\\
 
 exports[`Drop Down Menu DropDownMenu node opens and closes 2`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
 
-exports[`Drop Down Menu DropDownMenu node with sub-menu 1`] = `
-"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo<span>
-mock shortcut</span></button><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">subMenu</button><div class=\\"menu-items\\"><button>SubItem</button></div></div></div></div>"
-`;
+exports[`Drop Down Menu DropDownMenu node with sub-menu 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">subMenu</button><div class=\\"menu-items\\"><button>SubItem</button></div></div></div></div>"`;
 
 exports[`Drop Down Menu DropDownMenu node with toggle-action 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Show Placeholders<span>✔</span></button><button>Show Placeholders</button></div></div>"`;

@@ -13,6 +13,7 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
     <button
       className=" is-not-open"
       onClick={[Function]}
+      onKeyDown={[Function]}
     >
       ⌃
     </button>
@@ -65,6 +66,7 @@ exports[`Cell Editor Node Cell component selected 1`] = `
     <button
       className=" is-not-open"
       onClick={[Function]}
+      onKeyDown={[Function]}
     >
       ⌃
     </button>
