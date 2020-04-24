@@ -46,7 +46,7 @@ const apiDeletePermissionsToModule = (draftId, userId) => {
 	return fetch(`/api/drafts/${draftId}/permission/${userId}`, options).then(res => res.json())
 }
 
-const apiDeleteModule = (draftId, collectionId = null) => {
+const apiDeleteModule = (draftId, collectionId) => {
 	const body = JSON.stringify({ collectionId })
 	const options = { ...defaultOptions(), method: 'DELETE', body }
 	return fetch(`/api/drafts/${draftId}`, options).then(res => res.json())
@@ -93,7 +93,7 @@ const apiDeleteCollection = collection => {
 	return fetch(`/api/collections/${collection.id}`, options).then(res => res.json())
 }
 
-const apiCreateNewModule = (useTutorial, collectionId = null) => {
+const apiCreateNewModule = (useTutorial, collectionId) => {
 	const url = useTutorial ? '/api/drafts/tutorial' : '/api/drafts/new'
 	const body = JSON.stringify({ collectionId })
 	const options = { ...defaultOptions(), method: 'POST', body }
@@ -354,9 +354,9 @@ const renameCollection = (collectionId, newTitle, options = { ...defaultModuleMo
 }
 
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
-const deleteCollection = id => ({
+const deleteCollection = collection => ({
 	type: DELETE_COLLECTION,
-	promise: apiDeleteCollection(id).then(apiGetMyCollections)
+	promise: apiDeleteCollection(collection).then(apiGetMyCollections)
 })
 
 module.exports = {
