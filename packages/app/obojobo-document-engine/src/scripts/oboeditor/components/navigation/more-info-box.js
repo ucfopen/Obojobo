@@ -241,7 +241,9 @@ class MoreInfoBox extends React.Component {
 								<Button className="delete-page-button" onClick={this.props.deleteNode}>
 									Delete
 								</Button>
-								<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								{!this.props.isAssessment ? (
+									<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								) : null}
 								{this.props.isFirst ? null : (
 									<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
 								)}

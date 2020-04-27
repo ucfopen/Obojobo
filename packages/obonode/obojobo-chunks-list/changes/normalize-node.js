@@ -28,7 +28,7 @@ const normalizeNode = (entry, editor, next) => {
 			// Wrap loose ListLine children
 			if (Element.isElement(child) && child.subtype === LIST_LINE_NODE) {
 				const bulletList =
-					node.content.listStyles.type === 'unordered'
+					node.content.listStyles.type === ListStyles.TYPE_UNORDERED
 						? ListStyles.UNORDERED_LIST_BULLETS
 						: ListStyles.ORDERED_LIST_BULLETS
 				const bulletStyle = bulletList[0]
@@ -90,7 +90,7 @@ const normalizeNode = (entry, editor, next) => {
 			// Maintain list type integrity between levels
 			if (child.subtype === LIST_LEVEL_NODE && child.content.type !== node.content.type) {
 				const bulletList =
-					node.content.type === 'unordered'
+					node.content.type === ListStyles.TYPE_UNORDERED
 						? ListStyles.UNORDERED_LIST_BULLETS
 						: ListStyles.ORDERED_LIST_BULLETS
 				const bulletStyle =
@@ -174,7 +174,7 @@ const normalizeNode = (entry, editor, next) => {
 				{
 					type: LIST_NODE,
 					content: {
-						listStyles: { type: 'unordered' }
+						listStyles: { type: ListStyles.TYPE_UNORDERED }
 					},
 					children: []
 				},

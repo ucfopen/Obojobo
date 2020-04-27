@@ -50,6 +50,7 @@ class PageEditor extends React.Component {
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
@@ -349,6 +350,11 @@ class PageEditor extends React.Component {
 		}
 
 		return []
+	}
+
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
 	}
 
 	// All the render methods that allow the editor to display properly
