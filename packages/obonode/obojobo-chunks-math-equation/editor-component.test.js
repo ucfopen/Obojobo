@@ -19,6 +19,10 @@ jest.mock(
 jest.useFakeTimers()
 
 describe('MathEquation Editor Node', () => {
+	afterEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('renders with no latex', () => {
 		const component = renderer.create(<MathEquation element={{ content: { latex: null } }} />)
 		const tree = component.toJSON()
@@ -100,17 +104,13 @@ describe('MathEquation Editor Node', () => {
 	})
 
 	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
-		const component = mount(
-			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
-		)
+		const component = mount(<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} />)
 
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
-
-		component.setProps({ selected: false })
-
-		expect(Transforms.setNodes).not.toHaveBeenCalled()
-		jest.runAllTimers()
+		component.setState({ open: true })
+		component.setState({ open: false })
 		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
+
 		expect(Transforms.setNodes.mock.calls[0]).toMatchInlineSnapshot(`
 		Array [
 		  undefined,
