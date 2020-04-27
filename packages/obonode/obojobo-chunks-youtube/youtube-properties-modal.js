@@ -7,6 +7,7 @@ import EditorUtil from '../../app/obojobo-document-engine/src/scripts/oboeditor/
 import './youtube-properties-modal.scss'
 
 const { SimpleDialog } = Common.components.modal
+const { MoreInfoButton } = Common.components
 
 class YouTubeProperties extends React.Component {
 	constructor(props) {
@@ -122,13 +123,28 @@ class YouTubeProperties extends React.Component {
 			>
 				<div className="youtube-video-properties">
 					<label>Youtube video id or url:</label>
-					<input
-						id="obojobo-draft--chunks--youtube--video-id"
-						type="text"
-						ref={this.idInputRef}
-						value={this.state.content.videoId || ''}
-						onChange={this.handleIdChange}
-					/>
+					<div className="youtube-video-properties-input-wrapper">
+						<input
+							id="obojobo-draft--chunks--youtube--video-id"
+							type="text"
+							ref={this.idInputRef}
+							value={this.state.content.videoId || ''}
+							onChange={this.handleIdChange.bind(this)}
+						/>
+						<div>										
+						<MoreInfoButton ariaLabel="Click to explain youtube video options">
+							<div className="text-items">
+								<p>Add video by pasting one of the following:</p>
+								<hr />
+								<ul>
+									<li>The video url, from your browser's address bar</li>
+									<li>Embed code, provided by Youtube</li>
+									<li>The video's id</li>
+								</ul>
+							</div>
+						</MoreInfoButton>
+						</div>
+					</div>
 
 					<label>Start time in seconds (optional):</label>
 					<input

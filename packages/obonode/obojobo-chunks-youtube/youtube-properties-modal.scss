@@ -1,9 +1,17 @@
 @import '~styles/includes';
 
+.obojobo-draft--components--modal--modal {
+	overflow: visible;
+
+}
+
 .youtube-video-properties {
 	width: 15em;
 	text-align: left;
 	margin: auto;
+
+	$color-bg: white;
+	$color-bg2: #f4f4f4;
 
 	.error {
 		color: $color-error;
@@ -20,20 +28,60 @@
 
 	input {
 		@include text-input();
-
-		width: 100%;
+		
+		width: calc(100% - 2em);
 
 		&#obojobo-draft--chunks--youtube--video-id {
-			margin-bottom: 2em;
+			// margin-bottom: 2em;
 		}
 	}
 
 	small {
-		font-size: 0.7em;
-		color: #636363;
-		margin-top: 0.25em;
-		padding-top: 0;
 		display: block;
-		letter-spacing: 0.02em;
+		margin-top: 1em;
+		font-size: 0.7em;
+		color: $color-text-minor;
 	}
+
+	.youtube-video-properties-input-wrapper {
+		display: flex;
+		margin-bottom: 2em;
+		flex-direction: row;
+
+		input {
+			width: 100%;
+		}
+		.obojobo-draft--components--more-info-button {
+			width: 1em;
+		}
+	}
+
+	.info {
+		width: 18em;
+		$dimension-rounded-radius: 0.25em;
+		background: $color-bg2;
+
+		.container {
+			background: $color-bg2;
+		}
+
+		.text-items {
+			text-align: left;
+			border-radius: $dimension-rounded-radius;
+			background: $color-bg;
+			padding: 1em 2em;
+			margin: 1em;
+			font-size: 0.9em;	
+		}
+	}
+
+	.obojobo-draft--components--more-info-button.is-default-label > button {
+		margin-left: 6px;
+		vertical-align: sub;
+	}
+
 }
+
+
+
+ 
