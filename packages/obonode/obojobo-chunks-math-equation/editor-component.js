@@ -8,6 +8,7 @@ import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
 const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
@@ -24,6 +25,12 @@ const getLatexHtml = latex => {
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
+
+		// This debounce is necessary to get slate to update the node data.
+		// I've tried several ways to remove it but haven't been able to
+		// get it work :(
+		// If you have a solution please have at it!
+		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
 
 		// copy the attributes we want into state
 		const content = this.props.element.content
@@ -93,7 +100,7 @@ class MathEquation extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.open && !this.state.open) {
+		if ((prevProps.selected && !this.props.selected) || (prevState.open && !this.state.open)) {
 			this.updateNodeFromState()
 		}
 	}
