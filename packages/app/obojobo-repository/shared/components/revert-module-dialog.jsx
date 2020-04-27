@@ -178,7 +178,7 @@ class RevertModuleDialog extends React.Component {
 
 	renderRevisionHistoryMenu() {
 		return (
-			<CSSTransition timeout={200} in={this.state.isMenuOpen}>
+			<CSSTransition timeout={250} in={this.state.isMenuOpen}>
 				<div className={`revision-history`} ref={this.menuRef}>
 					<div className="menu-expanded">
 						<div className="revision-history--title">

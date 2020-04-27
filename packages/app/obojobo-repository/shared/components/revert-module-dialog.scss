@@ -2,7 +2,7 @@
 
 $border-color: rgba(0, 0, 0, 0.1);
 $border: 1px solid $border-color;
-$transition-time: 0.2s;
+$menu-transition-time: 0.25s;
 
 .revert-module-dialog {
 	font-family: $font-default;
@@ -63,7 +63,7 @@ $transition-time: 0.2s;
 	border-right: $border;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	transition: flex $transition-time;
+	transition: flex $menu-transition-time;
 
 	.menu-collapsed {
 		display: none;
@@ -82,8 +82,8 @@ $transition-time: 0.2s;
 		height: 1.32rem;
 		overflow: hidden;
 		text-indent: -9999px;
-		transition: background-color $transition-time;
-		transition: transform $transition-time;
+		transition: background-color $menu-transition-time;
+		transition: transform $menu-transition-time;
 		width: 1.6rem;
 		margin-right: 0.5em;
 		float: right;
