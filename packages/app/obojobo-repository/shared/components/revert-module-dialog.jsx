@@ -49,8 +49,7 @@ class RevertModuleDialog extends React.Component {
 			isConfirmDialogOpen: false,
 			revisions: [],
 			editorUrl: this.baseUrl,
-			selectedIndex: 0,
-			isMiniMenuOpen: false
+			selectedIndex: 0
 		}
 
 		this.revertModule = this.revertModule.bind(this)
