@@ -2,6 +2,7 @@
 
 $border-color: rgba(0, 0, 0, 0.1);
 $border: 1px solid $border-color;
+$transition-time: 0.2s;
 
 .revert-module-dialog {
 	font-family: $font-default;
@@ -51,32 +52,6 @@ $border: 1px solid $border-color;
 	display: flex;
 	height: calc(95vh - 3em);
 
-	.toggle-button {
-		background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/arrow.svg');
-		background-color: transparent;
-		background-position: center center;
-		background-repeat: no-repeat;
-		border: none;
-		cursor: pointer;
-		height: 1.32rem;
-		overflow: hidden;
-		text-indent: -9999px;
-		transition: background-color 0.2s;
-		width: 1.6rem;
-		margin-right: 0.5em;
-		z-index: 6;
-		transform: none;
-		float: left;
-
-		&.is-closed {
-			transform: rotate(180deg);
-
-			&:not(:hover) {
-				background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/hamburger.svg');
-			}
-		}
-	}
-
 	span {
 		display: block;
 		background-color: white;
@@ -88,18 +63,85 @@ $border: 1px solid $border-color;
 	border-right: $border;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	transition: flex 0.2s;
+	transition: flex $transition-time;
 
-	&.is-closed {
+	.menu-collapsed {
+		display: none;
+		height: 100%;
+		background-color: white;
+		padding-top: 0.9em;
+	}
+
+	.toggle-button {
+		background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/arrow.svg');
+		background-color: transparent;
+		background-position: center center;
+		background-repeat: no-repeat;
+		border: none;
+		cursor: pointer;
+		height: 1.32rem;
+		overflow: hidden;
+		text-indent: -9999px;
+		transition: background-color $transition-time;
+		transition: transform $transition-time;
+		width: 1.6rem;
+		margin-right: 0.5em;
+		float: right;
+	}
+
+	// Classes used by CSSTransition when the
+	// menu is collapsed/expanded
+	&.exit-done,
+	&.enter-active {
+		overflow-y: hidden;
+
+		.menu-expanded {
+			display: none;
+		}
+
+		.menu-collapsed {
+			display: block;
+		}
+
+		.toggle-button {
+			transform: rotate(180deg);
+			float: none;
+			margin: 0 auto;
+			display: block;
+
+			&:not(:hover) {
+				background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/hamburger.svg');
+			}
+		}
+	}
+
+	&.enter-active {
 		flex: 0;
+	}
+
+	&.enter-done {
+		flex: 1;
+	}
+
+	&.exit {
+		flex: 0;
+	}
+
+	&.exit-done {
+		flex: 0.12;
 	}
 }
 
 .revision-history--title {
-	padding: 0.9em 1.5em;
+	padding: 0.9em 0 0.9em 1.5em;
 	font-weight: bold;
 	font-size: 0.8em;
 	min-width: 14em;
+	background-color: white;
+
+	> span {
+		display: inline;
+	}
 }
 
 .revision-history--item {
@@ -149,7 +191,7 @@ $border: 1px solid $border-color;
 	&.is-selected {
 		background: url('/images/hex_transparent.svg') no-repeat;
 		background-origin: content-box;
-		background-position-x: 10.8em;
+		background-position-x: 100%;
 	}
 
 	&.is-selected,
@@ -194,8 +236,8 @@ $border: 1px solid $border-color;
 	}
 
 	.revert-button:disabled {
-		// Prevents the button from adjusting its size
-		// when it's disabled
+		// Prevents the revert button from adjusting
+		// its size when it's disabled
 		border: 0;
 	}
 }

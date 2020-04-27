@@ -1,5 +1,5 @@
 require('./revert-module-dialog.scss')
-
+const { CSSTransition } = require('react-transition-group')
 const React = require('react')
 const ModuleImage = require('./module-image')
 const Button = require('./button')
@@ -49,7 +49,8 @@ class RevertModuleDialog extends React.Component {
 			isConfirmDialogOpen: false,
 			revisions: [],
 			editorUrl: this.baseUrl,
-			selectedIndex: 0
+			selectedIndex: 0,
+			isMiniMenuOpen: false
 		}
 
 		this.revertModule = this.revertModule.bind(this)
@@ -168,30 +169,43 @@ class RevertModuleDialog extends React.Component {
 		)
 	}
 
-	renderRevisionHistoryMenu() {
-		const menuClass = this.state.isMenuOpen ? 'is-open' : 'is-closed'
-
+	renderMenuToggleButton() {
 		return (
-			<div className={`revision-history ${menuClass}`} ref={this.menuRef}>
-				<span className="revision-history--title">Revision history</span>
-				{this.state.revisions.map((revision, index) => (
-					<Revision
-						key={revision.id}
-						isLatestVersion={index === 0}
-						createdAt={revision.createdAt}
-						username={revision.username}
-						onClickRevision={this.setSelectedRevision}
-						isSelected={this.state.selectedIndex === index}
-						index={index}
-						versionNumber={revision.versionNumber}
-					/>
-				))}
-			</div>
+			<button className={`toggle-button`} onClick={this.toggleMenu}>
+				Toggle Navigation Menu
+			</button>
+		)
+	}
+
+	renderRevisionHistoryMenu() {
+		return (
+			<CSSTransition timeout={200} in={this.state.isMenuOpen}>
+				<div className={`revision-history`} ref={this.menuRef}>
+					<div className="menu-expanded">
+						<div className="revision-history--title">
+							<span>Revision history</span>
+							{this.renderMenuToggleButton()}
+						</div>
+						{this.state.revisions.map((revision, index) => (
+							<Revision
+								key={revision.id}
+								isLatestVersion={index === 0}
+								createdAt={revision.createdAt}
+								username={revision.username}
+								onClickRevision={this.setSelectedRevision}
+								isSelected={this.state.selectedIndex === index}
+								index={index}
+								versionNumber={revision.versionNumber}
+							/>
+						))}
+					</div>
+					<div className="menu-collapsed">{this.renderMenuToggleButton()}</div>
+				</div>
+			</CSSTransition>
 		)
 	}
 
 	render() {
-		const menuClass = this.state.isMenuOpen ? 'is-open' : 'is-closed'
 		const isFirstSelected = this.state.selectedIndex === 0
 
 		return (
@@ -222,9 +236,6 @@ class RevertModuleDialog extends React.Component {
 							>
 								Preview module
 							</ButtonLink>
-							<button className={`toggle-button ${menuClass}`} onClick={this.toggleMenu}>
-								Toggle Navigation Menu
-							</button>
 							<span>Editor preview:</span>
 							<small>Note: Changes made in this preview editor will not be saved</small>
 						</div>
