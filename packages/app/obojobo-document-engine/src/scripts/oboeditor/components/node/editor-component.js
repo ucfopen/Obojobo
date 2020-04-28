@@ -11,6 +11,8 @@ import './editor-component.scss'
 
 const INSERT_BEFORE = true
 const INSERT_AFTER = false
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const getSlatePath = props => {
 	return ReactEditor.findPath(props.editor, props.element)
@@ -101,12 +103,16 @@ class Node extends React.Component {
 		let thisSiblingIndex = pathToSiblingIndex(thisPath)
 
 		// A node inside a question content cannot move past multiple choices
-		if (parentNode.type === 'ObojoboDraft.Chunks.Question') {
-			siblingCount = thisSiblingIndex + 1
+
+		if (parentNode.type === QUESTION_NODE) {
+			if (siblingCount > 0 && parentNode.children[siblingCount - 1].type === QUESTION_NODE) {
+				siblingCount--
+			}
+			siblingCount--
 		}
 
 		// Direct children of Asssessment cannot be moved
-		if (parentNode.type === 'ObojoboDraft.Sections.Assessment') {
+		if (parentNode.type === ASSESSMENT_NODE) {
 			thisSiblingIndex = 0
 			siblingCount = 1
 		}

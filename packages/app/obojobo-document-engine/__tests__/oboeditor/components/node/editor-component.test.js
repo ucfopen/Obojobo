@@ -124,6 +124,27 @@ describe('Component Editor Node', () => {
 		expect(infoBoxProps).toHaveProperty('isFirst', false)
 		expect(infoBoxProps).toHaveProperty('isLast', true)
 	})
+	test('Node builds the expected component when selected when parent is a question node with solution child', () => {
+		// mock parts needed to display MoreInfoBox
+		const mockParentNode = {
+			children: [1, 2, { type: 'ObojoboDraft.Chunks.Question' }],
+			type: 'ObojoboDraft.Chunks.Question'
+		}
+		Editor.parent.mockReturnValue([mockParentNode])
+		ReactEditor.findPath.mockReturnValue([0])
+
+		const testProps = { ...mockProps, selected: true }
+
+		// render
+		const component = rtr.create(<Node {...testProps} />)
+
+		const infoBoxProps = component.root.findByType(MoreInfoBox).props
+
+		// verify
+		expect(infoBoxProps).toHaveProperty('index', 0)
+		expect(infoBoxProps).toHaveProperty('isFirst', true)
+		expect(infoBoxProps).toHaveProperty('isLast', true)
+	})
 
 	test('Node builds the expected component when selected when parent is an assessment', () => {
 		// mock parts needed to display MoreInfoBox
