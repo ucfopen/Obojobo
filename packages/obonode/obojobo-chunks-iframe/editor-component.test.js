@@ -10,7 +10,7 @@ import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -56,6 +56,7 @@ describe('IFrame Editor Node', () => {
 						src: 'mockSrc'
 					}
 				}}
+				selected
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -71,7 +72,8 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1,
 						src: ''
 					}
-				}}/>
+				}}
+			/>
 		)
 
 		component
@@ -92,7 +94,8 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1,
 						src: ''
 					}
-				}}/>
+				}}
+			/>
 		)
 
 		component
@@ -101,6 +104,42 @@ describe('IFrame Editor Node', () => {
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('IFrame component handles tab', () => {
+		const component = mount(
+			<IFrame
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: ''
+					}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 
 	test('changeProperties sets the nodes content', () => {

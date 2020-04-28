@@ -62,6 +62,8 @@ exports[`Figure Editor Node Figure component 1`] = `
 </div>
 `;
 
+exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><figure class=\\"container\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center\\"></figcaption></figure></div></div>"`;
+
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div>
   <div

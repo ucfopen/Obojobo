@@ -12,7 +12,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -36,7 +36,8 @@ describe('Figure Editor Node', () => {
 						url: 'mockUrl',
 						alt: 'mockAlt'
 					}
-				}}/>
+				}}
+			/>
 		)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
@@ -55,7 +56,8 @@ describe('Figure Editor Node', () => {
 						width: 'customWidth',
 						height: 'customHeight'
 					}
-				}}/>
+				}}
+			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
 
@@ -68,7 +70,8 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt',
 						height: 'customHeight'
 					}
-				}}/>
+				}}
+			/>
 		)
 		expect(componentNoWidth.toJSON()).toMatchSnapshot()
 
@@ -81,7 +84,8 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt',
 						width: 'customWidth'
 					}
-				}}/>
+				}}
+			/>
 		)
 		expect(componentNoHeight.toJSON()).toMatchSnapshot()
 	})
@@ -104,6 +108,38 @@ describe('Figure Editor Node', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 
 		component.unmount()
+	})
+
+	test('Figure component handles tabbing', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 
 	test('Figure component does not focus if already selected', () => {
@@ -166,12 +202,7 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('Figure component delete button calls Transforms', () => {
-		const component = mount(
-			<Figure
-				element={{ content: {} }}
-				selected={true}
-			/>
-		)
+		const component = mount(<Figure element={{ content: {} }} selected={true} />)
 
 		const deleteButton = component.find('button').at(0)
 		expect(deleteButton.props().children).toBe('×')

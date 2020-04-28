@@ -55,12 +55,11 @@ class MathEquation extends React.Component {
 
 	returnFocusOnTab(event) {
 		// Since there is only one button, return on both tab and shift-tab
-		if(event.key === 'Tab') {
+		if (event.key === 'Tab') {
 			event.preventDefault()
 			return ReactEditor.focus(this.props.editor)
 		}
 	}
-
 
 	renderEmptyEquation() {
 		return (
@@ -132,9 +131,7 @@ class MathEquation extends React.Component {
 		// Waits for the readOnly state to percolate before focusing
 		setTimeout(() => {
 			// Focusing on the input causes the editor to lose selection
-			if (!this.props.editor.selection) {
-				Transforms.select(this.props.editor, this.props.editor.prevSelection)
-			}
+			Transforms.select(this.props.editor, this.props.editor.prevSelection)
 			ReactEditor.focus(this.props.editor)
 		}, 200)
 	}
@@ -195,9 +192,10 @@ class MathEquation extends React.Component {
 			<div className={className} contentEditable={false}>
 				<div className="box-border">
 					{!this.state.open ? (
-						<Button 
+						<Button
 							onClick={this.freezeEditor.bind(this)}
-							onKeyDown={this.returnFocusOnTab.bind(this)}>
+							onKeyDown={this.returnFocusOnTab.bind(this)}
+						>
 							Edit
 						</Button>
 					) : (

@@ -11,7 +11,7 @@ jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -64,9 +64,7 @@ describe('ActionButton Editor Node', () => {
 	})
 
 	test('builds the expected component when selected', () => {
-		const component = renderer.create(
-			<ActionButton element={nodeData} selected={true} />
-		)
+		const component = renderer.create(<ActionButton element={nodeData} selected={true} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -87,13 +85,28 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('handles tabbing', () => {
+		const component = mount(<ActionButton element={nodeData} selected={true} />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('closes modal', () => {
 		const editor = {
 			children: [nodeData]
 		}
-		const component = mount(
-			<ActionButton element={nodeData} selected={true} editor={editor} />
-		)
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
 
 		component.instance().closeModal()
 

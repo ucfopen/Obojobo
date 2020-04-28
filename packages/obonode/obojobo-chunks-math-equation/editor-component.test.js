@@ -49,6 +49,7 @@ describe('MathEquation Editor Node', () => {
 					content: { latex: '1', label: '1.1', size: 1 }
 				}}
 				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
 			/>
 		)
 		component
@@ -62,6 +63,24 @@ describe('MathEquation Editor Node', () => {
 		component
 			.find({ id: 'math-equation-label' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component handles tabbing', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component.find('button').simulate('keyDown', { key: 'k' })
+
+		component.find('button').simulate('keyDown', { key: 'Tab' })
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -105,6 +124,8 @@ describe('MathEquation Editor Node', () => {
 		)
 
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
+		// pending timers throws because the EquationInput vanishes
+		expect(jest.runOnlyPendingTimers).toThrow()
 
 		component.setProps({ selected: false })
 
