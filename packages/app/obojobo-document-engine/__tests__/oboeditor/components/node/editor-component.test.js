@@ -55,6 +55,7 @@ jest.mock('Common', () => ({
 describe('Component Editor Node', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
+		jest.useFakeTimers()
 
 		Common.models.OboModel.models = {
 			'mock-id': {
@@ -268,10 +269,14 @@ describe('Component Editor Node', () => {
 		component.instance().onBlur('info')
 		component.instance().onBlur('top')
 
+		jest.runAllTimers()
+
 		// Onblur with selection
 		editor.selection = {}
 		component.instance().onBlur('info')
 		component.instance().onBlur('bottom')
+
+		jest.runAllTimers()
 
 		expect(editor.toggleEditable).toHaveBeenCalledTimes(4)
 	})

@@ -105,7 +105,7 @@ class Node extends React.Component {
 
 		// If the first or last node's open attribute matches the menu we are
 		// blurring, we need to clear the open attribute
-		if(menu === nodes[0][0].open) {
+		if (menu === nodes[0][0].open) {
 			// Clear anything open on the first node
 			// This could be an insert menu or a more info box
 			Transforms.setNodes(
@@ -117,7 +117,7 @@ class Node extends React.Component {
 			)
 		}
 
-		if(menu === nodes[nodes.length - 1][0].open) {
+		if (menu === nodes[nodes.length - 1][0].open) {
 			// Clear anything open on the last node
 			// This will only be an insert menu
 			Transforms.setNodes(
@@ -130,15 +130,22 @@ class Node extends React.Component {
 		}
 
 		// If the only open menu was closed by blurring, return the focus & selection to the editor
-		if((!nodes[0][0].open || menu === nodes[0][0].open) && 
-			(!nodes[nodes.length - 1][0].open || menu === nodes[nodes.length - 1][0].open)){
+		if (
+			(!nodes[0][0].open || menu === nodes[0][0].open) &&
+			(!nodes[nodes.length - 1][0].open || menu === nodes[nodes.length - 1][0].open)
+		) {
 			// Give cursor focus back to the editor, reselecting the previous
 			// selection if it got nulled
-			if (!this.props.editor.selection) {
-				Transforms.select(this.props.editor, this.props.editor.prevSelection)
-			}
 			this.props.editor.toggleEditable(true)
-		}	
+
+			// Timeout lag allows editable state to percolate
+			setTimeout(() => {
+				if (!this.props.editor.selection) {
+					Transforms.select(this.props.editor, this.props.editor.prevSelection)
+				}
+				ReactEditor.focus(this.props.editor)
+			}, 1)
+		}
 	}
 
 	render() {

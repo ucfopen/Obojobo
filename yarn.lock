@@ -1962,11 +1962,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/debounce@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.0.tgz#9ee99259f41018c640b3929e1bb32c3dcecdb192"
-  integrity sha512-bWG5wapaWgbss9E238T0R6bfo5Fh3OkeoSt245CM7JJwVwpw6MEBCbIxLq5z8KzsE3uJhzcIuQkyiZmzV3M/Dw==
-
 "@types/esrever@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@types/esrever/-/esrever-0.2.0.tgz#96404a2284b2c7527f08a1e957f8a31705f9880f"
@@ -2010,6 +2005,11 @@
   dependencies:
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
+
+"@types/lodash@^4.14.149":
+  version "4.14.150"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
+  integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
 
 "@types/minimatch@*":
   version "3.0.3"
@@ -4919,11 +4919,6 @@ db-migrate@^0.11.6:
     semver "^5.3.0"
     tunnel-ssh "^4.0.0"
 
-debounce@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
-  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
-  
 debounce-promise@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/debounce-promise/-/debounce-promise-3.1.2.tgz#320fb8c7d15a344455cd33cee5ab63530b6dc7c5"
@@ -12369,25 +12364,25 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slate-history@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.57.1.tgz#2938537f3f95768a69460ec5035be0333216c278"
-  integrity sha512-pSUmGcIzFJ1ClaF2S5dFm7TBS30ZG3sqkwAowTxvD0+jafG/2I3N6M6M0anhkgBEGMU1rdNQqX4O6b/qKUJPgg==
+slate-history@^0.57.2:
+  version "0.57.2"
+  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.57.2.tgz#801480317f66fa1a7f7ff090ec10c4ca0c14b04c"
+  integrity sha512-AncVHKP/l+A9kVY01+MFbuYy5vLJWYmZhyvYq4YdD4BtDzvIMLFAxRFR8MZoUOxBy0l3PeAxYFEd6mG2ay2Dyg==
   dependencies:
     immer "^5.0.0"
     is-plain-object "^3.0.0"
 
-slate-react@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.57.1.tgz#219a95b7caaea365a7f6fac5f3f5aa2e9da62295"
-  integrity sha512-W+M+YEcqBvuJD2xoU1gKgGbvhv6shwYJ5OOjPF8ZPEokUvGJh81Egxf65ZnnKxJejodsERdlwc2rRjpRphx2LQ==
+slate-react@^0.57.2:
+  version "0.57.2"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.57.2.tgz#0045258aaf0007a05f96aa09988b9a6152fdb76d"
+  integrity sha512-fg91E7XISMnFfoHB8vPbbaKoTDpaTfE+iwnG9i6EzbIfwNysz8XvLDpRW3XExm1ZtAfhEKB3Um8nPMtGaugVRg==
   dependencies:
-    "@types/debounce" "^1.2.0"
     "@types/is-hotkey" "^0.1.1"
-    debounce "^1.2.0"
+    "@types/lodash" "^4.14.149"
     direction "^1.0.3"
     is-hotkey "^0.1.6"
     is-plain-object "^3.0.0"
+    lodash "^4.17.4"
     scroll-into-view-if-needed "^2.2.20"
 
 slate-schema-violations@^0.1.39:
@@ -12395,10 +12390,10 @@ slate-schema-violations@^0.1.39:
   resolved "https://registry.yarnpkg.com/slate-schema-violations/-/slate-schema-violations-0.1.39.tgz#854ab5624136419cef4c803b1823acabe11f1c15"
   integrity sha512-SNRoV9Ii5UqjNqAKcIw7aAOMwgI45zsn86ue2n8NVLNOCe3fUI35cjq6l3fdvmRYw4X/GcZqzhpQsizHD3ts6A==
 
-slate@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.57.1.tgz#dc99d9a77840894c9e3d3bc1185b67ee36c17686"
-  integrity sha512-av95C0zbsi0+khfOuyQlpZy0Q3Pqqh0loCusGGi0Wlb/J8OUBAyK/a5EgTfE0zK4pmjtEBnPksfBuVilg5jrNg==
+slate@^0.57.2:
+  version "0.57.2"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.57.2.tgz#f45fb7a4b767c7a7a3b93365c3a446049d947f3e"
+  integrity sha512-qxx9iwNmN3fn13hPbwh1p65aNLCgpHMMK/XXLX7rBVv+GT2UFys9tU8OK6FyUF/lU2uEJ++sScDu8cHjzwLefw==
   dependencies:
     "@types/esrever" "^0.2.0"
     esrever "^0.2.0"

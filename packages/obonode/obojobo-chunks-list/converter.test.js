@@ -151,6 +151,7 @@ describe('List Converter', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'setPoint').mockReturnValue(true)
 
 		const editor = {
 			children: [
@@ -303,10 +304,11 @@ describe('List Converter', () => {
 		)
 	})
 
-	test('switchType[TEXT_NODE] changes leaf blocks to code nodes', () => {
+	test('switchType[TEXT_NODE] changes leaf blocks to text nodes', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'setPoint').mockReturnValue(true)
 
 		const editor = {
 			children: [

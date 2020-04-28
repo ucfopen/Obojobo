@@ -52,7 +52,7 @@ class InsertMenu extends React.PureComponent {
 				this.setState({
 					isOpen: false
 				})
-				this.props.onBlur()
+				this.props.onBlur(this.props.menu)
 				break
 
 			// Move right/down through the insert menu
@@ -106,7 +106,7 @@ class InsertMenu extends React.PureComponent {
 					}}
 					onClick={() => this.props.masterOnClick(item)}
 					disabled={item.disabled}
-					aria-label={"Insert " + item.name}
+					aria-label={'Insert ' + item.name}
 				>
 					{Icon ? <Icon /> : item.name}
 				</button>
@@ -127,11 +127,9 @@ class InsertMenu extends React.PureComponent {
 				contentEditable={false}
 				onKeyDown={this.onKeyDown}
 				onBlur={this.onBlurHandler}
-				onFocus={this.onFocusHandler}>
-				<button
-					className={'drop-icon'}
-					onClick={this.openMenu}
-					tabIndex="-1">
+				onFocus={this.onFocusHandler}
+			>
+				<button className={'drop-icon'} onClick={this.openMenu} tabIndex="-1">
 					{this.props.icon}
 				</button>
 				{this.props.dropOptions.map(item => this.renderItem(item))}
