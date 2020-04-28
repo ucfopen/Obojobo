@@ -2,15 +2,15 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import { Editor, Element, Transforms } from 'slate'
+import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import ListStyles from './list-styles'
 import Common from 'obojobo-document-engine/src/scripts/common'
+
 const { Button } = Common.components
 
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const oppositeListType = type =>
@@ -21,26 +21,9 @@ const toggleType = props => {
 
 	const newType = oppositeListType(currentContent.listStyles.type)
 
-	// get the bullet list
-	const bulletList =
-		newType === ListStyles.TYPE_UNORDERED
-			? ListStyles.UNORDERED_LIST_BULLETS
-			: ListStyles.ORDERED_LIST_BULLETS
-
-	let listStyles = {
-		type: newType,
-		indents: {}
+	const newContent = {
+		content: { ...props.element.content, listStyles: { type: newType, indents: {} } }
 	}
-
-	if (currentContent.listStyles.indents) {
-		const keys = Object.keys(currentContent.listStyles.indents)
-		keys.forEach(key => {
-			const bulletStyle = bulletList[parseInt(key, 10) % bulletList.length]
-			listStyles.indents[key] = { type: newType, bulletStyle }
-		})
-	}
-
-	const newContent = { content: { ...currentContent, listStyles: listStyles } }
 
 	Editor.withoutNormalizing(props.editor, () => {
 		const listPath = ReactEditor.findPath(props.editor, props.element)
@@ -56,24 +39,45 @@ const toggleType = props => {
 			match: node => node.subtype === LIST_LEVEL_NODE
 		})
 
-		for (const [levelNode, levelPath] of levelNodes) {
+		for (const [, levelPath] of levelNodes) {
 			Transforms.setNodes(props.editor, { content: { type: newType } }, { at: levelPath })
 		}
 	})
 }
 
 class List extends React.Component {
-	render() {
-		console.log(this.props)
+	isOnlyThisNodeSelected() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const s = this.props.editor.selection
+
+		return (
+			s &&
+			s.anchor.path.slice(0, path.length).toString() ===
+				s.focus.path.slice(0, path.length).toString() &&
+			this.props.selected
+		)
+	}
+
+	renderButton() {
 		const otherType = oppositeListType(this.props.element.content.listStyles.type)
+
+		return (
+			<div className="buttonbox-box" contentEditable={false}>
+				<div className="box-border">
+					<Button className="toggle-header" altAction onClick={() => toggleType(this.props)}>
+						{`Switch to ${otherType}`}
+					</Button>
+				</div>
+			</div>
+		)
+	}
+
+	render() {
 		return (
 			<Node {...this.props}>
 				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
 					{this.props.children}
-					<Button
-						altAction
-						onClick={() => toggleType(this.props)}
-					>{`Switch to ${otherType}`}</Button>
+					{this.isOnlyThisNodeSelected() ? this.renderButton() : null}
 				</div>
 			</Node>
 		)
