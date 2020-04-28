@@ -44,8 +44,7 @@ const searchModuleResultsState = (isFetching = false, hasFetched = false, items 
 })
 
 const closedDialogState = () => ({
-	dialog: null,
-	dialogProps: null
+	dialog: null
 })
 
 function filterModules(modules, searchString) {
