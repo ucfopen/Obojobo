@@ -17,6 +17,7 @@ import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
+import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 
@@ -43,9 +44,11 @@ class PageEditor extends React.Component {
 			value: json,
 			saved: true,
 			editable: json && json.length >= 1 && !json[0].text,
-			showPlaceholders: true
+			showPlaceholders: true,
+			contentRect: null
 		}
 
+		this.pageEditorContainerRef = React.createRef()
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
@@ -59,6 +62,7 @@ class PageEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
+		this.onResized = this.onResized.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -143,10 +147,28 @@ class PageEditor extends React.Component {
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
 		ReactEditor.focus(this.editor)
+		this.setupResizeObserver()
+	}
+
+	setupResizeObserver() {
+		if (
+			!window.ResizeObserver ||
+			!window.ResizeObserver.prototype ||
+			!window.ResizeObserver.prototype.observe ||
+			!window.ResizeObserver.prototype.disconnect
+		) {
+			return false
+		}
+
+		this.resizeObserver = new ResizeObserver(this.onResized)
+		this.resizeObserver.observe(this.pageEditorContainerRef.current)
+
+		return true
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
+		if (this.resizeObserver) this.resizeObserver.disconnect()
 	}
 
 	checkIfSaved(event) {
@@ -181,6 +203,12 @@ class PageEditor extends React.Component {
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
 		this.setState({ value, saved: false })
+	}
+
+	onResized(event) {
+		this.setState({
+			contentRect: event.contentRect
+		})
 	}
 
 	// Methods that handle movement between pages
@@ -380,8 +408,9 @@ class PageEditor extends React.Component {
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
-			<div className={className}>
+			<div className={className} ref={this.pageEditorContainerRef}>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">
 						<div className="draft-title">{this.props.model.title}</div>
 						<FileToolbar
