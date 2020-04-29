@@ -69,4 +69,21 @@ describe('TextGroupEl', () => {
 
 		expect(component.text()).toBe('Some BOLD text with a {{variable}} included')
 	})
+
+	test('String values of hangingIndent work as expected', () => {
+		tg = TextGroup.create(Infinity, { hangingIndent: 'false' })
+		tg.clear()
+
+		tg.add(new StyleableText('First line'))
+		const st = new StyleableText('Second line')
+		tg.add(st, { hangingIndent: 'true' })
+
+		const component1 = renderer.create(<TextGroupEl groupIndex={0} textItem={tg.get(0)} />)
+		const tree1 = component1.toJSON()
+		const component2 = renderer.create(<TextGroupEl groupIndex={1} textItem={tg.get(1)} />)
+		const tree2 = component2.toJSON()
+
+		expect(tree1).toMatchSnapshot()
+		expect(tree2).toMatchSnapshot()
+	})
 })

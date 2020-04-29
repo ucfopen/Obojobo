@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
@@ -6,15 +6,15 @@ import React from 'react'
 import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
-import { Value } from 'slate'
 
-jest.mock('slate-react')
+import { Editor } from 'slate'
+import { ReactEditor } from 'slate-react'
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 	helpers: {
 		slateToObo: jest.fn(),
-		oboToSlate: jest.fn()
+		oboToSlate: jest.fn().mockReturnValue({ text: '' })
 	}
 }))
 // Editor Store
@@ -24,6 +24,7 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
+jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
 // jest.mock('src/scripts/oboeditor/components/toolbars/content-toolbar')
 //jest.mock('obojobo-document-engine/src/scripts/common/registry')
 
@@ -38,17 +39,29 @@ describe('PageEditor', () => {
 		jest.restoreAllMocks()
 		jest.resetModules()
 		restoreConsole = mockConsole('error')
+		jest.spyOn(ReactEditor, 'focus').mockReturnValue(true)
+		jest.spyOn(Common.Registry, 'getItems').mockImplementation(fn =>
+			fn([
+				{
+					plugins: {
+						normalizeNode: jest.fn(),
+						isVoid: jest.fn()
+					}
+				}
+			])
+		)
 	})
 
 	afterEach(() => {
 		restoreConsole()
 	})
 
-	test('PageEditor component', () => {
+	test('component renders', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -56,7 +69,77 @@ describe('PageEditor', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('PageEditor component with no page', () => {
+	test('component renders with decoration', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: {
+				decorate: () => [
+					{
+						placeholder: 'Type your label here',
+						anchor: { path: [0, 0], offset: 0 },
+						focus: { path: [0, 0], offset: 0 }
+					}
+				]
+			}
+		})
+		const component = mount(<PageEditor {...props} />)
+		expect(
+			component.instance().decorate([
+				{
+					type: BREAK_NODE,
+					children: [{ text: '' }]
+				},
+				[0]
+			])
+		).toMatchSnapshot()
+	})
+
+	test('component renders with Elements', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: {
+				renderNode: () => <p>Mock Content</p> //eslint-disable-line react/display-name
+			}
+		})
+		const component = mount(<PageEditor {...props} />)
+		expect(
+			component.instance().renderElement({
+				element: {
+					type: 'a',
+					href: 'mockLink',
+					children: [{ text: '' }]
+				},
+				children: ''
+			})
+		).toMatchSnapshot()
+
+		expect(
+			component.instance().renderElement({
+				element: {
+					type: 'mock Element',
+					href: 'mockLink',
+					children: [{ text: '' }]
+				},
+				children: ''
+			})
+		).toMatchSnapshot()
+	})
+
+	test('component renders with no page', () => {
 		const props = {
 			page: null,
 			model: { title: 'Mock Title' }
@@ -84,11 +167,15 @@ describe('PageEditor', () => {
 	test('updating a component from no page to a page updates state', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }], type: ASSESSMENT_NODE })
 			},
 			model: { title: 'Mock Title' }
 		}
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			oboToSlate: () => ({ text: '' })
+		})
 		const thing = renderer.create(<PageEditor {...props} />)
 
 		const instance = thing.getInstance()
@@ -118,15 +205,16 @@ describe('PageEditor', () => {
 		expect(spyExport).not.toHaveBeenCalled()
 	})
 
-	test('PageEditor component changes pages', () => {
+	test('component changes pages', () => {
 		const props = {
 			page: {
 				id: 1,
 				set: jest.fn(),
 				attributes: {
-					children: []
+					children: [{ type: 'mockNode' }]
 				},
-				get: jest.fn()
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -146,17 +234,7 @@ describe('PageEditor', () => {
 		expect(thing.toJSON()).toMatchSnapshot()
 	})
 
-	test('PageEditor component with page updating to another page', () => {
-		const spy1 = jest.spyOn(Common.Registry, 'getItemForType')
-		spy1.mockReturnValue({
-			oboToSlate: jest.fn().mockReturnValue({ object: 'block', type: 'node' })
-		})
-		Component.helpers.oboToSlate.mockReturnValue({
-			object: 'block',
-			type: 'oboeditor.component',
-			nodes: []
-		})
-
+	test('component with page updating to another page', () => {
 		const prevProps = {
 			page: {
 				id: 122,
@@ -170,7 +248,16 @@ describe('PageEditor', () => {
 						}
 					]
 				},
-				get: jest.fn().mockReturnValue(ASSESSMENT_NODE)
+				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
+				toJSON: () => ({
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				})
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -188,7 +275,16 @@ describe('PageEditor', () => {
 						}
 					]
 				},
-				get: jest.fn()
+				get: jest.fn(),
+				toJSON: () => ({
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				})
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -212,43 +308,37 @@ describe('PageEditor', () => {
 		spy.mockClear()
 	})
 
-	test('PageEditor component alters value majorly', () => {
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
+	test('component alters value majorly', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = shallow(<PageEditor {...props} />)
-		//const tree = component.html()
+		const component = mount(<PageEditor {...props} />)
 
-		const change = {
-			value: Value.create({}),
-			operations: {
-				toJSON: () => [
-					{
-						type: 'set_mark'
-					}
-				]
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
 			}
-		}
+		]
 
-		component.find('.obojobo-draft--pages--page').simulate('change', change)
-
-		//expect(tree).toMatchSnapshot()
+		component.instance().onChange(value)
 	})
 
 	test('toggleEditable changes the state', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = shallow(<PageEditor {...props} />)
+		const component = mount(<PageEditor {...props} />)
 		const inst = component.instance()
 
 		inst.toggleEditable(false)
@@ -258,74 +348,11 @@ describe('PageEditor', () => {
 		  "editable": false,
 		  "saved": true,
 		  "showPlaceholders": true,
-		  "value": Immutable.Record {
-		    "data": Immutable.Map {},
-		    "decorations": Immutable.List [],
-		    "document": Immutable.Record {
-		      "data": Immutable.Map {},
-		      "key": "16",
-		      "nodes": Immutable.List [],
+		  "value": Array [
+		    Object {
+		      "text": "",
 		    },
-		    "selection": Immutable.Record {
-		      "anchor": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "focus": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "isFocused": false,
-		      "marks": null,
-		    },
-		  },
-		}
-	`)
-	})
-
-	test('togglePlaceholders changes the state', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const inst = component.instance()
-
-		inst.togglePlaceholders()
-
-		expect(component.state()).toMatchInlineSnapshot(`
-		Object {
-		  "editable": true,
-		  "saved": true,
-		  "showPlaceholders": false,
-		  "value": Immutable.Record {
-		    "data": Immutable.Map {},
-		    "decorations": Immutable.List [],
-		    "document": Immutable.Record {
-		      "data": Immutable.Map {},
-		      "key": "17",
-		      "nodes": Immutable.List [],
-		    },
-		    "selection": Immutable.Record {
-		      "anchor": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "focus": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "isFocused": false,
-		      "marks": null,
-		    },
-		  },
+		  ],
 		}
 	`)
 	})
@@ -333,12 +360,13 @@ describe('PageEditor', () => {
 	test('markUnsaved changes the state', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = shallow(<PageEditor {...props} />)
+		const component = mount(<PageEditor {...props} />)
 		const inst = component.instance()
 
 		inst.markUnsaved()
@@ -348,47 +376,18 @@ describe('PageEditor', () => {
 		  "editable": true,
 		  "saved": false,
 		  "showPlaceholders": true,
-		  "value": Immutable.Record {
-		    "data": Immutable.Map {},
-		    "decorations": Immutable.List [],
-		    "document": Immutable.Record {
-		      "data": Immutable.Map {},
-		      "key": "18",
-		      "nodes": Immutable.List [],
+		  "value": Array [
+		    Object {
+		      "text": "",
 		    },
-		    "selection": Immutable.Record {
-		      "anchor": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "focus": Immutable.Record {
-		        "key": null,
-		        "offset": null,
-		        "path": null,
-		      },
-		      "isFocused": false,
-		      "marks": null,
-		    },
-		  },
+		  ],
 		}
 	`)
 	})
 
 	test('Ensures the plugins work as expected', () => {
-		const spy1 = jest.spyOn(Common.Registry, 'getItems')
-		spy1.mockReturnValue([
-			{
-				plugins: {}
-			}
-		])
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
-		Component.helpers.oboToSlate.mockReturnValueOnce({
-			object: 'block',
-			type: 'oboeditor.component',
-			nodes: []
-		})
+
 		const props = {
 			page: {
 				id: 2,
@@ -403,7 +402,18 @@ describe('PageEditor', () => {
 					]
 				},
 				get: jest.fn(),
-				children: { set: jest.fn() }
+				children: {
+					reset: jest.fn()
+				},
+				toJSON: () => ({
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				})
 			},
 			model: {
 				children: [
@@ -436,165 +446,16 @@ describe('PageEditor', () => {
 		const component = mount(<PageEditor {...props} />)
 		const plugins = component.instance().plugins
 
+		component.instance().editor.normalizeNode([{}, [0]])
+		component.instance().editor.isVoid({})
+		component.instance().editor.insertData({
+			types: ['application/x-slate-fragment'],
+			getData: jest.fn()
+		})
+
+		component.unmount()
+
 		expect(plugins).toMatchSnapshot()
-
-		// Call the save plugin
-		plugins[12].onKeyDown(
-			{
-				preventDefault: jest.fn(),
-				key: 's',
-				metaKey: true
-			},
-			null,
-			jest.fn()
-		)
-
-		expect(APIUtil.postDraft).toHaveBeenCalled()
-	})
-
-	test('sends onChange to the Editor', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-
-		// render
-		const thing = mount(<PageEditor {...props} />)
-
-		// make sure onChange is registered with the Editor
-		const EditorProps = thing.find('Editor').props()
-		expect(EditorProps).toHaveProperty('onChange', expect.any(Function))
-	})
-
-	test('onChange updates state', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-
-		// render
-		const thing = mount(<PageEditor {...props} />)
-
-		// make sure onChange is registered with the Editor
-		const EditorProps = thing.find('Editor').props()
-
-		// make sure state.value isnt the value we're changing it to
-		expect(thing.state()).not.toHaveProperty('value', 'mockChangeValue')
-
-		// now call onChange to make sure it has the expected effects
-		EditorProps.onChange({
-			operations: {
-				toJSON: () => ({
-					some: jest.fn().mockReturnValue(true)
-				})
-			},
-			value: 'mockChangeValue' // this should be placed in the state
-		})
-
-		expect(thing.state()).toHaveProperty('value', 'mockChangeValue')
-	})
-
-	test('onChange calls ModalHide if nodes changed', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-
-		// render
-		const thing = mount(<PageEditor {...props} />)
-
-		// make sure onChange is registered with the Editor
-		const EditorProps = thing.find('Editor').props()
-
-		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
-		// now call onChange to make sure it has the expected effects
-		EditorProps.onChange({
-			operations: {
-				toJSON: () => ({
-					some: () => true // indicates something changed
-				})
-			},
-			value: 'mockChangeValue'
-		})
-		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(1)
-	})
-
-	test('onChange doesnt call ModalHide if node hasnt changed', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-
-		// render
-		const thing = mount(<PageEditor {...props} />)
-
-		// make sure onChange is registered with the Editor
-		const EditorProps = thing.find('Editor').props()
-
-		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
-		// now call onChange to make sure it has the expected effects
-		EditorProps.onChange({
-			operations: {
-				toJSON: () => ({
-					some: () => false // indicates nothing changed
-				})
-			},
-			value: 'mockChangeValue'
-		})
-		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
-	})
-
-	test('onChange callback tests for changes correctly', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			},
-			model: { title: 'Mock Title' }
-		}
-
-		const thing = mount(<PageEditor {...props} />)
-
-		// make sure onChange is registered with the Editor
-		const EditorProps = thing.find('Editor').props()
-		const mockSome = jest.fn()
-
-		// now call onChange to make sure it has the expected effects
-		EditorProps.onChange({
-			operations: {
-				toJSON: () => ({
-					some: mockSome
-				})
-			}
-		})
-
-		// some should have been called
-		expect(mockSome).toHaveBeenCalledTimes(1)
-
-		// make sure a callback was sent to it
-		const someCallback = mockSome.mock.calls[0][0]
-		expect(someCallback).toEqual(expect.any(Function))
-
-		// test all the slate operation types
-		expect(someCallback({ type: 'set_node' })).toBe(true)
-		expect(someCallback({ type: 'insert_node' })).toBe(true)
-		expect(someCallback({ type: 'add_mark' })).toBe(true)
-		expect(someCallback({ type: 'set_mark' })).toBe(true)
-
-		// test one that doesn't count
-		expect(someCallback({ type: 'not_a_change' })).toBe(false)
 	})
 
 	test('exportToJSON returns expected json for assessment node', () => {
@@ -609,13 +470,20 @@ describe('PageEditor', () => {
 		const page = {
 			get: () => 'ObojoboDraft.Sections.Assessment',
 			set: jest.fn(),
-			children: { set: jest.fn() }
+			children: {
+				reset: jest.fn()
+			},
+			toJSON: () => ({
+				type: 'ObojoboDraft.Sections.Assessment',
+				children: [{ type: 'mock node' }]
+			})
 		}
 
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mock node' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -663,22 +531,22 @@ describe('PageEditor', () => {
 		const page = {
 			get: () => 'will-result-in-else-path-taken',
 			set: jest.fn(),
-			children: { set: jest.fn() }
+			children: {
+				reset: jest.fn()
+			},
+			toJSON: () => ({ children: [{ type: 'mock node' }] })
 		}
 
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mock node' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
 
-		const value = {
-			document: {
-				nodes: ['node-one', 'node-two']
-			}
-		}
+		const value = ['node-one', 'node-two']
 
 		const thing = mount(<PageEditor {...props} />)
 
@@ -712,8 +580,9 @@ describe('PageEditor', () => {
 	test('exportToJSON returns undefined for null page', () => {
 		const props = {
 			page: {
-				attributes: { children: [] },
-				get: jest.fn()
+				attributes: { children: [{ type: 'mock node' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -737,7 +606,8 @@ describe('PageEditor', () => {
 		const props = {
 			page: {
 				attributes: { children: [] },
-				get: jest.fn()
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] })
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -751,5 +621,185 @@ describe('PageEditor', () => {
 		expect(eventMap.beforeunload({})).toEqual(true)
 
 		component.unmount()
+	})
+
+	test('onKeyDown() calls editor functions', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'z',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'y',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 's'
+		})
+
+		expect(editor.undo).toHaveBeenCalled()
+		expect(editor.redo).toHaveBeenCalled()
+	})
+
+	test('onKeyDown runs through full list of options', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			isInline: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true,
+			defaultPrevented: true
+		})
+
+		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
+			opts.match({ children: [{ text: '' }] })
+			return [[{ type: ASSESSMENT_NODE }, [0]], [{ type: BREAK_NODE }, [0]]]
+		})
+		jest.spyOn(Common.Registry, 'getItemForType')
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		const onKeyDown = jest.fn()
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: { onKeyDown }
+		})
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		expect(onKeyDown).toHaveBeenCalled()
+	})
+
+	test('saveModule calls APIUtil', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {}, children: [] }),
+				children: [
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => ({ children: [] }),
+						children: {
+							models: [
+								{
+									get: () => 'mock value'
+								}
+							]
+						}
+					},
+					{
+						get: () => ASSESSMENT_NODE
+					}
+				]
+			}
+		}
+
+		const component = mount(<PageEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true
+		})
+
+		expect(APIUtil.postDraft).toHaveBeenCalled()
+	})
+
+	test('reload disables event listener and calls location.reload', () => {
+		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
+		jest.spyOn(location, 'reload').mockReturnValueOnce()
+
+		const props = {
+			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<PageEditor {...props} />)
+
+		component.getInstance().reload()
+		expect(window.removeEventListener).toHaveBeenCalled()
+		expect(location.reload).toHaveBeenCalled()
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 })

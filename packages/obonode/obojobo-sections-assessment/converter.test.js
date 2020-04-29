@@ -31,15 +31,13 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 describe('Assessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode', () => {
 		const createSlateNode = triggersValue => ({
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					rubric: true,
-					triggers: triggersValue
-				})
+			content: {
+				rubric: true,
+				triggers: triggersValue
 			},
-			nodes: [
+			children: [
 				{
 					type: PAGE_NODE
 				},
@@ -67,15 +65,13 @@ describe('Assessment Converter', () => {
 
 	test('slateToObo converts a Slate node to an OboNode with no model', () => {
 		const createSlateNode = triggersValue => ({
-			key: 'otherMockKey',
+			id: 'otherMockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					rubric: true,
-					triggers: triggersValue
-				})
+			content: {
+				rubric: true,
+				triggers: triggersValue
 			},
-			nodes: [
+			children: [
 				{
 					type: PAGE_NODE
 				},
@@ -103,15 +99,13 @@ describe('Assessment Converter', () => {
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const createOboNode = (rubric, triggers) => ({
-			id: 'mockKey',
-			get() {
-				return {
+			attributes: {
+				id: 'mockKey',
+				content: {
 					triggers,
 					scoreActions: 'someScoreActions',
 					rubric: rubric
-				}
-			},
-			attributes: {
+				},
 				children: [
 					{
 						type: PAGE_NODE

@@ -213,12 +213,13 @@ describe('Dashboard', () => {
 
 		// MODE_RECENT is the only one with a 'New Collection' option under the 'New Module +' button
 		const multiButton = component.root.findByType(MultiButton).children[0]
-		// three buttons and the 'hr' under the 'new collection' button
-		expect(multiButton.children.length).toBe(4)
+		// four buttons and the 'hr' under the 'new collection' button
+		expect(multiButton.children.length).toBe(5)
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Collection')
 		expect(multiButton.children[1].type).toBe('hr')
 		expect(multiButton.children[2].children[0].children[0]).toBe('New Module')
 		expect(multiButton.children[3].children[0].children[0]).toBe('New Tutorial')
+		expect(multiButton.children[4].children[0].children[0]).toBe('Upload...')
 
 		// MODE_RECENT should show a placeholder area for modules or collections if either is empty
 		const placeholderComponents = getPlaceholderComponents(component)
@@ -312,10 +313,11 @@ describe('Dashboard', () => {
 	const expectNonRecentNewModuleOptions = component => {
 		// MODE_ALL and MODE_COLLECTION have no 'New Collection' option under the 'New Module +' button
 		const multiButton = component.root.findByType(MultiButton).children[0]
-		// three buttons and the 'hr' under the 'new collection' button
-		expect(multiButton.children.length).toBe(2)
+		// four buttons and the 'hr' under the 'new collection' button
+		expect(multiButton.children.length).toBe(3)
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
 		expect(multiButton.children[1].children[0].children[0]).toBe('New Tutorial')
+		expect(multiButton.children[2].children[0].children[0]).toBe('Upload...')
 	}
 
 	const getPlaceholderComponents = component => {
@@ -402,8 +404,8 @@ describe('Dashboard', () => {
 		// MODE_COLLECTION should have a lot in the control bar:
 		//  'New Module +' button and various controls for the current collection
 		expect(controlBar.children.length).toBe(5)
-		// two buttons in the 'New Module +' multibutton and three for managing the current collection
-		expect(controlBar.findAllByType(Button).length).toBe(5)
+		// three buttons in the 'New Module +' multibutton and three for managing the current collection
+		expect(controlBar.findAllByType(Button).length).toBe(6)
 		expect(component.root.findAllByType(Search).length).toBe(1)
 
 		// MODE_COLLECTION will not apply an extra class to the 'My Modules' title
@@ -648,13 +650,14 @@ describe('Dashboard', () => {
 		mockShortFromUUID.mock.calls.forEach(call => expect(call[0]).toBe('mockCollectionId'))
 	})
 
-	test('"New Collection" and "New Module" buttons call functions appropriately', () => {
+	test('"New Collection", "New Module" and "Upload..." buttons call functions appropriately', () => {
 		dashboardProps.mode = MODE_RECENT
 		dashboardProps.createNewCollection = jest.fn()
 		dashboardProps.createNewModule = jest.fn()
+		dashboardProps.importModuleFile = jest.fn()
 		const component = create(<Dashboard {...dashboardProps} />)
 
-		// three buttons under the 'New Module +' MultiButton component
+		// four buttons under the 'New Module +' MultiButton component
 		const multiButton = component.root.findByType(MultiButton).children[0]
 
 		// 'New Collection' button should call createNewCollection with no arguments
@@ -678,6 +681,12 @@ describe('Dashboard', () => {
 		expect(dashboardProps.createNewModule).toHaveBeenCalledTimes(1)
 		expect(dashboardProps.createNewModule).toHaveBeenCalledWith(true, { mode: MODE_RECENT })
 		dashboardProps.createNewModule.mockReset()
+
+		// 'Upload...' button should call importModuleFile with no arguments
+		expect(multiButton.children[4].children[0].children[0]).toBe('Upload...')
+		multiButton.children[4].props.onClick()
+		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
+		dashboardProps.importModuleFile.mockReset()
 
 		// two buttons in placeholders - one for collections and one for modules
 		const placeholderComponents = getPlaceholderComponents(component)

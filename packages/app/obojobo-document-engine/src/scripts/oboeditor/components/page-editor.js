@@ -7,29 +7,30 @@ import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
-import { Editor } from 'slate-react'
-import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
 import FileToolbar from './toolbars/file-toolbar'
-import hotKeyPlugin from '../plugins/hot-key-plugin'
+import FormatPlugin from '../plugins/format-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
-import React from 'react'
+import OboNodePlugin from '../plugins/obonode-plugin'
 import ScriptMarks from './marks/script-marks'
-import SelectParameter from './parameter-node/select-parameter'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
-import { Value } from 'slate'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import PageEditorErrorBoundry from './page-editor-error-boundry'
-
-const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+
+import React from 'react'
+import { createEditor, Editor, Element, Transforms } from 'slate'
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
+import { withHistory } from 'slate-history'
+
+// This file overwrites some Slate methods to fix weird bugs in the Slate system
+// It should be deleted when the Slate bugs are remedied
+import '../overwrite-bug-fixes'
 
 class PageEditor extends React.Component {
 	constructor(props) {
@@ -39,9 +40,9 @@ class PageEditor extends React.Component {
 		const json = this.importFromJSON()
 
 		this.state = {
-			value: Value.fromJSON(json),
+			value: json,
 			saved: true,
-			editable: true,
+			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true
 		}
 
@@ -49,13 +50,19 @@ class PageEditor extends React.Component {
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
 		this.insertableItems = []
-		this.plugins = this.getPlugins()
-		this.togglePlaceholders = this.togglePlaceholders.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
+		this.decorate = this.decorate.bind(this)
+		this.renderLeaf = this.renderLeaf.bind(this)
+
+		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
+		this.editor.toggleEditable = this.toggleEditable
+		this.editor.markUnsaved = this.markUnsaved
 	}
 
 	toggleEditable(editable) {
@@ -66,11 +73,42 @@ class PageEditor extends React.Component {
 		return this.setState({ saved: false })
 	}
 
-	togglePlaceholders() {
-		return this.setState(prevState => ({ showPlaceholders: !prevState.showPlaceholders }))
+	// All plugins are passed the following parameters:
+	// Any parameters that the default method is passed
+	// The editor
+	// The default method
+	addPlugin(editor, plugin) {
+		const { normalizeNode, isVoid, insertData, apply } = editor
+		if (plugin.normalizeNode) {
+			editor.normalizeNode = entry => plugin.normalizeNode(entry, editor, normalizeNode)
+		}
+
+		if (plugin.isVoid) {
+			editor.isVoid = element => plugin.isVoid(element, editor, isVoid)
+		}
+
+		if (plugin.isInline) {
+			editor.isInline = element => plugin.isInline(element, editor, isVoid)
+		}
+
+		if (plugin.insertData) {
+			editor.insertData = data => plugin.insertData(data, editor, insertData)
+		}
+
+		if (plugin.commands) {
+			for (const [name, funct] of Object.entries(plugin.commands)) {
+				editor[name] = funct.bind(this, editor)
+			}
+		}
+
+		if (plugin.apply) {
+			editor.apply = op => plugin.apply(op, editor, apply)
+		}
+
+		return editor
 	}
 
-	getPlugins() {
+	withPlugins(editor) {
 		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
 			.map(item => item.plugins)
 			.filter(item => item)
@@ -82,20 +120,17 @@ class PageEditor extends React.Component {
 			AlignMarks.plugins,
 			IndentMarks.plugins
 		]
-		const componentPlugins = [
-			Component.plugins,
-			ToggleParameter.plugins,
-			SelectParameter.plugins,
-			TextParameter.plugins
-		]
 
-		const editorPlugins = [
-			EditorSchema,
-			ClipboardPlugin,
-			hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
-		]
+		this.globalPlugins = [...markPlugins, ClipboardPlugin, FormatPlugin, OboNodePlugin]
 
-		return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
+		// Plugins are listed in order of priority
+		// The plugins list is reversed after building because the editor functions
+		// are built from the bottom up to the top
+		this.plugins = [...nodePlugins, ...this.globalPlugins].reverse()
+
+		this.renderLeafPlugins = this.plugins.filter(plugins => plugins.renderLeaf)
+
+		return this.plugins.reduce(this.addPlugin, editor)
 	}
 
 	convertItemsToArray(items) {
@@ -105,6 +140,9 @@ class PageEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		// Set keyboard focus to the editor
+		Transforms.select(this.editor, Editor.start(this.editor, []))
+		ReactEditor.focus(this.editor)
 	}
 
 	componentWillUnmount() {
@@ -120,6 +158,33 @@ class PageEditor extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
+	onKeyDownGlobal(event) {
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.saveModule(this.props.draftId)
+		}
+
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.editor.undo()
+		}
+
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.editor.redo()
+		}
+	}
+
+	onChange(value) {
+		// Save the previous selection in case the editor is unfocused
+		// This mostly happens with MoreInfoBoxes and void nodes
+		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
+
+		this.setState({ value, saved: false })
+	}
+
+	// Methods that handle movement between pages
+
 	componentDidUpdate(prevProps, prevState) {
 		// Do nothing when updating state from empty page
 		if (!prevProps.page && !this.props.page) {
@@ -129,104 +194,26 @@ class PageEditor extends React.Component {
 		// If updating from an existing page to no page, set the user alert message
 		if (prevProps.page && !this.props.page) {
 			return this.setState({
-				value: Value.fromJSON({
-					document: {
-						nodes: [
-							{
-								type: 'oboeditor.ErrorMessage',
-								object: 'block',
-								nodes: [
-									{
-										object: 'text',
-										leaves: [{ text: 'No content available, create a page to start editing' }]
-									}
-								]
-							}
-						]
-					}
-				})
+				value: [{ text: 'No content available, create a page to start editing' }],
+				editable: false
 			})
 		}
 
 		// If updating from no page to an existing page, load the new page into the editor
 		if (!prevProps.page && this.props.page) {
-			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+			this.editor.selection = null
+			this.editor.prevSelection = null
+			return this.setState({ value: this.importFromJSON(), editable: true })
 		}
 
 		// Both page and previous page are garunteed to not be null here
 		// Save changes and update value when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
+			this.editor.selection = null
+			this.editor.prevSelection = null
 			this.exportToJSON(prevProps.page, prevState.value)
-			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+			return this.setState({ value: this.importFromJSON(), editable: true })
 		}
-	}
-
-	render() {
-		const className =
-			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
-		return (
-			<div className={className}>
-				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
-					<FileToolbar
-						editorRef={this.editorRef}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						onSave={this.saveModule}
-						switchMode={this.props.switchMode}
-						saved={this.state.saved}
-						mode={'visual'}
-						insertableItems={this.props.insertableItems}
-						togglePlaceholders={this.togglePlaceholders}
-						showPlaceholders={this.state.showPlaceholders}
-					/>
-					<ContentToolbar editorRef={this.editorRef} />
-				</div>
-
-				<EditorNav
-					navState={this.props.navState}
-					model={this.props.model}
-					draftId={this.props.draftId}
-					savePage={this.exportCurrentToJSON}
-					markUnsaved={this.markUnsaved}
-				/>
-
-				<div className="component obojobo-draft--modules--module" role="main">
-					<PageEditorErrorBoundry editorRef={this.editorRef}>
-						<Editor
-							className="component obojobo-draft--pages--page"
-							value={this.state.value}
-							ref={this.editorRef}
-							onChange={this.onChange}
-							plugins={this.plugins}
-							readOnly={!this.props.page || !this.state.editable}
-						/>
-					</PageEditorErrorBoundry>
-				</div>
-			</div>
-		)
-	}
-
-	onChange(change) {
-		const nodesChanged = change.operations
-			.toJSON()
-			.some(
-				operation =>
-					operation.type === 'set_node' ||
-					operation.type === 'insert_node' ||
-					operation.type === 'add_mark' ||
-					operation.type === 'set_mark'
-			)
-
-		if (nodesChanged) {
-			// Hacky solution: editor changes need an uninterrupted React render cycle
-			// Calling ModalUtil.hide right after Modals are finished interrupts this asyncronously
-			// This hack only works because Modals are not directly a part of the Slate Editor
-			ModalUtil.hide()
-		}
-
-		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
-		this.setState({ value: change.value, saved: false })
 	}
 
 	saveModule(draftId) {
@@ -270,10 +257,10 @@ class PageEditor extends React.Component {
 		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(value.document.nodes.get(0))
+			const json = this.assessment.slateToObo(value[0])
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
-			page.children.set(childrenModels)
+			page.children.reset(childrenModels)
 			page.set('content', json.content)
 			return json
 		} else {
@@ -281,14 +268,14 @@ class PageEditor extends React.Component {
 			const json = {}
 			json.children = []
 
-			value.document.nodes.forEach(child => {
+			value.forEach(child => {
 				const oboChild = Component.helpers.slateToObo(child)
 				json.children.push(oboChild)
 			})
 
 			page.set('children', json.children)
 			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
-			page.children.set(childrenModels)
+			page.children.reset(childrenModels)
 
 			return json
 		}
@@ -300,20 +287,144 @@ class PageEditor extends React.Component {
 	}
 
 	importFromJSON() {
-		const json = { document: { nodes: [] } }
-		const { page } = this.props
-
-		if (!page) return json // if page is empty, exit
-
-		if (page.get('type') === ASSESSMENT_NODE) {
-			json.document.nodes.push(this.assessment.oboToSlate(page))
-		} else {
-			page.attributes.children.forEach(child => {
-				json.document.nodes.push(Component.helpers.oboToSlate(child))
-			})
+		if (!this.props.page) {
+			// if page is empty, exit
+			return [{ text: 'No content available, create a page to start editing' }]
 		}
 
-		return json
+		const json = this.props.page.toJSON()
+
+		if (json.type === ASSESSMENT_NODE) {
+			return [this.assessment.oboToSlate(this.props.page)]
+		} else {
+			const children = json.children.map(child => Component.helpers.oboToSlate(child))
+			return children
+		}
+	}
+
+	// All the 'plugin' methods that allow the obonodes to extend the default functionality
+
+	onKeyDown(event) {
+		// Run the global keydowns, stopping if one executes
+		this.onKeyDownGlobal(event)
+
+		for (const plugin of this.globalPlugins) {
+			if (plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
+			if (event.defaultPrevented) return
+		}
+
+		// If none of the global plugins caught the key event,
+		// Get each component (non-subtype) node that is selected,
+		// and run keydown on each
+		// The event will always run on every selected node, but
+		// if one node does something special, it will prevent the
+		// default Slate action from occurring on any selected node
+		const list = Array.from(
+			Editor.nodes(this.editor, {
+				mode: 'lowest',
+				match: node => Element.isElement(node) && !this.editor.isInline(node) && !node.subtype
+			})
+		)
+
+		for (const entry of list) {
+			const item = Common.Registry.getItemForType(entry[0].type)
+			if (item && item.plugins.onKeyDown) {
+				item.plugins.onKeyDown(entry, this.editor, event)
+			}
+		}
+	}
+
+	// Generates any necessary decorations, such as place holders
+	decorate(entry) {
+		const item = Common.Registry.getItemForType(entry[0].type)
+		if (item && item.plugins.decorate) {
+			return item.plugins.decorate(entry, this.editor)
+		}
+
+		return []
+	}
+
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
+	}
+
+	// All the render methods that allow the editor to display properly
+
+	renderLeaf(props) {
+		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
+		const { attributes, children, leaf } = props
+
+		if (leaf.placeholder) {
+			return (
+				<span {...props} {...attributes}>
+					<span contentEditable={false} data-placeholder={leaf.placeholder} />
+					{children}
+				</span>
+			)
+		}
+
+		return <span {...attributes}>{children}</span>
+	}
+
+	renderElement(props) {
+		if (props.element.type === 'a') return LinkMark.plugins.renderNode(props)
+
+		const item = Common.Registry.getItemForType(props.element.type)
+		if (item) {
+			return item.plugins.renderNode(props)
+		}
+	}
+
+	render() {
+		const className =
+			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+		return (
+			<div className={className}>
+				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+					<div className="draft-toolbars">
+						<div className="draft-title">{this.props.model.title}</div>
+						<FileToolbar
+							editor={this.editor}
+							selection={this.editor.selection}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							onSave={this.saveModule}
+							reload={this.reload}
+							switchMode={this.props.switchMode}
+							saved={this.state.saved}
+							mode={'visual'}
+							insertableItems={this.props.insertableItems}
+							togglePlaceholders={this.togglePlaceholders}
+							showPlaceholders={this.state.showPlaceholders}
+							value={this.state.value}
+						/>
+						<ContentToolbar editor={this.editor} value={this.state.value} />
+					</div>
+					<EditorNav
+						navState={this.props.navState}
+						model={this.props.model}
+						draftId={this.props.draftId}
+						savePage={this.exportCurrentToJSON}
+						markUnsaved={this.markUnsaved}
+					/>
+
+					<div className="component obojobo-draft--modules--module" role="main">
+						<PageEditorErrorBoundry editorRef={this.editorRef}>
+							<Editable
+								className="obojobo-draft--pages--page"
+								renderElement={this.renderElement.bind(this)}
+								renderLeaf={this.renderLeaf}
+								decorate={this.decorate}
+								readOnly={!this.state.editable}
+								onKeyDown={this.onKeyDown}
+								onCut={this.onCut}
+							/>
+						</PageEditorErrorBoundry>
+					</div>
+				</Slate>
+			</div>
+		)
 	}
 }
 

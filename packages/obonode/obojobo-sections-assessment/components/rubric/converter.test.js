@@ -7,14 +7,12 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: '$attempt_score',
-					failedType: '$attempt_score',
-					type: 'pass-fail',
-					unableToPassType: 'no-value',
-					mods: []
-				})
+			content: {
+				passedType: '$attempt_score',
+				failedType: '$attempt_score',
+				type: 'pass-fail',
+				unableToPassType: 'no-value',
+				mods: []
 			}
 		}
 
@@ -34,16 +32,14 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: 'set-value',
-					passedResult: '100',
-					type: 'pass-fail',
-					failedType: 'set-value',
-					failedResult: '100',
-					unableToPassType: 'set-value',
-					unableToPassResult: '100'
-				})
+			content: {
+				passedType: 'set-value',
+				passedResult: '100',
+				type: 'pass-fail',
+				failedType: 'set-value',
+				failedResult: '100',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
 			}
 		}
 
@@ -63,16 +59,14 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					type: 'highest',
-					passedType: 'set-value',
-					passedResult: '100',
-					failedType: 'set-value',
-					failedResult: '10',
-					unableToPassType: 'set-value',
-					unableToPassResult: '100'
-				})
+			content: {
+				type: 'highest',
+				passedType: 'set-value',
+				passedResult: '100',
+				failedType: 'set-value',
+				failedResult: '10',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
 			}
 		}
 

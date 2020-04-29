@@ -1,9 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Line Editor Node Line component 1`] = `
+exports[`Line Editor Node renders as expected 1`] = `
 <div>
   <li
-    data-hanging-indent={Object {}}
+    data-hanging-indent={true}
   />
+</div>
+`;
+
+exports[`Line Editor Node renders with children 1`] = `
+<div>
+  <li>
+    children!
+  </li>
+</div>
+`;
+
+exports[`Line Editor Node renders without content 1`] = `
+<div>
+  <li />
+</div>
+`;
+
+exports[`Line Editor Node renders without hanging indent 1`] = `
+<div>
+  <li />
 </div>
 `;

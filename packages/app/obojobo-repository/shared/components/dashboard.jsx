@@ -452,6 +452,7 @@ const Dashboard = props => {
 							{newCollectionOptionsRender}
 							{newModuleButtonRender}
 							<Button onClick={() => onNewModuleClick(true)}>New Tutorial</Button>
+							<Button onClick={props.importModuleFile}>Upload...</Button>
 						</MultiButton>
 						{collectionManageAreaRender}
 						{moduleFilterRender}

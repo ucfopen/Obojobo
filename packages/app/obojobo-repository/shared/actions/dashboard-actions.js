@@ -1,13 +1,16 @@
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
+const debouncePromise = require('debounce-promise')
 
 // =================== API =======================
 
+const JSON_MIME_TYPE = 'application/json'
+const XML_MIME_TYPE = 'application/xml'
 const defaultOptions = () => ({
 	method: 'GET',
 	credentials: 'include',
 	headers: {
-		Accept: 'application/json',
-		'Content-Type': 'application/json'
+		Accept: JSON_MIME_TYPE,
+		'Content-Type': JSON_MIME_TYPE
 	}
 })
 
@@ -15,9 +18,18 @@ const defaultModuleModeOptions = {
 	mode: null
 }
 
-const apiSearchForUser = searchString => {
-	return fetch(`/api/users/search?q=${searchString}`, defaultOptions()).then(res => res.json())
+const throwIfNotOk = res => {
+	if (!res.ok) throw Error(`Error requesting ${res.url}, status code: ${res.status}`)
+	return res
 }
+
+const apiSearchForUser = searchString => {
+	return fetch(`/api/users/search?q=${searchString}`, defaultOptions())
+		.then(throwIfNotOk)
+		.then(res => res.json())
+}
+
+const apiSearchForUserDebounced = debouncePromise(apiSearchForUser, 300)
 
 const apiAddPermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'POST', body: `{"userId":${userId}}` }
@@ -120,7 +132,7 @@ const searchForUser = searchString => ({
 	meta: {
 		searchString
 	},
-	promise: apiSearchForUser(searchString)
+	promise: apiSearchForUserDebounced(searchString)
 })
 
 const ADD_USER_TO_MODULE = 'ADD_USER_TO_MODULE'
@@ -359,6 +371,45 @@ const deleteCollection = collection => ({
 	promise: apiDeleteCollection(collection).then(apiGetMyCollections)
 })
 
+const IMPORT_MODULE_FILE = 'IMPORT_MODULE_FILE'
+const importModuleFile = searchString => ({
+	type: IMPORT_MODULE_FILE,
+	promise: promptUserForModuleFileUpload(searchString)
+})
+
+const promptUserForModuleFileUpload = async () => {
+	return new Promise((resolve, reject) => {
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE}`)
+		fileSelector.onchange = moduleUploadFileSelected.bind(this, resolve, reject)
+		fileSelector.click()
+	})
+}
+
+const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
+	const file = event.target.files[0]
+	if (!file) boundResolve()
+	const reader = new global.FileReader()
+	reader.readAsText(file, 'UTF-8')
+	reader.onload = moduleUploadFileLoaded.bind(this, boundResolve, boundReject, file.type)
+}
+
+const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) => {
+	try {
+		const body = {
+			content: e.target.result,
+			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
+		}
+
+		await apiCreateNewModule(false, body)
+		window.location.reload()
+		boundResolve()
+	} catch (e) {
+		boundReject()
+	}
+}
+
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
 	LOAD_USER_SEARCH,
@@ -386,6 +437,7 @@ module.exports = {
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
 	DELETE_COLLECTION,
+	IMPORT_MODULE_FILE,
 	filterModules,
 	filterCollections,
 	deleteModule,
@@ -411,5 +463,6 @@ module.exports = {
 	moduleAddToCollection,
 	moduleRemoveFromCollection,
 	renameCollection,
-	deleteCollection
+	deleteCollection,
+	importModuleFile
 }

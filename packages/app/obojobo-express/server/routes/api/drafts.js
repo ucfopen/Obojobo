@@ -106,7 +106,7 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post(async (req, res) => {
+	.post(async (req, res, next) => {
 		if (req.body.collectionId) {
 			const hasPermsToCollection = await userHasPermissionToCollection(
 				req.currentUser.id,
@@ -116,7 +116,32 @@ router
 				return res.notAuthorized('You must be the author of this draft to delete it')
 			}
 		}
-		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
+
+		const content = req.body.content
+		const format = req.body.format
+
+		let draftJson = !format ? draftTemplate : null
+		let draftXml = !format ? draftTemplateXML : null
+
+		if (format === 'application/json') {
+			draftJson = content
+		} else if (format === 'application/xml') {
+			draftXml = content
+			try {
+				const convertedXml = xmlToDraftObject(draftXml, true)
+				if (convertedXml) {
+					draftJson = convertedXml
+				} else {
+					logger.error('Parse XML non-error?', convertedXml)
+					return res.unexpected()
+				}
+			} catch (e) {
+				logger.error('Parse XML Failed:', e, content)
+				return res.unexpected(e)
+			}
+		}
+
+		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
 			.then(newDraft => {
 				CollectionModel.addModule(req.body.collectionId, newDraft.id, req.currentUser.id)
 				return res.success(newDraft)

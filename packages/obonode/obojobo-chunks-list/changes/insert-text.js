@@ -1,24 +1,32 @@
+import { Editor, Transforms, Range, Node } from 'slate'
+
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
-const insertText = (event, editor, next) => {
+const insertText = (entry, editor, event) => {
+	const [, nodePath] = entry
+	const nodeRange = Editor.range(editor, nodePath)
+	const [startLine] = Array.from(Editor.nodes(editor, {
+		at: Range.intersection(editor.selection, nodeRange),
+		match: child => child.subtype === LIST_LINE_NODE
+	}))
+	const [lineNode, linePath] = startLine
+
+	// If we are deleting multiple things, if the line is not empty, 
+	// or if we are not at end of List, stop here
+	// Returning before the preventDefault allows Slate to handle the enter
+	if (!Range.isCollapsed(editor.selection) || 
+		Node.string(lineNode) !== '' ||
+		!Editor.isEnd(editor, editor.selection.focus, nodeRange)) return 
+
 	event.preventDefault()
-	const last = editor.value.endBlock
 
-	// Get the deepest level that contains this line
-	const listLevel = editor.value.document.getClosest(last.key, par => par.type === LIST_LEVEL_NODE)
-
-	// Double enter on last node
-	if (
-		editor.value.selection.isCollapsed &&
-		last.text === '' &&
-		listLevel.nodes.last().key === last.key
-	) {
-		// Schema will change this back to a list_line unless it is at the end of the list
-		return editor.setNodeByKey(last.key, { type: TEXT_NODE })
-	}
-
-	return next()
+	// Change the listLine into a Text node
+	Transforms.setNodes(editor, {
+		type: TEXT_NODE,
+		content: {},
+		subtype: ''
+	}, { at: linePath })
 }
 
 export default insertText

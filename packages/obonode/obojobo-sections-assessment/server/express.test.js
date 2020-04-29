@@ -319,7 +319,14 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/attempt/review', () => {
 		expect.hasAssertions()
-		const returnValue = {}
+		// mock the id keyed objects returned by review attempt
+		const returnValue = {
+			'mock-attempt-id': { 'mock-question-id': { id: 'mock-question-id' } },
+			'mock-attempt-id2': {
+				'mock-question-id-2': { id: 'mock-question-id-2' },
+				'mock-question-id-3': { id: 'mock-question-id-3' }
+			}
+		}
 		reviewAttempt.mockResolvedValueOnce(returnValue)
 
 		return request(app)
@@ -329,7 +336,21 @@ describe('server/express', () => {
 				expect(response.statusCode).toBe(200)
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
 				expect(checkValidationRules).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual(returnValue)
+				// expect the result to be ARRAYS not id keyed objects
+				expect(response.body).toEqual([
+					{
+						attemptId: 'mock-attempt-id',
+						questions: [
+							{
+								id: 'mock-question-id'
+							}
+						]
+					},
+					{
+						attemptId: 'mock-attempt-id2',
+						questions: [{ id: 'mock-question-id-2' }, { id: 'mock-question-id-3' }]
+					}
+				])
 			})
 	})
 

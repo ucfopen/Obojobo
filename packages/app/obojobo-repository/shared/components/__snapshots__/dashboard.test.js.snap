@@ -123,6 +123,12 @@ exports[`Dashboard renders in MODE_RECENT with less modules than moduleCount, no
           >
             New Tutorial
           </button>
+          <button
+            className="repository--button "
+            onClick={[Function]}
+          >
+            Upload...
+          </button>
         </mock-MultiButton>
       </div>
       <div
@@ -653,6 +659,12 @@ exports[`Dashboard renders with default props 1`] = `
           >
             New Tutorial
           </button>
+          <button
+            className="repository--button "
+            onClick={[Function]}
+          >
+            Upload...
+          </button>
         </mock-MultiButton>
       </div>
       <div
@@ -899,6 +911,12 @@ exports[`Dashboard renders with mode = MODE_ALL 1`] = `
           >
             New Tutorial
           </button>
+          <button
+            className="repository--button "
+            onClick={[Function]}
+          >
+            Upload...
+          </button>
         </mock-MultiButton>
         <div
           className="repository--nav--links--search is-empty"
@@ -1111,6 +1129,12 @@ exports[`Dashboard renders with mode = MODE_COLLECTION 1`] = `
             onClick={[Function]}
           >
             New Tutorial
+          </button>
+          <button
+            className="repository--button "
+            onClick={[Function]}
+          >
+            Upload...
           </button>
         </mock-MultiButton>
         <button
@@ -1349,6 +1373,12 @@ exports[`Dashboard renders with mode = MODE_RECENT 1`] = `
             onClick={[Function]}
           >
             New Tutorial
+          </button>
+          <button
+            className="repository--button "
+            onClick={[Function]}
+          >
+            Upload...
           </button>
         </mock-MultiButton>
       </div>

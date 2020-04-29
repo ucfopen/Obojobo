@@ -69,7 +69,8 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent)
+			content: Object.assign(prevState.content, newContent),
+			needsUpdate: true
 		}))
 	}
 
@@ -240,7 +241,9 @@ class MoreInfoBox extends React.Component {
 								<Button className="delete-page-button" onClick={this.props.deleteNode}>
 									Delete
 								</Button>
-								<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								{!this.props.isAssessment ? (
+									<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+								) : null}
 								{this.props.isFirst ? null : (
 									<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
 								)}
@@ -253,9 +256,9 @@ class MoreInfoBox extends React.Component {
 						)}
 					</div>
 					<div className="box-controls">
-						{this.state.error ? <p>{this.state.error}</p> : null}
+						{this.state.error ? <p className="error">{this.state.error}</p> : null}
 						<Button onClick={this.onSave} className="cancel-button">
-							Save &amp; Close
+							Done
 						</Button>
 					</div>
 				</div>

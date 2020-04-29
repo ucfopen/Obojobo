@@ -4,6 +4,7 @@ describe('Dashboard Actions', () => {
 	const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 	const originalFetch = global.fetch
+	const originalCreateElement = document.createElement
 
 	// this is lifted straight out of dashboard-actions, for ease of comparison
 	//  barring any better ways of using it
@@ -17,6 +18,7 @@ describe('Dashboard Actions', () => {
 	}
 
 	let standardFetchResponse
+	let createElementCopy
 
 	beforeAll(() => {
 		global.fetch = jest.fn()
@@ -24,14 +26,26 @@ describe('Dashboard Actions', () => {
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		jest.useFakeTimers()
 
 		standardFetchResponse = {
+			ok: true,
 			json: jest.fn(() => ({ value: 'mockVal' }))
 		}
+
+		document.createElement = jest.fn(() => {
+			createElementCopy = {
+				setAttribute: jest.fn(),
+				onchange: jest.fn(),
+				click: jest.fn()
+			}
+			return createElementCopy
+		})
 	})
 
 	afterAll(() => {
 		global.fetch = originalFetch
+		document.createElement = originalCreateElement
 	})
 
 	const expectGetMyCollectionsCalled = () => {
@@ -81,10 +95,11 @@ describe('Dashboard Actions', () => {
 		})
 	})
 
-	test('searchForUser returns the expected output and calls other functions correctly', () => {
-		global.fetch.mockResolvedValueOnce(standardFetchResponse)
+	test('searchForUser returns the expected output and calls other functions correctly - server ok', () => {
+		global.fetch.mockResolvedValueOnce({ ...standardFetchResponse, ok: true })
 
 		const actionReply = DashboardActions.searchForUser('mockSearchString')
+		jest.runAllTimers()
 
 		expect(global.fetch).toHaveBeenCalledWith(
 			'/api/users/search?q=mockSearchString',
@@ -101,6 +116,37 @@ describe('Dashboard Actions', () => {
 
 		return actionReply.promise.then(() => {
 			expect(standardFetchResponse.json).toHaveBeenCalled()
+		})
+	})
+	test('searchForUser returns the expected output and calls other functions correctly - server error', () => {
+		const mockFetchUrl = '/api/users/search?q=mockSearchString'
+		global.fetch.mockResolvedValueOnce({
+			ok: false,
+			url: mockFetchUrl,
+			status: 500
+		})
+
+		const actionReply = DashboardActions.searchForUser('mockSearchString')
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.LOAD_USER_SEARCH,
+			meta: {
+				searchString: 'mockSearchString'
+			},
+			promise: expect.any(Object)
+		})
+
+		jest.runAllTimers()
+		return actionReply.promise.catch(error => {
+			expect(error).toBeInstanceOf(Error)
+			expect(error.message).toBe(
+				'Error requesting /api/users/search?q=mockSearchString, status code: 500'
+			)
+
+			expect(global.fetch).toHaveBeenCalledWith(
+				'/api/users/search?q=mockSearchString',
+				defaultFetchOptions
+			)
 		})
 	})
 

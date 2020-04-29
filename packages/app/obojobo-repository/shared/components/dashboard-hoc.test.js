@@ -38,6 +38,7 @@ describe('Dashboard HOC', () => {
 			loadUsersForModule: DashboardActions.loadUsersForModule,
 			deleteModulePermissions: DashboardActions.deleteModulePermissions,
 			filterModules: DashboardActions.filterModules,
+			importModuleFile: DashboardActions.importModuleFile,
 			filterCollections: DashboardActions.filterCollections,
 			deleteModule: DashboardActions.deleteModule,
 			showModulePermissions: DashboardActions.showModulePermissions,

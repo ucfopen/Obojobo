@@ -11,10 +11,10 @@ describe('toggleHangingIndet', () => {
 		const toggleHangingIndent = require('./toggle-hanging-indent').default
 
 		// execute
-		toggleHangingIndent(event, editor)
+		toggleHangingIndent([{}, []], editor, event)
 
 		// verify
-		expect(toggle).toHaveBeenCalledWith(editor)
+		expect(toggle).toHaveBeenCalledWith([{}, []], editor)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 })

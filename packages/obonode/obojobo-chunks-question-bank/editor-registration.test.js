@@ -7,18 +7,91 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'QuestionBank'))
 jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
-jest.mock('./components/settings/editor-component', () =>
-	global.mockReactComponent(this, 'Settings')
-)
-jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
-import Common from 'obojobo-document-engine/src/scripts/common'
+
+import { Transforms } from 'slate'
 import QuestionBank from './editor-registration'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 describe('QuestionBank editor', () => {
+	test('normalizeNode calls next if the node is not a Code node', () => {
+		const next = jest.fn()
+		QuestionBank.plugins.normalizeNode([{}, []], {}, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Code calls next if all Code children are valid', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_BANK_NODE,
+					content: {},
+					children: [
+						{
+							type: QUESTION_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		QuestionBank.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Code calls Transforms on invalid Element children', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_BANK_NODE,
+					content: {},
+					children: [
+						{
+							type: 'improperNode',
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		QuestionBank.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Code calls Transforms on invalid Text children', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_BANK_NODE,
+					content: {},
+					children: [{ text: 'mockCode', b: true }]
+				}
+			],
+			isInline: () => false
+		}
+		QuestionBank.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders a question bank when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -32,84 +105,6 @@ describe('QuestionBank editor', () => {
 			}
 		}
 
-		expect(QuestionBank.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(QuestionBank.plugins.renderNode(props, null, next)).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode renders settings when passed', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: SETTINGS_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
 		expect(QuestionBank.plugins.renderNode(props)).toMatchSnapshot()
-	})
-
-	test('plugins.getPasteNode returns qb', () => {
-		const qb = {
-			nodes: {
-				size: 2
-			}
-		}
-
-		expect(QuestionBank.getPasteNode(qb)).toEqual(qb)
-	})
-
-	test('plugins.getPasteNode returns question', () => {
-		const question = { type: QUESTION_NODE }
-		const qb = {
-			nodes: {
-				size: 1,
-				get: () => question
-			}
-		}
-		Common.Registry.getItemForType.mockReturnValueOnce({ getPasteNode: node => node })
-
-		expect(QuestionBank.getPasteNode(qb)).toEqual(question)
-	})
-
-	test('plugins.getPasteNode returns text from settings', () => {
-		const qb = {
-			nodes: {
-				size: 1,
-				get: () => ({
-					nodes: [
-						{
-							nodes: [
-								{
-									toJSON: () => ({ object: 'block', type: 'mockNode' })
-								}
-							]
-						}
-					]
-				})
-			}
-		}
-
-		expect(QuestionBank.getPasteNode(qb)).toMatchSnapshot()
 	})
 })

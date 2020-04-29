@@ -5,6 +5,17 @@ describe('TextUtil', () => {
 		jest.resetAllMocks()
 	})
 
+	test('parseMarkings converts empty styleList to leaves', () => {
+		const text = {
+			value: '',
+			styleList: []
+		}
+
+		const line = { text }
+
+		expect(TextUtil.parseMarkings(line)).toMatchSnapshot()
+	})
+
 	test('parseMarkings converts styleList to leaves', () => {
 		const text = {
 			value: 'ThisTextIsFormatted',
@@ -27,9 +38,17 @@ describe('TextUtil', () => {
 				{
 					type: 'a',
 					start: 10,
-					end: 19,
+					end: 14,
 					data: {
 						href: 'mockLink'
+					}
+				},
+				{
+					type: 'a',
+					start: 14,
+					end: 19,
+					data: {
+						href: 'mockOtherLink'
 					}
 				},
 				{
@@ -88,6 +107,12 @@ describe('TextUtil', () => {
 					start: 8,
 					end: 14,
 					data: -13
+				},
+				{
+					type: 'sup',
+					start: 8,
+					end: 12,
+					data: 13
 				}
 			]
 		}
@@ -109,75 +134,45 @@ describe('TextUtil', () => {
 
 	test('slateToOboText converts a text node to a textGroup', () => {
 		const text = {
-			leaves: [
+			children: [
 				{
 					text: 'This',
-					marks: [
-						{
-							type: 'b',
-							data: { toJSON: () => 'mockJSON' }
-						}
-					]
+					b: true
 				},
 				{
 					text: 'Text',
-					marks: [
-						{
-							type: 'i',
-							data: { toJSON: () => 'mockJSON' }
-						},
-						{
-							type: 'q',
-							data: { toJSON: () => 'mockJSON' }
-						}
-					]
+					i: true,
+					q: true
 				},
 				{
 					text: 'Is',
-					marks: [
+					del: true,
+					q: true,
+					sup: true,
+					num: 13
+				},
+				{
+					type: 'a',
+					href: 'mockURL',
+					children: [
 						{
-							type: 'del',
-							data: { toJSON: () => 'mockJSON' }
-						},
-						{
-							type: 'q',
-							data: { toJSON: () => 'mockJSON' }
-						},
-						{
-							type: 'sup',
-							data: { get: () => 13 }
+							text: 'Form',
+							sup: true,
+							num: 14,
+							b: true
 						}
 					]
 				},
 				{
-					text: 'Form',
-					marks: [
-						{
-							type: 'a',
-							data: {
-								toJSON: () => 'mockJSON'
-							}
-						},
-						{
-							type: 'sup',
-							data: { get: () => 14 }
-						}
-					]
-				},
-				{
-					text: 'atted',
-					marks: [
-						{
-							type: 'a',
-							data: { toJSON: () => 'mockJSON' }
-						}
-					]
+					type: 'a',
+					href: 'mockotherURL',
+					children: [{text: 'atted' }]
 				}
 			]
 		}
 
 		const line = {
-			text: { value: 'ThisTextIsFormatted', styleList: [] },
+			text: { value: '', styleList: [] },
 			data: { indent: 0 }
 		}
 
