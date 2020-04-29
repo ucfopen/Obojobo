@@ -212,7 +212,11 @@ describe('repository api route', () => {
 	test('get /users/search returns the expected response when given a search string', () => {
 		expect.hasAssertions()
 
-		const mockResult = [{ id: 1 }, { id: 2 }, { id: 3 }]
+		const mockResult = [
+			{ toJSON: jest.fn(() => ({ id: 1 })) },
+			{ toJSON: jest.fn(() => ({ id: 2 })) },
+			{ toJSON: jest.fn(() => ({ id: 3 })) }
+		]
 
 		SearchServices.searchForUserByString.mockResolvedValueOnce(mockResult)
 
@@ -222,7 +226,7 @@ describe('repository api route', () => {
 				expect(SearchServices.searchForUserByString).toHaveBeenCalledTimes(1)
 				expect(SearchServices.searchForUserByString).toHaveBeenCalledWith('searchString')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toStrictEqual(mockResult)
+				expect(response.body).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }])
 			})
 	})
 

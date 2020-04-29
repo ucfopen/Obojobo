@@ -91,10 +91,17 @@ exports[`PeopleSearchDialog renders with people 1`] = `
           </div>
         </div>
         <div
-          className="user-name"
+          className="user-info"
         >
-           
-           
+          <div
+            className="user-name"
+          >
+             
+             
+          </div>
+          <div
+            className="user-username"
+          />
         </div>
         <button
           className="repository--button select-button"
@@ -118,10 +125,17 @@ exports[`PeopleSearchDialog renders with people 1`] = `
           </div>
         </div>
         <div
-          className="user-name"
+          className="user-info"
         >
-           
-           
+          <div
+            className="user-name"
+          >
+             
+             
+          </div>
+          <div
+            className="user-username"
+          />
         </div>
         <button
           className="repository--button select-button"
@@ -145,13 +159,20 @@ exports[`PeopleSearchDialog renders with people 1`] = `
           </div>
         </div>
         <div
-          className="user-name"
+          className="user-info"
         >
-           
-           
-          <i>
-            (me)
-          </i>
+          <div
+            className="user-name"
+          >
+             
+             
+            <i>
+              (me)
+            </i>
+          </div>
+          <div
+            className="user-username"
+          />
         </div>
         <button
           className="repository--button select-button"

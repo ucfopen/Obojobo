@@ -525,7 +525,12 @@ describe('api draft route', () => {
 
 		return request(app)
 			.post('/api/drafts/new')
-			.send({ content: 'mockContent', format: 'application/json' })
+			.send({
+				moduleContent: {
+					content: 'mockContent',
+					format: 'application/json'
+				}
+			})
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
@@ -542,8 +547,10 @@ describe('api draft route', () => {
 		return request(app)
 			.post('/api/drafts/new')
 			.send({
-				content: 'mockContent',
-				format: 'application/xml'
+				moduleContent: {
+					content: 'mockContent',
+					format: 'application/xml'
+				}
 			})
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
@@ -562,7 +569,12 @@ describe('api draft route', () => {
 		return request(app)
 			.post('/api/drafts/new')
 			.accept('text/plain')
-			.send({ content: 'mockCont222ent', format: 'application/xml' })
+			.send({
+				moduleContent: {
+					content: 'mockCont222ent',
+					format: 'application/xml'
+				}
+			})
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
@@ -582,7 +594,12 @@ describe('api draft route', () => {
 		return request(app)
 			.post('/api/drafts/new')
 			.accept('text/plain')
-			.send({ content: 'mockCont222ent', format: 'application/xml' })
+			.send({
+				moduleContent: {
+					content: 'mockCont222ent',
+					format: 'application/xml'
+				}
+			})
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(500)
@@ -633,10 +650,14 @@ describe('api draft route', () => {
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
-			.send({ collectionId: 'whatever' })
+			.send({ collectionId: 'mockCollectionId' })
 			.then(async response => {
-				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'whatever')
-				expect(CollectionModel.addModule).toHaveBeenCalledWith('whatever', 'mockDraftId', 99)
+				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'mockCollectionId')
+				expect(CollectionModel.addModule).toHaveBeenCalledWith(
+					'mockCollectionId',
+					'mockDraftId',
+					99
+				)
 
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
@@ -657,9 +678,9 @@ describe('api draft route', () => {
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
-			.send({ collectionId: 'whatever' })
+			.send({ collectionId: 'mockCollectionId' })
 			.then(async response => {
-				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'whatever')
+				expect(userHasPermissionToCollection).toHaveBeenCalledWith(99, 'mockCollectionId')
 				expect(CollectionModel.addModule).not.toHaveBeenCalled()
 
 				expect(response.header['content-type']).toContain('application/json')

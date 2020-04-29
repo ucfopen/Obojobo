@@ -28,7 +28,6 @@ describe('Search Services', () => {
 	test('searchForUserByString returns a list of UserModel objects', () => {
 		const mockResponse = [{ ...mockRawUser }, { ...mockRawUser, id: 2 }, { ...mockRawUser, id: 3 }]
 
-		db.none = jest.fn()
 		db.manyOrNone.mockResolvedValueOnce(mockResponse)
 
 		db.taskIf = jest.fn()
@@ -36,29 +35,22 @@ describe('Search Services', () => {
 
 		expect.hasAssertions()
 
-		const noneQueryString = `CREATE OR REPLACE FUNCTION obo_immutable_concat_ws(s text, t1 text, t2 text)
-				RETURNS text AS
-				$func$
-				SELECT concat_ws(s, t1, t2)
-				$func$ LANGUAGE sql IMMUTABLE;
-				`
 		const manyOrNoneQueryString = `SELECT
-					id,
-					first_name AS "firstName",
-					last_name AS "lastName",
-					email,
-					username,
-					created_at AS "createdAt",
-					roles
-				FROM users
-				WHERE obo_immutable_concat_ws(' ', first_name, last_name) ILIKE $[search]
-				OR email ILIKE $[search]
-				OR username ILIKE $[search]
-				ORDER BY first_name, last_name
-				LIMIT 25`
+			id,
+			first_name AS "firstName",
+			last_name AS "lastName",
+			email,
+			username,
+			created_at AS "createdAt",
+			roles
+		FROM users
+		WHERE obo_immutable_concat_ws(' ', first_name, last_name) ILIKE $[search]
+		OR email ILIKE $[search]
+		OR username ILIKE $[search]
+		ORDER BY first_name, last_name
+		LIMIT 25`
 
 		return SearchServices.searchForUserByString('searchString').then(response => {
-			expect(db.none).toHaveBeenCalledWith(noneQueryString)
 			expect(db.manyOrNone).toHaveBeenCalledWith(manyOrNoneQueryString, {
 				search: '%searchString%'
 			})

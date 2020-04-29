@@ -1,10 +1,13 @@
-import DashboardActions from './dashboard-actions'
-
 describe('Dashboard Actions', () => {
+	let DashboardActions
+	let mockFileReader
+
 	const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 	const originalFetch = global.fetch
 	const originalCreateElement = document.createElement
+	const originalFileReader = global.FileReader
+	const originalWindowLocationReload = window.location.reload
 
 	// this is lifted straight out of dashboard-actions, for ease of comparison
 	//  barring any better ways of using it
@@ -25,8 +28,11 @@ describe('Dashboard Actions', () => {
 	})
 
 	beforeEach(() => {
+		jest.resetModules()
 		jest.resetAllMocks()
 		jest.useFakeTimers()
+
+		window.location.reload = jest.fn()
 
 		standardFetchResponse = {
 			ok: true,
@@ -41,11 +47,22 @@ describe('Dashboard Actions', () => {
 			}
 			return createElementCopy
 		})
+
+		global.FileReader = jest.fn(() => {
+			mockFileReader = {
+				readAsText: jest.fn()
+			}
+			return mockFileReader
+		})
+
+		DashboardActions = require('./dashboard-actions')
 	})
 
 	afterAll(() => {
 		global.fetch = originalFetch
 		document.createElement = originalCreateElement
+		global.FileReader = originalFileReader
+		window.location.reload = originalWindowLocationReload
 	})
 
 	const expectGetMyCollectionsCalled = () => {
@@ -389,7 +406,7 @@ describe('Dashboard Actions', () => {
 		}
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/new',
-			'{"collectionId":"mockCollectionId"}',
+			'{"collectionId":"mockCollectionId","moduleContent":{}}',
 			'/api/collections/mockCollectionId/modules',
 			false,
 			options
@@ -400,7 +417,7 @@ describe('Dashboard Actions', () => {
 		const options = { mode: MODE_RECENT }
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/new',
-			'{"collectionId":null}',
+			'{"collectionId":null,"moduleContent":{}}',
 			'/api/recent/drafts',
 			false,
 			options
@@ -411,7 +428,7 @@ describe('Dashboard Actions', () => {
 		const options = { mode: MODE_ALL }
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/new',
-			'{"collectionId":null}',
+			'{"collectionId":null,"moduleContent":{}}',
 			'/api/drafts',
 			false,
 			options
@@ -421,7 +438,7 @@ describe('Dashboard Actions', () => {
 	test('createNewModule returns expected output and calls other functions, mode MODE_ALL', () => {
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/new',
-			'{"collectionId":null}',
+			'{"collectionId":null,"moduleContent":{}}',
 			'/api/drafts'
 			//no argument indicating tutorial - should default to false
 		)
@@ -430,7 +447,7 @@ describe('Dashboard Actions', () => {
 	test('createNewModule returns expected output and calls other functions, mode MODE_ALL, tutorial', () => {
 		return assertCreateNewModuleRunsWithOptions(
 			'/api/drafts/tutorial',
-			'{"collectionId":null}',
+			'{"collectionId":null,"moduleContent":{}}',
 			'/api/drafts',
 			true
 		)
@@ -884,6 +901,186 @@ describe('Dashboard Actions', () => {
 			expectGetMyCollectionsCalled()
 			expect(standardFetchResponse.json).toHaveBeenCalled()
 			expect(finalResult).toEqual({ value: 'mockSecondReturnVal' })
+		})
+	})
+
+	test('importModuleFile returns the expected output and calls other functions correctly - no file', () => {
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		const mockEvent = {
+			target: {
+				files: []
+			}
+		}
+		createElementCopy.onchange(mockEvent)
+
+		return actionReply.promise.then(() => {
+			expect(global.fetch).not.toHaveBeenCalled()
+			expect(global.FileReader).not.toHaveBeenCalled()
+			expect(window.location.reload).not.toHaveBeenCalled()
+		})
+	})
+
+	test('importModuleFile returns the expected output and calls other functions correctly - valid file, json', () => {
+		global.fetch.mockResolvedValueOnce({ ...standardFetchResponse, ok: true })
+
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		const mockChangeEvent = {
+			target: {
+				files: [{ type: 'application/json' }]
+			}
+		}
+		createElementCopy.onchange(mockChangeEvent)
+		expect(global.FileReader).toHaveBeenCalledTimes(1)
+
+		const mockLoadEvent = {
+			target: {
+				result: 'fileContent'
+			}
+		}
+		mockFileReader.onload(mockLoadEvent)
+
+		return actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(1)
+			expect(global.fetch).toHaveBeenCalledWith('/api/drafts/new', {
+				...defaultFetchOptions,
+				method: 'POST',
+				body: JSON.stringify({
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: 'application/json'
+					}
+				})
+			})
+			expect(window.location.reload).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('importModuleFile returns the expected output and calls other functions correctly - valid file, non-json', () => {
+		global.fetch.mockResolvedValueOnce({ ...standardFetchResponse, ok: true })
+
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		const mockChangeEvent = {
+			target: {
+				files: [{ type: 'fileType' }]
+			}
+		}
+		createElementCopy.onchange(mockChangeEvent)
+		expect(global.FileReader).toHaveBeenCalledTimes(1)
+
+		const mockLoadEvent = {
+			target: {
+				result: 'fileContent'
+			}
+		}
+		mockFileReader.onload(mockLoadEvent)
+
+		return actionReply.promise.then(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(1)
+			expect(global.fetch).toHaveBeenCalledWith('/api/drafts/new', {
+				...defaultFetchOptions,
+				method: 'POST',
+				body: JSON.stringify({
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: 'application/xml' //defaults to this unless file type is 'application/json'
+					}
+				})
+			})
+			expect(window.location.reload).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('importModuleFile returns the expected output and calls other functions correctly - api failure', () => {
+		global.fetch.mockRejectedValueOnce(null)
+
+		const actionReply = DashboardActions.importModuleFile()
+		expect(actionReply).toEqual({
+			type: DashboardActions.IMPORT_MODULE_FILE,
+			promise: expect.any(Object)
+		})
+
+		expect(document.createElement).toHaveBeenCalledTimes(1)
+		expect(document.createElement).toHaveBeenCalledWith('input')
+		expect(createElementCopy.setAttribute).toHaveBeenCalledTimes(2)
+		expect(createElementCopy.setAttribute.mock.calls).toEqual([
+			['type', 'file'],
+			['accept', 'application/json, application/xml']
+		])
+		expect(createElementCopy.click).toHaveBeenCalledTimes(1)
+
+		const mockChangeEvent = {
+			target: {
+				files: [{ type: 'fileType' }]
+			}
+		}
+		createElementCopy.onchange(mockChangeEvent)
+		expect(global.FileReader).toHaveBeenCalledTimes(1)
+
+		const mockLoadEvent = {
+			target: {
+				result: 'fileContent'
+			}
+		}
+		mockFileReader.onload(mockLoadEvent)
+
+		return actionReply.promise.catch(() => {
+			expect(global.fetch).toHaveBeenCalledTimes(1)
+			expect(global.fetch).toHaveBeenCalledWith('/api/drafts/new', {
+				...defaultFetchOptions,
+				method: 'POST',
+				body: JSON.stringify({
+					collectionId: null,
+					moduleContent: {
+						content: 'fileContent',
+						format: 'application/xml' //defaults to this unless file type is 'application/json'
+					}
+				})
+			})
+			expect(window.location.reload).not.toHaveBeenCalled()
 		})
 	})
 })

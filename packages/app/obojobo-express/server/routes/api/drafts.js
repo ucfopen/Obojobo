@@ -117,8 +117,8 @@ router
 			}
 		}
 
-		const content = req.body.content
-		const format = req.body.format
+		const content = req.body.moduleContent ? req.body.moduleContent.content : null
+		const format = req.body.moduleContent ? req.body.moduleContent.format : null
 
 		let draftJson = !format ? draftTemplate : null
 		let draftXml = !format ? draftTemplateXML : null

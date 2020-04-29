@@ -16,10 +16,17 @@ exports[`PeopleListItem renders correctly with default props 1`] = `
     </div>
   </div>
   <div
-    className="user-name"
+    className="user-info"
   >
-     
-     
+    <div
+      className="user-name"
+    >
+       
+       
+    </div>
+    <div
+      className="user-username"
+    />
   </div>
 </li>
 `;
@@ -40,13 +47,20 @@ exports[`PeopleListItem renders correctly with standard props plus "isMe=true" p
     </div>
   </div>
   <div
-    className="user-name"
+    className="user-info"
   >
-    firstName lastName
-     
-    <i>
-      (me)
-    </i>
+    <div
+      className="user-name"
+    >
+      firstName lastName
+       
+      <i>
+        (me)
+      </i>
+    </div>
+    <div
+      className="user-username"
+    />
   </div>
   usuallyAButton
 </li>
@@ -68,10 +82,17 @@ exports[`PeopleListItem renders correctly with standard props provided 1`] = `
     </div>
   </div>
   <div
-    className="user-name"
+    className="user-info"
   >
-    firstName lastName
-     
+    <div
+      className="user-name"
+    >
+      firstName lastName
+       
+    </div>
+    <div
+      className="user-username"
+    />
   </div>
   usuallyAButton
 </li>

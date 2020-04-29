@@ -105,9 +105,9 @@ const apiDeleteCollection = collection => {
 	return fetch(`/api/collections/${collection.id}`, options).then(res => res.json())
 }
 
-const apiCreateNewModule = (useTutorial, collectionId) => {
+const apiCreateNewModule = (useTutorial, moduleContent, collectionId = null) => {
 	const url = useTutorial ? '/api/drafts/tutorial' : '/api/drafts/new'
-	const body = JSON.stringify({ collectionId })
+	const body = JSON.stringify({ collectionId, moduleContent })
 	const options = { ...defaultOptions(), method: 'POST', body }
 	return fetch(url, options).then(res => res.json())
 }
@@ -236,7 +236,7 @@ const createNewModule = (useTutorial = false, options = { ...defaultModuleModeOp
 	}
 	return {
 		type: CREATE_NEW_MODULE,
-		promise: apiCreateNewModule(useTutorial, collectionId).then(apiModuleGetCall)
+		promise: apiCreateNewModule(useTutorial, {}, collectionId).then(apiModuleGetCall)
 	}
 }
 
@@ -389,7 +389,7 @@ const promptUserForModuleFileUpload = async () => {
 
 const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
-	if (!file) boundResolve()
+	if (!file) return boundResolve()
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')
 	reader.onload = moduleUploadFileLoaded.bind(this, boundResolve, boundReject, file.type)
@@ -401,7 +401,6 @@ const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) =>
 			content: e.target.result,
 			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
 		}
-
 		await apiCreateNewModule(false, body)
 		window.location.reload()
 		boundResolve()
