@@ -10,7 +10,8 @@ const insertAttemptEndEvents = (
 	attemptNumber,
 	isPreview,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	visitId
 ) => {
 	const { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
@@ -20,6 +21,7 @@ const insertAttemptEndEvents = (
 			attemptId: attemptId,
 			attemptCount: attemptNumber
 		},
+		visitId,
 		userId: user.id,
 		ip: remoteAddress,
 		metadata: {},

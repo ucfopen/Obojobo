@@ -81,7 +81,8 @@ module.exports = {
 			req.attempt.number,
 			req.currentVisit.is_preview,
 			req.hostname,
-			req.connection.remoteAddress
+			req.connection.remoteAddress,
+			req.body.visitId
 		)
 	},
 
