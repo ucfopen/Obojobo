@@ -51,6 +51,17 @@ class MoreInfoBox extends React.Component {
 		this.close()
 	}
 
+	componentDidUpdate(prevProps) {
+		// If the component's content is updated we want to update our data
+		// (This can happen, for example, when updating triggers from the ActionButton's
+		// onClick shortcut menu)
+		if (prevProps.content !== this.props.content) {
+			this.setState({
+				content: this.props.content
+			})
+		}
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
@@ -235,23 +246,35 @@ class MoreInfoBox extends React.Component {
 									</span>
 								) : null}
 							</span>
-							<Button className="trigger-button" onClick={this.showTriggersModal}>
+							<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
 								✎ Edit
 							</Button>
 						</div>
 						{this.props.hideButtonBar ? null : (
 							<div className="button-bar">
-								<Button className="delete-page-button" onClick={this.props.deleteNode}>
+								<Button altAction isDangerous onClick={this.props.deleteNode}>
 									Delete
 								</Button>
 								{!this.props.isAssessment ? (
-									<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+									<Button altAction onClick={this.props.duplicateNode}>
+										Duplicate
+									</Button>
 								) : null}
-								{this.props.isFirst ? null : (
-									<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
+								{!this.props.showMoveButtons ? null : (
+									<Button
+										disabled={this.props.isFirst}
+										altAction
+										onClick={() => this.props.moveNode(this.props.index - 1)}
+									>
+										Move Up
+									</Button>
 								)}
-								{this.props.isLast ? null : (
-									<Button onClick={() => this.props.moveNode(this.props.index + 1)}>
+								{!this.props.showMoveButtons ? null : (
+									<Button
+										disabled={this.props.isLast}
+										altAction
+										onClick={() => this.props.moveNode(this.props.index + 1)}
+									>
 										Move Down
 									</Button>
 								)}

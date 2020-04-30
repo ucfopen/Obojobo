@@ -10,7 +10,7 @@ import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -38,6 +38,14 @@ describe('IFrame Editor Node', () => {
 						title: 'mockTitle'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -56,6 +64,14 @@ describe('IFrame Editor Node', () => {
 						src: 'mockSrc'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -71,7 +87,17 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1,
 						src: ''
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
+			/>
 		)
 
 		component
@@ -92,7 +118,16 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1,
 						src: ''
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 
 		component
@@ -113,6 +148,15 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 

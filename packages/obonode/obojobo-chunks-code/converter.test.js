@@ -89,7 +89,7 @@ describe('Code Converter', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
@@ -124,7 +124,7 @@ describe('Code Converter', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
@@ -160,14 +160,17 @@ describe('Code Converter', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
 			isVoid: () => false
 		}
 
-		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], { type: 'unordered', bulletStyle: 'disc' })
+		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], {
+			type: 'unordered',
+			bulletStyle: 'disc'
+		})
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
@@ -205,14 +208,17 @@ describe('Code Converter', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 2, 0], offset: 1 }
 			},
 			isVoid: () => false
 		}
 
-		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], { type: 'ordered', bulletStyle: 'alpha' })
+		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], {
+			type: 'ordered',
+			bulletStyle: 'alpha'
+		})
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()

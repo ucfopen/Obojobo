@@ -187,6 +187,7 @@ class CodeEditor extends React.Component {
 							title={this.state.title}
 							draftId={this.props.draftId}
 							switchMode={this.props.switchMode}
+							onSave={this.saveAndGetTitleFromCode}
 							saved={this.state.saved}
 							mode={this.props.mode}
 							insertableItems={this.props.insertableItems}

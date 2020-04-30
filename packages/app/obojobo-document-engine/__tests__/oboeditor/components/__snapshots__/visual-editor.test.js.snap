@@ -490,6 +490,14 @@ exports[`VisualEditor VisualEditor component 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <input
@@ -946,6 +954,14 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <input
@@ -1401,6 +1417,14 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
+  <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
   <div
     className="draft-toolbars"
   >
@@ -1904,6 +1928,14 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
   className="editor--page-editor  is-show-placeholders"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <input
@@ -2359,6 +2391,14 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
 <div
   className="editor--page-editor  is-show-placeholders"
 >
+  <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
   <div
     className="draft-toolbars"
   >
