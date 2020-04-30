@@ -9,13 +9,12 @@ const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
 describe('Format Menu', () => {
 	test('FormatMenu node', () => {
-		const editor = { current: {
-		}}
+		const editor = { current: {} }
 		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 1} }
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value}/>)
+		const component = mount(<FormatMenu editor={editor} value={value} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -25,10 +24,10 @@ describe('Format Menu', () => {
 			toggleMark: jest.fn()
 		}
 		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value}/>)
+		const component = mount(<FormatMenu editor={editor} value={value} />)
 
 		component
 			.find('button')
@@ -43,10 +42,10 @@ describe('Format Menu', () => {
 			changeToType: jest.fn()
 		}
 		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value}/>)
+		const component = mount(<FormatMenu editor={editor} value={value} />)
 
 		component
 			.find('button')
@@ -101,10 +100,10 @@ describe('Format Menu', () => {
 			unindentList: jest.fn()
 		}
 		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value}/>)
+		const component = mount(<FormatMenu editor={editor} value={value} />)
 
 		component
 			.find('button')
@@ -119,10 +118,10 @@ describe('Format Menu', () => {
 			changeToType: jest.fn()
 		}
 		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1}, anchor: { key: 'mock-key', offset: 4} }
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value}/>)
+		const component = mount(<FormatMenu editor={editor} value={value} />)
 
 		// Unordered lists
 		component

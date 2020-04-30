@@ -77,13 +77,15 @@ describe('AlignMarks', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: ''}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: '' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -91,7 +93,7 @@ describe('AlignMarks', () => {
 				focus: { path: [0], offset: 0 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		AlignMarks.plugins.commands.setAlign(editor, ALIGN_CENTER)

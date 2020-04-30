@@ -31,30 +31,30 @@ describe('ClipboardPlugin', () => {
 
 		ClipboardPlugin.insertData(mockData, editor, next)
 		expect(Transforms.insertFragment).toHaveBeenCalledWith(editor, [
-				{
-					type: "ObojoboDraft.Chunks.Text",
-					content: {},
-					children: [
-						{
-							type: "ObojoboDraft.Chunks.Text",
-							subtype: "ObojoboDraft.Chunks.Text.TextLine",
-							content: {
-								align: "left",
-								indent: 0,
-							},
-							children: [{ text: "line1"}]
+			{
+				type: 'ObojoboDraft.Chunks.Text',
+				content: {},
+				children: [
+					{
+						type: 'ObojoboDraft.Chunks.Text',
+						subtype: 'ObojoboDraft.Chunks.Text.TextLine',
+						content: {
+							align: 'left',
+							indent: 0
 						},
-						{
-							type: "ObojoboDraft.Chunks.Text",
-							subtype: "ObojoboDraft.Chunks.Text.TextLine",
-							content: {
-								align: "left",
-								indent: 0,
-							},
-							children: [{ text: "line2" }]
+						children: [{ text: 'line1' }]
+					},
+					{
+						type: 'ObojoboDraft.Chunks.Text',
+						subtype: 'ObojoboDraft.Chunks.Text.TextLine',
+						content: {
+							align: 'left',
+							indent: 0
 						},
-					]
-				},
-			])
+						children: [{ text: 'line2' }]
+					}
+				]
+			}
+		])
 	})
 })

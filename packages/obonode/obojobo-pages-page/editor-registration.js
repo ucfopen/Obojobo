@@ -24,7 +24,7 @@ const Page = {
 					// Wrap text childen in a score node
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: TEXT_NODE,
 								content: {}
@@ -37,11 +37,8 @@ const Page = {
 
 				// Page parent normalization
 				const [parent] = Editor.parent(editor, path)
-				if(!parent || parent.type === PAGE_NODE) {
-					Transforms.unwrapNodes(
-						editor, 
-						{ at: path }
-					)
+				if (!parent || parent.type === PAGE_NODE) {
+					Transforms.unwrapNodes(editor, { at: path })
 					return
 				}
 			}

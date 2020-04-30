@@ -6,7 +6,7 @@ import Code from './editor-component'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -17,7 +17,24 @@ jest.mock(
 describe('Code Editor Node', () => {
 	test('Code builds the expected component', () => {
 		const component = renderer.create(
-			<Code node={{ content:{} }}/>
+			<Code
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					},
+					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 		const tree = component.toJSON()
 

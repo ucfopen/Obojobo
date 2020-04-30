@@ -28,7 +28,7 @@ describe('Increase Code Indent', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 0 },
 				focus: { path: [0, 0, 0], offset: 0 }
 			},
@@ -36,7 +36,7 @@ describe('Increase Code Indent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		indentOrTab([editor.children[0],[0]], editor, event)
+		indentOrTab([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
@@ -66,7 +66,7 @@ describe('Increase Code Indent', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
@@ -75,7 +75,7 @@ describe('Increase Code Indent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		indentOrTab([editor.children[0],[0]], editor, event)
+		indentOrTab([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(editor.insertText).toHaveBeenCalled()

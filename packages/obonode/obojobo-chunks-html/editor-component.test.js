@@ -23,6 +23,14 @@ describe('HTML Editor Node', () => {
 						}
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		const tree = component.toJSON()
