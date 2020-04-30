@@ -14,56 +14,6 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
 
-	// make sure LIST_LEVEL_NODE bullets match the list's centralized listStyle
-	if (node.subtype === LIST_LEVEL_NODE) {
-		// find all LISTs
-		const listNodes = Editor.nodes(editor, {
-			mode: 'lowest',
-			match: node => node.type === LIST_NODE && !node.subtype
-		})
-
-		// there should only ever be 1 or 0 listNodes
-		for (const [listNode, listPath] of listNodes) {
-			const listStyles = listNode.content.listStyles
-
-			// get type, falling back on default
-			const listType = listStyles.type || ListStyles.TYPE_UNORDERED
-
-			// calculate depth of this LIST_LEVEL_NODE in parent LIST_NODE
-			// path.length - the depth of the parent list - 1 (for zero indexing offset)
-			const indentDepth = path.length - listPath.length - 1
-
-			// get the list of bullets from the parent LIST_NODE's type
-			const bulletList =
-				listType === ListStyles.TYPE_UNORDERED
-					? ListStyles.UNORDERED_LIST_BULLETS
-					: ListStyles.ORDERED_LIST_BULLETS
-
-			// build the default styles for this depth level
-			let desired = {
-				type: listType,
-				bulletStyle: bulletList[indentDepth % bulletList.length]
-			}
-
-			// combine desired defaults w/ whatever's set in the parent LIST_NODE styles
-			if (listStyles && listStyles.indents && listStyles.indents[indentDepth]) {
-				desired = { ...desired, ...listStyles.indents[indentDepth] }
-			}
-
-			// create styles for this LIST_LEVEL_NODE
-			let stylesToSet = {}
-			if (node.content.type !== desired.type) stylesToSet.type = desired.type
-			if (node.content.bulletStyle !== desired.bulletStyle)
-				stylesToSet.bulletStyle = desired.bulletStyle
-
-			// only update if needed
-			if (stylesToSet.type || stylesToSet.bulletStyle) {
-				Transforms.setNodes(editor, { content: { ...node.content, ...stylesToSet } }, { at: path })
-				return
-			}
-		}
-	}
-
 	// If the element is a List Node, only allow ListLevel children
 	if (node.type === LIST_NODE && !node.subtype) {
 		// List child normalization
@@ -176,6 +126,51 @@ const normalizeNode = (entry, editor, next) => {
 				},
 				node => node.subtype === LIST_LEVEL_NODE
 			)
+			return
+		}
+
+		// List Level self-normalization - ensure that listStyles is the source of truth
+		// Because parent normalization has already occurred, 
+		// there should always be an ancestor
+		const [listNode, listPath] = Editor.above(editor, {
+			at: path,
+			match: n => n.type === LIST_NODE && !n.subtype
+		})
+
+		const listStyles = listNode.content.listStyles
+
+		// get type, falling back on default
+		const listType = listStyles.type || ListStyles.TYPE_UNORDERED
+
+		// calculate depth of this LIST_LEVEL_NODE in parent LIST_NODE
+		// path.length - the depth of the parent list - 1 (for zero indexing offset)
+		const indentDepth = path.length - listPath.length - 1
+
+		// get the list of bullets from the parent LIST_NODE's type
+		const bulletList =
+			listType === ListStyles.TYPE_UNORDERED
+				? ListStyles.UNORDERED_LIST_BULLETS
+				: ListStyles.ORDERED_LIST_BULLETS
+
+		// build the default styles for this depth level
+		let desired = {
+			type: listType,
+			bulletStyle: bulletList[indentDepth % bulletList.length]
+		}
+
+		// combine desired defaults w/ whatever's set in the parent LIST_NODE styles
+		if (listStyles && listStyles.indents && listStyles.indents[indentDepth]) {
+			desired = { ...desired, ...listStyles.indents[indentDepth] }
+		}
+
+		// create styles for this LIST_LEVEL_NODE
+		const stylesToSet = {}
+		if (node.content.type !== desired.type) stylesToSet.type = desired.type
+		if (node.content.bulletStyle !== desired.bulletStyle) stylesToSet.bulletStyle = desired.bulletStyle
+
+		// only update if needed
+		if (stylesToSet.type || stylesToSet.bulletStyle) {
+			Transforms.setNodes(editor, { content: { ...node.content, ...stylesToSet } }, { at: path })
 			return
 		}
 	}
