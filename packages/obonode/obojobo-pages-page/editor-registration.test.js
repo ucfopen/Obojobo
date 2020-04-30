@@ -25,7 +25,7 @@ describe('Page editor', () => {
 
 	test('normalizeNode on Code calls next if all Code children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -51,7 +51,7 @@ describe('Page editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -70,7 +70,7 @@ describe('Page editor', () => {
 	test('normalizeNode on Page calls Transforms if parent is invalid', () => {
 		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -98,8 +98,8 @@ describe('Page editor', () => {
 			],
 			isInline: () => false
 		}
-		
-		Page.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+
+		Page.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.unwrapNodes).toHaveBeenCalled()
 	})
@@ -124,11 +124,20 @@ describe('Page editor', () => {
 		const model = {
 			parent: {
 				children: {
-					models: [{ get: () => true }]
+					models: [
+						{
+							get: () => 'ObojoboDraft.Pages.Page'
+						},
+						{
+							get: () => 'Not-A-Page'
+						}
+					]
 				}
 			},
-			title: 'Test Title'
+			title: 'Test Title',
+			get: () => 'ObojoboDraft.Pages.Page'
 		}
+		model.parent.children.models.push(model)
 
 		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
@@ -140,8 +149,16 @@ describe('Page editor', () => {
 		model.title = null
 		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
-			label: 'Page 0',
-			path: ['page-0'],
+			label: 'Page 2',
+			path: ['page-2'],
+			showChildren: false
+		})
+
+		delete model.parent
+		expect(Page.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Page',
+			path: ['page'],
 			showChildren: false
 		})
 	})
