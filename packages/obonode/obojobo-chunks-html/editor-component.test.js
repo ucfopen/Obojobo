@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer'
 import HTML from './editor-component'
 
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(

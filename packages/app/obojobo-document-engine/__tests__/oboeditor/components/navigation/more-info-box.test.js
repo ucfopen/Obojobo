@@ -533,4 +533,23 @@ describe('MoreInfoBox', () => {
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('componentDidUpdate calls setState when props.content changes', () => {
+		const mockSetState = jest.fn()
+		const mockProps = { content: 'mockValue' }
+
+		// Calling componentDidUpdate with the same props results in no changes
+		MoreInfoBox.prototype.componentDidUpdate.bind({
+			setState: mockSetState,
+			props: mockProps
+		})(mockProps)
+		expect(mockSetState).not.toHaveBeenCalled()
+
+		// Sending different props.content results in updating state
+		MoreInfoBox.prototype.componentDidUpdate.bind({
+			setState: mockSetState,
+			props: { content: 'newMockValue' }
+		})(mockProps)
+		expect(mockSetState).toHaveBeenCalledWith({ content: 'newMockValue' })
+	})
 })

@@ -48,6 +48,17 @@ class MoreInfoBox extends React.Component {
 		this.close()
 	}
 
+	componentDidUpdate(prevProps) {
+		// If the component's content is updated we want to update our data
+		// (This can happen, for example, when updating triggers from the ActionButton's
+		// onClick shortcut menu)
+		if (prevProps.content !== this.props.content) {
+			this.setState({
+				content: this.props.content
+			})
+		}
+	}
+
 	handleClick(event) {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
