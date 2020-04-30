@@ -113,19 +113,9 @@ describe('List editor', () => {
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			List.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(List.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			List.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(List.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
 	test('plugins.decorate renders a placeholder', () => {
@@ -135,12 +125,7 @@ describe('List editor', () => {
 		Element.isElement.mockReturnValue(true)
 		Node.string.mockReturnValue('')
 
-		expect(
-			List.plugins.decorate(
-				[ { children: [{ text: '' }] }, [0]],
-				editor
-			)
-		).toMatchSnapshot()
+		expect(List.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -149,7 +134,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -160,7 +145,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown([{},[0]], {}, event1)
+		List.plugins.onKeyDown([{}, [0]], {}, event1)
 		expect(onBackspace).toHaveBeenCalledTimes(1)
 	})
 
@@ -171,7 +156,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(unwrapLevel).toHaveBeenCalled()
 	})
@@ -183,7 +168,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(wrapLevel).toHaveBeenCalled()
 	})
@@ -194,7 +179,7 @@ describe('List editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(wrapLevelOrTab).toHaveBeenCalled()
 	})
@@ -210,7 +195,7 @@ describe('List editor', () => {
 		expect(toggleHangingIndent).not.toHaveBeenCalled()
 
 		// execute
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		// verify
 		expect(toggleHangingIndent).not.toHaveBeenCalled()
@@ -228,7 +213,7 @@ describe('List editor', () => {
 		expect(toggleHangingIndent).not.toHaveBeenCalled()
 
 		// execute
-		List.plugins.onKeyDown([{},[0]], {}, event)
+		List.plugins.onKeyDown([{}, [0]], {}, event)
 
 		// verify
 		expect(toggleHangingIndent).toHaveBeenCalled()

@@ -72,6 +72,12 @@
 
 	&.alt-action button:disabled {
 		@include disabled();
+
+		background-color: $color-bg;
+		cursor: not-allowed;
+		color: $color-text;
+		border: 1px solid $color-text;
+		opacity: 0.4;
 	}
 
 	&.alt-action.is-dangerous button:hover {
