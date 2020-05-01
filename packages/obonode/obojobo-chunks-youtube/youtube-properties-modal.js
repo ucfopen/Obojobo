@@ -1,7 +1,5 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-// import EditorUtil from 'obojobo-document-engine/src/scripts/obeditor/util/editor-util'
-
 import EditorUtil from '../../app/obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 
 import './youtube-properties-modal.scss'
@@ -30,13 +28,24 @@ class YouTubeProperties extends React.Component {
 	}
 
 	handleIdChange(event) {
-
 		const videoInfo = EditorUtil.youTubeParseUrl(event.target.value)
-		const videoId = videoInfo.videoId === false ? event.target.value : videoInfo.videoId;
+		const videoId = videoInfo.videoId === false ? event.target.value : videoInfo.videoId
 
 		let startTime = this.state.content.startTime
-
-		if (videoInfo.startTime) {
+		let endTime = this.state.content.endTime
+		if (videoInfo.startTime && videoInfo.endTime) {
+			startTime = videoInfo.startTime
+			endTime = videoInfo.endTime
+			this.setState({
+				...this.state,
+				content: {
+					...this.state.content,
+					videoId,
+					startTime,
+					endTime
+				}
+			})
+		} else if (videoInfo.startTime) {
 			startTime = videoInfo.startTime
 			this.setState({
 				...this.state,
@@ -83,12 +92,6 @@ class YouTubeProperties extends React.Component {
 		})
 	}
 
-	// youtube_parser(url){
-	// 	var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-	// 	var match = url.match(regExp);
-	// 	return (match&&match[7].length==11)? match[7] : false;
-	// }
-
 	onConfirm() {
 		const { startTime, endTime, videoId } = this.state.content
 
@@ -131,18 +134,18 @@ class YouTubeProperties extends React.Component {
 							value={this.state.content.videoId || ''}
 							onChange={this.handleIdChange.bind(this)}
 						/>
-						<div>										
-						<MoreInfoButton ariaLabel="Click to explain youtube video options">
-							<div className="text-items">
-								<p>Add video by pasting one of the following:</p>
-								<hr />
-								<ul>
-									<li>The video url, from your browser's address bar</li>
-									<li>Embed code, provided by Youtube</li>
-									<li>The video's id</li>
-								</ul>
-							</div>
-						</MoreInfoButton>
+						<div>
+							<MoreInfoButton ariaLabel="Click to explain youtube video options">
+								<div className="text-items">
+									<p>Add video by pasting one of the following:</p>
+									<hr />
+									<ul>
+										<li>The video url, from your browser's address bar</li>
+										<li>Embed code, provided by Youtube</li>
+										<li>The video's id</li>
+									</ul>
+								</div>
+							</MoreInfoButton>
 						</div>
 					</div>
 
@@ -153,9 +156,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange}
 					/>
-					<small>
-						Seconds or MM:SS format (e.g. 135 or 2:15)
-					</small>
+					<small>Seconds or MM:SS format (e.g. 135 or 2:15)</small>
 					<span className="error">{this.state.startTimeError}</span>
 					<label>End time in seconds (optional):</label>
 					<input
