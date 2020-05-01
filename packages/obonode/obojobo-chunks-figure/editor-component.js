@@ -17,15 +17,15 @@ const { ModalUtil } = Common.util
 const { Button } = Common.components
 
 /**
- * Display an Obojobo Figure node.  Users can type below the figure to add a caption. 
+ * Display an Obojobo Figure node.  Users can type below the figure to add a caption.
  * When the node is selected, the figure is outlined, and a delete button and image properties
- * button appear.  The Image properties button opens up a modal that alows the user to 
+ * button appear.  The Image properties button opens up a modal that alows the user to
  * select an image, and set its size and alt text. Clicking on the image when it is not selected
  * will move the cursor to the start of the figurecaption
  */
 class Figure extends React.Component {
 	focusFigure() {
-		if(!this.props.selected) {
+		if (!this.props.selected) {
 			const path = ReactEditor.findPath(this.props.editor, this.props.element)
 			const start = Editor.start(this.props.editor, path)
 			Transforms.setSelection(this.props.editor, {
@@ -53,7 +53,11 @@ class Figure extends React.Component {
 	changeProperties(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
 	}
 
 	render() {
@@ -67,26 +71,27 @@ class Figure extends React.Component {
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
 					<figure className="container">
 						{hasAltText ? null : (
-							<div 
-								contentEditable={false} 
+							<div
+								contentEditable={false}
 								className="accessibility-warning"
-								style={{ userSelect: "none" }}>
+								style={{ userSelect: 'none' }}
+							>
 								Accessibility Warning: No Alt Text!
 							</div>
 						)}
-						<div 
-							className={`figure-box  ${isSelected}`} 
+						<div
+							className={`figure-box  ${isSelected}`}
 							contentEditable={false}
-							onClick={this.focusFigure.bind(this)}>
-							<Button 
-								className="delete-button" 
-								onClick={this.deleteNode.bind(this)}>
+							onClick={this.focusFigure.bind(this)}
+						>
+							<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 								×
 							</Button>
 							<div className="image-toolbar">
 								<Button
 									className="properties-button"
-									onClick={this.showImagePropertiesModal.bind(this)}>
+									onClick={this.showImagePropertiesModal.bind(this)}
+								>
 									Image Properties
 								</Button>
 							</div>

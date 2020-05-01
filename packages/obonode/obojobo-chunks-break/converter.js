@@ -4,7 +4,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * Generates an Obojobo Break from a Slate node.
  * Copies the id, type, and triggers, as well as content.width
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Break node 
+ * @returns {Object} An Obojobo Break node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -19,7 +19,7 @@ const slateToObo = node => ({
 /**
  * Generates a Slate node from an Obojobo Break. Copies all attributes, and adds a dummy child
  * The conversion also ensures that the Slate node has a width so it will display properly
- * @param {Object} node An Obojobo Break node 
+ * @param {Object} node An Obojobo Break node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

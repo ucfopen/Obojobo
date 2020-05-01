@@ -50,8 +50,8 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
-				type: TEXT_NODE, 
+			{
+				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,
 				content: { indent: 0 }
 			},
@@ -65,7 +65,7 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
+			{
 				content: { headingLevel: 2 }
 			},
 			{ at: [0] }
@@ -78,8 +78,8 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
-				type: CODE_NODE, 
+			{
+				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
 				content: { indent: 0 }
 			},

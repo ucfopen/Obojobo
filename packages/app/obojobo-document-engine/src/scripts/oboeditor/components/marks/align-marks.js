@@ -28,16 +28,16 @@ const AlignMarks = {
 		},
 		commands: {
 			setAlign: (editor, align) => {
-				const list = Array.from(Editor.nodes(editor, {
-					mode: 'lowest',
-					match: node => Element.isElement(node) && !editor.isInline(node)
-				}))
+				const list = Array.from(
+					Editor.nodes(editor, {
+						mode: 'lowest',
+						match: node => Element.isElement(node) && !editor.isInline(node)
+					})
+				)
 
-				list.forEach(([child, path]) => Transforms.setNodes(
-					editor, 
-					{ content: {...child.content, align }}, 
-					{ at: path }
-				))
+				list.forEach(([child, path]) =>
+					Transforms.setNodes(editor, { content: { ...child.content, align } }, { at: path })
+				)
 
 				ReactEditor.focus(editor)
 			}

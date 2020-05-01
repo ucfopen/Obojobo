@@ -25,8 +25,9 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
-// jest.mock('src/scripts/oboeditor/components/toolbars/content-toolbar')
-//jest.mock('obojobo-document-engine/src/scripts/common/registry')
+jest.mock('src/scripts/oboeditor/components/hovering-preview', () => props => (
+	<div {...props} className={'mockHoveringPreview'} />
+))
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -317,6 +318,71 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
+
+		const component = mount(<PageEditor {...props} />)
+
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
+			}
+		]
+
+		component.instance().onChange(value)
+	})
+
+	test('PageEditor component alters value majorly with multi-select', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		window.getSelection = jest.fn().mockReturnValue({
+			getRangeAt: () => ({
+				commonAncestorContainer: {
+					parentNode: {
+						tagName: 'fakeTag',
+						getBoundingClientRect: () => ({})
+					}
+				}
+			})
+		})
+		const component = mount(<PageEditor {...props} />)
+
+		const value = [
+			{
+				type: 'mocknode',
+				children: [{ text: '' }]
+			}
+		]
+
+		component.instance().onChange(value)
+	})
+
+	test('PageEditor component alters value majorly with latex', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		window.getSelection = jest.fn().mockReturnValue({
+			getRangeAt: () => ({
+				commonAncestorContainer: {
+					parentNode: {
+						tagName: 'span',
+						getBoundingClientRect: () => ({})
+					}
+				}
+			})
+		})
 		const component = mount(<PageEditor {...props} />)
 
 		const value = [
@@ -345,6 +411,7 @@ describe('PageEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "contentRect": null,
 		  "editable": false,
 		  "saved": true,
 		  "showPlaceholders": true,
@@ -373,6 +440,7 @@ describe('PageEditor', () => {
 
 		expect(component.state()).toMatchInlineSnapshot(`
 		Object {
+		  "contentRect": null,
 		  "editable": true,
 		  "saved": false,
 		  "showPlaceholders": true,
@@ -801,6 +869,92 @@ describe('PageEditor', () => {
 		expect(window.removeEventListener).toHaveBeenCalled()
 		expect(location.reload).toHaveBeenCalled()
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('onResized sets state.contentRect', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<PageEditor {...props} />)
+
+		expect(component.state().contentRect).toBe(null)
+		component.instance().onResized({ contentRect: 'mock-content-rect' })
+		expect(component.state().contentRect).toBe('mock-content-rect')
+	})
+
+	test('setupResizeObserver does nothing if the browser does not support ResizeObserver', () => {
+		const originalResizeObserver = window.ResizeObserver
+
+		window.ResizeObserver = undefined //eslint-disable-line no-undefined
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = {}
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: {} }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: { observe: jest.fn() } }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = { prototype: { disconnect: jest.fn() } }
+		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+
+		window.ResizeObserver = jest.fn()
+		window.ResizeObserver.prototype = { observe: jest.fn(), disconnect: jest.fn() }
+		expect(
+			PageEditor.prototype.setupResizeObserver.bind({
+				onResized: jest.fn(),
+				pageEditorContainerRef: { current: jest.fn() }
+			})()
+		).toBe(true)
+
+		window.ResizeObserver = originalResizeObserver
+	})
+
+	test('setupResizeObserver creates a new ResizeObserver and observes the container ref', () => {
+		const originalResizeObserver = window.ResizeObserver
+
+		const onResized = jest.fn()
+		const pageEditorContainerRefCurrent = jest.fn()
+		window.ResizeObserver = class ResizeObserver {
+			constructor(fn) {
+				this.__callback = fn
+			}
+
+			observe() {}
+
+			disconnect() {}
+		}
+		const observeSpy = jest.spyOn(window.ResizeObserver.prototype, 'observe')
+
+		const thisValue = {
+			onResized,
+			pageEditorContainerRef: { current: pageEditorContainerRefCurrent }
+		}
+		expect(PageEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
+
+		expect(thisValue.resizeObserver).toBeInstanceOf(window.ResizeObserver)
+		expect(thisValue.resizeObserver.__callback).toBe(onResized)
+		expect(observeSpy).toHaveBeenCalledWith(pageEditorContainerRefCurrent)
+
+		window.ResizeObserver = originalResizeObserver
+	})
+
+	test('componentWillUnmount disconnects the resizeObserver', () => {
+		const disconnect = jest.fn()
+
+		PageEditor.prototype.componentWillUnmount.bind({
+			checkIfSaved: jest.fn(),
+			resizeObserver: { disconnect }
+		})()
+
+		expect(disconnect).toHaveBeenCalled()
 	})
 
 	test('PageEditor component doesnt save if readOnly is enabled', () => {

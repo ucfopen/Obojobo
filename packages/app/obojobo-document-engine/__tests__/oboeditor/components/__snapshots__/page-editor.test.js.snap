@@ -490,6 +490,14 @@ exports[`PageEditor component changes pages 1`] = `
   className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <div
@@ -942,6 +950,14 @@ exports[`PageEditor component changes pages 2`] = `
   className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <div
@@ -1393,6 +1409,14 @@ exports[`PageEditor component renders 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
+  <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
   <div
     className="draft-toolbars"
   >
@@ -1892,6 +1916,14 @@ exports[`PageEditor component renders with no page 1`] = `
   className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
+  <div
     className="draft-toolbars"
   >
     <div
@@ -2343,6 +2375,14 @@ exports[`PageEditor reload disables event listener and calls location.reload 1`]
 <div
   className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
+  <div
+    className="mockHoveringPreview"
+    pageEditorContainerRef={
+      Object {
+        "current": null,
+      }
+    }
+  />
   <div
     className="draft-toolbars"
   >
