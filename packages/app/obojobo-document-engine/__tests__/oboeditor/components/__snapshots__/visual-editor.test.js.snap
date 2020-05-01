@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PageEditor Ensures the plugins work as expected 1`] = `
+exports[`VisualEditor Ensures the plugins work as expected 1`] = `
 Array [
   Object {
     "apply": [Function],
@@ -485,7 +485,7 @@ Array [
 ]
 `;
 
-exports[`PageEditor component changes pages 1`] = `
+exports[`VisualEditor VisualEditor component 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -500,11 +500,15 @@ exports[`PageEditor component changes pages 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -945,7 +949,7 @@ exports[`PageEditor component changes pages 1`] = `
 </div>
 `;
 
-exports[`PageEditor component changes pages 2`] = `
+exports[`VisualEditor VisualEditor component changes pages 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -960,11 +964,15 @@ exports[`PageEditor component changes pages 2`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1405,7 +1413,7 @@ exports[`PageEditor component changes pages 2`] = `
 </div>
 `;
 
-exports[`PageEditor component renders 1`] = `
+exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -1420,11 +1428,15 @@ exports[`PageEditor component renders 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1865,7 +1877,7 @@ exports[`PageEditor component renders 1`] = `
 </div>
 `;
 
-exports[`PageEditor component renders with Elements 1`] = `
+exports[`VisualEditor VisualEditor component with Elements 1`] = `
 <SlateWrapper
   element={
     Object {
@@ -1883,13 +1895,13 @@ exports[`PageEditor component renders with Elements 1`] = `
 </SlateWrapper>
 `;
 
-exports[`PageEditor component renders with Elements 2`] = `
+exports[`VisualEditor VisualEditor component with Elements 2`] = `
 <p>
   Mock Content
 </p>
 `;
 
-exports[`PageEditor component renders with decoration 1`] = `
+exports[`VisualEditor VisualEditor component with decoration 1`] = `
 Array [
   Object {
     "anchor": Object {
@@ -1911,7 +1923,7 @@ Array [
 ]
 `;
 
-exports[`PageEditor component renders with no page 1`] = `
+exports[`VisualEditor VisualEditor component with no page 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -1926,11 +1938,15 @@ exports[`PageEditor component renders with no page 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -2371,7 +2387,7 @@ exports[`PageEditor component renders with no page 1`] = `
 </div>
 `;
 
-exports[`PageEditor reload disables event listener and calls location.reload 1`] = `
+exports[`VisualEditor reload disables event listener and calls location.reload 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -2386,11 +2402,15 @@ exports[`PageEditor reload disables event listener and calls location.reload 1`]
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
