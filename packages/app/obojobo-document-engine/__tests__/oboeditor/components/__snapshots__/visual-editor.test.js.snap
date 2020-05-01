@@ -70,7 +70,8 @@ Array [
             "deleteForward": [Function],
             "deleteFragment": [Function],
             "history": Object {
-              "redos": Array [
+              "redos": Array [],
+              "undos": Array [
                 Array [
                   Object {
                     "newProperties": Object {
@@ -92,7 +93,6 @@ Array [
                   },
                 ],
               ],
-              "undos": Array [],
             },
             "indentCode": [Function],
             "indentList": [Function],
@@ -167,7 +167,8 @@ Array [
             "deleteForward": [Function],
             "deleteFragment": [Function],
             "history": Object {
-              "redos": Array [
+              "redos": Array [],
+              "undos": Array [
                 Array [
                   Object {
                     "newProperties": Object {
@@ -189,7 +190,6 @@ Array [
                   },
                 ],
               ],
-              "undos": Array [],
             },
             "indentCode": [Function],
             "indentList": [Function],
@@ -268,7 +268,8 @@ Array [
             "deleteForward": [Function],
             "deleteFragment": [Function],
             "history": Object {
-              "redos": Array [
+              "redos": Array [],
+              "undos": Array [
                 Array [
                   Object {
                     "newProperties": Object {
@@ -290,7 +291,6 @@ Array [
                   },
                 ],
               ],
-              "undos": Array [],
             },
             "indentCode": [Function],
             "indentList": [Function],
@@ -388,7 +388,8 @@ Array [
             "deleteForward": [Function],
             "deleteFragment": [Function],
             "history": Object {
-              "redos": Array [
+              "redos": Array [],
+              "undos": Array [
                 Array [
                   Object {
                     "newProperties": Object {
@@ -410,7 +411,6 @@ Array [
                   },
                 ],
               ],
-              "undos": Array [],
             },
             "indentCode": [Function],
             "indentList": [Function],

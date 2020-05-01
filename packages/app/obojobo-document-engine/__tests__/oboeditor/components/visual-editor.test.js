@@ -1002,7 +1002,7 @@ describe('VisualEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		expect(component.state().contentRect).toBe(null)
 		component.instance().onResized({ contentRect: 'mock-content-rect' })
@@ -1013,24 +1013,24 @@ describe('VisualEditor', () => {
 		const originalResizeObserver = window.ResizeObserver
 
 		window.ResizeObserver = undefined //eslint-disable-line no-undefined
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = {}
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: {} }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: { observe: jest.fn() } }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: { disconnect: jest.fn() } }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = jest.fn()
 		window.ResizeObserver.prototype = { observe: jest.fn(), disconnect: jest.fn() }
 		expect(
-			PageEditor.prototype.setupResizeObserver.bind({
+			VisualEditor.prototype.setupResizeObserver.bind({
 				onResized: jest.fn(),
 				pageEditorContainerRef: { current: jest.fn() }
 			})()
@@ -1059,7 +1059,7 @@ describe('VisualEditor', () => {
 			onResized,
 			pageEditorContainerRef: { current: pageEditorContainerRefCurrent }
 		}
-		expect(PageEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
+		expect(VisualEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
 
 		expect(thisValue.resizeObserver).toBeInstanceOf(window.ResizeObserver)
 		expect(thisValue.resizeObserver.__callback).toBe(onResized)
@@ -1071,7 +1071,7 @@ describe('VisualEditor', () => {
 	test('componentWillUnmount disconnects the resizeObserver', () => {
 		const disconnect = jest.fn()
 
-		PageEditor.prototype.componentWillUnmount.bind({
+		VisualEditor.prototype.componentWillUnmount.bind({
 			checkIfSaved: jest.fn(),
 			resizeObserver: { disconnect }
 		})()
