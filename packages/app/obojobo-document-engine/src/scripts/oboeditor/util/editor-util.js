@@ -179,22 +179,31 @@ const EditorUtil = {
 	youTubeParseUrl(videoUrl) {
 		let newVideoId = false
 		let videoStartTime = false
+		let videoEndTime = false
 
-		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?^\s]*)*[&?t=sar]*([0-9]*)*.*/;
+		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?^\s]*)*[&\?t=]*([0-9]*)*[&\?start=]*([0-9]*)*[&\?end=]*([0-9]*)*.*/
 		const youTubeSiteRegexMatch = videoUrl.match(youTubeSiteRegex)
 
-		console.log("youTubeSiteRegexMatch", youTubeSiteRegexMatch);
-
 		if (youTubeSiteRegexMatch) {
-				videoStartTime = youTubeSiteRegexMatch[8]? parseInt(youTubeSiteRegexMatch[8],10) : 0
-				newVideoId = (youTubeSiteRegexMatch[7].length==11)? youTubeSiteRegexMatch[7] : false;
+			videoStartTime = youTubeSiteRegexMatch[8] ? parseInt(youTubeSiteRegexMatch[8], 10) : 0
+
+			if (youTubeSiteRegexMatch[8]) {
+				videoStartTime = youTubeSiteRegexMatch[8]
+			} else if (youTubeSiteRegexMatch[9]) {
+				videoStartTime = youTubeSiteRegexMatch[9]
+			} else {
+				videoStartTime = 0
+			}
+
+			videoEndTime = youTubeSiteRegexMatch[10] ? parseInt(youTubeSiteRegexMatch[10], 10) : 0
+			newVideoId = youTubeSiteRegexMatch[7].length == 11 ? youTubeSiteRegexMatch[7] : false
 		}
 
 		return {
 			videoId: newVideoId,
-			startTime: videoStartTime
+			startTime: videoStartTime,
+			endTime: videoEndTime
 		}
-
 	}
 }
 
