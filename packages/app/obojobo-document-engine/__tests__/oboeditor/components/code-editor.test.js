@@ -410,7 +410,9 @@ describe('CodeEditor', () => {
 
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
-		jest.spyOn(location, 'reload').mockReturnValueOnce()
+		Object.defineProperty(window, 'location', {
+			value: { reload: jest.fn() }
+		})
 
 		const props = {
 			initialCode: '',

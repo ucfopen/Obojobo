@@ -979,8 +979,9 @@ describe('VisualEditor', () => {
 
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
-		jest.spyOn(location, 'reload').mockReturnValueOnce()
-
+		Object.defineProperty(window, 'location', {
+			value: { reload: jest.fn() }
+		})
 		const props = {
 			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
 			model: { title: 'Mock Title' }
