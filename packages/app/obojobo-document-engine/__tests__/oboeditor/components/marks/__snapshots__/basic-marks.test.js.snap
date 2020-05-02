@@ -57,11 +57,11 @@ Object {
 
 exports[`BasicMarks renderLeaf diplays expected style 6`] = `
 Object {
-  "children": <span
-    className="latex-editor"
+  "children": <div
+    className="latex-editor "
   >
     mockChild
-  </span>,
+  </div>,
   "leaf": Object {
     "_latex": true,
   },

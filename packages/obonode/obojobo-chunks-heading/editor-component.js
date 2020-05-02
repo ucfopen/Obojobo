@@ -5,7 +5,7 @@ import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
-const Heading = (props) => {
+const Heading = props => {
 	const { content } = props.element
 	const HTag = `h${content.headingLevel || 1}`
 

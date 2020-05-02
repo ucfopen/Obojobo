@@ -4,7 +4,7 @@ import FormatPlugin from 'src/scripts/oboeditor/plugins/format-plugin'
 
 describe('FormatPlugin', () => {
 	test('changeToType calls item.switchToType', () => {
-		const editor = { 
+		const editor = {
 			children: [
 				{
 					type: 'mock-node',
@@ -32,7 +32,7 @@ describe('FormatPlugin', () => {
 	})
 
 	test('changeToType does not call item.switchToType when the value doent exist', () => {
-		const editor = { 
+		const editor = {
 			children: [
 				{
 					type: 'mock-node',

@@ -166,7 +166,7 @@ describe('TextUtil', () => {
 				{
 					type: 'a',
 					href: 'mockotherURL',
-					children: [{text: 'atted' }]
+					children: [{ text: 'atted' }]
 				}
 			]
 		}

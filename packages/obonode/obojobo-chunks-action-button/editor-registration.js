@@ -46,14 +46,16 @@ const ActionButton = {
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {
 			// Define a placeholder decoration
-			if(Element.isElement(node) && Node.string(node) === ''){
+			if (Element.isElement(node) && Node.string(node) === '') {
 				const point = Editor.start(editor, path)
 
-				return [{
-					placeholder: 'Type your label here',
-					anchor: point,
-					focus: point
-				}]
+				return [
+					{
+						placeholder: 'Type your label here',
+						anchor: point,
+						focus: point
+					}
+				]
 			}
 
 			return []
