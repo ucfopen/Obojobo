@@ -34,7 +34,9 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 		}
 
 		const listLine = {
-			text: { value: '' },
+			// text must follow TextUtil's formatting, sytyleList required here
+			// but don't confuse it with our list's styleList. NOT for bullet styles
+			text: { value: '', styleList: [] },
 			data: { indent: currLevel }
 		}
 
@@ -130,7 +132,6 @@ const oboToSlate = node => {
 
 	slateNode.children = node.content.textGroup.map(line => {
 		let indent = line.data && line.data.indent ? parseInt(line.data.indent, 10) : 0
-		const hangingIndent = line.data ? line.data.hangingIndent : false
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
 			type: LIST_NODE,

@@ -258,10 +258,10 @@ Object {
   "children": Array [],
   "content": Object {
     "listStyles": Object {
-      "indents": Array [
-        Object {},
-        Object {},
-      ],
+      "indents": Object {
+        "0": Object {},
+        "1": Object {},
+      },
       "type": undefined,
     },
     "textGroup": Array [
@@ -284,7 +284,6 @@ Object {
       },
       Object {
         "data": Object {
-          "hangingIndent": undefined,
           "indent": 1,
         },
         "text": Object {

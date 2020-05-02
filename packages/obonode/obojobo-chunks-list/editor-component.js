@@ -45,43 +45,59 @@ const toggleType = props => {
 	})
 }
 
-class List extends React.Component {
-	isOnlyThisNodeSelected() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const s = this.props.editor.selection
-
-		return (
-			s &&
-			s.anchor.path.slice(0, path.length).toString() ===
-				s.focus.path.slice(0, path.length).toString() &&
-			this.props.selected
-		)
+const isOnlyThisNodeSelected = ({ editor, element, selected }) => {
+	// quick test before doing more work
+	// is there a selection and am I selected?
+	if (!selected || !editor.selection) {
+		return false
 	}
 
-	renderButton() {
-		const otherType = oppositeListType(this.props.element.content.listStyles.type)
+	// use the length of this elements path
+	// to test the selection ends
+	const thisElPathLength = ReactEditor.findPath(editor, element).length
+	// make sure the start and end of the selection
+	// are this element or children of this element.
+	// No need to check if they match this path because
+	// they must be equal to both be in this element.
+	// If they are equal, but not in this element
+	// this code won't be reached.
+	return (
+		editor.selection.anchor.path.slice(0, thisElPathLength).toString() ===
+		editor.selection.focus.path.slice(0, thisElPathLength).toString()
+	)
+}
 
-		return (
-			<div className="buttonbox-box" contentEditable={false}>
-				<div className="box-border">
-					<Button className="toggle-header" altAction onClick={() => toggleType(this.props)}>
-						{`Switch to ${otherType}`}
-					</Button>
-				</div>
+const ListTypeSwitchButton = ({ onClick, switchToType }) => {
+	return (
+		<div className="buttonbox-box" contentEditable={false}>
+			<div className="box-border">
+				<Button className="toggle-header" altAction onClick={onClick}>
+					{`Switch to ${switchToType}`}
+				</Button>
 			</div>
+		</div>
+	)
+}
+
+const List = props => {
+	let switchButton = null
+	if (isOnlyThisNodeSelected(props)) {
+		switchButton = (
+			<ListTypeSwitchButton
+				onClick={() => toggleType(props)}
+				switchToType={oppositeListType(props.element.content.listStyles.type)}
+			/>
 		)
 	}
 
-	render() {
-		return (
-			<Node {...this.props}>
-				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
-					{this.props.children}
-					{this.isOnlyThisNodeSelected() ? this.renderButton() : null}
-				</div>
-			</Node>
-		)
-	}
+	return (
+		<Node {...props}>
+			<div className={'text-chunk obojobo-draft--chunks--list pad'}>
+				{props.children}
+				{switchButton}
+			</div>
+		</Node>
+	)
 }
 
 export default withSlateWrapper(List)
