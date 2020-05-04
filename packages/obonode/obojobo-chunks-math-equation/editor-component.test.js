@@ -5,7 +5,6 @@ import renderer from 'react-test-renderer'
 import MathEquation from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
-import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
@@ -102,62 +101,5 @@ describe('MathEquation Editor Node', () => {
 		jest.runAllTimers()
 
 		expect(editor.toggleEditable).toHaveBeenCalledWith(true)
-	})
-
-	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
-		const component = mount(
-			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
-		)
-
-		expect(Transforms.setNodes).not.toHaveBeenCalled()
-
-		component.setProps({ selected: false })
-
-		expect(Transforms.setNodes).not.toHaveBeenCalled()
-		jest.runAllTimers()
-		expect(Transforms.setNodes).toHaveBeenCalled()
-		expect(Transforms.setNodes.mock.calls[0]).toMatchInlineSnapshot(`
-		Array [
-		  undefined,
-		  Object {
-		    "content": Object {
-		      "alt": "",
-		      "label": "1.1",
-		      "latex": "2x/3",
-		      "size": 1,
-		    },
-		  },
-		  Object {
-		    "at": undefined,
-		  },
-		]
-	`)
-	})
-
-	test('MathEquation component calls setNodeByKey after clicking "Done"', () => {
-		const component = mount(<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} />)
-
-		expect(Transforms.setNodes).not.toHaveBeenCalled()
-		component.setState({ open: true })
-		component.setState({ open: false })
-		jest.runAllTimers()
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
-
-		expect(Transforms.setNodes.mock.calls[0]).toMatchInlineSnapshot(`
-		Array [
-		  undefined,
-		  Object {
-		    "content": Object {
-		      "alt": "",
-		      "label": "1.1",
-		      "latex": "2x/3",
-		      "size": 1,
-		    },
-		  },
-		  Object {
-		    "at": undefined,
-		  },
-		]
-	`)
 	})
 })

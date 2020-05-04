@@ -36,6 +36,7 @@ class MathEquation extends React.Component {
 		const content = this.props.element.content
 		this.state = this.contentToStateObj(content)
 
+		this.path = ReactEditor.findPath(this.props.editor, this.props.element)
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.focusEquation = this.focusEquation.bind(this)
@@ -89,20 +90,17 @@ class MathEquation extends React.Component {
 
 	updateNodeFromState() {
 		const content = this.props.element.content
-		delete this.state.open
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...content, ...this.state } },
+			{ at: this.path }
+		)
 	}
 
 	onChangeContent(key, event) {
 		const newContent = { [key]: event.target.value }
 		this.setState(newContent) // update the display now
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if ((prevProps.selected && !this.props.selected) || (prevState.open && !this.state.open)) {
-			this.updateNodeFromState()
-		}
+		this.updateNodeFromState()
 	}
 
 	freezeEditor() {
