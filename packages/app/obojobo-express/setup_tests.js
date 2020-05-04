@@ -27,7 +27,7 @@ global.oboJestMockConfig = () => {
 	}
 
 	// get the actual empty.xml
-	const realFs = require.requireActual('fs')
+	const realFs = jest.requireActual('fs')
 	const configPath = path.resolve(__dirname, 'server', 'config')
 	const bypassMock = file => {
 		fs.__setMockFileContents(file, realFs.readFileSync(file))
