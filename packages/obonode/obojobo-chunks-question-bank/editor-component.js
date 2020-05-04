@@ -11,7 +11,9 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 import emptyQB from './empty-node.json'
 
 const { Button } = Common.components
+const isOrNot = Common.util.isOrNot
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 
 const remove = (editor, element) => {
 	const path = ReactEditor.findPath(editor, element)
@@ -124,37 +126,101 @@ const displaySettings = (editor, element, content) => {
 	)
 }
 
-const QuestionBank = props => {
-	const { editor, element, children } = props
-	return (
-		<Node {...props}>
-			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<Button
-					className="delete-button"
-					onClick={() => {
-						remove(editor, element)
-					}}>
-					&times;
-				</Button>
-				{displaySettings(editor, element, element.content)}
-				{children}
-				<div className="button-bar">
-					<Button
-						onClick={() => {
-							addQuestion(editor, element)
-						}}>
-						Add Question
-					</Button>
-					<Button
-						onClick={() => {
-							addQuestionBank(editor, element)
-						}}>
-						Add Question Bank
-					</Button>
-				</div>
+class QuestionBank extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			open: true
+		}
+
+		this.toggleOpen = this.toggleOpen.bind(this)
+	}
+
+	// When the selected prop changes from false to true, toggle state open
+
+	toggleOpen() {
+		this.setState(prevState => {
+			if(prevState.open) {
+				// If the qb is the only node, closing fails
+
+				// Move the selection outside of the qb if it is currently in there
+				return ({ open: false })
+			}
+
+			return ({ open: true })
+		})
+	}
+
+	displaySummary() {
+		const { element } = this.props
+
+		const qChildren = element.children.filter(node => node.type === QUESTION_NODE).length
+		const qbChildren = element.children.filter(node => node.type === QUESTION_BANK_NODE).length
+
+		// Parse the number of children into readable text
+		let qText = qChildren > 0 ? qChildren + ' Question' : ''
+		qText = qChildren > 1 ? qText + 's' : qText
+		qText = qText && qbChildren > 0 ? qText + ' and ' : qText
+
+		let qbText = qbChildren > 0 ? qbChildren + ' nested Question Bank' : ''
+		qbText = qbChildren > 1 ? qbText + 's' : qbText
+
+		// There will always be at least one question/questionbank inside a question bank
+		// so we will always need to display this text.
+		return (
+			<div contentEditable={false}>
+				{ qText + qbText + ' hidden' }
 			</div>
-		</Node>
-	)
+		)
+	}
+
+	render() {
+		const { editor, element, children } = this.props
+
+		const className = 'obojobo-draft--chunks--question-bank editor-bank ' 
+			+ isOrNot(this.state.open, 'open')
+
+		return (
+			<Node {...this.props}>
+				<div className={className}>
+					<Button
+						className="collapse-button"
+						onClick={this.toggleOpen}
+						contentEditable={false}>
+						{'⌃'}
+					</Button>
+					<Button
+						className="delete-button"
+						onClick={() => {
+							remove(editor, element)
+						}}
+						contentEditable={false}>
+						&times;
+					</Button>
+					{!this.state.open ? this.displaySummary() : null}
+					<div className="question-bank-content">
+						{displaySettings(editor, element, element.content)}
+						{children}
+						<div className="button-bar">
+							<Button
+								onClick={() => {
+									addQuestion(editor, element)
+								}}>
+								Add Question
+							</Button>
+							<Button
+								onClick={() => {
+									addQuestionBank(editor, element)
+								}}>
+								Add Question Bank
+							</Button>
+						</div>
+					</div>
+				</div>
+			</Node>
+		)
+	}
 }
 
 export default memo(withSlateWrapper(QuestionBank))

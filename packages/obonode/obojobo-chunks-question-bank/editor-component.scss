@@ -8,6 +8,43 @@
 	margin-right: 3em;
 	padding: 1.5em;
 
+	.collapse-button {
+		position: absolute;
+		left: 0;
+		right: auto;
+		top: -0.2em;
+		z-index: 3;
+		transform: rotate(-180deg);
+
+		.button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
+
+			&:hover {
+				background: none;
+				color: $color-obojobo-blue;
+			}
+		}
+	}
+
+	&.is-not-open {
+		.question-bank-content {
+			display: none;
+		}
+
+		.collapse-button {	
+			top: 0;
+			left: -0.2em;
+			transform: rotate(90deg);
+		}
+	}
+
 	// Remove padding for nested questionbanks
 	.obojobo-draft--chunks--question-bank {
 		margin-left: 0;
