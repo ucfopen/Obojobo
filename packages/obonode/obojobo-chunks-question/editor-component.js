@@ -29,14 +29,14 @@ class Question extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, type } },
 			{ at: path }
 		)
 
 		const lastChildIndex = this.props.element.children.length - 1
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
 		)
@@ -101,7 +101,7 @@ class Question extends React.Component {
 				>
 					<div className="flipper question-editor">
 						<div className="content-back">
-							<div className="question-settings">
+							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
 								<select contentEditable={false} defaultValue={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
@@ -119,16 +119,13 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<Button 
-									className="add-solution" 
-									onClick={this.addSolution} 
-									contentEditable={false}>
+								<Button className="add-solution" onClick={this.addSolution} contentEditable={false}>
 									Add Solution
 								</Button>
 							)}
 						</div>
 					</div>
-					<Button className="delete-button" onClick={() => this.delete()}>
+					<Button className="delete-button" onClick={() => this.delete()} contentEditable={false}>
 						×
 					</Button>
 				</div>
@@ -137,4 +134,4 @@ class Question extends React.Component {
 	}
 }
 
-export default withSlateWrapper(Question) 
+export default withSlateWrapper(Question)
