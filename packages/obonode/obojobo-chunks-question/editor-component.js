@@ -95,10 +95,12 @@ class Question extends React.Component {
 		}
 
 		return (
-			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
+			<Node 
+				{...this.props} 
+				className="obojobo-draft--chunks--question--wrapper"
+				hideInsertMenus={ ReactEditor.findPath(this.props.editor, this.props.element).length > 1 }>
 				<div
-					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
-				>
+					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}>
 					<div className="flipper question-editor">
 						<div className="content-back">
 							<div className="question-settings" contentEditable={false}>

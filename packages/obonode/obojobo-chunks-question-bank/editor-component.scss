@@ -45,11 +45,19 @@
 		}
 	}
 
-	// Remove padding for nested questionbanks
+	// Remove padding for nested questionbanks and questions
 	.obojobo-draft--chunks--question-bank {
 		margin-left: 0;
 		margin-right: 0;
 		font-size: 0.9em;
+	}
+
+	.obojobo-draft--chunks--question {
+		&.pad {
+			padding-left: 0;
+			padding-right: 0;
+			font-size: 0.9em;
+		}
 	}
 
 	.qb-settings {
@@ -59,12 +67,15 @@
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: center;
+		user-select: none;
 
 		.choose {
 			display: inline-block;
 			border: none;
 			margin-inline-start: 0;
 			padding-inline-start: 0;
+			padding-block-end: 0;
+			padding-inline-end: 0;
 			margin: 0.5em;
 			text-align: center;
 

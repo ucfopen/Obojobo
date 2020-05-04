@@ -2,10 +2,11 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React, { memo } from 'react'
-import { Transforms } from 'slate'
+import { Transforms, Editor, Point, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import SelectionUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/selection-util'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 
@@ -55,13 +56,20 @@ class QuestionBank extends React.Component {
 		if (prevProps.selected && !this.props.selected) {
 			this.updateNodeFromState()
 		}
+
+		// When the cursor moves into the question bank, expand it
+		if(!prevProps.selected && this.props.selected) {
+			this.setState({ open: true })
+		}
 	}
 
 	updateNodeFromState() {
 		const content = this.props.element.content
+		const openValue = this.state.open
 		delete this.state.open
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
+		this.setState({ open: openValue })
 	}
 
 	remove() {
@@ -148,14 +156,15 @@ class QuestionBank extends React.Component {
 			</div>
 		)
 	}
-
-	// When the selected prop changes from false to true, toggle state open
+	
 	toggleOpen() {
 		this.setState(prevState => {
 			if(prevState.open) {
-				// If the qb is the only node, closing fails
-
 				// Move the selection outside of the qb if it is currently in there
+				const path = ReactEditor.findPath(this.props.editor, this.props.element)
+				SelectionUtil.moveSelectionOutsideNode(this.props.editor, path)
+				
+				// Close the qb
 				return ({ open: false })
 			}
 
@@ -205,7 +214,9 @@ class QuestionBank extends React.Component {
 			+ isOrNot(this.state.open, 'open')
 
 		return (
-			<Node {...this.props}>
+			<Node 
+				{...this.props}
+				hideInsertMenus={ ReactEditor.findPath(this.props.editor, this.props.element).length > 1 }>
 				<div className={className}>
 					<Button
 						className="collapse-button"
