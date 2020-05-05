@@ -593,8 +593,7 @@ exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 					<MCAnswer id=\\"7bd7191b-c804-4394-8883-4c08cd80afab\\">
 						<Text id=\\"cf4720a8-875d-4756-97e2-8fc7632b5f5e\\">
 							<textGroup>
-								<t indent=\\"0\\">
-								</t>
+								<t indent=\\"0\\"></t>
 							</textGroup>
 						</Text>
 					</MCAnswer>
