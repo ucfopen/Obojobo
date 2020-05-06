@@ -1,28 +1,18 @@
 {
 	"object":"block",
 	"type":"ObojoboDraft.Chunks.List",
-	"isVoid":false,
-	"data":{ "content": { "listStyles": { "type": "unordered" } }},
-	"nodes":[
+	"content": { "listStyles": { "type": "unordered" } },
+	"children":[
 		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.List.Level",
-			"isVoid":false,
-			"data": { "content": { "type": "unordered", "bulletStyle": "disc" } },
-			"nodes":[
+			"type":"ObojoboDraft.Chunks.List",
+			"subtype":"ObojoboDraft.Chunks.List.Level",
+			"content": { "type": "unordered", "bulletStyle": "disc" },
+			"children":[
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.List.Line",
-					"isVoid":false,
-					"data": {},
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
+					"type":"ObojoboDraft.Chunks.List",
+					"subtype":"ObojoboDraft.Chunks.List.Line",
+					"content": { "hangingIndent": true },
+					"children":[{ "text": ""}]
 				}
 			]
 		}

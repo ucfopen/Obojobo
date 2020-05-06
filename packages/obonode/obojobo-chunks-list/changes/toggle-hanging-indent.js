@@ -1,8 +1,8 @@
 import toggle from 'obojobo-chunks-text/util/toggle-hanging-indent'
 
-const toggleHangingIndent = (event, editor) => {
+const toggleHangingIndent = (entry, editor, event) => {
 	event.preventDefault()
-	toggle(editor)
+	toggle(entry, editor)
 	return true
 }
 

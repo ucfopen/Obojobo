@@ -30,7 +30,6 @@
 			padding: 0.18em;
 			padding-right: 0.5em;
 			font-weight: normal;
-			font-size: 1rem;
 			cursor: pointer;
 
 			&:hover {
@@ -75,7 +74,8 @@
 		left: 50%;
 		transform: translate(-50%, 0);
 		position: relative;
-		margin: $dimension-padding / 3 0 !important;
+		margin: $dimension-padding / 3;
+		user-select: none;
 	}
 
 	.delete-button {

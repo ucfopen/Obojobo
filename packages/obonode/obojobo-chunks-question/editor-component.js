@@ -1,16 +1,22 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import { Block } from 'slate'
+import { Transforms, Editor } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { Button } = Common.components
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 class Question extends React.Component {
 	constructor(props) {
@@ -24,39 +30,43 @@ class Question extends React.Component {
 	}
 
 	getIsInAssessment() {
-		return (
-			this.props.editor.value.document.getClosest(
-				this.props.node.key,
-				node => node.type === ASSESSMENT_NODE
-			) !== null
-		)
+		return [
+			...Editor.levels(
+				this.props.editor,
+				ReactEditor.findPath(this.props.editor, this.props.element)
+			)
+		].includes(([node]) => node.type)
 	}
 
 	onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
-		const questionData = this.props.node.data
-		const questionDataContent = questionData.get('content')
-		const questionAssessmentNode = this.props.node.nodes
-			.filter(node => node.type === MCASSESSMENT_NODE || node.type === NUMERIC_ASSESSMENT_NODE)
-			.get(0)
-		const questionAssessmentData = questionAssessmentNode.data.toJSON()
+		// const questionData = this.props.node.data
+		// const questionDataContent = questionData.get('content')
+		// const questionAssessmentNode = this.props.node.nodes
+		// 	.filter(node => node.type === MCASSESSMENT_NODE || node.type === NUMERIC_ASSESSMENT_NODE)
+		// 	.get(0)
+		// const questionAssessmentData = questionAssessmentNode.data.toJSON()
 
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...questionDataContent,
-					type
-				}
-			}
-		})
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, type } },
+			{ at: path }
+		)
 
 		// This will force an update to the question assessment child:
-		this.props.editor.setNodeByKey(questionAssessmentNode.key, {
-			data: {
-				...questionAssessmentData
-				// questionType: type
-			}
-		})
+		// this.props.editor.setNodeByKey(questionAssessmentNode.key, {
+		// 	data: {
+		// 		...questionAssessmentData
+		// 		// questionType: type
+		// 	}
+		// })
+		const lastChildIndex = this.props.element.children.length - 1
+		return Transforms.setNodes(
+			this.props.editor,
+			{ questionType: type },
+			{ at: path.concat(lastChildIndex) }
+		)
 	}
 
 	onSetRevealAnswer(event) {
@@ -78,63 +88,101 @@ class Question extends React.Component {
 	onSetAssessmentType(event) {
 		const type = event.target.value
 
-		const newAssessment = Block.create({
+		const newBlock = {
 			type,
-			data: {
-				content: {
-					numericChoices: [
-						{
-							type: 'percent',
-							score: 100,
-							answer: '3',
-							margin: '3',
-							requirement: 'margin'
-						},
-						{
-							type: 'absolute',
-							score: 100,
-							answer: '3',
-							margin: '3',
-							requirement: 'margin'
-						}
-					]
-				}
-			}
-		})
+			content: {
+				numericChoices: [
+					{
+						type: 'percent',
+						score: 100,
+						answer: '3',
+						margin: '3',
+						requirement: 'margin'
+					},
+					{
+						type: 'absolute',
+						score: 100,
+						answer: '3',
+						margin: '3',
+						requirement: 'margin'
+					}
+				]
+			},
+			children: [{ text: '' }]
+		}
 
-		this.props.editor.replaceNodeByKey(
-			this.props.node.nodes.get(this.props.node.nodes.size - 1).key,
-			newAssessment
-		)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
+		Editor.withoutNormalizing(this.props.editor, () => {
+			Transforms.removeNodes(this.props.editor, {
+				at: path.concat(this.props.element.children.length - 1)
+			})
+			//@TODO: Not handling solution
+			Transforms.insertNodes(this.props.editor, newBlock, {
+				at: path.concat(this.props.element.children.length - 1)
+			})
+		})
 	}
 
 	delete() {
-		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
 	addSolution() {
-		const editor = this.props.editor
-		const newQuestion = Block.create({
-			type: SOLUTION_NODE
-		})
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		return Transforms.insertNodes(
+			this.props.editor,
+			{
+				type: QUESTION_NODE,
+				subtype: SOLUTION_NODE,
+				content: { score: 0 },
+				children: [
+					{
+						type: PAGE_NODE,
+						content: {},
+						children: [
+							{
+								type: TEXT_NODE,
+								content: {},
+								children: [
+									{
+										type: TEXT_NODE,
+										subtype: TEXT_LINE_NODE,
+										content: { indent: 0 },
+										children: [{ text: '' }]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{ at: path.concat(this.props.element.children.length) }
+		)
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
-		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		// const content = this.props.node.data.get('content')
+		// const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		// return <div>QUESTION</div>
+
+		const element = this.props.element
+		const content = element.content
+		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
 		const revealAnswer = content.revealAnswer
 		const isTypeSurvey = content.type === 'survey'
-		let questionType
+		const questionType = element.content.type
+
+		// let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
-		if (hasSolution) {
-			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
-		} else {
-			questionType = this.props.node.nodes.last().type
-		}
+		// if (hasSolution) {
+		// 	questionType = element.children[element.children.length - 2].type
+		// } else {
+		// 	questionType = element.children[element.children.length - 1]
+		// }
 
 		return (
 			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
@@ -166,7 +214,7 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<Button className="add-solution" onClick={this.addSolution}>
+								<Button className="add-solution" onClick={this.addSolution} contentEditable={false}>
 									Add Solution
 								</Button>
 							)}
@@ -196,4 +244,4 @@ class Question extends React.Component {
 	}
 }
 
-export default Question
+export default withSlateWrapper(Question)

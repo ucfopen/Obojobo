@@ -2,135 +2,108 @@
 
 exports[`Table Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "header": true,
-      "numCols": 2,
-      "numRows": undefined,
-      "textGroup": Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "text": "Mock1",
+            },
+          ],
+          "content": Object {
+            "header": true,
+          },
+          "subtype": "ObojoboDraft.Chunks.Table.Cell",
+          "type": "ObojoboDraft.Chunks.Table",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "text": "Mock2",
+            },
+          ],
+          "content": Object {
+            "header": true,
+          },
+          "subtype": "ObojoboDraft.Chunks.Table.Cell",
+          "type": "ObojoboDraft.Chunks.Table",
+        },
+      ],
+      "content": Object {
+        "header": true,
         "numCols": 2,
-        "textGroup": Array [
-          Object {
-            "text": Object {
-              "value": "Mock1",
-            },
-          },
-          Object {
-            "text": Object {
-              "value": "Mock2",
-            },
-          },
-          Object {
-            "text": Object {
-              "value": "Mock3",
-            },
-          },
-          Object {
-            "text": Object {
-              "value": "Mock4",
-            },
-          },
-        ],
       },
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
-    Object {
-      "data": Object {
-        "content": Object {
-          "header": true,
-          "numCols": 2,
-        },
-      },
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "content": Object {
-              "header": true,
-            },
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                undefined,
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.Table.Cell",
-        },
-        Object {
-          "data": Object {
-            "content": Object {
-              "header": true,
-            },
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                undefined,
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.Table.Cell",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Table.Row",
+      "subtype": "ObojoboDraft.Chunks.Table.Row",
+      "type": "ObojoboDraft.Chunks.Table",
     },
     Object {
-      "data": Object {
-        "content": Object {
-          "header": false,
-          "numCols": 2,
-        },
-      },
-      "nodes": Array [
+      "children": Array [
         Object {
-          "data": Object {
-            "content": Object {
-              "header": false,
-            },
-          },
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": Array [
-                undefined,
-              ],
-              "object": "text",
+              "text": "Mock3",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.Table.Cell",
+          "content": Object {
+            "header": false,
+          },
+          "subtype": "ObojoboDraft.Chunks.Table.Cell",
+          "type": "ObojoboDraft.Chunks.Table",
         },
         Object {
-          "data": Object {
-            "content": Object {
-              "header": false,
-            },
-          },
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": Array [
-                undefined,
-              ],
-              "object": "text",
+              "text": "Mock4",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.Table.Cell",
+          "content": Object {
+            "header": false,
+          },
+          "subtype": "ObojoboDraft.Chunks.Table.Cell",
+          "type": "ObojoboDraft.Chunks.Table",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Table.Row",
+      "content": Object {
+        "header": false,
+        "numCols": 2,
+      },
+      "subtype": "ObojoboDraft.Chunks.Table.Row",
+      "type": "ObojoboDraft.Chunks.Table",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "header": true,
+    "numCols": 2,
+    "numRows": undefined,
+    "textGroup": Object {
+      "numCols": 2,
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "value": "Mock1",
+          },
+        },
+        Object {
+          "text": Object {
+            "value": "Mock2",
+          },
+        },
+        Object {
+          "text": Object {
+            "value": "Mock3",
+          },
+        },
+        Object {
+          "text": Object {
+            "value": "Mock4",
+          },
+        },
+      ],
+    },
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -141,14 +114,14 @@ Object {
   "content": Object {
     "header": true,
     "textGroup": Object {
-      "numCols": undefined,
-      "numRows": undefined,
+      "numCols": 1,
+      "numRows": 1,
       "textGroup": Array [
         Object {
           "text": Object {
             "styleList": Array [
               Object {
-                "data": true,
+                "data": Object {},
                 "end": 8,
                 "start": 0,
                 "type": "b",

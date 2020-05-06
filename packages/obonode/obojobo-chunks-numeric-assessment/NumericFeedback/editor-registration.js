@@ -14,7 +14,7 @@ const NumericFeedback = {
 	helpers: Converter,
 	plugins: {
 		renderNode(props, editor, next) {
-			switch (props.node.type) {
+			switch (props.element.type) {
 				case NUMERIC_FEEDBACK_NODE:
 					return <Node {...props} {...props.attributes} />
 				default:

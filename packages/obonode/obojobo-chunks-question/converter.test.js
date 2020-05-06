@@ -22,6 +22,7 @@ jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
 )
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
@@ -32,13 +33,11 @@ describe('Question editor', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}
@@ -48,17 +47,18 @@ describe('Question editor', () => {
 					type: MCASSESSMENT_NODE
 				},
 				{
-					type: SOLUTION_NODE,
-					nodes: {
-						get: () => ({
+					type: QUESTION_NODE,
+					subtype: SOLUTION_NODE,
+					children: [
+						{
 							type: 'oboeditor.component',
-							nodes: [
+							children: [
 								{
 									type: 'mockNode'
 								}
 							]
-						})
-					}
+						}
+					]
 				}
 			]
 		}

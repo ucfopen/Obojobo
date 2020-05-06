@@ -191,7 +191,7 @@ class AssessmentStore extends Store {
 
 		// debugger
 
-		if (assessment.unfinishedAttempt) {
+		if (assessment && assessment.unfinishedAttempt) {
 			NavUtil.goto(assessment.unfinishedAttempt.assessmentId)
 			const machine = this.state.machines[assessment.unfinishedAttempt.assessmentId]
 

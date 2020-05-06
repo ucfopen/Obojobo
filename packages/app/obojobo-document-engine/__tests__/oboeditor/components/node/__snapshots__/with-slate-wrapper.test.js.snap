@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slate Wrapper Node Node builds the expected component 1`] = `"<p>Mock Content</p>"`;
+
+exports[`Slate Wrapper Node Node builds the expected component with no selection 1`] = `"<p>Mock Content</p>"`;

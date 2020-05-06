@@ -9,6 +9,7 @@
 		cursor: default;
 		position: relative;
 		border: 3px solid transparentize($color-action, 0.7);
+		user-select: none;
 
 		.obojobo-draft--components--button {
 			transition: opacity 0.2s linear 0.2s;

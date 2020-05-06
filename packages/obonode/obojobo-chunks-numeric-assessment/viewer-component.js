@@ -571,20 +571,26 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 									) : (
 										<React.Fragment>
 											<h2>Correct answers:</h2>
-											<ul>
-												{correctRules.map((rule, index) => {
-													return (
-														<li key={index}>
-															<span>
-																{this.renderRangeSummary(this.getRangeSummary(rule.value))}
-															</span>
-															<span>
-																{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}
-															</span>
-														</li>
-													)
-												})}
-											</ul>
+											{correctRules.length === 0 ? (
+												<span className="no-correct-answers">
+													(There are no correct answers for this question)
+												</span>
+											) : (
+												<ul>
+													{correctRules.map((rule, index) => {
+														return (
+															<li key={index}>
+																<span>
+																	{this.renderRangeSummary(this.getRangeSummary(rule.value))}
+																</span>
+																<span>
+																	{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}
+																</span>
+															</li>
+														)
+													})}
+												</ul>
+											)}
 										</React.Fragment>
 									)}
 								</div>
