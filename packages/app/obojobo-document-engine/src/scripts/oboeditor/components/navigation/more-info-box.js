@@ -164,6 +164,7 @@ class MoreInfoBox extends React.Component {
 							type="text"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
+							placeholder={description.placeholder || ''}
 							onClick={stopPropagation}
 						/>
 					</div>
