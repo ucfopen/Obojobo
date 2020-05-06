@@ -56,7 +56,7 @@ describe('Header', () => {
 		const result = component.instance().renamePage('page-id', 'old-title', null)
 
 		expect(result).toBe('')
-		expect(EditorUtil.renamePage).toHaveBeenCalledWith('page-id', '')
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
 	})
 
 	test('renamePage handles undefined', () => {
@@ -74,7 +74,7 @@ describe('Header', () => {
 		const result = component.instance().renamePage('page-id', 'old-title', undefined)
 
 		expect(result).toBe('')
-		expect(EditorUtil.renamePage).toHaveBeenCalledWith('page-id', '')
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
 	})
 
 	test('renamePage trims the new title', () => {
@@ -88,7 +88,6 @@ describe('Header', () => {
 			]
 		}
 		const component = mount(<Header {...props} />)
-		// eslint-disable-next-line no-undefined
 		const result = component.instance().renamePage('page-id', 'old-title', '  new title  ')
 
 		expect(result).toBe('new title')
@@ -106,14 +105,13 @@ describe('Header', () => {
 			]
 		}
 		const component = mount(<Header {...props} />)
-		// eslint-disable-next-line no-undefined
 		const result = component.instance().renamePage('page-id', 'old-title', 'old-title')
 
 		expect(result).toBe('old-title')
 		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
 	})
 
-	test('saveContent updates the model', () => {
+	test('saveContent updates the model when the new module title is valid', () => {
 		const props = {
 			index: 0,
 			list: [
@@ -130,6 +128,8 @@ describe('Header', () => {
 		}
 		const component = mount(<Header {...props} />)
 		component.instance().saveContent({}, {})
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
 		component.instance().saveContent(
 			{},
 			{
@@ -137,15 +137,49 @@ describe('Header', () => {
 				title: '     '
 			}
 		)
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
 		component.instance().saveContent(
 			{},
 			{
-				triggers: [],
 				title: 'Mock Title'
 			}
 		)
+		expect(Common.models.OboModel.models['5'].set).toHaveBeenCalledTimes(1)
+	})
 
-		expect(Common.models.OboModel.models['5'].set).toHaveBeenCalledTimes(3)
+	test('saveContent returns a message when the new module title is not a non-empty string', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+
+		let saveContentResponse
+
+		saveContentResponse = component.instance().saveContent({}, {})
+		expect(saveContentResponse).toBe('Module must have a title!')
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
+		saveContentResponse = component.instance().saveContent(
+			{},
+			{
+				triggers: [],
+				title: '     '
+			}
+		)
+		expect(saveContentResponse).toBe('Module must have a title!')
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
 	})
 
 	test('saveId updates the model', () => {
