@@ -1,22 +1,36 @@
 @import '../../../scss/includes';
 
-.editor--components--editor-title-input {
-	font-size: 1.2em;
+.editor--components--editor-title-input-parent {
+	position: absolute;
 	margin-left: 0.6em;
 	margin-top: 0.5em;
-	font-family: $font-default;
-	border: 1px solid $color-bg;
-	width: 30em;
-	max-height: 1em;
-	line-height: 1em;
-	overflow: hidden;
-	white-space: nowrap;
-	position: absolute;
-	padding: 0.2em;
-	border-radius: 0.15em;
-	transform: translate(-0.2em, -0.2em);
 
-	&:hover {
-		border: 1px solid $color-shadow;
+	.editor--components--editor-title-input,
+	.empty-title-warning {
+		font-family: $font-default;
+		max-height: 1em;
+		line-height: 1em;
+		padding: 0.2em;
+		transform: translate(-0.2em, -0.2em);
+	}
+
+	.empty-title-warning {
+		position: absolute;
+		right: 0;
+		top: 100%;
+		color: $color-error;
+	}
+
+	.editor--components--editor-title-input {
+		font-size: 1.2em;
+		border: 1px solid $color-bg;
+		width: 30em;
+		overflow: hidden;
+		white-space: nowrap;
+		border-radius: 0.15em;
+
+		&:hover {
+			border: 1px solid $color-shadow;
+		}
 	}
 }

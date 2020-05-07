@@ -168,7 +168,7 @@ describe('Header', () => {
 		let saveContentResponse
 
 		saveContentResponse = component.instance().saveContent({}, {})
-		expect(saveContentResponse).toBe('Module must have a title!')
+		expect(saveContentResponse).toBe('Module title must not be empty!')
 		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
 
 		saveContentResponse = component.instance().saveContent(
@@ -178,7 +178,7 @@ describe('Header', () => {
 				title: '     '
 			}
 		)
-		expect(saveContentResponse).toBe('Module must have a title!')
+		expect(saveContentResponse).toBe('Module title must not be empty!')
 		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
 	})
 

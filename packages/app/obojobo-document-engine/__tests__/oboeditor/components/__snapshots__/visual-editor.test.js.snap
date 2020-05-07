@@ -500,15 +500,20 @@ exports[`VisualEditor VisualEditor component 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1010,15 +1015,20 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1520,15 +1530,20 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="visual-editor--content-toolbar"
     >
@@ -2076,15 +2091,20 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="visual-editor--content-toolbar"
     >
@@ -2582,15 +2602,20 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="visual-editor--content-toolbar"
     >

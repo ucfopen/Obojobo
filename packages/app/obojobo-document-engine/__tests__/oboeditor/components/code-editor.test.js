@@ -85,7 +85,7 @@ describe('CodeEditor', () => {
 		expect(thing.html()).toMatchSnapshot()
 	})
 
-	test('changes the Editor title to blank', () => {
+	test('can not change the Editor title to blank', () => {
 		const props = {
 			initialCode: '{ "content": {} }',
 			mode: JSON_MODE
@@ -108,6 +108,14 @@ describe('CodeEditor', () => {
 			.find('input')
 			.at(0)
 			.simulate('blur')
+
+		expect(
+			thing
+				.find('input')
+				.at(0)
+				.props()['aria-invalid']
+		).toBe(true)
+		expect(thing.find('.empty-title-warning').length).toBe(1)
 
 		expect(thing.html()).toMatchSnapshot()
 	})

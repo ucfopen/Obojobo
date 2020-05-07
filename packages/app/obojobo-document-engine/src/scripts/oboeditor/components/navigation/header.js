@@ -52,7 +52,7 @@ class Header extends React.Component {
 		const model = OboModel.models[item.id]
 
 		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
-		if (newContent.title === '') return 'Module must have a title!'
+		if (newContent.title === '') return 'Module title must not be empty!'
 		model.triggers = newContent.triggers || []
 
 		model.set({ content: newContent }) // may cause store update?

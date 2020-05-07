@@ -514,7 +514,7 @@ describe('VisualEditor', () => {
 		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
 	})
 
-	test('changes the Editor title to blank', () => {
+	test('can not change the Editor title to blank', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -569,9 +569,18 @@ describe('VisualEditor', () => {
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
 
-		// verify save and rename are called
-		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', '')
-		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
+		// verify save and rename are not called
+		expect(EditorUtil.renameModule).not.toHaveBeenCalled()
+		expect(saveModule).not.toHaveBeenCalled()
+
+		// verify input aria-invalid tag is set and warning div exists
+		expect(
+			thing
+				.find('input')
+				.at(0)
+				.props()['aria-invalid']
+		).toBe(true)
+		expect(thing.find('.empty-title-warning').length).toBe(1)
 	})
 
 	test('Ensures the plugins work as expected', () => {
