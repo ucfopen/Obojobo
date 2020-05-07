@@ -2,7 +2,6 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
-import EditorUtil from '../../util/editor-util'
 import APIUtil from '../../../viewer/util/api-util'
 import { downloadDocument } from '../../../common/util/download-document'
 
@@ -13,24 +12,6 @@ const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
-	renameModule(moduleId, label) {
-		ModalUtil.hide()
-
-		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-
-		EditorUtil.renamePage(moduleId, label)
-
-		if (this.props.onRename) {
-			this.props.onRename(label)
-		}
-	}
-
-	renameAndSaveModule(moduleId, label) {
-		this.renameModule(moduleId, label)
-		this.props.onSave(this.props.draftId)
-	}
-
 	deleteModule() {
 		return APIUtil.deleteDraft(this.props.draftId).then(result => {
 			if (result.status === 'ok') {
@@ -39,20 +20,11 @@ class FileMenu extends React.PureComponent {
 		})
 	}
 
-	copyModule(moduleId, label) {
-		const oldLabel = this.props.model.title
-		let draftId = null
-
-		APIUtil.createNewDraft()
-			.then(result => {
-				draftId = result.value.id
-				this.renameModule(moduleId, label)
-				return this.props.onSave(draftId)
-			})
-			.then(() => {
-				this.renameModule(moduleId, oldLabel)
-				window.open(window.location.origin + '/editor/visual/' + draftId, '_blank')
-			})
+	copyModule(newTitle) {
+		ModalUtil.hide()
+		return APIUtil.copyDraft(this.props.draftId, newTitle).then(result => {
+			window.open(window.location.origin + '/editor/visual/' + result.value.draftId, '_blank')
+		})
 	}
 
 	processFileContent(id, content, type) {
@@ -117,21 +89,8 @@ class FileMenu extends React.PureComponent {
 						<Prompt
 							title="Copy Module"
 							message="Enter the title for the copied module:"
-							value={this.props.model.title + ' - Copy'}
-							onConfirm={this.copyModule.bind(this, this.props.model.id)}
-						/>
-					)
-			},
-			{
-				name: 'Rename...',
-				type: 'action',
-				action: () =>
-					ModalUtil.show(
-						<Prompt
-							title="Rename Module"
-							message="Enter the new title for the module:"
-							value={this.props.model.title}
-							onConfirm={this.renameAndSaveModule.bind(this, this.props.model.id)}
+							value={this.props.title + ' - Copy'}
+							onConfirm={this.copyModule.bind(this)}
 						/>
 					)
 			},

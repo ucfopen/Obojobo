@@ -1,6 +1,7 @@
-import './page-editor.scss'
+import './visual-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -16,7 +17,9 @@ import OboNodePlugin from '../plugins/obonode-plugin'
 import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import PageEditorErrorBoundry from './page-editor-error-boundry'
+import VisualEditorErrorBoundry from './visual-editor-error-boundry'
+import EditorTitleInput from './editor-title-input'
+import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
@@ -33,7 +36,7 @@ import { withHistory } from 'slate-history'
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
 
-class PageEditor extends React.Component {
+class VisualEditor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
@@ -44,9 +47,11 @@ class PageEditor extends React.Component {
 			value: json,
 			saved: true,
 			editable: json && json.length >= 1 && !json[0].text,
-			showPlaceholders: true
+			showPlaceholders: true,
+			contentRect: null
 		}
 
+		this.pageEditorContainerRef = React.createRef()
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
@@ -61,6 +66,8 @@ class PageEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
+		this.renameModule = this.renameModule.bind(this)
+		this.onResized = this.onResized.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -148,11 +155,29 @@ class PageEditor extends React.Component {
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
 		ReactEditor.focus(this.editor)
+		this.setupResizeObserver()
+	}
+
+	setupResizeObserver() {
+		if (
+			!window.ResizeObserver ||
+			!window.ResizeObserver.prototype ||
+			!window.ResizeObserver.prototype.observe ||
+			!window.ResizeObserver.prototype.disconnect
+		) {
+			return false
+		}
+
+		this.resizeObserver = new ResizeObserver(this.onResized)
+		this.resizeObserver.observe(this.pageEditorContainerRef.current)
+
+		return true
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
 		window.removeEventListener('keydown', this.onKeyDownGlobal)
+		if (this.resizeObserver) this.resizeObserver.disconnect()
 	}
 
 	checkIfSaved(event) {
@@ -270,6 +295,12 @@ class PageEditor extends React.Component {
 		if (!ReactEditor.isFocused(this.editor)) ReactEditor.focus(this.editor)
 	}
 
+	onResized(event) {
+		this.setState({
+			contentRect: event.contentRect
+		})
+	}
+
 	// Methods that handle movement between pages
 	componentDidUpdate(prevProps, prevState) {
 		// Do nothing when updating state from empty page
@@ -306,6 +337,11 @@ class PageEditor extends React.Component {
 				ReactEditor.focus(this.editor)
 			})
 		}
+	}
+
+	renameModule(label) {
+		EditorUtil.renameModule(this.props.model.id, label)
+		this.saveModule(this.props.draftId)
 	}
 
 	saveModule(draftId) {
@@ -441,7 +477,6 @@ class PageEditor extends React.Component {
 	}
 
 	// All the render methods that allow the editor to display properly
-
 	renderLeaf(props) {
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
 		const { attributes, children, leaf } = props
@@ -471,17 +506,18 @@ class PageEditor extends React.Component {
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
-			<div className={className}>
+			<div className={className} ref={this.pageEditorContainerRef}>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">
-						<div className="draft-title">{this.props.model.title}</div>
+						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
 						<Button className="skip-nav" onClick={() => ReactEditor.focus(this.editor)}>
 							Skip to Editor
 						</Button>
 						<FileToolbar
 							editor={this.editor}
 							selection={this.editor.selection}
-							model={this.props.model}
+							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
 							reload={this.reload}
@@ -504,7 +540,7 @@ class PageEditor extends React.Component {
 					/>
 
 					<div className="component obojobo-draft--modules--module" role="main">
-						<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
 								renderElement={this.renderElement.bind(this)}
@@ -514,7 +550,7 @@ class PageEditor extends React.Component {
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>
-						</PageEditorErrorBoundry>
+						</VisualEditorErrorBoundry>
 					</div>
 				</Slate>
 			</div>
@@ -522,4 +558,4 @@ class PageEditor extends React.Component {
 	}
 }
 
-export default PageEditor
+export default VisualEditor

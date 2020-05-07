@@ -2,5 +2,5 @@
 
 exports[`File Menu File Menu node 1`] = `
 "<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">File</button><div class=\\"menu-items\\"><button>Save Module<span>
-CTRL+S</span></button><button>New</button><button>Make a copy...</button><button>Rename...</button><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Download</button><div class=\\"menu-items\\"><button>XML Document (.xml)</button><button>JSON Document (.json)</button></div></div><button>Import from file...</button><button>Delete Module...</button><button>Copy LTI Link</button></div></div></div>"
+CTRL+S</span></button><button>New</button><button>Make a copy...</button><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Download</button><div class=\\"menu-items\\"><button>XML Document (.xml)</button><button>JSON Document (.json)</button></div></div><button>Import from file...</button><button>Delete Module...</button><button>Copy LTI Link</button></div></div></div>"
 `;

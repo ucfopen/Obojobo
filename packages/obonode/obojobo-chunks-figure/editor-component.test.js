@@ -37,6 +37,14 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -57,6 +65,14 @@ describe('Figure Editor Node', () => {
 						height: 'customHeight'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -69,6 +85,14 @@ describe('Figure Editor Node', () => {
 						url: 'mockUrl',
 						alt: 'mockAlt',
 						height: 'customHeight'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -85,6 +109,14 @@ describe('Figure Editor Node', () => {
 						width: 'customWidth'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		expect(componentNoHeight.toJSON()).toMatchSnapshot()
@@ -97,6 +129,15 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 
@@ -149,6 +190,14 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 				selected={true}
 			/>
 		)
@@ -169,6 +218,14 @@ describe('Figure Editor Node', () => {
 				element={{
 					id: 'mockKey',
 					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				selected={false}
 			/>
@@ -193,6 +250,15 @@ describe('Figure Editor Node', () => {
 					key: 'mockKey',
 					content: mockContent
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 				selected={true}
 			/>
 		)
@@ -202,7 +268,26 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('Figure component delete button calls Transforms', () => {
-		const component = mount(<Figure element={{ content: {} }} selected={true} />)
+		const component = mount(
+			<Figure
+				node={{
+					data: {
+						get: () => ({})
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
+				element={{ content: {} }}
+				selected={true}
+			/>
+		)
 
 		const deleteButton = component.find('button').at(0)
 		expect(deleteButton.props().children).toBe('×')

@@ -10,6 +10,9 @@ import TriggerListModal from '../triggers/trigger-list-modal'
 const { Button, Switch } = Common.components
 const { ModalUtil } = Common.util
 
+// convenience function to reduce function creation in render
+const stopPropagation = event => event.stopPropagation()
+
 // Expected Props:
 // id: String - the id of the item to edit
 // content: Object - the item data for the node.  Each key-value pair would be edited independantly
@@ -65,6 +68,15 @@ class MoreInfoBox extends React.Component {
 			this.idInput.current.focus()
 			setTimeout(() => { this.idInput.current.select() }, 200)
 		}
+
+		// If the component's content is updated we want to update our data
+		// (This can happen, for example, when updating triggers from the ActionButton's
+		// onClick shortcut menu)
+		if (prevProps.content !== this.props.content) {
+			this.setState({
+				content: this.props.content
+			})
+		}
 	}
 
 	handleClick(event) {
@@ -87,7 +99,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	handleContentChange(key, event) {
-		event.stopPropagation()
+		stopPropagation(event)
 		const newContent = {}
 		newContent[key] = event.target.value
 
@@ -125,7 +137,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	toggleOpen(event) {
-		event.stopPropagation()
+		stopPropagation(event)
 
 		if (this.state.isOpen) {
 			if (this.state.needsUpdate) {
@@ -170,7 +182,7 @@ class MoreInfoBox extends React.Component {
 							type="text"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
-							onClick={event => event.stopPropagation()}
+							onClick={stopPropagation}
 						/>
 					</div>
 				)
@@ -182,7 +194,7 @@ class MoreInfoBox extends React.Component {
 							className="select-item"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
-							onClick={event => event.stopPropagation()}
+							onClick={stopPropagation}
 						>
 							{description.values.map(option => (
 								<option value={option.value} key={option.value}>
@@ -232,7 +244,7 @@ class MoreInfoBox extends React.Component {
 									value={this.state.currentId}
 									onChange={this.handleIdChange}
 									className="id-input"
-									onClick={event => event.stopPropagation()}
+									onClick={stopPropagation}
 									ref={this.idInput}
 								/>
 								<Button
@@ -255,23 +267,35 @@ class MoreInfoBox extends React.Component {
 									</span>
 								) : null}
 							</span>
-							<Button className="trigger-button" onClick={this.showTriggersModal}>
+							<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
 								✎ Edit
 							</Button>
 						</div>
 						{this.props.hideButtonBar ? null : (
 							<div className="button-bar">
-								<Button className="delete-page-button" onClick={this.props.deleteNode}>
+								<Button altAction isDangerous onClick={this.props.deleteNode}>
 									Delete
 								</Button>
 								{!this.props.isAssessment ? (
-									<Button onClick={this.props.duplicateNode}>Duplicate</Button>
+									<Button altAction onClick={this.props.duplicateNode}>
+										Duplicate
+									</Button>
 								) : null}
-								{this.props.isFirst ? null : (
-									<Button onClick={() => this.props.moveNode(this.props.index - 1)}>Move Up</Button>
+								{!this.props.showMoveButtons ? null : (
+									<Button
+										disabled={this.props.isFirst}
+										altAction
+										onClick={() => this.props.moveNode(this.props.index - 1)}
+									>
+										Move Up
+									</Button>
 								)}
-								{this.props.isLast ? null : (
-									<Button onClick={() => this.props.moveNode(this.props.index + 1)}>
+								{!this.props.showMoveButtons ? null : (
+									<Button
+										disabled={this.props.isLast}
+										altAction
+										onClick={() => this.props.moveNode(this.props.index + 1)}
+									>
 										Move Down
 									</Button>
 								)}

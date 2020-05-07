@@ -38,6 +38,14 @@ describe('IFrame Editor Node', () => {
 						title: 'mockTitle'
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		const tree = component.toJSON()
@@ -57,6 +65,14 @@ describe('IFrame Editor Node', () => {
 					}
 				}}
 				selected
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
@@ -73,6 +89,15 @@ describe('IFrame Editor Node', () => {
 						src: ''
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 
@@ -93,6 +118,14 @@ describe('IFrame Editor Node', () => {
 						border: false,
 						initialZoom: 1,
 						src: ''
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -152,6 +185,15 @@ describe('IFrame Editor Node', () => {
 						initialZoom: 1
 					}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 

@@ -36,10 +36,9 @@ const FormatMenu = props => {
 		type: 'sub-menu',
 		menu: [
 			{
-				name: 'Text',
+				name: 'Normal Text',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+Space',
-				shortcutMac: '⌘+Shift+Space',
 				action: () => props.editor.changeToType(TEXT_NODE)
 			},
 			{
@@ -82,7 +81,6 @@ const FormatMenu = props => {
 				name: 'Code',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+C',
-				shortcutMac: '⌘+Shift+C',
 				action: () => props.editor.changeToType(CODE_NODE)
 			}
 		]

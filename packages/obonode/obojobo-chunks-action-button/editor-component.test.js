@@ -73,6 +73,17 @@ describe('ActionButton Editor Node', () => {
 		expect(component.root.find(Node).props).toMatchSnapshot()
 	})
 
+	test('builds the expected component (with no onClickAction)', () => {
+		nodeData.content.triggers = []
+		const component = renderer.create(<ActionButton element={nodeData} selected={true} />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+
+		// make sure node recieves props since we're mocking it
+		expect(component.root.find(Node).props).toMatchSnapshot()
+	})
+
 	test('opens modal', () => {
 		const component = mount(<ActionButton element={nodeData} selected={true} />)
 
@@ -108,8 +119,42 @@ describe('ActionButton Editor Node', () => {
 		}
 		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
 
-		component.instance().closeModal()
+		component.instance().closeModal({
+			triggers: {
+				mockNewTrigger: {
+					type: 'mockNewTrigger',
+					actions: [
+						{
+							type: 'mockNewAction'
+						}
+					]
+				}
+			}
+		})
 
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{
+				content: {
+					actions: [
+						{
+							type: 'mockType',
+							value: 'mockValue'
+						}
+					],
+					triggers: [
+						{
+							type: 'mockNewTrigger',
+							actions: [
+								{
+									type: 'mockNewAction'
+								}
+							]
+						}
+					]
+				}
+			},
+			{ at: undefined }
+		)
 	})
 })

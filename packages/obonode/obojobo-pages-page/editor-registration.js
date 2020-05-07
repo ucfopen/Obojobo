@@ -24,7 +24,7 @@ const Page = {
 					// Wrap text childen in a score node
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: TEXT_NODE,
 								content: {}
@@ -37,11 +37,8 @@ const Page = {
 
 				// Page parent normalization
 				const [parent] = Editor.parent(editor, path)
-				if(!parent || parent.type === PAGE_NODE) {
-					Transforms.unwrapNodes(
-						editor, 
-						{ at: path }
-					)
+				if (!parent || parent.type === PAGE_NODE) {
+					Transforms.unwrapNodes(editor, { at: path })
 					return
 				}
 			}
@@ -57,11 +54,13 @@ const Page = {
 
 		if (model.title) {
 			label = '' + model.title
-		} else {
+		} else if (model.parent) {
 			const pages = model.parent.children.models.filter(
 				child => child.get('type') === 'ObojoboDraft.Pages.Page'
 			)
 			label = `Page ${pages.indexOf(model) + 1}`
+		} else {
+			label = `Page`
 		}
 
 		return {

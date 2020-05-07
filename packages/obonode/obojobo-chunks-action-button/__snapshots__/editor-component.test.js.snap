@@ -1,5 +1,73 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ActionButton Editor Node builds the expected component (with no onClickAction) 1`] = `
+<div>
+  <div
+    className="text-chunk obojobo-draft--chunks--action-button pad"
+  >
+    <div
+      className="obojobo-draft--components--button align-center"
+    >
+      <div
+        className="button"
+      />
+    </div>
+    <div
+      className="trigger-box"
+      contentEditable={false}
+    >
+      <div
+        className="box-border"
+      >
+        <div
+          className="trigger-list"
+        >
+          <div
+            className="title"
+          >
+            When the button is clicked:
+          </div>
+          <div
+            className="trigger no-actions"
+          >
+            (No action set)
+          </div>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            Set an action...
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButton Editor Node builds the expected component (with no onClickAction) 2`] = `
+Object {
+  "element": Object {
+    "content": Object {
+      "actions": Array [
+        Object {
+          "type": "mockType",
+          "value": "mockValue",
+        },
+      ],
+      "triggers": Array [],
+    },
+  },
+  "selected": true,
+}
+`;
+
 exports[`ActionButton Editor Node builds the expected component 1`] = `
 <div>
   <div

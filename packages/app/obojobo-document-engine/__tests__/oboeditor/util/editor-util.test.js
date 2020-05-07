@@ -33,6 +33,17 @@ describe('EditorUtil', () => {
 		restoreConsole()
 	})
 
+	test('renameModule dispatches editor:renameModule', () => {
+		EditorUtil.renameModule('mock-draft-id', 'New Name')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:renameModule', {
+			value: {
+				moduleId: 'mock-draft-id',
+				name: 'New Name'
+			}
+		})
+	})
+
 	test('rebuildMenu calls editor:rebuildMenu', () => {
 		EditorUtil.rebuildMenu('mockOboModel')
 
@@ -293,18 +304,18 @@ describe('EditorUtil', () => {
 	test('getTitleFromJSON returns unnamed', () => {
 		const title = EditorUtil.getTitleFromString('{"content":{"title":"  "}}', 'json')
 
-		expect(title).toEqual('(Unnamed Module)')
+		expect(title).toEqual('')
 	})
 
 	test('getTitleFromJSON returns title', () => {
-		const title = EditorUtil.getTitleFromString('{"content":{"title":"Mock Title"}}', 'json')
+		const title = EditorUtil.getTitleFromString('{"content":{"title":" Mock Title "}}', 'json')
 
-		expect(title).toEqual('Mock Title')
+		expect(title).toEqual(' Mock Title ')
 	})
 
 	test('getTitleFromJSON throws error and returns unnamed', () => {
 		const title = EditorUtil.getTitleFromString('invalid-json-string', 'json')
-		expect(title).toEqual('(Unnamed Module)')
+		expect(title).toEqual('')
 		// eslint-disable-next-line no-console
 		expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		// eslint-disable-next-line no-console
@@ -313,7 +324,7 @@ describe('EditorUtil', () => {
 
 	test('getTitleFromXML returns unnamed', () => {
 		const title = EditorUtil.getTitleFromString({}, 'xml')
-		expect(title).toEqual('(Unnamed Module)')
+		expect(title).toEqual('')
 	})
 
 	test('getTitleFromXML returns title from long name xml', () => {
@@ -329,7 +340,7 @@ describe('EditorUtil', () => {
 			'<?xml version="1.0" encoding="utf-8"?><Module title="  "></Module>',
 			'xml'
 		)
-		expect(title).toEqual('(Unnamed Module)')
+		expect(title).toEqual('')
 	})
 
 	test('getTitleFromXML throws error and returns unnamed', () => {
@@ -341,8 +352,38 @@ describe('EditorUtil', () => {
 			'<?xml version="1.0" encoding="utf-8"?><Module title="  "></Module>',
 			'xml'
 		)
-		expect(title).toEqual('(Unnamed Module)')
+		expect(title).toEqual('')
 		// eslint-disable-next-line no-console
 		expect(console.error).toHaveBeenCalledWith(expect.any(Error))
+	})
+
+	test('setModuleTitleInJSON replaces a title', () => {
+		const result = EditorUtil.setModuleTitleInJSON(
+			'{"content": { "title": "Old Title"}}',
+			'New Title'
+		)
+		expect(result).toMatchInlineSnapshot(`
+		"{
+		    \\"content\\": {
+		        \\"title\\": \\"New Title\\"
+		    }
+		}"
+	`)
+	})
+
+	test('setModuleTitleInXML ', () => {
+		const result = EditorUtil.setModuleTitleInXML(
+			'<?xml version="1.0" encoding="utf-8"?><Module title="Old Title"></Module>',
+			'New Title'
+		)
+		expect(result).toMatchInlineSnapshot(`"<mockSerializedToString/>"`)
+	})
+
+	test('setModuleTitleInXML ', () => {
+		const result = EditorUtil.setModuleTitleInXML(
+			'<?xml version="1.0" encoding="utf-8"?><ObojoboDraft.Modules.Module title="Old Title"></Module>',
+			'New Title'
+		)
+		expect(result).toMatchInlineSnapshot(`"<mockSerializedToString/>"`)
 	})
 })

@@ -13,12 +13,19 @@ class Header extends React.Component {
 		this.saveContent = this.saveContent.bind(this)
 	}
 
-	renamePage(pageId, label) {
-		// Fix page titles that are whitespace strings
-		if (!/[^\s]/.test(label)) label = null
+	renamePage(pageId, oldTitle, newTitle) {
+		// eslint-disable-next-line no-undefined
+		if (newTitle !== undefined && newTitle !== null) {
+			newTitle = String(newTitle).trim()
+		} else {
+			newTitle = ''
+		}
 
-		EditorUtil.renamePage(pageId, label)
-		return label
+		if (newTitle !== oldTitle) {
+			EditorUtil.renamePage(pageId, newTitle)
+		}
+
+		return newTitle
 	}
 
 	renderLabel(label) {
@@ -44,11 +51,10 @@ class Header extends React.Component {
 		const item = this.props.list[this.props.index]
 		const model = OboModel.models[item.id]
 
-		model.set({ content: newContent })
-		model.triggers = newContent.triggers ? newContent.triggers : []
-		model.title =
-			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
+		model.triggers = newContent.triggers || []
 
+		model.set({ content: newContent }) // may cause store update?
 		EditorUtil.setStartPage(newContent.start)
 	}
 

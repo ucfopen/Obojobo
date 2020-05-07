@@ -1,5 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import rtr from 'react-test-renderer'
 
 import MoreInfoBox from 'src/scripts/oboeditor/components/navigation/more-info-box'
 
@@ -16,7 +17,7 @@ describe('MoreInfoBox', () => {
 	})
 
 	test('More Info Box renders properly', () => {
-		const component = mount(
+		const component = rtr.create(
 			<MoreInfoBox
 				id="mock-id"
 				content={{}}
@@ -26,6 +27,29 @@ describe('MoreInfoBox', () => {
 				contentDescription={[]}
 			/>
 		)
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('More Info Box for assessment', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+				isAssessment
+			/>
+		)
+
+		// click open isAssessment only matters when its open
+		component.find('.more-info-button').simulate('click')
+
+		// verify it's open
+		expect(component.instance().state).toHaveProperty('isOpen', true)
+
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -69,20 +93,12 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(component.html()).toMatchSnapshot()
+		component.find('.more-info-button').simulate('click')
+		expect(component.instance().state).toHaveProperty('isOpen', true)
 		expect(onOpen).toHaveBeenCalled()
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(component.html()).toMatchSnapshot()
+		component.find('.more-info-button').simulate('click')
+		expect(component.instance().state).toHaveProperty('isOpen', false)
 		expect(saveId).not.toHaveBeenCalled()
 		expect(saveContent).not.toHaveBeenCalled()
 		expect(markUnsaved).not.toHaveBeenCalled()
@@ -112,10 +128,7 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -169,10 +182,7 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -245,10 +255,7 @@ describe('MoreInfoBox', () => {
 
 		// click to open
 		expect(component.state()).toHaveProperty('isOpen', false)
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 		expect(component.state()).toHaveProperty('isOpen', true)
 
 		// Change the current id
@@ -309,10 +316,7 @@ describe('MoreInfoBox', () => {
 		)
 		expect(component.html()).toMatchSnapshot()
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
 		expect(saveId).toHaveBeenCalled()
@@ -335,10 +339,7 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		component
 			.find('input')
@@ -347,10 +348,7 @@ describe('MoreInfoBox', () => {
 				target: { value: 'changed value' }
 			})
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
 		expect(saveId).toHaveBeenCalled()
@@ -436,6 +434,7 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				moveNode={moveNode}
+				showMoveButtons
 			/>
 		)
 		component.setState({ isOpen: true })
@@ -488,10 +487,7 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		component
 			.find('button')
@@ -513,10 +509,7 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.find('.more-info-button').simulate('click')
 
 		component
 			.find('button')
@@ -610,5 +603,26 @@ describe('MoreInfoBox', () => {
 		nodeInstance.handleClick() // click without node
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('componentDidUpdate calls setState when props.content changes', () => {
+		const mockSetState = jest.fn()
+		const mockProps = { content: 'mockValue' }
+
+		// Calling componentDidUpdate with the same props results in no changes
+		MoreInfoBox.prototype.componentDidUpdate.bind({
+			setState: mockSetState,
+			props: mockProps,
+			state: {}
+		})(mockProps)
+		expect(mockSetState).not.toHaveBeenCalled()
+
+		// Sending different props.content results in updating state
+		MoreInfoBox.prototype.componentDidUpdate.bind({
+			setState: mockSetState,
+			props: { content: 'newMockValue' },
+			state: {}
+		})(mockProps)
+		expect(mockSetState).toHaveBeenCalledWith({ content: 'newMockValue' })
 	})
 })

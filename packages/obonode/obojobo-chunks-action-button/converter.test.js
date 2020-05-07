@@ -14,15 +14,17 @@ describe('ActionButton Converter', () => {
 						actions: [
 							{ type: 'mockType', value: '{"id":"mockId"}' },
 							{ type: 'mockType', value: '' }
-						],
+						]
 					}
 				]
 			},
 			text: 'mockText',
-			children: [{
-				text: 'mockText',
-				b: true
-			}]
+			children: [
+				{
+					text: 'mockText',
+					b: true
+				}
+			]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

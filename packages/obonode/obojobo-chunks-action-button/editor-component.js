@@ -30,9 +30,15 @@ class ActionButton extends React.Component {
 	closeModal(modalState) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
 		Transforms.setNodes(
 			this.props.editor,
-			{ content: { ...this.props.element.content, ...modalState } },
+			{
+				content: {
+					...this.props.element.content,
+					triggers: Object.values(modalState.triggers)
+				}
+			},
 			{ at: path }
 		)
 	}
@@ -47,22 +53,28 @@ class ActionButton extends React.Component {
 
 	renderTriggers() {
 		const content = this.props.element.content
-		const onClickTrigger = content.triggers.find(trigger => trigger.type === 'onClick')
+		const onClickTrigger = content.triggers.find(trigger => trigger.type === 'onClick') || null
+		const isAnOnClickActionSet =
+			onClickTrigger && onClickTrigger.actions && onClickTrigger.actions.length > 0
 
 		return (
 			<div className="trigger-box" contentEditable={false}>
 				<div className="box-border">
 					<div className="trigger-list">
 						<div className="title">When the button is clicked:</div>
-						{onClickTrigger.actions.map(action => (
-							<ActionButtonEditorAction key={action.type} {...action} />
-						))}
+						{isAnOnClickActionSet ? (
+							onClickTrigger.actions.map(action => (
+								<ActionButtonEditorAction key={action.type} {...action} />
+							))
+						) : (
+							<div className="trigger no-actions">(No action set)</div>
+						)}
 					</div>
 					<Button 
 						className="add-action" 
 						onClick={this.showTriggersModal.bind(this)}
 						onKeyDown={this.returnFocusOnTab.bind(this)}>
-						Edit Triggers
+						{isAnOnClickActionSet ? 'Edit Triggers' : 'Set an action...'}
 					</Button>
 				</div>
 			</div>

@@ -13,7 +13,7 @@ const { Button } = Common.components
 const toggleSize = (editor, element) => {
 	const width = element.content.width === 'normal' ? 'large' : 'normal'
 	const path = ReactEditor.findPath(editor, element)
-	Transforms.setNodes(editor, { content: {...element.content, width} }, { at: path })
+	Transforms.setNodes(editor, { content: { ...element.content, width } }, { at: path })
 }
 
 
@@ -43,9 +43,8 @@ const renderButton = (editor, element) => {
 const Break = props => (
 	<Node {...props}>
 		<div
-			className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
-				props.element.content.width
-			}`}>
+			className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${props.element.content.width}`}
+		>
 			<hr />
 			<span className="invisibleText">{props.children}</span>
 			{props.selected ? renderButton(props.editor, props.element) : null}
