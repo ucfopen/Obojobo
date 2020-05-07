@@ -1,0 +1,1973 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document diffs generate-assessment.js 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+	<Assessment review=\\"never\\" attempts=\\"unlimited\\" id=\\"?\\">
+		<Page id=\\"?\\">
+			<Heading headingLevel=\\"1\\" id=\\"?\\">
+				<textGroup>
+					<t align=\\"center\\">Assessment Intro Title</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"?\\">
+				<textGroup>
+					<t align=\\"center\\">Some overview before starting the Assessment.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"?\\">
+				<textGroup>
+					<t align=\\"center\\">You have {{assessment:attemptsRemaining}} attempts remaining.</t>
+				</textGroup>
+			</Text>
+			<ActionButton id=\\"?\\">
+				<textGroup>
+					<t>Start Assessment</t>
+				</textGroup>
+				<triggers>
+					<trigger type=\\"onClick\\">
+						<actions>
+							<action type=\\"assessment:startAttempt\\">
+								<value id=\\"?\\"/>
+							</action>
+						</actions>
+					</trigger>
+				</triggers>
+			</ActionButton>
+		</Page>
+		<QuestionBank select=\\"sequential\\" id=\\"?\\">
+			<Question id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t>Your Question Here</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>More question text here.</t>
+					</textGroup>
+				</Text>
+				<MCAssessment shuffle=\\"false\\" responseType=\\"pick-one\\" id=\\"?\\">
+					<MCChoice score=\\"100\\" id=\\"?\\">
+						<MCAnswer id=\\"?\\">
+							<Text id=\\"?\\">
+								<textGroup>
+									<t>Correct answer</t>
+								</textGroup>
+							</Text>
+						</MCAnswer>
+					</MCChoice>
+					<MCChoice score=\\"0\\" id=\\"?\\">
+						<MCAnswer id=\\"?\\">
+							<Text id=\\"?\\">
+								<textGroup>
+									<t>Incorrect answer</t>
+								</textGroup>
+							</Text>
+						</MCAnswer>
+					</MCChoice>
+				</MCAssessment>
+			</Question>
+		</QuestionBank>
+		<scoreActions>
+			<scoreAction for=\\"[0,100]\\">
+				<Page id=\\"?\\">
+					<Heading headingLevel=\\"1\\" id=\\"?\\">
+						<textGroup>
+							<t align=\\"center\\">How did you do?</t>
+						</textGroup>
+					</Heading>
+					<Text id=\\"?\\">
+						<textGroup>
+							<t align=\\"center\\">You have {{assessment:attemptsRemaining}} attempts remaining.</t>
+						</textGroup>
+					</Text>
+					<ActionButton align=\\"center\\" id=\\"?\\">
+						<textGroup>
+							<t>Retry Assessment</t>
+						</textGroup>
+						<triggers>
+							<trigger type=\\"onClick\\">
+								<actions>
+									<action type=\\"assessment:startAttempt\\">
+										<value id=\\"?\\"/>
+									</action>
+								</actions>
+							</trigger>
+						</triggers>
+					</ActionButton>
+				</Page>
+			</scoreAction>
+		</scoreActions>
+	</Assessment>
+</ObojoboDraftDoc>"
+`;
+
+exports[`Document diffs generate-page.js 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+	<Page id=\\"?\\">
+		<Heading headingLevel=\\"1\\" id=\\"?\\">
+			<textGroup>
+				<t></t>
+			</textGroup>
+		</Heading>
+		<Text id=\\"?\\">
+			<textGroup>
+				<t></t>
+			</textGroup>
+		</Text>
+	</Page>
+</ObojoboDraftDoc>"
+`;
+
+exports[`Document diffs oboeditor-tutorial.json 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+	<Module title=\\"Obojobo Visual Editor Tutorial\\" id=\\"?\\">
+		<Content id=\\"?\\">
+			<Page title=\\"Welcome to the Obojobo Visual Editor\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Welcome to the Obojobo Visual Editor</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">This Visual Editor Tutorial is an <i>editable</i> guide to creating Obojobo modules. By following along and trying the edits yourself, you will learn how to leverage all the features in Obojobo you need to build your own modules. We invite you to open this module and edit as you go!</t>
+					</textGroup>
+				</Text>
+				<hr width=\\"normal\\" id=\\"?\\"/>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Saving</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">First is the most important thing; how and when to save your changes. While editing your module, your changes are only temporarily saved in this browser tab. To be clear, if you close this tab without saving, those changes will be lost. </t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Saved changes will be shown to the next students who start your module. To avoid this, you may prefer to duplicate your module and make edits to the copy.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">To save, click <q><code>File &gt; Save</code></q> from the tool bar menu or press <code>ctrl+s.</code></t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Navigation</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The navigation panel along the left side list all the pages and assessments that make up your module. Pages are identified by the larger circle ◯ symbol, and assessments are identified by the Ⓠ symbol.  You can have as many pages as you wish, but only one assessment per module.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Clicking an item in the navigation menu displays its contents on the right - the area this paragraph is in right now. Navigating to other pages while editing will not erase your changes.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Adding Pages</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When a page is selected in the Navigation menu, a <b><code>+Page</code></b> button will appear below it.  Clicking this button will create a new page below the current  page.  Similarly, if all pages or assessments are deleted, a <b><code>+Add Page</code></b> or <b><code>+Add Assessment</code></b> button will appear, allowing you to create a new page or assessment.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Detail Menus</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The circle with three dots next to any item opens a details menu with more information and options.  Sometimes you need to select that item for the details menu icon to appear. These menus are how you access the id and triggers associated with each part of your module.  In addition, each details menu can contain specialized options pertaining to the content it&#39;s controlling.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">For instance, the details menu at the top of the navigation title allows you to edit the module title and start page.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The details menus for pages and assessments allow you to edit their titles, delete, duplicate, and change their order.  Similarly, the circles next to each chunk (paragraphs, images, etc.) inside a page allow you to edit that chunk&#39;s id and triggers.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>A Special Note About ID&#39;s</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When changing any item&#39;s id, make sure to use a unique value.  Duplicate ids are not allowed in a module, and the menu will not close if the id you are trying to use already exists elsewhere in the module. </t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Toolbars</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The toolbars at the top of the page provide additional actions. These toolbars are always visible at the top of the page, no matter how far down you scroll.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>File Toolbar</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The file toolbar sits just below the module name, and contains a series of menus that provide additional functionality to the Obojobo Visual Editor. Many of these functions can also be accessed with shortcut keys.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Inside the file toolbar, the File menu allows you to Save the current changes to the menu (<code>CTRL+S</code>), open up a new Obojobo module, or make a copy of the current module.  It also allows you to download the module as either an XML or a JSON document.  You can also Delete the module from this menu or copy the LTI link to add into your LMS course.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">After the File menu is the Edit menu, which provides access to some typical editor commands.  You can undo (<code>CTRL+Z</code>) or redo (<code>CTRL+Y</code>) any changes that you have made, or delete content.  You can also select all the content within a single page (<code>CTRL+A</code>)</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The View menu can also be found in the file toolbar.  It allows you to change the way you are editing the module, swapping over to the XML editor or the JSON editor in order to manually edit the module.  It also allows you to preview the module as the students would see it.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The Insert menu follows the View menu and allows you to insert different kinds of content into the document.  All content types are inserted with blank text and default values, ready to be edited!</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">Finally, the Format menu allows you to make formatting changes to the content within a page. The Text submenu allows you change the inline style of any text, including making it bold or italicized. The Paragraph Styles submenu allows you to change the type of the currently selected content, swapping between Text, Headings, and Code.  Only those three types of content can be swapped, so selecting other types of content and then changing their Paragraph Style will have no effect.  The last submenu, Align &amp; Indent, allows you to change the indent style of a block of text, or to swap how it is aligned on the page.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Content Toolbar</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">Much like the Format menu in the file toolbar, the content toolbar provides buttons that can change the formatting of the content within a page.  Each button also has a keyboard shortcut associated with it, to allow for uninterrupted typing.  For more information about the Content Toolbar, see the <b>Text Editing</b> page.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Adding Content</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Within the pages of an Obojobo Module, you can add any of the supported Obojobo nodes. Nodes range from simple Text and Headings to more complex items such as Questions.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When you click on an existing node, two + buttons will appear above and below the node. Hovering over either of these buttons will open up a menu that lists all nodes that can be inserted. Clicking on any of the buttons will insert a new node into the document, either above or below the existing node.</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"Text Editing\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Text Editing</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">The most basic component of the Obojobo Visual Editor is the text node. Text nodes allow you to insert the main content of your Modules in paragraph form.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\" indent=\\"0\\">An empty text node displays a prompt for you to enter some text so that you don&#39;t lose track of where you can type.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Each text node consists of a series of one or more text lines.</t>
+						<t indent=\\"0\\">Hitting the <code>Enter</code> key within a text node will make a new text line, which will sit just below the previous line.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Hit the <code>Enter</code> key after this text to make a new line.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Hitting the <code>Enter</code> key twice or hitting the <code>Enter</code> key on an empty line will create a new text node. A new text node is like a new paragraph and is separated from the previous text node by extra space.</t>
+						<t><b>Try it!</b> Hit the <code>Enter</code> key twice after this line to make a new text node.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Align</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Text lines can be left aligned, right aligned, or center aligned.  The alignment applies to each individual line, so a text node can have multiple alignments within it.  For example, this line is left aligned,</t>
+						<t align=\\"right\\">this line is right aligned,</t>
+						<t align=\\"center\\">and this line is centered.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">The alignment can be changed by using the buttons in the toolbar, or by pressing <code>CTRL+L</code> for left align, <code>CRL+R</code> for right align, or <code>CTRL+E</code> for center align.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Indentation</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"1\\">Text lines can also be indented. An indention applies only to a single text line, but the line will maintain the indent even when the text wraps around, as seen here.</t>
+						<t indent=\\"2\\">Text Lines can also contain multiple indents, up to a maximum of 20 levels of indentation</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Indents can be applied by pressing <code>Alt+Tab</code>, and they can be removed by pressing <code>Shift+Tab</code>. You can also use the indent and un-indent buttons in the toolbar.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Use the <code>Alt+Tab</code> and <code>Shift+Tab</code> keys, or the toolbar buttons, to change the indent level in this line of text.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"true\\">Text nodes can also have a hanging indent, where the first part a wrapping text line sticks out further to the left than subsequent lines.  Hanging indents can be toggled by pressing CTRL+H, or by using the hanging indent button in the toolbar.</t>
+						<t indent=\\"0\\"><b>Try it!</b>  Use the CTRL+H keys, or the toolbar buttons, to toggle a hanging indent on this line of text.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Whitespace</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Text lines can contain whitespace such as <code>Tab</code>s anywhere within the line, including the beginning and the end.</t>
+						<t indent=\\"0\\">	Adding a <code>Tab</code> at the beginning of a line does not affect the indentation even if the line wraps around.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Paragraph Styles</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\" indent=\\"0\\">At times, you may insert a text node and then realize you want it to be a different kind of node.  In that case, the drop-down menu in the toolbar will allow you to change the paragraph style to a heading or to a code style.  You can also use the menu to change code and headings back into text.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Text Styling</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Text can also be styled. To apply styles, highlight some text and use the toolbar at the top of the page or the shortcut keys.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Style Shortcuts</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\"><b>Bold Text</b> (<code>CTRL+B</code> or <code>⌘+B</code>)</t>
+						<t indent=\\"0\\"><i>Italic Text</i> (<code>CTRL+I</code> or <code>⌘+I</code>)</t>
+						<t indent=\\"0\\"><del>Strikethrough</del> (<code>CTRL+D</code> or <code>⌘+D</code>)</t>
+						<t indent=\\"0\\"><q>Quoted Text</q> (<code>CTRL+&#34;</code> or <code>⌘+&#34;</code>)</t>
+						<t indent=\\"0\\"><code>Monospaced Text</code> (<code>CTRL+M</code> or <code>⌘+M</code>)</t>
+						<t indent=\\"0\\"><latex>Inline Latex Math</latex> (<code>CTRL+Q</code>) - for details on inline Latex, see <b>Math Equations</b></t>
+						<t indent=\\"0\\">Link (<code>CTRL+K</code> or <code>⌘+K</code>) - Links can be edited by clicking the pencil next to the link text</t>
+						<t indent=\\"0\\"><sup>Superscript</sup> (<code>CTRL+.</code> or <code>⌘+.</code>)</t>
+						<t indent=\\"0\\"><sub>Subscript</sub> (<code>CTRL+,</code> or <code>⌘+,</code>)</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"Headings\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Headings</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">In addition to text nodes, you can also insert Heading nodes. These can be used to separate sections or to designate quick links.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Headings can have one of 6 different levels. To toggle the heading level, click on the dropdown menu in the toolbar select the new heading style.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t>Level One Heading</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Level one headings are usually used only once on a page, as the title of the whole page. If they are not the first node on the page, they will show up as links in the navigation bar when a student views an Obojobo module.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Level Two Heading</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Level two headings usually denote the major subsections of a page. They also show up as links in the navigation bar when a student views an Obojobo module.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Level Three Heading</t>
+					</textGroup>
+				</Heading>
+				<Heading headingLevel=\\"4\\" id=\\"?\\">
+					<textGroup>
+						<t>Level Four Heading</t>
+					</textGroup>
+				</Heading>
+				<Heading headingLevel=\\"5\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Level Five Heading</t>
+					</textGroup>
+				</Heading>
+				<Heading headingLevel=\\"6\\" id=\\"?\\">
+					<textGroup>
+						<t>Level Six Heading</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Level three, four, five, and six headings usually denote subcategories within each subsection. These do not show up as links in the navigation bar.</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"Lists\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Lists</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Lists nodes allow for concise organization of data, in either numbered (ordered) or bullet-point (unordered) format.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">You can swap between ordered and unordered lists by pressing the swap button below the list, which appears when the list is selected.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Bullet-Point List (Unordered)</t>
+					</textGroup>
+				</Heading>
+				<List id=\\"?\\">
+					<listStyles>
+						<type>unordered</type>
+						<indents>
+							<indent level=\\"0\\" type=\\"unordered\\" bulletStyle=\\"disc\\"/>
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">One Item</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">Another Item</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">A Third Item</t>
+					</textGroup>
+				</List>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Numbered List (Ordered)</t>
+					</textGroup>
+				</Heading>
+				<List id=\\"?\\">
+					<listStyles>
+						<type>ordered</type>
+						<indents>
+							<indent level=\\"0\\" type=\\"ordered\\" bulletStyle=\\"decimal\\"/>
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">The First Item</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">The Second Item</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">The Third Item</t>
+					</textGroup>
+				</List>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>List Levels</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Lists can contain any number of levels. The level can be increased by pressing <code>Tab</code> at the start of the list item (or <code>ALT+Tab</code> anywhere in the list) or decreased by pressing <code>Shift+Tab</code>. You can also use the indent and un-indent buttons in the toolbar to change the level.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Use <code>Tab</code> and <code>Shift+Tab</code>, or the toolbar buttons, to increase and decrease the levels of this list.</t>
+					</textGroup>
+				</Text>
+				<List id=\\"?\\">
+					<listStyles>
+						<type>ordered</type>
+						<indents>
+							<indent level=\\"0\\" type=\\"ordered\\" bulletStyle=\\"decimal\\"/>
+							<indent level=\\"1\\" type=\\"ordered\\" bulletStyle=\\"upper-alpha\\"/>
+							<indent level=\\"2\\" type=\\"ordered\\" bulletStyle=\\"upper-roman\\"/>
+							<indent level=\\"3\\" type=\\"ordered\\" bulletStyle=\\"decimal\\"/>
+							<indent level=\\"4\\" type=\\"ordered\\" bulletStyle=\\"upper-alpha\\"/>
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">List Level 1</t>
+						<t indent=\\"1\\" hangingIndent=\\"false\\">List Level 2</t>
+						<t indent=\\"2\\" hangingIndent=\\"false\\">List Level 3</t>
+						<t indent=\\"3\\" hangingIndent=\\"false\\">List Level</t>
+						<t indent=\\"4\\" hangingIndent=\\"false\\">List Level 5</t>
+						<t indent=\\"3\\" hangingIndent=\\"false\\">Back to Level 4</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">Back to Level 1</t>
+					</textGroup>
+				</List>
+			</Page>
+			<Page title=\\"Tables\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Tables</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">A Table node allows for a concise display of complex data sets. Tables can have an unlimited number of rows and columns, although a large number of columns may become unwieldy.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Cell Insertion and Deletion</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When a table is inserted, it only has a single cell. To add more rows and columns, click on a cell in the table, and then click on the arrow in the top right corner of that cell.  A menu will appear with table options, allowing you to add rows above or below the current cell, and columns to the left or right of the current cell.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Use the menu to add a few rows and columns to this table.</t>
+					</textGroup>
+				</Text>
+				<Table numRows=\\"1\\" numCols=\\"1\\" header=\\"true\\" id=\\"?\\">
+					<textGroup>
+						<t>Single Cell Table</t>
+					</textGroup>
+				</Table>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Once a table has a few rows and columns, you can use the Delete Row or Delete Column option in the same dropdown menu to remove rows and columns</t>
+						<t indent=\\"0\\">Deleting the last row or column in the table will delete the entire table.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Use the menu to delete a few rows and columns from this table.</t>
+					</textGroup>
+				</Text>
+				<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"true\\" id=\\"?\\">
+					<textGroup>
+						<t>Header 1</t>
+						<t>Header 2</t>
+						<t>Header 3</t>
+						<t>Item 1</t>
+						<t>Item 2</t>
+						<t>Item 3</t>
+						<t>Item 4</t>
+						<t>Item 5</t>
+						<t>Item 6</t>
+					</textGroup>
+				</Table>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Header Rows</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The header row for a table can also be toggled on or off. Use the <code>Toggle Header</code> button to turn the header on and off.</t>
+						<t indent=\\"0\\"><b><i>Accessibility Warning!</i></b> Tables without headers can be very hard for text-to-speech devices to decipher. Try to use headers whenever possible.</t>
+						<t indent=\\"0\\">For more information on table accessibility, read <a href=\\"https://webaim.org/techniques/tables/data\\">the WebAIM article about table accessibility</a>. (Right-click to follow link)</t>
+					</textGroup>
+				</Text>
+				<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"false\\" id=\\"?\\">
+					<textGroup>
+						<t>Item 1</t>
+						<t>Item 2</t>
+						<t>Item 3</t>
+						<t>Item 4</t>
+						<t>Item 5</t>
+						<t>Item 6</t>
+						<t>Item 7</t>
+						<t>Item 8</t>
+						<t>Item 9</t>
+					</textGroup>
+				</Table>
+			</Page>
+			<Page title=\\"Breaks\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Breaks</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">A Break node provides a logical and visual division on the page.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Break nodes can have one of two different widths: normal and large. To toggle in-between the two widths, click on the break and then use the T<code>oggle Size </code>button to alter the size.</t>
+						<t align=\\"0\\" indent=\\"0\\"><b>Try it!</b> Toggle the size of this Break.</t>
+					</textGroup>
+				</Text>
+				<hr width=\\"normal\\" id=\\"?\\"/>
+			</Page>
+			<Page title=\\"Figures\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Figures</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Figure nodes allow you to display images within the Obojobo Module. </t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Figure Properties</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">When a Figure is inserted, it has no display image, and all of its properties are set to default values. To change these properties, click on the Figure and then click the Image Properties button; this will open up an Image Properties dialog. Inside the dialog, clicking Cancel will close the dialog without changing any of the properties of the Figure, and clicking OK will close the dialog and change the properties of the Figure.</t>
+						<t align=\\"0\\" indent=\\"0\\"><b>Try it!</b> Click on this Figure, then open and close the Image Properties dialog.</t>
+					</textGroup>
+				</Text>
+				<Figure size=\\"small\\" width=\\"100\\" height=\\"100\\" id=\\"?\\">
+					<textGroup>
+						<t></t>
+					</textGroup>
+				</Figure>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>URL</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When the properties box is first opened, it will ask you to upload a new image, or enter the URL of an image that has already been uploaded to the internet. It will also show you a list of your recently uploaded images, and you can select any of them to upload into the module.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Change the image in the following figure by opening the Image Properties dialog, pasting in an image URL or uploading an image, and then clicking OK</t>
+					</textGroup>
+				</Text>
+				<Figure size=\\"small\\" id=\\"?\\">
+					<textGroup>
+						<t></t>
+					</textGroup>
+				</Figure>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Alt Text</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Once an image has been selected, other properties will be displayed in the Image Properties dialog.  The first of these is the alt text. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as text-to-speech devices are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. Images without alt text will display a warning above them, so it is easy to see which images still need alt text.</t>
+						<t><b>Try it!</b> Add alt text to the following figure by opening the Image Properties dialog, typing into the Alt Text input, and then clicking OK.</t>
+					</textGroup>
+				</Text>
+				<Figure url=\\"https://www.ucf.edu/files/2017/10/knightro_two_hands_point.png\\" size=\\"small\\" id=\\"?\\">
+					<textGroup>
+						<t></t>
+					</textGroup>
+				</Figure>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>For more information on writing alt text, read <a href=\\"https://webaim.org/techniques/alttext/\\">the WebAIM article about alt text and accessibility.</a> (Right-click on the link to open it)</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Figure Sizes</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The second property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: s<code>mall,</code> m<code>edium,</code> l<code>arge,</code> and <code>custom.</code> </t>
+					</textGroup>
+				</Text>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"small\\" id=\\"?\\">
+					<textGroup>
+						<t>A small image</t>
+					</textGroup>
+				</Figure>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"medium\\" id=\\"?\\">
+					<textGroup>
+						<t>The same image, in a medium size</t>
+					</textGroup>
+				</Figure>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"large\\" id=\\"?\\">
+					<textGroup>
+						<t>The same image, in a large size</t>
+					</textGroup>
+				</Figure>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Figures that have a <code>custom</code> size have a height and width property. The best practice for <code>custom</code> image sizes is to assign <b>either </b>a custom width <b>or </b>a custom height, but not both. A Figure with <i>either</i> a custom width <i>or</i> a custom height will be scaled appropriately, but a Figure with both a custom width and a custom height will be squished or stretched to fit the custom size.</t>
+					</textGroup>
+				</Text>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"custom\\" width=\\"300\\" id=\\"?\\">
+					<textGroup>
+						<t>An image with a custom width</t>
+					</textGroup>
+				</Figure>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"custom\\" height=\\"300\\" id=\\"?\\">
+					<textGroup>
+						<t>An image with a custom height</t>
+					</textGroup>
+				</Figure>
+				<Figure url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"custom\\" width=\\"700\\" height=\\"100\\" id=\\"?\\">
+					<textGroup>
+						<t>An image with a custom width and height</t>
+					</textGroup>
+				</Figure>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\"><b>Try it!</b> Use the Image Properties dialog to change the size of any of the above images.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Captions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Every Figure has a caption that sits below the image. This caption is optional, but can provide more information about the image.  You can edit the caption by clicking directly beneath any image.</t>
+					</textGroup>
+				</Text>
+				<Figure url=\\"https://www.ucf.edu/files/2017/10/knightro_two_hands_point.png\\" size=\\"small\\" id=\\"?\\">
+					<textGroup>
+						<t>The caption could contain a detailed image description, attribution information, or further context</t>
+					</textGroup>
+				</Figure>
+			</Page>
+			<Page title=\\"Math Equations\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Math Equations</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Math Equations allow for the display of complex math equation on their own line.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>LaTeX Formatting</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Math Equations use LaTeX to represent equations. For more information on LaTeX equations, here are a couple of helpful LaTeX tutorials. (Right-click on the links to follow them)</t>
+					</textGroup>
+				</Text>
+				<List id=\\"?\\">
+					<listStyles>
+						<type>unordered</type>
+						<indents>
+							<indent level=\\"0\\" type=\\"unordered\\" bulletStyle=\\"disc\\"/>
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">
+							<a href=\\"https://www.latex-tutorial.com/tutorials/amsmath/\\">Basic LaTeX Math Tutorial</a>
+						</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">
+							<a href=\\"https://www.latex-tutorial.com/symbols/math-symbols/\\">Common Math Symbols in LaTeX</a>
+						</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\">
+							<a href=\\"https://www.latex-tutorial.com/symbols/greek-alphabet/\\">LaTeX Greek Alphabet</a>
+						</t>
+					</textGroup>
+				</List>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Inline Math Equations</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (<code>CTRL+Q</code>). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Here is an example of an inline equation: <latex>\\\\theta</latex> </t>
+						<t indent=\\"0\\">This equation will render as a θ in the viewer. Open this module in a preview to see it rendered properly.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Building Math Equations</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">To change a math equation, click on the Math Equation. An edit button will appear, and clicking the button will open a dialog with four input fields. Type the LaTeX representation of the equation into the Latex field, and then click OK. The Math Equation will be updated, and will display next to the edit button.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\"><b>Try it!</b> Click on the empty Math Equation chunk below, open the edit box, and enter <code>y=mx+b</code> into the input box labeled &#34;Latex&#34;.</t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"\\" size=\\"1\\" label=\\"\\" latex=\\"\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">If the LaTeX equation is mis-typed, an error message will appear. Fix the following Math Equation by correcting the spelling of <code>thata</code> to <code>theta.</code></t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"\\" size=\\"1\\" label=\\"\\" latex=\\"\\\\thata + \\\\pi\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">A Math Equation can also have a label. To change the label, type into the Optional Label input in the dialog.  The label will be displayed below the equation, and can provide an easy shorthand to refer to the equation in the rest of your content.</t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"\\" size=\\"1\\" label=\\"1.1\\" latex=\\"x_1 = x_0 + \\\\Delta x\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Because text-to-speech devices do not always read the LaTeX out correctly, there is the option to provide an alt text for the equation.  When providing alt text for an equation, be sure the the words are unambiguous, and provide all necessary context such as parenthesis and grouping.  For advice on writing out accessible Math Equations, use the <a href=\\"https://www.seewritehear.com/accessible-mathml/mathspeak/examples/\\">MathSpeak standards</a>.</t>
+						<t indent=\\"0\\">To add alt text to the math equation, type it into the Alt Text input.</t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"y equals m times x plus b\\" size=\\"1\\" label=\\"\\" latex=\\"y = mx + b\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">You can also alter the size of your Math Equations by changing the value in the Size field.  The size value is a multiplier, so a value of 1.5 makes the equation 1.5x as large as usual. </t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"\\" size=\\"1.5\\" align=\\"center\\" label=\\"\\" latex=\\"\\\\underset{acid\\\\ 1}{H-A}+\\\\underset{base\\\\ 1}{B^-} \\\\rightleftharpoons \\\\underset{base\\\\ 2}{A^-} + \\\\underset{acid\\\\ 2}{B-H}\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Math Equation chunks can also be aligned to the left or right. Here&#39;s a few examples</t>
+					</textGroup>
+				</Text>
+				<MathEquation alt=\\"\\" size=\\"1\\" align=\\"left\\" label=\\"A left aligned Matrix\\" latex=\\"M = \\\\begin{bmatrix} \\\\frac{5}{6} &amp; \\\\frac{1}{6} &amp; 0 \\\\\\\\[0.3em] \\\\frac{5}{6} &amp; 0 &amp; \\\\frac{1}{6} \\\\\\\\[0.3em] 0 &amp; \\\\frac{5}{6} &amp; \\\\frac{1}{6}\\\\end{bmatrix}\\" id=\\"?\\"/>
+				<MathEquation alt=\\"\\" size=\\"1\\" align=\\"right\\" label=\\"A right aligned fraction\\" latex=\\"\\\\left(\\\\frac{1}{\\\\sqrt{x}}\\\\right)\\" id=\\"?\\"/>
+				<MathEquation alt=\\"\\" size=\\"1\\" label=\\"A center aligned equation (default)\\" latex=\\"F(x) = \\\\int^a_b \\\\frac{1}{3}x^3\\" id=\\"?\\"/>
+			</Page>
+			<Page title=\\"Action Buttons\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Action Buttons</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">The Action Button node executes a series of predefined actions when clicked. This is useful for guiding student navigation. </t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">By default, an Action Button appears in its collapsed state, with only the label visible. Clicking on the button will display the buttons actions, and allow the label to be edited.</t>
+						<t indent=\\"0\\"><b>Try It!</b> Change the label on this button.</t>
+					</textGroup>
+				</Text>
+				<ActionButton id=\\"?\\">
+					<textGroup>
+						<t>A Basic Label</t>
+					</textGroup>
+				</ActionButton>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Action Button Actions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Clicking on a button also displays its list of actions, and a button to add a new actions. Clicking on a different node will hide the actions again.</t>
+					</textGroup>
+				</Text>
+				<ActionButton id=\\"?\\">
+					<textGroup>
+						<t>An Action Button with Two Actions</t>
+					</textGroup>
+					<triggers>
+						<trigger type=\\"onClick\\">
+							<actions>
+								<action type=\\"nav:prev\\">
+									<value/>
+								</action>
+								<action type=\\"nav:close\\">
+									<value/>
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">To add an action to an Action Button, click the Edit Triggers button. A dialog will appear; make sure the button has a When &#34;The student clicks the button&#34; trigger, click Add Action, and then select the desired action name from the dropdown menu and fill out any value that is needed for that action (see <b>Action Details</b>) before clicking the <code>Save</code> button. The Obojobo Visual Editor will validate the value, and then save the action into the Action Button if the value was valid. If the value was not valid, it will display an error message.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">To remove an action from an Action Button, click Edit Triggers and then click the <code>X</code> button in the upper righthand corner of the action. This will delete both the action and its associated value.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Add and remove a few actions from the button below (<code>nav:prev</code>, <code>nav:next</code>, <code>nav:lock</code>, <code>nav:unlock</code>, <code>nav:open</code>, <code>nav:close</code>, and <code>nav:toggle</code> are the easiest ones to try since they do not require a value)</t>
+					</textGroup>
+				</Text>
+				<ActionButton id=\\"?\\">
+					<textGroup>
+						<t>Action Manipulation Button</t>
+					</textGroup>
+					<triggers>
+						<trigger type=\\"onClick\\">
+							<actions>
+								<action type=\\"nav:prev\\">
+									<value/>
+								</action>
+								<action type=\\"nav:open\\">
+									<value/>
+								</action>
+								<action type=\\"nav:openExternalLink\\">
+									<value url=\\"https://ucfopen.github.io/Obojobo-Docs\\"/>
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Action Details</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The Action Button supports a wide array of actions, some of which require an additional value in order to function properly. For a comprehensive list of actions and what they do, read the <a href=\\"https://ucfopen.github.io/Obojobo-Docs/releases/latest/developers/obo_nodes/action.html\\">Obojobo Action documentation.</a> (right-click to follow link)</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"Code\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Code</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">A Code node displays code fragments in a recognizable format.</t>
+					</textGroup>
+				</Text>
+				<Code id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">
+							<i>// Sample code</i>
+						</t>
+						<t indent=\\"0\\">function main() {</t>
+						<t indent=\\"1\\">print(&#34;Hello world&#34;);</t>
+						<t indent=\\"0\\">}</t>
+					</textGroup>
+				</Code>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Code nodes function similarly to text nodes. A single Code node can contain multiple lines, including empty lines. Code nodes can contain as many empty lines as needed. Unlike Text nodes, two consecutive blank lines within a single Code node will not be turned into a new Code node.  Code nodes can also be converted into text or headings by selecting the node and using the drop-down menu it the toolbar.</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"YouTube\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">YouTube</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">YouTube nodes allow you to display YouTube videos inside of your Obojobo Module.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">To change the source of the video, find the YouTube id of the video that you wish to embed, and then click the Edit button in the upper right-hand corner of the video. A dialog will open; paste the YouTube id into the input in the dialog. </t>
+					</textGroup>
+				</Text>
+				<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">On YouTube, the id is the string of letters and numbers after the = in the URL. For example, a URL of h<code>ttps://www.youtube.com/watch?v=</code><b><code>gJ390e5sjHk </code></b>would correspond to a video id of <b><code>gJ390e5sjHk.</code></b></t>
+						<t align=\\"0\\" indent=\\"0\\">It can also be found by clicking the share button underneath the video on YouTube and then copying the string of letters and numbers at the end of the shared URL. Therefore a shared URL of h<code>ttps://youtu.be/</code><b><code>gJ390e5sjHk </code></b>would correspond to a video id of <b><code>gJ390e5sjHk.</code></b></t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">If you only want your students to watch a specific section of the video, you can enter a start time (in seconds) and an end time (in seconds) in the dialog.  When students press play, the video will begin at the specified start time, and play until the specified end time, ensuring that the student see only the relevant content.</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<Page title=\\"IFrames\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">IFrames</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\" indent=\\"0\\">An IFrame node displays external web content within an Obojobo module.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\" indent=\\"0\\"><b>Warning!</b> IFrames present unique challenges based on the security settings and the size of the embedded site. Make sure to test all IFrames in the student view to validate that they load as expected.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>IFrame Properties</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">When an IFrame is inserted, it has no source, and all of its properties are set to default values. To change these properties, click on the IFrame Properties button; this will open up an IFrame Properties dialog. Inside the dialog, clicking Cancel will close the dialog without changing any of the properties of the IFrame, and clicking OK will close the dialog and change the properties of the IFrame.</t>
+						<t align=\\"0\\" indent=\\"0\\"><b>Try it!</b> Click on this IFrame, then open and close the IFrame Properties dialog.</t>
+					</textGroup>
+				</Text>
+				<IFrame fit=\\"scale\\" type=\\"media\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"?\\"/>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Title and Source</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The source of the IFrame is the URL of the content the you wish to embed. The title of the IFrame is the name that will be displayed to students before the IFrame is loaded. If an IFrame does not have a title, the source URL will be displayed instead.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">An IFrame with a source and a title:</t>
+					</textGroup>
+				</Text>
+				<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">An IFrame with only a source:</t>
+					</textGroup>
+				</Text>
+				<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"?\\"/>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">To change the source or the title of an IFrame, open the IFrame Properties dialog, and then type into the appropriate input boxes.</t>
+						<t indent=\\"0\\"><b>Try it!</b> Change the source or title of either of the above IFrames.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Options</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">All IFrames have options that determine how they are displayed. None of these options are required; they simply alter the IFrame from its default display.</t>
+					</textGroup>
+				</Text>
+				<List id=\\"?\\">
+					<listStyles>
+						<type>ordered</type>
+						<indents>
+							<indent level=\\"0\\" type=\\"ordered\\" bulletStyle=\\"decimal\\"/>
+							<indent level=\\"1\\" type=\\"ordered\\" bulletStyle=\\"upper-alpha\\"/>
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t indent=\\"0\\" hangingIndent=\\"false\\"><b>Dimensions</b>: Set the width and height that the IFrame will be displayed at. </t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\"><b>Border</b>: Toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\"><b>Autoload</b>: Determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\"><b>Fit</b>: How content will be scaled within the IFrame</t>
+						<t indent=\\"1\\" hangingIndent=\\"false\\">Scale: Size of content inside the iframe will scale up and down to fit (much like scaling an image)</t>
+						<t indent=\\"1\\" hangingIndent=\\"false\\">Scroll: Content within the frame remains at its original size. When too large to fit, the contents will scroll instead of scale down.</t>
+						<t indent=\\"0\\" hangingIndent=\\"false\\"><b>Initial Zoom</b>: Sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.</t>
+					</textGroup>
+				</List>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\"><b>Try it!</b> Open the IFrame Properties dialog and change some of the display option on the following IFrame, then save the document and see how those changes affect the student view.</t>
+					</textGroup>
+				</Text>
+				<IFrame fit=\\"scroll\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"true\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"?\\"/>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Controls</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The IFrame controls allow the student to manipulate the content of the IFrame once it is loaded. You can toggle these controls on or off; students will only be able to see and use controls that are toggled on.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The reload control reloads the content of the IFrame, much like the refresh page button on a browser.</t>
+						<t indent=\\"0\\">The new window control opens the content of the IFrame in a new window.</t>
+						<t indent=\\"0\\">The zoom control allows student to zoom in and out on the content of the IFrame.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Try it! Open the IFrame Properties dialog, and toggle the controls of the following IFrame.</t>
+					</textGroup>
+				</Text>
+				<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"new-window,zoom\\" initialZoom=\\"1\\" id=\\"?\\"/>
+			</Page>
+			<Page title=\\"Questions\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Questions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Questions allow you to gauge the student&#39;s comprehension of your material. Questions can be placed directly into a page as practice for the student, or they can be added to a Question Bank in the assessment.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>A question contains three basic parts: the content, the multiple choice, and the solution.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Question Content</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The content appears at the start of the question and usually describes the question that the student is answering. It can contain any node except for other Questions and Question Banks.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>This Question contains both a Heading node and a Text node in its content.</t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Heading headingLevel=\\"1\\" id=\\"?\\">
+						<textGroup>
+							<t>A Simple Question</t>
+						</textGroup>
+					</Heading>
+					<Text id=\\"?\\">
+						<textGroup>
+							<t>How much wood could a woodchuck chuck if a woodchuck could chuck wood?</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">An answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Multiple-Choice Questions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The multiple choice section allows you to create multiple answers for a student, and select which one(s) are correct. Just like the content, a multiple choice answer can hold any node type except for Questions and Question Banks.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>By default, each question has one incorrect answer. To add more, click the <code>Add Choice</code> button below the current choices. To delete a choice, click the <code>X</code> button in the upper right-hand corner of the choice.</t>
+						<t><b>Try it!</b> Add and delete a few choices in the following Question. (Make sure you click the <code>X</code> inside of a choice to delete it; the <code>X</code> above the question will delete the whole question)</t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This question has three answer choices: one correct and two incorrect</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">An incorrect answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">A correct answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another incorrect answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>To toggle which choices are correct, simply click on the red <code>Incorrect</code> button or green <code>Correct</code> button on the left side of the choice. A question can have as many correct choices as you would like.</t>
+						<t><b>Try it! </b>Toggle the correctness of the answer choices in the following question by clicking on the green buttons.</t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This question has three correct answers, and no incorrect answers.</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one-multiple-correct\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">A correct answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another correct answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">A third correct answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Choices can also have feedback, which provides more information to the student if they select that choice. The feedback be displayed below the choice once the student hits submit (or during a review if the question is in the assessment), so it is a good place to let the student know where they went wrong, or to provide elaboration on a correct answer. </t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>To add feedback to a choice, click the <code>Add Feedback</code> button. To remove feedback from a choice, simply click the <code>X</code> button in the upper right-hand corner of the feedback.</t>
+						<t><b>Try it! </b>Add and remove feedback from any of the answer choices in the following Question. (Make sure you click the <code>X</code> inside of the feedback to delete it; the <code>X</code> above the question will delete the whole question, and the <code>X</code> inside of the choice will delete the choice)</t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This question has feedback on the incorrect answer, but not the correct one.</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">This is a correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">This is an incorrect answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+							<MCFeedback id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Here is some detailed information about the incorrect answer</t>
+									</textGroup>
+								</Text>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The feedback can contain any of the same nodes as the content and the choices.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>
+							<b>Multiple-Choice Settings</b>
+						</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Multiple-Choice questions can have one of two response types: pick one correct answer or pick all correct answers. To change the response type, use the dropdown above the answer choices</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Pick one correct answer questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question. </t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This is a <code>pick-one</code> question with multiple correct answers. The student can only select one answer, and the question will be marked correct if they choose any of the correct choices.</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one-multiple-correct\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">A correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">An incorrect answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Pick all correct answers questions allow a student to select as many answers as they want. A student<b> must</b> select all the correct choices to get the points for that question.</t>
+					</textGroup>
+				</Text>
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This is a <code>pick-all</code> question; the student will get it incorrect if they pick any of the wrong answers, or if they fail to pick any of the correct answers.</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"false\\" responseType=\\"pick-all\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">The student <b>must</b> pick this answer to get the question correct</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">The student <b>must not</b> pick this answer to get the question correct</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">The student <b>must also</b> pick this answer to get the question correct</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Questions can also be shuffled or un-shuffled. Shuffled questions will randomize the order of their choices, and un-shuffled questions will retain the order of their choices. By default, questions are shuffled, but this can be turned off by clicking on the toggle-button next to the response type.</t>
+					</textGroup>
+				</Text>
+				<Question type=\\"default\\" id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">The answer choices for the question will appear in the exact order they are displayed</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"false\\" responseType=\\"pick-one-multiple-correct\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">A part of the correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another part of the correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">All of the above</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Question Solution</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The solution will display after the question has been answered. In practice questions, it is accessible after every time that the student hits submit. In the assessment, it is accessible during a full review. It will be displayed regardless of which choices the student selected, so it is a good place to put general post-question information.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>To add a solution to the question, click the <code>Add Solution</code> button at the bottom of the question. To delete a solution, click the <code>X</code> button in the top right corner of the solution. The solution can contain any other node, and it can be as long as desired.</t>
+					</textGroup>
+				</Text>
+				<Question type=\\"default\\" id=\\"?\\">
+					<solution>
+						<Page id=\\"?\\">
+							<Heading headingLevel=\\"1\\" id=\\"?\\">
+								<textGroup>
+									<t>The Solution</t>
+								</textGroup>
+							</Heading>
+							<Text id=\\"?\\">
+								<textGroup>
+									<t indent=\\"0\\">Some more detail for the student, this can be as long as needed.</t>
+								</textGroup>
+							</Text>
+						</Page>
+					</solution>
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">This question contains a solution, which will be displayed after submission no matter which choice the student picks</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">An answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another answer choice</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Survey Questions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\" indent=\\"0\\">Questions can also be marked as Survey Only, which means they will not be graded.  Survey Only questions do not have correct and incorrect answers, and so toggling the Survey Only button to on will remove the Correct and Incorrect buttons from the Question</t>
+						<t align=\\"left\\" indent=\\"0\\"><b>Try it!</b> Toggle the Survey Only button on the following Question.</t>
+					</textGroup>
+				</Text>
+				<Question type=\\"survey\\" id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">A survey question</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">One survey response</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Another survey response</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+			</Page>
+			<Page title=\\"Question Banks\\" id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Question Banks</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Question Banks allow a set of questions to be displayed together. Mostly, Question Banks are used within Assessments to select and display a certain subset of questions. Within Pages, Question Banks simply display all of their questions one after another.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"0\\" indent=\\"0\\">Question Banks can contain both questions and other Question Banks. To add a Question or a Question Bank, click the A<code>dd Question </code>or A<code>dd Question Bank </code>button at the bottom of the Question Bank. To delete a Question or a Question Bank, click the X <code>i</code>n the top right corner of the item you wish to delete.</t>
+					</textGroup>
+				</Text>
+				<QuestionBank choose=\\"2\\" select=\\"random\\" id=\\"?\\">
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">A sample question</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Question Banks in Assessments</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Inside of an Assessment, a Question Bank selects a few of its children to display. The <q>How many questions should be displayed?</q> property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">A Question Bank also has a <q>How should questions be selected?</q> property, which determines how it picks children to display. </t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>In Order Selection</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Question Banks with in order selection will pick items in order. The Question Bank below will choose one question sequentially. This means it&#39;ll choose the first question for the first attempt, the second question for the second attempt, and so on. Once all questions have been chosen the selection will start over at the beginning.</t>
+					</textGroup>
+				</Text>
+				<QuestionBank choose=\\"1\\" select=\\"sequential\\" id=\\"?\\">
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This question would be selected the first time</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This question would be selected the second time</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Random Selection</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Question Banks with random selection will pick questions completely randomly. Questions can appear in any order, and may or may not be re-selected across attempts.</t>
+					</textGroup>
+				</Text>
+				<QuestionBank choose=\\"1\\" select=\\"random\\" id=\\"?\\">
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This question might be selected the first or the second time, both times, or neither time.</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This other question might be selected the first or second time, both times, or neither time.</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Random With No Repeats Selection</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>Question banks with random, no repeats selection pick questions at random but prioritize selecting questions that have not been used in a previous attempt. On a student&#39;s first attempt, this is identical to <code>random</code> selection, but successive attempts will pick randomly from questions the student hasn&#39;t seen yet.</t>
+					</textGroup>
+				</Text>
+				<QuestionBank choose=\\"1\\" select=\\"random-unseen\\" id=\\"?\\">
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This question might or might not be selected the first time, and will be selected the second time if it is not selected the first.</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+					<Question id=\\"?\\">
+						<Text id=\\"?\\">
+							<textGroup>
+								<t indent=\\"0\\">This other question might or might not be selected the first time, and will be selected the second time if it is not selected the first.</t>
+							</textGroup>
+						</Text>
+						<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+							<MCChoice score=\\"100\\" id=\\"?\\">
+								<MCAnswer id=\\"?\\">
+									<Text id=\\"?\\">
+										<textGroup>
+											<t indent=\\"0\\">The correct answer</t>
+										</textGroup>
+									</Text>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+			</Page>
+		</Content>
+		<Assessment title=\\"Assessment\\" review=\\"always\\" attempts=\\"5\\" id=\\"?\\">
+			<Page id=\\"?\\">
+				<Heading headingLevel=\\"1\\" id=\\"?\\">
+					<textGroup>
+						<t align=\\"center\\">Assessment</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">An assessment works a little differently from a regular page.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"2\\" id=\\"?\\">
+					<textGroup>
+						<t>Assessment Nodes</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">The assessment consists of four different sections:  the Launch Page, the Question Bank, the Score Actions, and the Rubric.  It also has some additional settings that can be accessed from the navigation menu</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Assessment Settings</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">Much like a normal page, Assessment settings can be accessed by clicking the circle with three dots that appears next to the Assessment title in the navigation menu.  Assessments have two extra settings that pages do not have: the number of attempts and the review type.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type u<code>nlimited </code>to allow the student to try as many times as they want.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The review type describes how answers will be displayed after an attempt has ended.  You can allow students to always see the correct answers, to see the correct answers only after their last attempt, or to never be allowed to see the correct answers.  Even when the student cannot see which answer was the correct one, they will still be able to see which questions they got correct and which they got incorrect.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Launch Page</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The second required node is the launch page. This is the page that a student sees the first time they navigate to an assessment.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">Somewhere on the launch page, there should be an Action Button that executes the Start an attempt for &#34;assessment-id&#34; action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:</t>
+					</textGroup>
+				</Text>
+				<ActionButton id=\\"?\\">
+					<textGroup>
+						<t>Start Assessment</t>
+					</textGroup>
+					<triggers>
+						<trigger type=\\"onClick\\">
+							<actions>
+								<action type=\\"assessment:startAttempt\\">
+									<value id=\\"?\\"/>
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Question Bank</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t align=\\"left\\">The third required node is the Question Bank. This Question Bank functions the same way as a Question Bank within a page.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Score Actions</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The fourth required node is the list of Score Actions. Score Actions are the pages that are displayed at the top of a review after a student has completed an attempt. Different Score Actions can be displayed for different score ranges.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">To describe a score range, use square brackets to denote an inclusive range, so that <code>[0,100]</code> would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (<code>0, 100)</code> would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0<code>,100), </code>which matches all scores except 100, and (0<code>,100], </code>which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">In most cases, Score Actions should contain an Action Button that executes the assessment:attemptStart action, just like the Launch Page. This will allow the students to complete multiple attempts.</t>
+					</textGroup>
+				</Text>
+				<Heading headingLevel=\\"3\\" id=\\"?\\">
+					<textGroup>
+						<t>Rubric</t>
+					</textGroup>
+				</Heading>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The fifth node in the assessment is a Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">When processing the student&#39;s score, the assessment first determines their <i>raw score</i> by dividing the number of questions correct by the total number of questions and then multiplying by 100. </t>
+						<t indent=\\"0\\">(<latex>(correct / questions) * 100 = raw score</latex>)</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t>The Rubric then checks the raw score. If the raw score is greater than or equal to the <i>Passing Score</i>, the rubric declares the student as passed.</t>
+						<t>If the student takes all of their allowed attempts and does not achieve at least one <i>Passing Score</i>, then the <i>Unable to Pass Result</i> will be sent to the grade book.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l</b><b><code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result</i>, with positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+					</textGroup>
+				</Text>
+				<Text id=\\"?\\">
+					<textGroup>
+						<t indent=\\"0\\">In this assessment, the Rubric lists a 75% as the <i>Passing Score</i> and sets the <i>Passed Result</i> and <i>Failed Result</i> so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.</t>
+					</textGroup>
+				</Text>
+			</Page>
+			<QuestionBank choose=\\"2\\" select=\\"sequential\\" id=\\"?\\">
+				<Question id=\\"?\\">
+					<Text id=\\"?\\">
+						<textGroup>
+							<t indent=\\"0\\">Here is an example question inside of an Assessment&#39;s question bank.</t>
+						</textGroup>
+					</Text>
+					<MCAssessment shuffle=\\"true\\" responseType=\\"pick-one\\" id=\\"?\\">
+						<MCChoice score=\\"0\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Incorrect answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score=\\"100\\" id=\\"?\\">
+							<MCAnswer id=\\"?\\">
+								<Text id=\\"?\\">
+									<textGroup>
+										<t indent=\\"0\\">Correct answer</t>
+									</textGroup>
+								</Text>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+			</QuestionBank>
+			<scoreActions>
+				<scoreAction for=\\"[0,100]\\">
+					<Page id=\\"?\\">
+						<Heading headingLevel=\\"1\\" id=\\"?\\">
+							<textGroup>
+								<t align=\\"center\\">How did you do?</t>
+							</textGroup>
+						</Heading>
+						<Text id=\\"?\\">
+							<textGroup>
+								<t align=\\"center\\">You have {{assessment:attemptsRemaining}} attempts remaining.</t>
+							</textGroup>
+						</Text>
+						<ActionButton id=\\"?\\">
+							<textGroup>
+								<t>Retry Assessment</t>
+							</textGroup>
+							<triggers>
+								<trigger type=\\"onClick\\">
+									<actions>
+										<action type=\\"assessment:startAttempt\\">
+											<value id=\\"?\\"/>
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+			</scoreActions>
+			<rubric type=\\"pass-fail\\" failedResult=\\"0\\" passedResult=\\"100\\" unableToPassResult=\\"50\\" passingAttemptScore=\\"75\\">
+				<mods>
+					<mod reward=\\"1\\" attemptCondition=\\"[1,$last_attempt]\\"/>
+					<mod reward=\\"2\\" attemptCondition=\\"(1,$last_attempt)\\"/>
+					<mod reward=\\"-3\\" attemptCondition=\\"(1,3]\\"/>
+					<mod reward=\\"4\\" attemptCondition=\\"[1,2)\\"/>
+					<mod reward=\\"-5\\" attemptCondition=\\"1\\"/>
+					<mod reward=\\"-6\\" attemptCondition=\\"$last_attempt\\"/>
+				</mods>
+			</rubric>
+		</Assessment>
+	</Module>
+</ObojoboDraftDoc>"
+`;
