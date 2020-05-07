@@ -10,6 +10,9 @@ import TriggerListModal from '../triggers/trigger-list-modal'
 const { Button, Switch } = Common.components
 const { ModalUtil } = Common.util
 
+// convenience function to reduce function creation in render
+const stopPropagation = event => event.stopPropagation()
+
 // Expected Props:
 // id: String - the id of the item to edit
 // content: Object - the item data for the node.  Each key-value pair would be edited independantly
@@ -75,7 +78,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	handleContentChange(key, event) {
-		event.stopPropagation()
+		stopPropagation(event)
 		const newContent = {}
 		newContent[key] = event.target.value
 
@@ -115,7 +118,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	toggleOpen(event) {
-		event.stopPropagation()
+		stopPropagation(event)
 
 		if (this.state.isOpen) {
 			if (this.state.needsUpdate) {
@@ -161,7 +164,7 @@ class MoreInfoBox extends React.Component {
 							type="text"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
-							onClick={event => event.stopPropagation()}
+							onClick={stopPropagation}
 						/>
 					</div>
 				)
@@ -173,7 +176,7 @@ class MoreInfoBox extends React.Component {
 							className="select-item"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
-							onClick={event => event.stopPropagation()}
+							onClick={stopPropagation}
 						>
 							{description.values.map(option => (
 								<option value={option.value} key={option.value}>
@@ -221,7 +224,7 @@ class MoreInfoBox extends React.Component {
 									value={this.state.currentId}
 									onChange={this.handleIdChange}
 									className="id-input"
-									onClick={event => event.stopPropagation()}
+									onClick={stopPropagation}
 								/>
 								<Button
 									className="input-aligned-button"

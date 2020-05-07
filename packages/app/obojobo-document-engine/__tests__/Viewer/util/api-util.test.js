@@ -533,6 +533,15 @@ describe('apiutil', () => {
 		})
 	})
 
+	test('copyDraft calls post and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.copyDraft('mock-draft-id', 'new title').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', { title: 'new title' })
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
 	test('getDraftRevision calls fetch and returns', async () => {
 		expect.hasAssertions()
 

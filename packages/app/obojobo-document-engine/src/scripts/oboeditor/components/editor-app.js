@@ -10,7 +10,7 @@ import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 //import { KeyUtils } from 'slate'
-import PageEditor from './page-editor'
+import VisualEditor from './visual-editor'
 import React from 'react'
 
 const { ModalContainer } = Common.components
@@ -187,7 +187,7 @@ class EditorApp extends React.Component {
 
 	renderVisualEditor() {
 		return (
-			<PageEditor
+			<VisualEditor
 				page={this.state.editorState.currentPageModel}
 				navState={this.state.editorState}
 				context={this.state.editorState.context}

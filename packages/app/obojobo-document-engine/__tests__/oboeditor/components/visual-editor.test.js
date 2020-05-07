@@ -1,11 +1,12 @@
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import APIUtil from 'src/scripts/viewer/util/api-util'
-import PageEditor from 'src/scripts/oboeditor/components/page-editor'
+import VisualEditor from 'src/scripts/oboeditor/components/visual-editor'
 import React from 'react'
 import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -22,6 +23,7 @@ jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: 'mock-id' }
 }))
 
+jest.mock('src/scripts/oboeditor/util/editor-util')
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 jest.mock('src/scripts/oboeditor/components/toolbars/paragraph-styles')
@@ -34,7 +36,7 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 let restoreConsole
 
-describe('PageEditor', () => {
+describe('VisualEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
@@ -57,7 +59,7 @@ describe('PageEditor', () => {
 		restoreConsole()
 	})
 
-	test('component renders', () => {
+	test('VisualEditor component', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -66,11 +68,11 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = renderer.create(<PageEditor {...props} />)
+		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('component renders with decoration', () => {
+	test('VisualEditor component with decoration', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -90,7 +92,7 @@ describe('PageEditor', () => {
 				]
 			}
 		})
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		expect(
 			component.instance().decorate([
 				{
@@ -102,7 +104,7 @@ describe('PageEditor', () => {
 		).toMatchSnapshot()
 	})
 
-	test('component renders with Elements', () => {
+	test('VisualEditor component with Elements', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -116,7 +118,7 @@ describe('PageEditor', () => {
 				renderNode: () => <p>Mock Content</p> //eslint-disable-line react/display-name
 			}
 		})
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		expect(
 			component.instance().renderElement({
 				element: {
@@ -140,13 +142,13 @@ describe('PageEditor', () => {
 		).toMatchSnapshot()
 	})
 
-	test('component renders with no page', () => {
+	test('VisualEditor component with no page', () => {
 		const props = {
 			page: null,
 			model: { title: 'Mock Title' }
 		}
 
-		const component = renderer.create(<PageEditor {...props} />)
+		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
@@ -155,7 +157,7 @@ describe('PageEditor', () => {
 			page: null,
 			model: { title: 'Mock Title' }
 		}
-		const thing = renderer.create(<PageEditor {...props} />)
+		const thing = renderer.create(<VisualEditor {...props} />)
 
 		const instance = thing.getInstance()
 		const spyImport = jest.spyOn(instance, 'importFromJSON')
@@ -177,7 +179,7 @@ describe('PageEditor', () => {
 		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
 			oboToSlate: () => ({ text: '' })
 		})
-		const thing = renderer.create(<PageEditor {...props} />)
+		const thing = renderer.create(<VisualEditor {...props} />)
 
 		const instance = thing.getInstance()
 		const spyImport = jest.spyOn(instance, 'importFromJSON')
@@ -194,7 +196,7 @@ describe('PageEditor', () => {
 			page: null,
 			model: { title: 'Mock Title' }
 		}
-		const thing = renderer.create(<PageEditor {...props} />)
+		const thing = renderer.create(<VisualEditor {...props} />)
 
 		const instance = thing.getInstance()
 		const spyImport = jest.spyOn(instance, 'importFromJSON')
@@ -206,7 +208,7 @@ describe('PageEditor', () => {
 		expect(spyExport).not.toHaveBeenCalled()
 	})
 
-	test('component changes pages', () => {
+	test('VisualEditor component changes pages', () => {
 		const props = {
 			page: {
 				id: 1,
@@ -222,20 +224,20 @@ describe('PageEditor', () => {
 
 		let thing
 		renderer.act(() => {
-			thing = renderer.create(<PageEditor {...props} />)
+			thing = renderer.create(<VisualEditor {...props} />)
 		})
 
 		expect(thing.toJSON()).toMatchSnapshot()
 
 		renderer.act(() => {
 			props.page.id = 2
-			thing.update(<PageEditor {...props} />)
+			thing.update(<VisualEditor {...props} />)
 		})
 
 		expect(thing.toJSON()).toMatchSnapshot()
 	})
 
-	test('component with page updating to another page', () => {
+	test('VisualEditor component with page updating to another page', () => {
 		const prevProps = {
 			page: {
 				id: 122,
@@ -290,11 +292,11 @@ describe('PageEditor', () => {
 			model: { title: 'Mock Title' }
 		}
 
-		const spy = jest.spyOn(PageEditor.prototype, 'exportToJSON')
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON')
 		spy.mockReturnValueOnce() // override the default method
 
 		// render
-		const thing = mount(<PageEditor {...prevProps} />)
+		const thing = mount(<VisualEditor {...prevProps} />)
 
 		// get a copy of state
 		const prevState = thing.state()
@@ -309,7 +311,7 @@ describe('PageEditor', () => {
 		spy.mockClear()
 	})
 
-	test('component alters value majorly', () => {
+	test('VisualEditor component alters value majorly', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -318,8 +320,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		const value = [
 			{
@@ -331,7 +332,7 @@ describe('PageEditor', () => {
 		component.instance().onChange(value)
 	})
 
-	test('PageEditor component alters value majorly with multi-select', () => {
+	test('VisualEditor component alters value majorly with multi-select', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -351,7 +352,7 @@ describe('PageEditor', () => {
 				}
 			})
 		})
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		const value = [
 			{
@@ -363,7 +364,7 @@ describe('PageEditor', () => {
 		component.instance().onChange(value)
 	})
 
-	test('PageEditor component alters value majorly with latex', () => {
+	test('VisualEditor component alters value majorly with latex', () => {
 		const props = {
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -383,7 +384,7 @@ describe('PageEditor', () => {
 				}
 			})
 		})
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		const value = [
 			{
@@ -404,7 +405,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const inst = component.instance()
 
 		inst.toggleEditable(false)
@@ -433,7 +434,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const inst = component.instance()
 
 		inst.markUnsaved()
@@ -451,6 +452,126 @@ describe('PageEditor', () => {
 		  ],
 		}
 	`)
+	})
+
+	test('changes the Editor title', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				},
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			draftId: 'mock-draft-id',
+			model: {
+				id: 'mock-draft-id',
+				title: 'Mock Title',
+				children: [
+					{
+						get: () => ASSESSMENT_NODE,
+						children: []
+					},
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => {
+							return { content: {}, children: [] }
+						},
+						children: {
+							models: [
+								{
+									get: () => null
+								}
+							]
+						}
+					},
+					{
+						get: () => 'mockNode'
+					}
+				],
+				flatJSON: () => {
+					return { content: {}, children: [] }
+				}
+			}
+		}
+
+		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
+
+		// render
+		const thing = mount(<VisualEditor {...props} />)
+
+		// simulate clicking on the input
+		thing.find('.editor--components--editor-title-input').simulate('change', {
+			target: { value: 'mock new title' }
+		})
+
+		thing.find('.editor--components--editor-title-input').simulate('blur')
+
+		// verify save and rename are called
+		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', 'mock new title')
+		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
+	})
+
+	test('changes the Editor title to blank', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				},
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			draftId: 'mock-draft-id',
+			model: {
+				id: 'mock-draft-id',
+				title: 'Mock Title',
+				children: [
+					{
+						get: () => ASSESSMENT_NODE,
+						children: []
+					},
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => {
+							return { content: {}, children: [] }
+						},
+						children: {
+							models: [
+								{
+									get: () => null
+								}
+							]
+						}
+					},
+					{
+						get: () => 'mockNode'
+					}
+				],
+				flatJSON: () => {
+					return { content: {}, children: [] }
+				}
+			}
+		}
+
+		const saveModule = jest.spyOn(VisualEditor.prototype, 'saveModule')
+
+		// render
+		const thing = mount(<VisualEditor {...props} />)
+
+		// simulate changing the title input
+		thing.find('.editor--components--editor-title-input').simulate('change', {
+			target: { value: '	' }
+		})
+
+		thing.find('.editor--components--editor-title-input').simulate('blur')
+
+		// verify save and rename are called
+		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', '')
+		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
 	})
 
 	test('Ensures the plugins work as expected', () => {
@@ -484,6 +605,7 @@ describe('PageEditor', () => {
 				})
 			},
 			model: {
+				title: 'mockTitle',
 				children: [
 					{
 						get: () => ASSESSMENT_NODE,
@@ -511,7 +633,7 @@ describe('PageEditor', () => {
 				}
 			}
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const plugins = component.instance().plugins
 
 		component.instance().editor.normalizeNode([{}, [0]])
@@ -567,7 +689,7 @@ describe('PageEditor', () => {
 			}
 		}
 
-		const thing = mount(<PageEditor {...props} />)
+		const thing = mount(<VisualEditor {...props} />)
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
 
@@ -616,7 +738,7 @@ describe('PageEditor', () => {
 
 		const value = ['node-one', 'node-two']
 
-		const thing = mount(<PageEditor {...props} />)
+		const thing = mount(<VisualEditor {...props} />)
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
 
@@ -654,7 +776,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const thing = mount(<PageEditor {...props} />)
+		const thing = mount(<VisualEditor {...props} />)
 
 		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
 
@@ -679,7 +801,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
@@ -714,7 +836,7 @@ describe('PageEditor', () => {
 			}
 		}
 
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
 		instance.editor = editor
 
@@ -769,7 +891,7 @@ describe('PageEditor', () => {
 			}
 		}
 
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
 		instance.editor = editor
 
@@ -842,7 +964,7 @@ describe('PageEditor', () => {
 			}
 		}
 
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
 		instance.editor = editor
 
@@ -857,13 +979,14 @@ describe('PageEditor', () => {
 
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
-		jest.spyOn(location, 'reload').mockReturnValueOnce()
-
+		Object.defineProperty(window, 'location', {
+			value: { reload: jest.fn() }
+		})
 		const props = {
 			page: { toJSON: () => ({ children: [{ type: 'mock node' }] }) },
 			model: { title: 'Mock Title' }
 		}
-		const component = renderer.create(<PageEditor {...props} />)
+		const component = renderer.create(<VisualEditor {...props} />)
 
 		component.getInstance().reload()
 		expect(window.removeEventListener).toHaveBeenCalled()
@@ -880,7 +1003,7 @@ describe('PageEditor', () => {
 			},
 			model: { title: 'Mock Title' }
 		}
-		const component = mount(<PageEditor {...props} />)
+		const component = mount(<VisualEditor {...props} />)
 
 		expect(component.state().contentRect).toBe(null)
 		component.instance().onResized({ contentRect: 'mock-content-rect' })
@@ -891,24 +1014,24 @@ describe('PageEditor', () => {
 		const originalResizeObserver = window.ResizeObserver
 
 		window.ResizeObserver = undefined //eslint-disable-line no-undefined
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = {}
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: {} }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: { observe: jest.fn() } }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = { prototype: { disconnect: jest.fn() } }
-		expect(PageEditor.prototype.setupResizeObserver()).toBe(false)
+		expect(VisualEditor.prototype.setupResizeObserver()).toBe(false)
 
 		window.ResizeObserver = jest.fn()
 		window.ResizeObserver.prototype = { observe: jest.fn(), disconnect: jest.fn() }
 		expect(
-			PageEditor.prototype.setupResizeObserver.bind({
+			VisualEditor.prototype.setupResizeObserver.bind({
 				onResized: jest.fn(),
 				pageEditorContainerRef: { current: jest.fn() }
 			})()
@@ -937,7 +1060,7 @@ describe('PageEditor', () => {
 			onResized,
 			pageEditorContainerRef: { current: pageEditorContainerRefCurrent }
 		}
-		expect(PageEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
+		expect(VisualEditor.prototype.setupResizeObserver.bind(thisValue)()).toBe(true)
 
 		expect(thisValue.resizeObserver).toBeInstanceOf(window.ResizeObserver)
 		expect(thisValue.resizeObserver.__callback).toBe(onResized)
@@ -949,27 +1072,11 @@ describe('PageEditor', () => {
 	test('componentWillUnmount disconnects the resizeObserver', () => {
 		const disconnect = jest.fn()
 
-		PageEditor.prototype.componentWillUnmount.bind({
+		VisualEditor.prototype.componentWillUnmount.bind({
 			checkIfSaved: jest.fn(),
 			resizeObserver: { disconnect }
 		})()
 
 		expect(disconnect).toHaveBeenCalled()
-	})
-
-	test('PageEditor component doesnt save if readOnly is enabled', () => {
-		const props = { readOnly: true }
-		const mockFn = jest.fn()
-		const spy = jest.spyOn(PageEditor.prototype, 'exportCurrentToJSON')
-		const component = mount(<PageEditor {...props} />)
-		const instance = component.instance()
-
-		instance.markUnsaved()
-		instance.saveModule('mockId')
-
-		// eslint-disable-next-line no-undefined
-		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
-		expect(spy).not.toHaveBeenCalled()
-		expect(instance.state.saved).toBe(false)
 	})
 })

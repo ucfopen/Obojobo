@@ -10,7 +10,7 @@ import React from 'react'
 import _ from 'underscore'
 import renderer from 'react-test-renderer'
 
-const { getScoreClass } = require.requireActual(
+const { getScoreClass } = jest.requireActual(
 	'obojobo-document-engine/src/scripts/viewer/util/question-util'
 ).default
 

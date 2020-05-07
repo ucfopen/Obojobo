@@ -1,6 +1,7 @@
-import './page-editor.scss'
+import './visual-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -16,7 +17,8 @@ import OboNodePlugin from '../plugins/obonode-plugin'
 import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import PageEditorErrorBoundry from './page-editor-error-boundry'
+import VisualEditorErrorBoundry from './visual-editor-error-boundry'
+import EditorTitleInput from './editor-title-input'
 import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
@@ -33,7 +35,7 @@ import { withHistory } from 'slate-history'
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
 
-class PageEditor extends React.Component {
+class VisualEditor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
@@ -62,6 +64,7 @@ class PageEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
+		this.renameModule = this.renameModule.bind(this)
 		this.onResized = this.onResized.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
@@ -248,6 +251,11 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	renameModule(label) {
+		EditorUtil.renameModule(this.props.model.id, label)
+		this.saveModule(this.props.draftId)
+	}
+
 	saveModule(draftId) {
 		if (this.props.readOnly) {
 			return
@@ -386,7 +394,6 @@ class PageEditor extends React.Component {
 	}
 
 	// All the render methods that allow the editor to display properly
-
 	renderLeaf(props) {
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
 		const { attributes, children, leaf } = props
@@ -424,11 +431,11 @@ class PageEditor extends React.Component {
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					{this.props.readOnly ? null : (
 						<div className="draft-toolbars">
-							<div className="draft-title">{this.props.model.title}</div>
+							<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
 							<FileToolbar
 								editor={this.editor}
 								selection={this.editor.selection}
-								model={this.props.model}
+								title={this.props.model.title}
 								draftId={this.props.draftId}
 								onSave={this.saveModule}
 								reload={this.reload}
@@ -452,7 +459,7 @@ class PageEditor extends React.Component {
 					/>
 
 					<div className="component obojobo-draft--modules--module" role="main">
-						<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
 								renderElement={this.renderElement.bind(this)}
@@ -462,7 +469,7 @@ class PageEditor extends React.Component {
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>
-						</PageEditorErrorBoundry>
+						</VisualEditorErrorBoundry>
 					</div>
 				</Slate>
 			</div>
@@ -470,4 +477,4 @@ class PageEditor extends React.Component {
 	}
 }
 
-export default PageEditor
+export default VisualEditor

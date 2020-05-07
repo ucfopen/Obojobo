@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VisualEditorErrorBoundry VisualEditorErrorBoundry component 1`] = `
+<div>
+  Contents...
+</div>
+`;
