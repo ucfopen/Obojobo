@@ -38,9 +38,9 @@ class AssessmentReviewView extends React.Component {
 
 		const attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
 			const date = new Date(attempt.finishTime)
-			const dateString = formatDate(date, 'M/D/YY [at] h:mma')
-			const machineDateString = formatDate(date)
-			const ariaDateString = formatDate(date, 'MMMM Do YYYY [at] h:mma')
+			const dateString = formatDate(date, "M/d/yy 'at' h:mmaaaa")
+			const machineDateString = formatDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+			const ariaDateString = formatDate(date, "MMMM Do yyyy 'at' h:mmaaaa")
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
 			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.questionScores)
 

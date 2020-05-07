@@ -1,0 +1,22 @@
+@import '../../../scss/includes';
+
+.editor--components--editor-title-input {
+	font-size: 1.2em;
+	margin-left: 0.6em;
+	margin-top: 0.5em;
+	font-family: $font-default;
+	border: 1px solid $color-bg;
+	width: 30em;
+	max-height: 1em;
+	line-height: 1em;
+	overflow: hidden;
+	white-space: nowrap;
+	position: absolute;
+	padding: 0.2em;
+	border-radius: 0.15em;
+	transform: translate(-0.2em, -0.2em);
+
+	&:hover {
+		border: 1px solid $color-shadow;
+	}
+}

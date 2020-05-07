@@ -1,5 +1,5 @@
 import React from 'react'
-import { Transforms, Editor } from 'slate'
+import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
@@ -8,7 +8,6 @@ import './editor-component.scss'
 
 const { Button, Switch } = Common.components
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -64,15 +63,8 @@ class MCAssessment extends React.Component {
 		)
 	}
 
-	getParentQuestionNode() {
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const [parent] = Editor.parent(this.props.editor, path)
-
-		return parent
-	}
-
 	render() {
-		const questionType = this.getParentQuestionNode().content.type || 'default'
+		const questionType = this.props.element.questionType || 'default'
 		const content = this.props.element.content
 
 		return (

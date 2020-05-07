@@ -16,14 +16,16 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
  * Copies the id, type, triggers, and converts text children (including marks)
  * into a textGroup.  The conversion also saves the headingLevel attribute
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Heading node 
+ * @returns {Object} An Obojobo Heading node
  */
 const slateToObo = node => {
 	const line = {
-		text: { value: "", styleList: [] },
+		text: { value: '', styleList: [] },
 		data: { align: node.content.align }
 	}
-	
+
+	TextUtil.slateToOboText(node, line)
+
 	TextUtil.slateToOboText(node, line)
 
 	const newNode = {
@@ -43,7 +45,7 @@ const slateToObo = node => {
 /**
  * Generates a Slate node from an Obojobo Heading.
  * Copies all attributes, and converts a textGroup into Slate Text children
- * @param {Object} node An Obojobo Heading node 
+ * @param {Object} node An Obojobo Heading node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
@@ -61,8 +63,8 @@ const switchType = {
 	'ObojoboDraft.Chunks.Text': (editor, [node, path]) => {
 		Transforms.setNodes(
 			editor,
-			{ 
-				type: TEXT_NODE, 
+			{
+				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,
 				content: { ...node.content, indent: 0 }
 			},
@@ -72,7 +74,7 @@ const switchType = {
 	'ObojoboDraft.Chunks.Heading': (editor, [node, path], data) => {
 		Transforms.setNodes(
 			editor,
-			{ 
+			{
 				content: { ...node.content, ...data }
 			},
 			{ at: path }
@@ -81,8 +83,8 @@ const switchType = {
 	'ObojoboDraft.Chunks.Code': (editor, [node, path]) => {
 		Transforms.setNodes(
 			editor,
-			{ 
-				type: CODE_NODE, 
+			{
+				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
 				content: { ...node.content, indent: 0 }
 			},
@@ -90,18 +92,18 @@ const switchType = {
 		)
 	},
 	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
-		const newList = { 
-			type: LIST_NODE, 
+		const newList = {
+			type: LIST_NODE,
 			content: { listStyles: data },
 			children: [
-				{ 
-					type: LIST_NODE, 
-					subtype: LIST_LEVEL_NODE, 
+				{
+					type: LIST_NODE,
+					subtype: LIST_LEVEL_NODE,
 					content: data,
 					children: [
-						{ 
-							type: LIST_NODE, 
-							subtype: LIST_LINE_NODE, 
+						{
+							type: LIST_NODE,
+							subtype: LIST_LINE_NODE,
 							children: node.children
 						}
 					]
@@ -110,12 +112,8 @@ const switchType = {
 		}
 
 		Transforms.removeNodes(editor, { at: path })
-		Transforms.insertNodes(
-			editor,
-			newList,
-			{ at: path }
-		)
-	},
+		Transforms.insertNodes(editor, newList, { at: path })
+	}
 }
 
 export default { slateToObo, oboToSlate, switchType }

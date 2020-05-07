@@ -1,9 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List Editor Node List component 1`] = `
+exports[`List Editor Node List component when not selected 1`] = `
 <div>
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   />
 </div>
+`;
+
+exports[`List Editor Node List component when selected 1`] = `
+<div>
+  <div
+    className="text-chunk obojobo-draft--chunks--list pad"
+  >
+    <div
+      className="buttonbox-box"
+      contentEditable={false}
+    >
+      <div
+        className="box-border"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center toggle-header"
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Switch to ordered
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`List Editor Node List toggleType calls setNodes on the list and each level 1`] = `
+Array [
+  Object {
+    "selection": Object {
+      "anchor": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+      "focus": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+    },
+  },
+  Object {
+    "content": Object {
+      "listStyles": Object {
+        "indents": Object {},
+        "type": "ordered",
+      },
+    },
+  },
+  Object {
+    "at": Array [
+      0,
+      1,
+      1,
+    ],
+  },
+]
+`;
+
+exports[`List Editor Node List toggleType calls setNodes on the list and each level 2`] = `
+Array [
+  Object {
+    "selection": Object {
+      "anchor": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+      "focus": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+    },
+  },
+  Object {
+    "content": Object {
+      "type": "ordered",
+    },
+  },
+  Object {
+    "at": "mock-level-path",
+  },
+]
 `;

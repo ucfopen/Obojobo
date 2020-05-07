@@ -10,7 +10,7 @@ const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 describe('ActionButton editor', () => {
 	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
 		const next = jest.fn()
-		ActionButton.plugins.normalizeNode([ {},[] ], {}, next)
+		ActionButton.plugins.normalizeNode([{}, []], {}, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -22,7 +22,7 @@ describe('ActionButton editor', () => {
 		}
 		const next = jest.fn()
 
-		ActionButton.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		ActionButton.plugins.normalizeNode([button, [0]], { children: [button] }, next)
 		expect(next).toHaveBeenCalled()
 	})
 
@@ -32,7 +32,7 @@ describe('ActionButton editor', () => {
 		const button = {
 			type: BUTTON_NODE,
 			children: [
-				{ 
+				{
 					type: 'mockElement',
 					children: [{ text: '' }]
 				}
@@ -44,23 +44,15 @@ describe('ActionButton editor', () => {
 		}
 		const next = jest.fn()
 
-		ActionButton.plugins.normalizeNode([ button,[0] ], editor, next)
+		ActionButton.plugins.normalizeNode([button, [0]], editor, next)
 		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			ActionButton.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(ActionButton.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
 		expect(
-			ActionButton.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
+			ActionButton.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})
 		).toMatchSnapshot()
 	})
 
@@ -70,10 +62,7 @@ describe('ActionButton editor', () => {
 		}
 
 		expect(
-			ActionButton.plugins.decorate(
-				[{ children: [{ text: '' }] }, [0]],
-				editor
-			)
+			ActionButton.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)
 		).toMatchSnapshot()
 	})
 
@@ -83,7 +72,7 @@ describe('ActionButton editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+		ActionButton.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -96,7 +85,7 @@ describe('ActionButton editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		ActionButton.plugins.onKeyDown([{},[0]], {}, event)
+		ActionButton.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 

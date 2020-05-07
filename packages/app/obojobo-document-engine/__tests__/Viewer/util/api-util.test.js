@@ -2,7 +2,7 @@
 
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
-const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 const API = require('../../../src/scripts/viewer/util/api')
 import mockConsole from 'jest-mock-console'
 let restoreConsole
@@ -503,11 +503,14 @@ describe('apiutil', () => {
 		})
 	})
 
-	test('createNewDraft calls fetch and returns', async () => {
+	test('createNewDraft calls fetch and returns', () => {
 		expect.hasAssertions()
 
-		return APIUtil.createNewDraft().then(result => {
-			expect(post).toHaveBeenCalledWith('/api/drafts/new')
+		return APIUtil.createNewDraft('mock_content', 'mock_format').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/new', {
+				content: 'mock_content',
+				format: 'mock_format'
+			})
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
@@ -526,6 +529,15 @@ describe('apiutil', () => {
 
 		return APIUtil.getAllDrafts('mock-draft-id').then(result => {
 			expect(get).toHaveBeenCalledWith('/api/drafts', 'json')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('copyDraft calls post and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.copyDraft('mock-draft-id', 'new title').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', { title: 'new title' })
 			expect(result).toEqual(mockJsonResult)
 		})
 	})

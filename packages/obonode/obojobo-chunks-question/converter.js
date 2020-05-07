@@ -63,7 +63,6 @@ const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	slateNode.children = node.children.map(child => {
 		if (child.type === MCASSESSMENT_NODE || child.type === NUMERIC_ASSESSMENT_NODE) {
-			console.log('::', child, Common.Registry.getItemForType(child.type).oboToSlate(child))
 			return Common.Registry.getItemForType(child.type).oboToSlate(child)
 		} else {
 			return Component.helpers.oboToSlate(child)

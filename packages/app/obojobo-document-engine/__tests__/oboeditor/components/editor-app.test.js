@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 
 import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-jest.mock('src/scripts/oboeditor/components/page-editor')
+jest.mock('src/scripts/oboeditor/components/visual-editor')
 jest.mock('src/scripts/oboeditor/components/code-editor')
 
 import APIUtil from 'src/scripts/viewer/util/api-util'

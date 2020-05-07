@@ -1,5 +1,4 @@
-import API from './api'
-import debounce from '../../common/util/debounce'
+const API = require('./api')
 
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
@@ -170,8 +169,12 @@ const APIUtil = {
 		return API.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
 	},
 
-	createNewDraft() {
-		return API.post(`/api/drafts/new`).then(processJsonResults)
+	// If `content` and `format` are not specified, the default draft will be created
+	createNewDraft(content, format) {
+		return API.post(`/api/drafts/new`, {
+			content,
+			format
+		}).then(processJsonResults)
 	},
 
 	deleteDraft(draftId) {
@@ -180,7 +183,11 @@ const APIUtil = {
 
 	getAllDrafts() {
 		return API.get(`/api/drafts`, 'json').then(processJsonResults)
+	},
+
+	copyDraft(draftId, newTitle) {
+		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(processJsonResults)
 	}
 }
 
-export default APIUtil
+module.exports = APIUtil

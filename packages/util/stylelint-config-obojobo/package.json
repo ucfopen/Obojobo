@@ -12,7 +12,7 @@
 		"precommit": "echo 'not implemented'"
 	},
 	"devDependencies": {
-		"stylelint-config-standard": "^18.2.0",
-		"stylelint-declaration-use-variable": "^1.7.0"
+		"stylelint-config-standard": "^20.0.0",
+		"stylelint-declaration-use-variable": "^1.7.2"
 	}
 }

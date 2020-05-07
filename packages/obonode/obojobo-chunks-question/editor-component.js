@@ -40,12 +40,6 @@ class Question extends React.Component {
 
 	onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
-		// const questionData = this.props.node.data
-		// const questionDataContent = questionData.get('content')
-		// const questionAssessmentNode = this.props.node.nodes
-		// 	.filter(node => node.type === MCASSESSMENT_NODE || node.type === NUMERIC_ASSESSMENT_NODE)
-		// 	.get(0)
-		// const questionAssessmentData = questionAssessmentNode.data.toJSON()
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
@@ -54,35 +48,12 @@ class Question extends React.Component {
 			{ at: path }
 		)
 
-		// This will force an update to the question assessment child:
-		// this.props.editor.setNodeByKey(questionAssessmentNode.key, {
-		// 	data: {
-		// 		...questionAssessmentData
-		// 		// questionType: type
-		// 	}
-		// })
 		const lastChildIndex = this.props.element.children.length - 1
 		return Transforms.setNodes(
 			this.props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
 		)
-	}
-
-	onSetRevealAnswer(event) {
-		const revealAnswer = event.target.value
-
-		const questionData = this.props.node.data
-		const questionDataContent = questionData.get('content')
-
-		this.props.editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					...questionDataContent,
-					revealAnswer
-				}
-			}
-		})
 	}
 
 	onSetAssessmentType(event) {
@@ -122,6 +93,24 @@ class Question extends React.Component {
 				at: path.concat(this.props.element.children.length - 1)
 			})
 		})
+
+		// const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		// Transforms.setNodes(
+		// 	this.props.editor,
+		// 	{ content: { ...this.props.element.content, type } },
+		// 	{ at: path }
+		// )
+
+		// const lastChildIndex = this.props.element.children.length - 1
+		// return Transforms.setNodes(
+		// 	this.props.editor,
+		// 	{ questionType: type },
+		// 	{ at: path.concat(lastChildIndex) }
+		// )
+	}
+
+	onSetRevealAnswer() {
+		alert('@TODO Not implemented')
 	}
 
 	delete() {
@@ -163,26 +152,39 @@ class Question extends React.Component {
 	}
 
 	render() {
-		// const content = this.props.node.data.get('content')
-		// const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
-		// return <div>QUESTION</div>
-
 		const element = this.props.element
 		const content = element.content
-		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
+		// // const content = this.props.node.data.get('content')
+		// // const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		// // return <div>QUESTION</div>
+
+		// const element = this.props.element
+		// const content = element.content
+		// const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
 		const revealAnswer = content.revealAnswer
 		const isTypeSurvey = content.type === 'survey'
-		const questionType = element.content.type
+		// const questionType = element.content.type
 
-		// let questionType
+		// // let questionType
+
+		// // The question type is determined by the MCAssessment or the NumericAssessement
+		// // This is either the last node or the second to last node
+		// // if (hasSolution) {
+		// // 	questionType = element.children[element.children.length - 2].type
+		// // } else {
+		// // 	questionType = element.children[element.children.length - 1]
+		// // }
+
+		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
+		let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
-		// if (hasSolution) {
-		// 	questionType = element.children[element.children.length - 2].type
-		// } else {
-		// 	questionType = element.children[element.children.length - 1]
-		// }
+		if (hasSolution) {
+			questionType = element.children[element.children.length - 2].type
+		} else {
+			questionType = element.children[element.children.length - 1]
+		}
 
 		return (
 			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
