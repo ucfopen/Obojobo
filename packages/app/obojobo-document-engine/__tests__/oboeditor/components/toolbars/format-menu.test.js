@@ -113,8 +113,7 @@ describe('Format Menu', () => {
 		expect(editor.unindentList).toHaveBeenCalled()
 	})
 
-	//@TODO: Skipping test for now until lists are complete
-	test.skip('FormatMenu node calls editor.changeToType for each bullet style', () => {
+	test('FormatMenu node calls editor.changeToType for each bullet style', () => {
 		const editor = {
 			changeToType: jest.fn()
 		}
