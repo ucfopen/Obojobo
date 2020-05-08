@@ -55,8 +55,8 @@ class ActionButton extends React.Component {
 					<div className="trigger-list">
 						<div className="title">When the button is clicked:</div>
 						{isAnOnClickActionSet ? (
-							onClickTrigger.actions.map(action => (
-								<ActionButtonEditorAction key={action.type} {...action} />
+							onClickTrigger.actions.map((action, index) => (
+								<ActionButtonEditorAction key={`${action.type}-${index}`} {...action} />
 							))
 						) : (
 							<div className="trigger no-actions">(No action set)</div>
