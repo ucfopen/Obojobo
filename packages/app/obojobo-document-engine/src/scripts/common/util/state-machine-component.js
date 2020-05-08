@@ -14,7 +14,7 @@ export default class Dialog extends React.Component {
 		props.machine.onTransition = (prevStep, nextStep) => {
 			// debugger
 			this.setState({
-				log: `->${nextStep}\n${this.state.log}`
+				log: `${prevStep}->${nextStep}\n${this.state.log}`
 			})
 			originalOnTransition(prevStep, nextStep)
 		}
@@ -82,7 +82,10 @@ export default class Dialog extends React.Component {
 								))}
 							</ul>
 						</div>
-						<textarea style={{ fontSize: '9pt', width: 360, height: 160 }} value={this.state.log} />
+						<textarea
+							style={{ fontSize: '10px', width: 360, height: 160 }}
+							value={this.state.log}
+						/>
 					</div>
 				) : (
 					<div>Missing state machine!</div>

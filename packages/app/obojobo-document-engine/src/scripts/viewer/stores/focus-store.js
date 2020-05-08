@@ -66,13 +66,11 @@ class FocusStore extends Store {
 	}
 
 	_updateFocusTarget(type, target = null, scroll = true, animateScroll = false) {
-		console.log('_uFT', arguments)
 		this.state.type = type
 		this.state.target = target
 		this.state.scroll = ('' + scroll).toLowerCase() === 'true'
 		this.state.animateScroll = ('' + animateScroll).toLowerCase() === 'true'
 		this.state.visualFocusTarget = null
-		console.log('now', JSON.stringify(this.state))
 	}
 
 	_focusOnNavTarget() {

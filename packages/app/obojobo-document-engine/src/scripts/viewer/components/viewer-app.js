@@ -264,8 +264,6 @@ export default class ViewerApp extends React.Component {
 	}
 
 	updateDOMFocus() {
-		console.log(JSON.stringify(this.state.focusState))
-
 		const focussedItem = FocusUtil.getFocussedItemAndClear(this.state.focusState)
 
 		switch (focussedItem.type) {
@@ -306,8 +304,6 @@ export default class ViewerApp extends React.Component {
 
 	focusComponent(model, opts) {
 		if (!model) return false
-
-		console.log('focusComponent', model, opts)
 
 		// Save the current scroll location since focus() will scroll the page (there is a
 		// preventScroll option but it is not widely supported). Once focus is called we'll

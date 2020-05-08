@@ -16,8 +16,6 @@ const Adapter = {
 		model.setStateProp('correctLabels', null, p => p.split('|'))
 		model.setStateProp('incorrectLabels', null, p => p.split('|'))
 
-		console.log('model', model)
-
 		// Older versions of the document put correctLabels and incorrectLabels
 		// on MCAssessment. For compatibility we'll use those if they exist
 		// and this node doesn't define them.

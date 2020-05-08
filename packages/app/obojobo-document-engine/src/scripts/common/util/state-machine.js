@@ -29,7 +29,7 @@ class StateMachine {
 			throw Error(`No transition defined from "${this.step}" to "${nextStep}"`)
 		}
 
-		const oldState = this.step
+		const oldStep = this.step
 		const oldTarget = this.getCurrentTransition()
 
 		if (oldTarget.onExit) {
@@ -38,10 +38,10 @@ class StateMachine {
 
 		const target = this.transitions[nextStep]
 
-		this.onTransition(oldState, this.step)
-
 		if (target) {
 			this.step = nextStep
+
+			this.onTransition(oldStep, nextStep)
 
 			if (target.onEnter) {
 				target.onEnter.call(this)

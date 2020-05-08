@@ -115,7 +115,6 @@ class QuestionStore extends Store {
 			},
 
 			'question:setResponse': payload => {
-				console.log('q:sR', payload)
 				const {
 					context,
 					id,

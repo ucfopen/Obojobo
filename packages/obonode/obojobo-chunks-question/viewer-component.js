@@ -297,8 +297,6 @@ export default class Question extends OboQuestionComponent {
 	}
 
 	componentDidUpdate() {
-		console.log('CDU', this.nextFocus)
-
 		switch (this.nextFocus) {
 			case FOCUS_TARGET_EXPLANATION:
 				delete this.nextFocus

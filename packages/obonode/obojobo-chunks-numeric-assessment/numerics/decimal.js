@@ -112,8 +112,6 @@ class Decimal extends Numeric {
 			valueString = `${bigValueString}${trailingContent}`
 		}
 
-		console.log('vs', valueString)
-
 		return {
 			matchType: MATCH_EXACT,
 			valueString,
@@ -196,8 +194,6 @@ class Decimal extends Numeric {
 			if (bigRight && bigRight.eq(0)) return 0
 			return bigRight ? Decimal.getStringFromBigValue(bigRight).length : 0
 		}
-
-		console.log('gnsf', valueString, Decimal.getStringFromBigValue(bigLeft), rightString)
 
 		return Decimal.getStringFromBigValue(bigLeft).length + rightString.length
 	}

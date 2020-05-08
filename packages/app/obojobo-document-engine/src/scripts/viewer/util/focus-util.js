@@ -5,7 +5,6 @@ const { OboModel } = Common.models
 
 const FocusUtil = {
 	focusComponent(id, opts = { fade: false, animateScroll: false, scroll: true }) {
-		console.log('FU.fC', arguments)
 		Dispatcher.trigger('focus:component', {
 			value: {
 				id,

@@ -14,7 +14,6 @@ const { CurrentAssessmentStates, AssessmentUtil } = Viewer.util
 const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
 
 const getDialog = (currentAttemptStatus, assessmentStep, onCancel, endAttemptFn, onResponse) => {
-	console.log('getDialog', currentAttemptStatus, assessmentStep)
 	switch (assessmentStep) {
 		case AssessmentNetworkStates.WILL_RESUME_ATTEMPT:
 			return (

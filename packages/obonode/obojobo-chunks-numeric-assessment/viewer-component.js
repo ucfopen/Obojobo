@@ -136,13 +136,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	calculateScore() {
 		const questionResponse = this.props.response.value
 
-		console.log('CALCULATE SCORE', questionResponse)
-
 		// debugger
 
 		const results = this.evaluator.evaluate(questionResponse)
 		// this.results = results
-		console.log('results', results)
 
 		switch (results.status) {
 			case 'inputInvalid':
@@ -286,8 +283,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	getRuleModSummaries(rule) {
 		// const valueSummary = this.getRangeSummary(rule.value)
 
-		console.log('rule ERROR VALUE', rule.errorValue.toString())
-
 		const mods = []
 
 		switch (rule.errorType) {
@@ -323,8 +318,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				mods.push('Not in reduced form')
 				break
 		}
-
-		console.log('we got mods for ya', mods)
 
 		// switch (mods.length) {
 		// 	case 0:
@@ -469,10 +462,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const feedback = this.getFeedback()
 		const feedbackModel = feedback ? OboModel.create(feedback) : null
 		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
-		console.log('RULES', this.evaluator.grader.rules)
 		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
 
-		console.log('__props__', this.props)
 		//@TODO
 		const questionResponse = this.props.response ? this.props.response.value : null
 
@@ -489,12 +480,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			results && results.details && results.details.matchingOutcome
 				? results.details.matchingOutcome.rule
 				: null
-		console.log('__r', results, matchingCorrectRule)
 		//@END TODO
 
 		const responseValue =
 			this.props.response && this.props.response.value ? this.props.response.value : ''
-		console.log('fb', feedback, feedbackModel, FeedbackComponent)
 
 		const isExactlyCorrect =
 			isScored && score === 100 && results.details.matchingOutcome.scoreOutcome.isExactlyCorrect
