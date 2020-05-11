@@ -131,15 +131,26 @@ describe('EditorStore', () => {
 		expect(EditorStore.setStartPage).toHaveBeenCalledWith('mockId')
 	})
 
-	test('editor:renamePage calls renamePage', () => {
-		jest.spyOn(EditorStore, 'renamePage')
-		EditorStore.renamePage.mockReturnValueOnce(false)
+	test('editor:renamePage calls renamePageOrModule', () => {
+		jest.spyOn(EditorStore, 'renamePageOrModule')
+		EditorStore.renamePageOrModule.mockReturnValueOnce(false)
 
 		eventCallbacks['editor:renamePage']({
 			value: { pageId: 'mockId', name: 'mockName' }
 		})
 
-		expect(EditorStore.renamePage).toHaveBeenCalledWith('mockId', 'mockName')
+		expect(EditorStore.renamePageOrModule).toHaveBeenCalledWith('mockId', 'mockName')
+	})
+
+	test('editor:renameModule calls renamePageOrModule', () => {
+		jest.spyOn(EditorStore, 'renamePageOrModule')
+		EditorStore.renamePageOrModule.mockReturnValueOnce(false)
+
+		eventCallbacks['editor:renameModule']({
+			value: { moduleId: 'mockId', name: 'mockName' }
+		})
+
+		expect(EditorStore.renamePageOrModule).toHaveBeenCalledWith('mockId', 'mockName')
 	})
 
 	test('init builds state with basic options', () => {
@@ -470,7 +481,7 @@ describe('EditorStore', () => {
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
-	test('renamePage rebuilds menu', () => {
+	test('renamePageOrModule rebuilds menu', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		jest.spyOn(EditorStore, 'triggerChange')
 		EditorStore.triggerChange.mockReturnValueOnce(true)
@@ -482,7 +493,7 @@ describe('EditorStore', () => {
 		}
 		Common.models.OboModel.getRoot.mockReturnValueOnce('mockRoot')
 
-		EditorStore.renamePage('mockId', 'mockTitle')
+		EditorStore.renamePageOrModule('mockId', 'mockTitle')
 
 		expect(Common.models.OboModel.models.mockId.title).toEqual('mockTitle')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()

@@ -30,6 +30,21 @@ jest.useFakeTimers()
 describe('QuestionBank editor', () => {
 	test('QuestionBank builds the expected component', () => {
 		const props = {
+			node: {
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
 			element: { content: {} }
 		}
 
@@ -42,6 +57,17 @@ describe('QuestionBank editor', () => {
 		const props = {
 			element: {
 				content: { choose: 8, select: 'sequential' }
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
 			}
 		}
 
@@ -65,6 +91,17 @@ describe('QuestionBank editor', () => {
 			},
 			editor: {
 				toggleEditable: jest.fn()
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
 			}
 		}
 
@@ -103,6 +140,17 @@ describe('QuestionBank editor', () => {
 		const props = {
 			element: {
 				content: { choose: 8, select: 'sequential' }
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
 			}
 		}
 
@@ -127,6 +175,26 @@ describe('QuestionBank editor', () => {
 		})
 
 		const props = {
+			node: {
+				data: {
+					data: {
+						get: () => {
+							return { choose: 8, select: 'sequential' }
+						}
+					}
+				}
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {
+				removeNodeByKey: jest.fn()
+			},
 			element: {
 				content: { choose: 8, select: 'sequential' }
 			}
@@ -154,6 +222,17 @@ describe('QuestionBank editor', () => {
 				content: {},
 				children: []
 			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
 			editor: {}
 		}
 
@@ -173,6 +252,17 @@ describe('QuestionBank editor', () => {
 			element: {
 				content: {},
 				children: []
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
 			},
 			editor: {}
 		}

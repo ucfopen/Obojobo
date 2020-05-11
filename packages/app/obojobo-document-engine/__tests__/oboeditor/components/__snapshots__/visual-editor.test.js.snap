@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PageEditor Ensures the plugins work as expected 1`] = `
+exports[`VisualEditor Ensures the plugins work as expected 1`] = `
 Array [
   Object {
     "apply": [Function],
@@ -485,7 +485,7 @@ Array [
 ]
 `;
 
-exports[`PageEditor component changes pages 1`] = `
+exports[`VisualEditor VisualEditor component 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -500,11 +500,15 @@ exports[`PageEditor component changes pages 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -941,11 +945,57 @@ exports[`PageEditor component changes pages 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`PageEditor component changes pages 2`] = `
+exports[`VisualEditor VisualEditor component changes pages 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -960,11 +1010,15 @@ exports[`PageEditor component changes pages 2`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1401,11 +1455,57 @@ exports[`PageEditor component changes pages 2`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`PageEditor component renders 1`] = `
+exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -1420,11 +1520,15 @@ exports[`PageEditor component renders 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -1861,11 +1965,57 @@ exports[`PageEditor component renders 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`PageEditor component renders with Elements 1`] = `
+exports[`VisualEditor VisualEditor component with Elements 1`] = `
 <SlateWrapper
   element={
     Object {
@@ -1883,13 +2033,13 @@ exports[`PageEditor component renders with Elements 1`] = `
 </SlateWrapper>
 `;
 
-exports[`PageEditor component renders with Elements 2`] = `
+exports[`VisualEditor VisualEditor component with Elements 2`] = `
 <p>
   Mock Content
 </p>
 `;
 
-exports[`PageEditor component renders with decoration 1`] = `
+exports[`VisualEditor VisualEditor component with decoration 1`] = `
 Array [
   Object {
     "anchor": Object {
@@ -1911,7 +2061,7 @@ Array [
 ]
 `;
 
-exports[`PageEditor component renders with no page 1`] = `
+exports[`VisualEditor VisualEditor component with no page 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -1926,11 +2076,15 @@ exports[`PageEditor component renders with no page 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >
@@ -2367,11 +2521,53 @@ exports[`PageEditor component renders with no page 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-string={true}
+          >
+            No content available, create a page to start editing
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`PageEditor reload disables event listener and calls location.reload 1`] = `
+exports[`VisualEditor reload disables event listener and calls location.reload 1`] = `
 <div
   className="editor--page-editor  is-show-placeholders"
 >
@@ -2386,11 +2582,15 @@ exports[`PageEditor reload disables event listener and calls location.reload 1`]
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
     <div
       className="visual-editor--content-toolbar"
     >

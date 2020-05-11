@@ -2,7 +2,7 @@
 	"extends": ["eslint:recommended", "plugin:react/recommended"],
 	"settings": {
 		"react": {
-			"version": "16.8.6"
+			"version": "16.13.1"
 		}
 	},
 	"parser": "babel-eslint",
@@ -52,7 +52,7 @@
 		"no-with": "error",
 		"prefer-const": "error",
 		"radix": "error",
-		"react/prop-types": "0",
+		"react/prop-types": 0,
 		"yoda": "error"
 	}
 }

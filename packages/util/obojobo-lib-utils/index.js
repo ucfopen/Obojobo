@@ -148,7 +148,7 @@ const gatherClientScriptsFromModules = () => {
 				}
 				// support config format of:
 				// entryFileName: { file: 'rel/path/to/file.js', position: 20 }
-				if (single.hasOwnProperty('file') && single.hasOwnProperty('position')) {
+				if (Object.prototype.hasOwnProperty.call(single, 'file') && Object.prototype.hasOwnProperty.call(single, 'position')) {
 					if (!entries[key][single.position]) entries[key][single.position] = []
 					entries[key][single.position].push(resolver(`${oboNodePackage}/${single.file}`))
 				}

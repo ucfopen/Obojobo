@@ -12,6 +12,6 @@
 		"precommit": "echo 'not implemented'"
 	},
 	"dependencies": {
-		"eslint-plugin-react": "^7.15.1"
+		"eslint-plugin-react": "^7.19.0"
 	}
 }

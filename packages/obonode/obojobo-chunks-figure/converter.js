@@ -7,11 +7,11 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * into a textGroup.  The conversion also saves the alt, url, size, width, and
  * height attributes
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Figure node 
+ * @returns {Object} An Obojobo Figure node
  */
 const slateToObo = node => {
 	const captionLine = {
-		text: { value: "", styleList: [] },
+		text: { value: '', styleList: [] },
 		data: null
 	}
 	TextUtil.slateToOboText(node, captionLine)
@@ -35,7 +35,7 @@ const slateToObo = node => {
 /**
  * Generates a Slate node from an Obojobo Figure.
  * Copies all attributes, and converts a textGroup into Slate Text children
- * @param {Object} node An Obojobo Figure node 
+ * @param {Object} node An Obojobo Figure node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

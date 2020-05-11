@@ -4,10 +4,12 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 const FormatPlugin = {
 	commands: {
 		changeToType: (editor, type, data) => {
-			const list = Array.from(Editor.nodes(editor, {
-				mode: 'lowest',
-				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-			}))
+			const list = Array.from(
+				Editor.nodes(editor, {
+					mode: 'lowest',
+					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+				})
+			)
 
 			Editor.withoutNormalizing(editor, () => {
 				list.forEach(entry => {
