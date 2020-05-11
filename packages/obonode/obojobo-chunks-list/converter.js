@@ -22,7 +22,7 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
  * @param {Integer} currLevel The indent level that is being flattened
  * @param {Array} textGroup The array that the ListLine text will be saved to
  * @param {Array} indents The array that the ListLevel styles will be saved to
- * @returns {Object} An Obojobo List node 
+ * @returns {Object} An Obojobo List node
  */
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.content
@@ -34,8 +34,14 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 		}
 
 		const listLine = {
+			// text must follow TextUtil's formatting, sytyleList required here
+			// but don't confuse it with our list's styleList. NOT for bullet styles
 			text: { value: '', styleList: [] },
-			data: { indent: currLevel, hangingIndent: child.content.hangingIndent }
+			data: { indent: currLevel }
+		}
+
+		if (child.content && typeof child.content.hangingIndent !== 'undefined') {
+			listLine.data.hangingIndent = child.content.hangingIndent
 		}
 
 		TextUtil.slateToOboText(child, listLine)
@@ -48,15 +54,15 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 
 /**
  * Generates an Obojobo List Node from a Slate node.
- * Copies the id, type, triggers, and condenses ListLine children and their 
+ * Copies the id, type, triggers, and condenses ListLine children and their
  * text children (including marks) into a single textGroup.  ListLevels are
  * flattened into the listStyles of the Obojobo node
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo List node 
+ * @returns {Object} An Obojobo List node
  */
 const slateToObo = node => {
 	const textGroup = []
-	const indents = []
+	const indents = {}
 
 	node.children.forEach(level => {
 		flattenLevels(level, 0, textGroup, indents)
@@ -106,25 +112,26 @@ const normalizeJSON = json => {
 /**
  * Generates a Slate node from an Obojobo List node.
  * Copies all attributes, and converts a textGroup into Slate List children
- * Each textItem in the textgroup becomes a separate ListLine, and indents 
- * are turned into nested ListLevel parents of the ListLine to properly 
+ * Each textItem in the textgroup becomes a separate ListLine, and indents
+ * are turned into nested ListLevel parents of the ListLine to properly
  * leverage the Slate Editor's capabilities.  The generated node is then normalized
  * to combine any adjacent ListLevel nodes
- * @param {Object} node An Obojobo Line node 
+ * @param {Object} node An Obojobo Line node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	const type = node.content.listStyles.type
 	const bulletList =
-		type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
+		type === ListStyles.TYPE_UNORDERED
+			? ListStyles.UNORDERED_LIST_BULLETS
+			: ListStyles.ORDERED_LIST_BULLETS
 
 	// Make sure that indents exists
 	if (!slateNode.content.listStyles.indents) slateNode.content.listStyles.indents = {}
 
 	slateNode.children = node.content.textGroup.map(line => {
-		let indent = line.data ? line.data.indent : 0
-		const hangingIndent = line.data ? line.data.hangingIndent : false
+		let indent = line.data && line.data.indent ? parseInt(line.data.indent, 10) : 0
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
 			type: LIST_NODE,
@@ -134,10 +141,14 @@ const oboToSlate = node => {
 				{
 					type: LIST_NODE,
 					subtype: LIST_LINE_NODE,
-					content: { hangingIndent },
+					content: {},
 					children: TextUtil.parseMarkings(line)
 				}
 			]
+		}
+
+		if (line.data && typeof line.data.hangingIndent !== 'undefined') {
+			listLine.children[0].content.hangingIndent = line.data.hangingIndent
 		}
 
 		while (indent > 0) {
@@ -162,17 +173,21 @@ const switchType = {
 	'ObojoboDraft.Chunks.Heading': (editor, [, path], data) => {
 		const nodeRange = Editor.range(editor, path)
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		Editor.withoutNormalizing(editor, () => {
-			list.forEach(([child, childPath]) => Transforms.setNodes(
-				editor,
-				{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },
-				{ at: childPath }
-			))
+			list.forEach(([child, childPath]) =>
+				Transforms.setNodes(
+					editor,
+					{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },
+					{ at: childPath }
+				)
+			)
 		})
 	},
 	'ObojoboDraft.Chunks.Text': (editor, [, path]) => {
@@ -184,26 +199,28 @@ const switchType = {
 		}
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		// Changing each ListLine to a TextLine and wrapping them in a Text node
-		// will allow normalization to remove them from the List node 
+		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
 		Editor.withoutNormalizing(editor, () => {
 			let firstPath
 			let lastPath
 			list.forEach(([child, childPath]) => {
 				// save the path of the first and last child to insert the textNode
-				if(!firstPath) firstPath = childPath
+				if (!firstPath) firstPath = childPath
 				lastPath = childPath
 
-				// The difference between the path lengths informs how 
-				// nested the ListLine is. The -2 accounts for the base 
+				// The difference between the path lengths informs how
+				// nested the ListLine is. The -2 accounts for the base
 				// ListLevel and the ListLine node itself
-				const indent = (childPath.length - path.length) - 2
+				const indent = childPath.length - path.length - 2
 				const jsonNode = {
 					type: TEXT_NODE,
 					subtype: TEXT_LINE_NODE,
@@ -216,19 +233,17 @@ const switchType = {
 
 				textNode.children.push(jsonNode)
 			})
-			
+
 			// When the new text node is inserted, all ListLine nodes that were
 			// changed are deleted, and then the textNode is inserted at the Point
 			// before the first changed ListLine. This prevents a hanging ListLine
 			// from lingering after the ListLine nodes are changed to TextLines
-			Transforms.insertNodes(
-				editor,
-				textNode,
-				{ at: {
+			Transforms.insertNodes(editor, textNode, {
+				at: {
 					anchor: Editor.before(editor, Editor.start(editor, firstPath)),
 					focus: Editor.end(editor, lastPath)
-				}}
-			)
+				}
+			})
 		})
 	},
 	'ObojoboDraft.Chunks.Code': (editor, [, path]) => {
@@ -240,26 +255,28 @@ const switchType = {
 		}
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		// Changing each ListLine to a CodeLine and wrapping them in a Code node
-		// will allow normalization to remove them from the List node 
+		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
 		Editor.withoutNormalizing(editor, () => {
 			let firstPath
 			let lastPath
 			list.forEach(([child, childPath]) => {
 				// Save the path of the first and last child to insert the textNode
-				if(!firstPath) firstPath = childPath
+				if (!firstPath) firstPath = childPath
 				lastPath = childPath
 
-				// The difference between the path lengths informs how 
-				// nested the ListLine is. The -2 accounts for the base 
+				// The difference between the path lengths informs how
+				// nested the ListLine is. The -2 accounts for the base
 				// ListLevel and the ListLine node itself
-				const indent = (childPath.length - path.length) - 2
+				const indent = childPath.length - path.length - 2
 				const jsonNode = {
 					type: CODE_NODE,
 					subtype: CODE_LINE_NODE,
@@ -272,19 +289,17 @@ const switchType = {
 
 				codeNode.children.push(jsonNode)
 			})
-			
+
 			// When the new Code node is inserted, all ListLine nodes that were
 			// changed are deleted, and then the codeNode is inserted at the Point
 			// before the first changed ListLine. This prevents a hanging ListLine
 			// from lingering after the ListLine nodes are changed to CodeLines
-			Transforms.insertNodes(
-				editor,
-				codeNode,
-				{ at: {
+			Transforms.insertNodes(editor, codeNode, {
+				at: {
 					anchor: Editor.before(editor, Editor.start(editor, firstPath)),
 					focus: Editor.end(editor, lastPath)
-				}}
-			)
+				}
+			})
 		})
 	},
 	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
@@ -294,22 +309,23 @@ const switchType = {
 		// If we are toggling between ordered and unordered lists
 		// Then we need to change the type on the root node
 		if (swapType) {
-			Transforms.setNodes(
-				editor,
-				{ content: { ...node.content, listStyles: data }},
-				{ at: path }
-			)
+			Transforms.setNodes(editor, { content: { ...node.content, listStyles: data } }, { at: path })
 		}
 
 		// Find the bullet list and starting index for the selection
-		const bulletList = data.type === 'unordered' ? ListStyles.UNORDERED_LIST_BULLETS : ListStyles.ORDERED_LIST_BULLETS
+		const bulletList =
+			data.type === ListStyles.TYPE_UNORDERED
+				? ListStyles.UNORDERED_LIST_BULLETS
+				: ListStyles.ORDERED_LIST_BULLETS
 		const bulletIndex = bulletList.indexOf(data.bulletStyle)
 
 		// Get only the Element children of the current node that are in the current selection
-		const list = Array.from(Editor.nodes(editor, {
-			at: Range.intersection(editor.selection, nodeRange),
-			match: child => child.subtype === LIST_LINE_NODE
-		}))
+		const list = Array.from(
+			Editor.nodes(editor, {
+				at: Range.intersection(editor.selection, nodeRange),
+				match: child => child.subtype === LIST_LINE_NODE
+			})
+		)
 
 		const shortestPath = list.reduce((accum, [, childPath]) => {
 			if (childPath.length < accum) return childPath.length
@@ -323,14 +339,14 @@ const switchType = {
 
 				// If we are not swapping the list type, we don't want to change
 				// any bullets that are not visibly selected. The visibly selected
-				// ListLevels can be found by comparing the pathlength to the 
-				// shortestPath. The -2 accounts for the base List and the 
+				// ListLevels can be found by comparing the pathlength to the
+				// shortestPath. The -2 accounts for the base List and the
 				// ListLine node itself
-				if(!swapType && index < (shortestPath - 2)) return
+				if (!swapType && index < shortestPath - 2) return
 
 				// If we are swapping the list type, we want to make sure to not
 				// overwrite the List content
-				if(swapType && index === 0) return 
+				if (swapType && index === 0) return
 
 				const linePath = childPath.slice(0, index + 1)
 				const bulletStyle =
@@ -343,11 +359,7 @@ const switchType = {
 						(bulletIndex + index - shortestPath + 2 + bulletList.length) % bulletList.length
 					]
 
-				Transforms.setNodes(
-					editor,
-					{ content: { ...data, bulletStyle } },
-					{ at: linePath }
-				)
+				Transforms.setNodes(editor, { content: { ...data, bulletStyle } }, { at: linePath })
 			})
 		})
 	}

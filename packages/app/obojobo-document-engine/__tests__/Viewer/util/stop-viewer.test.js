@@ -18,7 +18,7 @@ jest.mock('../../../src/scripts/common/index', () => ({
 
 const Common = require('../../../src/scripts/common/index')
 const StopViewer = require('../../../src/scripts/viewer/util/stop-viewer')
-const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 const sysend = require('sysend')
 const ModalUtil = Common.util.ModalUtil
 const Dispatcher = Common.flux.Dispatcher

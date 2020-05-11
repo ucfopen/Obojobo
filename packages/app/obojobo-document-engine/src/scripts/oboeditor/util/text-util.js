@@ -5,43 +5,45 @@ const TextUtil = {
 	collapseLinks(leaves) {
 		let currentLink = null
 
-		return leaves.map(leaf => {
-			if(leaf.a) {
-				// If this is the first link in a chain
-				// create a new link element with leaf children
-				if(!currentLink){
-					currentLink = {
-						type: 'a',
-						href: leaf.href,
-						children: [leaf]
+		return leaves
+			.map(leaf => {
+				if (leaf.a) {
+					// If this is the first link in a chain
+					// create a new link element with leaf children
+					if (!currentLink) {
+						currentLink = {
+							type: 'a',
+							href: leaf.href,
+							children: [leaf]
+						}
+						delete leaf.a
+						delete leaf.href
+						return currentLink
+						// If the href of this link does not match the current href
+						// create a new link element with leaf children
+					} else if (currentLink.href !== leaf.href) {
+						currentLink = {
+							type: 'a',
+							href: leaf.href,
+							children: [leaf]
+						}
+						delete leaf.a
+						delete leaf.href
+						return currentLink
+						// Otherwise, this is a leaf that matches the current link
+						// so simply add it to the children of the current link
+					} else {
+						delete leaf.a
+						delete leaf.href
+						currentLink.children.push(leaf)
+						return null
 					}
-					delete leaf.a
-					delete leaf.href
-					return currentLink
-				// If the href of this link does not match the current href
-				// create a new link element with leaf children
-				} else if(currentLink.href !== leaf.href) {
-					currentLink = {
-						type: 'a',
-						href: leaf.href,
-						children: [leaf]
-					}
-					delete leaf.a
-					delete leaf.href
-					return currentLink
-				// Otherwise, this is a leaf that matches the current link
-				// so simply add it to the children of the current link
 				} else {
-					delete leaf.a
-					delete leaf.href
-					currentLink.children.push(leaf)
-					return null
+					currentLink = null
+					return leaf
 				}
-			} else {
-				currentLink = null
-				return leaf
-			}
-		}).filter(mark => mark !== null)
+			})
+			.filter(mark => mark !== null)
 	},
 
 	// Parse Obojobo text object into Slate leaves array
@@ -88,11 +90,11 @@ const TextUtil = {
 
 				// Otherwise, add the type and the data to the mark
 				leaf[style.type] = true
-				if(style.type === 'a') {
+				if (style.type === 'a') {
 					leaf.href = style.data.href
 				}
-				if(style.type === 'sup') {
-					if(!leaf.num) leaf.num = 0
+				if (style.type === 'sup') {
+					if (!leaf.num) leaf.num = 0
 					leaf.num += style.data
 				}
 			})
@@ -103,7 +105,7 @@ const TextUtil = {
 		})
 
 		const leaves = leafList.filter(leaf => leaf !== null)
-		return leaves.length === 0 ? [{ text: ''}] : TextUtil.collapseLinks(leaves)
+		return leaves.length === 0 ? [{ text: '' }] : TextUtil.collapseLinks(leaves)
 	},
 
 	slateToOboText: (text, line) => {
@@ -113,7 +115,7 @@ const TextUtil = {
 			if (Text.isText(textRange)) {
 				Object.entries(textRange).forEach(([type, value]) => {
 					// Only the object keys that have a value of true are marks
-					if(value === true) {
+					if (value === true) {
 						const style = {
 							start: currIndex,
 							end: currIndex + textRange.text.length,
@@ -127,7 +129,6 @@ const TextUtil = {
 
 				line.text.value += textRange.text
 				currIndex += textRange.text.length
-
 			} else {
 				const inlineStyle = {
 					start: currIndex,
@@ -140,7 +141,7 @@ const TextUtil = {
 				textRange.children.forEach(child => {
 					Object.entries(child).forEach(([type, value]) => {
 						// Only the object keys that have a value of true are marks
-						if(value === true) {
+						if (value === true) {
 							const style = {
 								start: currIndex,
 								end: currIndex + child.text.length,

@@ -18,7 +18,7 @@ describe('Normalize Code', () => {
 
 	test('normalizeNode on Code calls next if all Code children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -45,7 +45,7 @@ describe('Normalize Code', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -72,7 +72,7 @@ describe('Normalize Code', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -90,7 +90,7 @@ describe('Normalize Code', () => {
 
 	test('normalizeNode on CodeLine calls next if all CodeLine children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -117,7 +117,7 @@ describe('Normalize Code', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -147,7 +147,7 @@ describe('Normalize Code', () => {
 
 	test('normalizeNode on CodeLine calls NormalizeUtil if parent is invalid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -168,8 +168,8 @@ describe('Normalize Code', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0])
 		})
-		
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})

@@ -117,16 +117,8 @@
 
 				.button {
 					padding: 0.2em 0.5em;
-					color: $color-action;
-					background-color: $color-bg;
-					border-color: $color-action;
 					border-width: 2px;
 					height: 2.5em;
-
-					&:hover {
-						color: $color-bg;
-						background-color: $color-action;
-					}
 				}
 
 				.xml-button {
@@ -155,18 +147,6 @@
 				&.button-bar {
 					.obojobo-draft--components--button {
 						margin-right: 0.5em;
-					}
-
-					.delete-page-button {
-						.button {
-							border-color: $color-dangerous;
-							color: $color-dangerous;
-
-							&:hover {
-								color: $color-bg;
-								background-color: $color-dangerous;
-							}
-						}
 					}
 				}
 			}

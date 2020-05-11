@@ -3,7 +3,9 @@
 .list-dropper {
 	cursor: pointer;
 	user-select: none;
-	display: inline-block;
+	// @TODO: temporarily disabled till functionality is more stable;
+	// display: inline-block;
+	display: none;
 	position: relative;
 
 	button {
@@ -30,6 +32,7 @@
 	}
 
 	.dropdown {
+		display: none; // @TODO: temporarily disabled till functionality is more stable;
 		font-weight: bold;
 		padding: 0;
 		border: none;
@@ -49,7 +52,9 @@
 
 	div {
 		&.is-open {
-			display: block;
+			// @TODO: temporarily disabled till functionality is more stable;
+			//display: block;
+			display: none;
 		}
 
 		&.is-not-open {

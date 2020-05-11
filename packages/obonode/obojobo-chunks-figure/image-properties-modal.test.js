@@ -29,7 +29,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
 
 jest.mock('./utils', () => {
 	return {
-		isUUID: require.requireActual('./utils').isUUID
+		isUUID: jest.requireActual('./utils').isUUID
 	}
 })
 
