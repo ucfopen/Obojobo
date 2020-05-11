@@ -15,6 +15,7 @@ import MockElement from './mockdom/mock-element'
 import MockTextNode from './mockdom/mock-text-node'
 import Modal from './components/modal/modal'
 import ModalContainer from './components/modal-container'
+import ModalPortal from './components/modal-portal'
 import ModalStore from './stores/modal-store'
 import ModalUtil from './util/modal-util'
 import MoreInfoButton from './components/more-info-button'
@@ -81,6 +82,7 @@ export default {
 			Prompt,
 			SimpleMessage,
 			Modal,
+			ModalPortal,
 			Dialog,
 			SimpleDialog,
 			ErrorDialog

@@ -190,9 +190,10 @@ class EditorApp extends React.Component {
 		return (
 			<div className="visual-editor--editor-app">
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
-				{modalItem && modalItem.component ? (
+				{/* modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null}
+				) : null */}
+				<ModalContainer modalItem={modalItem} />
 			</div>
 		)
 	}

@@ -6,9 +6,8 @@ class ModalStore extends Store {
 	constructor() {
 		super('modalstore')
 
-		Dispatcher.on('modal:show', (payload, status) => {
-			const id = this._show(payload.value)
-			status.id = id
+		Dispatcher.on('modal:show', payload => {
+			this._show(payload.value)
 		})
 
 		Dispatcher.on('modal:hide', this._hide.bind(this))
@@ -16,9 +15,7 @@ class ModalStore extends Store {
 
 	init() {
 		return (this.state = {
-			idOrder: [],
-			modalsById: {},
-			nextId: 1
+			modals: []
 		})
 	}
 
@@ -28,62 +25,20 @@ class ModalStore extends Store {
 			: null
 	}
 
-	_addModal(modalItem) {
-		const id = '' + this.state.nextId++
-
-		this.state.idOrder.push(id)
-
-		modalItem.id = id
-		modalItem.index = this.state.idOrder.length - 1
-		modalItem.lastActiveElement = document.activeElement
-
-		this.state.modalsById[id] = modalItem
-
-		return id
-	}
-
-	_removeModal(id) {
-		const modalItem = this.state.modalsById[id]
-
-		if (!modalItem) {
-			return false
-		}
-
-		delete this.state.modalsById[id]
-		this.state.idOrder.splice(modalItem.index, 1)
-
-		return true
-	}
-
 	_show(modalItem) {
-		// this.lastActiveElement = document.activeElement
-		// this.state.modals.push(modalItem)
-		// this.triggerChange()
-		const id = this._addModal(modalItem)
+		this.lastActiveElement = document.activeElement
+		this.state.modals.push(modalItem)
 		this.triggerChange()
-
-		return id
 	}
 
 	_hide() {
-		const currentModal = this._getCurrentModal()
+		this.state.modals.shift()
+		this.triggerChange()
 
-		if (!currentModal) {
-			return
+		if(this.lastActiveElement && document.body.contains(this.lastActiveElement)) {
+			focus(this.lastActiveElement)
 		}
-
-		if (this._removeModal(currentModal.id)) {
-			this.triggerChange()
-
-			if (
-				currentModal.lastActiveElement &&
-				document.body.contains(currentModal.lastActiveElement)
-			) {
-				focus(currentModal.lastActiveElement)
-			}
-
-			Dispatcher.trigger('modal:hidden', currentModal)
-		}
+		delete this.lastActiveElement
 	}
 
 	getState() {

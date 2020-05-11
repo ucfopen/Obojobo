@@ -34,9 +34,9 @@
 	animation-name: obojobo-draft--components--modal-container;
 
 	&.is-not-active {
-		display: none;
-		// pointer-events: none;
-		// opacity: 0;
+		// display: none;
+		pointer-events: none;
+		opacity: 0;
 	}
 
 	> .content {
