@@ -267,4 +267,126 @@ describe('File Toolbar', () => {
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('FileToolbar calls close', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			deleteFragment: jest.fn(),
+			toggleMark: jest.fn(),
+			children: [{ text: '' }],
+			selection: null,
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn(),
+			selectAll: jest.fn()
+		}
+
+		// Use `FileToolbar.type` to eliminate memo() function
+		const component = mount(
+			<FileToolbar.type saved editor={editor} insertableItems={[]} value={{}} />
+		)
+
+		component.instance().close()
+		expect(component.instance().state.isOpen).toBe(false)
+	})
+
+	test('FileToolbar calls onMouseEnter', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			deleteFragment: jest.fn(),
+			toggleMark: jest.fn(),
+			children: [{ text: '' }],
+			selection: null,
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn(),
+			selectAll: jest.fn()
+		}
+
+		// Use `FileToolbar.type` to eliminate memo() function
+		const component = mount(
+			<FileToolbar.type saved editor={editor} insertableItems={[]} value={{}} />
+		)
+
+		const mockInnerText = 'File'
+		component.instance().onMouseEnter({ target: { innerText: mockInnerText } })
+		expect(component.instance().state.curItem).toBe(mockInnerText)
+	})
+
+	test('FileToolbar calls clickOutside', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			deleteFragment: jest.fn(),
+			toggleMark: jest.fn(),
+			children: [{ text: '' }],
+			selection: null,
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn(),
+			selectAll: jest.fn()
+		}
+
+		// Use `FileToolbar.type` to eliminate memo() function
+		const component = mount(
+			<FileToolbar.type saved editor={editor} insertableItems={[]} value={{}} />
+		)
+
+		component.instance().state.isOpen = true
+		component.instance().node.current.contains = () => false
+		component.instance().clickOutside({ target: {} })
+		expect(component.instance().state.isOpen).toBe(false)
+
+		component.instance().node.current.contains = () => true
+		component.instance().clickOutside({ target: {} })
+		expect(component.instance().state.isOpen).toBe(false)
+	})
+
+	test('FileToolbar calls toggleOpen', () => {
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			deleteFragment: jest.fn(),
+			toggleMark: jest.fn(),
+			children: [{ text: '' }],
+			selection: null,
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn(),
+			selectAll: jest.fn(),
+			changeToType: jest.fn()
+		}
+
+		// Use `FileToolbar.type` to eliminate memo() function
+		const component = mount(
+			<FileToolbar.type saved mode="visual" editor={editor} insertableItems={[]} value={{}} />
+		)
+
+		component.instance().toggleOpen({ target: { innerText: 'File' } })
+		expect(component.instance().state.isOpen).toBe(true)
+		expect(component.instance().state.curItem).toBe('File')
+		component.instance().toggleOpen({ target: { innerText: 'File' } })
+
+		component.instance().toggleOpen({ target: { innerText: 'View' } })
+		expect(component.instance().state.isOpen).toBe(true)
+		expect(component.instance().state.curItem).toBe('View')
+		component.instance().toggleOpen({ target: { innerText: 'View' } })
+
+		component.instance().toggleOpen({ target: { innerText: 'Edit' } })
+		expect(component.instance().state.isOpen).toBe(true)
+		expect(component.instance().state.curItem).toBe('Edit')
+		component.instance().toggleOpen({ target: { innerText: 'Edit' } })
+
+		component.instance().toggleOpen({ target: { innerText: 'Insert' } })
+		expect(component.instance().state.isOpen).toBe(true)
+		expect(component.instance().state.curItem).toBe('Insert')
+		component.instance().toggleOpen({ target: { innerText: 'Insert' } })
+
+		component.instance().toggleOpen({ target: { innerText: 'Format' } })
+		expect(component.instance().state.isOpen).toBe(true)
+		expect(component.instance().state.curItem).toBe('Format')
+		component.instance().toggleOpen({ target: { innerText: 'Format' } })
+	})
 })

@@ -50,62 +50,137 @@ const openPreview = draftId => {
 	window.open(previewURL, '_blank')
 }
 
-const FileToolbar = props => {
-	// insert actions on menu items
-	// note that `editor.current` needs to be evaluated at execution time of the action!
-	const editor = props.editor
-	const insertMenu = props.insertableItems.map(item => ({
-		name: item.name,
-		action: () => {
-			Transforms.insertNodes(editor, item.cloneBlankNode())
-			ReactEditor.focus(editor)
-		},
-		disabled: insertDisabled(item.name, editor, props.value)
-	}))
+class FileToolbar extends React.Component {
+	constructor(props) {
+		super(props)
+		this.buttonRef = React.createRef()
 
-	const editMenu = [
-		{ name: 'Undo', type: 'action', action: () => editor.undo() },
-		{ name: 'Redo', type: 'action', action: () => editor.redo() },
-		{
-			name: 'Delete',
-			type: 'action',
-			action: () => editor.deleteFragment(),
-			disabled: props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection)
-		},
-		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
-	]
+		this.state = {
+			isOpen: false,
+			curItem: null
+		}
 
-	const saved = props.saved ? 'saved' : ''
-	return (
-		<div className={`visual-editor--file-toolbar`}>
-			<FileMenu
-				title={props.title}
-				draftId={props.draftId}
-				onSave={props.onSave}
-				reload={props.reload}
-				mode={props.mode}
-			/>
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Edit" menu={editMenu} />
-			</div>
-			<ViewMenu
-				draftId={props.draftId}
-				switchMode={props.switchMode}
-				onSave={props.onSave}
-				mode={props.mode}
-			/>
-			{props.mode === 'visual' ? (
+		this.node = React.createRef()
+		this.close = this.close.bind(this)
+		this.toggleOpen = this.toggleOpen.bind(this)
+		this.onMouseEnter = this.onMouseEnter.bind(this)
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.clickOutside.bind(this), false)
+	}
+
+	clickOutside(e) {
+		if (!this.node.current.contains(e.target)) {
+			this.setState({ isOpen: false })
+		}
+	}
+
+	close() {
+		this.setState({ isOpen: false, curItem: null })
+	}
+
+	toggleOpen(e) {
+		this.setState({ isOpen: !this.state.isOpen, curItem: e.target.innerText })
+	}
+
+	onMouseEnter(e) {
+		this.setState({ curItem: e.target.innerText })
+	}
+
+	render() {
+		// insert actions on menu items
+		// note that `editor.current` needs to be evaluated at execution time of the action!
+		const props = this.props
+		const editor = props.editor
+		const insertMenu = props.insertableItems.map(item => ({
+			name: item.name,
+			action: () => {
+				Transforms.insertNodes(editor, item.cloneBlankNode())
+				ReactEditor.focus(editor)
+			},
+			disabled: insertDisabled(item.name, editor, props.value)
+		}))
+
+		const editMenu = [
+			{ name: 'Undo', type: 'action', action: () => editor.undo() },
+			{ name: 'Redo', type: 'action', action: () => editor.redo() },
+			{
+				name: 'Delete',
+				type: 'action',
+				action: () => editor.deleteFragment(),
+				disabled:
+					props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection)
+			},
+			{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
+		]
+
+		const { isOpen, curItem } = this.state
+
+		const saved = props.saved ? 'saved' : ''
+		return (
+			<div className={`visual-editor--file-toolbar`} ref={this.node}>
+				<FileMenu
+					title={props.title}
+					draftId={props.draftId}
+					onSave={props.onSave}
+					reload={props.reload}
+					mode={props.mode}
+					isOpen={isOpen && curItem === 'File'}
+					close={this.close}
+					toggleOpen={this.toggleOpen}
+					onMouseEnter={this.onMouseEnter}
+				/>
 				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Insert" menu={insertMenu} />
+					<DropDownMenu
+						name="Edit"
+						menu={editMenu}
+						isOpen={isOpen && curItem === 'Edit'}
+						close={this.close}
+						toggleOpen={this.toggleOpen}
+						onMouseEnter={this.onMouseEnter}
+					/>
 				</div>
-			) : null}
-			{props.mode === 'visual' ? <FormatMenu editor={editor} value={props.value} /> : null}
-			<div className={'saved-message ' + saved}>Saved!</div>
-			<Button onClick={openPreview.bind(this, props.draftId)} className={'preview-button'}>
-				Preview Module
-			</Button>
-		</div>
-	)
+				<ViewMenu
+					draftId={props.draftId}
+					switchMode={props.switchMode}
+					onSave={props.onSave}
+					mode={props.mode}
+					isOpen={isOpen && curItem === 'View'}
+					close={this.close}
+					toggleOpen={this.toggleOpen}
+					onMouseEnter={this.onMouseEnter}
+				/>
+
+				{props.mode === 'visual' ? (
+					<div className="visual-editor--drop-down-menu">
+						<DropDownMenu
+							name="Insert"
+							menu={insertMenu}
+							isOpen={isOpen && curItem === 'Insert'}
+							close={this.close}
+							toggleOpen={this.toggleOpen}
+							onMouseEnter={this.onMouseEnter}
+						/>
+					</div>
+				) : null}
+				{props.mode === 'visual' ? (
+					<FormatMenu
+						editor={editor}
+						value={props.value}
+						isOpen={isOpen && curItem === 'Format'}
+						close={this.close}
+						toggleOpen={this.toggleOpen}
+						onMouseEnter={this.onMouseEnter}
+					/>
+				) : null}
+				<div className={'saved-message ' + saved}>Saved!</div>
+				<Button onClick={openPreview.bind(this, props.draftId)} className={'preview-button'}>
+					Preview Module
+				</Button>
+			</div>
+		)
+	}
 }
 
 export default memo(FileToolbar)

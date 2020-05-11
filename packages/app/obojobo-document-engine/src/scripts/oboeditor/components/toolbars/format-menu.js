@@ -33,45 +33,45 @@ const FormatMenu = props => {
 		name: 'Paragraph styles',
 		type: 'sub-menu',
 		menu: [
-			{ 
-				name: 'Normal Text', 
-				type: 'action', 
-				action: () => props.editor.changeToType(TEXT_NODE) 
+			{
+				name: 'Normal Text',
+				type: 'action',
+				action: () => props.editor.changeToType(TEXT_NODE)
 			},
-			{ 
-				name: 'Heading 1', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 1 }) 
+			{
+				name: 'Heading 1',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })
 			},
-			{ 
-				name: 'Heading 2', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })  
+			{
+				name: 'Heading 2',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })
 			},
-			{ 
-				name: 'Heading 3', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })  
+			{
+				name: 'Heading 3',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })
 			},
-			{ 
-				name: 'Heading 4', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })  
+			{
+				name: 'Heading 4',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })
 			},
-			{ 
-				name: 'Heading 5', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })  
+			{
+				name: 'Heading 5',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })
 			},
-			{ 
-				name: 'Heading 6', 
-				type: 'action', 
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })  
+			{
+				name: 'Heading 6',
+				type: 'action',
+				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })
 			},
-			{ 
-				name: 'Code', 
-				type: 'action', 
-				action: () => props.editor.changeToType(CODE_NODE)  
+			{
+				name: 'Code',
+				type: 'action',
+				action: () => props.editor.changeToType(CODE_NODE)
 			}
 		]
 	}
@@ -94,20 +94,23 @@ const FormatMenu = props => {
 				name: 'Bulleted List',
 				type: 'sub-menu',
 				menu: [
-					{ 
-						name: '● Disc', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
+					{
+						name: '● Disc',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 					},
-					{ 
-						name: '○ Circle', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' }) 
+					{
+						name: '○ Circle',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' })
 					},
-					{ 
-						name: '■ Square', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' }) 
+					{
+						name: '■ Square',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' })
 					}
 				]
 			},
@@ -115,36 +118,54 @@ const FormatMenu = props => {
 				name: 'Numbered List',
 				type: 'sub-menu',
 				menu: [
-					{ 
-						name: 'Numbers', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })},
-					{ 
-						name: 'Lowercase Alphabet', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })},
-					{ 
-						name: 'Lowercase Roman Numerals', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })},
-					{ 
-						name: 'Uppercase Alphabet', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })},
-					{ 
-						name: 'Uppercase Roman Numerals', 
-						type: 'action', 
-						action: () => props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })}
+					{
+						name: 'Numbers',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
+					},
+					{
+						name: 'Lowercase Alphabet',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })
+					},
+					{
+						name: 'Lowercase Roman Numerals',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })
+					},
+					{
+						name: 'Uppercase Alphabet',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })
+					},
+					{
+						name: 'Uppercase Roman Numerals',
+						type: 'action',
+						action: () =>
+							props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })
+					}
 				]
 			}
 		]
 	}
-	
+
 	const menu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
 
+	const { isOpen, close, toggleOpen, onMouseEnter } = props
 	return (
 		<div className="visual-editor--drop-down-menu">
-			<DropDownMenu name="Format" menu={menu} />
+			<DropDownMenu
+				name="Format"
+				menu={menu}
+				isOpen={isOpen}
+				close={close}
+				toggleOpen={toggleOpen}
+				onMouseEnter={onMouseEnter}
+			/>
 		</div>
 	)
 }

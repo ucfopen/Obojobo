@@ -15,16 +15,14 @@ class DropDownMenu extends React.PureComponent {
 
 		this.menu = []
 		this.timeOutId = null
-		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
-		this.toggleOpen = this.toggleOpen.bind(this)
 		this.menuButton = React.createRef()
 	}
 
 	componentDidUpdate() {
 		// When the menu is open, focus on the current dropdown item
-		if (this.state.isOpen) {
+		if (this.props.isOpen) {
 			this.menu = this.menu.filter(Boolean)
 			this.menu[this.state.currentFocus].focus()
 		}
@@ -32,7 +30,7 @@ class DropDownMenu extends React.PureComponent {
 
 	onKeyDown(event) {
 		this.menu = this.menu.filter(Boolean)
-		if (this.state.isOpen) event.stopPropagation()
+		if (this.props.isOpen) event.stopPropagation()
 
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
@@ -43,7 +41,7 @@ class DropDownMenu extends React.PureComponent {
 
 			// Close the menu and return focus to the link item
 			case 'ArrowLeft':
-				this.setState({ isOpen: false })
+				this.props.close()
 				this.menuButton.current.focus()
 				break
 
@@ -63,37 +61,28 @@ class DropDownMenu extends React.PureComponent {
 		}
 	}
 
-	// The timeout gives the blur time to check for child focus
-	onBlurHandler() {
-		this.timeOutId = setTimeout(() => {
-			this.setState({
-				isOpen: false
-			})
-		})
-	}
-
 	// If we focused on a child, don't close the sub-menu
 	onFocusHandler() {
 		clearTimeout(this.timeOutId)
-	}
-
-	toggleOpen() {
-		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
 	render() {
 		this.menu = []
 		return (
 			<div
-				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
+				className={'dropdown ' + isOrNot(this.props.isOpen, 'open')}
 				key={this.props.name}
-				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
 				onKeyDown={this.onKeyDown}
 				ref={this.props.onRef}
 				tabIndex={-1}
 			>
-				<button className="menu-title" onClick={this.toggleOpen} ref={this.menuButton}>
+				<button
+					className="menu-title"
+					onClick={this.props.toggleOpen}
+					ref={this.menuButton}
+					onMouseEnter={this.props.onMouseEnter}
+				>
 					{this.props.name}
 				</button>
 				<div className="menu-items">
