@@ -3,8 +3,14 @@
 .component.obojobo-draft--chunks--numeric-assessment {
 	$color-border: #dfdfdf;
 
-	border-top: 1px solid $color-border;
-	border-bottom: 1px solid $color-border;
+	background-color: #f4f4f4;
+	padding: 0.5em;
+	margin-top: 0;
+
+	> div {
+		background-color: $color-bg;
+		border-radius: 0.25em;
+	}
 
 	.response-container {
 		&.selected {

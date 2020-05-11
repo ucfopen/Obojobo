@@ -48,16 +48,15 @@ class NumericAssessment extends React.Component {
 		console.log(this.props.element)
 		return (
 			<div className="component obojobo-draft--chunks--numeric-assessment">
-				{this.props.children}
-				{/* <div> */}
-				<Button
-					className="add-answer-btn pad"
-					onClick={() => this.onAddNumericInput()}
-					contentEditable={false}
-				>
-					Add possible answer
+				<div>
+					{this.props.children}
+					<Button
+						className="add-answer-btn pad"
+						onClick={() => this.onAddNumericInput()}
+						contentEditable={false}>
+					+ Add possible answer
 				</Button>
-				{/* </div> */}
+				</div>
 			</div>
 		)
 	}

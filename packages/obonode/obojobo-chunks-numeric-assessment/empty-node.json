@@ -1,0 +1,19 @@
+{
+	"type": "ObojoboDraft.Chunks.NumericAssessment",
+	"content": {
+		"numericChoices":[]
+	},
+	"children": [
+		{
+			"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+			"content": { "score": 0 },
+			"children": [
+				{
+					"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+					"content": {},
+					"children": [{ "text": "" }]
+				}
+			]
+		}
+	]
+}

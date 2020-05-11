@@ -8,6 +8,8 @@ import NumericAssessmentComponent from './editor-component'
 // import NA from './components/numeric-answer/editor-component'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
+import emptyNode from './empty-node.json'
+
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
@@ -20,6 +22,9 @@ const NumericAssessment = {
 	isInsertable: false,
 	supportsChildren: true,
 	helpers: Converter,
+	json: {
+		emptyNode
+	},
 	plugins: {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
@@ -80,19 +85,7 @@ const NumericAssessment = {
 
 			next(entry, editor)
 		},
-		renderNode(props, editor, next) {
-			// console.log('NA RENDER NODE', props.element.type)
-			// switch (props.element.type) {
-			// 	case NUMERIC_ASSESSMENT_NODE:
-			// 		return <NumericAssessmentComponent {...props} {...props.attributes} />
-			// 	case 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice':
-			// 		return <NC {...props} {...props.attributes} />
-			// 	case 'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer':
-			// 		return <NA {...props} {...props.attributes} />
-			// 	default:
-			// 		return next()
-			// }
-
+		renderNode(props) {
 			return <NumericAssessmentComponent {...props} {...props.attributes} />
 		}
 	}

@@ -2,6 +2,7 @@ import React from 'react'
 import { Node, Element, Transforms, Text, Editor } from 'slate'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
+import emptyNode from './empty-node.json'
 import EditorComponent from './editor-component'
 import Converter from './converter'
 
@@ -16,6 +17,9 @@ const MCAssessment = {
 	isInsertable: false,
 	supportsChildren: true,
 	helpers: Converter,
+	json: {
+		emptyNode
+	},
 	plugins: {
 		// Editor Plugins - These get attached to the editor object and override it's default functions
 		// They may affect multiple nodes simultaneously

@@ -46,9 +46,6 @@ class _Registry {
 		// undefined values (Object.assign won't overwrite object
 		// values that are undefined, only ones that don't exist
 		// in the object)
-
-		console.log('REM', EditorNode)
-
 		this.registerModel(
 			EditorNode.name,
 			withoutUndefined({
