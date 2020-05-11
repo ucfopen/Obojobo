@@ -53,7 +53,6 @@ const openPreview = draftId => {
 class FileToolbar extends React.Component {
 	constructor(props) {
 		super(props)
-		this.buttonRef = React.createRef()
 
 		this.state = {
 			isOpen: false,
