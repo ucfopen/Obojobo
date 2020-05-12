@@ -25,7 +25,7 @@ export default class Dialog extends React.Component {
 	}
 
 	getActions(machine) {
-		return Object.keys(machine.transitions[machine.step]).filter(
+		return Object.keys(machine.transitions[machine.step].actions || {}).filter(
 			action => action !== 'canTransitionTo'
 		)
 	}
@@ -77,7 +77,9 @@ export default class Dialog extends React.Component {
 							<ul>
 								{this.getActions(this.props.machine).map(action => (
 									<li key={action}>
-										<button onClick={this.doAction.bind(this, action)}>{action}</button>
+										<button onClick={this.doAction.bind(this, action)}>
+											{action === 'onEnter' ? '(onEnter)' : action}
+										</button>
 									</li>
 								))}
 							</ul>

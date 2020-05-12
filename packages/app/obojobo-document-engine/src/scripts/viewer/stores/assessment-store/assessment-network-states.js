@@ -14,5 +14,24 @@ export default {
 	SENDING_RESPONSES_SUCCESSFUL: 'sendingResponsesSuccessful',
 	SENDING_RESPONSES_FAILED: 'sendingResponsesFailed',
 	AWAITING_END_ATTEMPT_RESPONSE: 'awaitingEndAttemptResponse',
-	END_ATTEMPT_FAILED: 'endAttemptFailed'
+	END_ATTEMPT_FAILED: 'endAttemptFailed',
+
+	// WILL_RESUME_ATTEMPT:'',
+	TRYING_START_ATTEMPT: 'tryingStartAttempt',
+	TRYING_RESUME_ATTEMPT: 'tryingResumeAttempt',
+	// IN_ATTEMPT:'',
+	// START_ATTEMPT_FAILED:'',
+	// RESUME_ATTEMPT_FAILED:'',
+	TRYING_SENDING_RESPONSES: 'tryingSendingResponses',
+	// SENDING_RESPONSES_SUCCESSFUL:'',
+	// SENDING_RESPONSES_FAILED:'',
+	TRYING_END_ATTEMPT: 'tryingEndAttempt',
+	// NOT_IN_ATTEMPT:'',
+	// TRYING_TO_SUBMIT:'',
+	// END_ATTEMPT_FAILED:'',
+	END_ATTEMPT_SUCCESSFUL: 'endAttemptSuccessful',
+	// PROMPT_FOR_IMPORT:'',
+	TRYING_IMPORT_ATTEMPT: 'tryingImportAttempt'
+	// IMPORT_ATTEMPT_FAILED:'',
+	// IMPORT_ATTEMPT_SUCCESSFUL
 }
