@@ -26,8 +26,6 @@ const slateToObo = node => {
 
 	TextUtil.slateToOboText(node, line)
 
-	TextUtil.slateToOboText(node, line)
-
 	const newNode = {
 		id: node.id,
 		type: node.type,
