@@ -33,12 +33,20 @@ exports[`Test Test component 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label="Submit (Not all questions have been saved)"
         className="button"
         contentEditable={false}
+        type="button"
       >
-        Submit (Not all questions have been answered)
+        Submit
       </button>
     </div>
+    <span
+      aria-hidden={true}
+      className="incomplete-notice"
+    >
+      (Not all questions have been saved)
+    </span>
   </div>
 </div>
 `;
@@ -76,13 +84,20 @@ exports[`Test Test component fetching score 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label="Submit (Not all questions have been saved)"
         className="button"
         contentEditable={false}
-        disabled={true}
+        type="button"
       >
-        Loading ...
+        Submit
       </button>
     </div>
+    <span
+      aria-hidden={true}
+      className="incomplete-notice"
+    >
+      (Not all questions have been saved)
+    </span>
   </div>
 </div>
 `;
@@ -120,12 +135,20 @@ exports[`Test Test component with completeAttempt 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label="Submit (Not all questions have been saved)"
         className="button"
         contentEditable={false}
+        type="button"
       >
         Submit
       </button>
     </div>
+    <span
+      aria-hidden={true}
+      className="incomplete-notice"
+    >
+      (Not all questions have been saved)
+    </span>
   </div>
 </div>
 `;

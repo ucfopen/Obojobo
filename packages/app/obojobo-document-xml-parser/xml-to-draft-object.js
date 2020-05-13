@@ -14,7 +14,6 @@ const parseListStyles = require('./src/list-styles-parser')
 const parseAssessmentRubric = require('./src/assessment-rubric-parser')
 const parseScoreAction = scoreParser.parseScoreAction
 const parseScoreActions = scoreParser.parseScoreActions
-const parseVars = require('./src/variables-parser')
 
 const parsers = {
 	textGroup: parseTg,
@@ -24,7 +23,6 @@ const parsers = {
 	rubric: parseAssessmentRubric,
 	triggers: parseTriggers,
 	listStyles: parseListStyles,
-	vars: parseVars,
 	solution: solAttr => {
 		return solAttr.elements[0]
 	}

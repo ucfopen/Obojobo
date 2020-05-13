@@ -5,9 +5,6 @@ import Dispatcher from '../flux/dispatcher'
 import { Registry } from '../registry'
 import DOMUtil from '../page/dom-util'
 import setProp from '../util/set-prop'
-import Variables from '../../viewer/vars/variables'
-import VariableGenerator from '../../viewer/vars/variable-generator'
-import parse from '../../viewer/vars/parser'
 
 const DefaultAdapter = {
 	construct() {
@@ -86,87 +83,11 @@ class OboModel extends Backbone.Model {
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
 		this.adapter.construct(this, attrs)
 
-		if (attrs.content && attrs.content.vars) {
-			//@TODO
-			// Variables.addMultiple(this.get('id'), attrs.content.vars)
-		}
-
 		this.children.on('remove', this.onChildRemove, this)
 		this.children.on('add', this.onChildAdd, this)
 		this.children.on('reset', this.onChildrenReset, this)
 
 		OboModel.models[this.get('id')] = this
-	}
-
-	getTextForVariable(expression, recur = true) {
-		return 'NOT IMPLEMENTED NOW'
-		// Compute all variables
-		// const varNames = Object.keys(Variables.varNamesByOwnerId.m)
-		// const variables = {}
-		// const customFns = {}
-		// varNames.forEach(varName => {
-		// 	if (!Variables.isValueComputed('m', varName)) {
-		// 		const def = Variables.getDefinition('m', varName)
-
-		// 		// if (def.type === 'fn') {
-		// 		// 	const fn = parse(def.value)
-		// 		// 	customFns[fn.name] = fn
-		// 		// }
-
-		// 		const newValue = VariableGenerator.generateOne(def)
-		// 		Variables.setValue('m', varName, newValue)
-		// 	}
-
-		// 	variables[varName] = Variables.getValue('m', varName)
-		// })
-
-		try {
-			const parsed = parse(expression, variables, customFns)
-			return { text: parsed }
-		} catch (e) {
-			console.error('Error parsing "' + expression + '"', e)
-			return { text: `!!${expression}!!` }
-		}
-	}
-
-	getTextForVariableOLD(varName, recur = true) {
-		console.log('>>>G', this.get('id'), varName, varName.indexOf(':'))
-		if (varName.indexOf(':') > -1) {
-			const i = varName.indexOf(':')
-			const id = varName.substring(0, i)
-			varName = varName.substring(i + 1)
-
-			console.log('*************we here', i, id, varName, OboModel.models[id])
-
-			if (!OboModel.models[id]) return null
-			return OboModel.models[id].getTextForVariable(varName, false)
-		}
-
-		const id = this.get('id')
-
-		if (Variables.has(id, varName)) {
-			const typeClass = Registry.getItemForType(this.get('type'))
-
-			if (Variables.isValueComputed(id, varName)) {
-				return Variables.getValue(id, varName)
-			}
-
-			const def = Variables.getDefinition(id, varName)
-			// def.name = varName
-			console.log('defdefdef', def)
-			const newValue = VariableGenerator.generateOne(def)
-			console.log('______________newValue', newValue)
-			// debugger
-			Variables.setValue(id, varName, newValue)
-			return newValue
-			// return typeClass.getTextForVariable(this, varName, Variables)
-		}
-
-		if (!this.parent || !recur) return null
-
-		console.log('>>>>parent')
-
-		return this.parent.getTextForVariable(varName)
 	}
 
 	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
@@ -220,8 +141,6 @@ class OboModel extends Backbone.Model {
 	onChildRemove(model) {
 		model.parent = null
 		model.markDirty()
-
-		//Variables.removeAll(model.get('id'))
 
 		return delete OboModel.models[model.get('id')]
 	}

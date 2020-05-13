@@ -55,6 +55,7 @@ exports[`PostTest PostTest component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -137,6 +138,7 @@ exports[`PostTest PostTest component 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -226,6 +228,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -293,6 +296,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -392,6 +396,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -459,6 +464,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -555,6 +561,7 @@ exports[`PostTest PostTest component with review 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -622,6 +629,7 @@ exports[`PostTest PostTest component with review 1`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -711,6 +719,7 @@ exports[`PostTest PostTest component with review 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -778,6 +787,7 @@ exports[`PostTest PostTest component with review 2`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -874,6 +884,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -941,6 +952,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -1030,6 +1042,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -1097,6 +1110,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -1193,6 +1207,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -1260,6 +1275,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -1349,6 +1365,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -1416,6 +1433,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -1502,6 +1520,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -1569,6 +1588,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"
@@ -1658,6 +1678,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Try again anyway
           </button>
@@ -1725,6 +1746,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
                 contentEditable={false}
                 onClick={[Function]}
                 tabIndex="0"
+                type="button"
               >
                 <span
                   className="text"

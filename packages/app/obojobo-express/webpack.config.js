@@ -84,15 +84,6 @@ module.exports =
 						]
 					},
 					{
-						test: /\.pegjs$/,
-						use: {
-							loader: 'pegjs-loader',
-							options: {
-								cache: true
-							}
-						}
-					},
-					{
 						test: /\.(jpe?g|png)$/i,
 						use: [
 							{

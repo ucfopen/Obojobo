@@ -258,6 +258,7 @@ exports[`FullReview FullReview component with attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -290,6 +291,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -322,6 +324,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -354,6 +357,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -386,6 +390,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -403,6 +408,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           />
         </div>
       </div>

@@ -11,6 +11,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ×
     </button>
@@ -22,6 +23,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ✖ Incorrect
     </button>
@@ -38,6 +40,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       Add Feedback
     </button>
@@ -56,6 +59,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ×
     </button>
@@ -67,6 +71,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ✔ Correct
     </button>

@@ -11,7 +11,7 @@ NumericRule {
     "fractional",
   ],
   "decimals": Object {
-    "isClosed": false,
+    "isEmpty": false,
     "isMaxInclusive": true,
     "isMinInclusive": true,
     "max": "2",
@@ -19,6 +19,7 @@ NumericRule {
   },
   "errorType": "percent",
   "errorValue": 0.2,
+  "feedback": null,
   "isFractionReduced": true,
   "isInteger": false,
   "isValidScientific": true,
@@ -28,7 +29,7 @@ NumericRule {
   ],
   "score": 100,
   "sigFigs": Object {
-    "isClosed": false,
+    "isEmpty": false,
     "isMaxInclusive": true,
     "isMinInclusive": true,
     "max": "3",
@@ -37,7 +38,7 @@ NumericRule {
   "unitsAreCaseSensitive": false,
   "unitsMatch": "ignore-unit",
   "value": Object {
-    "isClosed": false,
+    "isEmpty": false,
     "isMaxInclusive": true,
     "isMinInclusive": true,
     "max": "6.78",

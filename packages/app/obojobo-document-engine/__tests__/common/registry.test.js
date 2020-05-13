@@ -30,6 +30,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -62,6 +63,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -130,6 +132,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -176,6 +179,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -218,6 +222,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -259,6 +264,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)
@@ -299,6 +305,7 @@ describe('Registry', () => {
 			  "switchType": Object {},
 			  "templateObject": "",
 			  "type": "mockType",
+			  "variableHandler": [Function],
 			  "variables": Object {},
 			}
 		`)

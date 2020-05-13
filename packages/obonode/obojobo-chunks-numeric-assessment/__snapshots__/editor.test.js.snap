@@ -21,25 +21,6 @@ exports[`NumericAssessment editor plugins.renderNode renders a ObojoboDraft.Chun
 />
 `;
 
-exports[`NumericAssessment editor plugins.renderNode renders a ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer when passed 1`] = `
-<NumericInput
-  attributes={
-    Object {
-      "dummy": "some_attributes",
-    }
-  }
-  dummy="some_attributes"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer",
-    }
-  }
-/>
-`;
-
 exports[`NumericAssessment editor plugins.renderNode renders a ObojoboDraft.Chunks.NumericAssessment.NumericChoice when passed 1`] = `
 <NumericInput
   attributes={

@@ -1,6 +1,5 @@
 const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
-const processAttrs = require('../process-attrs')
 
 const questionNodeParser = (node, childrenParser) => {
 	const id = node.id ? ` id="${node.id}"` : ''

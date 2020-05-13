@@ -45,13 +45,7 @@ exports[`NumericHeader NumericHeader renders with requirement of \`precise\` 1`]
     Requirement
   </th>
   <th>
-    Type
-  </th>
-  <th>
     Answer
-  </th>
-  <th>
-    Precision
   </th>
 </tr>
 `;
