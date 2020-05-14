@@ -2,12 +2,18 @@
 
 import React from 'react'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
+const { SimpleDialog, ModalPortal } = Common.components.modal
+const { ModalUtil } = Common.util
+
 export default class Dialog extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			log: ''
+			log: '',
+			hackPortals: [],
+			showHackPortals: false
 		}
 
 		const originalOnTransition = props.machine.onTransition
@@ -44,6 +50,19 @@ export default class Dialog extends React.Component {
 		// this.forceUpdate()
 	}
 
+	alterHackPortals(remove=false) {
+		const hackPortalList = [ ...this.state.hackPortals ]
+		if (remove) {
+			hackPortalList.shift()
+		} else {
+			hackPortalList.push(<SimpleDialog title='HACK'>PORTAL HACK</SimpleDialog>)
+		}
+
+		this.setState({
+			hackPortals: hackPortalList
+		})
+	}
+
 	render() {
 		return (
 			<div
@@ -60,6 +79,36 @@ export default class Dialog extends React.Component {
 			>
 				{this.props.machine ? (
 					<div>
+						<button onClick={() => {
+							ModalUtil.show(
+								<SimpleDialog ok title='summoned-dialog'>
+									Spontaneously conjured dialog
+								</SimpleDialog>
+							)
+						}}>
+							Spawn Alert Dialog
+						</button>
+						<br/>
+						<button onClick={() => {this.alterHackPortals(true)}}>
+							Remove Hack Portal
+						</button>
+						<button onClick={() => {this.alterHackPortals()}}>
+							Add Hack Portal
+						</button>
+						<br/>
+						<button onClick={() => {this.setState({showHackPortals: !this.state.showHackPortals})}}>
+							Toggle Hack Portals
+						</button>
+						<br/>
+						{
+							this.state.showHackPortals ?
+								<ModalPortal>
+									{this.state.hackPortals}
+								</ModalPortal>
+							:
+								null
+						}
+						<br/>
 						<label>
 							<span>Step:</span>
 							<select value={this.props.machine.step} onChange={this.onChange.bind(this)}>

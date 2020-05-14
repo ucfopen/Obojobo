@@ -13,8 +13,6 @@ class ModalPortal extends React.Component {
 			Common.components.ModalContainer.PORTAL_CONTAINER_DOM_ID
 		)
 
-		console.log('SUP HOMIE')
-
 		return modalContainerEl ? ReactDOM.createPortal(this.props.children, modalContainerEl) : null
 	}
 }

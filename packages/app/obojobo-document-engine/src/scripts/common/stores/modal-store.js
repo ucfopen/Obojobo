@@ -20,8 +20,8 @@ class ModalStore extends Store {
 	}
 
 	_getCurrentModal() {
-		return this.state.idOrder.length > 0
-			? this.state.modalsById[this.state.idOrder[this.state.idOrder.length - 1]]
+		return this.state.modals.length > 0
+			? this.state.modal[0]
 			: null
 	}
 

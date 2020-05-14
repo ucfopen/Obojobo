@@ -185,7 +185,7 @@ class Assessment extends React.Component {
 			this.props.model
 		)
 
-		ModalUtil.hide()
+		// ModalUtil.hide()
 		machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
 	}
 
@@ -193,7 +193,8 @@ class Assessment extends React.Component {
 		//@TODO: This needs to happen after sending success
 		AssessmentUtil.resetNetworkState(this.props.model)
 
-		ModalUtil.hide()
+		//this'll hide regular modals but has no affect on ModalPortal
+		// ModalUtil.hide()
 	}
 
 	onDialogResponse(response) {
@@ -204,7 +205,7 @@ class Assessment extends React.Component {
 					this.props.model
 				)
 
-				ModalUtil.hide()
+				// ModalUtil.hide()
 				machine.dispatch('tryResumeAttempt')
 
 				break
