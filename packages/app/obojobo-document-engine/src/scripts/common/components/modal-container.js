@@ -71,7 +71,7 @@ class ModalContainer extends React.Component {
 						? this.props.modalItem.component
 						: null}
 				</div>
-				<div className="content" id={PORTAL_CONTAINER_DOM_ID} ref={this.onRefChanged}></div>
+				<div className="content portalContent" id={PORTAL_CONTAINER_DOM_ID} ref={this.onRefChanged}></div>
 			</div>
 		)
 	}

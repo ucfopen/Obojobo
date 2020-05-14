@@ -34,19 +34,30 @@
 	animation-name: obojobo-draft--components--modal-container;
 
 	&.is-not-active {
-		// display: none;
 		animation: none;
 		pointer-events: none;
 		opacity: 0;
 	}
 
 	> .content {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
 		animation-duration: $duration-animation-default;
 		animation-name: obojobo-draft--components--modal-container--content;
 		font-family: $font-default;
+
+		&:not(.portalContent) {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		&.portalContent {
+			> * {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
 	}
 }
