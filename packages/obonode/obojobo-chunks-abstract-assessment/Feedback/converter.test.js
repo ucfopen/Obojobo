@@ -25,18 +25,16 @@ jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
 import Converter from './converter'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
-describe('MCFeedback Converter', () => {
+describe('Feedback Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}
@@ -60,7 +58,8 @@ describe('MCFeedback Converter', () => {
 				{
 					type: 'notADefinedNode'
 				}
-			]
+			],
+			content: { triggers: 'mock-triggers' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 

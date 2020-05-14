@@ -25,12 +25,6 @@ const updateNumericChoice = (editor, element, updatedValues) => {
 }
 
 const NumericInput = props => {
-	const onHandleScoreChange = () => {
-		updateNumericChoice(props.editor, props.element, {
-			score: props.element.content.score === '100' ? '0' : '100'
-		})
-	}
-
 	const onHandleInputChange = event => {
 		const { name, value } = event.target
 
@@ -56,21 +50,12 @@ const NumericInput = props => {
 	}
 
 	const content = props.element.content
-	const { score } = content
 
 	return (
 		<div
-			className="numeric-input-container pad"
+			className="numeric-input-container"
 			onClick={props.onSetCurrSelected}
-			contentEditable={false}
-		>
-			<button
-				className={'correct-button ' + (score === '100' ? 'is-correct' : 'is-not-correct')}
-				tabIndex="0"
-				onClick={onHandleScoreChange}
-			>
-				{score === '100' ? '✔' : '✖'}
-			</button>
+			contentEditable={false}>
 			<table contentEditable={false}>
 				<thead>
 					<NumericHeader requirement={content.requirement} />

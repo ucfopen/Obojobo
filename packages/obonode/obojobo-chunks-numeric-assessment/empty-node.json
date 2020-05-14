@@ -5,7 +5,7 @@
 	},
 	"children": [
 		{
-			"type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+			"type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
 			"content": { "score": 0 },
 			"children": [
 				{

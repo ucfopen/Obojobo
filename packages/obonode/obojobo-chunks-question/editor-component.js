@@ -138,8 +138,6 @@ class Question extends React.Component {
 			questionType = element.children[element.children.length - 1].type
 		}
 
-		console.log('question Type', questionType)
-
 		return (
 			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
 				<div
