@@ -29,7 +29,7 @@ class Choice extends React.Component {
 	}
 
 	handleScoreChange() {
-		const score = this.props.element.content.score === 100 ? 0 : 100
+		const score = this.props.element.content.score === 100 || this.props.element.content.score === "100" ? 0 : 100
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
@@ -67,7 +67,6 @@ class Choice extends React.Component {
 
 	render() {
 		const score = this.props.element.content.score
-		console.log(score)
 		const hasFeedback = this.props.element.children.length === 2
 
 		const className =
@@ -81,7 +80,7 @@ class Choice extends React.Component {
 					×
 				</Button>
 				<Button className="correct-button" onClick={this.handleScoreChange}>
-					{score === 100 ? '✔ Correct' : '✖ Incorrect'}
+					{score === 100 || score === "100" ? '✔ Correct' : '✖ Incorrect'}
 				</Button>
 				<div className="children">
 					<div>{this.props.children}</div>

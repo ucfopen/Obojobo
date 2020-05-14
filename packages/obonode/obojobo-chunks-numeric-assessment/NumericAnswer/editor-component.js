@@ -5,7 +5,6 @@ import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
 import { fullTextToSimplifed } from '../constants'
 
@@ -53,22 +52,15 @@ const NumericInput = props => {
 
 	return (
 		<div
-			className="numeric-input-container"
+			className="numeric-input-container pad"
 			onClick={props.onSetCurrSelected}
 			contentEditable={false}>
-			<table contentEditable={false}>
-				<thead>
-					<NumericHeader requirement={content.requirement} />
-				</thead>
-				<tbody>
-					<NumericOption
-						editor={props.editor}
-						numericChoice={content}
-						onHandleInputChange={onHandleInputChange}
-						onClickDropdown={onClickDropdown}
-					/>
-				</tbody>
-			</table>
+			<NumericOption
+				editor={props.editor}
+				numericChoice={content}
+				onHandleInputChange={onHandleInputChange}
+				onClickDropdown={onClickDropdown}
+			/>
 			{props.children}
 		</div>
 	)

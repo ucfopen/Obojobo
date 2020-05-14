@@ -17,6 +17,7 @@ const slateToObo = node => {
 		if (feedback) {
 			numericChoices.push({
 				...answer.content,
+				...numericChoiceNode.content,
 				feedback: Common.Registry.getItemForType(feedback.type).slateToObo(feedback, NUMERIC_FEEDBACK_NODE)
 			})
 		} else {
@@ -38,7 +39,6 @@ const oboToSlate = node => {
 	// Parse each numericChoice node
 	if (node.content && node.content.numericChoices) {
 		node.content.numericChoices.forEach(numericChoice => {
-			console.log(numericChoice)
 			const node = {
 				type: CHOICE_NODE,
 				content: { score: numericChoice.score },

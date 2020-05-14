@@ -15,6 +15,11 @@
 	top: -2em;
 	border-radius: $dimension-rounded-radius;
 
+	@media (max-width: 61.24em) {
+		margin-left: 2.8em;
+		margin-right: 2.8em;
+	}
+
 	.delete-button {
 		top: 1em;
 	}

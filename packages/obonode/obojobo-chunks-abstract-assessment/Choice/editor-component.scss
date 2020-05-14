@@ -15,9 +15,13 @@
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
-		top: 0.5em;
-		left: 1em;
+		top: 1em;
+		left: 3em;
 		font-family: $correct-font;
+
+		@media (max-width: 61.24em) {
+			left: 2.2em;
+		}
 
 		.button {
 			padding: 0.2em 0.5em;
@@ -51,7 +55,7 @@
 	}
 
 	.children {
-		padding-top: 2em;
+		padding-top: 2.5em;
 	}
 
 	.add-feedback {
