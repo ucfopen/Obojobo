@@ -16,11 +16,11 @@ dayjs.extend(weekOfYear)
 
 const Revision = props => {
 	const date = dayjs(props.createdAt).format('MMMM Do - h:mm A')
-	const selectedClass = props.isSelected ? 'is-selected' : ''
+	const isSelected = props.isSelected ? 'is-selected' : ''
 
 	return (
 		<div
-			className={`revision-history--item ${selectedClass}`}
+			className={`revision-history--item ${isSelected}`}
 			onClick={() => {
 				// Pass the index so the revision history
 				// menu knows which item is currently selected
@@ -170,7 +170,7 @@ class RevertModuleDialog extends React.Component {
 
 	renderMenuToggleButton() {
 		return (
-			<button className={`toggle-button`} onClick={this.toggleMenu}>
+			<button className="toggle-button" onClick={this.toggleMenu}>
 				Toggle Navigation Menu
 			</button>
 		)
@@ -179,7 +179,7 @@ class RevertModuleDialog extends React.Component {
 	renderRevisionHistoryMenu() {
 		return (
 			<CSSTransition timeout={250} in={this.state.isMenuOpen}>
-				<div className={`revision-history`} ref={this.menuRef}>
+				<div className="revision-history" ref={this.menuRef}>
 					<div className="menu-expanded">
 						<div className="revision-history--title">
 							<span>Revision history</span>
@@ -206,6 +206,7 @@ class RevertModuleDialog extends React.Component {
 
 	render() {
 		const isFirstSelected = this.state.selectedIndex === 0
+		const isDisabled = !isFirstSelected ? 'disabled' : ''
 
 		return (
 			<div className="revert-module-dialog">
@@ -231,7 +232,7 @@ class RevertModuleDialog extends React.Component {
 							<ButtonLink
 								url={`/preview/${this.props.draftId}`}
 								target="_blank"
-								className={`preview-button ${!isFirstSelected ? 'disabled' : ''}`}
+								className={`preview-button ${isDisabled}`}
 							>
 								Preview module
 							</ButtonLink>
