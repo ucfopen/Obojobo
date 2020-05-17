@@ -17,6 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import insertDomTag from '../../common/util/insert-dom-tag'
 
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
@@ -36,15 +37,6 @@ Dispatcher.on('viewer:alert', payload =>
 		</SimpleDialog>
 	)
 )
-
-const insertStyleOrScriptTag = (props, type) => {
-	const tag = document.createElement(type)
-	for(const i in props){
-		tag[i] = props[i]
-	}
-	const firstTag = document.getElementsByTagName(type)[0]
-	firstTag.parentNode.insertBefore(tag, firstTag)
-}
 
 export default class ViewerApp extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
@@ -167,8 +159,8 @@ export default class ViewerApp extends React.Component {
 						type: 'text/css',
 						href:'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
 					}
-					insertStyleOrScriptTag(jsProps, 'script')
-					insertStyleOrScriptTag(cssProps, 'link')
+					insertDomTag(jsProps, 'script')
+					insertDomTag(cssProps, 'link')
 
 					return new Promise((resolve, reject) => {
 						const timeout = 2000

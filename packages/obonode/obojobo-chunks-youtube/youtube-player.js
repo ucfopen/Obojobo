@@ -1,5 +1,6 @@
 import React from 'react'
 import Common from 'Common'
+import insertDomTag from 'obojobo-document-engine/src/scripts/common/util/insert-dom-tag'
 
 const { uuid } = Common.util
 
@@ -51,10 +52,7 @@ class YouTubePlayer extends React.Component {
 			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReadyHandler
 
 			// add the script thag that loads the youtube iframe api
-			const tag = document.createElement('script')
-			tag.src = 'https://www.youtube.com/iframe_api'
-			const firstScriptTag = document.getElementsByTagName('script')[0]
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+			insertDomTag({src: 'https://www.youtube.com/iframe_api'}, 'script')
 		}
 	}
 
