@@ -37,6 +37,15 @@ Dispatcher.on('viewer:alert', payload =>
 	)
 )
 
+const insertStyleOrScriptTag = (props, type) => {
+	const tag = document.createElement(type)
+	for(const i in props){
+		tag[i] = props[i]
+	}
+	const firstTag = document.getElementsByTagName(type)[0]
+	firstTag.parentNode.insertBefore(tag, firstTag)
+}
+
 export default class ViewerApp extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
 
@@ -140,7 +149,49 @@ export default class ViewerApp extends React.Component {
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel }) => {
+			.then(({ value: draftModel}) => {
+				// DETECT LATEX USAGE
+				// LATEX can be in seen in 2 places
+				// HTML allows div with a classname of 'latex' to render latex
+				// AND in text nodes with a styleList item of type _latex
+				// The second can be matched against `"type":"_latex"` without many false positives
+				// However, the html node's classname will generate more false positives
+				const stringModel = JSON.stringify(draftModel)
+				if(stringModel.includes('latex')){
+					console.log('THIS MODULE CONTAINS LATEX')
+					const jsProps = {
+						src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js',
+					}
+					const cssProps = {
+						rel: 'stylesheet',
+						type: 'text/css',
+						href:'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
+					}
+					insertStyleOrScriptTag(jsProps, 'script')
+					insertStyleOrScriptTag(cssProps, 'link')
+
+					return new Promise((resolve, reject) => {
+						const timeout = 2000
+						const intervalTime = 20
+						let timer = 0
+						const latexCheckInterval = setInterval(() => {
+							timer+=intervalTime
+							if(window.katex){
+								clearInterval(latexCheckInterval)
+								return resolve(draftModel)
+							}
+							if(timer > timeout){
+								clearInterval(latexCheckInterval)
+								return reject('timedout loading katex library')
+							}
+						}, intervalTime)
+					})
+				} else {
+					return draftModel
+				}
+			})
+			// .then(({ value: draftModel }) => {
+			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(

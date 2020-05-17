@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useMemo } from 'react'
 import { ReactEditor, useSlate } from 'slate-react'
 import { Editor } from 'slate'
-import katex from 'katex'
+// import katex from 'katex'
 
 import './hovering-preview.scss'
 const LATEX_MARK = '_latex'
@@ -51,7 +51,7 @@ const HoveringPreview = ({ pageEditorContainerRef }) => {
 	// run only when text changes
 	const katexHTML = useMemo(() => {
 		if (!leaf[LATEX_MARK]) return ''
-		return katex.renderToString(leaf.text, { throwOnError: false })
+		return window.katex.renderToString(leaf.text, { throwOnError: false })
 	}, [leaf.text])
 
 	return (

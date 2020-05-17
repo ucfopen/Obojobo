@@ -1,6 +1,6 @@
 // Turns a StyleableText item into a mock DOM tree, which can then be used to render out in React
 
-const katex = require('katex')
+// const katex = require('katex')
 
 const StyleType = require('./style-type')
 const MockElement = require('../mockdom/mock-element')
@@ -161,7 +161,7 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			)
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
-			const html = katex.renderToString(text, { throwOnError: false })
+			const html = window.katex.renderToString(text, { throwOnError: false })
 			nodeToWrap.html = `<span aria-hidden="true">${html}</span>`
 			nodeToWrap.text = text
 			return newChild
