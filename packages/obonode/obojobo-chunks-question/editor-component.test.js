@@ -30,7 +30,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	}
 }))
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -48,47 +48,63 @@ describe('Question Editor Node', () => {
 	})
 
 	test('Question builds the expected component', () => {
-		const component = renderer.create(
-			<Question element={{ 
-				content: { type: 'default' }, 
-				children: [
-					{},
-					{ subtype: SOLUTION_NODE }
-				] }}/>
-		)
+		const props = {
+			element: {
+				content: { type: 'default' },
+				children: [{}, { subtype: SOLUTION_NODE }]
+			}
+		}
+		const component = renderer.create(<Question {...props} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Survey Question builds the expected component', () => {
-		const component = renderer.create(
-			<Question element={{ content: { type: 'survey' }, children: [{}] }}/>
-		)
+		const props = {
+			element: {
+				content: { type: 'survey' },
+				children: [{}]
+			}
+		}
+		const component = renderer.create(<Question {...props} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component deletes self', () => {
-		const component = mount(
-			<Question element={{ content: { type: 'default' }, children: [{}] }}/>
-		)
+		const props = {
+			element: {
+				content: { type: 'default' },
+				children: [{}]
+			}
+		}
+		const component = mount(<Question {...props} />)
 
-		component.find('Button').at(1).simulate('click')
+		// click Delete button
+		component
+			.find('.delete-button')
+			.at(0)
+			.simulate('click')
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('Question component adds Solution', () => {
-		const component = mount(
-			<Question element={{ content: { type: 'default' }, children: [{}] }}/>
-		)
+		const props = {
+			element: {
+				content: { type: 'default' },
+				children: [{}]
+			}
+		}
+		const component = mount(<Question {...props} />)
 		const tree = component.html()
 		ReactEditor.findPath.mockReturnValue([])
 
+		// click first add solution button
 		component
-			.find('button')
+			.find('.add-solution')
 			.at(0)
 			.simulate('click')
 
@@ -96,29 +112,103 @@ describe('Question Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Question component allows you to change set type', () => {
-		const component = mount(
-			<Question element={{ 
-				content: { type: 'default' }, 
-				children: [
-					{ type: BREAK_NODE },
-					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE }
-				]}}/>
-		)
-		ReactEditor.findPath.mockReturnValue([])
+	test('Question toggles survey type', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [{ type: BREAK_NODE }, { id: 'mock-mca-id', type: MCASSESSMENT_NODE }]
+			}
+		}
+		const component = mount(<Question {...props} />)
+		const path = [9, 2]
+		const pathOfMCAssessment = [9, 2, 1]
+		ReactEditor.findPath.mockReturnValue(path)
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { checked: true } })
-
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { checked: false } })
+		// turn ON survey
+		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: true } })
 
 		component.update()
 
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'survey' } },
+			{ at: path }
+		)
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ questionType: 'survey' },
+			{ at: pathOfMCAssessment }
+		)
+
+		Transforms.setNodes.mockClear()
+
+		// turn OFF survey
+		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: false } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'default' } },
+			{ at: path }
+		)
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ questionType: 'default' },
+			{ at: pathOfMCAssessment }
+		)
+	})
+
+	test('Question toggles survey type with a solution', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE },
+					{ subtype: SOLUTION_NODE }
+				]
+			}
+		}
+		const component = mount(<Question {...props} />)
+		const path = [9, 2]
+		const pathOfMCAssessment = [9, 2, 1]
+		ReactEditor.findPath.mockReturnValue(path)
+
+		// turn ON survey
+		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: true } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'survey' } },
+			{ at: path }
+		)
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ questionType: 'survey' },
+			{ at: pathOfMCAssessment }
+		)
+
+		Transforms.setNodes.mockClear()
+
+		// turn OFF survey
+		component.find({ type: 'checkbox' }).simulate('change', { target: { checked: false } })
+
+		component.update()
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ content: { type: 'default' } },
+			{ at: path }
+		)
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{ questionType: 'default' },
+			{ at: pathOfMCAssessment }
+		)
 	})
 })
