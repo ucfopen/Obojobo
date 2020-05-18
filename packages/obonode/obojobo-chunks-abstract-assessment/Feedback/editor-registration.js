@@ -6,7 +6,7 @@ import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/no
 import EditorComponent from './editor-component'
 import Converter from './converter'
 
-const CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
 const FEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -27,11 +27,13 @@ const Feedback = {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					if (Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)) {
 						Transforms.removeNodes(editor, { at: childPath })
+						console.log('removing nodes')
 						return
 					}
 
 					// Wrap loose text children in a Text Node
 					if (Text.isText(child)) {
+						console.log('wrapping in text')
 						Transforms.wrapNodes(
 							editor, 
 							{
@@ -61,6 +63,8 @@ const Feedback = {
 					return
 				}
 			}
+
+			console.log('onward')
 
 			next(entry, editor)
 		},

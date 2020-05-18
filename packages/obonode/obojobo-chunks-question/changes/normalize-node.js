@@ -1,6 +1,7 @@
 import { Node, Element, Transforms, Text } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
+import { validAssessments } from 'obojobo-chunks-abstract-assessment/constants'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
@@ -14,30 +15,28 @@ const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 // has been fixed, and runs the normalizeNode function again to see if there are any further problems
 // For more detailed information, see: https://docs.slatejs.org/concepts/10-normalizing
 const normalizeNode = (entry, editor, next) => {
-	console.log('NORMALIZING DISABLED')
-	return
 	const [node, path] = entry
 
 	// If the element is a Question, handle Content children
 	if (Element.isElement(node) && node.type === QUESTION_NODE && !node.subtype) {
 		let index = 0
 		let hasSolution = false
-		let hasMCAssessment = false
+		let hasAssessment = false
 		for (const [child, childPath] of Node.children(editor, path, { reverse: true })) {
-			// the last index should either be a solution node or a MCAssessment
+			// the last child should either be a solution node or an Assessment
 			if (index === 0 && Element.isElement(child)) {
 				if (child.subtype === SOLUTION_NODE) {
 					hasSolution = true
 					index++
 					continue
-				} else if (child.type === MCASSESSMENT_NODE) {
-					hasMCAssessment = true
+				} else if (validAssessments.includes(child.type)) {
+					hasAssessment = true
 					index++
 					continue
 				} else {
 					// If the last index is not one of the two valid options
-					// insert a MCAssessment and allow subsequent normalizations
-					// to fill it
+					// insert a MCAssessment as default and allow subsequent 
+					// normalizations to fill it
 					Transforms.insertNodes(
 						editor,
 						{
@@ -55,14 +54,15 @@ const normalizeNode = (entry, editor, next) => {
 				}
 			}
 
-			if (index === 1 && hasSolution && child.type === MCASSESSMENT_NODE) {
-				hasMCAssessment = true
+			// If there is a solution, the second to last child should be an Assessment
+			if (index === 1 && hasSolution && validAssessments.includes(child.type)) {
+				hasAssessment = true
 				index++
 				continue
 
-				// If there is a solution but no MCAssessment, insert a MCAssessment
-				// and allow subsequent normalizations to fill it
-			} else if (index === 1 && hasSolution && child.type !== MCASSESSMENT_NODE) {
+			// If there is a solution but no Assessment, insert a MCAssessment as default
+			// and allow subsequent normalizations to fill it
+			} else if (index === 1 && hasSolution && !validAssessments.includes(child.type)) {
 				Transforms.insertNodes(
 					editor,
 					{
@@ -79,7 +79,7 @@ const normalizeNode = (entry, editor, next) => {
 				return
 			}
 
-			// If we get here we have a MCAssessment node, and every subsequent node should be
+			// If we get here we have an Assessment node, and every subsequent node should be
 			// a content node
 			if (Element.isElement(child) && !Common.Registry.contentTypes.includes(child.type)) {
 				Transforms.removeNodes(editor, { at: childPath })
@@ -102,7 +102,7 @@ const normalizeNode = (entry, editor, next) => {
 			index++
 		}
 
-		// If we only have a Solution, add a MCAssessment child
+		// If we only have a Solution, add a MCAssessment child as default
 		if (hasSolution && node.children.length < 2) {
 			Transforms.insertNodes(
 				editor,
@@ -126,8 +126,8 @@ const normalizeNode = (entry, editor, next) => {
 			return
 		}
 
-		// If we only have a MCAssessment & a Solution, add a text child
-		if (hasSolution && hasMCAssessment && node.children.length < 3) {
+		// If we only have a Assessment & a Solution, add a text child
+		if (hasSolution && hasAssessment && node.children.length < 3) {
 			Transforms.insertNodes(
 				editor,
 				{
@@ -147,8 +147,8 @@ const normalizeNode = (entry, editor, next) => {
 			return
 		}
 
-		// If we only have a MCAssessment add a text child
-		if (!hasSolution && hasMCAssessment && node.children.length < 2) {
+		// If we only have a Assessment add a text child
+		if (!hasSolution && hasAssessment && node.children.length < 2) {
 			Transforms.insertNodes(
 				editor,
 				{

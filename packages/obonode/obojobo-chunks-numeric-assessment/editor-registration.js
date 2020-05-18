@@ -13,8 +13,7 @@ import emptyNode from './empty-node.json'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
-const NUMERIC_CHOICE_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice'
-const NUMERIC_ANSWER_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer'
+const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
 
 const NumericAssessment = {
 	name: 'ObojoboDraft.Chunks.NumericAssessment',
@@ -29,18 +28,16 @@ const NumericAssessment = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			return
-
 			// If the element is a NumericAssessment, only allow NumericChoice nodes
 			if (Element.isElement(node) && node.type === NUMERIC_ASSESSMENT_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
-					// The first node should be a NumericChoice
+					// The first node should be a Choice
 					// If it is not, wrapping it will result in normalizations to fix it
-					if (Element.isElement(child) && child.type !== NUMERIC_CHOICE_NODE) {
+					if (Element.isElement(child) && child.type !== CHOICE_NODE) {
 						Transforms.wrapNodes(
 							editor,
 							{
-								type: NUMERIC_CHOICE_NODE,
+								type: CHOICE_NODE,
 								content: { score: 0 }
 							},
 							{ at: childPath }
@@ -54,7 +51,7 @@ const NumericAssessment = {
 						Transforms.wrapNodes(
 							editor,
 							{
-								type: NUMERIC_CHOICE_NODE,
+								type: CHOICE_NODE,
 								content: { score: 0 }
 							},
 							{ at: childPath }
