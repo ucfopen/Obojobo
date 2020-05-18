@@ -86,6 +86,21 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 			showChildrenOnNavigation: false
 		})
 	})
+
+	test('assessment:attemptsRemaining returns `null` when there is no assessment', () => {
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const model = {
+			getParentOfType: jest.fn().mockReturnValueOnce(null)
+		}
+
+		// retrieve the method from variables
+		const funct = register[1].variables['assessment:attemptsRemaining']
+		expect(funct).toEqual(expect.any(Function))
+
+		const vari = funct(model)
+		expect(vari).toEqual(null)
+	})
+
 	test('assessment:attemptsRemaining returns unlimited with Infinity attempts', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
