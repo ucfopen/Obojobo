@@ -15,6 +15,11 @@ const assessmentToAnswer = {
 	[MC_ASSESSMENT_NODE]: mcAssessment.children[0].children[0],
 }
 
+const answerTypeToJson = {
+	[NUMERIC_ANSWER_NODE]: numericAssessment.children[0].children[0],
+	[MC_ANSWER_NODE]: mcAssessment.children[0].children[0],
+}
+
 const answerToAssessment = {
 	[NUMERIC_ANSWER_NODE]: numericAssessment,
 	[MC_ANSWER_NODE]: mcAssessment,
@@ -27,6 +32,7 @@ export {
 	CHOICE_NODE,
 	FEEDBACK_NODE,
 	assessmentToAnswer,
+	answerTypeToJson,
 	answerToAssessment,
 	validAssessments,
 	validAnswers

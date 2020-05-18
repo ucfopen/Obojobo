@@ -2,6 +2,7 @@ import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
  // TODO - remove type when viewer is abstracted out
+import { FEEDBACK_NODE } from '../constants'
  
 /**
  * Generates an Obojobo Feedback Node from a Slate node.
@@ -27,7 +28,7 @@ const slateToObo = (node, type) => ({
  */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
-	slateNode.type = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
+	slateNode.type = FEEDBACK_NODE
 	slateNode.children = node.children.map(child => Component.helpers.oboToSlate(child))
 	return slateNode
 }

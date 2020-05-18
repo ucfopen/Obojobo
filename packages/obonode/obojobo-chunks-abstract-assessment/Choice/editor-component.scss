@@ -62,6 +62,10 @@
 		position: absolute;
 		bottom: 0.5em;
 		right: 3em;
+
+		@media (max-width: 61.24em) {
+			right: 2.2em;
+		}
 	}
 
 	&.is-correct {
