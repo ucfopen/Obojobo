@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-sections-assessment",
-	"version": "9.0.0-alpha2",
+	"version": "9.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Assessment section for Obojobo",
 	"scripts": {
@@ -28,8 +28,8 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^9.0.0-alpha2",
-		"obojobo-lib-utils": "^9.0.0-alpha2"
+		"obojobo-document-engine": "^9.0.0",
+		"obojobo-lib-utils": "^9.0.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.2"
