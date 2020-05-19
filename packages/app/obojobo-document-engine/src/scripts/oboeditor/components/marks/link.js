@@ -59,19 +59,16 @@ class Link extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		// If this component is no longer "selected" stop the Intersection Observer and reset
-		// any translation
-		if (!this.props.selected && prevProps.selected) {
-			this.stopObserveringForIntersectionChanges()
+		if (this.props.selected === prevProps.selected) return
 
-			this.setState({
-				menuTranslateX: 0
-			})
-			// Else if this component is being "selected" then after update we need to start our
-			// Intersection Observer
-		} else if (this.props.selected && !prevProps.selected) {
+		if (this.props.selected) {
 			this.startObservingForIntersectionChanges()
+			return
 		}
+
+		// If this component is no longer "selected" stop the Intersection Observer and reset
+		this.stopObserveringForIntersectionChanges()
+		this.setState({ menuTranslateX: 0 })
 	}
 
 	startObservingForIntersectionChanges() {
