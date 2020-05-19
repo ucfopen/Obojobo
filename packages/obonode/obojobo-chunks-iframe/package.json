@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-iframe",
-	"version": "8.0.2",
+	"version": "9.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "IFrame content chunk for Obojobo",
 	"scripts": {
@@ -28,7 +28,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^8.0.2"
+		"obojobo-lib-utils": "^9.0.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.2"

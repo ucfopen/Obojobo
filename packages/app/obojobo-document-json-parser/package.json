@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "obojobo-document-engine": "^8.0.2",
+    "obojobo-document-engine": "^9.0.0",
     "xml-formatter": "^2.0.1"
   },
   "devDependencies": {
     "lint-staged": "^10.2.2",
-    "obojobo-lib-utils": "^8.0.2"
+    "obojobo-lib-utils": "^9.0.0"
   },
   "name": "obojobo-document-json-parser",
-  "version": "8.0.2",
+  "version": "9.0.0",
   "license": "AGPL-3.0-only",
   "main": "",
   "scripts": {

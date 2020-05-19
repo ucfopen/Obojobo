@@ -27,6 +27,7 @@ class Question extends React.Component {
 	onSetType(event) {
 		const type = event.target.checked ? 'survey' : 'default'
 
+		// update this element's content.type
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -34,11 +35,15 @@ class Question extends React.Component {
 			{ at: path }
 		)
 
-		const lastChildIndex = this.props.element.children.length - 1
-		return Transforms.setNodes(
+		// first search for the index of this element's children that is an MCASSESSMENT_NODE
+		const indexOfMCAssessment = this.props.element.children.findIndex(
+			el => el.type === MCASSESSMENT_NODE
+		)
+		// update MCASSESSMENT_NODE questionType to match
+		Transforms.setNodes(
 			this.props.editor,
 			{ questionType: type },
-			{ at: path.concat(lastChildIndex) }
+			{ at: path.concat(indexOfMCAssessment) }
 		)
 	}
 
@@ -109,8 +114,6 @@ class Question extends React.Component {
 								<label className="question-type" contentEditable={false}>
 									<input
 										type="checkbox"
-										name="vehicle1"
-										value="Bike"
 										checked={content.type === 'survey'}
 										onChange={this.onSetType}
 									/>
