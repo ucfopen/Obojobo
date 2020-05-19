@@ -513,6 +513,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold"
       >
@@ -527,6 +528,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic"
       >
@@ -541,6 +543,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough"
       >
@@ -567,6 +570,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote"
       >
@@ -587,6 +591,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace"
       >
@@ -610,6 +615,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation"
       >
@@ -636,6 +642,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link"
       >
@@ -654,6 +661,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript"
       >
@@ -672,6 +680,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript"
       >
@@ -690,6 +699,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align"
       >
@@ -704,6 +714,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align"
       >
@@ -718,6 +729,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align"
       >
@@ -732,6 +744,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent"
       >
@@ -750,6 +763,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent"
       >
@@ -768,6 +782,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent"
       >
@@ -1023,6 +1038,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold"
       >
@@ -1037,6 +1053,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic"
       >
@@ -1051,6 +1068,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough"
       >
@@ -1077,6 +1095,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote"
       >
@@ -1097,6 +1116,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace"
       >
@@ -1120,6 +1140,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation"
       >
@@ -1146,6 +1167,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link"
       >
@@ -1164,6 +1186,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript"
       >
@@ -1182,6 +1205,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript"
       >
@@ -1200,6 +1224,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align"
       >
@@ -1214,6 +1239,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align"
       >
@@ -1228,6 +1254,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align"
       >
@@ -1242,6 +1269,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent"
       >
@@ -1260,6 +1288,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent"
       >
@@ -1278,6 +1307,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent"
       >
@@ -1533,6 +1563,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold"
       >
@@ -1547,6 +1578,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic"
       >
@@ -1561,6 +1593,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough"
       >
@@ -1587,6 +1620,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote"
       >
@@ -1607,6 +1641,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace"
       >
@@ -1630,6 +1665,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation"
       >
@@ -1656,6 +1692,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link"
       >
@@ -1674,6 +1711,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript"
       >
@@ -1692,6 +1730,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript"
       >
@@ -1710,6 +1749,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align"
       >
@@ -1724,6 +1764,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align"
       >
@@ -1738,6 +1779,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align"
       >
@@ -1752,6 +1794,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent"
       >
@@ -1770,6 +1813,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent"
       >
@@ -1788,6 +1832,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent"
       >
@@ -2089,6 +2134,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold"
       >
@@ -2103,6 +2149,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic"
       >
@@ -2117,6 +2164,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough"
       >
@@ -2143,6 +2191,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote"
       >
@@ -2163,6 +2212,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace"
       >
@@ -2186,6 +2236,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation"
       >
@@ -2212,6 +2263,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link"
       >
@@ -2230,6 +2282,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript"
       >
@@ -2248,6 +2301,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript"
       >
@@ -2266,6 +2320,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align"
       >
@@ -2280,6 +2335,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align"
       >
@@ -2294,6 +2350,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align"
       >
@@ -2308,6 +2365,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent"
       >
@@ -2326,6 +2384,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent"
       >
@@ -2344,6 +2403,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent"
       >
@@ -2595,6 +2655,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       className="visual-editor--content-toolbar"
     >
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold"
       >
@@ -2609,6 +2670,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic"
       >
@@ -2623,6 +2685,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough"
       >
@@ -2649,6 +2712,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote"
       >
@@ -2669,6 +2733,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace"
       >
@@ -2692,6 +2757,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation"
       >
@@ -2718,6 +2784,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link"
       >
@@ -2736,6 +2803,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript"
       >
@@ -2754,6 +2822,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript"
       >
@@ -2772,6 +2841,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align"
       >
@@ -2786,6 +2856,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align"
       >
@@ -2800,6 +2871,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align"
       >
@@ -2814,6 +2886,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent"
       >
@@ -2832,6 +2905,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent"
       >
@@ -2850,6 +2924,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent"
       >
