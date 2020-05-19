@@ -37,6 +37,7 @@ module.exports =
 			},
 			entry: entriesFromObojoboModules,
 			output: {
+				publicPath: '/static/',
 				path: path.join(__dirname, 'server', 'public', 'compiled'),
 				filename: `${filename}.js`
 			},
