@@ -30,7 +30,8 @@
 			stroke: $color-text;
 		}
 
-		&:hover {
+		&:hover,
+		&.is-selected {
 			opacity: 1;
 			background: lighten($color-action, 48%);
 
