@@ -106,7 +106,6 @@ module.exports =
 				Viewer: 'Viewer',
 				slate: 'Slate',
 				'slate-react': 'SlateReact',
-				immutable: 'Immutable'
 			},
 			plugins: [
 				new WatchIgnorePlugin([
