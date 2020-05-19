@@ -1,12 +1,12 @@
 import Question from './viewer-component'
 import React from 'react'
-import _ from 'underscore'
 import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
+import shuffle from 'obojobo-document-engine/src/scripts/common/utils/shuffle'
 
 const { getScoreClass } = jest.requireActual(
 	'obojobo-document-engine/src/scripts/viewer/util/question-util'
@@ -228,7 +228,7 @@ const expectClasses = (className, type, mode, answered, correct) => {
 
 describe('Question', () => {
 	beforeAll(() => {
-		_.shuffle = a => a
+		shuffle = a => a
 		QuestionUtil.getScoreClass = getScoreClass
 	})
 

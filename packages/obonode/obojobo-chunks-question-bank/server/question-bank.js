@@ -1,5 +1,5 @@
 const DraftNode = require('obojobo-express/server/models/draft_node')
-const _ = require('underscore')
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 const logger = require('obojobo-express/server/logger')
 const { getRandom } = require('./util')
 const flatten = require('array-flatten')
@@ -106,7 +106,7 @@ class QuestionBank extends DraftNode {
 		const oboNodeQuestionIds = [...this.immediateChildrenSet]
 		// shuffle the array
 		return (
-			_.shuffle(oboNodeQuestionIds)
+			shuffle(oboNodeQuestionIds)
 				// reduce the array to the number of questions in attempt
 				.slice(0, this.choose)
 		)

@@ -9,7 +9,6 @@ jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
-jest.mock('underscore')
 
 jest.mock(
 	'obojobo-express/server/models/visit',
@@ -40,7 +39,7 @@ const {
 	getState,
 	loadChildren
 } = require('./attempt-start.js')
-const _ = require('underscore')
+
 const testJson = require('obojobo-document-engine/test-object.json')
 const Assessment = require('./assessment')
 const insertEvent = require('obojobo-express/server/insert_event')
