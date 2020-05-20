@@ -7,7 +7,7 @@ const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		getItemForType: jest.fn(),
-		contentTypes: [ 'ObojoboDraft.Chunks.Break' ]
+		contentTypes: ['ObojoboDraft.Chunks.Break']
 	},
 	util: {
 		ModalUtil: {
@@ -34,7 +34,7 @@ describe('Question editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			element: {
-				type: QUESTION_NODE,
+				type: QUESTION_NODE
 			}
 		}
 
@@ -45,7 +45,7 @@ describe('Question editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			element: {
-				subtype: SOLUTION_NODE,
+				subtype: SOLUTION_NODE
 			}
 		}
 
@@ -82,6 +82,13 @@ describe('Question editor', () => {
 		model.modelState.mode = null
 		expect(Question.getNavItem(model)).toEqual({
 			label: 'Question 0',
+			path: ['#obo-testId'],
+			type: 'sub-link'
+		})
+
+		delete model.parent
+		expect(Question.getNavItem(model)).toEqual({
+			label: 'Question',
 			path: ['#obo-testId'],
 			type: 'sub-link'
 		})
