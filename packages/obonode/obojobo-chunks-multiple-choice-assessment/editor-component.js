@@ -67,8 +67,6 @@ class MCAssessment extends React.Component {
 		const questionType = this.props.element.questionType || 'default'
 		const content = this.props.element.content
 
-		console.log(this.props.element)
-
 		return (
 			<div
 				className={`component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-${questionType}`}

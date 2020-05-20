@@ -19,7 +19,7 @@ class NumericAssessment extends React.Component {
 			this.props.editor,
 			{
 				type: CHOICE_NODE,
-				content: {},
+				content: { score: 0 },
 				children: [
 					{
 						type: NUMERIC_ANSWER_NODE,

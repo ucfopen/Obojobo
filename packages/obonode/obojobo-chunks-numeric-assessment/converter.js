@@ -21,7 +21,10 @@ const slateToObo = node => {
 				feedback: Common.Registry.getItemForType(feedback.type).slateToObo(feedback, NUMERIC_FEEDBACK_NODE)
 			})
 		} else {
-			numericChoices.push({ ...answer.content })
+			numericChoices.push({ 
+				...answer.content,
+				...numericChoiceNode.content, 
+			})
 		}
 	})
 

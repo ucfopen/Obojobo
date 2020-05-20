@@ -55,7 +55,7 @@ const Feedback = {
 						entry, 
 						{ 
 							type: CHOICE_NODE, 
-							content: {},
+							content: { score: 0 },
 							children: []
 						}, 
 						node => validAnswers.includes(node.type)
