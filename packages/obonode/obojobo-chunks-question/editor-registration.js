@@ -34,26 +34,6 @@ const Question = {
 					return <EditorComponent {...props} {...props.attributes} />
 			}
 		}
-	},
-	getNavItem(model) {
-		let label
-
-		if (model.title) {
-			label = '' + model.title
-		} else if (model.parent) {
-			const questions = model.parent.children.models.filter(
-				child => child.get('type') === QUESTION_NODE
-			)
-			label = `Question ${questions.indexOf(model) + 1}`
-		} else {
-			label = `Question`
-		}
-
-		return {
-			type: 'sub-link',
-			label,
-			path: [`#obo-${model.get('id')}`]
-		}
 	}
 }
 

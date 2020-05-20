@@ -51,46 +51,4 @@ describe('Question editor', () => {
 
 		expect(Question.plugins.renderNode(props)).toMatchSnapshot()
 	})
-
-	test('getNavItem returns expected object', () => {
-		const model = {
-			parent: {
-				children: {
-					models: [{ get: () => true }]
-				}
-			},
-			modelState: {
-				mode: 'practice'
-			},
-			title: 'TestTitle',
-			get: () => 'testId'
-		}
-
-		expect(Question.getNavItem(model)).toEqual({
-			label: 'TestTitle',
-			path: ['#obo-testId'],
-			type: 'sub-link'
-		})
-
-		model.title = null
-		expect(Question.getNavItem(model)).toEqual({
-			label: 'Question 0',
-			path: ['#obo-testId'],
-			type: 'sub-link'
-		})
-
-		model.modelState.mode = null
-		expect(Question.getNavItem(model)).toEqual({
-			label: 'Question 0',
-			path: ['#obo-testId'],
-			type: 'sub-link'
-		})
-
-		delete model.parent
-		expect(Question.getNavItem(model)).toEqual({
-			label: 'Question',
-			path: ['#obo-testId'],
-			type: 'sub-link'
-		})
-	})
 })
