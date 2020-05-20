@@ -12,7 +12,7 @@ const { Button } = Common.components
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+const FEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
 
 class MCChoice extends React.Component {
 	constructor(props) {
@@ -44,7 +44,7 @@ class MCChoice extends React.Component {
 		return Transforms.insertNodes(
 			this.props.editor,
 			{
-				type: MCFEEDBACK_NODE,
+				type: FEEDBACK_NODE,
 				content: {},
 				children: [
 					{

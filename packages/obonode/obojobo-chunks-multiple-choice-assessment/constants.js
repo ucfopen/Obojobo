@@ -1,7 +1,7 @@
 const MC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const MC_ANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const MC_CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+const MC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 export {
 	MC_ASSESSMENT_NODE,

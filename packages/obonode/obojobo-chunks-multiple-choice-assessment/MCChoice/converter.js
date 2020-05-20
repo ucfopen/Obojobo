@@ -1,6 +1,9 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
+const MC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+const FEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
+
 /**
  * Generates an Obojobo MCChoice Node from a Slate node.
  * Copies the id, type, and triggers. It also calls the appropriate
@@ -11,7 +14,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 const slateToObo = node => ({
 	id: node.id,
 	type: node.type,
-	children: node.children.map(child => Common.Registry.getItemForType(child.type).slateToObo(child)),
+	children: node.children.map(child => Common.Registry.getItemForType(child.type).slateToObo(child, MC_FEEDBACK_NODE)),
 	content: withoutUndefined({
 		triggers: node.content.triggers,
 		score: node.content. score
@@ -26,7 +29,10 @@ const slateToObo = node => ({
  */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
-	slateNode.children = node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child))
+	slateNode.children = node.children.map(child => {
+		if(child.type === MC_FEEDBACK_NODE) return Common.Registry.getItemForType(FEEDBACK_NODE).oboToSlate(child)
+		return Common.Registry.getItemForType(child.type).oboToSlate(child)
+	})
 	return slateNode
 }
 

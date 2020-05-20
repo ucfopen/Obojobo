@@ -22,6 +22,8 @@ const Feedback = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
+			next(entry, editor)
+
 			// If the element is a Feedback, only allow Content children
 			if (Element.isElement(node) && node.type === FEEDBACK_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {

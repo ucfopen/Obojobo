@@ -4,12 +4,14 @@ import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/no
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
+
+	return 
 
 	// If the element is a MCChoice, only allow 1 MCAnswer and 1 MCFeedback
 	if (Element.isElement(node) && node.type === MCCHOICE_NODE) {

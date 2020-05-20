@@ -2,6 +2,10 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
  // TODO - remove type when viewer is abstracted out
+ import { FEEDBACK_NODE } from '../constants'
+ const MC_CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+ const MC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+ const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
 
 /**
  * Generates an Obojobo Choice Node from a Slate node.
@@ -13,7 +17,10 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 const slateToObo = (node, type) => ({
 	id: node.id,
 	type,
-	children: node.children.map(child => Common.Registry.getItemForType(child.type).slateToObo(child)),
+	children: node.children.map(child => {
+		const feedbackType = type === MC_CHOICE_NODE ? MC_FEEDBACK_NODE : NUMERIC_FEEDBACK_NODE
+		return Common.Registry.getItemForType(child.type).slateToObo(child, feedbackType)
+	}),
 	content: withoutUndefined({
 		triggers: node.content.triggers,
 		score: node.content. score
@@ -29,6 +36,7 @@ const slateToObo = (node, type) => ({
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
 	slateNode.type = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
+	if(node.children.length > 1) node.children[1].type = FEEDBACK_NODE
 	slateNode.children = node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child))
 	return slateNode
 }
