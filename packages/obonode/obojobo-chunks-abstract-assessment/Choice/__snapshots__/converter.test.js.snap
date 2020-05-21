@@ -1,6 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice editor oboToSlate converts an OboNode to a Slate node 1`] = `
+exports[`Choice editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "children": Array [
+    undefined,
+  ],
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
+}
+`;
+
+exports[`Choice editor oboToSlate converts an OboNode to a Slate node with Feedback 1`] = `
 Object {
   "children": Array [
     undefined,
@@ -15,7 +28,7 @@ Object {
 }
 `;
 
-exports[`MCChoice editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`Choice editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [
     undefined,
@@ -25,5 +38,18 @@ Object {
   "content": Object {},
   "id": "mockKey",
   "type": undefined,
+}
+`;
+
+exports[`Choice editor slateToObo converts a Slate node to an OboNode with type MC_CHOICE 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
 }
 `;

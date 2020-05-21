@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice Editor Node MCChoice component 1`] = `
+exports[`Choice Editor Node Choice component 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice"
+  className="component obojobo-draft--chunks--abstract-assessment--choice is-not-correct editor-choice"
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -11,6 +11,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ×
     </button>
@@ -22,6 +23,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ✖ Incorrect
     </button>
@@ -38,6 +40,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       Add Feedback
     </button>
@@ -45,9 +48,9 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
 </div>
 `;
 
-exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
+exports[`Choice Editor Node Choice component correct choice 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct editor-mc-choice"
+  className="component obojobo-draft--chunks--abstract-assessment--choice is-correct editor-choice"
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -56,6 +59,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ×
     </button>
@@ -67,6 +71,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       ✔ Correct
     </button>

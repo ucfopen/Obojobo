@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import MCChoice from './editor-component'
+import Choice from './editor-component'
 
 import { Transforms } from 'slate'
 jest.mock('slate')
@@ -13,28 +13,28 @@ jest.mock(
 	() => item => item
 )
 
-describe('MCChoice Editor Node', () => {
-	test('MCChoice component', () => {
+describe('Choice Editor Node', () => {
+	test('Choice component', () => {
 		const component = renderer.create(
-			<MCChoice element={{ content: {}, children:[] }}/>
+			<Choice element={{ content: {}, children:[] }}/>
 		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCChoice component correct choice', () => {
+	test('Choice component correct choice', () => {
 		const component = renderer.create(
-			<MCChoice element={{ content: { score: 100 }, children:[{},{}] }}/>
+			<Choice element={{ content: { score: 100 }, children:[{},{}] }}/>
 		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCChoice component deletes itself', () => {
+	test('Choice component deletes itself', () => {
 		const component = mount(
-			<MCChoice element={{ content: { score: 100 }, children:[{},{}] }}/>
+			<Choice element={{ content: { score: 100 }, children:[{},{}] }}/>
 		)
 
 		component
@@ -45,9 +45,9 @@ describe('MCChoice Editor Node', () => {
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('MCChoice component edits score', () => {
+	test('Choice component edits score', () => {
 		const component = mount(
-			<MCChoice 
+			<Choice 
 				element={{ content: { score: 0 }, children:[{},{}] }}
 				editor={null}/>
 		)
@@ -63,7 +63,7 @@ describe('MCChoice Editor Node', () => {
 		}, { at: [0] })
 
 		const component2 = mount(
-			<MCChoice 
+			<Choice 
 				element={{ content: { score: 100 }, children:[{},{}] }}
 				editor={null}/>
 		)
@@ -78,9 +78,9 @@ describe('MCChoice Editor Node', () => {
 		}, { at: [0] })
 	})
 
-	test('MCChoice component adds feedback', () => {
+	test('Choice component adds feedback', () => {
 		const component = mount(
-			<MCChoice 
+			<Choice 
 				element={{ content: { score: 100 }, children:[] }}
 				editor={null}/>
 		)

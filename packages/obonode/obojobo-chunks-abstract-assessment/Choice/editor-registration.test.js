@@ -1,12 +1,13 @@
-import MCChoice from './editor-registration'
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+import Choice from './editor-registration'
 
-describe('MCChoice editor', () => {
+import { CHOICE_NODE } from '../constants'
+
+describe('Choice editor', () => {
 	test('plugins.renderNode renders a choice', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: MCCHOICE_NODE,
+				type: CHOICE_NODE,
 				data: {
 					get: () => {
 						return {}
@@ -15,6 +16,6 @@ describe('MCChoice editor', () => {
 			}
 		}
 
-		expect(MCChoice.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Choice.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 })
