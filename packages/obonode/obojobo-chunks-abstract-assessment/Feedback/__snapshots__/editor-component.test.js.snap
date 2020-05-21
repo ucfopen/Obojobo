@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
+exports[`Feedback Editor Node Feedback builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
+  className="component obojobo-draft--chunks--abstract-assessment--feedback editor-feedback"
 >
   <button
     className="delete-button"

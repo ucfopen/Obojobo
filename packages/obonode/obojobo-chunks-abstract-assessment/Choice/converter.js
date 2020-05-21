@@ -2,7 +2,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
  // TODO - remove type when viewer is abstracted out
- import { FEEDBACK_NODE } from '../constants'
+ import { FEEDBACK_NODE, CHOICE_NODE } from '../constants'
  const MC_CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
  const MC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
  const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
@@ -35,7 +35,7 @@ const slateToObo = (node, type) => ({
  */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
-	slateNode.type = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
+	slateNode.type = CHOICE_NODE
 	if(node.children.length > 1) node.children[1].type = FEEDBACK_NODE
 	slateNode.children = node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child))
 	return slateNode

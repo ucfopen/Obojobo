@@ -22,7 +22,7 @@ NumericRuleOutcome {
       "binary",
     ],
     "decimals": Object {
-      "isClosed": false,
+      "isEmpty": false,
       "isMaxInclusive": null,
       "isMinInclusive": null,
       "max": null,
@@ -30,6 +30,7 @@ NumericRuleOutcome {
     },
     "errorType": "noError",
     "errorValue": "0",
+    "feedback": null,
     "isFractionReduced": null,
     "isInteger": null,
     "isValidScientific": null,
@@ -43,7 +44,7 @@ NumericRuleOutcome {
     ],
     "score": 0,
     "sigFigs": Object {
-      "isClosed": false,
+      "isEmpty": false,
       "isMaxInclusive": null,
       "isMinInclusive": null,
       "max": null,
@@ -52,7 +53,7 @@ NumericRuleOutcome {
     "unitsAreCaseSensitive": false,
     "unitsMatch": "matches-unit",
     "value": Object {
-      "isClosed": false,
+      "isEmpty": false,
       "isMaxInclusive": true,
       "isMinInclusive": true,
       "max": "42",
@@ -62,8 +63,8 @@ NumericRuleOutcome {
   },
   "scoreOutcome": Object {
     "errorType": "noError",
+    "isExactlyCorrect": true,
     "isWithinError": true,
-    "roundedBigValue": "42",
   },
 }
 `;

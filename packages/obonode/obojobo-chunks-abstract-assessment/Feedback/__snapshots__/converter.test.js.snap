@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCFeedback Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+exports[`Feedback Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "children": Array [
     Object {
@@ -18,11 +18,11 @@ Object {
     "triggers": "mock-triggers",
   },
   "id": "mockKey",
-  "type": "mockType",
+  "type": "ObojoboDraft.Chunks.AbstractAssessment.Feedback",
 }
 `;
 
-exports[`MCFeedback Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`Feedback Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [
     Object {
@@ -38,6 +38,6 @@ Object {
   ],
   "content": Object {},
   "id": undefined,
-  "type": "mockType",
+  "type": undefined,
 }
 `;

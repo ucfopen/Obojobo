@@ -2,131 +2,131 @@
 
 exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "numericChoices": Array [
-        Object {
-          "answer": "3",
-          "feedback": Object {
-            "children": Array [
-              Object {
-                "children": Array [],
-                "content": Object {
-                  "textGroup": Array [
-                    Object {
-                      "data": Object {
-                        "indent": 0,
-                      },
-                      "text": Object {
-                        "styleList": Array [],
-                        "value": "3222",
-                      },
-                    },
-                  ],
-                },
-                "id": "text_id",
-                "type": "ObojoboDraft.Chunks.Text",
-              },
-            ],
-            "content": Object {},
-            "id": "feedback_id",
-            "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
-          },
-          "margin": "3",
-          "requirement": "margin",
-          "score": 100,
-          "type": "percent",
-        },
-        Object {
-          "answer": "3",
-          "margin": "3",
-          "requirement": "margin",
-          "score": 100,
-          "type": "absolute",
-        },
-      ],
-    },
-  },
-  "key": "mock_id",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "nodes": Array [
+      "children": Array [
         Object {
-          "data": Object {
-            "numericChoice": Object {
-              "answer": "3",
-              "feedback": Object {
-                "children": Array [
-                  Object {
-                    "children": Array [],
-                    "content": Object {
-                      "textGroup": Array [
-                        Object {
-                          "data": Object {
-                            "indent": 0,
-                          },
-                          "text": Object {
-                            "styleList": Array [],
-                            "value": "3222",
-                          },
-                        },
-                      ],
-                    },
-                    "id": "text_id",
-                    "type": "ObojoboDraft.Chunks.Text",
-                  },
-                ],
-                "content": Object {},
-                "id": "feedback_id",
-                "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
-              },
-              "margin": "3",
-              "requirement": "margin",
-              "score": 100,
-              "type": "percent",
+          "children": Array [
+            Object {
+              "text": "",
             },
+          ],
+          "content": Object {
+            "answer": "3",
+            "feedback": Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": Object {
+                          "indent": 0,
+                        },
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "3222",
+                        },
+                      },
+                    ],
+                  },
+                  "id": "text_id",
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": "feedback_id",
+              "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+            },
+            "margin": "3",
+            "requirement": "margin",
+            "score": 100,
+            "type": "percent",
           },
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer",
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
         },
         undefined,
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+      "content": Object {
+        "score": 100,
+      },
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
     },
     Object {
-      "nodes": Array [
+      "children": Array [
         Object {
-          "data": Object {
-            "numericChoice": Object {
-              "answer": "3",
-              "margin": "3",
-              "requirement": "margin",
-              "score": 100,
-              "type": "absolute",
+          "children": Array [
+            Object {
+              "text": "",
             },
+          ],
+          "content": Object {
+            "answer": "3",
+            "margin": "3",
+            "requirement": "margin",
+            "score": 100,
+            "type": "absolute",
           },
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAsnwer",
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+      "content": Object {
+        "score": 100,
+      },
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "numericChoices": Array [
+      Object {
+        "answer": "3",
+        "feedback": Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "content": Object {
+                "textGroup": Array [
+                  Object {
+                    "data": Object {
+                      "indent": 0,
+                    },
+                    "text": Object {
+                      "styleList": Array [],
+                      "value": "3222",
+                    },
+                  },
+                ],
+              },
+              "id": "text_id",
+              "type": "ObojoboDraft.Chunks.Text",
+            },
+          ],
+          "content": Object {},
+          "id": "feedback_id",
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+        },
+        "margin": "3",
+        "requirement": "margin",
+        "score": 100,
+        "type": "percent",
+      },
+      Object {
+        "answer": "3",
+        "margin": "3",
+        "requirement": "margin",
+        "score": 100,
+        "type": "absolute",
+      },
+    ],
+  },
   "type": "mock_type",
 }
 `;
 
 exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node with no content 1`] = `
 Object {
-  "data": Object {
-    "content": undefined,
-  },
-  "key": "mock_key",
-  "nodes": Array [],
-  "object": "block",
+  "children": Array [],
+  "content": undefined,
   "type": "mock_type",
 }
 `;

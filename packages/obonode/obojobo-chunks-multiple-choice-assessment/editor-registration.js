@@ -6,10 +6,11 @@ import emptyNode from './empty-node.json'
 import EditorComponent from './editor-component'
 import Converter from './converter'
 
+import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
+
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
 
 const MCAssessment = {
 	name: 'ObojoboDraft.Chunks.MCAssessment',

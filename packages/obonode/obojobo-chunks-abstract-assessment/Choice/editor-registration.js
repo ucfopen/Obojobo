@@ -4,7 +4,7 @@ import EditorComponent from './editor-component'
 import Converter from './converter'
 import normalizeNode from './changes/normalize-node'
 
-const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
+import { CHOICE_NODE } from '../constants'
 
 const Choice = {
 	name: CHOICE_NODE,

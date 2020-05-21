@@ -11,7 +11,7 @@ Object {
     "triggers": "mock-triggers",
   },
   "id": "mockKey",
-  "type": "mockType",
+  "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
 }
 `;
 
@@ -24,6 +24,6 @@ Object {
   ],
   "content": Object {},
   "id": "mockKey",
-  "type": "mockType",
+  "type": undefined,
 }
 `;
