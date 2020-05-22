@@ -12,6 +12,10 @@ const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 class FileMenu extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.copyModule = this.copyModule.bind(this)
+	}
 	deleteModule() {
 		return APIUtil.deleteDraft(this.props.draftId).then(result => {
 			if (result.status === 'ok') {
@@ -88,7 +92,7 @@ class FileMenu extends React.PureComponent {
 							title="Copy Module"
 							message="Enter the title for the copied module:"
 							value={this.props.title + ' - Copy'}
-							onConfirm={this.copyModule.bind(this)}
+							onConfirm={this.copyModule}
 						/>
 					)
 			},
