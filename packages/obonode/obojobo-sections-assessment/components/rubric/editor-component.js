@@ -18,6 +18,10 @@ class Rubric extends React.Component {
 
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.freezeEditor = this.freezeEditor.bind(this)
+		this.changeRubricType = this.changeRubricType.bind(this)
+		this.changeScoreType = this.changeScoreType.bind(this)
+		this.showModModal = this.showModModal.bind(this)
+		this.changeMods = this.changeMods.bind(this)
 	}
 
 	changeRubricType(event) {
@@ -51,7 +55,7 @@ class Rubric extends React.Component {
 			<ModProperties
 				mods={this.props.element.content.mods}
 				attempts={parent.content.attempts}
-				onConfirm={this.changeMods.bind(this)}
+				onConfirm={this.changeMods}
 			/>
 		)
 	}
@@ -110,7 +114,7 @@ class Rubric extends React.Component {
 							name="score-type"
 							value="highest"
 							checked={content.type === 'highest'}
-							onChange={this.changeRubricType.bind(this)}
+							onChange={this.changeRubricType}
 							onClick={event => event.stopPropagation()}
 						/>
 						Use the highest attempt score.
@@ -121,7 +125,7 @@ class Rubric extends React.Component {
 							name="score-type"
 							value="pass-fail"
 							checked={content.type === 'pass-fail'}
-							onChange={this.changeRubricType.bind(this)}
+							onChange={this.changeRubricType}
 							onClick={event => event.stopPropagation()}
 						/>
 						Calculate based on a threshold (pass/fail)...
@@ -247,7 +251,7 @@ class Rubric extends React.Component {
 				</fieldset>
 				<div className="mods">
 					<div className="title">Extra Credit & Penalties</div>
-					<Button onClick={this.showModModal.bind(this)}>Edit...</Button>
+					<Button onClick={this.showModModal}>Edit...</Button>
 					<ul>
 						{content.mods.map((mod, index) => {
 							const range = getParsedRange(mod.attemptCondition + '')
