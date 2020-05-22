@@ -30,6 +30,10 @@ class RangeModal extends React.Component {
 		}
 
 		this.inputRef = React.createRef()
+		this.onConfirm = this.onConfirm.bind(this)
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.updateSingleScoreFromEvent = this.updateSingleScoreFromEvent.bind(this)
+		this.onToggleNoScore = this.onToggleNoScore.bind(this)
 	}
 
 	getValueFromInput(el) {
@@ -146,8 +150,8 @@ class RangeModal extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="Score Range"
-				onConfirm={this.onConfirm.bind(this)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				onConfirm={this.onConfirm}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="score-range">
 					<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type">
@@ -180,14 +184,14 @@ class RangeModal extends React.Component {
 										step="1"
 										type="number"
 										value={this.state.range.max}
-										onChange={this.updateSingleScoreFromEvent.bind(this)}
+										onChange={this.updateSingleScoreFromEvent}
 									/>
 									<span>or</span>
 									<input
 										type="checkbox"
 										id="editor--sections--assessment--post-assessment--range-modal--no-score"
 										checked={this.generateRangeString(this.state.range) === 'no-score'}
-										onChange={this.onToggleNoScore.bind(this)}
+										onChange={this.onToggleNoScore}
 									/>
 									<label
 										className="null-label"
