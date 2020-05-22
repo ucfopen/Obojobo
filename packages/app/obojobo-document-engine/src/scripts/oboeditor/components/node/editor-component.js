@@ -26,6 +26,13 @@ class Node extends React.Component {
 		super(props)
 		this.insertBlockBefore = this.insertBlockAt.bind(this, INSERT_BEFORE)
 		this.insertBlockAfter = this.insertBlockAt.bind(this, INSERT_AFTER)
+		this.saveId = this.saveId.bind(this)
+		this.saveContent = this.saveContent.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.duplicateNode = this.duplicateNode.bind(this)
+		this.onOpen = this.onOpen.bind(this)
+		this.onClose = this.onClose.bind(this)
+		this.moveNode = this.moveNode.bind(this)
 	}
 
 	insertBlockAt(where, item) {
@@ -124,15 +131,15 @@ class Node extends React.Component {
 				type={this.props.element.type}
 				id={this.props.element.id}
 				content={this.props.element.content || {}}
-				saveId={this.saveId.bind(this)}
-				saveContent={this.saveContent.bind(this)}
+				saveId={this.saveId}
+				saveContent={this.saveContent}
 				contentDescription={this.props.contentDescription || []}
-				deleteNode={this.deleteNode.bind(this)}
-				duplicateNode={this.duplicateNode.bind(this)}
+				deleteNode={this.deleteNode}
+				duplicateNode={this.duplicateNode}
 				markUnsaved={this.props.editor.markUnsaved}
-				onOpen={this.onOpen.bind(this)}
-				onClose={this.onClose.bind(this)}
-				moveNode={this.moveNode.bind(this)}
+				onOpen={this.onOpen}
+				onClose={this.onClose}
+				moveNode={this.moveNode}
 				showMoveButtons
 				isFirst={thisSiblingIndex === 0}
 				isLast={thisSiblingIndex >= siblingCount - 1}
