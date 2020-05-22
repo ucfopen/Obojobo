@@ -156,6 +156,8 @@ class MathEquation extends React.Component {
 						value={this.state.size}
 						type="number"
 						step="0.1"
+						max="20"
+						min="0.1"
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'size')}
 						onFocus={this.freezeEditor}

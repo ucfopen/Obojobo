@@ -3,7 +3,7 @@ const Adapter = {
 		model.setStateProp('latex', '')
 		model.setStateProp('align', 'center', p => p.toLowerCase(), ['left', 'center', 'right'])
 		model.setStateProp('label', '')
-		model.setStateProp('size', '1em', p => (parseInt(p, 10) || 1) + 'em')
+		model.setStateProp('size', '1em', p => (parseFloat(p) || 1) + 'em')
 		model.setStateProp('alt')
 	},
 
