@@ -10,6 +10,11 @@ import ReactDOM from 'react-dom'
 import TableMenu from './table-menu'
 
 class TableControls extends React.Component {
+	constructor(props){
+		super(props)
+		this.addRow = this.addRow.bind(this)
+		this.addCol = this.addCol.bind(this)
+	}
 	addRow(event) {
 		event.preventDefault()
 		event.stopPropagation()
@@ -103,10 +108,10 @@ class TableControls extends React.Component {
 			<div className="obojobo-draft--chunks--table--table-controls" ref="self">
 				<div className="rows">{rows}</div>
 				<div className="cols">{cols}</div>
-				<button className="add-row" key="0" onMouseDown={this.addRow.bind(this)}>
+				<button className="add-row" key="0" onMouseDown={this.addRow}>
 					Add a row
 				</button>
-				<button className="add-col" key="1" onMouseDown={this.addCol.bind(this)}>
+				<button className="add-col" key="1" onMouseDown={this.addCol}>
 					Add a column
 				</button>
 			</div>
