@@ -155,7 +155,6 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				mode={this.state.mode}
 				switchMode={this.switchMode}
-				insertableItems={Common.Registry.insertableItems}
 			/>
 		)
 	}

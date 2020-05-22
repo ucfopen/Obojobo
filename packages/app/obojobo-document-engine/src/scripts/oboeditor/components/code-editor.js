@@ -188,7 +188,6 @@ class CodeEditor extends React.Component {
 							onSave={this.saveAndGetTitleFromCode}
 							saved={this.state.saved}
 							mode={this.props.mode}
-							insertableItems={this.props.insertableItems}
 						/>
 					) : null}
 				</div>

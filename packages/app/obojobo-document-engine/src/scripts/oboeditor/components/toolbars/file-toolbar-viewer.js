@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
-import { useEditor } from 'slate-react'
+import { ReactEditor, useEditor } from 'slate-react'
 import { Range, Editor, Transforms, Element } from 'slate'
 import FileToolbar from './file-toolbar'
-import { ReactEditor } from 'slate-react'
 import DropDownMenu from './drop-down-menu'
 import FormatMenu from './format-menu'
 
@@ -29,10 +28,11 @@ const selectAll = editor => {
 }
 
 const FileToolbarViewer = props => {
+	const { insertableItems, ...filteredProps } = props
 	const editor = useEditor()
 	const sel = editor.selection
 	const hasSelection = sel && Range.isCollapsed(sel)
-	const selectionKey = sel ? sel.anchor.path.join() + sel.focus.path.join() : 0
+	const selectionKey = sel ? sel.anchor.path.join() + '-' + sel.focus.path.join() : 0
 	const insertMenu = useMemo(() => {
 		// If the selected area spans across multiple blocks, the selection is deleted before
 		// inserting, colapsing it down to the type of the first block
@@ -46,13 +46,13 @@ const FileToolbarViewer = props => {
 			)
 		})()
 
-		const insertMenuItems = props.insertableItems.map(item => ({
+		const insertMenuItems = insertableItems.map(item => ({
 			name: item.name,
 			action: () => {
 				Transforms.insertNodes(editor, item.cloneBlankNode())
 				ReactEditor.focus(editor)
 			},
-			disabled: isInsertDisabledForItem(selectedNodes, item.name, editor)
+			disabled: isInsertDisabledForItem(selectedNodes, item.name, sel)
 		}))
 
 		return (
@@ -64,7 +64,7 @@ const FileToolbarViewer = props => {
 
 	return (
 		<FileToolbar
-			{...props}
+			{...filteredProps}
 			editor={editor}
 			selectionKey={selectionKey}
 			insertMenu={insertMenu}

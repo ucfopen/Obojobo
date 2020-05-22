@@ -1,5 +1,4 @@
-import React, { memo, useMemo } from 'react'
-import { Range, Editor, Transforms, Element } from 'slate'
+import React, { memo } from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
@@ -17,15 +16,16 @@ const openPreview = draftId => {
 
 const FileToolbar = props => {
 	const editor = props.editor
+	// selectAll is provided by Slate editor or as a prop
 	const selectAll = props.selectAll || editor.selectAll
 
 	const editMenu = [
-		{ name: 'Undo', type: 'action', action: () => editor.undo() },
-		{ name: 'Redo', type: 'action', action: () => editor.redo() },
+		{ name: 'Undo', type: 'action', action: editor.undo },
+		{ name: 'Redo', type: 'action', action: editor.redo },
 		{
 			name: 'Delete',
 			type: 'action',
-			action: () => editor.deleteFragment(),
+			action: editor.deleteFragment,
 			disabled: props.isDeletable === null ? true : props.isDeletable
 		},
 		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }

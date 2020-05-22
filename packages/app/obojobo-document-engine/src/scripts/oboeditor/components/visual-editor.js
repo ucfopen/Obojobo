@@ -60,7 +60,6 @@ class VisualEditor extends React.Component {
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
-		this.insertableItems = []
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)

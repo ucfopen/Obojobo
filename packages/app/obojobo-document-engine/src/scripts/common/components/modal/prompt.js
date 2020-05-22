@@ -8,16 +8,15 @@ class Prompt extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.inputRef = React.createRef()
-
 		this.state = {
 			text: this.props.value || ''
 		}
 
+		this.inputRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.handleTextChange = this.handleTextChange.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
-		this.onKeyDown - this.onKeyDown.bind(this)
+		this.handleOnKeyDown = this.handleOnKeyDown.bind(this)
 	}
 
 	componentDidMount() {
@@ -40,10 +39,10 @@ class Prompt extends React.Component {
 		this.props.onConfirm(this.state.text)
 	}
 
-	onKeyDown(event) {
+	handleOnKeyDown(event) {
 		if (event.key === 'Enter') {
 			event.preventDefault()
-			this.props.onConfirm(this.state.text)
+			this.onConfirm()
 		}
 	}
 
@@ -64,7 +63,7 @@ class Prompt extends React.Component {
 						onChange={this.handleTextChange}
 						ref={this.inputRef}
 						size="50"
-						onKeyDown={this.onKeyDown}
+						onKeyDown={this.handleOnKeyDown}
 					/>
 				</div>
 			</SimpleDialog>
