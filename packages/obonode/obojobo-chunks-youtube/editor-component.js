@@ -16,13 +16,20 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
+	constructor(props){
+		super(props)
+		this.handleSourceChange = this.handleSourceChange.bind(this)
+		this.focusYoutube = this.focusYoutube.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.showSourceModal = this.showSourceModal.bind(this)
+	}
 	showSourceModal(event) {
 		event.stopPropagation()
 
 		ModalUtil.show(
 			<YouTubeProperties
 				content={this.props.element.content}
-				onConfirm={this.handleSourceChange.bind(this)}
+				onConfirm={this.handleSourceChange}
 			/>
 		)
 	}
@@ -69,13 +76,13 @@ class YouTube extends React.Component {
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
-					onClick={this.focusYoutube.bind(this)}>
-					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+					onClick={this.focusYoutube}>
+					<Button className="delete-button" onClick={this.deleteNode}>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
 					{this.props.children}
-					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
+					<Button className="edit-button" onClick={this.showSourceModal}>
 						Edit
 					</Button>
 				</div>
