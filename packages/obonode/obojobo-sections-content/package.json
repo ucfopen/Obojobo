@@ -31,7 +31,7 @@
 		"obojobo-lib-utils": "^9.0.0"
 	},
 	"devDependencies": {
-		"lint-staged": "^10.2.2"
+		"lint-staged": "^10.2.6"
 	},
 	"jest": {
 		"testMatch": [

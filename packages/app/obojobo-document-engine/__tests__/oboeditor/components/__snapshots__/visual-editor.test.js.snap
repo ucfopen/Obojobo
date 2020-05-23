@@ -69,6 +69,7 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
+            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -145,6 +146,7 @@ Array [
               },
             },
             "setAlign": [Function],
+            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -166,6 +168,7 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
+            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -242,6 +245,7 @@ Array [
               },
             },
             "setAlign": [Function],
+            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -267,6 +271,7 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
+            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -343,6 +348,7 @@ Array [
               },
             },
             "setAlign": [Function],
+            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -387,6 +393,7 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
+            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -463,6 +470,7 @@ Array [
               },
             },
             "setAlign": [Function],
+            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
