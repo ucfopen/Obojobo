@@ -133,7 +133,7 @@
 		}
 	},
 	"nodemonConfig": {
-		"ext": "js ejs",
+		"ext": "js",
 		"watch": [
 			"./",
 			"../../obonode/obojobo-sections-assessment/server",
