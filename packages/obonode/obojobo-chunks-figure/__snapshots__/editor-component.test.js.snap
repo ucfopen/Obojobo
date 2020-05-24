@@ -7,6 +7,7 @@ exports[`Figure Editor Node Figure component 1`] = `
   >
     <figure
       className="container"
+      style={Object {}}
     >
       <div
         className="figure-box   is-not-selected"
@@ -65,6 +66,12 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
   >
     <figure
       className="container"
+      style={
+        Object {
+          "height": "customHeightpx",
+          "width": "customWidthpx",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"
@@ -128,6 +135,11 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
   >
     <figure
       className="container"
+      style={
+        Object {
+          "height": "customHeightpx",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"
@@ -190,6 +202,11 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
   >
     <figure
       className="container"
+      style={
+        Object {
+          "width": "customWidthpx",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"

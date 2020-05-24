@@ -66,19 +66,29 @@ class Figure extends React.Component {
 		const selected = this.props.selected
 		const isSelected = isOrNot(selected, 'selected')
 
+		const customStyle = {}
+		if (content.size === 'custom') {
+			if (content.width) {
+				customStyle.width = content.width + 'px'
+			}
+
+			if (content.height) {
+				customStyle.height = content.height + 'px'
+			}
+		}
 		return (
 			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
-					<figure className="container">
-						{hasAltText ? null : (
-							<div
-								contentEditable={false}
-								className="accessibility-warning"
-								style={{ userSelect: 'none' }}
-							>
-								Accessibility Warning: No Alt Text!
-							</div>
-						)}
+					{hasAltText ? null : (
+						<div
+							contentEditable={false}
+							className="accessibility-warning"
+							style={{ userSelect: 'none' }}
+						>
+							Accessibility Warning: No Alt Text!
+						</div>
+					)}
+					<figure className="container" style={customStyle}>
 						<div
 							className={`figure-box  ${isSelected}`}
 							contentEditable={false}
