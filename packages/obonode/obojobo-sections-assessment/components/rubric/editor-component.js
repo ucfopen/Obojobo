@@ -25,8 +25,8 @@ class Rubric extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
-			this.props.editor, 
-			{ content: {...this.props.element.content, type }}, 
+			this.props.editor,
+			{ content: { ...this.props.element.content, type } },
 			{ at: path }
 		)
 	}
@@ -37,8 +37,8 @@ class Rubric extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
-			this.props.editor, 
-			{ content: {...this.props.element.content, ...content }}, 
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
 			{ at: path }
 		)
 	}
@@ -61,8 +61,8 @@ class Rubric extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
-			this.props.editor, 
-			{ content: {...this.props.element.content, mods: content.mods }}, 
+			this.props.editor,
+			{ content: { ...this.props.element.content, mods: content.mods } },
 			{ at: path }
 		)
 	}
@@ -96,7 +96,7 @@ class Rubric extends React.Component {
 		const className = 'rubric pad ' + 'is-type-' + content.type
 
 		return (
-			<div className={className}>
+			<div className={className} contentEditable={false}>
 				<h2 contentEditable={false}>Assessment Scoring</h2>
 				<p>
 					The recorded score for this module is the highest assessment score, and will be sent to
@@ -145,7 +145,8 @@ class Rubric extends React.Component {
 								onChange={this.changeScoreType.bind(this, 'passingAttemptScore')}
 								onClick={event => event.stopPropagation()}
 								onFocus={this.freezeEditor}
-								onBlur={this.unfreezeEditor}/>
+								onBlur={this.unfreezeEditor}
+							/>
 							%
 						</label>
 					</div>
