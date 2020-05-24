@@ -40,6 +40,7 @@ const resumeAttempt = async (
 		},
 		userId: currentUser.id,
 		ip: remoteAddress,
+		visitId: currentVisit.id,
 		metadata: {},
 		draftId: currentDocument.draftId,
 		contentId: currentDocument.contentId,
