@@ -20,6 +20,8 @@ const Figure = props => {
 		if (content.height) {
 			customStyle.height = content.height + 'px'
 		}
+
+		customStyle['maxWidth'] = '100%'
 	}
 
 	return (

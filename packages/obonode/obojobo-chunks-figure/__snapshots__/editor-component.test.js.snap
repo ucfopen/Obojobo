@@ -69,6 +69,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
       style={
         Object {
           "height": "customHeightpx",
+          "maxWidth": "100%",
           "width": "customWidthpx",
         }
       }
@@ -138,6 +139,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
       style={
         Object {
           "height": "customHeightpx",
+          "maxWidth": "100%",
         }
       }
     >
@@ -204,6 +206,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
       className="container"
       style={
         Object {
+          "maxWidth": "100%",
           "width": "customWidthpx",
         }
       }

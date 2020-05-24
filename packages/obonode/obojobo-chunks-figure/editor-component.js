@@ -75,6 +75,8 @@ class Figure extends React.Component {
 			if (content.height) {
 				customStyle.height = content.height + 'px'
 			}
+
+			customStyle['maxWidth'] = '100%'
 		}
 		return (
 			<Node {...this.props}>

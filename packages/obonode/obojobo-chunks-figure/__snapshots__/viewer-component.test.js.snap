@@ -22,6 +22,7 @@ exports[`Figure Figure component 1`] = `
         style={
           Object {
             "height": "400px",
+            "maxWidth": "100%",
             "width": "500px",
           }
         }
@@ -83,6 +84,7 @@ exports[`Figure Figure component costom size with no height 1`] = `
       <figure
         style={
           Object {
+            "maxWidth": "100%",
             "width": "500px",
           }
         }
@@ -144,6 +146,7 @@ exports[`Figure Figure component costom size with no width 1`] = `
         style={
           Object {
             "height": "400px",
+            "maxWidth": "100%",
           }
         }
         unselectable="on"
@@ -256,6 +259,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
         style={
           Object {
             "height": "400px",
+            "maxWidth": "100%",
             "width": "500px",
           }
         }
