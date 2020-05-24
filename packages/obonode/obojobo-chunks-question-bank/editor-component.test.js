@@ -58,7 +58,7 @@ describe('QuestionBank editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('QuestionBank component changes choose type', () => {
+	test('QuestionBank component changes to choose all', () => {
 		const props = {
 			element: {
 				content: { choose: 8, select: 'sequential', chooseAll: false }
@@ -92,7 +92,7 @@ describe('QuestionBank editor', () => {
 	test('QuestionBank component changes choose amount', () => {
 		const props = {
 			element: {
-				content: { choose: 8, select: 'sequential' }
+				content: { choose: 8, select: 'sequential', chooseAll: false }
 			},
 			editor: {
 				toggleEditable: jest.fn()
@@ -235,6 +235,7 @@ describe('QuestionBank editor', () => {
 
 		ReactEditor.findPath.mockReturnValue(['mock-path'])
 		const component = mount(<QuestionBank {...props} />)
+		
 		const addQuestionButton = component.find({ children: 'Add Question' }).at(1)
 		addQuestionButton.simulate('click')
 
@@ -264,6 +265,7 @@ describe('QuestionBank editor', () => {
 		}
 
 		ReactEditor.findPath.mockReturnValue(['mock-path'])
+
 		const component = mount(<QuestionBank {...props} />)
 		const addQBButton = component.find({ children: 'Add Question Bank' }).at(1)
 		addQBButton.simulate('click')
