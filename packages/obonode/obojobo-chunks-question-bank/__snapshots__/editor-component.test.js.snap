@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
-<div
-  className="oboeditor-component component "
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--question-bank editor-bank"
   >
@@ -14,7 +11,9 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
       <button
         className="button"
         contentEditable={false}
+        onBlur={[Function]}
         onClick={[Function]}
+        onFocus={[Function]}
       >
         ×
       </button>
@@ -32,7 +31,9 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
         <label>
           <input
             name="undefined-choose"
+            onBlur={[Function]}
             onChange={[Function]}
+            onFocus={[Function]}
             type="radio"
             value="all"
           />
@@ -45,13 +46,16 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
           <input
             checked={true}
             name="undefined-choose"
+            onBlur={[Function]}
             onChange={[Function]}
+            onFocus={[Function]}
             type="radio"
             value="pick"
           />
           Pick
         </label>
         <input
+          min="1"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
@@ -64,8 +68,10 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
       >
         How should questions be selected?
         <select
+          onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
         >
           <option
             value="sequential"
@@ -87,6 +93,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
     </div>
     <div
       className="button-bar"
+      contentEditable={false}
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"

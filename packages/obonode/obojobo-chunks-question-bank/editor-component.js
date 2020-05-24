@@ -65,8 +65,10 @@ const unfreezeEditor = editor => {
 	editor.toggleEditable(true)
 }
 
-const displaySettings = (editor, element, content) => {
+const displaySettings = (editor, element, content, boundFreezeEditor, boundUnFreezeEditor) => {
+
 	const radioGroupName = `${element.id}-choose`
+
 	return (
 		<div className={'qb-settings'} contentEditable={false}>
 			<fieldset className="choose">
@@ -78,6 +80,8 @@ const displaySettings = (editor, element, content) => {
 						value="all"
 						checked={content.chooseAll}
 						onChange={changeChooseType.bind(this, editor, element)}
+						onFocus={boundFreezeEditor}
+						onBlur={boundUnFreezeEditor}
 					/>
 					All questions
 				</label>
@@ -89,6 +93,8 @@ const displaySettings = (editor, element, content) => {
 						value="pick"
 						checked={!content.chooseAll}
 						onChange={changeChooseType.bind(this, editor, element)}
+						onFocus={boundFreezeEditor}
+						onBlur={boundUnFreezeEditor}
 					/>
 					Pick
 				</label>
@@ -98,8 +104,9 @@ const displaySettings = (editor, element, content) => {
 					disabled={content.chooseAll}
 					onClick={event => event.stopPropagation()}
 					onChange={changeChooseAmount.bind(this, editor, element)}
-					onFocus={freezeEditor.bind(this, editor)}
-					onBlur={unfreezeEditor.bind(this, editor)}
+					onFocus={boundFreezeEditor}
+					onBlur={boundUnFreezeEditor}
+					min="1"
 				/>
 			</fieldset>
 			<label className="select">
@@ -108,6 +115,8 @@ const displaySettings = (editor, element, content) => {
 					value={content.select}
 					onClick={event => event.stopPropagation()}
 					onChange={changeSelect.bind(this, editor, element)}
+					onFocus={boundFreezeEditor}
+					onBlur={boundUnFreezeEditor}
 				>
 					<option value="sequential">In order</option>
 					<option value="random">Randomly</option>
@@ -120,6 +129,8 @@ const displaySettings = (editor, element, content) => {
 
 const QuestionBank = props => {
 	const { editor, element, children } = props
+	const boundFreezeEditor = freezeEditor.bind(this, editor)
+	const boundUnFreezeEditor = unfreezeEditor.bind(this, editor)
 	return (
 		<Node {...props}>
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
@@ -128,12 +139,14 @@ const QuestionBank = props => {
 					onClick={() => {
 						remove(editor, element)
 					}}
+					onFocus={boundFreezeEditor}
+					onBlur={boundUnFreezeEditor}
 				>
 					&times;
 				</Button>
-				{displaySettings(editor, element, element.content)}
+				{displaySettings(editor, element, element.content, boundFreezeEditor, boundUnFreezeEditor)}
 				{children}
-				<div className="button-bar">
+				<div className="button-bar" contentEditable={false}>
 					<Button
 						onClick={() => {
 							addQuestion(editor, element)
