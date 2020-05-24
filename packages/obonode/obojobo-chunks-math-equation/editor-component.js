@@ -26,20 +26,24 @@ class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
 
+		// copy the attributes we want into state
+		this.state = this.contentToStateObj(this.props.element.content)
+
+		// used to reduce the speed/cost of changes so typing isn't slow
+		// ALSO make sure changes are copied to slate after editing
+		// in case the edit window doesnt close before clicking save or preview
+		this.updateNodeFromStateAfterInput = debounce(200, this.updateNodeFromState)
+
 		// This debounce is necessary to get slate to update the node data.
 		// I've tried several ways to remove it but haven't been able to
 		// get it work :(
 		// If you have a solution please have at it!
 		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
 
-		// copy the attributes we want into state
-		const content = this.props.element.content
-		this.state = this.contentToStateObj(content)
-
-		this.path = ReactEditor.findPath(this.props.editor, this.props.element)
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.focusEquation = this.focusEquation.bind(this)
+		this.toggleOpen = this.toggleOpen.bind(this)
 	}
 
 	contentToStateObj(content) {
@@ -90,17 +94,30 @@ class MathEquation extends React.Component {
 
 	updateNodeFromState() {
 		const content = this.props.element.content
-		Transforms.setNodes(
-			this.props.editor,
-			{ content: { ...content, ...this.state } },
-			{ at: this.path }
-		)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
 	onChangeContent(key, event) {
 		const newContent = { [key]: event.target.value }
-		this.setState(newContent) // update the display now
-		this.updateNodeFromState()
+		this.setState(newContent, this.updateNodeFromStateAfterInput) // update the display
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const isClosing = prevState.open && !this.state.open
+		const isUnselecting = prevProps.selected && !this.props.selected
+
+		if (isClosing || isUnselecting) {
+			this.updateNodeFromState()
+		}
+
+		if (isUnselecting) {
+			this.setState({ open: false })
+		}
+	}
+
+	toggleOpen() {
+		this.setState({ open: !this.state.open })
 	}
 
 	freezeEditor() {
@@ -161,7 +178,7 @@ class MathEquation extends React.Component {
 					/>
 				</div>
 				<div>
-					<Button onClick={() => this.setState({ open: false })}>Done</Button>
+					<Button onClick={this.toggleOpen}>Done</Button>
 				</div>
 			</div>
 		)
@@ -174,7 +191,7 @@ class MathEquation extends React.Component {
 			<div className={className} contentEditable={false}>
 				<div className="box-border">
 					{!this.state.open ? (
-						<Button onClick={() => this.setState({ open: true })}>Edit</Button>
+						<Button onClick={this.toggleOpen}>Edit</Button>
 					) : (
 						this.renderAttributes()
 					)}
