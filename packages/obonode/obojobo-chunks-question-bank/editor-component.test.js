@@ -84,8 +84,8 @@ describe('QuestionBank editor', () => {
 		// make sure chooseAll updates slate
 		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
 			props.editor,
-			{ content: {choose: 8, select: "sequential", chooseAll: true}},
-			{ at: 'mock-path'}
+			{ content: { choose: 8, select: 'sequential', chooseAll: true } },
+			{ at: 'mock-path' }
 		)
 	})
 
@@ -120,7 +120,6 @@ describe('QuestionBank editor', () => {
 		pickSomeRadioInput.simulate('click')
 		pickSomeRadioInput.simulate('change', { target: { value: 'pick' } })
 
-
 		pickCountInput.simulate('focus')
 		pickCountInput.simulate('click')
 		pickCountInput.simulate('change', { target: { value: '7' } })
@@ -129,15 +128,15 @@ describe('QuestionBank editor', () => {
 		// make sure changing the pick input updates slate
 		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
 			props.editor,
-			{"content": {"choose": "7", "select": "sequential"}},
-			{ at: 'mock-path'}
+			{ content: { choose: '7', select: 'sequential', chooseAll: false } },
+			{ at: 'mock-path' }
 		)
 	})
 
 	test('QuestionBank component changes select type', () => {
 		const props = {
 			element: {
-				content: { choose: "8", select: 'sequential' }
+				content: { choose: '8', select: 'sequential' }
 			},
 			node: {
 				key: 'mock_key'
@@ -161,8 +160,8 @@ describe('QuestionBank editor', () => {
 		// make sure changing select updates to pick
 		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
 			props.editor,
-			{"content": {"choose": "8", "select": "pick"}},
-			{ at: 'mock-path'}
+			{ content: { choose: '8', select: 'pick' } },
+			{ at: 'mock-path' }
 		)
 	})
 
@@ -235,13 +234,17 @@ describe('QuestionBank editor', () => {
 
 		ReactEditor.findPath.mockReturnValue(['mock-path'])
 		const component = mount(<QuestionBank {...props} />)
-		
+
 		const addQuestionButton = component.find({ children: 'Add Question' }).at(1)
 		addQuestionButton.simulate('click')
 
 		// note at is testing that we're using findPath and concatnating with length of children
 		// to place the new question at th end
-		expect(Transforms.insertNodes).toHaveBeenCalledWith({}, { type: 'Mock' }, { at: ['mock-path', 2] })
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(
+			{},
+			{ type: 'Mock' },
+			{ at: ['mock-path', 2] }
+		)
 	})
 
 	test('QuestionBank component adds question bank', () => {
@@ -278,5 +281,4 @@ describe('QuestionBank editor', () => {
 			{ at: ['mock-path', 1] }
 		)
 	})
-
 })
