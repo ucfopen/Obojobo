@@ -16,10 +16,6 @@ const mockCurrentUser = {
 	id: 'mockCurrentUserId'
 }
 
-const mockBody = {
-	visitId: 'mockVisitId'
-}
-
 const mockAttempt = {
 	draftId: 'mockDraftId',
 	assessmentId: 'mockAssessmentId',
@@ -29,6 +25,7 @@ const mockAttempt = {
 }
 
 const mockCurrentVisit = {
+	id: 'mockVisitId',
 	is_preview: 'mockIsPreview',
 	resource_link_id: 'mockResourceLinkId'
 }
@@ -157,8 +154,7 @@ describe('attempt-end/attempt-end-helpers', () => {
 			currentDocument: mockCurrentDocument,
 			currentVisit: mockCurrentVisit,
 			hostname: mockHostName,
-			connection: mockConnection,
-			body: mockBody
+			connection: mockConnection
 		}
 
 		const actualReturnValue = await helpers.insertAttemptEndEvents(mockReq)
@@ -173,7 +169,7 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockCurrentVisit.is_preview,
 			mockHostName,
 			mockConnection.remoteAddress,
-			mockBody.visitId
+			mockCurrentVisit.id
 		)
 	}),
 		test('sendHighestAssessmentScore', async () => {
@@ -192,7 +188,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 				mockCurrentDocument,
 				mockAttempt.assessmentId,
 				mockCurrentVisit.is_preview,
-				mockCurrentVisit.resource_link_id
+				mockCurrentVisit.resource_link_id,
+				mockCurrentVisit.id
 			)
 		})
 
@@ -233,7 +230,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockHostName,
 			mockConnection.remoteAddress,
 			mockCalculatedScores.assessmentScoreDetails,
-			mockCurrentVisit.resource_link_id
+			mockCurrentVisit.resource_link_id,
+			mockCurrentVisit.id
 		)
 	})
 

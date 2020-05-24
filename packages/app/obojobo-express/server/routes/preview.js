@@ -33,6 +33,7 @@ router
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
 					isPreview: true,
+					visitId,
 					payload: {
 						visitId,
 						deactivatedVisitId

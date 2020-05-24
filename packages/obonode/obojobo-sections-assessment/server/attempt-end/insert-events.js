@@ -57,7 +57,8 @@ const insertAttemptScoredEvents = (
 	hostname,
 	remoteAddress,
 	scoreDetails,
-	resourceLinkId
+	resourceLinkId,
+	visitId
 ) => {
 	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
@@ -87,6 +88,7 @@ const insertAttemptScoredEvents = (
 					ltiAssessmentScoreId,
 					scoreDetails
 				},
+				visitId,
 				userId: user.id,
 				ip: remoteAddress,
 				metadata: {},
