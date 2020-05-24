@@ -35,6 +35,9 @@ Common.Registry.registerModel('ObojoboDraft.Sections.Assessment', {
 		},
 		'assessment:attemptsAmount'(textModel) {
 			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+			if (!assessmentModel) {
+				return null
+			}
 			if (assessmentModel.modelState.attempts === Infinity) {
 				return 'unlimited'
 			}
