@@ -2,7 +2,6 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-// import katex from 'katex'
 import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'

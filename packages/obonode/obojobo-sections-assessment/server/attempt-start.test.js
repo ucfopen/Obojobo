@@ -9,6 +9,7 @@ jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
 
 jest.mock(
 	'obojobo-express/server/models/visit',
@@ -46,6 +47,7 @@ const insertEvent = require('obojobo-express/server/insert_event')
 const Draft = require('obojobo-express/server/models/draft')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const Visit = require('obojobo-express/server/models/visit')
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -66,7 +68,7 @@ describe('start attempt route', () => {
 
 		// mock _.shuffle by always returning the same array
 		// just check to make sure shuffle.toHaveBeenCalled
-		_.shuffle.mockImplementation(arr => arr)
+		shuffle.mockImplementation(arr => arr)
 		mockDraft = new Draft(testJson)
 		mockUsedQuestionMap = new Map()
 

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense } from 'react'
 
 import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
@@ -12,9 +12,9 @@ import ModalUtil from '../../common/util/modal-util'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 import EditorTitleInput from './editor-title-input'
 
-const CodeMirror = React.lazy(() => import(/* webpackChunkName: "code-mirror" */'./code-mirror-bundle'));
-
-const { Promise } = global;
+const CodeMirror = React.lazy(() =>
+	import(/* webpackChunkName: "code-mirror" */ './code-mirror-bundle')
+)
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -200,7 +200,6 @@ class CodeEditor extends React.Component {
 						editorDidMount={this.setEditor}
 					/>
 				</Suspense>
-
 			</div>
 		)
 	}

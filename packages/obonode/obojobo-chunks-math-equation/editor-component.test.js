@@ -27,6 +27,9 @@ describe('MathEquation Editor Node', () => {
 	})
 
 	test('MathEquation component with error', () => {
+		global.window.katex.renderToString.mockImplementationOnce(() => {
+			throw Error('Mock katex render error')
+		})
 		const component = renderer.create(<MathEquation element={{ content: { latex: 'x_0_0' } }} />)
 		const tree = component.toJSON()
 

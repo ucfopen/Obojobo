@@ -7,7 +7,6 @@ import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-uti
 import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import Dialog from 'obojobo-document-engine/src/scripts/common/components/modal/dialog'
-import shuffle from 'obojobo-document-engine/src/scripts/common/util/shuffle'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -19,6 +18,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 jest.mock('obojobo-document-engine/src/scripts/common/components/modal/dialog')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer')
@@ -60,10 +60,6 @@ const assessmentJSON = {
 }
 
 describe('Assessment', () => {
-	beforeAll(() => {
-		shuffle.mockImlpementation( a => a)
-	})
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})

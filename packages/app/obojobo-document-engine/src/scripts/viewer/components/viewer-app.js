@@ -17,7 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
-import insertDomTag from '../../common/util/insert-dom-tag'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
@@ -141,48 +141,7 @@ export default class ViewerApp extends React.Component {
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel}) => {
-				// DETECT LATEX USAGE
-				// LATEX can be in seen in 2 places
-				// HTML allows div with a classname of 'latex' to render latex
-				// AND in text nodes with a styleList item of type _latex
-				// The second can be matched against `"type":"_latex"` without many false positives
-				// However, the html node's classname will generate more false positives
-				const stringModel = JSON.stringify(draftModel)
-				if(stringModel.includes('latex')){
-					console.log('THIS MODULE CONTAINS LATEX')
-					const jsProps = {
-						src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js',
-					}
-					const cssProps = {
-						rel: 'stylesheet',
-						type: 'text/css',
-						href:'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
-					}
-					insertDomTag(jsProps, 'script')
-					insertDomTag(cssProps, 'link')
-
-					return new Promise((resolve, reject) => {
-						const timeout = 2000
-						const intervalTime = 20
-						let timer = 0
-						const latexCheckInterval = setInterval(() => {
-							timer+=intervalTime
-							if(window.katex){
-								clearInterval(latexCheckInterval)
-								return resolve(draftModel)
-							}
-							if(timer > timeout){
-								clearInterval(latexCheckInterval)
-								return reject('timedout loading katex library')
-							}
-						}, intervalTime)
-					})
-				} else {
-					return draftModel
-				}
-			})
-			// .then(({ value: draftModel }) => {
+			.then(injectKatexIfNeeded)
 			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
@@ -194,6 +153,7 @@ export default class ViewerApp extends React.Component {
 					visitIdFromApi,
 					viewState
 				)
+
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose

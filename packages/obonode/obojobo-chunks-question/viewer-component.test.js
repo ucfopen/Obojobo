@@ -6,7 +6,6 @@ import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/questi
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
-import shuffle from 'obojobo-document-engine/src/scripts/common/utils/shuffle'
 
 const { getScoreClass } = jest.requireActual(
 	'obojobo-document-engine/src/scripts/viewer/util/question-util'
@@ -15,6 +14,7 @@ const { getScoreClass } = jest.requireActual(
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer') // dependency on Obojobo.Pages.Page
@@ -228,7 +228,6 @@ const expectClasses = (className, type, mode, answered, correct) => {
 
 describe('Question', () => {
 	beforeAll(() => {
-		shuffle = a => a
 		QuestionUtil.getScoreClass = getScoreClass
 	})
 
