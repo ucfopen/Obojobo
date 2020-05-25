@@ -21,20 +21,14 @@ const remove = (editor, element) => {
 const addQuestion = (editor, element) => {
 	const Question = Common.Registry.getItemForType(QUESTION_NODE)
 	const path = ReactEditor.findPath(editor, element)
-	return Transforms.insertNodes(
-		editor,
-		Question.insertJSON,
-		{ at: path.concat(element.children.length) }
-	)
+	return Transforms.insertNodes(editor, Question.insertJSON, {
+		at: path.concat(element.children.length)
+	})
 }
 
 const addQuestionBank = (editor, element) => {
 	const path = ReactEditor.findPath(editor, element)
-	return Transforms.insertNodes(
-		editor,
-		emptyQB,
-		{ at: path.concat(element.children.length) }
-	)
+	return Transforms.insertNodes(editor, emptyQB, { at: path.concat(element.children.length) })
 }
 
 const changeChooseType = (editor, element, event) => {
@@ -42,17 +36,13 @@ const changeChooseType = (editor, element, event) => {
 	const chooseAll = event.target.value === 'all'
 
 	const path = ReactEditor.findPath(editor, element)
-	Transforms.setNodes(
-		editor, 
-		{ content: { ...element.content, chooseAll } },
-		{ at: path }
-	)
+	Transforms.setNodes(editor, { content: { ...element.content, chooseAll } }, { at: path })
 }
 
 const changeChooseAmount = (editor, element, event) => {
 	const path = ReactEditor.findPath(editor, element)
 	Transforms.setNodes(
-		editor, 
+		editor,
 		{ content: { ...element.content, choose: event.target.value } },
 		{ at: path }
 	)
@@ -61,24 +51,24 @@ const changeChooseAmount = (editor, element, event) => {
 const changeSelect = (editor, element, event) => {
 	const path = ReactEditor.findPath(editor, element)
 	Transforms.setNodes(
-		editor, 
+		editor,
 		{ content: { ...element.content, select: event.target.value } },
 		{ at: path }
 	)
 }
 
-const freezeEditor = (editor) => {
+const freezeEditor = editor => {
 	editor.toggleEditable(false)
 }
 
-const unfreezeEditor = (editor) => {
+const unfreezeEditor = editor => {
 	editor.toggleEditable(true)
 }
 
 const displaySettings = (editor, element, content) => {
 	const radioGroupName = `${element.id}-choose`
 	return (
-		<div className={'qb-settings'}>
+		<div className={'qb-settings'} contentEditable={false}>
 			<fieldset className="choose">
 				<legend>How many questions should be displayed?</legend>
 				<label>
@@ -87,7 +77,8 @@ const displaySettings = (editor, element, content) => {
 						name={radioGroupName}
 						value="all"
 						checked={content.chooseAll}
-						onChange={changeChooseType.bind(this, editor, element)}/>
+						onChange={changeChooseType.bind(this, editor, element)}
+					/>
 					All questions
 				</label>
 				<span> or</span>
@@ -97,7 +88,8 @@ const displaySettings = (editor, element, content) => {
 						name={radioGroupName}
 						value="pick"
 						checked={!content.chooseAll}
-						onChange={changeChooseType.bind(this, editor, element)}/>
+						onChange={changeChooseType.bind(this, editor, element)}
+					/>
 					Pick
 				</label>
 				<input
@@ -107,14 +99,16 @@ const displaySettings = (editor, element, content) => {
 					onClick={event => event.stopPropagation()}
 					onChange={changeChooseAmount.bind(this, editor, element)}
 					onFocus={freezeEditor.bind(this, editor)}
-					onBlur={unfreezeEditor.bind(this, editor)}/>
+					onBlur={unfreezeEditor.bind(this, editor)}
+				/>
 			</fieldset>
 			<label className="select">
 				How should questions be selected?
 				<select
 					value={content.select}
 					onClick={event => event.stopPropagation()}
-					onChange={changeSelect.bind(this, editor, element)}>
+					onChange={changeSelect.bind(this, editor, element)}
+				>
 					<option value="sequential">In order</option>
 					<option value="random">Randomly</option>
 					<option value="random-unseen">Randomly, with no repeats</option>
@@ -133,7 +127,8 @@ const QuestionBank = props => {
 					className="delete-button"
 					onClick={() => {
 						remove(editor, element)
-					}}>
+					}}
+				>
 					&times;
 				</Button>
 				{displaySettings(editor, element, element.content)}
@@ -142,13 +137,15 @@ const QuestionBank = props => {
 					<Button
 						onClick={() => {
 							addQuestion(editor, element)
-						}}>
+						}}
+					>
 						Add Question
 					</Button>
 					<Button
 						onClick={() => {
 							addQuestionBank(editor, element)
-						}}>
+						}}
+					>
 						Add Question Bank
 					</Button>
 				</div>
