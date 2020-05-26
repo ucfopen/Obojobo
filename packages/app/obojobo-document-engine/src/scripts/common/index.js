@@ -34,6 +34,7 @@ import StyleType from './text/style-type'
 import StyleableText from './text/styleable-text'
 import StyleableTextComponent from './text/styleable-text-component'
 import StyleableTextRenderer from './text/styleable-text-renderer'
+import TabTrap from './components/modal/tab-trap'
 import TextChunk from './chunk/text-chunk'
 import TextGroup from './text-group/text-group'
 import TextGroupAdapter from './chunk/text-chunk/text-group-adapter'
@@ -79,7 +80,8 @@ export default {
 			Modal,
 			Dialog,
 			SimpleDialog,
-			ErrorDialog
+			ErrorDialog,
+			TabTrap
 		},
 		slider: {
 			Slider

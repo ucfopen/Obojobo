@@ -343,7 +343,7 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('input')
-			.at(0)
+			.at(1)
 			.simulate('change', {
 				target: { value: 'changed value' }
 			})
@@ -416,6 +416,31 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 		component.setProps({ open: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box prevents tab escape', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('focus')
 
 		expect(component.html()).toMatchSnapshot()
 	})
