@@ -126,7 +126,7 @@ describe('start attempt route', () => {
 		  "caliperPayload": "mockCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
-		  "eventVersion": "1.1.0",
+		  "eventVersion": "1.2.0",
 		  "ip": "mockRemoteAddress",
 		  "isPreview": "mockIsPreview",
 		  "metadata": Object {},

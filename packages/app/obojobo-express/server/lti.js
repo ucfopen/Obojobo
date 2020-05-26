@@ -555,7 +555,7 @@ const insertReplaceResultEvent = (
 		visitId,
 		userId,
 		ip: '',
-		eventVersion: '2.0.0',
+		eventVersion: '2.1.0',
 		metadata: {},
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId

@@ -27,7 +27,7 @@ const insertAttemptEndEvents = (
 		metadata: {},
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId,
-		eventVersion: '1.1.0',
+		eventVersion: '1.2.0',
 		isPreview: isPreview,
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
@@ -94,7 +94,7 @@ const insertAttemptScoredEvents = (
 				metadata: {},
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				isPreview: isPreview,
 				caliperPayload: createAssessmentAttemptScoredEvent({
 					actor: { type: 'serverApp' },
