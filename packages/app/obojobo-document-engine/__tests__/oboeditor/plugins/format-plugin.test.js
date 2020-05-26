@@ -2,7 +2,7 @@ import Common from 'src/scripts/common/index'
 
 import FormatPlugin from 'src/scripts/oboeditor/plugins/format-plugin'
 
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
+// const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -38,19 +38,6 @@ describe('FormatPlugin', () => {
 			key: 'k',
 			preventDefault: jest.fn()
 		}
-
-		FormatPlugin.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.changeToType).toHaveBeenCalledWith(LIST_NODE, {
-			type: 'unordered',
-			bulletStyle: 'disc'
-		})
-
-		mockEvent.key = 'l'
-		FormatPlugin.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.changeToType).toHaveBeenCalledWith(LIST_NODE, {
-			type: 'ordered',
-			bulletStyle: 'decimal'
-		})
 
 		mockEvent.key = 'c'
 		FormatPlugin.onKeyDown(mockEvent, editor, jest.fn())

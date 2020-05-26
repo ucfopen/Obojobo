@@ -1,7 +1,7 @@
 import { Editor, Element } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
+// const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -13,14 +13,18 @@ const FormatPlugin = {
 		switch (event.key) {
 			// Using both the lower and uppercase letters to accunt for systems
 			// where the shiftKey affects the key
-			case 'k':
-			case 'K':
-				event.preventDefault()
-				return editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
-			case 'l':
-			case 'L':
-				event.preventDefault()
-				return editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
+
+			// Currently changing between LIST Types occurs in the list
+			// onKeyDown - these cases can be uncommented when changing text to lists is permitted
+			// again
+			// case 'k':
+			// case 'K':
+			// 	event.preventDefault()
+			// 	return editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
+			// case 'l':
+			// case 'L':
+			// 	event.preventDefault()
+			// 	return editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
 			case 'c':
 			case 'C':
 				event.preventDefault()
