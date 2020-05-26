@@ -63,6 +63,30 @@ describe('MathEquation adapter', () => {
 		expect(model.modelState.size).toBe('0.3em')
 	})
 
+	test('construct sets size to 0.1 if less than 0.1', () => {
+		const attrs = {
+			content: {
+				size: '-1.1'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		MathEquationAdapter.construct(model, attrs)
+		expect(model.modelState.size).toBe('0.1em')
+	})
+
+	test('construct sets size to 20 if > 20', () => {
+		const attrs = {
+			content: {
+				size: '20.1'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		MathEquationAdapter.construct(model, attrs)
+		expect(model.modelState.size).toBe('20em')
+	})
+
 	test('clone creates a copy', () => {
 		const a = new OboModel({})
 		const b = new OboModel({})

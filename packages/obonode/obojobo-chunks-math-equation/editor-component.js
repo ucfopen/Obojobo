@@ -22,6 +22,10 @@ const getLatexHtml = latex => {
 	}
 }
 
+const restrictSize = size => {
+	return Math.min(20, Math.max(0.1, parseFloat(size) || 1))
+}
+
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
@@ -46,7 +50,7 @@ class MathEquation extends React.Component {
 			latex: content.latex || '',
 			alt: content.alt || '',
 			label: content.label || '',
-			size: content.size || 1,
+			size: restrictSize(content.size),
 			open: false
 		}
 	}
@@ -89,9 +93,16 @@ class MathEquation extends React.Component {
 
 	updateNodeFromState() {
 		const content = this.props.element.content
+
 		delete this.state.open
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
+	}
+
+	onBlurSize() {
+		this.setState({
+			size: restrictSize(this.state.size)
+		})
 	}
 
 	onChangeContent(key, event) {
@@ -161,7 +172,10 @@ class MathEquation extends React.Component {
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'size')}
 						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
+						onBlur={() => {
+							this.onBlurSize()
+							this.unfreezeEditor()
+						}}
 					/>
 				</div>
 				<div>
