@@ -343,6 +343,12 @@ describe('KeyDown Util', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 		expect(Transforms.collapse).toHaveBeenCalled()
+
+		// make sure the inserted node is correct type
+		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
+		expect(insertedNode.children[0]).toHaveProperty('type', 'ObojoboDraft.Chunks.Text')
+		expect(insertedNode.children[0]).toHaveProperty('subtype', 'ObojoboDraft.Chunks.Text.TextLine')
+		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
 	test('breakToText converts to text', () => {

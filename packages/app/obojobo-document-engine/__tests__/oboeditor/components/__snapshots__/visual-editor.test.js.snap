@@ -945,7 +945,53 @@ exports[`VisualEditor VisualEditor component 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
@@ -1409,7 +1455,53 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
@@ -1873,7 +1965,53 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      contentEditable={true}
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      role="textbox"
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-length={0}
+            data-slate-zero-width="n"
+          >
+            ﻿
+            <br />
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
@@ -2383,7 +2521,49 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     role="main"
-  />
+  >
+    <div
+      className="obojobo-draft--pages--page"
+      data-gramm={false}
+      data-slate-editor={true}
+      data-slate-node="value"
+      onBeforeInput={[Function]}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onCompositionEnd={[Function]}
+      onCompositionStart={[Function]}
+      onCopy={[Function]}
+      onCut={[Function]}
+      onDragOver={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onPaste={[Function]}
+      style={
+        Object {
+          "outline": "none",
+          "whiteSpace": "pre-wrap",
+          "wordWrap": "break-word",
+        }
+      }
+      suppressContentEditableWarning={true}
+    >
+      <span
+        data-slate-node="text"
+      >
+        <span
+          data-slate-leaf={true}
+        >
+          <span
+            data-slate-string={true}
+          >
+            No content available, create a page to start editing
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 

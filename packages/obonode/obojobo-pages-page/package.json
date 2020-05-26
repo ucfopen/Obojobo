@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-pages-page",
-	"version": "8.0.2",
+	"version": "9.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Page chunk for Obojobo",
 	"scripts": {
@@ -17,8 +17,7 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"prettier": {
@@ -28,11 +27,11 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^8.0.2",
-		"obojobo-lib-utils": "^8.0.2"
+		"obojobo-document-engine": "^9.0.0",
+		"obojobo-lib-utils": "^9.0.0"
 	},
 	"devDependencies": {
-		"lint-staged": "^9.4.1"
+		"lint-staged": "^10.2.2"
 	},
 	"jest": {
 		"testMatch": [
