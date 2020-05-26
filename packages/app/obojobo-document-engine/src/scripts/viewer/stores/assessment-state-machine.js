@@ -1,134 +1,141 @@
+import { Machine, interpret, assign } from 'xstate'
+
 import APIUtil from '../util/api-util'
+import Common from 'Common'
+import NavStore from '../stores/nav-store'
+import AssessmentNetworkStates from './assessment-store/assessment-network-states'
+import AssessmentStateActions from './assessment-store/assessment-state-actions'
+import NavUtil from '../util/nav-util'
+
 import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
 import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
 import AssessmentUtil from '../util/assessment-util'
 import CurrentAssessmentStates from '../util/current-assessment-states'
-import Common from 'Common'
 import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
-import AssessmentNetworkStates from './assessment-store/assessment-network-states'
-import NavStore from '../stores/nav-store'
-import NavUtil from '../util/nav-util'
 import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 import React from 'react'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
-const { ErrorUtil, ModalUtil, StateMachine } = Common.util
+const { ErrorUtil, ModalUtil } = Common.util
+const { Dispatcher } = Common.flux
 const { SimpleDialog, Dialog } = Common.components.modal
 
 const {
-	WILL_RESUME_ATTEMPT,
-	TRYING_START_ATTEMPT,
-	TRYING_RESUME_ATTEMPT,
+	PROMPTING_FOR_RESUME,
+	STARTING_ATTEMPT,
+	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
 	RESUME_ATTEMPT_FAILED,
-	TRYING_SENDING_RESPONSES,
-	SENDING_RESPONSES_SUCCESSFUL,
-	SENDING_RESPONSES_FAILED,
-	TRYING_END_ATTEMPT,
+	SENDING_RESPONSES,
+	SEND_RESPONSES_SUCCESSFUL,
+	SEND_RESPONSES_FAILED,
 	NOT_IN_ATTEMPT,
-	TRYING_TO_SUBMIT,
+	ENDING_ATTEMPT,
 	END_ATTEMPT_FAILED,
 	END_ATTEMPT_SUCCESSFUL,
-	PROMPT_FOR_IMPORT,
-	TRYING_IMPORT_ATTEMPT,
+	PROMPTING_FOR_IMPORT,
+	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
 	IMPORT_ATTEMPT_SUCCESSFUL
 } = AssessmentNetworkStates
 
-// const getNewAssessmentObject = assessmentId => ({
-// 	id: assessmentId,
-// 	state: NO_ATTEMPT_STARTED,
-// 	current: null,
-// 	currentResponses: [],
-// 	attempts: [],
-// 	highestAssessmentScoreAttempts: [],
-// 	highestAttemptScoreAttempts: [],
-// 	lti: null,
-// 	ltiNetworkState: LTINetworkStates.IDLE,
-// 	ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
-// 	isShowingAttemptHistory: false
-// })
+const {
+	START_ATTEMPT,
+	PROMPT_FOR_IMPORT,
+	PROMPT_FOR_RESUME,
+	IMPORT_ATTEMPT,
+	RESUME_ATTEMPT,
+	SEND_RESPONSES,
+	ACKNOWLEDGE,
+	END_ATTEMPT,
+	CONTINUE_ATTEMPT
+	// RETRY
+} = AssessmentStateActions
 
-// {
-// 	[NOT_IN_ATTEMPT]: [
-// 		'promptForImport',
-// 		'tryStartAttempt',
-// 		'tryResumeAttempt'
-// 	],
-// 	[TRYING_START_ATTEMPT_RE
-// 		'onEnter'
-// 	]
-// }
+class AssessmentStateHelpers {
+	static async startAttempt(assessmentId) {
+		console.log('startATtempt', assessmentId)
+		return this.onRequest(
+			await this.sendStartAttemptRequest(assessmentId),
+			this.onAttemptStarted.bind(this)
+		)
+	}
 
-const createTransitions = () => ({
-	[NOT_IN_ATTEMPT]: {
-		canTransitionTo: [PROMPT_FOR_IMPORT, WILL_RESUME_ATTEMPT, TRYING_START_ATTEMPT],
-		actions: {
-			promptForImport() {
-				this.transitionTo(PROMPT_FOR_IMPORT)
-			},
-			tryStartAttempt() {
-				this.transitionTo(TRYING_START_ATTEMPT)
-			},
-			willResumeAttempt() {
-				this.transitionTo(WILL_RESUME_ATTEMPT)
+	static async resumeAttempt(draftId, attemptId) {
+		return this.onRequest(
+			await this.sendResumeAttemptRequest(draftId, attemptId),
+			this.onAttemptStarted.bind(this)
+		)
+	}
+
+	static sendResponses(assessmentId, attemptId) {
+		return new Promise((resolve, reject) => {
+			const listener = ({ value }) => {
+				Dispatcher.off('question:forceSentAllResponses', listener)
+
+				if (value.success) {
+					resolve()
+				} else {
+					reject()
+				}
 			}
+
+			Dispatcher.on('question:forceSentAllResponses', listener)
+			QuestionUtil.forceSendAllResponsesForContext(
+				this.composeNavContextString(assessmentId, attemptId)
+			)
+		})
+	}
+
+	static async endAttempt(draftId, attemptId) {
+		return this.onRequest(
+			await this.sendEndAttemptRequest(draftId, attemptId),
+			this.onAttemptEnded.bind(this)
+		)
+	}
+
+	static async sendStartAttemptRequest(assessmentId) {
+		const model = OboModel.models[assessmentId]
+
+		return await APIUtil.startAttempt({
+			draftId: model.getRoot().get('draftId'),
+			assessmentId: model.get('id'),
+			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static async sendResumeAttemptRequest(draftId, attemptId) {
+		return await APIUtil.resumeAttempt({
+			draftId,
+			attemptId,
+			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static async sendEndAttemptRequest(draftId, attemptId) {
+		return await APIUtil.endAttempt({
+			attemptId,
+			draftId,
+			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static async onRequest(res, successFn) {
+		if (res.status !== 'ok') {
+			return this.onError(res)
 		}
-	},
-	[PROMPT_FOR_IMPORT]: {
-		canTransitionTo: [TRYING_IMPORT_ATTEMPT, TRYING_START_ATTEMPT],
-		actions: {
-			tryImport() {
-				this.transitionTo(TRYING_IMPORT_ATTEMPT)
-			},
-			tryStartAttempt() {
-				this.transitionTo(TRYING_START_ATTEMPT)
-			}
-		}
-	},
-	[WILL_RESUME_ATTEMPT]: {
-		canTransitionTo: [TRYING_RESUME_ATTEMPT],
-		actions: {
-			tryResumeAttempt() {
-				this.transitionTo(TRYING_RESUME_ATTEMPT)
-			}
-		}
-	},
-	[TRYING_START_ATTEMPT]: {
-		canTransitionTo: [START_ATTEMPT_FAILED, IN_ATTEMPT],
-		async onEnter() {
-			try {
-				this.onStartAttemptRequest(await this.sendStartAttemptRequest())
-			} catch (e) {
-				console.error(e) /* eslint-disable-line no-console */
-				this.transitionTo(START_ATTEMPT_FAILED)
-			}
-		},
-		async sendStartAttemptRequest() {
-			const assessment = this.state.assessment
-			const model = OboModel.models[assessment.id]
 
-			return await APIUtil.startAttempt({
-				draftId: model.getRoot().get('draftId'),
-				assessmentId: model.get('id'),
-				visitId: NavStore.getState().visitId
-			})
-		},
-		onStartAttemptRequest(res) {
-			if (res.status !== 'ok') {
-				return this.onError(res)
-			}
+		return successFn(res)
+	}
 
-			return this.onAttemptStarted(res.value)
-		},
-		onError(res = null) {
+	static async onError(res = null) {
+		if (res) {
 			switch (res.value.message.toLowerCase()) {
 				case 'attempt limit reached':
 					ErrorUtil.show(
@@ -141,314 +148,445 @@ const createTransitions = () => ({
 					ErrorUtil.errorResponse(res)
 					break
 			}
-
-			this.transitionTo(START_ATTEMPT_FAILED)
 		}
-	},
-	[TRYING_RESUME_ATTEMPT]: {
-		canTransitionTo: [RESUME_ATTEMPT_FAILED, IN_ATTEMPT],
-		async onEnter() {
-			const unfinishedAttempt = this.state.assessment.unfinishedAttempt
 
-			try {
-				const res = await APIUtil.resumeAttempt({
-					draftId: unfinishedAttempt.draftId,
-					attemptId: unfinishedAttempt.attemptId,
-					visitId: NavStore.getState().visitId
-				})
-				this.onResumeAttemptRequest(res)
-			} catch (e) {
-				console.error(e) /* eslint-disable-line no-console */
+		throw Error('Request failed')
+	}
 
-				//assessment.state = START_ATTEMPT_FAILED
-				//this.triggerChange()
-				this.transitionTo(RESUME_ATTEMPT_FAILED)
-			}
-		},
-		onResumeAttemptRequest(res) {
-			if (res.status !== 'ok') {
-				this.onError(res)
-			}
+	static onAttemptStarted(res) {
+		const assessment = res.value
+		const assessmentId = assessment.assessmentId
+		const assessmentModel = OboModel.models[assessmentId]
 
-			this.onAttemptStarted(res.value)
-		},
-		onError(res) {
-			ErrorUtil.errorResponse(res)
-			this.transitionTo(RESUME_ATTEMPT_FAILED)
-		}
-	},
-	[START_ATTEMPT_FAILED]: {
-		canTransitionTo: [NOT_IN_ATTEMPT],
-		actions: {
-			acknowledge() {
-				this.transitionTo(NOT_IN_ATTEMPT)
-			}
-		}
-	},
-	[RESUME_ATTEMPT_FAILED]: {
-		canTransitionTo: [WILL_RESUME_ATTEMPT],
-		actions: {
-			retry() {
-				this.transitionTo(WILL_RESUME_ATTEMPT)
-			}
-		}
-	},
-	[IN_ATTEMPT]: {
-		canTransitionTo: [TRYING_SENDING_RESPONSES],
-		onEnter() {
-			const currentAttempt = this.state.assessment.current
-			const id = currentAttempt.assessmentId
-			const model = OboModel.models[id]
+		this.setAssessmentQuestionBank(assessmentModel, assessment.questions)
+		this.updateNavContextAndMenu(assessmentModel, assessment.attemptId)
+		this.signalAttemptStarted(assessmentModel)
 
-			this.state.context = `assessment:${currentAttempt.assessmentId}:${currentAttempt.attemptId}`
-			NavUtil.setContext(this.state.context)
-			NavUtil.rebuildMenu(model.getRoot())
-			NavUtil.goto(id)
+		// Return the response so that the assessment data can be added to the context
+		return res
+	}
 
-			model.processTrigger('onStartAttempt')
-			Dispatcher.trigger('assessment:attemptStarted', id)
-		},
-		actions: {
-			forceSendAllResponses() {
-				this.transitionTo(TRYING_SENDING_RESPONSES)
-			}
-		}
-	},
-	// [TRYING_TO_SUBMIT]: {
-	// 	canTransitionTo: [TRYING_SENDING_RESPONSES],
-	// 	onEnter() {
-	// 		// debugger
-	// 		// this.transitionTo(TRYING_SENDING_RESPONSES)
-	// 	}
-	// },
-	[TRYING_SENDING_RESPONSES]: {
-		canTransitionTo: [SENDING_RESPONSES_SUCCESSFUL, SENDING_RESPONSES_FAILED],
-		onEnter() {
-			this.listener = this.onForceSentAllResponses.bind(this)
-			Dispatcher.on('question:forceSentAllResponses', this.listener)
+	static setAssessmentQuestionBank(assessmentModel, questions) {
+		const qb = assessmentModel.children.at(1)
 
-			QuestionUtil.forceSendAllResponsesForContext(this.state.context)
-		},
-		onForceSentAllResponses({ success, context }) {
-			// // debugger
-			Dispatcher.off('question:forceSentAllResponses', this.listener)
-			delete this.listener
+		qb.children.reset()
+		Array.from(questions).forEach(child => qb.children.add(OboModel.create(child)))
+	}
 
-			if (!success) {
-				this.transitionTo(SENDING_RESPONSES_FAILED)
+	static updateNavContextAndMenu(assessmentModel, attemptId) {
+		const assessmentId = assessmentModel.get('id')
 
-				return
-			}
+		NavUtil.setContext(this.composeNavContextString(assessmentId, attemptId))
+		NavUtil.rebuildMenu(assessmentModel.getRoot())
+		NavUtil.goto(assessmentId)
+	}
 
-			//@TODO - This no worky
-			// const currentAssessmentStatus = AssessmentUtil.getCurrentAttemptStatus(
-			// 	this.state,
-			// 	QuestionStore.getState(),
-			// 	assessmentModel,
-			// 	context
-			// )
+	static signalAttemptStarted(assessmentModel) {
+		const assessmentId = assessmentModel.get('id')
 
-			//@TODO
-			const currentAssessmentStatus = CurrentAssessmentStates.READY_TO_SUBMIT
+		assessmentModel.processTrigger('onStartAttempt')
+		Dispatcher.trigger('assessment:attemptStarted', assessmentId)
+	}
 
-			this.transitionTo(
-				currentAssessmentStatus === CurrentAssessmentStates.READY_TO_SUBMIT
-					? SENDING_RESPONSES_SUCCESSFUL
-					: SENDING_RESPONSES_FAILED
-			)
-		}
-	},
-	[SENDING_RESPONSES_FAILED]: {
-		canTransitionTo: [IN_ATTEMPT],
-		actions: {
-			acknowledge() {
-				this.transitionTo(IN_ATTEMPT)
-			}
-		}
-	},
-	[SENDING_RESPONSES_SUCCESSFUL]: {
-		canTransitionTo: [IN_ATTEMPT, TRYING_END_ATTEMPT],
-		actions: {
-			acknowledge() {
-				this.transitionTo(IN_ATTEMPT)
-			},
-			tryEndAttempt() {
-				// const model = OboModel.models[assessmentId]
-				// const assessment = this.state.assessments[assessmentId]
-
-				this.transitionTo(TRYING_END_ATTEMPT)
-			}
-		}
-	},
-	[TRYING_END_ATTEMPT]: {
-		canTransitionTo: [END_ATTEMPT_FAILED, END_ATTEMPT_SUCCESSFUL],
-		async onEnter() {
-			try {
-				this.onEndAttemptRequest(await this.sendEndAttemptRequest())
-			} catch (e) {
-				console.error(e) /* eslint-disable-line no-console */
-				this.transitionTo(END_ATTEMPT_FAILED)
-			}
-		},
-		async sendEndAttemptRequest() {
-			const assessment = this.state.assessment
-			const model = OboModel.models[assessment.id]
-
-			return await APIUtil.endAttempt({
-				attemptId: this.state.assessment.current.attemptId,
-				draftId: model.getRoot().get('draftId'),
-				visitId: NavStore.getState().visitId
-			})
-		},
-		onEndAttemptRequest(res) {
-			if (res.status !== 'ok') {
-				return this.onError(res)
-			}
-
-			return this.onAttemptEnded(res.value)
-		},
-		onError(res = null) {
-			ErrorUtil.errorResponse(res)
-			this.transitionTo(END_ATTEMPT_FAILED)
-		},
-		onAttemptEnded() {
-			// const assessId = this.state.__endAttemptResponse.assessmentId
-			// const assessment = this.state.assessment
-
-			this.hideQuestions()
-			this.clearResponses()
-
-			this.state.assessment.current = null
-			this.__onEndAttempt(this.state.__endAttemptResponse)
-
-			this.signalAttemptEnded()
-
-			const attempts = this.state.__endAttemptResponse.attempts
-			const lastAttempt = attempts[attempts.length - 1]
-			this.showReportDialog(lastAttempt)
-
-			this.transitionTo(END_ATTEMPT_SUCCESSFUL)
-		},
-		hideQuestions() {
-			this.state.assessment.current.state.chosen.forEach(question => {
-				if (question.type === QUESTION_NODE_TYPE) {
-					QuestionUtil.hideQuestion(question.id, this.state.context)
-				}
-			})
-		},
-		clearResponses() {
-			this.state.assessment.currentResponses.forEach(questionId =>
-				QuestionUtil.clearResponse(questionId, this.state.context)
-			)
-		},
-		getReportForAttempt(attemptNumber) {
-			const assessId = this.state.__endAttemptResponse.assessmentId
-			const assessment = this.state.assessment
-			const model = OboModel.models[assessId]
-
-			const reporter = new AssessmentScoreReporter({
-				assessmentRubric: model.modelState.rubric.toObject(),
-				totalNumberOfAttemptsAllowed: model.modelState.attempts,
-				allAttempts: assessment.attempts
-			})
-
-			return reporter.getReportFor(attemptNumber)
-		},
-		signalAttemptEnded() {
-			const assessId = this.state.__endAttemptResponse.assessmentId
-			const model = OboModel.models[assessId]
-
-			model.processTrigger('onEndAttempt')
-
-			Dispatcher.trigger('assessment:attemptEnded', assessId)
-		},
-		showReportDialog(attempt) {
-			const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
-
-			ModalUtil.show(
-				<Dialog
-					modalClassName="obojobo-draft--sections--assessment--results-modal"
-					centered
-					buttons={[
-						{
-							value: `Show ${assessmentLabel} Overview`,
-							onClick: this.onCloseResultsDialog.bind(this),
-							default: true
+	static onAttemptEnded(res) {
+		/*
+		example response
+		{
+			"status": "ok",
+			"value": {
+				"assessmentId": "my-assessment",
+				"attempts": [
+					{
+						"userId": "1",
+						"draftId": "00000000-0000-0000-0000-000000000000",
+						"contentId": "b156af29-faf5-4c61-a035-1cc33d8f1bf5",
+						"attemptId": "d9b51660-60f4-4e13-a877-9c8339d3ecd8",
+						"assessmentScoreId": "6",
+						"attemptNumber": 1,
+						"assessmentId": "my-assessment",
+						"startTime": "2020-05-15T20:12:07.163Z",
+						"finishTime": "2020-05-15T21:11:45.301Z",
+						"isFinished": true,
+						"state": {
+							"chosen": [
+								{
+									"id": "e32101dd-8f0e-4bec-b519-968270efb426",
+									"type": "ObojoboDraft.Chunks.Question"
+								},
+								{
+									"id": "f1ebeb0e-606f-4d1e-b8b9-2ba4fbfbfa0f",
+									"type": "ObojoboDraft.Chunks.Question"
+								},
+								{
+									"id": "fa4c4db0-30f1-4386-9ce9-956aaf228378",
+									"type": "ObojoboDraft.Chunks.Question"
+								},
+								{
+									"id": "5345c7c6-ac69-4e9f-80da-6037765fa612",
+									"type": "ObojoboDraft.Chunks.QuestionBank"
+								},
+								{
+									"id": "af4ea08a-e488-4156-a2a0-c0f9a64c58eb",
+									"type": "ObojoboDraft.Chunks.QuestionBank"
+								}
+							]
+						},
+						"questionScores": [
+							{
+								"id": "e32101dd-8f0e-4bec-b519-968270efb426",
+								"score": 0
+							},
+							{
+								"id": "f1ebeb0e-606f-4d1e-b8b9-2ba4fbfbfa0f",
+								"score": 0
+							},
+							{
+								"id": "fa4c4db0-30f1-4386-9ce9-956aaf228378",
+								"score": 0
+							}
+						],
+						"responses": [],
+						"attemptScore": 0,
+						"assessmentScore": 0,
+						"assessmentScoreDetails": {
+							"status": "passed",
+							"rewardTotal": 0,
+							"attemptScore": 0,
+							"rewardedMods": [],
+							"attemptNumber": 1,
+							"assessmentScore": 0,
+							"assessmentModdedScore": 0
 						}
-					]}
-					title={`Attempt ${attempt.attemptNumber} Results`}
-					width="35rem"
-				>
-					<AssessmentScoreReportView report={this.getReportForAttempt(attempt.attemptNumber)} />
-				</Dialog>
-			)
-		},
-		onCloseResultsDialog() {
-			ModalUtil.hide()
-			FocusUtil.focusOnNavTarget()
-		}
-	},
-	[END_ATTEMPT_FAILED]: {
-		canTransitionTo: [IN_ATTEMPT],
-		actions: {
-			acknowledge() {
-				this.transitionTo(IN_ATTEMPT)
+					}
+				],
+				"ltiState": null
 			}
 		}
-	},
-	[END_ATTEMPT_SUCCESSFUL]: {
-		canTransitionTo: [NOT_IN_ATTEMPT],
-		actions: {
-			acknowledge() {
-				this.transitionTo(NOT_IN_ATTEMPT)
-			}
-		},
-		onEnter() {
-			//
+
+		*/
+		const assessment = this.getInternalAssessmentObjectFromResponse(res.value)
+		const attempts = assessment.attempts //res.value.attempts
+		const lastAttempt = attempts[attempts.length - 1]
+		const { assessmentId, attemptId, attemptNumber } = lastAttempt
+		const assessmentModel = OboModel.models[assessmentId]
+		const navContext = this.composeNavContextString(assessmentId, attemptId)
+
+		// this.hideQuestions(lastAttempt.state.chosen, navContext)
+		// debugger "hello past me, i was here. lastAttempt.currentResponses doesnt exist, it on the context version. but is this really a good idea in the first place? anyway, i need a way to clear responses. maybe what i do is just have the helper send the request, then the onDone handles all the cleanup"
+		// this.clearResponses(lastAttempt.currentResponses, navContext)
+		this.signalAttemptEnded(assessmentModel)
+		this.showReportDialog(assessmentModel, attempts, attemptNumber)
+		this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
+
+		return assessment
+	}
+
+	static updateStateByContextForAttempt(attempt) {
+		const scores = {}
+		attempt.questionScores.forEach(scoreData => {
+			scores[scoreData.id] = scoreData
+		})
+		const stateToUpdate = {
+			scores,
+			responses: attempt.responses
 		}
+
+		QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+	}
+
+	// static hideQuestions(chosenQuestions, navContext) {
+	// 	chosenQuestions.forEach(question => {
+	// 		if (question.type !== QUESTION_NODE_TYPE) {
+	// 			return
+	// 		}
+
+	// 		QuestionUtil.hideQuestion(question.id, navContext)
+	// 	})
+	// }
+
+	// static clearResponses(responses, navContext) {
+	// 	responses.forEach(questionId => QuestionUtil.clearResponse(questionId, navContext))
+	// }
+
+	static getReportForAttempt(assessmentModel, allAttempts, attemptNumber) {
+		const reporter = new AssessmentScoreReporter({
+			assessmentRubric: assessmentModel.modelState.rubric.toObject(),
+			totalNumberOfAttemptsAllowed: assessmentModel.modelState.attempts,
+			allAttempts
+		})
+
+		return reporter.getReportFor(attemptNumber)
+	}
+
+	static signalAttemptEnded(assessmentModel) {
+		assessmentModel.processTrigger('onEndAttempt')
+		Dispatcher.trigger('assessment:attemptEnded', assessmentModel.get('id'))
+	}
+
+	static showReportDialog(assessmentModel, allAttempts, attemptNumber) {
+		const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), assessmentModel)
+
+		ModalUtil.show(
+			<Dialog
+				modalClassName="obojobo-draft--sections--assessment--results-modal"
+				centered
+				buttons={[
+					{
+						value: `Show ${assessmentLabel} Overview`,
+						onClick: this.onCloseResultsDialog.bind(this),
+						default: true
+					}
+				]}
+				title={`Attempt ${attemptNumber} Results`}
+				width="35rem"
+			>
+				<AssessmentScoreReportView
+					report={this.getReportForAttempt(assessmentModel, allAttempts, attemptNumber)}
+				/>
+			</Dialog>
+		)
+	}
+
+	static onCloseResultsDialog() {
+		ModalUtil.hide()
+		FocusUtil.focusOnNavTarget()
+	}
+
+	static composeNavContextString(assessmentId, attemptId) {
+		return `assessment:${assessmentId}:${attemptId}`
+	}
+
+	// Converts the assessmentResponse return value to an object that Obojobo can more easily use!
+	static getInternalAssessmentObjectFromResponse(assessmentResponse) {
+		const attempts = assessmentResponse.attempts
+
+		const getLastOf = array => {
+			return array && array.length > 0 ? array[array.length - 1] : null
+		}
+
+		return {
+			lti: assessmentResponse.ltiState,
+			highestAttemptScoreAttempts: AssessmentUtil.findHighestAttempts(attempts, 'attemptScore'),
+			highestAssessmentScoreAttempts: AssessmentUtil.findHighestAttempts(
+				attempts,
+				'assessmentScore'
+			),
+			unfinishedAttempt: getLastOf(attempts.filter(attempt => !attempt.isFinished)),
+			attempts: attempts
+				.filter(attempt => attempt.isFinished)
+				.map(attempt => {
+					// Server returns responses in an array, but we use a object keyed by the questionId:
+					if (!Array.isArray(attempt.responses)) {
+						return attempt
+					}
+
+					const responsesById = {}
+					attempt.responses.forEach(r => {
+						responsesById[r.id] = r.response
+					})
+
+					return { ...attempt, responses: responsesById }
+				})
+		}
+	}
+}
+
+const todo = () => {}
+
+const updateContextWithAssessmentResponse = assign({
+	// When the src function is completed the results will be
+	// put into event.data. It will then call this action. assign() will
+	// set the contents of event.data into this machine's context,
+	// therefore making context.currentAttempt = the attempt data
+	// returned by AssessmentStateHelpers.startAttempt
+
+	assessment: (context, event) => {
+		context.assessment.current = event.data.value
+		return context.assessment
 	}
 })
 
-class AssessmentStateMachine extends StateMachine {
-	constructor(assessmentObject, onStateTransition, __onEndAttempt) {
-		super({
-			initialStep: NOT_IN_ATTEMPT,
-			onTransition: onStateTransition,
-			transitions: createTransitions()
+class AssessmentStateMachine {
+	constructor(assessmentObject) {
+		//eslint-disable-next-line new-cap
+		this.machine = Machine({
+			id: 'assessment',
+			initial: NOT_IN_ATTEMPT,
+			context: {
+				assessment: assessmentObject
+				// forceSentAllResponsesListener: null
+			},
+			states: {
+				[NOT_IN_ATTEMPT]: {
+					on: {
+						[START_ATTEMPT]: STARTING_ATTEMPT,
+						[PROMPT_FOR_IMPORT]: PROMPTING_FOR_IMPORT,
+						[PROMPT_FOR_RESUME]: PROMPTING_FOR_RESUME
+					}
+				},
+				[STARTING_ATTEMPT]: {
+					invoke: {
+						id: 'startAttempt',
+						src: async context => {
+							return await AssessmentStateHelpers.startAttempt(context.assessment.id)
+						},
+						onDone: {
+							target: IN_ATTEMPT,
+							actions: [updateContextWithAssessmentResponse]
+						},
+						onError: START_ATTEMPT_FAILED
+					}
+				},
+				[PROMPTING_FOR_IMPORT]: {
+					on: {
+						[START_ATTEMPT]: STARTING_ATTEMPT,
+						[IMPORT_ATTEMPT]: IMPORTING_ATTEMPT
+					}
+				},
+				[IMPORTING_ATTEMPT]: {
+					invoke: {
+						id: 'importAttempt',
+						src: todo,
+						onDone: IN_ATTEMPT,
+						onError: IMPORT_ATTEMPT_FAILED
+					}
+				},
+				[PROMPTING_FOR_RESUME]: {
+					on: {
+						[RESUME_ATTEMPT]: RESUMING_ATTEMPT
+					}
+				},
+				[RESUMING_ATTEMPT]: {
+					invoke: {
+						id: 'resumeAttempt',
+						src: async context => {
+							const { draftId, attemptId } = context.assessment.unfinishedAttempt
+							return await AssessmentStateHelpers.resumeAttempt(draftId, attemptId)
+						},
+						onDone: {
+							target: IN_ATTEMPT,
+							actions: updateContextWithAssessmentResponse
+						},
+						onError: RESUME_ATTEMPT_FAILED
+					}
+				},
+				[IN_ATTEMPT]: {
+					on: {
+						[SEND_RESPONSES]: SENDING_RESPONSES
+					}
+				},
+				[START_ATTEMPT_FAILED]: {
+					on: {
+						[ACKNOWLEDGE]: NOT_IN_ATTEMPT
+					}
+				},
+				[IMPORT_ATTEMPT_FAILED]: {
+					on: {
+						[ACKNOWLEDGE]: NOT_IN_ATTEMPT
+					}
+				},
+				[RESUME_ATTEMPT_FAILED]: {
+					on: {
+						[ACKNOWLEDGE]: PROMPTING_FOR_RESUME
+					}
+				},
+				[SENDING_RESPONSES]: {
+					invoke: {
+						id: 'sendingResponses',
+						src: async context => {
+							const { assessmentId, attemptId } = context.assessment.current
+							return await AssessmentStateHelpers.sendResponses(assessmentId, attemptId)
+						},
+						onDone: SEND_RESPONSES_SUCCESSFUL,
+						onError: SEND_RESPONSES_FAILED
+					}
+				},
+				[SEND_RESPONSES_SUCCESSFUL]: {
+					on: {
+						[END_ATTEMPT]: ENDING_ATTEMPT,
+						[CONTINUE_ATTEMPT]: IN_ATTEMPT
+					}
+				},
+				[SEND_RESPONSES_FAILED]: {
+					on: {
+						retry: SENDING_RESPONSES,
+						[CONTINUE_ATTEMPT]: IN_ATTEMPT
+					}
+				},
+				[ENDING_ATTEMPT]: {
+					invoke: {
+						id: 'endAttempt',
+						src: async context => {
+							const { assessmentId, attemptId } = context.assessment.current
+							const draftId = OboModel.models[assessmentId].getRoot().get('draftId')
+
+							return await AssessmentStateHelpers.endAttempt(draftId, attemptId)
+						},
+						onDone: {
+							target: END_ATTEMPT_SUCCESSFUL,
+							actions: [
+								assign({
+									assessment: (context, event) => {
+										context.assessment.attempts = event.data.attempts
+										context.assessment.highestAssessmentScoreAttempts =
+											event.data.highestAssessmentScoreAttempts
+										context.assessment.highestAttemptScoreAttempts =
+											event.data.highestAttemptScoreAttempts
+										context.assessment.lti = event.data.lti
+										context.assessment.unfinishedAttempt = event.data.unfinishedAttempt
+										context.assessment.current = null
+										// context.assessment = { ...context.assessment, ...event.data, current: null }
+
+										return context.assessment
+									}
+								})
+							]
+						},
+						onError: END_ATTEMPT_FAILED
+					}
+				},
+				[END_ATTEMPT_SUCCESSFUL]: {
+					on: {
+						[ACKNOWLEDGE]: NOT_IN_ATTEMPT
+					}
+				},
+				[END_ATTEMPT_FAILED]: {
+					on: {
+						[CONTINUE_ATTEMPT]: IN_ATTEMPT
+					}
+				}
+			}
 		})
 
-		// this.boundOnForceSentAllResponses = this.onForceSentAllResponses.bind(this)
-		this.__onEndAttempt = __onEndAttempt
-
-		this.state = {
-			assessment: assessmentObject,
-			__endAttemptResponse: null,
-			context: null
-		}
+		this.service = interpret(this.machine)
 	}
 
-	onAttemptStarted(startAttemptResp) {
-		// debugger
-		const id = startAttemptResp.assessmentId
-		const model = OboModel.models[id]
-
-		model.children.at(1).children.reset()
-		for (const child of Array.from(startAttemptResp.questions)) {
-			const c = OboModel.create(child)
-			model.children.at(1).children.add(c)
-		}
-
-		//this.state.assessments[id].state = IN_ATTEMPT
-		//@TODO:
-		this.state.assessment.current = startAttemptResp
-
-		this.transitionTo(IN_ATTEMPT)
+	send(action) {
+		this.service.send(action)
 	}
 
-	onForceSentAllResponses(payload) {
-		// // debugger
-		this.dispatch('_onForceSentAllResponses', payload.value)
+	getCurrentState() {
+		return this.service.state.value
 	}
+
+	start(onTransition) {
+		this.service.start()
+		this.service.onTransition((state, oldValues) => {
+			if (!state.changed) {
+				return
+			}
+
+			onTransition(this, state, oldValues)
+		})
+	}
+
+	stop() {
+		this.service.stop()
+	}
+
+	// startAttempt() {
+	// 	this.service.send('startAttempt')
+	// }
 }
 
 export default AssessmentStateMachine

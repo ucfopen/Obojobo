@@ -36,6 +36,15 @@ const AssessmentUtil = {
 		return state.machines[assessment.id] || null
 	},
 
+	getAssessmentMachineStateForModel(state, model) {
+		const machine = AssessmentUtil.getAssessmentMachineForModel(state, model)
+		if (!machine) {
+			return null
+		}
+
+		return machine.getCurrentState()
+	},
+
 	getLastAttemptForModel(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {

@@ -63,9 +63,11 @@
 		"slate-react": "^0.57.2",
 		"slate-schema-violations": "^0.1.39",
 		"smoothscroll-polyfill": "^0.4.4",
+		"styled-components": "^5.1.0",
 		"sysend": "^1.3.3",
 		"underscore": "1.10.2",
-		"url-parse": "^1.4.7 "
+		"url-parse": "^1.4.7 ",
+		"xstate": "^4.9.1"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.2"

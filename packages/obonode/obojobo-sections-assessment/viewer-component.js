@@ -20,7 +20,7 @@ const { SimpleDialog, Dialog } = Common.components.modal
 // const { Dialog } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
-const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
+const { AssessmentNetworkStates, AssessmentStateActions } = Viewer.stores.assessmentStore
 const { NavUtil, FocusUtil, CurrentAssessmentStates } = Viewer.util
 
 class ModalPortal extends React.Component {
@@ -244,7 +244,11 @@ class Assessment extends React.Component {
 		)
 
 		ModalUtil.hide()
-		machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
+
+		machine.send(AssessmentStateActions.SEND_RESPONSES)
+
+		// machine.forceSendAllResponses()
+		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
 	}
 
 	closeDialog() {
@@ -263,7 +267,10 @@ class Assessment extends React.Component {
 				)
 
 				ModalUtil.hide()
-				machine.dispatch('tryResumeAttempt')
+
+				//@TODO XSTATE
+				// machine.dispatch('tryResumeAttempt')
+				machine.send(AssessmentStateActions.RESUME_ATTEMPT)
 
 				break
 		}
@@ -371,6 +378,12 @@ class Assessment extends React.Component {
 						this.props.moduleData.questionState,
 						this.props.model,
 						this.props.moduleData.navState.context
+					)}
+				</h1>
+				<h1>
+					{AssessmentUtil.getAssessmentMachineStateForModel(
+						this.props.moduleData.assessmentState,
+						this.props.model
 					)}
 				</h1>
 				<StateMachineComponent

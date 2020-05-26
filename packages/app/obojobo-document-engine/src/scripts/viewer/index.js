@@ -10,6 +10,7 @@ import Header from './components/header'
 import LTINetworkStates from './stores/assessment-store/lti-network-states'
 import LTIResyncStates from './stores/assessment-store/lti-resync-states'
 import AssessmentNetworkStates from './stores/assessment-store/assessment-network-states'
+import AssessmentStateActions from './stores/assessment-store/assessment-state-actions'
 import Logo from './components/logo'
 import MediaStore from './stores/media-store'
 import MediaUtil from './util/media-util'
@@ -41,7 +42,8 @@ export default {
 		assessmentStore: {
 			LTINetworkStates,
 			LTIResyncStates,
-			AssessmentNetworkStates
+			AssessmentNetworkStates,
+			AssessmentStateActions
 		},
 		NavStore,
 		MediaStore,

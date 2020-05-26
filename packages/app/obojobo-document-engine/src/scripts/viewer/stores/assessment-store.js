@@ -14,6 +14,7 @@ import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 import React from 'react'
 import AssessmentStateMachine from './assessment-state-machine'
+import AssessmentStateActions from './assessment-store/assessment-state-actions'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
@@ -26,7 +27,7 @@ const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
 	state: AssessmentNetworkStates.NO_ATTEMPT_STARTED,
 	current: null,
-	currentResponses: [],
+	// currentResponses: [],
 	attempts: [],
 	unfinishedAttempt: null,
 	highestAssessmentScoreAttempts: [],
@@ -61,9 +62,9 @@ class AssessmentStore extends Store {
 			this.resetNetworkState(payload.value.id)
 		})
 
-		Dispatcher.on('question:setResponse', payload => {
-			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
-		})
+		// Dispatcher.on('question:setResponse', payload => {
+		// 	this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
+		// })
 
 		Dispatcher.on('question:forceSentAllResponses', payload => {
 			this.onForceSentAllResponses(payload.value.success, payload.value.context)
@@ -114,14 +115,20 @@ class AssessmentStore extends Store {
 				this.state.assessments[id] = assessmentObject
 				this.state.machines[id] = new AssessmentStateMachine(
 					assessmentObject,
-					this.triggerChange.bind(this),
 					this.onEndAttempt.bind(this)
 				)
+				this.state.machines[id].start(this.onStateMachineTransition.bind(this))
+				window.__asm = this.state.machines[id]
 			})
 
 		// necessary?
 		if (!attemptsByAssessment) return
 		this.updateAttempts(attemptsByAssessment)
+	}
+
+	onStateMachineTransition(assessmentMachine, state, oldValues) {
+		console.log('got', state, oldValues)
+		this.triggerChange()
 	}
 
 	onEndAttempt(endAttemptResp) {
@@ -195,7 +202,11 @@ class AssessmentStore extends Store {
 			NavUtil.goto(assessment.unfinishedAttempt.assessmentId)
 			const machine = this.state.machines[assessment.unfinishedAttempt.assessmentId]
 
-			machine.gotoStep(AssessmentNetworkStates.WILL_RESUME_ATTEMPT)
+			// machine.dispatch('willResumeAttempt')
+			machine.send(AssessmentStateActions.PROMPT_FOR_RESUME)
+
+			// debugger
+			// machine.willResumeAttempt()
 			// return ModalUtil.show(
 			// 	<SimpleDialog
 			// 		ok
@@ -341,9 +352,9 @@ class AssessmentStore extends Store {
 			}
 		})
 
-		assessment.currentResponses.forEach(questionId =>
-			QuestionUtil.clearResponse(questionId, context)
-		)
+		// assessment.currentResponses.forEach(questionId =>
+		// 	QuestionUtil.clearResponse(questionId, context)
+		// )
 
 		assessment.current = null
 
@@ -459,21 +470,21 @@ class AssessmentStore extends Store {
 		this.triggerChange()
 	}
 
-	trySetResponse(questionId) {
-		const model = OboModel.models[questionId]
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
+	// trySetResponse(questionId) {
+	// 	const model = OboModel.models[questionId]
+	// 	const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
-		if (!assessment || !assessment.currentResponses) {
-			// Resolve false if not an error but couldn't do anything because not in an attempt
-			return Promise.resolve(false)
-		}
+	// 	if (!assessment || !assessment.currentResponses) {
+	// 		// Resolve false if not an error but couldn't do anything because not in an attempt
+	// 		return Promise.resolve(false)
+	// 	}
 
-		if (assessment.currentResponses.indexOf(questionId) === -1) {
-			assessment.currentResponses.push(questionId)
-		}
+	// 	if (assessment.currentResponses.indexOf(questionId) === -1) {
+	// 		assessment.currentResponses.push(questionId)
+	// 	}
 
-		this.triggerChange()
-	}
+	// 	this.triggerChange()
+	// }
 
 	onForceSentAllResponses(success, context) {
 		// debugger

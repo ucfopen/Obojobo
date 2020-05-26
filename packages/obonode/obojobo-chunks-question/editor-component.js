@@ -39,6 +39,8 @@ class Question extends React.Component {
 	}
 
 	onSetType(event) {
+		event.preventDefault()
+
 		const type = event.target.checked ? 'survey' : 'default'
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
