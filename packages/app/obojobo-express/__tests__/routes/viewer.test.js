@@ -115,7 +115,7 @@ describe('viewer route', () => {
 	})
 
 	test('launch visit requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 		mockCurrentDocument = null
 
 		return request(app)
@@ -123,8 +123,7 @@ describe('viewer route', () => {
 			.type('application/x-www-form-urlencoded')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -229,15 +228,14 @@ describe('viewer route', () => {
 	})
 
 	test('view visit requires a current document', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		mockCurrentDocument = null
 		return request(app)
 			.get('/' + validUUID() + '/visit/' + validUUID())
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 

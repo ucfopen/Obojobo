@@ -16,7 +16,7 @@ class MCAssessment extends React.Component {
 	changeResponseType(event) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, responseType: event.target.value } },
 			{ at: path }
 		)
@@ -25,7 +25,7 @@ class MCAssessment extends React.Component {
 	changeShuffle(shuffle) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, shuffle } },
 			{ at: path }
 		)
