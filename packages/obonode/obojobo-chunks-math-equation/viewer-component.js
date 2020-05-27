@@ -3,7 +3,6 @@ import './viewer-component.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-// import katex from 'katex'
 
 const { NonEditableChunk } = Common.chunk
 const { OboComponent } = Viewer.components
