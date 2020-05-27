@@ -19,6 +19,11 @@ jest.mock(
 jest.useFakeTimers()
 
 describe('MathEquation Editor Node', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+		jest.clearAllTimers()
+	})
+
 	test('renders with no latex', () => {
 		const component = renderer.create(<MathEquation element={{ content: { latex: null } }} />)
 		const tree = component.toJSON()
@@ -99,7 +104,7 @@ describe('MathEquation Editor Node', () => {
 		expect(editor.toggleEditable).toHaveBeenCalledWith(true)
 	})
 
-	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
+	test('MathEquation component calls setNode once edit dialog disappears', () => {
 		const component = mount(
 			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
 		)
@@ -119,6 +124,7 @@ describe('MathEquation Editor Node', () => {
 		      "alt": "",
 		      "label": "1.1",
 		      "latex": "2x/3",
+		      "open": false,
 		      "size": 1,
 		    },
 		  },
