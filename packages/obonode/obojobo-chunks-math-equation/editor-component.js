@@ -40,7 +40,37 @@ class MathEquation extends React.Component {
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.focusEquation = this.focusEquation.bind(this)
 
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+		this.returnFocusOnOpenTab = this.returnFocusOnOpenTab.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+
+		this.handleClick = this.handleClick.bind(this)
+
 		this.equationInput = React.createRef()
+		this.node = React.createRef()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (!this.state.open && this.state.open !== prevState.open) {
+			document.removeEventListener('mousedown', this.handleClick, false)
+		}
+
+		// This autofocuses the id input box when the node is opened
+		// for easy use by keyboard users
+		if (this.state.open && this.state.open !== prevState.open) {
+			document.addEventListener('mousedown', this.handleClick, false)
+		}
+
+		if (prevProps.selected && !this.props.selected) {
+			this.updateNodeFromState()
+		}
+	}
+
+	handleClick(event) {
+		if (!this.node.current || this.node.current.contains(event.target)) return
+
+		// When the click is outside the box, close the box
+		return this.unfreezeEditor()
 	}
 
 	contentToStateObj(content) {
@@ -54,10 +84,27 @@ class MathEquation extends React.Component {
 	}
 
 	returnFocusOnTab(event) {
-		// Since there is only one button, return on both tab and shift-tab
+		// Since there is only one button when the dialog is closed,
+		// return on both tab and shift-tab
 		if (event.key === 'Tab') {
 			event.preventDefault()
 			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	// These two are used to return focus from the open dialog,
+	// so they close the dialog before they return
+	returnFocusOnOpenTab(event) {
+		if (event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return this.unfreezeEditor()
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return this.unfreezeEditor()
 		}
 	}
 
@@ -109,12 +156,6 @@ class MathEquation extends React.Component {
 		this.setState(newContent) // update the display now
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.selected && !this.props.selected) {
-			this.updateNodeFromState()
-		}
-	}
-
 	freezeEditor() {
 		this.setState({ open: true })
 		this.props.editor.toggleEditable(false)
@@ -147,6 +188,7 @@ class MathEquation extends React.Component {
 						ref={this.equationInput}
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'latex')}
+						onKeyDown={this.returnFocusOnShiftTab}
 					/>
 				</div>
 				<div className="attribute">
@@ -179,7 +221,9 @@ class MathEquation extends React.Component {
 					/>
 				</div>
 				<div>
-					<Button onClick={this.unfreezeEditor.bind(this)}>Done</Button>
+					<Button onClick={this.unfreezeEditor} onKeyDown={this.returnFocusOnOpenTab}>
+						Done
+					</Button>
 				</div>
 			</div>
 		)
@@ -192,10 +236,7 @@ class MathEquation extends React.Component {
 			<div className={className} contentEditable={false}>
 				<div className="box-border">
 					{!this.state.open ? (
-						<Button
-							onClick={this.freezeEditor.bind(this)}
-							onKeyDown={this.returnFocusOnTab.bind(this)}
-						>
+						<Button onClick={this.freezeEditor} onKeyDown={this.returnFocusOnTab}>
 							Edit
 						</Button>
 					) : (
@@ -222,6 +263,7 @@ class MathEquation extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div
+					ref={this.node}
 					className={
 						'component obojobo-draft--chunks--math-equation pad ' +
 						'align-' +

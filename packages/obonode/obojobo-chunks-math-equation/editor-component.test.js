@@ -86,6 +86,44 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('MathEquation component edits properties', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		jest.runOnlyPendingTimers()
+		component.find('button').simulate('keyDown', { key: 'k' })
+		component.find('button').simulate('keyDown', { key: 'Tab' })
+		jest.runOnlyPendingTimers()
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		jest.runOnlyPendingTimers()
+		component
+			.find('input')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('input')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: true })
+		jest.runOnlyPendingTimers()
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('MathEquation component freezes and unfreezes editor', () => {
 		const editor = {
 			toggleEditable: jest.fn()
@@ -148,5 +186,40 @@ describe('MathEquation Editor Node', () => {
 		  },
 		]
 	`)
+	})
+
+	test('More Info Box handles clicks', () => {
+		const editor = {
+			toggleEditable: jest.fn()
+		}
+		React.createRef = jest.fn()
+		const component = mount(
+			<MathEquation
+				element={{ content: { latex: '2x/3', label: '1.1' } }}
+				selected={true}
+				editor={editor}
+			/>
+		)
+
+		const nodeInstance = component.instance()
+		nodeInstance.node = {
+			current: {
+				contains: value => value
+			}
+		}
+
+		nodeInstance.handleClick({ target: true }) // click inside
+		let tree = component.html()
+		expect(tree).toMatchSnapshot()
+
+		nodeInstance.node.current = { contains: value => value }
+		nodeInstance.handleClick({ target: false }) // click outside
+		tree = component.html()
+		expect(tree).toMatchSnapshot()
+
+		nodeInstance.node.current = null
+		nodeInstance.handleClick() // click without node
+		tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 })
