@@ -1,7 +1,5 @@
 // Turns a StyleableText item into a mock DOM tree, which can then be used to render out in React
 
-// const katex = require('katex')
-
 const StyleType = require('./style-type')
 const MockElement = require('../mockdom/mock-element')
 const MockTextNode = require('../mockdom/mock-text-node')
