@@ -2,7 +2,6 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-// import katex from 'katex'
 
 const { OboComponent } = Viewer.components
 
