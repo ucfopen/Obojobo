@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react'
 import { ReactEditor, useSlate } from 'slate-react'
 import { Editor } from 'slate'
-// import katex from 'katex'
 
 import './hovering-preview.scss'
 const LATEX_MARK = '_latex'
