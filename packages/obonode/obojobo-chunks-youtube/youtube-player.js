@@ -51,7 +51,7 @@ class YouTubePlayer extends React.Component {
 			// register a single global handler
 			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReadyHandler
 
-			// add the script thag that loads the youtube iframe api
+			// add the script tag that loads the youtube iframe api
 			insertDomTag({src: 'https://www.youtube.com/iframe_api'}, 'script')
 		}
 	}
