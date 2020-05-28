@@ -531,7 +531,14 @@ const sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, ltiResult) => {
+const insertReplaceResultEvent = (
+	userId,
+	draftDocument,
+	launch,
+	outcomeData,
+	ltiResult,
+	visitId
+) => {
 	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -545,9 +552,10 @@ const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, lt
 			},
 			result: ltiResult
 		},
+		visitId,
 		userId,
 		ip: '',
-		eventVersion: '2.0.0',
+		eventVersion: '2.1.0',
 		metadata: {},
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId
@@ -680,7 +688,8 @@ const sendHighestAssessmentScore = (
 	draftDocument,
 	assessmentId,
 	isPreview,
-	resourceLinkId
+	resourceLinkId,
+	visitId
 ) => {
 	const logId = uuid()
 	let requiredData = null
@@ -793,7 +802,14 @@ const sendHighestAssessmentScore = (
 			result.dbStatus = DB_STATUS_ERROR
 		})
 		.then(() => {
-			insertReplaceResultEvent(userId, draftDocument, requiredData.launch, outcomeData, result)
+			insertReplaceResultEvent(
+				userId,
+				draftDocument,
+				requiredData.launch,
+				outcomeData,
+				result,
+				visitId
+			)
 		})
 		.catch(error => {
 			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)

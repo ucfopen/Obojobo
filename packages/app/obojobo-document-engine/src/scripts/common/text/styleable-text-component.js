@@ -1,6 +1,7 @@
 import React from 'react'
 
 import styleableTextRenderer from './styleable-text-renderer'
+import withProtocol from '../util/with-protocol'
 
 const emptyChar = String.fromCharCode(8203)
 
@@ -11,7 +12,7 @@ export default class StyleableTextComponent extends React.Component {
 		switch (el.type) {
 			case 'a':
 				if (el.attrs && el.attrs.href) {
-					attrs.href = el.attrs.href
+					attrs.href = withProtocol(el.attrs.href)
 					attrs.target = '_blank'
 				}
 				break

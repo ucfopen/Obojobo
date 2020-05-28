@@ -59,6 +59,7 @@ exports[`BasicMarks renderLeaf diplays expected style 6`] = `
 Object {
   "children": <div
     className="latex-editor "
+    spellCheck={false}
   >
     mockChild
   </div>,

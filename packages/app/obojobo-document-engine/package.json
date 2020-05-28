@@ -27,8 +27,7 @@
 			"stylelint"
 		],
 		"{__{tests,mocks}__,src}/**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"browserslist": [
@@ -46,7 +45,6 @@
 		"codemirror": "^5.53.2",
 		"date-fns": "^2.12.0",
 		"downloadjs": "^1.4.7",
-		"immutable": "^4.0.0-rc.12",
 		"katex": "^0.11.1",
 		"prop-types": "15.7.2",
 		"react": "^16.13.1",

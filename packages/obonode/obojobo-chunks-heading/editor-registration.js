@@ -64,30 +64,6 @@ const Heading = {
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
-	getNavItem(model) {
-		switch (model.modelState.headingLevel) {
-			case 1:
-			case 2:
-				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
-					return null
-				}
-
-				return {
-					type: 'sub-link',
-					label: model.modelState.textGroup.first.text,
-					path: [
-						model
-							.toText()
-							.toLowerCase()
-							.replace(/ /g, '-')
-					],
-					showChildren: false
-				}
-
-			default:
-				return null
-		}
 	}
 }
 

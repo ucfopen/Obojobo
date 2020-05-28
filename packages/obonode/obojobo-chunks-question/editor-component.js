@@ -106,7 +106,7 @@ class Question extends React.Component {
 				>
 					<div className="flipper question-editor">
 						<div className="content-back">
-							<div className="question-settings">
+							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
 								<select contentEditable={false} defaultValue={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>

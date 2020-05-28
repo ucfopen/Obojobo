@@ -1,15 +1,9 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
-import 'codemirror/mode/xml/xml'
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/addon/fold/foldcode'
-import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/addon/fold/xml-fold.js'
-import { Controlled as CodeMirror } from 'react-codemirror2'
 
 import APIUtil from '../../../scripts/viewer/util/api-util'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
@@ -17,6 +11,10 @@ import FileToolbar from './toolbars/file-toolbar'
 import ModalUtil from '../../common/util/modal-util'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 import EditorTitleInput from './editor-title-input'
+
+const CodeMirror = React.lazy(() =>
+	import(/* webpackChunkName: "code-mirror" */ './code-mirror-bundle')
+)
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -194,12 +192,14 @@ class CodeEditor extends React.Component {
 						/>
 					) : null}
 				</div>
-				<CodeMirror
-					options={this.state.options}
-					value={this.state.code}
-					onBeforeChange={this.onBeforeChange}
-					editorDidMount={this.setEditor}
-				/>
+				<Suspense fallback={<div>Loading...</div>}>
+					<CodeMirror
+						options={this.state.options}
+						value={this.state.code}
+						onBeforeChange={this.onBeforeChange}
+						editorDidMount={this.setEditor}
+					/>
+				</Suspense>
 			</div>
 		)
 	}

@@ -48,3 +48,8 @@ process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
 	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 })
+
+global.window.open = jest.fn()
+global.window.katex = {
+	renderToString: jest.fn().mockImplementation((input, options = {}) => `mock-katex-render-for-${input}-with-options-${JSON.stringify(options)}`)
+}

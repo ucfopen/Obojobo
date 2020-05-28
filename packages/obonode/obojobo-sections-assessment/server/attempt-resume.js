@@ -40,10 +40,11 @@ const resumeAttempt = async (
 		},
 		userId: currentUser.id,
 		ip: remoteAddress,
+		visitId: currentVisit.id,
 		metadata: {},
 		draftId: currentDocument.draftId,
 		contentId: currentDocument.contentId,
-		eventVersion: '1.1.0',
+		eventVersion: '1.2.0',
 		isPreview: currentVisit.is_preview,
 		caliperPayload: createAssessmentAttemptResumedEvent({
 			actor: { type: 'user', id: currentUser.id },
