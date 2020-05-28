@@ -106,7 +106,7 @@ module.exports =
 				Common: 'Common',
 				Viewer: 'Viewer',
 				slate: 'Slate',
-				'slate-react': 'SlateReact',
+				'slate-react': 'SlateReact'
 			},
 			plugins: [
 				new WatchIgnorePlugin([

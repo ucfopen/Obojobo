@@ -11,7 +11,7 @@ const { uuid } = Common.util
 const instanceCallbacksForYouTubeReady = []
 
 // single global hangler that notifies all registered YouTubePlayer Components
-const onYouTubeIframeAPIReadyHandler = () =>{
+const onYouTubeIframeAPIReadyHandler = () => {
 	// call every registered callback when ready
 	instanceCallbacksForYouTubeReady.forEach(cb => cb())
 }
@@ -26,9 +26,9 @@ class YouTubePlayer extends React.Component {
 
 	componentDidMount() {
 		// load YouTube Iframe API if it's not here yet
-		if(!window.YT){
+		if (!window.YT) {
 			this.loadYouTubeAPIWithCallback(this.loadVideo)
-		} else{
+		} else {
 			this.loadVideo()
 		}
 	}
@@ -42,17 +42,17 @@ class YouTubePlayer extends React.Component {
 		this.loadVideo()
 	}
 
-	loadYouTubeAPIWithCallback(onReadyCallBack){
+	loadYouTubeAPIWithCallback(onReadyCallBack) {
 		// register a callback for this component
 		instanceCallbacksForYouTubeReady.push(onReadyCallBack)
 
 		// no event handler registered yet?
-		if(!window.onYouTubeIframeAPIReady){
+		if (!window.onYouTubeIframeAPIReady) {
 			// register a single global handler
 			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReadyHandler
 
 			// add the script tag that loads the youtube iframe api
-			insertDomTag({src: '//www.youtube.com/iframe_api'}, 'script')
+			insertDomTag({ src: '//www.youtube.com/iframe_api' }, 'script')
 		}
 	}
 

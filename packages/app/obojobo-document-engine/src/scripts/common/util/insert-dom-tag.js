@@ -1,6 +1,6 @@
 const insertDomTag = (props, type) => {
 	const tag = document.createElement(type)
-	for(const i in props){
+	for (const i in props) {
 		tag[i] = props[i]
 	}
 	const firstTag = document.getElementsByTagName(type)[0]

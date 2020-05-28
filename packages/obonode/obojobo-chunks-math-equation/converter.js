@@ -5,7 +5,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * Copies the id, type, and triggers.  The conversion also saves the
  * latex, alt, align, label, and size attributes.
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Math Equation node 
+ * @returns {Object} An Obojobo Math Equation node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -22,9 +22,9 @@ const slateToObo = node => ({
 })
 
 /**
- * Generates a Slate node from an Obojobo Math Equation. 
+ * Generates a Slate node from an Obojobo Math Equation.
  * Copies all attributes, and adds a dummy child
- * @param {Object} node An Obojobo Math Equation node 
+ * @param {Object} node An Obojobo Math Equation node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
