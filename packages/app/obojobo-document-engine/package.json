@@ -27,8 +27,7 @@
 			"stylelint"
 		],
 		"{__{tests,mocks}__,src}/**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"browserslist": [

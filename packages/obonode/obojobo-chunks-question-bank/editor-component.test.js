@@ -81,12 +81,7 @@ describe('QuestionBank editor', () => {
 		pickSomeRadioInput.simulate('click')
 		pickSomeRadioInput.simulate('change', { target: { value: 'all' } })
 
-		// make sure chooseAll updates slate
-		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
-			props.editor,
-			{ content: { choose: 8, select: 'sequential', chooseAll: true } },
-			{ at: 'mock-path' }
-		)
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('QuestionBank component changes choose amount', () => {
@@ -124,13 +119,9 @@ describe('QuestionBank editor', () => {
 		pickCountInput.simulate('click')
 		pickCountInput.simulate('change', { target: { value: '7' } })
 		pickCountInput.simulate('blur')
+		jest.runAllTimers()
 
-		// make sure changing the pick input updates slate
-		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
-			props.editor,
-			{ content: { choose: '7', select: 'sequential', chooseAll: false } },
-			{ at: 'mock-path' }
-		)
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('QuestionBank component changes select type', () => {
@@ -157,12 +148,7 @@ describe('QuestionBank editor', () => {
 		questionChooseMethodSelectInput.simulate('click')
 		questionChooseMethodSelectInput.simulate('change', { target: { value: 'pick' } })
 
-		// make sure changing select updates to pick
-		expect(Transforms.setNodes).toHaveBeenLastCalledWith(
-			props.editor,
-			{ content: { choose: '8', select: 'pick' } },
-			{ at: 'mock-path' }
-		)
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('QuestionBank component deletes self', () => {
@@ -280,5 +266,24 @@ describe('QuestionBank editor', () => {
 			expect.objectContaining({ type: 'ObojoboDraft.Chunks.QuestionBank' }),
 			{ at: ['mock-path', 1] }
 		)
+	})
+
+	test('QuestionBank component sets properties', () => {
+		const props = {
+			element: {
+				content: {},
+				children: []
+			},
+			editor: {},
+			selected: true
+		}
+
+		ReactEditor.findPath.mockReturnValueOnce([])
+
+		const component = mount(<QuestionBank {...props} />)
+
+		component.setProps({ selected: false })
+		jest.runAllTimers()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })
