@@ -1,7 +1,7 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -67,6 +67,37 @@ const unfreezeEditor = editor => {
 
 const displaySettings = (editor, element, content) => {
 	const radioGroupName = `${element.id}-choose`
+
+	const changeChooseTypeHandler = useCallback(
+		event => {
+			changeChooseType(editor, element, event)
+		},
+		[editor, element]
+	)
+
+	const changeSelectHandler = useCallback(
+		event => {
+			changeSelect(editor, element, event)
+		},
+		[editor, element]
+	)
+
+	const changeChooseAmountHandler = useCallback(
+		event => {
+			changeChooseAmount(editor, element, event)
+		},
+		[editor, element]
+	)
+
+	const freezeEditorHandler = useCallback(() => {
+		freezeEditor(editor)
+	}, [editor])
+	const unFreezeEditorHandler = useCallback(() => {
+		unfreezeEditor(editor)
+	}, [editor])
+
+	const stopPropagation = useCallback(event => event.stopPropagation())
+
 	return (
 		<div className={'qb-settings'} contentEditable={false}>
 			<fieldset className="choose">
@@ -77,7 +108,7 @@ const displaySettings = (editor, element, content) => {
 						name={radioGroupName}
 						value="all"
 						checked={content.chooseAll}
-						onChange={changeChooseType.bind(this, editor, element)}
+						onChange={changeChooseTypeHandler}
 					/>
 					All questions
 				</label>
@@ -88,7 +119,7 @@ const displaySettings = (editor, element, content) => {
 						name={radioGroupName}
 						value="pick"
 						checked={!content.chooseAll}
-						onChange={changeChooseType.bind(this, editor, element)}
+						onChange={changeChooseTypeHandler}
 					/>
 					Pick
 				</label>
@@ -96,19 +127,15 @@ const displaySettings = (editor, element, content) => {
 					type="number"
 					value={content.choose}
 					disabled={content.chooseAll}
-					onClick={event => event.stopPropagation()}
-					onChange={changeChooseAmount.bind(this, editor, element)}
-					onFocus={freezeEditor.bind(this, editor)}
-					onBlur={unfreezeEditor.bind(this, editor)}
+					onClick={stopPropagation}
+					onChange={changeChooseAmountHandler}
+					onFocus={freezeEditorHandler}
+					onBlur={unFreezeEditorHandler}
 				/>
 			</fieldset>
 			<label className="select">
 				How should questions be selected?
-				<select
-					value={content.select}
-					onClick={event => event.stopPropagation()}
-					onChange={changeSelect.bind(this, editor, element)}
-				>
+				<select value={content.select} onClick={stopPropagation} onChange={changeSelectHandler}>
 					<option value="sequential">In order</option>
 					<option value="random">Randomly</option>
 					<option value="random-unseen">Randomly, with no repeats</option>

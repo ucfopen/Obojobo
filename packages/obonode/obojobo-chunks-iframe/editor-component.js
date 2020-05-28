@@ -17,7 +17,7 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class IFrame extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.focusIframe = this.focusIframe.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
@@ -36,10 +36,7 @@ class IFrame extends React.Component {
 
 	showIFramePropertiesModal() {
 		ModalUtil.show(
-			<IframeProperties
-				content={this.props.element.content}
-				onConfirm={this.changeProperties}
-			/>
+			<IframeProperties content={this.props.element.content} onConfirm={this.changeProperties} />
 		)
 	}
 
@@ -93,7 +90,7 @@ class IFrame extends React.Component {
 					<div
 						className={`editor-container  ${isSelected}`}
 						style={previewStyle}
-						onClick={this.focusIframe.bind(this)}
+						onClick={this.focusIframe}
 					>
 						<Button className="delete-button" onClick={this.deleteNode}>
 							×
@@ -102,10 +99,7 @@ class IFrame extends React.Component {
 							<span className="title" aria-hidden contentEditable={false}>
 								{this.getTitle(content.src || null, content.title)}
 							</span>
-							<Button
-								className="properties-button"
-								onClick={this.showIFramePropertiesModal}
-							>
+							<Button className="properties-button" onClick={this.showIFramePropertiesModal}>
 								IFrame Properties
 							</Button>
 						</div>

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
@@ -19,6 +19,14 @@ const FileToolbar = props => {
 	// selectAll is provided by Slate editor or as a prop
 	const selectAll = props.selectAll || editor.selectAll
 
+	const onPreviewClickHandler = useCallback(() => {
+		openPreview(props.draftId)
+	}, [props.draftId])
+
+	const onSelectAllHandler = useCallback(() => {
+		selectAll(editor)
+	}, [selectAll, editor])
+
 	const editMenu = [
 		{ name: 'Undo', type: 'action', action: editor.undo },
 		{ name: 'Redo', type: 'action', action: editor.redo },
@@ -28,7 +36,7 @@ const FileToolbar = props => {
 			action: editor.deleteFragment,
 			disabled: props.isDeletable === null ? true : props.isDeletable
 		},
-		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
+		{ name: 'Select all', type: 'action', action: onSelectAllHandler }
 	]
 
 	const saved = props.saved ? 'saved' : ''
@@ -54,7 +62,7 @@ const FileToolbar = props => {
 			{props.insertMenu}
 			{props.formatMenu}
 			<div className={'saved-message ' + saved}>Saved!</div>
-			<Button onClick={openPreview.bind(this, props.draftId)} className={'preview-button'}>
+			<Button onClick={onPreviewClickHandler} className={'preview-button'}>
 				Preview Module
 			</Button>
 		</div>

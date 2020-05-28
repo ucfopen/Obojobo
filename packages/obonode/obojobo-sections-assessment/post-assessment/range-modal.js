@@ -34,6 +34,13 @@ class RangeModal extends React.Component {
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.updateSingleScoreFromEvent = this.updateSingleScoreFromEvent.bind(this)
 		this.onToggleNoScore = this.onToggleNoScore.bind(this)
+		this.onChangeTypeToSingle = this.onChangeType.bind(this, 'single')
+		this.onChangeTypeToRange = this.onChangeType.bind(this, 'range')
+
+		this.updateRangeMin = this.updateRangeFromEvent.bind(this, 'min')
+		this.updateRangeMax = this.updateRangeFromEvent.bind(this, 'max')
+		this.updateRangeIsMinInclusive = this.updateRangeFromEvent.bind(this, 'isMinInclusive')
+		this.updateRangeIsMaxInclusive = this.updateRangeFromEvent.bind(this, 'isMaxInclusive')
 	}
 
 	getValueFromInput(el) {
@@ -166,7 +173,7 @@ class RangeModal extends React.Component {
 								id="editor--sections--assessment--post-assessment--range-modal--type-single"
 								ref={this.inputRef}
 								checked={type === 'single'}
-								onChange={this.onChangeType.bind(this, 'single')}
+								onChange={this.onChangeTypeToSingle}
 							/>
 							<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type-single">
 								Single Score
@@ -209,7 +216,7 @@ class RangeModal extends React.Component {
 								value="range"
 								id="editor--sections--assessment--post-assessment--range-modal--type-range"
 								checked={type === 'range'}
-								onChange={this.onChangeType.bind(this, 'range')}
+								onChange={this.onChangeTypeToRange}
 							/>
 							<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type-range">
 								Range
@@ -228,13 +235,13 @@ class RangeModal extends React.Component {
 											step="1"
 											type="number"
 											value={this.state.range.min}
-											onChange={this.updateRangeFromEvent.bind(this, 'min')}
+											onChange={this.updateRangeMin}
 										/>
 										<input
 											type="checkbox"
 											id="editor--sections--assessment--post-assessment--range-modal--min-inclusive"
 											checked={this.state.range.isMinInclusive}
-											onChange={this.updateRangeFromEvent.bind(this, 'isMinInclusive')}
+											onChange={this.updateRangeIsMinInclusive}
 										/>
 										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--min-inclusive">
 											Inclusive
@@ -252,13 +259,13 @@ class RangeModal extends React.Component {
 											step="1"
 											type="number"
 											value={this.state.range.max}
-											onChange={this.updateRangeFromEvent.bind(this, 'max')}
+											onChange={this.updateRangeMax}
 										/>
 										<input
 											type="checkbox"
 											id="editor--sections--assessment--post-assessment--range-modal--max-inclusive"
 											checked={this.state.range.isMaxInclusive}
-											onChange={this.updateRangeFromEvent.bind(this, 'isMaxInclusive')}
+											onChange={this.updateRangeIsMaxInclusive}
 										/>
 										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--max-inclusive">
 											Inclusive
