@@ -510,6 +510,16 @@ exports[`VisualEditor VisualEditor component 1`] = `
       value="Mock Title"
     />
     <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
+    />
+    <div
       className="visual-editor--content-toolbar"
     >
       <button
@@ -1020,6 +1030,16 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       value="Mock Title"
     />
     <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
+    />
+    <div
       className="visual-editor--content-toolbar"
     >
       <button
@@ -1528,6 +1548,16 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       onKeyDown={[Function]}
       placeholder="(Untitled Module)"
       value="Mock Title"
+    />
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
@@ -2086,6 +2116,16 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       value="Mock Title"
     />
     <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
+    />
+    <div
       className="visual-editor--content-toolbar"
     >
       <button
@@ -2590,6 +2630,16 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       onKeyDown={[Function]}
       placeholder="(Untitled Module)"
       value="Mock Title"
+    />
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"

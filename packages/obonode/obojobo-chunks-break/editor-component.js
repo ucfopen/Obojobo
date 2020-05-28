@@ -1,7 +1,7 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import { ReactEditor } from 'slate-react'
 import { Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -17,10 +17,14 @@ const toggleSize = (editor, element) => {
 }
 
 const renderButton = (editor, element) => {
+	const onClickHandler = useCallback(() => {
+		toggleSize(editor, element)
+	}, [editor, element])
+
 	return (
 		<div className="buttonbox-box" contentEditable={false}>
 			<div className="box-border">
-				<Button className="toggle-size" onClick={toggleSize.bind(this, editor, element)}>
+				<Button className="toggle-size" onClick={onClickHandler}>
 					Toggle Size
 				</Button>
 			</div>
