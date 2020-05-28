@@ -50,3 +50,11 @@ global.mockReactComponent = (target, name) => {
 }
 
 global.window.open = jest.fn()
+global.window.katex = {
+	renderToString: jest
+		.fn()
+		.mockImplementation(
+			(input, options = {}) =>
+				`mock-katex-render-for-${input}-with-options-${JSON.stringify(options)}`
+		)
+}

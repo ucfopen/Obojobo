@@ -2,7 +2,6 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import katex from 'katex'
 import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -15,7 +14,7 @@ const isOrNot = Common.util.isOrNot
 
 const getLatexHtml = latex => {
 	try {
-		const html = katex.renderToString(latex, { displayMode: true })
+		const html = window.katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }

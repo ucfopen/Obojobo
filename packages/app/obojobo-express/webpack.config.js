@@ -37,6 +37,7 @@ module.exports =
 			},
 			entry: entriesFromObojoboModules,
 			output: {
+				publicPath: '/static/',
 				path: path.join(__dirname, 'server', 'public', 'compiled'),
 				filename: `${filename}.js`
 			},
@@ -106,7 +107,6 @@ module.exports =
 				Viewer: 'Viewer',
 				slate: 'Slate',
 				'slate-react': 'SlateReact',
-				immutable: 'Immutable'
 			},
 			plugins: [
 				new WatchIgnorePlugin([
