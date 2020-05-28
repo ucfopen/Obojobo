@@ -32,6 +32,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         <span
           aria-hidden={true}
           className="title"
+          contentEditable={false}
         >
           mockTitle
         </span>
@@ -84,6 +85,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         <span
           aria-hidden={true}
           className="title"
+          contentEditable={false}
         >
           mockSrc
         </span>

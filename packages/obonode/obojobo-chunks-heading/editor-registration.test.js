@@ -96,33 +96,4 @@ describe('Heading editor', () => {
 
 		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
 	})
-
-	test('getNavItem returns expected object', () => {
-		const model = {
-			modelState: {
-				headingLevel: 1,
-				textGroup: {
-					first: {
-						text: 'testText'
-					}
-				}
-			},
-			getIndex: () => 0,
-			showChildren: false,
-			toText: () => 'test string'
-		}
-
-		expect(Heading.getNavItem(model)).toBe(null)
-
-		model.modelState.headingLevel = 2
-		expect(Heading.getNavItem(model)).toEqual({
-			type: 'sub-link',
-			label: 'testText',
-			path: ['test-string'],
-			showChildren: false
-		})
-
-		model.modelState.headingLevel = 3
-		expect(Heading.getNavItem(model)).toBe(null)
-	})
 })

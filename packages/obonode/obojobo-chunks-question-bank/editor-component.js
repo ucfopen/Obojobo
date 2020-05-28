@@ -39,14 +39,17 @@ class QuestionBank extends React.Component {
 		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
-	onChangeContent(key, event) {
-		const newContent = { [key]: event.target.value }
-		this.setState(newContent) // update the display now
-	}
-
 	componentDidUpdate(prevProps) {
 		if (prevProps.selected && !this.props.selected) {
 			this.updateNodeFromState()
+		}
+	}
+
+	contentToStateObj(content) {
+		return {
+			chooseAll: content.chooseAll,
+			choose: content.choose || 1,
+			select: content.select || 'sequential'
 		}
 	}
 
@@ -74,6 +77,23 @@ class QuestionBank extends React.Component {
 		event.stopPropagation()
 		const chooseAll = event.target.value === 'all'
 		this.setState({ chooseAll }) // update the display now
+	}
+
+	onChangeContent(key, event) {
+		const newContent = { [key]: event.target.value }
+		this.setState(newContent) // update the display now
+	}
+
+	freezeEditor() {
+		clearTimeout(window.restoreEditorFocusId)
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		window.restoreEditorFocusId = setTimeout(() => {
+			this.updateNodeFromState()
+			this.props.editor.toggleEditable(true)
+		})
 	}
 
 	displaySettings(editor, element) {
@@ -133,26 +153,6 @@ class QuestionBank extends React.Component {
 				</label>
 			</div>
 		)
-	}
-
-	freezeEditor() {
-		clearTimeout(window.restoreEditorFocusId)
-		this.props.editor.toggleEditable(false)
-	}
-
-	unfreezeEditor() {
-		window.restoreEditorFocusId = setTimeout(() => {
-			this.updateNodeFromState()
-			this.props.editor.toggleEditable(true)
-		})
-	}
-
-	contentToStateObj(content) {
-		return {
-			chooseAll: content.chooseAll,
-			choose: content.choose || 1,
-			select: content.select || 'sequential'
-		}
 	}
 
 	render() {

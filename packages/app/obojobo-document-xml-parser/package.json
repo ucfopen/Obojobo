@@ -1,14 +1,14 @@
 {
   "dependencies": {
     "minimist": "^1.2.5",
-    "obojobo-lib-utils": "^8.0.2",
+    "obojobo-lib-utils": "^9.0.0",
     "xml-js": "^1.0.2"
   },
   "devDependencies": {
     "lint-staged": "^10.2.2"
   },
   "name": "obojobo-document-xml-parser",
-  "version": "8.0.2",
+  "version": "9.0.0",
   "license": "AGPL-3.0-only",
   "main": "xml2draft.js",
   "scripts": {
@@ -23,8 +23,7 @@
   },
   "lint-staged": {
     "**/*.{js,scss}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "jest": {
