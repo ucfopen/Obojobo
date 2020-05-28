@@ -19,21 +19,4 @@ exports[`HoveringPreview renders with LaTeX 1`] = `
 </div>
 `;
 
-exports[`HoveringPreview renders without LaTeX 1`] = `
-<div
-  className="hovering-preview"
-  contentEditable={false}
->
-  <p>
-    Preview:
-  </p>
-  <span
-    className="preview-latex"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "",
-      }
-    }
-  />
-</div>
-`;
+exports[`HoveringPreview renders without LaTeX 1`] = `null`;
