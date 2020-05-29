@@ -27,9 +27,11 @@ class YouTubeProperties extends React.Component {
 		return this.idInputRef.current.focus()
 	}
 
-	handleIdChange(event) {
+	handleUrlChange(event) {
 		const videoInfo = EditorUtil.youTubeParseUrl(event.target.value)
-		const videoId = videoInfo.videoId === false ? event.target.value : videoInfo.videoId
+		const videoId = videoInfo.videoId === false ? "" : videoInfo.videoId
+		const videoInputValidClass = videoInfo.videoId === false ? "youtube--video-invalid" : "youtube--video-valid"
+		const videoUrl = event.target.value
 
 		let startTime = this.state.content.startTime
 		let endTime = this.state.content.endTime
@@ -41,6 +43,8 @@ class YouTubeProperties extends React.Component {
 				content: {
 					...this.state.content,
 					videoId,
+					videoUrl,
+					videoInputValidClass,
 					startTime,
 					endTime
 				}
@@ -52,6 +56,8 @@ class YouTubeProperties extends React.Component {
 				content: {
 					...this.state.content,
 					videoId,
+					videoUrl,
+					videoInputValidClass,
 					startTime
 				}
 			})
@@ -60,7 +66,9 @@ class YouTubeProperties extends React.Component {
 				...this.state,
 				content: {
 					...this.state.content,
-					videoId
+					videoId,
+					videoUrl,
+					videoInputValidClass,
 				}
 			})
 		}
@@ -125,31 +133,41 @@ class YouTubeProperties extends React.Component {
 				onConfirm={this.onConfirm}
 			>
 				<div className="youtube-video-properties">
-					<label>Youtube video id or url:</label>
 					<div className="youtube-video-properties-input-wrapper">
-						<input
-							id="obojobo-draft--chunks--youtube--video-id"
-							type="text"
-							ref={this.idInputRef}
-							value={this.state.content.videoId || ''}
-							onChange={this.handleIdChange.bind(this)}
-						/>
+						<label>Youtube video url:</label>
 						<div>
-							<MoreInfoButton ariaLabel="Click to explain youtube video options">
-								<div className="text-items">
-									<p>Add video by pasting one of the following:</p>
-									<hr />
-									<ul>
-										<li>The video url, from your browser's address bar</li>
-										<li>Embed code, provided by Youtube</li>
-										<li>The video's id</li>
-									</ul>
-								</div>
-							</MoreInfoButton>
+						<MoreInfoButton ariaLabel="Click to explain youtube video options">
+							<div className="text-items">
+								<p>Add video by pasting one of the following:</p>
+								<hr />
+								<ul>
+									<li>The video url, from your browser's address bar</li>
+									<li>Embed code, provided by Youtube</li>
+									<li>The video's id</li>
+								</ul>
+							</div>
+						</MoreInfoButton>
 						</div>
 					</div>
+					
 
-					<label>Start time in seconds (optional):</label>
+					<input
+						id="obojobo-draft--chunks--youtube--video-url"
+						type="text"
+						ref={this.idInputRef}
+						value={this.state.content.videoUrl || ''}
+						onChange={this.handleUrlChange.bind(this)}
+						className={this.state.content.videoInputValidClass}
+					/>
+					<br />
+					<input
+						id="obojobo-draft--chunks--youtube--video-id"
+						type="text"
+						ref={this.idInputRef}
+						value={this.state.content.videoId || ''}
+					/>
+
+					<label>Start time (optional):</label>
 					<input
 						type="number"
 						min="0"
@@ -158,7 +176,7 @@ class YouTubeProperties extends React.Component {
 					/>
 					<small>Seconds or MM:SS format (e.g. 135 or 2:15)</small>
 					<span className="error">{this.state.startTimeError}</span>
-					<label>End time in seconds (optional):</label>
+					<label>End time (optional):</label>
 					<input
 						type="number"
 						min="1"

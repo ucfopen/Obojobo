@@ -31,8 +31,21 @@
 		
 		width: calc(100% - 2em);
 
+		&#obojobo-draft--chunks--youtube--video-url {
+			margin-bottom: 2em;
+		}
 		&#obojobo-draft--chunks--youtube--video-id {
-			// margin-bottom: 2em;
+			display: none;
+		}
+
+	}
+
+	input {
+		&.youtube--video-invalid {
+			border: solid rgb(78, 38, 38) 2px;
+		}
+		&.youtube--video-valid {
+			border: solid lime 2px;
 		}
 	}
 
@@ -45,7 +58,7 @@
 
 	.youtube-video-properties-input-wrapper {
 		display: flex;
-		margin-bottom: 2em;
+		// margin-bottom: 2em;
 		flex-direction: row;
 
 		input {
@@ -76,10 +89,10 @@
 	}
 
 	.obojobo-draft--components--more-info-button.is-default-label > button {
-		margin-left: 6px;
-		vertical-align: sub;
+		margin-left: 0.75em;
+		vertical-align: middle;
+		margin-top: -0.35em;
 	}
-
 }
 
 
