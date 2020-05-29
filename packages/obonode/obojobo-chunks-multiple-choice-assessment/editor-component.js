@@ -13,7 +13,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 class MCAssessment extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 
 		this.changeResponseType = this.changeResponseType.bind(this)

@@ -40,6 +40,31 @@ describe('YouTube Editor Node', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
+	test('YouTube component handles tab', () => {
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} selected />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('YouTube component deletes self', () => {
 		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 

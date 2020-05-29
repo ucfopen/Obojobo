@@ -10,6 +10,7 @@ const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 describe('Code Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -142,7 +143,6 @@ describe('Code Converter', () => {
 
 	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const editor = {
 			children: [
@@ -167,7 +167,78 @@ describe('Code Converter', () => {
 			isVoid: () => false
 		}
 
+		jest.spyOn(Transforms, 'insertNodes').mockImplementation(() => {
+			// Mock the insertion of a ListLine
+			editor.children[0].children[0].subtype = LIST_LINE_NODE
+		})
+
 		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], {
+			type: 'unordered',
+			bulletStyle: 'disc'
+		})
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('switchType[LIST_NODE] handles not being first or last', () => {
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: CODE_NODE,
+					content: {},
+					children: [
+						{
+							type: CODE_NODE,
+							subtype: CODE_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: CODE_NODE,
+					content: {},
+					children: [
+						{
+							type: CODE_NODE,
+							subtype: CODE_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: CODE_NODE,
+					content: {},
+					children: [
+						{
+							type: CODE_NODE,
+							subtype: CODE_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [2, 0, 0], offset: 1 }
+			},
+			isVoid: () => false
+		}
+
+		jest.spyOn(Transforms, 'insertNodes').mockImplementation(() => {
+			// Mock the insertion of a ListLine
+			editor.children[0].children[0].subtype = LIST_LINE_NODE
+		})
+
+		Converter.switchType[LIST_NODE](editor, [editor.children[1], [1]], {
 			type: 'unordered',
 			bulletStyle: 'disc'
 		})
@@ -178,7 +249,6 @@ describe('Code Converter', () => {
 
 	test('switchType[LIST_NODE] changes leaf blocks to ordered list nodes with indent', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
 
 		const editor = {
 			children: [
@@ -214,6 +284,12 @@ describe('Code Converter', () => {
 			},
 			isVoid: () => false
 		}
+
+		jest.spyOn(Transforms, 'insertNodes').mockImplementation(() => {
+			// Mock the insertion of a ListLine
+			editor.children[0].children[0].subtype = LIST_LINE_NODE
+			editor.children[0].children[2].subtype = LIST_LINE_NODE
+		})
 
 		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]], {
 			type: 'ordered',

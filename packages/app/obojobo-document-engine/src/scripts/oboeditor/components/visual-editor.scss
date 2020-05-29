@@ -37,6 +37,26 @@
 		cursor: text;
 	}
 
+	.skip-nav {
+		position: absolute;
+		z-index: 6;
+		left: 1em;
+		top: 1em;
+		font-size: 0.8em;
+
+		> button {
+			position: absolute;
+			left: -20em;
+			top: 0;
+			padding: 0.5em 1em;
+			white-space: nowrap;
+
+			&:focus {
+				left: 0;
+			}
+		}
+	}
+
 	span[data-placeholder] {
 		pointer-events: none;
 

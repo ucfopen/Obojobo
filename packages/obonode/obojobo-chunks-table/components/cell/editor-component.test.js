@@ -8,7 +8,7 @@ import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
@@ -23,18 +23,14 @@ describe('Cell Editor Node', () => {
 	})
 
 	test('Cell component', () => {
-		const component = renderer.create(
-			<Cell element={{ content: { header: false } }}/>
-		)
+		const component = renderer.create(<Cell element={{ content: { header: false } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Cell component as header', () => {
-		const component = renderer.create(
-			<Cell element={{ content: { header: true } }}/>
-		)
+		const component = renderer.create(<Cell element={{ content: { header: true } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -42,7 +38,7 @@ describe('Cell Editor Node', () => {
 
 	test('Cell component selected', () => {
 		const component = renderer.create(
-			<Cell element={{ content: { header: false } }} selected={true}/>
+			<Cell element={{ content: { header: false } }} selected={true} />
 		)
 		const tree = component.toJSON()
 
@@ -51,10 +47,34 @@ describe('Cell Editor Node', () => {
 
 	test('Cell component as selected header', () => {
 		const component = renderer.create(
-			<Cell element={{ content: { header: true } }} selected={true}/>
+			<Cell element={{ content: { header: true } }} selected={true} />
 		)
 		const tree = component.toJSON()
 
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Cell component handles tabbing', () => {
+		const component = mount(
+			<table>
+				<thead>
+					<tr>
+						<Cell element={{ content: { header: true } }} selected={true} />
+					</tr>
+				</thead>
+			</table>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', metaKey: 'true', shiftKey: 'true' })
+
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -63,7 +83,7 @@ describe('Cell Editor Node', () => {
 			<table>
 				<thead>
 					<tr>
-						<Cell element={{ content: { header: true } }} selected={true}/>
+						<Cell element={{ content: { header: true } }} selected={true} />
 					</tr>
 				</thead>
 			</table>
@@ -93,7 +113,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -105,16 +125,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -140,11 +157,11 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								},
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -156,16 +173,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: true } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: true } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -191,7 +205,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -203,16 +217,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -239,7 +250,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -251,16 +262,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -288,7 +296,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -300,16 +308,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -336,7 +341,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -348,16 +353,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -384,7 +386,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						},
@@ -395,7 +397,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -407,23 +409,20 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
 			.at(5)
 			.simulate('click')
 
-		expect(Transforms.removeNodes).toHaveBeenCalledWith(editor, { at: [0,0] })
+		expect(Transforms.removeNodes).toHaveBeenCalledWith(editor, { at: [0, 0] })
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
@@ -444,7 +443,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						},
@@ -455,7 +454,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -467,23 +466,20 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,1,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 1, 0])
 
 		component
 			.find('button')
 			.at(5)
 			.simulate('click')
 
-		expect(Transforms.removeNodes).toHaveBeenCalledWith(editor, { at: [0,1] })
+		expect(Transforms.removeNodes).toHaveBeenCalledWith(editor, { at: [0, 1] })
 	})
 
 	test('Cell component deletes only col', () => {
@@ -502,7 +498,7 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -514,16 +510,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')
@@ -550,11 +543,11 @@ describe('Cell Editor Node', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								},
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -566,16 +559,13 @@ describe('Cell Editor Node', () => {
 			<table>
 				<tbody>
 					<tr>
-						<Cell 
-							element={{ content: { header: false } }} 
-							selected={true}
-							editor={editor}/>
+						<Cell element={{ content: { header: false } }} selected={true} editor={editor} />
 					</tr>
 				</tbody>
 			</table>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0, 0])
 
 		component
 			.find('button')

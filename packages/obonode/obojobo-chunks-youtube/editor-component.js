@@ -16,28 +16,31 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.handleSourceChange = this.handleSourceChange.bind(this)
 		this.focusYoutube = this.focusYoutube.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showSourceModal = this.showSourceModal.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 	}
 	showSourceModal(event) {
 		event.stopPropagation()
 
 		ModalUtil.show(
-			<YouTubeProperties
-				content={this.props.element.content}
-				onConfirm={this.handleSourceChange}
-			/>
+			<YouTubeProperties content={this.props.element.content} onConfirm={this.handleSourceChange} />
 		)
 	}
 
 	handleSourceChange(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
 	}
 
 	renderNoVideo() {
@@ -66,6 +69,20 @@ class YouTube extends React.Component {
 		})
 	}
 
+	returnFocusOnTab(event) {
+		if (event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	render() {
 		const content = this.props.element.content
 
@@ -76,15 +93,27 @@ class YouTube extends React.Component {
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
-					onClick={this.focusYoutube}>
-					<Button className="delete-button" onClick={this.deleteNode}>
+					onClick={this.focusYoutube}
+				>
+					<Button
+						className="delete-button"
+						onClick={this.deleteNode}
+						onKeyDown={this.returnFocusOnShiftTab}
+						tabIndex={this.props.selected ? 0 : -1}
+					>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
-					{this.props.children}
-					<Button className="edit-button" onClick={this.showSourceModal}>
+					<Button
+						className="edit-button"
+						onClick={this.showSourceModal}
+						onKeyDown={this.returnFocusOnTab}
+						tabIndex={this.props.selected ? 0 : -1}
+					>
 						Edit
 					</Button>
+
+					{this.props.children}
 				</div>
 			</Node>
 		)

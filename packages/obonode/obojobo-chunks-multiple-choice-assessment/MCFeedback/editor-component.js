@@ -10,7 +10,7 @@ import { ReactEditor } from 'slate-react'
 const { Button } = Common.components
 
 class MCFeedback extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.delete = this.delete.bind(this)
 	}

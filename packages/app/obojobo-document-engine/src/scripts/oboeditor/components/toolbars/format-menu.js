@@ -24,6 +24,8 @@ const FormatMenu = props => {
 		type: 'sub-menu',
 		menu: textMarks.map(mark => ({
 			name: mark.name,
+			shortcut: 'Ctrl+' + mark.shortcut,
+			shortcutMac: '⌘+' + mark.shortcut,
 			type: 'action',
 			action: () => mark.action(editor),
 			disabled: props.hasSelection
@@ -37,41 +39,49 @@ const FormatMenu = props => {
 			{
 				name: 'Normal Text',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+Space',
 				action: () => editor.changeToType(TEXT_NODE)
 			},
 			{
 				name: 'Heading 1',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+1',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 1 })
 			},
 			{
 				name: 'Heading 2',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+2',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 2 })
 			},
 			{
 				name: 'Heading 3',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+3',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 3 })
 			},
 			{
 				name: 'Heading 4',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+4',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 4 })
 			},
 			{
 				name: 'Heading 5',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+5',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 5 })
 			},
 			{
 				name: 'Heading 6',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+6',
 				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 6 })
 			},
 			{
 				name: 'Code',
 				type: 'action',
+				shortcut: 'Ctrl+Shift+C',
 				action: () => editor.changeToType(CODE_NODE)
 			}
 		]
@@ -80,11 +90,24 @@ const FormatMenu = props => {
 	const alignMenu = {
 		name: 'Align & indent',
 		type: 'sub-menu',
-		menu: alignIndentMarks.map(mark => ({
-			name: mark.name,
-			type: 'action',
-			action: () => mark.action(editor)
-		}))
+		menu: alignIndentMarks.map(mark => {
+			if (mark.name === 'Unindent' || mark.name === 'Indent') {
+				return {
+					name: mark.name,
+					shortcut: mark.shortcut,
+					type: 'action',
+					action: () => mark.action(editor)
+				}
+			}
+
+			return {
+				name: mark.name,
+				shortcut: 'Ctrl+' + mark.shortcut,
+				shortcutMac: '⌘+' + mark.shortcut,
+				type: 'action',
+				action: () => mark.action(editor)
+			}
+		})
 	}
 
 	// @TODO: Removed until Lists are completed
@@ -99,6 +122,8 @@ const FormatMenu = props => {
 	// 				{
 	// 					name: '● Disc',
 	// 					type: 'action',
+	// 					shortcut: 'Ctrl+Shift+K',
+	// 					shortcutMac: '⌘+Shift+K',
 	// 					action: () =>
 	// 						editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 	// 				},
@@ -123,6 +148,8 @@ const FormatMenu = props => {
 	// 				{
 	// 					name: 'Numbers',
 	// 					type: 'action',
+	// 					shortcut: 'Ctrl+Shift+L',
+	// 					shortcutMac: '⌘+Shift+L',
 	// 					action: () =>
 	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
 	// 				},

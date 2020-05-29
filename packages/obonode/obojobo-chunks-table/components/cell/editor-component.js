@@ -24,6 +24,7 @@ class Cell extends React.Component {
 		this.addColRight = this.addColRight.bind(this)
 		this.deleteRow = this.deleteRow.bind(this)
 		this.deleteCol = this.deleteCol.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 	}
 
 	toggleOpen() {
@@ -215,10 +216,21 @@ class Cell extends React.Component {
 		})
 	}
 
+	returnFocusOnShiftTab(event) {
+		if(event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			this.setState({ isOpen: false })
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	renderDropdown() {
 		return (
 			<div className="dropdown-cell" contentEditable={false}>
-				<button className={isOrNot(this.state.isOpen, 'open')} onClick={this.toggleOpen}>
+				<button 
+					className={isOrNot(this.state.isOpen, 'open')} 
+					onClick={this.toggleOpen}
+					onKeyDown={this.returnFocusOnShiftTab}>
 					{'⌃'}
 				</button>
 				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>

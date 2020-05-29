@@ -96,6 +96,23 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('handles tabbing', () => {
+		const component = mount(<ActionButton element={nodeData} selected={true} />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('closes modal', () => {
 		const editor = {
 			children: [nodeData]

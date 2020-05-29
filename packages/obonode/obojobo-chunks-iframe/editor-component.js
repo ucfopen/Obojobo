@@ -23,6 +23,8 @@ class IFrame extends React.Component {
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showIFramePropertiesModal = this.showIFramePropertiesModal.bind(this)
 		this.changeProperties = this.changeProperties.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 	}
 
 	focusIframe() {
@@ -65,6 +67,20 @@ class IFrame extends React.Component {
 		Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
+	returnFocusOnTab(event) {
+		if (event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	render() {
 		const content = this.props.element.content
 		const { selected } = this.props
@@ -92,14 +108,24 @@ class IFrame extends React.Component {
 						style={previewStyle}
 						onClick={this.focusIframe}
 					>
-						<Button className="delete-button" onClick={this.deleteNode}>
+						<Button
+							className="delete-button"
+							onClick={this.deleteNode}
+							onKeyDown={this.returnFocusOnShiftTab}
+							tabIndex={selected ? 0 : -1}
+						>
 							×
 						</Button>
 						<div className="iframe-toolbar">
 							<span className="title" aria-hidden contentEditable={false}>
 								{this.getTitle(content.src || null, content.title)}
 							</span>
-							<Button className="properties-button" onClick={this.showIFramePropertiesModal}>
+							<Button
+								className="properties-button"
+								onClick={this.showIFramePropertiesModal}
+								onKeyDown={this.returnFocusOnTab}
+								tabIndex={selected ? 0 : -1}
+							>
 								IFrame Properties
 							</Button>
 						</div>

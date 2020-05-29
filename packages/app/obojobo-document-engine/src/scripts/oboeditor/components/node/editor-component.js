@@ -2,7 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { ReactEditor } from 'slate-react'
 
-import { Transforms, Path, Editor } from 'slate'
+import { Transforms, Path, Editor, Element } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
@@ -31,14 +31,21 @@ class Node extends React.Component {
 		this.deleteNode = this.deleteNode.bind(this)
 		this.duplicateNode = this.duplicateNode.bind(this)
 		this.onOpen = this.onOpen.bind(this)
-		this.onClose = this.onClose.bind(this)
 		this.moveNode = this.moveNode.bind(this)
+		this.onBlur = this.onBlur.bind(this)
 	}
 
 	insertBlockAt(where, item) {
 		const newBlock = item.cloneBlankNode()
 		const thisPath = getSlatePath(this.props)
 		const targetPath = where === INSERT_BEFORE ? thisPath : Path.next(thisPath)
+
+		// Change the node so that the bottom insert menu is closed
+		// Also, toggle editable back on so that users can continue editing once
+		// the new node is inserted
+		Transforms.setNodes(this.props.editor, { open: null }, { at: thisPath })
+		this.props.editor.toggleEditable(true)
+
 		Transforms.insertNodes(this.props.editor, newBlock, { at: targetPath })
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, targetPath))
 	}
@@ -84,9 +91,66 @@ class Node extends React.Component {
 		this.props.editor.toggleEditable(false)
 	}
 
-	onClose() {
-		// Give cursor focus back to the editor
-		this.props.editor.toggleEditable(true)
+	// This method allows the keyboard shortcuts to open and close
+	// menus (insert and more info) to play nice with mouse users
+	onBlur(menu) {
+		// clear the open attribute on the top and bottom nodes
+		const nodes = Array.from(
+			Editor.nodes(this.props.editor, {
+				at: this.props.editor.selection || this.props.editor.prevSelection,
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest'
+			})
+		)
+
+		// Handle cases where no nodes are selected because the page is changing
+		if (nodes.length === 0) {
+			return this.props.editor.toggleEditable(true)
+		}
+
+		// If the first or last node's open attribute matches the menu we are
+		// blurring, we need to clear the open attribute
+		if (menu === nodes[0][0].open) {
+			// Clear anything open on the first node
+			// This could be an insert menu or a more info box
+			Transforms.setNodes(
+				this.props.editor,
+				{ open: null },
+				{
+					at: nodes[0][1]
+				}
+			)
+		}
+
+		if (menu === nodes[nodes.length - 1][0].open) {
+			// Clear anything open on the last node
+			// This will only be an insert menu
+			Transforms.setNodes(
+				this.props.editor,
+				{ open: null },
+				{
+					at: nodes[nodes.length - 1][1]
+				}
+			)
+		}
+
+		// If the only open menu was closed by blurring, return the focus & selection to the editor
+		if (
+			(!nodes[0][0].open || menu === nodes[0][0].open) &&
+			(!nodes[nodes.length - 1][0].open || menu === nodes[nodes.length - 1][0].open)
+		) {
+			// Give cursor focus back to the editor, reselecting the previous
+			// selection if it got nulled
+			this.props.editor.toggleEditable(true)
+
+			// Timeout lag allows editable state to percolate
+			setTimeout(() => {
+				if (!this.props.editor.selection) {
+					Transforms.select(this.props.editor, this.props.editor.prevSelection)
+				}
+				ReactEditor.focus(this.props.editor)
+			}, 1)
+		}
 	}
 
 	moveNode(targetIndex) {
@@ -110,7 +174,6 @@ class Node extends React.Component {
 		let thisSiblingIndex = pathToSiblingIndex(thisPath)
 
 		// A node inside a question content cannot move past multiple choices
-
 		if (parentNode.type === QUESTION_NODE) {
 			if (siblingCount > 0 && parentNode.children[siblingCount - 1].type === QUESTION_NODE) {
 				siblingCount--
@@ -138,8 +201,10 @@ class Node extends React.Component {
 				duplicateNode={this.duplicateNode}
 				markUnsaved={this.props.editor.markUnsaved}
 				onOpen={this.onOpen}
-				onClose={this.onClose}
+				onBlur={this.onBlur}
+				tabIndex="-1"
 				moveNode={this.moveNode}
+				open={this.props.element.open === 'info'}
 				showMoveButtons
 				isFirst={thisSiblingIndex === 0}
 				isLast={thisSiblingIndex >= siblingCount - 1}
@@ -158,18 +223,23 @@ class Node extends React.Component {
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
+							open={this.props.element.open === 'top'}
 							masterOnClick={this.insertBlockBefore}
+							onBlur={this.onBlur.bind(this)}
+							menu="top"
 						/>
 						<InsertMenu
 							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
 							icon="+"
+							open={this.props.element.open === 'bottom'}
 							masterOnClick={this.insertBlockAfter}
+							onBlur={this.onBlur.bind(this)}
+							menu="bottom"
 						/>
 					</div>
 				) : null}
 				{this.props.selected ? this.renderMoreInfo() : null}
-
 				{this.props.children}
 			</div>
 		)

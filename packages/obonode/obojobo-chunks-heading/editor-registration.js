@@ -59,6 +59,10 @@ const Heading = {
 			switch (event.key) {
 				case 'Enter':
 					return KeyDownUtil.breakToText(event, editor, entry)
+
+				case 'Tab':
+					event.preventDefault()
+					return editor.insertText('\t')
 			}
 		},
 		renderNode(props) {

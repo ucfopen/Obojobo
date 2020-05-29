@@ -9,7 +9,6 @@ const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 
 /**
  * Generates an Obojobo Heading from a Slate node.
@@ -64,7 +63,7 @@ const switchType = {
 			{
 				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,
-				content: { ...node.content, indent: 0 }
+				content: { ...node.content, indent: 0, hangingIndent: false }
 			},
 			{ at: path }
 		)
@@ -84,33 +83,21 @@ const switchType = {
 			{
 				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { ...node.content, indent: 0 }
+				content: { ...node.content, indent: 0, hangingIndent: false }
 			},
 			{ at: path }
 		)
 	},
-	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
-		const newList = {
-			type: LIST_NODE,
-			content: { listStyles: data },
-			children: [
-				{
-					type: LIST_NODE,
-					subtype: LIST_LEVEL_NODE,
-					content: data,
-					children: [
-						{
-							type: LIST_NODE,
-							subtype: LIST_LINE_NODE,
-							children: node.children
-						}
-					]
-				}
-			]
-		}
-
-		Transforms.removeNodes(editor, { at: path })
-		Transforms.insertNodes(editor, newList, { at: path })
+	'ObojoboDraft.Chunks.List': (editor, [, path], data) => {
+		Transforms.setNodes(
+			editor,
+			{
+				type: LIST_NODE,
+				subtype: LIST_LEVEL_NODE,
+				content: data
+			},
+			{ at: path }
+		)
 	}
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
+import { ReactEditor } from 'slate-react'
 import MathEquation from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
@@ -60,21 +60,103 @@ describe('MathEquation Editor Node', () => {
 				editor={{ toggleEditable: jest.fn() }}
 			/>
 		)
+
+		// click to open
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
-		component.find({ id: 'math-equation-latex' }).simulate('click', { stopPropagation: jest.fn() })
-		component.find({ id: 'math-equation-label' }).simulate('click', { stopPropagation: jest.fn() })
-		component.find({ id: 'math-equation-alt' }).simulate('click', { stopPropagation: jest.fn() })
+
 		component
-			.find({ id: 'math-equation-size' })
+			.find('#math-equation-latex')
 			.simulate('click', { stopPropagation: jest.fn() })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: '999' } })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mock math value' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
+
+		// click on size input, change, and blur
 		component
-			.find({ id: 'math-equation-label' })
-			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
+			.find('#math-equation-size')
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: '10' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
+
+		// click on label and change
+		component
+			.find('#math-equation-label')
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockLabelValue' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
+
+		component
+			.find('#math-equation-alt')
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockAltValue' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
+
+		expect(component.state()).toMatchInlineSnapshot(`
+		Object {
+		  "alt": "mockAltValue",
+		  "label": "mockLabelValue",
+		  "latex": "mock math value",
+		  "open": true,
+		  "size": 10,
+		}
+	`)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component handles tabbing', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component.find('button').simulate('keyDown', { key: 'k' })
+
+		component.find('button').simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component edits properties', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		jest.runOnlyPendingTimers()
+		component.find('button').simulate('keyDown', { key: 'k' })
+		component.find('button').simulate('keyDown', { key: 'Tab' })
+		jest.runOnlyPendingTimers()
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		jest.runOnlyPendingTimers()
+		component
+			.find('input')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('input')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: true })
+		jest.runOnlyPendingTimers()
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -95,11 +177,37 @@ describe('MathEquation Editor Node', () => {
 			.at(0)
 			.simulate('click')
 		component
-			.find({ id: 'math-equation-size' })
+			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: '-1' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
+		expect(component.state().size).toBe(0.1)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component restricts maximum size to 20', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		component
+			.find('#math-equation-size')
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: '22' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
+
+		expect(component.state().size).toBe(20)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -119,11 +227,12 @@ describe('MathEquation Editor Node', () => {
 			.at(0)
 			.simulate('click')
 		component
-			.find({ id: 'math-equation-size' })
+			.find('#math-equation-size')
 			.simulate('click', { stopPropagation: jest.fn() })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: '' } })
 			.simulate('blur', { stopPropagation: jest.fn() })
 
+		expect(component.state().size).toBe(1)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -147,11 +256,11 @@ describe('MathEquation Editor Node', () => {
 			.find('button')
 			.at(0)
 			.simulate('click')
-		component.find({ id: 'math-equation-label' }).simulate('focus')
+		component.find('#math-equation-label').simulate('focus')
 
 		expect(editor.toggleEditable).toHaveBeenCalledWith(false)
 
-		component.find({ id: 'math-equation-label' }).simulate('blur')
+		component.find('#math-equation-label').simulate('blur')
 		component
 			.find('button')
 			.at(0)
@@ -161,9 +270,13 @@ describe('MathEquation Editor Node', () => {
 	})
 
 	test('MathEquation component calls setNode once edit dialog disappears', () => {
-		const component = mount(
-			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
-		)
+		const props = {
+			editor: { toggleEditable: jest.fn() },
+			element: { content: { latex: '2x/3', label: '1.1' } },
+			selected: true
+		}
+		const component = mount(<MathEquation {...props} />)
+		ReactEditor.findPath.mockReturnValueOnce('mock-path')
 
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
 
@@ -171,23 +284,53 @@ describe('MathEquation Editor Node', () => {
 
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
 		jest.runAllTimers()
+
 		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
-		expect(Transforms.setNodes.mock.calls[0]).toMatchInlineSnapshot(`
-		Array [
-		  undefined,
-		  Object {
-		    "content": Object {
-		      "alt": "",
-		      "label": "1.1",
-		      "latex": "2x/3",
-		      "open": false,
-		      "size": 1,
-		    },
-		  },
-		  Object {
-		    "at": undefined,
-		  },
-		]
-	`)
+		const [calledEditor, calledContent, calledAt] = Transforms.setNodes.mock.calls[0]
+		expect(calledEditor).toBe(props.editor)
+		expect(calledAt).toEqual({ at: 'mock-path' })
+		expect(calledContent).toEqual({
+			content: {
+				alt: '',
+				label: '1.1',
+				latex: '2x/3',
+				size: 1
+			}
+		})
+	})
+
+	test('More Info Box handles clicks', () => {
+		const editor = {
+			toggleEditable: jest.fn()
+		}
+		React.createRef = jest.fn()
+		const component = mount(
+			<MathEquation
+				element={{ content: { latex: '2x/3', label: '1.1' } }}
+				selected={true}
+				editor={editor}
+			/>
+		)
+
+		const nodeInstance = component.instance()
+		nodeInstance.node = {
+			current: {
+				contains: value => value
+			}
+		}
+
+		nodeInstance.handleClick({ target: true }) // click inside
+		let tree = component.html()
+		expect(tree).toMatchSnapshot()
+
+		nodeInstance.node.current = { contains: value => value }
+		nodeInstance.handleClick({ target: false }) // click outside
+		tree = component.html()
+		expect(tree).toMatchSnapshot()
+
+		nodeInstance.node.current = null
+		nodeInstance.handleClick() // click without node
+		tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 })

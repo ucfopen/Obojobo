@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom'
 import TableMenu from './table-menu'
 
 class TableControls extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.addRow = this.addRow.bind(this)
 		this.addCol = this.addCol.bind(this)

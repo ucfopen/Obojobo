@@ -30,6 +30,8 @@ class Figure extends React.Component {
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showImagePropertiesModal = this.showImagePropertiesModal.bind(this)
 		this.changeProperties = this.changeProperties.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 	}
 	focusFigure() {
 		if (!this.props.selected) {
@@ -55,6 +57,20 @@ class Figure extends React.Component {
 				onConfirm={this.changeProperties}
 			/>
 		)
+	}
+
+	returnFocusOnTab(event) {
+		if (event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
 	}
 
 	changeProperties(content) {
@@ -103,11 +119,21 @@ class Figure extends React.Component {
 							contentEditable={false}
 							onClick={this.focusFigure}
 						>
-							<Button className="delete-button" onClick={this.deleteNode}>
+							<Button
+								className="delete-button"
+								onClick={this.deleteNode}
+								onKeyDown={this.returnFocusOnShiftTab}
+								tabIndex={selected ? '0' : '-1'}
+							>
 								×
 							</Button>
 							<div className="image-toolbar">
-								<Button className="properties-button" onClick={this.showImagePropertiesModal}>
+								<Button
+									className="properties-button"
+									onClick={this.showImagePropertiesModal}
+									onKeyDown={this.returnFocusOnTab}
+									tabIndex={selected ? '0' : '-1'}
+								>
 									Image Properties
 								</Button>
 							</div>

@@ -154,9 +154,7 @@ class ModProperties extends React.Component {
 								</div>
 							)
 						})}
-						{this.state.mods.length < 20 ? (
-							<Button onClick={this.onAddMod}>Add Mod</Button>
-						) : null}
+						{this.state.mods.length < 20 ? <Button onClick={this.onAddMod}>Add Mod</Button> : null}
 					</div>
 				</div>
 			</SimpleDialog>
