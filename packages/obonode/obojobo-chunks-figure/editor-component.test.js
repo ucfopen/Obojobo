@@ -151,6 +151,38 @@ describe('Figure Editor Node', () => {
 		component.unmount()
 	})
 
+	test('Figure component handles tabbing', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('Figure component does not focus if already selected', () => {
 		const component = mount(
 			<Figure

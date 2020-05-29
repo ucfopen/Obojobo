@@ -85,6 +85,22 @@ describe('Heading editor', () => {
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			insertText: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders Heading when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },

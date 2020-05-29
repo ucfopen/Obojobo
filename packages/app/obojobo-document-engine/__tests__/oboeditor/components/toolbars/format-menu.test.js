@@ -7,11 +7,12 @@ import FormatMenu from '../../../../src/scripts/oboeditor/components/toolbars/fo
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
-describe('Format Menu', () => {
+describe('FormatMenu', () => {
 	beforeEach(() => {
 		useEditor.mockReturnValue({
 			current: {},
 			toggleMark: jest.fn(),
+			setAlign: jest.fn(),
 			children: [
 				{
 					type: LIST_NODE,
@@ -28,7 +29,7 @@ describe('Format Menu', () => {
 			changeToType: jest.fn()
 		})
 	})
-	test('FormatMenu node', () => {
+	test('component snapshot', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } }
 		}
@@ -38,7 +39,7 @@ describe('Format Menu', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('FormatMenu node toggles mark', () => {
+	test('toggles mark', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
@@ -53,50 +54,62 @@ describe('Format Menu', () => {
 		expect(useEditor().toggleMark).toHaveBeenCalled()
 	})
 
-	test('FormatMenu node calls editor.changeToType for each paraggraph style', () => {
+	test('calls editor.changeToType for each paragraph style', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
 		const component = mount(<FormatMenu value={value} />)
 
-		component
-			.find('button')
-			.at(12)
-			.simulate('click')
-		component
-			.find('button')
-			.at(13)
-			.simulate('click')
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
-		component
-			.find('button')
-			.at(15)
-			.simulate('click')
-		component
-			.find('button')
-			.at(16)
-			.simulate('click')
-		component
-			.find('button')
-			.at(17)
-			.simulate('click')
-		component
-			.find('button')
-			.at(18)
-			.simulate('click')
-		component
-			.find('button')
-			.at(19)
-			.simulate('click')
+		const buttonMap = {
+			12: 'Normal Text',
+			13: 'Heading 1',
+			14: 'Heading 2',
+			15: 'Heading 3',
+			16: 'Heading 4',
+			17: 'Heading 5',
+			18: 'Heading 6',
+			19: 'Code'
+		}
 
-		expect(useEditor().changeToType).toHaveBeenCalledTimes(8)
+		for (const id in buttonMap) {
+			const editor = useEditor()
+			editor.changeToType.mockClear()
+
+			const target = component.find('button').at(id)
+			expect(target.props().children[0]).toBe(buttonMap[id])
+			target.simulate('click')
+
+			expect(editor.changeToType).toHaveBeenCalledTimes(1)
+		}
 	})
 
-	test('FormatMenu node sets indent', () => {
+	test('calls editor.changeToType for each align style', () => {
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
+		}
+
+		const component = mount(<FormatMenu value={value} />)
+
+		const buttonMap = {
+			21: 'Left Align',
+			22: 'Center Align',
+			23: 'Right Align'
+		}
+
+		for (const id in buttonMap) {
+			const editor = useEditor()
+			editor.setAlign.mockClear()
+
+			const target = component.find('button').at(id)
+			expect(target.props().children[0]).toBe(buttonMap[id])
+			target.simulate('click')
+
+			expect(editor.setAlign).toHaveBeenCalledTimes(1)
+		}
+	})
+
+	test('sets indent', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
@@ -111,8 +124,7 @@ describe('Format Menu', () => {
 		expect(useEditor().unindentList).toHaveBeenCalled()
 	})
 
-	//@TODO: Skipping test for now until lists are complete
-	test.skip('FormatMenu node calls editor.changeToType for each bullet style', () => {
+	test.skip('calls editor.changeToType for each bullet style', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
@@ -138,18 +150,22 @@ describe('Format Menu', () => {
 			.find('button')
 			.at(33)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(34)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(35)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(36)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(37)

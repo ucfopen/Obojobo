@@ -6,8 +6,10 @@ const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('List Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -147,6 +149,9 @@ describe('List Converter', () => {
 
 	test('switchType[CODE_NODE] changes leaf blocks to code nodes', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'setPoint').mockReturnValue(true)
 
 		const editor = {
 			children: [
@@ -178,6 +183,13 @@ describe('List Converter', () => {
 											children: [{ text: 'mockLine1', b: true }]
 										}
 									]
+								},
+								// Mock text node for the selection to find
+								{
+									type: CODE_NODE,
+									subtype: CODE_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
 								}
 							]
 						}
@@ -197,12 +209,106 @@ describe('List Converter', () => {
 		expect(Transforms.insertNodes).toHaveBeenCalledWith(
 			editor,
 			expect.objectContaining({ type: CODE_NODE }),
-			{ at: expect.any(Object) }
+			{ at: expect.any(Array) }
 		)
 	})
 
-	test('switchType[TEXT_NODE] changes leaf blocks to code nodes', () => {
+	test('switchType[CODE_NODE] handles not being first or last', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: {},
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
+								},
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: {},
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockLine1', b: true }]
+										}
+									]
+								},
+								// Mock text node for the selection to find
+								{
+									type: CODE_NODE,
+									subtype: CODE_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
+								}
+							]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [2, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
+		}
+
+		Converter.switchType[CODE_NODE](editor, [editor.children[1], [1]])
+
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(
+			editor,
+			expect.objectContaining({ type: CODE_NODE }),
+			{ at: expect.any(Array) }
+		)
+	})
+
+	test('switchType[TEXT_NODE] changes leaf blocks to text nodes', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'setPoint').mockReturnValue(true)
 
 		const editor = {
 			children: [
@@ -234,6 +340,13 @@ describe('List Converter', () => {
 											children: [{ text: 'mockLine1', b: true }]
 										}
 									]
+								},
+								// Mock text node for the selection to find
+								{
+									type: TEXT_NODE,
+									subtype: TEXT_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
 								}
 							]
 						}
@@ -253,7 +366,98 @@ describe('List Converter', () => {
 		expect(Transforms.insertNodes).toHaveBeenCalledWith(
 			editor,
 			expect.objectContaining({ type: TEXT_NODE }),
-			{ at: expect.any(Object) }
+			{ at: expect.any(Array) }
+		)
+	})
+
+	test('switchType[TEXT_NODE] handles not being first or last', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: {},
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
+								},
+								{
+									type: LIST_NODE,
+									subtype: LIST_LEVEL_NODE,
+									content: {},
+									children: [
+										{
+											type: LIST_NODE,
+											subtype: LIST_LINE_NODE,
+											content: {},
+											children: [{ text: 'mockLine1', b: true }]
+										}
+									]
+								},
+								// Mock text node for the selection to find
+								{
+									type: TEXT_NODE,
+									subtype: TEXT_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockCode', b: true }]
+								}
+							]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 0 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [2, 0, 0], offset: 1 }
+			},
+			isVoid: () => false,
+			isInline: () => false
+		}
+
+		Converter.switchType[TEXT_NODE](editor, [editor.children[1], [1]])
+
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(
+			editor,
+			expect.objectContaining({ type: TEXT_NODE }),
+			{ at: expect.any(Array) }
 		)
 	})
 

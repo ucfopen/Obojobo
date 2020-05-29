@@ -73,6 +73,8 @@ class FileMenu extends React.PureComponent {
 		const menu = [
 			{
 				name: 'Save Module',
+				shortcut: 'CTRL+S',
+				shortcutMac: '⌘S',
 				type: 'action',
 				action: () => this.props.onSave(this.props.draftId)
 			},

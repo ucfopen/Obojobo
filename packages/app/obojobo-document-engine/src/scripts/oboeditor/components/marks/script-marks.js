@@ -10,6 +10,7 @@ const SCRIPT_MARK = 'sup'
 const ScriptMark = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
@@ -53,12 +54,14 @@ const ScriptMark = {
 	marks: [
 		{
 			name: 'Superscript',
+			shortcut: '.',
 			type: SCRIPT_MARK,
 			icon: SupIcon,
 			action: editor => editor.toggleScript(1)
 		},
 		{
 			name: 'Subscript',
+			shortcut: ',',
 			type: SCRIPT_MARK,
 			icon: SubIcon,
 			action: editor => editor.toggleScript(-1)

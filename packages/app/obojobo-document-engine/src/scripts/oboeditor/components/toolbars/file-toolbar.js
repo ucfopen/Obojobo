@@ -28,15 +28,33 @@ const FileToolbar = props => {
 	}, [selectAll, editor])
 
 	const editMenu = [
-		{ name: 'Undo', type: 'action', action: editor.undo },
-		{ name: 'Redo', type: 'action', action: editor.redo },
+		{
+			name: 'Undo',
+			shortcut: 'CTRL+Z',
+			shortcutMac: '⌘Z',
+			type: 'action',
+			action: editor.undo
+		},
+		{
+			name: 'Redo',
+			shortcut: 'CTRL+Y',
+			shortcutMac: '⌘Y',
+			type: 'action',
+			action: editor.redo
+		},
 		{
 			name: 'Delete',
 			type: 'action',
 			action: editor.deleteFragment,
 			disabled: props.isDeletable === null ? true : props.isDeletable
 		},
-		{ name: 'Select all', type: 'action', action: onSelectAllHandler }
+		{
+			name: 'Select all',
+			shortcut: 'CTRL+A',
+			shortcutMac: '⌘A',
+			type: 'action',
+			action: onSelectAllHandler
+		}
 	]
 
 	const saved = props.saved ? 'saved' : ''

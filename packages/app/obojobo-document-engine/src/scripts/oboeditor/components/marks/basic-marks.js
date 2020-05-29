@@ -19,6 +19,7 @@ const LATEX_MARK = '_latex'
 const BasicMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
@@ -37,7 +38,7 @@ const BasicMarks = {
 				case 'm':
 					event.preventDefault()
 					return editor.toggleMark(MONOSPACE_MARK)
-				case 'q':
+				case '/':
 					event.preventDefault()
 					return editor.toggleMark(LATEX_MARK)
 			}
@@ -80,36 +81,42 @@ const BasicMarks = {
 	marks: [
 		{
 			name: 'Bold',
+			shortcut: 'B',
 			type: BOLD_MARK,
 			icon: BoldIcon,
 			action: editor => editor.toggleMark(BOLD_MARK)
 		},
 		{
 			name: 'Italic',
+			shortcut: 'I',
 			type: ITALIC_MARK,
 			icon: ItalicIcon,
 			action: editor => editor.toggleMark(ITALIC_MARK)
 		},
 		{
 			name: 'Strikethrough',
+			shortcut: 'D',
 			type: STRIKE_MARK,
 			icon: StrikeIcon,
 			action: editor => editor.toggleMark(STRIKE_MARK)
 		},
 		{
 			name: 'Quote',
+			shortcut: '"',
 			type: QUOTE_MARK,
 			icon: QuoteIcon,
 			action: editor => editor.toggleMark(QUOTE_MARK)
 		},
 		{
 			name: 'Monospace',
+			shortcut: 'M',
 			type: MONOSPACE_MARK,
 			icon: MonoIcon,
 			action: editor => editor.toggleMark(MONOSPACE_MARK)
 		},
 		{
 			name: 'Equation',
+			shortcut: '/',
 			type: LATEX_MARK,
 			icon: LatexIcon,
 			action: editor => editor.toggleMark(LATEX_MARK)

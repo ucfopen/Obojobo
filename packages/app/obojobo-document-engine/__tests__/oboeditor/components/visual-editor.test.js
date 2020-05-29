@@ -321,6 +321,26 @@ describe('VisualEditor', () => {
 		spy.mockClear()
 	})
 
+	test('VisualEditor component refocuses on editor', () => {
+		const props = {
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+
+		jest.spyOn(ReactEditor, 'focus').mockReturnValue(true)
+		const component = mount(<VisualEditor {...props} />)
+
+		ReactEditor.focus.mockClear()
+
+		component.find('.skip-nav button').simulate('click')
+
+		expect(ReactEditor.focus).toHaveBeenCalledTimes(1)
+	})
+
 	test('VisualEditor component alters value majorly', () => {
 		const props = {
 			insertableItems: 'mock-insertable-items',
@@ -836,9 +856,24 @@ describe('VisualEditor', () => {
 	})
 
 	test('onKeyDown() calls editor functions', () => {
+		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
+
 		const editor = {
 			undo: jest.fn(),
-			redo: jest.fn()
+			redo: jest.fn(),
+			toggleEditable: jest.fn(),
+			children: [
+				{
+					type: 'Mock Node',
+					children: [{ text: 'mock text' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0], offset: 0 },
+				focus: { path: [0], offset: 3 }
+			},
+			isVoid: jest.fn(),
+			isInline: jest.fn()
 		}
 
 		const props = {
@@ -883,7 +918,31 @@ describe('VisualEditor', () => {
 
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
+			key: 'Escape'
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
 			key: 's'
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: '-',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: '=',
+			metaKey: true
+		})
+
+		instance.onKeyDownGlobal({
+			preventDefault: jest.fn(),
+			key: 'i',
+			metaKey: true,
+			shiftKey: true
 		})
 
 		expect(editor.undo).toHaveBeenCalled()
@@ -946,6 +1005,68 @@ describe('VisualEditor', () => {
 			key: 's',
 			metaKey: true
 		})
+
+		expect(onKeyDown).toHaveBeenCalled()
+	})
+
+	test('onKeyDown exits to defaults', () => {
+		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
+
+		const editor = {
+			undo: jest.fn(),
+			redo: jest.fn(),
+			isInline: jest.fn(),
+			insertText: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+		instance.editor = editor
+
+		instance.onKeyDown({
+			preventDefault: jest.fn(),
+			key: 's',
+			metaKey: true,
+			defaultPrevented: true
+		})
+
+		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
+			opts.match({ children: [{ text: '' }] })
+			return [[{ type: ASSESSMENT_NODE }, [0]], [{ type: BREAK_NODE }, [0]]]
+		})
+
+		const event = {
+			defaultPrevented: false,
+			preventDefault: jest.fn(),
+			key: 'Tab',
+			metaKey: true
+		}
+		instance.onKeyDown(event)
+
+		const onKeyDown = jest.fn().mockImplementation(() => {
+			event.defaultPrevented = true
+		})
+		jest.spyOn(Common.Registry, 'getItemForType').mockReturnValue({
+			plugins: { onKeyDown }
+		})
+		instance.onKeyDown(event)
 
 		expect(onKeyDown).toHaveBeenCalled()
 	})

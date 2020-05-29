@@ -24,6 +24,7 @@ class ActionButton extends React.Component {
 		super(props)
 		this.closeModal = this.closeModal.bind(this)
 		this.showTriggersModal = this.showTriggersModal.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 	}
 
 	showTriggersModal() {
@@ -49,6 +50,14 @@ class ActionButton extends React.Component {
 		)
 	}
 
+	returnFocusOnTab(event) {
+		// Since there is only one button, return on both tab and shift-tab
+		if (event.key === 'Tab') {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	renderTriggers() {
 		const content = this.props.element.content
 		const onClickTrigger = content.triggers.find(trigger => trigger.type === 'onClick') || null
@@ -68,7 +77,11 @@ class ActionButton extends React.Component {
 							<div className="trigger no-actions">(No action set)</div>
 						)}
 					</div>
-					<Button className="add-action" onClick={this.showTriggersModal}>
+					<Button
+						className="add-action"
+						onClick={this.showTriggersModal}
+						onKeyDown={this.returnFocusOnTab}
+					>
 						{isAnOnClickActionSet ? 'Edit Triggers' : 'Set an action...'}
 					</Button>
 				</div>
