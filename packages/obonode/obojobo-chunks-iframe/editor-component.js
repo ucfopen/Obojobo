@@ -17,6 +17,14 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class IFrame extends React.Component {
+	constructor(props) {
+		super(props)
+		this.focusIframe = this.focusIframe.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.showIFramePropertiesModal = this.showIFramePropertiesModal.bind(this)
+		this.changeProperties = this.changeProperties.bind(this)
+	}
+
 	focusIframe() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		const start = Editor.start(this.props.editor, path)
@@ -28,16 +36,18 @@ class IFrame extends React.Component {
 
 	showIFramePropertiesModal() {
 		ModalUtil.show(
-			<IframeProperties
-				content={this.props.element.content}
-				onConfirm={this.changeProperties.bind(this)}/>
+			<IframeProperties content={this.props.element.content} onConfirm={this.changeProperties} />
 		)
 	}
 
 	changeProperties(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(this.props.editor, { content: {...this.props.element.content, ...content} }, { at: path })
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
 	}
 
 	getTitle(src, title) {
@@ -77,20 +87,19 @@ class IFrame extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div 
-						className={`editor-container  ${isSelected}`} 
+					<div
+						className={`editor-container  ${isSelected}`}
 						style={previewStyle}
-						onClick={this.focusIframe.bind(this)}>
-						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+						onClick={this.focusIframe}
+					>
+						<Button className="delete-button" onClick={this.deleteNode}>
 							×
 						</Button>
 						<div className="iframe-toolbar">
-							<span className="title" aria-hidden>
+							<span className="title" aria-hidden contentEditable={false}>
 								{this.getTitle(content.src || null, content.title)}
 							</span>
-							<Button
-								className="properties-button"
-								onClick={this.showIFramePropertiesModal.bind(this)}>
+							<Button className="properties-button" onClick={this.showIFramePropertiesModal}>
 								IFrame Properties
 							</Button>
 						</div>

@@ -20,9 +20,15 @@ const { Button } = Common.components
  * that users can edit the onClick actions.
  */
 class ActionButton extends React.Component {
+	constructor(props) {
+		super(props)
+		this.closeModal = this.closeModal.bind(this)
+		this.showTriggersModal = this.showTriggersModal.bind(this)
+	}
+
 	showTriggersModal() {
 		ModalUtil.show(
-			<TriggerListModal content={this.props.element.content} onClose={this.closeModal.bind(this)} />
+			<TriggerListModal content={this.props.element.content} onClose={this.closeModal} />
 		)
 	}
 	// Hide the popup modal, and then use Slate's Transforms library to save any changes that the
@@ -55,14 +61,14 @@ class ActionButton extends React.Component {
 					<div className="trigger-list">
 						<div className="title">When the button is clicked:</div>
 						{isAnOnClickActionSet ? (
-							onClickTrigger.actions.map(action => (
-								<ActionButtonEditorAction key={action.type} {...action} />
+							onClickTrigger.actions.map((action, index) => (
+								<ActionButtonEditorAction key={index} {...action} />
 							))
 						) : (
 							<div className="trigger no-actions">(No action set)</div>
 						)}
 					</div>
-					<Button className="add-action" onClick={this.showTriggersModal.bind(this)}>
+					<Button className="add-action" onClick={this.showTriggersModal}>
 						{isAnOnClickActionSet ? 'Edit Triggers' : 'Set an action...'}
 					</Button>
 				</div>

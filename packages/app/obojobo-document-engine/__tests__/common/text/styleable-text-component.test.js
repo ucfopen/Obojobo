@@ -29,6 +29,19 @@ describe('StyleableText Component', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('StyleableText component a with proper link', () => {
+		StyleRenderer.mockReturnValueOnce({
+			type: 'a',
+			children: [],
+			attrs: { href: 'http://website.com' }
+		})
+
+		const component = renderer.create(<StyleableText />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('StyleableText component a with no attributes', () => {
 		StyleRenderer.mockReturnValueOnce({
 			type: 'a',

@@ -9,7 +9,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
 import EditorStore from '../stores/editor-store'
-import FileToolbar from './toolbars/file-toolbar'
+import FileToolbarViewer from './toolbars/file-toolbar-viewer'
 import FormatPlugin from '../plugins/format-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
@@ -60,12 +60,12 @@ class VisualEditor extends React.Component {
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
-		this.insertableItems = []
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 		this.renameModule = this.renameModule.bind(this)
 		this.onResized = this.onResized.bind(this)
+		this.renderElement = this.renderElement.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -416,13 +416,11 @@ class VisualEditor extends React.Component {
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className} ref={this.pageEditorContainerRef}>
-				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">
 						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
-						<FileToolbar
-							editor={this.editor}
-							selection={this.editor.selection}
+						<FileToolbarViewer
 							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
@@ -433,7 +431,6 @@ class VisualEditor extends React.Component {
 							insertableItems={this.props.insertableItems}
 							togglePlaceholders={this.togglePlaceholders}
 							showPlaceholders={this.state.showPlaceholders}
-							value={this.state.value}
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
@@ -449,7 +446,7 @@ class VisualEditor extends React.Component {
 						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
-								renderElement={this.renderElement.bind(this)}
+								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
 								readOnly={!this.state.editable}

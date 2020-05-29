@@ -2,7 +2,6 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import katex from 'katex'
 import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -15,16 +14,28 @@ const isOrNot = Common.util.isOrNot
 
 const getLatexHtml = latex => {
 	try {
-		const html = katex.renderToString(latex, { displayMode: true })
+		const html = window.katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }
 	}
 }
 
+const restrictSize = size => {
+	return Math.min(20, Math.max(0.1, parseFloat(size) || 1))
+}
+
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
+
+		// copy the attributes we want into state
+		this.state = this.contentToStateObj(this.props.element.content)
+
+		// used to reduce the speed/cost of changes so typing isn't slow
+		// ALSO make sure changes are copied to slate after editing
+		// in case the edit window doesnt close before clicking save or preview
+		this.updateNodeFromStateAfterInput = debounce(200, this.updateNodeFromState)
 
 		// This debounce is necessary to get slate to update the node data.
 		// I've tried several ways to remove it but haven't been able to
@@ -32,13 +43,10 @@ class MathEquation extends React.Component {
 		// If you have a solution please have at it!
 		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
 
-		// copy the attributes we want into state
-		const content = this.props.element.content
-		this.state = this.contentToStateObj(content)
-
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.focusEquation = this.focusEquation.bind(this)
+		this.toggleOpen = this.toggleOpen.bind(this)
 	}
 
 	contentToStateObj(content) {
@@ -46,7 +54,7 @@ class MathEquation extends React.Component {
 			latex: content.latex || '',
 			alt: content.alt || '',
 			label: content.label || '',
-			size: content.size || 1,
+			size: restrictSize(content.size),
 			open: false
 		}
 	}
@@ -89,20 +97,36 @@ class MathEquation extends React.Component {
 
 	updateNodeFromState() {
 		const content = this.props.element.content
-		delete this.state.open
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
-	onChangeContent(key, event) {
-		const newContent = { [key]: event.target.value }
-		this.setState(newContent) // update the display now
+	onBlurSize() {
+		this.setState({
+			size: restrictSize(this.state.size)
+		})
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.selected && !this.props.selected) {
+	onChangeContent(key, event) {
+		const newContent = { [key]: event.target.value }
+		this.setState(newContent, this.updateNodeFromStateAfterInput) // update the display
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const isClosing = prevState.open && !this.state.open
+		const isUnselecting = prevProps.selected && !this.props.selected
+
+		if (isClosing || isUnselecting) {
 			this.updateNodeFromState()
 		}
+
+		if (isUnselecting) {
+			this.setState({ open: false })
+		}
+	}
+
+	toggleOpen() {
+		this.setState({ open: !this.state.open })
 	}
 
 	freezeEditor() {
@@ -156,14 +180,19 @@ class MathEquation extends React.Component {
 						value={this.state.size}
 						type="number"
 						step="0.1"
+						max="20"
+						min="0.1"
 						onClick={event => event.stopPropagation()}
 						onChange={this.onChangeContent.bind(this, 'size')}
 						onFocus={this.freezeEditor}
-						onBlur={this.unfreezeEditor}
+						onBlur={() => {
+							this.onBlurSize()
+							this.unfreezeEditor()
+						}}
 					/>
 				</div>
 				<div>
-					<Button onClick={() => this.setState({ open: false })}>Done</Button>
+					<Button onClick={this.toggleOpen}>Done</Button>
 				</div>
 			</div>
 		)
@@ -176,7 +205,7 @@ class MathEquation extends React.Component {
 			<div className={className} contentEditable={false}>
 				<div className="box-border">
 					{!this.state.open ? (
-						<Button onClick={() => this.setState({ open: true })}>Edit</Button>
+						<Button onClick={this.toggleOpen}>Edit</Button>
 					) : (
 						this.renderAttributes()
 					)}

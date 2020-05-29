@@ -50,7 +50,8 @@ router
 				req.currentDocument,
 				req.body.assessmentId,
 				req.currentVisit.is_preview,
-				req.currentVisit.resource_link_id
+				req.currentVisit.resource_link_id,
+				req.currentVisit.id
 			)
 
 			res.success({

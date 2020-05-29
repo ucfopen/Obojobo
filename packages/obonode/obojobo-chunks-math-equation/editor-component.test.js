@@ -19,6 +19,11 @@ jest.mock(
 jest.useFakeTimers()
 
 describe('MathEquation Editor Node', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+		jest.clearAllTimers()
+	})
+
 	test('renders with no latex', () => {
 		const component = renderer.create(<MathEquation element={{ content: { latex: null } }} />)
 		const tree = component.toJSON()
@@ -27,6 +32,9 @@ describe('MathEquation Editor Node', () => {
 	})
 
 	test('MathEquation component with error', () => {
+		global.window.katex.renderToString.mockImplementationOnce(() => {
+			throw Error('Mock katex render error')
+		})
 		const component = renderer.create(<MathEquation element={{ content: { latex: 'x_0_0' } }} />)
 		const tree = component.toJSON()
 
@@ -49,6 +57,7 @@ describe('MathEquation Editor Node', () => {
 					content: { latex: '1', label: '1.1', size: 1 }
 				}}
 				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
 			/>
 		)
 		component
@@ -58,10 +67,62 @@ describe('MathEquation Editor Node', () => {
 		component.find({ id: 'math-equation-latex' }).simulate('click', { stopPropagation: jest.fn() })
 		component.find({ id: 'math-equation-label' }).simulate('click', { stopPropagation: jest.fn() })
 		component.find({ id: 'math-equation-alt' }).simulate('click', { stopPropagation: jest.fn() })
-		component.find({ id: 'math-equation-size' }).simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find({ id: 'math-equation-size' })
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: '999' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
 		component
 			.find({ id: 'math-equation-label' })
 			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue' } })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component restricts minimum size to 0.1', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		component
+			.find({ id: 'math-equation-size' })
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: '-1' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MathEquation component sets blank values to 1', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={true}
+				editor={{ toggleEditable: jest.fn() }}
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+		component
+			.find({ id: 'math-equation-size' })
+			.simulate('click', { stopPropagation: jest.fn() })
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: '' } })
+			.simulate('blur', { stopPropagation: jest.fn() })
 
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -99,7 +160,7 @@ describe('MathEquation Editor Node', () => {
 		expect(editor.toggleEditable).toHaveBeenCalledWith(true)
 	})
 
-	test('MathEquation component calls setNodeByKey once edit dialog disappears', () => {
+	test('MathEquation component calls setNode once edit dialog disappears', () => {
 		const component = mount(
 			<MathEquation element={{ content: { latex: '2x/3', label: '1.1' } }} selected={true} />
 		)
@@ -119,6 +180,7 @@ describe('MathEquation Editor Node', () => {
 		      "alt": "",
 		      "label": "1.1",
 		      "latex": "2x/3",
+		      "open": false,
 		      "size": 1,
 		    },
 		  },
