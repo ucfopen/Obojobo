@@ -1,5 +1,5 @@
 import React from 'react'
-import { Range } from 'slate'
+import { useEditor } from 'slate-react'
 
 import DropDownMenu from './drop-down-menu'
 
@@ -18,6 +18,7 @@ const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
 const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
 
 const FormatMenu = props => {
+	const editor = useEditor()
 	const textMenu = {
 		name: 'Text',
 		type: 'sub-menu',
@@ -26,8 +27,8 @@ const FormatMenu = props => {
 			shortcut: 'Ctrl+' + mark.shortcut,
 			shortcutMac: '⌘+' + mark.shortcut,
 			type: 'action',
-			action: () => mark.action(props.editor),
-			disabled: props.editor.selection && Range.isCollapsed(props.editor.selection)
+			action: () => mark.action(editor),
+			disabled: props.hasSelection
 		}))
 	}
 
@@ -39,49 +40,49 @@ const FormatMenu = props => {
 				name: 'Normal Text',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+Space',
-				action: () => props.editor.changeToType(TEXT_NODE)
+				action: () => editor.changeToType(TEXT_NODE)
 			},
 			{
 				name: 'Heading 1',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+1',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 1 })
 			},
 			{
 				name: 'Heading 2',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+2',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 2 })
 			},
 			{
 				name: 'Heading 3',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+3',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 3 })
 			},
 			{
 				name: 'Heading 4',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+4',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 4 })
 			},
 			{
 				name: 'Heading 5',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+5',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 5 })
 			},
 			{
 				name: 'Heading 6',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+6',
-				action: () => props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })
+				action: () => editor.changeToType(HEADING_NODE, { headingLevel: 6 })
 			},
 			{
 				name: 'Code',
 				type: 'action',
 				shortcut: 'Ctrl+Shift+C',
-				action: () => props.editor.changeToType(CODE_NODE)
+				action: () => editor.changeToType(CODE_NODE)
 			}
 		]
 	}
@@ -95,7 +96,7 @@ const FormatMenu = props => {
 					name: mark.name,
 					shortcut: mark.shortcut,
 					type: 'action',
-					action: () => mark.action(props.editor)
+					action: () => mark.action(editor)
 				}
 			}
 
@@ -104,7 +105,7 @@ const FormatMenu = props => {
 				shortcut: 'Ctrl+' + mark.shortcut,
 				shortcutMac: '⌘+' + mark.shortcut,
 				type: 'action',
-				action: () => mark.action(props.editor)
+				action: () => mark.action(editor)
 			}
 		})
 	}
@@ -124,19 +125,19 @@ const FormatMenu = props => {
 	// 					shortcut: 'Ctrl+Shift+K',
 	// 					shortcutMac: '⌘+Shift+K',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
+	// 						editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'disc' })
 	// 				},
 	// 				{
 	// 					name: '○ Circle',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' })
+	// 						editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'circle' })
 	// 				},
 	// 				{
 	// 					name: '■ Square',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' })
+	// 						editor.changeToType(LIST_NODE, { type: 'unordered', bulletStyle: 'square' })
 	// 				}
 	// 			]
 	// 		},
@@ -150,31 +151,31 @@ const FormatMenu = props => {
 	// 					shortcut: 'Ctrl+Shift+L',
 	// 					shortcutMac: '⌘+Shift+L',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
+	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'decimal' })
 	// 				},
 	// 				{
 	// 					name: 'Lowercase Alphabet',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })
+	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-alpha' })
 	// 				},
 	// 				{
 	// 					name: 'Lowercase Roman Numerals',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })
+	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'lower-roman' })
 	// 				},
 	// 				{
 	// 					name: 'Uppercase Alphabet',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })
+	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-alpha' })
 	// 				},
 	// 				{
 	// 					name: 'Uppercase Roman Numerals',
 	// 					type: 'action',
 	// 					action: () =>
-	// 						props.editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })
+	// 						editor.changeToType(LIST_NODE, { type: 'ordered', bulletStyle: 'upper-roman' })
 	// 				}
 	// 			]
 	// 		}

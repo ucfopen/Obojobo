@@ -1,12 +1,15 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
 import YouTube from './editor-component'
-
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 import { Transforms } from 'slate'
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag', () => () => {
+	// simulate loading the youtube iframe api
+	global.window.onYouTubeIframeAPIReady()
+})
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(

@@ -59,7 +59,7 @@ describe('Prompt Modal', () => {
 			.at(1)
 			.simulate('keyDown', { key: 'R' })
 
-		expect(component.html()).toMatchSnapshot()
+		expect(onConfirm).not.toHaveBeenCalled()
 
 		component
 			.find('input')

@@ -24,6 +24,15 @@ const { Button } = Common.components
  * will move the cursor to the start of the figurecaption
  */
 class Figure extends React.Component {
+	constructor(props) {
+		super(props)
+		this.focusFigure = this.focusFigure.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.showImagePropertiesModal = this.showImagePropertiesModal.bind(this)
+		this.changeProperties = this.changeProperties.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+	}
 	focusFigure() {
 		if (!this.props.selected) {
 			const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -45,20 +54,20 @@ class Figure extends React.Component {
 			<ImageProperties
 				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
 				content={this.props.element.content}
-				onConfirm={this.changeProperties.bind(this)}
+				onConfirm={this.changeProperties}
 			/>
 		)
 	}
 
 	returnFocusOnTab(event) {
-		if(event.key === 'Tab' && !event.shiftKey) {
+		if (event.key === 'Tab' && !event.shiftKey) {
 			event.preventDefault()
 			return ReactEditor.focus(this.props.editor)
 		}
 	}
 
 	returnFocusOnShiftTab(event) {
-		if(event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			return ReactEditor.focus(this.props.editor)
 		}
@@ -96,20 +105,23 @@ class Figure extends React.Component {
 						<div
 							className={`figure-box  ${isSelected}`}
 							contentEditable={false}
-							onClick={this.focusFigure.bind(this)}>
-							<Button 
-								className="delete-button" 
-								onClick={this.deleteNode.bind(this)}
-								onKeyDown={this.returnFocusOnShiftTab.bind(this)}
-								tabIndex={selected ? '0' : '-1'}>
+							onClick={this.focusFigure}
+						>
+							<Button
+								className="delete-button"
+								onClick={this.deleteNode}
+								onKeyDown={this.returnFocusOnShiftTab}
+								tabIndex={selected ? '0' : '-1'}
+							>
 								×
 							</Button>
 							<div className="image-toolbar">
 								<Button
 									className="properties-button"
-									onClick={this.showImagePropertiesModal.bind(this)}
-									onKeyDown={this.returnFocusOnTab.bind(this)}
-									tabIndex={selected ? '0' : '-1'}>
+									onClick={this.showImagePropertiesModal}
+									onKeyDown={this.returnFocusOnTab}
+									tabIndex={selected ? '0' : '-1'}
+								>
 									Image Properties
 								</Button>
 							</div>

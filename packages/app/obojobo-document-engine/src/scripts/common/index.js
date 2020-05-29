@@ -45,6 +45,7 @@ import TextMenu from './components/text-menu'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
 import isOrNot from './util/isornot'
+import withProtocol from './util/with-protocol'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
 import debounce from './util/debounce'
@@ -137,6 +138,7 @@ export default {
 		setProp,
 		cloneProps,
 		isOrNot,
+		withProtocol,
 		debounce,
 		withoutUndefined
 	}

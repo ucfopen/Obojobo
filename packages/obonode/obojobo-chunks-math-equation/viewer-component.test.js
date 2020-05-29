@@ -1,4 +1,3 @@
-import Katex from 'katex'
 import MathEquation from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import React from 'react'
@@ -92,8 +91,7 @@ describe('MathEquation', () => {
 			}
 		})
 
-		jest.spyOn(Katex, 'renderToString')
-		Katex.renderToString.mockImplementationOnce(() => {
+		global.window.katex.renderToString.mockImplementationOnce(() => {
 			throw new Error('mockKatexError')
 		})
 

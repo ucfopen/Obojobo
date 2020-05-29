@@ -10,7 +10,11 @@ jest.mock('./events')
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
 const mockCurrentDocument = { draftId: 'mockDraftId' }
-const mockCurrentVisit = { resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview' }
+const mockCurrentVisit = {
+	id: 'mockCurrentVisitId',
+	resource_link_id: 'mockResourceLinkId',
+	is_preview: 'mockIsPreview'
+}
 const bodyParser = require('body-parser')
 const request = require('supertest')
 const { reviewAttempt } = require('./attempt-review')
@@ -121,7 +125,8 @@ describe('server/express', () => {
 					mockCurrentDocument,
 					'mockAssessmentId',
 					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id
+					mockCurrentVisit.resource_link_id,
+					mockCurrentVisit.id
 				)
 				// verify the response body
 				expect(response.body).toEqual({

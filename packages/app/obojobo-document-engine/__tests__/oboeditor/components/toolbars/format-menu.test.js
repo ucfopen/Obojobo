@@ -2,89 +2,17 @@ import { mount } from 'enzyme'
 import React from 'react'
 
 jest.mock('slate-react')
-
+import { useEditor } from 'slate-react'
 import FormatMenu from '../../../../src/scripts/oboeditor/components/toolbars/format-menu'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 
-describe('Format Menu', () => {
-	test('FormatMenu node', () => {
-		const editor = { current: {} }
-		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } }
-		}
-
-		const component = mount(<FormatMenu editor={editor} value={value} />)
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('FormatMenu node toggles mark', () => {
-		const editor = {
-			toggleMark: jest.fn()
-		}
-		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
-		}
-
-		const component = mount(<FormatMenu editor={editor} value={value} />)
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(editor.toggleMark).toHaveBeenCalled()
-	})
-
-	test('FormatMenu node calls editor.changeToType for each paraggraph style', () => {
-		const editor = {
-			changeToType: jest.fn()
-		}
-		const value = {
-			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
-		}
-
-		const component = mount(<FormatMenu editor={editor} value={value} />)
-
-		component
-			.find('button')
-			.at(12)
-			.simulate('click')
-		component
-			.find('button')
-			.at(13)
-			.simulate('click')
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
-		component
-			.find('button')
-			.at(15)
-			.simulate('click')
-		component
-			.find('button')
-			.at(16)
-			.simulate('click')
-		component
-			.find('button')
-			.at(17)
-			.simulate('click')
-		component
-			.find('button')
-			.at(18)
-			.simulate('click')
-		component
-			.find('button')
-			.at(19)
-			.simulate('click')
-
-		expect(editor.changeToType).toHaveBeenCalledTimes(8)
-	})
-
-	test('FormatMenu node sets indent', () => {
-		const editor = {
+describe('FormatMenu', () => {
+	beforeEach(() => {
+		useEditor.mockReturnValue({
+			current: {},
+			toggleMark: jest.fn(),
+			setAlign: jest.fn(),
 			children: [
 				{
 					type: LIST_NODE,
@@ -97,31 +25,111 @@ describe('Format Menu', () => {
 			},
 			isInline: () => false,
 			isVoid: () => false,
-			unindentList: jest.fn()
+			unindentList: jest.fn(),
+			changeToType: jest.fn()
+		})
+	})
+	test('component snapshot', () => {
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 1 } }
 		}
+
+		const component = mount(<FormatMenu value={value} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('toggles mark', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value} />)
+		const component = mount(<FormatMenu value={value} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(useEditor().toggleMark).toHaveBeenCalled()
+	})
+
+	test('calls editor.changeToType for each paragraph style', () => {
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
+		}
+
+		const component = mount(<FormatMenu value={value} />)
+
+		const buttonMap = {
+			12: 'Normal Text',
+			13: 'Heading 1',
+			14: 'Heading 2',
+			15: 'Heading 3',
+			16: 'Heading 4',
+			17: 'Heading 5',
+			18: 'Heading 6',
+			19: 'Code'
+		}
+
+		for (const id in buttonMap) {
+			const editor = useEditor()
+			editor.changeToType.mockClear()
+
+			const target = component.find('button').at(id)
+			expect(target.props().children[0]).toBe(buttonMap[id])
+			target.simulate('click')
+
+			expect(editor.changeToType).toHaveBeenCalledTimes(1)
+		}
+	})
+
+	test('calls editor.changeToType for each align style', () => {
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
+		}
+
+		const component = mount(<FormatMenu value={value} />)
+
+		const buttonMap = {
+			21: 'Left Align',
+			22: 'Center Align',
+			23: 'Right Align'
+		}
+
+		for (const id in buttonMap) {
+			const editor = useEditor()
+			editor.setAlign.mockClear()
+
+			const target = component.find('button').at(id)
+			expect(target.props().children[0]).toBe(buttonMap[id])
+			target.simulate('click')
+
+			expect(editor.setAlign).toHaveBeenCalledTimes(1)
+		}
+	})
+
+	test('sets indent', () => {
+		const value = {
+			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
+		}
+
+		const component = mount(<FormatMenu value={value} />)
 
 		component
 			.find('button')
 			.at(25)
 			.simulate('click')
 
-		expect(editor.unindentList).toHaveBeenCalled()
+		expect(useEditor().unindentList).toHaveBeenCalled()
 	})
 
-	test.skip('FormatMenu node calls editor.changeToType for each bullet style', () => {
-		const editor = {
-			changeToType: jest.fn()
-		}
+	test.skip('calls editor.changeToType for each bullet style', () => {
 		const value = {
 			selection: { focus: { key: 'mock-key', offset: 1 }, anchor: { key: 'mock-key', offset: 4 } }
 		}
 
-		const component = mount(<FormatMenu editor={editor} value={value} />)
+		const component = mount(<FormatMenu value={value} />)
 
 		// Unordered lists
 		component
@@ -142,23 +150,27 @@ describe('Format Menu', () => {
 			.find('button')
 			.at(33)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(34)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(35)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(36)
 			.simulate('click')
+
 		component
 			.find('button')
 			.at(37)
 			.simulate('click')
 
-		expect(editor.changeToType).toHaveBeenCalledTimes(8)
+		expect(useEditor().changeToType).toHaveBeenCalledTimes(8)
 	})
 })

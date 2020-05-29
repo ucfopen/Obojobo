@@ -47,7 +47,13 @@ const BasicMarks = {
 			let { children } = props
 			const { leaf } = props
 
-			if (leaf[LATEX_MARK]) children = <div className={'latex-editor '}>{children}</div>
+			if (leaf[LATEX_MARK]) {
+				children = (
+					<div spellCheck={false} className={'latex-editor '}>
+						{children}
+					</div>
+				)
+			}
 			if (leaf[BOLD_MARK]) children = <strong>{children}</strong>
 			if (leaf[ITALIC_MARK]) children = <em>{children}</em>
 			if (leaf[STRIKE_MARK]) children = <del>{children}</del>

@@ -9,7 +9,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
 import EditorStore from '../stores/editor-store'
-import FileToolbar from './toolbars/file-toolbar'
+import FileToolbarViewer from './toolbars/file-toolbar-viewer'
 import FormatPlugin from '../plugins/format-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
@@ -61,13 +61,14 @@ class VisualEditor extends React.Component {
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
-		this.insertableItems = []
 		this.onKeyDownGlobal = this.onKeyDownGlobal.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
 		this.renameModule = this.renameModule.bind(this)
 		this.onResized = this.onResized.bind(this)
+		this.renderElement = this.renderElement.bind(this)
+		this.setEditorFocus = this.setEditorFocus.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -154,7 +155,7 @@ class VisualEditor extends React.Component {
 
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
-		ReactEditor.focus(this.editor)
+		this.setEditorFocus()
 		this.setupResizeObserver()
 	}
 
@@ -195,8 +196,12 @@ class VisualEditor extends React.Component {
 			return this.saveModule(this.props.draftId)
 		}
 
-		if ((event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
-			((event.key === 'z' || event.key === 'Z') && (event.ctrlKey || event.metaKey) && event.shiftKey)) {
+		if (
+			(event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
+			((event.key === 'z' || event.key === 'Z') &&
+				(event.ctrlKey || event.metaKey) &&
+				event.shiftKey)
+		) {
 			event.preventDefault()
 			return this.editor.redo()
 		}
@@ -261,7 +266,11 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: i and I occur on different systems as the key when shift is held
-		if ((event.key === 'i' || event.key === 'I') && (event.ctrlKey || event.metaKey) && event.shiftKey) {
+		if (
+			(event.key === 'i' || event.key === 'I') &&
+			(event.ctrlKey || event.metaKey) &&
+			event.shiftKey
+		) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -292,7 +301,7 @@ class VisualEditor extends React.Component {
 
 		this.setState({ value, saved: false })
 
-		if (!ReactEditor.isFocused(this.editor)) ReactEditor.focus(this.editor)
+		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
 
 	onResized(event) {
@@ -322,7 +331,7 @@ class VisualEditor extends React.Component {
 			this.editor.prevSelection = null
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
-				ReactEditor.focus(this.editor)
+				this.setEditorFocus()
 			})
 		}
 
@@ -334,7 +343,7 @@ class VisualEditor extends React.Component {
 			this.exportToJSON(prevProps.page, prevState.value)
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
-				ReactEditor.focus(this.editor)
+				this.setEditorFocus()
 			})
 		}
 	}
@@ -502,21 +511,23 @@ class VisualEditor extends React.Component {
 		}
 	}
 
+	setEditorFocus() {
+		ReactEditor.focus(this.editor)
+	}
+
 	render() {
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className} ref={this.pageEditorContainerRef}>
-				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">
 						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
-						<Button className="skip-nav" onClick={() => ReactEditor.focus(this.editor)}>
+						<Button className="skip-nav" onClick={this.setEditorFocus}>
 							Skip to Editor
 						</Button>
-						<FileToolbar
-							editor={this.editor}
-							selection={this.editor.selection}
+						<FileToolbarViewer
 							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
@@ -527,7 +538,6 @@ class VisualEditor extends React.Component {
 							insertableItems={this.props.insertableItems}
 							togglePlaceholders={this.togglePlaceholders}
 							showPlaceholders={this.state.showPlaceholders}
-							value={this.state.value}
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
@@ -543,7 +553,7 @@ class VisualEditor extends React.Component {
 						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
-								renderElement={this.renderElement.bind(this)}
+								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
 								readOnly={!this.state.editable}

@@ -26,6 +26,13 @@ class Node extends React.Component {
 		super(props)
 		this.insertBlockBefore = this.insertBlockAt.bind(this, INSERT_BEFORE)
 		this.insertBlockAfter = this.insertBlockAt.bind(this, INSERT_AFTER)
+		this.saveId = this.saveId.bind(this)
+		this.saveContent = this.saveContent.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.duplicateNode = this.duplicateNode.bind(this)
+		this.onOpen = this.onOpen.bind(this)
+		this.moveNode = this.moveNode.bind(this)
+		this.onBlur = this.onBlur.bind(this)
 	}
 
 	insertBlockAt(where, item) {
@@ -187,16 +194,16 @@ class Node extends React.Component {
 				type={this.props.element.type}
 				id={this.props.element.id}
 				content={this.props.element.content || {}}
-				saveId={this.saveId.bind(this)}
-				saveContent={this.saveContent.bind(this)}
+				saveId={this.saveId}
+				saveContent={this.saveContent}
 				contentDescription={this.props.contentDescription || []}
-				deleteNode={this.deleteNode.bind(this)}
-				duplicateNode={this.duplicateNode.bind(this)}
+				deleteNode={this.deleteNode}
+				duplicateNode={this.duplicateNode}
 				markUnsaved={this.props.editor.markUnsaved}
-				onOpen={this.onOpen.bind(this)}
-				onBlur={this.onBlur.bind(this)}
+				onOpen={this.onOpen}
+				onBlur={this.onBlur}
 				tabIndex="-1"
-				moveNode={this.moveNode.bind(this)}
+				moveNode={this.moveNode}
 				open={this.props.element.open === 'info'}
 				showMoveButtons
 				isFirst={thisSiblingIndex === 0}

@@ -17,6 +17,16 @@ const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class IFrame extends React.Component {
+	constructor(props) {
+		super(props)
+		this.focusIframe = this.focusIframe.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.showIFramePropertiesModal = this.showIFramePropertiesModal.bind(this)
+		this.changeProperties = this.changeProperties.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+	}
+
 	focusIframe() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		const start = Editor.start(this.props.editor, path)
@@ -28,10 +38,7 @@ class IFrame extends React.Component {
 
 	showIFramePropertiesModal() {
 		ModalUtil.show(
-			<IframeProperties
-				content={this.props.element.content}
-				onConfirm={this.changeProperties.bind(this)}
-			/>
+			<IframeProperties content={this.props.element.content} onConfirm={this.changeProperties} />
 		)
 	}
 
@@ -99,12 +106,12 @@ class IFrame extends React.Component {
 					<div
 						className={`editor-container  ${isSelected}`}
 						style={previewStyle}
-						onClick={this.focusIframe.bind(this)}
+						onClick={this.focusIframe}
 					>
 						<Button
 							className="delete-button"
-							onClick={this.deleteNode.bind(this)}
-							onKeyDown={this.returnFocusOnShiftTab.bind(this)}
+							onClick={this.deleteNode}
+							onKeyDown={this.returnFocusOnShiftTab}
 							tabIndex={selected ? 0 : -1}
 						>
 							×
@@ -115,8 +122,8 @@ class IFrame extends React.Component {
 							</span>
 							<Button
 								className="properties-button"
-								onClick={this.showIFramePropertiesModal.bind(this)}
-								onKeyDown={this.returnFocusOnTab.bind(this)}
+								onClick={this.showIFramePropertiesModal}
+								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>
 								IFrame Properties

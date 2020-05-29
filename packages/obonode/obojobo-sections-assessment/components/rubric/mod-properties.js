@@ -17,6 +17,8 @@ class ModProperties extends React.Component {
 		}
 
 		this.inputRef = React.createRef()
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.onAddMod = this.onAddMod.bind(this)
 	}
 
 	focusOnFirstElement() {
@@ -87,7 +89,7 @@ class ModProperties extends React.Component {
 				ok
 				title="Extra Credit & Penalties"
 				onConfirm={() => this.props.onConfirm(this.state)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="obojobo-draft--sections--assessment--mod-properties">
 					<p className="info" ref={this.inputRef} tabIndex={-1}>
@@ -152,9 +154,7 @@ class ModProperties extends React.Component {
 								</div>
 							)
 						})}
-						{this.state.mods.length < 20 ? (
-							<Button onClick={this.onAddMod.bind(this)}>Add Mod</Button>
-						) : null}
+						{this.state.mods.length < 20 ? <Button onClick={this.onAddMod}>Add Mod</Button> : null}
 					</div>
 				</div>
 			</SimpleDialog>

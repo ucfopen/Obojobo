@@ -21,11 +21,13 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 
 	// Check all children nodes
 	let duplicateId = null
-	for (const child of jsonTreeNode.children) {
-		duplicateId = findDuplicateIdsRecursive(child, idSet)
-		if (duplicateId) {
-			// return as soon as a duplicate is found
-			return duplicateId
+	if (Array.isArray(jsonTreeNode.children)) {
+		for (const child of jsonTreeNode.children) {
+			duplicateId = findDuplicateIdsRecursive(child, idSet)
+			if (duplicateId) {
+				// return as soon as a duplicate is found
+				return duplicateId
+			}
 		}
 	}
 
