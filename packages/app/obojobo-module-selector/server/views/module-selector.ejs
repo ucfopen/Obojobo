@@ -147,7 +147,7 @@
 			</p>
 		</div>
 
-		<form id="submit-form" action="" method="post" encType="application/x-www-form-urlencoded">
+		<form id="submit-form" action="<%- returnUrl %>" method="post" encType="application/x-www-form-urlencoded">
 			<input type="hidden" name="lti_message_type" value="ContentItemSelection" />
 			<input type="hidden" name="lti_version" value="LTI-1p0" />
 			<input type="hidden" name="content_items" value="" />
@@ -156,7 +156,6 @@
 
 
 		<script type="text/javascript">
-			window.__returnUrl = '<%= returnUrl %>';
 			window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 		</script>
 
