@@ -18,7 +18,7 @@ jest.mock(
 )
 jest.useFakeTimers()
 
-describe('MathEquation Editor Node', () => {
+describe('MathEquation Editor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.clearAllTimers()
@@ -31,7 +31,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component with error', () => {
+	test('renders with error', () => {
 		global.window.katex.renderToString.mockImplementationOnce(() => {
 			throw Error('Mock katex render error')
 		})
@@ -41,7 +41,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component with label', () => {
+	test('renders with label', () => {
 		const component = renderer.create(
 			<MathEquation element={{ content: { latex: '1', label: '', size: 1 } }} />
 		)
@@ -50,7 +50,47 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits properties', () => {
+	test('opens when clicked on', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={false}
+				editor={{ toggleEditable: jest.fn(), selection: 'mock-selection' }}
+			/>
+		)
+
+		const container = component.find('.obojobo-draft--chunks--math-equation')
+
+		// click to open
+		container.simulate('click', { stopPropagation: jest.fn(), preventDefault: jest.fn() })
+
+		expect(Transforms.setSelection).toHaveBeenCalled()
+		expect(Transforms.select).not.toHaveBeenCalled()
+	})
+
+	test('opens and selects itself if editor has no selection', () => {
+		const component = mount(
+			<MathEquation
+				element={{
+					content: { latex: '1', label: '1.1', size: 1 }
+				}}
+				selected={false}
+				editor={{ toggleEditable: jest.fn(), selection: null }}
+			/>
+		)
+
+		const container = component.find('.obojobo-draft--chunks--math-equation')
+
+		// click to open
+		container.simulate('click', { stopPropagation: jest.fn(), preventDefault: jest.fn() })
+
+		expect(Transforms.setSelection).toHaveBeenCalled()
+		expect(Transforms.select).toHaveBeenCalled()
+	})
+
+	test('edits properties', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -106,7 +146,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component handles tabbing', () => {
+	test('handles tabbing', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -124,7 +164,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits properties', () => {
+	test('edits properties', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -162,7 +202,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component restricts minimum size to 0.1', () => {
+	test('restricts minimum size to 0.1', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -187,7 +227,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component restricts maximum size to 20', () => {
+	test('restricts maximum size to 20', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -212,7 +252,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component sets blank values to 1', () => {
+	test('sets blank values to 1', () => {
 		const component = mount(
 			<MathEquation
 				element={{
@@ -237,7 +277,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component freezes and unfreezes editor', () => {
+	test('freezes and unfreezes editor', () => {
 		const editor = {
 			toggleEditable: jest.fn()
 		}
@@ -269,7 +309,7 @@ describe('MathEquation Editor Node', () => {
 		expect(editor.toggleEditable).toHaveBeenCalledWith(true)
 	})
 
-	test('MathEquation component calls setNode once edit dialog disappears', () => {
+	test('calls setNode once edit dialog disappears', () => {
 		const props = {
 			editor: { toggleEditable: jest.fn() },
 			element: { content: { latex: '2x/3', label: '1.1' } },

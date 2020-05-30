@@ -10,7 +10,6 @@ window.React = require('react')
 window.ReactDOM = require('react-dom')
 window._ = require('underscore')
 window.Backbone = require('backbone')
-window.katex = require('katex')
 window.focus = () => ({})
 window.matchMedia = jest.fn().mockImplementation(query => ({
 	matches: false,
