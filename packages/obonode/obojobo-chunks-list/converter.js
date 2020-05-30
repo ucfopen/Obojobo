@@ -257,11 +257,25 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				SelectionUtil.resetPointAtUncertainDepth(editor, path, start, startPath, TEXT_LINE_NODE, 'anchor')
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					start,
+					startPath,
+					TEXT_LINE_NODE,
+					'anchor'
+				)
 			}
 
 			if (containsEnd) {
-				SelectionUtil.resetPointAtUncertainDepth(editor, path, end, endPath, TEXT_LINE_NODE, 'focus')
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					end,
+					endPath,
+					TEXT_LINE_NODE,
+					'focus'
+				)
 			}
 		})
 	},
@@ -331,11 +345,25 @@ const switchType = {
 			})
 
 			if (containsStart) {
-				SelectionUtil.resetPointAtUncertainDepth(editor, path, start, startPath, CODE_LINE_NODE, 'anchor')
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					start,
+					startPath,
+					CODE_LINE_NODE,
+					'anchor'
+				)
 			}
 
 			if (containsEnd) {
-				SelectionUtil.resetPointAtUncertainDepth(editor, path, end, endPath, CODE_LINE_NODE, 'focus')
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					end,
+					endPath,
+					CODE_LINE_NODE,
+					'focus'
+				)
 			}
 		})
 	},

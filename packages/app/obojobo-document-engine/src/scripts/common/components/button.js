@@ -51,7 +51,8 @@ export default class Button extends React.Component {
 					aria-label={this.props.ariaLabel}
 					aria-selected={this.props.ariaSelected}
 					contentEditable={false}
-					onKeyDown={this.props.onKeyDown}>
+					onKeyDown={this.props.onKeyDown}
+				>
 					{children}
 				</button>
 			</div>

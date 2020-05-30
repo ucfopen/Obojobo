@@ -55,9 +55,9 @@ class MathEquation extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		const isClosing = prevState.open && !this.state.open
-		const isOpening = !prevState.open && this.state.open
-		const isUnselecting = prevProps.selected && !this.props.selected
+		const isClosing = Boolean(prevState.open) && !this.state.open
+		const isOpening = !prevState.open && Boolean(this.state.open)
+		const isUnselecting = Boolean(prevProps.selected) && !this.props.selected
 
 		if (isOpening) {
 			document.addEventListener('mousedown', this.handleClick, false)
@@ -279,6 +279,15 @@ class MathEquation extends React.Component {
 			focus: start,
 			anchor: start
 		})
+
+		// this is an attempt to detect when slate
+		// has no selection and this node is the
+		// first item to get clicked on
+		// Slate doesn't end up selecting it, so we'll
+		// do it manually.
+		if (!this.props.editor.selection) {
+			Transforms.select(this.props.editor, path)
+		}
 	}
 
 	render() {

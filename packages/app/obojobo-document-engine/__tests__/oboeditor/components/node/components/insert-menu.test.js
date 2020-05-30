@@ -65,11 +65,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component closes menu', () => {
 		const component = mount(
-			<InsertMenu 
-				dropOptions={testOptions} 
-				icon="+" 
-				masterOnClick={jest.fn()} 
-				onBlur={jest.fn()}/>
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} onBlur={jest.fn()} />
 		)
 
 		const html = component
@@ -139,11 +135,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component closes menu when unfocused', () => {
 		const component = mount(
-			<InsertMenu 
-				dropOptions={testOptions} 
-				icon="+" 
-				masterOnClick={jest.fn()}
-				onBlur={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} onBlur={jest.fn()} />
 		)
 
 		const html = component.simulate('blur').html()

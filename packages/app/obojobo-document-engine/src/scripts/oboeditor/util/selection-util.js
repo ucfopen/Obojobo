@@ -5,7 +5,7 @@ const SelectionUtil = {
 	 * Reset a selection point when changing between nodes of different depths
 	 * This is promarily used when converting to and from lists, as the nested levels
 	 * cause the selection to be lost
-	 * 
+	 *
 	 * @param {Object} editor A Slate editor
 	 * @param {Array} path The path to the Obojobo node
 	 * @param {Object} point The original point that needs to be reset
@@ -22,7 +22,7 @@ const SelectionUtil = {
 			Editor.nodes(editor, {
 				at: path,
 				match: n => n.subtype === leafSubtype,
-				reverse: edge === 'end' || edge ==='focus'
+				reverse: edge === 'end' || edge === 'focus'
 			})
 		)
 
