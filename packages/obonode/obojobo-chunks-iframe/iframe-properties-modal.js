@@ -109,6 +109,7 @@ class IFrameProperties extends React.Component {
 				cancelOk
 				title="IFrame Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
+				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className={'iframe-properties'}>

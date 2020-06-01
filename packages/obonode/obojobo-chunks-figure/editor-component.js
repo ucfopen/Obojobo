@@ -12,6 +12,10 @@ import Image from './image'
 import ImageProperties from './image-properties-modal'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import {
+	freezeEditor,
+	unfreezeEditor
+} from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -32,7 +36,9 @@ class Figure extends React.Component {
 		this.changeProperties = this.changeProperties.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.onCloseImagePropertiesModal = this.onCloseImagePropertiesModal.bind(this)
 	}
+
 	focusFigure() {
 		if (!this.props.selected) {
 			const path = ReactEditor.findPath(this.props.editor, this.props.element)
@@ -50,13 +56,20 @@ class Figure extends React.Component {
 	}
 
 	showImagePropertiesModal() {
+		freezeEditor(this.props.editor)
 		ModalUtil.show(
 			<ImageProperties
 				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
 				content={this.props.element.content}
 				onConfirm={this.changeProperties}
+				onCancel={this.onCloseImagePropertiesModal}
 			/>
 		)
+	}
+
+	onCloseImagePropertiesModal() {
+		ModalUtil.hide()
+		unfreezeEditor(this.props.editor)
 	}
 
 	returnFocusOnTab(event) {
@@ -74,7 +87,7 @@ class Figure extends React.Component {
 	}
 
 	changeProperties(content) {
-		ModalUtil.hide()
+		this.onCloseImagePropertiesModal()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
