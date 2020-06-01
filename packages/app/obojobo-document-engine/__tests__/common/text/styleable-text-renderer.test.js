@@ -1,6 +1,7 @@
 import styleableTextRenderer from '../../../src/scripts/common/text/styleable-text-renderer'
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
 import StyleRange from '../../../src/scripts/common/text/style-range'
+import mockConsole from 'jest-mock-console'
 
 // convience function to easily compare a MockElement
 const mockElToHTMLString = el => {
@@ -24,7 +25,17 @@ const mockElToHTMLString = el => {
 	}>`
 }
 
+let restoreConsole
+
 describe('styleableTextRenderer', () => {
+	beforeEach(() => {
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
+	})
+
 	test('Non-styled text', () => {
 		const st = new StyleableText('Test')
 		const mockEl = styleableTextRenderer(st)
@@ -159,6 +170,19 @@ describe('styleableTextRenderer', () => {
 
 		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
 			`"<span>dog <span class=\\"latex\\" role=\\"math\\" alt=\\"alt-text\\"><span aria-hidden=\\"true\\">mock-katex-render-for-fox-with-options-{\\"throwOnError\\":false}</span></span> cat</span>"`
+		)
+	})
+
+	test('Latex when window.katex is invalid', () => {
+		window.katex = null
+		const st = new StyleableText('dog fox cat')
+		st.styleText('_latex', 4, 7, { a: 1 })
+		const mockEl = styleableTextRenderer(st)
+
+		// eslint-disable-next-line no-console
+		expect(console.error).toHaveBeenCalled()
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\">fox</span> cat</span>"`
 		)
 	})
 

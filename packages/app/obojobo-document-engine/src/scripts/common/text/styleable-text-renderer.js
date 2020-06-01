@@ -159,8 +159,13 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			)
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
-			const html = window.katex.renderToString(text, { throwOnError: false })
-			nodeToWrap.html = `<span aria-hidden="true">${html}</span>`
+
+			try {
+				const html = window.katex.renderToString(text, { throwOnError: false })
+				nodeToWrap.html = `<span aria-hidden="true">${html}</span>`
+			} catch (e) {
+				console.error(e) // eslint-disable-line
+			}
 			nodeToWrap.text = text
 			return newChild
 		}
