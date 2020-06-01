@@ -64,6 +64,7 @@ describe('IFrame Editor Node', () => {
 						src: 'mockSrc'
 					}
 				}}
+				selected
 				parent={{
 					getPath: () => ({
 						get: () => 0
@@ -136,6 +137,42 @@ describe('IFrame Editor Node', () => {
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('IFrame component handles tab', () => {
+		const component = mount(
+			<IFrame
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: ''
+					}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 
 	test('changeProperties sets the nodes content', () => {

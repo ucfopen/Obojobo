@@ -35,22 +35,32 @@ const orderedList = [
 
 const ContentToolbar = props => {
 	const marks = Editor.marks(props.editor)
+	const isMac = navigator.platform.indexOf('Mac') !== -1
+
 	return (
 		<div className={`visual-editor--content-toolbar`}>
 			<ParagraphStyles editor={props.editor} />
 			{contentMarks.map(mark => {
-				const Icon = mark.icon
 				const isSelected = marks && mark && marks[mark.type]
 				const className = isOrNot(isSelected, 'selected')
+				const Icon = mark.icon
+
+				// Decide whether or not to use the mac shortcut
+				// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
+				// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
+				// for keyboard shortcuts
+				const hotKey = isMac ? '⌘+' : 'Ctrl+'
+				const shortcut = '\n' + hotKey + mark.shortcut
 
 				return (
 					<button
 						className={className}
 						key={mark.name}
 						onClick={() => mark.action(props.editor)}
-						title={mark.name}
+						title={mark.name + shortcut}
+						aria-label={mark.name + shortcut}
 					>
-						<Icon editor={props.editor} />
+						<Icon />
 					</button>
 				)
 			})}
@@ -59,12 +69,14 @@ const ContentToolbar = props => {
 				type="unordered"
 				bullets={unorderedList}
 				defaultStyle="disc"
+				shortcut="Shift+K"
 			/>
 			<ListDropper
 				editor={props.editor}
 				type="ordered"
 				bullets={orderedList}
 				defaultStyle="decimal"
+				shortcut="Shift+L"
 			/>
 		</div>
 	)

@@ -1,5 +1,14 @@
 const fs = require('fs')
 const jsonToXmlParser = require('../json-to-xml-parser')
+global.window.open = jest.fn()
+global.window.katex = {
+	renderToString: jest
+		.fn()
+		.mockImplementation(
+			(input, options = {}) =>
+				`mock-katex-render-for-${input}-with-options-${JSON.stringify(options)}`
+		)
+}
 
 describe('JSON to XML Parser', () => {
 	expect.hasAssertions()

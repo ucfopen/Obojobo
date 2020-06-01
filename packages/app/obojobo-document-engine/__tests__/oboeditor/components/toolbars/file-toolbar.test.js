@@ -1,43 +1,11 @@
 import { mount, shallow } from 'enzyme'
-import { Transforms, Editor } from 'slate'
 import React from 'react'
-import Common from '../../../../src/scripts/common'
-
 import FileToolbar from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar'
-
-jest.mock('slate-react')
-jest.mock('../../../../src/scripts/oboeditor/components/marks/basic-marks', () => ({
-	marks: [{ name: 'Mock Mark', action: jest.fn() }]
-}))
-jest.mock('../../../../src/scripts/oboeditor/components/marks/link-mark')
-jest.mock('../../../../src/scripts/oboeditor/components/marks/script-marks')
-jest.mock('../../../../src/scripts/oboeditor/components/marks/align-marks', () => ({
-	marks: [{ name: 'Mock Mark', action: jest.fn() }]
-}))
-jest.mock('../../../../src/scripts/oboeditor/components/marks/indent-marks')
+import DropDownMenu from '../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu'
 jest.mock('../../../../src/scripts/oboeditor/components/toolbars/file-menu')
 jest.mock('../../../../src/scripts/oboeditor/components/toolbars/view-menu')
-jest.mock('../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu', () =>
-	// Make sure actions are properly registered
-	props => {
-		if (props.menu) {
-			props.menu.forEach(item => {
-				if (item.action) return item.action()
-				if (item.menu) {
-					item.menu.forEach(subitem => {
-						if (subitem.action) return subitem.action()
-					})
-				}
-			})
-		}
-		return null
-	}
-)
-
+jest.mock('../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu')
 jest.mock('../../../../src/scripts/common', () => ({
-	models: {
-		OboModel: {}
-	},
 	components: {
 		modal: {
 			SimpleDialog: () => 'MockSimpleDialog'
@@ -45,226 +13,147 @@ jest.mock('../../../../src/scripts/common', () => ({
 		Button: require('../../../../src/scripts/common/components/button').default
 	},
 	util: {
-		ModalUtil: {
-			hide: jest.fn(),
-			show: jest.fn()
-		},
 		isOrNot: require('obojobo-document-engine/src/scripts/common/util/isornot').default
-	},
-	flux: {
-		Dispatcher: {
-			trigger: jest.fn()
-		}
 	}
 }))
 
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-
 describe('File Toolbar', () => {
+	let editor
 	beforeEach(() => {
 		jest.clearAllMocks()
-
-		Common.models.OboModel.create = jest.fn().mockReturnValue({ setId: () => true })
-	})
-
-	test('FileToolbar node', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(false)
-		const editor = {
+		editor = {
 			undo: jest.fn(),
 			redo: jest.fn(),
 			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			children: [{ text: '' }],
-			selection: null,
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn(),
 			selectAll: jest.fn()
 		}
-		const value = {}
+	})
 
-		const component = shallow(
-			<FileToolbar saved editor={editor} insertableItems={[]} value={value} />
-		)
+	test('FileToolbar node', () => {
+		const props = {
+			saved: true,
+			editor
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('FileToolbar node in visual editor', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn(),
-			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			changeToType: jest.fn(),
-			children: [{ text: 'mockText' }],
-			selection: null,
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn()
+	test('FileToolbar with disables deletion', () => {
+		const props = {
+			saved: true,
+			editor,
+			isDeletable: false
 		}
-		const items = [
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const expected = [
 			{
-				name: 'mock-item',
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE }
+				action: expect.any(Function),
+				disabled: false,
+				name: 'Delete',
+				type: 'action'
 			}
 		]
 
-		const component = mount(
-			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
-		)
+		const editMenuProps = component.find(DropDownMenu).props()
+		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
+	})
+
+	test('FileToolbar with enables deletion', () => {
+		const props = {
+			saved: true,
+			editor,
+			isDeletable: true
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const expected = [
+			{
+				action: expect.any(Function),
+				disabled: true,
+				name: 'Delete',
+				type: 'action'
+			}
+		]
+
+		const editMenuProps = component.find(DropDownMenu).props()
+		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
+	})
+
+	test('FileToolbar with enables deletion by default', () => {
+		const props = {
+			saved: true,
+			editor,
+			isDeletable: null
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const expected = [
+			{
+				action: expect.any(Function),
+				disabled: true,
+				name: 'Delete',
+				type: 'action'
+			}
+		]
+
+		const editMenuProps = component.find(DropDownMenu).props()
+		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
+	})
+
+	test('FileToolbar passes and executes props.selectAll on child editMenu', () => {
+		const props = {
+			saved: true,
+			editor,
+			isDeletable: null,
+			selectAll: jest.fn()
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const editMenuProps = component.find(DropDownMenu).props()
+		const selectItem = editMenuProps.menu.find(i => i.name === 'Select all')
+
+		expect(props.selectAll).toHaveBeenCalledTimes(0)
+		selectItem.action()
+		expect(props.selectAll).toHaveBeenCalledTimes(1)
+	})
+
+	test('FileToolbar passes and executes editor.selectAll on child editMenu', () => {
+		const props = {
+			saved: true,
+			editor,
+			isDeletable: null
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const editMenuProps = component.find(DropDownMenu).props()
+		const selectItem = editMenuProps.menu.find(i => i.name === 'Select all')
+
+		expect(editor.selectAll).toHaveBeenCalledTimes(0)
+		selectItem.action()
+		expect(editor.selectAll).toHaveBeenCalledTimes(1)
+	})
+
+	test('FileToolbar node in visual editor', () => {
+		const props = {
+			mode: 'visual',
+			editor
+		}
+
+		const component = mount(<FileToolbar {...props} />)
+
 		const tree = component.html()
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('FileToolbar node with no nodes', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
-		jest.spyOn(Editor, 'nodes').mockReturnValue([
-			[
-				{
-					type: TABLE_NODE,
-					children: [{ text: 'mockText' }]
-				},
-				[0]
-			]
-		])
-
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn(),
-			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			changeToType: jest.fn(),
-			children: [{ text: 'mockText' }],
-			selection: {
-				anchor: { path: [0], offset: 0 },
-				focus: { path: [0], offset: 0 }
-			},
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn()
-		}
-		const items = [
-			{
-				name: 'mock-item',
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE }
-			}
-		]
-
-		const component = mount(
-			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
-		)
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('FileToolbar node with question node', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
-		jest.spyOn(Editor, 'nodes').mockReturnValue([
-			[
-				{
-					type: QUESTION_NODE,
-					children: [{ text: 'mockText' }]
-				},
-				[0]
-			]
-		])
-
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn(),
-			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			changeToType: jest.fn(),
-			children: [{ text: 'mockText' }],
-			selection: {
-				anchor: { path: [0], offset: 0 },
-				focus: { path: [0], offset: 0 }
-			},
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn()
-		}
-		const items = [
-			{
-				name: 'mock-item',
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE }
-			},
-			{
-				name: 'Question Bank',
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE }
-			}
-		]
-
-		const component = mount(
-			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
-		)
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('FileToolbar node with other node', () => {
-		jest.spyOn(Editor, 'isEditor').mockReturnValue(false)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(false)
-
-		jest.spyOn(Editor, 'nodes').mockImplementation((editor, opts) => {
-			opts.match({
-				type: TEXT_NODE,
-				children: [{ text: 'mockText' }]
-			})
-			return [
-				[
-					{
-						type: TEXT_NODE,
-						children: [{ text: 'mockText' }]
-					},
-					[0]
-				]
-			]
-		})
-
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn(),
-			deleteFragment: jest.fn(),
-			toggleMark: jest.fn(),
-			changeToType: jest.fn(),
-			children: [{ text: 'mockText' }],
-			selection: {
-				anchor: { path: [0], offset: 0 },
-				focus: { path: [0], offset: 0 }
-			},
-			isInline: () => false,
-			isVoid: () => false,
-			apply: jest.fn(),
-			selectAll: jest.fn()
-		}
-		const items = [
-			{
-				name: 'mock-item',
-				cloneBlankNode: () => ({ type: 'mock-type' }),
-				insertJSON: { type: TEXT_NODE }
-			}
-		]
-
-		const component = mount(
-			<FileToolbar mode="visual" editor={editor} insertableItems={items} value={editor.children} />
-		)
-		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 })

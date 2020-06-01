@@ -20,6 +20,7 @@ const LinkMark = {
 			return next(element)
 		},
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
 
 			event.preventDefault()
@@ -66,6 +67,7 @@ const LinkMark = {
 		{
 			name: 'Link',
 			type: LINK_MARK,
+			shortcut: 'K',
 			icon: LinkIcon,
 			action: editor => {
 				// If we have part of the selection inside a button, prevent links

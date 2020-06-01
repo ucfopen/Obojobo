@@ -24,6 +24,7 @@ class Cell extends React.Component {
 		this.addColRight = this.addColRight.bind(this)
 		this.deleteRow = this.deleteRow.bind(this)
 		this.deleteCol = this.deleteCol.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 	}
 
 	toggleOpen() {
@@ -42,27 +43,39 @@ class Cell extends React.Component {
 		// Remove any existing header marks on the current row
 		if (isHeader) {
 			const noHeader = { header: false }
-			for(const [sibling, siblingPath] of Node.children(editor, rowPath)){
-				Transforms.setNodes(editor, {
-					content: { ...sibling.content, ...noHeader }
-				}, { at: siblingPath })
+			for (const [sibling, siblingPath] of Node.children(editor, rowPath)) {
+				Transforms.setNodes(
+					editor,
+					{
+						content: { ...sibling.content, ...noHeader }
+					},
+					{ at: siblingPath }
+				)
 			}
 
-			Transforms.setNodes(editor, {
-				content: { ...rowParent.content, ...noHeader }
-			}, { at: rowPath })
+			Transforms.setNodes(
+				editor,
+				{
+					content: { ...rowParent.content, ...noHeader }
+				},
+				{ at: rowPath }
+			)
 		}
 
 		// Add in the new row once the existing row is finished with its updates
-		Transforms.insertNodes(editor, {
-			type: TABLE_NODE,
-			subtype: TABLE_ROW_NODE,
-			content: {
-				header: rowIndex === 0 && isHeader,
-				numCols: tableParent.content.numCols
+		Transforms.insertNodes(
+			editor,
+			{
+				type: TABLE_NODE,
+				subtype: TABLE_ROW_NODE,
+				content: {
+					header: rowIndex === 0 && isHeader,
+					numCols: tableParent.content.numCols
+				},
+				children: [{ text: '' }]
 			},
-			children: [{ text: '' }]
-		}, { at: rowPath })
+			{ at: rowPath }
+		)
 	}
 
 	addRowBelow() {
@@ -72,15 +85,19 @@ class Cell extends React.Component {
 		const [, rowPath] = Editor.parent(editor, cellPath)
 		const [tableParent] = Editor.parent(editor, rowPath)
 
-		Transforms.insertNodes(editor, {
-			type: TABLE_NODE,
-			subtype: TABLE_ROW_NODE,
-			content: {
-				header: false,
-				numCols: tableParent.content.numCols
+		Transforms.insertNodes(
+			editor,
+			{
+				type: TABLE_NODE,
+				subtype: TABLE_ROW_NODE,
+				content: {
+					header: false,
+					numCols: tableParent.content.numCols
+				},
+				children: [{ text: '' }]
 			},
-			children: [{ text: '' }]
-		}, { at: Path.next(rowPath) })
+			{ at: Path.next(rowPath) }
+		)
 	}
 
 	addColLeft() {
@@ -95,23 +112,35 @@ class Cell extends React.Component {
 		// added on to the end of every row
 		return Editor.withoutNormalizing(editor, () => {
 			const colIncrease = { numCols: tableParent.content.numCols + 1 }
-			Transforms.setNodes(editor, {
-				content: { ...tableParent.content, ...colIncrease }
-			}, { at: tablePath })
+			Transforms.setNodes(
+				editor,
+				{
+					content: { ...tableParent.content, ...colIncrease }
+				},
+				{ at: tablePath }
+			)
 
-			for(const [row, path] of Node.children(editor, tablePath)){
-				Transforms.setNodes(editor, {
-					content: { ...row.content, ...colIncrease }
-				}, { at: path })
-
-				Transforms.insertNodes(editor, {
-					type: TABLE_NODE,
-					subtype: TABLE_CELL_NODE,
-					content: { 
-						header: row.content.header,
+			for (const [row, path] of Node.children(editor, tablePath)) {
+				Transforms.setNodes(
+					editor,
+					{
+						content: { ...row.content, ...colIncrease }
 					},
-					children: [{ text: '' }]
-				}, { at: path.concat(colIndex) })
+					{ at: path }
+				)
+
+				Transforms.insertNodes(
+					editor,
+					{
+						type: TABLE_NODE,
+						subtype: TABLE_CELL_NODE,
+						content: {
+							header: row.content.header
+						},
+						children: [{ text: '' }]
+					},
+					{ at: path.concat(colIndex) }
+				)
 			}
 		})
 	}
@@ -128,23 +157,35 @@ class Cell extends React.Component {
 		// added on to the end of every row
 		return Editor.withoutNormalizing(editor, () => {
 			const colIncrease = { numCols: tableParent.content.numCols + 1 }
-			Transforms.setNodes(editor, {
-				content: { ...tableParent.content, ...colIncrease }
-			}, { at: tablePath })
+			Transforms.setNodes(
+				editor,
+				{
+					content: { ...tableParent.content, ...colIncrease }
+				},
+				{ at: tablePath }
+			)
 
-			for(const [row, path] of Node.children(editor, tablePath)){
-				Transforms.setNodes(editor, {
-					content: { ...row.content, ...colIncrease }
-				}, { at: path })
-
-				Transforms.insertNodes(editor, {
-					type: TABLE_NODE,
-					subtype: TABLE_CELL_NODE,
-					content: { 
-						header: row.content.header,
+			for (const [row, path] of Node.children(editor, tablePath)) {
+				Transforms.setNodes(
+					editor,
+					{
+						content: { ...row.content, ...colIncrease }
 					},
-					children: [{ text: '' }]
-				}, { at: path.concat(colIndex + 1) })
+					{ at: path }
+				)
+
+				Transforms.insertNodes(
+					editor,
+					{
+						type: TABLE_NODE,
+						subtype: TABLE_CELL_NODE,
+						content: {
+							header: row.content.header
+						},
+						children: [{ text: '' }]
+					},
+					{ at: path.concat(colIndex + 1) }
+				)
 			}
 		})
 	}
@@ -168,20 +209,32 @@ class Cell extends React.Component {
 			const siblingPath = tablePath.concat(rowIndex + 1)
 			const header = { header: tableParent.content.header }
 
-			for(const [child, childPath] of Node.children(editor, siblingPath)){
-				Transforms.setNodes(editor, {
-					content: { ...child.content, ...header }
-				}, { at: childPath })
+			for (const [child, childPath] of Node.children(editor, siblingPath)) {
+				Transforms.setNodes(
+					editor,
+					{
+						content: { ...child.content, ...header }
+					},
+					{ at: childPath }
+				)
 			}
 
-			Transforms.setNodes(editor, {
-				content: { ...sibling.content, ...header }
-			}, { at: siblingPath })
+			Transforms.setNodes(
+				editor,
+				{
+					content: { ...sibling.content, ...header }
+				},
+				{ at: siblingPath }
+			)
 		}
 
-		Transforms.setNodes(editor, {
-			content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
-		}, { at: tablePath })
+		Transforms.setNodes(
+			editor,
+			{
+				content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
+			},
+			{ at: tablePath }
+		)
 
 		return Transforms.removeNodes(editor, { at: rowPath })
 	}
@@ -201,24 +254,44 @@ class Cell extends React.Component {
 
 		return Editor.withoutNormalizing(editor, () => {
 			const colDecrease = { numCols: tableParent.content.numCols - 1 }
-			Transforms.setNodes(editor, {
-				content: { ...tableParent.content, ...colDecrease }
-			}, { at: tablePath })
+			Transforms.setNodes(
+				editor,
+				{
+					content: { ...tableParent.content, ...colDecrease }
+				},
+				{ at: tablePath }
+			)
 
-			for(const [row, path] of Node.children(editor, tablePath)){
-				Transforms.setNodes(editor, {
-					content: { ...row.content, ...colDecrease }
-				}, { at: path })
+			for (const [row, path] of Node.children(editor, tablePath)) {
+				Transforms.setNodes(
+					editor,
+					{
+						content: { ...row.content, ...colDecrease }
+					},
+					{ at: path }
+				)
 
 				Transforms.removeNodes(editor, { at: path.concat(colIndex) })
 			}
 		})
 	}
 
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			this.setState({ isOpen: false })
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
 	renderDropdown() {
 		return (
 			<div className="dropdown-cell" contentEditable={false}>
-				<button className={isOrNot(this.state.isOpen, 'open')} onClick={this.toggleOpen}>
+				<button
+					className={isOrNot(this.state.isOpen, 'open')}
+					onClick={this.toggleOpen}
+					onKeyDown={this.returnFocusOnShiftTab}
+				>
 					{'⌃'}
 				</button>
 				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>

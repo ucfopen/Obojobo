@@ -14,6 +14,8 @@ exports[`YouTube Editor Node YouTube component 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         ×
       </button>
@@ -29,6 +31,8 @@ exports[`YouTube Editor Node YouTube component 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         Edit
       </button>
@@ -36,6 +40,8 @@ exports[`YouTube Editor Node YouTube component 1`] = `
   </div>
 </div>
 `;
+
+exports[`YouTube Editor Node YouTube component handles tab 1`] = `"<div><div contenteditable=\\"false\\" class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"0\\" contenteditable=\\"false\\">×</button></div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" tabindex=\\"0\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`;
 
 exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
 <div>
@@ -51,6 +57,8 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         ×
       </button>
@@ -69,6 +77,8 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         Edit
       </button>

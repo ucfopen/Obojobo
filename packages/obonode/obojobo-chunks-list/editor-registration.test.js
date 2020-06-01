@@ -11,6 +11,8 @@ import onBackspace from './changes/on-backspace'
 jest.mock('./changes/on-backspace')
 import toggleHangingIndent from './changes/toggle-hanging-indent'
 jest.mock('./changes/toggle-hanging-indent')
+import ListUtil from './list-util'
+jest.mock('./list-util')
 import List from './editor-registration'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
@@ -217,5 +219,42 @@ describe('List editor', () => {
 
 		// verify
 		expect(toggleHangingIndent).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown ignores [ctrl]+[k]', () => {
+		// setup
+		const event = {
+			key: 'k',
+			metaKey: true,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(ListUtil.toggleType).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown([{}, [0]], {}, event)
+
+		// verify
+		expect(ListUtil.toggleType).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [ctrl]+[shift]+[k]', () => {
+		// setup
+		const event = {
+			key: 'k',
+			metaKey: true,
+			shiftKey: true,
+			preventDefault: jest.fn()
+		}
+
+		// pre-execute verification
+		expect(ListUtil.toggleType).not.toHaveBeenCalled()
+
+		// execute
+		List.plugins.onKeyDown([{}, [0]], {}, event)
+
+		// verify
+		expect(ListUtil.toggleType).toHaveBeenCalled()
 	})
 })

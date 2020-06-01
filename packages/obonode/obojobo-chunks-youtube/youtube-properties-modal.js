@@ -13,6 +13,11 @@ class YouTubeProperties extends React.Component {
 			startTimeError: '',
 			endTimeError: ''
 		}
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.onConfirm = this.onConfirm.bind(this)
+		this.handleIdChange = this.handleIdChange.bind(this)
+		this.handleStartTimeChange = this.handleStartTimeChange.bind(this)
+		this.handleEndTimeChange = this.handleEndTimeChange.bind(this)
 	}
 
 	focusOnFirstElement() {
@@ -80,8 +85,8 @@ class YouTubeProperties extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="YouTube Video"
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
-				onConfirm={this.onConfirm.bind(this)}
+				focusOnFirstElement={this.focusOnFirstElement}
+				onConfirm={this.onConfirm}
 			>
 				<div className="youtube-video-properties">
 					<label>Youtube video id:</label>
@@ -90,14 +95,14 @@ class YouTubeProperties extends React.Component {
 						type="text"
 						ref={this.idInputRef}
 						value={this.state.content.videoId || ''}
-						onChange={this.handleIdChange.bind(this)}
+						onChange={this.handleIdChange}
 					/>
 					<label>Start time in seconds (optional):</label>
 					<input
 						type="number"
 						min="0"
 						value={this.state.content.startTime || ''}
-						onChange={this.handleStartTimeChange.bind(this)}
+						onChange={this.handleStartTimeChange}
 					/>
 					<span className="error">{this.state.startTimeError}</span>
 					<label>End time in seconds (optional):</label>
@@ -105,7 +110,7 @@ class YouTubeProperties extends React.Component {
 						type="number"
 						min="1"
 						value={this.state.content.endTime || ''}
-						onChange={this.handleEndTimeChange.bind(this)}
+						onChange={this.handleEndTimeChange}
 					/>
 					<span className="error">{this.state.endTimeError}</span>
 				</div>
