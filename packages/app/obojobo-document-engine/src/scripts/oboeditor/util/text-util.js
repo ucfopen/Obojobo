@@ -16,7 +16,6 @@ const TextUtil = {
 							href: leaf.href,
 							children: [leaf]
 						}
-						delete leaf.a
 						delete leaf.href
 						return currentLink
 						// If the href of this link does not match the current href
@@ -27,13 +26,11 @@ const TextUtil = {
 							href: leaf.href,
 							children: [leaf]
 						}
-						delete leaf.a
 						delete leaf.href
 						return currentLink
 						// Otherwise, this is a leaf that matches the current link
 						// so simply add it to the children of the current link
 					} else {
-						delete leaf.a
 						delete leaf.href
 						currentLink.children.push(leaf)
 						return null

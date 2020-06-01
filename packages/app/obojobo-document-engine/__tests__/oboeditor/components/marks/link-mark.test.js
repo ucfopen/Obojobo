@@ -1,4 +1,4 @@
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 jest.mock('slate-react')
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
@@ -147,6 +147,7 @@ describe('LinkMark', () => {
 	})
 
 	test('the action in each mark calls ModalUtil', () => {
+		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
 		const editor = {
 			children: [
 				{
@@ -175,6 +176,7 @@ describe('LinkMark', () => {
 	})
 
 	test('the action in each mark calls ModalUtil with ActionButtons', () => {
+		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
 		const editor = {
 			children: [
 				{

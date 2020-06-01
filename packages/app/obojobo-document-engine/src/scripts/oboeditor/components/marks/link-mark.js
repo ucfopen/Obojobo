@@ -65,10 +65,11 @@ const LinkMark = {
 	marks: [
 		{
 			name: 'Link',
-			type: LinkMark,
+			type: LINK_MARK,
 			icon: LinkIcon,
 			action: editor => {
 				// If we have part of the selection inside a button, prevent links
+				Editor.addMark(editor, 'a', true)
 				const buttonNodes = Array.from(Editor.nodes(editor, { match: n => n.type === BUTTON_NODE }))
 				if (buttonNodes.length > 0) {
 					return ModalUtil.show(<SimpleDialog ok>Links cannot be added to buttons</SimpleDialog>)

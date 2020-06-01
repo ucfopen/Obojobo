@@ -29,6 +29,7 @@ Array [
   Object {
     "children": Array [
       Object {
+        "a": true,
         "num": 13,
         "sup": true,
         "text": "Form",
@@ -40,6 +41,7 @@ Array [
   Object {
     "children": Array [
       Object {
+        "a": true,
         "text": "atted",
       },
     ],
@@ -70,16 +72,19 @@ Array [
   Object {
     "children": Array [
       Object {
+        "a": true,
         "num": 0,
         "sup": true,
         "text": "Fo",
       },
       Object {
+        "a": true,
         "num": -13,
         "sup": true,
         "text": "rm",
       },
       Object {
+        "a": true,
         "text": "atted",
       },
     ],
