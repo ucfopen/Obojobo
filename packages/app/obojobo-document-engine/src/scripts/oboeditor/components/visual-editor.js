@@ -354,6 +354,8 @@ class VisualEditor extends React.Component {
 	}
 
 	saveModule(draftId) {
+		if (EditorStore.state.mode !== 'visual') return
+
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
