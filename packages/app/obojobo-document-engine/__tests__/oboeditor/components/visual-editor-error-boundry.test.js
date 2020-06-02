@@ -59,4 +59,25 @@ describe('VisualEditorErrorBoundry', () => {
 			</VisualEditorErrorBoundry>
 		)
 	})
+
+	test('VisualEditorErrorBoundry catches errors thrown by editorRef.undo', () => {
+		const BadComponent = () => {
+			throw new Error('I am a bad component')
+		}
+
+		const props = {
+			children: 'mock-children',
+			editorRef: {
+				undo: () => {
+					throw Error('Undo Failed')
+				}
+			}
+		}
+
+		renderer.create(
+			<VisualEditorErrorBoundry {...props}>
+				<BadComponent />
+			</VisualEditorErrorBoundry>
+		)
+	})
 })
