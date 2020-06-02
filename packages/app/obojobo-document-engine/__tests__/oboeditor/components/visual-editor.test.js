@@ -1071,58 +1071,6 @@ describe('VisualEditor', () => {
 		expect(onKeyDown).toHaveBeenCalled()
 	})
 
-	test('saveModule calls APIUtil', () => {
-		const editor = {
-			undo: jest.fn(),
-			redo: jest.fn()
-		}
-
-		const props = {
-			insertableItems: 'mock-insertable-items',
-			page: {
-				attributes: { children: [] },
-				get: jest.fn(),
-				toJSON: () => ({ children: [{ type: 'mock node' }] }),
-				set: jest.fn(),
-				children: {
-					reset: jest.fn()
-				}
-			},
-			model: {
-				title: 'Mock Title',
-				flatJSON: () => ({ content: {}, children: [] }),
-				children: [
-					{
-						get: () => CONTENT_NODE,
-						flatJSON: () => ({ children: [] }),
-						children: {
-							models: [
-								{
-									get: () => 'mock value'
-								}
-							]
-						}
-					},
-					{
-						get: () => ASSESSMENT_NODE
-					}
-				]
-			}
-		}
-
-		const component = mount(<VisualEditor {...props} />)
-		const instance = component.instance()
-		instance.editor = editor
-
-		instance.onKeyDown({
-			preventDefault: jest.fn(),
-			key: 's',
-			metaKey: true
-		})
-
-		expect(APIUtil.postDraft).toHaveBeenCalled()
-	})
-
 	test('reload disables event listener and calls location.reload', () => {
 		jest.spyOn(window, 'removeEventListener').mockReturnValueOnce()
 		Object.defineProperty(window, 'location', {
