@@ -151,7 +151,7 @@ class VisualEditor extends React.Component {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
 		// Setup global keydown to listen to all global keys
-		document.addEventListener('keydown', this.onKeyDownGlobal)
+		window.addEventListener('keydown', this.onKeyDownGlobal)
 
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
@@ -441,9 +441,6 @@ class VisualEditor extends React.Component {
 
 	// All the 'plugin' methods that allow the obonodes to extend the default functionality
 	onKeyDown(event) {
-		// Run the global keydowns, stopping if one executes
-		this.onKeyDownGlobal(event)
-
 		for (const plugin of this.globalPlugins) {
 			if (plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
 			if (event.defaultPrevented) return
