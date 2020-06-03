@@ -41,7 +41,9 @@ class IFrame extends React.Component {
 		})
 	}
 
-	showIFramePropertiesModal() {
+	showIFramePropertiesModal(event) {
+		event.preventDefault()
+		event.stopPropagation()
 		ModalUtil.show(
 			<IframeProperties
 				content={this.props.element.content}
