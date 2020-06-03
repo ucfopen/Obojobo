@@ -201,7 +201,8 @@ module.exports = app => {
 			launch_presentation_css_url: 'https://example.fake/nope.css',
 			launch_presentation_locale: 'en-US',
 			lti_message_type: 'ContentItemSelectionRequest',
-			lti_version: 'LTI-1p0'
+			lti_version: 'LTI-1p0',
+			data: "this opaque 'data' should be sent back to the LMS!"
 		}
 		renderLtiLaunch(
 			{ ...ltiContext, ...person, ...ltiToolConsumer, ...params },
@@ -221,6 +222,7 @@ module.exports = app => {
 			<li>Type: ${data['@graph'][0]['@type']}</li>
 			<li>URL: ${data['@graph'][0].url}</li>
 			<li>Title: ${data['@graph'][0].title}</li>
+			<li>Data: ${req.body.data}</li>
 			</ul>
 			<code>${req.body.content_items}</code>
 			</body></html>`)
