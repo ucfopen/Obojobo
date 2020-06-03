@@ -28,6 +28,7 @@
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
+		user-select: none;
 
 		@mixin point() {
 			content: ' ';
@@ -55,9 +56,15 @@
 		.trigger-list {
 			background-color: $color-bg;
 			border-radius: $dimension-rounded-radius;
+			padding: $dimension-padding / 4 $dimension-padding / 2;
+			box-sizing: border-box;
 
 			.title {
 				font-weight: bold;
+			}
+
+			.no-actions {
+				color: $color-text-minor;
 			}
 		}
 

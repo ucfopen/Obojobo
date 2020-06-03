@@ -8,7 +8,7 @@ import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-uti
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 
-const { getScoreClass } = require.requireActual(
+const { getScoreClass } = jest.requireActual(
 	'obojobo-document-engine/src/scripts/viewer/util/question-util'
 ).default
 

@@ -1,51 +1,117 @@
+import { Transforms } from 'slate'
+
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const CODE_NODE = 'ObojoboDraft.Chunks.Code'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
+const LIST_NODE = 'ObojoboDraft.Chunks.List'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+
+/**
+ * Generates an Obojobo Heading from a Slate node.
+ * Copies the id, type, triggers, and converts text children (including marks)
+ * into a textGroup.  The conversion also saves the headingLevel attribute
+ * @param {Object} node A Slate Node
+ * @returns {Object} An Obojobo Heading node
+ */
 const slateToObo = node => {
 	const line = {
-		text: { value: node.text, styleList: [] },
-		data: { align: node.data.get('content').align }
+		text: { value: '', styleList: [] },
+		data: { align: node.content.align }
 	}
 
-	node.nodes.forEach(text => {
-		TextUtil.slateToOboText(text, line)
-	})
+	TextUtil.slateToOboText(node, line)
 
-	return {
-		id: node.key,
+	const newNode = {
+		id: node.id,
 		type: node.type,
 		children: [],
 		content: withoutUndefined({
-			headingLevel: node.data.get('content').level,
-			textGroup: [line],
-			triggers: node.data.get('content').triggers
+			triggers: node.content.triggers,
+			headingLevel: node.content.headingLevel,
+			textGroup: [line]
 		})
 	}
+
+	return newNode
 }
 
+/**
+ * Generates a Slate node from an Obojobo Heading.
+ * Copies all attributes, and converts a textGroup into Slate Text children
+ * @param {Object} node An Obojobo Heading node
+ * @returns {Object} A Slate node
+ */
 const oboToSlate = node => {
-	let align
-	const nodes = node.content.textGroup.map(line => {
-		align = line.data ? line.data.align : 'left'
-		return {
-			object: 'text',
-			leaves: TextUtil.parseMarkings(line)
-		}
+	const slateNode = JSON.parse(JSON.stringify(node))
+
+	slateNode.children = node.content.textGroup.flatMap(line => {
+		slateNode.content.align = line.data ? line.data.align : 'left'
+		return TextUtil.parseMarkings(line)
 	})
 
-	return {
-		object: 'block',
-		key: node.id,
-		type: node.type,
-		nodes,
-		data: {
-			content: {
-				align,
-				level: node.content.headingLevel,
-				triggers: node.content.triggers
-			}
+	return slateNode
+}
+
+const switchType = {
+	'ObojoboDraft.Chunks.Text': (editor, [node, path]) => {
+		Transforms.setNodes(
+			editor,
+			{
+				type: TEXT_NODE,
+				subtype: TEXT_LINE_NODE,
+				content: { ...node.content, indent: 0 }
+			},
+			{ at: path }
+		)
+	},
+	'ObojoboDraft.Chunks.Heading': (editor, [node, path], data) => {
+		Transforms.setNodes(
+			editor,
+			{
+				content: { ...node.content, ...data }
+			},
+			{ at: path }
+		)
+	},
+	'ObojoboDraft.Chunks.Code': (editor, [node, path]) => {
+		Transforms.setNodes(
+			editor,
+			{
+				type: CODE_NODE,
+				subtype: CODE_LINE_NODE,
+				content: { ...node.content, indent: 0 }
+			},
+			{ at: path }
+		)
+	},
+	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
+		const newList = {
+			type: LIST_NODE,
+			content: { listStyles: data },
+			children: [
+				{
+					type: LIST_NODE,
+					subtype: LIST_LEVEL_NODE,
+					content: data,
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LINE_NODE,
+							children: node.children
+						}
+					]
+				}
+			]
 		}
+
+		Transforms.removeNodes(editor, { at: path })
+		Transforms.insertNodes(editor, newList, { at: path })
 	}
 }
 
-export default { slateToObo, oboToSlate }
+export default { slateToObo, oboToSlate, switchType }

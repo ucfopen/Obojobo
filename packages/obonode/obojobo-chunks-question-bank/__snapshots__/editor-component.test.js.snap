@@ -2,7 +2,7 @@
 
 exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
 <div
-  className="oboeditor-component component"
+  className="oboeditor-component component "
   data-obo-component="true"
 >
   <div
@@ -18,6 +18,71 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
       >
         ×
       </button>
+    </div>
+    <div
+      className="qb-settings"
+    >
+      <fieldset
+        className="choose"
+      >
+        <legend>
+          How many questions should be displayed?
+        </legend>
+        <label>
+          <input
+            name="undefined-choose"
+            onChange={[Function]}
+            type="radio"
+            value="all"
+          />
+          All questions
+        </label>
+        <span>
+           or
+        </span>
+        <label>
+          <input
+            checked={true}
+            name="undefined-choose"
+            onChange={[Function]}
+            type="radio"
+            value="pick"
+          />
+          Pick
+        </label>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="number"
+        />
+      </fieldset>
+      <label
+        className="select"
+      >
+        How should questions be selected?
+        <select
+          onChange={[Function]}
+          onClick={[Function]}
+        >
+          <option
+            value="sequential"
+          >
+            In order
+          </option>
+          <option
+            value="random"
+          >
+            Randomly
+          </option>
+          <option
+            value="random-unseen"
+          >
+            Randomly, with no repeats
+          </option>
+        </select>
+      </label>
     </div>
     <div
       className="button-bar"
@@ -48,9 +113,3 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
   </div>
 </div>
 `;
-
-exports[`QuestionBank editor QuestionBank component adds question 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;
-
-exports[`QuestionBank editor QuestionBank component adds question bank 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;
-
-exports[`QuestionBank editor QuestionBank component deletes self 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"button-bar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Question Bank</button></div></div></div></div>"`;

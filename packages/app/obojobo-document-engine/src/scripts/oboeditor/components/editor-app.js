@@ -9,19 +9,9 @@ import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
-import { KeyUtils } from 'slate'
-import PageEditor from './page-editor'
+//import { KeyUtils } from 'slate'
+import VisualEditor from './visual-editor'
 import React from 'react'
-import generateId from '../generate-ids'
-
-// PLUGINS
-import ClipboardPlugin from '../plugins/clipboard-plugin'
-import EditorSchema from '../plugins/editor-schema'
-import Component from './node/editor'
-import SelectParameter from './parameter-node/select-parameter'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
-import MarkToolbar from './toolbars/content-toolbar'
 
 const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
@@ -30,16 +20,6 @@ const { OboModel } = Common.models
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-
-const plugins = [
-	Component.plugins,
-	MarkToolbar.plugins,
-	ToggleParameter.plugins,
-	SelectParameter.plugins,
-	TextParameter.plugins,
-	EditorSchema,
-	ClipboardPlugin
-]
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -57,15 +37,8 @@ class EditorApp extends React.Component {
 			code: null
 		}
 
-		// register plugins from dynamic registry items
-		Common.Registry.getItems(items => {
-			items.forEach(i => {
-				if (i.plugins) plugins.push(i.plugins)
-			})
-		})
-
 		// Make Slate nodes generate with UUIDs
-		KeyUtils.setGenerator(generateId)
+		//KeyUtils.setGenerator(generateId)
 
 		// === SET UP DATA STORES ===
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
@@ -187,7 +160,7 @@ class EditorApp extends React.Component {
 
 	renderVisualEditor() {
 		return (
-			<PageEditor
+			<VisualEditor
 				page={this.state.editorState.currentPageModel}
 				navState={this.state.editorState}
 				context={this.state.editorState.context}

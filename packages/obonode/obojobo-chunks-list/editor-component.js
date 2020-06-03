@@ -2,63 +2,102 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import { Editor, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import ListStyles from './list-styles'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Button } = Common.components
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-class List extends React.Component {
-	constructor(props) {
-		super(props)
+const oppositeListType = type =>
+	type === ListStyles.TYPE_ORDERED ? ListStyles.TYPE_UNORDERED : ListStyles.TYPE_ORDERED
+
+const toggleType = props => {
+	const currentContent = props.element.content
+
+	const newType = oppositeListType(currentContent.listStyles.type)
+
+	const newContent = {
+		content: { ...props.element.content, listStyles: { type: newType, indents: {} } }
 	}
 
-	toggleType() {
-		const content = this.props.node.data.get('content')
-		content.listStyles.type = content.listStyles.type === 'unordered' ? 'ordered' : 'unordered'
+	Editor.withoutNormalizing(props.editor, () => {
+		const listPath = ReactEditor.findPath(props.editor, props.element)
+		// update the list
+		Transforms.setNodes(props.editor, newContent, { at: listPath })
 
-		const levels = this.props.node.filterDescendants(desc => desc.type === LIST_LEVEL_NODE)
-
-		const { editor } = this.props
-
-		levels.forEach(levelNode => {
-			const levelContent = levelNode.data.get('content')
-			levelContent.type = content.listStyles.type
-			const bulletList =
-				content.listStyles.type === 'unordered'
-					? ListStyles.UNORDERED_LIST_BULLETS
-					: ListStyles.ORDERED_LIST_BULLETS
-			const previousBulletList =
-				content.listStyles.type === 'unordered'
-					? ListStyles.ORDERED_LIST_BULLETS
-					: ListStyles.UNORDERED_LIST_BULLETS
-
-			// bullet style will be different depending on tab indentation
-			// the index of the current bullet style is preserved between toggling
-			levelContent.bulletStyle =
-				bulletList[previousBulletList.indexOf(levelContent.bulletStyle) % bulletList.length]
-
-			// modify the level node
-			return editor.setNodeByKey(levelNode.key, {
-				data: { content: levelContent }
-			})
+		// search for all level nodes inside this list
+		// so we can force them to redraw their bullets + li/ul tag
+		// IDEA: we could limit this to only level nodes with a depth that changed?
+		const levelNodes = Editor.nodes(props.editor, {
+			mode: 'all',
+			at: listPath,
+			match: node => node.subtype === LIST_LEVEL_NODE
 		})
-	}
 
-	render() {
-		const type = this.props.node.data.get('content').listStyles.type
-		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
-		return (
-			<Node {...this.props}>
-				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
-					{this.props.children}
-					<Button onClick={() => this.toggleType()}>{'Swap to ' + other}</Button>
-				</div>
-			</Node>
-		)
-	}
+		for (const [, levelPath] of levelNodes) {
+			Transforms.setNodes(props.editor, { content: { type: newType } }, { at: levelPath })
+		}
+	})
 }
 
-export default List
+const isOnlyThisNodeSelected = ({ editor, element, selected }) => {
+	// quick test before doing more work
+	// is there a selection and am I selected?
+	if (!selected || !editor.selection) {
+		return false
+	}
+
+	// use the length of this elements path
+	// to test the selection ends
+	const thisElPathLength = ReactEditor.findPath(editor, element).length
+	// make sure the start and end of the selection
+	// are this element or children of this element.
+	// No need to check if they match this path because
+	// they must be equal to both be in this element.
+	// If they are equal, but not in this element
+	// this code won't be reached.
+	return (
+		editor.selection.anchor.path.slice(0, thisElPathLength).toString() ===
+		editor.selection.focus.path.slice(0, thisElPathLength).toString()
+	)
+}
+
+const ListTypeSwitchButton = ({ onClick, switchToType }) => {
+	return (
+		<div className="buttonbox-box" contentEditable={false}>
+			<div className="box-border">
+				<Button className="toggle-header" altAction onClick={onClick}>
+					{`Switch to ${switchToType}`}
+				</Button>
+			</div>
+		</div>
+	)
+}
+
+const List = props => {
+	let switchButton = null
+	if (isOnlyThisNodeSelected(props)) {
+		switchButton = (
+			<ListTypeSwitchButton
+				onClick={() => toggleType(props)}
+				switchToType={oppositeListType(props.element.content.listStyles.type)}
+			/>
+		)
+	}
+
+	return (
+		<Node {...props}>
+			<div className={'text-chunk obojobo-draft--chunks--list pad'}>
+				{props.children}
+				{switchButton}
+			</div>
+		</Node>
+	)
+}
+
+export default withSlateWrapper(List)

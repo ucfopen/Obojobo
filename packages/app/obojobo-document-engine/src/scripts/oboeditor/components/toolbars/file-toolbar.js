@@ -1,117 +1,88 @@
 import React, { memo } from 'react'
+import { Range, Editor, Transforms, Element } from 'slate'
+import { ReactEditor } from 'slate-react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
+import FormatMenu from './format-menu'
 import DropDownMenu from './drop-down-menu'
-
-import BasicMarks from '../marks/basic-marks'
-import LinkMark from '../marks/link-mark'
-import ScriptMarks from '../marks/script-marks'
-import AlignMarks from '../marks/align-marks'
-import IndentMarks from '../marks/indent-marks'
 
 import './file-toolbar.scss'
 
-const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
+const { Button } = Common.components
 
-const textMenu = {
-	name: 'Text',
-	type: 'sub-menu',
-	menu: textMarks.map(mark => ({
-		name: mark.name,
-		type: 'action',
-		markAction: mark.action
-		// action to be assigned in render
-	}))
+const insertDisabled = (name, editor) => {
+	if (!editor.selection) return true
+	// If the selected area spans across multiple blocks, the selection is deleted before
+	// inserting, colapsing it down to the type of the first block
+	// Any node in the tree
+	const list = Array.from(
+		Editor.nodes(editor, {
+			at: Editor.path(editor, editor.selection, { edge: 'start' }),
+			match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+		})
+	)
+
+	if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Table')) return true
+
+	if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Question')) {
+		if (name === 'Question' || name === 'Question Bank') return true
+
+		return false
+	}
+
+	return false
 }
 
-const paragraphMenu = {
-	name: 'Paragraph styles',
-	type: 'sub-menu',
-	menu: [
-		{ name: 'Normal Text', type: 'action', disabled: true },
-		{ name: 'Heading 1', type: 'action', disabled: true },
-		{ name: 'Heading 2', type: 'action', disabled: true },
-		{ name: 'Heading 3', type: 'action', disabled: true },
-		{ name: 'Heading 4', type: 'action', disabled: true },
-		{ name: 'Heading 5', type: 'action', disabled: true },
-		{ name: 'Heading 6', type: 'action', disabled: true }
-	]
+const selectAll = editor => {
+	if (Editor.isEditor(editor)) {
+		const edges = Editor.edges(editor, [])
+		Transforms.select(editor, { focus: edges[0], anchor: edges[1] })
+		return ReactEditor.focus(editor)
+	}
+
+	editor.selectAll()
 }
 
-const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
-
-const alignMenu = {
-	name: 'Align & indent',
-	type: 'sub-menu',
-	menu: alignIndentMarks.map(mark => ({
-		name: mark.name,
-		type: 'action',
-		markAction: mark.action
-		// action to be assigned in render
-	}))
+const openPreview = draftId => {
+	const previewURL = window.location.origin + '/preview/' + draftId
+	window.open(previewURL, '_blank')
 }
-
-const bulletsMenu = {
-	name: 'Bullets & numbering',
-	type: 'sub-menu',
-	menu: [
-		{
-			name: 'Bulleted List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Disc', type: 'action', disabled: true },
-				{ name: 'Circle', type: 'action', disabled: true },
-				{ name: 'Square', type: 'action', disabled: true }
-			]
-		},
-		{
-			name: 'Numbered List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Numbers', type: 'action', disabled: true },
-				{ name: 'Uppercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Uppercase Roman Numerals', type: 'action', disabled: true },
-				{ name: 'Lowercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Lowercase Roman Numerals', type: 'action', disabled: true }
-			]
-		}
-	]
-}
-
-const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
-
-// Build all the menu objects outside of the render function to prevent re-rendering children
-const editMenu = [
-	{ name: 'Undo', type: 'action' },
-	{ name: 'Redo', type: 'action' },
-	{ name: 'Delete', type: 'action' },
-	{ name: 'Select all', type: 'action' }
-]
 
 const FileToolbar = props => {
 	// insert actions on menu items
 	// note that `editor.current` needs to be evaluated at execution time of the action!
-	const editor = props.editorRef
-	editMenu[0].action = () => editor.current.undo()
-	editMenu[1].action = () => editor.current.redo()
-	editMenu[2].action = () => editor.current.delete()
-	editMenu[3].action = () => editor.current.moveToRangeOfDocument().focus()
-	textMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-	})
-	alignMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-	})
+	const editor = props.editor
+	const insertMenu = props.insertableItems.map(item => ({
+		name: item.name,
+		action: () => {
+			Transforms.insertNodes(editor, item.cloneBlankNode())
+			ReactEditor.focus(editor)
+		},
+		disabled: insertDisabled(item.name, editor, props.value)
+	}))
+
+	const editMenu = [
+		{ name: 'Undo', type: 'action', action: () => editor.undo() },
+		{ name: 'Redo', type: 'action', action: () => editor.redo() },
+		{
+			name: 'Delete',
+			type: 'action',
+			action: () => editor.deleteFragment(),
+			disabled: props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection)
+		},
+		{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
+	]
 
 	const saved = props.saved ? 'saved' : ''
 	return (
 		<div className={`visual-editor--file-toolbar`}>
 			<FileMenu
-				model={props.model}
+				title={props.title}
 				draftId={props.draftId}
 				onSave={props.onSave}
-				onRename={props.onRename}
+				reload={props.reload}
 				mode={props.mode}
 			/>
 			<div className="visual-editor--drop-down-menu">
@@ -122,18 +93,17 @@ const FileToolbar = props => {
 				switchMode={props.switchMode}
 				onSave={props.onSave}
 				mode={props.mode}
-				togglePlaceholders={props.togglePlaceholders}
-				showPlaceholders={props.showPlaceholders}
 			/>
-			{/* <div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Insert" menu={props.insertableItems} />
-			</div> */}
 			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Format" menu={formatMenu} />
+					<DropDownMenu name="Insert" menu={insertMenu} />
 				</div>
 			) : null}
+			{props.mode === 'visual' ? <FormatMenu editor={editor} value={props.value} /> : null}
 			<div className={'saved-message ' + saved}>Saved!</div>
+			<Button onClick={openPreview.bind(this, props.draftId)} className={'preview-button'}>
+				Preview Module
+			</Button>
 		</div>
 	)
 }

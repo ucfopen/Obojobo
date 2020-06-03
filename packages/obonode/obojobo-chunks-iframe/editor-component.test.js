@@ -6,26 +6,44 @@ import IFrame from './editor-component'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('IFrame Editor Node', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
 	})
+
 	test('IFrame component', () => {
 		const component = renderer.create(
 			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							width: 200,
-							height: 200,
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: 'mockSrc',
-							title: 'mockTitle'
-						})
+				element={{
+					content: {
+						width: 200,
+						height: 200,
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: 'mockSrc',
+						title: 'mockTitle'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -38,14 +56,20 @@ describe('IFrame Editor Node', () => {
 	test('IFrame renders with no size correctly', () => {
 		const component = renderer.create(
 			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: 'mockSrc'
-						})
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: 'mockSrc'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -54,23 +78,25 @@ describe('IFrame Editor Node', () => {
 	})
 
 	test('IFrame component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: ''
-						})
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: ''
 					}
 				}}
-				editor={editor}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 
@@ -79,22 +105,26 @@ describe('IFrame Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-
-		component.unmount()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('IFrame component edits properties', () => {
 		const component = mount(
 			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: ''
-						})
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1,
+						src: ''
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -106,32 +136,32 @@ describe('IFrame Editor Node', () => {
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
-
-		component.unmount()
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1
-						})
+				element={{
+					content: {
+						controls: '',
+						border: false,
+						initialZoom: 1
 					}
 				}}
-				editor={editor}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 
 		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

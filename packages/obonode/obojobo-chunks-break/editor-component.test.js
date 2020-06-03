@@ -1,9 +1,16 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import { Transforms } from 'slate'
 import renderer from 'react-test-renderer'
 
 import Break from './editor-component'
 
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
@@ -11,15 +18,7 @@ jest.mock(
 
 describe('Break Editor Node', () => {
 	test('Node builds the expected component', () => {
-		const component = renderer.create(
-			<Break
-				node={{
-					data: {
-						get: () => ({})
-					}
-				}}
-			/>
-		)
+		const component = renderer.create(<Break element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -27,47 +26,29 @@ describe('Break Editor Node', () => {
 
 	test('Node component toggles size to large', () => {
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [{ content: { width: 'normal' } }]
 		}
 
 		const component = mount(
-			<Break
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'normal' })
-					}
-				}}
-				editor={editor}
-			/>
+			<Break selected={true} element={{ content: { width: 'normal' } }} editor={editor} />
 		)
-		const tree = component.html()
 
 		component.find('button').simulate('click') // toggle to large
 
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('Node component toggles size to normal', () => {
 		const editor = {
-			setNodeByKey: jest.fn()
+			children: [{ content: { width: 'large' } }]
 		}
 
 		const component = mount(
-			<Break
-				isSelected={true}
-				node={{
-					data: {
-						get: () => ({ width: 'large' })
-					}
-				}}
-				editor={editor}
-			/>
+			<Break selected={true} element={{ content: { width: 'large' } }} editor={editor} />
 		)
-		const tree = component.html()
 
 		component.find('button').simulate('click') // toggle to normal
 
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

@@ -1,14 +1,11 @@
 {
-	"object": "block",
-	"type": "ObojoboDraft.Chunks.MathEquation",
-	"isVoid": false,
-	"data": {
-		"content": { "latex": "", "label": "" }
+	"type":"ObojoboDraft.Chunks.MathEquation",
+	"content": { 
+		"latex": "", 
+		"alt": "", 
+		"align":"", 
+		"label": "", 
+		"size": 1 
 	},
-	"nodes": [
-		{
-			"object": "text",
-			"leaves": [{ "object": "leaf", "text": "", "marks": [] }]
-		}
-	]
+	"children": [{"text":""}]
 }

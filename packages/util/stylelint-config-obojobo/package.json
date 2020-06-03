@@ -1,6 +1,6 @@
 {
 	"name": "stylelint-config-obojobo",
-	"version": "8.0.2",
+	"version": "9.0.1",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"lint": "echo 'not implemented'",
@@ -12,7 +12,7 @@
 		"precommit": "echo 'not implemented'"
 	},
 	"devDependencies": {
-		"stylelint-config-standard": "^18.2.0",
-		"stylelint-declaration-use-variable": "^1.7.0"
+		"stylelint-config-standard": "^20.0.0",
+		"stylelint-declaration-use-variable": "^1.7.2"
 	}
 }

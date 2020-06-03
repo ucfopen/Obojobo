@@ -33,6 +33,7 @@ class Prompt extends React.Component {
 
 	onKeyDown(event) {
 		if (event.key === 'Enter') {
+			event.preventDefault()
 			this.props.onConfirm(this.state.text)
 		}
 	}

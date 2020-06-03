@@ -75,7 +75,7 @@ exports[`List List component with ascending indents 1`] = `
             <li
               style={
                 Object {
-                  "listStyleType": "upper-alpha",
+                  "listStyleType": "lower-alpha",
                 }
               }
             >
@@ -129,7 +129,7 @@ exports[`List List component with ascending indents 1`] = `
                     <li
                       style={
                         Object {
-                          "listStyleType": "lower-alpha",
+                          "listStyleType": "upper-alpha",
                         }
                       }
                     >
@@ -210,7 +210,7 @@ exports[`List List component with ascending indents 1`] = `
                                 <li
                                   style={
                                     Object {
-                                      "listStyleType": "upper-alpha",
+                                      "listStyleType": "lower-alpha",
                                     }
                                   }
                                 >
@@ -334,7 +334,7 @@ exports[`List List component with inverse indentation 1`] = `
             <li
               style={
                 Object {
-                  "listStyleType": "upper-alpha",
+                  "listStyleType": "lower-alpha",
                 }
               }
             >
@@ -498,7 +498,7 @@ exports[`List List component with irregular indentation 1`] = `
                                 <li
                                   style={
                                     Object {
-                                      "listStyleType": "upper-alpha",
+                                      "listStyleType": "lower-alpha",
                                     }
                                   }
                                 >
@@ -590,7 +590,7 @@ exports[`List List component with irregular indentation 1`] = `
                     <li
                       style={
                         Object {
-                          "listStyleType": "lower-alpha",
+                          "listStyleType": "upper-alpha",
                         }
                       }
                     >

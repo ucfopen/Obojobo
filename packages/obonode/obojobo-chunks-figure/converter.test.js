@@ -1,33 +1,12 @@
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
-
 import Converter from './converter'
 
 describe('Figure Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return {}
-				}
-			},
-			text: 'mockText',
-			nodes: [
-				{
-					leaves: [
-						{
-							text: 'mockText',
-							marks: [
-								{
-									type: 'b',
-									data: {}
-								}
-							]
-						}
-					]
-				}
-			]
+			content: {},
+			children: [{ text: 'mockText', b: true }]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

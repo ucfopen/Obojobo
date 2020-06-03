@@ -5,20 +5,418 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Assessment'))
-jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('slate-react')
+import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
-import Common from 'obojobo-document-engine/src/scripts/common'
-import { Block } from 'slate'
+import { Transforms } from 'slate'
+
 import Assessment from './editor-registration'
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
+const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 describe('Assessment editor', () => {
+	test('normalizeNode calls next if the node is not a Question node', () => {
+		const next = jest.fn()
+		Assessment.plugins.normalizeNode([{}, []], {}, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls next if all Assessment children are valid', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							id: 'mockKey',
+							type: ACTIONS_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing Rubric', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							id: 'mockKey',
+							type: ACTIONS_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						} 
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing Actions', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing QuestionBank', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing Page', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: []
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing Page out of order', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped Page', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{ text: 'mockCode', b: true },
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							id: 'mockKey',
+							type: ACTIONS_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}, 
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
+			match(editor.children[0].children[0])
+			match(editor.children[0].children[1])
+			match(editor.children[0].children[2])
+			match(editor.children[0].children[3])
+		})
+
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing QuestionBank out of order', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped QuestionBank', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{ text: 'mockCode', b: true },
+						{
+							id: 'mockKey',
+							type: ACTIONS_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}, 
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
+			match(editor.children[0].children[0])
+			match(editor.children[0].children[1])
+			match(editor.children[0].children[2])
+			match(editor.children[0].children[3])
+		})
+
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls Transforms when missing Actions out of order', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped Actions', () => {
+		const next = jest.fn()
+		const editor= {
+			children: [
+				{
+					id: 'mockKey',
+					type: ASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: PAGE_NODE,
+							content: {},
+							children: [{ text: '' }]
+						},
+						{
+							id: 'mockKey',
+							type: QUESTION_BANK_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						},
+						{ text: 'mockCode', b: true },
+						{
+							id: 'mockKey',
+							type: RUBRIC_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
+			match(editor.children[0].children[0])
+			match(editor.children[0].children[1])
+			match(editor.children[0].children[2])
+			match(editor.children[0].children[3])
+		})
+
+		Assessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders the Assessment when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -33,25 +431,6 @@ describe('Assessment editor', () => {
 		}
 
 		expect(Assessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Assessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
 	})
 
 	test('getNavItem returns expected object', () => {
@@ -80,83 +459,5 @@ describe('Assessment editor', () => {
 			showChildren: false,
 			showChildrenOnNavigation: false
 		})
-	})
-
-	test('getPasteNode extracts content', () => {
-		const assessment = {
-			object: 'block',
-			type: ASSESSMENT_NODE,
-			nodes: [
-				{
-					object: 'block',
-					type: PAGE_NODE,
-					nodes: [
-						{
-							object: 'block',
-							type: 'mock-node'
-						}
-					]
-				},
-				{
-					object: 'block',
-					type: QUESTION_BANK_NODE
-				},
-				{
-					object: 'block',
-					type: ACTIONS_NODE,
-					nodes: [
-						{
-							object: 'block',
-							type: 'mock-action-node',
-							nodes: [
-								{
-									object: 'block',
-									type: PAGE_NODE,
-									nodes: [
-										{
-											object: 'block',
-											type: 'mock-node'
-										}
-									]
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-		Common.Registry.getItemForType.mockReturnValueOnce({ getPasteNode: node => node })
-
-		expect(Assessment.getPasteNode(Block.create(assessment))).toMatchSnapshot()
-	})
-
-	test('getPasteNode extracts partial qbs', () => {
-		const assessment = {
-			object: 'block',
-			type: ASSESSMENT_NODE,
-			nodes: [
-				{
-					object: 'block',
-					type: QUESTION_BANK_NODE
-				}
-			]
-		}
-		Common.Registry.getItemForType.mockReturnValueOnce({ getPasteNode: node => [node] })
-
-		expect(Assessment.getPasteNode(Block.create(assessment))).toMatchSnapshot()
-	})
-
-	test('getPasteNode extracts no nodes', () => {
-		const assessment = {
-			object: 'block',
-			type: ASSESSMENT_NODE,
-			nodes: [
-				{
-					object: 'block',
-					type: 'mock-node'
-				}
-			]
-		}
-		expect(Assessment.getPasteNode(Block.create(assessment))).toEqual([])
 	})
 })

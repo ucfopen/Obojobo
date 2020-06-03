@@ -2,10 +2,14 @@ import '../../viewer-component.scss'
 
 import React from 'react'
 
-const Line = props => {
+const Line = ({ element, children }) => {
+	const attr = {}
+	if (element.content && element.content.hangingIndent) {
+		attr['data-hanging-indent'] = element.content.hangingIndent
+	}
 	return (
 		<div>
-			<li data-hanging-indent={props.node.data.get('hangingIndent')}>{props.children}</li>
+			<li {...attr}>{children}</li>
 		</div>
 	)
 }

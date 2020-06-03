@@ -29,11 +29,11 @@ jest.mock('obojobo-document-engine/src/scripts/common/util/debounce', () => {
 
 jest.mock('./utils', () => {
 	return {
-		isUUID: require.requireActual('./utils').isUUID
+		isUUID: jest.requireActual('./utils').isUUID
 	}
 })
 
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api', () => ({
 	postMultiPart: jest.fn().mockResolvedValue({ mediaId: 'mockMediaId' }),
 	get: jest
 		.fn()
