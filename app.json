@@ -6,7 +6,8 @@
 	"logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_blue.svg",
 	"success_url": "/",
 	"scripts": {
-		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed",
+		"release": "cd node_modules/obojobo-express && yarn db:migrateup",
+		"postdeploy": "cd node_modules/obojobo-express && yarn sampleDraft:seed",
 		"purgedata": "yarn run obojobo_purge_data"
 	},
 	"env": {
