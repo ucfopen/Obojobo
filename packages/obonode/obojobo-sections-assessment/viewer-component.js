@@ -23,6 +23,25 @@ const { AssessmentUtil } = Viewer.util
 const { AssessmentNetworkStates, AssessmentStateActions } = Viewer.stores.assessmentStore
 const { NavUtil, FocusUtil, CurrentAssessmentStates } = Viewer.util
 
+const {
+	NOT_IN_ATTEMPT,
+	PROMPTING_FOR_IMPORT,
+	PROMPTING_FOR_RESUME,
+	IN_ATTEMPT,
+	START_ATTEMPT_FAILED,
+	RESUME_ATTEMPT_FAILED,
+	IMPORT_ATTEMPT_FAILED,
+	SEND_RESPONSES_SUCCESSFUL,
+	SEND_RESPONSES_FAILED,
+	END_ATTEMPT_FAILED,
+	STARTING_ATTEMPT,
+	RESUMING_ATTEMPT,
+	SENDING_RESPONSES,
+	ENDING_ATTEMPT,
+	END_ATTEMPT_SUCCESSFUL,
+	IMPORTING_ATTEMPT
+} = AssessmentNetworkStates
+
 class ModalPortal extends React.Component {
 	constructor(props) {
 		super(props)
@@ -108,24 +127,36 @@ class Assessment extends React.Component {
 	}
 
 	static getCurrentStep(props) {
-		const assessment = AssessmentUtil.getAssessmentForModel(
+		const state = AssessmentUtil.getAssessmentMachineStateForModel(
 			props.moduleData.assessmentState,
 			props.model
 		)
 
-		if (assessment === null) {
-			return 'pre-test'
-		}
+		switch (state) {
+			case IN_ATTEMPT:
+			case SEND_RESPONSES_SUCCESSFUL:
+			case SEND_RESPONSES_FAILED:
+			case END_ATTEMPT_FAILED:
+			case SENDING_RESPONSES:
+			case ENDING_ATTEMPT: {
+				return 'test'
+			}
 
-		if (assessment.current !== null) {
-			return 'test'
+			default:
+				return AssessmentUtil.getAssessmentForModel(
+					props.moduleData.assessmentState,
+					props.model
+				) === null
+					? 'pre-test'
+					: 'post-test'
 		}
+	}
 
-		if (assessment.attempts.length > 0) {
-			return 'post-test'
-		}
-
-		return 'pre-test'
+	static getIsLoading(props) {
+		const machineState = AssessmentUtil.getAssessmentMachineStateForModel(
+			props.moduleData.assessmentState,
+			props.model
+		)
 	}
 
 	componentWillUnmount() {
@@ -212,9 +243,15 @@ class Assessment extends React.Component {
 	}
 
 	isAttemptSubmitting() {
+		// return (
+		// 	AssessmentUtil.getAssessmentStep(this.props.moduleData.assessmentState, this.props.model) ===
+		// 	AssessmentNetworkStates.AWAITING_END_ATTEMPT_RESPONSE
+		// )
 		return (
-			AssessmentUtil.getAssessmentStep(this.props.moduleData.assessmentState, this.props.model) ===
-			AssessmentNetworkStates.AWAITING_END_ATTEMPT_RESPONSE
+			AssessmentUtil.getAssessmentMachineStateForModel(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			) === ENDING_ATTEMPT
 		)
 	}
 
@@ -258,23 +295,23 @@ class Assessment extends React.Component {
 		ModalUtil.hide()
 	}
 
-	onDialogResponse(response) {
-		switch (response) {
-			case 'ResumeAttempt':
-				const machine = AssessmentUtil.getAssessmentMachineForModel(
-					this.props.moduleData.assessmentState,
-					this.props.model
-				)
+	// onDialogResponse(response) {
+	// 	switch (response) {
+	// 		case 'ResumeAttempt':
+	// 			const machine = AssessmentUtil.getAssessmentMachineForModel(
+	// 				this.props.moduleData.assessmentState,
+	// 				this.props.model
+	// 			)
 
-				ModalUtil.hide()
+	// 			ModalUtil.hide()
 
-				//@TODO XSTATE
-				// machine.dispatch('tryResumeAttempt')
-				machine.send(AssessmentStateActions.RESUME_ATTEMPT)
+	// 			//@TODO XSTATE
+	// 			// machine.dispatch('tryResumeAttempt')
+	// 			machine.send(AssessmentStateActions.RESUME_ATTEMPT)
 
-				break
-		}
-	}
+	// 			break
+	// 	}
+	// }
 
 	endAttempt() {
 		// this.closeDialog()
@@ -360,18 +397,18 @@ class Assessment extends React.Component {
 			}
 		})()
 
+		const assessment = AssessmentUtil.getAssessmentForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
-				<h1>
-					{AssessmentUtil.getAssessmentStep(
-						this.props.moduleData.assessmentState,
-						this.props.model
-					)}
-				</h1>
+				<h1>{this.state.curStep}</h1>
 				<h1>
 					{AssessmentUtil.getCurrentAttemptStatus(
 						this.props.moduleData.assessmentState,
@@ -393,14 +430,16 @@ class Assessment extends React.Component {
 
 				<ModalPortal>
 					<SendingResponsesConfirmDialog
-						onResponse={this.onDialogResponse.bind(this)}
-						onCancel={this.closeDialog.bind(this)}
+						// onResponse={this.onDialogResponse.bind(this)}
+						// onCancel={this.closeDialog.bind(this)}
 						endAttempt={this.endAttempt}
-						assessmentStep={AssessmentUtil.getAssessmentStep(
+						assessmentMachineState={AssessmentUtil.getAssessmentMachineStateForModel(
 							this.props.moduleData.assessmentState,
 							this.props.model
 						)}
 						currentAttemptStatus={this.getCurrentAttemptStatus()}
+						assessmentModel={this.props.model}
+						assessment={assessment}
 					/>
 				</ModalPortal>
 			</OboComponent>

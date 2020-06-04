@@ -32,6 +32,7 @@ const {
 	IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
 	RESUME_ATTEMPT_FAILED,
+	// TRYING_TO_SUBMIT,
 	SENDING_RESPONSES,
 	SEND_RESPONSES_SUCCESSFUL,
 	SEND_RESPONSES_FAILED,
@@ -51,6 +52,7 @@ const {
 	PROMPT_FOR_RESUME,
 	IMPORT_ATTEMPT,
 	RESUME_ATTEMPT,
+	TRY_TO_SUBMIT,
 	SEND_RESPONSES,
 	ACKNOWLEDGE,
 	END_ATTEMPT,
@@ -73,7 +75,7 @@ class AssessmentStateHelpers {
 			this.onAttemptStarted.bind(this)
 		)
 	}
-
+alert('hi past me, so im trying to know when force all responnses fails. im thinking i need to search the status of the questionstore states to figure that out. i did tamper with promise returns but not sure if thatll work')
 	static sendResponses(assessmentId, attemptId) {
 		return new Promise((resolve, reject) => {
 			const listener = ({ value }) => {
@@ -136,21 +138,21 @@ class AssessmentStateHelpers {
 
 	static async onError(res = null) {
 		if (res) {
-			switch (res.value.message.toLowerCase()) {
-				case 'attempt limit reached':
-					ErrorUtil.show(
-						'No attempts left',
-						'You have attempted this assessment the maximum number of times available.'
-					)
-					break
-
-				default:
-					ErrorUtil.errorResponse(res)
-					break
-			}
+			// switch (res.value.message.toLowerCase()) {
+			// 	case 'attempt limit reached':
+			// 		ErrorUtil.show(
+			// 			'No attempts left',
+			// 			'You have attempted this assessment the maximum number of times available.'
+			// 		)
+			// 		break
+			// 	default:
+			// 		ErrorUtil.errorResponse(res)
+			// 		break
+			// }
 		}
 
-		throw Error('Request failed')
+		// throw Error('Request failed')
+		throw Error(res ? res.value.message : 'Request Failed')
 	}
 
 	static onAttemptStarted(res) {
@@ -269,13 +271,13 @@ class AssessmentStateHelpers {
 		const lastAttempt = attempts[attempts.length - 1]
 		const { assessmentId, attemptId, attemptNumber } = lastAttempt
 		const assessmentModel = OboModel.models[assessmentId]
-		const navContext = this.composeNavContextString(assessmentId, attemptId)
+		// const navContext = this.composeNavContextString(assessmentId, attemptId)
 
 		// this.hideQuestions(lastAttempt.state.chosen, navContext)
 		// debugger "hello past me, i was here. lastAttempt.currentResponses doesnt exist, it on the context version. but is this really a good idea in the first place? anyway, i need a way to clear responses. maybe what i do is just have the helper send the request, then the onDone handles all the cleanup"
 		// this.clearResponses(lastAttempt.currentResponses, navContext)
 		this.signalAttemptEnded(assessmentModel)
-		this.showReportDialog(assessmentModel, attempts, attemptNumber)
+		// this.showReportDialog(assessmentModel, attempts, attemptNumber)
 		this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
 
 		return assessment
@@ -308,48 +310,9 @@ class AssessmentStateHelpers {
 	// 	responses.forEach(questionId => QuestionUtil.clearResponse(questionId, navContext))
 	// }
 
-	static getReportForAttempt(assessmentModel, allAttempts, attemptNumber) {
-		const reporter = new AssessmentScoreReporter({
-			assessmentRubric: assessmentModel.modelState.rubric.toObject(),
-			totalNumberOfAttemptsAllowed: assessmentModel.modelState.attempts,
-			allAttempts
-		})
-
-		return reporter.getReportFor(attemptNumber)
-	}
-
 	static signalAttemptEnded(assessmentModel) {
 		assessmentModel.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', assessmentModel.get('id'))
-	}
-
-	static showReportDialog(assessmentModel, allAttempts, attemptNumber) {
-		const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), assessmentModel)
-
-		ModalUtil.show(
-			<Dialog
-				modalClassName="obojobo-draft--sections--assessment--results-modal"
-				centered
-				buttons={[
-					{
-						value: `Show ${assessmentLabel} Overview`,
-						onClick: this.onCloseResultsDialog.bind(this),
-						default: true
-					}
-				]}
-				title={`Attempt ${attemptNumber} Results`}
-				width="35rem"
-			>
-				<AssessmentScoreReportView
-					report={this.getReportForAttempt(assessmentModel, allAttempts, attemptNumber)}
-				/>
-			</Dialog>
-		)
-	}
-
-	static onCloseResultsDialog() {
-		ModalUtil.hide()
-		FocusUtil.focusOnNavTarget()
 	}
 
 	static composeNavContextString(assessmentId, attemptId) {
@@ -406,6 +369,18 @@ const updateContextWithAssessmentResponse = assign({
 	}
 })
 
+const updateContextWithError = assign({
+	assessment: (context, event) => {
+		if (!context.assessment.current) {
+			context.assessment.current = {}
+		}
+
+		context.assessment.current.error = event.data.message
+
+		return context.assessment
+	}
+})
+
 class AssessmentStateMachine {
 	constructor(assessmentObject) {
 		//eslint-disable-next-line new-cap
@@ -434,7 +409,10 @@ class AssessmentStateMachine {
 							target: IN_ATTEMPT,
 							actions: [updateContextWithAssessmentResponse]
 						},
-						onError: START_ATTEMPT_FAILED
+						onError: {
+							target: START_ATTEMPT_FAILED,
+							actions: [updateContextWithError]
+						}
 					}
 				},
 				[PROMPTING_FOR_IMPORT]: {
@@ -448,7 +426,10 @@ class AssessmentStateMachine {
 						id: 'importAttempt',
 						src: todo,
 						onDone: IN_ATTEMPT,
-						onError: IMPORT_ATTEMPT_FAILED
+						onError: {
+							target: IMPORT_ATTEMPT_FAILED,
+							actions: [updateContextWithError]
+						}
 					}
 				},
 				[PROMPTING_FOR_RESUME]: {
@@ -467,7 +448,10 @@ class AssessmentStateMachine {
 							target: IN_ATTEMPT,
 							actions: updateContextWithAssessmentResponse
 						},
-						onError: RESUME_ATTEMPT_FAILED
+						onError: {
+							target: RESUME_ATTEMPT_FAILED,
+							actions: [updateContextWithError]
+						}
 					}
 				},
 				[IN_ATTEMPT]: {
@@ -498,7 +482,10 @@ class AssessmentStateMachine {
 							return await AssessmentStateHelpers.sendResponses(assessmentId, attemptId)
 						},
 						onDone: SEND_RESPONSES_SUCCESSFUL,
-						onError: SEND_RESPONSES_FAILED
+						onError: {
+							target: SEND_RESPONSES_FAILED,
+							actions: [updateContextWithError]
+						}
 					}
 				},
 				[SEND_RESPONSES_SUCCESSFUL]: {
@@ -542,7 +529,10 @@ class AssessmentStateMachine {
 								})
 							]
 						},
-						onError: END_ATTEMPT_FAILED
+						onError: {
+							target: END_ATTEMPT_FAILED,
+							actions: [updateContextWithError]
+						}
 					}
 				},
 				[END_ATTEMPT_SUCCESSFUL]: {
@@ -552,7 +542,7 @@ class AssessmentStateMachine {
 				},
 				[END_ATTEMPT_FAILED]: {
 					on: {
-						[CONTINUE_ATTEMPT]: IN_ATTEMPT
+						[ACKNOWLEDGE]: IN_ATTEMPT
 					}
 				}
 			}

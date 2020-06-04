@@ -1,6 +1,13 @@
 @import './includes';
 @import './indents';
 
+// @TODO - Temporary rules to get modals to show up
+.obojobo-draft--components--modal--dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
 html {
 	height: 100%;
 	width: 100%;

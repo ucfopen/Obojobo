@@ -145,14 +145,14 @@ const AssessmentUtil = {
 		}
 	},
 
-	getAssessmentStep(state, model) {
-		const machine = AssessmentUtil.getAssessmentMachineForModel(state, model)
-		if (!machine) {
-			return null
-		}
+	// getAssessmentStep(state, model) {
+	// 	const machine = AssessmentUtil.getAssessmentMachineForModel(state, model)
+	// 	if (!machine) {
+	// 		return null
+	// 	}
 
-		return machine.step
-	},
+	// 	return machine.step
+	// },
 
 	isLTIScoreNeedingToBeResynced(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -399,6 +399,54 @@ const AssessmentUtil = {
 			value: {
 				id: model.get('id'),
 				context
+			}
+		})
+	},
+
+	continueAttempt(model) {
+		return Dispatcher.trigger('assessment:continueAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	resumeAttempt(model) {
+		return Dispatcher.trigger('assessment:resumeAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	acknowledgeStartAttemptFailed(model) {
+		return Dispatcher.trigger('assessment:acknowledgeStartAttemptFailed', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	acknowledgeResumeAttemptFailed(model) {
+		return Dispatcher.trigger('assessment:acknowledgeResumeAttemptFailed', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	acknowledgeEndAttemptSuccessful(model) {
+		return Dispatcher.trigger('assessment:acknowledgeEndAttemptSuccessful', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	acknowledgeEndAttemptFailed(model) {
+		return Dispatcher.trigger('assessment:acknowledgeEndAttemptFailed', {
+			value: {
+				id: model.get('id')
 			}
 		})
 	},
