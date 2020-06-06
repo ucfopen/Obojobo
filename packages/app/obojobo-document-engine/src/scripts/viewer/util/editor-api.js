@@ -15,12 +15,20 @@ const EditorAPI = {
 		return API.postWithFormat(`/api/drafts/${id}`, draftString, format).then(API.processJsonResults)
 	},
 
-	createNewDraft() {
-		return API.post(`/api/drafts/new`).then(API.processJsonResults)
+	// If `content` and `format` are not specified, the default draft will be created
+	createNewDraft(content, format) {
+		return API.post(`/api/drafts/new`, {
+			content,
+			format
+		}).then(API.processJsonResults)
 	},
 
 	deleteDraft(draftId) {
 		return API.delete(`/api/drafts/${draftId}`).then(API.processJsonResults)
+	},
+
+	copyDraft(draftId, newTitle) {
+		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(API.processJsonResults)
 	}
 }
 

@@ -1,0 +1,112 @@
+@import '~styles/includes';
+
+.editor--page-editor {
+	$latex-editor-background: #e8eef9;
+	$latex-editor-color: #124386;
+	$latex-defaults: inherit !important;
+
+	display: flex;
+	margin: 2em;
+	margin-top: 8em;
+	border: 1px solid $color-shadow;
+	background-color: $color-bg;
+	border-radius: $dimension-rounded-radius;
+	min-height: calc(100vh - 10.5em);
+	position: relative;
+
+	.obojobo-draft--modules--module {
+		margin: 3em auto;
+		width: 100%;
+		display: table-cell;
+		margin-top: 3em;
+		margin-bottom: 1em;
+	}
+
+	.parameter-node {
+		padding-right: 1em;
+	}
+
+	.latex-editor {
+		background: $latex-editor-background;
+		color: $latex-editor-color;
+		font-family: $font-monospace;
+		border-radius: 0.15em;
+		font-size: 0.95em;
+		letter-spacing: -0.025em;
+		display: inline;
+		cursor: text;
+	}
+
+	.skip-nav {
+		position: absolute;
+		z-index: 6;
+		left: 1em;
+		top: 1em;
+		font-size: 0.8em;
+
+		> button {
+			position: absolute;
+			left: -20em;
+			top: 0;
+			padding: 0.5em 1em;
+			white-space: nowrap;
+
+			&:focus {
+				left: 0;
+			}
+		}
+	}
+
+	span[data-placeholder] {
+		pointer-events: none;
+
+		&.required::before {
+			content: attr(data-placeholder);
+			opacity: 0.5;
+			position: absolute;
+		}
+
+		&.align-center {
+			&::before {
+				transform: translate(-50%, 0);
+			}
+		}
+
+		&.align-right {
+			&::before {
+				right: 3em;
+			}
+		}
+	}
+
+	*[data-hanging-indent='true'] span[data-placeholder]::before {
+		text-indent: -2em;
+		padding-left: 2em;
+	}
+
+	&.is-show-placeholders {
+		span[data-placeholder] {
+			&::before {
+				content: attr(data-placeholder);
+				opacity: 0.5;
+				position: absolute;
+			}
+		}
+
+		.align-center {
+			span[data-placeholder] {
+				&::before {
+					transform: translate(-50%, 0);
+				}
+			}
+		}
+
+		.align-right {
+			span[data-placeholder] {
+				&::before {
+					right: 2em;
+				}
+			}
+		}
+	}
+}

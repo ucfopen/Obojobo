@@ -126,8 +126,7 @@ const missing = (req, res, next, message) => {
 	// give other things a chance to execute
 	oboEvents.emit('HTTP_NOT_FOUND', { req, res, next, message })
 	if (res.headersSent || req.responseHandled) return
-
-	res.render('404')
+	res.render('404', message)
 }
 
 const unexpected = (req, res, next, messageOrError) => {

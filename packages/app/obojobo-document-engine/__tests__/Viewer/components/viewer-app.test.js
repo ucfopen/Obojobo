@@ -23,8 +23,10 @@ import ViewerApp from 'obojobo-document-engine/src/scripts/viewer/components/vie
 import { mount } from 'enzyme'
 import testObject from 'obojobo-document-engine/test-object.json'
 import mockConsole from 'jest-mock-console'
+import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
+jest.mock('obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 jest.mock('obojobo-document-engine/src/scripts/common/stores/modal-store')
@@ -37,6 +39,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/assessment-store')
 jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag')
 
 describe('ViewerApp', () => {
 	let restoreConsole
@@ -65,6 +68,7 @@ describe('ViewerApp', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
+		injectKatexIfNeeded.mockImplementation(async x => x.value)
 		restoreConsole = mockConsole('error')
 
 		isDOMFocusInsideNavSpy = jest
@@ -98,11 +102,10 @@ describe('ViewerApp', () => {
 		mocksForMount()
 
 		const component = mount(<ViewerApp />)
+
 		setTimeout(() => {
 			component.update()
-
 			expect(component.html()).toMatchSnapshot()
-
 			component.unmount()
 			done()
 		})

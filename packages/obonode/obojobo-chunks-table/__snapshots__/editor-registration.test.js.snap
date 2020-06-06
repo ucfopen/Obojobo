@@ -1,20 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Table editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
-<Table
+<SlateWrapper
   attributes={
     Object {
       "dummy": "dummyData",
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
       "type": "ObojoboDraft.Chunks.Table",
     }
   }
@@ -22,19 +17,16 @@ exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 `;
 
 exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
-<Cell
+<SlateWrapper
   attributes={
     Object {
       "dummy": "dummyData",
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.Table.Cell",
+      "subtype": "ObojoboDraft.Chunks.Table.Cell",
     }
   }
 />
@@ -48,12 +40,9 @@ exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.Table.Row",
+      "subtype": "ObojoboDraft.Chunks.Table.Row",
     }
   }
 />

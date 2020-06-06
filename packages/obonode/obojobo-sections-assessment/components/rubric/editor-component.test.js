@@ -5,23 +5,33 @@ import Rubric from './editor-component'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import { Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+
+const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 describe('Rubric editor', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+
 	test('Rubric renders', () => {
 		const component = renderer.create(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return {
-								mods: [
-									{ reward: 3, attemptCondition: '$last_attempt' },
-									{ reward: 3, attemptCondition: '1' },
-									{ reward: -3, attemptCondition: '[1,$last_attempt' },
-									{ reward: -3, attemptCondition: '[$last_attempt,5]' }
-								]
-							}
-						}
+				element={{
+					content: {
+						mods: [
+							{ reward: 3, attemptCondition: '$last_attempt' },
+							{ reward: 3, attemptCondition: '1' },
+							{ reward: -3, attemptCondition: '[1,$last_attempt' },
+							{ reward: -3, attemptCondition: '[$last_attempt,5]' }
+						]
 					}
 				}}
 			/>
@@ -32,20 +42,12 @@ describe('Rubric editor', () => {
 	})
 
 	test('Rubric changes type', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { mods: [] }
-						}
-					}
+				element={{
+					content: { mods: [] }
 				}}
-				editor={editor}
 			/>
 		)
 		component
@@ -62,27 +64,26 @@ describe('Rubric editor', () => {
 			.at(1)
 			.simulate('change', { target: { value: 'pass-fail' } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('Rubric changes pass score', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { mods: [] }
-						}
-					}
+				element={{
+					content: { mods: [] }
 				}}
-				editor={editor}
+				editor={{
+					toggleEditable: jest.fn()
+				}}
 			/>
 		)
 
+		component
+			.find('input')
+			.at(2)
+			.simulate('focus')
 		component
 			.find('input')
 			.at(2)
@@ -91,25 +92,21 @@ describe('Rubric editor', () => {
 			.find('input')
 			.at(2)
 			.simulate('change', { target: { value: 100 } })
+		component
+			.find('input')
+			.at(2)
+			.simulate('blur')
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('Rubric changes pass result', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { passedType: 'set-value', mods: [] }
-						}
-					}
+				element={{
+					content: { passedType: 'set-value', mods: [] }
 				}}
-				editor={editor}
 			/>
 		)
 
@@ -131,24 +128,16 @@ describe('Rubric editor', () => {
 			.at(3)
 			.simulate('change', { target: { value: 100 } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
 	})
 
 	test('Rubric changes failed result', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { failedType: 'set-value', mods: [] }
-						}
-					}
+				element={{
+					content: { failedType: 'set-value', mods: [] }
 				}}
-				editor={editor}
 			/>
 		)
 
@@ -170,24 +159,16 @@ describe('Rubric editor', () => {
 			.at(4)
 			.simulate('change', { target: { value: 100 } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
 	})
 
 	test('Rubric changes unable to pass result', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { unableToPassType: 'set-value', mods: [] }
-						}
-					}
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
 				}}
-				editor={editor}
 			/>
 		)
 
@@ -209,33 +190,34 @@ describe('Rubric editor', () => {
 			.at(5)
 			.simulate('change', { target: { value: 100 } })
 
-		expect(editor.setNodeByKey).toHaveBeenCalledTimes(2)
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
 	})
 
 	test('Rubric opens mod dialog', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { unableToPassType: 'set-value', mods: [] }
-						}
-					}
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
 				}}
-				parent={{
-					data: {
-						get: () => {
-							return { attempts: 3 }
+				editor={{
+					children: [
+						{
+							type: ASSESSMENT_NODE,
+							content: { attempts: 3 },
+							children: [
+								{
+									type: RUBRIC_NODE,
+									content: { unableToPassType: 'set-value', mods: [] },
+									children: []
+								}
+							]
 						}
-					}
+					]
 				}}
-				editor={editor}
 			/>
 		)
+
+		ReactEditor.findPath.mockReturnValueOnce([0, 0])
 
 		component
 			.find('button')
@@ -246,25 +228,17 @@ describe('Rubric editor', () => {
 	})
 
 	test('Rubric changes mods', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return { unableToPassType: 'set-value', mods: [] }
-						}
-					}
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
 				}}
-				editor={editor}
 			/>
 		)
 
 		component.instance().changeMods({ mods: [] })
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

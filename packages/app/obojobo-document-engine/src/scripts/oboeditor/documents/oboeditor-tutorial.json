@@ -1,6 +1,5 @@
 {
 	"id": "9c7e4d32-2e5b-432e-83dc-dbbb923df3b8",
-	"Rev": "2f59762d-d848-44ea-b1b7-3d23ba589612",
 	"rev": "42498656-c7a2-49b7-a3d9-928d5840ada0",
 	"type": "ObojoboDraft.Modules.Module",
 	"index": 0,
@@ -8,13 +7,17 @@
 		"start": null,
 		"title": "Obojobo Visual Editor Tutorial"
 	},
-	"draftId": "e2a43166-52d8-4d0f-8bfb-beb093f675d1",
+	"draftId": "1a053ec9-a3d7-4d36-8b48-8b0ca1dc74cb",
+	"metadata": {},
+	"contentId": "2416e023-a3db-4431-91e3-524178d95812",
+	"Rev": "2416e023-a3db-4431-91e3-524178d95812",
 	"children": [
 		{
 			"id": "40a16682-bcd9-44f0-aeb6-23d4cb143676",
 			"type": "ObojoboDraft.Sections.Content",
 			"index": 0,
 			"content": {},
+			"metadata": {},
 			"children": [
 				{
 					"id": "b64fdc8e-48c1-43c1-9644-747519ad14ef",
@@ -24,7 +27,7 @@
 					},
 					"children": [
 						{
-							"id": "cb446cb0-1528-45a8-8f67-f344a1d044a5",
+							"id": "56367e43-607b-425b-8a4b-079dd33c7ba1",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
 								"textGroup": [
@@ -43,7 +46,7 @@
 							"children": []
 						},
 						{
-							"id": "6b0dc582-4758-47e2-af17-1c920d59d255",
+							"id": "a7f0e986-64e0-47fa-b3db-0b2b2ccfc66e",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -53,7 +56,57 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
+											"value": "This Visual Editor Tutorial is an editable guide to creating Obojobo modules. By following along and trying the edits yourself, you will learn how to leverage all the features in Obojobo you need to build your own modules. We invite you to open this module and edit as you go!",
+											"styleList": [
+												{
+													"end": 42,
+													"data": {},
+													"type": "i",
+													"start": 34
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c4565a11-4c96-4162-819c-96b299e8dfc8",
+							"type": "ObojoboDraft.Chunks.Break",
+							"content": {
+								"width": "normal"
+							},
+							"children": []
+						},
+						{
+							"id": "2d793c81-89d6-4ddf-8fcb-7171a9e07392",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Saving",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "8cd836ed-347d-47dc-8b45-63a223e2bafe",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "First is the most important thing; how and when to save your changes. While editing your module, your changes are only temporarily saved in this browser tab. To be clear, if you close this tab without saving, those changes will be lost. ",
 											"styleList": []
 										}
 									}
@@ -62,7 +115,62 @@
 							"children": []
 						},
 						{
-							"id": "e2aff387-1926-4653-aa8e-e77d3afa5fc6",
+							"id": "d26958d2-335a-4d4d-bb42-8774d59952a8",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Saved changes will be shown to the next students who start your module. To avoid this, you may prefer to duplicate your module and make edits to the copy.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "184ffec1-f6d6-431f-b891-c65a54cf0b8b",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "To save, click File > Save from the tool bar menu or press ctrl+s.",
+											"styleList": [
+												{
+													"end": 26,
+													"data": {},
+													"type": "monospace",
+													"start": 15
+												},
+												{
+													"end": 26,
+													"data": {},
+													"type": "q",
+													"start": 15
+												},
+												{
+													"end": 66,
+													"data": {},
+													"type": "monospace",
+													"start": 59
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "5fa8875a-6f11-4027-8cd7-32daa316c8f5",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
 								"textGroup": [
@@ -79,7 +187,7 @@
 							"children": []
 						},
 						{
-							"id": "a5eb6860-e51f-45cf-9f5b-ab497c8a8641",
+							"id": "6d087906-59ae-490e-b840-fdb5316e435f",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -88,7 +196,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The navigation panel along the left side allows for manipulation of the pages and assessments that make up an Obojobo Module. Pages are identified by the ◯ symbol, and assessments are identified by the Ⓠ symbol.",
+											"value": "The navigation panel along the left side list all the pages and assessments that make up your module. Pages are identified by the larger circle ◯ symbol, and assessments are identified by the Ⓠ symbol.  You can have as many pages as you wish, but only one assessment per module.",
 											"styleList": []
 										}
 									}
@@ -97,7 +205,7 @@
 							"children": []
 						},
 						{
-							"id": "381fd26a-1769-47b5-8233-7929d9d57f62",
+							"id": "f8c43840-b3f8-4480-a072-95f6cd48d4ad",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -106,32 +214,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the Obojobo Visual Editor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
-											"styleList": [
-												{
-													"end": 281,
-													"data": {},
-													"type": "monospace",
-													"start": 268
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "8bf17337-1c17-4e07-abf7-a1266b554b8c",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The arrow next to each page or assessment provides a menu with special actions that can be taken on each item. ",
+											"value": "Clicking an item in the navigation menu displays its contents on the right - the area this paragraph is in right now. Navigating to other pages while editing will not erase your changes.",
 											"styleList": []
 										}
 									}
@@ -140,142 +223,86 @@
 							"children": []
 						},
 						{
-							"id": "be267557-40a9-4020-83c4-2778e3cbb566",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Move Up swaps a page with the previous page in the list, and Move Down swaps a page with the next page in the list.",
-											"styleList": [
-												{
-													"end": 7,
-													"data": {},
-													"type": "monospace",
-													"start": 0
-												},
-												{
-													"end": 70,
-													"data": {},
-													"type": "monospace",
-													"start": 61
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "bec3fc52-a8a0-4ff8-acb3-b9cf8755133d",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Edit Name allows you to change the name of the page. ",
-											"styleList": [
-												{
-													"end": 9,
-													"data": {},
-													"type": "monospace",
-													"start": 0
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Warning: Pages that have the same name will cause issues in the Obojobo viewer.",
-											"styleList": [
-												{
-													"end": 9,
-													"data": {},
-													"type": "b",
-													"start": 0
-												},
-												{
-													"end": 43,
-													"data": {},
-													"type": "b",
-													"start": 39
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "be27356b-864b-4d52-852b-f43f2c7aa031",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Delete deletes the entire page, including all of its content.",
-											"styleList": [
-												{
-													"end": 6,
-													"data": {},
-													"type": "monospace",
-													"start": 0
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "04416cac-638d-4a3d-8e0f-65028f031d4c",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The last item in the menu is the unique id for the page. Clicking on the id copies it to the clipboard, so you can paste it elsewhere in the Editor. (see Action Buttons for some uses of ids)",
-											"styleList": [
-												{
-													"end": 168,
-													"data": {},
-													"type": "b",
-													"start": 154
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "91c3d600-b02e-4287-a991-510b6c79f9d2",
+							"id": "0bedd503-f790-4746-b1d2-c5cbce724d90",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
 								"textGroup": [
 									{
 										"data": {},
 										"text": {
-											"value": "Module Editing Buttons",
+											"value": "Adding Pages",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "3f4ac4f9-7fc4-4a0a-bf30-d527aca99916",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "When a page is selected in the Navigation menu, a +Page button will appear below it.  Clicking this button will create a new page below the current  page.  Similarly, if all pages or assessments are deleted, a +Add Page or +Add Assessment button will appear, allowing you to create a new page or assessment.",
+											"styleList": [
+												{
+													"end": 55,
+													"data": {},
+													"type": "b",
+													"start": 50
+												},
+												{
+													"end": 55,
+													"data": {},
+													"type": "monospace",
+													"start": 50
+												},
+												{
+													"end": 219,
+													"data": {},
+													"type": "monospace",
+													"start": 210
+												},
+												{
+													"end": 219,
+													"data": {},
+													"type": "b",
+													"start": 210
+												},
+												{
+													"end": 238,
+													"data": {},
+													"type": "monospace",
+													"start": 223
+												},
+												{
+													"end": 238,
+													"data": {},
+													"type": "b",
+													"start": 223
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "9713b5d6-b641-4d88-99ce-082f92680683",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Detail Menus",
 											"styleList": []
 										}
 									}
@@ -285,7 +312,7 @@
 							"children": []
 						},
 						{
-							"id": "404e69c0-0894-459a-bc94-8c5e828f3bf1",
+							"id": "f27d6d56-cc3e-459c-9ef4-23e0f9a9a92c",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -294,7 +321,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The buttons at the bottom of the navigation panel provide actions that edit the entire module. ",
+											"value": "The circle with three dots next to any item opens a details menu with more information and options.  Sometimes you need to select that item for the details menu icon to appear. These menus are how you access the id and triggers associated with each part of your module.  In addition, each details menu can contain specialized options pertaining to the content it's controlling.",
 											"styleList": []
 										}
 									}
@@ -303,7 +330,7 @@
 							"children": []
 						},
 						{
-							"id": "dd848093-f356-4083-8712-7af4f61c443e",
+							"id": "de7b30d7-ecd1-4c4d-b673-d6a686239948",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -312,25 +339,154 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The Add Page button adds a new page to the bottom of the list of pages. The Add Assessment button adds a new assessment at the end of the assessments list.",
+											"value": "For instance, the details menu at the top of the navigation title allows you to edit the module title and start page.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "d9830dda-837b-4064-a5d0-c019288b7201",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The details menus for pages and assessments allow you to edit their titles, delete, duplicate, and change their order.  Similarly, the circles next to each chunk (paragraphs, images, etc.) inside a page allow you to edit that chunk's id and triggers.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "f6b3c8da-950e-455d-aa4a-2912b0d4b3ba",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "A Special Note About ID's",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "bdf78683-5027-4767-a122-09b86dafda1c",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "When changing any item's id, make sure to use a unique value.  Duplicate ids are not allowed in a module, and the menu will not close if the id you are trying to use already exists elsewhere in the module. ",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "8e5f9bf5-1bc5-4fb6-9d57-864f62b299c0",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Toolbars",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "6c245df0-e901-4493-93a6-0d79724ee7f9",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The toolbars at the top of the page provide additional actions. These toolbars are always visible at the top of the page, no matter how far down you scroll.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "3b63b6f9-8ee4-4d98-9345-9ef8eeff27b2",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "File Toolbar",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "48796666-5a99-45a0-841a-39681524597d",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The file toolbar sits just below the module name, and contains a series of menus that provide additional functionality to the Obojobo Visual Editor. Many of these functions can also be accessed with shortcut keys.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "99022c9b-fb33-487c-a6f5-359deb8bceff",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Inside the file toolbar, the File menu allows you to Save the current changes to the menu (CTRL+S), open up a new Obojobo module, or make a copy of the current module.  It also allows you to download the module as either an XML or a JSON document.  You can also Delete the module from this menu or copy the LTI link to add into your LMS course.",
 											"styleList": [
 												{
-													"end": 12,
+													"end": 97,
 													"data": {},
 													"type": "monospace",
-													"start": 4
-												},
-												{
-													"end": 79,
-													"data": {},
-													"type": "monospace",
-													"start": 77
-												},
-												{
-													"end": 90,
-													"data": {},
-													"type": "monospace",
-													"start": 80
+													"start": 91
 												}
 											]
 										}
@@ -340,7 +496,7 @@
 							"children": []
 						},
 						{
-							"id": "07c8b050-0c5a-43cb-888b-833a19c57af7",
+							"id": "3953c76b-abdb-4cdd-876b-97810d85c802",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -349,44 +505,25 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The Rename Module button allows you to rename the entire module and will change the title at the top of the navigation panel.",
+											"value": "After the File menu is the Edit menu, which provides access to some typical editor commands.  You can undo (CTRL+Z) or redo (CTRL+Y) any changes that you have made, or delete content.  You can also select all the content within a single page (CTRL+A)",
 											"styleList": [
 												{
-													"end": 17,
+													"end": 114,
 													"data": {},
 													"type": "monospace",
-													"start": 4
-												}
-											]
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
-							"id": "f6ece631-64ac-47f6-8a66-e2a3d8aaff24",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The Copy Module URL button copies a URL to the clipboard. This URL allows the student to access the Obojobo module.",
-											"styleList": [
-												{
-													"end": 15,
-													"data": {},
-													"type": "monospace",
-													"start": 4
+													"start": 108
 												},
 												{
-													"end": 19,
+													"end": 131,
 													"data": {},
 													"type": "monospace",
-													"start": 16
+													"start": 125
+												},
+												{
+													"end": 249,
+													"data": {},
+													"type": "monospace",
+													"start": 243
 												}
 											]
 										}
@@ -396,7 +533,105 @@
 							"children": []
 						},
 						{
-							"id": "09d1d344-e8ea-4578-b7c4-79f25f44db70",
+							"id": "81062e30-5b01-44f2-882e-a62afb8fc96d",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The View menu can also be found in the file toolbar.  It allows you to change the way you are editing the module, swapping over to the XML editor or the JSON editor in order to manually edit the module.  It also allows you to preview the module as the students would see it.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "50d0ac9e-76d8-4eac-8867-c0c84439197d",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The Insert menu follows the View menu and allows you to insert different kinds of content into the document.  All content types are inserted with blank text and default values, ready to be edited!",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c663f0ad-c830-464d-b741-729324736e4f",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Finally, the Format menu allows you to make formatting changes to the content within a page. The Text submenu allows you change the inline style of any text, including making it bold or italicized. The Paragraph Styles submenu allows you to change the type of the currently selected content, swapping between Text, Headings, and Code.  Only those three types of content can be swapped, so selecting other types of content and then changing their Paragraph Style will have no effect.  The last submenu, Align & Indent, allows you to change the indent style of a block of text, or to swap how it is aligned on the page.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "be5874ed-a75f-44e4-a86f-895a223bff89",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Content Toolbar",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "7ce89273-0450-4c41-b65c-e7a0f03b72d3",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Much like the Format menu in the file toolbar, the content toolbar provides buttons that can change the formatting of the content within a page.  Each button also has a keyboard shortcut associated with it, to allow for uninterrupted typing.  For more information about the Content Toolbar, see the Text Editing page.",
+											"styleList": [
+												{
+													"end": 311,
+													"data": {},
+													"type": "b",
+													"start": 299
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "e7251589-d80e-4779-ae15-fc34622bf7db",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
 								"textGroup": [
@@ -413,7 +648,7 @@
 							"children": []
 						},
 						{
-							"id": "207e3177-94b5-46cf-8c5a-b857933a41eb",
+							"id": "47345309-198e-4768-92ac-4358275ac0c1",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -431,7 +666,7 @@
 							"children": []
 						},
 						{
-							"id": "42b07e1a-bacc-4679-a2ff-a3a74fe144d3",
+							"id": "db3c7188-6526-4474-9ede-2d8fc84049d2",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
 								"textGroup": [
@@ -515,25 +750,6 @@
 							"children": []
 						},
 						{
-							"id": "be8d6a36-50a9-49fc-8b01-0b16d22464bd",
-							"type": "ObojoboDraft.Chunks.Text",
-							"content": {
-								"textGroup": [
-									{
-										"data": {
-											"align": 0,
-											"indent": 0
-										},
-										"text": {
-											"value": "",
-											"styleList": []
-										}
-									}
-								]
-							},
-							"children": []
-						},
-						{
 							"id": "b7a1a4a7-e1f9-4127-bdaa-ce4e4ab62508",
 							"type": "ObojoboDraft.Chunks.Text",
 							"content": {
@@ -598,7 +814,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Hitting the Enter key twice or hitting the Enter key on an empty line will create a new text node. A new text node is like a new paragraph and is separated from the previous text node accordingly.",
+											"value": "Hitting the Enter key twice or hitting the Enter key on an empty line will create a new text node. A new text node is like a new paragraph and is separated from the previous text node by extra space.",
 											"styleList": [
 												{
 													"end": 17,
@@ -631,6 +847,94 @@
 													"data": {},
 													"type": "monospace",
 													"start": 16
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "2464364f-9154-43f4-9dc0-7ff51906a4f6",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Align",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "c9554ba4-d330-4c26-b821-a4644b19c249",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Text lines can be left aligned, right aligned, or center aligned.  The alignment applies to each individual line, so a text node can have multiple alignments within it.  For example, this line is left aligned,",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"align": "right"
+										},
+										"text": {
+											"value": "this line is right aligned,",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"align": "center"
+										},
+										"text": {
+											"value": "and this line is centered.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "cc948d02-4242-4c90-8bb6-b7c2e7b403d9",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left"
+										},
+										"text": {
+											"value": "The alignment can be changed by using the buttons in the toolbar, or by pressing CTRL+L for left align, CRL+R for right align, or CTRL+E for center align.",
+											"styleList": [
+												{
+													"end": 87,
+													"data": {},
+													"type": "monospace",
+													"start": 81
+												},
+												{
+													"end": 109,
+													"data": {},
+													"type": "monospace",
+													"start": 104
+												},
+												{
+													"end": 136,
+													"data": {},
+													"type": "monospace",
+													"start": 130
 												}
 											]
 										}
@@ -743,6 +1047,41 @@
 							"children": []
 						},
 						{
+							"id": "1ba77c19-7e3e-4da4-930f-5d25cd37162a",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": true
+										},
+										"text": {
+											"value": "Text nodes can also have a hanging indent, where the first part a wrapping text line sticks out further to the left than subsequent lines.  Hanging indents can be toggled by pressing CTRL+H, or by using the hanging indent button in the toolbar.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it!  Use the CTRL+H keys, or the toolbar buttons, to toggle a hanging indent on this line of text.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
 							"id": "87cc7a52-0a5f-4cf7-9c2c-274a733078f1",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
@@ -783,7 +1122,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "\tAdding a Tab at the beginning of a line does not effect the indentation even if the line wraps around.",
+											"value": "\tAdding a Tab at the beginning of a line does not affect the indentation even if the line wraps around.",
 											"styleList": [
 												{
 													"end": 13,
@@ -792,6 +1131,42 @@
 													"start": 10
 												}
 											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "f500de24-03b6-4d6e-8a45-c4b1b9248bab",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Paragraph Styles",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "439e0126-0eae-40a9-a830-a09046502657",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "At times, you may insert a text node and then realize you want it to be a different kind of node.  In that case, the drop-down menu in the toolbar will allow you to change the paragraph style to a heading or to a code style.  You can also use the menu to change code and headings back into text.",
+											"styleList": []
 										}
 									}
 								]
@@ -1013,10 +1388,10 @@
 													"start": 19
 												},
 												{
-													"end": 77,
+													"end": 76,
 													"data": {},
 													"type": "b",
-													"start": 63
+													"start": 62
 												}
 											]
 										}
@@ -1026,7 +1401,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Link (CTRL+K or ⌘+K)",
+											"value": "Link (CTRL+K or ⌘+K) - Links can be edited by clicking the pencil next to the link text",
 											"styleList": [
 												{
 													"end": 4,
@@ -1106,75 +1481,6 @@
 												}
 											]
 										}
-									},
-									{
-										"data": {
-											"align": "left",
-											"indent": 0
-										},
-										"text": {
-											"value": "Left Align (CTRL+L or ⌘+L)",
-											"styleList": [
-												{
-													"end": 18,
-													"data": {},
-													"type": "monospace",
-													"start": 12
-												},
-												{
-													"end": 25,
-													"data": {},
-													"type": "monospace",
-													"start": 22
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"align": "right",
-											"indent": 0
-										},
-										"text": {
-											"value": "Right Align (CTRL+R or ⌘+R)",
-											"styleList": [
-												{
-													"end": 19,
-													"data": {},
-													"type": "monospace",
-													"start": 13
-												},
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 23
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"align": "center",
-											"indent": 0
-										},
-										"text": {
-											"value": "Center Align (CTRL+E or ⌘+E)",
-											"styleList": [
-												{
-													"end": 20,
-													"data": {},
-													"type": "monospace",
-													"start": 14
-												},
-												{
-													"end": 27,
-													"data": {},
-													"type": "monospace",
-													"start": 24
-												}
-											]
-										}
 									}
 								]
 							},
@@ -1238,7 +1544,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Headings can have one of 6 different levels. To toggle the heading level, click on the arrow next to the heading and select the new heading style.",
+											"value": "Headings can have one of 6 different levels. To toggle the heading level, click on the dropdown menu in the toolbar select the new heading style.",
 											"styleList": []
 										}
 									}
@@ -1462,7 +1768,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "You can swap between ordered and unordered lists by pressing the swap button below the list.",
+											"value": "You can swap between ordered and unordered lists by pressing the swap button below the list, which appears when the list is selected.",
 											"styleList": []
 										}
 									}
@@ -1494,7 +1800,8 @@
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "One Item",
@@ -1503,7 +1810,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "Another Item",
@@ -1512,7 +1820,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "A Third Item",
@@ -1522,12 +1831,12 @@
 								],
 								"listStyles": {
 									"type": "unordered",
-									"indents": [
-										{
+									"indents": {
+										"0": {
 											"type": "unordered",
 											"bulletStyle": "disc"
 										}
-									]
+									}
 								}
 							},
 							"children": []
@@ -1556,7 +1865,8 @@
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "The First Item",
@@ -1565,7 +1875,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "The Second Item",
@@ -1574,7 +1885,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "The Third Item",
@@ -1584,12 +1896,12 @@
 								],
 								"listStyles": {
 									"type": "ordered",
-									"indents": [
-										{
+									"indents": {
+										"0": {
 											"type": "ordered",
 											"bulletStyle": "decimal"
 										}
-									]
+									}
 								}
 							},
 							"children": []
@@ -1621,19 +1933,25 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Lists can contain any number of levels. The level can be increased by pressing Tab or decreased by pressing Shift+Tab. You can also use the indent and un-indent buttons in the toolbar to change the level.",
+											"value": "Lists can contain any number of levels. The level can be increased by pressing Tab at the start of the list item (or ALT+Tab anywhere in the list) or decreased by pressing Shift+Tab. You can also use the indent and un-indent buttons in the toolbar to change the level.",
 											"styleList": [
 												{
-													"end": 83,
+													"end": 82,
 													"data": {},
 													"type": "monospace",
-													"start": 80
+													"start": 79
 												},
 												{
-													"end": 117,
+													"end": 124,
 													"data": {},
 													"type": "monospace",
-													"start": 108
+													"start": 117
+												},
+												{
+													"end": 181,
+													"data": {},
+													"type": "monospace",
+													"start": 172
 												}
 											]
 										}
@@ -1677,7 +1995,8 @@
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "List Level 1",
@@ -1686,7 +2005,8 @@
 									},
 									{
 										"data": {
-											"indent": 1
+											"indent": 1,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "List Level 2",
@@ -1695,7 +2015,8 @@
 									},
 									{
 										"data": {
-											"indent": 2
+											"indent": 2,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "List Level 3",
@@ -1704,7 +2025,8 @@
 									},
 									{
 										"data": {
-											"indent": 3
+											"indent": 3,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "List Level",
@@ -1713,7 +2035,8 @@
 									},
 									{
 										"data": {
-											"indent": 4
+											"indent": 4,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "List Level 5",
@@ -1722,7 +2045,8 @@
 									},
 									{
 										"data": {
-											"indent": 3
+											"indent": 3,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "Back to Level 4",
@@ -1731,7 +2055,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "Back to Level 1",
@@ -1741,28 +2066,28 @@
 								],
 								"listStyles": {
 									"type": "ordered",
-									"indents": [
-										{
+									"indents": {
+										"0": {
 											"type": "ordered",
 											"bulletStyle": "decimal"
 										},
-										{
+										"1": {
 											"type": "ordered",
 											"bulletStyle": "upper-alpha"
 										},
-										{
+										"2": {
 											"type": "ordered",
 											"bulletStyle": "upper-roman"
 										},
-										{
+										"3": {
 											"type": "ordered",
 											"bulletStyle": "decimal"
 										},
-										{
+										"4": {
 											"type": "ordered",
 											"bulletStyle": "upper-alpha"
 										}
-									]
+									}
 								}
 							},
 							"children": []
@@ -1840,21 +2165,8 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "When a table is inserted, it only has a single cell. To add more rows and columns, use the Add Row and Add Column buttons.",
-											"styleList": [
-												{
-													"end": 98,
-													"data": {},
-													"type": "monospace",
-													"start": 91
-												},
-												{
-													"end": 113,
-													"data": {},
-													"type": "monospace",
-													"start": 103
-												}
-											]
+											"value": "When a table is inserted, it only has a single cell. To add more rows and columns, click on a cell in the table, and then click on the arrow in the top right corner of that cell.  A menu will appear with table options, allowing you to add rows above or below the current cell, and columns to the left or right of the current cell.",
+											"styleList": []
 										}
 									},
 									{
@@ -1862,7 +2174,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Try it! Use the buttons to add a few rows and columns to this table.",
+											"value": "Try it! Use the menu to add a few rows and columns to this table.",
 											"styleList": [
 												{
 													"end": 7,
@@ -1907,35 +2219,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Once a table has a few rows and columns, you can use the X buttons on the right side to delete rows, and the X buttons on the bottom to delete columns. Each X deletes the row or column that it is directly next to.",
-											"styleList": [
-												{
-													"end": 58,
-													"data": {},
-													"type": "monospace",
-													"start": 57
-												},
-												{
-													"end": 110,
-													"data": {},
-													"type": "monospace",
-													"start": 109
-												},
-												{
-													"end": 158,
-													"data": {},
-													"type": "monospace",
-													"start": 157
-												}
-											]
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "Deleting the last row in the table will delete the entire table.",
+											"value": "Once a table has a few rows and columns, you can use the Delete Row or Delete Column option in the same dropdown menu to remove rows and columns",
 											"styleList": []
 										}
 									},
@@ -1944,7 +2228,16 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Try it! Use the buttons to delete a few rows and columns from this table.",
+											"value": "Deleting the last row or column in the table will delete the entire table.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Use the menu to delete a few rows and columns from this table.",
 											"styleList": [
 												{
 													"end": 7,
@@ -2382,6 +2675,8 @@
 								"alt": null,
 								"url": null,
 								"size": "small",
+								"width": 100,
+								"height": 100,
 								"textGroup": [
 									{
 										"data": null,
@@ -2421,7 +2716,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The first property in the Image Properties dialog is the URL. To change the image, paste in the URL of the image that you wish to display.",
+											"value": "When the properties box is first opened, it will ask you to upload a new image, or enter the URL of an image that has already been uploaded to the internet. It will also show you a list of your recently uploaded images, and you can select any of them to upload into the module.",
 											"styleList": []
 										}
 									},
@@ -2430,8 +2725,15 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Try it! Change the image in the following figure by opening the Image Properties dialog, pasting in an image URL, and then clicking OK",
-											"styleList": []
+											"value": "Try it! Change the image in the following figure by opening the Image Properties dialog, pasting in an image URL or uploading an image, and then clicking OK",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
 										}
 									}
 								]
@@ -2484,7 +2786,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "The second property in the Image Properties dialog is the alt text. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as text-to-speech devices are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. Images without alt text will display a warning above them, so it is easy to see which images still need alt text.",
+											"value": "Once an image has been selected, other properties will be displayed in the Image Properties dialog.  The first of these is the alt text. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as text-to-speech devices are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. Images without alt text will display a warning above them, so it is easy to see which images still need alt text.",
 											"styleList": []
 										}
 									},
@@ -2579,31 +2881,31 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The third property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom. ",
+											"value": "The second property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom. ",
 											"styleList": [
 												{
-													"end": 128,
+													"end": 129,
 													"data": {},
 													"type": "monospace",
-													"start": 123
+													"start": 124
 												},
 												{
-													"end": 136,
+													"end": 137,
 													"data": {},
 													"type": "monospace",
-													"start": 130
+													"start": 131
 												},
 												{
-													"end": 143,
+													"end": 144,
 													"data": {},
 													"type": "monospace",
-													"start": 138
+													"start": 139
 												},
 												{
-													"end": 155,
+													"end": 156,
 													"data": {},
 													"type": "monospace",
-													"start": 148
+													"start": 149
 												}
 											]
 										}
@@ -2783,7 +3085,7 @@
 									{
 										"data": null,
 										"text": {
-											"value": "An image with a custom ",
+											"value": "An image with a custom width and height",
 											"styleList": []
 										}
 									}
@@ -2843,7 +3145,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Every Figure has a caption that sits below the image. This caption is optional, but can provide more information about the image.",
+											"value": "Every Figure has a caption that sits below the image. This caption is optional, but can provide more information about the image.  You can edit the caption by clicking directly beneath any image.",
 											"styleList": []
 										}
 									}
@@ -2961,7 +3263,8 @@
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "Basic LaTeX Math Tutorial",
@@ -2979,7 +3282,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "Common Math Symbols in LaTeX",
@@ -2997,7 +3301,8 @@
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
 											"value": "LaTeX Greek Alphabet",
@@ -3016,12 +3321,12 @@
 								],
 								"listStyles": {
 									"type": "unordered",
-									"indents": [
-										{
+									"indents": {
+										"0": {
 											"type": "unordered",
 											"bulletStyle": "disc"
 										}
-									]
+									}
 								}
 							},
 							"children": []
@@ -3053,13 +3358,13 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX hot key (CTRL+Q). The highlighted text will then have a light grey background, and will render as a Math Equation in the Obojobo Viewer",
+											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (CTRL+Q). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer",
 											"styleList": [
 												{
-													"end": 243,
+													"end": 244,
 													"data": {},
 													"type": "monospace",
-													"start": 237
+													"start": 238
 												}
 											]
 										}
@@ -3130,17 +3435,26 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "To change a math equation, click on the Edit button. A dialog will pop up, with two input fields. Type the LaTeX representation of the equation into the Latex Equation field, and then click OK. The Math Equation will be updated, and will display next to the edit button.",
+											"value": "To change a math equation, click on the Math Equation. An edit button will appear, and clicking the button will open a dialog with four input fields. Type the LaTeX representation of the equation into the Latex field, and then click OK. The Math Equation will be updated, and will display next to the edit button.",
 											"styleList": []
 										}
-									},
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "bed2297e-cc0d-41ea-ab27-8a90d62c4891",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
 									{
 										"data": {
 											"align": 0,
 											"indent": 0
 										},
 										"text": {
-											"value": "Try it! Click on the Edit button and then type y=mx+b into the Latex Equation input.",
+											"value": "Try it! Click on the empty Math Equation chunk below, open the edit box, and enter y=mx+b into the input box labeled \"Latex\".",
 											"styleList": [
 												{
 													"end": 7,
@@ -3149,10 +3463,10 @@
 													"start": 0
 												},
 												{
-													"end": 53,
+													"end": 89,
 													"data": {},
 													"type": "monospace",
-													"start": 47
+													"start": 83
 												}
 											]
 										}
@@ -3165,6 +3479,8 @@
 							"id": "fee457a6-1065-4f8b-9c2b-fab773b082e1",
 							"type": "ObojoboDraft.Chunks.MathEquation",
 							"content": {
+								"alt": "",
+								"size": 1,
 								"label": "",
 								"latex": ""
 							},
@@ -3180,18 +3496,35 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "If the LaTeX equation is mis-typed, an error will appear at the bottom of the dialog when OK is pressed. This error must be corrected before the Math Equation can be updated.",
+											"value": "If the LaTeX equation is mis-typed, an error message will appear. Fix the following Math Equation by correcting the spelling of thata to theta.",
 											"styleList": [
 												{
-													"end": 120,
+													"end": 133,
 													"data": {},
-													"type": "i",
-													"start": 116
+													"type": "monospace",
+													"start": 128
+												},
+												{
+													"end": 143,
+													"data": {},
+													"type": "monospace",
+													"start": 137
 												}
 											]
 										}
 									}
 								]
+							},
+							"children": []
+						},
+						{
+							"id": "70ed7dec-0c10-4ab2-8a2a-48d5d611fb78",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "",
+								"size": 1,
+								"label": "",
+								"latex": "\\thata + \\pi"
 							},
 							"children": []
 						},
@@ -3205,7 +3538,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "A Math Equation can also have a label. To change the label, type into the Equation Label input in the dialog.",
+											"value": "A Math Equation can also have a label. To change the label, type into the Optional Label input in the dialog.  The label will be displayed below the equation, and can provide an easy shorthand to refer to the equation in the rest of your content.",
 											"styleList": []
 										}
 									}
@@ -3217,8 +3550,140 @@
 							"id": "66ae62f9-7cde-4a7f-9164-9245e9be1b1e",
 							"type": "ObojoboDraft.Chunks.MathEquation",
 							"content": {
+								"alt": "",
+								"size": 1,
 								"label": "1.1",
 								"latex": "x_1 = x_0 + \\Delta x"
+							},
+							"children": []
+						},
+						{
+							"id": "d6d43efc-7ed3-4c23-8481-fc9b65c76003",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Because text-to-speech devices do not always read the LaTeX out correctly, there is the option to provide an alt text for the equation.  When providing alt text for an equation, be sure the the words are unambiguous, and provide all necessary context such as parenthesis and grouping.  For advice on writing out accessible Math Equations, use the MathSpeak standards.",
+											"styleList": [
+												{
+													"end": 366,
+													"data": {
+														"href": "https://www.seewritehear.com/accessible-mathml/mathspeak/examples/"
+													},
+													"type": "a",
+													"start": 347
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "To add alt text to the math equation, type it into the Alt Text input.",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "37b4ae6a-4fa8-4f1e-8262-08a35f73f556",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "y equals m times x plus b",
+								"size": 1,
+								"label": "",
+								"latex": "y = mx + b"
+							},
+							"children": []
+						},
+						{
+							"id": "d1f64933-d5bd-4135-b6c6-27d791d3d8f8",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "You can also alter the size of your Math Equations by changing the value in the Size field.  The size value is a multiplier, so a value of 1.5 makes the equation 1.5x as large as usual. ",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "16ad5aa0-a450-4b4f-b02a-d33df2577f43",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "",
+								"size": "1.5",
+								"align": "center",
+								"label": "",
+								"latex": "\\underset{acid\\ 1}{H-A}+\\underset{base\\ 1}{B^-} \\rightleftharpoons \\underset{base\\ 2}{A^-} + \\underset{acid\\ 2}{B-H}"
+							},
+							"children": []
+						},
+						{
+							"id": "49242bf4-971d-4bc0-b220-807376064de2",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Math Equation chunks can also be aligned to the left or right. Here's a few examples",
+											"styleList": []
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "27a711e0-3c02-4040-b043-138919444304",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "",
+								"size": 1,
+								"align": "left",
+								"label": "A left aligned Matrix",
+								"latex": "M = \\begin{bmatrix} \\frac{5}{6} & \\frac{1}{6} & 0 \\\\[0.3em] \\frac{5}{6} & 0 & \\frac{1}{6} \\\\[0.3em] 0 & \\frac{5}{6} & \\frac{1}{6}\\end{bmatrix}"
+							},
+							"children": []
+						},
+						{
+							"id": "92f1cca7-c70e-48eb-9154-b7a74e6ca932",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "",
+								"size": 1,
+								"align": "right",
+								"label": "A right aligned fraction",
+								"latex": "\\left(\\frac{1}{\\sqrt{x}}\\right)"
+							},
+							"children": []
+						},
+						{
+							"id": "9179d3c5-ea3b-48df-8a62-9d24c041966e",
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"alt": "",
+								"size": 1,
+								"label": "A center aligned equation (default)",
+								"latex": "F(x) = \\int^a_b \\frac{1}{3}x^3"
 							},
 							"children": []
 						}
@@ -3308,7 +3773,6 @@
 							"id": "c4f6e43f-80e2-466e-b934-9fd9a188fab0",
 							"type": "ObojoboDraft.Chunks.ActionButton",
 							"content": {
-								"actions": [],
 								"triggers": [
 									{
 										"type": "onClick",
@@ -3364,16 +3828,6 @@
 							"id": "2eb99837-c8c6-4d57-b6c3-d1c06e42d7bb",
 							"type": "ObojoboDraft.Chunks.ActionButton",
 							"content": {
-								"actions": [
-									{
-										"type": "nav:prev",
-										"value": "{}"
-									},
-									{
-										"type": "nav:close",
-										"value": "{}"
-									}
-								],
 								"triggers": [
 									{
 										"type": "onClick",
@@ -3411,19 +3865,19 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "To add an action to an Action Button, click the Add New Action button. A dialog will appear; select the desired action name from the dropdown menu and fill out any value that is needed for that action (see Action Details) before clicking the Save button. The Obojobo Visual Editor will validate the value, and then save the action into the Action Button if the value was valid. If the value was not valid, it will display an error message.",
+											"value": "To add an action to an Action Button, click the Edit Triggers button. A dialog will appear; make sure the button has a When \"The student clicks the button\" trigger, click Add Action, and then select the desired action name from the dropdown menu and fill out any value that is needed for that action (see Action Details) before clicking the Save button. The Obojobo Visual Editor will validate the value, and then save the action into the Action Button if the value was valid. If the value was not valid, it will display an error message.",
 											"styleList": [
 												{
-													"end": 220,
+													"end": 319,
 													"data": {},
 													"type": "b",
-													"start": 206
+													"start": 305
 												},
 												{
-													"end": 246,
+													"end": 345,
 													"data": {},
 													"type": "monospace",
-													"start": 242
+													"start": 341
 												}
 											]
 										}
@@ -3442,13 +3896,13 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "To remove an action from an Action Button, click the X button in the upper righthand corner of the action. This will delete both the action and its associated value.",
+											"value": "To remove an action from an Action Button, click Edit Triggers and then click the X button in the upper righthand corner of the action. This will delete both the action and its associated value.",
 											"styleList": [
 												{
-													"end": 54,
+													"end": 83,
 													"data": {},
 													"type": "monospace",
-													"start": 53
+													"start": 82
 												}
 											]
 										}
@@ -3519,20 +3973,6 @@
 							"id": "db2e334e-5205-48e7-9464-705cd13defec",
 							"type": "ObojoboDraft.Chunks.ActionButton",
 							"content": {
-								"actions": [
-									{
-										"type": "nav:prev",
-										"value": "{}"
-									},
-									{
-										"type": "nav:open",
-										"value": "{}"
-									},
-									{
-										"type": "nav:openExternalLink",
-										"value": "{\"url\":\"https://ucfopen.github.io/Obojobo-Docs\"}"
-									}
-								],
 								"triggers": [
 									{
 										"type": "onClick",
@@ -3719,7 +4159,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Code nodes function similarly to text nodes. A single Code node can contain multiple lines, including empty lines. Code nodes can contain as many empty lines as needed. Unlike Text nodes, two consecutive blank lines within a single Code node will not be turned into a new Code node.",
+											"value": "Code nodes function similarly to text nodes. A single Code node can contain multiple lines, including empty lines. Code nodes can contain as many empty lines as needed. Unlike Text nodes, two consecutive blank lines within a single Code node will not be turned into a new Code node.  Code nodes can also be converted into text or headings by selecting the node and using the drop-down menu it the toolbar.",
 											"styleList": []
 										}
 									}
@@ -3886,6 +4326,25 @@
 													"start": 252
 												}
 											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "d9114744-6c45-4392-832b-0f59520500f1",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": 0,
+											"indent": 0
+										},
+										"text": {
+											"value": "If you only want your students to watch a specific section of the video, you can enter a start time (in seconds) and an end time (in seconds) in the dialog.  When students press play, the video will begin at the specified start time, and play until the specified end time, ensuring that the student see only the relevant content.",
+											"styleList": []
 										}
 									}
 								]
@@ -4124,9 +4583,7 @@
 								"fit": "scale",
 								"src": "https://www.ucf.edu/",
 								"type": "media",
-								"width": "999999",
 								"border": false,
-								"height": "500",
 								"autoload": false,
 								"controls": "reload",
 								"initialZoom": 1
@@ -4194,7 +4651,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "All IFrames have 5 options that determine how they are displayed. None of these options are required; they simply alter the IFrame from its default display.",
+											"value": "All IFrames have options that determine how they are displayed. None of these options are required; they simply alter the IFrame from its default display.",
 											"styleList": []
 										}
 									}
@@ -4203,69 +4660,129 @@
 							"children": []
 						},
 						{
-							"id": "7c572576-7ec6-494d-8212-0421c0e5a8a6",
-							"type": "ObojoboDraft.Chunks.Text",
+							"id": "c0d13481-431d-4797-adb3-3767e36bc197",
+							"type": "ObojoboDraft.Chunks.List",
 							"content": {
 								"textGroup": [
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
-											"value": "The dimensions option sets the width and height that the IFrame will be displayed at. ",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The border option toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document.",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The autoload option determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
-											"styleList": []
-										}
-									},
-									{
-										"data": {
-											"indent": 0
-										},
-										"text": {
-											"value": "The fit option sets how content will be scaled within the IFrame. The scale value will cause both width, height, and contents to be scaled down inside the IFrame. The scroll value will scale down only the width, insuring that all content is the same size.",
+											"value": "Dimensions: Set the width and height that the IFrame will be displayed at. ",
 											"styleList": [
 												{
-													"end": 75,
+													"end": 10,
 													"data": {},
-													"type": "monospace",
-													"start": 70
-												},
-												{
-													"end": 173,
-													"data": {},
-													"type": "monospace",
-													"start": 167
+													"type": "b",
+													"start": 0
 												}
 											]
 										}
 									},
 									{
 										"data": {
-											"indent": 0
+											"indent": 0,
+											"hangingIndent": false
 										},
 										"text": {
-											"value": "The inital zoom option sets a scale multiplier on the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
+											"value": "Border: Toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document",
+											"styleList": [
+												{
+													"end": 6,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Autoload: Determines whether the IFrame content will be loaded as soon as the student clicks on the page. Be careful when using autoloading, as autoloading IFrames with a large amount of content can cause noticeable lag in loading times.",
+											"styleList": [
+												{
+													"end": 8,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Fit: How content will be scaled within the IFrame",
+											"styleList": [
+												{
+													"end": 3,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Scale: Size of content inside the iframe will scale up and down to fit (much like scaling an image)",
 											"styleList": []
 										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Scroll: Content within the frame remains at its original size. When too large to fit, the contents will scroll instead of scale down.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Initial Zoom: Sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
+											"styleList": [
+												{
+													"end": 12,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
 									}
-								]
+								],
+								"listStyles": {
+									"type": "ordered",
+									"indents": {
+										"0": {
+											"type": "ordered",
+											"bulletStyle": "decimal"
+										},
+										"1": {
+											"type": "ordered",
+											"bulletStyle": "upper-alpha"
+										}
+									}
+								}
 							},
 							"children": []
 						},
@@ -4300,6 +4817,7 @@
 							"content": {
 								"fit": "scroll",
 								"src": "https://www.ucf.edu/",
+								"type": "media",
 								"title": "UCF Website",
 								"border": true,
 								"autoload": false,
@@ -4401,10 +4919,14 @@
 							"id": "42cdc2ce-231f-4f37-a86f-86c4ada314f7",
 							"type": "ObojoboDraft.Chunks.IFrame",
 							"content": {
+								"fit": "scale",
 								"src": "https://www.ucf.edu/",
+								"type": "media",
 								"title": "UCF Website",
+								"border": false,
 								"autoload": false,
-								"controls": "new-window,zoom"
+								"controls": "new-window,zoom",
+								"initialZoom": 1
 							},
 							"children": []
 						}
@@ -4642,19 +5164,19 @@
 									{
 										"data": {},
 										"text": {
-											"value": "By default, each question has two answers, one correct and one incorrect. To add more, click the Add Choice button below the current choices. To delete a choice, click the X button in the upper right-hand corner of the choice.",
+											"value": "By default, each question has one incorrect answer. To add more, click the Add Choice button below the current choices. To delete a choice, click the X button in the upper right-hand corner of the choice.",
 											"styleList": [
 												{
-													"end": 107,
+													"end": 85,
 													"data": {},
 													"type": "monospace",
-													"start": 97
+													"start": 75
 												},
 												{
-													"end": 173,
+													"end": 151,
 													"data": {},
 													"type": "monospace",
-													"start": 172
+													"start": 150
 												}
 											]
 										}
@@ -4834,19 +5356,19 @@
 									{
 										"data": {},
 										"text": {
-											"value": "To toggle which choices are correct, simply click on the red X or green checkmark on the left side of the choice. Choices which are marked with the green checkmark are the correct choices, and choices that are marked with the red X are incorrect. A question can have as many correct choices as you would like.",
+											"value": "To toggle which choices are correct, simply click on the red Incorrect button or green Correct button on the left side of the choice. A question can have as many correct choices as you would like.",
 											"styleList": [
 												{
-													"end": 62,
+													"end": 70,
 													"data": {},
 													"type": "monospace",
 													"start": 61
 												},
 												{
-													"end": 231,
+													"end": 94,
 													"data": {},
 													"type": "monospace",
-													"start": 230
+													"start": 87
 												}
 											]
 										}
@@ -4854,7 +5376,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Try it! Toggle the correctness of the answer choices in the following question by clicking on the green checkmarks.",
+											"value": "Try it! Toggle the correctness of the answer choices in the following question by clicking on the green buttons.",
 											"styleList": [
 												{
 													"end": 8,
@@ -4897,7 +5419,7 @@
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
 										"shuffle": true,
-										"responseType": "pick-one"
+										"responseType": "pick-one-multiple-correct"
 									},
 									"children": [
 										{
@@ -5057,6 +5579,24 @@
 													"data": {},
 													"type": "b",
 													"start": 0
+												},
+												{
+													"end": 116,
+													"data": {},
+													"type": "monospace",
+													"start": 115
+												},
+												{
+													"end": 159,
+													"data": {},
+													"type": "monospace",
+													"start": 158
+												},
+												{
+													"end": 220,
+													"data": {},
+													"type": "monospace",
+													"start": 219
 												}
 											]
 										}
@@ -5241,21 +5781,8 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Multiple-Choice questions can have one of two response types: pick-one or pick-all. To change the response type, use the dropdown at the bottom of the question.",
-											"styleList": [
-												{
-													"end": 70,
-													"data": {},
-													"type": "monospace",
-													"start": 62
-												},
-												{
-													"end": 82,
-													"data": {},
-													"type": "monospace",
-													"start": 74
-												}
-											]
+											"value": "Multiple-Choice questions can have one of two response types: pick one correct answer or pick all correct answers. To change the response type, use the dropdown above the answer choices",
+											"styleList": []
 										}
 									}
 								]
@@ -5270,15 +5797,8 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Pick-one questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question. ",
-											"styleList": [
-												{
-													"end": 8,
-													"data": {},
-													"type": "monospace",
-													"start": 0
-												}
-											]
+											"value": "Pick one correct answer questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question. ",
+											"styleList": []
 										}
 									}
 								]
@@ -5320,7 +5840,7 @@
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
 										"shuffle": true,
-										"responseType": "pick-one"
+										"responseType": "pick-one-multiple-correct"
 									},
 									"children": [
 										{
@@ -5437,13 +5957,13 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Pick-all questions allow a student to select as many answers as they want. A student must select all the correct choices to get the points for that question.",
+											"value": "Pick all correct answers questions allow a student to select as many answers as they want. A student must select all the correct choices to get the points for that question.",
 											"styleList": [
 												{
-													"end": 8,
+													"end": 105,
 													"data": {},
-													"type": "monospace",
-													"start": 0
+													"type": "b",
+													"start": 100
 												}
 											]
 										}
@@ -5486,7 +6006,7 @@
 									"id": "791b33ce-742d-49e3-aeda-810ca6276c4e",
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
-										"shuffle": true,
+										"shuffle": false,
 										"responseType": "pick-all"
 									},
 									"children": [
@@ -5625,7 +6145,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Questions can also be shuffled or un-shuffled. Shuffled questions will randomize the order of their choices, and un-shuffled questions will retain the order of their choices. By default, questions are shuffled, but this can be turned off by clicking on the toggle-button at the bottom of the question.",
+											"value": "Questions can also be shuffled or un-shuffled. Shuffled questions will randomize the order of their choices, and un-shuffled questions will retain the order of their choices. By default, questions are shuffled, but this can be turned off by clicking on the toggle-button next to the response type.",
 											"styleList": []
 										}
 									}
@@ -5636,7 +6156,9 @@
 						{
 							"id": "906e8381-ce2d-45de-84c4-aa1122283df9",
 							"type": "ObojoboDraft.Chunks.Question",
-							"content": {},
+							"content": {
+								"type": "default"
+							},
 							"children": [
 								{
 									"id": "96a83f88-605c-48d2-b27a-74d9bd9191ed",
@@ -5660,15 +6182,15 @@
 									"id": "d99da2ae-a655-46c3-89a2-48d5cb86792d",
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
-										"shuffle": true,
-										"responseType": "pick-one"
+										"shuffle": false,
+										"responseType": "pick-one-multiple-correct"
 									},
 									"children": [
 										{
 											"id": "5137a0b4-8d32-4aca-bacf-c71501505e07",
 											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
 											"content": {
-												"score": 0
+												"score": 100
 											},
 											"children": [
 												{
@@ -5702,7 +6224,7 @@
 											"id": "96876568-8b4d-48cc-80b5-0ff9fcfd6ec5",
 											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
 											"content": {
-												"score": 0
+												"score": 100
 											},
 											"children": [
 												{
@@ -5836,6 +6358,7 @@
 							"id": "584f8b1c-caf6-4b4e-b157-70a31434014b",
 							"type": "ObojoboDraft.Chunks.Question",
 							"content": {
+								"type": "default",
 								"solution": {
 									"id": "a3427c5e-3ff3-4d19-9800-f2357db8a4d0",
 									"type": "ObojoboDraft.Pages.Page",
@@ -5977,6 +6500,164 @@
 									]
 								}
 							]
+						},
+						{
+							"id": "0758d69b-90cd-4c79-abe0-b95b6efa9267",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Survey Questions",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "a6bce4e8-3150-46aa-b7b3-096a0a22ea08",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Questions can also be marked as Survey Only, which means they will not be graded.  Survey Only questions do not have correct and incorrect answers, and so toggling the Survey Only button to on will remove the Correct and Incorrect buttons from the Question",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Toggle the Survey Only button on the following Question.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "61c95f91-4fae-409b-a085-d4b76a890d58",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"type": "survey"
+							},
+							"children": [
+								{
+									"id": "4b6a6b66-84a8-4629-b618-912915ff72af",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "A survey question",
+													"styleList": []
+												}
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "14119904-63a7-4bf4-ba87-603d3d5d7787",
+									"type": "ObojoboDraft.Chunks.MCAssessment",
+									"content": {
+										"shuffle": true,
+										"responseType": "pick-one"
+									},
+									"children": [
+										{
+											"id": "1ae88173-9bd7-454d-ae13-823e493c0e27",
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 0
+											},
+											"children": [
+												{
+													"id": "306520b2-e3a6-4e0d-8158-eb6a407e7307",
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"content": {},
+													"children": [
+														{
+															"id": "5d45bb05-e101-421c-bb87-95365ec3ae4b",
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"data": {
+																			"indent": 0
+																		},
+																		"text": {
+																			"value": "One survey response",
+																			"styleList": []
+																		}
+																	}
+																]
+															},
+															"children": []
+														}
+													]
+												}
+											]
+										},
+										{
+											"id": "58070d61-b24c-46dd-856c-fd1a7cf41a5a",
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 0
+											},
+											"children": [
+												{
+													"id": "e1fc6f47-6b1c-459e-82b2-bbc94e954fdd",
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"content": {},
+													"children": [
+														{
+															"id": "d10b8d24-986e-4fee-95eb-9c56d2e5892f",
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"data": {
+																			"indent": 0
+																		},
+																		"text": {
+																			"value": "Another survey response",
+																			"styleList": []
+																		}
+																	}
+																]
+															},
+															"children": []
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
 						}
 					]
 				},
@@ -6064,7 +6745,7 @@
 							"children": []
 						},
 						{
-							"id": "292faef6-debd-4b7e-b532-7f617551d04e",
+							"id": "54a8eeaf-04b7-41bc-8bd2-ea41c91bd378",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
 								"choose": "2",
@@ -6169,19 +6850,13 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. The Choose property at the top of the Question Bank determines how many items are chosen. If the Choose number is greater than the number of items within the Question Bank, all of the items will be displayed.",
+											"value": "Inside of an Assessment, a Question Bank selects a few of its children to display. The How many questions should be displayed? property at the top of the Question Bank determines how many items are chosen. If the number displayed is greater than the number of items within the Question Bank, all of the items will be displayed.",
 											"styleList": [
 												{
-													"end": 94,
+													"end": 126,
 													"data": {},
-													"type": "monospace",
-													"start": 88
-												},
-												{
-													"end": 188,
-													"data": {},
-													"type": "monospace",
-													"start": 182
+													"type": "q",
+													"start": 87
 												}
 											]
 										}
@@ -6200,12 +6875,12 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "A Question Bank also has a Select property, which determines how it picks children to display. ",
+											"value": "A Question Bank also has a How should questions be selected? property, which determines how it picks children to display. ",
 											"styleList": [
 												{
-													"end": 33,
+													"end": 60,
 													"data": {},
-													"type": "monospace",
+													"type": "q",
 													"start": 27
 												}
 											]
@@ -6223,7 +6898,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Sequential Selection",
+											"value": "In Order Selection",
 											"styleList": []
 										}
 									}
@@ -6240,15 +6915,8 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Question Banks with sequential selection will pick items in order. The Question Bank below will choose one question sequentially. This means it'll choose the first question for the first attempt, the second question for the second attempt, and so on. Once all questions have been chosen the selection will start over at the beginning.",
-											"styleList": [
-												{
-													"end": 30,
-													"data": {},
-													"type": "monospace",
-													"start": 20
-												}
-											]
+											"value": "Question Banks with in order selection will pick items in order. The Question Bank below will choose one question sequentially. This means it'll choose the first question for the first attempt, the second question for the second attempt, and so on. Once all questions have been chosen the selection will start over at the beginning.",
+											"styleList": []
 										}
 									}
 								]
@@ -6256,7 +6924,7 @@
 							"children": []
 						},
 						{
-							"id": "223ec6c7-32ac-40c4-b035-48bda0e10345",
+							"id": "091c9b06-54cd-463a-a637-1bb61bca1801",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
 								"choose": "1",
@@ -6429,14 +7097,7 @@
 										"data": {},
 										"text": {
 											"value": "Question Banks with random selection will pick questions completely randomly. Questions can appear in any order, and may or may not be re-selected across attempts.",
-											"styleList": [
-												{
-													"end": 26,
-													"data": {},
-													"type": "monospace",
-													"start": 20
-												}
-											]
+											"styleList": []
 										}
 									}
 								]
@@ -6444,7 +7105,7 @@
 							"children": []
 						},
 						{
-							"id": "7edd7e1b-3d7b-4db4-9c23-801e458ff22b",
+							"id": "67553f87-da63-4097-8d4d-27c3a586a17d",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
 								"choose": "1",
@@ -6599,7 +7260,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Random-Unseen Selection",
+											"value": "Random With No Repeats Selection",
 											"styleList": []
 										}
 									}
@@ -6616,19 +7277,13 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Question banks with random-unseen selection pick questions at random but prioritize selecting questions that have not been used in a previous attempt. On a student's first attempt, this is identical to random selection, but successive attempts will pick randomly from questions the student hasn't seen yet.",
+											"value": "Question banks with random, no repeats selection pick questions at random but prioritize selecting questions that have not been used in a previous attempt. On a student's first attempt, this is identical to random selection, but successive attempts will pick randomly from questions the student hasn't seen yet.",
 											"styleList": [
 												{
-													"end": 33,
+													"end": 213,
 													"data": {},
 													"type": "monospace",
-													"start": 20
-												},
-												{
-													"end": 208,
-													"data": {},
-													"type": "monospace",
-													"start": 202
+													"start": 207
 												}
 											]
 										}
@@ -6638,7 +7293,7 @@
 							"children": []
 						},
 						{
-							"id": "604f5934-5401-474f-b956-719a314ab590",
+							"id": "8ecba80a-7a73-46c7-b088-ddca1807c2c8",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
 								"choose": "1",
@@ -6787,8 +7442,7 @@
 						}
 					]
 				}
-			],
-			"metadata": {}
+			]
 		},
 		{
 			"id": "my-assessment",
@@ -6879,12 +7533,6 @@
 									"id": "2e1caa8e-560f-4e20-bc45-0bc0586476b2",
 									"type": "ObojoboDraft.Chunks.ActionButton",
 									"content": {
-										"actions": [
-											{
-												"type": "assessment:startAttempt",
-												"value": "{\"id\":\"my-assessment\"}"
-											}
-										],
 										"triggers": [
 											{
 												"type": "onClick",
@@ -6985,7 +7633,7 @@
 											"align": "left"
 										},
 										"text": {
-											"value": "The assessment consists of four required nodes (Assessment Settings, Launch Page, Question Bank, and Score Actions) and a single optional node (Rubric). ",
+											"value": "The assessment consists of four different sections:  the Launch Page, the Question Bank, the Score Actions, and the Rubric.  It also has some additional settings that can be accessed from the navigation menu",
 											"styleList": []
 										}
 									}
@@ -7020,7 +7668,7 @@
 											"align": "left"
 										},
 										"text": {
-											"value": "The first required node is the assessment settings, which holds the basic parameters for the assessment. This is displayed in a box at the top of the page, and it lists the number of attempts and the review type.",
+											"value": "Much like a normal page, Assessment settings can be accessed by clicking the circle with three dots that appears next to the Assessment title in the navigation menu.  Assessments have two extra settings that pages do not have: the number of attempts and the review type.",
 											"styleList": []
 										}
 									}
@@ -7061,42 +7709,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "The review type describes how answers will be displayed after an attempt has ended.",
-											"styleList": []
-										}
-									},
-									{
-										"data": {},
-										"text": {
-											"value": "A value of never means that after every attempt, the student will only be able to see if an answered question is incorrect.",
-											"styleList": [
-												{
-													"end": 16,
-													"data": {},
-													"type": "monospace",
-													"start": 11
-												}
-											]
-										}
-									},
-									{
-										"data": {},
-										"text": {
-											"value": "A value of always means that the student will see both incorrect responses and the correct answers after every attempt.",
-											"styleList": [
-												{
-													"end": 17,
-													"data": {},
-													"type": "monospace",
-													"start": 11
-												}
-											]
-										}
-									},
-									{
-										"data": {},
-										"text": {
-											"value": "A value of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.",
+											"value": "The review type describes how answers will be displayed after an attempt has ended.  You can allow students to always see the correct answers, to see the correct answers only after their last attempt, or to never be allowed to see the correct answers.  Even when the student cannot see which answer was the correct one, they will still be able to see which questions they got correct and which they got incorrect.",
 											"styleList": []
 										}
 									}
@@ -7149,15 +7762,8 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Somewhere on the launch page, there should be an Action Button that executes the assessment:attemptStart action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:",
-											"styleList": [
-												{
-													"end": 104,
-													"data": {},
-													"type": "monospace",
-													"start": 81
-												}
-											]
+											"value": "Somewhere on the launch page, there should be an Action Button that executes the Start an attempt for \"assessment-id\" action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:",
+											"styleList": []
 										}
 									}
 								]
@@ -7168,12 +7774,6 @@
 							"id": "6f464ec8-f759-456e-a184-7f4c6a3d4a9e",
 							"type": "ObojoboDraft.Chunks.ActionButton",
 							"content": {
-								"actions": [
-									{
-										"type": "assessment:startAttempt",
-										"value": "{\"id\":\"my-assessment\"}"
-									}
-								],
 								"triggers": [
 									{
 										"type": "onClick",
@@ -7357,7 +7957,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The fifth node in the assessment is an optional Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.",
+											"value": "The fifth node in the assessment is a Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.",
 											"styleList": []
 										}
 									}
@@ -7504,7 +8104,7 @@
 													"start": 378
 												},
 												{
-													"end": 458,
+													"end": 455,
 													"data": {},
 													"type": "i",
 													"start": 445
@@ -7556,7 +8156,7 @@
 					]
 				},
 				{
-					"id": "28caa8c1-fc48-4c7b-a69b-39724eea964a",
+					"id": "fae3efd0-0ca0-44c0-ab4a-112c554b227b",
 					"type": "ObojoboDraft.Chunks.QuestionBank",
 					"content": {
 						"choose": "2",
@@ -7670,7 +8270,5 @@
 				}
 			]
 		}
-	],
-	"metadata": {},
-	"contentId": "2f59762d-d848-44ea-b1b7-3d23ba589612"
+	]
 }

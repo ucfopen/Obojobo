@@ -32,6 +32,9 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
+	// WARNING - it is not possible to have 2 different documents/modules
+	// loaded via OboModel at once. If you need to clear a previous
+	// OboModel Tree, call OboModel.clearAll()
 	static create(typeOrNameOrJson, attrs = {}) {
 		if (typeof typeOrNameOrJson === 'object') {
 			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
@@ -60,6 +63,10 @@ class OboModel extends Backbone.Model {
 		attrs.type = typeOrNameOrJson
 
 		return new OboModel(attrs, item.adapter)
+	}
+
+	static clearAll() {
+		OboModel.models = {}
 	}
 
 	constructor(attrs, adapter = {}) {
@@ -437,8 +444,6 @@ class OboModel extends Backbone.Model {
 	}
 }
 
-OboModel.models = {}
-
 OboModel.getRoot = function() {
 	for (const id in OboModel.models) {
 		return OboModel.models[id].getRoot()
@@ -446,6 +451,8 @@ OboModel.getRoot = function() {
 
 	return null
 }
+
+OboModel.clearAll() // initialize models object
 
 class OboModelCollection extends Backbone.Collection {}
 

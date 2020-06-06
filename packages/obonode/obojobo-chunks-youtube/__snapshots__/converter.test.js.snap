@@ -2,14 +2,16 @@
 
 exports[`YouTube Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-      "videoId": "mock-video-id",
+  "children": Array [
+    Object {
+      "text": "",
     },
+  ],
+  "content": Object {
+    "triggers": "mock-triggers",
+    "videoId": "mock-video-id",
   },
-  "key": "mockKey",
-  "object": "block",
+  "id": "mockKey",
   "type": "mockType",
 }
 `;

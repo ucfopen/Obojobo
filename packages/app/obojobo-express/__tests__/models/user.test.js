@@ -256,8 +256,6 @@ describe('user model', () => {
 		Array [
 		  Object {
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
-		    "createdAt": "mockNowDate",
-		    "email": "e@m.com",
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
@@ -266,8 +264,6 @@ describe('user model', () => {
 		  },
 		  Object {
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
-		    "createdAt": "mockNowDate",
-		    "email": "e@m.com",
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
@@ -294,8 +290,6 @@ describe('user model', () => {
 		Array [
 		  Object {
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
-		    "createdAt": "mockNowDate",
-		    "email": "e@m.com",
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",
@@ -304,8 +298,6 @@ describe('user model', () => {
 		  },
 		  Object {
 		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
-		    "createdAt": "mockNowDate",
-		    "email": "e@m.com",
 		    "firstName": "Roger",
 		    "id": null,
 		    "lastName": "Wilco",

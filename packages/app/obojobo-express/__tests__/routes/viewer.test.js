@@ -44,6 +44,11 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
+	res.render = jest
+		.fn()
+		.mockImplementation((template, message) =>
+			res.send(`mock template rendered: ${template} with message: ${message}`)
+		)
 	next()
 })
 
@@ -117,7 +122,7 @@ describe('viewer route', () => {
 	})
 
 	test('launch visit requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 		mockCurrentDocument = null
 
 		return request(app)
@@ -125,8 +130,7 @@ describe('viewer route', () => {
 			.type('application/x-www-form-urlencoded')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -256,15 +260,14 @@ describe('viewer route', () => {
 	})
 
 	test('view visit requires a current document', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		mockCurrentDocument = null
 		return request(app)
 			.get('/' + validUUID() + '/visit/' + validUUID())
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -318,7 +321,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Obojobo Next Document Viewer')
+				expect(response.text).toBe('mock template rendered: viewer with message: [object Object]')
 			})
 	})
 

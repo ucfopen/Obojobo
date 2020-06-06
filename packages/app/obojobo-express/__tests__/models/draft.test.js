@@ -195,6 +195,17 @@ describe('Draft Model', () => {
 		expect(duplicate).toBe(null)
 	})
 
+	test('findDuplicateIds hanldes null children', () => {
+		const testTree = {
+			id: 'test-id',
+			children: null
+		}
+
+		const duplicate = DraftModel.findDuplicateIds(testTree)
+
+		expect(duplicate).toBe(null)
+	})
+
 	test('findDuplicateIds parses a single level draft with no ids', () => {
 		const testTree = {
 			children: []

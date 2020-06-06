@@ -12,6 +12,7 @@ const {
 	requireCurrentDocument
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
+const searchForUserByString = require('../services/search')
 const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
 // List public drafts
@@ -44,10 +45,13 @@ router
 			res.success([])
 			return
 		}
-
-		return UserModel.searchForUsers(req.query.q)
-			.then(res.success)
-			.catch(res.unexpected)
+		try {
+			const users = await searchForUserByString(req.query.q)
+			const filteredUsers = users.map(u => u.toJSON())
+			res.success(filteredUsers)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 
 // Copy a draft to the current user
@@ -67,7 +71,10 @@ router
 			}
 
 			const oldDraft = await Draft.fetchById(draftId)
-			const newDraft = await Draft.createWithContent(userId, oldDraft.root.toObject())
+			const draftObject = oldDraft.root.toObject()
+			const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
+			draftObject.content.title = newTitle
+			const newDraft = await Draft.createWithContent(userId, draftObject)
 
 			const draftMetadata = new DraftsMetadata({
 				draft_id: newDraft.id,
@@ -92,7 +99,7 @@ router
 				})
 			])
 
-			res.success()
+			res.success({ draftId: newDraft.id })
 		} catch (e) {
 			res.unexpected(e)
 		}

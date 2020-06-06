@@ -14,7 +14,7 @@
 
 			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
 		%>
-		<%- include ../../../obojobo-express/server/views/partials/head %>
+		<%- include('../../../obojobo-express/server/views/partials/head', {title, css, fonts}) %>
 	</head>
 	<body>
 		<section id="section-options">
@@ -172,15 +172,15 @@
 			</p>
 		</div>
 
-		<form id="submit-form" action="" method="post" encType="application/x-www-form-urlencoded">
+		<form id="submit-form" action="<%- returnUrl %>" method="post" encType="application/x-www-form-urlencoded">
 			<input type="hidden" name="lti_message_type" value="ContentItemSelection" />
 			<input type="hidden" name="lti_version" value="LTI-1p0" />
 			<input type="hidden" name="content_items" value="" />
+			<input type="hidden" name="data" value="<%= opaqueData %>" />
 		</form>
 
 
 		<script type="text/javascript">
-			window.__returnUrl = '<%= returnUrl %>';
 			window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 		</script>
 

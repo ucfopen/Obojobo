@@ -40,7 +40,21 @@ const AssessmentAPI = {
 		}).then(API.processJsonResults)
 	},
 	reviewAttempt(attemptIds) {
-		return API.post(`/api/assessments/attempt/review`, { attemptIds }).then(API.processJsonResults)
+		return API.post(`/api/assessments/attempt/review`, { attemptIds })
+			.then(API.processJsonResults)
+			.then(attemptArray => {
+				// quick fix - converts arrays sent by the api to expected object hash with ids as keys
+				const attemptHash = {}
+				attemptArray.forEach(attempt => {
+					const questionHash = {}
+					attempt.questions.forEach(question => {
+						questionHash[question.id] = question
+					})
+					attemptHash[attempt.attemptId] = questionHash
+				})
+
+				return attemptHash
+			})
 	}
 }
 

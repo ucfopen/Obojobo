@@ -295,7 +295,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -461,7 +461,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -624,7 +624,7 @@ exports[`PostTest PostTest component with review 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -780,7 +780,7 @@ exports[`PostTest PostTest component with review 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -943,7 +943,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1099,7 +1099,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1262,7 +1262,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1418,7 +1418,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1581,7 +1581,7 @@ exports[`PostTest PostTest component with review with imported score 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1737,7 +1737,7 @@ exports[`PostTest PostTest component with review with imported score 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1890,7 +1890,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -2046,7 +2046,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text align-undefined"
+                  className="text"
                   data-group-index="0"
                   data-indent={0}
                 >

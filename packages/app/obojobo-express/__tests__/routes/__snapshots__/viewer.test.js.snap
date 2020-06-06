@@ -31,6 +31,7 @@ Array [
     },
     "resourceLinkId": 3,
     "userId": 4,
+    "visitId": "mocked-visit-id",
   },
 ]
 `;
@@ -66,6 +67,7 @@ Array [
     },
     "resourceLinkId": 3,
     "userId": 4,
+    "visitId": "mocked-visit-id",
   },
 ]
 `;

@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-module-selector",
 	"license": "AGPL-3.0-only",
-	"version": "7.1.5",
+	"version": "9.1.0-alpha-2",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo package responsible for selecting which module you use in a course.",
@@ -22,14 +22,13 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"dependencies": {
 		"express": "~4.17.1",
-		"obojobo-express": "^7.1.5",
-		"obojobo-lib-utils": "^7.1.5",
-		"obojobo-repository": "^7.1.5"
+		"obojobo-express": "^9.1.0-alpha-2",
+		"obojobo-lib-utils": "^9.1.0-alpha-2",
+		"obojobo-repository": "^9.1.0-alpha-2"
 	}
 }

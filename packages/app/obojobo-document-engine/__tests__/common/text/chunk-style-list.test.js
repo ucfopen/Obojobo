@@ -302,6 +302,46 @@ describe('ChunkStyleList', function() {
 		])
 	})
 
+	test('normalizes unexpected styles', () => {
+		styleList = new ChunkStyleList()
+
+		styleList.add(new StyleRange(0, 5, 'b', {}))
+		styleList.add(new StyleRange(0, 5, 'extra', {}))
+		styleList.add(new StyleRange(0, 5, 'u', { prop: 'val1' }))
+		styleList.add(new StyleRange(5, 10, 'u', {}))
+		styleList.add(new StyleRange(5, 10, 'extra', {}))
+		styleList.normalize()
+
+		expect(styleList.getExportedObject()).toEqual([
+			{
+				start: 0,
+				end: 5,
+				type: 'b',
+				data: {}
+			},
+			{
+				start: 0,
+				end: 10,
+				type: 'extra',
+				data: {}
+			},
+			{
+				start: 5,
+				end: 10,
+				type: 'u',
+				data: {}
+			},
+			{
+				start: 0,
+				end: 5,
+				type: 'u',
+				data: {
+					prop: 'val1'
+				}
+			}
+		])
+	})
+
 	test('getStylesInRange returns styles completely within a given range', () => {
 		const styles = styleList.getStylesInRange(5, 15)
 

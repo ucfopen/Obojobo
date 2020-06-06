@@ -2,43 +2,55 @@
 
 exports[`Text editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "data": Object {
+      "children": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
+      "content": Object {
         "align": undefined,
+        "hangingIndent": undefined,
         "indent": 1,
       },
-      "nodes": Array [
-        Object {
-          "leaves": undefined,
-          "object": "text",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Text.TextLine",
+      "subtype": "ObojoboDraft.Chunks.Text.TextLine",
+      "type": "ObojoboDraft.Chunks.Text",
     },
     Object {
-      "data": Object {
-        "align": "left",
-        "indent": 0,
-      },
-      "nodes": Array [
+      "children": Array [
         Object {
-          "leaves": undefined,
-          "object": "text",
+          "text": "mockText2",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Text.TextLine",
+      "content": Object {
+        "align": "left",
+        "hangingIndent": false,
+        "indent": 0,
+      },
+      "subtype": "ObojoboDraft.Chunks.Text.TextLine",
+      "type": "ObojoboDraft.Chunks.Text",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "indent": 1,
+        },
+        "text": Object {
+          "value": "mockText",
+        },
+      },
+      Object {
+        "text": Object {
+          "value": "mockText2",
+        },
+      },
+    ],
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -49,12 +61,16 @@ Object {
   "content": Object {
     "textGroup": Array [
       Object {
-        "data": Object {
-          "align": Object {},
-          "indent": Object {},
-        },
+        "data": Object {},
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
@@ -71,12 +87,16 @@ Object {
   "content": Object {
     "textGroup": Array [
       Object {
-        "data": Object {
-          "align": Object {},
-          "indent": Object {},
-        },
+        "data": Object {},
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },

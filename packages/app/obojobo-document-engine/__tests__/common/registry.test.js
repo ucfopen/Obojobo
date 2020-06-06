@@ -27,8 +27,9 @@ describe('Registry', () => {
 			  "plugins": null,
 			  "slateToObo": null,
 			  "supportsChildren": false,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -58,8 +59,9 @@ describe('Registry', () => {
 			  "plugins": null,
 			  "slateToObo": null,
 			  "supportsChildren": false,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -125,8 +127,9 @@ describe('Registry', () => {
 			  "plugins": "mockPlugins",
 			  "slateToObo": "mockSlateToObo",
 			  "supportsChildren": true,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -170,8 +173,9 @@ describe('Registry', () => {
 			  "plugins": "mockPlugins",
 			  "slateToObo": "mockSlateToObo",
 			  "supportsChildren": true,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -211,8 +215,9 @@ describe('Registry', () => {
 			  "plugins": "mockPlugins",
 			  "slateToObo": null,
 			  "supportsChildren": true,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -251,8 +256,9 @@ describe('Registry', () => {
 			  "plugins": "mockPlugins",
 			  "slateToObo": null,
 			  "supportsChildren": false,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -290,8 +296,9 @@ describe('Registry', () => {
 			  "plugins": "mockPlugins",
 			  "slateToObo": null,
 			  "supportsChildren": false,
+			  "switchType": Object {},
 			  "templateObject": "",
-			  "type": null,
+			  "type": "mockType",
 			  "variables": Object {},
 			}
 		`)
@@ -463,5 +470,24 @@ describe('Registry', () => {
 		})
 
 		expect(Registry.insertableItems.length).toEqual(1)
+	})
+
+	test('contentTypes processes the items the first time its called', () => {
+		Registry.registerModel('content', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isContent: true
+		})
+		expect(Registry.contentTypes.length).toEqual(1)
+
+		Registry.registerModel('content', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isContent: true
+		})
+
+		expect(Registry.contentTypes.length).toEqual(1)
 	})
 })

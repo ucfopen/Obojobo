@@ -17,6 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
@@ -140,7 +141,8 @@ export default class ViewerApp extends React.Component {
 
 				return ViewerAPI.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel }) => {
+			.then(injectKatexIfNeeded)
+			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(

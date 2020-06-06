@@ -12,8 +12,10 @@ const {
 	requireCurrentDocument,
 	requireCurrentVisit,
 	requireAttemptId,
+	requireMultipleAttemptIds,
 	requireCurrentUser,
-	requireAssessmentId
+	requireAssessmentId,
+	checkValidationRules
 } = require('obojobo-express/server/express_validators')
 
 // load the server event listeners
@@ -21,7 +23,13 @@ require('./events')
 
 router
 	.route('/api/lti/send-assessment-score')
-	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
+	.post([
+		requireCurrentVisit,
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.post(async (req, res) => {
 		try {
 			logger.info(
@@ -32,7 +40,8 @@ router
 				req.currentDocument,
 				req.body.assessmentId,
 				req.currentVisit.is_preview,
-				req.currentVisit.resource_link_id
+				req.currentVisit.resource_link_id,
+				req.currentVisit.id
 			)
 
 			res.success({
@@ -50,12 +59,24 @@ router
 // @TODO: break startAttempt out so it doesn't need req, res
 router
 	.route('/api/assessments/attempt/start')
-	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument, requireAssessmentId])
+	.post([
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireCurrentDocument,
+		requireAssessmentId,
+		checkValidationRules
+	])
 	.post(startAttempt)
 
 router
 	.route('/api/assessments/attempt/:attemptId/resume')
-	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAttemptId])
+	.post([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireCurrentVisit,
+		requireAttemptId,
+		checkValidationRules
+	])
 	.post(async (req, res) => {
 		try {
 			const attempt = await resumeAttempt(
@@ -75,7 +96,13 @@ router
 
 router
 	.route('/api/assessments/attempt/:attemptId/end')
-	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAttemptId])
+	.post([
+		requireCurrentVisit,
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireAttemptId,
+		checkValidationRules
+	])
 	.post((req, res) => {
 		return endAttempt(req, res)
 			.then(res.success)
@@ -84,14 +111,19 @@ router
 			)
 	})
 
-// @TODO make sure i own
-// seems like attemptid should be in the url and swithc to get?
+// @TODO: seems like attemptid should be in the url and switch to GET?
 router
 	.route('/api/assessments/attempt/review')
-	.post([requireCurrentUser, requireAttemptId])
+	.post([requireCurrentUser, requireMultipleAttemptIds, checkValidationRules])
 	.post(async (req, res) => {
 		const questionModels = await attemptReview(req.body.attemptIds)
-		res.send(questionModels)
+		// convert key based objects to arrays for use in the api
+		const attemptsArray = []
+		for (const [attemptId, questionsMap] of Object.entries(questionModels)) {
+			const questions = Object.values(questionsMap)
+			attemptsArray.push({ attemptId, questions })
+		}
+		res.send(attemptsArray)
 	})
 
 router
@@ -100,15 +132,16 @@ router
 	.post(async (req, res) => {
 		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
-		return AssessmentModel.deletePreviewAttemptsAndScores(
-			req.currentUser.id,
-			req.currentDocument.draftId,
-			req.currentVisit.resource_link_id
-		)
-			.then(() => res.success())
-			.catch(error => {
-				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
-			})
+		try {
+			await AssessmentModel.deletePreviewAttemptsAndScores(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentVisit.resource_link_id
+			)
+			res.success()
+		} catch (error) {
+			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
+		}
 	})
 
 router

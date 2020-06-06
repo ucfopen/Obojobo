@@ -21,7 +21,12 @@ const showModuleSelector = (req, res) => {
 			throw 'Unknown return url for assignment selection'
 		}
 
-		res.render('module-selector', { returnUrl, isAssignment, allowImportDefault })
+		let opaqueData = req.lti.body.data || ''
+		if (opaqueData) {
+			opaqueData = opaqueData.replace(/"/gi, '\\"')
+		}
+
+		res.render('module-selector', { returnUrl, isAssignment, allowImportDefault, opaqueData })
 	} catch (error) {
 		res.unexpected(error)
 	}

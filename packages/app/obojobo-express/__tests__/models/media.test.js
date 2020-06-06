@@ -357,6 +357,58 @@ describe('media model', () => {
 		})
 	})
 
+	test('fetchByUserId throws error for invalid argument', () => {
+		expect.assertions(1)
+
+		const mockStart = null
+		const mockCount = null
+		const testInvalidArgument = () => {
+			MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)
+		}
+
+		expect(testInvalidArgument).toThrowError('Invalid argument.')
+	})
+
+	test('fetchByUserId correctly catches errors', async () => {
+		expect.assertions(1)
+
+		const mockStart = 0
+		const mockCount = 1
+		db.manyOrNone.mockRejectedValueOnce(new Error('Mock error'))
+
+		await expect(MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)).rejects.toMatchObject({
+			message: 'Mock error'
+		})
+	})
+
+	test('fetchByUserId retrieves correct data', async () => {
+		expect.hasAssertions()
+
+		const mockStart = 0
+		const mockCount = 1
+		const mockResults = []
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(0)
+			expect(results.hasMore).toEqual(false)
+		})
+	})
+
+	test('fetchByUserId retrieves results', async () => {
+		expect.hasAssertions()
+
+		const mockStart = 0
+		const mockCount = 1
+		const mockResults = ['mock-media-item', 'mock-media-item-2']
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(1)
+			expect(results.hasMore).toEqual(true)
+		})
+	})
+
 	test('saveImageAtNewSize calls MediaModel with correct arguments', async () => {
 		const mockNewMediaRecord = {
 			media_id: 'MEDIA_UUID',

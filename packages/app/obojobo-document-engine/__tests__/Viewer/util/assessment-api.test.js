@@ -62,12 +62,24 @@ describe('assessment-api', () => {
 	test('reviewAttempt calls fetch', () => {
 		expect.hasAssertions()
 
+		API.processJsonResults.mockResolvedValueOnce([
+			{ attemptId: 'a-id', questions: [{ id: 'q-id' }, { id: 'q-id2' }] }
+		])
 		return AssessmentAPI.reviewAttempt('mockAttemptIds', {}).then(result => {
 			expect(API.post).toHaveBeenCalledWith('/api/assessments/attempt/review', {
 				attemptIds: 'mockAttemptIds'
 			})
 			expect(API.processJsonResults).toHaveBeenCalled()
-			expect(result).toEqual(mockJsonResult)
+			expect(result).toEqual({
+				'a-id': {
+					'q-id': {
+						id: 'q-id'
+					},
+					'q-id2': {
+						id: 'q-id2'
+					}
+				}
+			})
 		})
 	})
 
@@ -114,11 +126,12 @@ describe('assessment-api', () => {
 			visitId: 'mockVisitId'
 		}
 
+		API.processJsonResults.mockResolvedValueOnce([])
 		const result = await AssessmentAPI.getAttemptHistory(args)
 		expect(API.get).toHaveBeenCalledWith(
 			'/api/assessments/mockDraftId/attempts?visitId=mockVisitId'
 		)
 		expect(API.processJsonResults).toHaveBeenCalled()
-		expect(result).toEqual(mockJsonResult)
+		expect(result).toEqual([])
 	})
 })

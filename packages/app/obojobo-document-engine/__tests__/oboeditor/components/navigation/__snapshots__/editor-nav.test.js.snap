@@ -42,10 +42,13 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
       </span>
       <div
         className="visual-editor--more-info "
+        onKeyDown={[Function]}
       >
         <button
+          aria-label="Toggle More Info Box"
           className="more-info-button "
           onClick={[Function]}
+          tabIndex={0}
         >
           <svg
             fill="none"

@@ -1,7 +1,13 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { Transforms } from 'slate'
+import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
 import MCAssessment from './editor-registration'
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const MCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+
+jest.mock('./converter', () => ({}))
 
 describe('MCAssessment editor', () => {
 	test('plugins.renderNode renders a MCAssessment when passed', () => {
@@ -20,82 +26,128 @@ describe('MCAssessment editor', () => {
 		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			node: {
-				attributes: { dummy: 'dummyData' },
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
+	test('normalizeNode calls next if the node is not a MCAssessment node', () => {
 		const next = jest.fn()
+		MCAssessment.plugins.normalizeNode([{}, []], {}, next)
 
-		expect(MCAssessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid first child in MCAssessment', () => {
+	test('normalizeNode on MCAssessment calls next if all MCAssessment children are valid', () => {
+		const next = jest.fn()
 		const editor = {
-			wrapBlockByKey: jest.fn()
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: MCASSESSMENT_NODE,
+							content: {},
+							children: [
+								{
+									type: MCHOICE_NODE,
+									content: { indent: 1 },
+									children: [{ text: 'mockCode', b: true }]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: {},
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid second child in MCAssessment', () => {
+	test('normalizeNode on MCAssessment calls Transforms on invalid Element children', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
 		const editor = {
-			wrapBlockByKey: jest.fn()
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: MCASSESSMENT_NODE,
+							content: {},
+							children: [
+								{
+									type: 'improperNode',
+									content: { indent: 1 },
+									children: [{ text: 'mockCode', b: true }]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: {},
-			child: { key: 'mockKey' },
-			index: 1
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds required first child in MCAssessment', () => {
+	test('normalizeNode on MCAssessment calls Transforms on invalid Text children', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
 		const editor = {
-			insertNodeByKey: jest.fn()
+			children: [
+				{
+					id: 'mockKey',
+					type: QUESTION_NODE,
+					content: {},
+					children: [
+						{
+							id: 'mockKey',
+							type: MCASSESSMENT_NODE,
+							content: {},
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: {},
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds required first child in MCAssessment', () => {
+	test('normalizeNode on MCAssessment calls Transforms with invalid parent', () => {
+		const next = jest.fn()
 		const editor = {
-			insertNodeByKey: jest.fn()
+			children: [
+				{
+					id: 'mockKey',
+					type: MCASSESSMENT_NODE,
+					content: {},
+					children: [
+						{
+							type: MCHOICE_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
 		}
-
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: {},
-			child: null,
-			index: 1
+		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
+			match(editor.children[0])
 		})
+		MCAssessment.plugins.normalizeNode([editor.children[0], [0]], editor, next)
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})
 })

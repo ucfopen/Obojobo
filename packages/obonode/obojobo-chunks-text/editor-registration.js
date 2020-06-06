@@ -1,118 +1,93 @@
-import { getEventTransfer } from 'slate-react'
-import { Block } from 'slate'
+import { Editor, Node, Element, Transforms } from 'slate'
 
 import Converter from './converter'
 import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import Line from './components/line/editor-component'
-import Node from './editor-component'
+import EditorComponent from './editor-component'
 import React from 'react'
-import Schema from './schema'
+
+import normalizeNode from './changes/normalize-node'
 import decreaseIndent from './changes/decrease-indent'
 import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
-import insertTab from './changes/insert-tab'
+import indentOrTab from './changes/indent-or-tab'
+import toggleHangingIndent from './changes/toggle-hanging-indent'
 import splitParent from './changes/split-parent'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const isType = editor => {
-	return editor.value.blocks.some(block => {
-		return !!editor.value.document.getClosest(block.key, parent => {
-			return parent.type === TEXT_NODE
-		})
-	})
-}
-
 const plugins = {
-	onPaste(event, editor, next) {
-		const isText = isType(editor)
-		const transfer = getEventTransfer(event)
-		if (transfer.type === 'fragment' || !isText) return next()
+	// Editor Plugins - These get attached to the editor object and override it's default functions
+	// They may affect multiple nodes simultaneously
+	insertData(data, editor, next) {
+		// Insert Slate fragments normally
+		if (data.types.includes('application/x-slate-fragment')) return next(data)
 
-		const saveBlocks = editor.value.blocks
+		// If the node that we will be inserting into is not a Text node use the regular logic
+		const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
+		if (first[0].type !== TEXT_NODE) return next(data)
 
-		editor
-			.createTextLinesFromText(transfer.text.split('\n'))
-			.forEach(line => editor.insertBlock(line))
+		// When inserting plain text into a Text node insert all lines as code
+		const plainText = data.getData('text/plain')
+		const fragment = plainText.split('\n').map(text => ({
+			type: TEXT_NODE,
+			subtype: TEXT_LINE_NODE,
+			content: { indent: 0, align: 'left' },
+			children: [{ text }]
+		}))
 
-		saveBlocks.forEach(node => {
-			if (node.text === '') {
-				editor.removeNodeByKey(node.key)
-			}
-		})
+		Transforms.insertFragment(editor, fragment)
 	},
-	onKeyDown(event, editor, next) {
-		const isText = isType(editor)
-		if (!isText) return next()
+	normalizeNode,
+	// Editable Plugins - These are used by the PageEditor component to augment React functions
+	// They affect individual nodes independently of one another
+	decorate([node, path], editor) {
+		// Define a placeholder decoration
+		if (Element.isElement(node) && !node.subtype && Node.string(node) === '') {
+			const point = Editor.start(editor, path)
 
-		const last = editor.value.endBlock
+			return [
+				{
+					placeholder: 'Type your text here',
+					anchor: point,
+					focus: point
+				}
+			]
+		}
 
+		return []
+	},
+	onKeyDown(entry, editor, event) {
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteEmptyParent(event, editor, next, TEXT_NODE)
+				return KeyDownUtil.deleteEmptyParent(event, editor, entry, event.key === 'Delete')
 
 			case 'Enter':
-				// Single Enter
-				if (last.text !== '') return next()
-
-				// Double Enter
-				return splitParent(event, editor, next)
+				return splitParent(entry, editor, event)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(event, editor, next)
+				if (event.shiftKey) return decreaseIndent(entry, editor, event)
 
 				// TAB+ALT
-				if (event.altKey) return increaseIndent(event, editor, next)
+				if (event.altKey) return increaseIndent(entry, editor, event)
 
 				// TAB
-				return insertTab(event, editor, next)
+				return indentOrTab(entry, editor, event)
 
-			default:
-				return next()
+			case 'h':
+				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
 		}
 	},
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case TEXT_NODE:
-				return <Node {...props} {...props.attributes} />
+	renderNode(props) {
+		switch (props.element.subtype) {
 			case TEXT_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
 			default:
-				return next()
-		}
-	},
-	renderPlaceholder(props, editor, next) {
-		const { node } = props
-		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return next()
-
-		return (
-			<span
-				className={'placeholder align-' + node.data.get('align')}
-				contentEditable={false}
-				data-placeholder="Type Your Text Here"
-			/>
-		)
-	},
-	schema: Schema,
-	queries: {
-		createTextLinesFromText(editor, textList) {
-			return textList.map(textLine =>
-				Block.create({
-					object: 'block',
-					type: TEXT_LINE_NODE,
-					data: {},
-					nodes: [
-						{
-							object: 'text',
-							leaves: [{ object: 'leaf', text: textLine, marks: [] }]
-						}
-					]
-				})
-			)
+				return <EditorComponent {...props} {...props.attributes} />
 		}
 	}
 }
@@ -122,6 +97,7 @@ const Text = {
 	menuLabel: 'Text',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode

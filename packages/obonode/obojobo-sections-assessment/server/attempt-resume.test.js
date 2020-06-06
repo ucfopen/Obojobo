@@ -83,7 +83,7 @@ describe('Resume Attempt Route', () => {
 			contentId: 'mockContentId',
 			getChildNodeById: jest.fn().mockReturnValue(mockAssessmentNode)
 		}
-		const mockCurrentVisit = { is_preview: 'mockIsPreview' }
+		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
 		AssessmentModel.fetchAttemptByID.mockResolvedValue(mockAttempt)
 
@@ -199,7 +199,7 @@ describe('Resume Attempt Route', () => {
 			contentId: 'mockContentId',
 			getChildNodeById: jest.fn().mockReturnValue('mock-assessment-node')
 		}
-		const mockCurrentVisit = { is_preview: 'mockIsPreview' }
+		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
 		AssessmentModel.fetchAttemptByID.mockResolvedValue(mockAttempt)
 		// const mockAttempt = await AssessmentModel.getAttempt()
@@ -234,7 +234,7 @@ describe('Resume Attempt Route', () => {
 		  "caliperPayload": "mockCaliperPayload",
 		  "contentId": "mockContentId",
 		  "draftId": "mockDraftId",
-		  "eventVersion": "1.1.0",
+		  "eventVersion": "1.2.0",
 		  "ip": "mockRemoteAddress",
 		  "isPreview": "mockIsPreview",
 		  "metadata": Object {},
@@ -243,6 +243,7 @@ describe('Resume Attempt Route', () => {
 		    "attemptId": "mockAttemptId",
 		  },
 		  "userId": 1,
+		  "visitId": "mockVisitId",
 		}
 	`)
 	})

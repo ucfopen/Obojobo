@@ -30,13 +30,11 @@ describe('MCFeedback Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}

@@ -213,11 +213,14 @@ module.exports = app => {
 			accept_unsigned: 'false',
 			auto_create: 'true',
 			can_confirm: 'false',
-			content_item_return_url: `${baseUrl(req)}/lti/dev/return/resource_selection`,
+			content_item_return_url: `${baseUrl(
+				req
+			)}/lti/dev/return/resource_selection?test=this%20is%20a%20test`,
 			launch_presentation_css_url: 'https://example.fake/nope.css',
 			launch_presentation_locale: 'en-US',
 			lti_message_type: 'ContentItemSelectionRequest',
-			lti_version: 'LTI-1p0'
+			lti_version: 'LTI-1p0',
+			data: "this opaque 'data' should be sent back to the LMS!"
 		}
 		renderLtiLaunch(
 			{ ...ltiContext, ...person, ...ltiToolConsumer, ...params },
@@ -233,10 +236,12 @@ module.exports = app => {
 		res.set('Content-Type', 'text/html')
 		res.send(`<html><body><h1>Resource selected!</h1>
 			<ul>
+			<li>URL: ${req.originalUrl}</li>
 			<li>lti_message_type: ${req.body.lti_message_type}</li>
 			<li>Type: ${data['@graph'][0]['@type']}</li>
 			<li>URL: ${data['@graph'][0].url}</li>
 			<li>Title: ${data['@graph'][0].title}</li>
+			<li>Data: ${req.body.data}</li>
 			</ul>
 			<code>${req.body.content_items}</code>
 			</body></html>`)

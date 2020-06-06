@@ -93,16 +93,26 @@ describe('EditorAPI', () => {
 	})
 
 	test('createNewDraft fetches with the correct args', async () => {
-		const res = await EditorAPI.createNewDraft()
+		const res = await EditorAPI.createNewDraft('mock_content', 'mock_format')
 
-		expect(post).toHaveBeenCalledWith('/api/drafts/new')
-		expect(res).toBe(mockJsonResult)
+		expect(post).toHaveBeenCalledWith('/api/drafts/new', {
+			content: 'mock_content',
+			format: 'mock_format'
+		})
+		expect(res).toEqual(mockJsonResult)
 	})
 
 	test('deleteDraft fetches with the correct args', async () => {
 		const res = await EditorAPI.deleteDraft('draft-id')
 
 		expect(deleteMethod).toHaveBeenCalledWith('/api/drafts/draft-id')
+		expect(res).toBe(mockJsonResult)
+	})
+
+	test('copyDraft fetches with the correct args', async () => {
+		const res = await EditorAPI.copyDraft('draft-id', 'new-title')
+
+		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', { title: 'new-title' })
 		expect(res).toBe(mockJsonResult)
 	})
 })

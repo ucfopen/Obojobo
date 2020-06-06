@@ -155,12 +155,12 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
               >
-                6/5/18 at 4:28pm
+                6/05/18 at 4:28p.m.
               </time>
               <span
                 className="for-screen-reader-only"
               >
-                June 5th 2018 at 4:28pm
+                June 156th 2018 at 4:28p.m.
               </span>
             </div>
             <div>
@@ -377,12 +377,12 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
               >
-                6/5/18 at 4:28pm
+                6/05/18 at 4:28p.m.
               </time>
               <span
                 className="for-screen-reader-only"
               >
-                June 5th 2018 at 4:28pm
+                June 156th 2018 at 4:28p.m.
               </span>
             </div>
             <div>

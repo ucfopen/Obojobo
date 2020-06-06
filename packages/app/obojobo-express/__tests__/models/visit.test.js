@@ -9,6 +9,8 @@ const db = oboRequire('server/db')
 describe('Visit Model', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
+		db.taskIf = jest.fn()
+		db.taskIf.mockImplementation(cb => cb(db))
 	})
 
 	test('constructor builds expected values', () => {

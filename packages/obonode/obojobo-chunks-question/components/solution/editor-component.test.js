@@ -4,6 +4,14 @@ import renderer from 'react-test-renderer'
 
 import Solution from './editor-component'
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+
 describe('Solution Editor Node', () => {
 	test('Solution component', () => {
 		const component = renderer.create(<Solution />)
@@ -13,25 +21,10 @@ describe('Solution Editor Node', () => {
 	})
 
 	test('Solution component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<Solution
-				node={{
-					data: {
-						get: () => null
-					}
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
+		const component = mount(<Solution element={{ content: {} }} />)
 
 		component.find('button').simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 })

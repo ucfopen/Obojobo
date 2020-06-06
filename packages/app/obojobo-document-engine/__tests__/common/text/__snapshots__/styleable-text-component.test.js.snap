@@ -9,7 +9,7 @@ exports[`StyleableText Component StyleableText component 1`] = `
 exports[`StyleableText Component StyleableText component a 1`] = `
 <span>
   <a
-    href="website.com"
+    href="//website.com"
     target="_blank"
   />
 </span>
@@ -18,6 +18,15 @@ exports[`StyleableText Component StyleableText component a 1`] = `
 exports[`StyleableText Component StyleableText component a with no attributes 1`] = `
 <span>
   <a />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component a with proper link 1`] = `
+<span>
+  <a
+    href="http://website.com"
+    target="_blank"
+  />
 </span>
 `;
 

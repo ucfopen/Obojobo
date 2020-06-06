@@ -86,6 +86,7 @@ body {
 	> .draft-title {
 		display: block;
 		font-weight: bold;
+		word-break: break-word;
 	}
 
 	> .throbber {
@@ -213,6 +214,8 @@ body {
 	}
 
 	.text {
+		display: block;
+
 		&.align-left {
 			text-align: left;
 		}

@@ -1,4 +1,4 @@
-const OboModel = require.requireActual('../src/scripts/common/models/obo-model').default
+const OboModel = jest.requireActual('../src/scripts/common/models/obo-model').default
 
 let localId = null
 
