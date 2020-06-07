@@ -21,14 +21,16 @@ const PreAttemptImportScoreDialog = ({ highestScore, onChoice }) => {
 					}
 				}
 			]}
-			title="Import Previous Score?"
+			title="Import Score or Start Attempt"
 			width="300"
 		>
 			<p>
-				You have previously completed this module and your instructor is allowing you to import your
-				high score of <strong>{highestScore}%</strong>
+				You previously completed this module in another course. Your highest score can be imported
+				for this assignment.
 			</p>
-			<p>Would you like to use that score now or ignore it and begin the Assessment?</p>
+			<p>
+				Import <b>{highestScore}%</b> for your final score <i>or</i> attempt the assessment?
+			</p>
 		</Dialog>
 	)
 }

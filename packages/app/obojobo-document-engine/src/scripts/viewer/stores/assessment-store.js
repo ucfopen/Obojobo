@@ -14,6 +14,7 @@ import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-pro
 import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import FinalWarningPreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/final-warning-pre-attempt-import-score-dialog'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -83,7 +84,7 @@ class AssessmentStore extends Store {
 		if (unfinishedAttempt) {
 			this.displayUnfinishedAttemptNotice(unfinishedAttempt.unfinishedAttemptId)
 		} else if (ext.importableScore && this.state.importHasBeenUsed !== true) {
-			this.displayScoreImportNotice(ext.importableScore)
+			this.displayScoreImportNotice()
 		}
 	}
 
@@ -274,41 +275,41 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	startAttemptWithImportScoreOption(assessmentId) {
+	async startAttemptWithImportScoreOption(assessmentId) {
 		// import has been used, do nothing
 		if (this.state.importHasBeenUsed === true) {
 			this.displayImportAlreadyUsed()
 			return Promise.resolve()
 		}
 
-		return new Promise(resolve => {
-			// ask the user to import
-			if (this.state.importableScore && this.state.importableScore.assessmentId === assessmentId) {
-				const importOrNotCallback = shouldImport => {
-					ModalUtil.hide()
-					resolve(shouldImport)
-				}
+		let shouldImport = false
 
-				this.displayPreAttemptImportScoreNotice(
-					this.state.importableScore.highestScore,
-					importOrNotCallback
-				)
-			} else {
-				// no importable score, next
-				resolve(false)
-			}
-		})
-			.then(shouldImport => {
-				const { draftId, visitId } = NavStore.getState()
-				const apiCall = shouldImport
-					? this.startImportScoresWithAPICall
-					: this.startAttemptWithAPICall
-				return apiCall.call(this, draftId, visitId, assessmentId)
-			})
-			.catch(error => {
-				console.error(error) /* eslint-disable-line no-console */
-				ErrorUtil.errorResponse(error)
-			})
+		if (this.state.importableScore && this.state.importableScore.assessmentId === assessmentId) {
+			// import high score or start an attempt (true = import, false = new attempt)
+			shouldImport = await this.displayPreAttemptImportScoreNotice(
+				this.state.importableScore.highestScore
+			)
+
+			ModalUtil.hide()
+
+			// confirm or cancel
+			const shouldContinue = await this.displayFinalChoiceNotice(
+				this.state.importableScore.highestScore,
+				shouldImport
+			)
+
+			ModalUtil.hide()
+
+			// Cancel?
+			if (!shouldContinue) return
+		}
+
+		const { draftId, visitId } = NavStore.getState()
+		const apiCall = shouldImport
+			? this.startImportScoresWithAPICall.bind(this)
+			: this.startAttemptWithAPICall.bind(this)
+
+		return await apiCall(draftId, visitId, assessmentId)
 	}
 
 	updateStateAfterStartAttempt(startAttemptResp) {
@@ -473,10 +474,28 @@ class AssessmentStore extends Store {
 		return (this.state = newState)
 	}
 
-	displayPreAttemptImportScoreNotice(highestScore, importOrNot) {
-		ModalUtil.show(
-			<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={importOrNot} />
-		)
+	displayPreAttemptImportScoreNotice(highestScore) {
+		return new Promise(resolve => {
+			const shouldImport = choice => resolve(choice)
+
+			ModalUtil.show(
+				<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
+			)
+		})
+	}
+
+	displayFinalChoiceNotice(highestScore, isImporting) {
+		return new Promise(resolve => {
+			const shouldContinueFn = choice => resolve(choice)
+
+			ModalUtil.show(
+				<FinalWarningPreAttemptImportScoreDialog
+					highestScore={highestScore}
+					isImporting={isImporting}
+					shouldContinueFn={shouldContinueFn}
+				/>
+			)
+		})
 	}
 
 	displayResultsModal(label, attemptNumber, scoreReport) {
@@ -495,13 +514,11 @@ class AssessmentStore extends Store {
 		ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
 	}
 
-	displayScoreImportNotice(importableScore) {
+	displayScoreImportNotice() {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
-				title: 'Previous Score Import',
-				message: `Your instructor allows importing your previous high score (${Math.round(
-					importableScore.highestScore
-				)}%) for this module. The option to import will be shown when you start the Assessment.`
+				title: 'Score Import Available',
+				message: `You previously completed this module in another course or assignment. The option to import your highest score will be shown when you start the assessment.`
 			}
 		})
 	}

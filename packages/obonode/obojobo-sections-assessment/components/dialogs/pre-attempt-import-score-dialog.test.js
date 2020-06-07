@@ -41,18 +41,23 @@ describe('PreAttemptImportScoreDialog', () => {
 		    ]
 		  }
 		  centered={true}
-		  title="Import Previous Score?"
+		  title="Import Score or Start Attempt"
 		  width="300"
 		>
 		  <p>
-		    You have previously completed this module and your instructor is allowing you to import your high score of 
-		    <strong>
-		      99
-		      %
-		    </strong>
+		    You previously completed this module in another course. Your highest score can be imported for this assignment.
 		  </p>
 		  <p>
-		    Would you like to use that score now or ignore it and begin the Assessment?
+		    Import 
+		    <b>
+		      99
+		      %
+		    </b>
+		     for your final score 
+		    <i>
+		      or
+		    </i>
+		     attempt the assessment?
 		  </p>
 		</div>
 	`)
