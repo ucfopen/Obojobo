@@ -1,36 +1,11 @@
 import NavStore from '../stores/nav-store'
+import Common from 'Common'
+const { Dispatcher } = Common.flux
+
+// pages which haven't been visted should be given less priority
+const NOT_VISITED_OFFSET = 10
 
 const RecommendationUtil = {
-	boundConfidence(state, page) {
-		if (state.confidenceLevels[page] > 100)
-			state.confidenceLevels[page] = 100
-		if (state.confidenceLevels[page] < 0)
-			state.confidenceLevels[page] = 0
-	},
-
-	onOpenQuestion(state) {
-		if (this.isOnAssessmentPage(state))
-			return
-		state.confidenceLevels[state.currentPageID] += 2
-		this.boundConfidence(state, state.currentPageID)
-	},
-
-	onQuestionAnswered(state, payload) {
-		if (this.isOnAssessmentPage(state))
-			return
-		state.confidenceLevels[state.currentPageID] += payload.value.score === 100 ? 15 : -12.5
-		console.log(9.5)
-		this.boundConfidence(state, state.currentPageID)
-	},
-
-	onOpenPage(state) {
-		if (this.isOnAssessmentPage(state))
-			return
-		state.confidenceLevels[state.currentPageID] += 2
-		state.pages[state.currentPageID].numVisits++;
-		this.boundConfidence(state, state.currentPageID)
-	},
-
 	updateOverallConfidence(state) {
 		if (this.isOnAssessmentPage(state))
 			return
@@ -66,23 +41,24 @@ const RecommendationUtil = {
 		let secondMin = null
 		let thirdMin = null
 
+		// determines which three pages have lowest confidence levels
 		for (const page in state.pages) {
 			if (
 				firstMin === null ||
-				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? 10 : 0) < state.confidenceLevels[firstMin]
+				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? NOT_VISITED_OFFSET : 0) < state.confidenceLevels[firstMin]
 			) {
 				thirdMin = secondMin
 				secondMin = firstMin
 				firstMin = page
 			} else if (
 				secondMin === null ||
-				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? 10 : 0) < state.confidenceLevels[secondMin]
+				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? NOT_VISITED_OFFSET : 0) < state.confidenceLevels[secondMin]
 			) {
 				thirdMin = secondMin
 				secondMin = page
 			} else if (
 				thirdMin === null ||
-				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? 10 : 0) < state.confidenceLevels[thirdMin]
+				state.confidenceLevels[page] + (state.pages[page].numVisits == 0 ? NOT_VISITED_OFFSET : 0) < state.confidenceLevels[thirdMin]
 			) {
 				thirdMin = page
 			}
