@@ -111,6 +111,7 @@ class CodeEditor extends React.Component {
 
 	sendSave(draftId, code, mode) {
 		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
+		this.setState({ saved: 'saving' })
 		return APIUtil.postDraft(draftId, code, format)
 			.then(result => {
 				if (result.status !== 'ok') throw Error(result.value.message)

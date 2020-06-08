@@ -386,8 +386,10 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: true })
-		return APIUtil.postDraft(draftId, JSON.stringify(json))
+		this.setState({ saved: 'saving' })
+		return APIUtil.postDraft(draftId, JSON.stringify(json)).then(() =>
+			this.setState({ saved: true })
+		)
 	}
 
 	exportToJSON(page, value) {

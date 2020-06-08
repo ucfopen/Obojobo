@@ -40,6 +40,17 @@ describe('File Toolbar', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('FileToolbar in saving state', () => {
+		const props = {
+			saved: 'saving',
+			editor
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('FileToolbar with disables deletion', () => {
 		const props = {
 			saved: true,

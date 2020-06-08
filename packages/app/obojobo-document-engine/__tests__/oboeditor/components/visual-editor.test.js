@@ -490,6 +490,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('changes the Editor title', () => {
+		APIUtil.postDraft.mockResolvedValue()
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -551,6 +552,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('changes the Editor title to blank', () => {
+		APIUtil.postDraft.mockResolvedValue()
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -858,6 +860,7 @@ describe('VisualEditor', () => {
 	test('onKeyDown() calls editor functions', () => {
 		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
 
+		APIUtil.postDraft.mockResolvedValue()
 		const editor = {
 			undo: jest.fn(),
 			redo: jest.fn(),

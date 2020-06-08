@@ -57,7 +57,15 @@ const FileToolbar = props => {
 		}
 	]
 
-	const saved = props.saved ? 'saved' : ''
+	let className = ''
+	let message = ''
+	if (props.saved === true) {
+		className = 'saved'
+		message = 'Saved!'
+	} else if (props.saved === 'saving') {
+		className = 'saving'
+		message = 'Saving...'
+	}
 
 	return (
 		<div className={`visual-editor--file-toolbar`}>
@@ -79,7 +87,7 @@ const FileToolbar = props => {
 			/>
 			{props.insertMenu}
 			{props.formatMenu}
-			<div className={'saved-message ' + saved}>Saved!</div>
+			<div className={'saved-message ' + className}>{message}</div>
 			<Button onClick={onPreviewClickHandler} className={'preview-button'}>
 				Preview Module
 			</Button>
