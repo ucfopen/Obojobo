@@ -1,6 +1,5 @@
 import React from 'react'
-import { useEditor, useSelected, ReactEditor } from 'slate-react'
-import { Range } from 'slate'
+import { useEditor, useSelected } from 'slate-react'
 
 const withSlateWrapper = WrappedComponent => {
 	const SlateWrapper = props => {
