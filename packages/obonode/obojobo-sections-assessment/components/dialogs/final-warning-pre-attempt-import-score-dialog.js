@@ -8,7 +8,7 @@ const FinalWarningPreAttemptImportScoreDialog = ({
 	shouldContinueFn
 }) => {
 	highestScore = Math.round(highestScore)
-	const titleText = isImporting ? 'Import Score' : 'Start Attempt Without Importing'
+	const titleText = isImporting ? 'Confirm Import Score' : 'Confirm Start Attempt'
 
 	const buttonText = isImporting
 		? `Import Score: ${highestScore}%`
@@ -20,6 +20,7 @@ const FinalWarningPreAttemptImportScoreDialog = ({
 			buttons={[
 				{
 					value: 'Cancel',
+					altAction: true,
 					onClick: () => {
 						shouldContinueFn(false)
 					}

@@ -14,7 +14,6 @@ import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-pro
 import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
-import FinalWarningPreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/final-warning-pre-attempt-import-score-dialog'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -279,7 +278,7 @@ class AssessmentStore extends Store {
 		// import has been used, do nothing
 		if (this.state.importHasBeenUsed === true) {
 			this.displayImportAlreadyUsed()
-			return Promise.resolve()
+			return
 		}
 
 		let shouldImport = false
@@ -291,25 +290,12 @@ class AssessmentStore extends Store {
 			)
 
 			ModalUtil.hide()
-
-			// confirm or cancel
-			const shouldContinue = await this.displayFinalChoiceNotice(
-				this.state.importableScore.highestScore,
-				shouldImport
-			)
-
-			ModalUtil.hide()
-
-			// Cancel?
-			if (!shouldContinue) return
 		}
 
 		const { draftId, visitId } = NavStore.getState()
-		const apiCall = shouldImport
-			? this.startImportScoresWithAPICall.bind(this)
-			: this.startAttemptWithAPICall.bind(this)
+		const apiCall = shouldImport ? this.startImportScoresWithAPICall : this.startAttemptWithAPICall
 
-		return await apiCall(draftId, visitId, assessmentId)
+		return await apiCall.call(this, draftId, visitId, assessmentId)
 	}
 
 	updateStateAfterStartAttempt(startAttemptResp) {
@@ -480,20 +466,6 @@ class AssessmentStore extends Store {
 
 			ModalUtil.show(
 				<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
-			)
-		})
-	}
-
-	displayFinalChoiceNotice(highestScore, isImporting) {
-		return new Promise(resolve => {
-			const shouldContinueFn = choice => resolve(choice)
-
-			ModalUtil.show(
-				<FinalWarningPreAttemptImportScoreDialog
-					highestScore={highestScore}
-					isImporting={isImporting}
-					shouldContinueFn={shouldContinueFn}
-				/>
 			)
 		})
 	}

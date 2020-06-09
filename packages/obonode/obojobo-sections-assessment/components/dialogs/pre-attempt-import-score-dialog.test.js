@@ -2,14 +2,18 @@
 
 import React from 'react'
 import renderer from 'react-test-renderer'
-
+import Common from 'obojobo-document-engine/src/scripts/common'
 import PreAttemptImportScoreDialog from './pre-attempt-import-score-dialog'
 
 jest.mock('Common', () => ({
 	components: {
 		modal: {
-			Dialog: props => <div {...props}></div>
-		}
+			Dialog: props => {
+				const { customControls, ...restProps } = props
+				return <div {...restProps}>{customControls}</div>
+			}
+		},
+		Button: props => <div {...props}></div>
 	}
 }))
 
@@ -28,37 +32,58 @@ describe('PreAttemptImportScoreDialog', () => {
 
 		expect(tree).toMatchInlineSnapshot(`
 		<div
-		  buttons={
-		    Array [
-		      Object {
-		        "onClick": [Function],
-		        "value": "Do Not Import",
-		      },
-		      Object {
-		        "onClick": [Function],
-		        "value": "Import Score: 99%",
-		      },
-		    ]
-		  }
 		  centered={true}
+		  className="pre-attempt-import"
 		  title="Import Score or Start Attempt"
 		  width="300"
 		>
-		  <p>
-		    You previously completed this module in another course. Your highest score can be imported for this assignment.
-		  </p>
-		  <p>
-		    Import 
-		    <b>
+		  <div
+		    className="choice-box"
+		  >
+		    <h2>
+		      Import Score
+		    </h2>
+		    <div
+		      className="choice-desc"
+		    >
+		      Skip this assessment.
+		      <br />
+		      Recieve a 
+		      99
+		      % for this assignment and forfeit all attempts.
+		    </div>
+		    <div
+		      onClick={[Function]}
+		    >
+		      Import Score: 
 		      99
 		      %
-		    </b>
-		     for your final score 
-		    <i>
-		      or
-		    </i>
-		     attempt the assessment?
-		  </p>
+		    </div>
+		  </div>
+		  <div
+		    className="or-box"
+		  >
+		    or
+		  </div>
+		  <div
+		    className="choice-box"
+		  >
+		    <h2>
+		      Start Attempt
+		    </h2>
+		    <div
+		      className="choice-desc"
+		    >
+		      Take this assessment.
+		      <br />
+		      Give up the ability to import your previous score.
+		    </div>
+		    <div
+		      onClick={[Function]}
+		    >
+		      Start Attempt
+		    </div>
+		  </div>
 		</div>
 	`)
 	})
@@ -69,13 +94,13 @@ describe('PreAttemptImportScoreDialog', () => {
 			onChoice: jest.fn()
 		}
 		const component = renderer.create(<PreAttemptImportScoreDialog {...props} />)
-		const buttons = component.root.findByProps({ centered: true }).props.buttons
+		const buttons = component.root.findAllByType(Common.components.Button)
 
-		expect(buttons[0]).toHaveProperty('value', 'Do Not Import')
+		expect(buttons[0].props.children).toEqual(['Import Score: ', 99, '%'])
 		expect(props.onChoice).toHaveBeenCalledTimes(0)
-		buttons[0].onClick()
+		buttons[0].props.onClick()
 		expect(props.onChoice).toHaveBeenCalledTimes(1)
-		expect(props.onChoice).toHaveBeenCalledWith(false)
+		expect(props.onChoice).toHaveBeenCalledWith(true)
 	})
 
 	test('handles import click', () => {
@@ -84,12 +109,12 @@ describe('PreAttemptImportScoreDialog', () => {
 			onChoice: jest.fn()
 		}
 		const component = renderer.create(<PreAttemptImportScoreDialog {...props} />)
-		const buttons = component.root.findByProps({ centered: true }).props.buttons
+		const buttons = component.root.findAllByType(Common.components.Button)
 
-		expect(buttons[1]).toHaveProperty('value', 'Import Score: 99%')
+		expect(buttons[1].props.children).toEqual('Start Attempt')
 		expect(props.onChoice).toHaveBeenCalledTimes(0)
-		buttons[1].onClick()
+		buttons[1].props.onClick()
 		expect(props.onChoice).toHaveBeenCalledTimes(1)
-		expect(props.onChoice).toHaveBeenCalledWith(true)
+		expect(props.onChoice).toHaveBeenCalledWith(false)
 	})
 })

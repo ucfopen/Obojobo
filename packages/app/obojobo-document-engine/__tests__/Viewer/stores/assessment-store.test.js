@@ -207,7 +207,7 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.getState()).toHaveProperty('assessmentSummary', 'mock-summary')
 	})
 
-	test.only('init calls displayScoreImportNotice', () => {
+	test('init calls displayScoreImportNotice', () => {
 		const displayImport = jest.spyOn(AssessmentStore, 'displayScoreImportNotice')
 		const findUnfinished = jest.spyOn(AssessmentStore, 'findUnfinishedAttemptInAssessmentSummary')
 		//eslint-disable-next-line no-undefined
@@ -911,7 +911,6 @@ describe('AssessmentStore', () => {
 		jest.spyOn(AssessmentStore, 'startImportScoresWithAPICall')
 		jest.spyOn(AssessmentStore, 'startAttemptWithAPICall')
 		jest.spyOn(AssessmentStore, 'displayPreAttemptImportScoreNotice')
-		jest.spyOn(AssessmentStore, 'displayFinalChoiceNotice')
 		jest.spyOn(AssessmentStore, 'displayImportAlreadyUsed')
 
 		AssessmentStore.state = {
@@ -931,7 +930,6 @@ describe('AssessmentStore', () => {
 		AssessmentStore.displayImportAlreadyUsed.mockReturnValueOnce()
 		// call the import callback as soon as the notice is displayed
 		AssessmentStore.displayPreAttemptImportScoreNotice.mockResolvedValue(true)
-		AssessmentStore.displayFinalChoiceNotice.mockResolvedValue(true)
 
 		const result = await AssessmentStore.startAttemptWithImportScoreOption('assessmentId')
 		expect(result).toBe('mockImportResult')
@@ -941,7 +939,6 @@ describe('AssessmentStore', () => {
 		jest.spyOn(AssessmentStore, 'startImportScoresWithAPICall')
 		jest.spyOn(AssessmentStore, 'startAttemptWithAPICall')
 		jest.spyOn(AssessmentStore, 'displayPreAttemptImportScoreNotice')
-		jest.spyOn(AssessmentStore, 'displayFinalChoiceNotice')
 		jest.spyOn(AssessmentStore, 'displayImportAlreadyUsed')
 
 		AssessmentStore.state = {
@@ -961,12 +958,10 @@ describe('AssessmentStore', () => {
 		AssessmentStore.displayImportAlreadyUsed.mockReturnValueOnce()
 		// call the import callback as soon as the notice is displayed
 		AssessmentStore.displayPreAttemptImportScoreNotice.mockResolvedValue(false)
-		AssessmentStore.displayFinalChoiceNotice.mockResolvedValue(true)
 
 		const result = await AssessmentStore.startAttemptWithImportScoreOption('assessmentId')
 		expect(AssessmentStore.displayImportAlreadyUsed).not.toHaveBeenCalled()
 		expect(AssessmentStore.displayPreAttemptImportScoreNotice).toHaveBeenCalled()
-		expect(AssessmentStore.displayFinalChoiceNotice).toHaveBeenCalled()
 		expect(result).toBe('mockStartAttemptResult')
 	})
 
@@ -993,6 +988,24 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.displayImportAlreadyUsed).not.toHaveBeenCalled()
 		expect(AssessmentStore.displayPreAttemptImportScoreNotice).not.toHaveBeenCalled()
 		expect(result).toBe('mock-api-call-result')
+	})
+
+	test('displayPreAttemptImportScoreNotice resolves with onChoice argument', async () => {
+		// display the dialog, get a promise
+		const promise = AssessmentStore.displayPreAttemptImportScoreNotice(55)
+
+		// get the props of the dialog that was sent to ModalUtil.show()
+		const dialogProps = ModalUtil.show.mock.calls[0][0].props
+
+		// execute the onChoice prop function - sending true
+		const aUniqueObject = {}
+		dialogProps.onChoice(aUniqueObject)
+
+		// now use the promise to capture and return the onChoice argument
+		const result = await promise
+
+		// expect promise result to be passed from onChocie to resolve
+		expect(result).toBe(aUniqueObject)
 	})
 
 	test('assessment:endAttempt calls endAttemptWithAPICall', () => {
