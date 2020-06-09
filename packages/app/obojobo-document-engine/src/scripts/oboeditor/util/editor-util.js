@@ -28,6 +28,8 @@ const getFlatList = function(item) {
 	return list
 }
 
+let recoveryValue
+
 const EditorUtil = {
 	renameModule(moduleId, newName) {
 		return Dispatcher.trigger('editor:renameModule', {
@@ -204,6 +206,13 @@ const EditorUtil = {
 			el.setAttribute('title', title)
 		}
 		return serial.serializeToString(doc)
+	},
+
+	setRecoveryValue(value){
+		recoveryValue = value
+	},
+	getRecoveryValue(){
+		return recoveryValue
 	}
 }
 

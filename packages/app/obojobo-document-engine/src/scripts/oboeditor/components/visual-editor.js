@@ -20,6 +20,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import VisualEditorErrorBoundry from './visual-editor-error-boundry'
 import EditorTitleInput from './editor-title-input'
 import HoveringPreview from './hovering-preview'
+import EditorErrorBoundry from './editor-error-boundry'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
@@ -41,7 +42,8 @@ class VisualEditor extends React.Component {
 		super(props)
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
 
-		const json = this.importFromJSON()
+		const json = EditorUtil.getRecoveryValue() || this.importFromJSON()
+		EditorUtil.setRecoveryValue(null)
 
 		this.state = {
 			value: json,
@@ -69,6 +71,7 @@ class VisualEditor extends React.Component {
 		this.onResized = this.onResized.bind(this)
 		this.renderElement = this.renderElement.bind(this)
 		this.setEditorFocus = this.setEditorFocus.bind(this)
+		this.switchMode = this.switchMode.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -116,6 +119,11 @@ class VisualEditor extends React.Component {
 		}
 
 		return editor
+	}
+
+	switchMode(mode){
+		EditorUtil.setRecoveryValue(null)
+		this.props.switchMode(mode)
 	}
 
 	withPlugins(editor) {
@@ -176,6 +184,7 @@ class VisualEditor extends React.Component {
 	}
 
 	componentWillUnmount() {
+		EditorUtil.setRecoveryValue(this.state.value)
 		window.removeEventListener('beforeunload', this.checkIfSaved)
 		window.removeEventListener('keydown', this.onKeyDownGlobal)
 		if (this.resizeObserver) this.resizeObserver.disconnect()
@@ -529,7 +538,7 @@ class VisualEditor extends React.Component {
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
 							reload={this.reload}
-							switchMode={this.props.switchMode}
+							switchMode={this.switchMode}
 							saved={this.state.saved}
 							mode={'visual'}
 							insertableItems={this.props.insertableItems}

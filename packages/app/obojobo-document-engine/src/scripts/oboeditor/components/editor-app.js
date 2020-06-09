@@ -9,7 +9,7 @@ import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
-//import { KeyUtils } from 'slate'
+import EditorErrorBoundry from './editor-error-boundry'
 import VisualEditor from './visual-editor'
 import React from 'react'
 
@@ -157,16 +157,18 @@ class EditorApp extends React.Component {
 
 	renderVisualEditor() {
 		return (
-			<VisualEditor
-				page={this.state.editorState.currentPageModel}
-				navState={this.state.editorState}
-				context={this.state.editorState.context}
-				model={this.state.model}
-				draft={this.state.draft}
-				draftId={this.state.draftId}
-				switchMode={this.switchMode}
-				insertableItems={Common.Registry.insertableItems}
-			/>
+			<EditorErrorBoundry>
+				<VisualEditor
+					page={this.state.editorState.currentPageModel}
+					navState={this.state.editorState}
+					context={this.state.editorState.context}
+					model={this.state.model}
+					draft={this.state.draft}
+					draftId={this.state.draftId}
+					switchMode={this.switchMode}
+					insertableItems={Common.Registry.insertableItems}
+				/>
+			</EditorErrorBoundry>
 		)
 	}
 
