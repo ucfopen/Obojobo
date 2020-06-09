@@ -1,9 +1,12 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--you-tube {
+	$border-width: 3px; /* stylelint-disable-line unit-blacklist */
+
 	width: auto;
 	max-width: 32em;
-	border: 3px solid transparentize($color-action, 0.7);
+	border: $border-width solid transparentize($color-action, 0.7);
+	border-radius: calc(#{$dimension-rounded-radius} + #{$border-width});
 
 	.editor--hidden-text {
 		cursor: default;
@@ -15,7 +18,7 @@
 	}
 
 	&.is-selected {
-		border: 3px solid $color-action;
+		border: $border-width solid $color-action;
 
 		.obojobo-draft--components--button {
 			transition: opacity 0s;
@@ -33,7 +36,7 @@
 	}
 
 	&:hover {
-		border: 3px solid $color-action;
+		border: $border-width solid $color-action;
 
 		.obojobo-draft--components--button {
 			transition: opacity 0s;
