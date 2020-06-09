@@ -116,7 +116,7 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent),
+			content: Object.assign({}, prevState.content, newContent),
 			needsUpdate: true
 		}))
 	}
