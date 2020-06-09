@@ -84,29 +84,31 @@
 				border-bottom: 1px solid $color-shadow;
 				position: relative;
 
+				.properties--row {
+					display: flex;
+					height: 2em;
+					margin: 0.3em 0;
+				}
+
 				label {
 					display: inline-block;
-					width: 7em;
-					min-height: 2em;
-
-					&.switch {
-						min-height: 1.1em;
-					}
+					min-width: 7em;
+					margin: auto 0;
 				}
 
 				input {
 					@include text-input();
 
-					width: 22.7em;
-
 					&.id-input {
-						width: 17.9em;
-						border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
+						margin-right: 0.3em;
 					}
 				}
 
+				input,
 				select {
-					width: 22.7em;
+					flex: auto;
+					font-size: 0.7em;
+					box-sizing: border-box;
 				}
 
 				&.assessment-settings {
@@ -123,6 +125,7 @@
 					padding: 0.2em 0.5em;
 					border-width: 2px;
 					height: 2.5em;
+					min-width: 5em;
 				}
 
 				.xml-button {
