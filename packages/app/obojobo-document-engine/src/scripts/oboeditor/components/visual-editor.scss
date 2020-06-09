@@ -6,11 +6,8 @@
 	$latex-defaults: inherit !important;
 
 	display: flex;
-	margin: 2em;
-	margin-top: 8em;
-	border: 1px solid $color-shadow;
+	margin-top: 6em;
 	background-color: $color-bg;
-	border-radius: $dimension-rounded-radius;
 	min-height: calc(100vh - 10.5em);
 	position: relative;
 
@@ -18,8 +15,8 @@
 		margin: 3em auto;
 		width: 100%;
 		display: table-cell;
-		margin-top: 3em;
 		margin-bottom: 1em;
+		padding-left: $dimension-nav-menu;
 	}
 
 	.parameter-node {
