@@ -30,7 +30,8 @@ const {
 	requireAttemptId,
 	requireCurrentUser,
 	requireAssessmentId,
-	checkValidationRules
+	checkValidationRules,
+	validImportedAssessmentScoreId
 } = require('obojobo-express/server/express_validators')
 const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
@@ -62,6 +63,7 @@ describe('server/express', () => {
 		checkValidationRules.mockImplementation(commonValidationMock)
 		requireAssessmentId.mockImplementation(commonValidationMock)
 		requireAttemptId.mockImplementation(commonValidationMock)
+		validImportedAssessmentScoreId.mockImplementation(commonValidationMock)
 
 		// init the server
 		app = express()
@@ -439,6 +441,7 @@ describe('server/express', () => {
 		const response = await request(app)
 			.post('/api/assessments/:draftId/:assessmentId/import-score')
 			.type('application/json')
+			.send({ importedAssessmentScoreId: 10 })
 
 		expect(response.statusCode).toBe(200)
 		expect(response.body).toEqual({
@@ -450,6 +453,7 @@ describe('server/express', () => {
 		expect(requireCurrentDocument).toHaveBeenCalledTimes(1)
 		expect(requireCurrentVisit).toHaveBeenCalledTimes(1)
 		expect(requireAssessmentId).toHaveBeenCalledTimes(1)
+		expect(validImportedAssessmentScoreId).toHaveBeenCalledTimes(1)
 	})
 
 	test('POST /api/assessments/:draftId/:assessmentId/import-score errors', async () => {

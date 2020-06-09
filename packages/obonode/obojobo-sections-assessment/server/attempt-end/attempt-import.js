@@ -5,7 +5,6 @@ const lti = require('obojobo-express/server/lti')
 const db = require('obojobo-express/server/db')
 
 const attemptImport = async req => {
-	// @TODO validate req.body.importedAssessmentScoreId
 	if (req.currentVisit.score_importable !== true) {
 		throw Error('Import score used on visit without import enabled.')
 	}

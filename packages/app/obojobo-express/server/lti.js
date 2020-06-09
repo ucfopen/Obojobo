@@ -631,7 +631,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (
+const sendHighestAssessmentScore = async (
 	userId,
 	draftDocument,
 	assessmentId,
@@ -658,123 +658,120 @@ const sendHighestAssessmentScore = (
 		logId
 	)
 
-	return getRequiredDataForReplaceResult(
-		userId,
-		draftDocument.draftId,
-		assessmentId,
-		logId,
-		resourceLinkId,
+	try {
+		const requiredDataResult = await getRequiredDataForReplaceResult(
+			userId,
+			draftDocument.draftId,
+			assessmentId,
+			logId,
+			resourceLinkId,
+			isPreview
+		)
+
+		result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
+
+		requiredData = requiredDataResult
+		outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+
+		result.outcomeServiceURL = outcomeData.serviceURL
+
+		if (isPreview) {
+			throw Error(ERROR_PREVIEW_MODE)
+		}
+
+		if (requiredData.ltiScoreToSend === null) {
+			throw Error(ERROR_SCORE_IS_NULL)
+		}
+
+		if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
+			throw Error(ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH)
+		}
+
+		if (requiredData.error !== null) {
+			throw requiredData.error
+		}
+
+		if (outcomeData.error !== null) {
+			throw outcomeData.error
+		}
+
+		result.scoreSent = requiredData.ltiScoreToSend
+
+		logger.info(
+			`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
+			logId
+		)
+
+		const ltiRequestResult = await sendReplaceResultRequest(
+			outcomeData.outcomeService,
+			requiredData.ltiScoreToSend
+		)
+
+		logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
+
+		if (ltiRequestResult !== true) {
+			throw Error(ERROR_FATAL_REPLACE_RESULT_FAILED)
+		}
+
+		result.status = STATUS_SUCCESS
+	} catch (error) {
+		const errorResult = logAndGetStatusForError(error, requiredData, logId)
+		result.status = errorResult.status
+		result.statusDetails = errorResult.statusDetails
+	}
+
+	// ALWAYS RUNS DUE TO CATCH ABOVE
+	result.gradebookStatus = getGradebookStatus(
+		outcomeData.type,
+		requiredData.scoreType,
+		result.status === STATUS_SUCCESS,
 		isPreview
 	)
-		.then(requiredDataResult => {
-			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
-			requiredData = requiredDataResult
-			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+	logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
 
-			result.outcomeServiceURL = outcomeData.serviceURL
+	try {
+		const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord
+			? requiredData.assessmentScoreRecord.id
+			: null
 
-			// @TODO: move this above getRequiredDataForReplaceResult call
-			// @TODO: heck, why dont we just move all these throws down
-			// to the where the code that finds these issues occurs
-			// and pass them up using the normal throw/catch functionality
-			if (isPreview) {
-				throw Error(ERROR_PREVIEW_MODE)
-			}
+		const scoreId = await insertLTIAssessmentScore(
+			assessmentScoreIdOrNull,
+			result.launchId,
+			result.scoreSent,
+			result.status,
+			result.statusDetails,
+			result.gradebookStatus,
+			logId
+		)
 
-			if (requiredData.ltiScoreToSend === null) {
-				throw Error(ERROR_SCORE_IS_NULL)
-			}
+		logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
 
-			if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
-				throw Error(ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH)
-			}
+		result.ltiAssessmentScoreId = scoreId
+		result.dbStatus = DB_STATUS_RECORDED
+	} catch (error) {
+		logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
 
-			if (requiredData.error !== null) {
-				throw requiredData.error
-			}
+		result.dbStatus = DB_STATUS_ERROR
+	}
 
-			if (outcomeData.error !== null) {
-				throw outcomeData.error
-			}
+	try {
+		// ALWAYS RUNS DUE TO CATCH ABOVE
+		insertReplaceResultEvent(
+			userId,
+			draftDocument,
+			requiredData.launch,
+			outcomeData,
+			result,
+			visitId
+		)
+	} catch (error) {
+		logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
+	}
 
-			result.scoreSent = requiredData.ltiScoreToSend
-
-			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
-				logId
-			)
-
-			return sendReplaceResultRequest(outcomeData.outcomeService, requiredData.ltiScoreToSend)
-		})
-		.then(ltiRequestResult => {
-			logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
-
-			if (ltiRequestResult !== true) {
-				throw Error(ERROR_FATAL_REPLACE_RESULT_FAILED)
-			}
-
-			result.status = STATUS_SUCCESS
-		})
-		.catch(error => {
-			const errorResult = logAndGetStatusForError(error, requiredData, logId)
-			result.status = errorResult.status
-			result.statusDetails = errorResult.statusDetails
-		})
-		.then(() => {
-			// ALWAYS RUNS DUE TO CATCH ABOVE
-			result.gradebookStatus = getGradebookStatus(
-				outcomeData.type,
-				requiredData.scoreType,
-				result.status === STATUS_SUCCESS,
-				isPreview
-			)
-
-			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
-
-			const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord
-				? requiredData.assessmentScoreRecord.id
-				: null
-			return insertLTIAssessmentScore(
-				assessmentScoreIdOrNull,
-				result.launchId,
-				result.scoreSent,
-				result.status,
-				result.statusDetails,
-				result.gradebookStatus,
-				logId
-			)
-		})
-		.then(scoreId => {
-			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
-
-			result.ltiAssessmentScoreId = scoreId
-			result.dbStatus = DB_STATUS_RECORDED
-		})
-		.catch(error => {
-			logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
-
-			result.dbStatus = DB_STATUS_ERROR
-		})
-		.then(() => {
-			// ALWAYS RUNS DUE TO CATCH ABOVE
-			insertReplaceResultEvent(
-				userId,
-				draftDocument,
-				requiredData.launch,
-				outcomeData,
-				result,
-				visitId
-			)
-		})
-		.catch(error => {
-			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
-		})
-		.then(() => {
-			// ALWAYS RUNS DUE TO CATCH ABOVE
-			logger.info(`LTI complete`, logId)
-			return result
-		})
+	// ALWAYS RUNS DUE TO CATCH ABOVE
+	logger.info(`LTI complete`, logId)
+	return result
 }
 
 module.exports = {

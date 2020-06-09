@@ -500,4 +500,74 @@ describe('current user middleware', () => {
 			'mock-param-1 mock-msg-1, got mock-value-1, mock-param-2 mock-msg-2, got mock-value-2'
 		)
 	})
+
+	test('validImportedAssessmentScoreId resolves', () => {
+		return expect(
+			Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext)
+		).resolves.toBeUndefined()
+	})
+
+	test('validImportedAssessmentScoreId rejects', () => {
+		mockReq.body.importedAssessmentScoreId = 'not-a-valid-INT'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(1)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: 'not-a-valid-INT'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId passes with positive int', () => {
+		mockReq.body.importedAssessmentScoreId = '50'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(0)
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors with negative int', () => {
+		mockReq.body.importedAssessmentScoreId = '-10'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: '-10'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors with 0', () => {
+		mockReq.body.importedAssessmentScoreId = '0'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: '0'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors when undefined', () => {
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: undefined
+			})
+		})
+	})
 })

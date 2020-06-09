@@ -15,7 +15,8 @@ const {
 	requireMultipleAttemptIds,
 	requireCurrentUser,
 	requireAssessmentId,
-	checkValidationRules
+	checkValidationRules,
+	validImportedAssessmentScoreId
 } = require('obojobo-express/server/express_validators')
 
 // load the server event listeners
@@ -146,7 +147,14 @@ router
 
 router
 	.route('/api/assessments/:draftId/:assessmentId/import-score')
-	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAssessmentId])
+	.post([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireCurrentVisit,
+		requireAssessmentId,
+		validImportedAssessmentScoreId,
+		checkValidationRules
+	])
 	.post((req, res) => {
 		return attemptImport(req, res)
 			.then(res.success)

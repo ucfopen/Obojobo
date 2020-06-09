@@ -54,16 +54,22 @@ exports.getCurrentUser = (req, res, next) => {
 exports.checkContentId = check('contentId', 'must be a valid UUID')
 	.isUUID()
 	.optional()
+
 exports.requireDraftId = check('draftId', 'must be a valid UUID').isUUID()
+
 exports.requireAttemptId = check('attemptId', 'must be a valid UUID').isUUID()
+
 exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
+
 exports.requireAssessmentId = check('assessmentId', 'must not be empty')
 	.exists({ checkNull: true, checkFalsy: true })
 	.isString()
+
 exports.requireMultipleAttemptIds = [
 	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
 	check('attemptIds.*', 'must be a valid UUID').isUUID()
 ]
+
 exports.validPageNumber = check('page', 'must be a valid int 1 or above')
 	.optional()
 	.isInt({ min: 1, allow_leading_zeroes: false })
@@ -80,12 +86,21 @@ exports.requireEvent = [
 	check('event.draft_id', 'must be a valid UUID').isUUID(),
 	check('event.event_version', 'must match a valid semVer string').matches(semVerRegex)
 ]
+
+exports.validImportedAssessmentScoreId = check(
+	'importedAssessmentScoreId',
+	'must be a valid score id'
+).isInt({ min: 1, allow_leading_zeroes: false })
+
 exports.requireCanViewEditor = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canViewEditor')
+
 exports.requireCanCreateDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canCreateDrafts')
+
 exports.requireCanDeleteDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canDeleteDrafts')
+
 exports.requireCanPreviewDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canPreviewDrafts')
 
