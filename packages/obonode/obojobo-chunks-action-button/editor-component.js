@@ -9,7 +9,10 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import TriggerListModal from 'obojobo-document-engine/src/scripts/oboeditor/components/triggers/trigger-list-modal'
 import ActionButtonEditorAction from './action-button-editor-action'
-
+import {
+	freezeEditor,
+	unfreezeEditor
+} from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
@@ -28,6 +31,7 @@ class ActionButton extends React.Component {
 	}
 
 	showTriggersModal() {
+		freezeEditor(this.props.editor)
 		ModalUtil.show(
 			<TriggerListModal content={this.props.element.content} onClose={this.closeModal} />
 		)
@@ -35,6 +39,7 @@ class ActionButton extends React.Component {
 	// Hide the popup modal, and then use Slate's Transforms library to save any changes that the
 	// user made to the onClick actions by combining the previous content and the current content.
 	closeModal(modalState) {
+		unfreezeEditor(this.props.editor)
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 

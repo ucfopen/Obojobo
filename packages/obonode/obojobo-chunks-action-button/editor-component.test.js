@@ -7,6 +7,7 @@ import renderer from 'react-test-renderer'
 import ActionButton from './editor-component'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
