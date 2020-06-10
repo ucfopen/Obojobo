@@ -24,6 +24,7 @@ describe('ActionButton Editor Node', () => {
 	let nodeData
 
 	beforeEach(() => {
+		jest.clearAllMocks()
 		nodeData = {
 			content: {
 				actions: [
@@ -114,7 +115,7 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('closes modal', () => {
+	test('closes modal and saves', () => {
 		const editor = {
 			children: [nodeData]
 		}
@@ -157,5 +158,16 @@ describe('ActionButton Editor Node', () => {
 			},
 			{ at: undefined }
 		)
+	})
+
+	test('closes modal without saving', () => {
+		const editor = {
+			children: [nodeData]
+		}
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
+
+		component.instance().closeModal()
+
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
 })

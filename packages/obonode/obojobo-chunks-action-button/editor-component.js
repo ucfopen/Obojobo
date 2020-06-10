@@ -36,11 +36,15 @@ class ActionButton extends React.Component {
 			<TriggerListModal content={this.props.element.content} onClose={this.closeModal} />
 		)
 	}
+
 	// Hide the popup modal, and then use Slate's Transforms library to save any changes that the
 	// user made to the onClick actions by combining the previous content and the current content.
+	// is called w/o arguments when TriggerListModal cancels
 	closeModal(modalState) {
 		unfreezeEditor(this.props.editor)
 		ModalUtil.hide()
+		if (!modalState) return
+
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 
 		Transforms.setNodes(
