@@ -1,12 +1,12 @@
 const xmlEncode = require('./xml-encode')
 
-const processAttrs = (content, blackListedAttributes) => {
+const processAttrs = (content, blockedAttributes) => {
 	let attrs = ''
 	for (const attr in content) {
 		if (
 			content[attr] === null ||
 			typeof content[attr] === 'object' ||
-			blackListedAttributes.includes(attr)
+			blockedAttributes.includes(attr)
 		) {
 			continue
 		}
