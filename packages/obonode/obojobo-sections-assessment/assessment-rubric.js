@@ -35,7 +35,7 @@ const MOD_AMOUNT_LIMIT = 20
 const getRubricType = rubric =>
 	!rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
 
-const createStandizedRubric = rubric => {
+const createStandardizedRubric = rubric => {
 	const rubricType = getRubricType(rubric)
 
 	let standardizedRubric
@@ -87,10 +87,10 @@ const createStandardizedMod = mod => {
 	}
 }
 
-const modToObject = standarizedMod => {
+const modToObject = standardizedMod => {
 	return {
-		attemptCondition: getRangeString(standarizedMod.attemptCondition),
-		reward: standarizedMod.reward
+		attemptCondition: getRangeString(standardizedMod.attemptCondition),
+		reward: standardizedMod.reward
 	}
 }
 
@@ -111,7 +111,7 @@ class AssessmentRubric {
 
 		const mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
 
-		this.rubric = createStandizedRubric(rubric)
+		this.rubric = createStandardizedRubric(rubric)
 		this.type = getRubricType(rubric)
 		this.mods = mods.map(createStandardizedMod).filter(mod => mod !== null)
 	}
