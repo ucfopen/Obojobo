@@ -5,7 +5,7 @@ const apiUrlRegex = /\/api\/.*/
 const oboEvents = oboRequire('server/obo_events')
 
 const getSanitizedErrorMessage = e => {
-	// If the error is in our blacklist only return the error name:
+	// If the error is in our blockList only return the error name:
 	if (e instanceof QueryResultError) {
 		return e.constructor.name
 	}
