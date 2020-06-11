@@ -177,13 +177,18 @@ class MoreInfoBox extends React.Component {
 		this.setState({ modalOpen: true })
 	}
 
+	// TriggerListModal.onClose is called w/ no arguments when canceled
+	// TriggerListModal.onClose is called w/ triggers when save+closed
 	closeModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
 			needsUpdate: true,
 			modalOpen: false
 		}))
-		ModalUtil.hide()
 	}
 
 	renderItem(description) {
