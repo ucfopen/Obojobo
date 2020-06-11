@@ -88,7 +88,7 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('question:forceSentAllResponses', payload => {
 			console.log('@TODO - Do I need this?')
-			this.onForceSentAllResponses(payload.value.success, payload.value.context)
+			// this.onForceSentAllResponses(payload.value.success, payload.value.context)
 		})
 
 		Dispatcher.on('assessment:acknowledgeEndAttemptSuccessful', payload => {

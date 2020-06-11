@@ -4,7 +4,13 @@ const timeoutPromise = (ms, promise) => {
 			reject(new Error('Promise Timeout'))
 		}, ms)
 
-		promise.then(resolve, reject)
+		promise
+			.then((...args) => {
+				resolve(...args)
+			})
+			.catch(e => {
+				reject(e)
+			})
 	})
 }
 

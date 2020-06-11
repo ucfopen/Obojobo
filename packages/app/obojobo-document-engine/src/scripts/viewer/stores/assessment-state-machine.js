@@ -75,7 +75,7 @@ class AssessmentStateHelpers {
 			this.onAttemptStarted.bind(this)
 		)
 	}
-alert('hi past me, so im trying to know when force all responnses fails. im thinking i need to search the status of the questionstore states to figure that out. i did tamper with promise returns but not sure if thatll work')
+
 	static sendResponses(assessmentId, attemptId) {
 		return new Promise((resolve, reject) => {
 			const listener = ({ value }) => {
@@ -84,7 +84,7 @@ alert('hi past me, so im trying to know when force all responnses fails. im thin
 				if (value.success) {
 					resolve()
 				} else {
-					reject()
+					reject(new Error('Sending all responses failed'))
 				}
 			}
 
@@ -271,13 +271,8 @@ alert('hi past me, so im trying to know when force all responnses fails. im thin
 		const lastAttempt = attempts[attempts.length - 1]
 		const { assessmentId, attemptId, attemptNumber } = lastAttempt
 		const assessmentModel = OboModel.models[assessmentId]
-		// const navContext = this.composeNavContextString(assessmentId, attemptId)
 
-		// this.hideQuestions(lastAttempt.state.chosen, navContext)
-		// debugger "hello past me, i was here. lastAttempt.currentResponses doesnt exist, it on the context version. but is this really a good idea in the first place? anyway, i need a way to clear responses. maybe what i do is just have the helper send the request, then the onDone handles all the cleanup"
-		// this.clearResponses(lastAttempt.currentResponses, navContext)
 		this.signalAttemptEnded(assessmentModel)
-		// this.showReportDialog(assessmentModel, attempts, attemptNumber)
 		this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
 
 		return assessment

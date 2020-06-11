@@ -99,7 +99,7 @@ const getDialog = (
 			console.log('sracd', SEND_RESPONSES_FAILED)
 			return (
 				<SimpleDialog onConfirm={() => continueAttempt(assessmentModel)} ok title="Error">
-					<p>Sorry, something went wrong. Please try submitting again.</p>
+					<p>Sorry, something went wrong sending your responses. Please try submitting again.</p>
 				</SimpleDialog>
 			)
 

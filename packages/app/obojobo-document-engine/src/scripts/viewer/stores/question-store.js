@@ -53,23 +53,19 @@ class QuestionStore extends Store {
 
 				const promises = sendingResponsePromises.concat(sendErrorResponsesPromises)
 
-				timeoutPromise(
-					SEND_RESPONSE_TIMEOUT_MS,
-					Promise.all(promises)
-						.then(values => {
-							const x = promises
-							debugger
-
-							Dispatcher.trigger('question:forceSentAllResponses', {
-								value: { context, success: true }
-							})
+				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, Promise.all(promises))
+					.then(values => {
+						console.log('SUH GOOD', values)
+						Dispatcher.trigger('question:forceSentAllResponses', {
+							value: { context, success: values.length === 0 || values.every(v => v) }
 						})
-						.catch(() => {
-							Dispatcher.trigger('question:forceSentAllResponses', {
-								value: { context, success: false }
-							})
+					})
+					.catch(e => {
+						console.log('SUH BAD', e)
+						Dispatcher.trigger('question:forceSentAllResponses', {
+							value: { context, success: false }
 						})
-				)
+					})
 			},
 			'question:sendResponse': payload => {
 				const { context, id } = payload.value
@@ -535,7 +531,7 @@ class QuestionStore extends Store {
 				// }
 
 				// const successful = result.response.status === 'ok'
-				const successful = false //Math.random() > 0.5
+				const successful = Math.random() > 0.5
 
 				contextState.responseMetadata[id].sendState = successful
 					? QuestionResponseSendStates.RECORDED
