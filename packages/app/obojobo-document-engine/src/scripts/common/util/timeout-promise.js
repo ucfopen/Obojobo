@@ -1,17 +1,13 @@
 const timeoutPromise = (ms, promise) => {
 	return new Promise(function(resolve, reject) {
 		setTimeout(function() {
-			reject(new Error('Promise Timeout'))
+			reject(timeoutPromise.ERROR)
 		}, ms)
 
-		promise
-			.then((...args) => {
-				resolve(...args)
-			})
-			.catch(e => {
-				reject(e)
-			})
+		promise.then(resolve).catch(reject)
 	})
 }
+
+timeoutPromise.ERROR = Error('Promise Timeout')
 
 export default timeoutPromise
