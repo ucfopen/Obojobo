@@ -16,57 +16,30 @@
 	}
 
 	.link-copy {
-		display: inline;
-		background-color: $color-bg;
 		background-image: url('./copy.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-		border: none;
-		height: 2em;
-		width: 2em;
-		vertical-align: top;
-		padding: 0;
-		margin: 0.4em;
-		cursor: pointer;
-		opacity: 0.6;
-
-		&:hover {
-			opacity: 1;
-		}
 	}
 
 	.link-edit {
-		display: inline;
-		background-color: $color-bg;
 		background-image: url('./edit.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-		border: none;
-		height: 2em;
-		width: 2em;
-		vertical-align: top;
-		padding: 0;
-		margin: 0.4em;
-		cursor: pointer;
-		opacity: 0.6;
-
-		&:hover {
-			opacity: 1;
-		}
 	}
 
 	.link-remove {
+		background-image: url('./unlink.svg');
+	}
+
+	.link-copy,
+	.link-edit,
+	.link-remove {
 		display: inline;
 		background-color: $color-bg;
-		background-image: url('./unlink.svg');
-		background-repeat: no-repeat;
 		background-position: center;
+		background-repeat: no-repeat;
 		border: none;
 		height: 2em;
 		width: 2em;
 		vertical-align: top;
 		padding: 0;
-		margin: 0.4em;
+		margin: 0.2em;
 		cursor: pointer;
 		opacity: 0.6;
 
