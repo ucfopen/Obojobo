@@ -1,10 +1,10 @@
 const timeoutPromise = (ms, promise) => {
-	return new Promise(function(resolve, reject) {
-		setTimeout(function() {
-			reject(timeoutPromise.ERROR)
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			reject(new Error('PTO'))
 		}, ms)
 
-		promise.then(resolve).catch(reject)
+		return promise.then(resolve).catch(reject)
 	})
 }
 

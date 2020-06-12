@@ -14,7 +14,8 @@ const { OboModel } = Common.models
 const { uuid, timeoutPromise } = Common.util
 
 // const SET_RESPONSE_EVENT_SEND_DELAY_MS = 4750
-const SEND_RESPONSE_TIMEOUT_MS = 6000
+// const SEND_RESPONSE_TIMEOUT_MS = 6000
+const SEND_RESPONSE_TIMEOUT_MS = 1000
 
 const getNewContextState = () => {
 	return {
@@ -87,7 +88,22 @@ class QuestionStore extends Store {
 				responseMetadata.sendState = QuestionResponseSendStates.SENDING
 				contextState.sendingResponsePromises[id] = sendResponsePromise
 
-				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise)
+				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise).catch(e => {
+					console.error('ERROR', e)
+
+					delete contextState.sendingResponsePromises[id]
+					contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+					// delete contextState.responses[id]
+
+					Dispatcher.trigger('question:responseSent', {
+						successful: false,
+						id
+					})
+
+					this.triggerChange()
+
+					return false
+				})
 
 				// APIUtil.postEvent({
 				// 	draftId: OboModel.getRoot().get('draftId'),
@@ -530,8 +546,8 @@ class QuestionStore extends Store {
 				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
 				// }
 
-				// const successful = result.response.status === 'ok'
-				const successful = Math.random() > 0.5
+				const successful = result.response.status === 'ok'
+				// const successful = Math.random() > 0.5
 
 				contextState.responseMetadata[id].sendState = successful
 					? QuestionResponseSendStates.RECORDED
