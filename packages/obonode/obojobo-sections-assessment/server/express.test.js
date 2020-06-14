@@ -7,10 +7,15 @@ jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
 jest.mock('obojobo-express/server/express_validators')
 jest.mock('./events')
+jest.mock('obojobo-express/server/config')
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
 const mockCurrentDocument = { draftId: 'mockDraftId' }
-const mockCurrentVisit = { resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview' }
+const mockCurrentVisit = {
+	id: 'mockCurrentVisitId',
+	resource_link_id: 'mockResourceLinkId',
+	is_preview: 'mockIsPreview'
+}
 const bodyParser = require('body-parser')
 const request = require('supertest')
 const { reviewAttempt } = require('./attempt-review')
@@ -25,7 +30,8 @@ const {
 	requireCurrentVisit,
 	requireAttemptId,
 	requireCurrentUser,
-	requireAssessmentId
+	requireAssessmentId,
+	checkValidationRules
 } = require('obojobo-express/server/express_validators')
 const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
@@ -37,6 +43,9 @@ describe('server/express', () => {
 		jest.resetAllMocks()
 
 		// mock all the validators
+		const commonValidationMock = (req, res, next) => {
+			next()
+		}
 		requireCurrentDocument.mockImplementation((req, res, next) => {
 			req.currentDocument = mockCurrentDocument
 			next()
@@ -51,14 +60,9 @@ describe('server/express', () => {
 			req.currentUser = mockCurrentUser
 			next()
 		})
-
-		requireAssessmentId.mockImplementation((req, res, next) => {
-			next()
-		})
-
-		requireAttemptId.mockImplementation((req, res, next) => {
-			next()
-		})
+		checkValidationRules.mockImplementation(commonValidationMock)
+		requireAssessmentId.mockImplementation(commonValidationMock)
+		requireAttemptId.mockImplementation(commonValidationMock)
 
 		// init the server
 		app = express()
@@ -122,7 +126,8 @@ describe('server/express', () => {
 					mockCurrentDocument,
 					'mockAssessmentId',
 					mockCurrentVisit.is_preview,
-					mockCurrentVisit.resource_link_id
+					mockCurrentVisit.resource_link_id,
+					mockCurrentVisit.id
 				)
 				// verify the response body
 				expect(response.body).toEqual({
@@ -320,7 +325,14 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/attempt/review', () => {
 		expect.hasAssertions()
-		const returnValue = {}
+		// mock the id keyed objects returned by review attempt
+		const returnValue = {
+			'mock-attempt-id': { 'mock-question-id': { id: 'mock-question-id' } },
+			'mock-attempt-id2': {
+				'mock-question-id-2': { id: 'mock-question-id-2' },
+				'mock-question-id-3': { id: 'mock-question-id-3' }
+			}
+		}
 		reviewAttempt.mockResolvedValueOnce(returnValue)
 
 		return request(app)
@@ -329,8 +341,22 @@ describe('server/express', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(requireCurrentUser).toHaveBeenCalledTimes(1)
-				expect(requireAttemptId).toHaveBeenCalledTimes(1)
-				expect(response.body).toEqual(returnValue)
+				expect(checkValidationRules).toHaveBeenCalledTimes(1)
+				// expect the result to be ARRAYS not id keyed objects
+				expect(response.body).toEqual([
+					{
+						attemptId: 'mock-attempt-id',
+						questions: [
+							{
+								id: 'mock-question-id'
+							}
+						]
+					},
+					{
+						attemptId: 'mock-attempt-id2',
+						questions: [{ id: 'mock-question-id-2' }, { id: 'mock-question-id-3' }]
+					}
+				])
 			})
 	})
 

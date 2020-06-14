@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClipboardPlugin plugins.apply deletes models when deleting 1`] = `
+Object {
+  "mockId1": Object {
+    "type": "mockNode1",
+  },
+  "mockId3": Object {
+    "type": "mockNode3",
+  },
+}
+`;
+
+exports[`ClipboardPlugin plugins.apply does not delete when merging non-obonodes 1`] = `
+Object {
+  "mockId1": Object {
+    "type": "mockNode1",
+  },
+  "mockId2": Object {
+    "type": "mockNode2",
+  },
+  "mockId3": Object {
+    "type": "mockNode3",
+  },
+}
+`;

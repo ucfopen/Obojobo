@@ -134,10 +134,10 @@ const unorderedDefaultBulletStyles = [
 
 const orderedDefaultBulletStyles = [
 	ListStyles.STYLE_NUMERIC,
-	ListStyles.STYLE_UPPERCASE_LETTER,
-	ListStyles.STYLE_UPPERCASE_ROMAN,
 	ListStyles.STYLE_LOWERCASE_LETTER,
-	ListStyles.STYLE_LOWERCASE_ROMAN
+	ListStyles.STYLE_LOWERCASE_ROMAN,
+	ListStyles.STYLE_UPPERCASE_LETTER,
+	ListStyles.STYLE_UPPERCASE_ROMAN
 ]
 
 ListStyles.UNORDERED_LIST_BULLETS = unorderedDefaultBulletStyles

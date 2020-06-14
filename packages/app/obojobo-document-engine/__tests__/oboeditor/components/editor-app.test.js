@@ -1,4 +1,4 @@
-jest.mock('../../../src/scripts/oboeditor/components/page-editor')
+jest.mock('../../../src/scripts/oboeditor/components/visual-editor')
 jest.mock('../../../src/scripts/oboeditor/components/code-editor')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/oboeditor/stores/editor-store')
@@ -33,7 +33,7 @@ describe('EditorApp', () => {
 		jest.resetModules()
 
 		EditorUtil = require('../../../src/scripts/oboeditor/util/editor-util').default
-		APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+		APIUtil = require('../../../src/scripts/viewer/util/api-util')
 		EditorStore = require('../../../src/scripts/oboeditor/stores/editor-store').default
 		ModalStore = require('../../../src/scripts/common/stores/modal-store').default
 		ModalUtil = require('../../../src/scripts/common/util/modal-util').default
@@ -164,6 +164,30 @@ describe('EditorApp', () => {
 			expect(ModalStore.getState).toHaveBeenCalled()
 
 			component.unmount()
+		})
+	})
+
+	test('onEditorStoreChange calls Editor.getState', () => {
+		expect.hasAssertions()
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({
+			component: 'mock component'
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
+
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+
+		return global.flushPromises().then(() => {
+			component.update()
+			EditorStore.getState.mockClear()
+			component.instance().onEditorStoreChange()
+			expect(EditorStore.getState).toHaveBeenCalled()
+			expect(instance.state).toHaveProperty('requestStatus', null)
+			expect(instance.state).toHaveProperty('requestError', null)
+			// eslint-disable-next-line no-console
 		})
 	})
 

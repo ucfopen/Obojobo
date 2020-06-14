@@ -2,6 +2,7 @@ const db = oboRequire('server/db')
 const permissions = oboRequire('server/config').permissions
 const crypto = require('crypto')
 const oboEvents = oboRequire('server/obo_events')
+const copyAttributesFn = require('obojobo-document-engine/src/scripts/common/util/clone-props')
 
 class User {
 	constructor({
@@ -128,12 +129,10 @@ class User {
 	}
 
 	toJSON() {
-		const userObj = {}
-		Object.keys(this).forEach(k => {
-			userObj[k] = this[k]
-		})
-		userObj.avatarUrl = this.avatarUrl
-		return userObj
+		const allowedKeys = ['id', 'firstName', 'lastName', 'username', 'roles', 'avatarUrl']
+		const safeUser = {}
+		copyAttributesFn(safeUser, this, allowedKeys)
+		return safeUser
 	}
 }
 

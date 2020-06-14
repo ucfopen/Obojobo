@@ -2,6 +2,7 @@ require('./default.scss')
 
 const React = require('react')
 const Footer = require('./footer')
+const reactVersion = '16.13.1'
 
 const LayoutDefault = props => (
 	<html lang="en">
@@ -34,12 +35,16 @@ const LayoutDefault = props => (
 			{props.appScriptUrl ? (
 				<React.Fragment>
 					<script
-						crossOrigin="true"
-						src="https://unpkg.com/react@16/umd/react.development.js"
+						crossOrigin={props.isDev ? 'true' : false}
+						src={`//unpkg.com/react@${reactVersion}/umd/react.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
 					></script>
 					<script
-						crossOrigin="true"
-						src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+						crossOrigin={props.isDev ? 'true' : false}
+						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
 					></script>
 					<script src={props.appScriptUrl}></script>
 				</React.Fragment>
@@ -49,6 +54,7 @@ const LayoutDefault = props => (
 )
 
 LayoutDefault.defaultProps = {
+	isDev: false,
 	headerJs: []
 }
 

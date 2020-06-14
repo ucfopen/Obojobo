@@ -18,6 +18,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const NAV_CLOSE_DURATION_MS = 400
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 30 // 30 minutes in milliseconds
@@ -111,7 +112,8 @@ export default class ViewerApp extends React.Component {
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel }) => {
+			.then(injectKatexIfNeeded)
+			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
@@ -122,6 +124,7 @@ export default class ViewerApp extends React.Component {
 					visitIdFromApi,
 					viewState
 				)
+
 				AssessmentStore.init(attemptHistory)
 				enableWindowCloseDispatcher()
 				window.onresize = this.onResize

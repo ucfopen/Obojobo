@@ -134,7 +134,7 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test('init builds with history (populates models and state, shows dialog for unfinished attempt', () => {
+	test('init builds with history (populates models and state)', () => {
 		OboModel.create({
 			id: 'question1',
 			type: 'ObojoboDraft.Chunks.Question'
@@ -161,23 +161,11 @@ describe('AssessmentStore', () => {
 							assessmentScore: 100
 						},
 						questionScores: [{ id: 'question1' }, { id: 'question2' }],
-						isFinished: true
-					},
-					{
-						assessmentId: 'assessmentId',
-						startTime: '1/2/2017 00:05:00',
-						endTime: '1/2/2017 0:05:20',
-						state: {
-							questions: [
-								{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
-								{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
-							]
-						},
-						result: {
-							assessmentScore: 100
-						},
-						questionScores: [{ id: 'question1' }, { id: 'question2' }],
-						isFinished: false
+						isFinished: true,
+						responses: [
+							{ id: 'question1', response: 'choice1' },
+							{ id: 'question2', response: 'choice2' }
+						]
 					}
 				]
 			}
@@ -201,9 +189,70 @@ describe('AssessmentStore', () => {
 									{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
 									{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
 								]
+							},
+							responses: {
+								question1: 'choice1',
+								question2: 'choice2'
 							}
 						}
 					],
+					current: null,
+					currentResponses: [],
+					highestAssessmentScoreAttempts: undefined,
+					highestAttemptScoreAttempts: undefined,
+					id: 'assessmentId',
+					isShowingAttemptHistory: false,
+					lti: undefined,
+					ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
+					ltiNetworkState: LTINetworkStates.IDLE
+				}
+			}
+		})
+
+		expect(Object.keys(OboModel.models).length).toEqual(2)
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
+	test('init builds with history (shows dialog for unfinished attempt)', () => {
+		OboModel.create({
+			id: 'question1',
+			type: 'ObojoboDraft.Chunks.Question'
+		})
+		OboModel.create({
+			id: 'question2',
+			type: 'ObojoboDraft.Chunks.Question'
+		})
+		const history = [
+			{
+				assessmentId: 'assessmentId',
+				attempts: [
+					{
+						assessmentId: 'assessmentId',
+						startTime: '1/2/2017 00:05:00',
+						endTime: '1/2/2017 0:05:20',
+						state: {
+							questions: [
+								{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
+								{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
+							]
+						},
+						result: {
+							assessmentScore: 100
+						},
+						questionScores: [{ id: 'question1' }, { id: 'question2' }],
+						isFinished: false,
+						responses: []
+					}
+				]
+			}
+		]
+
+		AssessmentStore.init(history)
+
+		expect(AssessmentStore.getState()).toEqual({
+			assessments: {
+				assessmentId: {
+					attempts: [],
 					current: null,
 					currentResponses: [],
 					highestAssessmentScoreAttempts: undefined,
@@ -716,7 +765,8 @@ describe('AssessmentStore', () => {
 						assessmentScore: null,
 						state: {
 							questions: []
-						}
+						},
+						responses: []
 					}
 				]
 			}

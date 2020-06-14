@@ -6,26 +6,24 @@
 			const title = 'Obojobo Next Document Viewer'
 			const css = [
 				webpackAssetPath('viewer.css'),
-				'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
 			]
 			const headerJs = []
 			const footerJs = [
-				assetForEnv('//unpkg.com/react@16.10.1/umd/react.$[development|production.min].js'),
-				assetForEnv('//unpkg.com/react-dom@16.10.1/umd/react-dom.$[development|production.min].js'),
-				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore$[-min].js'),
+				assetForEnv('//unpkg.com/react@16.13.1/umd/react.$[development|production.min].js'),
+				assetForEnv('//unpkg.com/react-dom@16.13.1/umd/react-dom.$[development|production.min].js'),
+				assetForEnv('//unpkg.com/underscore@1.10.2/underscore$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
-				'//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js',
 				webpackAssetPath('viewer.js')
 			]
 			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i']
 		%>
-		<%- include ./partials/head %>
+		<%- include('./partials/head', {title, css, fonts, headerJs}) %>
 </head>
 
 <body>
 	<div id="viewer-app"></div>
 	<div id="viewer-app-loading">
-		<%- include ./partials/loading %>
+		<%- include('./partials/loading') %>
 	</div>
 	<%
 		if (typeof inlines !== 'undefined')

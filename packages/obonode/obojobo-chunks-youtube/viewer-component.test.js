@@ -7,6 +7,10 @@ import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-mode
 jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => {
 	return () => 'mockId'
 })
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag', () => () => {
+	// simulate loading the youtube iframe api
+	global.window.onYouTubeIframeAPIReady()
+})
 
 require('./viewer') // used to register this oboModel
 

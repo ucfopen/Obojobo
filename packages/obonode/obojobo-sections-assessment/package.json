@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-sections-assessment",
-	"version": "7.1.5",
+	"version": "9.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "Assessment section for Obojobo",
 	"scripts": {
@@ -17,8 +17,7 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"prettier": {
@@ -28,11 +27,11 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^7.1.5",
-		"obojobo-lib-utils": "^7.1.5"
+		"obojobo-document-engine": "^9.1.0",
+		"obojobo-lib-utils": "^9.1.0"
 	},
 	"devDependencies": {
-		"lint-staged": "^9.4.1"
+		"lint-staged": "^10.2.6"
 	},
 	"jest": {
 		"testMatch": [

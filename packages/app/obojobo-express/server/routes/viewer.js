@@ -60,7 +60,8 @@ router
 						sessionIds: getSessionIds(req.session),
 						visitId,
 						extensions: { deactivatedVisitId }
-					})
+					}),
+					visitId
 				})
 			})
 			.then(req.saveSessionPromise)

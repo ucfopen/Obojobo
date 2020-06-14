@@ -2,34 +2,45 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import { ReactEditor } from 'slate-react'
+import { Transforms, Editor } from 'slate'
+
 import YouTubeProperties from './youtube-properties-modal'
 import YouTubePlayer from './youtube-player'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
-import EditableHiddenText from 'obojobo-document-engine/src/scripts/oboeditor/components/editable-hidden-text'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
 
 class YouTube extends React.Component {
+	constructor(props) {
+		super(props)
+		this.handleSourceChange = this.handleSourceChange.bind(this)
+		this.focusYoutube = this.focusYoutube.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.showSourceModal = this.showSourceModal.bind(this)
+		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
+		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+	}
 	showSourceModal(event) {
 		event.stopPropagation()
 
 		ModalUtil.show(
-			<YouTubeProperties
-				content={this.props.node.data.get('content')}
-				onConfirm={this.handleSourceChange.bind(this)}
-			/>
+			<YouTubeProperties content={this.props.element.content} onConfirm={this.handleSourceChange} />
 		)
 	}
 
 	handleSourceChange(content) {
-		const editor = this.props.editor
-
-		editor.setNodeByKey(this.props.node.key, {
-			data: { content }
-		})
+		ModalUtil.hide()
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...content } },
+			{ at: path }
+		)
 	}
 
 	renderNoVideo() {
@@ -41,37 +52,72 @@ class YouTube extends React.Component {
 	}
 
 	renderVideo() {
-		return <YouTubePlayer content={this.props.node.data.get('content')} />
+		return <YouTubePlayer content={this.props.element.content} />
 	}
 
 	deleteNode() {
-		const editor = this.props.editor
-		editor.removeNodeByKey(this.props.node.key)
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.removeNodes(this.props.editor, { at: path })
+	}
+
+	focusYoutube() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const start = Editor.start(this.props.editor, path)
+		Transforms.setSelection(this.props.editor, {
+			focus: start,
+			anchor: start
+		})
+	}
+
+	returnFocusOnTab(event) {
+		if (event.key === 'Tab' && !event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
+	}
+
+	returnFocusOnShiftTab(event) {
+		if (event.key === 'Tab' && event.shiftKey) {
+			event.preventDefault()
+			return ReactEditor.focus(this.props.editor)
+		}
 	}
 
 	render() {
-		const content = this.props.node.data.get('content')
+		const content = this.props.element.content
 
-		const isSelected = isOrNot(this.props.isSelected, 'selected')
+		const isSelected = isOrNot(this.props.selected, 'selected')
 
 		return (
 			<Node {...this.props}>
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
+					onClick={this.focusYoutube}
 				>
-					<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+					<Button
+						className="delete-button"
+						onClick={this.deleteNode}
+						onKeyDown={this.returnFocusOnShiftTab}
+						tabIndex={this.props.selected ? 0 : -1}
+					>
 						×
 					</Button>
 					{content.videoId ? this.renderVideo() : this.renderNoVideo()}
-					<EditableHiddenText>{this.props.children}</EditableHiddenText>
-					<Button className="edit-button" onClick={this.showSourceModal.bind(this)}>
+					<Button
+						className="edit-button"
+						onClick={this.showSourceModal}
+						onKeyDown={this.returnFocusOnTab}
+						tabIndex={this.props.selected ? 0 : -1}
+					>
 						Edit
 					</Button>
+
+					{this.props.children}
 				</div>
 			</Node>
 		)
 	}
 }
 
-export default YouTube
+export default withSlateWrapper(YouTube)

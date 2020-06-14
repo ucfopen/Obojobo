@@ -9,22 +9,11 @@ import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
-import { KeyUtils } from 'slate'
-import PageEditor from './page-editor'
+import VisualEditor from './visual-editor'
 import React from 'react'
-import generateId from '../generate-ids'
 import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
-
-// PLUGINS
-import ClipboardPlugin from '../plugins/clipboard-plugin'
-import EditorSchema from '../plugins/editor-schema'
-import Component from './node/editor'
-import SelectParameter from './parameter-node/select-parameter'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
-import MarkToolbar from './toolbars/content-toolbar'
 
 const ModalContainer = Common.components.ModalContainer
 const ModalUtil = Common.util.ModalUtil
@@ -34,16 +23,6 @@ const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
-
-const plugins = [
-	Component.plugins,
-	MarkToolbar.plugins,
-	ToggleParameter.plugins,
-	SelectParameter.plugins,
-	TextParameter.plugins,
-	EditorSchema,
-	ClipboardPlugin
-]
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -72,15 +51,8 @@ class EditorApp extends React.Component {
 			idleMs: msPerMin * locks.idleMinutes
 		}
 
-		// register plugins from dynamic registry items
-		Common.Registry.getItems(items => {
-			items.forEach(i => {
-				if (i.plugins) plugins.push(i.plugins)
-			})
-		})
-
 		// Make Slate nodes generate with UUIDs
-		KeyUtils.setGenerator(generateId)
+		//KeyUtils.setGenerator(generateId)
 
 		// === SET UP DATA STORES ===
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
@@ -115,6 +87,7 @@ class EditorApp extends React.Component {
 	}
 
 	getVisualEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const json = JSON.parse(draftModel)
 		const obomodel = OboModel.create(json)
 		EditorStore.init(
@@ -136,6 +109,7 @@ class EditorApp extends React.Component {
 	}
 
 	getCodeEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const obomodel = OboModel.create({
 			type: 'ObojoboDraft.Modules.Module',
 			content: {
@@ -307,7 +281,7 @@ class EditorApp extends React.Component {
 
 	renderVisualEditor() {
 		return (
-			<PageEditor
+			<VisualEditor
 				page={this.state.editorState.currentPageModel}
 				navState={this.state.editorState}
 				context={this.state.editorState.context}

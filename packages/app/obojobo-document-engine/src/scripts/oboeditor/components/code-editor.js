@@ -1,36 +1,32 @@
-import React from 'react'
-
 import './code-editor.scss'
-// Allows codemirror to work properly
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
-import 'codemirror/mode/xml/xml'
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/addon/fold/foldcode'
-import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/addon/fold/xml-fold.js'
-import { Controlled as CodeMirror } from 'react-codemirror2'
 
+import React, { Suspense } from 'react'
+import APIUtil from '../../../scripts/viewer/util/api-util'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
-import hotKeyPlugin from '../plugins/hot-key-plugin'
+import ModalUtil from '../../common/util/modal-util'
+import SimpleDialog from '../../common/components/modal/simple-dialog'
+import EditorTitleInput from './editor-title-input'
+
+const CodeMirror = React.lazy(() =>
+	import(/* webpackChunkName: "code-mirror" */ './code-mirror-bundle')
+)
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
-
-const domParser = new DOMParser()
-const serial = new XMLSerializer()
 
 class CodeEditor extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			code: this.props.initialCode,
+			code: props.initialCode,
+			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
 			saved: true,
 			editor: null,
-			mode: props.mode,
 			options: {
 				lineNumbers: true,
 				mode: this.getCodeMirrorMode(props.mode),
@@ -46,14 +42,12 @@ class CodeEditor extends React.Component {
 		}
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
-		this.saveCode = this.saveCode.bind(this)
-		this.setTitle = this.setTitle.bind(this)
+		this.saveAndGetTitleFromCode = this.saveAndGetTitleFromCode.bind(this)
+		this.reload = this.reload.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
-		this.onKeyUp = this.onKeyUp.bind(this)
-		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.saveAndSetNewTitleInCode = this.saveAndSetNewTitleInCode.bind(this)
 
-		this.keyBinding = hotKeyPlugin(this.saveCode)
 		this.setEditor = this.setEditor.bind(this)
 	}
 
@@ -79,53 +73,59 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
-	setJSONTitle(code, title) {
-		const json = JSON.parse(code)
-		json.content.title = title
-		return { code: JSON.stringify(json, null, 4) }
+	setTitleInCode(code, mode, title) {
+		switch (mode) {
+			case JSON_MODE:
+				return EditorUtil.setModuleTitleInJSON(code, title)
+
+			case XML_MODE:
+				return EditorUtil.setModuleTitleInXML(code, title)
+		}
 	}
 
-	setXMLTitle(code, title) {
-		const doc = domParser.parseFromString(code, 'application/xml')
-		let els = doc.getElementsByTagName('Module')
-		if (els.length === 0) {
-			els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
-		}
-		if (els.length > 0) {
-			const el = els[0]
-			el.setAttribute('title', title)
-		}
-		return { code: serial.serializeToString(doc) }
-	}
+	saveAndSetNewTitleInCode(newTitle) {
+		const { mode, draftId } = this.props
+		const newCode = this.setTitleInCode(this.state.code, mode, newTitle)
 
-	setTitle(title) {
-		return this.setState((state, props) => {
-			switch (props.mode) {
-				case JSON_MODE:
-					return this.setJSONTitle(state.code, title)
-
-				case XML_MODE:
-					return this.setXMLTitle(state.code, title)
-			}
+		this.setState({
+			title: newTitle,
+			code: newCode
 		})
+
+		return this.sendSave(draftId, newCode, mode)
 	}
 
-	saveCode() {
+	reload() {
+		window.removeEventListener('beforeunload', this.checkIfSaved)
+		location.reload()
+	}
+
+	saveAndGetTitleFromCode() {
 		// Update the title in the File Toolbar
-		let label = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
-		EditorUtil.renamePage(this.props.model.id, label)
-		return this.props
-			.saveDraft(this.props.draftId, this.state.code, this.props.mode)
-			.then(success => {
-				this.setState({ saved: success })
+		const title = EditorUtil.getTitleFromString(this.state.code, this.props.mode)
+		this.setState({ title })
+
+		return this.sendSave(this.props.draftId, this.state.code, this.props.mode)
+	}
+
+	sendSave(draftId, code, mode) {
+		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
+		return APIUtil.postDraft(draftId, code, format)
+			.then(result => {
+				if (result.status !== 'ok') throw Error(result.value.message)
+
+				this.setState({ saved: true })
+			})
+			.catch(e => {
+				if (e instanceof Error) e = e.message
+				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
 			})
 	}
 
 	// Makes CodeMirror commands match Slate commands
 	convertCodeMirrorToEditor(codeMirror) {
 		const editor = codeMirror
-		editor.moveToRangeOfDocument = () => {
+		editor.selectAll = () => {
 			const lastInfo = editor.lineInfo(editor.lastLine())
 			editor.setSelection(
 				{ line: editor.firstLine(), ch: 0 },
@@ -134,11 +134,11 @@ class CodeEditor extends React.Component {
 			return editor
 		}
 		editor.focus = () => editor
-		editor.delete = () => {
+		editor.deleteFragment = () => {
 			editor.deleteH(1, 'char')
 			return editor
 		}
-		return { current: editor }
+		return editor
 	}
 
 	getCodeMirrorMode(mode) {
@@ -152,17 +152,21 @@ class CodeEditor extends React.Component {
 
 	onKeyDown(event) {
 		if (!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
-	}
 
-	onKeyUp(event) {
-		if (!this.state.editor) return
-		this.keyBinding.onKeyUp(event, this.state.editor.current, () => null)
-	}
+		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.saveAndGetTitleFromCode()
+		}
 
-	onKeyPress(event) {
-		if (!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
+		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.state.editor.undo()
+		}
+
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			this.state.editor.redo()
+		}
 	}
 
 	setEditor(editor) {
@@ -171,34 +175,29 @@ class CodeEditor extends React.Component {
 
 	render() {
 		return (
-			<div
-				className={'component editor--code-editor'}
-				onKeyDown={this.onKeyDown}
-				onKeyUp={this.onKeyUp}
-				onKeyPress={this.onKeyPress}
-			>
+			<div className={'component editor--code-editor'} onKeyDown={this.onKeyDown}>
 				<div className="draft-toolbars">
-					<div className="draft-title">{this.props.model.title}</div>
+					<EditorTitleInput title={this.state.title} renameModule={this.saveAndSetNewTitleInCode} />
 					{this.state.editor ? (
 						<FileToolbar
-							editorRef={this.state.editor}
-							model={this.props.model}
+							editor={this.state.editor}
+							title={this.state.title}
 							draftId={this.props.draftId}
-							onSave={this.saveCode}
-							onRename={this.setTitle}
 							switchMode={this.props.switchMode}
+							onSave={this.saveAndGetTitleFromCode}
 							saved={this.state.saved}
 							mode={this.props.mode}
-							insertableItems={this.props.insertableItems}
 						/>
 					) : null}
 				</div>
-				<CodeMirror
-					options={this.state.options}
-					value={this.state.code}
-					onBeforeChange={this.onBeforeChange}
-					editorDidMount={this.setEditor}
-				/>
+				<Suspense fallback={<div>Loading...</div>}>
+					<CodeMirror
+						options={this.state.options}
+						value={this.state.code}
+						onBeforeChange={this.onBeforeChange}
+						editorDidMount={this.setEditor}
+					/>
+				</Suspense>
 			</div>
 		)
 	}

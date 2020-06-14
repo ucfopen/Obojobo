@@ -54,12 +54,6 @@ class ViewMenu extends React.PureComponent {
 				name: 'Preview Module',
 				type: 'action',
 				action: () => window.open(previewURL, '_blank')
-			},
-			{
-				name: 'Show Placeholders',
-				type: 'toggle-action',
-				action: this.props.togglePlaceholders,
-				value: this.props.showPlaceholders
 			}
 		]
 

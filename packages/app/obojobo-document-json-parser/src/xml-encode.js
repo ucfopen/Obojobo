@@ -1,7 +1,14 @@
-const xmlEncode = string => {
-	string = string + ''
+const xmlEncode = str => {
+	str = str + ''
 
-	return string.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+	const replacements = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		"'": '&#39;',
+		'"': '&#34;'
+	}
+	return str.replace(/[&<>'"]/g, match => replacements[match])
 }
 
 module.exports = xmlEncode

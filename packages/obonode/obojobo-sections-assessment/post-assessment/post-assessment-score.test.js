@@ -7,6 +7,18 @@ import PostAssessmentScore from './post-assessment-score'
 jest.mock('obojobo-pages-page/editor')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
+
 describe('Actions editor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -15,12 +27,8 @@ describe('Actions editor', () => {
 	test('Score component', () => {
 		const component = renderer.create(
 			<PostAssessmentScore
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
+				element={{
+					content: { for: '[0,100]' }
 				}}
 			/>
 		)
@@ -30,7 +38,7 @@ describe('Actions editor', () => {
 	})
 
 	test('Score component changes range', () => {
-		const component = shallow(<PostAssessmentScore node={{ data: { get: () => ({}) } }} />)
+		const component = shallow(<PostAssessmentScore element={{ content: { for: '[0,100]' } }} />)
 		const tree = component.html()
 
 		component
@@ -43,35 +51,21 @@ describe('Actions editor', () => {
 	})
 
 	test('changeRange updates the range', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-		const component = shallow(
-			<PostAssessmentScore node={{ data: { get: () => ({}) } }} editor={editor} />
-		)
+		const component = shallow(<PostAssessmentScore element={{ content: { for: '[0,100]' } }} />)
 		const tree = component.html()
 
 		component.instance().changeRange('mock range')
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
 	test('Score component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
 		const component = shallow(
 			<PostAssessmentScore
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
+				element={{
+					content: { for: '[0,100]' }
 				}}
-				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -79,6 +73,6 @@ describe('Actions editor', () => {
 		component.find('.delete-button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 })

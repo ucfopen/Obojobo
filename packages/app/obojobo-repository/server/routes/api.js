@@ -50,10 +50,10 @@ router
 			res.success([])
 			return
 		}
-
 		try {
 			const users = await searchForUserByString(req.query.q)
-			res.success(users)
+			const filteredUsers = users.map(u => u.toJSON())
+			res.success(filteredUsers)
 		} catch (error) {
 			res.unexpected(error)
 		}
@@ -76,7 +76,10 @@ router
 			}
 
 			const oldDraft = await Draft.fetchById(draftId)
-			const newDraft = await Draft.createWithContent(userId, oldDraft.root.toObject())
+			const draftObject = oldDraft.root.toObject()
+			const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
+			draftObject.content.title = newTitle
+			const newDraft = await Draft.createWithContent(userId, draftObject)
 
 			const draftMetadata = new DraftsMetadata({
 				draft_id: newDraft.id,
@@ -101,7 +104,7 @@ router
 				})
 			])
 
-			res.success()
+			res.success({ draftId: newDraft.id })
 		} catch (e) {
 			res.unexpected(e)
 		}

@@ -1,4 +1,4 @@
-import API from './api'
+const API = require('./api')
 
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
@@ -87,7 +87,21 @@ const APIUtil = {
 	},
 
 	reviewAttempt(attemptIds) {
-		return API.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
+		return API.post(`/api/assessments/attempt/review`, { attemptIds })
+			.then(processJsonResults)
+			.then(attemptArray => {
+				// quick fix - converts arrays sent by the api to expected object hash with ids as keys
+				const attemptHash = {}
+				attemptArray.forEach(attempt => {
+					const questionHash = {}
+					attempt.questions.forEach(question => {
+						questionHash[question.id] = question
+					})
+					attemptHash[attempt.attemptId] = questionHash
+				})
+
+				return attemptHash
+			})
 	},
 
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
@@ -109,8 +123,12 @@ const APIUtil = {
 		return API.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
 	},
 
-	createNewDraft() {
-		return API.post(`/api/drafts/new`).then(processJsonResults)
+	// If `content` and `format` are not specified, the default draft will be created
+	createNewDraft(content, format) {
+		return API.post(`/api/drafts/new`, {
+			content,
+			format
+		}).then(processJsonResults)
 	},
 
 	deleteDraft(draftId) {
@@ -127,7 +145,11 @@ const APIUtil = {
 
 	deleteLockBeacon(draftId) {
 		navigator.sendBeacon(`/api/locks/${draftId}/delete`)
+	},
+
+	copyDraft(draftId, newTitle) {
+		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(processJsonResults)
 	}
 }
 
-export default APIUtil
+module.exports = APIUtil

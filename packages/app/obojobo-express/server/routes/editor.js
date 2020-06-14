@@ -12,7 +12,7 @@ const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 // Display the visual editor
 // mounted as /editor/draftId/page
 router
-	.route('/visual|classic/:draftId/:page?')
+	.route('/visual/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
 	.get((req, res) => {
 		const options = {

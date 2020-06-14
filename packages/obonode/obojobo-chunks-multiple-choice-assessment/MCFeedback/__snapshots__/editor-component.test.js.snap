@@ -18,5 +18,3 @@ exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
   </span>
 </div>
 `;
-
-exports[`MCFeedback Editor Node MCFeedback component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"delete-button\\">×</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;

@@ -512,6 +512,79 @@ describe('api draft route', () => {
 			})
 	})
 
+	test('new draft with "application/json" returns success', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+
+		return request(app)
+			.post('/api/drafts/new')
+			.send({ content: 'mockContent', format: 'application/json' })
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+			})
+	})
+
+	test('new draft with "application/xml" returns success', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		xml.mockReturnValueOnce({})
+
+		return request(app)
+			.post('/api/drafts/new')
+			.send({
+				content: 'mockContent',
+				format: 'application/xml'
+			})
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(xml).toHaveBeenCalled()
+			})
+	})
+
+	test('new draft with invalid xml', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		xml.mockReturnValueOnce(null)
+
+		return request(app)
+			.post('/api/drafts/new')
+			.accept('text/plain')
+			.send({ content: 'mockCont222ent', format: 'application/xml' })
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
+	test('new draft with invalid xml', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		xml.mockImplementation(() => {
+			throw new Error()
+		})
+
+		return request(app)
+			.post('/api/drafts/new')
+			.accept('text/plain')
+			.send({ content: 'mockCont222ent', format: 'application/xml' })
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
 	test('new draft requires a login', () => {
 		expect.assertions(5)
 		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user

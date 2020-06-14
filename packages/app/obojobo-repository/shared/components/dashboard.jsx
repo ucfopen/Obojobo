@@ -121,6 +121,7 @@ const Dashboard = props => {
 						<MultiButton title="New Module">
 							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
 							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
+							<Button onClick={props.importModuleFile}>Upload...</Button>
 						</MultiButton>
 						<Search
 							value={props.moduleSearchString}
