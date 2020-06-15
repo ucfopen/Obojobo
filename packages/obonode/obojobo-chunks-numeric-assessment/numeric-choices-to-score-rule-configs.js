@@ -5,13 +5,6 @@ module.exports = numericChoices => {
 		const score = parseFloat(choice.score)
 
 		switch (choice.requirement) {
-			case 'exact':
-				return {
-					value: choice.answer,
-					feedback: choice.feedback || null,
-					score
-				}
-
 			case 'range':
 				return {
 					value: `[${choice.start},${choice.end}]`,
@@ -38,6 +31,14 @@ module.exports = numericChoices => {
 						}
 				}
 				break
+
+			case 'exact':
+			default:
+				return {
+					value: choice.answer,
+					feedback: choice.feedback || null,
+					score
+				}
 		}
 	})
 }
