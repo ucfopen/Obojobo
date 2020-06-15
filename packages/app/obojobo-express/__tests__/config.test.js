@@ -86,7 +86,7 @@ describe('config', () => {
 
 		oboRequire('server/config')
 		expect(logger.error).toHaveBeenLastCalledWith(
-			'Error: Missing config environment for "default" and "test" for /Users/iturgeon/git/Obojobo/packages/app/obojobo-express/server/config/db.json'
+			expect.stringContaining('Error: Missing config environment for "default" and "test" for')
 		)
 	})
 

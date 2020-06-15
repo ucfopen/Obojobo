@@ -25,15 +25,15 @@
 	},
 	"test": {
 		"key": "value",
-		"hostname": "obojobo.ucf.edu",
-		"editLocks": {
-			"idleMinutes": 45,
-			"warnMinutes": 40,
-			"autoExpireMinutes":5
-		}
+		"hostname": "obojobo.ucf.edu"
 	},
 	"development": {
-		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
+		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET",
+		"editLocks": {
+			"idleMinutes": 10,
+			"warnMinutes": 5,
+			"autoExpireMinutes": 5
+		}
 	},
 	"production": {
 		"secureCookie": {"ENV": "OBO_COOKIE_SECURE"},
