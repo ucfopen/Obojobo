@@ -16,6 +16,7 @@ exports[`Actions editor Node component 1`] = `
       className="button"
       contentEditable={false}
       onClick={[Function]}
+      type="button"
     >
       Add Action
     </button>
@@ -23,4 +24,4 @@ exports[`Actions editor Node component 1`] = `
 </div>
 `;
 
-exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Action</button></div></div>"`;
+exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Add Action</button></div></div>"`;

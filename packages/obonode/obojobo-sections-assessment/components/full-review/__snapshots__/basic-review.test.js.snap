@@ -161,8 +161,6 @@ exports[`BasicReview Basic component correct 1`] = `
               },
             ],
             "content": Object {
-              "correctLabels": null,
-              "incorrectLabels": null,
               "responseType": "pick-one",
               "shuffle": true,
             },
@@ -173,6 +171,8 @@ exports[`BasicReview Basic component correct 1`] = `
           },
         ],
         "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
           "solution": Object {
             "children": Array [
               Object {
@@ -384,8 +384,6 @@ exports[`BasicReview Basic component incorrect 1`] = `
               },
             ],
             "content": Object {
-              "correctLabels": null,
-              "incorrectLabels": null,
               "responseType": "pick-one",
               "shuffle": true,
             },
@@ -396,6 +394,8 @@ exports[`BasicReview Basic component incorrect 1`] = `
           },
         ],
         "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
           "solution": Object {
             "children": Array [
               Object {
@@ -607,8 +607,6 @@ exports[`BasicReview Basic component survey 1`] = `
               },
             ],
             "content": Object {
-              "correctLabels": null,
-              "incorrectLabels": null,
               "responseType": "pick-one",
               "shuffle": true,
             },
@@ -619,6 +617,8 @@ exports[`BasicReview Basic component survey 1`] = `
           },
         ],
         "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
           "solution": Object {
             "children": Array [
               Object {

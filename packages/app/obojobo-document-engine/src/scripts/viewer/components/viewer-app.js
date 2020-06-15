@@ -16,7 +16,6 @@ import NavUtil from '../util/nav-util'
 import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import VariableStore from '../stores/variable-store'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 
 import ModalPortal from '../../common/components/modal-portal'
@@ -90,10 +89,6 @@ export default class ViewerApp extends React.Component {
 			this.setState({
 				mediaState: MediaStore.getState()
 			})
-		this.onVariableStoreChange = () =>
-			this.setState({
-				variableState: VariableStore.getState()
-			})
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
@@ -116,7 +111,6 @@ export default class ViewerApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 		FocusStore.onChange(this.onFocusStoreChange)
 		MediaStore.onChange(this.onMediaStoreChange)
-		VariableStore.onChange(this.onVariableStoreChange)
 	}
 
 	componentDidMount() {
@@ -137,7 +131,6 @@ export default class ViewerApp extends React.Component {
 				ModalStore.init()
 				FocusStore.init()
 				MediaStore.init()
-				VariableStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
@@ -179,7 +172,6 @@ export default class ViewerApp extends React.Component {
 						assessmentState: AssessmentStore.getState(),
 						modalState: ModalStore.getState(),
 						focusState: FocusStore.getState(),
-						variableState: VariableStore.getState(),
 						lti: Object.assign(this.state.lti, {
 							outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
 						}),
@@ -206,7 +198,6 @@ export default class ViewerApp extends React.Component {
 		ModalStore.offChange(this.onModalStoreChange)
 		FocusStore.offChange(this.onFocusStoreChange)
 		MediaStore.offChange(this.onMediaStoreChange)
-		VariableStore.offChange(this.onVariableStoreChange)
 
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}

@@ -29,6 +29,7 @@ exports[`Actions editor Score component 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         ×
       </button>
@@ -37,8 +38,8 @@ exports[`Actions editor Score component 1`] = `
 </div>
 `;
 
-exports[`Actions editor Score component changes range 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
+exports[`Actions editor Score component changes range 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
 
-exports[`Actions editor Score component deletes self 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
+exports[`Actions editor Score component deletes self 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
 
-exports[`Actions editor changeRange updates the range 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;
+exports[`Actions editor changeRange updates the range 1`] = `"<div><div class=\\"action-data\\"><h2 contenteditable=\\"false\\">Score Range: [0,100] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\" contenteditable=\\"false\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">×</button></div></div></div>"`;

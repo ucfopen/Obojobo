@@ -17,9 +17,6 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       <option>
         Within a range
       </option>
-      <option>
-        Precise response
-      </option>
     </select>
   </td>
   <td>
@@ -27,7 +24,9 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
@@ -52,9 +51,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       <option>
         Within a range
       </option>
-      <option>
-        Precise response
-      </option>
     </select>
   </td>
   <td>
@@ -62,7 +58,9 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       className="input-item"
       contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
@@ -87,9 +85,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       <option>
         Within a range
       </option>
-      <option>
-        Precise response
-      </option>
     </select>
   </td>
   <td>
@@ -109,16 +104,22 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
   <td>
     <input
       className="input-item"
+      contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
   <td>
     <input
       className="input-item"
+      contentEditable={false}
       name="margin"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
@@ -132,7 +133,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
       className="select-item"
       name="requirement"
       onClick={[Function]}
-      value="Precise response"
     >
       <option>
         Exact answer
@@ -143,38 +143,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
       <option>
         Within a range
       </option>
-      <option>
-        Precise response
-      </option>
-    </select>
-  </td>
-  <td>
-    <select
-      className="select-item"
-      name="type"
-      onClick={[Function]}
-    >
-      <option>
-        Significant digits
-      </option>
-      <option>
-        Decimal places
-      </option>
     </select>
   </td>
   <td>
     <input
       className="input-item"
+      contentEditable={false}
       name="answer"
+      onBlur={[Function]}
       onClick={[Function]}
-      value=""
-    />
-  </td>
-  <td>
-    <input
-      className="input-item"
-      name="precision"
-      onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
@@ -199,34 +177,37 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       <option>
         Within a range
       </option>
-      <option>
-        Precise response
-      </option>
     </select>
   </td>
   <td>
     <input
       className="input-item"
+      contentEditable={false}
       name="start"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
   <td>
     <input
       className="input-item"
+      contentEditable={false}
       name="end"
+      onBlur={[Function]}
       onClick={[Function]}
+      onFocus={[Function]}
       value=""
     />
   </td>
 </tr>
 `;
 
-exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
 
-exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"margin\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
 
 exports[`NumericOption NumericOption with requirement of \`precise\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Significant digits</option><option>Decimal places</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"precision\\" value=\\"\\"></td></tr>"`;
 
-exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><input class=\\"input-item\\" name=\\"start\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"end\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;

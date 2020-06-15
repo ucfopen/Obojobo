@@ -47,6 +47,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             Submit as incomplete
           </button>
@@ -62,7 +63,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
           <button
             className="button"
             contentEditable={false}
-            onClick={[Function]}
+            type="button"
           >
             Resume assessment
           </button>

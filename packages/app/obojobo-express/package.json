@@ -64,8 +64,6 @@
 		"obojobo-document-engine": "^8.0.2",
 		"obojobo-document-xml-parser": "^8.0.2",
 		"obojobo-lib-utils": "^8.0.2",
-		"pegjs": "^0.10.0",
-		"pegjs-loader": "^0.5.5",
 		"pg-promise": "^10.5.2",
 		"react-transition-group": "^4.3.0",
 		"responsive-loader": "^1.2.0",

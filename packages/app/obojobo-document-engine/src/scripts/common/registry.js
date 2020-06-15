@@ -143,12 +143,6 @@ class _Registry {
 	}
 
 	getTextForVariable(variable, model, viewerState) {
-		if (variable.charAt(0) === '=') {
-			const item = this.getItemForType(model.get('type'))
-			if (item && item.variableHandler) {
-				return item.variableHandler(variable.substr(1), model, viewerState)
-			}
-		}
 		const cb = variableHandlers.get(variable)
 		if (!cb) {
 			return null
