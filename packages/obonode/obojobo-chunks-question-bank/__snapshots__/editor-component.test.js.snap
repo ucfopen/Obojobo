@@ -87,6 +87,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
     </div>
     <div
       className="button-bar"
+      contentEditable={false}
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"

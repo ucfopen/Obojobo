@@ -160,7 +160,7 @@ const QuestionBank = props => {
 				</Button>
 				{displaySettings(editor, element, element.content)}
 				{children}
-				<div className="button-bar">
+				<div className="button-bar" contentEditable={false}>
 					<Button
 						onClick={() => {
 							addQuestion(editor, element)
