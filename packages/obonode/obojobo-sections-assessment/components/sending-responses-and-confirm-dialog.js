@@ -148,7 +148,7 @@ const getDialog = (
 					// 		onClick: onCancel
 					// 	}
 					// ]}
-					title="Saving your answers"
+					title="Submitting your responses"
 					// onCancel={onCancel}
 				>
 					<Throbber />

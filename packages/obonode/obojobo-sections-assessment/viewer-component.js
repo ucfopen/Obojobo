@@ -288,13 +288,6 @@ class Assessment extends React.Component {
 		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
 	}
 
-	closeDialog() {
-		//@TODO: This needs to happen after sending success
-		AssessmentUtil.resetNetworkState(this.props.model)
-
-		ModalUtil.hide()
-	}
-
 	// onDialogResponse(response) {
 	// 	switch (response) {
 	// 		case 'ResumeAttempt':
@@ -423,9 +416,9 @@ class Assessment extends React.Component {
 						this.props.model
 					)}
 				</h1>
-				<StateMachineComponent
+				{/* <StateMachineComponent
 					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
-				></StateMachineComponent>
+				></StateMachineComponent> */}
 				{childEl}
 
 				<ModalPortal>

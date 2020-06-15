@@ -78,19 +78,6 @@ class AssessmentStore extends Store {
 			this.forceSendResponses(payload.value.id, payload.value.context)
 		})
 
-		Dispatcher.on('assessment:resetNetworkState', payload => {
-			this.resetNetworkState(payload.value.id)
-		})
-
-		// Dispatcher.on('question:setResponse', payload => {
-		// 	this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
-		// })
-
-		Dispatcher.on('question:forceSentAllResponses', payload => {
-			console.log('@TODO - Do I need this?')
-			// this.onForceSentAllResponses(payload.value.success, payload.value.context)
-		})
-
 		Dispatcher.on('assessment:acknowledgeEndAttemptSuccessful', payload => {
 			this.acknowledgeEndAttemptSuccessful(payload.value.id)
 		})
@@ -122,34 +109,11 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	resetNetworkState(assessmentId) {
-		const assessmentModel = OboModel.models[assessmentId]
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
-
-		if (!assessment) {
-			return
-		}
-
-		switch (assessment.state) {
-			case AssessmentNetworkStates.END_ATTEMPT_FAILED:
-			case AssessmentNetworkStates.START_ATTEMPT_FAILED:
-			case AssessmentNetworkStates.SENDING_RESPONSES_FAILED:
-			case AssessmentNetworkStates.SENDING_RESPONSES_SUCCESSFUL:
-				assessment.state = AssessmentUtil.isInAssessment(this.state)
-					? AssessmentNetworkStates.IN_ATTEMPT
-					: AssessmentNetworkStates.OUT_OF_ATTEMPT
-				this.triggerChange()
-				break
-		}
-	}
-
 	init(attemptsByAssessment) {
 		this.state = {
 			assessments: {},
 			machines: {}
 		}
-
-		console.log('init', attemptsByAssessment)
 
 		// Find all the assessments:
 		Object.values(OboModel.models)
@@ -157,27 +121,15 @@ class AssessmentStore extends Store {
 			.forEach(model => {
 				const id = model.get('id')
 				const assessmentObject = getNewAssessmentObject(id)
+
 				this.state.assessments[id] = assessmentObject
-				this.state.machines[id] = new AssessmentStateMachine(
-					assessmentObject,
-					this.onEndAttempt.bind(this)
-				)
-				this.state.machines[id].start(this.onStateMachineTransition.bind(this))
-				window.__asm = this.state.machines[id]
+				this.state.machines[id] = new AssessmentStateMachine(assessmentObject)
+				this.state.machines[id].start(this.triggerChange.bind(this))
 			})
 
 		// necessary?
 		if (!attemptsByAssessment) return
 		this.updateAttempts(attemptsByAssessment)
-	}
-
-	onStateMachineTransition(assessmentMachine, state, oldValues) {
-		console.log('got', state, oldValues)
-		this.triggerChange()
-	}
-
-	onEndAttempt(endAttemptResp) {
-		this.updateAttempts([endAttemptResp])
 	}
 
 	updateAttempts(attemptsByAssessment) {
@@ -241,115 +193,14 @@ class AssessmentStore extends Store {
 			})
 		}
 
-		// debugger
-
 		if (assessment && assessment.unfinishedAttempt) {
 			NavUtil.goto(assessment.unfinishedAttempt.assessmentId)
 			const machine = this.state.machines[assessment.unfinishedAttempt.assessmentId]
 
 			// machine.dispatch('willResumeAttempt')
 			machine.send(AssessmentStateActions.PROMPT_FOR_RESUME)
-
-			// debugger
-			// machine.willResumeAttempt()
-			// return ModalUtil.show(
-			// 	<SimpleDialog
-			// 		ok
-			// 		title="Resume Attempt"
-			// 		onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
-			// 		preventEsc
-			// 	>
-			// 		<p>
-			// 			It looks like you were in the middle of an attempt. We&apos;ll resume where you left
-			// 			off.
-			// 		</p>
-			// 	</SimpleDialog>,
-			// 	true
-			// )
 		}
 	}
-
-	onResumeAttemptConfirm(unfinishedAttempt) {
-		ModalUtil.hide()
-
-		return APIUtil.resumeAttempt({
-			draftId: unfinishedAttempt.draftId,
-			attemptId: unfinishedAttempt.attemptId,
-			visitId: NavStore.getState().visitId
-		}).then(response => {
-			this.startAttempt(response.value)
-			this.triggerChange()
-		})
-	}
-
-	// tryStartAttempt(id) {
-	// 	const model = OboModel.models[id]
-	// 	let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
-
-	// 	if (!assessment) {
-	// 		this.state.assessments[id] = assessment = getNewAssessmentObject(id)
-	// 	}
-
-	// 	assessment.state = AssessmentNetworkStates.AWAITING_START_ATTEMPT_RESPONSE
-
-	// 	return APIUtil.startAttempt({
-	// 		draftId: model.getRoot().get('draftId'),
-	// 		assessmentId: model.get('id'),
-	// 		visitId: NavStore.getState().visitId
-	// 	})
-	// 		.then(res => {
-	// 			if (res.status === 'error') {
-	// 				switch (res.value.message.toLowerCase()) {
-	// 					case 'attempt limit reached':
-	// 						ErrorUtil.show(
-	// 							'No attempts left',
-	// 							'You have attempted this assessment the maximum number of times available.'
-	// 						)
-	// 						break
-
-	// 					default:
-	// 						ErrorUtil.errorResponse(res)
-	// 				}
-
-	// 				assessment.state = AssessmentNetworkStates.START_ATTEMPT_FAILED
-	// 			} else {
-	// 				this.startAttempt(res.value)
-	// 			}
-
-	// 			this.triggerChange()
-	// 		})
-	// 		.catch(e => {
-	// 			console.error(e) /* eslint-disable-line no-console */
-
-	// 			assessment.state = AssessmentNetworkStates.START_ATTEMPT_FAILED
-	// 			this.triggerChange()
-	// 		})
-	// }
-
-	// startAttempt(startAttemptResp) {
-	// 	const id = startAttemptResp.assessmentId
-	// 	const model = OboModel.models[id]
-
-	// 	model.children.at(1).children.reset()
-	// 	for (const child of Array.from(startAttemptResp.questions)) {
-	// 		const c = OboModel.create(child)
-	// 		model.children.at(1).children.add(c)
-	// 	}
-
-	// 	// if (!this.state.assessments[id]) {
-	// 	// 	this.state.assessments[id] = getNewAssessmentObject(id)
-	// 	// }
-
-	// 	this.state.assessments[id].state = AssessmentNetworkStates.IN_ATTEMPT
-	// 	this.state.assessments[id].current = startAttemptResp
-
-	// 	NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
-	// 	NavUtil.rebuildMenu(model.getRoot())
-	// 	NavUtil.goto(id)
-
-	// 	model.processTrigger('onStartAttempt')
-	// 	Dispatcher.trigger('assessment:attemptStarted', id)
-	// }
 
 	startAttempt(id, context) {
 		const assessmentModel = OboModel.models[id]
@@ -359,10 +210,6 @@ class AssessmentStore extends Store {
 		if (!machine) {
 			throw "Can't start attempt - No assessment!"
 		}
-
-		// if (machine.getCurrentState() !== SEND_RESPONSES_SUCCESSFUL) {
-		// 	throw "Can't start attempt - Have not sent responses successfully!"
-		// }
 
 		machine.send(AssessmentStateActions.START_ATTEMPT)
 	}
@@ -381,34 +228,6 @@ class AssessmentStore extends Store {
 		}
 
 		machine.send(AssessmentStateActions.END_ATTEMPT)
-
-		// this.triggerChange()
-
-		// const model = OboModel.models[id]
-		// const assessment = this.state.assessments[id]
-
-		// assessment.state = AssessmentNetworkStates.AWAITING_END_ATTEMPT_RESPONSE
-
-		// return APIUtil.endAttempt({
-		// 	attemptId: assessment.current.attemptId,
-		// 	draftId: model.getRoot().get('draftId'),
-		// 	visitId: NavStore.getState().visitId
-		// })
-		// 	.then(res => {
-		// 		if (res.status === 'error') {
-		// 			assessment.state = AssessmentNetworkStates.END_ATTEMPT_FAILED
-		// 			return ErrorUtil.errorResponse(res)
-		// 		}
-
-		// 		this.endAttempt(res.value, context)
-		// 		return this.triggerChange()
-		// 	})
-		// 	.catch(e => {
-		// 		console.error(e) /* eslint-disable-line no-console */
-
-		// 		assessment.state = AssessmentNetworkStates.END_ATTEMPT_FAILED
-		// 		this.triggerChange()
-		// 	})
 	}
 
 	continueAttempt(id) {
@@ -485,8 +304,6 @@ class AssessmentStore extends Store {
 			throw "Can't acknowledge end attempt failed - No assessment!"
 		}
 
-		debugger
-
 		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
 		delete assessment.current.error
 
@@ -504,63 +321,6 @@ class AssessmentStore extends Store {
 
 		machine.send(AssessmentStateActions.ACKNOWLEDGE)
 	}
-
-	onCloseResultsDialog() {
-		ModalUtil.hide()
-		FocusUtil.focusOnNavTarget()
-	}
-
-	// ____endAttempt(endAttemptResp, context) {
-	// 	const assessId = endAttemptResp.assessmentId
-	// 	const assessment = this.state.assessments[assessId]
-	// 	const model = OboModel.models[assessId]
-
-	// 	assessment.state = AssessmentNetworkStates.END_ATTEMPT_SUCCESSFUL
-
-	// 	assessment.current.state.chosen.forEach(question => {
-	// 		if (question.type === QUESTION_NODE_TYPE) {
-	// 			QuestionUtil.hideQuestion(question.id, context)
-	// 		}
-	// 	})
-
-	// 	// assessment.currentResponses.forEach(questionId =>
-	// 	// 	QuestionUtil.clearResponse(questionId, context)
-	// 	// )
-
-	// 	assessment.current = null
-
-	// 	this.updateAttempts([endAttemptResp])
-
-	// 	model.processTrigger('onEndAttempt')
-
-	// 	Dispatcher.trigger('assessment:attemptEnded', assessId)
-
-	// 	const attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
-	// 	const reporter = new AssessmentScoreReporter({
-	// 		assessmentRubric: model.modelState.rubric.toObject(),
-	// 		totalNumberOfAttemptsAllowed: model.modelState.attempts,
-	// 		allAttempts: assessment.attempts
-	// 	})
-
-	// 	const assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
-	// 	ModalUtil.show(
-	// 		<Dialog
-	// 			modalClassName="obojobo-draft--sections--assessment--results-modal"
-	// 			centered
-	// 			buttons={[
-	// 				{
-	// 					value: `Show ${assessmentLabel} Overview`,
-	// 					onClick: this.onCloseResultsDialog.bind(this),
-	// 					default: true
-	// 				}
-	// 			]}
-	// 			title={`Attempt ${attempt.attemptNumber} Results`}
-	// 			width="35rem"
-	// 		>
-	// 			<AssessmentScoreReportView report={reporter.getReportFor(attempt.attemptNumber)} />
-	// 		</Dialog>
-	// 	)
-	// }
 
 	tryResendLTIScore(assessmentId) {
 		const assessmentModel = OboModel.models[assessmentId]
@@ -606,8 +366,6 @@ class AssessmentStore extends Store {
 		}
 
 		machine.send(SENDING_RESPONSES)
-
-		// this.triggerChange()
 	}
 
 	updateLTIScore(assessment, updateLTIScoreResp) {
@@ -619,71 +377,6 @@ class AssessmentStore extends Store {
 		} else {
 			assessment.ltiResyncState = LTIResyncStates.RESYNC_SUCCEEDED
 		}
-
-		this.triggerChange()
-	}
-
-	// trySetResponse(questionId) {
-	// 	const model = OboModel.models[questionId]
-	// 	const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
-
-	// 	if (!assessment || !assessment.currentResponses) {
-	// 		// Resolve false if not an error but couldn't do anything because not in an attempt
-	// 		return Promise.resolve(false)
-	// 	}
-
-	// 	if (assessment.currentResponses.indexOf(questionId) === -1) {
-	// 		assessment.currentResponses.push(questionId)
-	// 	}
-
-	// 	this.triggerChange()
-	// }
-
-	onForceSentAllResponses(success, context) {
-		// debugger
-		//@TODO - hardcoded assessment id
-		const assessmentId = context.split(':')[1]
-		const assessmentModel = OboModel.models[assessmentId]
-
-		if (!assessmentModel) {
-			return
-		}
-
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
-
-		if (!assessment) {
-			return
-		}
-
-		if (assessment.state !== AssessmentNetworkStates.AWAITING_SENDING_RESPONSES) {
-			return
-		}
-
-		const currentAttempt = AssessmentUtil.getCurrentAttemptForModel(this.state, assessmentModel)
-
-		if (!currentAttempt) {
-			return
-		}
-
-		if (!success) {
-			assessment.state = AssessmentNetworkStates.SENDING_RESPONSES_FAILED
-
-			this.triggerChange()
-
-			return
-		}
-
-		const currentAssessmentStatus = AssessmentUtil.getCurrentAttemptStatus(
-			this.state,
-			QuestionStore.getState(),
-			assessmentModel,
-			context
-		)
-
-		assessment.state =
-			currentAssessmentStatus === CurrentAssessmentStates.READY_TO_SUBMIT
-				? AssessmentNetworkStates.SENDING_RESPONSES_SUCCESSFUL
-				: AssessmentNetworkStates.IN_ATTEMPT
 
 		this.triggerChange()
 	}

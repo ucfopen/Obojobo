@@ -12,6 +12,9 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
+	if (Math.random() > 0.5) {
+		throw 'Random error'
+	}
 	const assessmentProperties = {
 		user: null,
 		isPreview: null,

@@ -451,14 +451,6 @@ const AssessmentUtil = {
 		})
 	},
 
-	resetNetworkState(model) {
-		return Dispatcher.trigger('assessment:resetNetworkState', {
-			value: {
-				id: model.get('id')
-			}
-		})
-	},
-
 	resendLTIScore(model) {
 		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {

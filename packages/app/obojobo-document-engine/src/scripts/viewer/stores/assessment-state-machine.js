@@ -62,7 +62,6 @@ const {
 
 class AssessmentStateHelpers {
 	static async startAttempt(assessmentId) {
-		console.log('startATtempt', assessmentId)
 		return this.onRequest(
 			await this.sendStartAttemptRequest(assessmentId),
 			this.onAttemptStarted.bind(this)
@@ -137,21 +136,6 @@ class AssessmentStateHelpers {
 	}
 
 	static async onError(res = null) {
-		if (res) {
-			// switch (res.value.message.toLowerCase()) {
-			// 	case 'attempt limit reached':
-			// 		ErrorUtil.show(
-			// 			'No attempts left',
-			// 			'You have attempted this assessment the maximum number of times available.'
-			// 		)
-			// 		break
-			// 	default:
-			// 		ErrorUtil.errorResponse(res)
-			// 		break
-			// }
-		}
-
-		// throw Error('Request failed')
 		throw Error(res ? res.value.message : 'Request Failed')
 	}
 
@@ -349,8 +333,6 @@ class AssessmentStateHelpers {
 	}
 }
 
-const todo = () => {}
-
 const updateContextWithAssessmentResponse = assign({
 	// When the src function is completed the results will be
 	// put into event.data. It will then call this action. assign() will
@@ -419,7 +401,7 @@ class AssessmentStateMachine {
 				[IMPORTING_ATTEMPT]: {
 					invoke: {
 						id: 'importAttempt',
-						src: todo,
+						src: () => {},
 						onDone: IN_ATTEMPT,
 						onError: {
 							target: IMPORT_ATTEMPT_FAILED,

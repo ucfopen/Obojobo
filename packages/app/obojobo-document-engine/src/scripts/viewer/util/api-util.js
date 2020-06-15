@@ -166,7 +166,7 @@ const APIUtil = {
 	},
 
 	postDraft(id, draftString, format = 'application/json') {
-		return API.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
+		return API.post(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
 	},
 
 	// If `content` and `format` are not specified, the default draft will be created

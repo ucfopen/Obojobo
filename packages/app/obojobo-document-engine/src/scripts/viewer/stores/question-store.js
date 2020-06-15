@@ -14,8 +14,8 @@ const { OboModel } = Common.models
 const { uuid, timeoutPromise } = Common.util
 
 // const SET_RESPONSE_EVENT_SEND_DELAY_MS = 4750
-// const SEND_RESPONSE_TIMEOUT_MS = 6000
-const SEND_RESPONSE_TIMEOUT_MS = 1000
+const SEND_RESPONSE_TIMEOUT_MS = 15000
+// const SEND_RESPONSE_TIMEOUT_MS = 1000
 
 const getNewContextState = () => {
 	return {
@@ -56,13 +56,11 @@ class QuestionStore extends Store {
 
 				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, Promise.all(promises))
 					.then(values => {
-						console.log('SUH GOOD', values)
 						Dispatcher.trigger('question:forceSentAllResponses', {
 							value: { context, success: values.length === 0 || values.every(v => v) }
 						})
 					})
 					.catch(e => {
-						console.log('SUH BAD', e)
 						Dispatcher.trigger('question:forceSentAllResponses', {
 							value: { context, success: false }
 						})
@@ -77,54 +75,13 @@ class QuestionStore extends Store {
 				const responseMetadata = contextState.responseMetadata[id]
 				if (!responseMetadata) return
 
-				// // If force is false then we only want to re-sendResponse if the response
-				// // is in an error state.
-				// if (!force && responseMetadata.sendState !== QuestionResponseSendStates.ERROR) {
-				// 	return
-				// }
-
 				const sendResponsePromise = this.sendResponse(id, context)
 
-				responseMetadata.sendState = QuestionResponseSendStates.SENDING
 				contextState.sendingResponsePromises[id] = sendResponsePromise
 
-				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise).catch(e => {
-					console.error('ERROR', e)
-
-					delete contextState.sendingResponsePromises[id]
-					contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
-					// delete contextState.responses[id]
-
-					Dispatcher.trigger('question:responseSent', {
-						successful: false,
-						id
-					})
-
-					this.triggerChange()
-
-					return false
-				})
-
-				// APIUtil.postEvent({
-				// 	draftId: OboModel.getRoot().get('draftId'),
-				// 	action: 'question:setResponse',
-				// 	eventVersion: '2.2.0',
-				// 	visitId: NavStore.getState().visitId,
-				// 	payload: responseMetadata.details,
-				// 	actorTime: responseMetadata.time
-				// }).then(result => {
-				// 	if (result.response.status === 'ok') {
-				// 		Dispatcher.trigger('question:responseSet', result.sent.event.payload)
-
-				// 		const contextState = this.getOrCreateContextState(context)
-
-				// 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.RECORDED
-				// 	} else {
-				// 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
-				// 	}
-
-				// 	this.triggerChange()
-				// })
+				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise).catch(e =>
+					this.onSendResponseError(e, contextState, id)
+				)
 
 				this.triggerChange()
 			},
@@ -155,78 +112,6 @@ class QuestionStore extends Store {
 				if (sendResponseImmediately) {
 					QuestionUtil.sendResponse(id, context)
 				}
-
-				// contextState.responses[questionId] = response
-				// contextState.responseTimes[questionId] = new Date()
-				// contextState.responseSendState[questionId] = QuestionResponseSendStates.NOT_SENT
-
-				// console.log('SR', payload)
-
-				// if (debounce) {
-				// 	APIUtil.debouncedPostEvent(
-				// 		SET_RESPONSE_EVENT_SEND_DELAY_MS,
-				// 		() => {
-				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.SENDING
-				// 			this.triggerChange()
-				// 		},
-				// 		{
-				// 			draftId: OboModel.getRoot().get('draftId'),
-				// 			action: 'question:setResponse',
-				// 			eventVersion: '2.2.0',
-				// 			visitId: NavStore.getState().visitId,
-				// 			payload: {
-				// 				questionId,
-				// 				response,
-				// 				targetId,
-				// 				context,
-				// 				assessmentId,
-				// 				attemptId,
-				// 				debounce
-				// 			}
-				// 		},
-				// 		result => {
-				// 			if (result.response.status === 'ok') {
-				// 				Dispatcher.trigger('question:responseSet', result.sent.event.payload)
-
-				// 				const contextState = this.getOrCreateContextState(context)
-
-				// 				contextState.responseSendState[questionId] = QuestionResponseSendStates.RECORDED
-				// 			} else {
-				// 				contextState.responseSendState[questionId] = QuestionResponseSendStates.ERROR
-				// 			}
-
-				// 			this.triggerChange()
-				// 		}
-				// 	)
-				// } else {
-				// 	APIUtil.postEvent({
-				// 		draftId: OboModel.getRoot().get('draftId'),
-				// 		action: 'question:setResponse',
-				// 		eventVersion: '2.2.0',
-				// 		visitId: NavStore.getState().visitId,
-				// 		payload: {
-				// 			questionId,
-				// 			response,
-				// 			targetId,
-				// 			context,
-				// 			assessmentId,
-				// 			attemptId,
-				// 			debounce
-				// 		}
-				// 	}).then(result => {
-				// 		if (result.response.status === 'ok') {
-				// 			Dispatcher.trigger('question:responseSet', result.sent.event.payload)
-
-				// 			const contextState = this.getOrCreateContextState(context)
-
-				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.RECORDED
-				// 		} else {
-				// 			contextState.responseSendState[questionId] = QuestionResponseSendStates.ERROR
-				// 		}
-
-				// 		this.triggerChange()
-				// 	})
-				// }
 
 				this.triggerChange()
 			},
@@ -531,6 +416,8 @@ class QuestionStore extends Store {
 		const contextState = this.getContextState(context)
 		const responseMetadata = contextState.responseMetadata[id]
 
+		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.SENDING
+
 		return APIUtil.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:setResponse',
@@ -545,6 +432,11 @@ class QuestionStore extends Store {
 				// } else {
 				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
 				// }
+				// If the sendState isn't 'sending' then we may have already timed out. In this case
+				// we ignore the result
+				if (contextState.responseMetadata[id].sendState !== QuestionResponseSendStates.SENDING) {
+					return false
+				}
 
 				const successful = result.response.status === 'ok'
 				// const successful = Math.random() > 0.5
@@ -564,22 +456,24 @@ class QuestionStore extends Store {
 
 				return successful
 			})
-			.catch(e => {
-				console.error('ERROR', e)
+			.catch(e => this.onSendResponseError(e, contextState, id))
+	}
 
-				delete contextState.sendingResponsePromises[id]
-				contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
-				// delete contextState.responses[id]
+	onSendResponseError(error, contextState, id) {
+		console.error('ERROR', error)
 
-				Dispatcher.trigger('question:responseSent', {
-					successful: false,
-					id
-				})
+		delete contextState.sendingResponsePromises[id]
+		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+		// delete contextState.responses[id]
 
-				this.triggerChange()
+		Dispatcher.trigger('question:responseSent', {
+			successful: false,
+			id
+		})
 
-				return false
-			})
+		this.triggerChange()
+
+		return false
 	}
 
 	setResponse({

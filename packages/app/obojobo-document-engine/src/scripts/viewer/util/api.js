@@ -20,22 +20,12 @@ const API = {
 		})
 	},
 
-	post(endpoint, body) {
-		if (!body) body = {}
-
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify(body),
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			}
-		})
-	},
-
-	postWithFormat(endpoint, body, format) {
-		if (!body) body = '{}'
+	post(endpoint, body, format = 'application/json') {
+		if (!body) {
+			body = '{}'
+		} else if (typeof body === 'object') {
+			body = JSON.stringify(body)
+		}
 
 		return fetch(endpoint, {
 			method: 'POST',

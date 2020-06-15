@@ -1,7 +1,7 @@
 const timeoutPromise = (ms, promise) => {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
-			reject(new Error('PTO'))
+			reject(timeoutPromise.ERROR)
 		}, ms)
 
 		return promise.then(resolve).catch(reject)
