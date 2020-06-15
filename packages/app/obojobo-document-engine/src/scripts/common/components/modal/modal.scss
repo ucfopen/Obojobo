@@ -8,6 +8,7 @@
 	border-radius: 2px;
 	max-height: 85vh;
 	overflow: auto;
+	box-sizing: border-box;
 
 	@include mq($until: tablet) {
 		padding: 1.5rem 1.5em;

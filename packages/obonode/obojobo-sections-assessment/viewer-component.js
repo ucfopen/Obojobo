@@ -12,10 +12,10 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import StateMachineComponent from 'obojobo-document-engine/src/scripts/common/util/state-machine-component'
 
-const { OboComponent, Throbber } = Viewer.components
+const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
-const { ModalContainer } = Common.components
+const { ModalContainer, Throbber } = Common.components
 const { SimpleDialog, Dialog, ModalPortal } = Common.components.modal
 // const { Dialog } = Common.components.modal
 
@@ -82,6 +82,11 @@ class Assessment extends React.Component {
 			case SENDING_RESPONSES:
 			case ENDING_ATTEMPT: {
 				return 'test'
+			}
+
+			case STARTING_ATTEMPT:
+			case RESUMING_ATTEMPT: {
+				return 'loading'
 			}
 
 			default:
@@ -314,6 +319,13 @@ class Assessment extends React.Component {
 						<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
 					)
 
+				case 'loading':
+					return (
+						<div className="loading-assessment">
+							<Throbber />
+						</div>
+					)
+
 				case 'test':
 					return (
 						<Test
@@ -348,7 +360,7 @@ class Assessment extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
-				<h1>{this.state.curStep}</h1>
+				{/* <h1>{this.state.curStep}</h1>
 				<h1>
 					{AssessmentUtil.getCurrentAttemptStatus(
 						this.props.moduleData.assessmentState,
@@ -362,7 +374,7 @@ class Assessment extends React.Component {
 						this.props.moduleData.assessmentState,
 						this.props.model
 					)}
-				</h1>
+				</h1> */}
 				{/* <StateMachineComponent
 					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
 				></StateMachineComponent> */}

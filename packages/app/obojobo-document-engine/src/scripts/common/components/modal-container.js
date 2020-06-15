@@ -66,12 +66,12 @@ class ModalContainer extends React.Component {
 					)
 				}
 			>
-				<div className="content">
+				<div className="content legacy">
 					{this.props.modalItem && this.props.modalItem.component
 						? this.props.modalItem.component
 						: null}
 				</div>
-				<div className="content portalContent" id={PORTAL_CONTAINER_DOM_ID} ref={this.onRefChanged}></div>
+				<div className="content portal" id={PORTAL_CONTAINER_DOM_ID} ref={this.onRefChanged}></div>
 			</div>
 		)
 	}

@@ -19,6 +19,8 @@ import ReactDOM from 'react-dom'
 import VariableStore from '../stores/variable-store'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 
+import ModalPortal from '../../common/components/modal-portal'
+
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
@@ -361,8 +363,8 @@ export default class ViewerApp extends React.Component {
 
 	getTextForVariable(event, varName, textModel) {
 		let text = Common.Registry.getTextForVariable(varName, textModel, this.state)
-		if (text) {
-			event.text = text
+		if (typeof text !== 'undefined' && text !== null) {
+			event.text = '' + text
 			return
 		}
 
@@ -533,7 +535,7 @@ export default class ViewerApp extends React.Component {
 			AssessmentStore.triggerChange()
 			QuestionStore.triggerChange()
 
-			return ModalUtil.show(
+			ModalUtil.show(
 				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
@@ -685,9 +687,6 @@ export default class ViewerApp extends React.Component {
 					</div>
 				) : null}
 				<FocusBlocker moduleData={this.state} />
-				{/* modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null */}
 				<ModalContainer modalItem={modalItem} />
 			</div>
 		)

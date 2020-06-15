@@ -39,25 +39,17 @@
 		opacity: 0;
 	}
 
-	> .content {
+	&.is-not-active > .content {
+		animation: none;
+	}
+
+	&.is-active > .content {
 		animation-duration: $duration-animation-default;
 		animation-name: obojobo-draft--components--modal-container--content;
 		font-family: $font-default;
-
-		&:not(.portalContent) {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		&.portalContent {
-			> * {
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-			}
-		}
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 }

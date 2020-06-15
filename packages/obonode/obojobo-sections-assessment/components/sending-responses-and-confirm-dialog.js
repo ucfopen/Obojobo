@@ -103,23 +103,23 @@ const getDialog = (
 				</SimpleDialog>
 			)
 
-		case STARTING_ATTEMPT:
-		case RESUMING_ATTEMPT:
-			console.log('sracd', STARTING_ATTEMPT)
-			return (
-				<Dialog
-					// buttons={[
-					// 	{
-					// 		value: 'Cancel',
-					// 		altAction: true,
-					// 		onClick: onCancel
-					// 	}
-					// ]}
-					title="Loading Assessment"
-				>
-					<Throbber />
-				</Dialog>
-			)
+		// case STARTING_ATTEMPT:
+		// case RESUMING_ATTEMPT:
+		// 	console.log('sracd', STARTING_ATTEMPT)
+		// 	return (
+		// 		<Dialog
+		// 			// buttons={[
+		// 			// 	{
+		// 			// 		value: 'Cancel',
+		// 			// 		altAction: true,
+		// 			// 		onClick: onCancel
+		// 			// 	}
+		// 			// ]}
+		// 			title="Loading Assessment"
+		// 		>
+		// 			<Throbber />
+		// 		</Dialog>
+		// 	)
 
 		case ENDING_ATTEMPT:
 			console.log('sracd', ENDING_ATTEMPT)
