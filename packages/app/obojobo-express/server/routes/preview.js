@@ -33,11 +33,12 @@ router
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
 					isPreview: true,
+					visitId,
 					payload: {
 						visitId,
 						deactivatedVisitId
 					},
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),

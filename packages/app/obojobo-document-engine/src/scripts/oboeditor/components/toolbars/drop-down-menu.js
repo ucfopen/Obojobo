@@ -81,6 +81,33 @@ class DropDownMenu extends React.PureComponent {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
+	renderAction(index, item) {
+		const isMac = navigator.platform.indexOf('Mac') !== -1
+		// Decide whether or not to use the mac shortcut
+		// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
+		// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
+		// for keyboard shortcuts
+		const shortcutMac = isMac && item.shortcutMac ? '\n' + item.shortcutMac : ''
+		// If the Mac shortcut exists, use it
+		// If there is no Mac shortcut and no mark.shortcut, the mac shortcut will be
+		// the blank string, so just use it
+		const shortcut = shortcutMac || !item.shortcut ? shortcutMac : '\n' + item.shortcut
+
+		return (
+			<button
+				key={index}
+				onClick={item.action}
+				disabled={this.props.disabled || item.disabled}
+				ref={item => {
+					this.menu.push(item)
+				}}
+			>
+				{item.name}
+				{shortcut ? <span>{shortcut}</span> : null}
+			</button>
+		)
+	}
+
 	render() {
 		this.menu = []
 		return (
@@ -126,18 +153,7 @@ class DropDownMenu extends React.PureComponent {
 									</button>
 								)
 							default:
-								return (
-									<button
-										key={index}
-										onClick={item.action}
-										disabled={this.props.disabled || item.disabled}
-										ref={item => {
-											this.menu.push(item)
-										}}
-									>
-										{item.name}
-									</button>
-								)
+								return this.renderAction(index, item)
 						}
 					})}
 				</div>

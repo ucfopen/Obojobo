@@ -12,28 +12,11 @@ exports[`HoveringPreview renders with LaTeX 1`] = `
     className="preview-latex"
     dangerouslySetInnerHTML={
       Object {
-        "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>h</mi><mi>e</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding=\\"application/x-tex\\">	heta</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.69444em;vertical-align:0em;\\"></span><span class=\\"mord mathdefault\\">h</span><span class=\\"mord mathdefault\\">e</span><span class=\\"mord mathdefault\\">t</span><span class=\\"mord mathdefault\\">a</span></span></span></span>",
+        "__html": "mock-katex-render-for-	heta-with-options-{\\"throwOnError\\":false}",
       }
     }
   />
 </div>
 `;
 
-exports[`HoveringPreview renders without LaTeX 1`] = `
-<div
-  className="hovering-preview"
-  contentEditable={false}
->
-  <p>
-    Preview:
-  </p>
-  <span
-    className="preview-latex"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "",
-      }
-    }
-  />
-</div>
-`;
+exports[`HoveringPreview renders without LaTeX 1`] = `null`;

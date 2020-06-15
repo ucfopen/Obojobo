@@ -2,48 +2,13 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import ListStyles from './list-styles'
+import ListUtil from './list-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Button } = Common.components
-
-const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
-
-const oppositeListType = type =>
-	type === ListStyles.TYPE_ORDERED ? ListStyles.TYPE_UNORDERED : ListStyles.TYPE_ORDERED
-
-const toggleType = props => {
-	const currentContent = props.element.content
-
-	const newType = oppositeListType(currentContent.listStyles.type)
-
-	const newContent = {
-		content: { ...props.element.content, listStyles: { type: newType, indents: {} } }
-	}
-
-	Editor.withoutNormalizing(props.editor, () => {
-		const listPath = ReactEditor.findPath(props.editor, props.element)
-		// update the list
-		Transforms.setNodes(props.editor, newContent, { at: listPath })
-
-		// search for all level nodes inside this list
-		// so we can force them to redraw their bullets + li/ul tag
-		// IDEA: we could limit this to only level nodes with a depth that changed?
-		const levelNodes = Editor.nodes(props.editor, {
-			mode: 'all',
-			at: listPath,
-			match: node => node.subtype === LIST_LEVEL_NODE
-		})
-
-		for (const [, levelPath] of levelNodes) {
-			Transforms.setNodes(props.editor, { content: { type: newType } }, { at: levelPath })
-		}
-	})
-}
 
 const isOnlyThisNodeSelected = ({ editor, element, selected }) => {
 	// quick test before doing more work
@@ -84,8 +49,8 @@ const List = props => {
 	if (isOnlyThisNodeSelected(props)) {
 		switchButton = (
 			<ListTypeSwitchButton
-				onClick={() => toggleType(props)}
-				switchToType={oppositeListType(props.element.content.listStyles.type)}
+				onClick={() => ListUtil.toggleType(props.element, props.editor)}
+				switchToType={ListUtil.oppositeListType(props.element.content.listStyles.type)}
 			/>
 		)
 	}

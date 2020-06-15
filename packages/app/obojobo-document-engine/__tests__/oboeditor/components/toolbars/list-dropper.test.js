@@ -201,6 +201,7 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper component cancels menu closure when focused', () => {
+		navigator.__defineGetter__('platform', () => 'Mock Mac')
 		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
 		const component = shallow(<ListDropper type="unordered" bullets={bullets} />)
 

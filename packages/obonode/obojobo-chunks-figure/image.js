@@ -58,14 +58,14 @@ class Image extends React.Component {
 			src = `/api/media/${data.url}/${data.size}`
 		}
 
-		const imgStyles = {}
+		const customStyle = {}
 		if (data.size === 'custom') {
 			if (data.width) {
-				imgStyles.width = data.width + 'px'
+				customStyle.width = data.width + 'px'
 			}
 
 			if (data.height) {
-				imgStyles.height = data.height + 'px'
+				customStyle.height = data.height + 'px'
 			}
 		}
 
@@ -75,7 +75,7 @@ class Image extends React.Component {
 					'obojobo-draft--chunks--figure--image is-not-valid' +
 					isOrNot(this.state.isLoaded, 'loaded')
 				}
-				style={imgStyles}
+				style={customStyle}
 			/>
 		) : (
 			<img
@@ -85,10 +85,10 @@ class Image extends React.Component {
 				src={src}
 				unselectable="on"
 				alt={data.alt}
-				style={imgStyles}
 				onLoad={this.boundOnLoad}
 				onError={this.boundOnError}
 				loading={lazyLoad ? 'lazy' : null}
+				style={customStyle}
 			/>
 		)
 	}

@@ -664,7 +664,7 @@ exports[`JSON to XML Parser Converts text.json to xml 1`] = `
 exports[`JSON to XML Parser Converts youtube.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\" startTime=\\"10\\" endTime=\\"20\\">
+	<YouTube startTime=\\"10\\" endTime=\\"20\\" videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\">
 		<triggers>
 			<trigger type=\\"onClick\\">
 				<actions>

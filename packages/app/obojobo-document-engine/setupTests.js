@@ -10,7 +10,6 @@ window.React = require('react')
 window.ReactDOM = require('react-dom')
 window._ = require('underscore')
 window.Backbone = require('backbone')
-window.katex = require('katex')
 window.focus = () => ({})
 window.matchMedia = jest.fn().mockImplementation(query => ({
 	matches: false,
@@ -48,3 +47,8 @@ process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
 	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 })
+
+global.window.open = jest.fn()
+global.window.katex = {
+	renderToString: jest.fn().mockImplementation((input, options = {}) => `mock-katex-render-for-${input}-with-options-${JSON.stringify(options)}`)
+}

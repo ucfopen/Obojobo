@@ -85,6 +85,22 @@ describe('Heading editor', () => {
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			insertText: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders Heading when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -95,34 +111,5 @@ describe('Heading editor', () => {
 		}
 
 		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
-	})
-
-	test('getNavItem returns expected object', () => {
-		const model = {
-			modelState: {
-				headingLevel: 1,
-				textGroup: {
-					first: {
-						text: 'testText'
-					}
-				}
-			},
-			getIndex: () => 0,
-			showChildren: false,
-			toText: () => 'test string'
-		}
-
-		expect(Heading.getNavItem(model)).toBe(null)
-
-		model.modelState.headingLevel = 2
-		expect(Heading.getNavItem(model)).toEqual({
-			type: 'sub-link',
-			label: 'testText',
-			path: ['test-string'],
-			showChildren: false
-		})
-
-		model.modelState.headingLevel = 3
-		expect(Heading.getNavItem(model)).toBe(null)
 	})
 })

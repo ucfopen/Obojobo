@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import rtr from 'react-test-renderer'
-import { Transforms, Editor, Path } from 'slate'
+import { Transforms, Editor, Element, Path } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from '../../../../src/scripts/common'
 import Node from 'src/scripts/oboeditor/components/node/editor-component'
@@ -40,6 +40,7 @@ describe('Component Editor Node', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks()
+		jest.useFakeTimers()
 		editor = {
 			toggleEditable: jest.fn()
 		}
@@ -297,12 +298,51 @@ describe('Component Editor Node', () => {
 	})
 
 	test('onOpen and onClose call toggleEditable', () => {
-		const component = rtr.create(<Node {...mockProps} />)
+		Editor.nodes
+			.mockImplementationOnce((editor, options) => {
+				options.match({})
+				return []
+			})
+			.mockImplementationOnce((editor, options) => {
+				options.match({})
+				return [[{ open: 'top' }, []]]
+			})
+			.mockImplementation((editor, options) => {
+				options.match({})
+				return [[{ open: 'info' }, []]]
+			})
+		Element.isElement.mockReturnValue(true)
 
-		component.getInstance().onOpen()
-		expect(editor.toggleEditable).toHaveBeenLastCalledWith(false)
+		const editor = {
+			toggleEditable: jest.fn()
+		}
 
-		component.getInstance().onClose()
-		expect(editor.toggleEditable).toHaveBeenLastCalledWith(true)
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 }
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().onOpen()
+		component.instance().onBlur('info')
+		component.instance().onBlur('top')
+
+		jest.runAllTimers()
+
+		// Onblur with selection
+		editor.selection = {}
+		component.instance().onBlur('info')
+		component.instance().onBlur('bottom')
+
+		jest.runAllTimers()
+
+		expect(editor.toggleEditable).toHaveBeenCalledTimes(4)
 	})
 })

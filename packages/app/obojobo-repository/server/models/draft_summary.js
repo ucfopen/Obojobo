@@ -11,11 +11,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			count(drafts_content.id) OVER wnd as revision_count,
 			COALESCE(last_value(drafts_content.content->'content'->>'title') OVER wnd, '') as "title",
 			drafts.user_id AS user_id,
-			CASE
-				WHEN last_value(drafts_content.xml) OVER wnd IS NULL
-				THEN 'visual'
-				ELSE 'classic'
-			END AS editor
+			'visual' AS editor
 		FROM drafts
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
