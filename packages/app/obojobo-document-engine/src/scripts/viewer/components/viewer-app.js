@@ -685,10 +685,10 @@ export default class ViewerApp extends React.Component {
 					</div>
 				) : null}
 				<FocusBlocker moduleData={this.state} />
-				{/* {true || (modalItem && modalItem.component) ? ( */}
-				{/* // <ModalContainer>{modalItem.component}</ModalContainer> */}
+				{/* modalItem && modalItem.component ? (
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null */}
 				<ModalContainer modalItem={modalItem} />
-				{/* ) : null} */}
 			</div>
 		)
 	}

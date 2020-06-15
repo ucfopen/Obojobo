@@ -7,6 +7,14 @@
 			padding-bottom: 0.5em;
 			font-size: 1.5em;
 		}
+
+		> .viewer--components--throbber {
+			margin: 0 auto;
+			width: 2em;
+			height: 2em;
+			opacity: 0.25;
+			display: block;
+		}
 	}
 
 	> .overview {

@@ -16,7 +16,7 @@ const { OboComponent, Throbber } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
 const { ModalContainer } = Common.components
-const { SimpleDialog, Dialog } = Common.components.modal
+const { SimpleDialog, Dialog, ModalPortal } = Common.components.modal
 // const { Dialog } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
@@ -41,64 +41,6 @@ const {
 	END_ATTEMPT_SUCCESSFUL,
 	IMPORTING_ATTEMPT
 } = AssessmentNetworkStates
-
-class ModalPortal extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			todo: 0
-		}
-	}
-
-	// componentDidMount() {
-	// 	this.update()
-	// }
-
-	// componentDidUpdate() {
-	// 	this.update()
-	// }
-
-	// update() {
-	// 	if (!this.props.children) return
-
-	// 	const firstChild = this.props.children
-
-	// 	if(!this.props.children) {
-
-	// 	}
-
-	// 	if (firstChild !== this.state.component) {
-	// 		// if (this.state.component === null) {
-	// 		ModalUtil.show(null, false, true)
-	// 		// }
-
-	// 		this.setState({
-	// 			component: firstChild
-	// 		})
-	// 	}
-	// }
-
-	render() {
-		// alert('render')
-		// if (!document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)) {
-		// 	alert('not ready')
-		// 	setTimeout(() => {
-		// 		this.setState({
-		// 			todo: this.state.todo + 1
-		// 		})
-		// 	}, 1000)
-
-		// 	return null
-		// }
-
-		return ReactDOM.createPortal(
-			this.props.children,
-			// document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID) //ModalContainer.DOM_ID
-			document.body //ModalContainer.DOM_ID
-		)
-	}
-}
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -280,12 +222,17 @@ class Assessment extends React.Component {
 			this.props.model
 		)
 
-		ModalUtil.hide()
+		// ModalUtil.hide()
+		// ModalUtil.hide()
+		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
+		// }
 
 		machine.send(AssessmentStateActions.SEND_RESPONSES)
 
 		// machine.forceSendAllResponses()
 		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
+		//this'll hide regular modals but has no affect on ModalPortal
+		// ModalUtil.hide()
 	}
 
 	// onDialogResponse(response) {

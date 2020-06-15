@@ -9,6 +9,7 @@ const { OboModel } = Common.models
 const { focus } = Common.page
 const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
 const { Dispatcher } = Common.flux
+const { Throbber } = Common.components
 
 class AssessmentPostTest extends React.Component {
 	constructor(props) {
@@ -152,7 +153,7 @@ class AssessmentPostTest extends React.Component {
 				</div>
 				<div className="attempt-history">
 					<h1>Attempt History:</h1>
-					{this.state.isFetching ? <span>Loading...</span> : this.renderFullReview()}
+					{this.state.isFetching ? <Throbber /> : this.renderFullReview()}
 				</div>
 			</div>
 		)
