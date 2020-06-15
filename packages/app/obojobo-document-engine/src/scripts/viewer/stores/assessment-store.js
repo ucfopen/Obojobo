@@ -54,8 +54,7 @@ const getNewAssessmentObject = assessmentId => ({
 	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
-	ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
-	isShowingAttemptHistory: false
+	ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED
 })
 
 class AssessmentStore extends Store {

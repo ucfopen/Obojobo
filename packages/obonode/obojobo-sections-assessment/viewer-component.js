@@ -143,10 +143,10 @@ class Assessment extends React.Component {
 			}
 
 			default:
-				return AssessmentUtil.getAssessmentForModel(
+				return AssessmentUtil.getNumberOfAttemptsCompletedForModel(
 					props.moduleData.assessmentState,
 					props.model
-				) === null
+				) === 0
 					? 'pre-test'
 					: 'post-test'
 		}
