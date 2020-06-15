@@ -1,29 +1,27 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import { NUMERIC_ANSWER_NODE, NUMERIC_FEEDBACK_NODE, NUMERIC_CHOICE_NODE } from './constants'
+import { NUMERIC_ANSWER_NODE, NUMERIC_CHOICE_NODE, NUMERIC_FEEDBACK_NODE } from './constants'
+
+const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
+const FEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
+
+// TODO - refactor converter when viewer is abstracted
 
 const slateToObo = node => {
 	const numericChoices = []
 
 	// Parse each numericChoice node
 	node.children.forEach(numericChoiceNode => {
-		if (numericChoiceNode.type !== NUMERIC_CHOICE_NODE) {
-			return
-		}
-
-		const choiceChildNodes = numericChoiceNode.children.filter(
-			child => child.type === NUMERIC_ANSWER_NODE || child.type === NUMERIC_FEEDBACK_NODE
-		)
-
-		const [answer, feedback] = choiceChildNodes
+		const [answer, feedback] = numericChoiceNode.children
 
 		if (feedback) {
 			numericChoices.push({
-				...answer.content.numericChoice,
-				feedback: Common.Registry.getItemForType(feedback.type).slateToObo(feedback)
+				...answer.content,
+				...numericChoiceNode.content,
+				feedback: Common.Registry.getItemForType(feedback.type).slateToObo(feedback, NUMERIC_FEEDBACK_NODE)
 			})
 		} else {
-			numericChoices.push({ ...answer.content.numericChoice })
+			numericChoices.push({ ...answer.content })
 		}
 	})
 
@@ -42,11 +40,12 @@ const oboToSlate = node => {
 	if (node.content && node.content.numericChoices) {
 		node.content.numericChoices.forEach(numericChoice => {
 			const node = {
-				type: NUMERIC_CHOICE_NODE,
+				type: CHOICE_NODE,
+				content: { score: numericChoice.score },
 				children: [
 					{
 						type: NUMERIC_ANSWER_NODE,
-						content: { numericChoice },
+						content: { ...numericChoice },
 						children: [{ text: '' }]
 					}
 				]
@@ -54,7 +53,7 @@ const oboToSlate = node => {
 
 			// Parse feedback node
 			if (numericChoice.feedback) {
-				const feedbackNode = Common.Registry.getItemForType(numericChoice.feedback.type).oboToSlate(
+				const feedbackNode = Common.Registry.getItemForType(FEEDBACK_NODE).oboToSlate(
 					numericChoice.feedback
 				)
 

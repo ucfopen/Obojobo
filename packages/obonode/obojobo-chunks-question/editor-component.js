@@ -61,54 +61,23 @@ class Question extends React.Component {
 	onSetAssessmentType(event) {
 		const type = event.target.value
 
-		const newBlock = {
-			type,
-			content: {
-				numericChoices: [
-					{
-						type: 'percent',
-						score: 100,
-						answer: '3',
-						margin: '3',
-						requirement: 'margin'
-					},
-					{
-						type: 'absolute',
-						score: 100,
-						answer: '3',
-						margin: '3',
-						requirement: 'margin'
-					}
-				]
-			},
-			children: [{ text: '' }]
-		}
+		const item = Common.Registry.getItemForType(type)
+		const newBlock = item.cloneBlankNode()
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		const hasSolution = this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
+		const assessmentLocation = hasSolution ? this.props.element.children.length - 2 : this.props.element.children.length - 1
 
 		Editor.withoutNormalizing(this.props.editor, () => {
+			// Remove the old assessment
 			Transforms.removeNodes(this.props.editor, {
-				at: path.concat(this.props.element.children.length - 1)
+				at: path.concat(assessmentLocation)
 			})
-			//@TODO: Not handling solution
+			// Insert the new assessment
 			Transforms.insertNodes(this.props.editor, newBlock, {
-				at: path.concat(this.props.element.children.length - 1)
+				at: path.concat(assessmentLocation)
 			})
 		})
-
-		// const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		// Transforms.setNodes(
-		// 	this.props.editor,
-		// 	{ content: { ...this.props.element.content, type } },
-		// 	{ at: path }
-		// )
-
-		// const lastChildIndex = this.props.element.children.length - 1
-		// return Transforms.setNodes(
-		// 	this.props.editor,
-		// 	{ questionType: type },
-		// 	{ at: path.concat(lastChildIndex) }
-		// )
 	}
 
 	onSetRevealAnswer() {
@@ -156,26 +125,9 @@ class Question extends React.Component {
 	render() {
 		const element = this.props.element
 		const content = element.content
-		// // const content = this.props.node.data.get('content')
-		// // const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
-		// // return <div>QUESTION</div>
 
-		// const element = this.props.element
-		// const content = element.content
-		// const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
 		const revealAnswer = content.revealAnswer
 		const isTypeSurvey = content.type === 'survey'
-		// const questionType = element.content.type
-
-		// // let questionType
-
-		// // The question type is determined by the MCAssessment or the NumericAssessement
-		// // This is either the last node or the second to last node
-		// // if (hasSolution) {
-		// // 	questionType = element.children[element.children.length - 2].type
-		// // } else {
-		// // 	questionType = element.children[element.children.length - 1]
-		// // }
 
 		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
 		let questionType
@@ -185,7 +137,7 @@ class Question extends React.Component {
 		if (hasSolution) {
 			questionType = element.children[element.children.length - 2].type
 		} else {
-			questionType = element.children[element.children.length - 1]
+			questionType = element.children[element.children.length - 1].type
 		}
 
 		return (

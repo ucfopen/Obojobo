@@ -1,9 +1,10 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--mc-assessment--mc-choice {
+.obojobo-draft--chunks--abstract-assessment--choice {
 	$color-border: #dfdfdf;
 
 	border-bottom: 1px solid $color-border;
+	position: relative;
 
 	&:hover {
 		background: none;
@@ -14,9 +15,13 @@
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
-		top: 0.5em;
+		top: 1em;
 		left: 3em;
 		font-family: $correct-font;
+
+		@media (max-width: 61.24em) {
+			left: 2.2em;
+		}
 
 		.button {
 			padding: 0.2em 0.5em;
@@ -49,10 +54,18 @@
 		}
 	}
 
+	.children {
+		padding-top: 2.5em;
+	}
+
 	.add-feedback {
 		position: absolute;
 		bottom: 0.5em;
 		right: 3em;
+
+		@media (max-width: 61.24em) {
+			right: 2.2em;
+		}
 	}
 
 	&.is-correct {

@@ -15,8 +15,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 	switch (simplifedToFullText[requirement]) {
 		case WITHIN_A_RANGE:
 			return (
-				<tr>
-					<td>
+				<div>
+					<label className="select">
+						Requirement
 						<select
 							className="select-item"
 							name="requirement"
@@ -28,8 +29,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
-					</td>
-					<td>
+					</label>
+					<label className="input">
+						Start
 						<input
 							className="input-item"
 							name="start"
@@ -40,8 +42,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onBlur={() => editor.toggleEditable(true)}
 							contentEditable={false}
 						/>
-					</td>
-					<td>
+					</label>
+					<label className="input">
+						End
 						<input
 							className="input-item"
 							name="end"
@@ -52,13 +55,14 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onBlur={() => editor.toggleEditable(true)}
 							contentEditable={false}
 						/>
-					</td>
-				</tr>
+					</label>
+				</div>
 			)
 		case MARGIN_OF_ERROR:
 			return (
-				<tr>
-					<td>
+				<div>
+					<label className="select">
+						Requirement
 						<select
 							className="select-item"
 							name="requirement"
@@ -70,8 +74,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
-					</td>
-					<td>
+					</label>
+					<label className="select">
+						Type
 						<select
 							className="select-item"
 							name="type"
@@ -79,12 +84,13 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
-							{marginDropdown.map(requirement => (
-								<option key={requirement}>{requirement}</option>
+							{marginDropdown.map(type => (
+								<option key={type}>{type}</option>
 							))}
 						</select>
-					</td>
-					<td>
+					</label>
+					<label className="input">
+						Answer
 						<input
 							className="input-item"
 							name="answer"
@@ -95,8 +101,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onBlur={() => editor.toggleEditable(true)}
 							contentEditable={false}
 						/>
-					</td>
-					<td>
+					</label>
+					<label className="input">
+						Margin
 						<input
 							className="input-item"
 							name="margin"
@@ -107,14 +114,15 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onBlur={() => editor.toggleEditable(true)}
 							contentEditable={false}
 						/>
-					</td>
-				</tr>
+					</label>
+				</div>
 			)
 		default:
 		case EXACT_ANSWER:
 			return (
-				<tr>
-					<td>
+				<div>
+					<label className="select">
+						Requirement
 						<select
 							className="select-item"
 							name="requirement"
@@ -126,8 +134,9 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
-					</td>
-					<td>
+					</label>
+					<label className="input">
+						Answer
 						<input
 							className="input-item"
 							name="answer"
@@ -138,8 +147,8 @@ const NumericOption = ({ editor, numericChoice, onHandleInputChange, onClickDrop
 							onBlur={() => editor.toggleEditable(true)}
 							contentEditable={false}
 						/>
-					</td>
-				</tr>
+					</label>
+				</div>
 			)
 	}
 }

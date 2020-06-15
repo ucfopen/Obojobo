@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCChoice editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`MCChoice editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
