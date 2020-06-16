@@ -63,9 +63,9 @@ const showModulePermissions = module => ({
 	module
 })
 
-const SHOW_REVERT_DIALOG = 'SHOW_REVERT_DIALOG'
-const showRevertDialog = module => ({
-	type: SHOW_REVERT_DIALOG,
+const SHOW_VERSION_HISTORY = 'SHOW_VERSION_HISTORY'
+const showVersionHistory = module => ({
+	type: SHOW_VERSION_HISTORY,
 	module
 })
 
@@ -187,7 +187,7 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
-	SHOW_REVERT_DIALOG,
+	SHOW_VERSION_HISTORY,
 	IMPORT_MODULE_FILE,
 	filterModules,
 	deleteModule,
@@ -200,6 +200,6 @@ module.exports = {
 	loadUsersForModule,
 	clearPeopleSearchResults,
 	showModuleMore,
-	showRevertDialog,
+	showVersionHistory,
 	importModuleFile
 }

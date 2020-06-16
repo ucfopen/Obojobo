@@ -1,4 +1,4 @@
-require('./revert-module-dialog.scss')
+require('./version-history-dialog.scss')
 const { CSSTransition } = require('react-transition-group')
 const React = require('react')
 const ModuleImage = require('./module-image')
@@ -9,36 +9,11 @@ const APIUtil = require('../api-util')
 const ReactModal = require('react-modal')
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
-const weekOfYear = require('dayjs/plugin/weekOfYear')
+const VersionHistoryListItem = require('./version-history-list-item')
 
 dayjs.extend(advancedFormat)
-dayjs.extend(weekOfYear)
 
-const Revision = props => {
-	const date = dayjs(props.createdAt).format('MMMM Do - h:mm A')
-	const isSelected = props.isSelected ? 'is-selected' : ''
-
-	return (
-		<div
-			className={`revision-history--item ${isSelected}`}
-			onClick={() => {
-				// Pass the index so the revision history
-				// menu knows which item is currently selected
-				props.onClickRevision(props.index)
-			}}
-		>
-			<span className="date">{date}</span>
-			<span className="username">{props.username}</span>
-			{props.isLatestVersion ? (
-				<span className="latest-version">Latest Version</span>
-			) : (
-				<span className="version">Version {props.versionNumber}</span>
-			)}
-		</div>
-	)
-}
-
-class RevertModuleDialog extends React.Component {
+class VersionHistoryDialog extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -52,7 +27,7 @@ class RevertModuleDialog extends React.Component {
 			selectedIndex: 0
 		}
 
-		this.revertModule = this.revertModule.bind(this)
+		this.restoreModule = this.restoreModule.bind(this)
 		this.setSelectedRevision = this.setSelectedRevision.bind(this)
 		this.toggleMenu = this.toggleMenu.bind(this)
 		this.loadDraftRevisions = this.loadDraftRevisions.bind(this)
@@ -72,6 +47,7 @@ class RevertModuleDialog extends React.Component {
 				.filter(draft => draft.json !== null)
 				.map((draft, index) => ({
 					createdAt: new Date(draft.createdAt),
+					createdAtDisplay: dayjs(draft.createdAt).format('MMMM Do - h:mm A'),
 					id: draft.revisionId,
 					username: draft.userFullName,
 					selected: index === 0,
@@ -79,7 +55,7 @@ class RevertModuleDialog extends React.Component {
 				}))
 
 			// Set selectedIndex to 0 to make sure the first draft
-			// is selected when a draft gets reverted
+			// is selected when a draft gets restored
 			this.setState(
 				{
 					selectedIndex: 0,
@@ -105,9 +81,10 @@ class RevertModuleDialog extends React.Component {
 		})
 	}
 
-	revertModule() {
+	restoreModule() {
+		this.closeConfirmDialog()
 		if (this.state.selectedIndex === 0) {
-			// Prevent reverting a module that's already
+			// Prevent restoring a module that's already
 			// the latest version
 			return
 		}
@@ -141,32 +118,23 @@ class RevertModuleDialog extends React.Component {
 		}
 
 		const revision = this.state.revisions[this.state.selectedIndex]
-		const date = dayjs(revision.createdAt).format('MMMM Do')
 
 		return (
 			<ReactModal
 				isOpen={true}
 				onRequestClose={this.closeConfirmDialog}
-				className="repository--modal revert-confirm-dialog"
+				className="repository--modal restore-confirm-dialog"
 				overlayClassName="repository--modal-overlay"
 			>
-				<h1 className="dialog-title">Revert Document</h1>
+				<h1 className="dialog-title">Confirm Restore</h1>
 				<div className="dialog-content">
-					This will revert the document from {date} and save it as the latest version.
-					<small>You can always undo this action by reverting another version.</small>
+					Restore version <b>{revision.versionNumber}</b> from <b>{revision.createdAtDisplay}</b>?
 				</div>
 				<div className="dialog-controls">
 					<Button className="secondary-button" onClick={this.closeConfirmDialog}>
 						Cancel
 					</Button>
-					<Button
-						onClick={() => {
-							this.closeConfirmDialog()
-							this.revertModule()
-						}}
-					>
-						Yes - Revert
-					</Button>
+					<Button onClick={this.restoreModule}>Yes - Restore</Button>
 				</div>
 			</ReactModal>
 		)
@@ -183,17 +151,17 @@ class RevertModuleDialog extends React.Component {
 	renderRevisionHistoryMenu() {
 		return (
 			<CSSTransition timeout={250} in={this.state.isMenuOpen}>
-				<div className="revision-history" ref={this.menuRef}>
+				<div className="version-history-list" ref={this.menuRef}>
 					<div className="menu-expanded">
-						<div className="revision-history--title">
-							<span>Revision history</span>
+						<div className="version-history-list--title">
+							<span>Version History</span>
 							{this.renderMenuToggleButton()}
 						</div>
 						{this.state.revisions.map((revision, index) => (
-							<Revision
+							<VersionHistoryListItem
 								key={revision.id}
 								isLatestVersion={index === 0}
-								createdAt={revision.createdAt}
+								createdAtDisplay={revision.createdAtDisplay}
 								username={revision.username}
 								onClickRevision={this.setSelectedRevision}
 								isSelected={this.state.selectedIndex === index}
@@ -211,27 +179,31 @@ class RevertModuleDialog extends React.Component {
 	render() {
 		const isFirstSelected = this.state.selectedIndex === 0
 		const isDisabled = !isFirstSelected ? 'disabled' : ''
+		const selectedRevision = this.state.revisions[this.state.selectedIndex] || {}
+		const currentVerstionTitle = isFirstSelected
+			? 'Latest Version'
+			: `Version ${selectedRevision.versionNumber} from ${selectedRevision.createdAtDisplay}`
 
 		return (
-			<div className="revert-module-dialog">
+			<div className="version-history-dialog">
 				{this.renderConfirmDialog()}
-				<div className="revert-module-dialog--header">
+				<div className="version-history-dialog--header">
 					<ModuleImage id={this.props.draftId} />
 					<div className="title">{this.props.title}</div>
 					<Button className="close-button" onClick={this.props.onClose} ariaLabel="Close dialog">
 						×
 					</Button>
 				</div>
-				<div className="revert-module-dialog--body">
+				<div className="version-history-dialog--body">
 					{this.renderRevisionHistoryMenu()}
 					<div className="editor-preview">
 						<div className="editor-preview--header">
 							<Button
-								className="revert-button"
+								className="restore-button"
 								onClick={this.openConfirmDialog}
 								disabled={isFirstSelected}
 							>
-								Revert document to this version
+								Restore to this version
 							</Button>
 							<ButtonLink
 								url={`/preview/${this.props.draftId}`}
@@ -240,8 +212,8 @@ class RevertModuleDialog extends React.Component {
 							>
 								Preview module
 							</ButtonLink>
-							<span>Editor preview:</span>
-							<small>Note: Changes made in this preview editor will not be saved</small>
+							<span>Viewing: {currentVerstionTitle}</span>
+							<small>Note: Changes made in preview window will not be saved.</small>
 						</div>
 						<iframe src={this.state.editorUrl} frameBorder="0" loading="lazy" />
 					</div>
@@ -251,4 +223,4 @@ class RevertModuleDialog extends React.Component {
 	}
 }
 
-module.exports = RevertModuleDialog
+module.exports = VersionHistoryDialog

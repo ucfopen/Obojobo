@@ -4,12 +4,12 @@ $border-color: rgba(0, 0, 0, 0.1);
 $border: 1px solid $border-color;
 $menu-transition-time: 0.25s;
 
-.revert-module-dialog {
+.version-history-dialog {
 	font-family: $font-default;
 	width: calc(100vw - 3em);
 }
 
-.revert-module-dialog--header {
+.version-history-dialog--header {
 	height: 3em;
 	box-sizing: border-box;
 	position: relative;
@@ -47,7 +47,7 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-.revert-module-dialog--body {
+.version-history-dialog--body {
 	background-color: #f2f2f2;
 	display: flex;
 	height: calc(95vh - 3em);
@@ -58,7 +58,7 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-.revision-history {
+.version-history-list {
 	flex: 1;
 	border-right: $border;
 	overflow-y: scroll;
@@ -132,7 +132,7 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-.revision-history--title {
+.version-history-list--title {
 	padding: 0.9em 0 0.9em 1.5em;
 	font-weight: bold;
 	font-size: 0.8em;
@@ -144,7 +144,7 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-.revision-history--item {
+.version-history-list--item {
 	border-top: $border;
 	border-bottom: $border;
 	padding: 1em 1.5em;
@@ -229,14 +229,14 @@ $menu-transition-time: 0.25s;
 		}
 	}
 
-	.revert-button,
+	.restore-button,
 	.toggle-nav-button,
 	.preview-button {
 		float: right;
 	}
 
-	.revert-button:disabled {
-		// Prevents the revert button from adjusting
+	.restore-button:disabled {
+		// Prevents the restore button from adjusting
 		// its size when it's disabled
 		border: 0;
 	}
@@ -261,7 +261,7 @@ $menu-transition-time: 0.25s;
 	}
 }
 
-.revert-confirm-dialog {
+.restore-confirm-dialog {
 	padding: 1.5em 3em;
 	max-width: 23em;
 

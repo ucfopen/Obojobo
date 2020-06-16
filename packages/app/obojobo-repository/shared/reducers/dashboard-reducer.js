@@ -14,7 +14,7 @@ const {
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
-	SHOW_REVERT_DIALOG
+	SHOW_VERSION_HISTORY
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -124,10 +124,10 @@ function DashboardReducer(state, action) {
 				success: prevState => ({ ...prevState, searchPeople: { items: action.payload.value } })
 			})
 
-		case SHOW_REVERT_DIALOG:
+		case SHOW_VERSION_HISTORY:
 			return {
 				...state,
-				dialog: 'revert-module',
+				dialog: 'module-version-history',
 				selectedModule: action.module
 			}
 

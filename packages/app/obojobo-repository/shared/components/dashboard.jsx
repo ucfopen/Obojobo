@@ -8,7 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
-const RevertModuleDialog = require('./revert-module-dialog')
+const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -21,7 +21,7 @@ const renderOptionsDialog = props => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
-		showRevertDialog={props.showRevertDialog}
+		showVersionHistory={props.showVersionHistory}
 	/>
 )
 
@@ -39,8 +39,12 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
-const renderRevertDialog = props => (
-	<RevertModuleDialog {...props.selectedModule} onClose={props.closeModal} />
+const renderVersionHistoryDialog = props => (
+	<VersionHistoryDialog
+		{...props.selectedModule}
+		title={`${props.selectedModule.title} - Version History`}
+		onClose={props.closeModal}
+	/>
 )
 
 const renderModalDialog = props => {
@@ -56,10 +60,12 @@ const renderModalDialog = props => {
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
 			break
-		case 'revert-module':
-			title = 'Revert Module'
-			dialog = renderRevertDialog(props)
+
+		case 'module-version-history':
+			title = 'Module Version History'
+			dialog = renderVersionHistoryDialog(props)
 			break
+
 		default:
 			return null
 	}
