@@ -74,16 +74,21 @@ class RevertModuleDialog extends React.Component {
 					createdAt: new Date(draft.createdAt),
 					id: draft.revisionId,
 					username: draft.userFullName,
-					selected: this.state.selectedIndex === index,
+					selected: index === 0,
 					versionNumber: drafts.length - index
 				}))
 
 			// Set selectedIndex to 0 to make sure the first draft
 			// is selected when a draft gets reverted
-			this.setState({
-				selectedIndex: 0,
-				revisions
-			})
+			this.setState(
+				{
+					selectedIndex: 0,
+					revisions
+				},
+				() => {
+					this.menuRef.current.scrollTop = 0
+				}
+			)
 		})
 	}
 
@@ -114,7 +119,6 @@ class RevertModuleDialog extends React.Component {
 		APIUtil.getDraftRevision(draftId, revision.id).then(res => {
 			APIUtil.postDraft(draftId, JSON.stringify(res.json)).then(() => {
 				this.loadDraftRevisions()
-				this.menuRef.current.scrollTop = 0
 			})
 		})
 	}

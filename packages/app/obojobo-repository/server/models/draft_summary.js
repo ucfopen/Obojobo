@@ -99,15 +99,13 @@ class DraftSummary {
 				drafts_content.id,
 				drafts_content.draft_id,
 				drafts_content.created_at,
-				repository_map_user_to_draft.user_id,
+				drafts_content.user_id,
 				users.first_name,
 				users.last_name
 			FROM drafts_content
-			JOIN repository_map_user_to_draft
-				ON repository_map_user_to_draft.draft_id=drafts_content.draft_id
 			JOIN users
-				ON repository_map_user_to_draft.user_id=users.id
-			WHERE drafts_content.draft_id=$[draftId]
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId]
 			ORDER BY drafts_content.created_at DESC;
 		`
 
@@ -122,7 +120,12 @@ class DraftSummary {
 
 	static fetchDraftRevisionById(draftId, revisionId) {
 		const query = `
-			SELECT id, draft_id, created_at, content FROM drafts_content
+			SELECT
+				id,
+				draft_id,
+				created_at,
+				content
+			FROM drafts_content
 			WHERE draft_id = $[draftId] AND id = $[revisionId]
 		`
 
