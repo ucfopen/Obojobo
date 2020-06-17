@@ -96,6 +96,11 @@
 		}
 	}
 
+	.delete-button,
+	.delete-label {
+		margin-top: 1em;
+	}
+
 	.buttons-with-labels {
 		text-align: left;
 		margin: 2em 0;
@@ -103,6 +108,7 @@
 		grid-template-columns: 7em auto;
 		grid-gap: 0.6em;
 		align-items: center;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
 		.label {
 			font-size: 0.8em;

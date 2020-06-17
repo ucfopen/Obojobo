@@ -44,6 +44,10 @@ const renderVersionHistoryDialog = props => (
 		{...props.selectedModule}
 		title={`${props.selectedModule.title} - Version History`}
 		onClose={props.closeModal}
+		isHistoryLoading={props.versionHistory.isFetching}
+		hasHistoryLoaded={props.versionHistory.hasFetched}
+		versionHistory={props.versionHistory.items}
+		restoreVersion={props.restoreVersion}
 	/>
 )
 

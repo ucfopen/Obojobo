@@ -47,11 +47,11 @@ class DraftSummary {
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
-		this.revisionCount = Number(revision_count)
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
 		this.userFullName = `${first_name} ${last_name}`
+		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
 	static fetchById(id) {
@@ -93,7 +93,23 @@ class DraftSummary {
 			})
 	}
 
-	static fetchAllDraftRevisions(draftId) {
+	static async fetchAllDraftRevisions(draftId, afterVersionId = null, count = 50) {
+		const MAX_COUNT = 100
+		const MIN_COUNT = 10
+		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
+		count += 1 // add 1 so we'll know if there are more to get after count
+
+		// if afterVersionId is provided, we'll reduce
+		// the results to any revisions saved before afterVersionId
+		let whereAfterVersion = ''
+		if (afterVersionId) {
+			whereAfterVersion = `
+				AND drafts_content.created_at < (
+					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
+				)
+			`
+		}
+
 		const query = `
 			SELECT
 				drafts_content.id,
@@ -105,17 +121,24 @@ class DraftSummary {
 			FROM drafts_content
 			JOIN users
 				ON drafts_content.user_id = users.id
-			WHERE drafts_content.draft_id = $[draftId]
-			ORDER BY drafts_content.created_at DESC;
+			WHERE
+				drafts_content.draft_id = $[draftId]
+				${whereAfterVersion}
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
 		`
 
-		return db
-			.any(query, { draftId })
-			.then(DraftSummary.resultsToObjects)
-			.catch(error => {
-				logger.error('fetchAllDraftRevisions', error.message, query, draftId)
-				return Promise.reject('Error loading DraftSummary by query')
-			})
+		try {
+			const results = await db.any(query, { draftId, afterVersionId, count })
+			const hasMoreResults = results.length === count
+			if (hasMoreResults) results.pop() // remove last element
+			const revisions = DraftSummary.resultsToObjects(results)
+			return { revisions, hasMoreResults }
+		} catch (error) {
+			logger.error('fetchAllDraftRevisions', error.message, query, draftId)
+			return Promise.reject('Error loading DraftSummary by query')
+		}
 	}
 
 	static fetchDraftRevisionById(draftId, revisionId) {

@@ -1,24 +1,31 @@
 const React = require('react')
 
-const VersionHistoryListItem = props => {
-	const isSelected = props.isSelected ? 'is-selected' : ''
+const VersionHistoryListItem = ({
+	isSelected,
+	onClick,
+	index,
+	createdAtDisplay,
+	username,
+	isLatestVersion,
+	versionNumber,
+	isRestored = false
+}) => {
+	const onClickHandler = React.useCallback(() => {
+		onClick(index)
+	}, [index])
+
+	const className = 'version-history-list--item' + (isSelected ? ' is-selected' : '')
 
 	return (
-		<div
-			className={`version-history-list--item ${isSelected}`}
-			onClick={() => {
-				// Pass the index so the revision history
-				// menu knows which item is currently selected
-				props.onClickRevision(props.index)
-			}}
-		>
-			<span className="date">{props.createdAtDisplay}</span>
-			<span className="username">by {props.username}</span>
-			{props.isLatestVersion ? (
-				<span className="latest-version">Latest Version</span>
+		<div className={className} onClick={onClickHandler}>
+			<span className="date">{createdAtDisplay}</span>
+			<span className="username">by {username}</span>
+			{isLatestVersion ? (
+				<span className="version latest">Latest Version</span>
 			) : (
-				<span className="version">Version {props.versionNumber}</span>
+				<span className="version">Version {versionNumber}</span>
 			)}
+			{isRestored ? <span className="version restored">Restored</span> : null}
 		</div>
 	)
 }

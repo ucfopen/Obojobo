@@ -14,7 +14,8 @@ const {
 	CREATE_NEW_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
-	SHOW_VERSION_HISTORY
+	SHOW_VERSION_HISTORY,
+	RESTORE_VERSION
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -25,7 +26,12 @@ const searchPeopleResultsState = (isFetching = false, hasFetched = false, items 
 
 const closedDialogState = () => ({
 	dialog: null,
-	dialogProps: null
+	dialogProps: null,
+	versionHistory: {
+		isFetching: false,
+		hasFetched: false,
+		items: []
+	}
 })
 
 function filterModules(modules, searchString) {
@@ -125,11 +131,46 @@ function DashboardReducer(state, action) {
 			})
 
 		case SHOW_VERSION_HISTORY:
-			return {
-				...state,
-				dialog: 'module-version-history',
-				selectedModule: action.module
-			}
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					dialog: 'module-version-history',
+					selectedModule: action.meta.module,
+					versionHistory: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
+
+		case RESTORE_VERSION:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
 
 		default:
 			return state

@@ -1,6 +1,6 @@
 const React = require('react')
 const { Provider } = require('react-redux')
-const { createStore, applyMiddleware } = require('redux')
+const { createStore, applyMiddleware, compose } = require('redux')
 const { middleware } = require('redux-pack')
 
 function hydrateElWithoutStore(Component, domSelector) {
@@ -19,7 +19,13 @@ function hydrateEl(Component, reducers, domSelector) {
 }
 
 function propsToStore(reducer, initialState) {
-	const combinedMiddleware = applyMiddleware(middleware)
+	let combinedMiddleware
+	// if(typeof window !== "undefined"){
+	// 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+	// 	combinedMiddleware = composeEnhancers(applyMiddleware(middleware))
+	// } else {
+	combinedMiddleware = applyMiddleware(middleware)
+	// }
 	return createStore(reducer, initialState, combinedMiddleware)
 }
 

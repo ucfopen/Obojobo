@@ -62,6 +62,7 @@ exports.requireMultipleAttemptIds = [
 	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
 	check('attemptIds.*', 'must be a valid UUID').isUUID()
 ]
+exports.check = check
 exports.validPageNumber = check('page', 'must be a valid int 1 or above')
 	.optional()
 	.isInt({ min: 1, allow_leading_zeroes: false })
