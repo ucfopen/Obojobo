@@ -3,6 +3,7 @@ const { Provider } = require('react-redux')
 const { createStore, applyMiddleware, compose } = require('redux')
 const { middleware } = require('redux-pack')
 
+// used in the browser to hydrate a SSR page w/o Redux
 function hydrateElWithoutStore(Component, domSelector) {
 	const domEl = document.querySelector(domSelector)
 	const initialState = JSON.parse(domEl.dataset.reactProps)
@@ -10,23 +11,25 @@ function hydrateElWithoutStore(Component, domSelector) {
 	ReactDOM.hydrate(app, domEl) //eslint-disable-line no-undef
 }
 
+// used in the browser to 'hydrate' a SSR page w/ Redux
 function hydrateEl(Component, reducers, domSelector) {
+	// locate the element containing the react app to hydrate
 	const domEl = document.querySelector(domSelector)
+	// reconstitute state into object (created by convertPropsToString)
 	const initialState = JSON.parse(domEl.dataset.reactProps)
-	const store = propsToStore(reducers, initialState)
+	// compose middleware to allow for redux dev tools
+	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+	const combinedMiddleware = composeEnhancers(applyMiddleware(middleware))
+	// create a store w/ initial state and middleware
+	const store = propsToStore(reducers, initialState, combinedMiddleware)
 	const app = createCommonReactApp(Component, store)
 	ReactDOM.hydrate(app, domEl) //eslint-disable-line no-undef
 }
 
-function propsToStore(reducer, initialState) {
-	let combinedMiddleware
-	// if(typeof window !== "undefined"){
-	// 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-	// 	combinedMiddleware = composeEnhancers(applyMiddleware(middleware))
-	// } else {
-	combinedMiddleware = applyMiddleware(middleware)
-	// }
-	return createStore(reducer, initialState, combinedMiddleware)
+// used on the server and client to create a redux store
+function propsToStore(reducer, initialState, optionalMiddleware) {
+	const preppedMiddleware = optionalMiddleware || applyMiddleware(middleware)
+	return createStore(reducer, initialState, preppedMiddleware)
 }
 
 function createCommonReactApp(Component, store) {
@@ -35,6 +38,8 @@ function createCommonReactApp(Component, store) {
 	return provider
 }
 
+// used to render state objects into a SSR page
+// so that they can be used to hydrate the application
 function convertPropsToString(props) {
 	const newProps = Object.assign({}, props)
 	delete newProps.settings
