@@ -8,10 +8,11 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 }))
 
 import Converter from './converter'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
-describe('MCChoice editor', () => {
+import { MC_ANSWER_NODE, MC_CHOICE_NODE } from 'obojobo-chunks-multiple-choice-assessment/constants'
+import { FEEDBACK_NODE } from '../constants'
+
+describe('Choice editor', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			id: 'mockKey',
@@ -19,10 +20,10 @@ describe('MCChoice editor', () => {
 			content: {},
 			children: [
 				{
-					type: MCANSWER_NODE
+					type: MC_ANSWER_NODE
 				},
 				{
-					type: MCFEEDBACK_NODE
+					type: FEEDBACK_NODE
 				},
 				{
 					type: 'notADefinedNode'
@@ -34,16 +35,54 @@ describe('MCChoice editor', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
+	test('slateToObo converts a Slate node to an OboNode with type MC_CHOICE', () => {
+		const slateNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			content: {},
+			children: [
+				{
+					type: MC_ANSWER_NODE
+				},
+				{
+					type: FEEDBACK_NODE
+				},
+				{
+					type: 'notADefinedNode'
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode, MC_CHOICE_NODE)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
 			children: [
 				{
-					type: MCANSWER_NODE
+					type: MC_ANSWER_NODE
+				}
+			],
+			content: { triggers: 'mock-triggers' }
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('oboToSlate converts an OboNode to a Slate node with Feedback', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			children: [
+				{
+					type: MC_ANSWER_NODE
 				},
 				{
-					type: MCFEEDBACK_NODE
+					type: FEEDBACK_NODE
 				},
 				{
 					type: 'notADefinedNode'

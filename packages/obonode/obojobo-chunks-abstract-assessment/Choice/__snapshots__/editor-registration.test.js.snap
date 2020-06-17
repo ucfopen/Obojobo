@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
+exports[`Choice editor plugins.renderNode renders a choice 1`] = `
 <SlateWrapper
   attributes={
     Object {
@@ -13,7 +13,7 @@ exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
       "data": Object {
         "get": [Function],
       },
-      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
     }
   }
 />

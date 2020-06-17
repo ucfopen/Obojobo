@@ -12,9 +12,9 @@ const resumeAttempt = async (
 	hostname,
 	remoteAddress
 ) => {
-	// if (Math.random() > 0.5) {
-	// 	throw 'Random error'
-	// }
+	if (Math.random() > 0.5) {
+		throw 'Random error'
+	}
 
 	// @TODO: these used to be req and res objects from express
 	// are they needed for OboModel.yell() ?!?!

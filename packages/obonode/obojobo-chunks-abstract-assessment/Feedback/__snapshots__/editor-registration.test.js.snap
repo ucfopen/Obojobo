@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCFeedback editor plugins.renderNode renders a node 1`] = `
+exports[`Feedback editor plugins.renderNode renders a node 1`] = `
 <SlateWrapper
   attributes={
     Object {
@@ -13,7 +13,7 @@ exports[`MCFeedback editor plugins.renderNode renders a node 1`] = `
       "data": Object {
         "get": [Function],
       },
-      "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Feedback",
     }
   }
 />

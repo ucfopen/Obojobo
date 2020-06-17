@@ -3,10 +3,9 @@ import React from 'react'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
-import MCFeedback from './editor-registration'
+import Feedback from './editor-registration'
+import { CHOICE_NODE, FEEDBACK_NODE } from '../constants'
 
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
@@ -20,12 +19,12 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 }))
 jest.mock('./converter', () => ({}))
 
-describe('MCFeedback editor', () => {
+describe('Feedback editor', () => {
 	test('plugins.renderNode renders a node', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: MCFEEDBACK_NODE,
+				type: FEEDBACK_NODE,
 				data: {
 					get: () => {
 						return {}
@@ -34,28 +33,28 @@ describe('MCFeedback editor', () => {
 			}
 		}
 
-		expect(MCFeedback.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Feedback.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
-	test('normalizeNode calls next if the node is not a MCFeedback node', () => {
+	test('normalizeNode calls next if the node is not a Feedback node', () => {
 		const next = jest.fn()
-		MCFeedback.plugins.normalizeNode([{}, []], {}, next)
+		Feedback.plugins.normalizeNode([{}, []], {}, next)
 
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on MCFeedback calls next if all MCFeedback children are valid', () => {
+	test('normalizeNode on Feedback calls next if all Feedback children are valid', () => {
 		const next = jest.fn()
 		const editor= {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCFEEDBACK_NODE,
+							type: FEEDBACK_NODE,
 							content: {},
 							children: [
 								{
@@ -70,12 +69,12 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on MCFeedback calls Transforms on invalid Element children', () => {
+	test('normalizeNode on Feedback calls Transforms on invalid Element children', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
@@ -83,12 +82,12 @@ describe('MCFeedback editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCFEEDBACK_NODE,
+							type: FEEDBACK_NODE,
 							content: {},
 							children: [
 								{
@@ -103,12 +102,12 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on MCFeedback calls Transforms on invalid Text children', () => {
+	test('normalizeNode on Feedback calls Transforms on invalid Text children', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
@@ -116,12 +115,12 @@ describe('MCFeedback editor', () => {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCCHOICE_NODE,
+					type: CHOICE_NODE,
 					content: {},
 					children: [
 						{
 							id: 'mockKey',
-							type: MCFEEDBACK_NODE,
+							type: FEEDBACK_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
 						}
@@ -130,18 +129,18 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on MCFeedback calls Transforms with invalid parent', () => {
+	test('normalizeNode on Feedback calls Transforms with invalid parent', () => {
 		const next = jest.fn()
 		const editor= {
 			children: [
 				{
 					id: 'mockKey',
-					type: MCFEEDBACK_NODE,
+					type: FEEDBACK_NODE,
 					content: {},
 					children: [
 						{
@@ -157,7 +156,7 @@ describe('MCFeedback editor', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0])
 		})
-		MCFeedback.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0], [0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})

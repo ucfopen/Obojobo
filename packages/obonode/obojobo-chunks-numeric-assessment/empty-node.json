@@ -10,7 +10,10 @@
 			"children": [
 				{
 					"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
-					"content": {},
+					"content": { 
+						"requirement": "exact",
+						"answer": "1"
+					},
 					"children": [{ "text": "" }]
 				}
 			]

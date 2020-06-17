@@ -12,44 +12,45 @@ Object {
             },
           ],
           "content": Object {
-            "numericChoice": Object {
-              "answer": "3",
-              "feedback": Object {
-                "children": Array [
-                  Object {
-                    "children": Array [],
-                    "content": Object {
-                      "textGroup": Array [
-                        Object {
-                          "data": Object {
-                            "indent": 0,
-                          },
-                          "text": Object {
-                            "styleList": Array [],
-                            "value": "3222",
-                          },
+            "answer": "3",
+            "feedback": Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": Object {
+                          "indent": 0,
                         },
-                      ],
-                    },
-                    "id": "text_id",
-                    "type": "ObojoboDraft.Chunks.Text",
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "3222",
+                        },
+                      },
+                    ],
                   },
-                ],
-                "content": Object {},
-                "id": "feedback_id",
-                "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
-              },
-              "margin": "3",
-              "requirement": "margin",
-              "score": 100,
-              "type": "percent",
+                  "id": "text_id",
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": "feedback_id",
+              "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
             },
+            "margin": "3",
+            "requirement": "margin",
+            "score": 100,
+            "type": "percent",
           },
           "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
         },
         undefined,
       ],
-      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+      "content": Object {
+        "score": 100,
+      },
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
     },
     Object {
       "children": Array [
@@ -60,18 +61,19 @@ Object {
             },
           ],
           "content": Object {
-            "numericChoice": Object {
-              "answer": "3",
-              "margin": "3",
-              "requirement": "margin",
-              "score": 100,
-              "type": "absolute",
-            },
+            "answer": "3",
+            "margin": "3",
+            "requirement": "margin",
+            "score": 100,
+            "type": "absolute",
           },
           "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
         },
       ],
-      "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+      "content": Object {
+        "score": 100,
+      },
+      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
     },
   ],
   "content": Object {

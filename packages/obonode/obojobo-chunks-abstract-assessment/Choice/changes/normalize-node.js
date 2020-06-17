@@ -1,7 +1,7 @@
 import { Node, Element, Transforms, Text, Editor } from 'slate'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+import { MC_ANSWER_NODE } from 'obojobo-chunks-multiple-choice-assessment/constants'
 
 import { 
 	CHOICE_NODE, 
@@ -19,9 +19,9 @@ const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const getAnswer = (path, editor) => {
 	// If the choice has an Assessment parent, pull from it's type to 
 	// determine what kind of answer to insert
-	const [parent] = Editor.above(editor, { at: path })
-	if(parent && validAssessments.includes(parent.type)) {
-		return assessmentToAnswer[parent.type]
+	const parent = Editor.above(editor, { at: path })
+	if(parent && validAssessments.includes(parent[0].type)) {
+		return assessmentToAnswer[parent[0].type]
 	}
 
 	// If the choice does not have an Assessment parent, see if its
@@ -32,17 +32,17 @@ const getAnswer = (path, editor) => {
 	// normalization to wrap choices in an assessment already
 	// (ergo, this branch will only be run on the first Choice node
 	// in a series)
-	const [sibling] = Editor.next(editor, { at: path })
+	const sibling = Editor.next(editor, { at: path })
 	if (sibling 
-		&& sibling.type === CHOICE_NODE 
-		&& sibling.children.length > 0
-		&& validAnswers.includes(sibling.children[0].type)) {
-		return answerTypeToJson[sibling.children[0].type]
+		&& sibling[0].type === CHOICE_NODE 
+		&& sibling[0].children.length > 0
+		&& validAnswers.includes(sibling[0].children[0].type)) {
+		return answerTypeToJson[sibling[0].children[0].type]
 	}
 
 	// If the proper answer type cannot be determined, use a MCAnswer
 	return {
-		type: MCANSWER_NODE,
+		type: MC_ANSWER_NODE,
 		content: {},
 		children: [
 			{

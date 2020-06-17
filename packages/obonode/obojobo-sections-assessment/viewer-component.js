@@ -375,9 +375,9 @@ class Assessment extends React.Component {
 						this.props.model
 					)}
 				</h1> */}
-				{/* <StateMachineComponent
+				<StateMachineComponent
 					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
-				></StateMachineComponent> */}
+				></StateMachineComponent>
 				{childEl}
 
 				<ModalPortal>

@@ -28,7 +28,7 @@ describe('Feedback Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCFeedback component deletes itself', () => {
+	test('Feedback component deletes itself', () => {
 		const component = shallow(
 			<Feedback element={{ content: {} }}/>
 		)

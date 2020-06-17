@@ -1,9 +1,8 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import { NUMERIC_ANSWER_NODE, NUMERIC_CHOICE_NODE, NUMERIC_FEEDBACK_NODE } from './constants'
+import { NUMERIC_ANSWER_NODE, NUMERIC_FEEDBACK_NODE } from './constants'
 
-const CHOICE_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Choice'
-const FEEDBACK_NODE = 'ObojoboDraft.Chunks.AbstractAssessment.Feedback'
+import { CHOICE_NODE, FEEDBACK_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 
 // TODO - refactor converter when viewer is abstracted
 
@@ -24,7 +23,10 @@ const slateToObo = node => {
 				)
 			})
 		} else {
-			numericChoices.push({ ...answer.content, ...numericChoiceNode.content })
+			numericChoices.push({
+				...answer.content,
+				...numericChoiceNode.content
+			})
 		}
 	})
 

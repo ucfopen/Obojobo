@@ -35,10 +35,10 @@
 	}
 
 	// Work around for the tangled scss in MCAssessment
-	.obojobo-draft--chunks--mc-assessment--mc-choice {
+	.obojobo-draft--chunks--abstract-assessment--choice {
 		position: relative;
 
-		&.editor-mc-choice {
+		&.editor-choice {
 			.delete-button {
 				top: 0.7em;
 				right: 0.7em;
@@ -51,7 +51,7 @@
 			padding-left: 0;
 		}
 
-		.obojobo-draft--chunks--mc-assessment--mc-feedback {
+		.obojobo-draft--chunks--abstract-assessment--feedback {
 			.delete-button {
 				right: 0.8em;
 				top: 1em;
@@ -60,7 +60,7 @@
 	}
 
 	&.is-type-survey {
-		.obojobo-draft--chunks--mc-assessment--mc-choice .correct-button {
+		.obojobo-draft--chunks--abstract-assessment--choice .correct-button {
 			visibility: hidden;
 		}
 	}

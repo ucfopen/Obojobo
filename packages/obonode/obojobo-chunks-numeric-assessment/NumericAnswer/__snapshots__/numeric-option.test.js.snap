@@ -1,8 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NumericOption NumericOption renders as expected with default requirement 1`] = `
-<tr>
-  <td>
+<div>
+  <label
+    className="select"
+  >
+    Requirement
     <select
       className="select-item"
       name="requirement"
@@ -18,8 +21,11 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
         Within a range
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Answer
     <input
       className="input-item"
       contentEditable={false}
@@ -29,13 +35,16 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       onFocus={[Function]}
       value=""
     />
-  </td>
-</tr>
+  </label>
+</div>
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`exact\` 1`] = `
-<tr>
-  <td>
+<div>
+  <label
+    className="select"
+  >
+    Requirement
     <select
       className="select-item"
       name="requirement"
@@ -52,8 +61,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
         Within a range
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Answer
     <input
       className="input-item"
       contentEditable={false}
@@ -63,13 +75,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       onFocus={[Function]}
       value=""
     />
-  </td>
-</tr>
+  </label>
+</div>
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`margin\` 1`] = `
-<tr>
-  <td>
+<div>
+  <label
+    className="select"
+  >
+    Requirement
     <select
       className="select-item"
       name="requirement"
@@ -86,8 +101,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
         Within a range
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="select"
+  >
+    Type
     <select
       className="select-item"
       name="type"
@@ -100,8 +118,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
         Absolute
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Answer
     <input
       className="input-item"
       contentEditable={false}
@@ -111,8 +132,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       onFocus={[Function]}
       value=""
     />
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Margin
     <input
       className="input-item"
       contentEditable={false}
@@ -122,13 +146,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       onFocus={[Function]}
       value=""
     />
-  </td>
-</tr>
+  </label>
+</div>
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`precise\` 1`] = `
-<tr>
-  <td>
+<div>
+  <label
+    className="select"
+  >
+    Requirement
     <select
       className="select-item"
       name="requirement"
@@ -144,8 +171,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
         Within a range
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Answer
     <input
       className="input-item"
       contentEditable={false}
@@ -155,13 +185,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
       onFocus={[Function]}
       value=""
     />
-  </td>
-</tr>
+  </label>
+</div>
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`range\` 1`] = `
-<tr>
-  <td>
+<div>
+  <label
+    className="select"
+  >
+    Requirement
     <select
       className="select-item"
       name="requirement"
@@ -178,8 +211,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
         Within a range
       </option>
     </select>
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    Start
     <input
       className="input-item"
       contentEditable={false}
@@ -189,8 +225,11 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       onFocus={[Function]}
       value=""
     />
-  </td>
-  <td>
+  </label>
+  <label
+    className="input"
+  >
+    End
     <input
       className="input-item"
       contentEditable={false}
@@ -200,14 +239,14 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       onFocus={[Function]}
       value=""
     />
-  </td>
-</tr>
+  </label>
+</div>
 `;
 
-exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
 
-exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"select\\">Type<select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></label><label class=\\"input\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></label><label class=\\"input\\">Margin<input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
 
 exports[`NumericOption NumericOption with requirement of \`precise\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Significant digits</option><option>Decimal places</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"precision\\" value=\\"\\"></td></tr>"`;
 
-exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></td><td><input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" value=\\"\\"></td></tr>"`;
+exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input\\">Start<input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" value=\\"\\"></label><label class=\\"input\\">End<input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
