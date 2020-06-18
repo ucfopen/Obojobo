@@ -9,10 +9,11 @@ import Figure from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -36,7 +37,16 @@ describe('Figure Editor Node', () => {
 						url: 'mockUrl',
 						alt: 'mockAlt'
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
@@ -55,7 +65,16 @@ describe('Figure Editor Node', () => {
 						width: 'customWidth',
 						height: 'customHeight'
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
 
@@ -68,7 +87,16 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt',
 						height: 'customHeight'
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 		expect(componentNoWidth.toJSON()).toMatchSnapshot()
 
@@ -81,7 +109,16 @@ describe('Figure Editor Node', () => {
 						alt: 'mockAlt',
 						width: 'customWidth'
 					}
-				}}/>
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+			/>
 		)
 		expect(componentNoHeight.toJSON()).toMatchSnapshot()
 	})
@@ -93,6 +130,15 @@ describe('Figure Editor Node', () => {
 					id: 'mockKey',
 					content: {}
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 			/>
 		)
 
@@ -106,12 +152,52 @@ describe('Figure Editor Node', () => {
 		component.unmount()
 	})
 
+	test('Figure component handles tabbing', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('Figure component does not focus if already selected', () => {
 		const component = mount(
 			<Figure
 				element={{
 					id: 'mockKey',
 					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				selected={true}
 			/>
@@ -133,6 +219,14 @@ describe('Figure Editor Node', () => {
 				element={{
 					id: 'mockKey',
 					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
 				}}
 				selected={false}
 			/>
@@ -157,6 +251,15 @@ describe('Figure Editor Node', () => {
 					key: 'mockKey',
 					content: mockContent
 				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 				selected={true}
 			/>
 		)
@@ -168,6 +271,20 @@ describe('Figure Editor Node', () => {
 	test('Figure component delete button calls Transforms', () => {
 		const component = mount(
 			<Figure
+				node={{
+					data: {
+						get: () => ({})
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
 				element={{ content: {} }}
 				selected={true}
 			/>

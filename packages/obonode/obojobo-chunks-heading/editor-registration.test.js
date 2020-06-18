@@ -10,7 +10,7 @@ jest.mock('slate-react')
 describe('Heading editor', () => {
 	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
 		const next = jest.fn()
-		Heading.plugins.normalizeNode([ {},[] ], {}, next)
+		Heading.plugins.normalizeNode([{}, []], {}, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -22,7 +22,7 @@ describe('Heading editor', () => {
 		}
 		const next = jest.fn()
 
-		Heading.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		Heading.plugins.normalizeNode([button, [0]], { children: [button] }, next)
 		expect(next).toHaveBeenCalled()
 	})
 
@@ -32,7 +32,7 @@ describe('Heading editor', () => {
 		const button = {
 			type: HEADING_NODE,
 			children: [
-				{ 
+				{
 					type: 'mockElement',
 					children: [{ text: '' }]
 				}
@@ -44,24 +44,14 @@ describe('Heading editor', () => {
 		}
 		const next = jest.fn()
 
-		Heading.plugins.normalizeNode([ button,[0] ], editor, next)
+		Heading.plugins.normalizeNode([button, [0]], editor, next)
 		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			Heading.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Heading.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			Heading.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(Heading.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
 	test('plugins.decorate renders a placeholder', () => {
@@ -69,12 +59,7 @@ describe('Heading editor', () => {
 			children: [{ children: [{ text: '' }] }]
 		}
 
-		expect(
-			Heading.plugins.decorate(
-				[{ children: [{ text: '' }] }, [0]],
-				editor
-			)
-		).toMatchSnapshot()
+		expect(Heading.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -83,7 +68,7 @@ describe('Heading editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Heading.plugins.onKeyDown([{},[0]], {}, event)
+		Heading.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -96,8 +81,24 @@ describe('Heading editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Heading.plugins.onKeyDown([{},[0]], {}, event)
+		Heading.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			insertText: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(editor.insertText).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders Heading when passed', () => {
@@ -110,34 +111,5 @@ describe('Heading editor', () => {
 		}
 
 		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
-	})
-
-	test('getNavItem returns expected object', () => {
-		const model = {
-			modelState: {
-				headingLevel: 1,
-				textGroup: {
-					first: {
-						text: 'testText'
-					}
-				}
-			},
-			getIndex: () => 0,
-			showChildren: false,
-			toText: () => 'test string'
-		}
-
-		expect(Heading.getNavItem(model)).toBe(null)
-
-		model.modelState.headingLevel = 2
-		expect(Heading.getNavItem(model)).toEqual({
-			type: 'sub-link',
-			label: 'testText',
-			path: ['test-string'],
-			showChildren: false
-		})
-
-		model.modelState.headingLevel = 3
-		expect(Heading.getNavItem(model)).toBe(null)
 	})
 })

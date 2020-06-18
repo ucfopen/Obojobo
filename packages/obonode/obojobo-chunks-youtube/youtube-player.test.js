@@ -2,6 +2,10 @@ import React from 'react'
 import YouTubePlayer from './youtube-player'
 import { mount } from 'enzyme'
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag', () => () => {
+	// simulate loading the youtube iframe api
+	global.window.onYouTubeIframeAPIReady()
+})
 jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => {
 	return () => 'mockId'
 })
@@ -82,39 +86,5 @@ describe('YouTubePlayer', () => {
 
 		expect(spy).toHaveBeenCalledTimes(1)
 		expect(component.instance().player.destroy).not.toHaveBeenCalled()
-	})
-
-	test('YouTubePlayer loads Iframe API', () => {
-		window.YT = null
-
-		const mockContent = {
-			videoId: 'mockId',
-			startTime: 1,
-			endTime: 2
-		}
-
-		// Make sure loading multiple videos doesn't break anything
-		mount(
-			<div>
-				<YouTubePlayer content={mockContent} />
-				<YouTubePlayer content={mockContent} />
-				<YouTubePlayer content={mockContent} />
-			</div>
-		)
-
-		const callbacks = YouTubePlayer.callbacks
-
-		// Simulate loading YouTube's Player object
-		window.YT = {
-			Player: jest.fn(() => ({
-				destroy: jest.fn(),
-				cueVideoById: jest.fn()
-			}))
-		}
-		window.onYouTubeIframeAPIReady()
-
-		callbacks.forEach(cb => expect(cb).toHaveBeenCalled())
-
-		expect(callbacks.length).toEqual(0)
 	})
 })

@@ -18,6 +18,16 @@ describe('AlignMarks', () => {
 		expect(editor.setAlign).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			setAlign: jest.fn()
+		}
+
+		AlignMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.setAlign).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			setAlign: jest.fn()
@@ -77,13 +87,15 @@ describe('AlignMarks', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: ''}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: '' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -91,7 +103,7 @@ describe('AlignMarks', () => {
 				focus: { path: [0], offset: 0 }
 			},
 			isVoid: () => false,
-			isInline: () => false,
+			isInline: () => false
 		}
 
 		AlignMarks.plugins.commands.setAlign(editor, ALIGN_CENTER)

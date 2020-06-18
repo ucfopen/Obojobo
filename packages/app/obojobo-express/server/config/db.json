@@ -16,7 +16,7 @@
 		"host": {"ENV": "DB_HOST"},
 		"database": {"ENV": "DB_NAME"},
 		"port": {"ENV": "DB_PORT"},
-		"ssl": {"ENV": "DB_SSL"},
+		"ssl": {"ENV": "DB_SSL_JSON"},
 		"useBluebird": false
 	}
 }

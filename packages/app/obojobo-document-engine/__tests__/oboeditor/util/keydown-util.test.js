@@ -10,13 +10,15 @@ describe('KeyDown Util', () => {
 		jest.spyOn(Transforms, 'move').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: ''}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: '' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -30,11 +32,11 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], false))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], false))
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(1)
 
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 		expect(Transforms.move).toHaveBeenCalledTimes(1)
@@ -42,48 +44,56 @@ describe('KeyDown Util', () => {
 		editor.children = [
 			{
 				type: 'mockNode',
-				children: [{
-					type: 'mockChildNode',
-					children: [{ text: 'mockText'}]
-				}]
+				children: [
+					{
+						type: 'mockChildNode',
+						children: [{ text: 'mockText' }]
+					}
+				]
 			}
 		]
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 
 		editor.isVoid = () => true
 
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0],[0]], true))
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, [editor.children[0], [0]], true))
 		expect(event.preventDefault).toHaveBeenCalledTimes(2)
 		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 	})
 
 	test('deleteNodeContents deals with selection outside of table', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some text content'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				},
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some text content'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				},
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some text content'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -99,19 +109,21 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[1],[1]], false)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[1], [1]], false)
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with delete backward selection collapsed at start of block', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some text content'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -127,19 +139,21 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor,[editor.children[0],[0]], false)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], false)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with delete forward selection collapsed at end of block', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -155,19 +169,21 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with delete forward selection collapsed in block', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -183,19 +199,21 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection inside cell', () => {
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{
-						type: 'mockChildNode',
-						children: [{ text: 'some text content'}]
-					}]
+					children: [
+						{
+							type: 'mockChildNode',
+							children: [{ text: 'some text content' }]
+						}
+					]
 				}
 			],
 			selection: {
@@ -211,7 +229,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]])
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]])
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -221,17 +239,17 @@ describe('KeyDown Util', () => {
 		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
 					children: [
 						{
 							type: 'mockChildNode',
-							children: [{ text: 'some text content'}]
+							children: [{ text: 'some text content' }]
 						},
 						{
 							type: 'mockChildNode',
-							children: [{ text: 'some text content'}]
+							children: [{ text: 'some text content' }]
 						}
 					]
 				}
@@ -249,7 +267,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]])
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]])
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.delete).toHaveBeenCalled()
@@ -261,17 +279,17 @@ describe('KeyDown Util', () => {
 		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
 					children: [
 						{
 							type: 'mockChildNode',
-							children: [{ text: 'some text content'}]
+							children: [{ text: 'some text content' }]
 						},
 						{
 							type: 'mockChildNode',
-							children: [{ text: 'some text content'}]
+							children: [{ text: 'some text content' }]
 						}
 					]
 				}
@@ -289,7 +307,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0],[0]], true)
+		KeyDownUtil.deleteNodeContents(event, editor, [editor.children[0], [0]], true)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.delete).toHaveBeenCalled()
@@ -301,10 +319,10 @@ describe('KeyDown Util', () => {
 		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{ text: 'some'}]
+					children: [{ text: 'some' }]
 				}
 			],
 			selection: {
@@ -320,11 +338,17 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.breakToText(event, editor, [editor.children[0],[0]], true)
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 		expect(Transforms.collapse).toHaveBeenCalled()
+
+		// make sure the inserted node is correct type
+		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
+		expect(insertedNode.children[0]).toHaveProperty('type', 'ObojoboDraft.Chunks.Text')
+		expect(insertedNode.children[0]).toHaveProperty('subtype', 'ObojoboDraft.Chunks.Text.TextLine')
+		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
 	test('breakToText converts to text', () => {
@@ -332,10 +356,10 @@ describe('KeyDown Util', () => {
 		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
-			children:[
+			children: [
 				{
 					type: 'mockNode',
-					children: [{ text: 'some'}]
+					children: [{ text: 'some' }]
 				}
 			],
 			selection: {
@@ -351,7 +375,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.breakToText(event, editor, [editor.children[0],[0]], true)
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setNodes).toHaveBeenCalled()

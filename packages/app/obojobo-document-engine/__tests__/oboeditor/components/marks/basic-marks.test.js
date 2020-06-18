@@ -21,6 +21,16 @@ describe('BasicMarks', () => {
 		expect(editor.toggleMark).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			toggleMark: jest.fn()
+		}
+
+		BasicMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.toggleMark).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			toggleMark: jest.fn()
@@ -60,7 +70,7 @@ describe('BasicMarks', () => {
 		BasicMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleMark).toHaveBeenCalledWith(MONOSPACE_MARK)
 
-		mockEvent.key = 'q'
+		mockEvent.key = '/'
 		BasicMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleMark).toHaveBeenCalledWith(LATEX_MARK)
 	})
@@ -110,19 +120,21 @@ describe('BasicMarks', () => {
 	})
 
 	test('renderLeaf does nothing', () => {
-		expect(BasicMarks.plugins.renderLeaf({
-			leaf: { },
-			children: 'mockChild'
-		})).toMatchSnapshot()
+		expect(
+			BasicMarks.plugins.renderLeaf({
+				leaf: {},
+				children: 'mockChild'
+			})
+		).toMatchSnapshot()
 	})
 
 	test('toggleMarks removes links', () => {
 		jest.spyOn(Editor, 'removeMark').mockReturnValue(true)
-		
+
 		const editor = {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),
-			children: [{ text: 'mockText', b: true}],
+			children: [{ text: 'mockText', b: true }],
 			selection: {
 				anchor: { path: [0], offset: 1 },
 				focus: { path: [0], offset: 1 }
@@ -136,7 +148,7 @@ describe('BasicMarks', () => {
 
 	test('toggleMarks adds links', () => {
 		jest.spyOn(Editor, 'addMark').mockReturnValue(true)
-		
+
 		const editor = {
 			removeMark: jest.fn(),
 			addMark: jest.fn(),

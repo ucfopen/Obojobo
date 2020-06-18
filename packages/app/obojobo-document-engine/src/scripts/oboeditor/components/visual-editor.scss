@@ -3,6 +3,7 @@
 .editor--page-editor {
 	$latex-editor-background: #e8eef9;
 	$latex-editor-color: #124386;
+	$latex-defaults: inherit !important;
 
 	display: flex;
 	margin: 2em;
@@ -11,6 +12,7 @@
 	background-color: $color-bg;
 	border-radius: $dimension-rounded-radius;
 	min-height: calc(100vh - 10.5em);
+	position: relative;
 
 	.obojobo-draft--modules--module {
 		margin: 3em auto;
@@ -30,6 +32,29 @@
 		font-family: $font-monospace;
 		border-radius: 0.15em;
 		font-size: 0.95em;
+		letter-spacing: -0.025em;
+		display: inline;
+		cursor: text;
+	}
+
+	.skip-nav {
+		position: absolute;
+		z-index: 6;
+		left: 1em;
+		top: 1em;
+		font-size: 0.8em;
+
+		> button {
+			position: absolute;
+			left: -20em;
+			top: 0;
+			padding: 0.5em 1em;
+			white-space: nowrap;
+
+			&:focus {
+				left: 0;
+			}
+		}
 	}
 
 	span[data-placeholder] {

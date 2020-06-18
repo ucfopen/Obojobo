@@ -1,6 +1,7 @@
-import './page-editor.scss'
+import './visual-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
@@ -8,7 +9,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
 import EditorStore from '../stores/editor-store'
-import FileToolbar from './toolbars/file-toolbar'
+import FileToolbarViewer from './toolbars/file-toolbar-viewer'
 import FormatPlugin from '../plugins/format-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
@@ -16,15 +17,18 @@ import OboNodePlugin from '../plugins/obonode-plugin'
 import ScriptMarks from './marks/script-marks'
 import EditorNav from './navigation/editor-nav'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import PageEditorErrorBoundry from './page-editor-error-boundry'
+import VisualEditorErrorBoundry from './visual-editor-error-boundry'
+import EditorTitleInput from './editor-title-input'
+import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
+const { Button } = Common.components
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 import React from 'react'
-import { createEditor, Editor, Element, Transforms } from 'slate'
+import { createEditor, Editor, Element, Transforms, Range } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
 
@@ -32,7 +36,7 @@ import { withHistory } from 'slate-history'
 // It should be deleted when the Slate bugs are remedied
 import '../overwrite-bug-fixes'
 
-class PageEditor extends React.Component {
+class VisualEditor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
@@ -43,9 +47,11 @@ class PageEditor extends React.Component {
 			value: json,
 			saved: true,
 			editable: json && json.length >= 1 && !json[0].text,
-			showPlaceholders: true
+			showPlaceholders: true,
+			contentRect: null
 		}
 
+		this.pageEditorContainerRef = React.createRef()
 		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
@@ -55,10 +61,14 @@ class PageEditor extends React.Component {
 		this.toggleEditable = this.toggleEditable.bind(this)
 		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
-		this.insertableItems = []
+		this.onKeyDownGlobal = this.onKeyDownGlobal.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 		this.decorate = this.decorate.bind(this)
 		this.renderLeaf = this.renderLeaf.bind(this)
+		this.renameModule = this.renameModule.bind(this)
+		this.onResized = this.onResized.bind(this)
+		this.renderElement = this.renderElement.bind(this)
+		this.setEditorFocus = this.setEditorFocus.bind(this)
 
 		this.editor = this.withPlugins(withHistory(withReact(createEditor())))
 		this.editor.toggleEditable = this.toggleEditable
@@ -140,13 +150,35 @@ class PageEditor extends React.Component {
 	componentDidMount() {
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
+		// Setup global keydown to listen to all global keys
+		window.addEventListener('keydown', this.onKeyDownGlobal)
+
 		// Set keyboard focus to the editor
 		Transforms.select(this.editor, Editor.start(this.editor, []))
-		ReactEditor.focus(this.editor)
+		this.setEditorFocus()
+		this.setupResizeObserver()
+	}
+
+	setupResizeObserver() {
+		if (
+			!window.ResizeObserver ||
+			!window.ResizeObserver.prototype ||
+			!window.ResizeObserver.prototype.observe ||
+			!window.ResizeObserver.prototype.disconnect
+		) {
+			return false
+		}
+
+		this.resizeObserver = new ResizeObserver(this.onResized)
+		this.resizeObserver.observe(this.pageEditorContainerRef.current)
+
+		return true
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('beforeunload', this.checkIfSaved)
+		window.removeEventListener('keydown', this.onKeyDownGlobal)
+		if (this.resizeObserver) this.resizeObserver.disconnect()
 	}
 
 	checkIfSaved(event) {
@@ -161,17 +193,104 @@ class PageEditor extends React.Component {
 	onKeyDownGlobal(event) {
 		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
-			this.saveModule(this.props.draftId)
+			return this.saveModule(this.props.draftId)
+		}
+
+		if (
+			(event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
+			((event.key === 'z' || event.key === 'Z') &&
+				(event.ctrlKey || event.metaKey) &&
+				event.shiftKey)
+		) {
+			event.preventDefault()
+			return this.editor.redo()
 		}
 
 		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
-			this.editor.undo()
+			return this.editor.undo()
 		}
 
-		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+		if (event.key === 'Escape') {
 			event.preventDefault()
-			this.editor.redo()
+			return ReactEditor.blur(this.editor)
+		}
+
+		// Open top insert menu: - and _ account for users potentially using the shift key
+		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, {
+				at: Range.start(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest'
+			})
+
+			// Change the node so that the top insert menu is open
+			return Transforms.setNodes(
+				this.editor,
+				{ open: 'top' },
+				{
+					at: nodeEntry[1]
+				}
+			)
+		}
+
+		// Open bottom insert menu: = and + account for users potentially using the shift key
+		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, {
+				at: Range.end(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest',
+				reverse: true
+			})
+
+			// Change the node so that the top insert menu is open
+			return Transforms.setNodes(
+				this.editor,
+				{ open: 'bottom' },
+				{
+					at: nodeEntry[1]
+				}
+			)
+		}
+
+		// Open top insert menu: i and I occur on different systems as the key when shift is held
+		if (
+			(event.key === 'i' || event.key === 'I') &&
+			(event.ctrlKey || event.metaKey) &&
+			event.shiftKey
+		) {
+			event.preventDefault()
+			// Prevent keyboard stealing by locking the editor to readonly
+			this.editor.toggleEditable(false)
+
+			// Get the first, leafmost Obojobo node
+			// This allows for things to be inserted inside of nested nodes like Questions
+			const [nodeEntry] = Editor.nodes(this.editor, {
+				at: Range.start(this.editor.selection),
+				match: n => Element.isElement(n) && !n.subtype,
+				mode: 'lowest'
+			})
+
+			// Change the node so that the more info box is open
+			return Transforms.setNodes(
+				this.editor,
+				{ open: 'info' },
+				{
+					at: nodeEntry[1]
+				}
+			)
 		}
 	}
 
@@ -181,10 +300,17 @@ class PageEditor extends React.Component {
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
 		this.setState({ value, saved: false })
+
+		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
+	}
+
+	onResized(event) {
+		this.setState({
+			contentRect: event.contentRect
+		})
 	}
 
 	// Methods that handle movement between pages
-
 	componentDidUpdate(prevProps, prevState) {
 		// Do nothing when updating state from empty page
 		if (!prevProps.page && !this.props.page) {
@@ -203,7 +329,10 @@ class PageEditor extends React.Component {
 		if (!prevProps.page && this.props.page) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			return this.setState({ value: this.importFromJSON(), editable: true })
+			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+				Transforms.select(this.editor, Editor.start(this.editor, []))
+				this.setEditorFocus()
+			})
 		}
 
 		// Both page and previous page are garunteed to not be null here
@@ -212,8 +341,16 @@ class PageEditor extends React.Component {
 			this.editor.selection = null
 			this.editor.prevSelection = null
 			this.exportToJSON(prevProps.page, prevState.value)
-			return this.setState({ value: this.importFromJSON(), editable: true })
+			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
+				Transforms.select(this.editor, Editor.start(this.editor, []))
+				this.setEditorFocus()
+			})
 		}
+	}
+
+	renameModule(label) {
+		EditorUtil.renameModule(this.props.model.id, label)
+		this.saveModule(this.props.draftId)
 	}
 
 	saveModule(draftId) {
@@ -303,11 +440,7 @@ class PageEditor extends React.Component {
 	}
 
 	// All the 'plugin' methods that allow the obonodes to extend the default functionality
-
 	onKeyDown(event) {
-		// Run the global keydowns, stopping if one executes
-		this.onKeyDownGlobal(event)
-
 		for (const plugin of this.globalPlugins) {
 			if (plugin.onKeyDown) plugin.onKeyDown(event, this.editor)
 			if (event.defaultPrevented) return
@@ -350,7 +483,6 @@ class PageEditor extends React.Component {
 	}
 
 	// All the render methods that allow the editor to display properly
-
 	renderLeaf(props) {
 		props = this.renderLeafPlugins.reduce((props, plugin) => plugin.renderLeaf(props), props)
 		const { attributes, children, leaf } = props
@@ -376,18 +508,24 @@ class PageEditor extends React.Component {
 		}
 	}
 
+	setEditorFocus() {
+		ReactEditor.focus(this.editor)
+	}
+
 	render() {
 		const className =
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
-			<div className={className}>
-				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange.bind(this)}>
+			<div className={className} ref={this.pageEditorContainerRef}>
+				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
+					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">
-						<div className="draft-title">{this.props.model.title}</div>
-						<FileToolbar
-							editor={this.editor}
-							selection={this.editor.selection}
-							model={this.props.model}
+						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
+						<Button className="skip-nav" onClick={this.setEditorFocus}>
+							Skip to Editor
+						</Button>
+						<FileToolbarViewer
+							title={this.props.model.title}
 							draftId={this.props.draftId}
 							onSave={this.saveModule}
 							reload={this.reload}
@@ -397,7 +535,6 @@ class PageEditor extends React.Component {
 							insertableItems={this.props.insertableItems}
 							togglePlaceholders={this.togglePlaceholders}
 							showPlaceholders={this.state.showPlaceholders}
-							value={this.state.value}
 						/>
 						<ContentToolbar editor={this.editor} value={this.state.value} />
 					</div>
@@ -410,17 +547,17 @@ class PageEditor extends React.Component {
 					/>
 
 					<div className="component obojobo-draft--modules--module" role="main">
-						<PageEditorErrorBoundry editorRef={this.editorRef}>
+						<VisualEditorErrorBoundry editorRef={this.editor}>
 							<Editable
 								className="obojobo-draft--pages--page"
-								renderElement={this.renderElement.bind(this)}
+								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
 								readOnly={!this.state.editable}
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>
-						</PageEditorErrorBoundry>
+						</VisualEditorErrorBoundry>
 					</div>
 				</Slate>
 			</div>
@@ -428,4 +565,4 @@ class PageEditor extends React.Component {
 	}
 }
 
-export default PageEditor
+export default VisualEditor

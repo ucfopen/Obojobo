@@ -7,6 +7,7 @@ import EditorComponent from './editor-component'
 import Level from './components/level/editor-component'
 import Line from './components/line/editor-component'
 import Converter from './converter'
+import ListUtil from './list-util'
 
 import normalizeNode from './changes/normalize-node'
 import onBackspace from './changes/on-backspace'
@@ -25,11 +26,11 @@ const plugins = {
 	// They may affect multiple nodes simultaneously
 	insertData(data, editor, next) {
 		// Insert Slate fragments normally
-		if(data.types.includes('application/x-slate-fragment')) return next(data)
+		if (data.types.includes('application/x-slate-fragment')) return next(data)
 
 		// If the node that we will be inserting into is not a Code node use the regular logic
 		const [first] = Editor.nodes(editor, { match: node => Element.isElement(node) })
-		if(first[0].type !== LIST_NODE) return next(data)
+		if (first[0].type !== LIST_NODE) return next(data)
 
 		// When inserting plain text into a Code node insert all lines as code
 		const plainText = data.getData('text/plain')
@@ -47,14 +48,16 @@ const plugins = {
 	// They affect individual nodes independently of one another
 	decorate([node, path], editor) {
 		// Define a placeholder decoration
-		if(Element.isElement(node) && !node.subtype && Node.string(node) === ''){
+		if (Element.isElement(node) && !node.subtype && Node.string(node) === '') {
 			const point = Editor.start(editor, path)
 
-			return [{
-				placeholder: 'Type your text here',
-				anchor: point,
-				focus: point
-			}]
+			return [
+				{
+					placeholder: 'Type your text here',
+					anchor: point,
+					focus: point
+				}
+			]
 		}
 
 		return []
@@ -79,6 +82,20 @@ const plugins = {
 
 			case 'h':
 				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
+				break
+
+			// Allow both L and K to swap between list types
+			// Standard practice is that Ctrl+Shift+K toggles unordered and
+			// Ctrl+Shift+L toggles ordered, but, in the case of lists, toggling
+			// ordered/unordered off is the same as toggling the other on.
+			case 'k':
+			case 'K':
+			case 'l':
+			case 'L':
+				if (event.shiftKey) {
+					event.preventDefault()
+					ListUtil.toggleType(entry[0], editor)
+				}
 		}
 	},
 	renderNode(props) {
@@ -90,7 +107,7 @@ const plugins = {
 			default:
 				return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
+	}
 }
 
 const List = {

@@ -7,11 +7,12 @@ import renderer from 'react-test-renderer'
 import ActionButton from './editor-component'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -23,6 +24,7 @@ describe('ActionButton Editor Node', () => {
 	let nodeData
 
 	beforeEach(() => {
+		jest.clearAllMocks()
 		nodeData = {
 			content: {
 				actions: [
@@ -64,9 +66,18 @@ describe('ActionButton Editor Node', () => {
 	})
 
 	test('builds the expected component when selected', () => {
-		const component = renderer.create(
-			<ActionButton element={nodeData} selected={true} />
-		)
+		const component = renderer.create(<ActionButton element={nodeData} selected={true} />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+
+		// make sure node recieves props since we're mocking it
+		expect(component.root.find(Node).props).toMatchSnapshot()
+	})
+
+	test('builds the expected component (with no onClickAction)', () => {
+		nodeData.content.triggers = []
+		const component = renderer.create(<ActionButton element={nodeData} selected={true} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -87,16 +98,76 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('closes modal', () => {
+	test('handles tabbing', () => {
+		const component = mount(<ActionButton element={nodeData} selected={true} />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('closes modal and saves', () => {
 		const editor = {
 			children: [nodeData]
 		}
-		const component = mount(
-			<ActionButton element={nodeData} selected={true} editor={editor} />
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
+
+		component.instance().closeModal({
+			triggers: {
+				mockNewTrigger: {
+					type: 'mockNewTrigger',
+					actions: [
+						{
+							type: 'mockNewAction'
+						}
+					]
+				}
+			}
+		})
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{
+				content: {
+					actions: [
+						{
+							type: 'mockType',
+							value: 'mockValue'
+						}
+					],
+					triggers: [
+						{
+							type: 'mockNewTrigger',
+							actions: [
+								{
+									type: 'mockNewAction'
+								}
+							]
+						}
+					]
+				}
+			},
+			{ at: undefined }
 		)
+	})
+
+	test('closes modal without saving', () => {
+		const editor = {
+			children: [nodeData]
+		}
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
 
 		component.instance().closeModal()
 
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
 	})
 })

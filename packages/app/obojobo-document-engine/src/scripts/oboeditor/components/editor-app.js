@@ -10,7 +10,7 @@ import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 //import { KeyUtils } from 'slate'
-import PageEditor from './page-editor'
+import VisualEditor from './visual-editor'
 import React from 'react'
 
 const { ModalContainer } = Common.components
@@ -50,6 +50,7 @@ class EditorApp extends React.Component {
 	}
 
 	getVisualEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const json = JSON.parse(draftModel)
 		const obomodel = OboModel.create(json)
 		EditorStore.init(
@@ -71,6 +72,7 @@ class EditorApp extends React.Component {
 	}
 
 	getCodeEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const obomodel = OboModel.create({
 			type: 'ObojoboDraft.Modules.Module',
 			content: {
@@ -132,10 +134,6 @@ class EditorApp extends React.Component {
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
 
-		// get the mode from the location
-		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if (mode === 'classic') mode = XML_MODE // convert classic to xml
-
 		ModalStore.init()
 		return this.reloadDraft(draftId, this.state.mode)
 	}
@@ -153,14 +151,13 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				mode={this.state.mode}
 				switchMode={this.switchMode}
-				insertableItems={Common.Registry.insertableItems}
 			/>
 		)
 	}
 
 	renderVisualEditor() {
 		return (
-			<PageEditor
+			<VisualEditor
 				page={this.state.editorState.currentPageModel}
 				navState={this.state.editorState}
 				context={this.state.editorState.context}

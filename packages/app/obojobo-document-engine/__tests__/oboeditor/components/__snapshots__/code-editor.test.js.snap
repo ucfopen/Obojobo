@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CodeEditor CodeEditor component 1`] = `
+exports[`CodeEditor CodeEditor component 1`] = `null`;
+
+exports[`CodeEditor CodeEditor component before loading 1`] = `
 <div
   className="component editor--code-editor"
   onKeyDown={[Function]}
@@ -8,14 +10,22 @@ exports[`CodeEditor CodeEditor component 1`] = `
   <div
     className="draft-toolbars"
   >
-    <div
-      className="draft-title"
-    >
-      Mock Title
-    </div>
+    <input
+      aria-label="Rename Module"
+      className="editor--components--editor-title-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="(Untitled Module)"
+      value="Mock Title"
+    />
   </div>
   Codemirror
 </div>
 `;
 
-exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"draft-title\\">Mock Title</div></div>Codemirror</div>"`;
+exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"(Untitled Module)\\" aria-label=\\"Rename Module\\" value=\\"Mock Title\\"></div>Codemirror</div>"`;
+
+exports[`CodeEditor changes the Editor title 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"(Untitled Module)\\" aria-label=\\"Rename Module\\" value=\\"mock new title\\"></div>Codemirror</div>"`;
+
+exports[`CodeEditor changes the Editor title to blank 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><input class=\\"editor--components--editor-title-input\\" placeholder=\\"(Untitled Module)\\" aria-label=\\"Rename Module\\" value=\\"\\"></div>Codemirror</div>"`;

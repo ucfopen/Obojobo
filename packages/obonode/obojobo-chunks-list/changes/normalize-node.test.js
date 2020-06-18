@@ -42,7 +42,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -89,7 +90,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -116,7 +118,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -143,7 +146,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -170,7 +174,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -190,7 +195,8 @@ describe('Normalize List', () => {
 					children: [{ text: 'mockList', b: true }]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
@@ -204,12 +210,12 @@ describe('Normalize List', () => {
 				{
 					id: 'mockKey',
 					type: LIST_NODE,
-					content: {},
+					content: { listStyles: { type: 'ordered' } },
 					children: [
 						{
 							type: LIST_NODE,
 							subtype: LIST_LEVEL_NODE,
-							content: {},
+							content: { type: 'ordered', bulletStyle: 'decimal' },
 							children: [
 								{
 									type: LIST_NODE,
@@ -222,7 +228,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
@@ -275,14 +282,15 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.mergeNodes).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on ListLevel handles invalid child type unordered', () => {
+	test('normalizeNode on ListLevel handles invalid child type ordered', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
 		const editor = {
@@ -290,7 +298,13 @@ describe('Normalize List', () => {
 				{
 					id: 'mockKey',
 					type: LIST_NODE,
-					content: {},
+					content: {
+						listStyles: {
+							indents: {
+								0: { bulletStyle: 'circle' }
+							}
+						}
+					},
 					children: [
 						{
 							type: LIST_NODE,
@@ -315,14 +329,15 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
-	test('normalizeNode on ListLevel handles invalid child type ordered', () => {
+	test('normalizeNode on ListLevel handles invalid child type unordered', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
 		const editor = {
@@ -330,7 +345,7 @@ describe('Normalize List', () => {
 				{
 					id: 'mockKey',
 					type: LIST_NODE,
-					content: {},
+					content: { listStyles: { type: 'ordered' } },
 					children: [
 						{
 							type: LIST_NODE,
@@ -355,7 +370,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
@@ -387,7 +403,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
@@ -414,7 +431,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
@@ -446,7 +464,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0])
@@ -482,7 +501,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0].children[0], [0, 0, 0]], editor, next)
 
@@ -521,7 +541,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		normalizeNode([editor.children[0].children[0].children[0], [0, 0, 0]], editor, next)
 
@@ -552,7 +573,8 @@ describe('Normalize List', () => {
 					]
 				}
 			],
-			isInline: () => false
+			isInline: () => false,
+			isVoid: () => false
 		}
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0].children[0])

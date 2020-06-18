@@ -279,34 +279,34 @@ describe('SubMenu', () => {
 
 		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
-		component.instance().addPage('mock-id-1')
+		component.instance().addPage()
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
 			expect.objectContaining({
 				content: expect.objectContaining({
 					title: null
 				})
 			}),
-			'mock-id-1'
+			7
 		)
 
-		component.instance().addPage('mock-id-2', 'New Title')
+		component.instance().addPage('New Title')
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
 			expect.objectContaining({
 				content: expect.objectContaining({
 					title: 'New Title'
 				})
 			}),
-			'mock-id-2'
+			7
 		)
 
-		component.instance().addPage('mock-id-3', '     ')
+		component.instance().addPage('     ')
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
 			expect.objectContaining({
 				content: expect.objectContaining({
 					title: null
 				})
 			}),
-			'mock-id-3'
+			7
 		)
 	})
 

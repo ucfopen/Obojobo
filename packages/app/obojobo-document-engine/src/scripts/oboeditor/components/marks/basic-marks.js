@@ -19,6 +19,7 @@ const LATEX_MARK = '_latex'
 const BasicMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
@@ -37,7 +38,7 @@ const BasicMarks = {
 				case 'm':
 					event.preventDefault()
 					return editor.toggleMark(MONOSPACE_MARK)
-				case 'q':
+				case '/':
 					event.preventDefault()
 					return editor.toggleMark(LATEX_MARK)
 			}
@@ -46,12 +47,18 @@ const BasicMarks = {
 			let { children } = props
 			const { leaf } = props
 
+			if (leaf[LATEX_MARK]) {
+				children = (
+					<div spellCheck={false} className={'latex-editor '}>
+						{children}
+					</div>
+				)
+			}
 			if (leaf[BOLD_MARK]) children = <strong>{children}</strong>
 			if (leaf[ITALIC_MARK]) children = <em>{children}</em>
 			if (leaf[STRIKE_MARK]) children = <del>{children}</del>
 			if (leaf[QUOTE_MARK]) children = <q>{children}</q>
 			if (leaf[MONOSPACE_MARK]) children = <code>{children}</code>
-			if (leaf[LATEX_MARK]) children = <span className={'latex-editor'}>{children}</span>
 
 			props.children = children
 			return props
@@ -74,36 +81,42 @@ const BasicMarks = {
 	marks: [
 		{
 			name: 'Bold',
+			shortcut: 'B',
 			type: BOLD_MARK,
 			icon: BoldIcon,
 			action: editor => editor.toggleMark(BOLD_MARK)
 		},
 		{
 			name: 'Italic',
+			shortcut: 'I',
 			type: ITALIC_MARK,
 			icon: ItalicIcon,
 			action: editor => editor.toggleMark(ITALIC_MARK)
 		},
 		{
 			name: 'Strikethrough',
+			shortcut: 'D',
 			type: STRIKE_MARK,
 			icon: StrikeIcon,
 			action: editor => editor.toggleMark(STRIKE_MARK)
 		},
 		{
 			name: 'Quote',
+			shortcut: '"',
 			type: QUOTE_MARK,
 			icon: QuoteIcon,
 			action: editor => editor.toggleMark(QUOTE_MARK)
 		},
 		{
 			name: 'Monospace',
+			shortcut: 'M',
 			type: MONOSPACE_MARK,
 			icon: MonoIcon,
 			action: editor => editor.toggleMark(MONOSPACE_MARK)
 		},
 		{
 			name: 'Equation',
+			shortcut: '/',
 			type: LATEX_MARK,
 			icon: LatexIcon,
 			action: editor => editor.toggleMark(LATEX_MARK)

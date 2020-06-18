@@ -50,10 +50,10 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
-				type: TEXT_NODE, 
+			{
+				type: TEXT_NODE,
 				subtype: TEXT_LINE_NODE,
-				content: { indent: 0 }
+				content: { indent: 0, hangingIndent: false }
 			},
 			{ at: [0] }
 		)
@@ -65,7 +65,7 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
+			{
 				content: { headingLevel: 2 }
 			},
 			{ at: [0] }
@@ -78,21 +78,36 @@ describe('Heading Converter', () => {
 
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			{},
-			{ 
-				type: CODE_NODE, 
+			{
+				type: CODE_NODE,
 				subtype: CODE_LINE_NODE,
-				content: { indent: 0 }
+				content: { indent: 0, hangingIndent: false }
 			},
 			{ at: [0] }
 		)
 	})
 
 	test('switchType[LIST_NODE] changes blocks to list nodes', () => {
-		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
-		Converter.switchType[LIST_NODE]({}, [{ content: {} }, [0]])
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 
-		expect(Transforms.removeNodes).toHaveBeenCalled()
-		expect(Transforms.insertNodes).toHaveBeenCalled()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: HEADING_NODE,
+					content: { headingLevel: 1 },
+					children: [{ text: 'mockHeading', b: true }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 1 },
+				focus: { path: [0, 0], offset: 1 }
+			},
+			isVoid: () => false
+		}
+
+		Converter.switchType[LIST_NODE](editor, [editor.children[0], [0]])
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

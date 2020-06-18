@@ -9,8 +9,6 @@ import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('../../../../src/scripts/viewer/util/api-util')
 import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
 jest.mock('../../../../src/scripts/oboeditor/util/clipboard-util')
-import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
-jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
 import EditorStore from '../../../../src/scripts/oboeditor/stores/editor-store'
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
@@ -20,18 +18,6 @@ jest.mock('../../../../src/scripts/common/util/download-document')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
-const buttonIndex = {
-	save: 1,
-	new: 2,
-	copy: 3,
-	rename: 4,
-	xml: 6,
-	json: 7,
-	import: 8,
-	delete: 9,
-	lti: 10
-}
 
 describe('File Menu', () => {
 	beforeEach(() => {
@@ -76,8 +62,7 @@ describe('File Menu', () => {
 		})
 
 		component
-			.find('button')
-			.at(buttonIndex.save)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
 			.simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
@@ -86,8 +71,7 @@ describe('File Menu', () => {
 		})
 
 		component
-			.find('button')
-			.at(buttonIndex.save)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
 			.simulate('click')
 
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
@@ -101,20 +85,14 @@ describe('File Menu', () => {
 			value: { id: 'mock-id' }
 		})
 
-		component
-			.find('button')
-			.at(buttonIndex.new)
-			.simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component
-			.find('button')
-			.at(buttonIndex.new)
-			.simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		setTimeout(() => {
 			component.update()
@@ -133,8 +111,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		component
-			.find('button')
-			.at(buttonIndex.copy)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Make a copy...'))
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -153,12 +130,12 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		// get references to buttons
-		const downloadXmlButton = component.find('button').at(buttonIndex.xml)
-		const downloadJSONButton = component.find('button').at(buttonIndex.json)
-
-		// Verify references are correct
-		expect(downloadXmlButton.text()).toBe('XML Document (.xml)')
-		expect(downloadJSONButton.text()).toBe('JSON Document (.json)')
+		const downloadXmlButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('XML Document (.xml)')
+		)
+		const downloadJSONButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('JSON Document (.json)')
+		)
 
 		// click
 		downloadJSONButton.simulate('click')
@@ -184,21 +161,6 @@ describe('File Menu', () => {
 		})
 	})
 
-	test('FileMenu calls Rename', () => {
-		const model = {
-			title: 'mockTitle'
-		}
-
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-
-		component
-			.find('button')
-			.at(buttonIndex.rename)
-			.simulate('click')
-
-		expect(ModalUtil.show).toHaveBeenCalled()
-	})
-
 	test('FileMenu calls Delete', () => {
 		const model = {
 			title: 'mockTitle'
@@ -207,8 +169,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		component
-			.find('button')
-			.at(buttonIndex.delete)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -222,42 +183,13 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		component
-			.find('button')
-			.at(buttonIndex.lti)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Copy LTI Link'))
 			.simulate('click')
 
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
-	test('renameModule renames with blank name', () => {
-		const component = mount(<FileMenu draftId="mockDraft" onRename={jest.fn()} />)
-
-		component.instance().renameModule('mockId', '      ')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-	})
-
-	test('renameModule renames with new name', () => {
-		const component = mount(<FileMenu draftId="mockDraft" />)
-
-		component.instance().renameModule('mockId', 'mock title')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-	})
-
-	test('renameAndSaveModule renames and saves draft', () => {
-		expect.hasAssertions()
-		const onSave = jest.fn()
-
-		const component = mount(<FileMenu draftId="mockDraft" onSave={onSave} />)
-
-		component.instance().renameAndSaveModule('mockId', 'mock title')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-		expect(onSave).toHaveBeenCalled()
-	})
-
-	test('copyModule creates a copy of the current draft', () => {
+	test('copyModule calls copyDraft api', () => {
 		expect.hasAssertions()
 		const model = {
 			flatJSON: () => ({ children: [] }),
@@ -276,22 +208,30 @@ describe('File Menu', () => {
 		const exportToJSON = jest.fn()
 
 		const component = mount(
-			<FileMenu draftId="mockDraft" model={model} exportToJSON={exportToJSON} onSave={jest.fn()} />
+			<FileMenu
+				draftId="mockDraftId"
+				model={model}
+				exportToJSON={exportToJSON}
+				onSave={jest.fn()}
+			/>
 		)
 
-		APIUtil.createNewDraft.mockResolvedValueOnce({
-			value: { id: 'mockId' }
-		})
-		APIUtil.postDraft.mockResolvedValueOnce({
-			status: 'ok'
+		APIUtil.copyDraft.mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				draftId: 'new-copy-draft-id'
+			}
 		})
 
-		component.instance().copyModule('mockId', 'mock title - copy')
-
-		expect(APIUtil.createNewDraft).toHaveBeenCalled()
+		return component
+			.instance()
+			.copyModule('new title')
+			.then(() => {
+				expect(APIUtil.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title')
+			})
 	})
 
-	test('deleteModule removes draft', () => {
+	test('deleteModule calls deleteDraft api', () => {
 		expect.hasAssertions()
 		// make sure window.close doesn't break further tests
 		jest.spyOn(window, 'close').mockReturnValueOnce()
@@ -316,8 +256,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)
 
 		component
-			.find('button')
-			.at(buttonIndex.import)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
 			.simulate('click')
 
 		const mockId = 'mockId'
@@ -334,8 +273,7 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		component
-			.find('button')
-			.at(buttonIndex.import)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
 			.simulate('click')
 		expect(ModalUtil.show).toHaveBeenCalled()
 

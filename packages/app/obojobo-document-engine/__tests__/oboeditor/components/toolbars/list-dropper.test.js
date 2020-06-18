@@ -9,11 +9,8 @@ jest.useFakeTimers()
 
 describe('List Dropper', () => {
 	test('List Dropper node', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = shallow(<ListDropper type="unordered" bullets={bullets}/>)
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = shallow(<ListDropper type="unordered" bullets={bullets} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -24,7 +21,7 @@ describe('List Dropper', () => {
 			children: [
 				{
 					type: 'mock-type',
-					children: [{ text: ''}]
+					children: [{ text: '' }]
 				}
 			],
 			selection: {
@@ -35,14 +32,9 @@ describe('List Dropper', () => {
 			isInline: () => false
 		}
 
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
-		)
-		
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="ordered" bullets={bullets} editor={editor} />)
+
 		component
 			.find('button')
 			.at(0)
@@ -58,7 +50,7 @@ describe('List Dropper', () => {
 				{
 					type: LIST_NODE,
 					content: { listStyles: { type: 'unordered' } },
-					children: [{ text: ''}] 
+					children: [{ text: '' }]
 				}
 			],
 			selection: {
@@ -69,14 +61,9 @@ describe('List Dropper', () => {
 			isInline: () => false
 		}
 
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
-		)
-		
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="ordered" bullets={bullets} editor={editor} />)
+
 		component
 			.find('button')
 			.at(0)
@@ -92,7 +79,7 @@ describe('List Dropper', () => {
 				{
 					type: LIST_NODE,
 					content: { listStyles: { type: 'ordered' } },
-					children: [{ text: ''}] 
+					children: [{ text: '' }]
 				}
 			],
 			selection: {
@@ -103,14 +90,9 @@ describe('List Dropper', () => {
 			isInline: () => false
 		}
 
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(
-			<ListDropper type="ordered" bullets={bullets} editor={editor}/>
-		)
-		
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="ordered" bullets={bullets} editor={editor} />)
+
 		component
 			.find('button')
 			.at(0)
@@ -120,12 +102,9 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper node opens and closes', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(<ListDropper type="unordered" bullets={bullets}/>)
-		
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="unordered" bullets={bullets} />)
+
 		component
 			.find('button')
 			.at(1)
@@ -145,14 +124,9 @@ describe('List Dropper', () => {
 		const editor = {
 			changeToType: jest.fn()
 		}
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(
-			<ListDropper type="unordered" bullets={bullets} editor={editor}/>
-		)
-		
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="unordered" bullets={bullets} editor={editor} />)
+
 		component
 			.find('button')
 			.at(2)
@@ -162,11 +136,8 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper component opens and closes menu with keys', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = mount(<ListDropper type="unordered" bullets={bullets}/>)
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = mount(<ListDropper type="unordered" bullets={bullets} />)
 
 		component
 			.find('div')
@@ -190,11 +161,8 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper component moves up and down with keys', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = shallow(<ListDropper type="unordered" bullets={bullets}/>)
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = shallow(<ListDropper type="unordered" bullets={bullets} />)
 
 		component
 			.find('div')
@@ -218,11 +186,8 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper component closes menu when unfocused', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = shallow(<ListDropper type="unordered" bullets={bullets}/>)
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = shallow(<ListDropper type="unordered" bullets={bullets} />)
 
 		const html = component
 			.find('div')
@@ -236,11 +201,9 @@ describe('List Dropper', () => {
 	})
 
 	test('List Dropper component cancels menu closure when focused', () => {
-		const bullets = [
-			{ bulletStyle: 'disc', display: '●'},
-			{ bulletStyle: 'circle', display: '○'},
-		]
-		const component = shallow(<ListDropper type="unordered" bullets={bullets}/>)
+		navigator.__defineGetter__('platform', () => 'Mock Mac')
+		const bullets = [{ bulletStyle: 'disc', display: '●' }, { bulletStyle: 'circle', display: '○' }]
+		const component = shallow(<ListDropper type="unordered" bullets={bullets} />)
 
 		const html = component
 			.find('div')

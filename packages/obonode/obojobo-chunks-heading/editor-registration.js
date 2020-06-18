@@ -41,14 +41,16 @@ const Heading = {
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {
 			// Define a placeholder decoration
-			if(Element.isElement(node) && Node.string(node) === ''){
+			if (Element.isElement(node) && Node.string(node) === '') {
 				const point = Editor.start(editor, path)
 
-				return [{
-					placeholder: 'Type your heading here',
-					anchor: point,
-					focus: point
-				}]
+				return [
+					{
+						placeholder: 'Type your heading here',
+						anchor: point,
+						focus: point
+					}
+				]
 			}
 
 			return []
@@ -57,34 +59,14 @@ const Heading = {
 			switch (event.key) {
 				case 'Enter':
 					return KeyDownUtil.breakToText(event, editor, entry)
+
+				case 'Tab':
+					event.preventDefault()
+					return editor.insertText('\t')
 			}
 		},
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
-		}
-	},
-	getNavItem(model) {
-		switch (model.modelState.headingLevel) {
-			case 1:
-			case 2:
-				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
-					return null
-				}
-
-				return {
-					type: 'sub-link',
-					label: model.modelState.textGroup.first.text,
-					path: [
-						model
-							.toText()
-							.toLowerCase()
-							.replace(/ /g, '-')
-					],
-					showChildren: false
-				}
-
-			default:
-				return null
 		}
 	}
 }

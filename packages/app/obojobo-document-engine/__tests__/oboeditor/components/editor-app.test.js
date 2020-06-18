@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 
 import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-jest.mock('src/scripts/oboeditor/components/page-editor')
+jest.mock('src/scripts/oboeditor/components/visual-editor')
 jest.mock('src/scripts/oboeditor/components/code-editor')
 
 import APIUtil from 'src/scripts/viewer/util/api-util'
@@ -19,7 +19,6 @@ import testObject from 'test-object.json'
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
-const CLASSIC_MODE = 'classic'
 const XML_MODE = 'xml'
 
 describe('EditorApp', () => {
@@ -60,32 +59,6 @@ describe('EditorApp', () => {
 		})
 	})
 
-	test('EditorApp component displays xml in classic mode', done => {
-		expect.assertions(1)
-
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart' }
-		})
-
-		APIUtil.getFullDraft
-			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-			.mockResolvedValueOnce(
-				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
-			)
-		EditorStore.getState.mockReturnValueOnce({})
-
-		const component = mount(<EditorApp />)
-		component.instance().switchMode(CLASSIC_MODE)
-
-		setTimeout(() => {
-			component.update()
-			expect(component.html()).toMatchSnapshot()
-			component.unmount()
-			done()
-		})
-	})
-
 	test('EditorApp component displays xml', done => {
 		expect.assertions(1)
 
@@ -117,31 +90,6 @@ describe('EditorApp', () => {
 
 		// No visit or draft id
 		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
-
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart' }
-		})
-
-		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-		EditorStore.getState.mockReturnValueOnce({})
-
-		const component = mount(<EditorApp />)
-		setTimeout(() => {
-			component.update()
-
-			expect(component.html()).toMatchSnapshot()
-
-			component.unmount()
-			done()
-		})
-	})
-
-	test('EditorApp component with classic mode', done => {
-		expect.assertions(1)
-
-		// No visit or draft id
-		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['', '', CLASSIC_MODE])
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
