@@ -36,8 +36,9 @@ const EditorTitleInput = ({ renameModule, title }) => {
 					if (stateTitle !== title) {
 						const newTitle = stateTitle.trim()
 
-						if (newTitle !== '') renameModule(newTitle)
-						else {
+						if (newTitle !== '') {
+							renameModule(newTitle)
+						} else {
 							// refocus the input, aria labels and class change will indicate error
 							setEmptyTitleError(true)
 							event.target.focus()
