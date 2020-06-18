@@ -35,14 +35,14 @@ const MOD_AMOUNT_LIMIT = 20
 const getRubricType = rubric =>
 	!rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
 
-const createWhitelistedRubric = rubric => {
+const createStandardizedRubric = rubric => {
 	const rubricType = getRubricType(rubric)
 
-	let whitelistedRubric
+	let standardizedRubric
 
 	switch (rubricType) {
 		case AssessmentRubric.TYPE_PASS_FAIL:
-			whitelistedRubric = Object.assign(
+			standardizedRubric = Object.assign(
 				{
 					passingAttemptScore: 100,
 					passedResult: 100,
@@ -55,7 +55,7 @@ const createWhitelistedRubric = rubric => {
 
 		case AssessmentRubric.TYPE_ATTEMPT:
 		default:
-			whitelistedRubric = {
+			standardizedRubric = {
 				passingAttemptScore: 0,
 				passedResult: AssessmentRubric.VAR_ATTEMPT_SCORE,
 				failedResult: 0,
@@ -64,10 +64,10 @@ const createWhitelistedRubric = rubric => {
 			break
 	}
 
-	return whitelistedRubric
+	return standardizedRubric
 }
 
-const createWhitelistedMod = mod => {
+const createStandardizedMod = mod => {
 	// Ensure at least one condition exists:
 	if (!mod.attemptCondition) {
 		return null
@@ -87,10 +87,10 @@ const createWhitelistedMod = mod => {
 	}
 }
 
-const modToObject = whitelistedMod => {
+const modToObject = standardizedMod => {
 	return {
-		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
-		reward: whitelistedMod.reward
+		attemptCondition: getRangeString(standardizedMod.attemptCondition),
+		reward: standardizedMod.reward
 	}
 }
 
@@ -111,9 +111,9 @@ class AssessmentRubric {
 
 		const mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
 
-		this.rubric = createWhitelistedRubric(rubric)
+		this.rubric = createStandardizedRubric(rubric)
 		this.type = getRubricType(rubric)
-		this.mods = mods.map(createWhitelistedMod).filter(mod => mod !== null)
+		this.mods = mods.map(createStandardizedMod).filter(mod => mod !== null)
 	}
 
 	toObject() {

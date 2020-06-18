@@ -16,6 +16,10 @@ class TriggerListModal extends React.Component {
 		this.createTrigger = this.createTrigger.bind(this)
 	}
 
+	componentWillUnmount() {
+		if (this.props.onClose) this.props.onClose()
+	}
+
 	updateTriggerType(index, event) {
 		const type = event.target.value
 

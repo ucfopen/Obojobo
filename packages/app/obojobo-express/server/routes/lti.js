@@ -14,7 +14,7 @@ router.route('/').get((req, res) => {
 		xml_url: `${protocol}://${hostname}/lti/config.xml`,
 		launch_url: `${protocol}://${hostname}/lti`,
 		course_navigation_url: `${protocol}://${hostname}/lti/canvas/course_navigation`,
-		assignment_selection_url: `${protocol}://${hostname}/lti/canvas/assignment_selection`,
+		assignment_selection_url: `${protocol}://${hostname}/lti/canvas/resource_selection`,
 		keys: Object.keys(config.lti.keys)
 	})
 })

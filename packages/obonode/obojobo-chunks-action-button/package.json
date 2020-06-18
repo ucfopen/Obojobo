@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-action-button",
-	"version": "8.0.2",
+	"version": "9.1.0",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
@@ -16,15 +16,14 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^8.0.2"
+		"obojobo-lib-utils": "^9.1.0"
 	},
 	"devDependencies": {
-		"lint-staged": "^10.2.2"
+		"lint-staged": "^10.2.6"
 	},
 	"jest": {
 		"testMatch": [

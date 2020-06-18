@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CodeEditor CodeEditor component 1`] = `
+exports[`CodeEditor CodeEditor component 1`] = `null`;
+
+exports[`CodeEditor CodeEditor component before loading 1`] = `
 <div
   className="component editor--code-editor"
   onKeyDown={[Function]}

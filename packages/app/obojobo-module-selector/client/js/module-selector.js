@@ -2,7 +2,6 @@ import '../css/module-selector.scss'
 ;(function() {
 	// settings set by the view
 	const SETTINGS_IS_ASSIGNMENT = __isAssignment // eslint-disable-line no-undef
-	const SETTINGS_RETURN_URL = __returnUrl // eslint-disable-line no-undef
 	const TAB_COMMUNITY = 'Community Library'
 	const TAB_PERSONAL = 'My Modules'
 	const SECTION_MODULE_SELECT = 'section-module-selection'
@@ -223,7 +222,6 @@ import '../css/module-selector.scss'
 			)
 			const formEl = document.getElementById('submit-form')
 			formEl.querySelector('input[name=content_items]').value = JSON.stringify(ltiData)
-			formEl.setAttribute('action', SETTINGS_RETURN_URL)
 			formEl.submit()
 		}, 1000)
 	}

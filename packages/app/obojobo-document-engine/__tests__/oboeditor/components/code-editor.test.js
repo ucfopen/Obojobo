@@ -31,7 +31,17 @@ describe('CodeEditor', () => {
 		EditorUtil.setModuleTitleInXML.mockReturnValue('mock-setModuleTitleInXML-return-value')
 	})
 
-	test('CodeEditor component', () => {
+	test('CodeEditor component', async () => {
+		const props = {
+			initialCode: '',
+			mode: XML_MODE
+		}
+		const component = renderer.create(<CodeEditor {...props} />)
+		component.update() // allow the suspense & react.lazy to process
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('CodeEditor component before loading', () => {
 		const props = {
 			initialCode: '',
 			mode: XML_MODE

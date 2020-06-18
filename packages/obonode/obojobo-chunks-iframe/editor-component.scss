@@ -75,6 +75,7 @@
 			transform: translate(50%, -50%);
 			z-index: 3;
 			opacity: 0;
+			visibility: hidden;
 			transition: opacity 0.2s linear 0.2s;
 
 			button {
@@ -89,6 +90,7 @@
 			border: 3px solid $color-action;
 
 			.delete-button {
+				visibility: visible;
 				transition: opacity 0s;
 				opacity: 1;
 			}
@@ -98,6 +100,7 @@
 			border: 3px solid $color-action;
 
 			.delete-button {
+				visibility: visible;
 				transition: opacity 0s;
 				opacity: 1;
 			}

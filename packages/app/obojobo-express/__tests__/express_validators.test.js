@@ -28,7 +28,8 @@ describe('current user middleware', () => {
 		mockRes = {
 			json: jest.fn(),
 			notAuthorized: jest.fn(),
-			badInput: jest.fn()
+			badInput: jest.fn(),
+			missing: jest.fn()
 		}
 		mockReq = {
 			session: {},
@@ -153,44 +154,11 @@ describe('current user middleware', () => {
 		).resolves.toBeUndefined()
 	})
 
-	test('requireCurrentDocument calls next when invalid', () => {
+	test('requireCurrentDocument calls missing when invalid', () => {
 		expect.assertions(1)
 		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
 		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toHaveBeenCalled()
-		})
-	})
-
-	test('requireCurrentDocument sets _validationErrors when failed', () => {
-		expect.assertions(3)
-		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
-
-		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
-				location: 'request',
-				param: 'currentDocument',
-				value: undefined,
-				msg: 'missing from request'
-			})
-		})
-	})
-
-	test('requireCurrentDocument doesnt overwrite _validationErrors when failed', () => {
-		expect.assertions(4)
-		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
-		mockReq._validationErrors = ['test']
-		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(2)
-			expect(mockReq._validationErrors).toContainEqual('test')
-			expect(mockReq._validationErrors).toContainEqual({
-				location: 'request',
-				param: 'currentDocument',
-				value: undefined,
-				msg: 'missing from request'
-			})
+			expect(mockRes.missing).toHaveBeenCalled()
 		})
 	})
 

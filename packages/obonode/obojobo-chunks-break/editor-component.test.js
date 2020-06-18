@@ -38,6 +38,23 @@ describe('Break Editor Node', () => {
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
+	test('Node component handles tabbing', () => {
+		const editor = {
+			children: [{ content: { width: 'normal' } }]
+		}
+
+		const component = mount(
+			<Break selected={true} element={{ content: { width: 'normal' } }} editor={editor} />
+		)
+
+		component.find('button').simulate('keyDown', { key: 'k' })
+
+		component.find('button').simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('Node component toggles size to normal', () => {
 		const editor = {
 			children: [{ content: { width: 'large' } }]

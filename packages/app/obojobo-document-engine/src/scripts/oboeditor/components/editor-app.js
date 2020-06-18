@@ -50,6 +50,7 @@ class EditorApp extends React.Component {
 	}
 
 	getVisualEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const json = JSON.parse(draftModel)
 		const obomodel = OboModel.create(json)
 		EditorStore.init(
@@ -71,6 +72,7 @@ class EditorApp extends React.Component {
 	}
 
 	getCodeEditorState(draftId, draftModel) {
+		OboModel.clearAll()
 		const obomodel = OboModel.create({
 			type: 'ObojoboDraft.Modules.Module',
 			content: {
@@ -132,10 +134,6 @@ class EditorApp extends React.Component {
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
 
-		// get the mode from the location
-		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if (mode === 'classic') mode = XML_MODE // convert classic to xml
-
 		ModalStore.init()
 		return this.reloadDraft(draftId, this.state.mode)
 	}
@@ -153,7 +151,6 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				mode={this.state.mode}
 				switchMode={this.switchMode}
-				insertableItems={Common.Registry.insertableItems}
 			/>
 		)
 	}

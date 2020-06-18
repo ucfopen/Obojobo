@@ -7,7 +7,6 @@
 	width: auto;
 	background: white;
 	white-space: nowrap;
-	overflow: visible;
 	color: $color-text;
 	padding: 0.3rem 1rem;
 	padding-top: -0.3rem;
@@ -18,7 +17,9 @@
 	font-size: 1rem;
 	cursor: text;
 	line-height: 1.5rem;
-	opacity: 0;
+	max-width: 60vw;
+	overflow: hidden;
+	display: none;
 
 	p {
 		font-family: $font-default;
