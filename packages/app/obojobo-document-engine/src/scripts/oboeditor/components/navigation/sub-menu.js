@@ -32,10 +32,16 @@ class SubMenu extends React.Component {
 
 		this.showAddPageModal = this.showAddPageModal.bind(this)
 		this.saveId = this.saveId.bind(this)
+		this.addPage = this.addPage.bind(this)
+		this.movePage = this.movePage.bind(this)
 		this.saveContent = this.saveContent.bind(this)
 		this.showDeleteModal = this.showDeleteModal.bind(this)
 		this.deletePage = this.deletePage.bind(this)
 		this.duplicatePage = this.duplicatePage.bind(this)
+	}
+
+	itemFromProps() {
+		return this.props.list[this.props.index]
 	}
 
 	renamePage(pageId, label) {
@@ -46,36 +52,38 @@ class SubMenu extends React.Component {
 		return label
 	}
 
-	movePage(pageId, index) {
-		EditorUtil.movePage(pageId, index)
+	movePage(index) {
+		const item = this.itemFromProps()
+		EditorUtil.movePage(item.id, index)
 	}
 
-	renderNewItemButton(pageId) {
+	renderNewItemButton() {
 		return (
 			<div className="add-page">
-				<button className="add-page-button" onClick={() => this.showAddPageModal(pageId)}>
+				<button className="add-page-button" onClick={this.showAddPageModal}>
 					+ Page
 				</button>
 			</div>
 		)
 	}
 
-	showAddPageModal(pageId) {
+	showAddPageModal() {
 		ModalUtil.show(
 			<Prompt
 				title="Add Page"
 				message="Enter the title for the new page:"
-				onConfirm={this.addPage.bind(this, pageId)}
+				onConfirm={this.addPage}
 			/>
 		)
 	}
 
-	addPage(afterPageId, title = null) {
+	addPage(title = null) {
 		ModalUtil.hide()
 
 		const newPage = generatePage()
+		const item = this.itemFromProps()
 		newPage.content.title = this.isWhiteSpace(title) ? null : title
-		EditorUtil.addPage(newPage, afterPageId)
+		EditorUtil.addPage(newPage, item.id)
 	}
 
 	isWhiteSpace(str) {
@@ -83,11 +91,11 @@ class SubMenu extends React.Component {
 	}
 
 	saveId(oldId, newId) {
-		const model = OboModel.models[oldId]
-
 		if (!newId) {
 			return 'Please enter an id'
 		}
+
+		const model = OboModel.models[oldId]
 
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
@@ -97,7 +105,7 @@ class SubMenu extends React.Component {
 	}
 
 	saveContent(oldContent, newContent) {
-		const item = this.props.list[this.props.index]
+		const item = this.itemFromProps()
 		const model = OboModel.models[item.id]
 
 		model.set({ content: newContent })
@@ -107,7 +115,7 @@ class SubMenu extends React.Component {
 	}
 
 	showDeleteModal() {
-		const item = this.props.list[this.props.index]
+		const item = this.itemFromProps()
 
 		ModalUtil.show(
 			<Dialog
@@ -136,13 +144,13 @@ class SubMenu extends React.Component {
 
 	deletePage() {
 		ModalUtil.hide()
-		const item = this.props.list[this.props.index]
+		const item = this.itemFromProps()
 
 		EditorUtil.deletePage(item.id)
 	}
 
 	duplicatePage() {
-		const item = this.props.list[this.props.index]
+		const item = this.itemFromProps()
 		const model = OboModel.models[item.id]
 
 		this.props.savePage()
@@ -185,29 +193,7 @@ class SubMenu extends React.Component {
 		return { ...content, triggers }
 	}
 
-	render() {
-		const { index, isSelected, list } = this.props
-		const item = list[index]
-		const isFirstInList = !list[index - 1]
-		const isLastInList = !list[index + 1]
-
-		const className =
-			'editor--editor-nav--submenu link' +
-			isOrNot(isSelected, 'selected') +
-			isOrNot(item.flags.assessment, 'assessment') +
-			isOrNot(isFirstInList, 'first-in-list') +
-			isOrNot(isLastInList, 'last-in-list')
-
-		let ariaLabel = item.label
-		if (item.contentType) {
-			ariaLabel = item.contentType + ': ' + ariaLabel
-		}
-		if (isSelected) {
-			ariaLabel = 'Currently on ' + ariaLabel
-		} else {
-			ariaLabel = 'Go to ' + ariaLabel
-		}
-
+	renderMoreInfoBox(item) {
 		const model = OboModel.models[item.id]
 		const contentDescription = [
 			{
@@ -252,34 +238,58 @@ class SubMenu extends React.Component {
 				}
 			)
 		}
+		return (
+			<MoreInfoBox
+				id={item.id}
+				index={model.getIndex()}
+				isFirst={model.isFirst()}
+				isLast={model.isLast()}
+				type={model.get('type')}
+				content={model.get('content')}
+				saveId={this.saveId}
+				saveContent={this.saveContent}
+				savePage={this.props.savePage}
+				contentDescription={contentDescription}
+				deleteNode={this.showDeleteModal}
+				duplicateNode={this.duplicatePage}
+				markUnsaved={this.props.markUnsaved}
+				moveNode={this.movePage}
+				showMoveButtons={!item.flags.assessment}
+				isAssessment={item.flags.assessment}
+			/>
+		)
+	}
+
+	render() {
+		const { index, isSelected, list } = this.props
+		const item = this.itemFromProps()
+		const isFirstInList = !list[index - 1]
+		const isLastInList = !list[index + 1]
+
+		const className =
+			'editor--editor-nav--submenu link' +
+			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.assessment, 'assessment') +
+			isOrNot(isFirstInList, 'first-in-list') +
+			isOrNot(isLastInList, 'last-in-list')
+
+		let ariaLabel = item.label
+		if (item.contentType) {
+			ariaLabel = item.contentType + ': ' + ariaLabel
+		}
+		if (isSelected) {
+			ariaLabel = 'Currently on ' + ariaLabel
+		} else {
+			ariaLabel = 'Go to ' + ariaLabel
+		}
 
 		return (
 			<li onClick={this.props.onClick} className={className}>
 				<button aria-label={ariaLabel}>
 					<span>{item.label}</span>
 				</button>
-
-				{isSelected ? (
-					<MoreInfoBox
-						id={item.id}
-						index={model.getIndex()}
-						isFirst={model.isFirst()}
-						isLast={model.isLast()}
-						type={model.get('type')}
-						content={model.get('content')}
-						saveId={this.saveId}
-						saveContent={this.saveContent}
-						savePage={this.props.savePage}
-						contentDescription={contentDescription}
-						deleteNode={this.showDeleteModal}
-						duplicateNode={this.duplicatePage}
-						markUnsaved={this.props.markUnsaved}
-						moveNode={this.movePage.bind(this, item.id)}
-						showMoveButtons={!item.flags.assessment}
-						isAssessment={item.flags.assessment}
-					/>
-				) : null}
-				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
+				{isSelected ? this.renderMoreInfoBox(item) : null}
+				{isSelected && !item.flags.assessment ? this.renderNewItemButton() : null}
 			</li>
 		)
 	}

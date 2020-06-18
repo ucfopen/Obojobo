@@ -61,14 +61,18 @@ describe('File Menu', () => {
 			status: 'ok'
 		})
 
-		component.find({ children: 'Save Module' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
+			.simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component.find({ children: 'Save Module' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
+			.simulate('click')
 
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
@@ -81,14 +85,14 @@ describe('File Menu', () => {
 			value: { id: 'mock-id' }
 		})
 
-		component.find({ children: 'New' }).simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component.find({ children: 'New' }).simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		setTimeout(() => {
 			component.update()
@@ -106,7 +110,9 @@ describe('File Menu', () => {
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
-		component.find({ children: 'Make a copy...' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Make a copy...'))
+			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
@@ -124,8 +130,12 @@ describe('File Menu', () => {
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
 		// get references to buttons
-		const downloadXmlButton = component.find({ children: 'XML Document (.xml)' })
-		const downloadJSONButton = component.find({ children: 'JSON Document (.json)' })
+		const downloadXmlButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('XML Document (.xml)')
+		)
+		const downloadJSONButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('JSON Document (.json)')
+		)
 
 		// click
 		downloadJSONButton.simulate('click')
@@ -158,7 +168,9 @@ describe('File Menu', () => {
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
-		component.find({ children: 'Delete Module...' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
+			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
@@ -170,7 +182,9 @@ describe('File Menu', () => {
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
-		component.find({ children: 'Copy LTI Link' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Copy LTI Link'))
+			.simulate('click')
 
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
@@ -241,7 +255,9 @@ describe('File Menu', () => {
 		const reload = jest.fn()
 		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)
 
-		component.find({ children: 'Import from file...' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
+			.simulate('click')
 
 		const mockId = 'mockId'
 		const content = 'mockContent'
@@ -256,7 +272,9 @@ describe('File Menu', () => {
 	test('FileMenu calls Import', () => {
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
-		component.find({ children: 'Import from file...' }).simulate('click')
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
+			.simulate('click')
 		expect(ModalUtil.show).toHaveBeenCalled()
 
 		component.instance().buildFileSelector()

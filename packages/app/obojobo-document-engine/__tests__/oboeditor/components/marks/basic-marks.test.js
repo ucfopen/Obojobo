@@ -21,6 +21,16 @@ describe('BasicMarks', () => {
 		expect(editor.toggleMark).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			toggleMark: jest.fn()
+		}
+
+		BasicMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.toggleMark).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			toggleMark: jest.fn()
@@ -60,7 +70,7 @@ describe('BasicMarks', () => {
 		BasicMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleMark).toHaveBeenCalledWith(MONOSPACE_MARK)
 
-		mockEvent.key = 'q'
+		mockEvent.key = '/'
 		BasicMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleMark).toHaveBeenCalledWith(LATEX_MARK)
 	})

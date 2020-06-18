@@ -14,6 +14,10 @@ import emptyQB from './empty-node.json'
 const { Button } = Common.components
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const stopPropagation = event => {
+	event.stopPropagation()
+}
+
 class QuestionBank extends React.Component {
 	constructor(props) {
 		super(props)
@@ -136,7 +140,7 @@ class QuestionBank extends React.Component {
 						type="number"
 						value={this.state.choose}
 						disabled={this.state.chooseAll}
-						onClick={event => event.stopPropagation()}
+						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
 						onFocus={this.freezeEditor}
 						onBlur={this.unfreezeEditor}
@@ -146,7 +150,7 @@ class QuestionBank extends React.Component {
 					How should questions be selected?
 					<select
 						value={this.state.select}
-						onClick={event => event.stopPropagation()}
+						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
 						onFocus={this.freezeEditor}
 						onBlur={this.unfreezeEditor}

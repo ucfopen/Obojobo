@@ -1,6 +1,7 @@
-import { Editor, Transforms, Range } from 'slate'
+import { Editor, Transforms, Range, Path } from 'slate'
 
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+import SelectionUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/selection-util'
 import ListStyles from './list-styles'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
@@ -192,6 +193,10 @@ const switchType = {
 	},
 	'ObojoboDraft.Chunks.Text': (editor, [, path]) => {
 		const nodeRange = Editor.range(editor, path)
+		const [start, end] = Range.edges(editor.selection)
+		const containsStart = Range.includes(nodeRange, start)
+		const containsEnd = Range.includes(nodeRange, end)
+
 		const textNode = {
 			type: TEXT_NODE,
 			content: {},
@@ -209,13 +214,12 @@ const switchType = {
 		// Changing each ListLine to a TextLine and wrapping them in a Text node
 		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
+		const startPath = list[0][1]
+		let endPath = list[0][1]
 		Editor.withoutNormalizing(editor, () => {
-			let firstPath
-			let lastPath
 			list.forEach(([child, childPath]) => {
-				// save the path of the first and last child to insert the textNode
-				if (!firstPath) firstPath = childPath
-				lastPath = childPath
+				// Save the start and end child paths to fix the selection once all nodes are moved
+				if (Path.isAfter(childPath, endPath)) endPath = childPath
 
 				// The difference between the path lengths informs how
 				// nested the ListLine is. The -2 accounts for the base
@@ -225,6 +229,7 @@ const switchType = {
 					type: TEXT_NODE,
 					subtype: TEXT_LINE_NODE,
 					content: {
+						...child.content,
 						indent,
 						align: 'left'
 					},
@@ -234,20 +239,52 @@ const switchType = {
 				textNode.children.push(jsonNode)
 			})
 
-			// When the new text node is inserted, all ListLine nodes that were
-			// changed are deleted, and then the textNode is inserted at the Point
-			// before the first changed ListLine. This prevents a hanging ListLine
-			// from lingering after the ListLine nodes are changed to TextLines
-			Transforms.insertNodes(editor, textNode, {
+			// In order to properly handle the replacement without breaking normalization
+			// First delete all text that is going to be replaced
+			// This leaves us with an empty ListLine at the start path
+			// Then we delete that empty ListLine, and insert the new TextNode in its place
+			const initalPoint = Editor.start(editor, startPath)
+			const finalPoint = Editor.end(editor, endPath)
+			Transforms.delete(editor, {
 				at: {
-					anchor: Editor.before(editor, Editor.start(editor, firstPath)),
-					focus: Editor.end(editor, lastPath)
+					anchor: initalPoint,
+					focus: finalPoint
 				}
 			})
+			Transforms.removeNodes(editor, { at: startPath })
+			Transforms.insertNodes(editor, textNode, {
+				at: startPath
+			})
+
+			if (containsStart) {
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					start,
+					startPath,
+					TEXT_LINE_NODE,
+					'anchor'
+				)
+			}
+
+			if (containsEnd) {
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					end,
+					endPath,
+					TEXT_LINE_NODE,
+					'focus'
+				)
+			}
 		})
 	},
 	'ObojoboDraft.Chunks.Code': (editor, [, path]) => {
 		const nodeRange = Editor.range(editor, path)
+		const [start, end] = Range.edges(editor.selection)
+		const containsStart = Range.includes(nodeRange, start)
+		const containsEnd = Range.includes(nodeRange, end)
+
 		const codeNode = {
 			type: CODE_NODE,
 			content: {},
@@ -265,13 +302,12 @@ const switchType = {
 		// Changing each ListLine to a CodeLine and wrapping them in a Code node
 		// will allow normalization to remove them from the List node
 		// Nested levels in the ListLine are transfered into indents
+		const startPath = list[0][1]
+		let endPath = list[0][1]
 		Editor.withoutNormalizing(editor, () => {
-			let firstPath
-			let lastPath
 			list.forEach(([child, childPath]) => {
-				// Save the path of the first and last child to insert the textNode
-				if (!firstPath) firstPath = childPath
-				lastPath = childPath
+				// Save the start and end child paths to fix the selection once all nodes are moved
+				if (Path.isAfter(childPath, endPath)) endPath = childPath
 
 				// The difference between the path lengths informs how
 				// nested the ListLine is. The -2 accounts for the base
@@ -281,6 +317,7 @@ const switchType = {
 					type: CODE_NODE,
 					subtype: CODE_LINE_NODE,
 					content: {
+						...child.content,
 						indent,
 						align: 'left'
 					},
@@ -290,16 +327,44 @@ const switchType = {
 				codeNode.children.push(jsonNode)
 			})
 
-			// When the new Code node is inserted, all ListLine nodes that were
-			// changed are deleted, and then the codeNode is inserted at the Point
-			// before the first changed ListLine. This prevents a hanging ListLine
-			// from lingering after the ListLine nodes are changed to CodeLines
-			Transforms.insertNodes(editor, codeNode, {
+			// In order to properly handle the replacement without breaking normalization
+			// First delete all text that is going to be replaced
+			// This leaves us with an empty ListLine at the start path
+			// Then we delete that empty ListLine, and insert the new CodeNode in its place
+			const initalPoint = Editor.start(editor, startPath)
+			const finalPoint = Editor.end(editor, endPath)
+			Transforms.delete(editor, {
 				at: {
-					anchor: Editor.before(editor, Editor.start(editor, firstPath)),
-					focus: Editor.end(editor, lastPath)
+					anchor: initalPoint,
+					focus: finalPoint
 				}
 			})
+			Transforms.removeNodes(editor, { at: startPath })
+			Transforms.insertNodes(editor, codeNode, {
+				at: startPath
+			})
+
+			if (containsStart) {
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					start,
+					startPath,
+					CODE_LINE_NODE,
+					'anchor'
+				)
+			}
+
+			if (containsEnd) {
+				SelectionUtil.resetPointAtUncertainDepth(
+					editor,
+					path,
+					end,
+					endPath,
+					CODE_LINE_NODE,
+					'focus'
+				)
+			}
 		})
 	},
 	'ObojoboDraft.Chunks.List': (editor, [node, path], data) => {
@@ -332,7 +397,7 @@ const switchType = {
 			return accum
 		}, Infinity)
 
-		list.forEach(([, childPath]) => {
+		list.forEach(([child, childPath]) => {
 			childPath.forEach((value, index) => {
 				// No changes are needed on the ListLine itself
 				if (index === childPath.length - 1) return
@@ -359,7 +424,11 @@ const switchType = {
 						(bulletIndex + index - shortestPath + 2 + bulletList.length) % bulletList.length
 					]
 
-				Transforms.setNodes(editor, { content: { ...data, bulletStyle } }, { at: linePath })
+				Transforms.setNodes(
+					editor,
+					{ content: { ...child.content, ...data, bulletStyle } },
+					{ at: linePath }
+				)
 			})
 		})
 	}

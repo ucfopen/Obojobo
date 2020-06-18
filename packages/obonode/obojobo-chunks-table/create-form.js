@@ -6,6 +6,8 @@ export default class CreateForm {
 			rows: this.props.rows,
 			cols: this.props.cols
 		}
+
+		this.onUpdateRows = this.onUpdateRows.bind(this)
 	}
 
 	onUpdateRows(event) {
@@ -28,9 +30,9 @@ export default class CreateForm {
 		return (
 			<div>
 				<label>rows:</label>
-				<input type="number" value={this.state.rows} onChange={this.onUpdateRows.bind(this)} />
+				<input type="number" value={this.state.rows} onChange={this.onUpdateRows} />
 				<label>cols:</label>
-				<input type="number" value={this.state.cols} onChange={this.onUpdateCols.bind(this)} />
+				<input type="number" value={this.state.cols} onChange={this.onUpdateCols} />
 			</div>
 		)
 	}

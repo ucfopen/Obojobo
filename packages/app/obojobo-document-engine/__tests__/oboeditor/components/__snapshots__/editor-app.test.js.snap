@@ -2,13 +2,9 @@
 
 exports[`EditorApp EditorApp component displays xml 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
 
-exports[`EditorApp EditorApp component displays xml in classic mode 1`] = `"<div class=\\"viewer--viewer-app--visit-error\\"><h1>Error</h1><h2></h2><div>Unexpected token &lt; in JSON at position 0</div></div>"`;
-
 exports[`EditorApp EditorApp component renders error messsage 1`] = `"<div class=\\"viewer--viewer-app--visit-error\\"><h1>Error</h1><h2>someType</h2><div>someMessage</div></div>"`;
 
 exports[`EditorApp EditorApp component renders modal 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"obojobo-draft--components--modal-container\\"><div class=\\"content\\">mock component</div></div></div>"`;
-
-exports[`EditorApp EditorApp component with classic mode 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
 
 exports[`EditorApp EditorApp component with no draft 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
 
