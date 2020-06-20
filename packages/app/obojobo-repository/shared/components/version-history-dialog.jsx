@@ -13,12 +13,12 @@ class VersionHistoryDialog extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.baseUrl = `${urlForEditor(this.props.editor, this.props.draftId)}?read_only=1`
+		this.baseUrl = `${urlForEditor(props.editor, props.draftId)}?read_only=1`
 
 		this.state = {
 			isMenuOpen: true,
 			isConfirmDialogOpen: false,
-			editorUrl: null,
+			editorUrl: props.versionHistory.length ? this.editUrlForItem(0) : null,
 			selectedIndex: 0
 		}
 
@@ -32,14 +32,21 @@ class VersionHistoryDialog extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		// when the list goes from empty to not-empty
+		// assume the list just loaded/refreshed
+		// so select the first item.
 		if (!prevProps.versionHistory.length && this.props.versionHistory.length) {
 			this.setSelectedRevision(0)
 		}
 	}
 
+	editUrlForItem(index) {
+		return `${this.baseUrl}&revision_id=${this.props.versionHistory[index].id}`
+	}
+
 	setSelectedRevision(index) {
 		this.setState({
-			editorUrl: `${this.baseUrl}&revision_id=${this.props.versionHistory[index].id}`,
+			editorUrl: this.editUrlForItem(index),
 			selectedIndex: index
 		})
 	}
@@ -138,7 +145,6 @@ class VersionHistoryDialog extends React.Component {
 
 	render() {
 		const isFirstSelected = this.state.selectedIndex === 0
-		const isDisabled = !isFirstSelected ? 'disabled' : ''
 		const selectedRevision = this.props.versionHistory[this.state.selectedIndex] || {}
 		const currentVerstionTitle = isFirstSelected
 			? 'Latest Version'
@@ -169,13 +175,6 @@ class VersionHistoryDialog extends React.Component {
 								>
 									Restore this version
 								</Button>
-								<ButtonLink
-									url={`/preview/${this.props.draftId}`}
-									target="_blank"
-									className={`preview-button ${isDisabled}`}
-								>
-									Preview module
-								</ButtonLink>
 								<span>Viewing: {currentVerstionTitle}</span>
 								<small>Note: Changes made in preview window will not be saved.</small>
 							</div>
