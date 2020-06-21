@@ -29,7 +29,7 @@ class Header extends React.Component {
 	}
 
 	renderLabel(label) {
-		return <span>{label}</span>
+		return <span>{label || '\u00A0'}</span>
 	}
 
 	saveId(oldId, newId) {
