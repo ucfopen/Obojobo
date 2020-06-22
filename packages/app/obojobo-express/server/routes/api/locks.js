@@ -49,6 +49,8 @@ router
 			}
 
 			// let's go ahead and clean the locks after returning the result to the user
+			// this isn't necissary for functionality (expired locks don't affect new locks)
+			// it's just housekeeping.
 			EditLock.deleteExpiredLocks()
 		} catch (e) {
 			res.unexpected(e)
