@@ -4,7 +4,7 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from '../../viewer/util/api-util' //@TODO: move api-util out of viewer
+import APIUtil from '../../viewer/util/api-util'
 import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
