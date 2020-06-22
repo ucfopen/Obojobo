@@ -1,4 +1,5 @@
 const express = require('express')
+const logger = oboRequire('server/logger')
 const router = express.Router()
 const EditLock = oboRequire('server/models/edit_lock')
 const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
@@ -26,13 +27,13 @@ router
 			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
 
 			if (!hasPerms) {
-				return res.notAuthorized('Authoring permissions required to create a lock.')
+				return res.notAuthorized('You do not have the required access to edit this module.')
 			}
 
 			const existingLock = await EditLock.fetchByDraftId(req.params.draftId)
 
 			if (existingLock && existingLock.userId !== req.currentUser.id) {
-				return res.notAuthorized('Draft is already locked by someone else.')
+				return res.notAuthorized('Someone else is currently editing this module.')
 			}
 
 			const myLock = await EditLock.create(
@@ -53,7 +54,8 @@ router
 			// it's just housekeeping.
 			EditLock.deleteExpiredLocks()
 		} catch (e) {
-			res.unexpected(e)
+			logger.error(e)
+			res.unexpected('Unexpected error while creating edit lock.')
 		}
 	})
 

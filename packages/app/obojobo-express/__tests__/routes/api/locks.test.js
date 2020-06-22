@@ -118,7 +118,7 @@ describe('Route api/locks', () => {
 				expect(response.body).toHaveProperty('value')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'Authoring permissions required to create a lock.'
+					'You do not have the required access to edit this module.'
 				)
 			})
 	})
@@ -137,7 +137,7 @@ describe('Route api/locks', () => {
 				expect(response.body).toHaveProperty('value')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'Draft is already locked by someone else.'
+					'Someone else is currently editing this module.'
 				)
 			})
 	})
@@ -172,7 +172,10 @@ describe('Route api/locks', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('message', 'mock-error')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Unexpected error while creating edit lock.'
+				)
 			})
 	})
 

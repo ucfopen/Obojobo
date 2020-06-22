@@ -240,6 +240,37 @@ describe('EditorApp', () => {
 
 	test('EditorApp calls displayLockedModal when module is locked', () => {
 		expect.hasAssertions()
+		APIUtil.requestEditLock.mockResolvedValue({
+			status: 'error',
+			value: { message: 'mock-message' }
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+
+		const component = mount(<EditorApp {...defaultProps} />)
+		const instance = component.instance()
+		return global.flushPromises().then(() => {
+			component.update()
+			// make sure the error is displayed
+			expect(component.html()).toContain('Unable to Edit Module')
+			expect(component.html()).toContain('mock-message')
+
+			// make sure state has the error message
+			expect(instance.state).toHaveProperty('requestStatus', 'invalid')
+			expect(instance.state).toHaveProperty('requestError')
+			expect(instance.state.requestError).toMatchInlineSnapshot(`
+			Object {
+			  "message": "mock-message",
+			  "title": "Unable to Edit Module",
+			}
+		`)
+
+			component.unmount()
+		})
+	})
+
+	test('EditorApp calls displayLockedModal when locking throws an error', () => {
+		expect.hasAssertions()
 		APIUtil.requestEditLock.mockResolvedValue({ status: 'error' })
 
 		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
@@ -249,15 +280,16 @@ describe('EditorApp', () => {
 		return global.flushPromises().then(() => {
 			component.update()
 			// make sure the error is displayed
-			expect(component.html()).toContain('Module is Being Edited')
+			expect(component.html()).toContain('Unable to Edit Module')
+			expect(component.html()).toContain('Unable to lock module.')
 
 			// make sure state has the error message
 			expect(instance.state).toHaveProperty('requestStatus', 'invalid')
 			expect(instance.state).toHaveProperty('requestError')
 			expect(instance.state.requestError).toMatchInlineSnapshot(`
 			Object {
-			  "message": "Someone else is currently editing this module. Try reloading this tab in a few minutes (1 or more).",
-			  "title": "Module is Being Edited.",
+			  "message": "Unable to lock module.",
+			  "title": "Unable to Edit Module",
 			}
 		`)
 
@@ -320,13 +352,13 @@ describe('EditorApp', () => {
 		// mock reloadDraft just to simplify the test
 		jest.spyOn(instance, 'reloadDraft').mockResolvedValueOnce()
 		jest.spyOn(instance, 'createEditLock').mockResolvedValueOnce()
-		instance._isCreatingEditLock = true
+		instance._isCreatingRenewableEditLock = true
 
 		return global.flushPromises().then(() => {
 			expect(instance.createEditLock).not.toHaveBeenCalled()
 
 			// now turn it off and call the function directy to test that it does get called
-			instance._isCreatingEditLock = false
+			instance._isCreatingRenewableEditLock = false
 			instance.startRenewEditLockInterval('test')
 			expect(instance.createEditLock).toHaveBeenCalled()
 
@@ -334,7 +366,7 @@ describe('EditorApp', () => {
 		})
 	})
 
-	test('startRenewEditLockInterval displays error when unable to secure lock', () => {
+	test('startRenewEditLockInterval displays error when interval is unable to secure lock', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
 		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
@@ -360,8 +392,8 @@ describe('EditorApp', () => {
 				expect(instance.state).toHaveProperty('requestError')
 				expect(instance.state.requestError).toMatchInlineSnapshot(`
 				Object {
-				  "message": "Someone else is currently editing this module. Try reloading this tab in a few minutes (1 or more).",
-				  "title": "Module is Being Edited.",
+				  "message": "Unable to lock module.",
+				  "title": "Unable to Edit Module",
 				}
 			`)
 				component.unmount()

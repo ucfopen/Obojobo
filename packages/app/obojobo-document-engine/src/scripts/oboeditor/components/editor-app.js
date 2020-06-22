@@ -135,44 +135,49 @@ class EditorApp extends React.Component {
 		this.reloadDraft(this.state.draftId, mode)
 	}
 
-	displayLockedState() {
+	displayLockedState(title, message) {
 		this.setState({
 			requestStatus: 'invalid',
-			requestError: {
-				title: 'Module is Being Edited.',
-				message:
-					'Someone else is currently editing this module. Try reloading this tab in a few minutes (' +
-					this.props.settings.editLocks.autoExpireMinutes +
-					' or more).'
-			}
+			requestError: { title, message }
 		})
 	}
 
 	startRenewEditLockInterval(draftId) {
-		if (this._isCreatingEditLock === true) return Promise.resolve()
-		this._isCreatingEditLock = true
+		// allow this function to be called again
+		if (this._isCreatingRenewableEditLock === true) return Promise.resolve()
+		this._isCreatingRenewableEditLock = true
 
 		return this.createEditLock(draftId, this.state.model.get('contentId'))
 			.then(() => {
-				// only create the lock interval when we've got a successful lock
-				clearInterval(this.renewLockInterval) // clear any existing interval
-				this.renewLockInterval = setInterval(() => {
-					this.createEditLock(draftId, this.state.model.get('contentId')).catch(() =>
-						this.displayLockedState()
-					)
-				}, this.editLocks.autoExpireMs)
+				// success!
 
-				this._isCreatingEditLock = false
+				// create the lock interval to keep checking & renewing
+				clearInterval(this.renewLockInterval)
+				this.renewLockInterval = setInterval(() => {
+					this.createEditLock(draftId, this.state.model.get('contentId')).catch(error => {
+						this.handleEditLockError(error)
+					})
+				}, this.editLocks.autoExpireMs)
 			})
-			.catch(() => {
-				this.displayLockedState()
-				this._isCreatingEditLock = false
+			.catch(error => {
+				this.handleEditLockError(error)
 			})
+			.then(() => {
+				// allow this function to be called again
+				this._isCreatingRenewableEditLock = false
+			})
+	}
+
+	handleEditLockError(error) {
+		this.displayLockedState('Unable to Edit Module', error.message)
 	}
 
 	createEditLock(draftId, contentId) {
 		return APIUtil.requestEditLock(draftId, contentId).then(json => {
-			if (json.status === 'error') throw new Error('Unable to lock module.')
+			if (json.status === 'error') {
+				const msg = json.value && json.value.message ? json.value.message : 'Unable to lock module.'
+				throw Error(msg)
+			}
 		})
 	}
 

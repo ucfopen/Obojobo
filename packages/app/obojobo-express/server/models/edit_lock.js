@@ -101,7 +101,7 @@ class EditLock {
 					AND user_id != $[userId]
 					AND created_at > now() - interval '${editLockExpireMinutes} minutes'
 				) RETURNING
-					id
+					id,
 					user_id AS "userId",
 					draft_id AS "draftId",
 					created_at AS "createdAt"
