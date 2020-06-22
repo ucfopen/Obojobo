@@ -6,16 +6,16 @@
 			display: flex;
 			align-items: stretch;
 			align-content: center;
-			margin: 0 -2em;
 
 			> .choice-box {
 				width: 50%;
 				background: #f9f4ff;
-				border-radius: 1em;
+				border-radius: $dimension-rounded-radius;
 				padding: 1em 0.5em;
 				position: relative;
-				padding-bottom: 4em;
 				box-sizing: border-box;
+				display: flex;
+				flex-direction: column;
 
 				h2 {
 					margin-top: 0;
@@ -24,19 +24,19 @@
 
 				.choice-desc {
 					font-size: 0.9em;
+					margin-bottom: 1.5em;
+					flex-grow: 1;
 				}
 
-				> .obojobo-draft--components--button {
-					position: absolute;
-					bottom: 1em;
-					width: 90%;
-					left: 0;
+				> .obojobo-draft--components--button > button {
+					width: 100%;
 				}
 			}
 
 			> .or-box {
 				align-self: center;
 				margin: 0 1em;
+				color: $color-text-minor;
 			}
 
 			@include mq($until: tablet) {
@@ -44,10 +44,7 @@
 
 				> .choice-box {
 					font-size: 0.9em;
-					padding-top: 0.5em;
-					padding-left: 0.2em;
-					padding-right: 0.2em;
-					padding-bottom: 4.5em;
+					padding: 0.5em 0.2em;
 
 					h2 {
 						font-size: 0.8em;
