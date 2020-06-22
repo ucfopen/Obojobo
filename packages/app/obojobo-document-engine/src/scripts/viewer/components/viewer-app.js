@@ -495,7 +495,7 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 
-	builPageNavProps() {
+	buildPageNavProps() {
 		const canNavigate = NavUtil.canNavigate(this.state.navState)
 		const prevItem = NavUtil.getPrev(this.state.navState)
 		const nextItem = NavUtil.getNext(this.state.navState)
@@ -539,7 +539,7 @@ export default class ViewerApp extends React.Component {
 
 	renderViewer() {
 		NavUtil.isNavEnabled(this.state.navState)
-		const { prevProps, nextProps } = this.builPageNavProps()
+		const { prevProps, nextProps } = this.buildPageNavProps()
 		const ModuleComponent = this.state.model.getComponentClass()
 		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
 		let navTargetLabel = ''
