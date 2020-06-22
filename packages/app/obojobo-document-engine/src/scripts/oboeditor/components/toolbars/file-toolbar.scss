@@ -43,5 +43,9 @@
 		&.saved {
 			color: $color-action;
 		}
+
+		&.saving {
+			color: $color-text-minor;
+		}
 	}
 }

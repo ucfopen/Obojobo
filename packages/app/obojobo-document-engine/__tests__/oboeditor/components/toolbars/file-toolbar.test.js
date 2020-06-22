@@ -42,7 +42,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar in saving state', () => {
 		const props = {
-			saved: 'saving',
+			saving: true,
 			editor
 		}
 

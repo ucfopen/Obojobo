@@ -171,6 +171,7 @@ describe('CodeEditor', () => {
 		    "theme": "monokai",
 		  },
 		  "saved": false,
+		  "saving": false,
 		  "title": "Mock Title",
 		}
 	`)

@@ -71,7 +71,7 @@ class CodeEditor extends React.Component {
 	}
 
 	onBeforeChange(editor, data, code) {
-		this.setState({ code, saved: false })
+		this.setState({ code, saved: false, saving: false })
 	}
 
 	setTitleInCode(code, mode, title) {
@@ -111,14 +111,14 @@ class CodeEditor extends React.Component {
 
 	sendSave(draftId, code, mode) {
 		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
-		this.setState({ saved: 'saving' })
+		this.setState({ saved: false, saving: true })
 		return APIUtil.postDraft(draftId, code, format)
 			.then(result => {
 				if (result.status !== 'ok') throw Error(result.value.message)
-
-				this.setState({ saved: true })
+				this.setState({ saved: this.state.saving, saving: false })
 			})
 			.catch(e => {
+				this.setState({ saved: false, saving: false })
 				if (e instanceof Error) e = e.message
 				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
 			})
@@ -188,6 +188,7 @@ class CodeEditor extends React.Component {
 							switchMode={this.props.switchMode}
 							onSave={this.saveAndGetTitleFromCode}
 							saved={this.state.saved}
+							saving={this.state.saving}
 							mode={this.props.mode}
 						/>
 					) : null}

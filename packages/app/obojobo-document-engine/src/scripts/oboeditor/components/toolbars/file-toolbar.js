@@ -59,12 +59,12 @@ const FileToolbar = props => {
 
 	let className = ''
 	let message = ''
-	if (props.saved === true) {
-		className = 'saved'
-		message = 'Saved!'
-	} else if (props.saved === 'saving') {
+	if (props.saving) {
 		className = 'saving'
 		message = 'Saving...'
+	} else if (props.saved) {
+		className = 'saved'
+		message = 'Saved!'
 	}
 
 	return (

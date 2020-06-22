@@ -7,6 +7,7 @@ import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalUtil from 'src/scripts/common/util/modal-util'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -73,6 +74,36 @@ describe('VisualEditor', () => {
 		}
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('VisualEditor component opens a modal when saving fail', () => {
+		APIUtil.postDraft.mockResolvedValue({ status: 'error' })
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				},
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				children: [],
+				flatJSON: jest.fn().mockReturnValue({ content: {} })
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(ModalUtil.show).toHaveBeenCalled()
+			})
 	})
 
 	test('VisualEditor component with decoration', () => {
@@ -449,6 +480,7 @@ describe('VisualEditor', () => {
 		  "contentRect": null,
 		  "editable": false,
 		  "saved": true,
+		  "saving": false,
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -479,6 +511,7 @@ describe('VisualEditor', () => {
 		  "contentRect": null,
 		  "editable": true,
 		  "saved": false,
+		  "saving": false,
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -490,7 +523,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('changes the Editor title', () => {
-		APIUtil.postDraft.mockResolvedValue()
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok' })
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -552,7 +585,7 @@ describe('VisualEditor', () => {
 	})
 
 	test('changes the Editor title to blank', () => {
-		APIUtil.postDraft.mockResolvedValue()
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok' })
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -860,7 +893,7 @@ describe('VisualEditor', () => {
 	test('onKeyDown() calls editor functions', () => {
 		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
 
-		APIUtil.postDraft.mockResolvedValue()
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok' })
 		const editor = {
 			undo: jest.fn(),
 			redo: jest.fn(),

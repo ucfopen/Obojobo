@@ -23,6 +23,8 @@ import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
+const { SimpleDialog } = Common.components.modal
+const { ModalUtil } = Common.util
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -46,6 +48,7 @@ class VisualEditor extends React.Component {
 		this.state = {
 			value: json,
 			saved: true,
+			saving: false,
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null
@@ -80,7 +83,7 @@ class VisualEditor extends React.Component {
 	}
 
 	markUnsaved() {
-		return this.setState({ saved: false })
+		return this.setState({ saved: false, saving: false })
 	}
 
 	// All plugins are passed the following parameters:
@@ -299,7 +302,7 @@ class VisualEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
-		this.setState({ value, saved: false })
+		this.setState({ value, saved: false, saving: false })
 
 		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
@@ -386,10 +389,19 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: 'saving' })
-		return APIUtil.postDraft(draftId, JSON.stringify(json)).then(() =>
-			this.setState({ saved: true })
-		)
+		this.setState({ saved: false, saving: true })
+		return APIUtil.postDraft(draftId, JSON.stringify(json)).then(result => {
+			if (result.status === 'ok') {
+				this.setState({ saved: this.state.saving, saving: false })
+			} else {
+				this.setState({ saved: false, saving: false })
+				ModalUtil.show(
+					<SimpleDialog ok title="Error">
+						There was an issue saving your document - please try again.
+					</SimpleDialog>
+				)
+			}
+		})
 	}
 
 	exportToJSON(page, value) {
@@ -533,6 +545,7 @@ class VisualEditor extends React.Component {
 							reload={this.reload}
 							switchMode={this.props.switchMode}
 							saved={this.state.saved}
+							saving={this.state.saving}
 							mode={'visual'}
 							insertableItems={this.props.insertableItems}
 							togglePlaceholders={this.togglePlaceholders}
