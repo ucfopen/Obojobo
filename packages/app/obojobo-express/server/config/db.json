@@ -17,6 +17,7 @@
 		"useBluebird": true
 	},
 	"development":{
+		"driver": "postgres",
 		"user": "postgres",
 		"password": "mysecretpassword",
 		"host": "127.0.0.1",

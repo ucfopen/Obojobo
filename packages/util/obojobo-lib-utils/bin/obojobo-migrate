@@ -19,19 +19,32 @@ const os = require('os')
 const { execSync } = require('child_process')
 const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
 const configPath = require.resolve('obojobo-express/server/config/db.json')
-const args = process.argv.slice(2).join(' ')
+let args = process.argv.slice(2).join(' ')
 const isCreateMode = args.includes('create')
 
 let command
 
 if (!isCreateMode) {
+	// make a tmp directory to gather all the migrations into
 	const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
 
 	try {
-		// useful to understand how args are being inserted into the command
+		// match -e production and -env test
+		const envFlagRegex = /\s-e(nv)?\s+(\w+)/
+
+		// if no flag is set, add our own
+		if(!args.match(envFlagRegex)){
+			args += ' -e development'
+		}
+
+		// re-match for logging below
+		const match = args.match(envFlagRegex)
+
+		console.log(`Using db.json environment: ${match[2]}. use '-e <environment>' to set`)
+
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
 
-		// gather all the migrations into a tmp dir
+		// gather all the migrations
 		utils.gatherAllMigrations().forEach(dir => fs.copySync(dir, tempDir))
 
 		// log and execute
