@@ -225,12 +225,23 @@ describe('Edit Lock Model', () => {
 		})
 	})
 
-	test('create returns result from db.one', () => {
-		db.one.mockResolvedValueOnce({ contentId: 3 }).mockResolvedValueOnce('mock-result')
-		db.one.mockResolvedValueOnce('mock-result')
-		return EditLock.create(1, 2, 3).then(result => {
-			expect(db.one).toHaveBeenCalledTimes(2)
-			expect(result).toBe('mock-result')
-		})
+	test('create returns result from db.one', async () => {
+		const mockDBResult = {
+			id: 'mock-lock-id',
+			userId: 'mock-user-id',
+			draftId: 'mock-draft-id',
+			createdAt: 'mock-created-at'
+		}
+
+		db.one.mockResolvedValueOnce({ contentId: 3 }).mockResolvedValueOnce(mockDBResult)
+
+		const result = await EditLock.create(1, 2, 3)
+
+		expect(db.one).toHaveBeenCalledTimes(2)
+		expect(result).toBeInstanceOf(EditLock)
+		expect(result).toHaveProperty('id', 'mock-lock-id')
+		expect(result).toHaveProperty('userId', 'mock-user-id')
+		expect(result).toHaveProperty('draftId', 'mock-draft-id')
+		expect(result).toHaveProperty('createdAt', 'mock-created-at')
 	})
 })

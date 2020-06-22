@@ -86,12 +86,13 @@ class EditLock {
 
 			// verify the newest version is the same as the version requested
 			// if it is not - that means the draft has been updated unexpectedly
-			if (currentContentId.contentId !== contentId){
+			if (currentContentId.contentId !== contentId) {
 				throw Error('Current version of draft does not match requested lock.')
 			}
 
-			return await t.one(
-				`INSERT INTO edit_locks (user_id, draft_id)
+			return await t
+				.one(
+					`INSERT INTO edit_locks (user_id, draft_id)
 				SELECT $[userId], $[draftId]
 				WHERE NOT EXISTS (
 					SELECT id
@@ -100,12 +101,16 @@ class EditLock {
 					AND user_id != $[userId]
 					AND created_at > now() - interval '${editLockExpireMinutes} minutes'
 				) RETURNING
+					id
 					user_id AS "userId",
 					draft_id AS "draftId",
 					created_at AS "createdAt"
 				`,
-				{ userId, draftId }
-			)
+					{ userId, draftId }
+				)
+				.then(data => {
+					return new EditLock(data)
+				})
 		})
 	}
 }
