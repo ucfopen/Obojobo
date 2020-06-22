@@ -70,9 +70,9 @@ describe('Edit Lock Model', () => {
 		})
 	})
 
-	test('deleteByDraftIdandUser calls the expected query with arguments', () => {
+	test('deleteByDraftIdAndUser calls the expected query with arguments', () => {
 		db.result.mockResolvedValueOnce(1) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(() => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(() => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			expect(db.result).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE'),
@@ -82,42 +82,42 @@ describe('Edit Lock Model', () => {
 		})
 	})
 
-	test('deleteByDraftIdandUser requests rowCount from results', () => {
+	test('deleteByDraftIdAndUser requests rowCount from results', () => {
 		db.result.mockResolvedValueOnce(1) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(() => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(() => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			const queryReturnFn = db.result.mock.calls[0][2]
 			expect(queryReturnFn({ rowCount: 'mock-row-count' })).toBe('mock-row-count')
 		})
 	})
 
-	test('deleteByDraftIdandUser returns false when no rows are affected', () => {
+	test('deleteByDraftIdAndUser returns false when no rows are affected', () => {
 		db.result.mockResolvedValueOnce(0) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(success => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(success => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			expect(success).toBe(false)
 		})
 	})
 
-	test('deleteByDraftIdandUser returns true when 1 rows are affected', () => {
+	test('deleteByDraftIdAndUser returns true when 1 rows are affected', () => {
 		db.result.mockResolvedValueOnce(1) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(success => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(success => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			expect(success).toBe(true)
 		})
 	})
 
-	test('deleteByDraftIdandUser returns true when 50 rows are affected', () => {
+	test('deleteByDraftIdAndUser returns true when 50 rows are affected', () => {
 		db.result.mockResolvedValueOnce(50) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(success => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(success => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			expect(success).toBe(true)
 		})
 	})
 
-	test('deleteByDraftIdandUser calls the expected query with arguments', () => {
+	test('deleteByDraftIdAndUser calls the expected query with arguments', () => {
 		db.result.mockResolvedValueOnce(50) // mock affected row count
-		return EditLock.deleteByDraftIdandUser('mock-user-id', 'mock-draft-id').then(() => {
+		return EditLock.deleteByDraftIdAndUser('mock-user-id', 'mock-draft-id').then(() => {
 			expect(db.result).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE'),
 				expect.anything(),

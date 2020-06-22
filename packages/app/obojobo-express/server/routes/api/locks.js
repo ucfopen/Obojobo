@@ -66,7 +66,7 @@ router
 	.route('/:draftId/delete')
 	.post([requireDraftId, requireCanViewEditor, checkValidationRules])
 	.post(async (req, res) => {
-		EditLock.deleteByDraftIdandUser(req.currentUser.id, req.params.draftId)
+		EditLock.deleteByDraftIdAndUser(req.currentUser.id, req.params.draftId)
 		res.success()
 	})
 

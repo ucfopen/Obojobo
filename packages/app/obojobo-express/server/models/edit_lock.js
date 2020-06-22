@@ -24,7 +24,7 @@ class EditLock {
 
 	// clear a user's locks on a draft
 	// returns true if deleted, false if nothing to delete
-	static deleteByDraftIdandUser(userId, draftId) {
+	static deleteByDraftIdAndUser(userId, draftId) {
 		return db
 			.result(
 				`

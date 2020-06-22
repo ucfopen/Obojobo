@@ -2,7 +2,7 @@ jest.mock('../../../server/models/edit_lock', () => ({
 	fetchByDraftId: jest.fn(),
 	create: jest.fn(),
 	deleteExpiredLocks: jest.fn(),
-	deleteByDraftIdandUser: jest.fn()
+	deleteByDraftIdAndUser: jest.fn()
 }))
 jest.mock('obojobo-repository/server/services/permissions', () => ({
 	userHasPermissionToDraft: jest.fn()
@@ -200,8 +200,8 @@ describe('Route api/locks', () => {
 			.post('/api/locks/mock-draft-id/delete')
 			.then(response => {
 				expect(response.statusCode).toBe(200)
-				expect(EditLock.deleteByDraftIdandUser).toHaveBeenCalledTimes(1)
-				expect(EditLock.deleteByDraftIdandUser).toHaveBeenCalledWith(
+				expect(EditLock.deleteByDraftIdAndUser).toHaveBeenCalledTimes(1)
+				expect(EditLock.deleteByDraftIdAndUser).toHaveBeenCalledWith(
 					'mock-current-user-id',
 					'mock-draft-id'
 				)
