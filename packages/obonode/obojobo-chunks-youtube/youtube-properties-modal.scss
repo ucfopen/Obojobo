@@ -44,9 +44,10 @@
 		&.youtube--video-invalid {
 			border: solid rgb(78, 38, 38) 2px;
 		}
+		/*
 		&.youtube--video-valid {
 			border: solid lime 2px;
-		}
+		}*/
 	}
 
 	small {
@@ -58,7 +59,6 @@
 
 	.youtube-video-properties-input-wrapper {
 		display: flex;
-		// margin-bottom: 2em;
 		flex-direction: row;
 
 		input {

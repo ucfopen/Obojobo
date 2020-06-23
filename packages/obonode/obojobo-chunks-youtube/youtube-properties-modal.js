@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../app/obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../app/obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 
 import './youtube-properties-modal.scss'
@@ -11,6 +11,7 @@ class YouTubeProperties extends React.Component {
 	constructor(props) {
 		super(props)
 		this.idInputRef = React.createRef()
+		this.videoUrlInputRef = React.createRef()
 		this.state = {
 			content: this.props.content,
 			startTimeError: '',
@@ -24,7 +25,7 @@ class YouTubeProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.idInputRef.current.focus()
+		return this.videoUrlInputRef.current.focus()
 	}
 
 	handleUrlChange(event) {
@@ -106,7 +107,8 @@ class YouTubeProperties extends React.Component {
 		const videoInfo = EditorUtil.youTubeParseUrl(videoId)
 
 		if (videoInfo.videoId) {
-			this.state.content.videoId = videoInfo.videoId
+			// this.state.content.videoId = videoInfo.videoId
+			this.setState({ videoId: videoInfo.videoId })
 		}
 
 		if (startTime < 0) {
@@ -154,15 +156,14 @@ class YouTubeProperties extends React.Component {
 					<input
 						id="obojobo-draft--chunks--youtube--video-url"
 						type="text"
-						ref={this.idInputRef}
+						ref={this.videoUrlInputRef}
 						value={this.state.content.videoUrl || ''}
 						onChange={this.handleUrlChange.bind(this)}
 						className={this.state.content.videoInputValidClass}
 					/>
-					<br />
 					<input
 						id="obojobo-draft--chunks--youtube--video-id"
-						type="text"
+						type="hidden"
 						ref={this.idInputRef}
 						value={this.state.content.videoId || ''}
 					/>

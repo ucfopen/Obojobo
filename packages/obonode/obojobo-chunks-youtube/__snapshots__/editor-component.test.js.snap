@@ -67,7 +67,9 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
       className="empty-frame"
     >
       <div>
-        No Video Id.
+        <p>
+          No video specified. Click 'Edit' to add one.
+        </p>
       </div>
     </div>
     <div

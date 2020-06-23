@@ -210,8 +210,13 @@ const EditorUtil = {
 		let videoStartTime = false
 		let videoEndTime = false
 
+		let youTubeSiteRegexMatch = false
+
 		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?^\s]*)*[&\?t=]*([0-9]*)*[&\?start=]*([0-9]*)*[&\?end=]*([0-9]*)*.*/
-		const youTubeSiteRegexMatch = videoUrl.match(youTubeSiteRegex)
+		
+		if (typeof(videoUrl) !== 'undefined') {
+			youTubeSiteRegexMatch = videoUrl.match(youTubeSiteRegex)
+		}
 
 		if (youTubeSiteRegexMatch) {
 			videoStartTime = youTubeSiteRegexMatch[8] ? parseInt(youTubeSiteRegexMatch[8], 10) : 0
