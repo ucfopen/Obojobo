@@ -147,6 +147,10 @@ const APIUtil = {
 		navigator.sendBeacon(`/api/locks/${draftId}/delete`)
 	},
 
+	getDraftRevision(draftId, revisionId) {
+		return API.get(`/api/drafts/${draftId}/revisions/${revisionId}`).then(processJsonResults)
+	},
+
 	copyDraft(draftId, newTitle) {
 		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(processJsonResults)
 	}

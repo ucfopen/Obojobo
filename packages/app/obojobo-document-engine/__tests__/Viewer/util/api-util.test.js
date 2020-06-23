@@ -601,4 +601,13 @@ describe('apiutil', () => {
 		expect(navigator.sendBeacon).toHaveBeenCalledTimes(1)
 		expect(navigator.sendBeacon).toHaveBeenCalledWith('/api/locks/mock-draft-id/delete')
 	})
+
+	test('getDraftRevision calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getDraftRevision('mock-draft-id', 'mock-revision-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mock-draft-id/revisions/mock-revision-id')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
 })

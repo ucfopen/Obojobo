@@ -208,10 +208,13 @@ describe('EditorApp', () => {
 
 		return global.flushPromises().then(() => {
 			component.update()
-			expect(component.html()).toMatchSnapshot()
+			const html = component.html()
+			expect(html).toContain('Error')
+			expect(html).toContain('Error')
 			expect(console.error).toHaveBeenCalled() // eslint-disable-line no-console
 			expect(instance.state).toHaveProperty('requestStatus', 'invalid')
-			expect(instance.state).toHaveProperty('requestError', mockError)
+			expect(instance.state).toHaveProperty('requestError.type', 'someType')
+			expect(instance.state).toHaveProperty('requestError.message', 'someMessage')
 			component.unmount()
 		})
 	})
@@ -361,6 +364,26 @@ describe('EditorApp', () => {
 			instance._isCreatingRenewableEditLock = false
 			instance.startRenewEditLockInterval('test')
 			expect(instance.createEditLock).toHaveBeenCalled()
+		})
+	})
+
+	test('component loads draft revision', () => {
+		expect.hasAssertions()
+		jest.useFakeTimers()
+		APIUtil.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		defaultProps.settings.revisionId = 'mockId'
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...defaultProps} />)
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().mode).toEqual('visual')
+			expect(component.state().draft).toEqual(testObject)
 
 			component.unmount()
 		})
@@ -540,6 +563,32 @@ describe('EditorApp', () => {
 		return instance.onWindowReturnFromInactive().then(() => {
 			expect(instance.startRenewEditLockInterval).toHaveBeenCalledWith('mock-draft-id')
 			expect(ModalUtil.hide).toHaveBeenCalled()
+		})
+	})
+
+	test('EditorApp renders error when loading draft revision', () => {
+		expect.assertions(5)
+		jest.useFakeTimers()
+		APIUtil.getDraftRevision.mockResolvedValueOnce({
+			status: 'error',
+			value: { type: 'mock-type', message: 'mock-message' }
+		})
+		EditorStore.getState.mockReturnValueOnce({})
+		defaultProps.settings.revisionId = 'mockId'
+		console.error = jest.fn() // eslint-disable-line no-console
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...defaultProps} />)
+
+		return global.flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().requestStatus).toEqual('invalid')
+			expect(component.state()).toHaveProperty('requestError.message', 'mock-message')
+			expect(component.state()).toHaveProperty('requestError.type', 'mock-type')
+			expect(component.state().mode).toEqual('visual')
+
+			component.unmount()
 		})
 	})
 })

@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator/check')
+const { check, param, validationResult } = require('express-validator/check')
 const logger = oboRequire('server/logger')
 
 const semVerRegex = /\d+\.\d+\.\d+/
@@ -67,6 +67,8 @@ exports.requireMultipleAttemptIds = [
 	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
 	check('attemptIds.*', 'must be a valid UUID').isUUID()
 ]
+exports.check = check
+exports.param = param
 exports.validPageNumber = check('page', 'must be a valid int 1 or above')
 	.optional()
 	.isInt({ min: 1, allow_leading_zeroes: false })

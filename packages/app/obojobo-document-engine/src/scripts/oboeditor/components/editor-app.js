@@ -191,7 +191,11 @@ class EditorApp extends React.Component {
 						return response
 					default:
 						json = JSON.parse(response)
-						if (json.status === 'error') throw json.value
+						if (json.status === 'error') {
+							const error = Error(json.value.message)
+							error.type = json.value.type
+							throw error
+						}
 
 						return JSON.stringify(json.value, null, 4)
 				}
@@ -212,13 +216,43 @@ class EditorApp extends React.Component {
 			})
 	}
 
+	loadDraftRevision(draftId, revisionId) {
+		const mode = 'visual'
+
+		return APIUtil.getDraftRevision(draftId, revisionId)
+			.then(response => {
+				if (response.status === 'error') {
+					const error = Error(response.value.message)
+					error.type = response.value.type
+					throw error
+				}
+
+				return JSON.stringify(response.value.json, null, 4)
+			})
+			.then(draftModel => {
+				this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
+			})
+			.catch(err => {
+				// eslint-disable-next-line no-console
+				console.error(err)
+				this.setState({ requestStatus: 'invalid', requestError: err, mode })
+			})
+	}
+
 	componentDidMount() {
 		const urlTokens = document.location.pathname.split('/')
+		const revisionId = this.props.settings && this.props.settings.revisionId
 
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
 
 		ModalStore.init()
+
+		if (revisionId) {
+			// If this is a revision, load it in the editor. Note that
+			// revisions will always load in visual mode
+			return this.loadDraftRevision(draftId, revisionId)
+		}
 
 		return this.reloadDraft(draftId, this.state.mode)
 			.then(() => this.startRenewEditLockInterval(draftId))
@@ -266,6 +300,7 @@ class EditorApp extends React.Component {
 	}
 
 	componentWillUnmount() {
+		clearInterval(this.renewLockInterval)
 		EditorStore.offChange(this.onEditorStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 	}
@@ -296,6 +331,11 @@ class EditorApp extends React.Component {
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
 				saveDraft={this.saveDraft}
+				readOnly={
+					// Prevents editing a draft that's a revision,
+					// even if the url was visited manually
+					this.props.settings && (this.props.settings.readOnly || this.props.settings.revisionId)
+				}
 			/>
 		)
 	}

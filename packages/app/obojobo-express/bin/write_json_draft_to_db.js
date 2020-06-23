@@ -27,7 +27,7 @@ try {
 			userId = process.argv[4] || 0
 			desiredDraftId = process.argv[5] || null
 
-			DraftModel.createWithContent(userId, jsonContent)
+			DraftModel.createWithContent(userId, userId, jsonContent)
 				.then(newDraft => {
 					if (desiredDraftId) {
 						console.info(desiredDraftId)
