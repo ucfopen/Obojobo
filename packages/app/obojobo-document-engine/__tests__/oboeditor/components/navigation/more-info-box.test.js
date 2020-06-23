@@ -573,11 +573,11 @@ describe('MoreInfoBox', () => {
 		expect(saveContent).toHaveBeenCalled()
 	})
 
-	test('More Info Box closes the TriggersModal', () => {
+	test('More Info Box closes the TriggersModal with updates', () => {
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
-				content={{}}
+				content={{ triggers: ['initial-trigger'] }}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
@@ -585,9 +585,42 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component.instance().closeModal({ triggers: [] })
+		const cmp = component.instance()
+		cmp.closeModal({ triggers: ['mock-trigger'] })
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "mock-trigger",
+		  ],
+		}
+	`)
+	})
+
+	test('More Info Box closes the TriggersModal without updating', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ triggers: ['initial-trigger'] }}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		const cmp = component.instance()
+		cmp.closeModal()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "initial-trigger",
+		  ],
+		}
+	`)
 	})
 
 	test('More Info Box mousedown listener behaviors', () => {

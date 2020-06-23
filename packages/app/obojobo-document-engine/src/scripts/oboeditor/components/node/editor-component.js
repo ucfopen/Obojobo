@@ -164,6 +164,10 @@ class Node extends React.Component {
 			to: targetPath
 		}
 
+		// All kinds of issues pop up if the selection spans multiple chunks
+		// when using moveNode.  So set the selection to the start of the currently moving element
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, thisPath))
+
 		Transforms.moveNodes(this.props.editor, options)
 	}
 

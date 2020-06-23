@@ -29,6 +29,10 @@ const EditorAPI = {
 
 	copyDraft(draftId, newTitle) {
 		return API.post(`/api/drafts/${draftId}/copy`, { title: newTitle }).then(API.processJsonResults)
+	},
+
+	getDraftRevision(draftId, revisionId) {
+		return API.get(`/api/drafts/${draftId}/revisions/${revisionId}`).then(API.processJsonResults)
 	}
 }
 

@@ -115,4 +115,43 @@ describe('EditorAPI', () => {
 		expect(post).toHaveBeenCalledWith('/api/drafts/draft-id/copy', { title: 'new-title' })
 		expect(res).toBe(mockJsonResult)
 	})
+
+	test('createNewDraft calls fetch and returns', () => {
+		expect.hasAssertions()
+
+		return EditorAPI.createNewDraft('mock_content', 'mock_format').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/new', {
+				content: 'mock_content',
+				format: 'mock_format'
+			})
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('deleteDraft calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return EditorAPI.deleteDraft('mock-draft-id').then(result => {
+			expect(deleteMethod).toHaveBeenCalledWith('/api/drafts/mock-draft-id')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('copyDraft calls post and returns', async () => {
+		expect.hasAssertions()
+
+		return EditorAPI.copyDraft('mock-draft-id', 'new title').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', { title: 'new title' })
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('getDraftRevision calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return EditorAPI.getDraftRevision('mock-draft-id', 'mock-revision-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts/mock-draft-id/revisions/mock-revision-id')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
 })

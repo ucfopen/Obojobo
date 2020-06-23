@@ -211,4 +211,57 @@ describe('EditorApp', () => {
 			component.unmount()
 		})
 	})
+
+	test('EditorApp component loads draft revision', () => {
+		expect.assertions(3)
+
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const props = {
+			settings: {
+				revisionId: 'mockId'
+			}
+		}
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...props} />)
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().mode).toEqual('visual')
+			expect(component.state().draft).toEqual(testObject)
+
+			component.unmount()
+		})
+	})
+
+	test('EditorApp renders error when loading draft revision', () => {
+		expect.assertions(4)
+
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({ status: 'error' })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const props = {
+			settings: {
+				revisionId: 'mockId'
+			}
+		}
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...props} />)
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().requestStatus).toEqual('invalid')
+			expect(component.state().requestError).toEqual('error')
+			expect(component.state().mode).toEqual('visual')
+
+			component.unmount()
+		})
+	})
 })

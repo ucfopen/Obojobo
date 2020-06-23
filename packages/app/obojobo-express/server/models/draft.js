@@ -188,11 +188,11 @@ class Draft {
 						return transactionDb.one(
 							`
 							INSERT INTO drafts_content
-								(draft_id, content, xml)
+								(draft_id, user_id, content, xml)
 							VALUES
-								($[draftId], $[jsonContent], $[xmlContent])
+								($[draftId], $[userId], $[jsonContent], $[xmlContent])
 							RETURNING *`,
-							{ draftId: newDraft.id, jsonContent, xmlContent }
+							{ draftId: newDraft.id, userId, jsonContent, xmlContent }
 						)
 					})
 					.then(newContentResult => {
@@ -207,17 +207,19 @@ class Draft {
 			})
 	}
 
-	static updateContent(draftId, jsonContent, xmlContent) {
+	static updateContent(draftId, userId, jsonContent, xmlContent) {
 		return db
 			.one(
 				`
-				INSERT INTO drafts_content(
+				INSERT INTO drafts_content (
 					draft_id,
+					user_id,
 					content,
 					xml
 				)
 				VALUES(
 					$[draftId],
+					$[userId],
 					$[jsonContent],
 					$[xmlContent]
 				)
@@ -225,6 +227,7 @@ class Draft {
 			`,
 				{
 					draftId,
+					userId,
 					jsonContent,
 					xmlContent
 				}

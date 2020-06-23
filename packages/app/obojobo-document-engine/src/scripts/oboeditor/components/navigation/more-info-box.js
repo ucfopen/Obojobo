@@ -116,7 +116,7 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent),
+			content: Object.assign({}, prevState.content, newContent),
 			needsUpdate: true
 		}))
 	}
@@ -177,13 +177,18 @@ class MoreInfoBox extends React.Component {
 		this.setState({ modalOpen: true })
 	}
 
+	// TriggerListModal.onClose is called w/ no arguments when canceled
+	// TriggerListModal.onClose is called w/ triggers when save+closed
 	closeModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
 			needsUpdate: true,
 			modalOpen: false
 		}))
-		ModalUtil.hide()
 	}
 
 	renderItem(description) {
