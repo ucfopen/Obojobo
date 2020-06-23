@@ -30,12 +30,8 @@ router
 				return res.notAuthorized('You do not have the required access to edit this module.')
 			}
 
-			const existingLock = await EditLock.fetchByDraftId(req.params.draftId)
-
-			if (existingLock && existingLock.userId !== req.currentUser.id) {
-				return res.notAuthorized('Someone else is currently editing this module.')
-			}
-
+			// attempt to lock
+			// create won't overwrite existing valid locks owned by other users
 			const myLock = await EditLock.create(
 				req.currentUser.id,
 				req.params.draftId,
@@ -43,11 +39,11 @@ router
 			)
 
 			// send response to user
-			if (myLock.userId === req.currentUser.id) {
-				res.success()
-			} else {
-				res.notAuthorized()
+			if (!myLock || myLock.userId !== req.currentUser.id) {
+				return res.notAuthorized('Someone else is currently editing this module.')
 			}
+
+			res.success()
 
 			// let's go ahead and clean the locks after returning the result to the user
 			// this isn't necissary for functionality (expired locks don't affect new locks)

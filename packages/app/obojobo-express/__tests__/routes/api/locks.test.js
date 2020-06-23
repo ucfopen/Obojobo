@@ -134,9 +134,8 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty(
-					'message',
+				expect(response.body).toHaveProperty(
+					'value.message',
 					'Someone else is currently editing this module.'
 				)
 			})
@@ -154,8 +153,10 @@ describe('Route api/locks', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).not.toHaveProperty('message')
+				expect(response.body).toHaveProperty(
+					'value.message',
+					'Someone else is currently editing this module.'
+				)
 			})
 	})
 
