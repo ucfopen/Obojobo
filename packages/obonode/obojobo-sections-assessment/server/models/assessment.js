@@ -41,7 +41,9 @@ class AssessmentModel {
 					assessment_id as "assessmentId",
 					state,
 					result,
-					draft_content_id as "contentId"
+					draft_content_id as "contentId",
+					is_imported as "isImported",
+					imported_attempt_id as "importedAttemptId"
 				FROM attempts
 				WHERE
 					user_id = $[userId]

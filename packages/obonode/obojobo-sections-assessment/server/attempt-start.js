@@ -9,6 +9,7 @@ const ACTION_ASSESSMENT_ATTEMPT_START = 'assessment:attemptStart'
 const ACTION_ASSESSMENT_SEND_TO_ASSESSMENT = 'ObojoboDraft.Sections.Assessment:sendToAssessment'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+const ERROR_IMPORT_USED = 'Import score has already been used'
 
 const startAttempt = (req, res) => {
 	let attemptState
@@ -58,6 +59,13 @@ const startAttempt = (req, res) => {
 			) {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 			}
+
+			// look to see if import has been used before
+			const isImportUsed = attemptHistory.find(attempt => attempt.isImported === true)
+			if(isImportUsed){
+				throw new Error(ERROR_IMPORT_USED)
+			}
+
 			attemptState = getState(assessmentProperties)
 			const toClientPromises = getSendToClientPromises(
 				assessmentProperties.oboNode,
@@ -101,7 +109,9 @@ const startAttempt = (req, res) => {
 		.catch(error => {
 			switch (error.message) {
 				case ERROR_ATTEMPT_LIMIT_REACHED:
-					return res.reject(ERROR_ATTEMPT_LIMIT_REACHED)
+				case ERROR_IMPORT_USED:
+					return res.reject(error.message)
+
 				default:
 					logAndRespondToUnexpected(ERROR_UNEXPECTED_DB_ERROR, res, req, error)
 			}
