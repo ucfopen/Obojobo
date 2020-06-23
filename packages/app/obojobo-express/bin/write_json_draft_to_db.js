@@ -27,7 +27,7 @@ try {
 			userId = process.argv[4] || 0
 			desiredDraftId = process.argv[5] || null
 
-			DraftModel.createWithContent(userId, userId, jsonContent)
+			DraftModel.createWithContent(userId, jsonContent)
 				.then(newDraft => {
 					if (desiredDraftId) {
 						console.info(desiredDraftId)
@@ -64,7 +64,7 @@ try {
 		case 'update': {
 			const draftId = process.argv[4] || 0
 
-			DraftModel.updateContent(draftId, jsonContent)
+			DraftModel.updateContent(draftId, 0, jsonContent)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()
