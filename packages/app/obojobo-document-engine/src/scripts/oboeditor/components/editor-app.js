@@ -144,7 +144,7 @@ class EditorApp extends React.Component {
 
 	startRenewEditLockInterval(draftId) {
 		// allow this function to be called again
-		if (this._isCreatingRenewableEditLock === true) return Promise.resolve()
+		if (this._isCreatingRenewableEditLock) return Promise.resolve()
 		this._isCreatingRenewableEditLock = true
 
 		return this.createEditLock(draftId, this.state.model.get('contentId'))
