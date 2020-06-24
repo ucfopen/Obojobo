@@ -1,6 +1,8 @@
 @import '~styles/includes';
 
 .obojobo-draft--components--modal--dialog.pre-attempt-import {
+	max-width: 40rem;
+
 	.content {
 		.controls {
 			display: flex;
