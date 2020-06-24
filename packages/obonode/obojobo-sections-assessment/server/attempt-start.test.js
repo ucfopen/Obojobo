@@ -53,6 +53,7 @@ const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+const ERROR_IMPORT_USED = 'Import score has already been used'
 
 describe('start attempt route', () => {
 	let mockDraft
@@ -202,6 +203,48 @@ describe('start attempt route', () => {
 		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+		})
+	})
+
+	test('startAttempt rejects with an expected error when an import was used', () => {
+		mockRes = { reject: jest.fn() }
+
+		const mockAssessmentNode = {
+			getChildNodeById: jest.fn(() => ({
+				node: {
+					content: {
+						// Number of attempts the user is allowed (needs more then tthe number of attempts that are sent).
+						attempts: 10
+					}
+				},
+				children: [
+					{},
+					{
+						childrenSet: ['test', 'test1'],
+						toObject: jest.fn()
+					}
+				]
+			}))
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			currentVisit: { is_preview: false },
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([
+			{ isImported: false },
+			{ isImported: true }
+		])
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_IMPORT_USED)
 		})
 	})
 
