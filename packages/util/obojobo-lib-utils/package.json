@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "9.0.1",
+	"version": "9.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
@@ -17,19 +17,18 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"dependencies": {
-		"db-migrate": "^0.11.10",
-		"db-migrate-pg": "^1.2.1",
+		"db-migrate": "^0.11.11",
+		"db-migrate-pg": "^1.2.2",
 		"fs-extra": "^9.0.0",
 		"prop-types": "15.7.2",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-idle-timer": "^4.2.12",
-		"react-transition-group": "^4.3.0"
+		"react-transition-group": "^4.4.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.6",
@@ -40,16 +39,16 @@
 		"@babel/runtime": "^7.9.6",
 		"babel-core": "^7.0.0-bridge",
 		"babel-eslint": "^10.1.0",
-		"babel-jest": "26.0.0",
+		"babel-jest": "26.0.1",
 		"enzyme": "^3.11.0",
 		"enzyme-adapter-react-16": "^1.15.2",
 		"eslint": "^6.8.0",
-		"jest": "26.0.0",
+		"jest": "26.0.1",
 		"jest-mock-console": "^1.0.0",
-		"lint-staged": "^10.2.2",
+		"lint-staged": "^10.2.6",
 		"prettier": "1.18.2",
 		"react-test-renderer": "16.13.1",
-		"stylelint": "^13.3.3",
+		"stylelint": "^13.5.0",
 		"stylelint-config-standard": "^20.0.0",
 		"stylelint-declaration-use-variable": "^1.7.2"
 	},

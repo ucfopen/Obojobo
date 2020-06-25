@@ -1,40 +1,36 @@
 import React from 'react'
 import Common from 'Common'
+import insertDomTag from 'obojobo-document-engine/src/scripts/common/util/insert-dom-tag'
 
 const { uuid } = Common.util
-const _callbacks = []
-const tag = document.createElement('script')
 
-// Load YouTube's Iframe API
-tag.src = 'https://www.youtube.com/iframe_api'
-document.body.appendChild(tag)
+// while youtube iframe api script is loading
+// this will be filled with loadVideo() callbacks
+// from YouTubePlayer components waiting for it to load
+// They'll all get called once it loads
+const instanceCallbacksForYouTubeReady = []
 
-window.onYouTubeIframeAPIReady = () => {
-	while (YouTubePlayer.callbacks.length > 0) {
-		const callback = YouTubePlayer.callbacks.shift()
-		callback()
-	}
+// single global hangler that notifies all registered YouTubePlayer Components
+const onYouTubeIframeAPIReadyHandler = () => {
+	// call every registered callback when ready
+	instanceCallbacksForYouTubeReady.forEach(cb => cb())
 }
 
 class YouTubePlayer extends React.Component {
-	static get callbacks() {
-		return _callbacks
-	}
-
 	constructor(props) {
 		super(props)
 		this.playerId = `obojobo-draft--chunks-you-tube-player-${uuid()}`
 		this.player = null
+		this.loadVideo = this.loadVideo.bind(this)
 	}
 
 	componentDidMount() {
-		if (window.YT && window.YT.Player) {
+		// load YouTube Iframe API if it's not here yet
+		if (!window.YT) {
+			this.loadYouTubeAPIWithCallback(this.loadVideo)
+		} else {
 			this.loadVideo()
-			return
 		}
-
-		// Wait for YouTube's API to be loaded before loading a video
-		_callbacks.push(this.loadVideo.bind(this))
 	}
 
 	componentDidUpdate(prevProps) {
@@ -46,8 +42,22 @@ class YouTubePlayer extends React.Component {
 		this.loadVideo()
 	}
 
+	loadYouTubeAPIWithCallback(onReadyCallBack) {
+		// register a callback for this component
+		instanceCallbacksForYouTubeReady.push(onReadyCallBack)
+
+		// no event handler registered yet?
+		if (!window.onYouTubeIframeAPIReady) {
+			// register a single global handler
+			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReadyHandler
+
+			// add the script tag that loads the youtube iframe api
+			insertDomTag({ src: '//www.youtube.com/iframe_api' }, 'script')
+		}
+	}
+
 	loadVideo() {
-		if (!this.props.content) {
+		if (!this.props.content || !window.YT || !window.YT.Player) {
 			return
 		}
 

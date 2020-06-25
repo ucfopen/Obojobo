@@ -151,18 +151,15 @@ describe('api visits route', () => {
 	})
 
 	test('/start fails when theres no draftDocument loaded', () => {
-		expect.assertions(5)
+		expect.assertions(4)
 		mockCurrentUser = { id: 99 }
 		return request(app)
 			.post('/api/start')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(422)
+				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value.message).toContain(
-					'currentDocument missing from request, got undefined'
-				)
+				expect(response.body.value).toHaveProperty('type', 'missing')
 			})
 	})
 

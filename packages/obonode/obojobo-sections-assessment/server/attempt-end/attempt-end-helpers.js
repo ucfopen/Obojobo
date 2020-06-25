@@ -81,7 +81,8 @@ module.exports = {
 			req.attempt.number,
 			req.currentVisit.is_preview,
 			req.hostname,
-			req.connection.remoteAddress
+			req.connection.remoteAddress,
+			req.currentVisit.id
 		)
 	},
 
@@ -92,7 +93,8 @@ module.exports = {
 				req.currentDocument,
 				req.attempt.assessmentId,
 				req.currentVisit.is_preview,
-				req.currentVisit.resource_link_id
+				req.currentVisit.resource_link_id,
+				req.currentVisit.id
 			)
 			.then(ltiRequest => {
 				req.ltiRequest = ltiRequest
@@ -118,7 +120,8 @@ module.exports = {
 			req.hostname,
 			req.connection.remoteAddress,
 			req.calculatedScores.assessmentScoreDetails,
-			req.currentVisit.resource_link_id
+			req.currentVisit.resource_link_id,
+			req.currentVisit.id
 		)
 	},
 

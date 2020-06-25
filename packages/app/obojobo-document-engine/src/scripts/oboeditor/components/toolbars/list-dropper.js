@@ -1,4 +1,4 @@
-	import './list-dropper.scss'
+import './list-dropper.scss'
 
 import React from 'react'
 import { Editor, Element } from 'slate'
@@ -93,56 +93,77 @@ class ListDropper extends React.Component {
 	}
 
 	toggleBullet() {
-		const nodes = Array.from(Editor.nodes(this.props.editor, {
-			mode: 'lowest',
-			match: node => Element.isElement(node) && !this.props.editor.isInline(node) && !node.subtype
-		}))
+		const nodes = Array.from(
+			Editor.nodes(this.props.editor, {
+				mode: 'lowest',
+				match: node => Element.isElement(node) && !this.props.editor.isInline(node) && !node.subtype
+			})
+		)
 		const isList = nodes.every(([block]) => block.type === LIST_NODE)
 
-		if(!isList) {
-			return this.props.editor.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
+		if (!isList) {
+			return this.props.editor.changeToType(LIST_NODE, {
+				type: this.props.type,
+				bulletStyle: this.props.defaultStyle
+			})
 		}
 
 		// Once we know they are all lists, we can check if the lists are the same type
 		// as the list we are changing to
 		const isSameType = nodes.every(([block]) => block.content.listStyles.type === this.props.type)
-		if(!isSameType) {
-			return this.props.editor.changeToType(LIST_NODE, { type: this.props.type, bulletStyle: this.props.defaultStyle })
+		if (!isSameType) {
+			return this.props.editor.changeToType(LIST_NODE, {
+				type: this.props.type,
+				bulletStyle: this.props.defaultStyle
+			})
 		}
 
 		this.props.editor.changeToType(TEXT_NODE)
 	}
 
 	render() {
+		const isMac = navigator.platform.indexOf('Mac') !== -1
+		// Decide whether or not to use the mac shortcut
+		// Note - users can spoof their appVersion, but anyone who is tech-savvy enough
+		// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
+		// for keyboard shortcuts
+		const hotKey = isMac ? '⌘+' : 'Ctrl+'
+		const shortcut = this.props.shortcut ? '\n' + hotKey + this.props.shortcut : ''
+
 		return (
-			<div 
-				className={'list-dropper'} 
+			<div
+				className={'list-dropper'}
 				contentEditable={false}
 				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
-				onKeyDown={this.onKeyDown}>
+				onKeyDown={this.onKeyDown}
+			>
 				<button
 					className="icon"
 					onClick={this.toggleBullet}
 					ref={this.menuButton}
-					aria-label={this.props.type + ' list'}>
+					title={this.props.type + ' list' + shortcut}
+					aria-label={this.props.type + ' list'}
+				>
 					{this.props.type === 'ordered' ? <OrderedListIcon /> : <UnorderedListIcon />}
 				</button>
-				<button 
+				<button
 					className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
 					onClick={this.toggleLevelSelect}
 					ref={this.menuButton}
-					aria-label={'Open ' + this.props.type + ' list type menu'}>
+					aria-label={'Open ' + this.props.type + ' list type menu'}
+				>
 					{'⌃'}
 				</button>
 				<div className={'list-dropper-menu ' + isOrNot(this.state.isOpen, 'open')}>
 					{this.props.bullets.map(bullet => (
-						<button 
+						<button
 							key={bullet.bulletStyle}
 							onClick={this.changeBullet.bind(this, bullet.bulletStyle)}
 							ref={item => {
 								this.menu.push(item)
-							}}>
+							}}
+						>
 							{bullet.display}
 						</button>
 					))}

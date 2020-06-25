@@ -21,7 +21,7 @@ Array [
     },
     "contentId": undefined,
     "draftId": "00000000-0000-0000-0000-000000000000",
-    "eventVersion": "1.0.0",
+    "eventVersion": "1.1.0",
     "ip": "::ffff:127.0.0.1",
     "isPreview": false,
     "metadata": Object {},
@@ -31,6 +31,7 @@ Array [
     },
     "resourceLinkId": 3,
     "userId": 4,
+    "visitId": "mocked-visit-id",
   },
 ]
 `;

@@ -25,6 +25,7 @@ const mockAttempt = {
 }
 
 const mockCurrentVisit = {
+	id: 'mockVisitId',
 	is_preview: 'mockIsPreview',
 	resource_link_id: 'mockResourceLinkId'
 }
@@ -167,7 +168,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockAttempt.number,
 			mockCurrentVisit.is_preview,
 			mockHostName,
-			mockConnection.remoteAddress
+			mockConnection.remoteAddress,
+			mockCurrentVisit.id
 		)
 	}),
 		test('sendHighestAssessmentScore', async () => {
@@ -186,7 +188,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 				mockCurrentDocument,
 				mockAttempt.assessmentId,
 				mockCurrentVisit.is_preview,
-				mockCurrentVisit.resource_link_id
+				mockCurrentVisit.resource_link_id,
+				mockCurrentVisit.id
 			)
 		})
 
@@ -227,7 +230,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockHostName,
 			mockConnection.remoteAddress,
 			mockCalculatedScores.assessmentScoreDetails,
-			mockCurrentVisit.resource_link_id
+			mockCurrentVisit.resource_link_id,
+			mockCurrentVisit.id
 		)
 	})
 

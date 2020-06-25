@@ -30,6 +30,7 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
+	res.render = jest.fn()
 	next()
 })
 
@@ -69,13 +70,13 @@ describe('preview route', () => {
 	})
 
 	test('preview requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.assertions(2)
+		mockCurrentDocument = null
 		return request(app)
 			.get(`/${validUUID()}/`)
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 

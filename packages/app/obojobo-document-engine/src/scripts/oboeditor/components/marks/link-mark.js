@@ -20,6 +20,7 @@ const LinkMark = {
 			return next(element)
 		},
 		onKeyDown(event, editor, next) {
+			if (event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
 
 			event.preventDefault()
@@ -65,6 +66,7 @@ const LinkMark = {
 	marks: [
 		{
 			name: 'Link',
+			shortcut: 'K',
 			type: LinkMark,
 			icon: LinkIcon,
 			action: editor => {

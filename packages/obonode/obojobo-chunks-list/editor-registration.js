@@ -7,6 +7,7 @@ import EditorComponent from './editor-component'
 import Level from './components/level/editor-component'
 import Line from './components/line/editor-component'
 import Converter from './converter'
+import ListUtil from './list-util'
 
 import normalizeNode from './changes/normalize-node'
 import onBackspace from './changes/on-backspace'
@@ -81,6 +82,20 @@ const plugins = {
 
 			case 'h':
 				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
+				break
+
+			// Allow both L and K to swap between list types
+			// Standard practice is that Ctrl+Shift+K toggles unordered and
+			// Ctrl+Shift+L toggles ordered, but, in the case of lists, toggling
+			// ordered/unordered off is the same as toggling the other on.
+			case 'k':
+			case 'K':
+			case 'l':
+			case 'L':
+				if (event.shiftKey) {
+					event.preventDefault()
+					ListUtil.toggleType(entry[0], editor)
+				}
 		}
 	},
 	renderNode(props) {

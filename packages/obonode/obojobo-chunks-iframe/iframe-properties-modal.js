@@ -22,6 +22,16 @@ class IFrameProperties extends React.Component {
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
+
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.handleTitleChange = this.handleTitleChange.bind(this)
+		this.handleURLChange = this.handleURLChange.bind(this)
+		this.handleWidthChange = this.handleWidthChange.bind(this)
+		this.handleHeightChange = this.handleHeightChange.bind(this)
+		this.handleBorderChange = this.handleBorderChange.bind(this)
+		this.handleAutoloadChange = this.handleAutoloadChange.bind(this)
+		this.handleFitChange = this.handleFitChange.bind(this)
+		this.handleZoomChange = this.handleZoomChange.bind(this)
 	}
 
 	componentDidMount() {
@@ -99,7 +109,8 @@ class IFrameProperties extends React.Component {
 				cancelOk
 				title="IFrame Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				onCancel={this.props.onCancel}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className={'iframe-properties'}>
 					<div className="info">
@@ -111,7 +122,7 @@ class IFrameProperties extends React.Component {
 								ref={this.inputRef}
 								value={this.state.title || ''}
 								placeholder="IFrame Title"
-								onChange={this.handleTitleChange.bind(this)}
+								onChange={this.handleTitleChange}
 							/>
 						</div>
 
@@ -122,7 +133,7 @@ class IFrameProperties extends React.Component {
 								id="obojobo-draft--chunks--iframe--properties-modal--src"
 								value={this.state.src || ''}
 								placeholder="Web Address"
-								onChange={this.handleURLChange.bind(this)}
+								onChange={this.handleURLChange}
 							/>
 						</div>
 					</div>
@@ -141,7 +152,7 @@ class IFrameProperties extends React.Component {
 								placeholder="Width"
 								aria-label="Width"
 								value={this.state.width}
-								onChange={this.handleWidthChange.bind(this)}
+								onChange={this.handleWidthChange}
 							/>
 							<span className="px-label">px ×</span>
 							<input
@@ -153,7 +164,7 @@ class IFrameProperties extends React.Component {
 								placeholder="Height"
 								aria-label="Height"
 								value={this.state.height}
-								onChange={this.handleHeightChange.bind(this)}
+								onChange={this.handleHeightChange}
 							/>
 							<span className="px-label">px</span>
 						</div>
@@ -161,14 +172,14 @@ class IFrameProperties extends React.Component {
 							<Switch
 								title="Border"
 								initialChecked={this.state.border}
-								handleCheckChange={this.handleBorderChange.bind(this)}
+								handleCheckChange={this.handleBorderChange}
 							/>
 						</div>
 						<div>
 							<Switch
 								title="Autoload"
 								initialChecked={this.state.autoload}
-								handleCheckChange={this.handleAutoloadChange.bind(this)}
+								handleCheckChange={this.handleAutoloadChange}
 							/>
 						</div>
 						<div>
@@ -176,7 +187,7 @@ class IFrameProperties extends React.Component {
 							<select
 								id="obojobo-draft--chunks--iframe--properties-modal--fit"
 								value={this.state.fit || 'scale'}
-								onChange={this.handleFitChange.bind(this)}
+								onChange={this.handleFitChange}
 							>
 								<option value="scale">Scale</option>
 								<option value="scroll">Scroll</option>
@@ -194,7 +205,7 @@ class IFrameProperties extends React.Component {
 								type="number"
 								placeholder="Decimal Value"
 								value={this.state.initialZoom}
-								onChange={this.handleZoomChange.bind(this)}
+								onChange={this.handleZoomChange}
 							/>
 						</div>
 					</div>

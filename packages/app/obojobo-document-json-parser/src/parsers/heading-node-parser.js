@@ -1,4 +1,5 @@
 const textGroupParser = require('../text-group-parser')
+const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
 
 const headingNodeParser = node => {
@@ -9,8 +10,9 @@ const headingNodeParser = node => {
 		: ''
 	const textGroupXML = textGroupParser(node.content.textGroup)
 	const triggersXML = processTriggers(node.content.triggers)
+	const attrs = processAttrs(node.content, ['triggers', 'textGroup'])
 
-	return `<Heading ${headingLevel}${id}>` + textGroupXML + triggersXML + `</Heading>`
+	return `<Heading ${headingLevel}${attrs}${id}>` + textGroupXML + triggersXML + `</Heading>`
 }
 
 module.exports = headingNodeParser
