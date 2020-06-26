@@ -2,31 +2,32 @@ const { ROUND_TYPE_ROUND_DECIMAL_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } = require('
 
 module.exports = numericChoices => {
 	return numericChoices.map(choice => {
-		const score = parseFloat(choice.score)
+		const score = parseFloat(choice.content.score)
+		const answer = choice.children[0].content
 
-		switch (choice.requirement) {
+		switch (answer.requirement) {
 			case 'range':
 				return {
-					value: `[${choice.start},${choice.end}]`,
-					feedback: choice.feedback || null,
+					value: `[${answer.start},${answer.end}]`,
+					feedback: answer.feedback || null,
 					score
 				}
 
 			case 'margin':
-				switch (choice.type) {
+				switch (answer.type) {
 					case 'percent':
 						return {
-							value: choice.answer,
-							percentError: choice.margin,
-							feedback: choice.feedback || null,
+							value: '' + answer.answer,
+							percentError: answer.margin,
+							feedback: answer.feedback || null,
 							score
 						}
 
 					case 'absolute':
 						return {
-							value: choice.answer,
-							absoluteError: choice.margin,
-							feedback: choice.feedback || null,
+							value: '' + answer.answer,
+							absoluteError: answer.margin,
+							feedback: answer.feedback || null,
 							score
 						}
 				}
@@ -35,8 +36,8 @@ module.exports = numericChoices => {
 			case 'exact':
 			default:
 				return {
-					value: choice.answer,
-					feedback: choice.feedback || null,
+					value: '' + answer.answer,
+					feedback: answer.feedback || null,
 					score
 				}
 		}

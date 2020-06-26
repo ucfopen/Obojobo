@@ -31,7 +31,6 @@ class QuestionBank extends DraftNode {
 	}
 
 	buildAssessment(questionUsesMap) {
-		console.log('QB buildAssessment', this)
 		let chosenIds
 		switch (this.select) {
 			case SELECT_SEQUENTIAL:
@@ -89,7 +88,6 @@ class QuestionBank extends DraftNode {
 	// but within those groups, questions are kept in order
 	// only return up to the desired amount of questions per attempt.
 	createChosenArraySequentially(questionUsesMap) {
-		console.log('ccas', this.immediateChildrenSet)
 		return (
 			// convert this questionBank's set of direct children *IDs* to an array
 			[...this.immediateChildrenSet]

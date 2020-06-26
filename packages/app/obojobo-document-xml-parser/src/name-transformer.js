@@ -29,6 +29,8 @@ const nameTable = {
 	MCChoice: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 	MCAnswer: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
 	MCFeedback: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+	NumericChoice: 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice',
+	NumericAnswer: 'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer',
 	NumericFeedback: 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback',
 	ActionButton: 'ObojoboDraft.Chunks.ActionButton',
 	Table: 'ObojoboDraft.Chunks.Table',

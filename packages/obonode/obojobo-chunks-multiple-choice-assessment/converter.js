@@ -11,7 +11,7 @@ const MC_CHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
  * based on the number of correct children. It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo MCAssessment node 
+ * @returns {Object} An Obojobo MCAssessment node
  */
 const slateToObo = node => {
 	let responseType = node.content.responseType
@@ -47,7 +47,7 @@ const slateToObo = node => {
  * Copies all attributes, and calls the appropriate converters for the children
  * It also retrieves and stores the type of the parent question, to allow for proper
  * rendering of the elements.
- * @param {Object} node An Obojobo MCAssessment node 
+ * @param {Object} node An Obojobo MCAssessment node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
@@ -59,9 +59,9 @@ const oboToSlate = node => {
 	const questionModel = oboModel.parent
 	const questionType = questionModel.attributes.content.type
 
-	console.log(node.children)
-
-	slateNode.children = node.children.map(child => Common.Registry.getItemForType(CHOICE_NODE).oboToSlate(child))
+	slateNode.children = node.children.map(child =>
+		Common.Registry.getItemForType(CHOICE_NODE).oboToSlate(child)
+	)
 	slateNode.questionType = questionType
 
 	return slateNode

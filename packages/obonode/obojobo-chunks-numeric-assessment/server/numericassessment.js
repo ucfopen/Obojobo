@@ -17,8 +17,6 @@ class NumericAssessment extends DraftNode {
 	onCalculateScore(app, question, responseRecord, setScore) {
 		if (!question.contains(this.node)) return
 
-		console.log(this.node.content, responseRecord, NumericAnswerEvaluator)
-
 		const scoreRuleConfigs = numericChoicesToScoreRuleConfigs(this.node.content.numericChoices)
 		const evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs

@@ -2,9 +2,9 @@ import numericChoicesToScoreRuleConfigs from './numeric-choices-to-score-rule-co
 
 const Adapter = {
 	construct(model, attrs) {
-		const content = attrs && attrs.content ? attrs.content : {}
+		const children = attrs && attrs.children ? attrs.children : []
 
-		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(content.numericChoices || [])
+		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(children || [])
 	},
 
 	clone(model, clone) {},

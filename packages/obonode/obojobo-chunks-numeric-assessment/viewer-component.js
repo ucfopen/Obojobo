@@ -30,6 +30,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
+		console.log('eval', this.evaluator)
 
 		// debugger
 
@@ -139,6 +140,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		// debugger
 
 		const results = this.evaluator.evaluate(questionResponse)
+		console.log('results', results)
 		// this.results = results
 
 		switch (results.status) {

@@ -52,6 +52,7 @@ class EditorApp extends React.Component {
 	getVisualEditorState(draftId, draftModel) {
 		const json = JSON.parse(draftModel)
 		const obomodel = OboModel.create(json)
+
 		EditorStore.init(
 			obomodel,
 			json.content.start,

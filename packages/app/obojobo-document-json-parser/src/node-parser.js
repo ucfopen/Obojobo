@@ -14,6 +14,8 @@ const mcAssessmentNodeParser = require('./parsers/mcAssessmentNodeParser')
 const numericAssessmentNodeParser = require('./parsers/numeric-assessment-node-parser')
 const mcChoiceNodeParser = require('./parsers/mc-choice-node-parser')
 const mcFeedbackNodeParser = require('./parsers/mc-feedback-node-parser')
+const numericChoiceNodeParser = require('./parsers/numeric-choice-node-parser')
+const numericAnswerNodeParser = require('./parsers/numeric-answer-node-parser')
 const numericFeedbackNodeParser = require('./parsers/numeric-feedback-node-parser')
 const moduleNodeParser = require('./parsers/module-node-parser')
 const pageNodeParser = require('./parsers/page-node-parser')
@@ -40,6 +42,8 @@ const parsers = {
 	'ObojoboDraft.Chunks.NumericAssessment': numericAssessmentNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice': mcChoiceNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': mcFeedbackNodeParser,
+	'ObojoboDraft.Chunks.NumericAssessment.NumericChoice': numericChoiceNodeParser,
+	'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer': numericAnswerNodeParser,
 	'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback': numericFeedbackNodeParser,
 	'ObojoboDraft.Modules.Module': moduleNodeParser,
 	'ObojoboDraft.Pages.Page': pageNodeParser,

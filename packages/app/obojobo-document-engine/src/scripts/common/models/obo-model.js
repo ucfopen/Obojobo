@@ -119,7 +119,6 @@ class OboModel extends Backbone.Model {
 			if (trigger.type === type) {
 				for (index = 0; index < trigger.actions.length; index++) {
 					const action = trigger.actions[index]
-					console.log('trigger', action.type, action)
 					Dispatcher.trigger(action.type, action)
 				}
 

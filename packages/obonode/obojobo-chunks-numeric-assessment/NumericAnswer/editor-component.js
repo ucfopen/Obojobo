@@ -37,7 +37,7 @@ const NumericInput = props => {
 
 		if (name === 'requirement') {
 			updateNumericChoice(props.editor, props.element, {
-				[name]: fullTextToSimplifed[value],
+				requirement: fullTextToSimplifed[value],
 				score: props.element.content.score,
 				type: 'percent'
 			})
@@ -54,7 +54,8 @@ const NumericInput = props => {
 		<div
 			className="numeric-input-container pad"
 			onClick={props.onSetCurrSelected}
-			contentEditable={false}>
+			contentEditable={false}
+		>
 			<NumericOption
 				editor={props.editor}
 				numericChoice={content}

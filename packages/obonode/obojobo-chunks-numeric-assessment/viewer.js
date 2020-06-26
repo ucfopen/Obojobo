@@ -5,6 +5,8 @@ import { NUMERIC_ASSESSMENT_NODE } from './constants'
 
 import adapter from './adapter'
 
+import './NumericChoice/viewer'
+import './NumericAnswer/viewer'
 import './NumericFeedback/viewer'
 
 Common.Registry.registerModel(NUMERIC_ASSESSMENT_NODE, {

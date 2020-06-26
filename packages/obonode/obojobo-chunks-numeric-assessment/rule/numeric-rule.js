@@ -414,7 +414,7 @@ module.exports = class NumericRule {
 	static getRuleValue(config, types) {
 		if (typeof config.value === 'undefined' || config.value === null) return new NumericEntryRange()
 
-		const range = new NumericEntryRange(config.value, types)
+		const range = new NumericEntryRange('' + config.value, types)
 
 		if (range.isEmpty) throw 'Invalid range given for value'
 

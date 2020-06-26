@@ -1,17 +1,17 @@
-const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
+const processAttrs = require('../process-attrs')
 
-const numericAssessmentNodeParser = (node, childrenParser) => {
+const numericAnswerNodeParser = (node, childrenParser) => {
 	const id = node.id ? ` id="${node.id}"` : ''
 	const attrs = processAttrs(node.content, ['triggers', 'actions'])
 	const triggersXML = processTriggers(node.content.triggers)
 
 	return (
-		`<NumericAssessment${attrs}${id}>` +
+		`<NumericAnswer${attrs}${id}>` +
 		childrenParser(node.children) +
 		triggersXML +
-		`</NumericAssessment>`
+		`</NumericAnswer>`
 	)
 }
 
-module.exports = numericAssessmentNodeParser
+module.exports = numericAnswerNodeParser

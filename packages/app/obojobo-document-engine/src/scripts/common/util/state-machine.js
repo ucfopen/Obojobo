@@ -14,7 +14,6 @@ class StateMachine {
 		// on the object as well as any methods on StateMachine (or the superclass)
 		this.states = {}
 		Object.keys(transitions).forEach(name => {
-			// 	console.log('we got', name, transitions[name])
 			const o = Object.create(this)
 			this.states[name] = Object.assign(o, transitions[name])
 		})

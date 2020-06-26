@@ -50,7 +50,6 @@ class ModalContainer extends React.Component {
 	}
 
 	onRefChanged() {
-		console.log('REF changed!')
 		this.watchForPortalContainerMutations()
 	}
 
