@@ -12,6 +12,7 @@ const Module = require('./module')
 const ModuleManageCollectionsDialog = require('./module-manage-collections-dialog')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const ButtonLink = require('./button-link')
 const MultiButton = require('./multi-button')
@@ -30,6 +31,7 @@ const renderOptionsDialog = (props, extension) => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={extension.deleteModule}
 		onClose={props.closeModal}
+		showVersionHistory={props.showVersionHistory}
 	/>
 )
 
@@ -90,6 +92,18 @@ const extendedPropsDefault = props => ({
 	deleteModule: props.deleteModule,
 	deleteModulePermissions: props.deleteModulePermissions
 })
+
+const renderVersionHistoryDialog = props => (
+	<VersionHistoryDialog
+		{...props.selectedModule}
+		title={`${props.selectedModule.title} - Version History`}
+		onClose={props.closeModal}
+		isHistoryLoading={props.versionHistory.isFetching}
+		hasHistoryLoaded={props.versionHistory.hasFetched}
+		versionHistory={props.versionHistory.items}
+		restoreVersion={props.restoreVersion}
+	/>
+)
 
 const renderModalDialog = props => {
 	let dialog
@@ -162,6 +176,11 @@ const renderModalDialog = props => {
 		case 'collection-rename':
 			title = 'Rename Collection'
 			dialog = renderCollectionRenameDialog(props, extendedProps)
+			break
+
+		case 'module-version-history':
+			title = 'Module Version History'
+			dialog = renderVersionHistoryDialog(props)
 			break
 
 		default:

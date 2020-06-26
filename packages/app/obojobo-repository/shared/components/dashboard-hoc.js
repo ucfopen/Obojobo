@@ -22,6 +22,8 @@ const {
 	loadModuleCollections,
 	moduleAddToCollection,
 	moduleRemoveFromCollection,
+	showVersionHistory,
+	restoreVersion,
 	importModuleFile
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
@@ -47,6 +49,8 @@ const mapActionsToProps = {
 	loadModuleCollections,
 	moduleAddToCollection,
 	moduleRemoveFromCollection,
+	showVersionHistory,
+	restoreVersion,
 	importModuleFile
 }
 module.exports = connect(

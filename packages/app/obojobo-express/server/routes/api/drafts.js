@@ -190,8 +190,9 @@ router
 				}
 
 				if (!documentInput || typeof documentInput !== 'object') {
-					logger.error('Posting draft failed - format unexpected:', req.body)
-					res.badInput('Posting draft failed - format unexpected')
+					const msg = 'Posting draft failed - format unexpected'
+					logger.error(msg, req.body)
+					res.badInput(msg)
 					return
 				}
 
@@ -199,12 +200,18 @@ router
 				const duplicateId = DraftModel.findDuplicateIds(documentInput)
 
 				if (duplicateId !== null) {
-					logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
-					res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
+					const msg = `Posting draft failed - duplicate id "${duplicateId}"`
+					logger.error(msg)
+					res.badInput(msg)
 					return
 				}
 
-				return DraftModel.updateContent(req.params.draftId, documentInput, xml || null).then(id => {
+				return DraftModel.updateContent(
+					req.params.draftId,
+					req.currentUser.id,
+					documentInput,
+					xml || null
+				).then(id => {
 					res.success({ id })
 				})
 			})

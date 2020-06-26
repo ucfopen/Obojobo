@@ -28,7 +28,9 @@ const {
 	CLEAR_MODULE_SEARCH_RESULTS,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
-	DELETE_COLLECTION
+	DELETE_COLLECTION,
+	SHOW_VERSION_HISTORY,
+	RESTORE_VERSION
 } = require('../actions/dashboard-actions')
 
 const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
@@ -44,7 +46,13 @@ const searchModuleResultsState = (isFetching = false, hasFetched = false, items 
 })
 
 const closedDialogState = () => ({
-	dialog: null
+	dialog: null,
+	dialogProps: null,
+	versionHistory: {
+		isFetching: false,
+		hasFetched: false,
+		items: []
+	}
 })
 
 function filterModules(modules, searchString) {
@@ -255,6 +263,48 @@ function DashboardReducer(state, action) {
 				dialog: 'collection-rename',
 				selectedCollection: action.collection
 			}
+
+		case SHOW_VERSION_HISTORY:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					dialog: 'module-version-history',
+					selectedModule: action.meta.module,
+					versionHistory: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
+
+		case RESTORE_VERSION:
+			return handle(state, action, {
+				start: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: true,
+						hasFetched: false,
+						items: []
+					}
+				}),
+				success: prevState => ({
+					...prevState,
+					versionHistory: {
+						isFetching: false,
+						hasFetched: true,
+						items: action.payload
+					}
+				})
+			})
 
 		default:
 			return state

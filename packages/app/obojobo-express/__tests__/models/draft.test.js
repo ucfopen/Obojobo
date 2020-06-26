@@ -121,6 +121,7 @@ describe('Draft Model', () => {
 			// and make sure the content is sent to the query
 			expect(db.one.mock.calls[1][1]).toEqual({
 				jsonContent: mockContent,
+				userId: 555,
 				xmlContent: mockXMLContent,
 				draftId: 'NEWID'
 			})
@@ -156,26 +157,28 @@ describe('Draft Model', () => {
 		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 
-	test('updateContent calls db.one with expected args', () => {
+	test('updateContent calls db.one with expected args', async () => {
 		expect.hasAssertions()
 
-		const id = 555
-		const jsonContent = 'mockJsonContent'
-		const xmlContent = 'mockXmlContent'
+		db.one.mockResolvedValueOnce({ id: 555 })
 
-		db.one.mockResolvedValueOnce({ id })
+		const resultId = await DraftModel.updateContent(
+			555,
+			'mockUserId',
+			'mockJsonContent',
+			'mockXmlContent'
+		)
 
-		return DraftModel.updateContent(id, jsonContent, xmlContent).then(resultId => {
-			expect(resultId).toBe(id)
-			expect(db.one).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftId: id,
-					jsonContent: jsonContent,
-					xmlContent: xmlContent
-				})
-			)
-		})
+		expect(resultId).toBe(555)
+		expect(db.one).toBeCalledWith(
+			expect.any(String),
+			expect.objectContaining({
+				draftId: 555,
+				userId: 'mockUserId',
+				jsonContent: 'mockJsonContent',
+				xmlContent: 'mockXmlContent'
+			})
+		)
 	})
 
 	test('updateContent fails as expected', () => {
