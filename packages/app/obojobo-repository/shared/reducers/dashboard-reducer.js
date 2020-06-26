@@ -118,7 +118,8 @@ function DashboardReducer(state, action) {
 				// update my modules list & remove filtering because the new module could be filtered
 				success: prevState => ({
 					...prevState,
-					myModules: action.payload.value,
+					moduleCount: action.payload.value.allCount,
+					myModules: action.payload.value.modules,
 					moduleSearchString: '',
 					filteredModules: null
 				})
@@ -130,8 +131,13 @@ function DashboardReducer(state, action) {
 				start: () => ({ ...state, ...closedDialogState() }),
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
-					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
-					return { ...prevState, myModules: action.payload.value, filteredModules }
+					const filteredModules = filterModules(action.payload.value.modules, state.moduleSearchString)
+					return {
+						...prevState,
+						moduleCount: action.payload.value.allCount,
+						myModules: action.payload.value.modules,
+						filteredModules
+					}
 				}
 			})
 
@@ -191,7 +197,10 @@ function DashboardReducer(state, action) {
 					const newState = { ...prevState }
 					newState.draftPermissions = { ...newState.draftPermissions }
 					newState.draftPermissions[newState.selectedModule.draftId] = searchPeople
-					if (action.payload.modules) newState.myModules = action.payload.modules
+					if (action.payload.modules) {
+						newState.moduleCount = action.payload.modules.allCount
+						newState.myModules = action.payload.modules.modules
+					}
 					return newState
 				}
 			})
@@ -234,7 +243,12 @@ function DashboardReducer(state, action) {
 					...prevState,
 					collectionModuleSearchString: action.meta.searchString
 				}),
-				success: prevState => ({ ...prevState, searchModules: { items: action.payload.value } })
+				success: prevState => ({
+					...prevState,
+					searchModules: {
+						items: action.payload.value.modules
+					}
+				})
 			})
 
 		case CLEAR_MODULE_SEARCH_RESULTS:
@@ -246,12 +260,12 @@ function DashboardReducer(state, action) {
 			return handle(state, action, {
 				success: prevState => {
 					const newState = { ...prevState }
-					newState.collectionModules = action.payload.value
+					newState.collectionModules = action.payload.value.modules
 					if (
 						action.meta.currentCollectionId &&
 						action.meta.changedCollectionId === action.meta.currentCollectionId
 					) {
-						newState.myModules = action.payload.value
+						newState.myModules = action.payload.value.modules
 					}
 					return newState
 				}

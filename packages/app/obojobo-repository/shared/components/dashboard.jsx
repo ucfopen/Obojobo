@@ -392,6 +392,7 @@ const Dashboard = props => {
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
+			console.log(props.moduleCount, props.myModules.length)
 			if (props.myModules.length < props.moduleCount) {
 				allModulesButtonRender = (
 					<ButtonLink
@@ -410,6 +411,16 @@ const Dashboard = props => {
 					<hr />
 				</React.Fragment>
 			)
+
+			let collectionFilterRender = null
+			if (props.myCollections.length > 0) {
+				collectionFilterRender = <Search
+					value={props.collectionSearchString}
+					placeholder="Filter Collections..."
+					onChange={props.filterCollections}
+				/>
+			}
+
 			collectionAreaRender = (
 				<React.Fragment>
 					<div className="repository--main-content--title repository--my-collections-title">
@@ -425,11 +436,7 @@ const Dashboard = props => {
 							</select>
 						</div>
 					</div>
-					<Search
-						value={props.collectionSearchString}
-						placeholder="Filter Collections..."
-						onChange={props.filterCollections}
-					/>
+					{collectionFilterRender}
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">

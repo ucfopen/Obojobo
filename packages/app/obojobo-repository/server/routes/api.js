@@ -25,6 +25,7 @@ const {
 	userHasPermissionToCollection
 } = require('../services/permissions')
 const { fetchAllCollectionsForDraft } = require('../services/collections')
+const { getUserModuleCount } = require('../services/count')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 // List public drafts
@@ -54,8 +55,15 @@ router
 	.route('/recent/drafts')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return DraftSummary.fetchRecentByUserId(req.currentUser.id)
-			.then(res.success)
+		let allCount
+		return getUserModuleCount(req.currentUser.id)
+			.then(count => {
+				allCount = count
+				return DraftSummary.fetchRecentByUserId(req.currentUser.id)
+			})
+			.then(modules => {
+				return res.success({allCount, modules})
+			})
 			.catch(res.unexpected)
 	})
 
@@ -65,8 +73,15 @@ router
 	.route('/drafts')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return DraftSummary.fetchByUserId(req.currentUser.id)
-			.then(res.success)
+		let allCount
+		return getUserModuleCount(req.currentUser.id)
+			.then(count => {
+				allCount = count
+				return DraftSummary.fetchByUserId(req.currentUser.id)
+			})
+			.then(modules => {
+				return res.success({allCount, modules})
+			})
 			.catch(res.unexpected)
 	})
 
@@ -264,9 +279,16 @@ router
 	.route('/collections/:collectionId/modules')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return DraftSummary.fetchAllInCollectionForUser(req.params.collectionId, req.currentUser.id)
-			.then(res.success)
+		return getUserModuleCount(req.currentUser.id)
+			.then(count => {
+				allCount = count
+				return DraftSummary.fetchAllInCollectionForUser(req.params.collectionId, req.currentUser.id)
+			})
+			.then(modules => {
+				return res.success({allCount, modules})
+			})
 			.catch(res.unexpected)
+
 	})
 
 router
@@ -279,8 +301,14 @@ router
 			return
 		}
 
-		return DraftSummary.fetchByDraftTitleAndUser(req.query.q, req.currentUser.id)
-			.then(res.success)
+		return getUserModuleCount(req.currentUser.id)
+			.then(count => {
+				allCount = count
+				return DraftSummary.fetchByDraftTitleAndUser(req.query.q, req.currentUser.id)
+			})
+			.then(modules => {
+				return res.success({allCount, modules})
+			})
 			.catch(res.unexpected)
 	})
 
