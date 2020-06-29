@@ -7,10 +7,14 @@ import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
+import ImportQuestionModal from './import-questions-modal'
 
 import emptyQB from './empty-node.json'
 
 const { Button } = Common.components
+const { ModalUtil } = Common.util
+
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 const remove = (editor, element) => {
@@ -145,10 +149,44 @@ const displaySettings = (editor, element, content) => {
 	)
 }
 
+const getQuestionList = draft => {
+	if (draft.type === QUESTION_NODE) return [draft]
+
+	let result = []
+	for (const node of draft.children) {
+		result = result.concat(getQuestionList(node))
+	}
+
+	return result
+}
+
 const QuestionBank = props => {
 	const { editor, element, children } = props
+
+	const contentDescription = [
+		{
+			name: 'Import Questions',
+			description: 'Import',
+			type: 'button',
+			action: () => {
+				const json = EditorUtil.json().attributes
+				const questionList = getQuestionList(json)
+				// const question = Common.Registry.getItemForType(QUESTION_NODE)
+				// console.log(question.oboToSlate(questionList[0]))
+				// const node = question.oboToSlate(questionList[0])
+
+				// const path = ReactEditor.findPath(editor, element)
+				// return Transforms.insertNodes(editor, node, {
+				// 	at: path.concat(element.children.length)
+				// })
+
+				ModalUtil.show(<ImportQuestionModal questionList={questionList} />)
+			}
+		}
+	]
+
 	return (
-		<Node {...props}>
+		<Node {...props} contentDescription={contentDescription}>
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<Button
 					className="delete-button"

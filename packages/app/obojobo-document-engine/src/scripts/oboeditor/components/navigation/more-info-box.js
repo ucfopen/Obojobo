@@ -242,6 +242,15 @@ class MoreInfoBox extends React.Component {
 						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}
 					/>
 				)
+			case 'button':
+				return (
+					<div key={description.description}>
+						<label>{description.description}</label>
+						<Button altAction onClick={description.action}>
+							{description.name}
+						</Button>
+					</div>
+				)
 		}
 	}
 
