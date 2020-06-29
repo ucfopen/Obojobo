@@ -50,6 +50,7 @@ import isOrNot from './util/isornot'
 import withProtocol from './util/with-protocol'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
+import waitForElement from './util/wait-for-element'
 import debounce from './util/debounce'
 import timeoutPromise from './util/timeout-promise'
 import withoutUndefined from './util/without-undefined'
@@ -139,6 +140,7 @@ export default {
 		ModalUtil,
 		ErrorUtil,
 		uuid,
+		waitForElement,
 		RangeParsing,
 		setProp,
 		cloneProps,

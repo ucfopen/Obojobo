@@ -1,6 +1,6 @@
 import './viewer-component.scss'
 
-import SendingResponsesConfirmDialog from './components/sending-responses-and-confirm-dialog'
+import AssessmentDialog from './components/assessment-dialog'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { FOCUS_ON_ASSESSMENT_CONTENT } from './assessment-event-constants'
 import PostTest from './components/post-test'
@@ -375,13 +375,13 @@ class Assessment extends React.Component {
 						this.props.model
 					)}
 				</h1> */}
-				<StateMachineComponent
+				{/* <StateMachineComponent
 					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
-				></StateMachineComponent>
+				></StateMachineComponent> */}
 				{childEl}
 
 				<ModalPortal>
-					<SendingResponsesConfirmDialog
+					<AssessmentDialog
 						// onResponse={this.onDialogResponse.bind(this)}
 						// onCancel={this.closeDialog.bind(this)}
 						endAttempt={this.endAttempt}

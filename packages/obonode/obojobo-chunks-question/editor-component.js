@@ -25,17 +25,18 @@ class Question extends React.Component {
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
 		this.onSetAssessmentType = this.onSetAssessmentType.bind(this)
-		this.onSetRevealAnswer = this.onSetRevealAnswer.bind(this)
 		this.isInAssessment = this.getIsInAssessment()
 	}
 
 	getIsInAssessment() {
 		return [
-			...Editor.levels(
-				this.props.editor,
-				ReactEditor.findPath(this.props.editor, this.props.element)
-			)
-		].includes(([node]) => node.type)
+			...Editor.levels(this.props.editor, {
+				at: ReactEditor.findPath(this.props.editor, this.props.element),
+				reverse: true
+			})
+		].some(([node]) => {
+			return node.type === ASSESSMENT_NODE
+		})
 	}
 
 	onSetType(event) {
@@ -85,10 +86,6 @@ class Question extends React.Component {
 		})
 	}
 
-	onSetRevealAnswer() {
-		alert('@TODO Not implemented')
-	}
-
 	delete() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.removeNodes(this.props.editor, { at: path })
@@ -127,11 +124,39 @@ class Question extends React.Component {
 		)
 	}
 
+	getContentDescription(isTypeSurvey, isInAssessment) {
+		if (isTypeSurvey || isInAssessment) {
+			return []
+		}
+
+		return [
+			{
+				name: 'revealAnswer',
+				description: 'Allow reveal answer?',
+				type: 'select',
+				values: [
+					{
+						value: 'default',
+						description: '(Use the default setting for this question type)'
+					},
+					{
+						value: 'never',
+						description: 'No'
+					},
+					{ value: 'always', description: 'Yes' },
+					{
+						value: 'when-incorrect',
+						description: 'Yes, but only after submitting an incorrect answer'
+					}
+				]
+			}
+		]
+	}
+
 	render() {
 		const element = this.props.element
 		const content = element.content
 
-		const revealAnswer = content.revealAnswer
 		const isTypeSurvey = content.type === 'survey'
 
 		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
@@ -146,7 +171,11 @@ class Question extends React.Component {
 		}
 
 		return (
-			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
+			<Node
+				{...this.props}
+				className="obojobo-draft--chunks--question--wrapper"
+				contentDescription={this.getContentDescription(isTypeSurvey, this.isInAssessment)}
+			>
 				<div
 					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
 				>
@@ -179,21 +208,6 @@ class Question extends React.Component {
 									Add Solution
 								</Button>
 							)}
-							{!isTypeSurvey && !this.isInAssessment ? (
-								<div className="show-reveal-answer-container" contentEditable={false}>
-									<label>Include a button allowing students to reveal the correct answer?</label>
-									<select value={revealAnswer} onChange={this.onSetRevealAnswer}>
-										<option value="default">
-											(Use the default setting for this question type)
-										</option>
-										<option value="never">No</option>
-										<option value="always">Yes</option>
-										<option value="when-incorrect">
-											Yes, but only after submitting an incorrect answer
-										</option>
-									</select>
-								</div>
-							) : null}
 						</div>
 					</div>
 					<Button className="delete-button" onClick={() => this.delete()}>

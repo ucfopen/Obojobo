@@ -35,7 +35,7 @@ export default class Dialog extends React.Component {
 	}
 
 	onTransition(newState, old) {
-		console.log('ON TRANS', arguments)
+		console.log('ON TRANS', old.type + '->' + newState.value)
 		this.setState({ log: old.type + '->' + newState.value + '\n' + this.state.log })
 	}
 
@@ -62,12 +62,12 @@ export default class Dialog extends React.Component {
 		// this.forceUpdate()
 	}
 
-	alterHackPortals(remove=false) {
-		const hackPortalList = [ ...this.state.hackPortals ]
+	alterHackPortals(remove = false) {
+		const hackPortalList = [...this.state.hackPortals]
 		if (remove) {
 			hackPortalList.shift()
 		} else {
-			hackPortalList.push(<SimpleDialog title='HACK'>PORTAL HACK</SimpleDialog>)
+			hackPortalList.push(<SimpleDialog title="HACK">PORTAL HACK</SimpleDialog>)
 		}
 
 		this.setState({
@@ -91,36 +91,45 @@ export default class Dialog extends React.Component {
 			>
 				{this.props.machine ? (
 					<div>
-						<button onClick={() => {
-							ModalUtil.show(
-								<SimpleDialog ok title='summoned-dialog'>
-									Spontaneously conjured dialog
-								</SimpleDialog>
-							)
-						}}>
+						<button
+							onClick={() => {
+								ModalUtil.show(
+									<SimpleDialog ok title="summoned-dialog">
+										Spontaneously conjured dialog
+									</SimpleDialog>
+								)
+							}}
+						>
 							Spawn Alert Dialog
 						</button>
-						<br/>
-						<button onClick={() => {this.alterHackPortals(true)}}>
+						<br />
+						<button
+							onClick={() => {
+								this.alterHackPortals(true)
+							}}
+						>
 							Remove Hack Portal
 						</button>
-						<button onClick={() => {this.alterHackPortals()}}>
+						<button
+							onClick={() => {
+								this.alterHackPortals()
+							}}
+						>
 							Add Hack Portal
 						</button>
-						<br/>
-						<button onClick={() => {this.setState({showHackPortals: !this.state.showHackPortals})}}>
+						<br />
+						<button
+							onClick={() => {
+								this.setState({ showHackPortals: !this.state.showHackPortals })
+							}}
+						>
 							Toggle Hack Portals
 						</button>
-						<br/>
-						{
-							this.state.showHackPortals ?
-								<ModalPortal>
-									{this.state.hackPortals}
-								</ModalPortal>
-							:
-								null
-						}
-						<br/>
+						<br />
+						{this.state.showHackPortals ? (
+							<ModalPortal>{this.state.hackPortals}</ModalPortal>
+						) : null}
+						<br />
 						<label>
 							<span>Step:</span>
 							<select

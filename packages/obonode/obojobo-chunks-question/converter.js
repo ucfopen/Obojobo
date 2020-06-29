@@ -20,7 +20,8 @@ const slateToObo = node => {
 	const children = []
 	const content = {
 		triggers: node.content.triggers,
-		type: node.content.type
+		type: node.content.type,
+		revealAnswer: node.content.revealAnswer
 	}
 
 	node.children.forEach(child => {

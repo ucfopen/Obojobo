@@ -1,19 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-import Common from 'obojobo-document-engine/src/scripts/common'
+import waitForElement from '../util/wait-for-element'
+import ModalContainer from './modal-container'
 
 class ModalPortal extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.state = { isDOMElementReady: false }
+	}
+
+	async componentDidMount() {
+		await waitForElement(`#${ModalContainer.PORTAL_CONTAINER_DOM_ID}`)
+		this.setState({ isDOMElementReady: true })
 	}
 
 	render() {
-		const modalContainerEl = document.getElementById(
-			Common.components.ModalContainer.PORTAL_CONTAINER_DOM_ID
-		)
+		if (!this.state.isDOMElementReady) {
+			return null
+		}
 
-		return modalContainerEl ? ReactDOM.createPortal(this.props.children, modalContainerEl) : null
+		return ReactDOM.createPortal(
+			this.props.children,
+			document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)
+		)
 	}
 }
 

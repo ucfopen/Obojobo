@@ -17,8 +17,6 @@ const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
 
-	console.log('qnn', node)
-
 	// If the element is a Question, handle Content children
 	if (Element.isElement(node) && node.type === QUESTION_NODE && !node.subtype) {
 		let index = 0

@@ -76,6 +76,7 @@ const getDialog = (
 	assessmentModel,
 	assessment
 ) => {
+	console.log('getDialog', assessmentMachineState)
 	switch (assessmentMachineState) {
 		case PROMPTING_FOR_RESUME:
 			console.log('sracd', PROMPTING_FOR_RESUME)
@@ -322,14 +323,14 @@ const getDialog = (
 	return null
 }
 
-// const SendingResponsesConfirmDialog = props => {
+// const AssessmentDialog = props => {
 // 	return ReactDOM.createPortal(
 // 		<div>{getDialog(props.currentAttemptStatus, props.endAttempt)}</div>,
 // 		document.getElementById(ModalContainer.DOM_ID)
 // 	)
 // }
 
-const SendingResponsesConfirmDialog = props => {
+const AssessmentDialog = props => {
 	return getDialog(
 		props.currentAttemptStatus,
 		props.assessmentMachineState,
@@ -341,4 +342,4 @@ const SendingResponsesConfirmDialog = props => {
 	)
 }
 
-export default SendingResponsesConfirmDialog
+export default AssessmentDialog

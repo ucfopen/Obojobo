@@ -23,6 +23,8 @@ class ModalContainer extends React.Component {
 	onMutation(mutationsList, observer) {
 		const el = ReactDOM.findDOMNode(document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID))
 
+		console.log('modal container el', el)
+
 		this.setState({
 			numPortalElements: el.children.length
 		})

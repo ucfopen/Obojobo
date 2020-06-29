@@ -66,8 +66,6 @@ const getAnswer = (path, editor) => {
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
 
-	console.log('nn-->', JSON.stringify(node, null, 2))
-
 	// If the element is a Choice, only allow 1 Answer and 1 Feedback
 	if (Element.isElement(node) && node.type === CHOICE_NODE) {
 		let index = 0
@@ -76,27 +74,23 @@ const normalizeNode = (entry, editor, next) => {
 			if (index === 0 && Element.isElement(child) && !validAnswers.includes(child.type)) {
 				// If the first child is a FEEDBACK, insert a Answer above it
 				if (child.type === FEEDBACK_NODE) {
-					console.log('insert answer above')
 					return Transforms.insertNodes(editor, getAnswer(path, editor), { at: childPath })
 				}
 
 				// Otherwise, wrap the child in an Answer and let the answer
 				// normalization decide what to do with it
-				console.log('wrap in answer')
 				return Transforms.wrapNodes(editor, getAnswer(path, editor), { at: childPath })
 			}
 
 			// The second node should be an (optional) Feedback
 			// If it is not, remove it
 			if (index === 1 && Element.isElement(child) && child.type !== FEEDBACK_NODE) {
-				console.log('remove second node')
 				Transforms.removeNodes(editor, { at: childPath })
 				return
 			}
 
 			// A Choice should not ever have more than 2 nodes
 			if (index > 1) {
-				console.log('remove extra nodes')
 				Transforms.removeNodes(editor, { at: childPath })
 				return
 			}
@@ -104,7 +98,6 @@ const normalizeNode = (entry, editor, next) => {
 			// Wrap loose text children in an Answer Node
 			// This may result in subsequent normalizations depending on the answer
 			if (Text.isText(child)) {
-				console.log('wrap loose text in answer')
 				return Transforms.wrapNodes(editor, getAnswer(path, editor), { at: childPath })
 			}
 
@@ -121,8 +114,6 @@ const normalizeNode = (entry, editor, next) => {
 			!Element.isElement(parent) ||
 			(!validAssessments.includes(parent.type) && node.children.length > 0)
 		) {
-			console.log('here', validAnswers, answerToAssessment)
-			console.log(JSON.stringify(node, null, 2))
 			NormalizeUtil.wrapOrphanedSiblings(
 				editor,
 				entry,
