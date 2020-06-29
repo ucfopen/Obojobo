@@ -9,6 +9,7 @@ import Figure from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
@@ -149,6 +150,38 @@ describe('Figure Editor Node', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 
 		component.unmount()
+	})
+
+	test('Figure component handles tabbing', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 
 	test('Figure component does not focus if already selected', () => {

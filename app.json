@@ -6,13 +6,14 @@
 	"logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_blue.svg",
 	"success_url": "/",
 	"scripts": {
-		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed",
+		"release": "cd node_modules/obojobo-express && yarn db:migrateup",
+		"postdeploy": "cd node_modules/obojobo-express && yarn sampleDraft:seed",
 		"purgedata": "yarn run obojobo_purge_data"
 	},
 	"env": {
-		"DB_SSL": {
-			"description": "Do not change. Connects to the database using SSL.",
-			"value": "true"
+		"DB_SSL_JSON": {
+			"description": "PG-Promise SSL Configuration. https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax",
+			"value": "{\"rejectUnauthorized\":false}"
 		},
 		"OBO_LTI_KEYS_JSON": {
 			"description": "Edit the secret value. JSON string for LTI key:secret values.",

@@ -21,6 +21,7 @@ class ChooseImageModal extends React.Component {
 		}
 
 		this.firstRef = React.createRef()
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 	}
 
 	componentDidMount() {
@@ -82,7 +83,7 @@ class ChooseImageModal extends React.Component {
 				title="Upload or Choose an Image"
 				onConfirm={() => this.props.onCloseChooseImageModal(this.state.url)}
 				onCancel={() => this.props.onCloseChooseImageModal(null)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className="choose-image">
 					<div className="choose-image--image-controls">

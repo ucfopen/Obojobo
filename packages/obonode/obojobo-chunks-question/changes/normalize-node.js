@@ -17,6 +17,8 @@ const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const normalizeNode = (entry, editor, next) => {
 	const [node, path] = entry
 
+	console.log('qnn', node)
+
 	// If the element is a Question, handle Content children
 	if (Element.isElement(node) && node.type === QUESTION_NODE && !node.subtype) {
 		let index = 0
@@ -35,7 +37,7 @@ const normalizeNode = (entry, editor, next) => {
 					continue
 				} else {
 					// If the last index is not one of the two valid options
-					// insert a MCAssessment as default and allow subsequent 
+					// insert a MCAssessment as default and allow subsequent
 					// normalizations to fill it
 					Transforms.insertNodes(
 						editor,
@@ -60,8 +62,8 @@ const normalizeNode = (entry, editor, next) => {
 				index++
 				continue
 
-			// If there is a solution but no Assessment, insert a MCAssessment as default
-			// and allow subsequent normalizations to fill it
+				// If there is a solution but no Assessment, insert a MCAssessment as default
+				// and allow subsequent normalizations to fill it
 			} else if (index === 1 && hasSolution && !validAssessments.includes(child.type)) {
 				Transforms.insertNodes(
 					editor,

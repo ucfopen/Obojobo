@@ -18,6 +18,16 @@ describe('AlignMarks', () => {
 		expect(editor.setAlign).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			setAlign: jest.fn()
+		}
+
+		AlignMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.setAlign).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			setAlign: jest.fn()

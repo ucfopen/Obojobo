@@ -17,6 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 import ModalPortal from '../../common/components/modal-portal'
 
@@ -142,7 +143,8 @@ export default class ViewerApp extends React.Component {
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel }) => {
+			.then(injectKatexIfNeeded)
+			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
@@ -153,6 +155,7 @@ export default class ViewerApp extends React.Component {
 					visitIdFromApi,
 					viewState
 				)
+
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose

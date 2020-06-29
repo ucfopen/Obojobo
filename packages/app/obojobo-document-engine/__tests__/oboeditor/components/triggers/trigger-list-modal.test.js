@@ -4,7 +4,7 @@ import React from 'react'
 import TriggerListModal from '../../../../src/scripts/oboeditor/components/triggers/trigger-list-modal'
 
 describe('TriggerListModal', () => {
-	test('TriggerListModal node', () => {
+	test('renders all options', () => {
 		const content = {
 			triggers: [
 				{
@@ -27,13 +27,13 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal still renders if given no triggers', () => {
+	test('renders if given no triggers', () => {
 		const component = shallow(<TriggerListModal content={{}} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node deletes trigger', () => {
+	test('deletes trigger', () => {
 		const content = {
 			triggers: [
 				{
@@ -57,7 +57,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node deletes an action', () => {
+	test('deletes an action', () => {
 		const content = {
 			triggers: [
 				{
@@ -81,7 +81,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node adds an action', () => {
+	test('adds an action', () => {
 		const content = {
 			triggers: [
 				{
@@ -105,7 +105,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node adds a trigger', () => {
+	test('adds a trigger', () => {
 		const content = {
 			triggers: [
 				{
@@ -129,7 +129,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node closes', () => {
+	test('node closes', () => {
 		const content = {
 			triggers: [
 				{
@@ -153,7 +153,26 @@ describe('TriggerListModal', () => {
 		expect(close).toHaveBeenCalled()
 	})
 
-	test('TriggerListModal node changes trigger', () => {
+	test('calls close on unmount', () => {
+		const content = { triggers: [] }
+		const close = jest.fn()
+		const component = mount(<TriggerListModal content={content} onClose={close} />)
+
+		expect(close).not.toHaveBeenCalled()
+		component.unmount()
+		expect(close).toHaveBeenCalledWith()
+	})
+
+	test('unounts when there is no close prop', () => {
+		const content = { triggers: [] }
+		const component = mount(<TriggerListModal content={content} />)
+
+		expect(function() {
+			component.unmount()
+		}).not.toThrow()
+	})
+
+	test('changes trigger', () => {
 		const content = {
 			triggers: [
 				{
@@ -179,7 +198,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node changes action', () => {
+	test('changes action', () => {
 		const content = {
 			triggers: [
 				{
@@ -205,7 +224,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('TriggerListModal node changes action value', () => {
+	test('changes action value', () => {
 		const content = {
 			triggers: [
 				{

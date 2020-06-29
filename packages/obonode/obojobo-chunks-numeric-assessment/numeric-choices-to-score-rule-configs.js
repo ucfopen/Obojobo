@@ -4,12 +4,13 @@ module.exports = numericChoices => {
 	return numericChoices.map(choice => {
 		const score = parseFloat(choice.content.score)
 		const answer = choice.children[0].content
+		const feedback = choice.children[1] ? choice.children[1] : null
 
 		switch (answer.requirement) {
 			case 'range':
 				return {
 					value: `[${answer.start},${answer.end}]`,
-					feedback: answer.feedback || null,
+					feedback,
 					score
 				}
 
@@ -19,7 +20,7 @@ module.exports = numericChoices => {
 						return {
 							value: '' + answer.answer,
 							percentError: answer.margin,
-							feedback: answer.feedback || null,
+							feedback,
 							score
 						}
 
@@ -27,7 +28,7 @@ module.exports = numericChoices => {
 						return {
 							value: '' + answer.answer,
 							absoluteError: answer.margin,
-							feedback: answer.feedback || null,
+							feedback,
 							score
 						}
 				}
@@ -37,7 +38,7 @@ module.exports = numericChoices => {
 			default:
 				return {
 					value: '' + answer.answer,
-					feedback: answer.feedback || null,
+					feedback,
 					score
 				}
 		}

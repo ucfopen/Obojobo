@@ -3,6 +3,7 @@
 exports[`Rubric editor Rubric renders 1`] = `
 <div
   className="rubric pad is-type-undefined"
+  contentEditable={false}
 >
   <h2
     contentEditable={false}

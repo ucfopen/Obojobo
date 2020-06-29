@@ -17,7 +17,19 @@ class NumericAssessment extends DraftNode {
 	onCalculateScore(app, question, responseRecord, setScore) {
 		if (!question.contains(this.node)) return
 
-		const scoreRuleConfigs = numericChoicesToScoreRuleConfigs(this.node.content.numericChoices)
+		// Construct the original JSON from the DraftNode objects
+		const numericChoices = [...this.immediateChildrenSet].map(id => {
+			const choiceDraftNode = this.draftTree.getChildNodeById(id)
+			const choiceNode = choiceDraftNode.node
+
+			choiceNode.children = [...choiceDraftNode.immediateChildrenSet].map(
+				id => this.draftTree.getChildNodeById(id).node
+			)
+
+			return choiceNode
+		})
+
+		const scoreRuleConfigs = numericChoicesToScoreRuleConfigs(numericChoices)
 		const evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs
 		})

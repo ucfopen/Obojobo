@@ -8,6 +8,7 @@ import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 
 const { Button, Switch } = Common.components
+const { TabTrap } = Common.components.modal
 const { ModalUtil } = Common.util
 
 // convenience function to reduce function creation in render
@@ -30,10 +31,12 @@ class MoreInfoBox extends React.Component {
 			needsUpdate: false,
 			error: null,
 			isOpen: false,
+			modalOpen: false,
 			content: this.props.content
 		}
 
-		this.handleClick = this.handleClick.bind(this)
+		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.toggleOpen = this.toggleOpen.bind(this)
 		this.close = this.close.bind(this)
@@ -44,14 +47,36 @@ class MoreInfoBox extends React.Component {
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 
-		this.node = React.createRef()
+		this.domRef = React.createRef()
+		this.idInput = React.createRef()
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onWindowMouseDown, false)
 	}
 
 	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onWindowMouseDown, false)
 		this.close()
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
+		// When props.open changes to open, update state and re-render
+		const isOpeningByProps = this.props.open && this.props.open !== prevProps.open
+		if (isOpeningByProps) {
+			this.setState({ isOpen: true })
+			return
+		}
+
+		// when opening, focus/select the first input for keyboard users
+		const isOpening = this.state.isOpen && this.state.isOpen !== prevState.isOpen
+		if (isOpening) {
+			this.idInput.current.focus()
+			setTimeout(() => {
+				this.idInput.current.select()
+			}, 200)
+		}
+
 		// If the component's content is updated we want to update our data
 		// (This can happen, for example, when updating triggers from the ActionButton's
 		// onClick shortcut menu)
@@ -62,13 +87,21 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
-	handleClick(event) {
-		if (!this.node.current || this.node.current.contains(event.target)) return
+	onWindowMouseDown(event) {
+		// do nothing if...
+		if (!this.state.isOpen) return // not open
+		if (this.state.modalOpen) return // modal is open
+		if (!this.domRef.current) return // not currently rendered on the dom
+		if (this.domRef.current.contains(event.target)) return // clicked inside this element
 
 		// When the click is outside the box, close the box
-		if (this.state.needsUpdate) return this.onSave()
+		return this.onSave()
+	}
 
-		this.close()
+	onKeyDown(event) {
+		if (event.key === 'Escape') {
+			return this.onSave()
+		}
 	}
 
 	handleIdChange(event) {
@@ -83,7 +116,7 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent),
+			content: Object.assign({}, prevState.content, newContent),
 			needsUpdate: true
 		}))
 	}
@@ -108,10 +141,9 @@ class MoreInfoBox extends React.Component {
 			this.props.saveId(this.props.id, this.state.currentId)
 		if (!error) {
 			// Wrapping these methods in a Timeout prevents a race condition with editor updates
-			return setTimeout(() => {
-				this.props.markUnsaved()
-				return this.close()
-			}, 0)
+			this.props.markUnsaved()
+			this.close()
+			return
 		}
 
 		this.setState({ error })
@@ -127,31 +159,36 @@ class MoreInfoBox extends React.Component {
 				this.close()
 			}
 		} else {
-			document.addEventListener('mousedown', this.handleClick, false)
-			if (this.props.onOpen) this.props.onOpen()
 			this.setState({ isOpen: true })
+			if (this.props.onOpen) this.props.onOpen()
 		}
 	}
 
 	close() {
-		document.removeEventListener('mousedown', this.handleClick, false)
-		if (this.props.onClose) this.props.onClose()
-		return this.setState({ isOpen: false })
+		if (this.state.isOpen === true) {
+			if (this.props.onBlur) this.props.onBlur('info')
+			this.setState({ isOpen: false })
+		}
 	}
 
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
-		document.removeEventListener('mousedown', this.handleClick, false)
 		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
+		this.setState({ modalOpen: true })
 	}
 
+	// TriggerListModal.onClose is called w/ no arguments when canceled
+	// TriggerListModal.onClose is called w/ triggers when save+closed
 	closeModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
-			needsUpdate: true
+			needsUpdate: true,
+			modalOpen: false
 		}))
-		document.addEventListener('mousedown', this.handleClick, false)
-		ModalUtil.hide()
 	}
 
 	renderItem(description) {
@@ -210,83 +247,88 @@ class MoreInfoBox extends React.Component {
 
 	renderInfoBox() {
 		const triggers = this.state.content.triggers
+
 		return (
 			<div className="more-info-box">
 				<div className="container">
-					<div className="properties">
-						<div>{this.props.type}</div>
-						<div>
+					<TabTrap focusOnFirstElement={() => this.idInput.current.focus()}>
+						<div className="properties">
+							<div>{this.props.type}</div>
 							<div>
-								<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
-								<input
-									type="text"
-									id="oboeditor--components--more-info-box--id-input"
-									value={this.state.currentId}
-									onChange={this.handleIdChange}
-									className="id-input"
-									onClick={stopPropagation}
-								/>
-								<Button
-									className="input-aligned-button"
-									onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}
-								>
-									Copy Id
+								<div>
+									<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
+									<input
+										autoFocus
+										type="text"
+										id="oboeditor--components--more-info-box--id-input"
+										value={this.state.currentId}
+										onChange={this.handleIdChange}
+										className="id-input"
+										onClick={stopPropagation}
+										ref={this.idInput}
+									/>
+									<Button
+										className="input-aligned-button"
+										onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}
+									>
+										Copy Id
+									</Button>
+								</div>
+								{this.props.contentDescription.map(description => this.renderItem(description))}
+							</div>
+							<div>
+								<span className="triggers">
+									Triggers:
+									{triggers && triggers.length > 0 ? (
+										<span>
+											{triggers
+												.map(trigger => trigger.type)
+												.reduce((accum, trigger) => accum + ', ' + trigger)}
+										</span>
+									) : null}
+								</span>
+								<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
+									✎ Edit
 								</Button>
 							</div>
-							{this.props.contentDescription.map(description => this.renderItem(description))}
+							{this.props.hideButtonBar ? null : (
+								<div className="button-bar">
+									<Button altAction isDangerous onClick={this.props.deleteNode}>
+										Delete
+									</Button>
+									{!this.props.isAssessment ? (
+										<Button altAction onClick={this.props.duplicateNode}>
+											Duplicate
+										</Button>
+									) : null}
+									{!this.props.showMoveButtons ? null : (
+										<Button
+											disabled={this.props.isFirst}
+											altAction
+											onClick={() => this.props.moveNode(this.props.index - 1)}
+										>
+											Move Up
+										</Button>
+									)}
+									{!this.props.showMoveButtons ? null : (
+										<Button
+											disabled={this.props.isLast}
+											altAction
+											onClick={() => this.props.moveNode(this.props.index + 1)}
+										>
+											Move Down
+										</Button>
+									)}
+								</div>
+							)}
 						</div>
-						<div>
-							<span className="triggers">
-								Triggers:
-								{triggers && triggers.length > 0 ? (
-									<span>
-										{triggers
-											.map(trigger => trigger.type)
-											.reduce((accum, trigger) => accum + ', ' + trigger)}
-									</span>
-								) : null}
-							</span>
-							<Button altAction className="trigger-button" onClick={this.showTriggersModal}>
-								✎ Edit
+						<div className="box-controls">
+							{this.state.error ? <p className="error">{this.state.error}</p> : null}
+							<Button onClick={this.onSave} className="cancel-button">
+								Done
 							</Button>
 						</div>
-						{this.props.hideButtonBar ? null : (
-							<div className="button-bar">
-								<Button altAction isDangerous onClick={this.props.deleteNode}>
-									Delete
-								</Button>
-								{!this.props.isAssessment ? (
-									<Button altAction onClick={this.props.duplicateNode}>
-										Duplicate
-									</Button>
-								) : null}
-								{!this.props.showMoveButtons ? null : (
-									<Button
-										disabled={this.props.isFirst}
-										altAction
-										onClick={() => this.props.moveNode(this.props.index - 1)}
-									>
-										Move Up
-									</Button>
-								)}
-								{!this.props.showMoveButtons ? null : (
-									<Button
-										disabled={this.props.isLast}
-										altAction
-										onClick={() => this.props.moveNode(this.props.index + 1)}
-									>
-										Move Down
-									</Button>
-								)}
-							</div>
-						)}
-					</div>
-					<div className="box-controls">
-						{this.state.error ? <p className="error">{this.state.error}</p> : null}
-						<Button onClick={this.onSave} className="cancel-button">
-							Done
-						</Button>
-					</div>
+					</TabTrap>
 				</div>
 			</div>
 		)
@@ -294,10 +336,16 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className={'visual-editor--more-info ' + (this.props.className || '')}>
+			<div
+				ref={this.domRef}
+				className={'visual-editor--more-info ' + (this.props.className || '')}
+				onKeyDown={this.onKeyDown}
+			>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}
+					tabIndex={this.props.tabIndex || 0}
+					aria-label="Toggle More Info Box"
 				>
 					<MoreInfoIcon />
 				</button>

@@ -1,7 +1,7 @@
 import { Text, Editor, Transforms, Range, Path, Element, Point } from 'slate'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.Line'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const KeyDownUtil = {
 	deleteNodeContents: (event, editor, entry, deleteForward) => {

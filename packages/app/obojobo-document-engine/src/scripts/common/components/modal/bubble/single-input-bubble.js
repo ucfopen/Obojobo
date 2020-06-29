@@ -7,6 +7,9 @@ class SingleInputBubble extends React.Component {
 	constructor(props) {
 		super(props)
 		this.inputRef = React.createRef()
+		this.onSubmit = this.onSubmit.bind(this)
+		this.onChange = this.onChange.bind(this)
+		this.onKeyUp = this.onKeyUp.bind(this)
 	}
 
 	onChange(event) {
@@ -35,15 +38,15 @@ class SingleInputBubble extends React.Component {
 		return (
 			<Bubble>
 				<label className="single-input-bubble">
-					<form className="interactable" onSubmit={this.onSubmit.bind(this)}>
+					<form className="interactable" onSubmit={this.onSubmit}>
 						<input
 							ref={this.inputRef}
 							type="text"
 							value={this.props.value}
-							onChange={this.onChange.bind(this)}
-							onKeyUp={this.onKeyUp.bind(this)}
+							onChange={this.onChange}
+							onKeyUp={this.onKeyUp}
 						/>
-						<button onClick={this.onSubmit.bind(this)}>Ok</button>
+						<button onClick={this.onSubmit}>Ok</button>
 					</form>
 					<span className="label">{this.props.label}</span>
 				</label>

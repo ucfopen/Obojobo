@@ -43,6 +43,7 @@ class Question extends React.Component {
 
 		const type = event.target.checked ? 'survey' : 'default'
 
+		// update this element's content.type
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -50,6 +51,7 @@ class Question extends React.Component {
 			{ at: path }
 		)
 
+		// The Question Assessment item should be the last child
 		const lastChildIndex = this.props.element.children.length - 1
 		return Transforms.setNodes(
 			this.props.editor,
@@ -65,8 +67,11 @@ class Question extends React.Component {
 		const newBlock = item.cloneBlankNode()
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const hasSolution = this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
-		const assessmentLocation = hasSolution ? this.props.element.children.length - 2 : this.props.element.children.length - 1
+		const hasSolution =
+			this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
+		const assessmentLocation = hasSolution
+			? this.props.element.children.length - 2
+			: this.props.element.children.length - 1
 
 		Editor.withoutNormalizing(this.props.editor, () => {
 			// Remove the old assessment
@@ -147,7 +152,7 @@ class Question extends React.Component {
 				>
 					<div className="flipper question-editor">
 						<div className="content-back">
-							<div className="question-settings">
+							<div className="question-settings" contentEditable={false}>
 								<label>Question Type</label>
 								<select
 									contentEditable={false}

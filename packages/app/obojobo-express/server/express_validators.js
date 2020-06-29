@@ -6,23 +6,15 @@ const semVerRegex = /\d+\.\d+\.\d+/
 // reusable method to call a promise method on req
 // and make sure it's value isn't falsy and is an object
 // if it fails it'll register a validation error for express-validate
-const requireAndValidateReqMethod = (req, next, method, prop) => {
+const requireAndValidateReqMethod = (req, res, next, method, prop) => {
 	return req[method]()
 		.then(() => {
-			if (!req[prop] || typeof req[prop] !== 'object') throw `Request missing ${prop}`
+			if (!req[prop] || typeof req[prop] !== 'object') res.missing()
+			next()
 		})
 		.catch(error => {
 			logger.error('requireAndValidateReqMethod error', error)
-			if (!req._validationErrors) req._validationErrors = []
-			req._validationErrors.push({
-				location: 'request',
-				param: prop,
-				value: req[prop],
-				msg: `missing from request`
-			})
-		})
-		.then(() => {
-			next() //always call next, unlike user auth, we're letting checkValidationRules handle this
+			res.missing()
 		})
 }
 
@@ -44,9 +36,9 @@ const requireCurrentUser = (req, res, next, permission = null) => {
 
 exports.requireCurrentUser = requireCurrentUser
 exports.requireCurrentVisit = (req, res, next) =>
-	requireAndValidateReqMethod(req, next, 'getCurrentVisitFromRequest', 'currentVisit')
+	requireAndValidateReqMethod(req, res, next, 'getCurrentVisitFromRequest', 'currentVisit')
 exports.requireCurrentDocument = (req, res, next) =>
-	requireAndValidateReqMethod(req, next, 'requireCurrentDocument', 'currentDocument')
+	requireAndValidateReqMethod(req, res, next, 'requireCurrentDocument', 'currentDocument')
 
 exports.getCurrentUser = (req, res, next) => {
 	return req.getCurrentUser().then(user => {

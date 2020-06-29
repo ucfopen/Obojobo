@@ -10,14 +10,20 @@ import { ReactEditor } from 'slate-react'
 const { Button } = Common.components
 
 class Feedback extends React.Component {
+	constructor(props) {
+		super(props)
+		this.delete = this.delete.bind(this)
+	}
+
 	delete() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
+
 	render() {
 		return (
 			<div className="component obojobo-draft--chunks--abstract-assessment--feedback editor-feedback">
-				<Button className="delete-button" onClick={this.delete.bind(this)}>
+				<Button className="delete-button" onClick={this.delete}>
 					×
 				</Button>
 				<span className="label" contentEditable={false}>

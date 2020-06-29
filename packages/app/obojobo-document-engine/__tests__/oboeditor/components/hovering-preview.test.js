@@ -67,7 +67,6 @@ describe('HoveringPreview', () => {
 			})
 		})
 
-		expect(ref.removeAttribute).toHaveBeenCalledWith('style')
 		expect(ref.style).toEqual({})
 	})
 
@@ -171,6 +170,6 @@ describe('HoveringPreview', () => {
 			})
 		})
 
-		expect(ref.style).toEqual({ left: '-5px', opacity: 1, top: '-16px' })
+		expect(ref.style).toEqual({ left: '-5px', display: 'block', top: '-16px' })
 	})
 })

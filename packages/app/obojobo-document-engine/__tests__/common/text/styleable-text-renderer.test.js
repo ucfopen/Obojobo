@@ -148,7 +148,7 @@ describe('styleableTextRenderer', () => {
 		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
-			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\"><span aria-hidden=\\"true\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding=\\"application/x-tex\\">fox</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.8888799999999999em;vertical-align:-0.19444em;\\"></span><span class=\\"mord mathdefault\\" style=\\"margin-right:0.10764em;\\">f</span><span class=\\"mord mathdefault\\">o</span><span class=\\"mord mathdefault\\">x</span></span></span></span></span></span> cat</span>"`
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\"><span aria-hidden=\\"true\\">mock-katex-render-for-fox-with-options-{\\"throwOnError\\":false}</span></span> cat</span>"`
 		)
 	})
 
@@ -158,7 +158,20 @@ describe('styleableTextRenderer', () => {
 		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
-			`"<span>dog <span class=\\"latex\\" role=\\"math\\" alt=\\"alt-text\\"><span aria-hidden=\\"true\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding=\\"application/x-tex\\">fox</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.8888799999999999em;vertical-align:-0.19444em;\\"></span><span class=\\"mord mathdefault\\" style=\\"margin-right:0.10764em;\\">f</span><span class=\\"mord mathdefault\\">o</span><span class=\\"mord mathdefault\\">x</span></span></span></span></span></span> cat</span>"`
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" alt=\\"alt-text\\"><span aria-hidden=\\"true\\">mock-katex-render-for-fox-with-options-{\\"throwOnError\\":false}</span></span> cat</span>"`
+		)
+	})
+
+	test('Latex when window is invalid', () => {
+		const windowSpy = jest.spyOn(global, 'window', 'get')
+		windowSpy.mockImplementation(() => undefined) // eslint-disable-line no-undefined
+
+		const st = new StyleableText('dog fox cat')
+		st.styleText('_latex', 4, 7, { a: 1 })
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\">fox</span> cat</span>"`
 		)
 	})
 
