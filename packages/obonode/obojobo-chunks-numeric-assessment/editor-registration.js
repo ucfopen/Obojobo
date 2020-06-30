@@ -35,7 +35,7 @@ const NumericAssessment = {
 							editor,
 							{
 								type: CHOICE_NODE,
-								content: { score: 0 }
+								content: { score: 100 }
 							},
 							{ at: childPath }
 						)
@@ -49,7 +49,7 @@ const NumericAssessment = {
 							editor,
 							{
 								type: CHOICE_NODE,
-								content: { score: 0 }
+								content: { score: 100 }
 							},
 							{ at: childPath }
 						)

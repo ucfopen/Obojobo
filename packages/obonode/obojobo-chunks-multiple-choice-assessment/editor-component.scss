@@ -47,8 +47,13 @@
 
 		.obojobo-draft--chunks--mc-assessment--mc-answer {
 			padding-bottom: 3em;
-			padding-top: 2.5em;
+			padding-top: 1em;
 			padding-left: 0;
+
+			.text-chunk.obojobo-draft--chunks--single-text.pad {
+				padding-left: 2.5em;
+				padding-right: 2.5em;
+			}
 		}
 
 		.obojobo-draft--chunks--abstract-assessment--feedback {

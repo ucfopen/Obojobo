@@ -4,7 +4,7 @@ import React from 'react'
 
 const Throbber = props => {
 	return (
-		<div className="viewer--components--throbber" aria-label="Loading content">
+		<div className="obojobo-draft--components--throbber" aria-label="Loading content">
 			<div className="throbber" aria-hidden={true}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

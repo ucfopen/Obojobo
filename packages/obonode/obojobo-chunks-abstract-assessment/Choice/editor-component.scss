@@ -16,8 +16,9 @@
 
 		position: absolute;
 		top: 1em;
-		left: 3em;
+		left: 2.5em;
 		font-family: $correct-font;
+		z-index: 1;
 
 		@media (max-width: 61.24em) {
 			left: 2.2em;
@@ -61,10 +62,10 @@
 	.add-feedback {
 		position: absolute;
 		bottom: 0.5em;
-		right: 3em;
+		left: 2.5em;
 
 		@media (max-width: 61.24em) {
-			right: 2.2em;
+			left: 2.2em;
 		}
 	}
 

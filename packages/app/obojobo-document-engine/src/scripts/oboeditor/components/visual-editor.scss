@@ -13,6 +13,7 @@
 	border-radius: $dimension-rounded-radius;
 	min-height: calc(100vh - 10.5em);
 	position: relative;
+	min-width: 56.5em;
 
 	.obojobo-draft--modules--module {
 		margin: 3em auto;

@@ -70,11 +70,11 @@
 		}
 	}
 
-	.add-solution {
+	> .flipper > .content-back > .add-solution {
 		left: 50%;
 		transform: translate(-50%, 0);
 		position: relative;
-		margin: $dimension-padding / 3;
+		margin: $dimension-padding / 3 0;
 		user-select: none;
 	}
 

@@ -19,14 +19,13 @@ class NumericAssessment extends React.Component {
 			this.props.editor,
 			{
 				type: CHOICE_NODE,
-				content: { score: 0 },
+				content: { score: 100 },
 				children: [
 					{
 						type: NUMERIC_ANSWER_NODE,
 						content: {
-							score: '0',
 							requirement: 'exact',
-							answer: '0'
+							answer: '1'
 						},
 						children: [{ text: '' }]
 					}
@@ -42,11 +41,12 @@ class NumericAssessment extends React.Component {
 				<div>
 					{this.props.children}
 					<Button
-						className="add-answer-btn pad"
+						className="add-answer-btn"
 						onClick={() => this.onAddNumericInput()}
-						contentEditable={false}>
-					+ Add possible answer
-				</Button>
+						contentEditable={false}
+					>
+						+ Add possible answer
+					</Button>
 				</div>
 			</div>
 		)

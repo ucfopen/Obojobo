@@ -46,6 +46,15 @@ body {
 	&.is-loaded {
 		opacity: 1;
 	}
+
+	> .root > .obojobo-draft--components--throbber {
+		width: 2em;
+		height: 2em;
+		left: 50%;
+		top: 10vw;
+		transform: translate(-50%, 0);
+		opacity: 0.3;
+	}
 }
 
 #viewer-app-loading {

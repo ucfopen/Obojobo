@@ -28,12 +28,17 @@ class Choice extends React.Component {
 		return Transforms.removeNodes(this.props.editor, { at: path })
 	}
 
-	handleScoreChange() {
-		const score = this.props.element.content.score === 100 || this.props.element.content.score === "100" ? 0 : 100
+	handleScoreChange(event) {
+		event.preventDefault()
+
+		const score =
+			this.props.element.content.score === 100 || this.props.element.content.score === '100'
+				? 0
+				: 100
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, score } },
 			{ at: path }
 		)
@@ -71,7 +76,7 @@ class Choice extends React.Component {
 
 		const className =
 			'component obojobo-draft--chunks--abstract-assessment--choice' +
-			isOrNot(score === 100 || score === "100", 'correct') +
+			isOrNot(score === 100 || score === '100', 'correct') +
 			' editor-choice'
 
 		return (
@@ -80,13 +85,13 @@ class Choice extends React.Component {
 					×
 				</Button>
 				<Button className="correct-button" onClick={this.handleScoreChange}>
-					{score === 100 || score === "100" ? '✔ Correct' : '✖ Incorrect'}
+					{score === 100 || score === '100' ? '✔ Correct' : '✖ Incorrect'}
 				</Button>
 				<div className="children">
 					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? (
-					<Button className="add-feedback" onClick={this.addFeedback}>
+					<Button className="add-feedback" onClick={this.addFeedback} altAction>
 						Add Feedback
 					</Button>
 				) : null}

@@ -1,16 +1,16 @@
 {
 	"type": "ObojoboDraft.Chunks.NumericAssessment",
 	"content": {
-		"numericChoices":[]
+		"numericChoices": []
 	},
 	"children": [
 		{
 			"type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
-			"content": { "score": 0 },
+			"content": { "score": 100 },
 			"children": [
 				{
 					"type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
-					"content": { 
+					"content": {
 						"requirement": "exact",
 						"answer": "1"
 					},

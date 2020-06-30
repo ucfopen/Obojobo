@@ -13,7 +13,7 @@ import EditorUtil from '../util/editor-util'
 import VisualEditor from './visual-editor'
 import React from 'react'
 
-const { ModalContainer } = Common.components
+const { ModalContainer, Throbber } = Common.components
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
@@ -182,7 +182,7 @@ class EditorApp extends React.Component {
 			)
 		}
 
-		if (this.state.loading) return <p>Loading</p>
+		if (this.state.loading) return <Throbber />
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (

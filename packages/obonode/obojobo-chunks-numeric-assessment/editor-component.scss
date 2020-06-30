@@ -25,13 +25,34 @@
 	}
 
 	.add-answer-btn {
-		margin: 1rem 0;
+		margin: 1rem auto;
+		display: block;
+		padding-bottom: 1rem;
 	}
 
 	.obojobo-draft--chunks--abstract-assessment--choice {
 		.delete-button {
 			top: 0.7em;
 			right: 0.7em;
+		}
+
+		.correct-button {
+			top: 5.7em;
+			// bottom: 1em;
+		}
+
+		.add-feedback {
+			left: inherit;
+			right: 2.5em;
+			bottom: 1em;
+		}
+
+		> .children {
+			padding-top: 0;
+		}
+
+		.obojobo-draft--chunks--abstract-assessment--feedback {
+			margin-top: 2.2em;
 		}
 	}
 }
