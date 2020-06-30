@@ -19,10 +19,12 @@ describe('Count Services', () => {
 		expect.hasAssertions()
 
 		const queryString = `
-		SELECT COUNT(id) AS count
+		SELECT COUNT(drafts.id) AS count
 		FROM drafts
-		WHERE deleted = FALSE
-		AND user_id = $[userId]
+		INNER JOIN repository_map_user_to_draft
+			ON repository_map_user_to_draft.draft_id = drafts.id
+		WHERE drafts.deleted = FALSE
+		AND repository_map_user_to_draft.user_id = $[userId]
 	`
 
 		return CountServices.getUserModuleCount('mockUserId').then(response => {

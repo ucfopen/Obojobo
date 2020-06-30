@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-jest.mock('obojobo-express/server/express_validators')
 jest.mock('../models/collection_summary')
 jest.mock('../models/draft_summary')
 jest.mock('../services/permissions')
@@ -16,6 +13,21 @@ jest.mock(
 	}),
 	{ virtual: true }
 )
+
+// override requireCurrentUser for tests to provide our own user
+let mockCurrentUser
+
+jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) => {
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	req.getCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	next()
+})
 
 let mockDashboardComponent
 let mockDashboardComponentConstructor
@@ -41,30 +53,6 @@ let PermissionsServices
 let CountServices
 
 let short
-
-// override requireCurrentUser for tests to provide our own user
-let mockCurrentUser
-
-jest.mock(
-	'obojobo-express/server/express_validators',
-	() => ({
-		requireCanPreviewDrafts: () => jest.fn(),
-		requireCurrentUser: () => jest.fn()
-	}),
-	{ virtual: true }
-)
-
-jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) => {
-	req.requireCurrentUser = () => {
-		req.currentUser = mockCurrentUser
-		return Promise.resolve(mockCurrentUser)
-	}
-	req.getCurrentUser = () => {
-		req.currentUser = mockCurrentUser
-		return Promise.resolve(mockCurrentUser)
-	}
-	next()
-})
 
 // setup express server
 const path = require('path')
@@ -448,10 +436,10 @@ describe('repository dashboard route', () => {
 		DraftSummary.fetchByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId = jest.fn()
 
-		const path = 'collections/mock-collection-safe-name-mockCollectionShortId'
+		const path = '/collections/mock-collection-safe-name-mockCollectionShortId'
 
 		return request(app)
-			.get(`/${path}`)
+			.get(path)
 			.set('cookie', [''])
 			.then(response => {
 				expect(mockShortToUUID).toHaveBeenCalledTimes(1)

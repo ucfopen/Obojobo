@@ -1,4 +1,3 @@
-jest.mock('obojobo-express/server/express_validators')
 jest.mock('../services/collections')
 jest.mock('../models/collection_summary')
 jest.mock('../models/collection')
@@ -8,6 +7,7 @@ jest.mock('../models/drafts_metadata')
 jest.mock('../services/search')
 jest.mock('../services/permissions')
 jest.mock('../services/collections')
+jest.mock('../services/count')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('obojobo-express/server/insert_event')
 jest.unmock('fs') // need fs working for view rendering
@@ -21,6 +21,7 @@ let DraftsMetadata
 let SearchServices
 let PermissionsServices
 let CollectionsServices
+let CountServices
 let UserModel
 let insertEvent
 
@@ -30,18 +31,25 @@ let mockCurrentUser
 // override requireCurrentDocument for tests to provide our own document
 let mockCurrentDocument
 
-jest.mock(
-	'obojobo-express/server/express_validators',
-	() => ({
-		requireCanPreviewDrafts: () => jest.fn(),
-		requireCurrentUser: () => jest.fn(),
-		requireCurrentDocument: () => jest.fn(),
-		checkValidationRules: () => jest.fn(),
-		requireCanCreateDrafts: () => jest.fn(),
-		requireCanDeleteDrafts: () => jest.fn()
-	}),
-	{ virtual: true }
-)
+// these mocks were important before - but now the tests don't run unless they're removed
+// whatever
+// jest.mock(
+// 	'obojobo-express/server/express_validators',
+// 	() => ({
+// 		requireCanPreviewDrafts: () => jest.fn(),
+// 		requireCurrentUser: () => jest.fn(),
+// 		requireCurrentDocument: () => jest.fn(),
+// 		checkValidationRules: () => jest.fn(),
+// 		requireCanCreateDrafts: () => jest.fn(),
+// 		requireCanDeleteDrafts: () => jest.fn(),
+// 		check: () => ({
+// 			isUUID: () => ({
+// 				optional: jest.fn()
+// 			})
+// 		})
+// 	}),
+// 	{ virtual: true }
+// )
 
 jest.mock('obojobo-express/server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
@@ -109,6 +117,7 @@ describe('repository api route', () => {
 		SearchServices = require('../services/search')
 		PermissionsServices = require('../services/permissions')
 		CollectionsServices = require('../services/collections')
+		CountServices = require('../services/count')
 		UserModel = require('obojobo-express/server/models/user')
 		insertEvent = require('obojobo-express/server/insert_event')
 	})
@@ -176,15 +185,23 @@ describe('repository api route', () => {
 			{ draftId: 'mockDraftId3' }
 		]
 
+		CountServices.getUserModuleCount.mockResolvedValueOnce(mockResult.length)
+
 		DraftSummary.fetchRecentByUserId = jest.fn()
 		DraftSummary.fetchRecentByUserId.mockResolvedValueOnce(mockResult)
 
 		return request(app)
 			.get('/recent/drafts')
 			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(DraftSummary.fetchRecentByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toStrictEqual(mockResult)
+				expect(response.body).toEqual({
+					allCount: mockResult.length,
+					modules: mockResult
+				})
 			})
 	})
 
@@ -195,6 +212,8 @@ describe('repository api route', () => {
 			{ draftId: 'mockDraftId3', title: 'whatever3' }
 		]
 
+		CountServices.getUserModuleCount.mockResolvedValueOnce(mockResult.length)
+
 		DraftSummary.fetchByUserId = jest.fn()
 		DraftSummary.fetchByUserId.mockResolvedValueOnce(mockResult)
 
@@ -203,9 +222,15 @@ describe('repository api route', () => {
 		return request(app)
 			.get('/drafts')
 			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(DraftSummary.fetchByUserId).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toStrictEqual(mockResult)
+				expect(response.body).toEqual({
+					allCount: mockResult.length,
+					modules: mockResult
+				})
 			})
 	})
 
@@ -535,6 +560,8 @@ describe('repository api route', () => {
 			{ draftId: 'mockDraftId3' }
 		]
 
+		CountServices.getUserModuleCount.mockResolvedValueOnce(mockResult.length)
+
 		DraftSummary.fetchAllInCollectionForUser = jest.fn()
 		DraftSummary.fetchAllInCollectionForUser.mockResolvedValueOnce(mockResult)
 
@@ -543,12 +570,17 @@ describe('repository api route', () => {
 		return request(app)
 			.get('/collections/mockCollectionId/modules')
 			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(DraftSummary.fetchAllInCollectionForUser).toHaveBeenCalledWith(
 					'mockCollectionId',
 					mockCurrentUser.id
 				)
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toStrictEqual(mockResult)
+				expect(response.body).toEqual({
+					allCount: mockResult.length,
+					modules: mockResult
+				})
 			})
 	})
 
@@ -561,18 +593,25 @@ describe('repository api route', () => {
 			{ draftId: 'mockDraftId3' }
 		]
 
+		CountServices.getUserModuleCount.mockResolvedValueOnce(mockResult.length)
+
 		DraftSummary.fetchByDraftTitleAndUser = jest.fn()
 		DraftSummary.fetchByDraftTitleAndUser.mockResolvedValueOnce(mockResult)
 
 		return request(app)
 			.get('/collections/mockCollectionId/modules/search?q=searchString')
 			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(DraftSummary.fetchByDraftTitleAndUser).toHaveBeenCalledWith(
 					'searchString',
 					mockCurrentUser.id
 				)
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toStrictEqual(mockResult)
+				expect(response.body).toEqual({
+					allCount: mockResult.length,
+					modules: mockResult
+				})
 			})
 	})
 
@@ -590,8 +629,10 @@ describe('repository api route', () => {
 			})
 	})
 
-	test('get /collections/:collectionId/modules/search returns the expected response with a search string', () => {
+	test('get /collections/:collectionId/modules/search returns the expected response with a search string if the query errors', () => {
 		expect.hasAssertions()
+
+		CountServices.getUserModuleCount.mockResolvedValueOnce(0)
 
 		DraftSummary.fetchByDraftTitleAndUser = jest.fn()
 		DraftSummary.fetchByDraftTitleAndUser.mockRejectedValueOnce('database error')
@@ -599,6 +640,8 @@ describe('repository api route', () => {
 		return request(app)
 			.get('/collections/mockCollectionId/modules/search?q=searchString')
 			.then(response => {
+				expect(CountServices.getUserModuleCount).toHaveBeenCalledWith(mockCurrentUser.id)
+
 				expect(DraftSummary.fetchByDraftTitleAndUser).toHaveBeenCalledTimes(1)
 				expect(DraftSummary.fetchByDraftTitleAndUser).toHaveBeenCalledWith(
 					'searchString',

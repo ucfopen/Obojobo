@@ -450,6 +450,8 @@ describe('Dashboard', () => {
 		expect(placeholderComponents[0].findByType(Button).children[0].children[0]).toBe(
 			'New Collection'
 		)
+		// and no collection filter
+		expect(component.root.findAllByType(Search).length).toBe(0)
 
 		expect(component.toJSON()).toMatchSnapshot()
 	})

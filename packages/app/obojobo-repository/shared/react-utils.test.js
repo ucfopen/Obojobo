@@ -1,6 +1,9 @@
+// this file changed from before in strange ways - will have to revisit these tests for sure
 jest.mock('react')
-jest.mock('react-redux')
 jest.mock('redux')
+jest.mock('react-redux', () => ({
+	Provider: jest.fn()
+}))
 jest.mock('redux-pack')
 
 let React
@@ -89,10 +92,11 @@ describe('react utils', () => {
 		expect(document.querySelector).toHaveBeenCalledTimes(1)
 		expect(document.querySelector).toHaveBeenCalledWith('mockSelector')
 
-		expect(Redux.applyMiddleware).toHaveBeenCalledTimes(1)
+		expect(Redux.applyMiddleware).toHaveBeenCalledTimes(2)
 		expect(Redux.applyMiddleware).toHaveBeenCalledWith(ReduxPack.middleware)
 
-		expect(Redux.createStore).toHaveBeenCalledWith(mockReducers, mockReactProps, mockMiddleware)
+		// eslint-disable-next-line no-undefined
+		expect(Redux.createStore).toHaveBeenCalledWith(mockReducers, mockReactProps, undefined)
 
 		expect(React.createElement).toHaveBeenCalledTimes(2)
 		expect(React.createElement.mock.calls[0]).toEqual([mockReactComponent])

@@ -32,7 +32,10 @@ describe('Dashboard Actions', () => {
 		jest.resetAllMocks()
 		jest.useFakeTimers()
 
-		window.location.reload = jest.fn()
+		delete window.location
+		window.location = {
+			reload: jest.fn()
+		}
 
 		standardFetchResponse = {
 			ok: true,

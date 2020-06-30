@@ -60,7 +60,6 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Add to or remove from private collections.</div>
 
 				<Button
-					className="new-button"
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
 					}}

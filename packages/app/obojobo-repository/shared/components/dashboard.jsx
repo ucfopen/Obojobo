@@ -392,7 +392,6 @@ const Dashboard = props => {
 		// url is /dashboard
 		case MODE_RECENT:
 		default:
-			console.log(props.moduleCount, props.myModules.length)
 			if (props.myModules.length < props.moduleCount) {
 				allModulesButtonRender = (
 					<ButtonLink

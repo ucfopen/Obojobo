@@ -279,6 +279,7 @@ router
 	.route('/collections/:collectionId/modules')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
+		let allCount
 		return getUserModuleCount(req.currentUser.id)
 			.then(count => {
 				allCount = count
@@ -301,6 +302,7 @@ router
 			return
 		}
 
+		let allCount
 		return getUserModuleCount(req.currentUser.id)
 			.then(count => {
 				allCount = count

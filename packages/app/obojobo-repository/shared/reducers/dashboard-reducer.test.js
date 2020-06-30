@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 jest.mock('redux-pack', () => {
 	return {
 		//TODO: FIGURE OUT WHAT TO DO WITH THIS TO MAKE UNIT TESTS WORK
@@ -36,8 +35,6 @@ const {
 	RENAME_COLLECTION,
 	DELETE_COLLECTION
 } = require('../actions/dashboard-actions')
-
-const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
 const Pack = require('redux-pack')
 
@@ -206,7 +203,10 @@ describe('Dashboard Reducer', () => {
 			// this action occurs after the current user's modules are
 			//  queried - so it will contain a list of modules
 			payload: {
-				value: mockModuleList
+				value: {
+					allCount: mockModuleList.length,
+					modules: mockModuleList
+				}
 			}
 		}
 
@@ -268,6 +268,7 @@ describe('Dashboard Reducer', () => {
 			draftPermissions: {
 				mockDraftId: mockInitialDraftPermissions
 			},
+			moduleCount: mockModuleList.length + 1,
 			myModules: [
 				...mockModuleList,
 				{
@@ -277,11 +278,16 @@ describe('Dashboard Reducer', () => {
 			]
 		}
 
+		const modulePayload = {
+			allCount: mockModuleList.length,
+			modules: mockModuleList
+		}
+
 		const action = {
 			type: testAction,
 			payload: {
 				// eslint-disable-next-line no-undefined
-				modules: testModules ? mockModuleList : undefined,
+				modules: testModules ? modulePayload : undefined,
 				value: mockUserList
 			}
 		}
@@ -305,7 +311,9 @@ describe('Dashboard Reducer', () => {
 			items: mockUserList
 		})
 		if (testModules) {
+			expect(newState.moduleCount).not.toEqual(initialState.moduleCount)
 			expect(newState.myModules).not.toEqual(initialState.myModules)
+			expect(newState.moduleCount).toEqual(mockModuleList.length)
 			expect(newState.myModules).toEqual(mockModuleList)
 		}
 	}
@@ -367,7 +375,10 @@ describe('Dashboard Reducer', () => {
 				currentCollectionId: testCurrentCollection ? 'mockCollectionId' : undefined
 			},
 			payload: {
-				value: mockModuleList
+				value: {
+					allCount: mockModuleList.length,
+					modules: mockModuleList
+				}
 			}
 		}
 
@@ -699,7 +710,9 @@ describe('Dashboard Reducer', () => {
 				searchString: 'newSearchString'
 			},
 			payload: {
-				value: mockModuleList
+				value: {
+					modules: mockModuleList
+				}
 			}
 		}
 
