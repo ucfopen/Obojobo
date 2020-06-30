@@ -91,10 +91,13 @@ module.exports = class Octal extends Numeric {
 		const valueString = Octal.getValueString(tokens[0])
 		if (!valueString) return Numeric.getNullParseObject()
 
+		const unit = tokens[1] || ''
+
 		return {
 			matchType: Octal.getMatchType(valueString),
 			valueString,
-			unit: tokens[1] || ''
+			unit,
+			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -125,7 +128,7 @@ module.exports = class Octal extends Numeric {
 	 * @return {boolean} True if the string representation is less than Number.MAX_SAFE_INTEGER
 	 */
 	static isSafe(valueString) {
-		return Octal.getBigValue(valueString).lte(Number.MAX_SAFE_INTEGER)
+		return Octal.getBigValueFromString(valueString).lte(Number.MAX_SAFE_INTEGER)
 	}
 
 	/**
@@ -145,10 +148,10 @@ module.exports = class Octal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Octal.getBigValue('0o55') //Big(45)
-	 * Octal.getBigValue('120') //Big(80)
+	 * Octal.getBigValueFromString('0o55') //Big(45)
+	 * Octal.getBigValueFromString('120') //Big(80)
 	 */
-	static getBigValue(valueString) {
+	static getBigValueFromString(valueString) {
 		return Big(Octal.getValue(valueString))
 	}
 
@@ -179,7 +182,7 @@ module.exports = class Octal extends Numeric {
 	 * Octal.getNumSigFigs('120') //1
 	 */
 	static getNumSigFigs(valueString) {
-		return Decimal.getNumSigFigs(Octal.getBigValue(valueString).toString())
+		return Decimal.getNumSigFigs(Octal.getBigValueFromString(valueString).toString())
 	}
 
 	/**

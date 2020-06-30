@@ -8,11 +8,13 @@ import _ from 'underscore'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
+import NumericInputMoreInfoButton from './numeric-input-more-info-button'
 const { PERCENT_ERROR, ABSOLUTE_ERROR } = require('./rule/rule-error-types')
 
 const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
+const { ErrorUtil } = Common.util
 
 const KEY_FEEDBACK = 'feedback'
 const LONG_RESPONSE_NUM_CHARS = 19
@@ -145,7 +147,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 		switch (results.status) {
 			case 'inputInvalid':
-				alert('input invalid')
+				ErrorUtil.show('Invalid Input', 'Please enter a valid numeric value')
 				return null
 
 			default: {
@@ -199,6 +201,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	getRangeSummary(range) {
 		const min = range.min ? range.min.toString() : null
 		const max = range.max ? range.max.toString() : null
+
+		console.log('grs', range, min, max)
 
 		if (range.isSingular) {
 			return {
@@ -410,6 +414,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	}
 
 	renderRangeSummary(summary) {
+		console.log('rrs', summary)
+
 		switch (summary.type) {
 			case 'text':
 				return <span>{summary.text}</span>
@@ -514,13 +520,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					<div className="input-container">
 						<input
 							autoComplete="off"
-							id="numeric-assessment--input"
+							className="numeric-assessment--input"
 							placeholder={this.props.mode !== 'review' ? 'Your answer...' : '(No answer given)'}
 							value={responseValue}
 							disabled={this.props.mode === 'review'}
 							onBlur={this.onInputBlur}
 							// onChange={this.onInputChange}
 						/>
+						<NumericInputMoreInfoButton />
 						{score === 100 && !isExactlyCorrect ? (
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}

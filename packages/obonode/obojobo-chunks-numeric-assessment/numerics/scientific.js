@@ -119,10 +119,12 @@ module.exports = class Scientific extends Numeric {
 		const unit = str.substr(valueString.length).trim()
 
 		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
+
 		return {
 			matchType: MATCH_EXACT,
 			valueString,
-			unit
+			unit,
+			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -139,7 +141,7 @@ module.exports = class Scientific extends Numeric {
 	 * @param {string} valueString
 	 * @return {Big}
 	 */
-	static getBigValue(valueString) {
+	static getBigValueFromString(valueString) {
 		const terms = Scientific.getTerms(valueString)
 		return terms.bigValue
 	}
@@ -165,7 +167,7 @@ module.exports = class Scientific extends Numeric {
 	 * Scientific.getIsInteger('7e-2') //false
 	 */
 	static getIsInteger(valueString) {
-		return Decimal.getIsInteger(Scientific.getBigValue(valueString).toString())
+		return Decimal.getIsInteger(Scientific.getBigValueFromString(valueString).toString())
 	}
 
 	/**

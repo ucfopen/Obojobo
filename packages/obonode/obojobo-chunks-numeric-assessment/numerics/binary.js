@@ -87,7 +87,8 @@ module.exports = class Binary extends Numeric {
 		return {
 			matchType: Binary.getMatchType(valueString),
 			valueString,
-			unit
+			unit,
+			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -118,7 +119,7 @@ module.exports = class Binary extends Numeric {
 	 * @return {boolean} True if the string representation is less than Number.MAX_SAFE_INTEGER
 	 */
 	static isSafe(valueString) {
-		return Binary.getBigValue(valueString).lte(Number.MAX_SAFE_INTEGER)
+		return Binary.getBigValueFromString(valueString).lte(Number.MAX_SAFE_INTEGER)
 	}
 
 	/**
@@ -138,10 +139,10 @@ module.exports = class Binary extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Binary.getBigValue('0b10') //Big(2)
-	 * Binary.getBigValue('1111') //Big(15)
+	 * Binary.getBigValueFromString('0b10') //Big(2)
+	 * Binary.getBigValueFromString('1111') //Big(15)
 	 */
-	static getBigValue(valueString) {
+	static getBigValueFromString(valueString) {
 		return Big(Binary.getValue(valueString))
 	}
 
@@ -172,7 +173,7 @@ module.exports = class Binary extends Numeric {
 	 * Binary.getNumSigFigs('1111') //2
 	 */
 	static getNumSigFigs(valueString) {
-		return Decimal.getNumSigFigs(Binary.getBigValue(valueString).toString())
+		return Decimal.getNumSigFigs(Binary.getBigValueFromString(valueString).toString())
 	}
 
 	/**

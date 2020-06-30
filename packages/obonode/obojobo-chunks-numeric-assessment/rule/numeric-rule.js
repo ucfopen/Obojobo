@@ -196,6 +196,7 @@ module.exports = class NumericRule {
 	 * @param {RuleConfigObject} config
 	 * @return {BigValueRange}
 	 * @throws Error if the range contains values <= 0
+	 * @throws Error if fractional values are allowed
 	 */
 	static getRuleSigFigs(config) {
 		if (!config.sigFigs) return new BigValueRange()
@@ -203,6 +204,10 @@ module.exports = class NumericRule {
 		const range = new BigValueRange(config.sigFigs)
 		if (range.getValuePosition(Big(0)) !== ValueRange.VALUE_BELOW_MIN) {
 			throw 'sigFigs range must be larger than 0'
+		}
+
+		if (config.types.split(',').includes(INPUT_TYPE_FRACTIONAL)) {
+			throw 'sigFigs cannot be defined if fractional values are allowed'
 		}
 
 		return range

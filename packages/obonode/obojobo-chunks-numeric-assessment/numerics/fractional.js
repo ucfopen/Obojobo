@@ -71,7 +71,8 @@ module.exports = class Fractional extends Numeric {
 		return {
 			matchType: MATCH_EXACT,
 			valueString: matches[0],
-			unit
+			unit,
+			stringWithUnit: matches[0] + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -90,6 +91,16 @@ module.exports = class Fractional extends Numeric {
 	 */
 	static getBigValueFromString(valueString) {
 		return Fractional.getTerms(valueString).bigValue
+	}
+
+	/**
+	 * Fractional values don't really have significant figures, so we return null
+	 * @return {number} null
+	 * @example
+	 * Fractional.getNumSigFigs('1/2') //null
+	 */
+	static getNumSigFigs() {
+		return null
 	}
 
 	/**

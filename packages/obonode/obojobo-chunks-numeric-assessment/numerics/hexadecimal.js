@@ -104,10 +104,13 @@ module.exports = class Hexadecimal extends Numeric {
 		const valueString = Hexadecimal.getValueString(tokens[0])
 		if (!valueString) return Numeric.getNullParseObject()
 
+		const unit = tokens[1] || ''
+
 		return {
 			matchType: Hexadecimal.getMatchType(valueString),
 			valueString,
-			unit: tokens[1] || ''
+			unit,
+			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
 		}
 	}
 
@@ -163,10 +166,10 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getBigValue('0x2') //Big(2)
-	 * Hexadecimal.getBigValue('0xFF') //Big(255)
+	 * Hexadecimal.getBigValueFromString('0x2') //Big(2)
+	 * Hexadecimal.getBigValueFromString('0xFF') //Big(255)
 	 */
-	static getBigValue(valueString) {
+	static getBigValueFromString(valueString) {
 		return Big(Hexadecimal.getValue(valueString))
 	}
 
@@ -204,7 +207,7 @@ module.exports = class Hexadecimal extends Numeric {
 	 * Hexadecimal.getNumSigFigs('FF') //3
 	 */
 	static getNumSigFigs(valueString) {
-		return Decimal.getNumSigFigs(Hexadecimal.getBigValue(valueString).toString())
+		return Decimal.getNumSigFigs(Hexadecimal.getBigValueFromString(valueString).toString())
 	}
 
 	/**

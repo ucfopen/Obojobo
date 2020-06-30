@@ -7,12 +7,12 @@
 	// border-bottom: 1px solid $color-border;
 
 	&.is-long-response {
-		#numeric-assessment--input {
+		.numeric-assessment--input {
 			width: 100%;
 		}
 	}
 
-	#numeric-assessment--input {
+	.numeric-assessment--input {
 		@include text-input();
 
 		// width: 11.5em * 0.85 * (1 / 0.8);

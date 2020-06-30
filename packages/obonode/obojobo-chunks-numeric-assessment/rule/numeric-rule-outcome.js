@@ -295,7 +295,14 @@ module.exports = class NumericRuleOutcome {
 	 * @return {boolean}
 	 */
 	static getIsExpectedNumSigFigs(numericInstance, rule) {
-		return rule.sigFigs.isValueInRange(Big(numericInstance.numSigFigs))
+		// Fractional values have no sig figs, so we ignore the rule in that case
+		switch (numericInstance.type) {
+			case INPUT_TYPE_FRACTIONAL:
+				return true
+
+			default:
+				return rule.sigFigs.isValueInRange(Big(numericInstance.numSigFigs))
+		}
 	}
 
 	/**

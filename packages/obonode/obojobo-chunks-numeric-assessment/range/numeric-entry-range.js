@@ -168,8 +168,8 @@ module.exports = class NumericEntryRange extends ValueRange {
 		)
 
 		// Remove units
-		if (this.min) this.min.numericInstance.clearUnit()
-		if (this.max) this.max.numericInstance.clearUnit()
+		// if (this.min) this.min.numericInstance.clearUnit()
+		// if (this.max) this.max.numericInstance.clearUnit()
 	}
 
 	/**
