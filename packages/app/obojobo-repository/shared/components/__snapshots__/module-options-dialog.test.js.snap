@@ -105,7 +105,7 @@ exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard
         View and restore previous versions.
       </div>
       <button
-        className="repository--button manage-collections-button"
+        className="repository--button "
         onClick={[Function]}
       >
         Manage Collections

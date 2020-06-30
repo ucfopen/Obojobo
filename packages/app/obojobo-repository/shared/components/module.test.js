@@ -1,4 +1,6 @@
-jest.mock('./module-menu-hoc')
+jest.mock('./module-menu-hoc', () => props => {
+	return <mock-ModuleMenu {...props}>{props.children}</mock-ModuleMenu>
+})
 
 import React from 'react'
 import Module from './module'
@@ -66,8 +68,6 @@ describe('Module', () => {
 		})
 		expect(mockClickEvent.preventDefault).toHaveBeenCalledTimes(1)
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(1)
-
-		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('the module menu is not rendered after onMouseLeave is called', () => {

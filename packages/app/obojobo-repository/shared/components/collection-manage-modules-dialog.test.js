@@ -2,7 +2,9 @@ jest.mock('react-modal', () => props => {
 	return <mock-ReactModal {...props}></mock-ReactModal>
 })
 
-jest.mock('./module-search-dialog-hoc')
+jest.mock('./module-search-dialog-hoc', () => props => {
+	return <mock-ModuleSearchDialog {...props}>{props.children}</mock-ModuleSearchDialog>
+})
 
 import React from 'react'
 import ReactModal from 'react-modal'

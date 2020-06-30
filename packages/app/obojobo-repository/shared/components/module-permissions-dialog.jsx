@@ -64,6 +64,22 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	render() {
+		let accessListItemsRender = null
+		if(this.props.draftPermissions[this.props.draftId]) {
+			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
+				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
+					<Button
+						className="close-button"
+						onClick={() => {
+							this.removePerson(p.id)
+						}}
+					>
+						×
+					</Button>
+				</PeopleListItem>
+			))
+		}
+
 		return (
 			<div className="module-permissions-dialog">
 				<div className="top-bar">
@@ -78,30 +94,20 @@ class ModulePermissionsDialog extends React.Component {
 				<div className="wrapper">
 					<h1 className="title">Module Access</h1>
 					<div className="sub-title">People who can edit this module</div>
-					<Button onClick={this.openPeoplePicker}>Add People</Button>
+					<Button id='modulePermissionsDialog-addPeopleButton'
+						onClick={this.openPeoplePicker}>
+						Add People
+					</Button>
 				</div>
 				<div className="access-list-wrapper">
 					<ul className="access-list">
-						{/* eslint-disable no-mixed-spaces-and-tabs */
-						this.props.draftPermissions[this.props.draftId]
-							? this.props.draftPermissions[this.props.draftId].items.map(p => (
-									<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
-										<Button
-											className="close-button"
-											onClick={() => {
-												this.removePerson(p.id)
-											}}
-										>
-											×
-										</Button>
-									</PeopleListItem>
-							  ))
-							: null}
+						{accessListItemsRender}
 					</ul>
 				</div>
 				<div className="wrapper">
 					{this.renderModal()}
-					<Button className="done-button secondary-button" onClick={this.props.onClose}>
+					<Button className="done-button secondary-button"
+						onClick={this.props.onClose}>
 						Done
 					</Button>
 				</div>

@@ -1,5 +1,7 @@
 jest.mock('short-uuid')
-jest.mock('./collection-menu-hoc')
+jest.mock('./collection-menu-hoc', () => props => {
+	return <mock-CollectionMenu {...props}>{props.children}</mock-CollectionMenu>
+})
 
 import React from 'react'
 import Collection from './collection'
@@ -88,8 +90,6 @@ describe('Collection', () => {
 		})
 		expect(mockClickEvent.preventDefault).toHaveBeenCalledTimes(1)
 		expect(component.root.findAllByType(CollectionMenu).length).toBe(1)
-
-		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('the collection menu is not rendered after onMouseLeave is called', () => {

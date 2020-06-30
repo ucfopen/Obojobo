@@ -37,7 +37,7 @@ const ModuleOptionsDialog = props => (
 				</ButtonLink>
 				<div className="label">Write, edit, and update.</div>
 
-				<Button
+				<Button id='moduleOptionsDialog-shareButton'
 					onClick={() => {
 						props.showModulePermissions(props)
 					}}
@@ -49,8 +49,7 @@ const ModuleOptionsDialog = props => (
 				<Button onClick={() => props.showVersionHistory(props)}>Version History</Button>
 				<div className="label">View and restore previous versions.</div>
 
-				<Button
-					className="manage-collections-button"
+				<Button id='moduleOptionsDialog-manageCollectionsButton'
 					onClick={() => {
 						props.showModuleManageCollections(props)
 					}}
@@ -59,7 +58,7 @@ const ModuleOptionsDialog = props => (
 				</Button>
 				<div className="label">Add to or remove from private collections.</div>
 
-				<Button
+				<Button id='moduleOptionsDialog-downloadJSONButton'
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
 					}}
@@ -68,7 +67,7 @@ const ModuleOptionsDialog = props => (
 				</Button>
 				<div className="label">Download a copy in JSON format.</div>
 
-				<Button
+				<Button id='moduleOptionsDialog-downloadXMLButton'
 					onClick={() => {
 						downloadDocument(props.draftId, 'xml')
 					}}
@@ -82,7 +81,7 @@ const ModuleOptionsDialog = props => (
 				</ButtonLink>
 				<div className="label">Visit this modules public page.</div>
 
-				<Button
+				<Button id='moduleOptionsDialog-deleteButton'
 					className="dangerous-button delete-button"
 					onClick={() => {
 						deleteModule(props.title, props.draftId, props.deleteModule)

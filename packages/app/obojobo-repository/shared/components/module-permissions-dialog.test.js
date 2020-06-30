@@ -1,8 +1,9 @@
 jest.mock('react-modal', () => props => {
 	return <mock-ReactModal {...props}></mock-ReactModal>
 })
-
-jest.mock('./people-search-dialog-hoc')
+jest.mock('./people-search-dialog-hoc', () => props => {
+	return <mock-PeopleSearchDialog {...props}>{props.children}</mock-PeopleSearchDialog>
+})
 
 import React from 'react'
 import ReactModal from 'react-modal'
@@ -99,7 +100,7 @@ describe('ModulePermissionsDialog', () => {
 		expectPeopleSearchModalToBeRendered(component, false)
 
 		act(() => {
-			component.root.findByProps({ className: 'new-button' }).props.onClick()
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
 			component.update(reusableComponent)
 		})
 
@@ -116,7 +117,7 @@ describe('ModulePermissionsDialog', () => {
 		expectPeopleSearchModalToBeRendered(component, false)
 
 		act(() => {
-			component.root.findByProps({ className: 'new-button' }).props.onClick()
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
 			component.update(reusableComponent)
 		})
 
@@ -140,7 +141,7 @@ describe('ModulePermissionsDialog', () => {
 		expectPeopleSearchModalToBeRendered(component, false)
 
 		act(() => {
-			component.root.findByProps({ className: 'new-button' }).props.onClick()
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
 			component.update(reusableComponent)
 		})
 
@@ -164,7 +165,7 @@ describe('ModulePermissionsDialog', () => {
 		expectPeopleSearchModalToBeRendered(component, false)
 
 		act(() => {
-			component.root.findByProps({ className: 'new-button' }).props.onClick()
+			component.root.findByProps({ id: 'modulePermissionsDialog-addPeopleButton' }).props.onClick()
 			component.update(reusableComponent)
 		})
 

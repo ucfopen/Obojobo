@@ -201,7 +201,8 @@ describe('Dashboard', () => {
 		// MODE_RECENT will remove the module filtering options
 		//  normally it would be a child of the control bar
 		expect(controlBar.children[0].children.length).toBe(1)
-		expect(component.root.findAllByType(Search).length).toBe(1)
+		// no filters should be on the page since there are no modules or collections to filter
+		expect(component.root.findAllByType(Search).length).toBe(0)
 
 		// MODE_RECENT will remove the module sorting options
 		const expectedModuleSortClasses = 'repository--main-content--sort repository--module-sort'
@@ -1114,7 +1115,11 @@ describe('Dashboard', () => {
 		expect(dashboardProps.deleteCollection).not.toHaveBeenCalled()
 
 		// delete button clicked - confirmed
-		window.location.assign = jest.fn()
+		delete window.location
+		window.location = {
+			assign: jest.fn()
+		}
+
 		window.confirm.mockReset()
 		window.confirm.mockReturnValue(true)
 		controlBar.findByProps({ className: 'dangerous-button' }).props.onClick()

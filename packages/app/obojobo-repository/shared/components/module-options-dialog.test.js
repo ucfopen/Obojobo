@@ -46,7 +46,7 @@ describe('ModuleOptionsDialog', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		//there are a few buttons on the page using this class
-		component.root.findAllByProps({ className: 'new-button' })[0].props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-shareButton' }).props.onClick()
 
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledTimes(1)
 		expect(defaultProps.showModulePermissions).toHaveBeenCalledWith(defaultProps)
@@ -56,7 +56,7 @@ describe('ModuleOptionsDialog', () => {
 		defaultProps.showModuleManageCollections = jest.fn()
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
-		component.root.findAllByProps({ className: 'manage-collections-button' })[0].props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-manageCollectionsButton' }).props.onClick()
 
 		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledTimes(1)
 		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledWith(defaultProps)
@@ -66,7 +66,7 @@ describe('ModuleOptionsDialog', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		//there are a few buttons on the page using this class
-		component.root.findAllByProps({ className: 'new-button' })[1].props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-downloadJSONButton' }).props.onClick()
 
 		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledTimes(1)
 		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId', 'json')
@@ -76,7 +76,7 @@ describe('ModuleOptionsDialog', () => {
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
 		//there are a few buttons on the page using this class
-		component.root.findAllByProps({ className: 'new-button' })[2].props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-downloadXMLButton' }).props.onClick()
 
 		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledTimes(1)
 		expect(mockDownloadDocument.downloadDocument).toHaveBeenCalledWith('mockDraftId', 'xml')
@@ -90,7 +90,7 @@ describe('ModuleOptionsDialog', () => {
 		window.confirm.mockReturnValue(false)
 
 		//there are a few buttons on the page using this class
-		component.root.findByProps({ className: 'new-button dangerous-button' }).props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-deleteButton' }).props.onClick()
 
 		expect(window.confirm).toHaveBeenCalledTimes(1)
 		expect(window.confirm).toHaveBeenCalledWith('Delete "Mock Module Title" id: mockDraftId ?')
@@ -106,7 +106,7 @@ describe('ModuleOptionsDialog', () => {
 		window.confirm.mockReturnValue(true)
 
 		//there are a few buttons on the page using this class
-		component.root.findByProps({ className: 'new-button dangerous-button' }).props.onClick()
+		component.root.findByProps({ id: 'moduleOptionsDialog-deleteButton' }).props.onClick()
 
 		expect(window.confirm).toHaveBeenCalledTimes(1)
 		expect(window.confirm).toHaveBeenCalledWith('Delete "Mock Module Title" id: mockDraftId ?')
