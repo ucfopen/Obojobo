@@ -33,7 +33,9 @@ const {
 	CLEAR_MODULE_SEARCH_RESULTS,
 	SHOW_COLLECTION_RENAME,
 	RENAME_COLLECTION,
-	DELETE_COLLECTION
+	DELETE_COLLECTION,
+	SHOW_VERSION_HISTORY,
+	RESTORE_VERSION
 } = require('../actions/dashboard-actions')
 
 const Pack = require('redux-pack')
@@ -785,7 +787,151 @@ describe('Dashboard Reducer', () => {
 		expect(newState.selectedCollection).toEqual(mockSelectedCollection)
 	})
 
-	test('unrecognized action types just return the state', () => {
+	test('SHOW_VERSION_HISTORY action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			dialogProps: null,
+			versionHistory: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			},
+			selectedModule: {
+				draftId: 'someMockDraftId',
+				title: 'Some Mock Module Title'
+			}
+		}
+
+		const mockModule = {
+			draftId: 'someOtherMockDraftId',
+			title: 'Some Other Mock Module Title'
+		}
+
+		const mockHistoryItems = [
+			{
+				id: 'mockHistoryId1',
+				createdAtDisplay: 'mockCreatedAtDisplay1',
+				username: 'mockUserName1',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			},
+			{
+				id: 'mockHistoryId2',
+				createdAtDisplay: 'mockCreatedAtDisplay2',
+				username: 'mockUserName1',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			},
+			{
+				id: 'mockHistoryId3',
+				createdAtDisplay: 'mockCreatedAtDisplay3',
+				username: 'mockUserName2',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			}
+		]
+		const action = {
+			type: SHOW_VERSION_HISTORY,
+			meta: {
+				module: mockModule
+			},
+			payload: mockHistoryItems
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.dialog).toEqual('module-version-history')
+		expect(newState.selectedModule).toEqual(mockModule)
+		expect(newState.versionHistory).toEqual({
+			isFetching: true,
+			hasFetched: false,
+			items: []
+		})
+
+		newState = handleSuccess(handler)
+		expect(newState.versionHistory).not.toEqual(initialState.versionHistory)
+		expect(newState.versionHistory).toEqual({
+			isFetching: false,
+			hasFetched: true,
+			items: mockHistoryItems
+		})
+	})
+
+	test('RESTORE_VERSION action modifies state correctly', () => {
+		const initialState = {
+			dialog: null,
+			dialogProps: null,
+			versionHistory: {
+				isFetching: false,
+				hasFetched: false,
+				items: []
+			},
+			selectedModule: {
+				draftId: 'someMockDraftId',
+				title: 'Some Mock Module Title'
+			}
+		}
+
+		const mockModule = {
+			draftId: 'someOtherMockDraftId',
+			title: 'Some Other Mock Module Title'
+		}
+
+		const mockHistoryItems = [
+			{
+				id: 'mockHistoryId1',
+				createdAtDisplay: 'mockCreatedAtDisplay1',
+				username: 'mockUserName1',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			},
+			{
+				id: 'mockHistoryId2',
+				createdAtDisplay: 'mockCreatedAtDisplay2',
+				username: 'mockUserName1',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			},
+			{
+				id: 'mockHistoryId3',
+				createdAtDisplay: 'mockCreatedAtDisplay3',
+				username: 'mockUserName2',
+				versionNumber: 'mockVersionNumber1',
+				isRestored: false
+			}
+		]
+		const action = {
+			type: RESTORE_VERSION,
+			meta: {
+				module: mockModule
+			},
+			payload: mockHistoryItems
+		}
+
+		// asynchronous action - state changes on success
+		const handler = dashboardReducer(initialState, action)
+		let newState
+
+		newState = handleStart(handler)
+		expect(newState.versionHistory).toEqual({
+			isFetching: true,
+			hasFetched: false,
+			items: []
+		})
+
+		newState = handleSuccess(handler)
+		expect(newState.versionHistory).not.toEqual(initialState.versionHistory)
+		expect(newState.versionHistory).toEqual({
+			isFetching: false,
+			hasFetched: true,
+			items: mockHistoryItems
+		})
+	})
+
+	test('unrecognized action types just return the current state', () => {
 		const initialState = {
 			key: 'initialValue'
 		}
