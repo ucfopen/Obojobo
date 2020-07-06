@@ -7,7 +7,6 @@ import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 import ImportQuestionModal from './import-questions-modal'
 import emptyQB from './empty-node.json'
 
@@ -148,25 +147,10 @@ const displaySettings = (editor, element, content) => {
 	)
 }
 
-const getQuestionList = draft => {
-	if (draft.type === QUESTION_NODE) return [draft]
-
-	let result = []
-	for (const node of draft.children) {
-		result = result.concat(getQuestionList(node))
-	}
-
-	return result
-}
 const getQuestionListModel = model => {
 	if (model.attributes.type === QUESTION_NODE) return [model]
 
 	let result = []
-	// console.log(model.children.models)
-	// for (const child of model.children.models) {
-	// 	console.log(child)
-	// 	result = result.concat(getQuestionListModel(child))
-	// }
 	model.children.models.forEach(child => {
 		result = result.concat(getQuestionListModel(child))
 	})
@@ -183,40 +167,8 @@ const QuestionBank = props => {
 			description: 'Import',
 			type: 'button',
 			action: () => {
-				// const model = EditorUtil.json()
-
-				// const json = model.attributes
-				// const questionList = getQuestionList(json)
-				// const question = Common.Registry.getItemForType('ObojoboDraft.Chunks.Text')
-				// console.log('noo', window.__lo)
-				// import 'obojobo-document-engine/__mocks__/_load-all-chunks.js'
-				React.lazy(() => import('obojobo-document-engine/__mocks__/_load-all-chunks.js'))
-				console.log(window.__lo)
-				const modelTest = OboModel.create(window.__lo)
-
-				// console.log('modelTest', modelTest)
-				// console.log('modelTest', modelTest.getComponentClass())
-				// console.log(modelTest.getComponentClass)
-				const questionList = getQuestionListModel(modelTest)
-				console.log('questionList', questionList)
-				console.log('questionList class', questionList[0].getComponentClass())
-
-				// console.log(question)
-				// console.log(question.componentClass)
-
-				// questionList.forEach(q => {
-				// 	const test = OboModel.create(q)
-				// 	test.children.models.map(c => {
-				// 		console.log(c.getComponentClass())
-				// 	})
-				// })
-				// console.log(question.oboToSlate(questionList[0]))
-				// const node = question.oboToSlate(questionList[0])
-
-				// const path = ReactEditor.findPath(editor, element)
-				// return Transforms.insertNodes(editor, node, {
-				// 	at: path.concat(element.children.length)
-				// })
+				const root = OboModel.getRoot()
+				const questionList = getQuestionListModel(root)
 
 				ModalUtil.show(<ImportQuestionModal questionList={questionList} editor={editor} />)
 			}

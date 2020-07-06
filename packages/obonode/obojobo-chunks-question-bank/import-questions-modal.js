@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Common from 'Common'
-import JsonRenderer from './jsonRenderer'
+// import JsonRenderer from './jsonRenderer'
 
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -16,17 +16,21 @@ const importQuestionModal = props => {
 		ModalUtil.hide()
 	}
 
+	const JsonRenderer = React.lazy(() => import('./jsonRenderer'))
+
 	return (
 		<SimpleDialog cancelOk title="Import Questions" onConfirm={confirm} onCancel={cancel}>
-			{questionList.map(model => {
-				return (
-					<div key={model} className="json-renderer">
-						{model.children.models.map(child => {
-							return <JsonRenderer key={child} json={child.attributes} />
-						})}
-					</div>
-				)
-			})}
+			<Suspense fallback={<div>Loading...</div>}>
+				{questionList.map(questionModal => {
+					return (
+						<div key={questionModal.id} className="json-renderer">
+							{questionModal.children.map(child => {
+								return <JsonRenderer key={child.id} model={child} />
+							})}
+						</div>
+					)
+				})}
+			</Suspense>
 		</SimpleDialog>
 	)
 }
