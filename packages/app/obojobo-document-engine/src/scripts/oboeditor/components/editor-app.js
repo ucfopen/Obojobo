@@ -183,6 +183,7 @@ class EditorApp extends React.Component {
 	}
 
 	renderVisualEditor() {
+		window.__lo = this.state.draft
 		return (
 			<VisualEditor
 				page={this.state.editorState.currentPageModel}
