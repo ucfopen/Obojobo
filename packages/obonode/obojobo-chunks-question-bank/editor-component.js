@@ -147,17 +147,6 @@ const displaySettings = (editor, element, content) => {
 	)
 }
 
-const getQuestionListModel = model => {
-	if (model.attributes.type === QUESTION_NODE) return [model]
-
-	let result = []
-	model.children.models.forEach(child => {
-		result = result.concat(getQuestionListModel(child))
-	})
-
-	return result
-}
-
 const QuestionBank = props => {
 	const { editor, element, children } = props
 
@@ -174,7 +163,20 @@ const QuestionBank = props => {
 			description: 'Import',
 			type: 'button',
 			action: () => {
-				const questionList = getQuestionListModel(OboModel.getRoot())
+				// This function return all questions outside of the current QuestionBank
+				const getQuestionList = model => {
+					if (model.get('id') === element.id) return []
+					if (model.get('type') === QUESTION_NODE) return [model]
+
+					let result = []
+					model.children.models.forEach(child => {
+						result = result.concat(getQuestionList(child))
+					})
+
+					return result
+				}
+
+				const questionList = getQuestionList(OboModel.getRoot())
 
 				ModalUtil.show(
 					<ImportQuestionModal
