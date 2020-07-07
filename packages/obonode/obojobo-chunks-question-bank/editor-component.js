@@ -161,16 +161,28 @@ const getQuestionListModel = model => {
 const QuestionBank = props => {
 	const { editor, element, children } = props
 
+	const importQuestions = nodes => {
+		const path = ReactEditor.findPath(editor, element)
+		nodes.forEach((node, index) => {
+			Transforms.insertNodes(editor, node, { at: path.concat(element.children.length + index) })
+		})
+	}
+
 	const contentDescription = [
 		{
 			name: 'Import Questions',
 			description: 'Import',
 			type: 'button',
 			action: () => {
-				const root = OboModel.getRoot()
-				const questionList = getQuestionListModel(root)
+				const questionList = getQuestionListModel(OboModel.getRoot())
 
-				ModalUtil.show(<ImportQuestionModal questionList={questionList} editor={editor} />)
+				ModalUtil.show(
+					<ImportQuestionModal
+						questionList={questionList}
+						editor={editor}
+						importQuestions={importQuestions}
+					/>
+				)
 			}
 		}
 	]

@@ -1,4 +1,8 @@
 .json-renderer {
 	border: 1px solid black;
 	border-radius: 5px;
+
+	&.is-selected {
+		opacity: 0.5;
+	}
 }
