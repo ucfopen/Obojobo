@@ -411,13 +411,16 @@ const Dashboard = props => {
 				</React.Fragment>
 			)
 
+			// eslint-disable-next-line no-case-declarations
 			let collectionFilterRender = null
 			if (props.myCollections.length > 0) {
-				collectionFilterRender = <Search
-					value={props.collectionSearchString}
-					placeholder="Filter Collections..."
-					onChange={props.filterCollections}
-				/>
+				collectionFilterRender = (
+					<Search
+						value={props.collectionSearchString}
+						placeholder="Filter Collections..."
+						onChange={props.filterCollections}
+					/>
+				)
 			}
 
 			collectionAreaRender = (

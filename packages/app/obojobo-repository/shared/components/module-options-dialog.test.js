@@ -56,10 +56,24 @@ describe('ModuleOptionsDialog', () => {
 		defaultProps.showModuleManageCollections = jest.fn()
 		const component = create(<ModuleOptionsDialog {...defaultProps} />)
 
-		component.root.findByProps({ id: 'moduleOptionsDialog-manageCollectionsButton' }).props.onClick()
+		component.root
+			.findByProps({ id: 'moduleOptionsDialog-manageCollectionsButton' })
+			.props.onClick()
 
 		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledTimes(1)
 		expect(defaultProps.showModuleManageCollections).toHaveBeenCalledWith(defaultProps)
+	})
+
+	test('"Version History" button calls showVersionHistory', () => {
+		defaultProps.showVersionHistory = jest.fn()
+		const component = create(<ModuleOptionsDialog {...defaultProps} />)
+
+		component.root
+			.findByProps({ id: 'moduleOptionsDialog-showVersionHistoryButton' })
+			.props.onClick()
+
+		expect(defaultProps.showVersionHistory).toHaveBeenCalledTimes(1)
+		expect(defaultProps.showVersionHistory).toHaveBeenCalledWith(defaultProps)
 	})
 
 	test('"Download JSON" button calls downloadDocument with the correct arguments', () => {

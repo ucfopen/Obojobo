@@ -41,6 +41,7 @@ import CollectionRenameDialog from './collection-rename-dialog'
 import ModuleManageCollectionsDialog from './module-manage-collections-dialog'
 import ModulePermissionsDialog from './module-permissions-dialog'
 import ModuleOptionsDialog from './module-options-dialog'
+import VersionHistoryDialog from './version-history-dialog'
 
 const { MODE_RECENT, MODE_ALL, MODE_COLLECTION } = require('../repository-constants')
 
@@ -164,6 +165,11 @@ describe('Dashboard', () => {
 				hasFetched: false,
 				isFetching: false,
 				timestamp: 3,
+				items: []
+			},
+			versionHistory: {
+				isFetching: false,
+				hasFetched: false,
 				items: []
 			},
 			closeModal: jest.fn()
@@ -1067,6 +1073,27 @@ describe('Dashboard', () => {
 		])
 		dialogComponent.props.onClose()
 		expectMethodToBeCalledOnceWith(dashboardProps.closeModal)
+	})
+
+	test('renders "Version History" dialog and runs callbacks properly', () => {
+		dashboardProps.dialog = 'module-version-history'
+		dashboardProps.selectedModule.title = 'Mock Module Title'
+		dashboardProps.restoreVersion = jest.fn()
+
+		let component
+		act(() => {
+			component = create(<Dashboard key="dashboardComponent" {...dashboardProps} />)
+		})
+
+		expectDialogToBeRendered(component, VersionHistoryDialog, 'Module Version History')
+		const dialogComponent = component.root.findByType(VersionHistoryDialog)
+		expect(dialogComponent.props.title).toBe('Mock Module Title - Version History')
+
+		dialogComponent.props.restoreVersion()
+		expect(dashboardProps.restoreVersion).toHaveBeenCalledTimes(1)
+
+		dialogComponent.props.onClose()
+		expect(dashboardProps.closeModal).toHaveBeenCalledTimes(1)
 	})
 
 	test('renders no dialogs if props.dialog value is unsupported', () => {

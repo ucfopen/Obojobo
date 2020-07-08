@@ -234,6 +234,151 @@ describe('repository api route', () => {
 			})
 	})
 
+	test('get /drafts/:draftId/revisions/ returns the expected response, no after - hasMoreResults false', () => {
+		const mockResult = {
+			revisions: [
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId1'
+				},
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId2'
+				}
+			],
+			hasMoreResults: false
+		}
+
+		DraftSummary.fetchAllDraftRevisions = jest.fn()
+		DraftSummary.fetchAllDraftRevisions.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts/mockDraftId/revisions/')
+			.then(response => {
+				// query.after is optional - will be undefined otherwise
+				// eslint-disable-next-line no-undefined
+				expect(DraftSummary.fetchAllDraftRevisions).toHaveBeenCalledWith('mockDraftId', undefined)
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult.revisions)
+				expect(response.links).toEqual({})
+			})
+	})
+	test('get /drafts/:draftId/revisions/ returns the expected response, no after - hasMoreResults true', () => {
+		const mockResult = {
+			revisions: [
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId1'
+				},
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId2'
+				}
+			],
+			hasMoreResults: true
+		}
+
+		DraftSummary.fetchAllDraftRevisions = jest.fn()
+		DraftSummary.fetchAllDraftRevisions.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get('/drafts/mockDraftId/revisions/')
+			.then(response => {
+				// query.after is optional - will be undefined otherwise
+				// eslint-disable-next-line no-undefined
+				expect(DraftSummary.fetchAllDraftRevisions).toHaveBeenCalledWith('mockDraftId', undefined)
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult.revisions)
+				expect(response.links).toHaveProperty('next')
+				const nextLinkRegex = new RegExp(
+					/^http:\/\/(.*)\/drafts\/mockDraftId\/revisions\/\?after=mockRevisionId2$/
+				)
+				expect(response.links.next).toEqual(expect.stringMatching(nextLinkRegex))
+			})
+	})
+	test('get /drafts/:draftId/revisions/ returns the expected response, after - hasMoreResults false', () => {
+		// after ID has to be a valid UUID and we can't mock the helper function, so...
+		const mockAfterUUID = '00000000-0000-0000-0000-000000000000'
+
+		const mockResult = {
+			revisions: [
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId1'
+				},
+				{
+					draftId: 'mockDraftId',
+					revisionId: 'mockRevisionId2'
+				}
+			],
+			hasMoreResults: false
+		}
+
+		DraftSummary.fetchAllDraftRevisions = jest.fn()
+		DraftSummary.fetchAllDraftRevisions.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get(`/drafts/mockDraftId/revisions?after=${mockAfterUUID}`)
+			.then(response => {
+				expect(DraftSummary.fetchAllDraftRevisions).toHaveBeenCalledWith(
+					'mockDraftId',
+					mockAfterUUID
+				)
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult.revisions)
+				expect(response.links).toEqual({})
+			})
+	})
+	test('get /drafts/:draftId/revisions/ catches unexpected errors correctly', () => {
+		expect.hasAssertions()
+
+		DraftSummary.fetchAllDraftRevisions.mockRejectedValueOnce('database error')
+
+		return request(app)
+			.get('/drafts/mockDraftId/revisions')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.error).toHaveProperty('text', 'Server Error: database error')
+			})
+	})
+
+	test('get /drafts/:draftId/revisions/:revisionId returns the expected response', () => {
+		// revision ID has to be a valid UUID and we can't mock the helper function, so...
+		const mockRevisionUUID = '00000000-0000-0000-0000-000000000000'
+
+		const mockResult = {
+			draftId: 'mockDraftId',
+			revisionId: mockRevisionUUID,
+			title: 'whatever1'
+		}
+
+		DraftSummary.fetchDraftRevisionById = jest.fn()
+		DraftSummary.fetchDraftRevisionById.mockResolvedValueOnce(mockResult)
+
+		expect.hasAssertions()
+
+		return request(app)
+			.get(`/drafts/mockDraftId/revisions/${mockRevisionUUID}`)
+			.then(response => {
+				expect(DraftSummary.fetchDraftRevisionById).toHaveBeenCalledWith(
+					'mockDraftId',
+					mockRevisionUUID
+				)
+
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toEqual(mockResult)
+			})
+	})
+
 	test('get /users/search returns the expected response when given a search string', () => {
 		expect.hasAssertions()
 
@@ -288,7 +433,8 @@ describe('repository api route', () => {
 		const mockDraftObject = {
 			id: 'mockNewDraftId',
 			content: {
-				id: 'mockNewDraftContentId'
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
 			}
 		}
 
@@ -316,6 +462,7 @@ describe('repository api route', () => {
 					mockCurrentDocument.draftId
 				)
 				expect(Draft.fetchById).toHaveBeenCalledWith(mockCurrentDocument.draftId)
+				expect(mockDraftObject.content.title).toEqual('mockDraftTitle Copy')
 				expect(Draft.createWithContent).toHaveBeenCalledWith(mockCurrentUser.id, mockDraftObject)
 				expect(DraftsMetadata).toHaveBeenCalledWith({
 					draft_id: 'mockNewDraftId',
@@ -337,6 +484,41 @@ describe('repository api route', () => {
 					visitId: 'mockVisitId'
 				})
 				expect(response.statusCode).toBe(200)
+			})
+	})
+
+	test('post /drafts/:draftId/copy sets title if one is provided', () => {
+		expect.hasAssertions()
+
+		const mockDraftObject = {
+			id: 'mockNewDraftId',
+			content: {
+				id: 'mockNewDraftContentId',
+				title: 'mockDraftTitle'
+			}
+		}
+
+		const mockDraftRootToObject = jest.fn()
+		mockDraftRootToObject.mockReturnValueOnce(mockDraftObject)
+
+		const mockDraft = {
+			root: {
+				toObject: mockDraftRootToObject
+			}
+		}
+
+		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
+
+		Draft.fetchById = jest.fn()
+		Draft.fetchById.mockResolvedValueOnce(mockDraft)
+		Draft.createWithContent.mockResolvedValueOnce(mockDraftObject)
+
+		return request(app)
+			.post('/drafts/mockDraftId/copy')
+			.send({ visitId: 'mockVisitId', title: 'New Draft Title' })
+			.then(() => {
+				expect(mockDraftObject.content.title).toEqual('New Draft Title')
+				// everything else is unchanged from above
 			})
 	})
 

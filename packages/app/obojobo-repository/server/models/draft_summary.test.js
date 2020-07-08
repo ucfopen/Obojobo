@@ -16,6 +16,33 @@ describe.only('DraftSummary Model', () => {
 		editor: 'visual'
 	}
 
+	const mockRawRevisionHistory = [
+		{
+			id: 'mockDraftVersionId1',
+			draft_id: 'mockDraftId',
+			created_at: new Date(10000000000).toISOString(),
+			user_id: 0,
+			first_name: 'firstName',
+			last_name: 'lastName'
+		},
+		{
+			id: 'mockDraftVersionId2',
+			draft_id: 'mockDraftId',
+			created_at: new Date(20000000000).toISOString(),
+			user_id: 0,
+			first_name: 'firstName',
+			last_name: 'lastName'
+		},
+		{
+			id: 'mockDraftVersionId2',
+			draft_id: 'mockDraftId',
+			created_at: new Date(30000000000).toISOString(),
+			user_id: 0,
+			first_name: 'firstName',
+			last_name: 'lastName'
+		}
+	]
+
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
@@ -267,6 +294,333 @@ describe.only('DraftSummary Model', () => {
 				'not found in db',
 				whereSQL,
 				mockQueryValues
+			)
+			expect(err).toBe('Error loading DraftSummary by query')
+		})
+	})
+
+	test('fetchAllDraftRevisions returns all versions of a draft when afterVersionId is null or missing', () => {
+		expect.hasAssertions()
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
+			expect(db.any).toHaveBeenCalledWith(query, {
+				afterVersionId: null,
+				count: 51,
+				draftId: 'mockDraftId'
+			})
+			expect(history.revisions.length).toBe(mockRawRevisionHistory.length)
+			for (let i = 0; i < history.revisions.length; i++) {
+				const revision = history.revisions[i]
+				expect(revision).toBeInstanceOf(DraftSummary)
+				expect(revision.draftId).toBe('mockDraftId')
+				expect(revision.userId).toBe(0)
+				expect(revision.createdAt).toBe(mockRawRevisionHistory[i].created_at)
+				expect(revision.revisionId).toBe(mockRawRevisionHistory[i].id)
+				expect(revision.userFullName).toBe('firstName lastName')
+
+				// nothing else was grabbed in the query
+				expect(revision.title).toBeUndefined()
+				expect(revision.updatedAt).toBeUndefined()
+				expect(revision.latestVersion).toBeUndefined()
+				expect(revision.editor).toBeUndefined()
+				expect(revision.json).toBeUndefined()
+			}
+			// would only be true if the number of results returned was equal to the max number per batch
+			expect(history.hasMoreResults).toBe(false)
+		})
+	})
+
+	// there's no real way of testing this short of running the actual queries against an actual database
+	// test will make sure the correct query is being generated
+	test('fetchAllDraftRevisions returns revisions created later than a provided afterVersionId', () => {
+		expect.hasAssertions()
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce([
+			{ ...mockRawRevisionHistory[1] },
+			{ ...mockRawRevisionHistory[2] }
+		])
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+				AND drafts_content.created_at < (
+					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
+				)
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		// bonus test - make sure count is equal to the provided number plus one
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId', 'mockAfterVersionId', 20).then(
+			history => {
+				expect(db.any).toHaveBeenCalledWith(query, {
+					afterVersionId: 'mockAfterVersionId',
+					count: 21,
+					draftId: 'mockDraftId'
+				})
+				expect(history.revisions.length).toBeLessThan(mockRawRevisionHistory.length)
+				for (let i = 1; i < history.length; i++) {
+					const revision = history.revisions[i]
+					expect(revision).toBeInstanceOf(DraftSummary)
+					expect(revision.draftId).toBe('mockDraftId')
+					expect(revision.userId).toBe(0)
+					expect(revision.createdAt).toBe(mockRawRevisionHistory[i + 1].created_at)
+					expect(revision.revisionId).toBe(mockRawRevisionHistory[i + 1].id)
+					expect(revision.userFullName).toBe('firstName lastName')
+
+					// nothing else was grabbed in the query
+					expect(revision.title).toBeUndefined()
+					expect(revision.updatedAt).toBeUndefined()
+					expect(revision.latestVersion).toBeUndefined()
+					expect(revision.editor).toBeUndefined()
+					expect(revision.json).toBeUndefined()
+				}
+				// would only be true if the number of results returned was equal to the max number per batch
+				expect(history.hasMoreResults).toBe(false)
+			}
+		)
+	})
+
+	// again, no real way of testing this without querying a real database
+	// can approximate it
+	test('fetchAllDraftRevisions indicates when more revisions are available', () => {
+		expect.hasAssertions()
+
+		const mockDbReturn = []
+		for (let i = 0; i < 51; i++) {
+			mockDbReturn.push({
+				id: `mockDraftVersionId1${i + 1}`,
+				draft_id: 'mockDraftId',
+				created_at: new Date(10000000000 + 1000000000 * i).toISOString(),
+				user_id: 0,
+				first_name: 'firstName',
+				last_name: 'lastName'
+			})
+		}
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce(mockDbReturn)
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
+			expect(db.any).toHaveBeenCalledWith(query, {
+				afterVersionId: null,
+				count: 51,
+				draftId: 'mockDraftId'
+			})
+			expect(history.revisions.length).toBe(50)
+			// would only be true if the number of results returned was equal to the max number per batch
+			expect(history.hasMoreResults).toBe(true)
+		})
+	})
+
+	test('fetchAllDraftRevisions constrains the result count to a minimum', () => {
+		expect.hasAssertions()
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1).then(() => {
+			expect(db.any).toHaveBeenCalledWith(query, {
+				afterVersionId: null,
+				count: 11, //minimum count value is 10, plus one
+				draftId: 'mockDraftId'
+			})
+		})
+	})
+
+	test('fetchAllDraftRevisions constrains the result count to a maximum', () => {
+		expect.hasAssertions()
+
+		db.any = jest.fn()
+		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1000).then(() => {
+			expect(db.any).toHaveBeenCalledWith(query, {
+				afterVersionId: null,
+				count: 101, //maximum count value is 100, plus one
+				draftId: 'mockDraftId'
+			})
+		})
+	})
+
+	test('fetchAllDraftRevisions catches database errors', () => {
+		expect.hasAssertions()
+
+		db.any.mockRejectedValueOnce(new Error('not found in db'))
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		return DraftSummary.fetchAllDraftRevisions('mockDraftId').catch(err => {
+			expect(logger.error).toHaveBeenCalledWith(
+				'fetchAllDraftRevisions',
+				'not found in db',
+				query,
+				'mockDraftId'
+			)
+			expect(err).toBe('Error loading DraftSummary by query')
+		})
+	})
+
+	test('fetchDraftRevisionById returns a draft revision', () => {
+		expect.hasAssertions()
+
+		const mockCreationDate = new Date().toISOString()
+
+		db.one = jest.fn()
+		db.one.mockResolvedValueOnce({
+			id: 'mockRevisionId',
+			draft_id: 'mockDraftId',
+			created_at: mockCreationDate,
+			content: 'mockDraftContent'
+		})
+
+		const query = `
+			SELECT
+				id,
+				draft_id,
+				created_at,
+				content
+			FROM drafts_content
+			WHERE draft_id = $[draftId] AND id = $[revisionId]
+		`
+
+		return DraftSummary.fetchDraftRevisionById('mockDraftId', 'mockRevisionId').then(revision => {
+			expect(db.one).toHaveBeenCalledWith(query, {
+				draftId: 'mockDraftId',
+				revisionId: 'mockRevisionId'
+			})
+			expect(revision).toBeInstanceOf(DraftSummary)
+			expect(revision.draftId).toBe('mockDraftId')
+			expect(revision.createdAt).toBe(mockCreationDate)
+			expect(revision.json).toBe('mockDraftContent')
+			expect(revision.revisionId).toBe('mockRevisionId')
+		})
+	})
+
+	test('fetchDraftRevisionById catches database errors', () => {
+		expect.hasAssertions()
+
+		db.one.mockRejectedValueOnce(new Error('not found in db'))
+
+		const query = `
+			SELECT
+				id,
+				draft_id,
+				created_at,
+				content
+			FROM drafts_content
+			WHERE draft_id = $[draftId] AND id = $[revisionId]
+		`
+
+		return DraftSummary.fetchDraftRevisionById('mockDraftId', 'mockRevisionId').catch(err => {
+			expect(logger.error).toHaveBeenCalledWith(
+				'fetchDraftRevisionById',
+				'not found in db',
+				query,
+				{ draftId: 'mockDraftId', revisionId: 'mockRevisionId' }
 			)
 			expect(err).toBe('Error loading DraftSummary by query')
 		})

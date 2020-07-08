@@ -3,7 +3,6 @@ const { CSSTransition } = require('react-transition-group')
 const React = require('react')
 const ModuleImage = require('./module-image')
 const Button = require('./button')
-const ButtonLink = require('./button-link')
 const Loading = require('./loading')
 const { urlForEditor } = require('../repository-utils')
 const ReactModal = require('react-modal')
@@ -31,7 +30,7 @@ class VersionHistoryDialog extends React.Component {
 		this.menuRef = React.createRef()
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		// when the list goes from empty to not-empty
 		// assume the list just loaded/refreshed
 		// so select the first item.
@@ -146,7 +145,7 @@ class VersionHistoryDialog extends React.Component {
 	render() {
 		const isFirstSelected = this.state.selectedIndex === 0
 		const selectedRevision = this.props.versionHistory[this.state.selectedIndex] || {}
-		const currentVerstionTitle = isFirstSelected
+		const currentVersionTitle = isFirstSelected
 			? 'Latest Version'
 			: `Version ${selectedRevision.versionNumber} from ${selectedRevision.createdAtDisplay}`
 
@@ -175,7 +174,7 @@ class VersionHistoryDialog extends React.Component {
 								>
 									Restore this version
 								</Button>
-								<span>Viewing: {currentVerstionTitle}</span>
+								<span>Viewing: {currentVersionTitle}</span>
 								<small>Note: Changes made in preview window will not be saved.</small>
 							</div>
 							<iframe src={this.state.editorUrl} frameBorder="0" loading="lazy" />

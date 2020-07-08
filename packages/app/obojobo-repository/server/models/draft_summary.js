@@ -175,15 +175,14 @@ class DraftSummary {
 		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
 		count += 1 // add 1 so we'll know if there are more to get after count
 
+		let whereQuery = 'drafts_content.draft_id = $[draftId]'
 		// if afterVersionId is provided, we'll reduce
 		// the results to any revisions saved before afterVersionId
-		let whereAfterVersion = ''
 		if (afterVersionId) {
-			whereAfterVersion = `
+			whereQuery += `
 				AND drafts_content.created_at < (
 					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
-				)
-			`
+				)`
 		}
 
 		const query = `
@@ -198,8 +197,7 @@ class DraftSummary {
 			JOIN users
 				ON drafts_content.user_id = users.id
 			WHERE
-				drafts_content.draft_id = $[draftId]
-				${whereAfterVersion}
+				${whereQuery}
 			ORDER BY
 				drafts_content.created_at DESC
 			LIMIT $[count];
@@ -232,7 +230,7 @@ class DraftSummary {
 			.one(query, { draftId, revisionId })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchAllDraftVersions', error.message, query, draftId)
+				logger.error('fetchDraftRevisionById', error.message, query, { draftId, revisionId })
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
