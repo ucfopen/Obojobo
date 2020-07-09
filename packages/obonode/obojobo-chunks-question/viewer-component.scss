@@ -313,6 +313,10 @@
 		&.is-not-correct .flipper {
 			border: 1.25px solid $color-incorrect;
 		}
+
+		&.is-no-score .flipper {
+			border: 1.25px solid $color-survey;
+		}
 	}
 
 	&.is-type-survey {

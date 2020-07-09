@@ -40,7 +40,7 @@ class Question extends React.Component {
 	}
 
 	onSetType(event) {
-		event.preventDefault()
+		// event.preventDefault()
 
 		const type = event.target.checked ? 'survey' : 'default'
 
@@ -53,11 +53,19 @@ class Question extends React.Component {
 		)
 
 		// The Question Assessment item should be the last child
-		const lastChildIndex = this.props.element.children.length - 1
+		const lastChildIndex = this.getHasSolution()
+			? this.props.element.children.length - 2
+			: this.props.element.children.length - 1
 		return Transforms.setNodes(
 			this.props.editor,
 			{ questionType: type },
 			{ at: path.concat(lastChildIndex) }
+		)
+	}
+
+	getHasSolution() {
+		return (
+			this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
 		)
 	}
 
@@ -68,8 +76,7 @@ class Question extends React.Component {
 		const newBlock = item.cloneBlankNode()
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		const hasSolution =
-			this.props.element.children[this.props.element.children.length - 1].subtype === SOLUTION_NODE
+		const hasSolution = this.getHasSolution()
 		const assessmentLocation = hasSolution
 			? this.props.element.children.length - 2
 			: this.props.element.children.length - 1
@@ -159,7 +166,7 @@ class Question extends React.Component {
 
 		const isTypeSurvey = content.type === 'survey'
 
-		const hasSolution = element.children[element.children.length - 1].subtype === SOLUTION_NODE
+		const hasSolution = this.getHasSolution()
 		let questionType
 
 		// The question type is determined by the MCAssessment or the NumericAssessement
@@ -192,13 +199,7 @@ class Question extends React.Component {
 									<option value={NUMERIC_ASSESSMENT_NODE}>Input a number</option>
 								</select>
 								<label className="question-type" contentEditable={false}>
-									<input
-										type="checkbox"
-										name="survey"
-										value="survey"
-										checked={isTypeSurvey}
-										onChange={this.onSetType}
-									/>
+									<input type="checkbox" checked={isTypeSurvey} onChange={this.onSetType} />
 									Survey Only
 								</label>
 							</div>

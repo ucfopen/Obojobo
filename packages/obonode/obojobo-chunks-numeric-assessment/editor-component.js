@@ -8,6 +8,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import { NUMERIC_ANSWER_NODE } from './constants'
 import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 
 const { Button } = Common.components
 
@@ -37,14 +38,15 @@ class NumericAssessment extends React.Component {
 
 	render() {
 		return (
-			<div className="component obojobo-draft--chunks--numeric-assessment">
-				<div>
+			<div
+				className={
+					'component obojobo-draft--chunks--numeric-assessment is-type-' +
+					this.props.element.questionType
+				}
+			>
+				<div contentEditable={false}>
 					{this.props.children}
-					<Button
-						className="add-answer-btn"
-						onClick={() => this.onAddNumericInput()}
-						contentEditable={false}
-					>
+					<Button className="add-answer-btn" onClick={() => this.onAddNumericInput()}>
 						+ Add possible answer
 					</Button>
 				</div>

@@ -9,9 +9,13 @@
 		background-color: $color-bg;
 		border-radius: $dimension-rounded-radius;
 
+		> .choice-button {
+			width: 100%;
+		}
+
 		.obojobo-draft--components--button {
-			padding-top: 0.5em;
-			padding-bottom: 0.5em;
+			padding-top: 1rem;
+			padding-bottom: 1rem;
 		}
 	}
 
@@ -67,6 +71,10 @@
 	&.is-type-survey {
 		.obojobo-draft--chunks--abstract-assessment--choice .correct-button {
 			visibility: hidden;
+		}
+
+		.obojobo-draft--chunks--abstract-assessment--choice .children {
+			padding-top: 0;
 		}
 	}
 }

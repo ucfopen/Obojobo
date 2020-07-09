@@ -78,6 +78,8 @@ module.exports = class NumericEntryRange extends ValueRange {
 		const aIsEqualB = a.numericInstance.isEqual(b.numericInstance.bigValue)
 		const bIsEqualA = b.numericInstance.isEqual(a.numericInstance.bigValue)
 
+		// console.log('compareValues', a.toString(), b.toString(), aIsEqualB, bIsEqualA)
+
 		if (aIsEqualB || bIsEqualA) return 0
 		if (a.numericInstance.bigValue.lt(b.numericInstance.bigValue)) return -1
 		return 1

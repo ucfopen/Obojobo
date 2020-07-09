@@ -16,6 +16,7 @@ const { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } = require('./unit-types')
  * @property {Big} roundedBigValue
  * @property {boolean} isWithinError
  * @property {'percent'|'absolute'|'noError'} errorType
+ * @property {boolean} isExactlyCorrect
  */
 
 /**
@@ -94,71 +95,91 @@ module.exports = class NumericRuleOutcome {
 	}
 
 	/**
-	 * Determine if a rounded student'0s answer is within the allowed error amount
-	 * @param {NumericRule} rule
-	 * @param {NumericEntry} roundedEntry
-	 * @result {boolean}
-	 */
-	static getIsWithinError(rule, roundedBigValue) {
-		switch (rule.errorType) {
-			case PERCENT_ERROR:
-				return NumericRuleOutcome.getPercentErrorRange(rule).isValueInRange(roundedBigValue)
-
-			case ABSOLUTE_ERROR:
-				return NumericRuleOutcome.getAbsoluteErrorRange(rule).isValueInRange(roundedBigValue)
-
-			case NO_ERROR:
-				return rule.value.toBigValueRange().isValueInRange(roundedBigValue)
-		}
-	}
-
-	/**
-	 * Gets details about how correct a student's answer is
+	 * Determine if a student's answer is within the allowed error amount
 	 * @param {NumericEntry} studentNumericEntry
 	 * @param {NumericRule} rule
-	 * @return {NumericRuleScoreOutcomeObject}
+	 * @result {NumericRuleScoreOutcomeObject}
 	 */
 	static getScoreOutcome(studentNumericEntry, rule) {
 		const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
 
-		// const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
-		// 	studentNumericEntry,
-		// 	rule
-		// )
-		// const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
-		// 	studentNumericEntry,
-		// 	rule
-		// )
+		switch (rule.errorType) {
+			case PERCENT_ERROR:
+				return {
+					errorType: rule.errorType,
+					isExactlyCorrect,
+					isWithinError: NumericRuleOutcome.getPercentErrorRange(rule).isValueInRange(
+						studentNumericEntry.numericInstance.bigValue
+					)
+				}
 
-		// // roundedStudentAnswer.numericInstance.round(
-		// // 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
-		// // )
-		// console.log('rounded correct answer=', roundedBigValueRange.toString())
-		// // debugger
-		// console.log('students answer=', roundedStudentAnswer.toString())
-		// console.log('value=', rule.value.max.numericInstance)
-		// console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
-		// console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
-		// // const errorAmount = {
-		// // 	percentError: '@TODO',
-		// // 	absoluteError: '@TODO'
-		// // }
+			case ABSOLUTE_ERROR:
+				return {
+					errorType: rule.errorType,
+					isExactlyCorrect,
+					isWithinError: NumericRuleOutcome.getAbsoluteErrorRange(rule).isValueInRange(
+						studentNumericEntry.numericInstance.bigValue
+					)
+				}
 
-		// const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
-
-		const isWithinError = NumericRuleOutcome.getIsWithinError(
-			rule,
-			studentNumericEntry.numericInstance.bigValue
-		)
-
-		return {
-			// roundedBigValueRange,
-			// errorAmount,
-			isWithinError,
-			errorType: rule.errorType,
-			isExactlyCorrect
+			case NO_ERROR:
+				return {
+					errorType: rule.errorType,
+					isExactlyCorrect,
+					isWithinError: isExactlyCorrect
+				}
 		}
 	}
+
+	// /**
+	//  * Gets details about how correct a student's answer is
+	//  * @param {NumericEntry} studentNumericEntry
+	//  * @param {NumericRule} rule
+	//  * @return {NumericRuleScoreOutcomeObject}
+	//  */
+	// static getScoreOutcome(studentNumericEntry, rule) {
+	// 	// const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
+
+	// 	// console.log('gso', isExactlyCorrect, rule.value.toString(), studentNumericEntry)
+
+	// 	// const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
+	// 	// 	studentNumericEntry,
+	// 	// 	rule
+	// 	// )
+	// 	// const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
+	// 	// 	studentNumericEntry,
+	// 	// 	rule
+	// 	// )
+
+	// 	// // roundedStudentAnswer.numericInstance.round(
+	// 	// // 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
+	// 	// // )
+	// 	// console.log('rounded correct answer=', roundedBigValueRange.toString())
+	// 	// // debugger
+	// 	// console.log('students answer=', roundedStudentAnswer.toString())
+	// 	// console.log('value=', rule.value.max.numericInstance)
+	// 	// console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
+	// 	// console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
+	// 	// // const errorAmount = {
+	// 	// // 	percentError: '@TODO',
+	// 	// // 	absoluteError: '@TODO'
+	// 	// // }
+
+	// 	// const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
+
+	// 	const errorResults = NumericRuleOutcome.getIsWithinError(studentNumericEntry, rule)
+
+	// 	console.log('iwe', isWithinError, rule, studentNumericEntry.numericInstance.bigValue)
+
+	// 	return {
+	// 		...errorResults,
+	// 		// roundedBigValueRange,
+	// 		// errorAmount,
+	// 		// isWithinError,
+	// 		errorType: rule.errorType
+	// 		// isExactlyCorrect:
+	// 	}
+	// }
 
 	/**
 	 * Get the percent and absolute error of a student's answer

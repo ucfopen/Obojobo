@@ -23,13 +23,14 @@
 
 		.question-type {
 			position: absolute;
-			top: 2em;
-			right: 2em;
+			top: 2.85em;
+			right: 4.3em;
 			border: 1px solid $color-shadow;
 			border-radius: $dimension-rounded-radius;
-			padding: 0.18em;
-			padding-right: 0.5em;
+			padding: 0.25em;
+			padding-right: 1em;
 			font-weight: normal;
+			font-size: 0.7em;
 			cursor: pointer;
 
 			&:hover {
@@ -39,7 +40,7 @@
 
 			input {
 				position: relative;
-				top: -0.1em;
+				top: 0.1em;
 				left: 0.2em;
 				margin-right: 1em;
 			}
@@ -109,17 +110,23 @@
 			display: none;
 		}
 
-		.component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
-			.obojobo-draft--chunks--mc-assessment--mc-choice {
-				.obojobo-draft--chunks--mc-assessment--mc-answer {
-					padding-top: 0;
-				}
+		// .component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
+		// 	.obojobo-draft--chunks--mc-assessment--mc-choice {
+		// 		.obojobo-draft--chunks--mc-assessment--mc-answer {
+		// 			padding-top: 0;
+		// 		}
+		// 	}
+		// }
+
+		.obojobo-draft--chunks--abstract-assessment--choice {
+			.correct-button {
+				display: none;
 			}
 		}
 
-		.component.obojobo-draft--chunks--numeric-assessment {
-			display: none;
-		}
+		// .component.obojobo-draft--chunks--numeric-assessment {
+		// 	display: none;
+		// }
 	}
 
 	select {

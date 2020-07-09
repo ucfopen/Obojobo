@@ -7,6 +7,10 @@
 	padding: 0.5em;
 	margin-top: 0;
 
+	&.is-type-survey {
+		display: none;
+	}
+
 	> div {
 		background-color: $color-bg;
 		border-radius: 0.25em;
@@ -32,8 +36,8 @@
 
 	.obojobo-draft--chunks--abstract-assessment--choice {
 		.delete-button {
-			top: 0.7em;
-			right: 0.7em;
+			top: 0.9em;
+			right: 0.9em;
 		}
 
 		.correct-button {

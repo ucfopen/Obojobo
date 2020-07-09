@@ -22,7 +22,11 @@ class Feedback extends React.Component {
 
 	render() {
 		return (
-			<div className="component obojobo-draft--chunks--abstract-assessment--feedback editor-feedback">
+			<div
+				className="component obojobo-draft--chunks--abstract-assessment--feedback editor-feedback"
+				suppressContentEditableWarning
+				contentEditable={true}
+			>
 				<Button className="delete-button" onClick={this.delete}>
 					×
 				</Button>

@@ -6,7 +6,7 @@ import Converter from './converter'
 
 const NUMERIC_ANSWER_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer'
 
-const MCChoice = {
+const NumericAnswer = {
 	name: NUMERIC_ANSWER_NODE,
 	menuLabel: 'Numeric Answer',
 	isInsertable: false,
@@ -24,4 +24,4 @@ const MCChoice = {
 	}
 }
 
-export default MCChoice
+export default NumericAnswer

@@ -527,7 +527,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							onBlur={this.onInputBlur}
 							// onChange={this.onInputChange}
 						/>
-						<NumericInputMoreInfoButton />
+						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						{score === 100 && !isExactlyCorrect ? (
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}

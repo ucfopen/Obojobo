@@ -9,13 +9,24 @@ import {
 	simplifedToFullText
 } from '../constants'
 
-const NumericOption = ({
-	freezeEditor,
-	unfreezeEditor,
-	numericChoice,
-	onHandleInputChange,
-	onClickDropdown
-}) => {
+const onHandleInputFocus = event => {
+	const el = event.target
+
+	event.stopPropagation()
+
+	// Hack to get the focus to stay when clicking in on inputs.
+	// The first timeout is needed for Chrome not to blink the focus outline
+	// The second timeout is required for FF
+	setTimeout(() => el.focus())
+	setTimeout(() => el.focus(), 1)
+}
+
+const onHandleClick = event => {
+	event.stopPropagation()
+	event.preventDefault()
+}
+
+const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
 	const { requirement, answer, start, end, margin, type } = numericChoice
 
 	switch (simplifedToFullText[requirement]) {
@@ -23,13 +34,13 @@ const NumericOption = ({
 			return (
 				<div className="is-type-range">
 					<label className="select requirement">
-						Requirement
+						Answer Type
 						<select
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
+							onChange={onHandleSelectChange}
+							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -43,9 +54,9 @@ const NumericOption = ({
 							name="start"
 							value={start || ''}
 							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-							onFocus={freezeEditor}
-							onBlur={unfreezeEditor}
+							onClick={onHandleClick}
+							onFocus={onHandleInputFocus}
+							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -57,9 +68,9 @@ const NumericOption = ({
 							name="end"
 							value={end || ''}
 							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-							onFocus={freezeEditor}
-							onBlur={unfreezeEditor}
+							onClick={onHandleClick}
+							onFocus={onHandleInputFocus}
+							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -70,30 +81,16 @@ const NumericOption = ({
 			return (
 				<div className="is-type-margin">
 					<label className="select requirement">
-						Requirement
+						Answer Type
 						<select
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
+							onChange={onHandleSelectChange}
+							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
-							))}
-						</select>
-					</label>
-					<label className="select margin-type">
-						Type
-						<select
-							className="select-item"
-							name="margin-type"
-							value={simplifedToFullText[type]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
-						>
-							{marginDropdown.map(type => (
-								<option key={type}>{type}</option>
 							))}
 						</select>
 					</label>
@@ -104,12 +101,26 @@ const NumericOption = ({
 							name="answer"
 							value={answer || ''}
 							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-							onFocus={freezeEditor}
-							onBlur={unfreezeEditor}
+							onClick={onHandleClick}
+							onFocus={onHandleInputFocus}
+							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
+					</label>
+					<label className="select margin-type">
+						Error Type
+						<select
+							className="select-item"
+							name="margin-type"
+							value={simplifedToFullText[type]}
+							onChange={onHandleSelectChange}
+							onClick={onHandleClick}
+						>
+							{marginDropdown.map(type => (
+								<option key={type}>{type}</option>
+							))}
+						</select>
 					</label>
 					<label className="input margin-value">
 						{type === 'percent' ? '% Error' : '± Error'}
@@ -118,9 +129,9 @@ const NumericOption = ({
 							name="margin"
 							value={margin || ''}
 							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-							onFocus={freezeEditor}
-							onBlur={unfreezeEditor}
+							onClick={onHandleClick}
+							onFocus={onHandleInputFocus}
+							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -132,13 +143,13 @@ const NumericOption = ({
 			return (
 				<div className="is-type-exact">
 					<label className="select requirement">
-						Requirement
+						Answer Type
 						<select
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onClickDropdown}
-							onClick={event => event.stopPropagation()}
+							onChange={onHandleSelectChange}
+							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -152,9 +163,14 @@ const NumericOption = ({
 							name="answer"
 							value={answer || ''}
 							onChange={onHandleInputChange}
-							onClick={event => event.stopPropagation()}
-							onFocus={freezeEditor}
-							onBlur={unfreezeEditor}
+							// onClick={event => {
+							// 	console.log('onclick', event)
+							// 	console.log(event.target.selectionStart, event.target.selectionEnd)
+							// 	// event.stopPropagation()
+							// 	// event.preventDefault()
+							// }}
+							onFocus={onHandleInputFocus}
+							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>

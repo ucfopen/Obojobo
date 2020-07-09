@@ -140,7 +140,7 @@ export default class Question extends OboQuestionComponent {
 		const isSurvey = modelState.type === 'survey'
 
 		const cacluatedScoreResponse = isSurvey
-			? 'no-score'
+			? { score: 'no-score', details: null }
 			: this.assessmentComponentRef.current.calculateScore()
 		const detailedText =
 			this.assessmentComponentRef.current.getDetails(cacluatedScoreResponse.score) || null

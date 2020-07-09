@@ -8,46 +8,71 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 import NumericOption from './numeric-option'
 import { fullTextToSimplifed, EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE } from '../constants'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
-import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
+
+const UPDATE_NODE_FROM_STATE_DEBOUNCE_MS = 500
 
 class NumericAnswer extends React.Component {
 	constructor(props) {
 		super(props)
 
-		// This debounce is necessary to get slate to update the node data.
-		// I've tried several ways to remove it but haven't been able to
-		// get it work :(
-		// If you have a solution please have at it!
-		this.updateNodeFromState = debounce(1, this.updateNodeFromState)
+		// After the content is changed and no typing has happened for 500 ms
+		// then we update the slate state from the internal state.
+		// This is required to maintain the users' cursor position and focus
+		// unfortunately.
+		this.updateNodeFromState = debounce(
+			UPDATE_NODE_FROM_STATE_DEBOUNCE_MS,
+			this.updateNodeFromState
+		)
 
 		// copy the attributes we want into state
 		const content = this.props.element.content
 		this.state = { ...content }
 
-		this.freezeEditor = this.freezeEditor.bind(this)
-		this.unfreezeEditor = this.unfreezeEditor.bind(this)
-
 		this.onHandleInputChange = this.onHandleInputChange.bind(this)
-		this.onClickDropdown = this.onClickDropdown.bind(this)
+		this.onHandleSelectChange = this.onHandleSelectChange.bind(this)
 	}
 
 	updateNodeFromState() {
-		const content = this.props.element.content
-		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		try {
+			// Capture the currently focused input and DOM selection state
+			// (We only care if the element is an input)
+			const activeElement = document.activeElement
+			const selStart = activeElement ? activeElement.selectionStart : null
+			const selEnd = activeElement ? activeElement.selectionEnd : null
 
-		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
+			const content = this.props.element.content
+			const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
+			Transforms.setNodes(
+				this.props.editor,
+				{ content: { ...content, ...this.state } },
+				{ at: path }
+			)
+
+			// Since the Transforms.setNodes call will rerender this element
+			// the selection/focus will be wiped out. We simply restore it.
+			// It's a nasty hack but I've spent a week on this problem and can't
+			// find another solution :[
+			setTimeout(() => {
+				if (!activeElement || !activeElement.select) return
+
+				activeElement.focus()
+				activeElement.setSelectionRange(selStart, selEnd)
+			})
+		} catch (e) {
+			return
+		}
 	}
 
-	freezeEditor() {
-		this.props.editor.toggleEditable(false)
-	}
+	// onHandleInputFocus(event) {
+	// 	const el = event.target
 
-	unfreezeEditor(event) {
-		event.preventDefault()
-		event.stopPropagation()
+	// 	event.stopPropagation()
 
-		this.props.editor.toggleEditable(true)
-	}
+	// 	setTimeout(() => {
+	// 		el.focus()
+	// 	})
+	// }
 
 	onHandleInputChange(event) {
 		event.preventDefault()
@@ -59,15 +84,17 @@ class NumericAnswer extends React.Component {
 			...this.state,
 			[name]: value
 		})
+
+		this.updateNodeFromState()
 	}
 
 	getAnswerFromState(state) {
-		if (typeof this.state.answer !== 'undefined') {
-			return this.state.answer
+		if (typeof state.answer !== 'undefined') {
+			return state.answer
 		}
 
-		if (typeof this.state.start !== 'undefined') {
-			return this.state.start
+		if (typeof state.start !== 'undefined') {
+			return state.start
 		}
 
 		return '1'
@@ -107,7 +134,7 @@ class NumericAnswer extends React.Component {
 		}
 	}
 
-	onClickDropdown(event) {
+	onHandleSelectChange(event) {
 		event.preventDefault()
 		event.stopPropagation()
 
@@ -130,11 +157,10 @@ class NumericAnswer extends React.Component {
 		return (
 			<div className="numeric-input-container" contentEditable={false}>
 				<NumericOption
-					freezeEditor={this.freezeEditor}
-					unfreezeEditor={this.unfreezeEditor}
+					// onHandleInputFocus={this.onHandleInputFocus}
 					numericChoice={this.state}
 					onHandleInputChange={this.onHandleInputChange}
-					onClickDropdown={this.onClickDropdown}
+					onHandleSelectChange={this.onHandleSelectChange}
 				/>
 				{this.props.children}
 			</div>
