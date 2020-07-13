@@ -4,6 +4,10 @@ import renderer from 'react-test-renderer'
 import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 import QuestionBank from './editor-component'
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model')
 import { Transforms } from 'slate'
 jest.mock('slate')
 import { ReactEditor } from 'slate-react'
@@ -273,5 +277,107 @@ describe('QuestionBank editor', () => {
 			expect.objectContaining({ type: 'ObojoboDraft.Chunks.QuestionBank' }),
 			{ at: [0] }
 		)
+	})
+
+	test('QuestionBank component adds questions', () => {
+		const props = {
+			element: {
+				content: {},
+				children: []
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {}
+		}
+
+		ReactEditor.findPath.mockReturnValueOnce([])
+
+		// Use QuestionBank.type to bypass memo()
+		const component = mount(<QuestionBank.type {...props} />)
+
+		component.instance().importQuestionList([{}])
+		expect(Transforms.insertNodes).toHaveBeenCalledWith({}, {}, { at: [0] })
+	})
+
+	test('QuestionBank component displays ImportQuestionModal', () => {
+		const props = {
+			element: {
+				content: {},
+				children: []
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {}
+		}
+
+		ReactEditor.findPath.mockReturnValueOnce([])
+
+		// Use QuestionBank.type to bypass memo()
+		const component = mount(<QuestionBank.type {...props} />)
+
+		OboModel.getRoot.mockReturnValueOnce({ get: () => 'mock_type', children: [] })
+		component.instance().diplayImportQuestionModal()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('QuestionBank component call getQuestionList', () => {
+		const props = {
+			element: {
+				content: {},
+				children: []
+			},
+			node: {
+				key: 'mock_key'
+			},
+			parent: {
+				getPath: () => ({
+					get: () => 0
+				}),
+				nodes: {
+					size: 2
+				}
+			},
+			editor: {}
+		}
+
+		ReactEditor.findPath.mockReturnValueOnce([])
+
+		// Use QuestionBank.type to bypass memo()
+		const component = mount(<QuestionBank.type {...props} />)
+
+		let root = {
+			get: () => 'mock_type',
+			children: []
+		}
+		expect(component.instance().getQuestionList(root)).toHaveLength(0)
+
+		root = {
+			get: () => 'mock_type',
+			children: [
+				{
+					get: () => 'ObojoboDraft.Chunks.Question',
+					children: []
+				}
+			]
+		}
+		expect(component.instance().getQuestionList(root)).toHaveLength(1)
 	})
 })

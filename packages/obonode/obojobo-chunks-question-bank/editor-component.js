@@ -148,19 +148,24 @@ const Settings = props => {
 	)
 }
 
-const getQuestionList = root => {
-	if (root.get('type') === QUESTION_NODE) return [root]
-
-	let questionList = []
-	root.children.forEach(child => {
-		questionList = questionList.concat(getQuestionList(child))
-	})
-
-	return questionList
-}
 class QuestionBank extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.importQuestionList = this.importQuestionList.bind(this)
+		this.getQuestionList = this.getQuestionList.bind(this)
+		this.diplayImportQuestionModal = this.diplayImportQuestionModal.bind(this)
+	}
+
+	getQuestionList(root) {
+		if (root.get('type') === QUESTION_NODE) return [root]
+
+		let questionList = []
+		root.children.forEach(child => {
+			questionList = questionList.concat(this.getQuestionList(child))
+		})
+
+		return questionList
 	}
 
 	importQuestionList(nodes) {
@@ -175,13 +180,13 @@ class QuestionBank extends React.Component {
 	}
 
 	diplayImportQuestionModal() {
-		const questionList = getQuestionList(OboModel.getRoot())
+		const questionList = this.getQuestionList(OboModel.getRoot())
 
 		ModalUtil.show(
 			<ImportQuestionModal
 				questionList={questionList}
 				editor={this.props.editor}
-				importQuestions={this.importQuestionList.bind(this)}
+				importQuestions={this.importQuestionList}
 			/>
 		)
 	}
@@ -194,7 +199,7 @@ class QuestionBank extends React.Component {
 				name: 'Import Questions',
 				description: 'Import',
 				type: 'button',
-				action: this.diplayImportQuestionModal.bind(this)
+				action: this.diplayImportQuestionModal
 			}
 		]
 
