@@ -1,23 +1,23 @@
-// @import '~styles/includes';
+@import '~styles/includes';
 
-// .import-questions-model {
-// 	max-height: 70vh;
-// 	overflow-y: scroll;
+.import-questions-model {
+	max-height: 70vh;
+	overflow-y: scroll;
 
-// 	.import-model--single-question {
-// 		border: 1px solid black;
-// 		border-radius: 5px;
-// 		user-select: none;
-// 		cursor: pointer;
-// 		margin: 1em;
+	.import-model--single-question {
+		border: 1px solid black;
+		border-radius: 5px;
+		user-select: none;
+		cursor: pointer;
+		margin: 1em;
 
-// 		&.is-selected {
-// 			background-color: transparentize($color-action, 0.9);
-// 			border: 1px solid $color-action;
-// 		}
+		&.is-selected {
+			background-color: transparentize($color-action, 0.9);
+			border: 1px solid $color-action;
+		}
 
-// 		* {
-// 			pointer-events: none;
-// 		}
-// 	}
-// }
+		* {
+			pointer-events: none;
+		}
+	}
+}
