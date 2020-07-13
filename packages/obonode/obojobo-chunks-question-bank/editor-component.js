@@ -163,9 +163,7 @@ const QuestionBank = props => {
 			description: 'Import',
 			type: 'button',
 			action: () => {
-				// This function return all questions outside of the current QuestionBank
 				const getQuestionList = model => {
-					if (model.get('id') === element.id) return []
 					if (model.get('type') === QUESTION_NODE) return [model]
 
 					let result = []
