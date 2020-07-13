@@ -518,11 +518,6 @@ class VisualEditor extends React.Component {
 			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
 		return (
 			<div className={className} ref={this.pageEditorContainerRef}>
-				<h1
-					style={{ position: 'fixed', top: 0, right: 0, background: 'white', zIndex: 99999999999 }}
-				>
-					{this.state.editable ? 'EDIT' : 'NOT'}
-				</h1>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
 					<div className="draft-toolbars">

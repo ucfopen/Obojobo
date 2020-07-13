@@ -43,20 +43,14 @@ module.exports = class NumericRuleOutcome {
 	 * newRange.toString() // [1,3]
 	 */
 	static getPercentErrorRange(rule) {
-		const percentError = rule.errorValue / 100
 		const bigValueRange = rule.value.toBigValueRange()
-		let min = null
-		let max = null
 
-		if (bigValueRange.min) {
-			min = bigValueRange.min.minus(bigValueRange.min.div(percentError + 1))
-		}
+		const absError = bigValueRange.min
+			.times(rule.errorValue)
+			.div(100)
+			.abs()
 
-		if (bigValueRange.max) {
-			max = bigValueRange.max.minus(bigValueRange.max.div(percentError + 1))
-		}
-
-		return NumericRuleOutcome.extendBigValueRange(bigValueRange, min, max)
+		return NumericRuleOutcome.extendBigValueRange(bigValueRange, absError)
 	}
 
 	/**
@@ -72,23 +66,22 @@ module.exports = class NumericRuleOutcome {
 		const absError = rule.errorValue
 		const bigValueRange = rule.value.toBigValueRange()
 
-		return NumericRuleOutcome.extendBigValueRange(bigValueRange, absError, absError)
+		return NumericRuleOutcome.extendBigValueRange(bigValueRange, absError)
 	}
 
 	/**
 	 * Modifies a BigValueRange by extending the min and max by amount
 	 * @param {BigValueRange} range
-	 * @param {Big} amountMin
-	 * @param {Big} amountMax
+	 * @param {Big} byAmount
 	 * @return {BigValueRange}
 	 */
-	static extendBigValueRange(range, amountMin, amountMax) {
-		if (range.min && amountMin) {
-			range.min = range.min.minus(amountMin)
+	static extendBigValueRange(range, byAmount) {
+		if (range.min) {
+			range.min = range.min.minus(byAmount)
 		}
 
-		if (range.max && amountMax) {
-			range.max = range.max.plus(amountMax)
+		if (range.max) {
+			range.max = range.max.plus(byAmount)
 		}
 
 		return range
