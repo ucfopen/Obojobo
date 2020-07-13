@@ -67,7 +67,8 @@ const unfreezeEditor = editor => {
 	editor.toggleEditable(true)
 }
 
-const displaySettings = (editor, element, content) => {
+const Settings = props => {
+	const { editor, element, content } = props
 	const radioGroupName = `${element.id}-choose`
 
 	const changeChooseTypeHandler = useCallback(
@@ -147,78 +148,89 @@ const displaySettings = (editor, element, content) => {
 	)
 }
 
-const QuestionBank = props => {
-	const { editor, element, children } = props
+const getQuestionList = root => {
+	if (root.get('type') === QUESTION_NODE) return [root]
 
-	const importQuestions = nodes => {
+	let questionList = []
+	root.children.forEach(child => {
+		questionList = questionList.concat(getQuestionList(child))
+	})
+
+	return questionList
+}
+class QuestionBank extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+
+	importQuestionList(nodes) {
+		const { editor, element } = this.props
+
 		const path = ReactEditor.findPath(editor, element)
 		nodes.forEach((node, index) => {
-			Transforms.insertNodes(editor, node, { at: path.concat(element.children.length + index) })
+			Transforms.insertNodes(editor, node, {
+				at: path.concat(element.children.length + index)
+			})
 		})
 	}
 
-	const contentDescription = [
-		{
-			name: 'Import Questions',
-			description: 'Import',
-			type: 'button',
-			action: () => {
-				const getQuestionList = model => {
-					if (model.get('type') === QUESTION_NODE) return [model]
+	diplayImportQuestionModal() {
+		const questionList = getQuestionList(OboModel.getRoot())
 
-					let result = []
-					model.children.models.forEach(child => {
-						result = result.concat(getQuestionList(child))
-					})
+		ModalUtil.show(
+			<ImportQuestionModal
+				questionList={questionList}
+				editor={this.props.editor}
+				importQuestions={this.importQuestionList.bind(this)}
+			/>
+		)
+	}
 
-					return result
-				}
+	render() {
+		const { editor, element, children } = this.props
 
-				const questionList = getQuestionList(OboModel.getRoot())
-
-				ModalUtil.show(
-					<ImportQuestionModal
-						questionList={questionList}
-						editor={editor}
-						importQuestions={importQuestions}
-					/>
-				)
+		const contentDescription = [
+			{
+				name: 'Import Questions',
+				description: 'Import',
+				type: 'button',
+				action: this.diplayImportQuestionModal.bind(this)
 			}
-		}
-	]
+		]
 
-	return (
-		<Node {...props} contentDescription={contentDescription}>
-			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<Button
-					className="delete-button"
-					onClick={() => {
-						remove(editor, element)
-					}}
-				>
-					&times;
-				</Button>
-				{displaySettings(editor, element, element.content)}
-				{children}
-				<div className="button-bar">
+		return (
+			<Node {...this.props} contentDescription={contentDescription}>
+				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 					<Button
+						className="delete-button"
 						onClick={() => {
-							addQuestion(editor, element)
+							remove(editor, element)
 						}}
 					>
-						Add Question
+						&times;
 					</Button>
-					<Button
-						onClick={() => {
-							addQuestionBank(editor, element)
-						}}
-					>
-						Add Question Bank
-					</Button>
+					<Settings editor={editor} element={element} content={element.content} />
+					{children}
+					<div className="button-bar">
+						<Button
+							onClick={() => {
+								addQuestion(editor, element)
+							}}
+						>
+							Add Question
+						</Button>
+						<Button
+							onClick={() => {
+								addQuestionBank(editor, element)
+							}}
+						>
+							Add Question Bank
+						</Button>
+					</div>
 				</div>
-			</div>
-		</Node>
-	)
+			</Node>
+		)
+	}
 }
 
 export default memo(withSlateWrapper(QuestionBank))
