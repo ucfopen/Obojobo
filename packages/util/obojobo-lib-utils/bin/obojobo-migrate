@@ -27,7 +27,7 @@ let command
 if (!isCreateMode) {
 	const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
 	const configPath = `${tempDir}/dbconfig.json`
-	console.log(tempDir)
+
 	try {
 		// useful to understand how args are being inserted into the command
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
