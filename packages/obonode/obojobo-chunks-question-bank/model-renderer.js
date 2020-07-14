@@ -80,7 +80,7 @@ const ModelRenderer = props => {
 			return null
 	}
 
-	return <Component model={model} moduleData={{}} />
+	return <Component model={model} moduleData={{ isFocussed: false }} />
 }
 
 export default ModelRenderer

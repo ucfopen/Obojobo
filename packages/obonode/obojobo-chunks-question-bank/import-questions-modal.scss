@@ -4,7 +4,7 @@
 	max-height: 70vh;
 	overflow-y: scroll;
 
-	.import-model--single-question {
+	.import-model--question-content {
 		border: 1px solid black;
 		border-radius: 5px;
 		user-select: none;
@@ -12,7 +12,7 @@
 		margin: 1em;
 
 		&.is-selected {
-			background-color: transparentize($color-action, 0.9);
+			background: transparentize($color-action, 0.9);
 			border: 1px solid $color-action;
 		}
 

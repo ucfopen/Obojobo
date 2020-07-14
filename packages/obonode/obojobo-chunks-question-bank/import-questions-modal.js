@@ -47,7 +47,7 @@ const importQuestionModal = props => {
 							<div
 								key={questionModel.id}
 								className={
-									'import-model--single-question' + isOrNot(selectStates[index], 'selected')
+									'import-model--question-content' + isOrNot(selectStates[index], 'selected')
 								}
 								onClick={() => {
 									selectStates[index] = !selectStates[index]
