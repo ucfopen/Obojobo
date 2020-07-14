@@ -13,7 +13,7 @@ const {
 	requireCurrentUser,
 	requireCurrentDocument
 } = oboRequire('server/express_validators')
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}

@@ -4,6 +4,7 @@ exports[`api visits route /start in preview works and doesnt care about matching
 Object {
   "extensions": Object {},
   "isPreviewing": true,
+  "isRedAlertEnabled": false,
   "lti": Object {
     "lisOutcomeServiceUrl": null,
   },

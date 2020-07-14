@@ -27,8 +27,8 @@ describe('viewer events', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.resetModules()
-		db = oboRequire('db')
-		logger = oboRequire('logger')
+		db = oboRequire('server/db')
+		logger = oboRequire('server/logger')
 		vs = oboRequire('server/viewer/viewer_state')
 		oboEvents = oboRequire('server/obo_events')
 		VisitModel = oboRequire('server/models/visit')
@@ -109,7 +109,7 @@ describe('viewer events', () => {
 
 		db.none.mockResolvedValue(null)
 
-		ve = oboRequire('viewer_events')
+		ve = oboRequire('server/viewer/viewer_events')
 		const [eventName, callback] = oboEvents.on.mock.calls[2]
 		expect(eventName).toBe('client:nav:setRedAlert')
 		expect(callback).toHaveLength(1)
@@ -141,7 +141,7 @@ describe('viewer events', () => {
 
 		db.none.mockRejectedValue(message)
 
-		ve = oboRequire('viewer_events')
+		ve = oboRequire('server/viewer/viewer_events')
 		const [eventName, callback] = oboEvents.on.mock.calls[2]
 		expect(eventName).toBe('client:nav:setRedAlert')
 		expect(callback).toHaveLength(1)
