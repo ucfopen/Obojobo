@@ -13,6 +13,7 @@ const {
 	requireCurrentUser,
 	requireCurrentDocument
 } = oboRequire('server/express_validators')
+const db = oboRequire('db')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}
@@ -48,10 +49,12 @@ router
 	.route('/start')
 	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
 	.post((req, res) => {
+		let isRedAlertEnabled = false
 		let viewState
 		let visitStartReturnExtensionsProps
 		let launch
 
+		const userId = req.currentUser.id
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
 		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
@@ -60,6 +63,23 @@ router
 			.getCurrentVisitFromRequest()
 			.catch(() => {
 				throw 'Unable to start visit, visitId is no longer valid'
+			})
+			.then(() =>
+				db.oneOrNone(
+					`
+						SELECT is_enabled FROM red_alert_status
+						WHERE
+							user_id = $[userId]
+							AND draft_id = $[draftId]
+					`,
+					{
+						userId,
+						draftId
+					}
+				)
+			)
+			.then(result => {
+				if (result) isRedAlertEnabled = result.is_enabled
 			})
 			.then(() => {
 				// error so the student starts a new view w/ newer version
@@ -135,6 +155,7 @@ router
 				req.session.visitSessions[draftId] = true
 
 				res.success({
+					isRedAlertEnabled,
 					visitId,
 					isPreviewing: req.currentVisit.is_preview,
 					lti,

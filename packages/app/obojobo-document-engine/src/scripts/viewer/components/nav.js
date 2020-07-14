@@ -24,6 +24,7 @@ export default class Nav extends React.Component {
 		this.selfRef = React.createRef()
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
 		this.closeNavOnMobile = this.closeNavOnMobile.bind(this)
+		this.onClickRedAlert = this.onClickRedAlert.bind(this)
 	}
 
 	isMobileSize() {
@@ -189,7 +190,13 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
+	onClickRedAlert() {
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(this.props.navState)
+		NavUtil.setRedAlert(!isRedAlertEnabled)
+	}
+
 	render() {
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
@@ -198,7 +205,8 @@ export default class Nav extends React.Component {
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled') +
+			isOrNot(isRedAlertEnabled, 'red-alert')
 
 		return (
 			<nav
@@ -217,6 +225,9 @@ export default class Nav extends React.Component {
 				>
 					Skip Navigation
 				</Button>
+
+				<Button onClick={this.onClickRedAlert} />
+
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>

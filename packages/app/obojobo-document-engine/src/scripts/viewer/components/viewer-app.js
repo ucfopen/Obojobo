@@ -115,6 +115,7 @@ export default class ViewerApp extends React.Component {
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
+		let isRedAlertEnabled
 		let visitIdFromApi
 		let attemptHistory
 		let viewState
@@ -138,6 +139,7 @@ export default class ViewerApp extends React.Component {
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+				isRedAlertEnabled = visit.value.isRedAlertEnabled
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
@@ -151,7 +153,8 @@ export default class ViewerApp extends React.Component {
 					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
-					viewState
+					viewState,
+					isRedAlertEnabled
 				)
 
 				AssessmentStore.init(attemptHistory)
