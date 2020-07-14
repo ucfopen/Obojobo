@@ -54,11 +54,6 @@ module.exports = class NumericEntry {
 
 		Object.values(numericClasses).forEach(C => {
 			const numericInstance = new C(str)
-			// if (numericInstance.type === 'decimal' && str === '9901.01') {
-			// 	console.error('oh boy')
-			// 	debugger
-			// }
-			// console.log('Creating new C(', str, ')', numericInstance)
 
 			if (numericInstance.matchType !== MATCH_NONE) {
 				matches.add(numericInstance)
@@ -97,8 +92,6 @@ module.exports = class NumericEntry {
 	 * NumericEntry.getProcessedInput('  4,000  g ') //4000 g
 	 */
 	static getProcessedInput(s) {
-		//@TODO: Consider stripping out '$' for financial inputs
-		// return s.replace(/\s/g, '').replace(/,/g, '')
 		return s
 			.replace(/,/g, '') // Remove commas
 			.replace(/\s+/g, ' ') // Replace all whitespace with single spaces

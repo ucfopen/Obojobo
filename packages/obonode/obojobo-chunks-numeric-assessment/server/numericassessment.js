@@ -45,8 +45,6 @@ class NumericAssessment extends DraftNode {
 				setScore(results.details.score)
 				break
 		}
-
-		// setScore(100)
 	}
 }
 

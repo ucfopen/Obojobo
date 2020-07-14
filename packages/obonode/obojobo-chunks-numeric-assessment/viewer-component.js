@@ -4,13 +4,20 @@ import './viewer-component.scss'
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import _ from 'underscore'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 import NumericInputMoreInfoButton from './numeric-input-more-info-button'
 const { PERCENT_ERROR, ABSOLUTE_ERROR } = require('./rule/rule-error-types')
-
+const {
+	FAILED,
+	PASSED,
+	FAILED_VALIDATION,
+	INPUT_INVALID,
+	INPUT_NOT_SAFE,
+	INPUT_MATCHES_MULTIPLE_TYPES,
+	INPUT_NOT_MATCHED
+} = require('./evaluation/numeric-answer-result-statuses')
 const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
@@ -23,51 +30,17 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	constructor(props) {
 		super(props)
 
-		// this.matchMedia = window.matchMedia('(max-width: 980px)')
-		// this.onMatchMediaChanged = this.onMatchMediaChanged.bind(this)
-		// this.matchMedia.addListener(this.onMatchMediaChanged)
-
 		this.onInputBlur = this.onInputBlur.bind(this)
-
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
-		console.log('eval', this.evaluator)
-
-		// debugger
-
-		// this.onInputChange = this.onInputChange.bind(this)
-
-		// this.state = {
-		// 	feedback: null
-		// }
-
-		// this.state = {
-		// 	isScreenLte980Px: false
-		// }
 	}
-
-	// componentDidMount() {
-	// 	this.setState({
-	// 		isScreenLte980Px: this.matchMedia.matches
-	// 	})
-	// }
-
-	// componentWillUnmount() {
-	// 	this.matchMedia.removeListener(this.onMatchMediaChanged)
-	// }
-
-	// onMatchMediaChanged() {
-	// 	this.setState({
-	// 		isScreenLte980Px: this.matchMedia.matches
-	// 	})
-	// }
 
 	static getRevealAnswerDefault() {
 		return 'when-incorrect'
 	}
 
-	static getInstructions(questionModel, questionAssessmentModel) {
+	static getInstructions() {
 		return (
 			<React.Fragment>
 				<span className="for-screen-reader-only">{`Form with one input. `}</span>
@@ -79,20 +52,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	static isResponseEmpty(response) {
 		return response.value === ''
 	}
-
-	// static getDerivedStateFromProps(props, state) {
-	// 	if (props.response !== state.response) {
-	// 		return {
-	// 			response: props.response
-	// 		}
-	// 	}
-	// }
-
-	// onInputChange(event) {
-	// 	this.setState({
-	// 		response: event.target.value
-	// 	})
-	// }
 
 	setFeedback(feedback) {
 		QuestionUtil.setData(
@@ -120,45 +79,44 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		)
 	}
 
-	// getCorrectResponse() {
-	// 	// Get the first correct response
-	// 	const correctRules = this.evaluator.grader.rules.filter(r => r.score === 100)
-
-	// 	if(correctRules.length === 0) {
-	// 		return null
-	// 	}
-
-	// 	return {
-	// 		state: {
-	// 			value: correctRules[0].
-	// 		},
-	// 		targetId: null
-	// 	}
-	// }
-
 	calculateScore() {
 		const questionResponse = this.props.response.value
-
-		// debugger
-
 		const results = this.evaluator.evaluate(questionResponse)
-		console.log('results', results)
-		// this.results = results
+
+		// @TODO: Handle FAILED_VALIDATION case (currently nothing is being passed to
+		// this.evaluator.validator)
 
 		switch (results.status) {
-			case 'inputInvalid':
+			case INPUT_INVALID:
 				ErrorUtil.show('Invalid Input', 'Please enter a valid numeric value')
 				return null
 
-			default: {
-				let feedback = null
-				if (
+			case INPUT_NOT_SAFE:
+				ErrorUtil.show('Invalid Input', 'Your answer was too large of a number')
+				return null
+
+			case INPUT_MATCHES_MULTIPLE_TYPES:
+				ErrorUtil.show(
+					'Invalid Input',
+					'Your answer matched multiple types - Make sure to explicitly input your answer'
+				)
+				return null
+
+			case INPUT_NOT_MATCHED:
+				ErrorUtil.show(
+					'Invalid Input',
+					"Your answer didn't match one of the accepted numeric types"
+				)
+				return null
+
+			case PASSED:
+			case FAILED: {
+				const feedback =
 					results.details.matchingOutcome &&
 					results.details.matchingOutcome.rule &&
 					results.details.matchingOutcome.rule.feedback
-				) {
-					feedback = results.details.matchingOutcome.rule.feedback
-				}
+						? results.details.matchingOutcome.rule.feedback
+						: null
 
 				this.setFeedback(feedback)
 
@@ -167,6 +125,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					details: results.details
 				}
 			}
+
+			// Should never get here!
+			default:
+				ErrorUtil.show(
+					'Error',
+					'Something went wrong evaulating your answer. Double check your input and try again.'
+				)
+				return null
 		}
 	}
 
@@ -201,8 +167,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	getRangeSummary(range) {
 		const min = range.min ? range.min.toString() : null
 		const max = range.max ? range.max.toString() : null
-
-		console.log('grs', range, min, max)
 
 		if (range.isSingular) {
 			return {
@@ -278,17 +242,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
-	// getRangeSummaryString(rangeSummary) {
-	// 	return `${summary.minPrefix ? summary.minPrefix : ''
-	// 					<span className="value">{summary.min}</span>
-	// 					<span> {summary.conjunction} </span>
-	// 					{summary.maxPrefix ? <span>{summary.maxPrefix} </span> : null}
-	// 					<span className="value">{summary.max}</span>
-	// }
-
 	getRuleModSummaries(rule) {
-		// const valueSummary = this.getRangeSummary(rule.value)
-
 		const mods = []
 
 		switch (rule.errorType) {
@@ -309,12 +263,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			)
 		}
 
-		//@TODO - Is anything being done with digits?
-		// let digitsMod = ''
-		// if (!rule.digits.isUniversal) {
-		// 	digitsMod = `${this.getRangeSummary(rule.digits)} number`
-		// }
-
 		switch (rule.isFractionReduced) {
 			case true:
 				mods.push('Must be in reduced form')
@@ -325,74 +273,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				break
 		}
 
-		// switch (mods.length) {
-		// 	case 0:
-		// 		return valueSummary
-
-		// 	case 1:
-		// 		debugger
-		// 		return valueSummary + ' (' + mods[0] + ')'
-
-		// 	case 2:
-		// 		return valueSummary + ' (' + mods[0] + ' and ' + mods[1] + ')'
-
-		// 	default:
-		// 		return (
-		// 			valueSummary +
-		// 			' (' +
-		// 			mods.slice(0, mods.length - 2).join(', ') +
-		// 			' and ' +
-		// 			mods[mods.length - 1] +
-		// 			')'
-		// 		)
-		// }
-
 		return mods
-
-		// @TODO - scientific types
-		// @TODO - isValidScientific
-		// @TODO - round
-
-		// if (rule.value.isSingular) {
-		// 	return {
-		// 		type: 'single',
-		// 		value: min
-		// 	}
-		// }
-
-		// const isFullyInclusive = rule.value.isMinInclusive && rule.value.isMaxInclusive
-		// if (isFullyInclusive) {
-		// 	return {
-		// 		type: 'range',
-		// 		min,
-		// 		max,
-		// 		conjunction: 'to'
-		// 	}
-		// }
-
-		// let minPrefix = ''
-		// let maxPrefix = ''
-
-		// if (rule.value.isMinInclusive) {
-		// 	minPrefix = 'Greater than or equal to'
-		// } else {
-		// 	minPrefix = 'Greater than'
-		// }
-
-		// if (rule.value.isMaxInclusive) {
-		// 	maxPrefix = 'less than or equal to'
-		// } else {
-		// 	maxPrefix = 'less than'
-		// }
-
-		// return {
-		// 	type: 'range',
-		// 	minPrefix,
-		// 	maxPrefix,
-		// 	min,
-		// 	max,
-		// 	conjunction: 'and'
-		// }
 	}
 
 	getRangeSummaryString(summary) {
@@ -414,8 +295,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	}
 
 	renderRangeSummary(summary) {
-		console.log('rrs', summary)
-
 		switch (summary.type) {
 			case 'text':
 				return <span>{summary.text}</span>
@@ -466,29 +345,23 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const scoreClass = this.props.scoreClass
 		const hasResponse = this.props.hasResponse
 		const isScored = score !== null
-		// const isAnswerRevealed = this.props.isAnswerRevealed
 		const feedback = this.getFeedback()
 		const feedbackModel = feedback ? OboModel.create(feedback) : null
 		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
 		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
-
-		//@TODO
 		const questionResponse = this.props.response ? this.props.response.value : null
 
-		// console.log('CALCULATE SCORE', questionResponse)
-
-		// debugger
 		let results
 		try {
 			results = questionResponse ? this.evaluator.evaluate(questionResponse) : null
 		} catch (e) {
 			results = null
 		}
+		console.log('results', results)
 		const matchingCorrectRule =
 			results && results.details && results.details.matchingOutcome
 				? results.details.matchingOutcome.rule
 				: null
-		//@END TODO
 
 		const responseValue =
 			this.props.response && this.props.response.value ? this.props.response.value : ''
@@ -525,7 +398,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							value={responseValue}
 							disabled={this.props.mode === 'review'}
 							onBlur={this.onInputBlur}
-							// onChange={this.onInputChange}
 						/>
 						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						{score === 100 && !isExactlyCorrect ? (
@@ -544,7 +416,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					{this.props.mode === 'review' ? (
 						<div className="review">
 							<Flag
-								// small={this.state.isScreenLte980Px}
 								type={Flag.getType(
 									score === 100,
 									score === 100,

@@ -1,9 +1,7 @@
 @import '~styles/includes';
 
 .component.obojobo-draft--chunks--numeric-assessment {
-	$color-border: #dfdfdf;
-
-	background-color: #f4f4f4;
+	background-color: $color-bg2;
 	padding: 0.5em;
 	margin-top: 0;
 
@@ -14,18 +12,6 @@
 	> div {
 		background-color: $color-bg;
 		border-radius: 0.25em;
-	}
-
-	.response-container {
-		&.selected {
-			margin: -1px;
-			border: 1px solid $color-highlight;
-			background-color: lighten($color-highlight, 19);
-		}
-
-		.add-feedback-btn {
-			margin-bottom: 1rem;
-		}
 	}
 
 	.add-answer-btn {
@@ -42,7 +28,6 @@
 
 		.correct-button {
 			top: 5.7em;
-			// bottom: 1em;
 		}
 
 		.add-feedback {

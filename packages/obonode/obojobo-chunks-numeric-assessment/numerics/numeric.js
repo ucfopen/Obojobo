@@ -112,7 +112,6 @@ module.exports = class Numeric {
 	 */
 	static getRoundedBigValue(bigValue, toDigits = null) {
 		if (!toDigits) return Big(bigValue)
-		console.log('grbv', bigValue.toString(), toDigits, bigValue.toPrecision(toDigits))
 		return Big(bigValue.toPrecision(toDigits))
 	}
 
@@ -211,7 +210,9 @@ module.exports = class Numeric {
 		/**
 		 * @type {Big}
 		 */
-		this.bigValue = this.constructor.getBigValueFromString(this.valueString)
+		this.bigValue = this.constructor.isSafe(this.valueString)
+			? this.constructor.getBigValueFromString(this.valueString)
+			: null
 	}
 
 	/**
@@ -274,29 +275,6 @@ module.exports = class Numeric {
 	clone() {
 		return new this.constructor(this.inputString)
 	}
-
-	// /**
-	//  * Return a string representation of this value of this instance.
-	//  * @return {string}
-	//  */
-	// getString() {
-	// 	return this.constructor.getString(this.bigValue)
-	// }
-
-	// /**
-	//  * Return a full string representation of this instance (value and unit)
-	//  * @return {string}
-	//  */
-	// getStringWithUnit() {
-	// 	return this.constructor.getStringWithUnit(this.bigValue, this.unit)
-	// }
-
-	// /**
-	//  * @alias getStringWithUnit
-	//  */
-	// toString() {
-	// 	return this.getStringWithUnit()
-	// }
 
 	/**
 	 * Determine if a given Big instance is equal to this instance

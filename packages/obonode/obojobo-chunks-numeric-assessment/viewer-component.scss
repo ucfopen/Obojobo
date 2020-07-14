@@ -3,9 +3,6 @@
 .obojobo-draft--chunks--numeric-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
 
-	// border-top: 1px solid $color-border;
-	// border-bottom: 1px solid $color-border;
-
 	&.is-long-response {
 		.numeric-assessment--input {
 			width: 100%;
@@ -15,7 +12,6 @@
 	.numeric-assessment--input {
 		@include text-input();
 
-		// width: 11.5em * 0.85 * (1 / 0.8);
 		width: 11.3em;
 		margin-right: 1.15em;
 
@@ -90,16 +86,10 @@
 
 	.input-container > .matching-correct-answer {
 		color: $color-correct;
-		// margin-left: 1em;
 		font-size: 0.8em;
 		font-family: $font-default;
-
 		display: inline-block;
-		/* max-width: 34em; */
-		/* overflow: hidden; */
-		/* line-height: 0; */
 		white-space: nowrap;
-		/* overflow: hidden; */
 		vertical-align: middle;
 
 		> .value {
@@ -135,11 +125,8 @@
 
 	.obojobo-draft--components--flag {
 		position: absolute;
-
 		left: -5.3em;
 		top: 1.1em;
-		// padding-left: 0.5em;
-		// padding-right: 0.5em;
 
 		&.is-size-small {
 			left: -1.9em;

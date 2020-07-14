@@ -40,8 +40,6 @@ class Question extends React.Component {
 	}
 
 	onSetType(event) {
-		// event.preventDefault()
-
 		const type = event.target.checked ? 'survey' : 'default'
 
 		// update this element's content.type

@@ -1,11 +1,5 @@
-const ValueRange = require('../range/value-range')
 const Big = require('../big')
-const getPercentError = require('../util/percent-error')
-const {
-	ROUND_TYPE_NONE,
-	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
-	ROUND_TYPE_ROUND_SIG_FIGS
-} = require('./round-types')
+const { ROUND_TYPE_ROUND_DECIMAL_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } = require('./round-types')
 const { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } = require('../numerics/types/input-types')
 const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
 const { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } = require('./unit-types')
@@ -124,123 +118,6 @@ module.exports = class NumericRuleOutcome {
 		}
 	}
 
-	// /**
-	//  * Gets details about how correct a student's answer is
-	//  * @param {NumericEntry} studentNumericEntry
-	//  * @param {NumericRule} rule
-	//  * @return {NumericRuleScoreOutcomeObject}
-	//  */
-	// static getScoreOutcome(studentNumericEntry, rule) {
-	// 	// const isExactlyCorrect = rule.value.isValueInRange(studentNumericEntry)
-
-	// 	// console.log('gso', isExactlyCorrect, rule.value.toString(), studentNumericEntry)
-
-	// 	// const roundedBigValueRange = NumericRuleOutcome.getRoundedCorrectAnswerBigValueRange(
-	// 	// 	studentNumericEntry,
-	// 	// 	rule
-	// 	// )
-	// 	// const roundedStudentAnswer = NumericRuleOutcome.getRoundedStudentBigValue(
-	// 	// 	studentNumericEntry,
-	// 	// 	rule
-	// 	// )
-
-	// 	// // roundedStudentAnswer.numericInstance.round(
-	// 	// // 	parseInt(rule.value.max.numericInstance.numSigFigs, 10)
-	// 	// // )
-	// 	// console.log('rounded correct answer=', roundedBigValueRange.toString())
-	// 	// // debugger
-	// 	// console.log('students answer=', roundedStudentAnswer.toString())
-	// 	// console.log('value=', rule.value.max.numericInstance)
-	// 	// console.log('num of correct answer sig figs=', rule.value.max.numericInstance.numSigFigs)
-	// 	// console.log('correct?=', roundedBigValueRange.isValueInRange(roundedStudentAnswer))
-	// 	// // const errorAmount = {
-	// 	// // 	percentError: '@TODO',
-	// 	// // 	absoluteError: '@TODO'
-	// 	// // }
-
-	// 	// const isWithinError = roundedBigValueRange.isValueInRange(roundedStudentAnswer)
-
-	// 	const errorResults = NumericRuleOutcome.getIsWithinError(studentNumericEntry, rule)
-
-	// 	console.log('iwe', isWithinError, rule, studentNumericEntry.numericInstance.bigValue)
-
-	// 	return {
-	// 		...errorResults,
-	// 		// roundedBigValueRange,
-	// 		// errorAmount,
-	// 		// isWithinError,
-	// 		errorType: rule.errorType
-	// 		// isExactlyCorrect:
-	// 	}
-	// }
-
-	/**
-	 * Get the percent and absolute error of a student's answer
-	 * @param {NumericRule} rule
-	 * @param {Big} roundedStudentBigValue
-	 * @return {object} errorAmount
-	 * @property {number} errorAmount.percentError
-	 * @property {Big} errorAmount.absoluteError
-	 */
-	// static getAnswerErrorAmount(rule, roundedStudentBigValue) {
-	// 	return {
-	// 		percentError: NumericRuleOutcome.getAnswerPercentErrorAmount(
-	// 			rule.value,
-	// 			roundedStudentBigValue
-	// 		),
-	// 		absoluteError: NumericRuleOutcome.getAnswerAbsoluteErrorAmount(
-	// 			rule.value,
-	// 			roundedStudentBigValue
-	// 		)
-	// 	}
-	// }
-
-	/**
-	 * Get the percent error of a student's answer
-	 * @param {NumericEntryRange} correctAnswerRange
-	 * @param {Big} roundedStudentBigValue
-	 * @return {number}
-	 */
-	// static getAnswerPercentErrorAmount(correctAnswerRange, roundedStudentBigValue) {
-	// 	switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
-	// 		case ValueRange.VALUE_BELOW_MIN:
-	// 			if (!correctAnswerRange.min) return 0
-	// 			return getPercentError(
-	// 				roundedStudentBigValue,
-	// 				correctAnswerRange.min.numericInstance.bigValue
-	// 			)
-
-	// 		case ValueRange.VALUE_ABOVE_MAX:
-	// 			if (!correctAnswerRange.max) return 0
-	// 			return getPercentError(
-	// 				roundedStudentBigValue,
-	// 				correctAnswerRange.max.numericInstance.bigValue
-	// 			)
-	// 	}
-
-	// 	return 0
-	// }
-
-	/**
-	 * Get the absolute error of a student's answer
-	 * @param {NumericEntryRange} correctAnswerRange
-	 * @param {Big} roundedStudentBigValue
-	 * @return {Big}
-	 */
-	// static getAnswerAbsoluteErrorAmount(correctAnswerRange, roundedStudentBigValue) {
-	// 	switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
-	// 		case ValueRange.VALUE_BELOW_MIN:
-	// 			if (!correctAnswerRange.min) return 0
-	// 			return correctAnswerRange.min.numericInstance.bigValue.minus(roundedStudentBigValue)
-
-	// 		case ValueRange.VALUE_ABOVE_MAX:
-	// 			if (!correctAnswerRange.max) return 0
-	// 			return roundedStudentBigValue.minus(correctAnswerRange.max.numericInstance.bigValue)
-	// 	}
-
-	// 	return Big(0)
-	// }
-
 	/**
 	 * Returns a new NumericEntry with the value rounded based on the rounding setting
 	 * in the given rule. This rounded NumericEntry will be used in calculating the
@@ -256,7 +133,6 @@ module.exports = class NumericRuleOutcome {
 		switch (rule.round) {
 			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
 				const numStudentDecimalDigits = studentRoundedNumericInstance.numDecimalDigits
-
 				roundedCorrectAnswerValueRange.min.numericInstance.round(numStudentDecimalDigits)
 				roundedCorrectAnswerValueRange.max.numericInstance.round(numStudentDecimalDigits)
 
@@ -264,15 +140,6 @@ module.exports = class NumericRuleOutcome {
 			}
 
 			case ROUND_TYPE_ROUND_SIG_FIGS: {
-				// const numStudentSigFigs = studentRoundedNumericInstance.numSigFigs
-				// debugger
-				// console.log(
-				// 	'rounding',
-				// 	roundedCorrectAnswerValueRange.min.numericInstance.bigValue.toString(),
-				// 	'to',
-				// 	numStudentSigFigs
-				// )
-
 				const minNumSigFigs = parseInt(rule.sigFigs.min, 10)
 				roundedCorrectAnswerValueRange.min.numericInstance.round(minNumSigFigs)
 				roundedCorrectAnswerValueRange.max.numericInstance.round(minNumSigFigs)
@@ -294,7 +161,6 @@ module.exports = class NumericRuleOutcome {
 			}
 
 			case ROUND_TYPE_ROUND_SIG_FIGS: {
-				// debugger
 				roundedStudentNumericInstance.round(parseInt(rule.sigFigs.min, 10))
 				break
 			}

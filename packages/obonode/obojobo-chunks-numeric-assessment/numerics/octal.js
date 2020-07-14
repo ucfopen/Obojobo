@@ -65,17 +65,6 @@ module.exports = class Octal extends Numeric {
 		return null
 	}
 
-	// static parse(str) {
-	// 	const valueString = Octal.getValueString(str)
-	// 	if (!valueString) return Numeric.getNullParseObject()
-
-	// 	return {
-	// 		matchType: Octal.getMatchType(str),
-	// 		valueString,
-	// 		unit: str.substr(valueString.length).trim()
-	// 	}
-	// }
-
 	/**
 	 * Gets details about an answer string.
 	 * @param {string} str A potential string representation of a octal value

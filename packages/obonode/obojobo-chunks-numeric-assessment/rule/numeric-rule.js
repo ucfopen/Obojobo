@@ -2,7 +2,6 @@ const Big = require('../big')
 const NumericEntryRange = require('../range/numeric-entry-range')
 const BigValueRange = require('../range/big-value-range')
 const ValueRange = require('../range/value-range')
-const NumericEntry = require('../entry/numeric-entry')
 const {
 	ROUND_TYPE_NONE,
 	ROUND_TYPE_ROUND_DECIMAL_DIGITS,

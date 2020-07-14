@@ -61,6 +61,7 @@ class MoreInfoButton extends React.Component {
 				} is-mode-${this.state.mode}`}
 			>
 				<button
+					type="button" // Prevents click event when inside a <form>
 					onMouseOver={this.boundOnMouseOver}
 					onMouseOut={this.boundOnMouseOut}
 					onClick={this.boundOnClick}

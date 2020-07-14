@@ -8,7 +8,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import { NUMERIC_ANSWER_NODE } from './constants'
 import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 
 const { Button } = Common.components
 

@@ -7,9 +7,9 @@ const Adapter = {
 		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(children || [])
 	},
 
-	clone(model, clone) {},
-
-	toJSON(model, json) {}
+	clone(model, clone) {
+		clone.modelState.scoreRules = { ...model.modelState.scoreRules }
+	}
 }
 
 export default Adapter

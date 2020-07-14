@@ -38,13 +38,4 @@ module.exports = class BigValueRange extends ValueRange {
 	constructor(rangeStringOrRangeObject = '*') {
 		super(rangeStringOrRangeObject, BigValueRange.parseValue, BigValueRange.compareValues)
 	}
-
-	// toJSON() {
-	// 	const o = super.toJSON()
-
-	// 	o.min = o.min.toString()
-	// 	o.max = o.max.toString()
-
-	// 	return o
-	// }
 }
