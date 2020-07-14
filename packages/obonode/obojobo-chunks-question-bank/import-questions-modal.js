@@ -6,7 +6,7 @@ import Common from 'Common'
 const { Dialog } = Common.components.modal
 const { isOrNot, ModalUtil } = Common.util
 
-const ModelRender = React.lazy(() => import('./modelRenderer'))
+const ModelRender = React.lazy(() => import('./model-renderer'))
 
 const importQuestionModal = props => {
 	const { questionList } = props
@@ -47,7 +47,7 @@ const importQuestionModal = props => {
 							<div
 								key={questionModel.id}
 								className={
-									'import-model--single-question ' + isOrNot(selectStates[index], 'selected')
+									'import-model--single-question' + isOrNot(selectStates[index], 'selected')
 								}
 								onClick={() => {
 									selectStates[index] = !selectStates[index]

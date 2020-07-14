@@ -29,9 +29,6 @@ const getFlatList = function(item) {
 }
 
 const EditorUtil = {
-	json() {
-		return OboModel.getRoot()
-	},
 	renameModule(moduleId, newName) {
 		return Dispatcher.trigger('editor:renameModule', {
 			value: {

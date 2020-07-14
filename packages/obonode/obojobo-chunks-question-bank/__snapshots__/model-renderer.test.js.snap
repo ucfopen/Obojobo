@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.ActionButton" 1`] = `
+<div>
+  ActionButton
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Break" 1`] = `
+<div>
+  Break
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Figure" 1`] = `
+<div>
+  Figure
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.HTML" 1`] = `
+<div>
+  HTML
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Heading" 1`] = `
+<div>
+  Heading
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.List" 1`] = `
+<div>
+  List
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.MathEquation" 1`] = `
+<div>
+  MathEquation
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Table" 1`] = `
+<div>
+  Table
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Text" 1`] = `
+<div>
+  Text
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.YouTube" 1`] = `
+<div>
+  Youtube
+</div>
+`;

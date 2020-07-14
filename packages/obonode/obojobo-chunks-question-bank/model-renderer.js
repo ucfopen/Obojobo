@@ -1,27 +1,28 @@
-import React, { Suspense } from 'react'
-import ActionButtonAdapter from 'obojobo-chunks-action-button/adapter'
-import BreakAdapter from 'obojobo-chunks-break/adapter'
+import React from 'react'
+
 // import CodeAdapter from 'obojobo-chunks-code/adapter'
-import FigureAdapter from 'obojobo-chunks-figure/adapter'
-import HeadingAdapter from 'obojobo-chunks-heading/adapter'
-import HtmlAdapter from 'obojobo-chunks-html/adapter'
 // import IframeAdapter from 'obojobo-chunks-iframe/adapter'
-import ListAdapter from 'obojobo-chunks-list/adapter'
-import MathEquationAdapter from 'obojobo-chunks-math-equation/adapter'
-import TableAdapter from 'obojobo-chunks-table/adapter'
-import TextAdaptor from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter.js'
-import YoutubeAdapter from 'obojobo-chunks-youtube/adapter'
 
 import ActionButton from 'obojobo-chunks-action-button/viewer-component'
+import ActionButtonAdapter from 'obojobo-chunks-action-button/adapter'
 import Break from 'obojobo-chunks-break/viewer-component'
+import BreakAdapter from 'obojobo-chunks-break/adapter'
 import Figure from 'obojobo-chunks-figure/viewer-component'
+import FigureAdapter from 'obojobo-chunks-figure/adapter'
 import Heading from 'obojobo-chunks-heading/viewer-component'
+import HeadingAdapter from 'obojobo-chunks-heading/adapter'
 import HTML from 'obojobo-chunks-html/viewer-component'
+import HtmlAdapter from 'obojobo-chunks-html/adapter'
 import List from 'obojobo-chunks-list/viewer-component'
+import ListAdapter from 'obojobo-chunks-list/adapter'
 import MathEquation from 'obojobo-chunks-math-equation/viewer-component'
+import MathEquationAdapter from 'obojobo-chunks-math-equation/adapter'
 import Table from 'obojobo-chunks-table/viewer-component'
+import TableAdapter from 'obojobo-chunks-table/adapter'
 import Text from 'obojobo-chunks-text/viewer-component'
+import TextAdaptor from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter'
 import Youtube from 'obojobo-chunks-youtube/viewer-component'
+import YoutubeAdapter from 'obojobo-chunks-youtube/adapter'
 
 const ModelRenderer = props => {
 	const { model } = props
@@ -79,11 +80,7 @@ const ModelRenderer = props => {
 			return null
 	}
 
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<Component model={model} moduleData={{}} />
-		</Suspense>
-	)
+	return <Component model={model} moduleData={{}} />
 }
 
 export default ModelRenderer
