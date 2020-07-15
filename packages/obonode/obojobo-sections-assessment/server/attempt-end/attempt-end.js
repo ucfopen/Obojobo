@@ -2,9 +2,9 @@ const helpers = require('./attempt-end-helpers')
 const logger = require('obojobo-express/server/logger')
 
 const endAttempt = async (req, res) => {
-	if (Math.random() > 0.5) {
-		throw 'Random error'
-	}
+	// if (Math.random() > 0.5) {
+	// 	throw 'Random error'
+	// }
 
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
