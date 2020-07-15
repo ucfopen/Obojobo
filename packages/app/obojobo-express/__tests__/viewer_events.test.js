@@ -2,7 +2,7 @@ jest.mock('../server/config')
 jest.mock('../server/viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../server/obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
 jest.mock('../server/models/visit')
-jest.mock('./db')
+jest.mock('../server/db')
 jest.mock('../server/logger')
 
 const mockEvent = {
@@ -117,7 +117,7 @@ describe('viewer events', () => {
 		const mockRedAlertEvent = {
 			userId: 'mock-user-id',
 			draftId: 'mock-draft-id',
-			payload: { to: 'mock-is-red-alert-enabled' }
+			payload: { to: true }
 		}
 
 		return callback(mockRedAlertEvent).then(() => {
@@ -149,7 +149,7 @@ describe('viewer events', () => {
 		const mockRedAlertEvent = {
 			userId: 'mock-user-id',
 			draftId: 'mock-draft-id',
-			payload: { to: 'mock-is-red-alert-enabled' }
+			payload: { to: true }
 		}
 
 		return callback(mockRedAlertEvent).then(() => {
