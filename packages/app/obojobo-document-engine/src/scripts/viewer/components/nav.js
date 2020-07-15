@@ -196,8 +196,8 @@ export default class Nav extends React.Component {
 	}
 
 	render() {
-		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
 		const navState = this.props.navState
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
 		const isNavInaccessible = navState.disabled || !navState.open
