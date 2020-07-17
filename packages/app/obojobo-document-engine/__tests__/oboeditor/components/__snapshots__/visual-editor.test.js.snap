@@ -496,7 +496,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1076,7 +1076,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor VisualEditor component changes pages 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1656,7 +1656,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2282,7 +2282,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component with no page 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2858,7 +2858,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor reload disables event listener and calls location.reload 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
