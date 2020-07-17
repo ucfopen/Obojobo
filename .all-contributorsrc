@@ -5,6 +5,16 @@
   "imageSize": 100,
   "commit": false,
   "contributors": [
+   {
+      "login": "samuel-belcastro",
+      "name": "Samuel Belcastro",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/17661897?v=4",
+      "profile": "https://github.com/samuel-belcastro",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
     {
       "login": "gitnix",
       "name": "Ryan Eppers",
