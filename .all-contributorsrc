@@ -6,6 +6,17 @@
   "commit": false,
   "contributors": [
     {
+      "login": "AnthonyRodriguez726",
+      "name": "AnthonyRodriguez726",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11856062?v=4",
+      "profile": "https://github.com/AnthonyRodriguez726",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
       "login": "rmanbaird",
       "name": "Ralph Baird",
       "avatar_url": "https://avatars0.githubusercontent.com/u/22771644?v=4",
