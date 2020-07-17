@@ -1,7 +1,7 @@
 describe('Draft Model', () => {
-	jest.mock('../../db')
-	jest.mock('../../logger')
-	jest.mock('../../obo_events')
+	jest.mock('../../server/db')
+	jest.mock('../../server/logger')
+	jest.mock('../../server/obo_events')
 	let db
 	let DraftModel
 	let DraftNode
@@ -33,9 +33,9 @@ describe('Draft Model', () => {
 	beforeEach(() => {
 		jest.resetModules()
 		jest.resetAllMocks()
-		db = require('../../db')
-		DraftNode = require('../../models/draft_node')
-		DraftModel = require('../../models/draft')
+		db = require('../../server/db')
+		DraftNode = require('../../server/models/draft_node')
+		DraftModel = require('../../server/models/draft')
 	})
 	afterEach(() => {})
 
@@ -100,7 +100,6 @@ describe('Draft Model', () => {
 		const mockContent = { content: 'yes' }
 		const mockXMLContent = '<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc />'
 		const mockUserId = 555
-
 		return DraftModel.createWithContent(mockUserId, mockContent, mockXMLContent).then(newDraft => {
 			// make sure we're using a transaction
 			expect(db.tx).toBeCalled()
@@ -122,6 +121,7 @@ describe('Draft Model', () => {
 			// and make sure the content is sent to the query
 			expect(db.one.mock.calls[1][1]).toEqual({
 				jsonContent: mockContent,
+				userId: 555,
 				xmlContent: mockXMLContent,
 				draftId: 'NEWID'
 			})
@@ -157,26 +157,28 @@ describe('Draft Model', () => {
 		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 
-	test('updateContent calls db.one with expected args', () => {
+	test('updateContent calls db.one with expected args', async () => {
 		expect.hasAssertions()
 
-		const id = 555
-		const jsonContent = 'mockJsonContent'
-		const xmlContent = 'mockXmlContent'
+		db.one.mockResolvedValueOnce({ id: 555 })
 
-		db.one.mockResolvedValueOnce({ id })
+		const resultId = await DraftModel.updateContent(
+			555,
+			'mockUserId',
+			'mockJsonContent',
+			'mockXmlContent'
+		)
 
-		return DraftModel.updateContent(id, jsonContent, xmlContent).then(resultId => {
-			expect(resultId).toBe(id)
-			expect(db.one).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftId: id,
-					jsonContent: jsonContent,
-					xmlContent: xmlContent
-				})
-			)
-		})
+		expect(resultId).toBe(555)
+		expect(db.one).toBeCalledWith(
+			expect.any(String),
+			expect.objectContaining({
+				draftId: 555,
+				userId: 'mockUserId',
+				jsonContent: 'mockJsonContent',
+				xmlContent: 'mockXmlContent'
+			})
+		)
 	})
 
 	test('updateContent fails as expected', () => {
@@ -192,6 +194,17 @@ describe('Draft Model', () => {
 		const testTree = {
 			id: 'test-id',
 			children: []
+		}
+
+		const duplicate = DraftModel.findDuplicateIds(testTree)
+
+		expect(duplicate).toBe(null)
+	})
+
+	test('findDuplicateIds hanldes null children', () => {
+		const testTree = {
+			id: 'test-id',
+			children: null
 		}
 
 		const duplicate = DraftModel.findDuplicateIds(testTree)
@@ -290,7 +303,7 @@ describe('Draft Model', () => {
 
 	test('deleteByIdAndUser sets delete flag', () => {
 		expect.hasAssertions()
-		const oboEvents = require('../../obo_events')
+		const oboEvents = require('../../server/obo_events')
 
 		db.none.mockResolvedValueOnce()
 

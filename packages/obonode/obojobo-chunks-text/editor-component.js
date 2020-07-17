@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 
 const Text = props => {
 	return (
@@ -11,4 +12,4 @@ const Text = props => {
 	)
 }
 
-export default Text
+export default withSlateWrapper(Text)

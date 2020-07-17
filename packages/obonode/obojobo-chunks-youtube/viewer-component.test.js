@@ -4,6 +4,14 @@ import renderer from 'react-test-renderer'
 import YouTube from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => {
+	return () => 'mockId'
+})
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag', () => () => {
+	// simulate loading the youtube iframe api
+	global.window.onYouTubeIframeAPIReady()
+})
+
 require('./viewer') // used to register this oboModel
 
 describe('YouTube', () => {
@@ -12,7 +20,9 @@ describe('YouTube', () => {
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.YouTube',
 			content: {
-				videoId: 'dQw4w9WgXcQ'
+				videoId: 'dQw4w9WgXcQ',
+				startTime: 4,
+				endTime: 20
 			}
 		})
 		const moduleData = {

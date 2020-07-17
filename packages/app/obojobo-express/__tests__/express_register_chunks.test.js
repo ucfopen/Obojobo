@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 jest.mock('express')
-jest.mock('../draft_node_store')
+jest.mock('../server/draft_node_store')
 jest.mock('path')
 jest.mock('obojobo-lib-utils')
-jest.mock('../logger')
-const realPath = require.requireActual('path')
+jest.mock('../server/logger')
+const realPath = jest.requireActual('path')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const express = require('express')
 mockVirtual('mock-obo-node')
@@ -37,7 +37,7 @@ describe('register chunks middleware', () => {
 	afterEach(() => {})
 
 	test('calls with no errors', () => {
-		const middleware = oboRequire('express_register_chunks')
+		const middleware = oboRequire('server/express_register_chunks')
 
 		middleware(mockApp)
 
@@ -45,7 +45,7 @@ describe('register chunks middleware', () => {
 	})
 
 	test('registers all middleware as expected', () => {
-		const middleware = oboRequire('express_register_chunks')
+		const middleware = oboRequire('server/express_register_chunks')
 		const MockMiddleware = require('mock-obo-middleware')
 
 		getAllOboNodeScriptPathsByType.mockReturnValueOnce(['mock-obo-middleware']) // 'mock request for middleware
@@ -57,8 +57,8 @@ describe('register chunks middleware', () => {
 	})
 
 	test('registers all obonodes as expected', () => {
-		const dns = oboRequire('draft_node_store')
-		const middleware = oboRequire('express_register_chunks')
+		const dns = oboRequire('server/draft_node_store')
+		const middleware = oboRequire('server/express_register_chunks')
 		const MockOboNode = require('mock-obo-node')
 
 		getAllOboNodeScriptPathsByType.mockReturnValueOnce([]) // 'mock request for middleware
@@ -70,7 +70,7 @@ describe('register chunks middleware', () => {
 	})
 
 	test('calls express.static as expected', () => {
-		const middleware = oboRequire('express_register_chunks')
+		const middleware = oboRequire('server/express_register_chunks')
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
 		express.static.mockReset()
@@ -79,7 +79,7 @@ describe('register chunks middleware', () => {
 		})
 
 		middleware(mockApp)
-		const compiledDir = realPath.resolve(__dirname, '..', 'public', 'compiled')
+		const compiledDir = realPath.resolve(__dirname, '..', 'server', 'public', 'compiled')
 
 		expect(express.static).toHaveBeenCalledWith(compiledDir + '/')
 	})
@@ -92,7 +92,7 @@ describe('register chunks middleware', () => {
 			}
 		}
 
-		const middleware = oboRequire('express_register_chunks')
+		const middleware = oboRequire('server/express_register_chunks')
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
 		express.static.mockReset()

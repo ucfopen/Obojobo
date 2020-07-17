@@ -1,14 +1,6 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.HTML",
-	"isVoid":false,
-	"nodes":[
-		{
-			"object":"text",
-			"leaves":[
-				{"object":"leaf","text":"","marks":[]}
-			]
-		}
-	]
+	"content": {},
+	"children":[{ "text": "" }]
 }
 

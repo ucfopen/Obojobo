@@ -11,8 +11,28 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/73480?v=4",
       "profile": "https://ianturgeon.com",
       "contributions": [
+        "code",
         "test",
-        "code"
+        "ideas",
+        "platform",
+        "projectManagement",
+        "maintenance",
+        "tool"
+      ]
+    },
+    {
+      "login": "zachberry",
+      "name": "Zachary Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73479?v=4",
+      "profile": "http://www.zachberry.com",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "design",
+        "ideas",
+        "projectManagement",
+        "review"
       ]
     }
   ],

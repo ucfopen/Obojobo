@@ -1,16 +1,16 @@
 const helpers = require('./attempt-end-helpers')
-const lti = require('obojobo-express/lti')
+const lti = require('obojobo-express/server/lti')
 const Assessment = require('../assessment')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('./insert-events')
-const DraftDocument = require('obojobo-express/models/draft')
+const DraftDocument = require('obojobo-express/server/models/draft')
 
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
 jest.mock('./insert-events')
-jest.mock('obojobo-express/lti')
-jest.mock('obojobo-express/models/draft')
+jest.mock('obojobo-express/server/lti')
+jest.mock('obojobo-express/server/models/draft')
 
 const mockCurrentUser = {
 	id: 'mockCurrentUserId'
@@ -25,6 +25,7 @@ const mockAttempt = {
 }
 
 const mockCurrentVisit = {
+	id: 'mockVisitId',
 	is_preview: 'mockIsPreview',
 	resource_link_id: 'mockResourceLinkId'
 }
@@ -167,7 +168,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockAttempt.number,
 			mockCurrentVisit.is_preview,
 			mockHostName,
-			mockConnection.remoteAddress
+			mockConnection.remoteAddress,
+			mockCurrentVisit.id
 		)
 	}),
 		test('sendHighestAssessmentScore', async () => {
@@ -186,7 +188,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 				mockCurrentDocument,
 				mockAttempt.assessmentId,
 				mockCurrentVisit.is_preview,
-				mockCurrentVisit.resource_link_id
+				mockCurrentVisit.resource_link_id,
+				mockCurrentVisit.id
 			)
 		})
 
@@ -227,7 +230,8 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockHostName,
 			mockConnection.remoteAddress,
 			mockCalculatedScores.assessmentScoreDetails,
-			mockCurrentVisit.resource_link_id
+			mockCurrentVisit.resource_link_id,
+			mockCurrentVisit.id
 		)
 	})
 

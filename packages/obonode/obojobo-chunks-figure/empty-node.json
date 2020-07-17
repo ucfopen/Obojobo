@@ -1,22 +1,11 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.Figure",
-	"isVoid":false,
-	"data":{
-		"content": {
-			"size": "small",
-			"alt": null,
-			"url": null,
-			"height": null,
-			"width": null
-		}
+	"content": {
+		"size": "small",
+		"alt": null,
+		"url": null,
+		"height": null,
+		"width": null
 	},
-	"nodes":[
-		{
-			"object":"text",
-			"leaves":[
-				{"object":"leaf","text":"","marks":[]}
-			]
-		}
-	]
+	"children": [{ "text": "" }]
 }

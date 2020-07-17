@@ -1,462 +1,174 @@
-import SlateReact from 'slate-react'
+jest.mock('slate')
 jest.mock('slate-react')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+jest.mock('./changes/increase-indent')
+jest.mock('./changes/decrease-indent')
+jest.mock('./changes/indent-or-tab')
 
+import { Editor, Transforms, Element, Node } from 'slate'
 import Code from './editor-registration'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+import decreaseIndent from './changes/decrease-indent'
+import increaseIndent from './changes/increase-indent'
+import indentOrTab from './changes/indent-or-tab'
+
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 describe('Code editor', () => {
-	test('onPaste calls next if not pasting text into a CODE_NODE', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => false
-				}
-			}
+	test('insertData calls next if pasting a Slate fragment', () => {
+		const data = {
+			types: ['application/x-slate-fragment']
 		}
-
 		const next = jest.fn()
 
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
-
-		Code.plugins.onPaste(null, editor, next)
+		Code.plugins.insertData(data, {}, next)
 
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('onPaste calls createTextLinesFromText', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						text: ''
-					},
-					{
-						key: 'mockBlockKey',
-						text: 'mock text'
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			},
-			createCodeLinesFromText: jest.fn().mockReturnValueOnce([
-				{
-					key: 'mockBlockKey'
-				}
-			]),
-			insertBlock: jest.fn(),
-			removeNodeByKey: jest.fn()
+	test('insertData calls next if not pasting into Code', () => {
+		const data = {
+			types: ['application/html']
 		}
-
 		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({
-			type: 'text',
-			text: 'mock text'
+		Editor.nodes.mockImplementation((editor, { match }) => {
+			match({ type: 'nonCodeNode' })
+			return [[{ type: 'nonCodeNode' }]]
 		})
 
-		Code.plugins.onPaste(null, editor, next)
+		Code.plugins.insertData(data, {}, next)
 
-		expect(editor.createCodeLinesFromText).toHaveBeenCalled()
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('insertData inserts all lines as CodeLines if pasting into Code', () => {
+		const data = {
+			types: ['application/html'],
+			getData: () => 'line1 \n line2'
+		}
+		const next = jest.fn()
+		Editor.nodes.mockReturnValueOnce([[{ type: CODE_NODE }]])
+
+		Code.plugins.insertData(data, {}, next)
+
+		expect(Transforms.insertFragment).toHaveBeenCalledWith({}, [
+			{
+				type: CODE_NODE,
+				subtype: CODE_LINE_NODE,
+				content: { indent: 0, hangingIndent: false },
+				children: [{ text: 'line1 ' }]
+			},
+			{
+				type: CODE_NODE,
+				subtype: CODE_LINE_NODE,
+				content: { indent: 0, hangingIndent: false },
+				children: [{ text: ' line2' }]
+			}
+		])
 	})
 
 	test('plugins.renderNode renders code when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
+			element: {
 				type: CODE_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+				content: {}
 			}
 		}
 
-		expect(Code.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Code.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a line when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
-				type: CODE_LINE_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+			element: {
+				type: CODE_NODE,
+				subtype: CODE_LINE_NODE,
+				content: {}
 			}
 		}
 
-		expect(Code.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.renderPlaceholder exits when not relevent', () => {
-		expect(
-			Code.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
+	test('plugins.decorate exits when not relevent', () => {
+		expect(Code.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			Code.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			Code.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: CODE_LINE_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
+		expect(Code.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
-	test('plugins.renderPlaceholder renders a placeholder', () => {
-		expect(
-			Code.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: CODE_LINE_NODE,
-						text: ''
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('plugins.onKeyDown deals with no code', () => {
+	test('plugins.decorate renders a placeholder', () => {
 		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => false
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: 'mockText'
-				}
-			}
+			children: [{ children: [{ text: '' }] }]
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		Element.isElement.mockReturnValue(true)
+		Node.string.mockReturnValue('')
 
+		expect(Code.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
+		Code.plugins.onKeyDown({}, {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
-		const editor = {
-			value: {
-				blocks: {
-					get: () => ({ key: 'mockBlockKey' }),
-					some: () => true
-				},
-				document: {
-					getClosest: (num, funct) => {
-						funct({ key: 'mockKey' })
-						return {
-							key: 'mockParent',
-							nodes: { size: 1 }
-						}
-					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: 'mockText'
-				}
-			}
-		}
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		Code.plugins.onKeyDown(event, editor, jest.fn())
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty code', () => {
-		const editor = {
-			value: {
-				blocks: {
-					get: () => ({ key: 'mockBlockKey', text: '' }),
-					some: () => true
-				},
-				document: {
-					getClosest: (num, funct) => {
-						funct({ key: 'mockKey' })
-						return {
-							key: 'mockParent',
-							nodes: { size: 1 }
-						}
-					}
-				}
-			}
-		}
-		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
+		const event1 = {
 			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
+		Code.plugins.onKeyDown([{}, [0]], {}, event1)
 
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Enter]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'Enter',
+		const event2 = {
+			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(editor.insertBlock).not.toHaveBeenCalled()
-		expect(event.preventDefault).not.toHaveBeenCalled()
+		Code.plugins.onKeyDown([{}, [0]], {}, event2)
+		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalledTimes(2)
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: {
-							get: () => {
-								return { indent: 0 }
-							}
-						}
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
 		const event = {
 			key: 'Tab',
 			shiftKey: true,
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(decreaseIndent).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented code', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: {
-							get: () => {
-								return { indent: 6 }
-							}
-						}
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
+	test('plugins.onKeyDown deals with [Alt]+[Tab]', () => {
 		const event = {
 			key: 'Tab',
-			shiftKey: true,
+			altKey: true,
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(increaseIndent).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: {
-							get: () => {
-								return { indent: 0 }
-							}
-						}
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
 		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor, jest.fn())
+		Code.plugins.onKeyDown([{}, [0]], {}, event)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Tab] in fully indented nodes', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: {
-							get: () => {
-								return { indent: 20 }
-							}
-						}
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'Tab',
-			preventDefault: jest.fn()
-		}
-
-		Code.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with random keys', () => {
-		const editor = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey',
-						data: {
-							get: () => {
-								return { indent: 0 }
-							}
-						}
-					}
-				],
-				document: {
-					getClosest: (key, funct) => {
-						funct({ type: 'mockType' })
-						return true
-					}
-				}
-			}
-		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
-
-		const event = {
-			key: 'e',
-			preventDefault: jest.fn()
-		}
-
-		Code.plugins.onKeyDown(event, editor, jest.fn())
-
-		expect(editor.setNodeByKey).not.toHaveBeenCalled()
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('queries.createCodeLinesFromText builds text lines', () => {
-		const editor = {}
-
-		const blocks = Code.plugins.queries.createCodeLinesFromText(editor, ['mock text'])
-
-		expect(blocks).toMatchSnapshot()
+		expect(indentOrTab).toHaveBeenCalled()
 	})
 })

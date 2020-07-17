@@ -1,3 +1,6 @@
+import { Transforms } from 'slate'
+jest.mock('slate-react')
+
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		registerModel: jest.fn()
@@ -5,15 +8,103 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 }))
 
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Page'))
-jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
 
 import Page from './editor-registration'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 describe('Page editor', () => {
-	test('plugins.renderNode renders a solution when passed', () => {
+	test('normalizeNode calls next if the node is not a Code node', () => {
+		const next = jest.fn()
+		Page.plugins.normalizeNode([{}, []], {}, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Code calls next if all Code children are valid', () => {
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: PAGE_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+		Page.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Code calls Transforms on invalid Text children', () => {
+		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: PAGE_NODE,
+					content: {},
+					children: [{ text: 'mockCode', b: true }]
+				}
+			],
+			isInline: () => false
+		}
+		Page.plugins.normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.wrapNodes).toHaveBeenCalled()
+	})
+
+	test('normalizeNode on Page calls Transforms if parent is invalid', () => {
+		jest.spyOn(Transforms, 'unwrapNodes').mockReturnValueOnce(true)
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: PAGE_NODE,
+					content: {},
+					children: [
+						{
+							type: PAGE_NODE,
+							content: { indent: 1 },
+							children: [
+								{
+									type: TEXT_NODE,
+									content: { indent: 1 },
+									children: [
+										{
+											type: 'invalidNode',
+											children: [{ text: 'mockCode', b: true }]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false
+		}
+
+		Page.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
+
+		expect(Transforms.unwrapNodes).toHaveBeenCalled()
+	})
+
+	test('plugins.renderNode renders a Page when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
@@ -26,37 +117,27 @@ describe('Page editor', () => {
 			}
 		}
 
-		expect(Page.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Page.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Page.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('getNavItem returns expected object', () => {
 		const model = {
 			parent: {
 				children: {
-					models: [{ get: () => true }]
+					models: [
+						{
+							get: () => 'ObojoboDraft.Pages.Page'
+						},
+						{
+							get: () => 'Not-A-Page'
+						}
+					]
 				}
 			},
-			title: 'Test Title'
+			title: 'Test Title',
+			get: () => 'ObojoboDraft.Pages.Page'
 		}
+		model.parent.children.models.push(model)
 
 		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
@@ -68,8 +149,16 @@ describe('Page editor', () => {
 		model.title = null
 		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
-			label: 'Page 0',
-			path: ['page-0'],
+			label: 'Page 2',
+			path: ['page-2'],
+			showChildren: false
+		})
+
+		delete model.parent
+		expect(Page.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Page',
+			path: ['page'],
 			showChildren: false
 		})
 	})

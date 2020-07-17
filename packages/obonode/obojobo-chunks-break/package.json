@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-break",
-	"version": "7.1.5",
+	"version": "9.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Break content chunk for Obojobo",
 	"scripts": {
@@ -13,22 +13,18 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^7.1.5"
+		"obojobo-lib-utils": "^9.1.1"
 	},
 	"devDependencies": {
-		"lint-staged": "^9.4.1"
+		"lint-staged": "^10.2.6"
 	},
 	"jest": {
 		"testMatch": [

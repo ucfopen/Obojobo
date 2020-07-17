@@ -1,16 +1,18 @@
+require('./page-module.scss')
+
 const React = require('react')
-import LayoutDefault from '../layouts/default'
-import RepositoryNav from '../repository-nav'
-import RepositoryBanner from '../repository-banner'
-import ModuleImage from '../module-image'
-import moment from 'moment'
+const RepositoryNav = require('../repository-nav')
+const RepositoryBanner = require('../repository-banner')
+const ModuleImage = require('../module-image')
+const Button = require('../button')
+const APIUtil = require('../../api-util')
+const dayjs = require('dayjs')
+const relativeTime = require('dayjs/plugin/relativeTime')
+
+dayjs.extend(relativeTime)
 
 const PageModule = props => (
-	<LayoutDefault
-		title={`${props.module.title} - an Obojobo Module`}
-		className="repository--module"
-		appCSSUrl={props.appCSSUrl /* provided by resp.render() */}
-	>
+	<div>
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -23,13 +25,21 @@ const PageModule = props => (
 		</RepositoryBanner>
 
 		<section className="repository--main-content">
+			<Button
+				className="copy-button"
+				onClick={() => APIUtil.copyModule(props.module.draftId)}
+				disabled={!props.canCopy}
+			>
+				Copy this module
+			</Button>
+
 			<div>
 				Module created by{' '}
 				<b>
 					{props.owner.firstName} {props.owner.lastName}
 				</b>{' '}
-				on <b>{moment(props.module.createdAt).format('ll')}</b> and updated{' '}
-				{moment(props.module.updatedAt).fromNow()}.
+				on <b>{dayjs(props.module.createdAt).format('MMM D, YYYY')}</b> and updated{' '}
+				{dayjs(props.module.updatedAt).fromNow()}.
 			</div>
 
 			<h2>Use this Module in your Canvas Course</h2>
@@ -105,7 +115,7 @@ const PageModule = props => (
 				<li>Click Embed next to your chosen module</li>
 			</ol>
 		</section>
-	</LayoutDefault>
+	</div>
 )
 
 module.exports = PageModule

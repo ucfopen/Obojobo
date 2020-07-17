@@ -1,14 +1,14 @@
-jest.mock('../../../routes/api/events/create_caliper_event')
-jest.mock('../../../models/visit')
-jest.mock('../../../insert_event')
-jest.mock('../../../db')
+jest.mock('../../../server/routes/api/events/create_caliper_event')
+jest.mock('../../../server/models/visit')
+jest.mock('../../../server/insert_event')
+jest.mock('../../../server/db')
 jest.unmock('express') // we'll use supertest + express for this
 
 /* eslint-disable no-undefined */
 let mockCurrentUser
 let mockCurrentVisit
 let mockSaveSessionSuccess
-jest.mock('../../../express_current_user', () => (req, res, next) => {
+jest.mock('../../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -28,7 +28,7 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../../express_current_document', () => (req, res, next) => {
+jest.mock('../../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
@@ -42,12 +42,12 @@ describe('api visits route', () => {
 	const request = require('supertest')
 	const express = require('express')
 	const bodyParser = require('body-parser')
-	const VisitModel = oboRequire('models/visit')
-	const insertEvent = oboRequire('insert_event')
-	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
-	const viewerState = oboRequire('viewer/viewer_state')
-	const db = oboRequire('db')
-	const ltiUtil = oboRequire('lti')
+	const VisitModel = oboRequire('server/models/visit')
+	const insertEvent = oboRequire('server/insert_event')
+	const caliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
+	const viewerState = oboRequire('server/viewer/viewer_state')
+	const db = oboRequire('server/db')
+	const ltiUtil = oboRequire('server/lti')
 	let mockSession
 	let app
 
@@ -75,10 +75,10 @@ describe('api visits route', () => {
 			req.session = mockSession
 			next()
 		})
-		app.use(oboRequire('express_current_user'))
-		app.use(oboRequire('express_current_document'))
-		app.use('/', oboRequire('express_response_decorator'))
-		app.use('/api/', oboRequire('routes/api/visits'))
+		app.use(oboRequire('server/express_current_user'))
+		app.use(oboRequire('server/express_current_document'))
+		app.use('/', oboRequire('server/express_response_decorator'))
+		app.use('/api/', oboRequire('server/routes/api/visits'))
 	})
 	afterEach(() => {})
 
@@ -151,18 +151,15 @@ describe('api visits route', () => {
 	})
 
 	test('/start fails when theres no draftDocument loaded', () => {
-		expect.assertions(5)
+		expect.assertions(4)
 		mockCurrentUser = { id: 99 }
 		return request(app)
 			.post('/api/start')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(422)
+				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value.message).toContain(
-					'currentDocument missing from request, got undefined'
-				)
+				expect(response.body.value).toHaveProperty('type', 'missing')
 			})
 	})
 

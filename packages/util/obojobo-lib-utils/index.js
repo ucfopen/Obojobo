@@ -94,7 +94,7 @@ const gatherAllMigrations = () => {
 const migrateUp = () => {
 	const { execSync } = require('child_process')
 	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
-	const configPath = resolver('obojobo-express/config/db.json')
+	const configPath = resolver('obojobo-express/server/config/db.json')
 	const migrationDirs = gatherAllMigrations()
 
 	migrationDirs.forEach(dir => {
@@ -148,7 +148,10 @@ const gatherClientScriptsFromModules = () => {
 				}
 				// support config format of:
 				// entryFileName: { file: 'rel/path/to/file.js', position: 20 }
-				if (single.hasOwnProperty('file') && single.hasOwnProperty('position')) {
+				if (
+					Object.prototype.hasOwnProperty.call(single, 'file') &&
+					Object.prototype.hasOwnProperty.call(single, 'position')
+				) {
 					if (!entries[key][single.position]) entries[key][single.position] = []
 					entries[key][single.position].push(resolver(`${oboNodePackage}/${single.file}`))
 				}

@@ -1,20 +1,18 @@
 // Global for loading specialized Obojobo stuff
-// use oboRequire('models/draft') to load draft models from any context
+// use oboRequire('server/models/draft') to load draft models from any context
 global.oboRequire = name => {
 	return require(`obojobo-express/${name}`)
 }
 
-jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
-jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
-jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
-jest.mock('obojobo-express/logger')
-jest.mock('obojobo-express/db')
-jest.mock('obojobo-express/models/draft')
-jest.mock('obojobo-express/routes/api/events/create_caliper_event')
-jest.mock('underscore')
+jest.mock('obojobo-express/server/logger')
+jest.mock('obojobo-express/server/insert_event')
+jest.mock('obojobo-express/server/db')
+jest.mock('obojobo-express/server/models/draft')
+jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
 
 jest.mock(
-	'obojobo-express/models/visit',
+	'obojobo-express/server/models/visit',
 	() => ({
 		fetchById: jest.fn()
 	}),
@@ -42,13 +40,14 @@ const {
 	getState,
 	loadChildren
 } = require('./attempt-start.js')
-const _ = require('underscore')
+
 const testJson = require('obojobo-document-engine/test-object.json')
 const Assessment = require('./assessment')
-const insertEvent = require('obojobo-express/insert_event')
-const Draft = require('obojobo-express/models/draft')
-const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
-const Visit = require('obojobo-express/models/visit')
+const insertEvent = require('obojobo-express/server/insert_event')
+const Draft = require('obojobo-express/server/models/draft')
+const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
+const Visit = require('obojobo-express/server/models/visit')
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -69,7 +68,7 @@ describe('start attempt route', () => {
 
 		// mock _.shuffle by always returning the same array
 		// just check to make sure shuffle.toHaveBeenCalled
-		_.shuffle.mockImplementation(arr => arr)
+		shuffle.mockImplementation(arr => arr)
 		mockDraft = new Draft(testJson)
 		mockUsedQuestionMap = new Map()
 

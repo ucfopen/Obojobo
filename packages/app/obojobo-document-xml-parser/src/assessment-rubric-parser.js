@@ -1,4 +1,4 @@
-let parseRubric = el => {
+const parseRubric = el => {
 	let mods = []
 	if (
 		el.elements &&
@@ -19,7 +19,7 @@ let parseRubric = el => {
 	}
 }
 
-let parseMod = el => {
+const parseMod = el => {
 	return {
 		attemptCondition: el.attributes.attemptCondition,
 		reward: el.attributes.reward

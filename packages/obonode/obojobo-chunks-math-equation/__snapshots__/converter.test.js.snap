@@ -2,27 +2,29 @@
 
 exports[`MathEquation Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {},
-  },
-  "isVoid": true,
-  "key": "mockKey",
-  "object": "block",
+  "children": Array [
+    Object {
+      "text": "",
+    },
+  ],
+  "content": Object {},
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`MathEquation Converter oboToSlate converts an OboNode to a Slate node with content 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "latex": "y=2x",
-      "triggers": "mock-triggers",
+  "children": Array [
+    Object {
+      "text": "",
     },
+  ],
+  "content": Object {
+    "latex": "y=2x",
+    "triggers": "mock-triggers",
   },
-  "isVoid": true,
-  "key": "mockKey",
-  "object": "block",
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -31,7 +33,7 @@ exports[`MathEquation Converter slateToObo converts a Slate node to an OboNode w
 Object {
   "children": Array [],
   "content": Object {},
-  "id": "mockKey",
+  "id": undefined,
   "type": "mockType",
 }
 `;

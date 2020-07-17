@@ -6,13 +6,7 @@ import Line from './editor-component'
 describe('Line Editor Node', () => {
 	test('Line builds the expected component', () => {
 		const component = renderer.create(
-			<Line
-				node={{
-					data: {
-						get: () => 0
-					}
-				}}
-			/>
+			<Line element={{ content: { align: 'left', indent: 0 } }}/>
 		)
 		const tree = component.toJSON()
 

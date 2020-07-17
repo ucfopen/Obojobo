@@ -7,13 +7,12 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: '$attempt_score',
-					failedType: '$attempt_score',
-					unableToPassType: 'no-value',
-					mods: []
-				})
+			content: {
+				passedType: '$attempt_score',
+				failedType: '$attempt_score',
+				type: 'pass-fail',
+				unableToPassType: 'no-value',
+				mods: []
 			}
 		}
 
@@ -23,6 +22,7 @@ describe('Assessment Converter', () => {
 		Object {
 		  "failedResult": "$attempt_score",
 		  "passedResult": "$attempt_score",
+		  "type": "pass-fail",
 		  "unableToPassResult": null,
 		}
 	`)
@@ -32,15 +32,14 @@ describe('Assessment Converter', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => ({
-					passedType: 'set-value',
-					passedResult: '100',
-					failedType: 'set-value',
-					failedResult: '100',
-					unableToPassType: 'set-value',
-					unableToPassResult: '100'
-				})
+			content: {
+				passedType: 'set-value',
+				passedResult: '100',
+				type: 'pass-fail',
+				failedType: 'set-value',
+				failedResult: '100',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
 			}
 		}
 
@@ -50,9 +49,30 @@ describe('Assessment Converter', () => {
 		Object {
 		  "failedResult": "100",
 		  "passedResult": "100",
+		  "type": "pass-fail",
 		  "unableToPassResult": "100",
 		}
 	`)
+	})
+
+	test('slateToObo does not convert a Slate node when type is not "pass-fail"', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			content: {
+				type: 'highest',
+				passedType: 'set-value',
+				passedResult: '100',
+				failedType: 'set-value',
+				failedResult: '10',
+				unableToPassType: 'set-value',
+				unableToPassResult: '100'
+			}
+		}
+
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toBe('')
 	})
 
 	test('oboToSlate converts an OboComponent to a Slate node with special types', () => {

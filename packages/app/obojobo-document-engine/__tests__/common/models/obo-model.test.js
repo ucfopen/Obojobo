@@ -92,7 +92,6 @@ describe('OboModel', () => {
 	})
 
 	test('should retrieve the root model', () => {
-		expect.assertions(2)
 		const o = OboModel.create({
 			id: 'root',
 			type: 'ObojoboDraft.Modules.Module',
@@ -105,6 +104,137 @@ describe('OboModel', () => {
 		})
 		expect(OboModel.models.root.getRoot()).toBe(o)
 		expect(OboModel.models.child.getRoot()).toBe(o)
+	})
+
+	test('getRoot returns expected references with multiple module trees', () => {
+		const modelA = {
+			id: 'modelA',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				},
+				{
+					id: 'different-child-id-a',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+		const modelB = {
+			id: 'modelB',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				},
+				{
+					id: 'different-child-id-b',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+
+		const a = OboModel.create(modelA)
+		const b = OboModel.create(modelB)
+
+		// bug/limitation - expect this to always return the first model
+		expect(OboModel.getRoot()).toBe(a)
+
+		// expect root nodes to return themselves
+		expect(OboModel.models['modelA'].getRoot()).toBe(a)
+		expect(OboModel.models['modelB'].getRoot()).toBe(b)
+
+		// expect the duplicate node's root to replace the
+		// first registered node with that id - resulting in it pointing
+		// at the newer root node (although correct, this can be unexpected)
+		expect(OboModel.models['duplicate-child-id'].getRoot()).toBe(b)
+
+		// expect unique new children root's to be correct
+		expect(OboModel.models['different-child-id-a'].getRoot()).toBe(a)
+		expect(OboModel.models['different-child-id-b'].getRoot()).toBe(b)
+	})
+
+	test('clearAll allows getRoot to return a new root model', () => {
+		const modelA = {
+			id: 'modelA',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				},
+				{
+					id: 'different-child-id-a',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+		const modelB = {
+			id: 'modelB',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				},
+				{
+					id: 'different-child-id-b',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+
+		// register A then clear it
+		OboModel.create(modelA)
+		OboModel.clearAll()
+		const b = OboModel.create(modelB)
+
+		// root should be the first tree created after clearAll()
+		expect(OboModel.getRoot()).toBe(b)
+
+		// expect all traces of modelA to be gone
+		expect(OboModel.models).not.toHaveProperty('modelA')
+		expect(OboModel.models).not.toHaveProperty('different-child-id-a')
+
+		expect(OboModel.models['modelB'].getRoot()).toBe(b)
+
+		// make sure the duplicate id is pointing at b
+		expect(OboModel.models['duplicate-child-id'].getRoot()).toBe(b)
+
+		// expect unique new children root's to be correct
+		expect(OboModel.models['different-child-id-b'].getRoot()).toBe(b)
+	})
+
+	test('clearAll allows getRoot to return a new root model', () => {
+		const modelA = {
+			id: 'modelA',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+		const modelB = {
+			id: 'modelB',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'duplicate-child-id',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		}
+
+		const a = OboModel.create(modelA)
+		const b = OboModel.create(modelB)
+
+		expect(OboModel.models['modelA'].getRoot()).toBe(a)
+		expect(OboModel.models['duplicate-child-id'].getRoot()).toBe(b)
+		expect(OboModel.models['modelB'].getRoot()).toBe(b)
 	})
 
 	test('should process a trigger', () => {
@@ -166,7 +296,6 @@ describe('OboModel', () => {
 	})
 
 	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
-		expect.assertions(4)
 		Registry.getItems(() => {
 			const o = OboModel.create({
 				id: 'root',
@@ -1001,7 +1130,7 @@ describe('OboModel', () => {
 			content: {
 				textGroup: [
 					{
-						data: { align: 'left', indent: 0 },
+						data: { align: 'left', hangingIndent: false, indent: 0 },
 						text: { styleList: null, value: '' }
 					}
 				]

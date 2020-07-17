@@ -3,14 +3,13 @@ import './viewer-component.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import katex from 'katex'
 
 const { NonEditableChunk } = Common.chunk
 const { OboComponent } = Viewer.components
 
 const getLatexHtml = function(latex) {
 	try {
-		const html = katex.renderToString(latex, { displayMode: true })
+		const html = window.katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }
@@ -20,13 +19,9 @@ const getLatexHtml = function(latex) {
 const MathEquation = props => {
 	let katexHtml = getLatexHtml(props.model.modelState.latex)
 	if (katexHtml.error) {
-		katexHtml = ''
+		katexHtml = `<div class="katex-error" title="${katexHtml.error.message}">${props.model.modelState.latex}</div>`
 	} else {
 		katexHtml = katexHtml.html
-	}
-
-	if (katexHtml.length === 0) {
-		return null
 	}
 
 	/*

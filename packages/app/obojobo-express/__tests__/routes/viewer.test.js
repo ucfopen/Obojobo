@@ -1,7 +1,7 @@
-jest.mock('../../models/visit')
-jest.mock('../../insert_event')
+jest.mock('../../server/models/visit')
+jest.mock('../../server/insert_event')
 jest.mock(
-	'../../asset_resolver',
+	'../../server/asset_resolver',
 	() => ({
 		assetForEnv: path => path,
 		webpackAssetPath: path => path
@@ -11,7 +11,7 @@ jest.mock(
 // make sure all Date objects use a static date
 mockStaticDate()
 
-jest.mock('../../db')
+jest.mock('../../server/db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 
@@ -19,7 +19,7 @@ jest.unmock('express') // we'll use supertest + express for this
 let mockCurrentUser
 let mockCurrentVisit
 let mockSaveSessionSuccess = true
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -37,7 +37,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		if (!mockCurrentDocument) return Promise.reject()
 		req.currentDocument = mockCurrentDocument
@@ -48,7 +48,7 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 
 // ovveride requireCurrentDocument to provide our own
 let mockLtiLaunch
-jest.mock('../../express_lti_launch', () => ({
+jest.mock('../../server/express_lti_launch', () => ({
 	assignment: (req, res, next) => {
 		req.lti = { body: mockLtiLaunch }
 		req.oboLti = {
@@ -64,15 +64,15 @@ const request = require('supertest')
 const express = require('express')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '../../../views/')
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/viewer'))
+app.set('views', __dirname + '../../../server/views/')
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/viewer'))
 
 describe('viewer route', () => {
-	const insertEvent = oboRequire('insert_event')
-	const VisitModel = oboRequire('models/visit')
+	const insertEvent = oboRequire('server/insert_event')
+	const VisitModel = oboRequire('server/models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -115,7 +115,7 @@ describe('viewer route', () => {
 	})
 
 	test('launch visit requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 		mockCurrentDocument = null
 
 		return request(app)
@@ -123,8 +123,7 @@ describe('viewer route', () => {
 			.type('application/x-www-form-urlencoded')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -229,15 +228,14 @@ describe('viewer route', () => {
 	})
 
 	test('view visit requires a current document', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		mockCurrentDocument = null
 		return request(app)
 			.get('/' + validUUID() + '/visit/' + validUUID())
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 

@@ -1,19 +1,19 @@
-import lti from '../lti'
+import lti from '../server/lti'
 
-jest.mock('../db')
+jest.mock('../server/db')
 jest.mock('uuid')
-jest.mock('../logger')
-jest.mock('../insert_event')
+jest.mock('../server/logger')
+jest.mock('../server/insert_event')
 
 const moment = require('moment')
-const db = require('../db')
-const logger = oboRequire('logger')
-const insertEvent = require('../insert_event')
+const db = oboRequire('server/db')
+const logger = oboRequire('server/logger')
+const insertEvent = oboRequire('server/insert_event')
 
 const logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
 let _DateToISOString
 
-jest.mock('../config', () => {
+jest.mock('../server/config', () => {
 	return {
 		lti: {
 			keys: {
@@ -448,7 +448,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -530,7 +530,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -612,7 +612,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -690,7 +690,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -768,7 +768,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -854,7 +854,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -940,7 +940,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1016,7 +1016,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1094,7 +1094,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1165,7 +1165,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1237,7 +1237,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1309,7 +1309,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1385,7 +1385,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1468,7 +1468,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1551,7 +1551,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1638,7 +1638,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1736,7 +1736,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1812,7 +1812,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1891,7 +1891,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -1971,7 +1971,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2046,7 +2046,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2116,7 +2116,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2189,7 +2189,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2262,7 +2262,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2337,7 +2337,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2557,7 +2557,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,
@@ -2634,7 +2634,7 @@ describe('lti', () => {
 				},
 				userId: 'user-id',
 				ip: '',
-				eventVersion: '2.0.0',
+				eventVersion: '2.1.0',
 				metadata: {},
 				draftId: 'draft-id',
 				isPreview: false,

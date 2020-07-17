@@ -4,7 +4,10 @@ const React = require('react')
 const ModuleIamge = require('./module-image')
 const Button = require('./button')
 const ButtonLink = require('./button-link')
-const { urlForEditor, downloadDocument } = require('../repository-utils')
+const { urlForEditor } = require('../repository-utils')
+const {
+	downloadDocument
+} = require('obojobo-document-engine/src/scripts/common/util/download-document')
 
 const deleteModule = (title, draftId, deleteFn) => {
 	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
@@ -35,7 +38,6 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Write, edit, and update.</div>
 
 				<Button
-					className="new-button"
 					onClick={() => {
 						props.showModulePermissions(props)
 					}}
@@ -44,15 +46,26 @@ const ModuleOptionsDialog = props => (
 				</Button>
 				<div className="label">Add or remove collaborators.</div>
 
+				<Button onClick={() => props.showVersionHistory(props)}>Version History</Button>
+				<div className="label">View and restore previous versions.</div>
+
 				<Button
-					className="new-button"
 					onClick={() => {
-						downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')
+						downloadDocument(props.draftId, 'json')
 					}}
 				>
-					Download
+					Download JSON
 				</Button>
-				<div className="label">Download a copy.</div>
+				<div className="label">Download a copy in JSON format.</div>
+
+				<Button
+					onClick={() => {
+						downloadDocument(props.draftId, 'xml')
+					}}
+				>
+					Download XML
+				</Button>
+				<div className="label">Download a copy in XML format.</div>
 
 				<ButtonLink url={`/library/${props.draftId}`} target="_blank">
 					Public Page
@@ -60,14 +73,14 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Visit this modules public page.</div>
 
 				<Button
-					className="new-button dangerous-button"
+					className="dangerous-button delete-button"
 					onClick={() => {
 						deleteModule(props.title, props.draftId, props.deleteModule)
 					}}
 				>
 					Delete
 				</Button>
-				<div className="label">Say farewell.</div>
+				<div className="label delete-label">Say farewell.</div>
 			</div>
 			<Button className="done-button secondary-button" onClick={props.onClose}>
 				Close

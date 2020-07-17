@@ -13,7 +13,8 @@ const Assessment = {
 	getAttempts: jest.fn(),
 	getAttemptNumber: jest.fn().mockResolvedValue('mockAttemptNumber'),
 	getCompletedAssessmentAttemptHistory: jest.fn(),
-	getResponsesForAttempt: jest.fn()
+	getResponsesForAttempt: jest.fn(),
+	fetchAttemptByIdAndUserId: jest.fn()
 }
 
 module.exports = Assessment

@@ -35,6 +35,14 @@ const buildMockReactComponent = name => {
 	return MockComponent
 }
 
+class XMLSerializer {
+	serializeToString() {
+		return '<mockSerializedToString/>'
+	}
+}
+
+global.XMLSerializer = XMLSerializer
+
 // helper to quickly create a standin mock react component with a name
 // : jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
 global.mockReactComponent = (target, name) => {
@@ -42,3 +50,11 @@ global.mockReactComponent = (target, name) => {
 }
 
 global.window.open = jest.fn()
+global.window.katex = {
+	renderToString: jest
+		.fn()
+		.mockImplementation(
+			(input, options = {}) =>
+				`mock-katex-render-for-${input}-with-options-${JSON.stringify(options)}`
+		)
+}

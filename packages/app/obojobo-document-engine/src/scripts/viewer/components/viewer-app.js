@@ -17,6 +17,7 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
@@ -140,7 +141,8 @@ export default class ViewerApp extends React.Component {
 
 				return APIUtil.getDraft(this.props.draftId)
 			})
-			.then(({ value: draftModel }) => {
+			.then(injectKatexIfNeeded)
+			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
@@ -151,6 +153,7 @@ export default class ViewerApp extends React.Component {
 					visitIdFromApi,
 					viewState
 				)
+
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
@@ -517,7 +520,7 @@ export default class ViewerApp extends React.Component {
 			QuestionStore.triggerChange()
 
 			return ModalUtil.show(
-				<SimpleDialog ok width="15em">
+				<SimpleDialog ok width="19em">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
 			)

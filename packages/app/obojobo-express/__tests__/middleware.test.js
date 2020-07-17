@@ -1,6 +1,19 @@
-jest.mock('../obo_express', () => {})
+jest.mock('../server/obo_express', () => {})
 jest.mock('serve-favicon')
-jest.mock('../config')
+jest.mock('../server/config', () => {
+	return {
+		general: {
+			bodyParser: {
+				jsonOptions: 'mockJSON',
+				urlencodedOptions: 'mockURL',
+				textOptions: 'mockTextOptions'
+			}
+		},
+		db: {
+			useBluebird: false
+		}
+	}
+})
 jest.mock('body-parser', () => {
 	return {
 		json: jest.fn(),
@@ -9,12 +22,12 @@ jest.mock('body-parser', () => {
 	}
 })
 jest.mock('consolidate', () => mockConsolidateEngines)
-jest.mock('../routes/profile', () => {})
-jest.mock('../logger')
+jest.mock('../server/routes/profile', () => {})
+jest.mock('../server/logger')
 jest.mock('connect-pg-simple', () => {
 	return jest.fn().mockReturnValueOnce(jest.fn())
 })
-jest.mock('../db')
+jest.mock('../server/db')
 jest.mock('express-session')
 
 const originalWEBPACK = process.env.IS_WEBPACK
@@ -27,7 +40,7 @@ let config
 describe('middleware', () => {
 	beforeEach(() => {
 		jest.resetModules()
-		config = require('../config')
+		config = require('../server/config')
 		config.general.bodyParser = {
 			jsonOptions: 'mockJSON',
 			urlencodedOptions: 'mockURL',
@@ -67,7 +80,7 @@ describe('middleware', () => {
 	})
 
 	test('initializes with no errors', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 
 		middleware(mockApp)
 		expect(mockApp.set).toHaveBeenCalled()
@@ -76,13 +89,13 @@ describe('middleware', () => {
 	})
 
 	test('sets default view extension to ejs', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		expect(mockApp.set).toHaveBeenCalledWith('view engine', 'ejs')
 	})
 
 	test('registeres ejs when not already registered', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const mockEJSEngine = {}
 		mockConsolidateEngines.ejs = mockEJSEngine
 
@@ -91,7 +104,7 @@ describe('middleware', () => {
 	})
 
 	test('skips registering ejs when already registered', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const mockEJSEngine = {}
 		mockApp.engines.ejs = mockEJSEngine
 
@@ -100,14 +113,14 @@ describe('middleware', () => {
 	})
 
 	test('favicon is registered', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const favicon = require('serve-favicon')
 		middleware(mockApp)
 		expect(favicon).toHaveBeenCalled()
 	})
 
 	test('bodyParser is setup', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const bodyParser = require('body-parser')
 		middleware(mockApp)
 		expect(bodyParser.json).toHaveBeenCalled()
@@ -116,7 +129,7 @@ describe('middleware', () => {
 	})
 
 	test('session handler is initialized', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const session = require('express-session')
 		middleware(mockApp)
 		expect(session).toHaveBeenCalled()
@@ -141,7 +154,7 @@ describe('middleware', () => {
 
 	test('session handler is initialized with ssl enabled', () => {
 		config.general.secureCookie = true
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		const session = require('express-session')
 		middleware(mockApp)
 		expect(session).toHaveBeenCalled()
@@ -165,21 +178,21 @@ describe('middleware', () => {
 	})
 
 	test('obo_express is registered', () => {
-		const middleware = require('../middleware.default')
-		const ObojoboDocumentServer = require('../obo_express')
+		const middleware = require('../server/middleware.default')
+		const ObojoboDocumentServer = require('../server/obo_express')
 		middleware(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(ObojoboDocumentServer)
 	})
 
 	test('profile route is registered', () => {
-		const middleware = require('../middleware.default')
-		const profileRoute = require('../routes/profile')
+		const middleware = require('../server/middleware.default')
+		const profileRoute = require('../server/routes/profile')
 		middleware(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith('/profile', profileRoute)
 	})
 
 	test('a 404 handler is registered', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
 		const shouldBe404Handler = mockApp.use.mock.calls[nextToLastCallIndex][0]
@@ -193,7 +206,7 @@ describe('middleware', () => {
 
 	test('when using webpack, the 404 handler calls calls missing when not a static file', () => {
 		process.env.IS_WEBPACK = 'true'
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
 		const shouldBe404Handler = mockApp.use.mock.calls[nextToLastCallIndex][0]
@@ -209,7 +222,7 @@ describe('middleware', () => {
 
 	test('when using webpack, the 404 handler calls next on missing static files', () => {
 		process.env.IS_WEBPACK = 'true'
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
 		const shouldBe404Handler = mockApp.use.mock.calls[nextToLastCallIndex][0]
@@ -224,7 +237,7 @@ describe('middleware', () => {
 	})
 
 	test('when NOT using webpack, the 404 handler calls missing for non-static files', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
 		const shouldBe404Handler = mockApp.use.mock.calls[nextToLastCallIndex][0]
@@ -239,7 +252,7 @@ describe('middleware', () => {
 	})
 
 	test('when NOT using webpack, the 404 handler calls missing for static files', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const nextToLastCallIndex = mockApp.use.mock.calls.length - 2
 		const shouldBe404Handler = mockApp.use.mock.calls[nextToLastCallIndex][0]
@@ -254,7 +267,7 @@ describe('middleware', () => {
 	})
 
 	test('an error handler is registered last', () => {
-		const middleware = require('../middleware.default')
+		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
 		const lastCallIndex = mockApp.use.mock.calls.length - 1
 		const shouldBeErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
@@ -267,8 +280,8 @@ describe('middleware', () => {
 	})
 
 	test('an error handler is registered last', () => {
-		const logger = require('../logger')
-		const middleware = require('../middleware.default')
+		const logger = require('../server/logger')
+		const middleware = require('../server/middleware.default')
 		const mockNext = jest.fn()
 		middleware(mockApp)
 		const lastCallIndex = mockApp.use.mock.calls.length - 1

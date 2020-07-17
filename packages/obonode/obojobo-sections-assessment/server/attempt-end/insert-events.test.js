@@ -1,5 +1,5 @@
 const { insertAttemptEndEvents, insertAttemptScoredEvents } = require('./insert-events')
-const mockInsertEvent = require('obojobo-express/insert_event')
+const mockInsertEvent = require('obojobo-express/server/insert_event')
 
 const mockCreateAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 const mockCreateAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
@@ -13,13 +13,13 @@ const mockDraftDocument = {
 	draftId: 'mockDraftId'
 }
 
-jest.mock('obojobo-express/lti', () => ({
+jest.mock('obojobo-express/server/lti', () => ({
 	getLatestHighestAssessmentScoreRecord: function() {
 		return mockGetLatestHighestAssessmentScoreRecord.apply(null, arguments)
 	}
 }))
-jest.mock('obojobo-express/insert_event')
-jest.mock('obojobo-express/routes/api/events/create_caliper_event', () => {
+jest.mock('obojobo-express/server/insert_event')
+jest.mock('obojobo-express/server/routes/api/events/create_caliper_event', () => {
 	return () => ({
 		createAssessmentAttemptScoredEvent: args => mockCreateAssessmentAttemptScoredEvent(args),
 		createAssessmentAttemptSubmittedEvent: args => mockCreateAssessmentAttemptSubmittedEvent(args)
@@ -53,7 +53,7 @@ describe('attempt-end/insert events', () => {
 			caliperPayload: 'mockCaliperPayload',
 			contentId: 'mockContentId',
 			draftId: 'mockDraftId',
-			eventVersion: '1.1.0',
+			eventVersion: '1.2.0',
 			ip: 'mockRemoteAddress',
 			isPreview: 'mockIsPreview',
 			metadata: {},
@@ -111,7 +111,7 @@ describe('attempt-end/insert events', () => {
 			caliperPayload: 'mockCaliperPayload',
 			contentId: 'mockContentId',
 			draftId: 'mockDraftId',
-			eventVersion: '2.0.0',
+			eventVersion: '2.1.0',
 			ip: 'mockRemoteAddress',
 			isPreview: 'mockIsPreview',
 			metadata: {},

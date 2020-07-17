@@ -1,8 +1,8 @@
-jest.mock('../../db')
+jest.mock('../../server/db')
 jest.unmock('fs') // need fs working for view rendering
 jest.unmock('express') // we'll use supertest + express for this
 jest.mock(
-	'../../asset_resolver',
+	'../../server/asset_resolver',
 	() => ({
 		assetForEnv: path => path,
 		webpackAssetPath: path => path
@@ -15,7 +15,7 @@ let mockCurrentUser
 // override requireCurrentDocument for tests to provide our own document
 let mockCurrentDocument
 
-jest.mock('../../express_current_user', () => (req, res, next) => {
+jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -27,7 +27,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-jest.mock('../../express_current_document', () => (req, res, next) => {
+jest.mock('../../server/express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
@@ -36,16 +36,16 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 })
 
 // setup express server
-const db = oboRequire('db')
+const db = oboRequire('server/db')
 const request = require('supertest')
 const express = require('express')
 const app = express()
 app.set('view engine', 'ejs')
-app.set('views', __dirname + '/../../views/')
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/', oboRequire('routes/editor'))
+app.set('views', __dirname + '/../../server/views/')
+app.use(oboRequire('server/express_current_user'))
+app.use(oboRequire('server/express_current_document'))
+app.use('/', oboRequire('server/express_response_decorator'))
+app.use('/', oboRequire('server/routes/editor'))
 
 describe('editor route', () => {
 	beforeEach(() => {
@@ -97,29 +97,18 @@ describe('editor route', () => {
 			})
 	})
 
-	test('get classic editor rejects users without canViewEditor permission', () => {
+	test('get visual editor handles readOnly setting', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
 		mockCurrentUser.isGuest = () => false
-		return request(app)
-			.get('/classic/draft/mockId')
-			.then(response => {
-				expect(response.statusCode).toBe(401)
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.text).toBe('Not Authorized')
-			})
-	})
 
-	test('get classic editor rejects without canViewEditor access', () => {
-		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
-		mockCurrentUser.isGuest = () => false
 		return request(app)
-			.get('/classic/draft/mockId')
+			.get('/visual/draft/mockId')
+			.query({ read_only: '1' })
 			.then(response => {
-				expect(response.statusCode).toBe(401)
+				expect(response.statusCode).toBe(200)
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.text).toBe('Not Authorized')
+				expect(response.text).toContain('"readOnly":true')
 			})
 	})
 })

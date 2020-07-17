@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`QuestionBank editor plugins.getPasteNode returns text from settings 1`] = `
-Array [
-  Immutable.Record {
-    "data": Immutable.Map {},
-    "key": "0",
-    "nodes": Immutable.List [
-      Immutable.Record {
-        "data": Immutable.Map {},
-        "key": "1",
-        "nodes": Immutable.List [
-          Immutable.Record {
-            "data": Immutable.Map {},
-            "key": "2",
-            "nodes": Immutable.List [],
-            "type": "mockNode",
-          },
-        ],
-        "type": "ObojoboDraft.Chunks.Text.TextLine",
-      },
-    ],
-    "type": "ObojoboDraft.Chunks.Text",
-  },
-]
-`;
-
-exports[`QuestionBank editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
 <QuestionBank
   attributes={
@@ -41,25 +14,6 @@ exports[`QuestionBank editor plugins.renderNode renders a question bank when pas
         "get": [Function],
       },
       "type": "ObojoboDraft.Chunks.QuestionBank",
-    }
-  }
-/>
-`;
-
-exports[`QuestionBank editor plugins.renderNode renders settings when passed 1`] = `
-<Settings
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
     }
   }
 />

@@ -1,5 +1,5 @@
 {
-    "extends": "eslint-config-obojobo",
+	"extends": "eslint-config-obojobo",
 	"globals": {
 		"$": true
 	},

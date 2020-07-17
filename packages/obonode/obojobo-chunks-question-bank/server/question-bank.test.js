@@ -1,4 +1,4 @@
-jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/server/logger')
 jest.mock(
 	'./util',
 	() => ({
@@ -7,19 +7,19 @@ jest.mock(
 	{ virtual: false }
 )
 
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
 jest.setMock(
-	'obojobo-express/models/draft_node',
+	'obojobo-express/server/models/draft_node',
 	require('obojobo-document-engine/__mocks__/models/draft_node')
 )
 
 const QuestionBank = require('./question-bank')
-const _ = require('underscore')
-const logger = require('obojobo-express/logger')
+const logger = require('obojobo-express/server/logger')
 const { getRandom } = require('./util')
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'
 const SELECT_RANDOM_UNSEEN = 'random-unseen'
-
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 describe('QuestionBank', () => {
 	/*
 	|QB (choose=Infinity)
@@ -301,7 +301,7 @@ describe('QuestionBank', () => {
 	})
 
 	test('buildAssessment creates a random-all group', () => {
-		_.shuffle = jest.fn(array => array)
+		shuffle.mockImplementation(array => array)
 
 		const usageMap = new Map()
 
@@ -508,7 +508,7 @@ describe('QuestionBank', () => {
 	})
 
 	test('display all question banks and questions randomly', () => {
-		_.shuffle = jest.fn(() => ['qb1.q2', 'qb1.q1', 'qb1.q3'])
+		shuffle.mockReturnValue(['qb1.q2', 'qb1.q1', 'qb1.q3'])
 
 		const mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 
@@ -525,19 +525,19 @@ describe('QuestionBank', () => {
 		mockQBNode.choose = 1
 		let chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2'])
-		expect(_.shuffle).toHaveBeenCalled()
+		expect(shuffle).toHaveBeenCalled()
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
 		mockQBNode.choose = 2
 		chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2', 'qb1.q1'])
-		expect(_.shuffle).toHaveBeenCalled()
+		expect(shuffle).toHaveBeenCalled()
 
 		// Case to test sorting of question banks.
 		mockQBNode.choose = Infinity
 		chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2', 'qb1.q1', 'qb1.q3'])
-		expect(_.shuffle).toHaveBeenCalled()
+		expect(shuffle).toHaveBeenCalled()
 	})
 
 	test('display unseen question banks and questions randomly', () => {

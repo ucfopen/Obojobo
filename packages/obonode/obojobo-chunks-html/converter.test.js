@@ -3,14 +3,10 @@ import Converter from './converter'
 describe('HTML Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return {}
-				}
-			},
-			text: 'mockText'
+			content: {},
+			children: [{ text: 'mockText' }]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 
@@ -19,14 +15,10 @@ describe('HTML Converter', () => {
 
 	test('slateToObo converts a Slate node to an OboNode with triggers', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => {
-					return { triggers: 'mock-triggers' }
-				}
-			},
-			text: 'mockText'
+			content: { triggers: 'mock-triggers' },
+			children: [{ text: 'mockText' }]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

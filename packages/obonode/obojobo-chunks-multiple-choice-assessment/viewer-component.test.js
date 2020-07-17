@@ -7,10 +7,9 @@ import MCAssessment from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 import React from 'react'
-import _ from 'underscore'
 import renderer from 'react-test-renderer'
 
-const { getScoreClass } = require.requireActual(
+const { getScoreClass } = jest.requireActual(
 	'obojobo-document-engine/src/scripts/viewer/util/question-util'
 ).default
 
@@ -19,6 +18,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
@@ -231,7 +231,6 @@ let originalGetRandomItem
 
 describe('MCAssessment', () => {
 	beforeAll(() => {
-		_.shuffle = a => a
 		QuestionUtil.getScoreClass = getScoreClass
 	})
 	beforeEach(() => {

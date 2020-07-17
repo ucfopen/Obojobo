@@ -1,88 +1,97 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
 import YouTube from './editor-component'
+import { Transforms } from 'slate'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag', () => () => {
+	// simulate loading the youtube iframe api
+	global.window.onYouTubeIframeAPIReady()
+})
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
 jest.mock(
 	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
 	() => props => <div>{props.children}</div>
 )
-
-let mockNode
-let editor
+jest.mock('obojobo-document-engine/src/scripts/common/util/uuid', () => () => 'mockId')
 
 describe('YouTube Editor Node', () => {
 	beforeEach(() => {
-		const mockNodeDataGet = jest.fn().mockReturnValue({})
-		mockNode = { data: { get: mockNodeDataGet } }
-		editor = { setNodeByKey: jest.fn(), removeNodeByKey: jest.fn() }
+		jest.restoreAllMocks()
+		jest.resetAllMocks()
 	})
 
-	test('YouTube builds the expected componen without a videoId', () => {
-		const component = renderer.create(<YouTube node={mockNode} />)
+	test('YouTube component', () => {
+		const component = renderer.create(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('YouTube builds the expected component given a videoId', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
-		const component = renderer.create(<YouTube node={mockNode} />)
-		const tree = component.toJSON()
+	test('YouTube renders with no id correctly', () => {
+		const component = renderer.create(<YouTube element={{ content: {} }} />)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
 
+	test('YouTube component handles tab', () => {
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} selected />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
+
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('YouTube component deletes self', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
-		const component = mount(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
-		)
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 
-		// locate the delete button
-		const button = component.find('button').at(0)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
-		// click it
-		button.simulate('click')
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
-	test('YouTube component edits input', () => {
-		mockNode.data.get.mockReturnValue({ videoId: 'mockId' })
-		const component = mount(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
-		)
+	test('YouTube component edits properties', () => {
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 
-		// locate the edit button
-		const button = component.find('button').at(1)
-		expect(button.props().children).toBe('Edit')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
-		// click it
-		button.simulate('click')
-
-		const tree = component.html()
-
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('handleSourceChange sets the nodes content', () => {
-		mockNode.key = 'mockNodeKey'
-		const testRenderer = renderer.create(
-			<YouTube node={mockNode} isFocused={true} isSelected={true} editor={editor} />
-		)
-		const component = testRenderer.root
+	test('changeProperties sets the nodes content', () => {
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} />)
 
-		// execute the instance callback
-		component.instance.handleSourceChange('mockId')
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockNodeKey', {
-			data: { content: { videoId: 'mockId' } }
-		})
+		component.instance().handleSourceChange({ mockProperties: 'mock value' })
 
-		const tree = testRenderer.toJSON()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 })

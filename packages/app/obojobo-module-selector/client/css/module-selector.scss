@@ -65,7 +65,7 @@ header {
 .no-items {
 	display: none;
 	position: absolute;
-	top: 150px;
+	top: 50px;
 	text-align: center;
 	width: 400px;
 	margin-left: -200px;
@@ -357,6 +357,7 @@ header {
 	font-size: 17pt;
 	font-weight: 700;
 	margin: 0;
+	word-break: break-word;
 }
 
 #section-progress header .heading-container h1 .remaining-tagline,
@@ -629,7 +630,6 @@ header {
 }
 
 .ui-progressbar {
-	background: url('/assets/images/lti/progressbar-bg.gif');
 	height: 20px;
 	border-radius: 11px;
 	width: 80%;
@@ -709,5 +709,6 @@ header {
 
 	.obo-item h2 {
 		font-size: 0.9em;
+		word-break: break-word;
 	}
 }

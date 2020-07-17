@@ -2,51 +2,26 @@
 
 exports[`QuestionBank converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "choose": null,
-      "triggers": "mock-triggers",
-    },
-  },
-  "nodes": Array [
+  "children": Array [
     Object {
-      "data": Object {
-        "content": Object {
-          "choose": "1",
-          "chooseAll": true,
-          "triggers": "mock-triggers",
-        },
-      },
-      "isVoid": true,
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
-    },
-    Object {
-      "data": Object {
-        "content": Object {
-          "choose": "1",
-        },
-      },
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "content": Object {
-              "choose": "1",
-              "chooseAll": false,
-            },
-          },
-          "isVoid": true,
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
-        },
+      "children": Array [
         undefined,
       ],
-      "object": "block",
+      "content": Object {
+        "choose": "1",
+        "chooseAll": false,
+      },
+      "id": "mockKey",
       "type": "ObojoboDraft.Chunks.QuestionBank",
     },
     undefined,
   ],
-  "object": "block",
+  "content": Object {
+    "choose": 1,
+    "chooseAll": true,
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -56,7 +31,9 @@ Object {
   "children": Array [
     Object {
       "children": Array [],
-      "content": undefined,
+      "content": Object {
+        "choose": "1",
+      },
       "id": "mockKey",
       "type": "ObojoboDraft.Chunks.QuestionBank",
     },
@@ -64,25 +41,6 @@ Object {
   ],
   "content": Object {
     "choose": "all",
-  },
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`QuestionBank converter slateToObo converts a Slate node to an OboNode without content 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [],
-      "content": undefined,
-      "id": "mockKey",
-      "type": "ObojoboDraft.Chunks.QuestionBank",
-    },
-    undefined,
-  ],
-  "content": Object {
-    "choose": "1",
   },
   "id": "mockKey",
   "type": "mockType",

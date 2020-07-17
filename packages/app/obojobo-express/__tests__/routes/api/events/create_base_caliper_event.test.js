@@ -1,8 +1,8 @@
-import BaseEvent from '../../../../routes/api/events/create_base_caliper_event'
+import BaseEvent from '../../../../server/routes/api/events/create_base_caliper_event'
 import Event from 'caliper-js-public/src/events/event'
-import iriFactory from '../../../../iri_builder'
+import iriFactory from '../../../../server/iri_builder'
 
-const { ACTOR_SERVER_APP } = oboRequire('routes/api/events/caliper_constants')
+const { ACTOR_SERVER_APP } = oboRequire('server/routes/api/events/caliper_constants')
 
 describe('Base Caliper Event', () => {
 	test('createEvent builds basic Caliper Event', () => {
