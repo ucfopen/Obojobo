@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "vutoan1245",
+      "name": "Toan Vu",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/23706824?v=4",
+      "profile": "https://github.com/vutoan1245",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
