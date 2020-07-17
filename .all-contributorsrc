@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ctcuff",
+      "name": "Cameron Cuff",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7400747?v=4",
+      "profile": "https://ctcuff.github.io",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
