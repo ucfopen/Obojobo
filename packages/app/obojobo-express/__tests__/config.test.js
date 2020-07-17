@@ -90,6 +90,25 @@ describe('config', () => {
 		expect(config.db).toEqual({})
 	})
 
+	test('config logs errors when missing env and default', () => {
+		process.env.NODE_ENV = 'test'
+		const fs = require('fs')
+		const mockDBConfig = {
+			development: {
+				driver: 'postgres'
+			}
+		}
+
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
+
+		const config = oboRequire('server/config')
+		expect(logger.error).toHaveBeenCalledTimes(2)
+		expect(logger.error).toHaveBeenCalledWith(
+			expect.stringContaining('Error: Missing config environment for "default" and "test"')
+		)
+		expect(config.db).toEqual({})
+	})
+
 	test('processes DATABASE_URL env variable 2', () => {
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
