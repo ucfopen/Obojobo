@@ -6,6 +6,24 @@
   "commit": false,
   "contributors": [
     {
+      "login": "gitnix",
+      "name": "Ryan Eppers",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5448785?v=4",
+      "profile": "https://github.com/gitnix",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "platform",
+        "question",
+        "review",
+        "tool",
+        "review"
+      ]
+   },
+   {
       "login": "qwertynerd97",
       "name": "Elli Howard",
       "avatar_url": "https://avatars3.githubusercontent.com/u/36134301?v=4",
