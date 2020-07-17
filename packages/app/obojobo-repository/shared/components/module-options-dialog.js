@@ -38,7 +38,6 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Write, edit, and update.</div>
 
 				<Button
-					className="new-button"
 					onClick={() => {
 						props.showModulePermissions(props)
 					}}
@@ -47,8 +46,10 @@ const ModuleOptionsDialog = props => (
 				</Button>
 				<div className="label">Add or remove collaborators.</div>
 
+				<Button onClick={() => props.showVersionHistory(props)}>Version History</Button>
+				<div className="label">View and restore previous versions.</div>
+
 				<Button
-					className="new-button"
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
 					}}
@@ -58,7 +59,6 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Download a copy in JSON format.</div>
 
 				<Button
-					className="new-button"
 					onClick={() => {
 						downloadDocument(props.draftId, 'xml')
 					}}
@@ -73,14 +73,14 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Visit this modules public page.</div>
 
 				<Button
-					className="new-button dangerous-button"
+					className="dangerous-button delete-button"
 					onClick={() => {
 						deleteModule(props.title, props.draftId, props.deleteModule)
 					}}
 				>
 					Delete
 				</Button>
-				<div className="label">Say farewell.</div>
+				<div className="label delete-label">Say farewell.</div>
 			</div>
 			<Button className="done-button secondary-button" onClick={props.onClose}>
 				Close
