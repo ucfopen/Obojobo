@@ -6,6 +6,18 @@
   "commit": false,
   "contributors": [
     {
+      "login": "vutoan1245",
+      "name": "Toan Vu",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/23706824?v=4",
+      "profile": "https://github.com/vutoan1245",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    },
+    {
       "login": "ctcuff",
       "name": "Cameron Cuff",
       "avatar_url": "https://avatars2.githubusercontent.com/u/7400747?v=4",
