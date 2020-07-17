@@ -41,10 +41,10 @@ exports.up = function(db) {
 			// Copy drafts_content into temp_drafts_content
 			.then(result => {
 				return db.runSql(`
-	      INSERT INTO temp_drafts_content(draft_id, created_at, content, xml, temp_old_id)
-        SELECT draft_id, created_at, content, xml, id AS temp_old_id
-        FROM drafts_content
-	    `)
+					INSERT INTO temp_drafts_content(draft_id, created_at, content, xml, temp_old_id)
+					SELECT draft_id, created_at, content, xml, id AS temp_old_id
+					FROM drafts_content
+				`)
 			})
 			// Add a column to visits to store the new UUID draft_content_id
 			.then(result => {
@@ -64,10 +64,10 @@ exports.up = function(db) {
 					const newId = row.id
 
 					updates.push(`
-        UPDATE visits
-        SET new_draft_content_id='${newId}'
-        WHERE draft_content_id='${oldId}'
-      `)
+						UPDATE visits
+						SET new_draft_content_id='${newId}'
+						WHERE draft_content_id='${oldId}'
+					`)
 				})
 
 				updates = updates.join(';')
@@ -98,10 +98,6 @@ exports.up = function(db) {
 				return db.dropTable('drafts_content')
 			})
 			.then(result => {
-				// 	return db.runSql(`
-				// ALTER TABLE temp_drafts_content
-				// RENAME TO drafts_content;`)
-				// })
 				return db.renameTable('temp_drafts_content', 'drafts_content')
 			})
 			// Add indicies to the new drafts_content
@@ -142,10 +138,10 @@ exports.down = function(db) {
 			// Copy drafts_content into temp_drafts_content
 			.then(result => {
 				return db.runSql(`
-	      INSERT INTO temp_drafts_content(draft_id, created_at, content, xml, temp_old_id)
-        SELECT draft_id, created_at, content, xml, id AS temp_old_id
-        FROM drafts_content
-	    `)
+					INSERT INTO temp_drafts_content(draft_id, created_at, content, xml, temp_old_id)
+					SELECT draft_id, created_at, content, xml, id AS temp_old_id
+					FROM drafts_content
+				`)
 			})
 			// Add a column to visits to store the new bigint draft_content_id
 			.then(result => {
@@ -165,10 +161,10 @@ exports.down = function(db) {
 					const newId = row.id
 
 					updates.push(`
-        UPDATE visits
-        SET new_draft_content_id='${newId}'
-        WHERE draft_content_id='${oldId}'
-      `)
+						UPDATE visits
+						SET new_draft_content_id = '${newId}'
+						WHERE draft_content_id = '${oldId}'
+					`)
 				})
 
 				updates = updates.join(';')
