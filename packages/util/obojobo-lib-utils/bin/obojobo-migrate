@@ -21,7 +21,7 @@ const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
 const config = require('obojobo-express/server/config')
 const args = process.argv.slice(2).join(' ')
 const isCreateMode = args.includes('create')
-
+const NODE_ENV = process.env.NODE_ENV || 'development'
 let command
 
 if (!isCreateMode) {
@@ -30,18 +30,8 @@ if (!isCreateMode) {
 	const configPath = `${tempDir}/dbconfig.json`
 
 	try {
-		// match -e production and -env test
-		const envFlagRegex = /\s-e(nv)?\s+(\w+)/
-
-		// if no flag is set, add our own
-		if(!args.match(envFlagRegex)){
-			args += ' -e development'
-		}
-
-		// re-match for logging below
-		const match = args.match(envFlagRegex)
-
-		console.log(`Using db.json environment: ${match[2]}. use '-e <environment>' to set`)
+		console.log(`Using db.json env: ${NODE_ENV}.`)
+		console.log(`use 'NODE_ENV=<environment> obojobo-migrate ...' to change`)
 
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
 
