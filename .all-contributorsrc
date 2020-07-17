@@ -6,6 +6,16 @@
   "commit": false,
   "contributors": [
     {
+      "login": "keeeeeegan",
+      "name": "Keegan Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/229935?v=4",
+      "profile": "http://keeganberry.com",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
       "login": "adrianfish",
       "name": "Adrian Fish",
       "avatar_url": "https://avatars3.githubusercontent.com/u/134546?v=4",
