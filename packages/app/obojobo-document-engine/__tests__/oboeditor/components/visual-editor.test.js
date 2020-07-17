@@ -1175,4 +1175,20 @@ describe('VisualEditor', () => {
 
 		expect(disconnect).toHaveBeenCalled()
 	})
+
+	test('PageEditor component doesnt save if readOnly is enabled', () => {
+		const props = { readOnly: true }
+		const mockFn = jest.fn()
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		// eslint-disable-next-line no-undefined
+		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
+		expect(spy).not.toHaveBeenCalled()
+		expect(instance.state.saved).toBe(false)
+	})
 })
