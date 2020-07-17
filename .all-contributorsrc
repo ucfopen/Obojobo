@@ -6,6 +6,17 @@
   "commit": false,
   "contributors": [
     {
+      "login": "rmanbaird",
+      "name": "Ralph Baird",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/22771644?v=4",
+      "profile": "https://github.com/rmanbaird",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
       "login": "clpetersonucf",
       "name": "Corey Peterson",
       "avatar_url": "https://avatars0.githubusercontent.com/u/1268547?v=4",
