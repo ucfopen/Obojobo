@@ -1,0 +1,30 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "zachberry",
+      "name": "Zachary Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73479?v=4",
+      "profile": "http://www.zachberry.com",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "design",
+        "ideas",
+        "projectManagement",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
