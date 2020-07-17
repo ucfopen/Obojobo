@@ -19,7 +19,53 @@
         "platform",
         "question",
         "review",
+        "tool",
+        "review"
+      ]
+   },
+   {
+      "login": "qwertynerd97",
+      "name": "Elli Howard",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/36134301?v=4",
+      "profile": "https://github.com/qwertynerd97",
+      "contributions": [
+        "a11y",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "iturgeon",
+      "name": "Ian Turgeon",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73480?v=4",
+      "profile": "https://ianturgeon.com",
+      "contributions": [
+        "code",
+        "test",
+        "ideas",
+        "platform",
+        "projectManagement",
+        "maintenance",
         "tool"
+      ]
+    },
+    {
+      "login": "zachberry",
+      "name": "Zachary Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73479?v=4",
+      "profile": "http://www.zachberry.com",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "design",
+        "ideas",
+        "projectManagement",
+        "review"
       ]
     }
   ],
