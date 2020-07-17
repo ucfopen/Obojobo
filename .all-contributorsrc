@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "FrenjaminBanklin",
+      "name": "Brandon Stull",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1275983?v=4",
+      "profile": "https://github.com/FrenjaminBanklin",
+      "contributions": [
+        "code",
+        "bug",
+        "test",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
