@@ -78,6 +78,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="http://www.zachberry.com"><img src="https://avatars2.githubusercontent.com/u/73479?v=4" width="100px;" alt=""/><br /><sub><b>Zachary Berry</b></sub></a><br /><a href="https://github.com/ucfopen/Obojobo/commits?author=zachberry" title="Code">💻</a> <a href="#content-zachberry" title="Content">🖋</a> <a href="https://github.com/ucfopen/Obojobo/commits?author=zachberry" title="Documentation">📖</a> <a href="#design-zachberry" title="Design">🎨</a> <a href="#ideas-zachberry" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-zachberry" title="Project Management">📆</a> <a href="https://github.com/ucfopen/Obojobo/pulls?q=is%3Apr+reviewed-by%3Azachberry" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://ianturgeon.com"><img src="https://avatars2.githubusercontent.com/u/73480?v=4" width="100px;" alt=""/><br /><sub><b>Ian Turgeon</b></sub></a><br /><a href="https://github.com/ucfopen/Obojobo/commits?author=iturgeon" title="Tests">⚠️</a> <a href="https://github.com/ucfopen/Obojobo/commits?author=iturgeon" title="Code">💻</a></td>
   </tr>
 </table>
 
