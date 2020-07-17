@@ -89,7 +89,9 @@ class QuestionBank extends React.Component {
 	}
 
 	onChangeContent(key, event) {
-		const newContent = { [key]: event.target.value }
+		let val = event.target.value
+		if (key === 'choose') val = Math.max(parseInt(val, 10), 1)
+		const newContent = { [key]: val }
 		this.setState(newContent) // update the display now
 	}
 
@@ -138,6 +140,7 @@ class QuestionBank extends React.Component {
 					</label>
 					<input
 						type="number"
+						min="1"
 						value={this.state.choose}
 						disabled={this.state.chooseAll}
 						onClick={stopPropagation}
