@@ -1,4 +1,7 @@
 # Obojobo Next
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Obojobo Next is a modern educational content ecosystem. Obojobo documents are programmable, extend-able, and heavily fortified with data analytics.
 
@@ -64,3 +67,22 @@ Once logged in, visit [https://127.0.0.1:8080/editor](https://127.0.0.1:8080/edi
 ### Special Thanks
 
 Support for this work was provided by the National Science Foundation Scholarships in Science, Technology, Engineering, and Mathematics (S-STEM) program under [Award No.1643835](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1643835). Any opinions, findings, conclusions and recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://www.zachberry.com"><img src="https://avatars2.githubusercontent.com/u/73479?v=4" width="100px;" alt=""/><br /><sub><b>Zachary Berry</b></sub></a><br /><a href="https://github.com/ucfopen/Obojobo/commits?author=zachberry" title="Code">💻</a> <a href="#content-zachberry" title="Content">🖋</a> <a href="https://github.com/ucfopen/Obojobo/commits?author=zachberry" title="Documentation">📖</a> <a href="#design-zachberry" title="Design">🎨</a> <a href="#ideas-zachberry" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-zachberry" title="Project Management">📆</a> <a href="https://github.com/ucfopen/Obojobo/pulls?q=is%3Apr+reviewed-by%3Azachberry" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
