@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ssilverm",
+      "name": "Shea",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1273237?v=4",
+      "profile": "http://blog.sheasilverman.com",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
