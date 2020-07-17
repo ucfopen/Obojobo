@@ -6,6 +6,18 @@
   "commit": false,
   "contributors": [
     {
+      "login": "ctcuff",
+      "name": "Cameron Cuff",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7400747?v=4",
+      "profile": "https://ctcuff.github.io",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    },
+    {
       "login": "AnthonyRodriguez726",
       "name": "AnthonyRodriguez726",
       "avatar_url": "https://avatars2.githubusercontent.com/u/11856062?v=4",
