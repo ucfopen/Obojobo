@@ -205,8 +205,8 @@ describe('Edit Lock Model', () => {
 		db.one.mockResolvedValueOnce({ contentId: 3 })
 
 		return EditLock.create(1, 2, 3).then(() => {
-			expect(db.one).toHaveBeenCalledTimes(2)
-			expect(db.one).toHaveBeenCalledWith(
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			expect(db.oneOrNone).toHaveBeenCalledWith(
 				expect.stringContaining(`${MOCK_EXPIRE_MINUTES} minutes`),
 				expect.anything()
 			)
@@ -216,16 +216,19 @@ describe('Edit Lock Model', () => {
 	test('create calls the expected query with arguments', () => {
 		db.one.mockResolvedValueOnce({ contentId: 'mock-content-id' })
 		return EditLock.create('mock-user-id', 'mock-draft-id', 'mock-content-id').then(() => {
-			expect(db.one).toHaveBeenCalledTimes(2)
-			expect(db.one).toHaveBeenCalledWith(expect.stringContaining('INSERT'), expect.anything())
-			expect(db.one).toHaveBeenLastCalledWith(expect.anything(), {
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			expect(db.oneOrNone).toHaveBeenCalledWith(
+				expect.stringContaining('INSERT'),
+				expect.anything()
+			)
+			expect(db.oneOrNone).toHaveBeenLastCalledWith(expect.anything(), {
 				userId: 'mock-user-id',
 				draftId: 'mock-draft-id'
 			})
 		})
 	})
 
-	test('create returns result from db.one', async () => {
+	test('create returns result from db.oneOrNone as an EditLock Object', async () => {
 		const mockDBResult = {
 			id: 'mock-lock-id',
 			userId: 'mock-user-id',
@@ -233,15 +236,28 @@ describe('Edit Lock Model', () => {
 			createdAt: 'mock-created-at'
 		}
 
-		db.one.mockResolvedValueOnce({ contentId: 3 }).mockResolvedValueOnce(mockDBResult)
+		db.one.mockResolvedValueOnce({ contentId: 3 })
+		db.oneOrNone.mockResolvedValueOnce(mockDBResult)
 
 		const result = await EditLock.create(1, 2, 3)
 
-		expect(db.one).toHaveBeenCalledTimes(2)
+		expect(db.one).toHaveBeenCalledTimes(1)
+		expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 		expect(result).toBeInstanceOf(EditLock)
 		expect(result).toHaveProperty('id', 'mock-lock-id')
 		expect(result).toHaveProperty('userId', 'mock-user-id')
 		expect(result).toHaveProperty('draftId', 'mock-draft-id')
 		expect(result).toHaveProperty('createdAt', 'mock-created-at')
+	})
+
+	test('create returns null when a lock already exists', async () => {
+		db.one.mockResolvedValueOnce({ contentId: 3 })
+		db.oneOrNone.mockResolvedValueOnce() // returns null result when lock unable to be created
+
+		const result = await EditLock.create(1, 2, 3)
+
+		expect(db.one).toHaveBeenCalledTimes(1)
+		expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+		expect(result).toBeNull()
 	})
 })

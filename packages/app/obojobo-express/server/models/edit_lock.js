@@ -91,7 +91,7 @@ class EditLock {
 			}
 
 			return await t
-				.one(
+				.oneOrNone(
 					`INSERT INTO edit_locks (user_id, draft_id)
 				SELECT $[userId], $[draftId]
 				WHERE NOT EXISTS (
@@ -109,7 +109,9 @@ class EditLock {
 					{ userId, draftId }
 				)
 				.then(data => {
-					return new EditLock(data)
+					// only return a lock if the user has a lock
+					if (data) return new EditLock(data)
+					return null
 				})
 		})
 	}
