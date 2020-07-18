@@ -734,17 +734,17 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.trySetResponse).toHaveBeenCalled()
 	})
 
-	test('viewer:closeAttempted calls AssessmentUtil', () => {
-		Dispatcher.trigger('viewer:closeAttempted')
+	test('window:closeAttempt calls AssessmentUtil', () => {
+		Dispatcher.trigger('window:closeAttempt')
 
 		expect(AssessmentUtil.isInAssessment).toHaveBeenCalled()
 	})
 
-	test('viewer:closeAttempted calls AssessmentUtil', () => {
+	test('window:closeAttempt calls AssessmentUtil', () => {
 		AssessmentUtil.isInAssessment.mockReturnValueOnce(true)
 		const mockFunction = jest.fn()
 
-		Dispatcher.trigger('viewer:closeAttempted', mockFunction)
+		Dispatcher.trigger('window:closeAttempt', mockFunction)
 
 		expect(AssessmentUtil.isInAssessment).toHaveBeenCalled()
 		expect(mockFunction).toHaveBeenCalled()

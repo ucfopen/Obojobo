@@ -19,6 +19,12 @@ db.any.mockResolvedValue()
 db.none = jest.fn()
 db.none.mockResolvedValue()
 
+db.result = jest.fn()
+db.result.mockResolvedValue()
+
+db.taskIf = jest.fn()
+db.taskIf.mockImplementation(cb => cb(db))
+
 db.tx = jest.fn()
 db.tx.mockImplementation(
 	cb =>

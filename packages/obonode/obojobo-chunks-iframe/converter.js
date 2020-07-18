@@ -6,7 +6,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * src, title, type, border, fit, width, height, initalZoom, autoload,
  * and controlls attributes.
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Iframe node 
+ * @returns {Object} An Obojobo Iframe node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -29,7 +29,7 @@ const slateToObo = node => ({
 
 /**
  * Generates a Slate node from an Obojobo IFrame. Copies all attributes, and adds a dummy child
- * @param {Object} node An Obojobo Iframe node 
+ * @param {Object} node An Obojobo Iframe node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

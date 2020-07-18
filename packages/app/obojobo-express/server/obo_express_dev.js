@@ -14,6 +14,17 @@ const ltiInstructor = {
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
 }
 
+const ltiInstructor2 = {
+	lis_person_contact_email_primary: 'frankie@obojobo.com',
+	lis_person_name_family: 'Yonekura',
+	lis_person_name_full: 'Francisca Yonekura',
+	lis_person_name_given: 'Francisca',
+	lis_person_sourcedid: 'sis:2801233',
+	roles: 'Instructor',
+	user_id: '234111',
+	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
+}
+
 const ltiLearner = {
 	lis_person_contact_email_primary: 'ian@obojobo.com',
 	lis_person_name_family: 'Turgeon',
@@ -104,7 +115,7 @@ module.exports = app => {
 			<h2>LTI & Auth</h2>
 			<ul>
 				<li><a href="/lti">LTI Instructions</a></li>
-				<li>LTI Course Nav: <a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Instructor</a> <a href="/lti/dev/launch/course_navigation?student=1&resource_link_id=whatever-you-want"">Student</a></li>
+				<li>LTI Course Nav: <a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Instructor</a> <a href="/lti/dev/launch/course_navigation?instructor=2&resource_link_id=whatever-you-want"">Instructor2</a> <a href="/lti/dev/launch/course_navigation?student=1&resource_link_id=whatever-you-want"">Student</a></li>
 				<li>LTI Resource Selection: (iframe) <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection')">Instructor</a> <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection?student=1')">Student</a></li>
 				<li>LTI Assignment: <a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Instructor</a> <a href="/lti/dev/launch/view?student=1&resource_link_id=whatever-you-want">Student</a></li>
 				<li><a href="/profile">Whoami</a></li>
@@ -141,7 +152,8 @@ module.exports = app => {
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
 		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
-		const person = req.query.student ? ltiLearner : ltiInstructor
+		const instructorOneOrTwo = req.query.instructor === '2' ? ltiInstructor2 : ltiInstructor
+		const person = req.query.student ? ltiLearner : instructorOneOrTwo
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {

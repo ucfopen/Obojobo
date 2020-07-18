@@ -254,23 +254,6 @@ describe('CodeEditor', () => {
 			})
 	})
 
-	test('saveAndGetTitleFromCode calls APIUtil', () => {
-		expect.hasAssertions()
-		const code = '{ "content": { "title": "Initial Title"} }'
-		const props = {
-			draftId: 'mock-draft-id',
-			initialCode: code,
-			mode: JSON_MODE
-		}
-		APIUtil.postDraft.mockResolvedValue({
-			status: 'ok'
-		})
-		const component = mount(<CodeEditor {...props} />)
-		component.instance().saveAndGetTitleFromCode()
-
-		expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-draft-id', code, 'application/json')
-	})
-
 	test('sendSave() handles api returning an error', () => {
 		expect.hasAssertions()
 

@@ -4,19 +4,22 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import APIUtil from '../../viewer/util/api-util'
 import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
-//import { KeyUtils } from 'slate'
 import VisualEditor from './visual-editor'
 import React from 'react'
+import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
+import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
+import SimpleDialog from '../../common/components/modal/simple-dialog'
 
-const { ModalContainer } = Common.components
-const { ModalUtil } = Common.util
-const { ModalStore } = Common.stores
-const { OboModel } = Common.models
+const ModalContainer = Common.components.ModalContainer
+const ModalUtil = Common.util.ModalUtil
+const ModalStore = Common.stores.ModalStore
+const OboModel = Common.models.OboModel
+const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'
@@ -34,7 +37,18 @@ class EditorApp extends React.Component {
 			draftId: null,
 			draft: null,
 			mode: VISUAL_MODE,
-			code: null
+			code: null,
+			requestStatus: null,
+			requestError: null
+		}
+
+		// caluclate edit lock settings
+		const msPerMin = 60000
+		const locks = props.settings.editLocks
+		this.editLocks = {
+			autoExpireMs: msPerMin * locks.autoExpireMinutes * 0.9,
+			warnMs: msPerMin * locks.warnMinutes,
+			idleMs: msPerMin * locks.idleMinutes
 		}
 
 		// Make Slate nodes generate with UUIDs
@@ -47,6 +61,29 @@ class EditorApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 
 		this.switchMode = this.switchMode.bind(this)
+		this.saveDraft = this.saveDraft.bind(this)
+		this.onWindowClose = this.onWindowClose.bind(this)
+		this.onWindowInactiveWarning = this.onWindowInactiveWarning.bind(this)
+		this.onWindowReturnFromInactive = this.onWindowReturnFromInactive.bind(this)
+		this.onWindowInactive = this.onWindowInactive.bind(this)
+		this.renewLockInterval = null
+	}
+
+	saveDraft(draftId, draftSrc, xmlOrJSON = 'json') {
+		const mode = xmlOrJSON === 'xml' ? 'text/plain' : 'application/json'
+		return APIUtil.postDraft(draftId, draftSrc, mode)
+			.then(result => {
+				if (result.status !== 'ok') {
+					throw Error(result.value.message)
+				}
+
+				this.state.model.set('contentId', result.value.id)
+				return true
+			})
+			.catch(e => {
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + e} />)
+				return false
+			})
 	}
 
 	getVisualEditorState(draftId, draftModel) {
@@ -98,6 +135,52 @@ class EditorApp extends React.Component {
 		this.reloadDraft(this.state.draftId, mode)
 	}
 
+	displayLockedState(title, message) {
+		this.setState({
+			requestStatus: 'invalid',
+			requestError: { title, message }
+		})
+	}
+
+	startRenewEditLockInterval(draftId) {
+		// allow this function to be called again
+		if (this._isCreatingRenewableEditLock) return Promise.resolve()
+		this._isCreatingRenewableEditLock = true
+
+		return this.createEditLock(draftId, this.state.model.get('contentId'))
+			.then(() => {
+				// success!
+
+				// create the lock interval to keep checking & renewing
+				clearInterval(this.renewLockInterval)
+				this.renewLockInterval = setInterval(() => {
+					this.createEditLock(draftId, this.state.model.get('contentId')).catch(error => {
+						this.handleEditLockError(error)
+					})
+				}, this.editLocks.autoExpireMs)
+			})
+			.catch(error => {
+				this.handleEditLockError(error)
+			})
+			.then(() => {
+				// allow this function to be called again
+				this._isCreatingRenewableEditLock = false
+			})
+	}
+
+	handleEditLockError(error) {
+		this.displayLockedState('Unable to Edit Module', error.message)
+	}
+
+	createEditLock(draftId, contentId) {
+		return APIUtil.requestEditLock(draftId, contentId).then(json => {
+			if (json.status === 'error') {
+				const msg = json.value && json.value.message ? json.value.message : 'Unable to lock module.'
+				throw Error(msg)
+			}
+		})
+	}
+
 	reloadDraft(draftId, mode) {
 		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
@@ -108,7 +191,11 @@ class EditorApp extends React.Component {
 						return response
 					default:
 						json = JSON.parse(response)
-						if (json.status === 'error') throw json.value
+						if (json.status === 'error') {
+							const error = Error(json.value.message)
+							error.type = json.value.type
+							throw error
+						}
 
 						return JSON.stringify(json.value, null, 4)
 				}
@@ -124,7 +211,8 @@ class EditorApp extends React.Component {
 			.catch(err => {
 				// eslint-disable-next-line no-console
 				console.error(err)
-				return this.setState({ requestStatus: 'invalid', requestError: err, mode })
+				this.setState({ requestStatus: 'invalid', requestError: err, mode })
+				throw err
 			})
 	}
 
@@ -133,17 +221,21 @@ class EditorApp extends React.Component {
 
 		return APIUtil.getDraftRevision(draftId, revisionId)
 			.then(response => {
-				if (response.status === 'error') throw response.status
+				if (response.status === 'error') {
+					const error = Error(response.value.message)
+					error.type = response.value.type
+					throw error
+				}
 
 				return JSON.stringify(response.value.json, null, 4)
 			})
 			.then(draftModel => {
-				return this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
+				this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console
 				console.error(err)
-				return this.setState({ requestStatus: 'invalid', requestError: err, mode })
+				this.setState({ requestStatus: 'invalid', requestError: err, mode })
 			})
 	}
 
@@ -158,14 +250,57 @@ class EditorApp extends React.Component {
 
 		if (revisionId) {
 			// If this is a revision, load it in the editor. Note that
-			// revisions will always lode in visual mode
+			// revisions will always load in visual mode
 			return this.loadDraftRevision(draftId, revisionId)
 		}
 
 		return this.reloadDraft(draftId, this.state.mode)
+			.then(() => this.startRenewEditLockInterval(draftId))
+			.then(() => {
+				enableWindowCloseDispatcher()
+				Dispatcher.on('window:closeNow', this.onWindowClose)
+
+				Dispatcher.on('window:inactiveWarning', this.onWindowInactiveWarning)
+				Dispatcher.on('window:returnFromInactiveWarning', this.onWindowReturnFromInactive)
+				Dispatcher.on('window:inactive', this.onWindowInactive)
+				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
+			})
+			.catch(() => {})
+	}
+
+	onWindowClose() {
+		APIUtil.deleteLockBeacon(this.state.draftId)
+	}
+
+	onWindowInactive() {
+		APIUtil.deleteLockBeacon(this.state.draftId)
+		clearInterval(this.renewLockInterval)
+		this.renewLockInterval = null
+		ModalUtil.hide()
+		ModalUtil.show(
+			<SimpleDialog ok title="Editor Session Expired">
+				Collaborators may edit this module while you&apos;re away. We&apos;ll attempt to renew your
+				session when you return.
+			</SimpleDialog>
+		)
+	}
+
+	onWindowInactiveWarning() {
+		ModalUtil.show(
+			<SimpleDialog ok title="Editor Idle Warning">
+				Interact with this window soon to keep your edit session.
+			</SimpleDialog>
+		)
+	}
+
+	onWindowReturnFromInactive() {
+		return this.startRenewEditLockInterval(this.state.draftId).then(() => {
+			ModalUtil.hide()
+		})
 	}
 
 	componentWillUnmount() {
+		clearInterval(this.renewLockInterval)
 		EditorStore.offChange(this.onEditorStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 	}
@@ -178,6 +313,8 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				mode={this.state.mode}
 				switchMode={this.switchMode}
+				insertableItems={Common.Registry.insertableItems}
+				saveDraft={this.saveDraft}
 			/>
 		)
 	}
@@ -193,6 +330,7 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
+				saveDraft={this.saveDraft}
 				readOnly={
 					// Prevents editing a draft that's a revision,
 					// even if the url was visited manually
@@ -206,8 +344,8 @@ class EditorApp extends React.Component {
 		if (this.state.requestStatus === 'invalid') {
 			return (
 				<div className="viewer--viewer-app--visit-error">
-					<h1>Error</h1>
-					<h2>{this.state.requestError.type}</h2>
+					<h1>{this.state.requestError.title || 'Error'}</h1>
+					{this.state.requestError.type ? <h2>{this.state.requestError.type}</h2> : null}
 					<div>{this.state.requestError.message}</div>
 				</div>
 			)
@@ -218,6 +356,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
+				<ObojoboIdleTimer timeout={this.editLocks.idleMs} warning={this.editLocks.warnMs} />
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>

@@ -52,7 +52,7 @@ class AssessmentStore extends Store {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
 
-		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {
+		Dispatcher.on('window:closeAttempt', shouldPrompt => {
 			if (AssessmentUtil.isInAssessment(this.state)) {
 				shouldPrompt()
 			}

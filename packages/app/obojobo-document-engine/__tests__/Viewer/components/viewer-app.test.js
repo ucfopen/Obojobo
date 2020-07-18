@@ -130,30 +130,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('ViewerApp component with no update removal', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		// This will be reset by jestReset, and is called multiple times
-		NavUtil.canNavigate.mockImplementation(() => {
-			// keeps loading element
-			component.instance().needsRemoveLoadingElement = false
-			// Sets up scrolling
-			return 'mockNav'
-		})
-
-		setTimeout(() => {
-			component.update()
-
-			expect(component.html()).toMatchSnapshot()
-
-			component.unmount()
-			done()
-		})
-	})
-
 	test('ViewerApp component displays error when the requestStatus is invalid', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -296,7 +272,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onNavStoreChange calls setState', done => {
+	test('NavStore Change listener calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -306,7 +282,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			component.instance().onNavStoreChange()
+			component.instance().stores.navState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				navState: {}
@@ -328,7 +304,7 @@ describe('ViewerApp', () => {
 			QuestionStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onQuestionStoreChange()
+			component.instance().stores.questionState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				questionState: {}
@@ -350,7 +326,7 @@ describe('ViewerApp', () => {
 			AssessmentStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onAssessmentStoreChange()
+			component.instance().stores.assessmentState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				assessmentState: {}
@@ -372,7 +348,7 @@ describe('ViewerApp', () => {
 			ModalStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onModalStoreChange()
+			component.instance().stores.modalState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				modalState: {}
@@ -394,7 +370,7 @@ describe('ViewerApp', () => {
 			FocusStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onFocusStoreChange()
+			component.instance().stores.focusState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				focusState: {}
@@ -416,7 +392,7 @@ describe('ViewerApp', () => {
 			MediaStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onMediaStoreChange()
+			component.instance().stores.mediaState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				mediaState: {}
@@ -769,7 +745,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
-			component.instance().onIdle()
+			component.instance().onIdle({ lastActiveEpoch: 'now' })
 
 			expect(APIUtil.postEvent).toHaveBeenCalled()
 
@@ -788,11 +764,14 @@ describe('ViewerApp', () => {
 			component.instance().inactiveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance().lastActiveEpoch = 999
+			component.instance()
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
-			component.instance().onReturnFromIdle()
+			component.instance().onReturnFromIdle({
+				lastActiveEpoch: 999,
+				inactiveDuration: 1
+			})
 
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:returnFromInactive',
@@ -812,52 +791,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onBeforeWindowClose returns undefined', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		global.navigator.sendBeacon = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			const spy = jest.spyOn(Dispatcher, 'trigger')
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(undefined)
-
-			component.unmount()
-			spy.mockRestore()
-			done()
-		})
-	})
-
-	test('onBeforeWindowClose calls closePrevented', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-		const originalTrigger = Dispatcher.trigger
-		Dispatcher.trigger = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			Dispatcher.trigger.mockImplementationOnce((type, funct) => {
-				funct()
-			})
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(true)
-
-			component.unmount()
-			Dispatcher.trigger = originalTrigger
-			done()
-		})
-	})
-
 	test('sendCloseEvent calls navigator.sendBeacon', done => {
 		global.navigator.sendBeacon = jest.fn()
 
@@ -870,7 +803,7 @@ describe('ViewerApp', () => {
 
 			component.instance().sendCloseEvent()
 
-			expect(navigator.sendBeacon).toHaveBeenCalled()
+			expect(APIUtil.postEventBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -1015,18 +948,9 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:open',
-				component.instance().boundOnDelayResize
-			)
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:close',
-				component.instance().boundOnDelayResize
-			)
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:toggle',
-				component.instance().boundOnDelayResize
-			)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:open', component.instance().onDelayResize)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:close', component.instance().onDelayResize)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:toggle', component.instance().onDelayResize)
 
 			component.unmount()
 			done()
@@ -1674,7 +1598,7 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			expect(component.find('.is-focus-state-inactive').length).toBe(1)
+			expect(component.find('.is-not-focus-state-active').length).toBe(1)
 			expect(component.find('.is-focus-state-active').length).toBe(0)
 
 			component.unmount()

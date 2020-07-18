@@ -1,6 +1,7 @@
 /* eslint no-extend-native: 0 */
 
 const originalFetch = global.fetch
+const originalSendBeacon = navigator.sendBeacon
 const originalToISOString = Date.prototype.toISOString
 const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 const API = require('../../../src/scripts/viewer/util/api')
@@ -18,6 +19,7 @@ describe('apiutil', () => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		restoreConsole = mockConsole('error')
+		navigator.sendBeacon = jest.fn()
 		jest.spyOn(window.parent, 'postMessage')
 
 		mockJsonResult = {}
@@ -55,6 +57,7 @@ describe('apiutil', () => {
 		Date.prototype.toISOString = () => 'mockDate'
 	})
 	afterAll(() => {
+		navigator.sendBeacon = originalSendBeacon
 		global.fetch = originalFetch
 		Date.prototype.toISOString = originalToISOString
 	})
@@ -540,6 +543,63 @@ describe('apiutil', () => {
 			expect(post).toHaveBeenCalledWith('/api/drafts/mock-draft-id/copy', { title: 'new title' })
 			expect(result).toEqual(mockJsonResult)
 		})
+	})
+
+	test('requestEditLock calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.requestEditLock('mock-draft-id').then(result => {
+			expect(post).toHaveBeenCalledWith('/api/locks/mock-draft-id', {})
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('postEventBeacon sends navigator beacon', () => {
+		expect.hasAssertions()
+
+		const args = {
+			draftId: 'mock-draft-id',
+			action: 'mock-action',
+			eventVersion: 'mock-event-version',
+			visitId: 'mock-visit-id',
+			payload: {
+				someData: false
+			}
+		}
+		APIUtil.postEventBeacon(args)
+		expect(navigator.sendBeacon).toHaveBeenCalledTimes(1)
+		expect(navigator.sendBeacon.mock.calls[0]).toMatchInlineSnapshot(`
+		Array [
+		  "/api/events",
+		  "{\\"draftId\\":\\"mock-draft-id\\",\\"visitId\\":\\"mock-visit-id\\",\\"event\\":{\\"action\\":\\"mock-action\\",\\"draft_id\\":\\"mock-draft-id\\",\\"actor_time\\":\\"mockDate\\",\\"event_version\\":\\"mock-event-version\\",\\"visitId\\":\\"mock-visit-id\\",\\"payload\\":{\\"someData\\":false}}}",
+		]
+	`)
+	})
+
+	test('postEventBeacon sends navigator beacon', () => {
+		expect.hasAssertions()
+
+		const args = {
+			draftId: 'mock-draft-id',
+			action: 'mock-action',
+			eventVersion: 'mock-event-version',
+			visitId: 'mock-visit-id'
+		}
+		APIUtil.postEventBeacon(args)
+		expect(navigator.sendBeacon.mock.calls[0]).toMatchInlineSnapshot(`
+		Array [
+		  "/api/events",
+		  "{\\"draftId\\":\\"mock-draft-id\\",\\"visitId\\":\\"mock-visit-id\\",\\"event\\":{\\"action\\":\\"mock-action\\",\\"draft_id\\":\\"mock-draft-id\\",\\"actor_time\\":\\"mockDate\\",\\"event_version\\":\\"mock-event-version\\",\\"visitId\\":\\"mock-visit-id\\",\\"payload\\":{}}}",
+		]
+	`)
+	})
+
+	test('deleteLockBeacon sends a beacon request', () => {
+		expect.hasAssertions()
+
+		APIUtil.deleteLockBeacon('mock-draft-id')
+		expect(navigator.sendBeacon).toHaveBeenCalledTimes(1)
+		expect(navigator.sendBeacon).toHaveBeenCalledWith('/api/locks/mock-draft-id/delete')
 	})
 
 	test('getDraftRevision calls fetch and returns', async () => {

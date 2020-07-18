@@ -1,10 +1,9 @@
-import React, { Suspense } from 'react'
-
 import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import 'codemirror/addon/fold/foldgutter.css'
 
+import React, { Suspense } from 'react'
 import APIUtil from '../../../scripts/viewer/util/api-util'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'

@@ -33,7 +33,7 @@ class MCChoice extends React.Component {
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
-			this.props.editor, 
+			this.props.editor,
 			{ content: { ...this.props.element.content, score } },
 			{ at: path }
 		)

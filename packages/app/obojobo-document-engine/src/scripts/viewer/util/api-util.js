@@ -10,21 +10,24 @@ const processJsonResults = res => {
 	})
 }
 
+const buildEventData = (draftId, action, eventVersion, visitId, payload) => ({
+	draftId,
+	visitId,
+	event: {
+		action,
+		draft_id: draftId,
+		actor_time: new Date().toISOString(),
+		event_version: eventVersion,
+		visitId,
+		payload
+	}
+})
+
 const APIUtil = {
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
+		const data = buildEventData(draftId, action, eventVersion, visitId, payload)
 		return (
-			API.post('/api/events', {
-				draftId,
-				visitId,
-				event: {
-					action,
-					draft_id: draftId,
-					actor_time: new Date().toISOString(),
-					event_version: eventVersion,
-					visitId,
-					payload
-				}
-			})
+			API.post('/api/events', data)
 				.then(processJsonResults)
 				// TODO: Send Caliper event to client host.
 				.then(res => {
@@ -35,6 +38,11 @@ const APIUtil = {
 					return res
 				})
 		)
+	},
+
+	postEventBeacon({ draftId, action, eventVersion, visitId, payload = {} }) {
+		const data = buildEventData(draftId, action, eventVersion, visitId, payload)
+		navigator.sendBeacon('/api/events', JSON.stringify(data))
 	},
 
 	getDraft(id) {
@@ -129,6 +137,14 @@ const APIUtil = {
 
 	getAllDrafts() {
 		return API.get(`/api/drafts`, 'json').then(processJsonResults)
+	},
+
+	requestEditLock(draftId, contentId) {
+		return API.post(`/api/locks/${draftId}`, { contentId }).then(processJsonResults)
+	},
+
+	deleteLockBeacon(draftId) {
+		navigator.sendBeacon(`/api/locks/${draftId}/delete`)
 	},
 
 	getDraftRevision(draftId, revisionId) {

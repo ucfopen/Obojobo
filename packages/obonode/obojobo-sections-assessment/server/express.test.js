@@ -7,6 +7,7 @@ jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
 jest.mock('obojobo-express/server/express_validators')
 jest.mock('./events')
+jest.mock('obojobo-express/server/config')
 
 const mockCurrentUser = { id: 'mockCurrentUserId' }
 const mockCurrentDocument = { draftId: 'mockDraftId' }

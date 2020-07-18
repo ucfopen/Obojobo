@@ -47,16 +47,21 @@ exports.getCurrentUser = (req, res, next) => {
 	})
 }
 
+const VALID_UUID_ERROR = 'must be a valid UUID'
+const EXISTS_NOT_EMPTY = { checkNull: true, checkFalsy: true }
 // Valitator Middleware
 // NOTE: YOU MUST RUN checkValidationRules AFTER THESE TO ENFORCE these check functions
-exports.checkContentId = check('contentId', 'must be a valid UUID')
+exports.requireContentId = check('contentId', VALID_UUID_ERROR)
+	.exists(EXISTS_NOT_EMPTY)
+	.isUUID()
+exports.checkContentId = check('contentId', VALID_UUID_ERROR)
 	.isUUID()
 	.optional()
-exports.requireDraftId = check('draftId', 'must be a valid UUID').isUUID()
-exports.requireAttemptId = check('attemptId', 'must be a valid UUID').isUUID()
-exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
+exports.requireDraftId = check('draftId', VALID_UUID_ERROR).isUUID()
+exports.requireAttemptId = check('attemptId', VALID_UUID_ERROR).isUUID()
+exports.requireVisitId = check('visitId', VALID_UUID_ERROR).isUUID()
 exports.requireAssessmentId = check('assessmentId', 'must not be empty')
-	.exists({ checkNull: true, checkFalsy: true })
+	.exists(EXISTS_NOT_EMPTY)
 	.isString()
 exports.requireMultipleAttemptIds = [
 	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
@@ -74,10 +79,10 @@ exports.validPerPageNumber = check('per_page', 'must be a valid int between 1 an
 
 exports.requireEvent = [
 	check('event.action', 'must not be empty')
-		.exists({ checkNull: true, checkFalsy: true })
+		.exists(EXISTS_NOT_EMPTY)
 		.isString(),
 	check('event.actor_time', 'must be a valid ISO8601 date string').isISO8601(),
-	check('event.draft_id', 'must be a valid UUID').isUUID(),
+	check('event.draft_id', VALID_UUID_ERROR).isUUID(),
 	check('event.event_version', 'must match a valid semVer string').matches(semVerRegex)
 ]
 exports.requireCanViewEditor = (req, res, next) =>
