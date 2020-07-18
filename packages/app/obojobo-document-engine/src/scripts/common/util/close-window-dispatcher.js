@@ -20,7 +20,18 @@ const onBeforeWindowClose = event => {
 }
 
 const enableWindowCloseDispatcher = () => {
+	// listen for all close events that would allow us to remove our lock
 	window.addEventListener('beforeunload', onBeforeWindowClose)
+	window.addEventListener('pagehide', onBeforeWindowClose)
+
+	// if this browser supports visibilityState
+	if (window.visibilityState) {
+		const onVisibilityChange = event => {
+			if (window.visibilityState === 'hidden') onBeforeWindowClose(event)
+		}
+
+		window.addEventListener('visibilitychange', onVisibilityChange)
+	}
 }
 
 export default enableWindowCloseDispatcher
