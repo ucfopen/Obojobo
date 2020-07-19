@@ -157,7 +157,10 @@ router
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return DraftPermissions.getDraftOwners(req.params.draftId)
-			.then(res.success)
+			.then(users => {
+				const filteredUsers = users.map(u => u.toJSON())
+				res.success(filteredUsers)
+			})
 			.catch(res.unexpected)
 	})
 
