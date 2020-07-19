@@ -328,12 +328,12 @@ import '../css/module-selector.scss'
 		const lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
 		const sectionEl = document.querySelector(className)
 		const listEl = sectionEl.querySelector('ul')
+		// hide all no-item lists
+		document.querySelectorAll('.no-items').forEach(el => hide(el))
 
 		if (items.length === 0) {
 			show(sectionEl.querySelector('.no-items'))
 		} else {
-			hide(sectionEl.querySelector('.no-items'))
-
 			const len = lastIndex
 			for (let i = data.last; i < len; i++) {
 				appendListItem(items[i], listEl)
