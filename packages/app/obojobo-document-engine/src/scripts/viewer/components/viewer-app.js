@@ -1,7 +1,7 @@
 import '../../../scss/main.scss'
 import './viewer-app.scss'
 
-import APIUtil from '../util/api-util'
+import ViewerAPI from '../util/viewer-api'
 import AssessmentStore from '../stores/assessment-store'
 import Common from 'Common'
 import FocusStore from '../stores/focus-store'
@@ -87,7 +87,7 @@ export default class ViewerApp extends React.Component {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
 		let visitIdFromApi
-		let attemptHistory
+		let extensions
 		let viewState
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
@@ -95,7 +95,7 @@ export default class ViewerApp extends React.Component {
 
 		Dispatcher.trigger('viewer:loading')
 
-		APIUtil.requestStart(this.props.visitId, this.props.draftId)
+		ViewerAPI.requestStart(this.props.visitId, this.props.draftId)
 			.then(visit => {
 				QuestionStore.init()
 				ModalStore.init()
@@ -106,11 +106,11 @@ export default class ViewerApp extends React.Component {
 
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
-				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
+				extensions = visit.value.extensions
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
-				return APIUtil.getDraft(this.props.draftId)
+				return ViewerAPI.getDraft(this.props.draftId)
 			})
 			.then(injectKatexIfNeeded)
 			.then(draftModel => {
@@ -125,8 +125,9 @@ export default class ViewerApp extends React.Component {
 					viewState
 				)
 
-				AssessmentStore.init(attemptHistory)
+				AssessmentStore.init(extensions)
 				enableWindowCloseDispatcher()
+
 				window.onresize = this.onResize
 
 				Dispatcher.on('nav:open', this.onDelayResize)
@@ -307,7 +308,7 @@ export default class ViewerApp extends React.Component {
 		if (document.hidden) {
 			this.leftEpoch = new Date()
 
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
 				eventVersion: '1.0.0',
@@ -316,7 +317,7 @@ export default class ViewerApp extends React.Component {
 				this.leaveEvent = res.value
 			})
 		} else {
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
 				eventVersion: '2.0.0',
@@ -410,7 +411,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle(event) {
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
@@ -425,7 +426,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onReturnFromIdle(event) {
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
 			eventVersion: '2.1.0',
@@ -441,7 +442,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	sendCloseEvent() {
-		APIUtil.postEventBeacon({
+		ViewerAPI.postEventBeacon({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:close',
 			eventVersion: '1.0.0',
@@ -450,7 +451,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores({
+		ViewerAPI.clearPreviewScores({
 			draftId: this.state.model.get('draftId'),
 			visitId: this.state.navState.visitId
 		}).then(res => {

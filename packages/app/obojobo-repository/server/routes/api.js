@@ -3,7 +3,9 @@ const insertEvent = require('obojobo-express/server/insert_event')
 const RepositoryCollection = require('../models/collection')
 const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
+const DraftPermissions = require('../models/draft_permissions')
 const DraftsMetadata = require('../models/drafts_metadata')
+const { userHasPermissionToCopy } = require('../services/permissions')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
@@ -13,14 +15,7 @@ const {
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
-const {
-	addUserPermissionToDraft,
-	userHasPermissionToDraft,
-	fetchAllUsersWithPermissionToDraft,
-	removeUserPermissionToDraft,
-	userHasPermissionToCopy
-} = require('../services/permissions')
-const publicLibCollectionId = require('../../shared/publicLibCollectionId')
+const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
 // List public drafts
 router.route('/drafts-public').get((req, res) => {
@@ -161,7 +156,7 @@ router
 	.route('/drafts/:draftId/permission')
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return fetchAllUsersWithPermissionToDraft(req.params.draftId)
+		return DraftPermissions.getDraftOwners(req.params.draftId)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
@@ -169,57 +164,31 @@ router
 // add a permission for a user to a draft
 router
 	.route('/drafts/:draftId/permission')
-	.post([requireCurrentUser, requireCurrentDocument])
-	.post(async (req, res) => {
-		try {
-			const userId = req.body.userId
-			const draftId = req.currentDocument.draftId
-
-			// check currentUser's permissions
-			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
-			if (!canShare) {
-				res.notAuthorized('Current User has no permissions to selected draft')
-				return
-			}
-
-			// make sure the target userId exists
-			// fetchById will throw if not found
-			await UserModel.fetchById(userId)
-
-			// add permissions
-			await addUserPermissionToDraft(userId, draftId)
-			res.success()
-		} catch (error) {
-			res.unexpected(error)
-		}
+	.post([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
+	.post((req, res) => {
+		return UserModel.fetchById(req.body.userId)
+			.then(userToAdd =>
+				DraftPermissions.addOwnerToDraft(req.currentDocument.draftId, userToAdd.id)
+			)
+			.then(() => {
+				res.success()
+			})
+			.catch(res.unexpected)
 	})
 
 // delete a permission for a user to a draft
 router
 	.route('/drafts/:draftId/permission/:userId')
-	.delete([requireCurrentUser, requireCurrentDocument])
-	.delete(async (req, res) => {
-		try {
-			const userIdToRemove = req.params.userId
-			const draftId = req.currentDocument.draftId
-
-			// check currentUser's permissions
-			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
-			if (!canShare) {
-				res.notAuthorized('Current User has no permissions to selected draft')
-				return
-			}
-
-			// make sure the userToRemove exists
-			// fetchById throws when not found
-			const userToRemove = await UserModel.fetchById(userIdToRemove)
-
-			// remove perms
-			await removeUserPermissionToDraft(userToRemove.id, draftId)
-			res.success()
-		} catch (error) {
-			res.unexpected(error)
-		}
+	.delete([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
+	.delete((req, res) => {
+		return UserModel.fetchById(req.params.userId)
+			.then(userToRemove =>
+				DraftPermissions.removeOwnerFromDraft(req.currentDocument.draftId, userToRemove.id)
+			)
+			.then(() => {
+				res.success()
+			})
+			.catch(res.unexpected)
 	})
 
 module.exports = router

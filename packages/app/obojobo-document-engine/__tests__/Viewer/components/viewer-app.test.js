@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-console */
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import ViewerAPI from 'obojobo-document-engine/src/scripts/viewer/util/viewer-api'
 import AssessmentStore from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
@@ -25,8 +25,8 @@ import testObject from 'obojobo-document-engine/test-object.json'
 import mockConsole from 'jest-mock-console'
 import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
 jest.mock('obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 jest.mock('obojobo-document-engine/src/scripts/common/stores/modal-store')
@@ -47,7 +47,7 @@ describe('ViewerApp', () => {
 	const isDOMFocusInsideNavOriginal = ViewerApp.prototype.isDOMFocusInsideNav
 
 	const mocksForMount = (status = 'ok') => {
-		APIUtil.requestStart.mockResolvedValueOnce({
+		ViewerAPI.requestStart.mockResolvedValueOnce({
 			status: status,
 			value: {
 				visitId: 123,
@@ -60,7 +60,7 @@ describe('ViewerApp', () => {
 				}
 			}
 		})
-		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
+		ViewerAPI.getDraft.mockResolvedValueOnce({ value: testObject })
 		NavStore.getState.mockReturnValueOnce({})
 		FocusStore.getState.mockReturnValueOnce({})
 	}
@@ -404,7 +404,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls APIUtil when leaving', done => {
+	test('onVisibilityChange calls ViewerAPI when leaving', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -413,12 +413,12 @@ describe('ViewerApp', () => {
 		document.hidden = true
 
 		setTimeout(() => {
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:leave',
 				draftId: undefined,
 				eventVersion: '1.0.0',
@@ -431,7 +431,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls APIUtil when returning', done => {
+	test('onVisibilityChange calls ViewerAPI when returning', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -442,12 +442,12 @@ describe('ViewerApp', () => {
 				extensions: { internalEventId: 'mock-id' }
 			}
 			component.instance().leftEpoch = 999
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
 				eventVersion: '2.0.0',
@@ -744,10 +744,10 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: {} })
 			component.instance().onIdle({ lastActiveEpoch: 'now' })
 
-			expect(APIUtil.postEvent).toHaveBeenCalled()
+			expect(ViewerAPI.postEvent).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -764,8 +764,8 @@ describe('ViewerApp', () => {
 			component.instance().inactiveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance()
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onReturnFromIdle({
@@ -773,7 +773,7 @@ describe('ViewerApp', () => {
 				inactiveDuration: 1
 			})
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:returnFromInactive',
 				draftId: undefined,
 				eventVersion: '2.1.0',
@@ -803,7 +803,7 @@ describe('ViewerApp', () => {
 
 			component.instance().sendCloseEvent()
 
-			expect(APIUtil.postEventBeacon).toHaveBeenCalled()
+			expect(ViewerAPI.postEventBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -817,13 +817,13 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'ok'
 			})
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -837,14 +837,14 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'not ok',
 				error: 'Not Authorized'
 			})
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -858,7 +858,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'not ok',
 				error: 'Not Authorized',
 				value: {
@@ -868,7 +868,7 @@ describe('ViewerApp', () => {
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()

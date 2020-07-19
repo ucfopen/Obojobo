@@ -1,6 +1,6 @@
 const API = require('obojobo-document-engine/src/scripts/viewer/util/api')
 
-const APIUtil = {
+const ViewerAPI = {
 	copyModule(draftId) {
 		return API.post(`/api/drafts/${draftId}/copy`).then(result => {
 			if (result.status === 200) {
@@ -19,4 +19,4 @@ const APIUtil = {
 	// Make your API calls via redux actions please
 }
 
-module.exports = APIUtil
+module.exports = ViewerAPI

@@ -17,6 +17,31 @@
 		<%- include('../../../obojobo-express/server/views/partials/head', {title, css, fonts}) %>
 	</head>
 	<body>
+		<section id="section-options">
+			<header>
+				<div class="heading-container">
+					<h1>
+						<span class="remaining-tagline">Embed Options</span>
+					</h1>
+				</div>
+				<div class="flourish-line"></div>
+			</header>
+
+			<div class="option-list">
+				<div class="option">
+					<div class="small-label">Allow importing previous scores for the same module?</div>
+					<input id="import-on" type="radio" name="allow_import" value="1" <%= allowImportDefault ? 'checked' : '' %>>
+					<label for="import-on">Yes<%= allowImportDefault ? ' (default)' : '' %></label>
+					<input id="import-off" type="radio" name="allow_import" value="0" <%= allowImportDefault ? '' : 'checked' %>>
+					<label for="import-off">No<%= allowImportDefault ? '' : ' (default)' %></label>
+				</div>
+
+				<div class="buttons">
+					<a id="finish-button" role="button" class="button embed-button" href="#">Finish</a>
+					<a id="finish-cancel-button" class="cancel" target="_blank" href="#">Cancel</a>
+				</div>
+			</div>
+		</section>
 
 		<section id="section-module-selection">
 			<header>

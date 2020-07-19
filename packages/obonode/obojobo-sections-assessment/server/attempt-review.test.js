@@ -1,35 +1,24 @@
 /* eslint no-extend-native: 0 */
-jest.mock('./assessment')
+jest.mock('./models/assessment')
 jest.mock('./attempt-start')
 jest.mock('obojobo-express/server/models/draft')
 jest.mock('./util')
 jest.mock('obojobo-express/server/logger')
 
 const attemptStart = require('./attempt-start')
-const Assessment = require('./assessment')
 const DraftModel = require('obojobo-express/server/models/draft')
+const AssessmentModel = require('./models/assessment')
 const util = require('./util')
 const logger = require('obojobo-express/server/logger')
 
 describe('attempt review', () => {
-	let mockAttempt
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
-		mockAttempt = {
-			id: 'mockAttemptId',
-			number: 'mockAttemptNumber',
-			user_id: 'mockUserId',
-			draft_id: 'mockDraftId',
-			assessment_id: 'mockAssessmentId',
-			state: {
-				chosen: []
-			}
-		}
 	})
 
-	test('reviewAttempt handles no attempt ids', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview handles no attempt ids', async () => {
+		const attemptReview = require('./attempt-review')
 
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
@@ -43,10 +32,11 @@ describe('attempt review', () => {
 				id: 'mockId'
 			}
 		])
-		const questionModels = await reviewAttempt([])
+		const questionModels = await attemptReview([])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
+			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(0)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(0)
 			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(0)
@@ -55,8 +45,18 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('reviewAttempt for 2 attempts with review always', async () => {
-		const { reviewAttempt } = require('./attempt-review')
+	test('attemptReview for 2 attempts with review = always', async () => {
+		const attemptReview = require('./attempt-review')
+
+		AssessmentModel.fetchAttemptByID.mockReturnValue({
+			draftId: 'mock-draft-id',
+			assessmentId: 'mock-assessment-id',
+			draftContentId: 'mock-content-id',
+			state: {
+				chosen: [{ id: 'mock-chosen-id' }]
+			}
+		})
+
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
 				content: {
@@ -69,19 +69,18 @@ describe('attempt review', () => {
 				id: 'mockId'
 			}
 		])
+		const questionModels = await attemptReview([1, 2])
 
-		Assessment.fetchAttemptByIdAndUserId
-			.mockResolvedValueOnce(mockAttempt)
-			.mockResolvedValueOnce(mockAttempt)
-
-		const questionModels = await reviewAttempt([1, 2], 10)
-
-		// eslint-disable-next-line no-undef
-		return flushPromises().then(() => {
-			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(2)
-			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
-			expect(logger.error).toHaveBeenCalledTimes(0)
-			expect(questionModels).toMatchInlineSnapshot(`
+		return flushPromises() // eslint-disable-line no-undef
+			.then(flushPromises) // eslint-disable-line no-undef
+			.then(() => {
+				expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(2)
+				expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1) // uses cache!
+				// only called when review !== always
+				expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
+				expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(2)
+				expect(logger.error).toHaveBeenCalledTimes(0)
+				expect(questionModels).toMatchInlineSnapshot(`
 									Object {
 									  "1": Object {
 									    "mockId": Object {
@@ -95,12 +94,12 @@ describe('attempt review', () => {
 									  },
 									}
 						`)
-		})
+			})
 	})
 
-	test('reviewAttempt for one attempt without review always', async () => {
-		const { reviewAttempt } = require('./attempt-review')
-		Assessment.fetchAttemptByIdAndUserId.mockResolvedValueOnce(mockAttempt)
+	test('attemptReview for one attempt without review always', async () => {
+		const attemptReview = require('./attempt-review')
+
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
 				content: {
@@ -115,11 +114,13 @@ describe('attempt review', () => {
 		])
 		attemptStart.getSendToClientPromises.mockReturnValue([Promise.resolve()])
 
-		const questionModels = await reviewAttempt([1])
+		const questionModels = await attemptReview([1])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
+			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(1)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1)
+			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(1)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 			expect(logger.error).toHaveBeenCalledTimes(0)
 			expect(questionModels).toMatchInlineSnapshot(`
@@ -134,14 +135,10 @@ describe('attempt review', () => {
 		})
 	})
 
-	test('reviewAttempt handles one of two fetchAttemptByIdAndUserId rejecting', async () => {
-		const { reviewAttempt } = require('./attempt-review')
-		Assessment.fetchAttemptByIdAndUserId
-			.mockRejectedValueOnce('mock-error')
-			.mockResolvedValueOnce(mockAttempt)
+	test('attemptReview loggs errors', async () => {
+		const attemptReview = require('./attempt-review')
 
-		DraftModel.fetchDraftByVersion.mockResolvedValueOnce({})
-
+		DraftModel.fetchDraftByVersion.mockRejectedValue('mockError')
 		DraftModel.mockGetChildNodeById.mockReturnValue({
 			node: {
 				content: {
@@ -149,7 +146,6 @@ describe('attempt review', () => {
 				}
 			}
 		})
-
 		util.getFullQuestionsFromDraftTree.mockReturnValue([
 			{
 				id: 'mockId'
@@ -157,62 +153,16 @@ describe('attempt review', () => {
 		])
 		attemptStart.getSendToClientPromises.mockReturnValue([Promise.resolve()])
 
-		const questionModels = await reviewAttempt([1, 2], 10)
+		const questionModels = await attemptReview([1])
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
+			expect(DraftModel.mockGetChildNodeById).toHaveBeenCalledTimes(0)
 			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1)
-			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
+			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(0)
 			expect(logger.error).toHaveBeenCalledTimes(2)
-			expect(questionModels).toEqual({
-				'1': {},
-				'2': {
-					mockId: {
-						id: 'mockId'
-					}
-				}
-			})
-		})
-	})
-
-	test('reviewAttempt handles one of two fetchAttemptByIdAndUserId returning null', async () => {
-		const { reviewAttempt } = require('./attempt-review')
-		Assessment.fetchAttemptByIdAndUserId
-			.mockResolvedValueOnce(mockAttempt)
-			.mockResolvedValueOnce(null) // mock oneOrNone not finding anything
-
-		DraftModel.fetchDraftByVersion.mockResolvedValueOnce({})
-
-		DraftModel.mockGetChildNodeById.mockReturnValue({
-			node: {
-				content: {
-					review: 'not-always'
-				}
-			}
-		})
-
-		util.getFullQuestionsFromDraftTree.mockReturnValue([
-			{
-				id: 'mockId'
-			}
-		])
-		attemptStart.getSendToClientPromises.mockReturnValue([Promise.resolve()])
-
-		const questionModels = await reviewAttempt([1, 2], 10)
-
-		// eslint-disable-next-line no-undef
-		return flushPromises().then(() => {
-			expect(DraftModel.fetchDraftByVersion).toHaveBeenCalledTimes(1)
-			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
-			expect(logger.error).toHaveBeenCalledTimes(2)
-			expect(questionModels).toEqual({
-				'1': {
-					mockId: {
-						id: 'mockId'
-					}
-				},
-				'2': {}
-			})
+			expect(questionModels).toBe(undefined) //eslint-disable-line no-undefined
 		})
 	})
 })

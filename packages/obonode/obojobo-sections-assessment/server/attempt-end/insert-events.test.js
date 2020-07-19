@@ -1,8 +1,17 @@
-const { insertAttemptEndEvents, insertAttemptScoredEvents } = require('./insert-events')
+const {
+	insertAttemptEndEvents,
+	insertAttemptScoredEvents,
+	insertAttemptImportedEvents
+} = require('./insert-events')
 const mockInsertEvent = require('obojobo-express/server/insert_event')
 
-const mockCreateAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-const mockCreateAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+const mockCreateAssessmentAttemptSubmittedEvent = jest
+	.fn()
+	.mockReturnValue('mockSubmitCaliperPayload')
+const mockCreateAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockScoreCaliperPayload')
+const mockCreateAssessmentAttemptImportedEvent = jest
+	.fn()
+	.mockReturnValue('mockImportCaliperPayload')
 const mockGetLatestHighestAssessmentScoreRecord = jest
 	.fn()
 	.mockResolvedValue({ score: 'mockHighestAssessmentScore' })
@@ -22,13 +31,18 @@ jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event', () => {
 	return () => ({
 		createAssessmentAttemptScoredEvent: args => mockCreateAssessmentAttemptScoredEvent(args),
-		createAssessmentAttemptSubmittedEvent: args => mockCreateAssessmentAttemptSubmittedEvent(args)
+		createAssessmentAttemptSubmittedEvent: args => mockCreateAssessmentAttemptSubmittedEvent(args),
+		createAssessmentAttemptImportedEvent: args => mockCreateAssessmentAttemptImportedEvent(args)
 	})
 })
 
 mockStaticDate()
 
 describe('attempt-end/insert events', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('insertAttemptEndEvents', async () => {
 		await insertAttemptEndEvents(
 			mockUser,
@@ -50,7 +64,7 @@ describe('attempt-end/insert events', () => {
 		expect(mockInsertEvent).toBeCalledWith({
 			action: 'assessment:attemptEnd',
 			actorTime: '2016-09-22T16:57:14.500Z',
-			caliperPayload: 'mockCaliperPayload',
+			caliperPayload: 'mockSubmitCaliperPayload',
 			contentId: 'mockContentId',
 			draftId: 'mockDraftId',
 			eventVersion: '1.2.0',
@@ -108,7 +122,7 @@ describe('attempt-end/insert events', () => {
 		expect(mockInsertEvent).toBeCalledWith({
 			action: 'assessment:attemptScored',
 			actorTime: '2016-09-22T16:57:14.500Z',
-			caliperPayload: 'mockCaliperPayload',
+			caliperPayload: 'mockScoreCaliperPayload',
 			contentId: 'mockContentId',
 			draftId: 'mockDraftId',
 			eventVersion: '2.1.0',
@@ -131,5 +145,64 @@ describe('attempt-end/insert events', () => {
 			},
 			userId: 'mockUserId'
 		})
+	})
+
+	test('insertAttemptImportedEvents', async () => {
+		await insertAttemptImportedEvents(
+			'mock-userId',
+			'mock-draftId',
+			'mock-contentId',
+			'mock-assessmentId',
+			'mock-attemptId',
+			'mock-scoreId',
+			'mock-originalAttemptId',
+			'mock-originalScoreId',
+			'mock-isPreview',
+			'mock-ltiScoreSent',
+			'mock-ltiScoreStatus',
+			'mock-ltiStatusDetails',
+			'mock-ltiGradeBookStatus',
+			'mock-ltiAssessmentScoreId',
+			'mock-hostname',
+			'mock-remoteAddress',
+			'mock-resourceLinkId'
+		)
+
+		expect(mockCreateAssessmentAttemptImportedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "actor": Object {
+		    "id": "mock-userId",
+		    "type": "user",
+		  },
+		  "assessmentId": "mock-assessmentId",
+		  "attemptId": "mock-attemptId",
+		  "contentId": "mock-contentId",
+		  "draftId": "mock-draftId",
+		  "originalAttemptId": "mock-originalAttemptId",
+		  "originalScoreId": "mock-originalScoreId",
+		  "resourceLinkId": "mock-resourceLinkId",
+		}
+	`)
+		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "action": "assessment:attemptEnd",
+		  "actorTime": "2016-09-22T16:57:14.500Z",
+		  "caliperPayload": "mockImportCaliperPayload",
+		  "contentId": "mock-contentId",
+		  "draftId": "mock-draftId",
+		  "eventVersion": "1.1.0",
+		  "ip": "mock-remoteAddress",
+		  "isPreview": "mock-isPreview",
+		  "metadata": Object {},
+		  "payload": Object {
+		    "attemptCount": 1,
+		    "attemptId": "mock-attemptId",
+		    "originalAttemptId": "mock-originalAttemptId",
+		    "originalScoreId": "mock-originalScoreId",
+		    "resourceLinkId": "mock-resourceLinkId",
+		  },
+		  "userId": "mock-userId",
+		}
+	`)
 	})
 })

@@ -1,6 +1,5 @@
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import APIUtil from 'src/scripts/viewer/util/api-util'
 import VisualEditor from 'src/scripts/oboeditor/components/visual-editor'
 import React from 'react'
 import mockConsole from 'jest-mock-console'
@@ -10,7 +9,7 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
-jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 	helpers: {
@@ -621,8 +620,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('Ensures the plugins work as expected', () => {
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
-
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -842,7 +839,7 @@ describe('VisualEditor', () => {
 			eventMap[event] = cb
 		})
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
+
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {

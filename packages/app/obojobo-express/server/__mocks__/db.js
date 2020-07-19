@@ -44,7 +44,9 @@ class MockQueryResultError {
 
 db.errors = {
 	queryResultErrorCode: {
-		noData: 'noData'
+		noData: 'noData',
+		notEmpty: 'notEmpty',
+		multiple: 'multiple'
 	},
 	QueryResultError: MockQueryResultError
 }

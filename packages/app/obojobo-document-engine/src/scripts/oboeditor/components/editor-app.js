@@ -4,7 +4,7 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from '../../viewer/util/api-util'
+import EditorAPI from '../../viewer/util/editor-api'
 import Common from '../../common'
 import CodeEditor from './code-editor'
 import EditorStore from '../stores/editor-store'
@@ -71,7 +71,7 @@ class EditorApp extends React.Component {
 
 	saveDraft(draftId, draftSrc, xmlOrJSON = 'json') {
 		const mode = xmlOrJSON === 'xml' ? 'text/plain' : 'application/json'
-		return APIUtil.postDraft(draftId, draftSrc, mode)
+		return EditorAPI.postDraft(draftId, draftSrc, mode)
 			.then(result => {
 				if (result.status !== 'ok') {
 					throw Error(result.value.message)
@@ -146,11 +146,9 @@ class EditorApp extends React.Component {
 		// allow this function to be called again
 		if (this._isCreatingRenewableEditLock) return Promise.resolve()
 		this._isCreatingRenewableEditLock = true
-
 		return this.createEditLock(draftId, this.state.model.get('contentId'))
 			.then(() => {
 				// success!
-
 				// create the lock interval to keep checking & renewing
 				clearInterval(this.renewLockInterval)
 				this.renewLockInterval = setInterval(() => {
@@ -173,7 +171,7 @@ class EditorApp extends React.Component {
 	}
 
 	createEditLock(draftId, contentId) {
-		return APIUtil.requestEditLock(draftId, contentId).then(json => {
+		return EditorAPI.requestEditLock(draftId, contentId).then(json => {
 			if (json.status === 'error') {
 				const msg = json.value && json.value.message ? json.value.message : 'Unable to lock module.'
 				throw Error(msg)
@@ -182,7 +180,7 @@ class EditorApp extends React.Component {
 	}
 
 	reloadDraft(draftId, mode) {
-		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
+		return EditorAPI.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(response => {
 				let json
 				switch (mode) {
@@ -219,7 +217,7 @@ class EditorApp extends React.Component {
 	loadDraftRevision(draftId, revisionId) {
 		const mode = 'visual'
 
-		return APIUtil.getDraftRevision(draftId, revisionId)
+		return EditorAPI.getDraftRevision(draftId, revisionId)
 			.then(response => {
 				if (response.status === 'error') {
 					const error = Error(response.value.message)
@@ -251,6 +249,7 @@ class EditorApp extends React.Component {
 		if (revisionId) {
 			// If this is a revision, load it in the editor. Note that
 			// revisions will always load in visual mode
+			// currently this used for viewing version history
 			return this.loadDraftRevision(draftId, revisionId)
 		}
 
@@ -269,11 +268,11 @@ class EditorApp extends React.Component {
 	}
 
 	onWindowClose() {
-		APIUtil.deleteLockBeacon(this.state.draftId)
+		EditorAPI.deleteLockBeacon(this.state.draftId)
 	}
 
 	onWindowInactive() {
-		APIUtil.deleteLockBeacon(this.state.draftId)
+		EditorAPI.deleteLockBeacon(this.state.draftId)
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
 		ModalUtil.hide()

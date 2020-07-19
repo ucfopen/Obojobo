@@ -4,7 +4,7 @@ import 'codemirror/theme/monokai.css'
 import 'codemirror/addon/fold/foldgutter.css'
 
 import React, { Suspense } from 'react'
-import APIUtil from '../../../scripts/viewer/util/api-util'
+import EditorAPI from '../../../scripts/viewer/util/editor-api'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
 import ModalUtil from '../../common/util/modal-util'
@@ -110,7 +110,7 @@ class CodeEditor extends React.Component {
 
 	sendSave(draftId, code, mode) {
 		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
-		return APIUtil.postDraft(draftId, code, format)
+		return EditorAPI.postDraft(draftId, code, format)
 			.then(result => {
 				if (result.status !== 'ok') throw Error(result.value.message)
 

@@ -9,12 +9,14 @@ const semVerRegex = /\d+\.\d+\.\d+/
 const requireAndValidateReqMethod = (req, res, next, method, prop) => {
 	return req[method]()
 		.then(() => {
-			if (!req[prop] || typeof req[prop] !== 'object') res.missing()
+			if (!req[prop] || typeof req[prop] !== 'object') {
+				throw Error('Required request property is missing.')
+			}
 			next()
 		})
 		.catch(error => {
 			logger.error('requireAndValidateReqMethod error', error)
-			res.missing()
+			res.missing(`${prop} missing from request, got ${req[prop]}`)
 		})
 }
 
@@ -54,21 +56,30 @@ const EXISTS_NOT_EMPTY = { checkNull: true, checkFalsy: true }
 exports.requireContentId = check('contentId', VALID_UUID_ERROR)
 	.exists(EXISTS_NOT_EMPTY)
 	.isUUID()
+
 exports.checkContentId = check('contentId', VALID_UUID_ERROR)
 	.isUUID()
 	.optional()
+
 exports.requireDraftId = check('draftId', VALID_UUID_ERROR).isUUID()
+
 exports.requireAttemptId = check('attemptId', VALID_UUID_ERROR).isUUID()
+
 exports.requireVisitId = check('visitId', VALID_UUID_ERROR).isUUID()
+
 exports.requireAssessmentId = check('assessmentId', 'must not be empty')
 	.exists(EXISTS_NOT_EMPTY)
 	.isString()
+
 exports.requireMultipleAttemptIds = [
 	check('attemptIds', 'must be an array of UUIDs').isArray({ min: 1 }),
 	check('attemptIds.*', 'must be a valid UUID').isUUID()
 ]
+
 exports.check = check
+
 exports.param = param
+
 exports.validPageNumber = check('page', 'must be a valid int 1 or above')
 	.optional()
 	.isInt({ min: 1, allow_leading_zeroes: false })
@@ -85,12 +96,21 @@ exports.requireEvent = [
 	check('event.draft_id', VALID_UUID_ERROR).isUUID(),
 	check('event.event_version', 'must match a valid semVer string').matches(semVerRegex)
 ]
+
+exports.validImportedAssessmentScoreId = check(
+	'importedAssessmentScoreId',
+	'must be a valid score id'
+).isInt({ min: 1, allow_leading_zeroes: false })
+
 exports.requireCanViewEditor = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canViewEditor')
+
 exports.requireCanCreateDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canCreateDrafts')
+
 exports.requireCanDeleteDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canDeleteDrafts')
+
 exports.requireCanPreviewDrafts = (req, res, next) =>
 	requireCurrentUser(req, res, next, 'canPreviewDrafts')
 

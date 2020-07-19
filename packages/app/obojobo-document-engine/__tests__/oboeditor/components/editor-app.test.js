@@ -1,6 +1,6 @@
 jest.mock('../../../src/scripts/oboeditor/components/visual-editor')
 jest.mock('../../../src/scripts/oboeditor/components/code-editor')
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/editor-api')
 jest.mock('../../../src/scripts/oboeditor/stores/editor-store')
 jest.mock('../../../src/scripts/common/stores/modal-store')
 jest.mock('../../../src/scripts/common/util/modal-util')
@@ -18,7 +18,7 @@ describe('EditorApp', () => {
 	const ogConsoleError = console.error // eslint-disable-line no-console
 
 	let defaultProps
-	let APIUtil
+	let EditorAPI
 	let EditorStore
 	let ModalStore
 	let ModalUtil
@@ -33,7 +33,7 @@ describe('EditorApp', () => {
 		jest.resetModules()
 
 		EditorUtil = require('../../../src/scripts/oboeditor/util/editor-util').default
-		APIUtil = require('../../../src/scripts/viewer/util/api-util')
+		EditorAPI = require('../../../src/scripts/viewer/util/editor-api').default
 		EditorStore = require('../../../src/scripts/oboeditor/stores/editor-store').default
 		ModalStore = require('../../../src/scripts/common/stores/modal-store').default
 		ModalUtil = require('../../../src/scripts/common/util/modal-util').default
@@ -61,7 +61,7 @@ describe('EditorApp', () => {
 			context: {}
 		}
 
-		APIUtil.requestEditLock.mockResolvedValue({ status: 'ok' })
+		EditorAPI.requestEditLock.mockResolvedValue({ status: 'ok' })
 		Common.models.OboModel.create.mockReturnValue(defaultModel)
 		EditorStore.getState.mockReturnValue(defaultEditorState)
 		ModalStore.getState.mockReturnValue({})
@@ -84,7 +84,8 @@ describe('EditorApp', () => {
 		})
 
 		// mock api calls
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorStore.getState.mockReturnValueOnce({})
 
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -102,18 +103,25 @@ describe('EditorApp', () => {
 	test('component should request null draft when draftid not in pathname', () => {
 		expect.hasAssertions()
 
-		// mock api calls
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
 		// update document.location to cause no draftId
 		window.history.pushState({}, null, '/pathname?k=v')
 
+		// mock api calls
+		EditorAPI.getFullDraft
+			.mockResolvedValueOnce(testObjectString)
+			.mockResolvedValueOnce(
+				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
+			)
+		EditorStore.getState.mockReturnValueOnce({})
+
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
+		component.instance().switchMode(XML_MODE)
 
 		// verify
 		return global.flushPromises().then(() => {
 			component.update()
-			expect(APIUtil.getFullDraft).toHaveBeenCalledWith(null, 'json')
+			expect(EditorAPI.getFullDraft).toHaveBeenCalledWith(null, 'json')
 			component.unmount()
 		})
 	})
@@ -123,7 +131,10 @@ describe('EditorApp', () => {
 
 		const mockXMLDraft = '<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString).mockResolvedValueOnce(mockXMLDraft)
+		EditorAPI.getFullDraft
+			.mockResolvedValueOnce(testObjectString)
+			.mockResolvedValueOnce(testObjectString)
+		EditorStore.getState.mockReturnValueOnce(mockXMLDraft)
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		component.instance().switchMode(XML_MODE)
@@ -138,7 +149,8 @@ describe('EditorApp', () => {
 	test('onEditorStoreChange calls Editor.getState', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		return global.flushPromises().then(() => {
@@ -154,7 +166,9 @@ describe('EditorApp', () => {
 	test('onModalStoreChange calls ModalStore.getState', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
+		ModalStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		return global.flushPromises().then(() => {
@@ -174,7 +188,7 @@ describe('EditorApp', () => {
 			component: 'mock component'
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
+		EditorAPI.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -195,7 +209,7 @@ describe('EditorApp', () => {
 		expect.hasAssertions()
 
 		const mockError = { type: 'someType', message: 'someMessage' }
-		APIUtil.getFullDraft.mockResolvedValueOnce(
+		EditorAPI.getFullDraft.mockResolvedValueOnce(
 			JSON.stringify({
 				status: 'error',
 				value: mockError
@@ -222,7 +236,13 @@ describe('EditorApp', () => {
 	test('EditorApp component renders modal', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorStore.getState.mockReturnValueOnce({})
 
 		ModalUtil.getCurrentModal.mockReturnValueOnce({
 			component: 'mock component'
@@ -243,12 +263,12 @@ describe('EditorApp', () => {
 
 	test('EditorApp calls displayLockedModal when module is locked', () => {
 		expect.hasAssertions()
-		APIUtil.requestEditLock.mockResolvedValue({
+		EditorAPI.requestEditLock.mockResolvedValue({
 			status: 'error',
 			value: { message: 'mock-message' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		const instance = component.instance()
@@ -274,9 +294,9 @@ describe('EditorApp', () => {
 
 	test('EditorApp calls displayLockedModal when locking throws an error', () => {
 		expect.hasAssertions()
-		APIUtil.requestEditLock.mockResolvedValue({ status: 'error' })
+		EditorAPI.requestEditLock.mockResolvedValue({ status: 'error' })
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		const instance = component.instance()
@@ -303,7 +323,7 @@ describe('EditorApp', () => {
 	test('startRenewEditLockInterval is called when on mount', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		const component = mount(<EditorApp {...defaultProps} />)
 		const instance = component.instance()
@@ -322,25 +342,25 @@ describe('EditorApp', () => {
 	test('startRenewEditLockInterval calls requestEditLock', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 		const component = mount(<EditorApp {...defaultProps} />)
 		// mock reloadDraft just to simplify the test
 		jest.spyOn(component.instance(), 'reloadDraft').mockResolvedValueOnce()
 
 		return global.flushPromises().then(() => {
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(1)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(1)
 
 			// move forward to just before the timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.89)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(1)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(1)
 
 			// move forward to the timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.01)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(2)
 
 			// move forward to the next timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(3)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(3)
 
 			component.unmount()
 		})
@@ -349,7 +369,7 @@ describe('EditorApp', () => {
 	test('startRenewEditLockInterval skips createEditLock when already locking', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 		const component = mount(<EditorApp {...defaultProps} />)
 		const instance = component.instance()
 		// mock reloadDraft just to simplify the test
@@ -370,10 +390,11 @@ describe('EditorApp', () => {
 	test('component loads draft revision', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
-		APIUtil.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
+		window.history.pushState({}, null, '/api/drafts/mock-draft-id/whatever')
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		defaultProps.settings.revisionId = 'mockId'
+		defaultProps.settings.revisionId = 'mock-revision-id'
 		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
 		const component = mount(<EditorApp {...defaultProps} />)
 
@@ -382,6 +403,7 @@ describe('EditorApp', () => {
 			component.update()
 
 			expect(spy).toHaveBeenCalled()
+			expect(EditorAPI.getDraftRevision).toHaveBeenCalledWith('mock-draft-id', 'mock-revision-id')
 			expect(component.state().mode).toEqual('visual')
 			expect(component.state().draft).toEqual(testObject)
 
@@ -392,7 +414,7 @@ describe('EditorApp', () => {
 	test('startRenewEditLockInterval displays error when interval is unable to secure lock', () => {
 		expect.hasAssertions()
 		jest.useFakeTimers()
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 		const component = mount(<EditorApp {...defaultProps} />)
 		const instance = component.instance()
 		// mock reloadDraft just to simplify the test
@@ -400,14 +422,14 @@ describe('EditorApp', () => {
 
 		return global.flushPromises().then(() => {
 			// now simulate not being able to obtain a lock
-			APIUtil.requestEditLock.mockResolvedValueOnce({ status: 'error' })
+			EditorAPI.requestEditLock.mockResolvedValueOnce({ status: 'error' })
 
 			// make sure we're not in an error state
 			expect(instance.state).toHaveProperty('requestStatus', null)
 
 			//move forward to the next timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(2)
 
 			return global.flushPromises().then(() => {
 				// make sure state has the error message
@@ -426,9 +448,11 @@ describe('EditorApp', () => {
 
 	test('saveDraft updates the models content id', () => {
 		expect.hasAssertions()
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({ status: 'error' })
+		EditorStore.getState.mockReturnValueOnce({})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
-		APIUtil.postDraft.mockResolvedValueOnce({
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.postDraft.mockResolvedValueOnce({
 			status: 'ok',
 			value: {
 				id: 'mock-content-id'
@@ -444,7 +468,7 @@ describe('EditorApp', () => {
 		return instance.saveDraft('mock-draft-id', 'mock-data-src').then(success => {
 			expect(success).toBe(true)
 			expect(defaultModel.set).toHaveBeenCalledWith('contentId', 'mock-content-id')
-			expect(APIUtil.postDraft).toHaveBeenCalledWith(
+			expect(EditorAPI.postDraft).toHaveBeenCalledWith(
 				'mock-draft-id',
 				'mock-data-src',
 				'application/json'
@@ -456,8 +480,8 @@ describe('EditorApp', () => {
 	test('saveDraft shows dialog on ', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
-		APIUtil.postDraft.mockResolvedValueOnce({
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.postDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'mock-error-message'
@@ -481,8 +505,8 @@ describe('EditorApp', () => {
 	test('saveDraft sends correct mode to postDraft for xml', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
-		APIUtil.postDraft.mockResolvedValueOnce({
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.postDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: {
 				message: 'mock-error-message'
@@ -495,7 +519,11 @@ describe('EditorApp', () => {
 
 		// verify
 		return instance.saveDraft('mock-draft-id', 'mock-data-src', 'xml').then(() => {
-			expect(APIUtil.postDraft).toHaveBeenCalledWith('mock-draft-id', 'mock-data-src', 'text/plain')
+			expect(EditorAPI.postDraft).toHaveBeenCalledWith(
+				'mock-draft-id',
+				'mock-data-src',
+				'text/plain'
+			)
 			component.unmount()
 		})
 	})
@@ -503,7 +531,7 @@ describe('EditorApp', () => {
 	test('onWindowClose sends becon', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -512,13 +540,13 @@ describe('EditorApp', () => {
 
 		// verify
 		instance.onWindowClose()
-		expect(APIUtil.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
+		expect(EditorAPI.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
 	})
 
 	test('onWindowInactive sends becon, hides modal and shows expiration modal', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -527,7 +555,7 @@ describe('EditorApp', () => {
 
 		// verify
 		instance.onWindowInactive()
-		expect(APIUtil.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
+		expect(EditorAPI.deleteLockBeacon).toHaveBeenCalledWith('mock-draft-id')
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
@@ -535,7 +563,7 @@ describe('EditorApp', () => {
 	test('onWindowInactiveWarning shows a modal', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -550,7 +578,7 @@ describe('EditorApp', () => {
 	test('onWindowReturnFromInactive renews lock interval and hides modals', () => {
 		expect.hasAssertions()
 
-		APIUtil.getFullDraft.mockResolvedValueOnce(testObjectString)
+		EditorAPI.getFullDraft.mockResolvedValueOnce(testObjectString)
 
 		// mount
 		const component = mount(<EditorApp {...defaultProps} />)
@@ -569,7 +597,7 @@ describe('EditorApp', () => {
 	test('EditorApp renders error when loading draft revision', () => {
 		expect.assertions(5)
 		jest.useFakeTimers()
-		APIUtil.getDraftRevision.mockResolvedValueOnce({
+		EditorAPI.getDraftRevision.mockResolvedValueOnce({
 			status: 'error',
 			value: { type: 'mock-type', message: 'mock-message' }
 		})

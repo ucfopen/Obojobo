@@ -1,6 +1,6 @@
 import './visual-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import EditorApi from 'obojobo-document-engine/src/scripts/viewer/util/editor-api'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
@@ -395,7 +395,7 @@ class VisualEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 		this.setState({ saved: true })
-		return APIUtil.postDraft(draftId, JSON.stringify(json))
+		return EditorApi.postDraft(draftId, JSON.stringify(json))
 	}
 
 	exportToJSON(page, value) {

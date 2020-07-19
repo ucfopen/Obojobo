@@ -21,7 +21,8 @@
 			"idleMinutes": 45,
 			"warnMinutes": 40,
 			"autoExpireMinutes":5
-		}
+		},
+		"allowImportDefault": true
 	},
 	"test": {
 		"key": "value",

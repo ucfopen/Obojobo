@@ -18,7 +18,7 @@ const insertAttemptEndEvents = (
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
 		payload: {
-			attemptId: attemptId,
+			attemptId,
 			attemptCount: attemptNumber
 		},
 		visitId,
@@ -34,7 +34,7 @@ const insertAttemptEndEvents = (
 			draftId: draftDocument.draftId,
 			contentId: draftDocument.contentId,
 			assessmentId,
-			attemptId: attemptId
+			attemptId
 		})
 	})
 }
@@ -115,7 +115,58 @@ const insertAttemptScoredEvents = (
 		})
 }
 
+const insertAttemptImportedEvents = (
+	userId,
+	draftId,
+	contentId,
+	assessmentId,
+	attemptId,
+	scoreId,
+	originalAttemptId,
+	originalScoreId,
+	isPreview,
+	ltiScoreSent,
+	ltiScoreStatus,
+	ltiStatusDetails,
+	ltiGradeBookStatus,
+	ltiAssessmentScoreId,
+	hostname,
+	remoteAddress,
+	resourceLinkId
+) => {
+	const { createAssessmentAttemptImportedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: 'assessment:attemptEnd',
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId,
+			attemptCount: 1,
+			originalScoreId,
+			originalAttemptId,
+			resourceLinkId
+		},
+		userId,
+		ip: remoteAddress,
+		metadata: {},
+		draftId,
+		contentId,
+		eventVersion: '1.1.0',
+		isPreview,
+		caliperPayload: createAssessmentAttemptImportedEvent({
+			actor: { type: 'user', id: userId },
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			originalScoreId,
+			originalAttemptId,
+			resourceLinkId
+		})
+	})
+}
+
 module.exports = {
 	insertAttemptEndEvents,
-	insertAttemptScoredEvents
+	insertAttemptScoredEvents,
+	insertAttemptImportedEvents
 }
