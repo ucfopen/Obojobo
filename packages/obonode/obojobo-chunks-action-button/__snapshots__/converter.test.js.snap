@@ -2,141 +2,113 @@
 
 exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "label": "mockLabel",
-      "triggers": Array [
-        Object {
-          "actions": Array [],
-          "type": "onClick",
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockLabel",
-        },
-      ],
-      "object": "text",
+      "text": "mockLabel",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "label": "mockLabel",
+    "triggers": Array [
+      Object {
+        "actions": Array [],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node using a textGroup 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "textGroup": Array [
-        Object {
-          "text": Object {
-            "value": "mockLabel",
-          },
-        },
-      ],
-      "triggers": Array [
-        Object {
-          "actions": Array [],
-          "type": "onClick",
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": undefined,
-      "object": "text",
+      "text": "mockLabel",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "mockLabel",
+        },
+      },
+    ],
+    "triggers": Array [
+      Object {
+        "actions": Array [],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node with onClick trigger 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "label": "mockLabel",
-      "triggers": Array [
-        Object {
-          "actions": Array [
-            Object {
-              "type": "mockType",
-            },
-            Object {
-              "type": "mockOtherType",
-              "value": Object {
-                "id": "mockId",
-              },
-            },
-          ],
-          "type": "onClick",
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockLabel",
-        },
-      ],
-      "object": "text",
+      "text": "mockLabel",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "label": "mockLabel",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "mockType",
+          },
+          Object {
+            "type": "mockOtherType",
+            "value": Object {
+              "id": "mockId",
+            },
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "label": "mockLabel",
-      "triggers": Array [
-        Object {
-          "actions": Array [
-            Object {
-              "type": "mockType",
-            },
-            Object {
-              "type": "mockOtherType",
-              "value": Object {
-                "id": "mockId",
-              },
-            },
-          ],
-        },
-        Object {
-          "actions": Array [],
-          "type": "onClick",
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockLabel",
-        },
-      ],
-      "object": "text",
+      "text": "mockLabel",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "label": "mockLabel",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "mockType",
+          },
+          Object {
+            "type": "mockOtherType",
+            "value": Object {
+              "id": "mockId",
+            },
+          },
+        ],
+      },
+      Object {
+        "actions": Array [],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -145,23 +117,35 @@ exports[`ActionButton Converter slateToObo converts a Slate node 1`] = `
 Object {
   "children": Array [],
   "content": Object {
-    "actions": Array [
-      Object {
-        "type": "mockType",
-        "value": "{\\"id\\":\\"mockId\\"}",
-      },
-      Object {
-        "type": "mockType",
-        "value": "",
-      },
-    ],
     "textGroup": Array [
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
+      },
+    ],
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "mockType",
+            "value": "{\\"id\\":\\"mockId\\"}",
+          },
+          Object {
+            "type": "mockType",
+            "value": "",
+          },
+        ],
+        "type": "onClick",
       },
     ],
   },

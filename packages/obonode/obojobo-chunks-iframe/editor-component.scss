@@ -2,6 +2,7 @@
 
 .obojobo-draft--chunks--iframe {
 	position: relative;
+	user-select: none;
 
 	.obojobo-draft--components--button {
 		display: block;
@@ -51,6 +52,7 @@
 		overflow: hidden;
 		margin: 0 auto;
 		cursor: pointer;
+		user-select: none;
 
 		&::before {
 			content: ' ';
@@ -63,6 +65,7 @@
 			right: 3.3em;
 			bottom: 0;
 			transition: transform $duration-animation-default, opacity $duration-animation-default;
+			user-select: none;
 		}
 
 		.delete-button {
@@ -72,6 +75,7 @@
 			transform: translate(50%, -50%);
 			z-index: 3;
 			opacity: 0;
+			visibility: hidden;
 			transition: opacity 0.2s linear 0.2s;
 
 			button {
@@ -86,6 +90,7 @@
 			border: 3px solid $color-action;
 
 			.delete-button {
+				visibility: visible;
 				transition: opacity 0s;
 				opacity: 1;
 			}
@@ -95,6 +100,7 @@
 			border: 3px solid $color-action;
 
 			.delete-button {
+				visibility: visible;
 				transition: opacity 0s;
 				opacity: 1;
 			}

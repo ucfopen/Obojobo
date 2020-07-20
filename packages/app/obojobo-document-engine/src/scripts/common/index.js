@@ -34,6 +34,7 @@ import StyleType from './text/style-type'
 import StyleableText from './text/styleable-text'
 import StyleableTextComponent from './text/styleable-text-component'
 import StyleableTextRenderer from './text/styleable-text-renderer'
+import TabTrap from './components/modal/tab-trap'
 import TextChunk from './chunk/text-chunk'
 import TextGroup from './text-group/text-group'
 import TextGroupAdapter from './chunk/text-chunk/text-group-adapter'
@@ -44,6 +45,7 @@ import TextMenu from './components/text-menu'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
 import isOrNot from './util/isornot'
+import withProtocol from './util/with-protocol'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
 import debounce from './util/debounce'
@@ -79,7 +81,8 @@ export default {
 			Modal,
 			Dialog,
 			SimpleDialog,
-			ErrorDialog
+			ErrorDialog,
+			TabTrap
 		},
 		slider: {
 			Slider
@@ -135,6 +138,7 @@ export default {
 		setProp,
 		cloneProps,
 		isOrNot,
+		withProtocol,
 		debounce,
 		withoutUndefined
 	}

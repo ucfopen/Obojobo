@@ -1,187 +1,115 @@
-import SlateReact from 'slate-react'
+import { Transforms } from 'slate'
 
 import Heading from './editor-registration'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('slate-react')
 
 describe('Heading editor', () => {
+	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
+		const next = jest.fn()
+		Heading.plugins.normalizeNode([{}, []], {}, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode calls next if all Action Button children are text', () => {
+		const button = {
+			type: HEADING_NODE,
+			children: [{ text: '' }]
+		}
+		const next = jest.fn()
+
+		Heading.plugins.normalizeNode([button, [0]], { children: [button] }, next)
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode calls Transforms on an invalid child', () => {
+		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
+
+		const button = {
+			type: HEADING_NODE,
+			children: [
+				{
+					type: 'mockElement',
+					children: [{ text: '' }]
+				}
+			]
+		}
+		const editor = {
+			isInline: () => false,
+			children: [button]
+		}
+		const next = jest.fn()
+
+		Heading.plugins.normalizeNode([button, [0]], editor, next)
+		expect(Transforms.liftNodes).toHaveBeenCalled()
+	})
+
+	test('plugins.decorate exits when not relevent', () => {
+		expect(Heading.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
+
+		expect(Heading.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
+	})
+
+	test('plugins.decorate renders a placeholder', () => {
+		const editor = {
+			children: [{ children: [{ text: '' }] }]
+		}
+
+		expect(Heading.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], {}, event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], {}, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			insertText: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders Heading when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
-			node: {
+			element: {
 				type: HEADING_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
+				content: {}
 			}
 		}
 
-		expect(Heading.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Heading.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
-	})
-
-	test('plugins.renderPlaceholder exits when not relevent', () => {
-		expect(
-			Heading.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			Heading.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-
-		expect(
-			Heading.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: HEADING_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('plugins.renderPlaceholder renders a placeholder', () => {
-		expect(
-			Heading.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: HEADING_NODE,
-						text: '',
-						data: { get: () => ({ align: 'left' }) }
-					}
-				},
-				null,
-				jest.fn()
-			)
-		).toMatchSnapshot()
-	})
-
-	test('getNavItem returns expected object', () => {
-		const model = {
-			modelState: {
-				headingLevel: 1,
-				textGroup: {
-					first: {
-						text: 'testText'
-					}
-				}
-			},
-			getIndex: () => 0,
-			showChildren: false,
-			toText: () => 'test string'
-		}
-
-		expect(Heading.getNavItem(model)).toBe(null)
-
-		model.modelState.headingLevel = 2
-		expect(Heading.getNavItem(model)).toEqual({
-			type: 'sub-link',
-			label: 'testText',
-			path: ['test-string'],
-			showChildren: false
-		})
-
-		model.modelState.headingLevel = 3
-		expect(Heading.getNavItem(model)).toBe(null)
-	})
-
-	test('onPaste handler calls next if item is not a heading', () => {
-		const editor = {
-			value: {
-				blocks: {
-					some: fn => fn({ type: 'not-heading-node' })
-				}
-			},
-			insertText: jest.fn()
-		}
-		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
-
-		Heading.plugins.onPaste(null, editor, next)
-
-		expect(next).toHaveBeenCalled()
-		expect(editor.insertText).not.toHaveBeenCalled()
-	})
-
-	test('onPaste handler calls next if transfer type is not text', () => {
-		const editor = {
-			value: {
-				blocks: {
-					some: fn => fn({ type: HEADING_NODE })
-				}
-			},
-			insertText: jest.fn()
-		}
-		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'fragment' })
-
-		Heading.plugins.onPaste(null, editor, next)
-
-		expect(next).toHaveBeenCalled()
-		expect(editor.insertText).not.toHaveBeenCalled()
-	})
-
-	test('onPaste handler calls editor.insertText if item is a heading and transfer type is text', () => {
-		const editor = {
-			value: {
-				blocks: {
-					some: fn => fn({ type: HEADING_NODE })
-				}
-			},
-			insertText: jest.fn()
-		}
-		const next = jest.fn()
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text', text: 'mock-text' })
-
-		Heading.plugins.onPaste(null, editor, next)
-
-		expect(next).not.toHaveBeenCalled()
-		expect(editor.insertText).toHaveBeenCalledWith('mock-text')
+		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })

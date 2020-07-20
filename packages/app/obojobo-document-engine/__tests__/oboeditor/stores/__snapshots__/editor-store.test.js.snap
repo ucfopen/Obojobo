@@ -9,6 +9,7 @@ Object {
   "editor:gotoPath": [Function],
   "editor:movePage": [Function],
   "editor:rebuildMenu": [Function],
+  "editor:renameModule": [Function],
   "editor:renamePage": [Function],
   "editor:setContext": [Function],
   "editor:setStartPage": [Function],

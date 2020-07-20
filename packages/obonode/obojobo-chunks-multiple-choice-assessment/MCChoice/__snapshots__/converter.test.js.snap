@@ -2,18 +2,15 @@
 
 exports[`MCChoice editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     undefined,
     undefined,
     undefined,
   ],
-  "object": "block",
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;

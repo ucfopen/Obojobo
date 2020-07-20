@@ -6,6 +6,14 @@ import PostAssessment from './editor-component'
 
 jest.mock('obojobo-pages-page/editor')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import { Transforms } from 'slate'
+jest.mock('slate')
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
 
 describe('Actions editor', () => {
 	beforeEach(() => {
@@ -13,38 +21,19 @@ describe('Actions editor', () => {
 	})
 
 	test('Node component', () => {
-		const component = renderer.create(
-			<PostAssessment
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-			/>
-		)
+		const component = renderer.create(<PostAssessment element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Node component adds child', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<PostAssessment
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: { size: 0 }
+				element={{
+					content: {},
+					children: []
 				}}
-				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -56,26 +45,18 @@ describe('Actions editor', () => {
 	})
 
 	test('addAction adds an action with the given range', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
 		const component = shallow(
 			<PostAssessment
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: { size: 0 }
+				element={{
+					content: {},
+					children: []
 				}}
-				editor={editor}
 			/>
 		)
+		ReactEditor.findPath.mockReturnValueOnce([])
 
 		component.instance().addAction('mock range')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 })

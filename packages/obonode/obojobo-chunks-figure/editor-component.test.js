@@ -1,33 +1,49 @@
-import Figure from './editor-component'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
+import { Transforms } from 'slate'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
+
+import Figure from './editor-component'
+
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('Figure Editor Node', () => {
-	let mockEditor
 	beforeEach(() => {
 		jest.restoreAllMocks()
-		mockEditor = {
-			setNodeByKey: jest.fn(),
-			removeNodeByKey: jest.fn()
-		}
+		jest.resetAllMocks()
 		EditorStore.state = { settings: { allowedUploadTypes: '.mockTypes' } }
 	})
 
 	test('Figure component', () => {
 		const component = renderer.create(
 			<Figure
-				node={{
-					data: {
-						get: () => ({
-							size: 'small',
-							url: 'mockUrl',
-							alt: 'mockAlt'
-						})
+				element={{
+					content: {
+						size: 'small',
+						url: 'mockUrl',
+						alt: 'mockAlt'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -41,15 +57,21 @@ describe('Figure Editor Node', () => {
 
 		const component = renderer.create(
 			<Figure
-				node={{
-					data: {
-						get: () => ({
-							size: 'custom',
-							url: 'mockUrl',
-							alt: 'mockAlt',
-							width: 'customWidth',
-							height: 'customHeight'
-						})
+				element={{
+					content: {
+						size: 'custom',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						width: 'customWidth',
+						height: 'customHeight'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -58,14 +80,20 @@ describe('Figure Editor Node', () => {
 
 		const componentNoWidth = renderer.create(
 			<Figure
-				node={{
-					data: {
-						get: () => ({
-							size: 'custom',
-							url: 'mockUrl',
-							alt: 'mockAlt',
-							height: 'customHeight'
-						})
+				element={{
+					content: {
+						size: 'custom',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						height: 'customHeight'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -74,14 +102,20 @@ describe('Figure Editor Node', () => {
 
 		const componentNoHeight = renderer.create(
 			<Figure
-				node={{
-					data: {
-						get: () => ({
-							size: 'custom',
-							url: 'mockUrl',
-							alt: 'mockAlt',
-							width: 'mockWidth'
-						})
+				element={{
+					content: {
+						size: 'custom',
+						url: 'mockUrl',
+						alt: 'mockAlt',
+						width: 'customWidth'
+					}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
 			/>
@@ -92,13 +126,19 @@ describe('Figure Editor Node', () => {
 	test('Figure component edits properties', () => {
 		const component = mount(
 			<Figure
-				node={{
-					key: 'mockKey',
-					data: {
-						get: () => ({})
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
-				editor={mockEditor}
+				editor={{}}
 			/>
 		)
 
@@ -112,39 +152,94 @@ describe('Figure Editor Node', () => {
 		component.unmount()
 	})
 
-	test('Figure component handles clicks', () => {
+	test('Figure component handles tabbing', () => {
 		const component = mount(
 			<Figure
-				attributes={{ dummy: 'dummyData' }}
-				node={{
-					data: {
-						get: () => ({})
-					},
-					text: 'Your Title Here'
+				element={{
+					id: 'mockKey',
+					content: {}
 				}}
 			/>
 		)
 
-		const nodeInstance = component.instance()
-		nodeInstance.node = {
-			contains: value => value
-		}
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(0)
+			.simulate('keyDown', { key: 'Tab', shiftKey: 'true' })
 
-		nodeInstance.handleClick({ target: true }) // click inside
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'k' })
+		component
+			.find('button')
+			.at(1)
+			.simulate('keyDown', { key: 'Tab' })
 
-		let tree = component.html()
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
 
-		nodeInstance.handleClick({ target: false }) // click outside
+	test('Figure component does not focus if already selected', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				selected={true}
+			/>
+		)
 
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
+		component
+			.find('.figure-box')
+			.at(0)
+			.simulate('click')
 
-		nodeInstance.node = null
-		nodeInstance.handleClick() // click without node
+		expect(Transforms.setSelection).not.toHaveBeenCalled()
 
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
+		component.unmount()
+	})
+
+	test('Figure component focuses when clicked', () => {
+		const component = mount(
+			<Figure
+				element={{
+					id: 'mockKey',
+					content: {}
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				selected={false}
+			/>
+		)
+
+		component
+			.find('.figure-box')
+			.at(0)
+			.simulate('click')
+
+		expect(Transforms.setSelection).toHaveBeenCalled()
+
+		component.unmount()
 	})
 
 	test('changeProperties sets the nodes content', () => {
@@ -152,23 +247,28 @@ describe('Figure Editor Node', () => {
 		const newMockContent = { newMockContent: 999 }
 		const component = mount(
 			<Figure
-				node={{
+				element={{
 					key: 'mockKey',
-					data: {
-						get: () => mockContent
+					content: mockContent
+				}}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
 					}
 				}}
-				editor={mockEditor}
+				editor={{}}
+				selected={true}
 			/>
 		)
 
 		component.instance().changeProperties(newMockContent)
-		expect(mockEditor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
-			data: { content: newMockContent }
-		})
+		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
-	test('Figure component delete button calls editor.removeNodeByKey', () => {
+	test('Figure component delete button calls Transforms', () => {
 		const component = mount(
 			<Figure
 				node={{
@@ -176,15 +276,24 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				editor={mockEditor}
+				parent={{
+					getPath: () => ({
+						get: () => 0
+					}),
+					nodes: {
+						size: 2
+					}
+				}}
+				editor={{}}
+				element={{ content: {} }}
+				selected={true}
 			/>
 		)
 
 		const deleteButton = component.find('button').at(0)
 		expect(deleteButton.props().children).toBe('×')
 
-		expect(mockEditor.removeNodeByKey).not.toHaveBeenCalled()
 		deleteButton.simulate('click')
-		expect(mockEditor.removeNodeByKey).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 })

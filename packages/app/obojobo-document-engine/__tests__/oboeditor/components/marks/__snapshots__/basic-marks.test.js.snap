@@ -1,39 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BasicMarks renderMark diplays expected style 1`] = `
-<strong>
-  mockChild
-</strong>
+exports[`BasicMarks renderLeaf diplays expected style 1`] = `
+Object {
+  "children": <strong>
+    mockChild
+  </strong>,
+  "leaf": Object {
+    "b": true,
+  },
+}
 `;
 
-exports[`BasicMarks renderMark diplays expected style 2`] = `
-<em>
-  mockChild
-</em>
+exports[`BasicMarks renderLeaf diplays expected style 2`] = `
+Object {
+  "children": <em>
+    mockChild
+  </em>,
+  "leaf": Object {
+    "i": true,
+  },
+}
 `;
 
-exports[`BasicMarks renderMark diplays expected style 3`] = `
-<del>
-  mockChild
-</del>
+exports[`BasicMarks renderLeaf diplays expected style 3`] = `
+Object {
+  "children": <del>
+    mockChild
+  </del>,
+  "leaf": Object {
+    "del": true,
+  },
+}
 `;
 
-exports[`BasicMarks renderMark diplays expected style 4`] = `
-<q>
-  mockChild
-</q>
+exports[`BasicMarks renderLeaf diplays expected style 4`] = `
+Object {
+  "children": <q>
+    mockChild
+  </q>,
+  "leaf": Object {
+    "q": true,
+  },
+}
 `;
 
-exports[`BasicMarks renderMark diplays expected style 5`] = `
-<code>
-  mockChild
-</code>
+exports[`BasicMarks renderLeaf diplays expected style 5`] = `
+Object {
+  "children": <code>
+    mockChild
+  </code>,
+  "leaf": Object {
+    "monospace": true,
+  },
+}
 `;
 
-exports[`BasicMarks renderMark diplays expected style 6`] = `
-<span
-  className="latex-editor"
->
-  mockChild
-</span>
+exports[`BasicMarks renderLeaf diplays expected style 6`] = `
+Object {
+  "children": <div
+    className="latex-editor "
+    spellCheck={false}
+  >
+    mockChild
+  </div>,
+  "leaf": Object {
+    "_latex": true,
+  },
+}
+`;
+
+exports[`BasicMarks renderLeaf does nothing 1`] = `
+Object {
+  "children": "mockChild",
+  "leaf": Object {},
+}
 `;

@@ -1,4 +1,9 @@
 body {
+	*[data-hanging-indent='true'] {
+		text-indent: -2em;
+		padding-left: 2em;
+	}
+
 	*[data-indent='1'] {
 		margin-left: 2em;
 	}

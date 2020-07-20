@@ -65,6 +65,7 @@
 	z-index: 1;
 	// Nudge the text slightly left to line up:
 	margin-left: -3px;
+	word-break: break-word;
 }
 
 .default-bg .repository--title-banner--title {

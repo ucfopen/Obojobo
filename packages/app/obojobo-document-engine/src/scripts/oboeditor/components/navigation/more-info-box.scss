@@ -20,7 +20,7 @@
 		cursor: pointer;
 
 		svg {
-			opacity: 0.4;
+			opacity: 0.6;
 		}
 
 		&:hover {
@@ -46,6 +46,7 @@
 		z-index: $z-index-above-content;
 		box-shadow: $box-shadow-overlay;
 		width: 28em;
+		text-align: left;
 
 		&::before {
 			position: absolute;
@@ -116,16 +117,8 @@
 
 				.button {
 					padding: 0.2em 0.5em;
-					color: $color-action;
-					background-color: $color-bg;
-					border-color: $color-action;
 					border-width: 2px;
 					height: 2.5em;
-
-					&:hover {
-						color: $color-bg;
-						background-color: $color-action;
-					}
 				}
 
 				.xml-button {
@@ -155,18 +148,6 @@
 					.obojobo-draft--components--button {
 						margin-right: 0.5em;
 					}
-
-					.delete-page-button {
-						.button {
-							border-color: $color-dangerous;
-							color: $color-dangerous;
-
-							&:hover {
-								color: $color-bg;
-								background-color: $color-dangerous;
-							}
-						}
-					}
 				}
 			}
 		}
@@ -191,6 +172,10 @@
 
 	.box-controls {
 		text-align: center;
+
+		.error {
+			color: $color-error;
+		}
 	}
 
 	.select-item {

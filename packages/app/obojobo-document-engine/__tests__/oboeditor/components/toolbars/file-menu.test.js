@@ -3,20 +3,18 @@ import React from 'react'
 
 import FileMenu from '../../../../src/scripts/oboeditor/components/toolbars/file-menu'
 
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+import ModalUtil from '../../../../src/scripts/common/util/modal-util'
+jest.mock('../../../../src/scripts/common/util/modal-util')
 import APIUtil from 'src/scripts/viewer/util/api-util'
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
+jest.mock('../../../../src/scripts/viewer/util/api-util')
 import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
 jest.mock('../../../../src/scripts/oboeditor/util/clipboard-util')
-import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
-jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
 import EditorStore from '../../../../src/scripts/oboeditor/stores/editor-store'
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
 }))
-import download from 'downloadjs'
-jest.mock('downloadjs')
+import { downloadDocument } from '../../../../src/scripts/common/util/download-document'
+jest.mock('../../../../src/scripts/common/util/download-document')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -28,19 +26,12 @@ describe('File Menu', () => {
 	})
 
 	test('File Menu node', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
 		const component = shallow(<FileMenu draftId="mockDraft" />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FileMenu calls save', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
 		const model = {
 			flatJSON: () => ({ children: [] }),
 			children: [
@@ -65,15 +56,13 @@ describe('File Menu', () => {
 				onSave={APIUtil.postDraft}
 			/>
 		)
-		const tree = component.html()
 
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'ok'
 		})
 
 		component
-			.find('button')
-			.at(1)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
 			.simulate('click')
 
 		APIUtil.postDraft.mockResolvedValueOnce({
@@ -82,43 +71,29 @@ describe('File Menu', () => {
 		})
 
 		component
-			.find('button')
-			.at(1)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Save Module'))
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalledTimes(2)
 	})
 
 	test('FileMenu calls new', done => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
 		const component = mount(<FileMenu draftId="mockDraft" />)
-		const tree = component.html()
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'ok',
 			value: { id: 'mock-id' }
 		})
 
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
 		APIUtil.createNewDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { message: 'mock Error' }
 		})
 
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
+		component.findWhere(n => n.type() === 'button' && n.html().includes('New')).simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		setTimeout(() => {
 			component.update()
 			expect(APIUtil.createNewDraft).toHaveBeenCalledTimes(2)
@@ -129,170 +104,93 @@ describe('File Menu', () => {
 	})
 
 	test('FileMenu calls Copy', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
 		const model = {
 			title: 'mockTitle'
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
-			.find('button')
-			.at(3)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Make a copy...'))
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('FileMenu calls Download', done => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
+		// setup
 		const model = {
 			title: 'mockTitle'
 		}
 
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
-
 		APIUtil.getFullDraft.mockResolvedValueOnce('')
-
-		component
-			.find('button')
-			.at(5)
-			.simulate('click')
-
 		APIUtil.getFullDraft.mockResolvedValueOnce('{ "item": "value" }')
 
-		component
-			.find('button')
-			.at(6)
-			.simulate('click')
+		// render
+		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
 
-		expect(tree).toMatchSnapshot()
+		// get references to buttons
+		const downloadXmlButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('XML Document (.xml)')
+		)
+		const downloadJSONButton = component.findWhere(
+			n => n.type() === 'button' && n.html().includes('JSON Document (.json)')
+		)
+
+		// click
+		downloadJSONButton.simulate('click')
+		downloadXmlButton.simulate('click')
 
 		setTimeout(() => {
 			component.update()
-			expect(APIUtil.getFullDraft).toHaveBeenCalled()
-			expect(download).toHaveBeenCalled()
+			expect(downloadDocument.mock.calls).toMatchInlineSnapshot(`
+			Array [
+			  Array [
+			    "mockDraft",
+			    "json",
+			  ],
+			  Array [
+			    "mockDraft",
+			    "xml",
+			  ],
+			]
+		`)
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test('FileMenu calls Rename', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
-		const model = {
-			title: 'mockTitle'
-		}
-
-		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(7)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(ModalUtil.show).toHaveBeenCalled()
-	})
-
 	test('FileMenu calls Delete', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
 		const model = {
 			title: 'mockTitle'
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
-			.find('button')
-			.at(8)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Delete Module...'))
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('FileMenu calls Copy LTI Link', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
 		const model = {
 			title: 'mockTitle'
 		}
 
 		const component = mount(<FileMenu draftId="mockDraft" model={model} />)
-		const tree = component.html()
 
 		component
-			.find('button')
-			.at(9)
+			.findWhere(n => n.type() === 'button' && n.html().includes('Copy LTI Link'))
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 
-	test('renameModule renames with blank name', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
-		const component = mount(<FileMenu draftId="mockDraft" onRename={jest.fn()} />)
-
-		component.instance().renameModule('mockId', '      ')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-	})
-
-	test('renameModule renames with new name', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
-		const component = mount(<FileMenu draftId="mockDraft" />)
-
-		component.instance().renameModule('mockId', 'mock title')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-	})
-
-	test('renameAndSaveModule renames and saves draft', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-		const onSave = jest.fn()
-
-		const component = mount(<FileMenu draftId="mockDraft" onSave={onSave} />)
-
-		component.instance().renameAndSaveModule('mockId', 'mock title')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-		expect(onSave).toHaveBeenCalled()
-	})
-
-	test('copyModule creates a copy of the current draft', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
+	test('copyModule calls copyDraft api', () => {
+		expect.hasAssertions()
 		const model = {
 			flatJSON: () => ({ children: [] }),
 			children: [
@@ -310,34 +208,91 @@ describe('File Menu', () => {
 		const exportToJSON = jest.fn()
 
 		const component = mount(
-			<FileMenu draftId="mockDraft" model={model} exportToJSON={exportToJSON} onSave={jest.fn()} />
+			<FileMenu
+				draftId="mockDraftId"
+				model={model}
+				exportToJSON={exportToJSON}
+				onSave={jest.fn()}
+			/>
 		)
 
-		APIUtil.createNewDraft.mockResolvedValueOnce({
-			value: { id: 'mockId' }
-		})
-		APIUtil.postDraft.mockResolvedValueOnce({
-			status: 'ok'
+		APIUtil.copyDraft.mockResolvedValueOnce({
+			status: 'ok',
+			value: {
+				draftId: 'new-copy-draft-id'
+			}
 		})
 
-		component.instance().copyModule('mockId', 'mock title - copy')
-
-		expect(APIUtil.createNewDraft).toHaveBeenCalled()
+		return component
+			.instance()
+			.copyModule('new title')
+			.then(() => {
+				expect(APIUtil.copyDraft).toHaveBeenCalledWith('mockDraftId', 'new title')
+			})
 	})
 
-	test('deleteModule removes draft', () => {
-		APIUtil.getAllDrafts.mockResolvedValueOnce({
-			value: [{ draftId: 'mockDraft' }, { draftId: 'otherDraft' }]
-		})
-
+	test('deleteModule calls deleteDraft api', () => {
+		expect.hasAssertions()
+		// make sure window.close doesn't break further tests
+		jest.spyOn(window, 'close').mockReturnValueOnce()
 		const component = mount(<FileMenu draftId="mockDraft" />)
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'ok' })
 		component.instance().deleteModule('mockId', '      ')
 
 		APIUtil.deleteDraft.mockResolvedValueOnce({ status: 'error' })
-		component.instance().deleteModule('mockId', '      ')
+		return component
+			.instance()
+			.deleteModule('mockId', '      ')
+			.then(() => {
+				expect(APIUtil.deleteDraft).toHaveBeenCalled()
+			})
+	})
 
-		expect(APIUtil.deleteDraft).toHaveBeenCalled()
+	test('FileMenu - processFileContent', () => {
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok', value: { id: 'mockId' } })
+
+		const reload = jest.fn()
+		const component = mount(<FileMenu draftId="mockDraft" reload={reload} />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
+			.simulate('click')
+
+		const mockId = 'mockId'
+		const content = 'mockContent'
+
+		component.instance().processFileContent(mockId, content, 'application/json')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'application/json')
+
+		component.instance().processFileContent(mockId, content, 'text')
+		expect(APIUtil.postDraft).toHaveBeenCalledWith(mockId, content, 'text/plain')
+	})
+
+	test('FileMenu calls Import', () => {
+		const component = mount(<FileMenu draftId="mockDraft" />)
+
+		component
+			.findWhere(n => n.type() === 'button' && n.html().includes('Import from file...'))
+			.simulate('click')
+		expect(ModalUtil.show).toHaveBeenCalled()
+
+		component.instance().buildFileSelector()
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('FileMenu calls onFileChange', () => {
+		const fileReaderReadAsText = jest.spyOn(FileReader.prototype, 'readAsText')
+		fileReaderReadAsText.mockReturnValueOnce()
+		const file = new Blob(['fileContents'], { type: 'text/plain' })
+		const component = mount(<FileMenu draftId="mockDraft" reload={jest.fn} />)
+		const processFileContent = jest.spyOn(component.instance(), 'processFileContent')
+		processFileContent.mockReturnValueOnce()
+
+		const fileReader = component.instance().onFileChange({ target: { files: [file] } })
+
+		expect(fileReaderReadAsText).toHaveBeenCalledWith(file, 'UTF-8')
+		fileReader.onload({ target: { result: 'mock-content' } })
+		expect(processFileContent).toHaveBeenCalledWith('mockDraft', 'mock-content', 'text/plain')
 	})
 })

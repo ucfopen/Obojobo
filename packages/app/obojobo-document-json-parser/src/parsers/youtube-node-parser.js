@@ -1,19 +1,18 @@
 const xmlEncode = require('../xml-encode')
+const processAttrs = require('../process-attrs')
 const processTriggers = require('../process-triggers')
 
 const youTubeNodeParser = node => {
-	const content = node.content
 	const id = node.id ? ` id="${node.id}"` : ''
-	const startTime = content.startTime ? `startTime="${content.startTime}"` : ''
-	const endTime = content.endTime ? `endTime="${content.endTime}"` : ''
 	const videoId = xmlEncode(node.content.videoId)
+	const attrs = processAttrs(node.content, ['triggers'])
 	const triggersXML = processTriggers(node.content.triggers)
 
 	if (triggersXML) {
-		return `<YouTube videoId="${videoId}"${id} ${startTime} ${endTime}>${triggersXML}</YouTube>`
+		return `<YouTube${attrs} videoId="${videoId}"${id}>${triggersXML}</YouTube>`
 	}
 
-	return `<YouTube videoId="${videoId}"${id} ${startTime} ${endTime}/>`
+	return `<YouTube${attrs} videoId="${videoId}"${id}/>`
 }
 
 module.exports = youTubeNodeParser

@@ -1,14 +1,15 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.ActionButton",
-	"data":{
-		"content": {
-			"triggers": [
-				{
-					"type": "onClick",
-					"actions": []
-				}
-			]
-		}
-	}
+	"content": {
+		"triggers": [
+			{
+				"type": "onClick",
+				"actions": []
+			}
+		],
+		"align": "center"
+	},
+	"children": [
+		{ "text": "" }
+	]
 }

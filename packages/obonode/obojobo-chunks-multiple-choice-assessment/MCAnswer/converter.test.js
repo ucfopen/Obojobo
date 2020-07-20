@@ -28,15 +28,13 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 describe('MCAnswer Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
+			content: {},
+			children: [
 				{
 					type: 'oboeditor.component',
-					nodes: [
+					children: [
 						{
 							type: 'mockNode'
 						}

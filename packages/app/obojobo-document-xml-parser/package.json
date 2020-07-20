@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "minimist": "^1.2.0",
-    "obojobo-lib-utils": "^7.1.2",
+    "minimist": "^1.2.5",
+    "obojobo-lib-utils": "^9.1.1",
     "xml-js": "^1.0.2"
   },
   "devDependencies": {
-    "lint-staged": "^9.4.1"
+    "lint-staged": "^10.2.6"
   },
   "name": "obojobo-document-xml-parser",
-  "version": "7.1.2",
+  "version": "9.1.1",
   "license": "AGPL-3.0-only",
   "main": "xml2draft.js",
   "scripts": {
@@ -23,8 +23,7 @@
   },
   "lint-staged": {
     "**/*.{js,scss}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "jest": {
@@ -37,7 +36,6 @@
       "src/draft-json-transform.js",
       "src/extension-transform.js",
       "src/generate-id.js",
-      "src/text-group-parser.js",
       "src/html-transform.js",
       "src/list-styles-parser.js",
       "src/triggers-parser.js",

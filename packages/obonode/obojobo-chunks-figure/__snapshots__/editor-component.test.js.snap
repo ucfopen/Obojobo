@@ -1,19 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Figure Editor Node Figure component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--figure viewer small  is-not-selected"
   >
-    <div
+    <figure
       className="container"
+      style={Object {}}
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
+        onClick={[Function]}
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -22,6 +21,8 @@ exports[`Figure Editor Node Figure component 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -36,6 +37,8 @@ exports[`Figure Editor Node Figure component 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -52,32 +55,35 @@ exports[`Figure Editor Node Figure component 1`] = `
           unselectable="on"
         />
       </div>
-      <figcaption />
-    </div>
+      <figcaption
+        className="align-center"
+      />
+    </figure>
   </div>
 </div>
 `;
 
-exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div class=\\"container\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
-
-exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div class=\\"container\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
-
-exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div class=\\"container\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
+exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><figure class=\\"container\\"><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center\\"></figcaption></figure></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
   >
-    <div
+    <figure
       className="container"
+      style={
+        Object {
+          "height": "customHeightpx",
+          "maxWidth": "100%",
+          "width": "customWidthpx",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
+        onClick={[Function]}
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -86,6 +92,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -100,6 +108,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -121,26 +131,32 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
           unselectable="on"
         />
       </div>
-      <figcaption />
-    </div>
+      <figcaption
+        className="align-center"
+      />
+    </figure>
   </div>
 </div>
 `;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
   >
-    <div
+    <figure
       className="container"
+      style={
+        Object {
+          "height": "customHeightpx",
+          "maxWidth": "100%",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
+        onClick={[Function]}
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -149,6 +165,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -163,6 +181,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -183,26 +203,32 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
           unselectable="on"
         />
       </div>
-      <figcaption />
-    </div>
+      <figcaption
+        className="align-center"
+      />
+    </figure>
   </div>
 </div>
 `;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="obojobo-draft--chunks--figure viewer custom  is-not-selected"
   >
-    <div
+    <figure
       className="container"
+      style={
+        Object {
+          "maxWidth": "100%",
+          "width": "customWidthpx",
+        }
+      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
+        onClick={[Function]}
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -211,6 +237,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex="-1"
           >
             ×
           </button>
@@ -225,6 +253,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
               className="button"
               contentEditable={false}
               onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
             >
               Image Properties
             </button>
@@ -239,14 +269,16 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
           src="mockUrl"
           style={
             Object {
-              "width": "mockWidthpx",
+              "width": "customWidthpx",
             }
           }
           unselectable="on"
         />
       </div>
-      <figcaption />
-    </div>
+      <figcaption
+        className="align-center"
+      />
+    </figure>
   </div>
 </div>
 `;

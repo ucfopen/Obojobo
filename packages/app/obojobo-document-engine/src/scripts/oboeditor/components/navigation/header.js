@@ -13,20 +13,32 @@ class Header extends React.Component {
 		this.saveContent = this.saveContent.bind(this)
 	}
 
-	renamePage(pageId, label) {
-		// Fix page titles that are whitespace strings
-		if (!/[^\s]/.test(label)) label = null
+	renamePage(pageId, oldTitle, newTitle) {
+		// eslint-disable-next-line no-undefined
+		if (newTitle !== undefined && newTitle !== null) {
+			newTitle = String(newTitle).trim()
+		} else {
+			newTitle = ''
+		}
 
-		EditorUtil.renamePage(pageId, label)
-		return label
+		if (newTitle !== oldTitle && newTitle !== '') {
+			EditorUtil.renamePage(pageId, newTitle)
+		}
+
+		return newTitle
 	}
 
 	renderLabel(label) {
-		return <span>{label}</span>
+		return <span>{label || '\u00A0'}</span>
 	}
 
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
+
+		if (!newId) {
+			return 'Please enter an id'
+		}
+
 		// prettier-ignore
 		if (!model.setId(newId)) {
 			return 'The id "' + newId + '" already exists. Please choose a unique id'
@@ -39,10 +51,12 @@ class Header extends React.Component {
 		const item = this.props.list[this.props.index]
 		const model = OboModel.models[item.id]
 
-		model.set({ content: newContent })
-		model.triggers = newContent.triggers ? newContent.triggers : []
-		model.title =
-			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
+		if (newContent.title === '') return 'Module title must not be empty!'
+		model.triggers = newContent.triggers || []
+
+		model.set({ content: newContent }) // may cause store update?
+		EditorUtil.setStartPage(newContent.start)
 	}
 
 	render() {
@@ -54,7 +68,9 @@ class Header extends React.Component {
 			{
 				name: 'title',
 				description: 'Title',
-				type: 'input'
+				placeholder: 'Module Title',
+				type: 'input',
+				required: true
 			},
 			{
 				name: 'start',

@@ -6,8 +6,8 @@ import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatch
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import Dialog from 'obojobo-document-engine/src/scripts/common/components/modal/dialog'
 import React from 'react'
-import _ from 'underscore'
 import renderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
@@ -17,6 +17,8 @@ jest.mock('./components/post-test')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/common/components/modal/dialog')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer')
@@ -58,10 +60,6 @@ const assessmentJSON = {
 }
 
 describe('Assessment', () => {
-	beforeAll(() => {
-		_.shuffle = a => a
-	})
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
@@ -190,7 +188,76 @@ describe('Assessment', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:scrollToTop')
 	})
 
-	test('componentWillUnmount calls dispatcher and NavUtil', () => {
+	test('compontent listens to events and sets assessment context when mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		// establish a baseline
+		expect(NavUtil.setContext).not.toHaveBeenCalled()
+		expect(Dispatcher.on).not.toHaveBeenCalled()
+
+		// mount!
+		mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// make sure we're currently listening
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenLastCalledWith('assessment:mockAssessmentId:mockAttemptId')
+	})
+
+	test('compontent listens to events and sets assessment context when RE-mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		// establish a baseline
+		expect(NavUtil.setContext).not.toHaveBeenCalled()
+		expect(Dispatcher.on).not.toHaveBeenCalled()
+
+		// mount!
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// unmount
+		component.unmount()
+
+		// clear all the mocks
+		Dispatcher.on.mockClear()
+		Dispatcher.off.mockClear()
+		NavUtil.setContext.mockClear()
+
+		// RE-mount
+		component.mount()
+
+		// make sure we're currently listening again
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenLastCalledWith('assessment:mockAssessmentId:mockAttemptId')
+	})
+
+	test('unmounting calls dispatcher.off and resets NavUtil context', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -205,6 +272,34 @@ describe('Assessment', () => {
 		expect(NavUtil.resetContext).toHaveBeenCalled()
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+	})
+
+	test('compontent listens to events when mounted', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		// make sure we're currently listening!
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		// make sure setContext is called to notify we're in assessment!
+		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)
+		expect(NavUtil.setContext).toHaveBeenCalledWith('assessment:mockAssessmentId:mockAttemptId')
+
+		// unmount to verify
+		component.unmount()
 	})
 
 	test('onEndAttempt alters the state', () => {
@@ -347,7 +442,7 @@ describe('Assessment', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('onClickSubmit calls endAttempt', () => {
+	test('onClickSubmit displays the last attempt Modal for the last submission', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -358,17 +453,81 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
+		// Last attempt
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(1)
 		// mock for render
 		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
-		// Attempt is complete
+		// Attempt is completed
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
 		component.instance().onClickSubmit()
 
-		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
-		expect(ModalUtil.show).not.toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalledWith(
+			<Dialog
+				width="32rem"
+				title="This is your last attempt"
+				buttons={[
+					{
+						value: 'Cancel',
+						altAction: true,
+						default: true,
+						onClick: ModalUtil.hide
+					},
+					{
+						value: 'OK - Submit Last Attempt',
+						onClick: component.instance().endAttempt
+					}
+				]}
+			>
+				<p>{"You won't be able to submit another attempt after this one."}</p>
+			</Dialog>
+		)
+	})
+
+	test('onClickSubmit() displays the confirm modal when submitting an assessment', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// 3 attempts remain
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(3)
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+		// Attempt is completed
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().onClickSubmit()
+
+		expect(ModalUtil.show).toHaveBeenCalledWith(
+			<Dialog
+				width="32rem"
+				title="Just to confirm..."
+				buttons={[
+					{
+						value: 'Cancel',
+						altAction: true,
+						default: true,
+						onClick: ModalUtil.hide
+					},
+					{
+						value: 'OK - Submit',
+						onClick: component.instance().endAttempt
+					}
+				]}
+			>
+				<p>Are you ready to submit?</p>
+			</Dialog>
+		)
 	})
 
 	test('endAttempt calls AssessmentUtil', () => {

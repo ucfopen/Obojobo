@@ -3,8 +3,11 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const domParser = new DOMParser()
+const serial = new XMLSerializer()
 
 const XML_MODE = 'xml'
+const XML_MIME = 'application/xml'
+const MODULE_NODE_NAME = 'ObojoboDraft.Modules.Module'
 
 const getFlatList = function(item) {
 	let list = []
@@ -26,6 +29,14 @@ const getFlatList = function(item) {
 }
 
 const EditorUtil = {
+	renameModule(moduleId, newName) {
+		return Dispatcher.trigger('editor:renameModule', {
+			value: {
+				moduleId,
+				name: newName
+			}
+		})
+	},
 	rebuildMenu(model) {
 		return Dispatcher.trigger('editor:rebuildMenu', {
 			value: {
@@ -135,10 +146,10 @@ const EditorUtil = {
 	},
 	getTitleFromXML(draftModel) {
 		try {
-			const doc = domParser.parseFromString(draftModel, 'application/xml')
+			const doc = domParser.parseFromString(draftModel, XML_MIME)
 			let els = doc.getElementsByTagName('Module')
 			if (els.length === 0) {
-				els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+				els = doc.getElementsByTagName(MODULE_NODE_NAME)
 			}
 			if (els.length > 0) {
 				const el = els[0]
@@ -146,23 +157,23 @@ const EditorUtil = {
 				if (!this.isEmptyString(title)) return title
 			}
 
-			return '(Unnamed Module)'
+			return ''
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
+			return ''
 		}
 	},
 	getTitleFromJSON(draftModel) {
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
+			if (!json.content || this.isEmptyString(json.content.title)) return ''
 
 			return json.content.title
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
+			return ''
 		}
 	},
 	isEmptyString(string) {
@@ -172,9 +183,27 @@ const EditorUtil = {
 		switch (mode) {
 			case XML_MODE:
 				return this.getTitleFromXML(draftModel)
+
 			default:
 				return this.getTitleFromJSON(draftModel)
 		}
+	},
+	setModuleTitleInJSON(code, title) {
+		const json = JSON.parse(code)
+		json.content.title = title
+		return JSON.stringify(json, null, 4)
+	},
+	setModuleTitleInXML(code, title) {
+		const doc = domParser.parseFromString(code, XML_MIME)
+		let els = doc.getElementsByTagName('Module')
+		if (els.length === 0) {
+			els = doc.getElementsByTagName(MODULE_NODE_NAME)
+		}
+		if (els.length > 0) {
+			const el = els[0]
+			el.setAttribute('title', title)
+		}
+		return serial.serializeToString(doc)
 	}
 }
 

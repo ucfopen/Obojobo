@@ -7,7 +7,9 @@ const DraftsMetadata = require('../models/drafts_metadata')
 const {
 	requireCanPreviewDrafts,
 	requireCurrentUser,
-	requireCurrentDocument
+	requireCurrentDocument,
+	checkValidationRules,
+	check
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
@@ -42,6 +44,50 @@ router
 	})
 
 router
+	.route('/drafts/:draftId/revisions')
+	.get([
+		requireCurrentUser,
+		requireCanPreviewDrafts,
+		check('after')
+			.isUUID()
+			.optional(),
+		checkValidationRules
+	])
+	.get(async (req, res) => {
+		try {
+			const { revisions, hasMoreResults } = await DraftSummary.fetchAllDraftRevisions(
+				req.params.draftId,
+				req.query.after
+			)
+			if (hasMoreResults) {
+				const lastRevision = revisions[revisions.length - 1]
+				const baseUrl = `${req.protocol}://${req.get('host')}`
+				const pathUrl = req.originalUrl.split('?').shift()
+				res.links({
+					next: `${baseUrl}${pathUrl}?after=${lastRevision.revisionId}`
+				})
+			}
+			return res.success(revisions)
+		} catch (error) {
+			res.unexpected(error)
+		}
+	})
+
+router
+	.route('/drafts/:draftId/revisions/:revisionId')
+	.get([
+		requireCurrentUser,
+		requireCanPreviewDrafts,
+		check('revisionId').isUUID(),
+		checkValidationRules
+	])
+	.get((req, res) => {
+		return DraftSummary.fetchDraftRevisionById(req.params.draftId, req.params.revisionId)
+			.then(res.success)
+			.catch(res.unexpected)
+	})
+
+router
 	.route('/users/search')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get(async (req, res) => {
@@ -50,10 +96,10 @@ router
 			res.success([])
 			return
 		}
-
 		try {
 			const users = await searchForUserByString(req.query.q)
-			res.success(users)
+			const filteredUsers = users.map(u => u.toJSON())
+			res.success(filteredUsers)
 		} catch (error) {
 			res.unexpected(error)
 		}
@@ -76,7 +122,10 @@ router
 			}
 
 			const oldDraft = await Draft.fetchById(draftId)
-			const newDraft = await Draft.createWithContent(userId, oldDraft.root.toObject())
+			const draftObject = oldDraft.root.toObject()
+			const newTitle = req.body.title ? req.body.title : draftObject.content.title + ' Copy'
+			draftObject.content.title = newTitle
+			const newDraft = await Draft.createWithContent(userId, draftObject)
 
 			const draftMetadata = new DraftsMetadata({
 				draft_id: newDraft.id,
@@ -101,7 +150,7 @@ router
 				})
 			])
 
-			res.success()
+			res.success({ draftId: newDraft.id })
 		} catch (e) {
 			res.unexpected(e)
 		}

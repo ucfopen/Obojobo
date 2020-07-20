@@ -5,11 +5,12 @@ const processTriggers = require('../process-triggers')
 const listNodeParser = node => {
 	const id = node.id ? ` id="${node.id}"` : ''
 
+	const attrs = processAttrs(node.content, ['triggers', 'textGroup', 'listStyles'])
 	const listStyles = listStylesParser(node.content.listStyles)
 	const textGroupXML = textGroupParser(node.content.textGroup)
 	const triggersXML = processTriggers(node.content.triggers)
 
-	return `<List${id}>` + listStyles + textGroupXML + triggersXML + `</List>`
+	return `<List${attrs}${id}>` + listStyles + textGroupXML + triggersXML + `</List>`
 }
 
 const listStylesParser = listStyles => {

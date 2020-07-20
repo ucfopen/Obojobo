@@ -97,29 +97,18 @@ describe('editor route', () => {
 			})
 	})
 
-	test('get classic editor rejects users without canViewEditor permission', () => {
+	test('get visual editor handles readOnly setting', () => {
 		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
 		mockCurrentUser.isGuest = () => false
-		return request(app)
-			.get('/classic/draft/mockId')
-			.then(response => {
-				expect(response.statusCode).toBe(401)
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.text).toBe('Not Authorized')
-			})
-	})
 
-	test('get classic editor rejects without canViewEditor access', () => {
-		expect.hasAssertions()
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
-		mockCurrentUser.isGuest = () => false
 		return request(app)
-			.get('/classic/draft/mockId')
+			.get('/visual/draft/mockId')
+			.query({ read_only: '1' })
 			.then(response => {
-				expect(response.statusCode).toBe(401)
+				expect(response.statusCode).toBe(200)
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.text).toBe('Not Authorized')
+				expect(response.text).toContain('"readOnly":true')
 			})
 	})
 })

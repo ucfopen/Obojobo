@@ -1,31 +1,31 @@
-import { getEventTransfer } from 'slate-react'
-import { Document, Block } from 'slate'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import { Transforms } from 'slate'
+
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const ClipboardPlugin = {
-	onPaste(event, editor, next) {
-		const transfer = getEventTransfer(event)
+	insertData(data, editor, next) {
+		// Insert Slate fragments normally
+		if (data.types.includes('application/x-slate-fragment')) return next(data)
 
-		// Pasting in OboEditor nodes
-		if (transfer.type === 'fragment') {
-			const nodes = []
-			transfer.fragment.nodes.forEach(node => {
-				const item = Common.Registry.getItemForType(node.type)
-				const pastableNode = item.getPasteNode(node)
+		// By default, plain text will be inserted as a Text node
+		// The first and last text leaves may be split out into the node that is being
+		// pasted into - this is consistant with similar editors like Google Docs and Word
+		const plainText = data.getData('text/plain')
+		const fragment = [
+			{
+				type: TEXT_NODE,
+				content: {},
+				children: plainText.split('\n').map(text => ({
+					type: TEXT_NODE,
+					subtype: TEXT_LINE_NODE,
+					content: { align: 'left', indent: 0 },
+					children: [{ text }]
+				}))
+			}
+		]
 
-				if (pastableNode instanceof Block) {
-					nodes.push(pastableNode)
-				} else {
-					pastableNode.forEach(node => nodes.push(node))
-				}
-			})
-
-			return editor.insertFragment(
-				Document.create({ object: 'document', nodes: nodes.map(node => node.toJSON()) })
-			)
-		}
-
-		return next()
+		Transforms.insertFragment(editor, fragment)
 	}
 }
 

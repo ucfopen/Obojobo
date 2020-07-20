@@ -2,9 +2,11 @@
 
 .image-properties {
 	text-align: left;
+	display: flex;
 	width: 22em;
 
-	> label {
+	label {
+		margin-top: 0.7rem;
 		margin-bottom: 0.3em;
 	}
 
@@ -47,67 +49,31 @@
 		}
 	}
 
-	.upload {
-		// same as button component styles
-		$color-button-bg: lighten($color-action, 9%);
-
-		user-select: none;
-		cursor: pointer;
-		font-family: $font-default;
-		font-size: 0.85em;
-		position: relative;
-		min-width: 3.25em;
-		border-radius: 0.2em;
-		padding: 0.6rem 1em;
-		background-color: $color-button-bg;
-		color: $color-bg;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid darken($color-action, 20%);
-
-		&:hover {
-			background-color: $color-action;
-		}
-	}
-
-	#obojobo-draft--chunks--figure--alt {
-		margin-bottom: 1em;
-	}
-
-	#obojobo-draft--chunks--figure--image-file-input {
-		display: none;
-	}
-
 	.flex-container {
 		display: flex;
 		align-items: center;
-		margin-bottom: 1em;
+		padding: 1rem 0;
+		background-color: $color-bg2;
 
 		&.image-container {
 			justify-content: center;
 			flex-direction: column;
-			max-width: 100%;
 
-			.obojobo-draft--chunks--figure--image {
-				border: 1px solid $color-transparent;
+			button {
+				font-size: 0.8rem;
+				padding: 0.5rem;
+				margin-top: 1rem;
+			}
 
-				&.is-loaded {
-					border: 1px solid $color-shadow;
-				}
+			img {
+				max-width: 20rem;
+				object-fit: cover;
 			}
 		}
 	}
 
-	.figure--url--or {
-		padding: 0 1em;
-	}
-
-	.figure--url--upload {
-		max-width: 40%;
-	}
-
 	.image-preview {
 		font-size: 0.8em;
-		margin-top: 0.2em;
 
 		&.image-preview-placeholder {
 			height: 100px; /* stylelint-disable-line unit-blacklist */
@@ -115,7 +81,7 @@
 			line-height: 100px; /* stylelint-disable-line unit-blacklist */
 			text-align: center;
 			box-sizing: border-box;
-			background: $color-bg2;
+			background: darken($color-bg2, 10%);
 			color: $color-text-minor;
 		}
 	}

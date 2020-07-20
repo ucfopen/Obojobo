@@ -21,14 +21,15 @@ describe('Drop Down Menu', () => {
 			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: true },
 			{ name: 'Show Placeholders', type: 'toggle-action', action: jest.fn(), value: false }
 		]
-		const component = shallow(<DropDownMenu name="MockMenu" menu={menu} />)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('DropDownMenu node with sub-menu', () => {
+		navigator.__defineGetter__('platform', () => 'Mock Mac')
 		const menu = [
-			{ name: 'Undo', type: 'action', action: jest.fn() },
+			{ name: 'Undo', type: 'action', action: jest.fn(), shortcutMac: 'mock shortcut' },
 			{
 				name: 'subMenu',
 				type: 'sub-menu',

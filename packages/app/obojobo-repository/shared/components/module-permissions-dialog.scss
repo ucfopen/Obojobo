@@ -30,12 +30,15 @@
 			font-weight: bold;
 			color: black;
 			margin: 0;
-			max-width: 50%;
+			max-width: calc(100% - 8.5em);
 			vertical-align: middle;
 			position: absolute;
 			left: 4.5em;
 			top: 50%;
 			transform: translate(0, -50%);
+			max-height: 1.2em;
+			overflow: hidden;
+			word-break: break-word;
 		}
 
 		.close-button {
@@ -91,6 +94,11 @@
 				margin-bottom: 1em;
 			}
 		}
+	}
+
+	.delete-button,
+	.delete-label {
+		margin-top: 1em;
 	}
 
 	.buttons-with-labels {

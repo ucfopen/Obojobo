@@ -34,8 +34,7 @@ const validateArguments = (
 				if (params.actor.type !== actorType) invalidActor.push(actorType)
 			}
 		}
-
-		if (!params.hasOwnProperty(key)) {
+		if (!Object.prototype.hasOwnProperty.call(params, key)) {
 			missingRequired.push(key)
 		}
 	})

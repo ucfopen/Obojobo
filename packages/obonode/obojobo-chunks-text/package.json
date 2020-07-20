@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-text",
-	"version": "7.1.2",
+	"version": "9.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Text content chunk for Obojobo",
 	"scripts": {
@@ -17,8 +17,7 @@
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"prettier": {
@@ -28,10 +27,10 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^7.1.2"
+		"obojobo-lib-utils": "^9.1.1"
 	},
 	"devDependencies": {
-		"lint-staged": "^9.4.1"
+		"lint-staged": "^10.2.6"
 	},
 	"jest": {
 		"testMatch": [

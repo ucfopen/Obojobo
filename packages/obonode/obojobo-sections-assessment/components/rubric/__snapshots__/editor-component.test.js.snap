@@ -3,6 +3,7 @@
 exports[`Rubric editor Rubric renders 1`] = `
 <div
   className="rubric pad is-type-undefined"
+  contentEditable={false}
 >
   <h2
     contentEditable={false}
@@ -61,8 +62,10 @@ exports[`Rubric editor Rubric renders 1`] = `
         <input
           max="100"
           min="0"
+          onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           type="number"
         />
         %
@@ -98,8 +101,10 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           type="number"
         />
         %
@@ -140,8 +145,10 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           type="number"
         />
         %
@@ -187,8 +194,10 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           type="number"
         />
         %
@@ -291,5 +300,8 @@ exports[`Rubric editor Rubric renders 1`] = `
       </li>
     </ul>
   </div>
+  <span
+    className="invisibleText"
+  />
 </div>
 `;

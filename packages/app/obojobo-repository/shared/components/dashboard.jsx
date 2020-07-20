@@ -2,55 +2,79 @@ require('./modal.scss')
 require('./dashboard.scss')
 
 const React = require('react')
+const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 
-ReactModal.setAppElement('#dashboard-root')
+const renderOptionsDialog = props => (
+	<ModuleOptionsDialog
+		title=""
+		{...props.selectedModule}
+		showModulePermissions={props.showModulePermissions}
+		deleteModule={props.deleteModule}
+		onClose={props.closeModal}
+		showVersionHistory={props.showVersionHistory}
+	/>
+)
+
+const renderPermissionsDialog = props => (
+	<ModulePermissionsDialog
+		title=""
+		{...props.selectedModule}
+		searchState={props.searchPeople}
+		loadUsersForModule={props.loadUsersForModule}
+		onClose={props.closeModal}
+		addUserToModule={props.addUserToModule}
+		draftPermissions={props.draftPermissions}
+		deleteModulePermissions={props.deleteModulePermissions}
+		currentUserId={props.currentUser.id}
+	/>
+)
+
+const renderVersionHistoryDialog = props => (
+	<VersionHistoryDialog
+		{...props.selectedModule}
+		title={`${props.selectedModule.title} - Version History`}
+		onClose={props.closeModal}
+		isHistoryLoading={props.versionHistory.isFetching}
+		hasHistoryLoaded={props.versionHistory.hasFetched}
+		versionHistory={props.versionHistory.items}
+		restoreVersion={props.restoreVersion}
+	/>
+)
 
 const renderModalDialog = props => {
-	let child
+	let dialog
 	let title
 	switch (props.dialog) {
 		case 'module-more':
 			title = 'Module Options'
-			child = (
-				<ModuleOptionsDialog
-					title=""
-					{...props.selectedModule}
-					showModulePermissions={props.showModulePermissions}
-					deleteModule={props.deleteModule}
-					onClose={props.closeModal}
-				/>
-			)
+			dialog = renderOptionsDialog(props)
 			break
 
 		case 'module-permissions':
 			title = 'Module Access'
-			child = (
-				<ModulePermissionsDialog
-					title=""
-					{...props.selectedModule}
-					searchState={props.searchPeople}
-					loadUsersForModule={props.loadUsersForModule}
-					onClose={props.closeModal}
-					addUserToModule={props.addUserToModule}
-					draftPermissions={props.draftPermissions}
-					deleteModulePermissions={props.deleteModulePermissions}
-					currentUserId={props.currentUser.id}
-				/>
-			)
+			dialog = renderPermissionsDialog(props)
+			break
+
+		case 'module-version-history':
+			title = 'Module Version History'
+			dialog = renderVersionHistoryDialog(props)
 			break
 
 		default:
 			return null
 	}
+
+	ReactModal.setAppElement('#dashboard-root')
 
 	return (
 		<ReactModal
@@ -60,16 +84,47 @@ const renderModalDialog = props => {
 			overlayClassName="repository--modal-overlay"
 			onRequestClose={props.closeModal}
 		>
-			{child}
+			{dialog}
 		</ReactModal>
 	)
 }
 
-const renderModules = modules => {
-	return modules.map(draft => <Module key={draft.draftId} hasMenu={true} {...draft}></Module>)
+const getSortMethod = sortOrder => {
+	let sortFn
+	switch (sortOrder) {
+		case 'alphabetical':
+			sortFn = (a, b) => a.title.localeCompare(b.title)
+			break
+
+		case 'newest':
+			sortFn = (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+			break
+
+		case 'last updated':
+			sortFn = (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+			break
+	}
+
+	return sortFn
+}
+
+const renderModules = (modules, sortOrder) => {
+	const sortFn = getSortMethod(sortOrder)
+	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
 }
 
 const Dashboard = props => {
+	const [sortOrder, setSortOrder] = useState(props.sortOrder)
+
+	// Set a cookie when sortOrder changes on the client
+	if (typeof document !== 'undefined') {
+		useEffect(() => {
+			const expires = new Date()
+			expires.setFullYear(expires.getFullYear() + 1)
+			document.cookie = `sortOrder=${sortOrder}; expires=${expires.toUTCString()}; path=/dashboard`
+		}, [sortOrder])
+	}
+
 	return (
 		<span id="dashboard-root">
 			<RepositoryNav
@@ -83,20 +138,9 @@ const Dashboard = props => {
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="New Module">
-							<Button
-								onClick={() => {
-									props.createNewModule(false)
-								}}
-							>
-								New Module
-							</Button>
-							<Button
-								onClick={() => {
-									props.createNewModule(true)
-								}}
-							>
-								New Tutorial
-							</Button>
+							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
+							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
+							<Button onClick={props.importModuleFile}>Upload...</Button>
 						</MultiButton>
 						<Search
 							value={props.moduleSearchString}
@@ -106,19 +150,30 @@ const Dashboard = props => {
 					</div>
 					<div className="repository--main-content--title">
 						<span>My Modules</span>
+						<div className="repository--main-content--sort">
+							<span>Sort</span>
+							<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
+								<option value="newest">Newest</option>
+								<option value="alphabetical">Alphabetical</option>
+								<option value="last updated">Last updated</option>
+							</select>
+						</div>
 					</div>
 					<div className="repository--item-list--collection">
 						<div className="repository--item-list--collection--item-wrapper">
 							<div className="repository--item-list--row">
 								<div className="repository--item-list--collection--item--multi-wrapper">
-									{renderModules(props.filteredModules ? props.filteredModules : props.myModules)}
+									{renderModules(
+										props.filteredModules ? props.filteredModules : props.myModules,
+										sortOrder
+									)}
 								</div>
 							</div>
 						</div>
 					</div>
 				</section>
 			</div>
-			{renderModalDialog(props)}
+			{props.dialog ? renderModalDialog(props) : null}
 		</span>
 	)
 }

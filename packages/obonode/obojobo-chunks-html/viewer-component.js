@@ -2,7 +2,6 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import katex from 'katex'
 
 const { OboComponent } = Viewer.components
 
@@ -13,7 +12,7 @@ const createMarkup = html => {
 	const latexes = div.querySelectorAll('.latex')
 
 	for (const el of Array.from(latexes)) {
-		el.innerHTML = katex.renderToString(el.innerHTML)
+		el.innerHTML = window.katex.renderToString(el.innerHTML, { throwOnError: false })
 	}
 
 	return { __html: div.innerHTML }

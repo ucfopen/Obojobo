@@ -1,8 +1,9 @@
+import { Editor, Element, Transforms } from 'slate'
+import { ReactEditor } from 'slate-react'
+
 import LeftIcon from '../../assets/left-icon'
 import RightIcon from '../../assets/right-icon'
 import CenterIcon from '../../assets/center-icon'
-
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const ALIGN_RIGHT = 'right'
 const ALIGN_CENTER = 'center'
@@ -11,7 +12,8 @@ const ALIGN_LEFT = 'left'
 const AlignMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey)) return next()
+			if (event.shiftKey) return
+			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
 				case 'l':
@@ -23,44 +25,43 @@ const AlignMarks = {
 				case 'e':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_CENTER)
-				default:
-					next()
 			}
 		},
-		queries: {
+		commands: {
 			setAlign: (editor, align) => {
-				const value = editor.value
+				const list = Array.from(
+					Editor.nodes(editor, {
+						mode: 'lowest',
+						match: node => Element.isElement(node) && !editor.isInline(node)
+					})
+				)
 
-				value.blocks.forEach(block => {
-					const dataJSON = block.data.toJSON()
-					if (block.type === TEXT_LINE_NODE) {
-						dataJSON.align = align
-					} else {
-						dataJSON.content.align = align
-					}
+				list.forEach(([child, path]) =>
+					Transforms.setNodes(editor, { content: { ...child.content, align } }, { at: path })
+				)
 
-					editor.setNodeByKey(block.key, { data: dataJSON })
-				})
-
-				return true
+				ReactEditor.focus(editor)
 			}
 		}
 	},
 	marks: [
 		{
 			name: 'Left Align',
+			shortcut: 'L',
 			type: ALIGN_LEFT,
 			icon: LeftIcon,
 			action: editor => editor.setAlign(ALIGN_LEFT)
 		},
 		{
 			name: 'Center Align',
+			shortcut: 'R',
 			type: ALIGN_CENTER,
 			icon: CenterIcon,
 			action: editor => editor.setAlign(ALIGN_CENTER)
 		},
 		{
 			name: 'Right Align',
+			shortcut: 'E',
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)

@@ -2,16 +2,10 @@
 
 exports[`Page Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
       "componentOboToSlateReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -20,7 +14,10 @@ Object {
       },
     },
   ],
-  "object": "block",
+  "content": Object {
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -30,7 +27,7 @@ Object {
   "children": Array [
     Object {
       "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
+        "children": Array [
           Object {
             "type": "mockNode",
           },
@@ -40,25 +37,6 @@ Object {
     },
   ],
   "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`Page Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "componentSlateToOboReturnFor": Object {
-        "nodes": Array [
-          Object {
-            "type": "mockNode",
-          },
-        ],
-        "type": "oboeditor.component",
-      },
-    },
-  ],
   "id": "mockKey",
   "type": "mockType",
 }

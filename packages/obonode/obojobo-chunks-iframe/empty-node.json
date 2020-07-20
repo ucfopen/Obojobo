@@ -1,8 +1,5 @@
 {
-	"object":"block",
 	"type":"ObojoboDraft.Chunks.IFrame",
-	"isVoid":true,
-	"data":{
-		"content": { }
-	}
+	"content": { },
+	"children": [{ "text": "" }]
 }

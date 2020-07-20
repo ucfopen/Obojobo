@@ -54,13 +54,14 @@ router
 						deactivatedVisitId
 					},
 					resourceLinkId: req.oboLti.body.resource_link_id,
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),
 						visitId,
 						extensions: { deactivatedVisitId }
-					})
+					}),
+					visitId
 				})
 			})
 			.then(req.saveSessionPromise)
