@@ -9,11 +9,22 @@
 		}
 	}
 
+	.units {
+		display: inline-block;
+		white-space: nowrap;
+		line-height: 1.9em;
+		vertical-align: middle;
+	}
+
+	.input-container {
+		display: flex;
+	}
+
 	.numeric-assessment--input {
 		@include text-input();
 
 		width: 11.3em;
-		margin-right: 1.15em;
+		margin-right: 0.5em;
 
 		&:disabled {
 			background: transparentize($color-bg, 0.3);

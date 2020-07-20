@@ -1,4 +1,5 @@
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
+const NUMERIC_ASSESSMENT_UNITS = 'ObojoboDraft.Chunks.NumericAssessment.Units'
 const NUMERIC_ANSWER_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericAnswer'
 const NUMERIC_CHOICE_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice'
 const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
@@ -38,6 +39,7 @@ export {
 	NUMERIC_CHOICE_NODE,
 	NUMERIC_ANSWER_NODE,
 	NUMERIC_FEEDBACK_NODE,
+	NUMERIC_ASSESSMENT_UNITS,
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,
 	WITHIN_A_RANGE,

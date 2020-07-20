@@ -3,13 +3,12 @@
 .component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
 	background-color: $color-bg2;
 	padding: 0.5em;
+	padding-bottom: 0;
 	margin-top: 0;
 
 	> div {
-		background-color: $color-bg;
-		border-radius: $dimension-rounded-radius;
-
 		> .choice-button {
+			background: $color-bg2;
 			width: 100%;
 		}
 
@@ -26,6 +25,12 @@
 		font-family: $font-default;
 		position: relative;
 
+		label > span {
+			font-family: $font-default;
+			font-weight: bold;
+			font-size: 0.8em;
+		}
+
 		select {
 			margin-left: 0.5em;
 			min-width: 15em;
@@ -40,7 +45,22 @@
 
 	// Work around for the tangled scss in MCAssessment
 	.obojobo-draft--chunks--abstract-assessment--choice {
+		$color-border: #dfdfdf;
+
 		position: relative;
+		border-bottom: 1px solid $color-border;
+		background: $color-bg;
+
+		&:first-child {
+			border-top-left-radius: $dimension-rounded-radius;
+			border-top-right-radius: $dimension-rounded-radius;
+		}
+
+		&:nth-last-child(2) {
+			border-bottom: none;
+			border-bottom-left-radius: $dimension-rounded-radius;
+			border-bottom-right-radius: $dimension-rounded-radius;
+		}
 
 		&.editor-choice {
 			.delete-button {

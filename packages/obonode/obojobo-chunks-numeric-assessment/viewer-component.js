@@ -22,6 +22,7 @@ const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { ErrorUtil } = Common.util
+const { TextGroupEl } = Common.chunk.textChunk
 
 const KEY_FEEDBACK = 'feedback'
 const LONG_RESPONSE_NUM_CHARS = 19
@@ -399,6 +400,13 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 							disabled={this.props.mode === 'review'}
 							onBlur={this.onInputBlur}
 						/>
+						<div className="units">
+							<TextGroupEl
+								textItem={this.props.model.modelState.units.first}
+								groupIndex="0"
+								parentModel={this.props.model}
+							/>
+						</div>
 						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						{score === 100 && !isExactlyCorrect ? (
 							<span className="matching-correct-answer">

@@ -81,7 +81,7 @@ class MCAssessment extends React.Component {
 			>
 				<div className="mc-settings" contentEditable={false}>
 					<label>
-						Response Type
+						<span>Response Type</span>
 						<select value={content.responseType} onChange={this.changeResponseType}>
 							<option value="pick-one">Pick one correct answer</option>
 							<option value="pick-all">Pick all correct answers</option>
@@ -93,7 +93,7 @@ class MCAssessment extends React.Component {
 						handleCheckChange={this.changeShuffle}
 					/>
 				</div>
-				<div>
+				<div className="choices-container">
 					{this.props.children}
 					<Button className={'choice-button'} onClick={this.addChoice}>
 						{'+ Add possible answer'}

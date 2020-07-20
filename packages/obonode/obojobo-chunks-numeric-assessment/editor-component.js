@@ -36,6 +36,21 @@ class NumericAssessment extends React.Component {
 	}
 
 	render() {
+		// The first child is the special units element, the remaining
+		// children are the answer choices:
+		// let children = React.Children.toArray(this.props.children)
+		// children = React.Children.toArray(children[0])
+		// const units = children.shift()
+		// // const choices = children.slice(1)
+
+		// console.log(
+		// 	'rendar',
+		// 	units,
+		// 	children,
+		// 	React.Children.count(this.props.children),
+		// 	this.props.element
+		// )
+
 		return (
 			<div
 				className={
@@ -43,12 +58,14 @@ class NumericAssessment extends React.Component {
 					this.props.element.questionType
 				}
 			>
-				<div contentEditable={false}>
-					{this.props.children}
-					<Button className="add-answer-btn" onClick={() => this.onAddNumericInput()}>
-						+ Add possible answer
-					</Button>
-				</div>
+				{this.props.children}
+				{/* <div className="units">{units}</div>
+				<div className="choices-container" contentEditable={false}>
+					{children} */}
+				<Button className="add-answer-btn" onClick={() => this.onAddNumericInput()}>
+					+ Add possible answer
+				</Button>
+				{/* </div> */}
 			</div>
 		)
 	}

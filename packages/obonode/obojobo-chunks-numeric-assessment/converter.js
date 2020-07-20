@@ -1,11 +1,24 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
-import { NUMERIC_CHOICE_NODE } from './constants'
+import { NUMERIC_CHOICE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_ASSESSMENT_UNITS } from './constants'
 import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
+import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
+
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const slateToObo = node => {
-	const children = node.children.map(child => {
+	const unitsNode = node.children[0]
+	const choiceNodes = node.children.slice(1)
+
+	const textLine = {
+		text: { value: '', styleList: [] },
+		data: {}
+	}
+	TextUtil.slateToOboText(unitsNode, textLine)
+
+	const children = choiceNodes.map(child => {
 		return Common.Registry.getItemForType(child.type).slateToObo(child, NUMERIC_CHOICE_NODE)
 	})
 
@@ -14,7 +27,8 @@ const slateToObo = node => {
 		type: node.type,
 		children,
 		content: withoutUndefined({
-			triggers: node.content.triggers
+			triggers: node.content.triggers,
+			units: [textLine]
 		})
 	}
 }
@@ -28,9 +42,22 @@ const oboToSlate = node => {
 	const questionModel = oboModel.parent
 	const questionType = questionModel.attributes.content.type
 
-	slateNode.children = node.children.map(child =>
-		Common.Registry.getItemForType(CHOICE_NODE).oboToSlate(child)
-	)
+	console.log('so', {
+		type: NUMERIC_ASSESSMENT_NODE,
+		subtype: NUMERIC_ASSESSMENT_UNITS,
+		content: {},
+		children: [{ text: TextUtil.parseMarkings(node.content.units[0]) }]
+	})
+
+	slateNode.children = [
+		{
+			type: NUMERIC_ASSESSMENT_NODE,
+			subtype: NUMERIC_ASSESSMENT_UNITS,
+			content: {},
+			children: TextUtil.parseMarkings(node.content.units[0])
+		},
+		...node.children.map(child => Common.Registry.getItemForType(CHOICE_NODE).oboToSlate(child))
+	]
 	slateNode.questionType = questionType
 
 	return slateNode
