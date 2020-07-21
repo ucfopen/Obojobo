@@ -1,0 +1,38 @@
+{
+	"type": "ObojoboDraft.Chunks.Excerpt",
+	"content": {
+		"bodyStyle": "filled-box",
+		"topEdge": "normal",
+		"bottomEdge": "normal",
+		"width": "smaller-than-content",
+		"font": "serif"
+	},
+	"children": [
+		{
+			"type": "ObojoboDraft.Chunks.Excerpt",
+			"subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptText",
+			"content": {},
+			"children": [
+				{
+					"type": "ObojoboDraft.Chunks.Excerpt",
+					"subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptLine",
+					"content": { "indent": 0, "hangingIndent": 0 },
+					"children": [{ "text": "" }]
+				}
+			]
+		},
+		{
+			"type": "ObojoboDraft.Chunks.Excerpt",
+			"subtype": "ObojoboDraft.Chunks.Excerpt.CitationText",
+			"content": { "indent": 0, "hangingIndent": 0 },
+			"children": [
+				{
+					"type": "ObojoboDraft.Chunks.Excerpt",
+					"subtype": "ObojoboDraft.Chunks.Excerpt.CitationLine",
+					"content": { "indent": 0, "hangingIndent": 0, "align": "center" },
+					"children": [{ "text": "" }]
+				}
+			]
+		}
+	]
+}
