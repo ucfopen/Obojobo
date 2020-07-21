@@ -1,10 +1,47 @@
-import React from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import Common from 'Common'
 
-const { SimpleDialog } = Common.components.modal
-const { Switch } = Common.components
+const { Dialog, SimpleDialog } = Common.components.modal
+const { Switch, Button } = Common.components
+
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 
 import './iframe-properties-modal.scss'
+
+
+const MateriaPickerDialog = (props) => {
+	const pickerIframe = useRef(null)
+
+	useEffect(
+		() => {
+			console.log('listening?')
+			if(pickerIframe.current.addEventListener){
+				console.log('listening!')
+				window.addEventListener('message', props.onPick)
+			}
+
+		}, [pickerIframe.current]
+	)
+
+
+	const buttons = useMemo(
+		() => {
+			return [
+				{
+					value: 'Cancel',
+					altAction: true,
+					onClick: props.onCancel
+				}
+			]
+		}, []
+	)
+
+	return (
+		<Dialog buttons={buttons} title="Choose a Widget">
+			<iframe ref={pickerIframe} id="materia-lti-picker" src="/materia-lti-picker-launch" frameBorder="0" loading="lazy"></iframe>
+		</Dialog>
+	)
+}
 
 class MateriaProperties extends React.Component {
 	constructor(props) {
@@ -18,10 +55,22 @@ class MateriaProperties extends React.Component {
 			src: '',
 			title: '',
 			width: 640,
-			controls: ''
+			controls: '',
+			pickerOpen: false
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
+
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
+		this.handleTitleChange = this.handleTitleChange.bind(this)
+		this.handleURLChange = this.handleURLChange.bind(this)
+		this.handleWidthChange = this.handleWidthChange.bind(this)
+		this.handleHeightChange = this.handleHeightChange.bind(this)
+		this.handleBorderChange = this.handleBorderChange.bind(this)
+		this.handleFitChange = this.handleFitChange.bind(this)
+		this.handleZoomChange = this.handleZoomChange.bind(this)
+		this.openPicker = this.openPicker.bind(this)
+		this.onPick = this.onPick.bind(this)
 	}
 
 	componentDidMount() {
@@ -69,9 +118,6 @@ class MateriaProperties extends React.Component {
 		this.setState({ initialZoom })
 	}
 
-	handleAutoloadChange(checked) {
-		this.setState({ autoload: checked })
-	}
 
 	handleControlChange(property, checked) {
 		const controls = new Set(this.state.controls.split(','))
@@ -91,15 +137,55 @@ class MateriaProperties extends React.Component {
 		this.inputRef.current.focus()
 	}
 
+	onPick(event){
+		if(event.type === 'click'){
+			return this.setState({pickerOpen: false})
+		}
+		// Returned postMessage (in obojobo)
+		if(event.data && event.data.embed_type && event.data.url){
+			return this.setState({pickerOpen: false, src: event.data.url})
+		}
+		// Materia special selection postMessage
+		if(event.data && typeof event.data === 'string'){
+			try{
+				const data = JSON.parse(event.data)
+				const {name: title, url, widget} = data
+				const height = parseInt(widget.height, 10)
+				const width = parseInt(widget.width, 10)
+				return this.setState({
+					height,
+					width,
+					title,
+					pickerOpen: false
+				})
+			} catch(e){
+				// do nothing
+			}
+
+		}
+
+	}
+
+	openPicker(){
+		this.setState({pickerOpen: true})
+	}
+
 	render() {
 		const controlList = this.state.controls ? this.state.controls.split(',') : []
+
+		if(this.state.pickerOpen){
+			return (
+				<MateriaPickerDialog onPick={this.onPick} onCancel={this.onPick}/>
+			)
+		}
 
 		return (
 			<SimpleDialog
 				cancelOk
-				title="Materia Widget Properties"
+				title="Materia Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				onCancel={this.props.onCancel}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className={'iframe-properties'}>
 					<div className="info">
@@ -110,8 +196,8 @@ class MateriaProperties extends React.Component {
 								id="obojobo-draft--chunks--iframe--properties-modal--title"
 								ref={this.inputRef}
 								value={this.state.title || ''}
-								placeholder="Widget Title"
-								onChange={this.handleTitleChange.bind(this)}
+								placeholder="IFrame Title"
+								onChange={this.handleTitleChange}
 							/>
 						</div>
 
@@ -122,8 +208,11 @@ class MateriaProperties extends React.Component {
 								id="obojobo-draft--chunks--iframe--properties-modal--src"
 								value={this.state.src || ''}
 								placeholder="Web Address"
-								onChange={this.handleURLChange.bind(this)}
+								onChange={this.handleURLChange}
 							/>
+							<Button id="obojobo-draft--chunks--iframe--properties-modal--src" className="correct-button" onClick={this.openPicker}>
+								Select...
+							</Button>
 						</div>
 					</div>
 
@@ -141,7 +230,7 @@ class MateriaProperties extends React.Component {
 								placeholder="Width"
 								aria-label="Width"
 								value={this.state.width}
-								onChange={this.handleWidthChange.bind(this)}
+								onChange={this.handleWidthChange}
 							/>
 							<span className="px-label">px ×</span>
 							<input
@@ -153,7 +242,7 @@ class MateriaProperties extends React.Component {
 								placeholder="Height"
 								aria-label="Height"
 								value={this.state.height}
-								onChange={this.handleHeightChange.bind(this)}
+								onChange={this.handleHeightChange}
 							/>
 							<span className="px-label">px</span>
 						</div>
@@ -161,14 +250,7 @@ class MateriaProperties extends React.Component {
 							<Switch
 								title="Border"
 								initialChecked={this.state.border}
-								handleCheckChange={this.handleBorderChange.bind(this)}
-							/>
-						</div>
-						<div>
-							<Switch
-								title="Autoload"
-								initialChecked={this.state.autoload}
-								handleCheckChange={this.handleAutoloadChange.bind(this)}
+								handleCheckChange={this.handleBorderChange}
 							/>
 						</div>
 						<div>
@@ -176,7 +258,7 @@ class MateriaProperties extends React.Component {
 							<select
 								id="obojobo-draft--chunks--iframe--properties-modal--fit"
 								value={this.state.fit || 'scale'}
-								onChange={this.handleFitChange.bind(this)}
+								onChange={this.handleFitChange}
 							>
 								<option value="scale">Scale</option>
 								<option value="scroll">Scroll</option>
@@ -194,7 +276,7 @@ class MateriaProperties extends React.Component {
 								type="number"
 								placeholder="Decimal Value"
 								value={this.state.initialZoom}
-								onChange={this.handleZoomChange.bind(this)}
+								onChange={this.handleZoomChange}
 							/>
 						</div>
 					</div>
@@ -205,11 +287,6 @@ class MateriaProperties extends React.Component {
 							title="Reload"
 							initialChecked={controlList.includes('reload')}
 							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
-						/>
-						<Switch
-							title="New Window"
-							initialChecked={controlList.includes('new-window')}
-							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
 						/>
 						<Switch
 							title="Zoom"

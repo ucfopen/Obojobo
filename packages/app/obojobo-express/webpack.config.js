@@ -20,7 +20,7 @@ module.exports =
 			mode: is_production ? 'production' : 'development',
 			target: 'web',
 			devServer: {
-				https: false,
+				https: true,
 				host: '127.0.0.1',
 				disableHostCheck: true,
 				before: app => {

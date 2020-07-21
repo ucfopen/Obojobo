@@ -1,5 +1,11 @@
 @import '~styles/includes';
 
+#materia-lti-picker{
+	height: 64vh;
+	width: 80vw;
+	overflow: scroll;
+}
+
 .iframe-properties {
 	text-align: left;
 
@@ -25,9 +31,15 @@
 		width: 5.8em;
 	}
 
-	#obojobo-draft--chunks--iframe--properties-modal--title,
-	#obojobo-draft--chunks--iframe--properties-modal--src {
+	#obojobo-draft--chunks--iframe--properties-modal--title{
 		width: 16.5em;
+	}
+	#obojobo-draft--chunks--iframe--properties-modal--src {
+		width: 10em;
+    	margin-right: 1em;
+	}
+	#obojobo-draft--chunks--iframe--proterrties-modal--src-button{
+		display: inline;
 	}
 
 	.px-label {

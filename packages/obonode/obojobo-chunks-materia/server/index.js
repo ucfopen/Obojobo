@@ -14,13 +14,26 @@ const oauthKey = 'materia-key'
 const oauthSecret = 'materia-secret'
 
 
-const buildLTIPerson = user => ({
+const buildLTIStudent = user => ({
 	lis_person_contact_email_primary: user.email,
 	lis_person_name_family: user.lastName,
 	lis_person_name_full: `${user.firstName} ${user.lastName}`,
 	lis_person_name_given: user.firstName,
 	lis_person_sourcedid: user.username,
-	roles: ['Learner'],
+	// @TODO get roles from obojobo?  Or should they be based on current 'veiw'?
+	roles: ['Student'],
+	user_id: user.id,
+	user_image: user.avatarUrl
+})
+
+const buildLTIInstructor = user => ({
+	lis_person_contact_email_primary: user.email,
+	lis_person_name_family: user.lastName,
+	lis_person_name_full: `${user.firstName} ${user.lastName}`,
+	lis_person_name_given: user.firstName,
+	lis_person_sourcedid: user.username,
+	// @TODO get roles from obojobo?  Or should they be based on current 'veiw'?
+	roles: ['Instructor'],
 	user_id: user.id,
 	user_image: user.avatarUrl
 })
@@ -32,6 +45,7 @@ const ltiToolConsumer = {
 	tool_consumer_instance_url: 'https://obojobo.ucf.edu/'
 }
 
+// @TODO this should be the module!
 const ltiContext = {
 	context_id: 'S3294476',
 	context_label: 'OBO4321',
@@ -42,7 +56,7 @@ const ltiContext = {
 const defaultResourceLinkId = 'obojobo-dev-resource-id'
 // util to get a baseUrl for inernal requests
 // const baseUrl = req => `${req.protocol}://${req.get('host')}`
-const baseUrl = req => `https://docker.for.mac.localhost:8080`
+const baseUrl = req => `${req.protocol}://${req.get('host')}`
 
 // constructs a signed lti request and sends it.
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
@@ -73,8 +87,10 @@ const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 		</body></html>`)
 }
 
-const materiaUrl = 'http://localhost'
 
+// check the bodyHash of an LTI 1 score passback to verify
+// it matches when hashed with the secret we have locally
+// throws error if it doesn't match
 const verifyScorePassback = (req) => {
 	// re-constitute the authorization headers into an object we can use
 	const requestHeaders = req.headers.authorization.split(' ')[1].replace(/"/g, '').split(',').reduce((all, cur, i) => { return Object.assign({}, all, querystring.parse(cur))}, {} )
@@ -120,10 +136,14 @@ const getValuesFromPassbackXML = async body => {
 	}
 }
 
+// receives scores passed back from the LTI Tool
 router
 	.route('/materia-lti-score-passback')
 	.post(bodyParser.text({type: '*/*'}))
 	.post(async (req, res) => {
+		// @TODO store event for score passback
+		// @TODO: put the score in a database!
+		// @TODO: make the client aware that we've got a verifed score (or error!)
 		console.log('passback heard!')
 		let success = true
 
@@ -133,9 +153,6 @@ router
 
 			console.log('SERVER RECEIVED A VALID SIGNED SCORE FROM MATERIA!!!')
 			console.log(`Message ID: ${messageID}, sourcedid: ${sourcedid}, score: ${score}`)
-			// @TODO: put the score in a database!
-			// @TODO: make the client aware that we've got a verifed score (or error!)
-			// @TODO: we may have found a Canvas security flaw - if you don't send a key, it may not validate the hash!
  		} catch(e){
 			console.log(e)
 			success = false
@@ -162,10 +179,18 @@ router
 			</imsx_POXEnvelopeResponse>`)
 	})
 
+// route to launch a materia widget
+// the viewer component sends the widget url
+// to this url and we build a page with all the params
+// and signed oauth signature that the client's browser
+// will post for us - taking them to the widget
 router
 	.route('/materia-lti-launch')
 	.get([requireCurrentUser])
 	.get((req, res) => {
+		// @TODO store event for lti launch
+		// @TODO validate input more, restrict to viewer launches
+		const isPreview = req.query.isPreview === 'true'
 		const method = 'POST'
 		const endpoint = decodeURI(`${req.query.endpoint}`)
 		const params = {
@@ -175,7 +200,47 @@ router
 			lti_version: 'LTI-1p0',
 			resource_link_id: defaultResourceLinkId,
 		}
-		renderLtiLaunch({ ...buildLTIPerson(req.currentUser), ...params, ...ltiToolConsumer, ...ltiContext }, method, endpoint, res)
+		const user = req.query.isPreview === 'true' ? buildLTIInstructor(req.currentUser) : buildLTIStudent(req.currentUser)
+		renderLtiLaunch({ ...user, ...params, ...ltiToolConsumer, ...ltiContext }, method, endpoint, res)
+	})
+
+
+https://docker.for.mac.localhost:8080/materia-lti-picker-return?embed_type=basic_lti&url=https://localhost/embed/P6q9Y/test
+
+
+router
+	.route('/materia-lti-picker-return')
+	.get((req, res) => {
+		// @TODO store event picker return
+		// @TODO validate the message
+		// @TODO check the params to re-associate with the current document
+		// @TODO announce the selection to the editor somehow
+		// @TODO conver to lti content item selection
+		if(req.query.embed_type && req.query.url){
+			res.type('text/html');
+			res.send(`<html><head></head><body><script>
+				parent.postMessage(${JSON.stringify(req.query)}, "${baseUrl(req)}");
+			</script></body></html>`)
+		}
+	})
+
+
+
+router
+	.route('/materia-lti-picker-launch')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		// @TODO store event for picker launch
+		const method = 'POST'
+		const endpoint = 'https://localhost/lti/picker'
+		const params = {
+			launch_presentation_return_url: `${baseUrl(req)}/materia-lti-picker-return`,
+			lti_message_type: 'ContentItemSelectionRequest',
+			lis_result_sourcedid: '00000-00000',
+			lti_version: 'LTI-1p0',
+			resource_link_id: defaultResourceLinkId,
+		}
+		renderLtiLaunch({ ...buildLTIInstructor(req.currentUser), ...params, ...ltiToolConsumer, ...ltiContext }, method, endpoint, res)
 	})
 
 

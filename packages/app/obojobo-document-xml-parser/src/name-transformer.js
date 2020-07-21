@@ -32,7 +32,8 @@ const nameTable = {
 	Table: 'ObojoboDraft.Chunks.Table',
 	Break: 'ObojoboDraft.Chunks.Break',
 	HTML: 'ObojoboDraft.Chunks.HTML',
-	IFrame: 'ObojoboDraft.Chunks.IFrame'
+	IFrame: 'ObojoboDraft.Chunks.IFrame',
+	Materia: 'ObojoboDraft.Chunks.Materia'
 }
 
 module.exports = nameTransform

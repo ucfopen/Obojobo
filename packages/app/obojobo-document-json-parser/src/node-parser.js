@@ -20,6 +20,7 @@ const questionNodeParser = require('./parsers/question-node-parser')
 const tableNodeParser = require('./parsers/table-node-parser')
 const textNodeParser = require('./parsers/text-node-parser')
 const youTubeNodeParser = require('./parsers/youtube-node-parser')
+const materiaNodeParser = require('./parsers/materia-node-parser')
 
 const parsers = {
 	'ObojoboDraft.Chunks.ActionButton': actionButtonNodeParser,
@@ -31,6 +32,7 @@ const parsers = {
 	'ObojoboDraft.Chunks.Heading': headingNodeParser,
 	'ObojoboDraft.Chunks.HTML': htmlNodeParser,
 	'ObojoboDraft.Chunks.IFrame': iFrameNodeParser,
+	'ObojoboDraft.Chunks.Materia': materiaNodeParser,
 	'ObojoboDraft.Chunks.List': listNodeParser,
 	'ObojoboDraft.Chunks.MathEquation': mathEquationNodeParser,
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': mcAnswerNodeParser,

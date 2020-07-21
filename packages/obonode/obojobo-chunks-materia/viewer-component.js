@@ -45,7 +45,7 @@ export default class Materia extends React.Component {
 	}
 
 	createSrc(src) {
-		return `${window.location.origin}/materia-lti-launch?endpoint=${encodeURI(src)}`
+		return `${window.location.origin}/materia-lti-launch?endpoint=${encodeURI(src)}&isPreview=${this.props.moduleData.isPreviewing}`
 	}
 
 	render() {

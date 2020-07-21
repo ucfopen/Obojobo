@@ -21,7 +21,7 @@
 		"hostname": "obojobo.ucf.edu"
 	},
 	"development": {
-		"secureCookie": false,
+		"secureCookie": true,
 		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
 	},
 	"production": {

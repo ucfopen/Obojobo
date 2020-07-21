@@ -2,8 +2,7 @@ import React from 'react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-import Node from './editor-component'
-import Schema from './schema'
+import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const MATERIA_NODE = 'ObojoboDraft.Chunks.Materia'
@@ -13,21 +12,24 @@ const Materia = {
 	menuLabel: 'Materia Widget',
 	icon: Icon,
 	isInsertable: true,
+	isContent: true,
 	helpers: Converter,
 	json: {
 		emptyNode
 	},
 	plugins: {
-		renderNode(props, editor, next) {
-			console.log(props.node.type)
-			switch (props.node.type) {
-				case MATERIA_NODE:
-					return <Node {...props} {...props.attributes} />
-				default:
-					return next()
-			}
+		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// They may affect multiple nodes simultaneously
+		isVoid(element, editor, next) {
+			if (element.type === MATERIA_NODE) return true
+
+			return next(element)
 		},
-		schema: Schema
+		// Editable Plugins - These are used by the PageEditor component to augment React functions
+		// They affect individual nodes independently of one another
+		renderNode(props) {
+			return <EditorComponent {...props} {...props.attributes} />
+		}
 	}
 }
 
