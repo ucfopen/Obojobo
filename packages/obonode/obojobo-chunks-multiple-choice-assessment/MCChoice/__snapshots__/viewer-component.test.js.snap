@@ -46,7 +46,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -120,7 +120,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -194,7 +194,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -268,7 +268,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -336,7 +336,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -404,7 +404,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - survey qu
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -478,7 +478,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - survey qu
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -546,7 +546,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -620,7 +620,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode with no sco
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -694,7 +694,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -768,7 +768,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -842,7 +842,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -910,7 +910,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -977,7 +977,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1044,7 +1044,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1118,7 +1118,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1164,7 +1164,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1235,7 +1235,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1281,7 +1281,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1352,7 +1352,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1398,7 +1398,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1469,7 +1469,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1515,7 +1515,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1586,7 +1586,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted - sur
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1632,7 +1632,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted - sur
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1703,7 +1703,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
@@ -1749,7 +1749,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
             className="text-chunk obojobo-draft--chunks--single-text pad"
           >
             <span
-              className="text align-left"
+              className="text-group align-left"
               data-group-index={0}
               data-indent={0}
             >
