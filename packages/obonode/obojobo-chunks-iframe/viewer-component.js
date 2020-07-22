@@ -37,6 +37,7 @@ export default class IFrame extends React.Component {
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
 		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
 		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
+		this.makeIFrameFullScreen = this.makeIFrameFullScreen.bind(this)
 
 		MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
 
@@ -126,6 +127,10 @@ export default class IFrame extends React.Component {
 		if (this.isMediaNeedingToBeHidden()) {
 			MediaUtil.hide(this.props.model.get('id'), 'viewerClient')
 		}
+	}
+
+	makeIFrameFullScreen() {
+		this.refs.iframe.requestFullscreen()
 	}
 
 	render() {
@@ -245,6 +250,17 @@ export default class IFrame extends React.Component {
 								)}
 								zoomReset={this.boundOnZoomReset}
 							/>
+						) : null}
+						{isShowing ? (
+							<div>
+								<Button
+									className="make-iframe-fullscreen"
+									onClick={this.makeIFrameFullScreen}
+									ariaLabel="Makes embedded content full screen"
+								>
+									Full Screen
+								</Button>
+							</div>
 						) : null}
 					</div>
 				</div>
