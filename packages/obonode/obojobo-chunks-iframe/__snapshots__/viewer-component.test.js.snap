@@ -61,6 +61,20 @@ exports[`IFrame IFrame component renders 1`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -127,6 +141,20 @@ exports[`IFrame IFrame component renders 2`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -193,6 +221,20 @@ exports[`IFrame IFrame component renders 3`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -259,6 +301,20 @@ exports[`IFrame IFrame component renders 4`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -325,6 +381,20 @@ exports[`IFrame IFrame component renders 5`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -391,6 +461,20 @@ exports[`IFrame IFrame component renders 6`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -799,6 +883,20 @@ exports[`IFrame IFrame component renders 13`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -865,6 +963,20 @@ exports[`IFrame IFrame component renders 14`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -931,6 +1043,20 @@ exports[`IFrame IFrame component renders 15`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -997,6 +1123,20 @@ exports[`IFrame IFrame component renders 16`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1063,6 +1203,20 @@ exports[`IFrame IFrame component renders 17`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1129,6 +1283,20 @@ exports[`IFrame IFrame component renders 18`] = `
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
         role="toolbar"
       />
+      <div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center make-iframe-fullscreen"
+        >
+          <button
+            aria-label="Makes embedded content full screen"
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Full Screen
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
