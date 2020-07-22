@@ -77,9 +77,8 @@ const normalizeNode = (entry, editor, next) => {
 					return Transforms.insertNodes(editor, getAnswer(path, editor), { at: childPath })
 				}
 
-				// Otherwise, wrap the child in an Answer and let the answer
-				// normalization decide what to do with it
-				return Transforms.wrapNodes(editor, getAnswer(path, editor), { at: childPath })
+				// Otherwise, abort, simply remove the node
+				return Transforms.removeNodes(editor, { at: path })
 			}
 
 			// The second node should be an (optional) Feedback

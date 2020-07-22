@@ -22,8 +22,6 @@ const Feedback = {
 		normalizeNode(entry, editor, next) {
 			const [node, path] = entry
 
-			next(entry, editor)
-
 			// If the element is a Feedback, only allow Content children
 			if (Element.isElement(node) && node.type === FEEDBACK_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
@@ -35,7 +33,7 @@ const Feedback = {
 					// Wrap loose text children in a Text Node
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: TEXT_NODE,
 								content: { indent: 0 }
@@ -49,15 +47,15 @@ const Feedback = {
 				// Feedback parent normalization
 				// Note - collect up an adjacent Answer (of any type), if it exists
 				const [parent] = Editor.parent(editor, path)
-				if(!Element.isElement(parent) || parent.type !== CHOICE_NODE) {
+				if (!Element.isElement(parent) || parent.type !== CHOICE_NODE) {
 					NormalizeUtil.wrapOrphanedSiblings(
-						editor, 
-						entry, 
-						{ 
-							type: CHOICE_NODE, 
+						editor,
+						entry,
+						{
+							type: CHOICE_NODE,
 							content: { score: 0 },
 							children: []
-						}, 
+						},
 						node => validAnswers.includes(node.type)
 					)
 					return
