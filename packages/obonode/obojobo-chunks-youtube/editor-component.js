@@ -22,7 +22,6 @@ class YouTube extends React.Component {
 		this.focusYoutube = this.focusYoutube.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showSourceModal = this.showSourceModal.bind(this)
-		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 	}
 	showSourceModal(event) {
@@ -73,13 +72,6 @@ class YouTube extends React.Component {
 
 	returnFocusOnTab(event) {
 		if (event.key === 'Tab' && !event.shiftKey) {
-			event.preventDefault()
-			return ReactEditor.focus(this.props.editor)
-		}
-	}
-
-	returnFocusOnShiftTab(event) {
-		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			return ReactEditor.focus(this.props.editor)
 		}

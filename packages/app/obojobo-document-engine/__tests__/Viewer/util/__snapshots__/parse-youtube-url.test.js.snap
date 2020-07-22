@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with a different valid url 1`] = `
+Object {
+  "endTime": 0,
+  "startTime": "5000",
+  "videoId": "krfcq5pF8u8",
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with a valid embed url 1`] = `
+Object {
+  "endTime": 541,
+  "startTime": "539",
+  "videoId": "Ho8niBS1nrU",
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with invalid url 1`] = `
+Object {
+  "endTime": false,
+  "startTime": false,
+  "videoId": false,
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with valid embed code 1`] = `
+Object {
+  "endTime": 0,
+  "startTime": "3",
+  "videoId": "ByH9LuSILxU",
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with valid embed code and start and end values 1`] = `
+Object {
+  "endTime": 300,
+  "startTime": "100",
+  "videoId": "tpiyEe_CqB4",
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with valid embed code and start and end values 2`] = `
+Object {
+  "endTime": 345,
+  "startTime": "50",
+  "videoId": "tpiyEe_CqB4",
+}
+`;
+
+exports[`YouTube Parse Url test ParseYoutubeUrl youTubeParseUrl method with valid url 1`] = `
+Object {
+  "endTime": 0,
+  "startTime": 0,
+  "videoId": "krfcq5pF8u8",
+}
+`;

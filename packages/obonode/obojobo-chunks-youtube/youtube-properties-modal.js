@@ -1,6 +1,6 @@
 import React from 'react'
 import Common from '../../app/obojobo-document-engine/src/scripts/common'
-import EditorUtil from '../../app/obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
+import ParseYoutubeUrl from '../../app/obojobo-document-engine/src/scripts/oboeditor/util/parse-youtube-url'
 
 import './youtube-properties-modal.scss'
 
@@ -19,9 +19,9 @@ class YouTubeProperties extends React.Component {
 		}
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
-		this.handleIdChange = this.handleIdChange.bind(this)
 		this.handleStartTimeChange = this.handleStartTimeChange.bind(this)
 		this.handleEndTimeChange = this.handleEndTimeChange.bind(this)
+		this.handleUrlChange = this.handleUrlChange.bind(this)
 	}
 
 	focusOnFirstElement() {
@@ -29,51 +29,25 @@ class YouTubeProperties extends React.Component {
 	}
 
 	handleUrlChange(event) {
-		const videoInfo = EditorUtil.youTubeParseUrl(event.target.value)
+		const videoInfo = ParseYoutubeUrl.youTubeParseUrl(event.target.value)
 		const videoId = videoInfo.videoId === false ? '' : videoInfo.videoId
 		const videoInputValidClass =
 			videoInfo.videoId === false ? 'youtube--video-invalid' : 'youtube--video-valid'
 		const videoUrl = event.target.value
+		const startTime = videoInfo.startTime
+		const endTime = videoInfo.endTime
 
-		let startTime = this.state.content.startTime
-		let endTime = this.state.content.endTime
-		if (videoInfo.startTime && videoInfo.endTime) {
-			startTime = videoInfo.startTime
-			endTime = videoInfo.endTime
-			this.setState({
-				...this.state,
-				content: {
-					...this.state.content,
-					videoId,
-					videoUrl,
-					videoInputValidClass,
-					startTime,
-					endTime
-				}
-			})
-		} else if (videoInfo.startTime) {
-			startTime = videoInfo.startTime
-			this.setState({
-				...this.state,
-				content: {
-					...this.state.content,
-					videoId,
-					videoUrl,
-					videoInputValidClass,
-					startTime
-				}
-			})
-		} else {
-			this.setState({
-				...this.state,
-				content: {
-					...this.state.content,
-					videoId,
-					videoUrl,
-					videoInputValidClass
-				}
-			})
-		}
+		this.setState({
+			...this.state,
+			content: {
+				...this.state.content,
+				videoId,
+				videoUrl,
+				videoInputValidClass,
+				startTime,
+				endTime
+			}
+		})
 	}
 
 	handleStartTimeChange(event) {
@@ -105,12 +79,14 @@ class YouTubeProperties extends React.Component {
 	onConfirm() {
 		const { startTime, endTime, videoId } = this.state.content
 
-		const videoInfo = EditorUtil.youTubeParseUrl(videoId)
+		const videoInfo = ParseYoutubeUrl.youTubeParseUrl(videoId)
 
-		if (videoInfo.videoId) {
-			// this.state.content.videoId = videoInfo.videoId
-			this.setState({ videoId: videoInfo.videoId })
-		}
+		this.setState({
+			videoId: videoInfo.videoId,
+			content: {
+				...this.state.content
+			}
+		})
 
 		if (startTime < 0) {
 			return this.setState({ startTimeError: 'Start time must be > 0' })
@@ -158,7 +134,7 @@ class YouTubeProperties extends React.Component {
 						type="text"
 						ref={this.videoUrlInputRef}
 						value={this.state.content.videoUrl || ''}
-						onChange={this.handleUrlChange.bind(this)}
+						onChange={this.handleUrlChange}
 						className={this.state.content.videoInputValidClass}
 					/>
 					<input
