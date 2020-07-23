@@ -132,6 +132,20 @@ class NavStore extends Store {
 					})
 					this.setAndTrigger({ locked: false })
 				},
+				'nav:redAlert': payload => {
+					this.state.redAlert = payload.redAlert
+					APIUtil.postEvent({
+						draftId: this.state.draftId,
+						action: 'nav:redAlert',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							from: this.state.redAlert,
+							to: payload.redAlert
+						}
+					})
+					this.triggerChange()
+				},
 				'nav:close': () => {
 					this.updateOpenState(false)
 				},
@@ -166,7 +180,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
+	init(draftId, model, startingId, startingPath, visitId, redAlert, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -184,7 +198,8 @@ class NavStore extends Store {
 					: true,
 			context: DEFAULT_CONTEXT,
 			visitId,
-			draftId
+			draftId,
+			redAlert: false
 		}
 
 		startHeartBeat(this.state.draftId)

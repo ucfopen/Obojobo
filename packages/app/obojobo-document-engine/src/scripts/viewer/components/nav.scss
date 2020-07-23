@@ -396,6 +396,10 @@
 		display: none;
 	}
 
+	&.is-red-alert {
+		background-color: $color-dangerous;
+	}
+
 	&.is-not-open .viewer--components--logo {
 		opacity: 0;
 	}

@@ -194,11 +194,13 @@ export default class Nav extends React.Component {
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
 		const isNavInaccessible = navState.disabled || !navState.open
+		const isRedAlert = NavUtil.isRedAlertEnabled(navState)
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled') +
+			isOrNot(isRedAlert, 'red-alert')
 
 		return (
 			<nav
@@ -248,6 +250,14 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
+				<button
+					onClick={() => {
+						NavUtil.setRedAlert(!NavUtil.isRedAlertEnabled(navState))
+						console.log(NavUtil.isRedAlertEnabled)
+					}}
+				>
+					Red Alert
+				</button>
 				<Logo />
 			</nav>
 		)

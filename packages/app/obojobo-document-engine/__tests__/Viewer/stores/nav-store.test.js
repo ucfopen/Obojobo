@@ -268,6 +268,24 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
+	test('nav:redAlert event fires and updates state', () => {
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:redAlert']({ redAlert: 'mockRedAlert' })
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('nav:close event fires and updates state', () => {
 		jest.useFakeTimers()
 		NavStore.setState({

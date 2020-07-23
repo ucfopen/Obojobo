@@ -245,6 +245,16 @@ const NavUtil = {
 		return Dispatcher.trigger('nav:resetContext')
 	},
 
+	setRedAlert(redAlert) {
+		return Dispatcher.trigger('nav:redAlert', {
+			redAlert: redAlert
+		})
+	},
+
+	isRedAlertEnabled(state) {
+		return state.redAlert
+	},
+
 	isNavEnabled(state) {
 		return !state.disabled
 	},
