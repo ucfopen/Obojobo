@@ -49,12 +49,14 @@ class MateriaProperties extends React.Component {
 		const defaultState = {
 			autoload: false,
 			border: false,
-			fit: '',
 			height: 480,
+			width: 640,
 			initialZoom: 1,
+			fit: '',
 			src: '',
 			title: '',
-			width: 640,
+			icon: '',
+			widgetEngine: '',
 			controls: '',
 			pickerOpen: false
 		}
@@ -156,12 +158,14 @@ class MateriaProperties extends React.Component {
 					height,
 					width,
 					title,
+					src: data.embed_url,
+					widgetEngine: widget.name,
+					icon: data.img.replace(/icon-.+\.png/, 'icon-92@2x.png'),
 					pickerOpen: false
 				})
 			} catch(e){
 				// do nothing
 			}
-
 		}
 
 	}

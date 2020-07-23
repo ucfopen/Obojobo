@@ -7,6 +7,10 @@
 		display: block;
 	}
 
+	.widget-icon img{
+		height: 92px;
+	}
+
 	.iframe-toolbar {
 		position: absolute;
 		top: 50%;
@@ -64,5 +68,17 @@
 			bottom: 0;
 			transition: transform $duration-animation-default, opacity $duration-animation-default;
 		}
+
+		&::after {
+			content: ' ';
+			background: url('./materia-logo.svg') no-repeat bottom right;
+			width: 150px;
+			height: 24px;
+			position: absolute;
+			bottom: 8px;
+			right: 69px;
+			background-size: contain;
+		}
+
 	}
 }

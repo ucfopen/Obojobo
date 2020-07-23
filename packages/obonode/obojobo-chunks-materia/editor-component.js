@@ -70,12 +70,11 @@ class MateriaEditor extends React.Component {
 
 	getTitle(src, title) {
 		if (src === null) {
-			return 'Materia missing src attribute'
-		} else if (title) {
-			return title
+			return 'No widget linked'
 		}
 
-		return src.replace(/^https?:\/\//, '')
+		return title || src
+
 	}
 
 	deleteNode() {
@@ -132,17 +131,18 @@ class MateriaEditor extends React.Component {
 						>
 							×
 						</Button>
-						<div className="iframe-toolbar">
-							<span className="title" aria-hidden contentEditable={false}>
+						<div className="iframe-toolbar" onClick={this.showIFramePropertiesModal}>
+							<div className="widget-icon"><img src={content.icon} alt={content.widgetEngine} /></div>
+							<div className="title" aria-hidden contentEditable={false}>
 								{this.getTitle(content.src || null, content.title)}
-							</span>
+							</div>
 							<Button
 								className="properties-button"
 								onClick={this.showIFramePropertiesModal}
 								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>
-								Mateira Properties
+								Widget Settings...
 							</Button>
 						</div>
 					</div>

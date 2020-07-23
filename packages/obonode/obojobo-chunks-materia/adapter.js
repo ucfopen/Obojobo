@@ -6,16 +6,18 @@ import IFrameControlTypes from './iframe-control-types'
 
 const cloneProps = Common.util.cloneProps
 const propsList = [
-	'type',
-	'src',
-	'width',
-	'height',
-	'initialZoom',
-	'border',
 	'autoload',
+	'border',
+	'controls',
 	'fit',
+	'height',
+	'icon',
+	'initialZoom',
+	'src',
 	'title',
-	'controls'
+	'type',
+	'widgetEngine',
+	'width',
 ]
 
 export default {
@@ -56,6 +58,8 @@ export default {
 		model.setStateProp('src', null)
 		model.setStateProp('width', null, p => parseInt(p, 10) || null)
 		model.setStateProp('height', null, p => parseInt(p, 10) || null)
+		model.setStateProp('widgetEngine', null)
+		model.setStateProp('icon', null)
 		model.setStateProp('initialZoom', 1, p => parseFloat(p) || 1)
 		model.setStateProp('autoload', false, p => p === true)
 		model.setStateProp('title', null)

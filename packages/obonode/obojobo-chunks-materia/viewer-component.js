@@ -19,15 +19,16 @@ export default class Materia extends React.Component {
 	}
 
 	onPostMessageFromMateria(event){
-		console.log(event)
 		if(!this.state.model.modelState.src.includes(event.origin)){
 			console.log('EVENT NOT FROM IFRAME HOST')
 			return
 		}
 
 		try{
+			if(typeof event.data !== 'string') return
 			const data = JSON.parse(event.data)
 			if(data.type === 'materiaScoreRecorded'){
+				console.log('POSTMESSAGE FROM MATERIA')
 				console.log(`SCORE IS ${data.score} !!!!!`)
 				this.setState({unverifiedScore: data.score})
 			}

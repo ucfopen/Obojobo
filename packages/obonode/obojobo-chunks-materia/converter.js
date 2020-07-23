@@ -17,6 +17,8 @@ const slateToObo = node => ({
 		src: node.content.src,
 		title: node.content.title,
 		type: node.content.type,
+		widgetEngine: node.content.widgetEngine,
+		icon: node.content.icon,
 		border: node.content.border,
 		fit: node.content.fit,
 		width: node.content.width,
@@ -26,6 +28,7 @@ const slateToObo = node => ({
 		controls: node.content.controls
 	})
 })
+
 
 /**
  * Generates a Slate node from an Obojobo IFrame. Copies all attributes, and adds a dummy child
