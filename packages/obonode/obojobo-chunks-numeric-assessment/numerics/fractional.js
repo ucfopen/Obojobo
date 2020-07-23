@@ -7,7 +7,7 @@ const getPercentError = require('../util/percent-error')
 
 const DEFAULT_TO_FRACTION_ERROR_VALUE = 0.000001
 
-const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+/
+const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+$/
 
 /**
  * Object representing the terms of a fraction
@@ -25,12 +25,11 @@ const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+/
  */
 
 /**
- * A fractional numeric type.  Units may have whitespace between the value but are not required.
+ * A fractional numeric type.
  * @example
  * new Fractional("1/2")
  * new Fractional("-1 / 3") // Spaces allowed and are ignored
  * new Fractional("2/4") // Do not have to be reduced (equal to 1/2)
- * new Fractional("99/1g") // Supports units next to value
  * new Fractional("+22/7") // Plus sign optional and is ignored
  * new Fractional("7,392/8,040,112") // Commas optional and are ignored
  */
@@ -56,23 +55,18 @@ module.exports = class Fractional extends Numeric {
 	 * @param {string} str A potential string representation of a fractional value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Fractional.parse("1/2") //{ matchType:'exact', valueString:'1/2', unit:'' }
-	 * Fractional.parse("2/4g") //{ matchType:'exact', valueString:'2/4', unit:'g' }
-	 * Fractional.parse("0.333333") //{ matchType:'none', valueString:'', unit:'' }
+	 * Fractional.parse("1/2") //{ matchType:'exact', valueString:'1/2' }
+	 * Fractional.parse("2/4") //{ matchType:'exact', valueString:'2/4' }
+	 * Fractional.parse("0.333333") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
 		const matches = fractionalRegex.exec(str)
 
 		if (!matches || !matches.length) return Numeric.getNullParseObject()
 
-		const unit = str.substr(matches[0].length).trim()
-
-		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 		return {
 			matchType: MATCH_EXACT,
-			valueString: matches[0],
-			unit,
-			stringWithUnit: matches[0] + (unit ? ` ${unit}` : '')
+			valueString: matches[0]
 		}
 	}
 

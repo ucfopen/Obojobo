@@ -2,7 +2,6 @@ const Big = require('../big')
 const { ROUND_TYPE_ROUND_DECIMAL_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } = require('./round-types')
 const { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } = require('../numerics/types/input-types')
 const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
-const { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } = require('./unit-types')
 
 /**
  * @typedef {Object} NumericRuleScoreOutcomeObject
@@ -221,33 +220,6 @@ module.exports = class NumericRuleOutcome {
 	 * @param {NumericRule} rule
 	 * @return {boolean}
 	 */
-	static getIsExpectedUnits(numericInstance, rule) {
-		switch (rule.unitsMatch) {
-			case IGNORE_UNIT:
-				return true
-
-			case ANY_UNIT:
-				return numericInstance.isWithUnit
-
-			case NO_UNIT:
-				return !numericInstance.isWithUnit
-
-			case MATCHES_UNIT:
-				if (rule.unitsAreCaseSensitive) {
-					return rule.allUnits.indexOf(numericInstance.unit) > -1
-				} else {
-					return (
-						rule.allUnits.map(u => u.toLowerCase()).indexOf(numericInstance.unit.toLowerCase()) > -1
-					)
-				}
-		}
-	}
-
-	/**
-	 * @param {Numeric} numericInstance
-	 * @param {NumericRule} rule
-	 * @return {boolean}
-	 */
 	static getIsExpectedScientific(numericInstance, rule) {
 		return (
 			rule.isValidScientific === null ||
@@ -304,11 +276,6 @@ module.exports = class NumericRuleOutcome {
 		/**
 		 * @type {boolean}
 		 */
-		this.isExpectedUnits = NumericRuleOutcome.getIsExpectedUnits(numericInstance, this.rule)
-
-		/**
-		 * @type {boolean}
-		 */
 		this.isExpectedScientific = NumericRuleOutcome.getIsExpectedScientific(
 			numericInstance,
 			this.rule
@@ -324,7 +291,6 @@ module.exports = class NumericRuleOutcome {
 			this.isExpectedType &&
 			this.isExpectedInteger &&
 			this.isExpectedFractionReduced &&
-			this.isExpectedUnits &&
 			this.isExpectedScientific
 	}
 }

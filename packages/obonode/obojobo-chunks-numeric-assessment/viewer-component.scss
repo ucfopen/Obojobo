@@ -14,6 +14,7 @@
 		white-space: pre;
 		line-height: 1.9em;
 		vertical-align: middle;
+		margin-left: 0.5em;
 	}
 
 	.input-container {
@@ -24,7 +25,6 @@
 		@include text-input();
 
 		width: 11.3em;
-		margin-right: 0.5em;
 
 		&:disabled {
 			background: transparentize($color-bg, 0.3);
@@ -102,6 +102,8 @@
 		display: inline-block;
 		white-space: nowrap;
 		vertical-align: middle;
+		margin-left: 1em;
+		line-height: 2.4em;
 
 		> .value {
 			font-family: $font-monospace;

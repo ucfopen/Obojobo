@@ -11,11 +11,11 @@ const { INPUT_TYPE_SCIENTIFIC } = require('./types/input-types')
 const { MATCH_EXACT } = require('../entry/match-types')
 const Big = require('../big')
 
-const xScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?x10\^[-+]?[0-9]+/
-const asteriskScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?\*10\^[-+]?[0-9]+/
-const eScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?e[-+]?[0-9]+/
-const eeScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?ee[-+]?[0-9]+/
-const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+/
+const xScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?x10\^[-+]?[0-9]+$/
+const asteriskScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?\*10\^[-+]?[0-9]+$/
+const eScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?e[-+]?[0-9]+$/
+const eeScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?ee[-+]?[0-9]+$/
+const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+$/
 
 /**
  * Object representing the terms of a Scientific value
@@ -26,15 +26,14 @@ const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+/
  */
 
 /**
- * A number in scientific notation. Units may have whitespace between the value but are not required.
+ * A number in scientific notation.
  * @example
  * new Scientific("6.02e23") // Default 'e' syntax
  * new Scientific("-6.02x10^23") // 'x10^' syntax
  * new Scientific("6.02*10^23") // '*10^' syntax
  * new Scientific("6.02'23") // 'apostrophe' syntax
  * new Scientific("6.02ee23") // 'ee' syntax (Used on some Casio calculators)
- * new Scientific("6.02e23 mols") // Unit example
- * new Scientific("+6.02e23mols") // Plus sign optional and ignored
+ * new Scientific("+6.02e23") // Plus sign optional and ignored
  * new Scientific("60.2e22") // The left-hand digit may be >= 10 even though this is not technically valid scientific notation
  */
 module.exports = class Scientific extends Numeric {
@@ -80,7 +79,7 @@ module.exports = class Scientific extends Numeric {
 	 * @param {string} str
 	 * @return {string}
 	 * @example
-	 * Scientific.getValueString('6.02e23 mols') //'6.02e23'
+	 * Scientific.getValueString('6.02e23') //'6.02e23'
 	 */
 	static getValueString(str) {
 		switch (Scientific.getInputType(str)) {
@@ -108,23 +107,17 @@ module.exports = class Scientific extends Numeric {
 	 * @param {string} str A potential string representation of a scientific value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Scientific.parse("6.02e23 mols") //{ matchType:'exact', valueString:'6.02e23', unit:'mols' }
-	 * Scientific.parse("6.02'23") //{ matchType:'exact', valueString:"6.02'23", unit:'' }
-	 * Scientific.parse("6.02") //{ matchType:'none', valueString:'', unit:'' }
+	 * Scientific.parse("6.02e23") //{ matchType:'exact', valueString:'6.02e23' }
+	 * Scientific.parse("6.02'23") //{ matchType:'exact', valueString:"6.02'23" }
+	 * Scientific.parse("6.02") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
 		const valueString = Scientific.getValueString(str)
 		if (!valueString) return Scientific.getNullParseObject()
 
-		const unit = str.substr(valueString.length).trim()
-
-		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
-
 		return {
 			matchType: MATCH_EXACT,
-			valueString,
-			unit,
-			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
+			valueString
 		}
 	}
 

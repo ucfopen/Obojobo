@@ -2,14 +2,11 @@ const Big = require('../big')
 const { INPUT_TYPE_INVALID } = require('./types/input-types')
 const { MATCH_NONE } = require('../entry/match-types')
 
-const validUnitRegex = /^[^0-9,.,/,^].*/
-
 /**
  * The result of parsing a string for a given numeric class
  * @typedef {Object} NumericParseObject
  * @property {string} matchType
  * @property {string} valueString
- * @property {string} unit
  */
 
 /**
@@ -17,7 +14,6 @@ const validUnitRegex = /^[^0-9,.,/,^].*/
  * @typedef {Object} NullNumericParseObject
  * @property {string} matchType 'none'
  * @property {string} valueString ''
- * @property {string} unit ''
  */
 
 /**
@@ -48,7 +44,6 @@ module.exports = class Numeric {
 		return {
 			matchType: MATCH_NONE,
 			valueString: '',
-			unit: '',
 			fullString: ''
 		}
 	}
@@ -145,23 +140,6 @@ module.exports = class Numeric {
 	}
 
 	/**
-	 * Determine if the given unit is valid
-	 * @param {string} unitString
-	 * @return {boolean}
-	 * @example
-	 * Numeric.isValidUnit("") //true
-	 * Numeric.isValidUnit("g") //true
-	 * Numeric.isValidUnit("Grams") //true
-	 * Numeric.isValidUnit("%") //true
-	 * Numeric.isValidUnit(".9") //false
-	 * Numeric.isValidUnit("66") //false
-	 */
-	static isValidUnit(unitString) {
-		if (!unitString) return true
-		return validUnitRegex.test(unitString)
-	}
-
-	/**
 	 * Create a new instance given either a string representation of a numeric value or a Big instance. If the value could not be parsed for this type then some properties will not be set (this.matchType will be 'none').
 	 * @param {string|Big} stringOrBigValue
 	 */
@@ -193,17 +171,7 @@ module.exports = class Numeric {
 		/**
 		 * @type {string}
 		 */
-		this.unit = parsed.unit
-
-		/**
-		 * @type {string}
-		 */
 		this.valueString = parsed.valueString
-
-		/**
-		 * @type {string}
-		 */
-		this.stringWithUnit = parsed.stringWithUnit
 
 		if (this.matchType === MATCH_NONE) return
 
@@ -220,7 +188,7 @@ module.exports = class Numeric {
 	 * @param {Big} bigValue
 	 */
 	setBigValue(bigValue) {
-		this.init(this.constructor.getStringFromBigValue(bigValue) + ' ' + this.unit)
+		this.init(this.constructor.getStringFromBigValue(bigValue))
 	}
 
 	/**
@@ -230,21 +198,6 @@ module.exports = class Numeric {
 	round(toDigits) {
 		const roundedBigValue = this.constructor.getRoundedBigValue(this.bigValue, toDigits)
 		this.setBigValue(roundedBigValue)
-	}
-
-	/**
-	 * Set the unit property
-	 * @param {string} unit
-	 */
-	setUnit(unit) {
-		this.init(this.valueString + (unit ? ' ' + unit : ''))
-	}
-
-	/**
-	 * Reset the unit property to ''
-	 */
-	clearUnit() {
-		this.setUnit('')
 	}
 
 	toObject() {
@@ -265,7 +218,7 @@ module.exports = class Numeric {
 	}
 
 	toString() {
-		return this.stringWithUnit
+		return this.valueString
 	}
 
 	/**
@@ -304,13 +257,6 @@ module.exports = class Numeric {
 	 */
 	get isInteger() {
 		return this.constructor.getIsInteger(this.valueString)
-	}
-
-	/**
-	 * @return {boolean} True if this instance has a unit property defined
-	 */
-	get isWithUnit() {
-		return this.unit.length > 0
 	}
 
 	/**

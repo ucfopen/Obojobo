@@ -24,7 +24,6 @@ const {
 	SCIENTIFIC_TYPE_ASTERISK
 } = require('../numerics/types/scientific-types')
 const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
-const { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } = require('./unit-types')
 
 const SCHEMA = [
 	'percentError',
@@ -37,9 +36,6 @@ const SCHEMA = [
 	'isValidScientific',
 	'score',
 	'round',
-	'unitsMatch',
-	'additionalUnits',
-	'unitsAreCaseSensitive',
 	'scientificTypes',
 	'feedback',
 	'value'
@@ -60,9 +56,6 @@ const ZERO = Big(0)
  * @property {boolean} [isValidScientific=null] If true then this rule matches if and only if a given scientific value has a digit term less than 10 (i.e. `6.02e23` is "valid" while `60.2e22` is not). If false than a given scientific value must not be valid. If omitted then scientific values can be either. IF the student's answer is not scientific then this rule is ignored and always matches.
  * @property {number} [score=0] This is the score to award the student if this rule matches. `score` **MUST** be included for rules in the score rule set. In the validation rule set `score` is ignored.
  * @property {string} [round=none] Determines how to round a student's answer compared to the `value`. This is useful in cases where a student value may be more precise (i.e. if `value` is `3.14` and a student answer is `3.141` round can allow the student answer to still match). Possible values are `none`, `sig-figs` or `decimals`. `none` performs no rounding. `sig-figs` rounds a given student answer to the number of significant figures of `value`. `decimals` rounds to the number of decimal digits of `value`.
- * @property {string} [unitsMatch=true] If true then a given student answer must match the units specified in `value` and optionally in `additionalUnits` (and should not have a unit if there are no units specified). If false then the given student answer must not match the specified units. If omitted then units are ignored and this rule always matches.
- * @property {string} [additionalUnits=''] A comma separated list of units that are allowed in addition to any units specified in `value`. For example, if `value` specifies `g` (for grams) it may be useful to allow `grams` as an alternate valid unit.
- * @property {boolean} [unitsAreCaseSensitive=false] If true then this rule matches only if their cases are the same (i.e. `g` and `g` match but `g` and `G` do not). If false then case is ignored.
  * @property {string} [scientificTypes=(Any)] A comma separated list of scientific types. This rule matches if a given scientific student answer contains one of the syntaxes specified (i.e. `'e,ee'`). If omitted then any valid scientific student answer matches. Non-scientific answers always match.
  * @property {NumericEntryRangeString} [value] The value or range of values to compare against a student's answer. This rule matches if the rounded student answer falls within `value` (or, if outside `value`, is within the accepted amount of absolute or percent error if such error tolerances are specified).
  */
@@ -73,11 +66,9 @@ const ZERO = Big(0)
  * answer. NumericRules are created by passing in a RuleConfigObject which is parsed
  * and then expanded to a complete NumericRule instance.
  * @example
- * // Create a rule looking for a response of "4g" to "5g" (also allowing 'gram' or 'grams')
- * const rule = new NumericRule({ value:'[4,5]g', additionalUnits:'grams,gram' })
- * rule.allUnits // ['g', 'gram', 'grams']
- * rule.unitsAreCaseSensitive // false (The default)
- * rule.value //Equivalent to new NumericEntryRange('[4,5]g')
+ * // Create a rule looking for a response of "4" to "5"
+ * const rule = new NumericRule({ value:'[4,5]' })
+ * rule.value //Equivalent to new NumericEntryRange('[4,5]')
  */
 module.exports = class NumericRule {
 	/**
@@ -344,72 +335,6 @@ module.exports = class NumericRule {
 	}
 
 	/**
-	 * Validates and returns `config.unitsMatch`
-	 * @param {RuleConfigObject} config
-	 * @return {'no-unit'|'any-unit'|'ignore-unit'|'matches-unit'}
-	 * @throws Error if an invalid unit match property is given
-	 */
-	static getUnitsMatch(config) {
-		if (!config.unitsMatch) return MATCHES_UNIT
-
-		switch (config.unitsMatch) {
-			case NO_UNIT:
-			case ANY_UNIT:
-			case IGNORE_UNIT:
-			case MATCHES_UNIT:
-				return config.unitsMatch
-		}
-
-		throw 'Invalid unitsMatch property'
-	}
-
-	/**
-	 * Combines the unit in `config.value` and `config.additionalUnits`
-	 * @param {RuleConfigObject} config
-	 * @param {NumericEntryRange} value
-	 * @return {string[]}
-	 */
-	static getAllUnits(config, value) {
-		const additionalUnits = NumericRule.getAdditionalUnits(config, value)
-		const unit = value.unit
-		let units = []
-
-		if (unit.length > 0) {
-			units.push(unit)
-		}
-
-		units = [...new Set(units.concat(additionalUnits))]
-
-		return units.length === 0 ? [''] : units
-	}
-
-	/**
-	 * Returns `config.additionalUnits` as an array
-	 * @param {RuleConfigObject} config
-	 * @return {string[]}
-	 */
-	static getAdditionalUnits(config) {
-		if (typeof config.additionalUnits === 'string') {
-			return config.additionalUnits
-				.split(',')
-				.map(s => s.trim())
-				.map(s => s.replace(/ /g, ''))
-				.filter(s => s.length > 0)
-		}
-
-		return []
-	}
-
-	/**
-	 * Returns `config.unitsAreCaseSensitive`
-	 * @param {RuleConfigObject} config
-	 * @return {boolean}
-	 */
-	static getUnitsAreCaseSensitive(config) {
-		return config.unitsAreCaseSensitive === true
-	}
-
-	/**
 	 * Returns `config.value` as a NumericEntryRange
 	 * @param {RuleConfigObject} config
 	 * @param {string[]} types
@@ -499,21 +424,6 @@ module.exports = class NumericRule {
 		 * @type {string[]}
 		 */
 		this.allowedTypes = NumericRule.getAllowedRuleTypes(config)
-
-		/**
-		 * @type {boolean|null}
-		 */
-		this.unitsMatch = NumericRule.getUnitsMatch(config)
-
-		/**
-		 * @type {string[]}
-		 */
-		this.allUnits = NumericRule.getAllUnits(config, this.value)
-
-		/**
-		 * @type {boolean|null}
-		 */
-		this.unitsAreCaseSensitive = NumericRule.getUnitsAreCaseSensitive(config)
 
 		/**
 		 * @type {string[]}

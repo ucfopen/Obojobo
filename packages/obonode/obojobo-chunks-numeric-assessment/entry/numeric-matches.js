@@ -54,33 +54,6 @@ module.exports = class NumericMatches {
 	}
 
 	/**
-	 * If there are multiple exact matches this will remove any whose strings are
-	 * shorter in length than the longest match. The purpose is to prioritize matches
-	 * that might contain what another match would consider a unit.
-	 * For example, with `"3.2e12"` this could be interpreted two ways:
-	 * * Decimal with unit: `3.2 e12` (Unit = `'e12'`)
-	 * * Scientific notation: `3.2e12` (Unit = `''`)
-	 *
-	 * We consider the scientific version more correct. This function would remove
-	 * the decimal instance leaving only the scientific exact match.
-	 */
-	removeShorterExactMatches() {
-		const exactMatchesByValueStringLength = this.getNumericTypesForMatches(
-			MATCH_EXACT
-		).instances.sort((a, b) => b.valueString.length - a.valueString.length)
-
-		if (exactMatchesByValueStringLength.length === 0) return
-
-		const longestStringLength = exactMatchesByValueStringLength[0].valueString.length
-
-		exactMatchesByValueStringLength
-			.filter(m => m.valueString.length < longestStringLength)
-			.forEach(m => {
-				this.remove(m.type)
-			})
-	}
-
-	/**
 	 * Add another Numeric instance to the collection
 	 * @param {Numeric} numericInstance
 	 */
@@ -92,8 +65,6 @@ module.exports = class NumericMatches {
 		this.instances[numericType] = numericInstance
 		this.matchTypes[numericType] = matchType
 		this.numMatches++
-
-		this.removeShorterExactMatches()
 	}
 
 	/**

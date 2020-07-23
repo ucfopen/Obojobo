@@ -11,20 +11,19 @@ const Numeric = require('./numeric')
 const Decimal = require('./decimal')
 const Big = require('../big')
 
-const hexZeroX = /^0x[0-9a-fA-F]+$|^0x[0-9a-fA-F]+ /
-const hexOctothorpe = /^#[0-9a-fA-F]+$|^#[0-9a-fA-F]+ /
-const hexDollarSign = /^\$[0-9a-fA-F]+$|^\$[0-9a-fA-F]+ /
-const hexNoPrefix = /^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]*$|^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]* /
-const hexInferred = /^[0-9]+$|^[0-9]+ /
+const hexZeroX = /^0x[0-9a-fA-F]+$|^0x[0-9a-fA-F]+$/
+const hexOctothorpe = /^#[0-9a-fA-F]+$|^#[0-9a-fA-F]+$/
+const hexDollarSign = /^\$[0-9a-fA-F]+$|^\$[0-9a-fA-F]+$/
+const hexNoPrefix = /^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]*$|^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]*$/
+const hexInferred = /^[0-9]+$|^[0-9]+$/
 
 /**
  * A hexadecimal numeric type. Values should be prefixed with "0x" but "#" or "$" may also be used.
- * Values are also possible hex matches if given a string with only 0-9 and A-F. Units cannot come directly after the value string and must have a space in-between.
+ * Values are also possible hex matches if given a string with only 0-9 and A-F.
  * @example
  * new Hexadecimal("0xFF")
  * new Hexadecimal("#FF9900")
  * new Hexadecimal("$6928")
- * new Hexadecimal("0xF0 bytes") // Unit example
  * new Hexadecimal("B0283") // 'inferred' hex value
  */
 module.exports = class Hexadecimal extends Numeric {
@@ -65,8 +64,8 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @return {string|null}
 	 * @example
 	 * Hexadecimal.getValueString('0xFF') //'0xFF'
-	 * Hexadecimal.getValueString('FF bytes') //'FF'
-	 * Hexadecimal.getValueString('3.9 bytes') //null
+	 * Hexadecimal.getValueString('FF') //'FF'
+	 * Hexadecimal.getValueString('3.9') //null
 	 */
 	static getValueString(str) {
 		switch (Hexadecimal.getInputType(str)) {
@@ -94,23 +93,17 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {string} str A potential string representation of a hex value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Hexadecimal.parse("0xFF bytes") //{ matchType:'exact', valueString:'0xFF', unit:'bytes' }
-	 * Hexadecimal.parse("FF") //{ matchType:'inferred', valueString:'FF', unit:'' }
-	 * Hexadecimal.parse("101.1") //{ matchType:'none', valueString:'', unit:'' }
+	 * Hexadecimal.parse("0xFF") //{ matchType:'exact', valueString:'0xFF' }
+	 * Hexadecimal.parse("FF") //{ matchType:'inferred', valueString:'FF' }
+	 * Hexadecimal.parse("101.1") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
-		const tokens = str.split(' ')
-
-		const valueString = Hexadecimal.getValueString(tokens[0])
+		const valueString = Hexadecimal.getValueString(str)
 		if (!valueString) return Numeric.getNullParseObject()
-
-		const unit = tokens[1] || ''
 
 		return {
 			matchType: Hexadecimal.getMatchType(valueString),
-			valueString,
-			unit,
-			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
+			valueString
 		}
 	}
 

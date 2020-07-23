@@ -5,14 +5,13 @@ const Decimal = require('./decimal')
 const Big = require('../big')
 const { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } = require('./types/octal-types')
 
-const octalZeroO = /^0o[0-7]+$|^0o[0-7]+ /
-const octalInferred = /^[0-7]+$|^[0-7]+ /
+const octalZeroO = /^0o[0-7]+$|^0o[0-7]+$/
+const octalInferred = /^[0-7]+$|^[0-7]+$/
 
 /**
- * An octal numeric type. Values should be prefixed with "0o" but are possible octal matches if given a number with only numbers 0-7. Units cannot come directly after the value string and must have a space in-between.
+ * An octal numeric type. Values should be prefixed with "0o" but are possible octal matches if given a number with only numbers 0-7.
  * @example
  * new Octal("0o701")
- * new Octal("0o701 bytes") // Unit example
  * new Octal("701") // 'inferred' octal value
  */
 module.exports = class Octal extends Numeric {
@@ -50,8 +49,8 @@ module.exports = class Octal extends Numeric {
 	 * @return {string|null}
 	 * @example
 	 * Octal.getValueString('0o777') //'0o777'
-	 * Octal.getValueString('777 bytes') //'777'
-	 * Octal.getValueString('0xFF bytes') //null
+	 * Octal.getValueString('777') //'777'
+	 * Octal.getValueString('0xFF') //null
 	 */
 	static getValueString(str) {
 		switch (Octal.getInputType(str)) {
@@ -70,23 +69,17 @@ module.exports = class Octal extends Numeric {
 	 * @param {string} str A potential string representation of a octal value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Octal.parse("0o777 bytes") //{ matchType:'exact', valueString:'0o777', unit:'bytes' }
-	 * Octal.parse("777") //{ matchType:'inferred', valueString:'777', unit:'' }
-	 * Octal.parse("888") //{ matchType:'none', valueString:'', unit:'' }
+	 * Octal.parse("0o777") //{ matchType:'exact', valueString:'0o777' }
+	 * Octal.parse("777") //{ matchType:'inferred', valueString:'777' }
+	 * Octal.parse("888") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
-		const tokens = str.split(' ')
-
-		const valueString = Octal.getValueString(tokens[0])
+		const valueString = Octal.getValueString(str)
 		if (!valueString) return Numeric.getNullParseObject()
-
-		const unit = tokens[1] || ''
 
 		return {
 			matchType: Octal.getMatchType(valueString),
-			valueString,
-			unit,
-			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
+			valueString
 		}
 	}
 
@@ -95,7 +88,7 @@ module.exports = class Octal extends Numeric {
 	 * @param {string} str
 	 * @return {string} 'exact' | 'inferred' | 'none'
 	 * @example
-	 * Binary.getMatchType('0o777 bytes') //'exact'
+	 * Binary.getMatchType('0o777') //'exact'
 	 * Binary.getMatchType('777') //'inferred'
 	 * Binary.getMatchType('888') //'none'
 	 */

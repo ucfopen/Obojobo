@@ -46,7 +46,7 @@ module.exports = class NumericAnswerResults {
 	static getSuggestions(matches) {
 		return matches.getNumericTypesForMatches('inferred').numericTypes.map(type => ({
 			label: matches.getInstance(type).label,
-			stringValue: matches.getInstance(type).formattedString
+			stringValue: matches.getInstance(type).toString()
 		}))
 	}
 

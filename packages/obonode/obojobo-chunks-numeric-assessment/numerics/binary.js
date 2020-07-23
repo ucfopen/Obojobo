@@ -5,14 +5,13 @@ const Numeric = require('./numeric')
 const Decimal = require('./decimal')
 const Big = require('../big')
 
-const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+ /
-const binaryInferred = /^[0-1]+$|^[0-1]+ /
+const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+$/
+const binaryInferred = /^[0-1]+$|^[0-1]+$/
 
 /**
- * A binary numeric type. Values should be prefixed with "0b" but are possible binary matches if given a number with only zeroes and ones. Units cannot come directly after the value string and must have a space in-between.
+ * A binary numeric type. Values should be prefixed with "0b" but are possible binary matches if given a number with only zeroes and ones.
  * @example
  * new Binary("0b1101")
- * new Binary("0b1101 bytes") // Unit example
  * new Binary("101") // 'inferred' binary value
  */
 module.exports = class Binary extends Numeric {
@@ -50,8 +49,8 @@ module.exports = class Binary extends Numeric {
 	 * @return {string|null}
 	 * @example
 	 * Binary.getValueString('0b1101') //'0b110'
-	 * Binary.getValueString('1101 bytes') //'1101'
-	 * Binary.getValueString('0xFF bytes') //null
+	 * Binary.getValueString('1101') //'1101'
+	 * Binary.getValueString('0xFF') //null
 	 */
 	static getValueString(str) {
 		switch (Binary.getInputType(str)) {
@@ -70,25 +69,17 @@ module.exports = class Binary extends Numeric {
 	 * @param {string} str A potential string representation of a binary value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Binary.parse("0b1101 bytes") //{ matchType:'exact', valueString:'0b1101', unit:'bytes' }
-	 * Binary.parse("1101") //{ matchType:'inferred', valueString:'1101', unit:'' }
-	 * Binary.parse("101.1") //{ matchType:'none', valueString:'', unit:'' }
+	 * Binary.parse("0b1101") //{ matchType:'exact', valueString:'0b1101' }
+	 * Binary.parse("1101") //{ matchType:'inferred', valueString:'1101' }
+	 * Binary.parse("101.1") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
-		const tokens = str.split(' ')
-
-		const valueString = Binary.getValueString(tokens[0])
+		const valueString = Binary.getValueString(str)
 		if (!valueString) return Numeric.getNullParseObject()
-
-		const unit = tokens[1] || ''
-
-		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 
 		return {
 			matchType: Binary.getMatchType(valueString),
-			valueString,
-			unit,
-			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
+			valueString
 		}
 	}
 
@@ -97,7 +88,7 @@ module.exports = class Binary extends Numeric {
 	 * @param {string} str
 	 * @return {string} 'exact' | 'inferred' | 'none'
 	 * @example
-	 * Binary.getMatchType('0b1101 bytes') //'exact'
+	 * Binary.getMatchType('0b1101') //'exact'
 	 * Binary.getMatchType('1101') //'inferred'
 	 * Binary.getMatchType('101.1') //'none'
 	 */

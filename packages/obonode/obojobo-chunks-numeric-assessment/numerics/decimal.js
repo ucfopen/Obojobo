@@ -9,25 +9,16 @@ const Big = require('../big')
 //0.0
 //0.
 //.0
-//0g
-//0. g
-//.0g
-//.0 g
-//0%
-//.0%
-//0. %
-const decimalRegex = /^[-+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
+const decimalRegex = /^[-+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+$/
 const trailingZeroesRegex = /0+$/
 const removeTrailingDotRegex = /\.$/
 
 /**
- * A decimal numeric type. Units may have whitespace between the value but are not required.
+ * A decimal numeric type.
  * @example
  * new Decimal("42")
- * new Decimal("-9.2g") // Supports units next to value
  * new Decimal("100.") // Syntax to specify significant figures
- * new Decimal("0%") //"%" is treated as a unit
- * new Decimal("+51.07 mols") // Plus sign optional and is ignored
+ * new Decimal("+51.07") // Plus sign optional and is ignored
  * new Decimal("1,024") // Commas optional and are ignored
  */
 class Decimal extends Numeric {
@@ -87,18 +78,14 @@ class Decimal extends Numeric {
 	 * @param {string} str A potential string representation of a decimal value
 	 * @return {NumericParseObject|NullNumericParseObject}
 	 * @example
-	 * Decimal.parse("-5") //{ matchType:'exact', valueString:'-5', unit:'' }
-	 * Decimal.parse("0.2g") //{ matchType:'exact', valueString:'0.2', unit:'g' }
-	 * Decimal.parse("2/3 kCal") //{ matchType:'none', valueString:'', unit:'' }
-	 * Decimal.parse("+010.00") //{ matchType:'none', valueString:'10.00', unit:'' }
+	 * Decimal.parse("-5") //{ matchType:'exact', valueString:'-5' }
+	 * Decimal.parse("0.2") //{ matchType:'exact', valueString:'0.2' }
+	 * Decimal.parse("2/3") //{ matchType:'none', valueString:'' }
+	 * Decimal.parse("+010.00") //{ matchType:'exact', valueString:'10.00' }
 	 */
 	static parse(str) {
 		const matches = decimalRegex.exec(str)
 		if (!matches || !matches.length) return Numeric.getNullParseObject()
-
-		const unit = str.substr(matches[0].length).trim()
-
-		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 
 		const unparsedValueString = matches[0]
 		const bigValueString = Decimal.getStringFromBigValue(
@@ -114,9 +101,7 @@ class Decimal extends Numeric {
 
 		return {
 			matchType: MATCH_EXACT,
-			valueString,
-			unit,
-			stringWithUnit: valueString + (unit ? ` ${unit}` : '')
+			valueString
 		}
 	}
 
