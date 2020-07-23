@@ -16,6 +16,7 @@ describe('Youtube adapter', () => {
 		const attrs = {
 			content: {
 				videoId: 'example_video_id',
+				videoUrl: 'https://www.youtube.com/watch?v=example_video_id',
 				startTime: 5,
 				enddTime: 10
 			}
@@ -29,6 +30,7 @@ describe('Youtube adapter', () => {
 		const attrs = {
 			content: {
 				videoId: 'example_video_id',
+				videoUrl: 'https://www.youtube.com/watch?v=example_video_id',
 				startTime: 5,
 				enddTime: 10
 			}
@@ -48,6 +50,7 @@ describe('Youtube adapter', () => {
 		const attrs = {
 			content: {
 				videoId: 'example_video_id',
+				videoUrl: 'https://www.youtube.com/watch?v=example_video_id',
 				startTime: 5,
 				enddTime: 10
 			}
@@ -64,6 +67,7 @@ describe('Youtube adapter', () => {
 		const attrs = {
 			content: {
 				videoId: 'example_video_id',
+				videoUrl: 'https://www.youtube.com/watch?v=example_video_id',
 				startTime: 5,
 				enddTime: 10
 			}

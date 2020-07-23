@@ -5,6 +5,7 @@ Object {
   "endTime": null,
   "startTime": 5,
   "videoId": "example_video_id",
+  "videoUrl": "https://www.youtube.com/watch?v=example_video_id",
 }
 `;
 
@@ -13,6 +14,7 @@ Object {
   "endTime": null,
   "startTime": null,
   "videoId": null,
+  "videoUrl": null,
 }
 `;
 
@@ -22,6 +24,7 @@ Object {
     "endTime": null,
     "startTime": 5,
     "videoId": "example_video_id",
+    "videoUrl": "https://www.youtube.com/watch?v=example_video_id",
   },
 }
 `;
