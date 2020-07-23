@@ -2,7 +2,6 @@
 
 .obojobo-draft--components--modal--modal {
 	overflow: visible;
-
 }
 
 .youtube-video-properties {
@@ -28,26 +27,20 @@
 
 	input {
 		@include text-input();
-		
+
 		width: calc(100% - 2em);
 
 		&#obojobo-draft--chunks--youtube--video-url {
 			margin-bottom: 2em;
 		}
+
 		&#obojobo-draft--chunks--youtube--video-id {
 			display: none;
 		}
 
-	}
-
-	input {
 		&.youtube--video-invalid {
-			border: solid rgb(78, 38, 38) 2px;
+			border: solid rgb(78, 38, 38) 0.25em;
 		}
-		/*
-		&.youtube--video-valid {
-			border: solid lime 2px;
-		}*/
 	}
 
 	small {
@@ -64,14 +57,16 @@
 		input {
 			width: 100%;
 		}
+
 		.obojobo-draft--components--more-info-button {
 			width: 1em;
 		}
 	}
 
 	.info {
-		width: 18em;
 		$dimension-rounded-radius: 0.25em;
+
+		width: 18em;
 		background: $color-bg2;
 
 		.container {
@@ -84,17 +79,12 @@
 			background: $color-bg;
 			padding: 1em 2em;
 			margin: 1em;
-			font-size: 0.9em;	
+			font-size: 0.9em;
 		}
 	}
 
 	.obojobo-draft--components--more-info-button.is-default-label > button {
 		margin-left: 0.75em;
-		vertical-align: middle;
-		margin-top: -0.35em;
+		vertical-align: sub;
 	}
 }
-
-
-
- 

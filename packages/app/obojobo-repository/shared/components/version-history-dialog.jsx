@@ -3,7 +3,6 @@ const { CSSTransition } = require('react-transition-group')
 const React = require('react')
 const ModuleImage = require('./module-image')
 const Button = require('./button')
-const ButtonLink = require('./button-link')
 const Loading = require('./loading')
 const { urlForEditor } = require('../repository-utils')
 const ReactModal = require('react-modal')
@@ -31,7 +30,7 @@ class VersionHistoryDialog extends React.Component {
 		this.menuRef = React.createRef()
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		// when the list goes from empty to not-empty
 		// assume the list just loaded/refreshed
 		// so select the first item.
