@@ -12,7 +12,7 @@ const controls = props => {
 	return (
 		<div
 			className={
-				'obojobo-draft--chunks--iframe--controls' +
+				'obojobo-draft--chunks--materia--controls' +
 				isOrNot(controlsOpts.zoom, 'zoomable') +
 				isOrNot(controlsOpts.reload, 'reloadable')
 			}

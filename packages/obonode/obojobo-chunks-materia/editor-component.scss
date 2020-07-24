@@ -1,7 +1,8 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--iframe {
+.obojobo-draft--chunks--materia {
 	position: relative;
+	user-select: none;
 
 	.obojobo-draft--components--button {
 		display: block;
@@ -48,13 +49,14 @@
 		$bg-color: #fdfdfd;
 		$hover-bg-color: #f9f4ff;
 
-		border: 1px solid transparentize($color-action, 0.8);
+		border: 3px solid transparentize($color-action, 0.7);
 		max-height: 15em;
 		border-radius: $dimension-rounded-radius;
 		background-color: $bg-color;
 		overflow: hidden;
 		margin: 0 auto;
 		cursor: pointer;
+		user-select: none;
 
 		&::before {
 			content: ' ';
@@ -67,18 +69,56 @@
 			right: 3.3em;
 			bottom: 0;
 			transition: transform $duration-animation-default, opacity $duration-animation-default;
+			user-select: none;
 		}
 
 		&::after {
 			content: ' ';
 			background: url('./materia-logo.svg') no-repeat bottom right;
-			width: 150px;
-			height: 24px;
+			width: 7em;
 			position: absolute;
 			bottom: 8px;
 			right: 69px;
 			background-size: contain;
 		}
 
+
+		.delete-button {
+			position: absolute;
+			right: 3.1em;
+			top: 0.1em;
+			transform: translate(50%, -50%);
+			z-index: 3;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.2s linear 0.2s;
+
+			button {
+				font-size: 1.2em;
+				padding: 0;
+				min-width: 1.3em;
+				border-radius: 50%;
+			}
+		}
+
+		&.is-selected {
+			border: 3px solid $color-action;
+
+			.delete-button {
+				visibility: visible;
+				transition: opacity 0s;
+				opacity: 1;
+			}
+		}
+
+		&:hover {
+			border: 3px solid $color-action;
+
+			.delete-button {
+				visibility: visible;
+				transition: opacity 0s;
+				opacity: 1;
+			}
+		}
 	}
 }

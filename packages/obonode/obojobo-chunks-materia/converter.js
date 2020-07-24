@@ -1,12 +1,12 @@
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
- * Generates an Obojobo IFrame from a Slate node.
+ * Generates an Obojobo Materia from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
  * src, title, type, border, fit, width, height, initalZoom, autoload,
  * and controlls attributes.
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Iframe node
+ * @returns {Object} An Obojobo Materia node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -31,8 +31,8 @@ const slateToObo = node => ({
 
 
 /**
- * Generates a Slate node from an Obojobo IFrame. Copies all attributes, and adds a dummy child
- * @param {Object} node An Obojobo Iframe node
+ * Generates a Slate node from an Obojobo Materia. Copies all attributes, and adds a dummy child
+ * @param {Object} node An Obojobo Materia node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

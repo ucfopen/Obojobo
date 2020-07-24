@@ -8,7 +8,7 @@ import {
 	freezeEditor,
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
-import MateriaProperties from './iframe-properties-modal'
+import MateriaSettingsDialog from './materia-settings-dialog'
 import './viewer-component.scss'
 import './editor-component.scss'
 
@@ -19,16 +19,16 @@ const isOrNot = Common.util.isOrNot
 class MateriaEditor extends React.Component {
 	constructor(props) {
 		super(props)
-		this.focusIframe = this.focusIframe.bind(this)
+		this.focusMe = this.focusMe.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
-		this.showIFramePropertiesModal = this.showIFramePropertiesModal.bind(this)
+		this.showMateriaSettingsDialog = this.showMateriaSettingsDialog.bind(this)
 		this.changeProperties = this.changeProperties.bind(this)
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
-		this.onCloseIFramePropertiesModal = this.onCloseIFramePropertiesModal.bind(this)
+		this.onCloseMateriaSettingsDialog = this.onCloseMateriaSettingsDialog.bind(this)
 	}
 
-	focusIframe() {
+	focusMe() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		const start = Editor.start(this.props.editor, path)
 		Transforms.setSelection(this.props.editor, {
@@ -37,23 +37,23 @@ class MateriaEditor extends React.Component {
 		})
 	}
 
-	showIFramePropertiesModal(event) {
+	showMateriaSettingsDialog(event) {
 		if(event){
 			event.preventDefault()
 			event.stopPropagation()
 		}
 		ModalUtil.show(
-			<MateriaProperties
+			<MateriaSettingsDialog
 				content={this.props.element.content}
 				onConfirm={this.changeProperties}
-				onCancel={this.onCloseIFramePropertiesModal}
+				onCancel={this.onCloseMateriaSettingsDialog}
 			/>
 		)
 
 		freezeEditor(this.props.editor)
 	}
 
-	onCloseIFramePropertiesModal() {
+	onCloseMateriaSettingsDialog() {
 		ModalUtil.hide()
 		unfreezeEditor(this.props.editor)
 	}
@@ -65,7 +65,7 @@ class MateriaEditor extends React.Component {
 			{ content: { ...this.props.element.content, ...content } },
 			{ at: path }
 		)
-		this.onCloseIFramePropertiesModal()
+		this.onCloseMateriaSettingsDialog()
 	}
 
 	getTitle(src, title) {
@@ -106,7 +106,7 @@ class MateriaEditor extends React.Component {
 		}
 
 		const className =
-			'obojobo-draft--chunks--iframe viewer pad is-previewing ' +
+			'obojobo-draft--chunks--materia viewer pad is-previewing ' +
 			isOrNot(content.border, 'bordered') +
 			' is-not-showing ' +
 			' is-controls-enabled ' +
@@ -121,7 +121,7 @@ class MateriaEditor extends React.Component {
 					<div
 						className={`editor-container  ${isSelected}`}
 						style={previewStyle}
-						onClick={this.focusIframe}
+						onClick={this.focusMe}
 					>
 						<Button
 							className="delete-button"
@@ -131,14 +131,17 @@ class MateriaEditor extends React.Component {
 						>
 							×
 						</Button>
-						<div className="iframe-toolbar" onClick={this.showIFramePropertiesModal}>
-							<div className="widget-icon"><img src={content.icon} alt={content.widgetEngine} /></div>
+						<div className="iframe-toolbar" onClick={this.showMateriaSettingsDialog}>
+							{content.icon
+								? <div className="widget-icon"><img src={content.icon} alt={content.widgetEngine} /></div>
+								: null
+							}
 							<div className="title" aria-hidden contentEditable={false}>
 								{this.getTitle(content.src || null, content.title)}
 							</div>
 							<Button
 								className="properties-button"
-								onClick={this.showIFramePropertiesModal}
+								onClick={this.showMateriaSettingsDialog}
 								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>

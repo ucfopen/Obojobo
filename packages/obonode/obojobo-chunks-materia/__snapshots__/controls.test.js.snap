@@ -2,14 +2,14 @@
 
 exports[`IFrame controls IFrame controls component renders 1`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 2`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -32,7 +32,7 @@ exports[`IFrame controls IFrame controls component renders 2`] = `
 
 exports[`IFrame controls IFrame controls component renders 3`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -83,7 +83,7 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
 
 exports[`IFrame controls IFrame controls component renders 4`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -149,14 +149,14 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
 
 exports[`IFrame controls IFrame controls component renders 5`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 6`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -179,7 +179,7 @@ exports[`IFrame controls IFrame controls component renders 6`] = `
 
 exports[`IFrame controls IFrame controls component renders 7`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -230,7 +230,7 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
 
 exports[`IFrame controls IFrame controls component renders 8`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -296,14 +296,14 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
 
 exports[`IFrame controls IFrame controls component renders 9`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 10`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -326,7 +326,7 @@ exports[`IFrame controls IFrame controls component renders 10`] = `
 
 exports[`IFrame controls IFrame controls component renders 11`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -379,7 +379,7 @@ exports[`IFrame controls IFrame controls component renders 11`] = `
 
 exports[`IFrame controls IFrame controls component renders 12`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -447,14 +447,14 @@ exports[`IFrame controls IFrame controls component renders 12`] = `
 
 exports[`IFrame controls IFrame controls component renders 13`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 14`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -477,7 +477,7 @@ exports[`IFrame controls IFrame controls component renders 14`] = `
 
 exports[`IFrame controls IFrame controls component renders 15`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -530,7 +530,7 @@ exports[`IFrame controls IFrame controls component renders 15`] = `
 
 exports[`IFrame controls IFrame controls component renders 16`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -598,14 +598,14 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
 
 exports[`IFrame controls IFrame controls component renders 17`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 18`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -628,7 +628,7 @@ exports[`IFrame controls IFrame controls component renders 18`] = `
 
 exports[`IFrame controls IFrame controls component renders 19`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -693,7 +693,7 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
 
 exports[`IFrame controls IFrame controls component renders 20`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -773,14 +773,14 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
 
 exports[`IFrame controls IFrame controls component renders 21`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 22`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -803,7 +803,7 @@ exports[`IFrame controls IFrame controls component renders 22`] = `
 
 exports[`IFrame controls IFrame controls component renders 23`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -868,7 +868,7 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
 
 exports[`IFrame controls IFrame controls component renders 24`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -948,14 +948,14 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
 
 exports[`IFrame controls IFrame controls component renders 25`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 26`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -978,7 +978,7 @@ exports[`IFrame controls IFrame controls component renders 26`] = `
 
 exports[`IFrame controls IFrame controls component renders 27`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1045,7 +1045,7 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
 
 exports[`IFrame controls IFrame controls component renders 28`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1127,14 +1127,14 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
 
 exports[`IFrame controls IFrame controls component renders 29`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 />
 `;
 
 exports[`IFrame controls IFrame controls component renders 30`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1157,7 +1157,7 @@ exports[`IFrame controls IFrame controls component renders 30`] = `
 
 exports[`IFrame controls IFrame controls component renders 31`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1224,7 +1224,7 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
 
 exports[`IFrame controls IFrame controls component renders 32`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1306,7 +1306,7 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
 
 exports[`IFrame controls IFrame controls component renders 33`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1331,7 +1331,7 @@ exports[`IFrame controls IFrame controls component renders 33`] = `
 
 exports[`IFrame controls IFrame controls component renders 34`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1371,7 +1371,7 @@ exports[`IFrame controls IFrame controls component renders 34`] = `
 
 exports[`IFrame controls IFrame controls component renders 35`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1439,7 +1439,7 @@ exports[`IFrame controls IFrame controls component renders 35`] = `
 
 exports[`IFrame controls IFrame controls component renders 36`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1522,7 +1522,7 @@ exports[`IFrame controls IFrame controls component renders 36`] = `
 
 exports[`IFrame controls IFrame controls component renders 37`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1547,7 +1547,7 @@ exports[`IFrame controls IFrame controls component renders 37`] = `
 
 exports[`IFrame controls IFrame controls component renders 38`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1587,7 +1587,7 @@ exports[`IFrame controls IFrame controls component renders 38`] = `
 
 exports[`IFrame controls IFrame controls component renders 39`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1655,7 +1655,7 @@ exports[`IFrame controls IFrame controls component renders 39`] = `
 
 exports[`IFrame controls IFrame controls component renders 40`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1738,7 +1738,7 @@ exports[`IFrame controls IFrame controls component renders 40`] = `
 
 exports[`IFrame controls IFrame controls component renders 41`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1763,7 +1763,7 @@ exports[`IFrame controls IFrame controls component renders 41`] = `
 
 exports[`IFrame controls IFrame controls component renders 42`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1803,7 +1803,7 @@ exports[`IFrame controls IFrame controls component renders 42`] = `
 
 exports[`IFrame controls IFrame controls component renders 43`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1873,7 +1873,7 @@ exports[`IFrame controls IFrame controls component renders 43`] = `
 
 exports[`IFrame controls IFrame controls component renders 44`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -1958,7 +1958,7 @@ exports[`IFrame controls IFrame controls component renders 44`] = `
 
 exports[`IFrame controls IFrame controls component renders 45`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -1983,7 +1983,7 @@ exports[`IFrame controls IFrame controls component renders 45`] = `
 
 exports[`IFrame controls IFrame controls component renders 46`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2023,7 +2023,7 @@ exports[`IFrame controls IFrame controls component renders 46`] = `
 
 exports[`IFrame controls IFrame controls component renders 47`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2093,7 +2093,7 @@ exports[`IFrame controls IFrame controls component renders 47`] = `
 
 exports[`IFrame controls IFrame controls component renders 48`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2178,7 +2178,7 @@ exports[`IFrame controls IFrame controls component renders 48`] = `
 
 exports[`IFrame controls IFrame controls component renders 49`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2203,7 +2203,7 @@ exports[`IFrame controls IFrame controls component renders 49`] = `
 
 exports[`IFrame controls IFrame controls component renders 50`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2243,7 +2243,7 @@ exports[`IFrame controls IFrame controls component renders 50`] = `
 
 exports[`IFrame controls IFrame controls component renders 51`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2325,7 +2325,7 @@ exports[`IFrame controls IFrame controls component renders 51`] = `
 
 exports[`IFrame controls IFrame controls component renders 52`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2422,7 +2422,7 @@ exports[`IFrame controls IFrame controls component renders 52`] = `
 
 exports[`IFrame controls IFrame controls component renders 53`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2447,7 +2447,7 @@ exports[`IFrame controls IFrame controls component renders 53`] = `
 
 exports[`IFrame controls IFrame controls component renders 54`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2487,7 +2487,7 @@ exports[`IFrame controls IFrame controls component renders 54`] = `
 
 exports[`IFrame controls IFrame controls component renders 55`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2569,7 +2569,7 @@ exports[`IFrame controls IFrame controls component renders 55`] = `
 
 exports[`IFrame controls IFrame controls component renders 56`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2666,7 +2666,7 @@ exports[`IFrame controls IFrame controls component renders 56`] = `
 
 exports[`IFrame controls IFrame controls component renders 57`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2691,7 +2691,7 @@ exports[`IFrame controls IFrame controls component renders 57`] = `
 
 exports[`IFrame controls IFrame controls component renders 58`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2731,7 +2731,7 @@ exports[`IFrame controls IFrame controls component renders 58`] = `
 
 exports[`IFrame controls IFrame controls component renders 59`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2815,7 +2815,7 @@ exports[`IFrame controls IFrame controls component renders 59`] = `
 
 exports[`IFrame controls IFrame controls component renders 60`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2914,7 +2914,7 @@ exports[`IFrame controls IFrame controls component renders 60`] = `
 
 exports[`IFrame controls IFrame controls component renders 61`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -2939,7 +2939,7 @@ exports[`IFrame controls IFrame controls component renders 61`] = `
 
 exports[`IFrame controls IFrame controls component renders 62`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-not-zoomable is-reloadable"
   role="toolbar"
 >
   <div
@@ -2979,7 +2979,7 @@ exports[`IFrame controls IFrame controls component renders 62`] = `
 
 exports[`IFrame controls IFrame controls component renders 63`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-not-reloadable"
   role="toolbar"
 >
   <div
@@ -3063,7 +3063,7 @@ exports[`IFrame controls IFrame controls component renders 63`] = `
 
 exports[`IFrame controls IFrame controls component renders 64`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
+  className="obojobo-draft--chunks--materia--controls is-zoomable is-reloadable"
   role="toolbar"
 >
   <div
