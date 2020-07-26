@@ -37,14 +37,48 @@
 	text-align: left;
 	min-width: 20em;
 	width: 40vw;
+	display: flex;
+	flex-flow: column wrap;
+
+	.widget-name{
+		margin: .5em;
+	}
+
+	.row {
+		flex: 1 1 100%;
+		transition: flex 0.3s ease-out;
+		margin-bottom: 1em;
+
+		&.is-collapsed{
+			display: none;
+		}
+
+		&.toggle-view {
+			text-align: center;
+			font-size: .8em;
+			margin-top: -1em;
+			margin-bottom: -1em;
+			button{
+				border: 0;
+			}
+		}
+
+		&.is-hidden {
+			display: none;
+		}
+
+		&:last-child{
+			margin-bottom: 0;
+		}
+	}
 
 	.info{
 		text-align: center;
+		background: #f4f4f4;
+		padding: 1em;
 	}
 
 	.widget-icon {
-		display: inline;
-		margin-right: 10px;
 		vertical-align: middle;
 
 		img{
@@ -74,41 +108,10 @@
 		width: 5.8em;
 	}
 
-	.options{
-		.obojobo-draft--components--button{
-			font-size: .8em;
-			margin: .5em;
-			button{
-				border: 0;
-			}
-		}
-	}
-
 	.options {
 		text-align: center;
-		border-top: 1px solid $color-shadow;
 		margin-top: 1em;
 	}
-
-	// > div > div {
-	// 	margin-bottom: 0.2em;
-	// 	height: 1.8em;
-
-	// 	> span {
-	// 		display: inline-block;
-	// 		vertical-align: top;
-	// 		padding-top: 0.9em;
-	// 		line-height: 0;
-	// 		margin-right: 0.4em;
-	// 	}
-
-	// 	> label {
-	// 		display: inline-block;
-	// 		padding-right: 0.5em;
-	// 		width: 7em;
-	// 		vertical-align: middle;
-	// 	}
-	// }
 
 	.obojobo-draft--components--slider {
 		display: block;

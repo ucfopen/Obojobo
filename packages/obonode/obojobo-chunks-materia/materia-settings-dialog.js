@@ -5,6 +5,7 @@ const { Dialog, SimpleDialog } = Common.components.modal
 const { Button } = Common.components
 
 import './materia-settings-dialog.scss'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const MateriaPickerDialog = (props) => {
 	const pickerIframe = useRef(null)
@@ -68,8 +69,8 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	componentDidMount() {
-		this.inputRef.current.focus()
-		this.inputRef.current.select()
+		// this.inputRef.current.focus()
+		// this.inputRef.current.select()
 	}
 
 	handleEventChange(prop, event){
@@ -78,7 +79,7 @@ class MateriaSettingsDialog extends React.Component {
 
 
 	focusOnFirstElement() {
-		this.inputRef.current.focus()
+		// this.inputRef.current.focus()
 	}
 
 	onPick(event){
@@ -139,26 +140,22 @@ class MateriaSettingsDialog extends React.Component {
 			{
 				label: 'Name',
 				prop: 'title',
-				editable: this.state.isUnlocked
 			},
 			{
 				label: 'Link',
 				prop: 'src',
-				editable: this.state.isUnlocked
 			},
 			{
 				label: 'Width',
 				prop: 'width',
 				units: 'px',
 				type: 'number',
-				editable: this.state.isUnlocked
 			},
 			{
 				label: 'Height',
 				prop: 'height',
 				units: 'px',
 				type: 'number',
-				editable: this.state.isUnlocked
 			}
 		]
 
@@ -171,43 +168,56 @@ class MateriaSettingsDialog extends React.Component {
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<div className={'obojobo-draft--chunks--materia--properties-modal'}>
-					<div className="info">
-					{this.state.icon
-								? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div>
-								: null
-							}
+
+					<div className="row info">
+						{this.state.icon
+							? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div>
+							: null
+						}
+						{this.state.title
+							? <div className="widget-name">{this.state.title}</div>
+							: null
+						}
 						<Button id="obojobo-draft--chunks--materia--properties-modal--src" className="correct-button" onClick={this.openPicker}>
-								{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
-							</Button>
+							{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
+						</Button>
 					</div>
 
-					<div className="options">
-						<Button altAction onClick={this.toggleEditLock} disabled={this.state.isUnlocked}>
-							{this.state.isUnlocked ? 'unlocked for editing' : 'unlock to edit'}
+					<div className={`row toggle-view `}>
+						<Button altAction onClick={this.toggleEditLock} >
+							{this.state.isUnlocked ? 'hide details' : 'customize...'}
 						</Button>
-						<div className="obojobo-draft-settings--container">
-							{items.map(item =>
-								<>
-									<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>{item.label}:</label>
-									<div>
-										<input
-												type={item.type || 'text'}
-												id={`obojobo-draft-seetings--item-${item.prop}`}
-												ref={this.inputRef}
-												disabled={item.editable === false}
-												value={this.state[item.prop] || ''}
-												placeholder={(item.placeholder || item.label) + " not set"}
-												onChange={this.handleEventChange.bind(this, item.prop)}
-										/>
-										{item.units
-											? <span className="obojobo-draft-settings--units">{item.units}</span>
-											: null
-										}
-									</div>
-								</>
-							)}
-						</div>
 					</div>
+
+					{this.state.isUnlocked
+						? <div className="row">
+							<div className="obojobo-draft-settings--container">
+								{items.map(item =>
+									<>
+										<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>{item.label}:</label>
+										<div>
+											<input
+													type={item.type || 'text'}
+													id={`obojobo-draft-seetings--item-${item.prop}`}
+													ref={this.inputRef}
+													disabled={item.editable === false}
+													value={this.state[item.prop] || ''}
+													placeholder={(item.placeholder || item.label) + " not set"}
+													onChange={this.handleEventChange.bind(this, item.prop)}
+											/>
+											{item.units
+												? <span className="obojobo-draft-settings--units">{item.units}</span>
+												: null
+											}
+										</div>
+									</>
+								)}
+							</div>
+						</div>
+						: null
+
+					}
+
 
 				</div>
 			</SimpleDialog>
