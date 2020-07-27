@@ -217,6 +217,7 @@ describe('Nav', () => {
 
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
+		expect(tree.props.className).toEqual(expect.stringContaining('is-red-alert'))
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -233,6 +234,7 @@ describe('Nav', () => {
 
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
+		expect(tree.props.className).toEqual(expect.stringContaining('is-not-red-alert'))
 		expect(tree).toMatchSnapshot()
 	})
 
