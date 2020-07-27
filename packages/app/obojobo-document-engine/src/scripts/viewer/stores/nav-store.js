@@ -180,7 +180,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(draftId, model, startingId, startingPath, visitId, redAlert, viewState = {}) {
+	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},

@@ -251,9 +251,9 @@ export default class Nav extends React.Component {
 					})}
 				</ul>
 				<button
+					className="red-alert-button"
 					onClick={() => {
 						NavUtil.setRedAlert(!NavUtil.isRedAlertEnabled(navState))
-						console.log(NavUtil.isRedAlertEnabled)
 					}}
 				>
 					Red Alert

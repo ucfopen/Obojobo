@@ -54,7 +54,9 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	getOrderedList: jest.fn(),
 	getNavTarget: jest.fn(),
 	close: jest.fn(),
-	open: jest.fn()
+	open: jest.fn(),
+	setRedAlert: jest.fn(),
+	isRedAlertEnabled: jest.fn()
 }))
 
 // NavStore
@@ -197,6 +199,38 @@ describe('Nav', () => {
 				navTargetId: 56 // select this item
 			}
 		}
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders red alert status (redAlert=true)', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(true)
+		const props = {
+			navState: {
+				open: true,
+				locked: false,
+				redAlert: true
+			}
+		}
+
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders red alert status (redAlert=false)', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(false)
+		const props = {
+			navState: {
+				open: true,
+				locked: false,
+				redAlert: false
+			}
+		}
+
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
@@ -365,6 +399,24 @@ describe('Nav', () => {
 		expect(mockDispatcherTrigger).toHaveBeenCalledWith('viewer:scrollToTop', {
 			value: { animateScroll: true }
 		})
+	})
+
+	test('Clicking on red alert button calls NavUtil.setRedAlert and NavUtil.isRedAlertEnabled', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+		const el = mount(<Nav {...props} />)
+		const redAlert = el.find('.red-alert-button')
+
+		expect(NavUtil.setRedAlert).not.toHaveBeenCalled()
+		expect(NavUtil.isRedAlertEnabled).toHaveBeenCalledTimes(1)
+		redAlert.simulate('click')
+		expect(NavUtil.setRedAlert).toHaveBeenCalledTimes(1)
+		expect(NavUtil.isRedAlertEnabled).toHaveBeenCalledTimes(2)
 	})
 
 	test('focus calls focus ', () => {

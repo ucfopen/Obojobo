@@ -277,6 +277,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -293,6 +294,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -309,6 +311,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;

@@ -3,7 +3,7 @@
 exports[`Nav renders all list item types (locked=false) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -117,6 +117,12 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       </button>
     </li>
   </ul>
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -129,7 +135,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
 exports[`Nav renders all list item types (locked=true) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -264,6 +270,12 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       />
     </li>
   </ul>
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -276,7 +288,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 exports[`Nav renders blank title 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -308,6 +320,12 @@ exports[`Nav renders blank title 1`] = `
        
     </li>
   </ul>
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -320,7 +338,7 @@ exports[`Nav renders blank title 1`] = `
 exports[`Nav renders closed 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-open is-enabled"
+  className="viewer--components--nav is-locked is-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -345,6 +363,12 @@ exports[`Nav renders closed 1`] = `
     aria-hidden={false}
     tabIndex="-1"
   />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -357,7 +381,7 @@ exports[`Nav renders closed 1`] = `
 exports[`Nav renders opened 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -383,6 +407,12 @@ exports[`Nav renders opened 1`] = `
     aria-hidden={true}
     tabIndex="-1"
   />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -395,7 +425,7 @@ exports[`Nav renders opened 1`] = `
 exports[`Nav renders unlocked 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -421,6 +451,98 @@ exports[`Nav renders unlocked 1`] = `
     aria-hidden={true}
     tabIndex="-1"
   />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders red alert status (redAlert=true) 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled is-red-alert"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders red alert status (redAlert=false) 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled is-not-red-alert"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
