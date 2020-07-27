@@ -1,5 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`IFrame IFrame component readOnly 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          className="button"
+          contentEditable={false}
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          loading="lazy"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          className="button"
+          contentEditable={false}
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`IFrame IFrame component renders 1`] = `
 <div
   className="component"

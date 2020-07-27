@@ -1,17 +1,17 @@
 import React from 'react'
 
-// import CodeAdapter from 'obojobo-chunks-code/adapter'
-// import IframeAdapter from 'obojobo-chunks-iframe/adapter'
-
 import ActionButton from 'obojobo-chunks-action-button/viewer-component'
 import ActionButtonAdapter from 'obojobo-chunks-action-button/adapter'
 import Break from 'obojobo-chunks-break/viewer-component'
 import BreakAdapter from 'obojobo-chunks-break/adapter'
+import Code from 'obojobo-chunks-code/viewer-component'
 import Figure from 'obojobo-chunks-figure/viewer-component'
 import FigureAdapter from 'obojobo-chunks-figure/adapter'
 import Heading from 'obojobo-chunks-heading/viewer-component'
 import HeadingAdapter from 'obojobo-chunks-heading/adapter'
 import HTML from 'obojobo-chunks-html/viewer-component'
+import Iframe from 'obojobo-chunks-iframe/viewer-component'
+import IframeAdapter from 'obojobo-chunks-iframe/adapter'
 import HtmlAdapter from 'obojobo-chunks-html/adapter'
 import List from 'obojobo-chunks-list/viewer-component'
 import ListAdapter from 'obojobo-chunks-list/adapter'
@@ -37,9 +37,10 @@ const ModelRenderer = props => {
 			Component = Break
 			BreakAdapter.construct(model, model.attributes)
 			break
-		// case 'ObojoboDraft.Chunks.Code':
-		// 	Component = React.lazy(() => import('obojobo-chunks-code/viewer-component'))
-		// 	break
+		case 'ObojoboDraft.Chunks.Code':
+			Component = Code
+			TextAdaptor.construct(model, model.attributes)
+			break
 		case 'ObojoboDraft.Chunks.Figure':
 			Component = Figure
 			FigureAdapter.construct(model, model.attributes)
@@ -52,10 +53,10 @@ const ModelRenderer = props => {
 			Component = HTML
 			HtmlAdapter.construct(model, model.attributes)
 			break
-		// case 'ObojoboDraft.Chunks.IFrame':
-		// 	Component = React.lazy(() => import('obojobo-chunks-iframe/viewer-component'))
-		// 	IframeAdapter.construct(model, model.attributes)
-		// 	break
+		case 'ObojoboDraft.Chunks.IFrame':
+			Component = Iframe
+			IframeAdapter.construct(model, model.attributes)
+			break
 		case 'ObojoboDraft.Chunks.List':
 			Component = List
 			ListAdapter.construct(model, model.attributes)
@@ -80,7 +81,7 @@ const ModelRenderer = props => {
 			return null
 	}
 
-	return <Component model={model} moduleData={{ isFocussed: false }} />
+	return <Component model={model} moduleData={{ isFocussed: false }} readOnly />
 }
 
 export default ModelRenderer

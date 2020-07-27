@@ -12,6 +12,12 @@ exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Br
 </div>
 `;
 
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Code" 1`] = `
+<div>
+  Code
+</div>
+`;
+
 exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Figure" 1`] = `
 <div>
   Figure
@@ -27,6 +33,12 @@ exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.HT
 exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.Heading" 1`] = `
 <div>
   Heading
+</div>
+`;
+
+exports[`ModelRenderer ModelRenderer component with type "ObojoboDraft.Chunks.IFrame" 1`] = `
+<div>
+  IFrame
 </div>
 `;
 

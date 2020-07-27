@@ -7,12 +7,15 @@ jest.mock('obojobo-chunks-action-button/viewer-component', () => () => <div>Acti
 jest.mock('obojobo-chunks-action-button/adapter')
 jest.mock('obojobo-chunks-break/viewer-component', () => () => <div>Break</div>)
 jest.mock('obojobo-chunks-break/adapter')
+jest.mock('obojobo-chunks-code/viewer-component', () => () => <div>Code</div>)
 jest.mock('obojobo-chunks-figure/viewer-component', () => () => <div>Figure</div>)
 jest.mock('obojobo-chunks-figure/adapter')
 jest.mock('obojobo-chunks-heading/viewer-component', () => () => <div>Heading</div>)
 jest.mock('obojobo-chunks-heading/adapter')
 jest.mock('obojobo-chunks-html/viewer-component', () => () => <div>HTML</div>)
 jest.mock('obojobo-chunks-html/adapter')
+jest.mock('obojobo-chunks-iframe/viewer-component', () => () => <div>IFrame</div>)
+jest.mock('obojobo-chunks-iframe/adapter')
 jest.mock('obojobo-chunks-list/viewer-component', () => () => <div>List</div>)
 jest.mock('obojobo-chunks-list/adapter')
 jest.mock('obojobo-chunks-math-equation/viewer-component', () => () => <div>MathEquation</div>)
@@ -43,6 +46,12 @@ describe('ModelRenderer', () => {
 		expect(component).toMatchSnapshot()
 	})
 
+	test('ModelRenderer component with type "ObojoboDraft.Chunks.Code"', () => {
+		const model = { get: () => 'ObojoboDraft.Chunks.Code' }
+		const component = create(<ModelRenderer model={model} />)
+		expect(component).toMatchSnapshot()
+	})
+
 	test('ModelRenderer component with type "ObojoboDraft.Chunks.Figure"', () => {
 		const model = { get: () => 'ObojoboDraft.Chunks.Figure' }
 		const component = create(<ModelRenderer model={model} />)
@@ -57,6 +66,12 @@ describe('ModelRenderer', () => {
 
 	test('ModelRenderer component with type "ObojoboDraft.Chunks.HTML"', () => {
 		const model = { get: () => 'ObojoboDraft.Chunks.HTML' }
+		const component = create(<ModelRenderer model={model} />)
+		expect(component).toMatchSnapshot()
+	})
+
+	test('ModelRenderer component with type "ObojoboDraft.Chunks.IFrame"', () => {
+		const model = { get: () => 'ObojoboDraft.Chunks.IFrame' }
 		const component = create(<ModelRenderer model={model} />)
 		expect(component).toMatchSnapshot()
 	})
