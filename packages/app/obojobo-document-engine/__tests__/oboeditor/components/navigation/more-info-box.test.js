@@ -193,6 +193,40 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
+	test('More Info Box input with explicit and default placeholders', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{
+					mockInput1: 'mockInputValue1',
+					mockInput2: 'mockInputValue2'
+				}}
+				contentDescription={[
+					{
+						type: 'input',
+						description: 'Mock Input 1',
+						name: 'mockInput1'
+					},
+					{
+						type: 'input',
+						description: 'Mock Input 2',
+						name: 'mockInput2',
+						placeholder: 'mockPlaceholderValue'
+					}
+				]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		expect(component.find({ value: 'mockInputValue1' }).props().placeholder).toBe('')
+		expect(component.find({ value: 'mockInputValue2' }).props().placeholder).toBe(
+			'mockPlaceholderValue'
+		)
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('More Info Box edits values', () => {
 		jest.spyOn(React, 'createRef').mockReturnValue({
 			current: {
