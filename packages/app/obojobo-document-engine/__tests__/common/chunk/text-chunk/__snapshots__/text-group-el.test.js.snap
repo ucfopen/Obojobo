@@ -2,7 +2,7 @@
 
 exports[`TextGroupEl String values of hangingIndent work as expected 1`] = `
 <span
-  className="text-group"
+  className="obo-text"
   data-group-index={0}
 >
   <span>
@@ -17,7 +17,7 @@ exports[`TextGroupEl String values of hangingIndent work as expected 1`] = `
 
 exports[`TextGroupEl String values of hangingIndent work as expected 2`] = `
 <span
-  className="text-group"
+  className="obo-text"
   data-group-index={1}
   data-hanging-indent={true}
 >
@@ -33,7 +33,7 @@ exports[`TextGroupEl String values of hangingIndent work as expected 2`] = `
 
 exports[`TextGroupEl TextGroupEl formatted 1`] = `
 <span
-  className="text-group"
+  className="obo-text"
   data-group-index={1}
   data-hanging-indent={true}
 >
@@ -57,7 +57,7 @@ exports[`TextGroupEl TextGroupEl formatted 1`] = `
 
 exports[`TextGroupEl TextGroupEl unformatted 1`] = `
 <span
-  className="text-group"
+  className="obo-text"
   data-group-index={0}
 >
   <span>

@@ -51,7 +51,7 @@ const TextGroupEl = props => {
 	const hangingIndent = ('' + props.textItem.data.hangingIndent).toLowerCase()
 
 	const txtProps = {
-		className: 'text-group',
+		className: 'obo-text',
 		'data-group-index': props.groupIndex
 	}
 

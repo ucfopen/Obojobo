@@ -16,7 +16,7 @@ exports[`Code Code component 1`] = `
     <pre>
       <code>
         <span
-          className="text-group align-left"
+          className="obo-text align-left"
           data-group-index={0}
           data-indent={0}
         >

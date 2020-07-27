@@ -28,7 +28,7 @@ exports[`MCFeedback MCFeedback component for a correct item 1`] = `
       className="text-chunk obojobo-draft--chunks--single-text pad"
     >
       <span
-        className="text-group align-left"
+        className="obo-text align-left"
         data-group-index={0}
         data-indent={0}
       >
@@ -73,7 +73,7 @@ exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
       className="text-chunk obojobo-draft--chunks--single-text pad"
     >
       <span
-        className="text-group align-left"
+        className="obo-text align-left"
         data-group-index={0}
         data-indent={0}
       >
