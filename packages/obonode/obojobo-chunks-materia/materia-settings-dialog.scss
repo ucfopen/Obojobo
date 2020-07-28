@@ -49,27 +49,27 @@
 		transition: flex 0.3s ease-out;
 		margin-bottom: 1em;
 
-		&.is-collapsed{
-			display: none;
+		&.center{
+			text-align: center;
 		}
 
-		&.toggle-view {
+		.toggle-view-button {
 			text-align: center;
 			font-size: .8em;
-			margin-top: -1em;
-			margin-bottom: -1em;
+
 			button{
 				border: 0;
 			}
+
+			&.is-not-open {
+				margin-bottom: -1em;
+			}
+
+			&.is-open {
+				margin-bottom: 1.2em;
+			}
 		}
 
-		&.is-hidden {
-			display: none;
-		}
-
-		&:last-child{
-			margin-bottom: 0;
-		}
 	}
 
 	.info{

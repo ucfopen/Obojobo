@@ -38,10 +38,8 @@ class MateriaEditor extends React.Component {
 	}
 
 	showMateriaSettingsDialog(event) {
-		if(event){
-			event.preventDefault()
-			event.stopPropagation()
-		}
+		event.preventDefault()
+		event.stopPropagation()
 		ModalUtil.show(
 			<MateriaSettingsDialog
 				content={this.props.element.content}
@@ -49,7 +47,6 @@ class MateriaEditor extends React.Component {
 				onCancel={this.onCloseMateriaSettingsDialog}
 			/>
 		)
-
 		freezeEditor(this.props.editor)
 	}
 
@@ -131,9 +128,9 @@ class MateriaEditor extends React.Component {
 						>
 							×
 						</Button>
-						<div className="iframe-toolbar" onClick={this.showMateriaSettingsDialog}>
+						<div className="iframe-toolbar" >
 							{content.icon
-								? <div className="widget-icon"><img src={content.icon} alt={content.widgetEngine} /></div>
+								? <div className="widget-icon" contentEditable={false}><img src={content.icon} alt={content.widgetEngine} /></div>
 								: null
 							}
 							<div className="title" aria-hidden contentEditable={false}>

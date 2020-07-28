@@ -81,6 +81,7 @@ class IFrameCore extends React.Component {
 	}
 
 	onClickContainer() {
+		if (this.props.onShow) this.props.onShow()
 		MediaUtil.show(this.props.model.get('id'))
 		FocusUtil.focusComponent(this.props.model.get('id'))
 	}
@@ -213,45 +214,43 @@ class IFrameCore extends React.Component {
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
-						{isShowing ? null : (
+						{isShowing ? (
+							<>
+								<Button
+									altAction
+									className="button-skip bottom"
+									ref={this.buttonSkipToTopRef}
+									onClick={this.boundSkipToTop}
+								>
+									You are at the end of this embedded content. Click to skip to the beginning.
+								</Button>
+								<Controls
+									newWindowSrc={src}
+									controlsOptions={controlsOpts}
+									isZoomResettable={!zoomValues.isZoomAtDefault}
+									isZoomOutDisabled={isAtMinScale}
+									isZoomInDisabled={isAtMaxScale}
+									reload={this.boundOnReload}
+									zoomIn={this.onClickSetZoom.bind(
+										this,
+										parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
+									)}
+									zoomOut={this.onClickSetZoom.bind(
+										this,
+										parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
+									)}
+									zoomReset={this.boundOnZoomReset}
+								/>
+							</>
+						) : (
 							<div className="click-to-load">
-								<span className="title" aria-hidden>
-									{displayedTitle}
-								</span>
 								{ms.src === null ? null : (
-									<Button ariaLabel="Click to load external content">{this.props.label || 'View Content'}</Button>
+									<Button ariaLabel="Click to load external content">
+										{this.props.label || 'View Content'}
+									</Button>
 								)}
 							</div>
 						)}
-						{isShowing ? (
-							<Button
-								altAction
-								className="button-skip bottom"
-								ref={this.buttonSkipToTopRef}
-								onClick={this.boundSkipToTop}
-							>
-								You are at the end of this embedded content. Click to skip to the beginning.
-							</Button>
-						) : null}
-						{isShowing ? (
-							<Controls
-								newWindowSrc={src}
-								controlsOptions={controlsOpts}
-								isZoomResettable={!zoomValues.isZoomAtDefault}
-								isZoomOutDisabled={isAtMinScale}
-								isZoomInDisabled={isAtMaxScale}
-								reload={this.boundOnReload}
-								zoomIn={this.onClickSetZoom.bind(
-									this,
-									parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
-								)}
-								zoomOut={this.onClickSetZoom.bind(
-									this,
-									parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
-								)}
-								zoomReset={this.boundOnZoomReset}
-							/>
-						) : null}
 					</div>
 				</div>
 			</OboComponent>
@@ -259,5 +258,6 @@ class IFrameCore extends React.Component {
 	}
 }
 
-const IFrame = React.forwardRef( (props, ref) => <IFrameCore {...props} forwardedRef={ref} /> )
+// wrap export with forwardRef
+const IFrame = React.forwardRef((props, ref) => <IFrameCore {...props} forwardedRef={ref} />)
 export default IFrame

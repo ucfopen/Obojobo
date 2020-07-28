@@ -1,49 +1,14 @@
-import React, { useEffect, useRef, useMemo } from 'react'
-import Common from 'Common'
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-const { Dialog, SimpleDialog } = Common.components.modal
-const { Button } = Common.components
-
-import './materia-settings-dialog.scss'
+import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-
-const MateriaPickerDialog = (props) => {
-	const pickerIframe = useRef(null)
-
-	useEffect(
-		() => {
-			console.log('listening?')
-			if(pickerIframe.current.addEventListener){
-				console.log('listening!')
-				window.addEventListener('message', props.onPick)
-			}
-
-		}, [pickerIframe.current]
-	)
-
-
-	const buttons = useMemo(
-		() => {
-			return [
-				{
-					value: 'Cancel',
-					altAction: true,
-					onClick: props.onCancel
-				}
-			]
-		}, []
-	)
-
-	return (
-		<Dialog buttons={buttons} title="Choose a Widget">
-			<iframe ref={pickerIframe} id="materia-lti-picker" src="/materia-lti-picker-launch" frameBorder="0" loading="lazy"></iframe>
-		</Dialog>
-	)
-}
+import SimpleDialog from 'obojobo-document-engine/src/scripts/common/components/modal/simple-dialog'
+import Button from 'obojobo-document-engine/src/scripts/common/components/button'
+import MateriaPickerDialog from './materia-picker-dialog'
+import './materia-settings-dialog.scss'
 
 class MateriaSettingsDialog extends React.Component {
 	constructor(props) {
 		super(props)
+
 		const defaultState = {
 			autoload: false,
 			border: true,
@@ -56,30 +21,51 @@ class MateriaSettingsDialog extends React.Component {
 			icon: '',
 			widgetEngine: '',
 			pickerOpen: false,
-			isUnlocked: false
+			// start open if theres no icon and src is set (custom link)
+			// start closed if there's no src (empty node)
+			isUnlocked: (!props.content.icon && props.content.src)
 		}
 		this.state = { ...defaultState, ...props.content }
-		this.inputRef = React.createRef()
 
+		this.inputRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.openPicker = this.openPicker.bind(this)
 		this.onPick = this.onPick.bind(this)
 		this.toggleEditLock = this.toggleEditLock.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
-	}
 
-	componentDidMount() {
-		// this.inputRef.current.focus()
-		// this.inputRef.current.select()
+		this.settingsItems = [
+			{
+				label: 'Name',
+				prop: 'title',
+			},
+			{
+				label: 'Link',
+				prop: 'src',
+			},
+			{
+				label: 'Width',
+				prop: 'width',
+				units: 'px',
+				type: 'number',
+			},
+			{
+				label: 'Height',
+				prop: 'height',
+				units: 'px',
+				type: 'number',
+			}
+		]
 	}
 
 	handleEventChange(prop, event){
 		this.setState({ [prop]: event.target.value })
 	}
 
-
 	focusOnFirstElement() {
-		// this.inputRef.current.focus()
+		if (this.inputRef && this.inputRef.current) {
+			return this.inputRef.current.focus()
+		}
 	}
 
 	onPick(event){
@@ -136,29 +122,6 @@ class MateriaSettingsDialog extends React.Component {
 			)
 		}
 
-		const items = [
-			{
-				label: 'Name',
-				prop: 'title',
-			},
-			{
-				label: 'Link',
-				prop: 'src',
-			},
-			{
-				label: 'Width',
-				prop: 'width',
-				units: 'px',
-				type: 'number',
-			},
-			{
-				label: 'Height',
-				prop: 'height',
-				units: 'px',
-				type: 'number',
-			}
-		]
-
 		return (
 			<SimpleDialog
 				cancelOk
@@ -178,28 +141,35 @@ class MateriaSettingsDialog extends React.Component {
 							? <div className="widget-name">{this.state.title}</div>
 							: null
 						}
-						<Button id="obojobo-draft--chunks--materia--properties-modal--src" className="correct-button" onClick={this.openPicker}>
+						<Button
+							id="obojobo-draft--chunks--materia--properties-modal--src"
+							className="correct-button"
+							onClick={this.openPicker}
+							ref={this.inputRef}
+						>
 							{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
 						</Button>
 					</div>
 
-					<div className={`row toggle-view `}>
-						<Button altAction onClick={this.toggleEditLock} >
-							{this.state.isUnlocked ? 'hide details' : 'customize...'}
-						</Button>
-					</div>
+					<div className="row center">
 
-					{this.state.isUnlocked
-						? <div className="row">
-							<div className="obojobo-draft-settings--container">
-								{items.map(item =>
+						<Button
+							className={`toggle-view-button ${isOrNot(this.state.isUnlocked, 'open')}`}
+							altAction
+							onClick={this.toggleEditLock}
+						>
+							{this.state.isUnlocked ? 'Close Customize' : 'Customize'}
+						</Button>
+
+						{this.state.isUnlocked
+							? <div className="obojobo-draft-settings--container">
+								{this.settingsItems.map(item =>
 									<>
 										<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>{item.label}:</label>
 										<div>
 											<input
 													type={item.type || 'text'}
 													id={`obojobo-draft-seetings--item-${item.prop}`}
-													ref={this.inputRef}
 													disabled={item.editable === false}
 													value={this.state[item.prop] || ''}
 													placeholder={(item.placeholder || item.label) + " not set"}
@@ -213,10 +183,10 @@ class MateriaSettingsDialog extends React.Component {
 									</>
 								)}
 							</div>
-						</div>
-						: null
+							: null
+						}
+					</div>
 
-					}
 
 
 				</div>
