@@ -1,24 +1,42 @@
 @import '~styles/includes';
 
 .import-questions-model {
-	max-height: 65vh;
-	overflow-y: scroll;
-	font-size: 0.8em;
-
 	.import-model--question-content {
-		border: 1px solid black;
-		border-radius: 5px;
-		user-select: none;
-		cursor: pointer;
-		margin: 1em;
+		background: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		max-height: 55vh;
+		min-width: 35em;
+		overflow-y: scroll;
+		font-size: 0.75em;
 
-		&.is-selected {
-			background: transparentize($color-action, 0.9);
-			border: 1px solid $color-action;
-		}
+		.import-model--question-content--single {
+			background: $color-bg;
+			border: 1px solid $color-shadow;
+			border-radius: $dimension-rounded-radius;
+			user-select: none;
+			cursor: pointer;
+			margin: 1em;
 
-		* {
-			pointer-events: none;
+			input {
+				float: left;
+				margin-top: 1.9em;
+				margin-left: 1em;
+			}
+
+			&.is-selected {
+				background: transparentize($color-action, 0.9);
+				border: 1px solid $color-action;
+			}
+
+			* {
+				pointer-events: none;
+			}
 		}
+	}
+
+	p {
+		margin: 1em 0;
+		font-size: 0.8em;
+		color: $color-text-minor;
 	}
 }

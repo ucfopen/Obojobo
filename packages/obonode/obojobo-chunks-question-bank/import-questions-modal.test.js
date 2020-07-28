@@ -41,7 +41,7 @@ describe('ImportQuestionModal', () => {
 		const component = mount(<ImportQuestionModal {...props} />)
 
 		component
-			.find('.import-model--question-content')
+			.find('.import-model--question-content--single')
 			.at(0)
 			.simulate('click')
 
@@ -63,7 +63,7 @@ describe('ImportQuestionModal', () => {
 		const component = mount(<ImportQuestionModal {...props} />)
 
 		component
-			.find('.import-model--question-content')
+			.find('.import-model--question-content--single')
 			.at(0)
 			.simulate('click')
 

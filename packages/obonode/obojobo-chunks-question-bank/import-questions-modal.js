@@ -39,21 +39,27 @@ const importQuestionModal = props => {
 	]
 
 	return (
-		<Dialog title="Select questions from the current module" buttons={buttons}>
+		<Dialog
+			modalClassName="import-questions-model"
+			title="Select questions from the current module to import"
+			buttons={buttons}
+		>
 			<Suspense fallback={<div>Loading...</div>}>
-				<div className="import-questions-model">
+				<div className="import-model--question-content">
 					{questionList.map((questionModel, index) => {
 						return (
 							<div
 								key={questionModel.id}
 								className={
-									'import-model--question-content' + isOrNot(selectStates[index], 'selected')
+									'import-model--question-content--single' +
+									isOrNot(selectStates[index], 'selected')
 								}
 								onClick={() => {
 									selectStates[index] = !selectStates[index]
 									setSelectStates([...selectStates])
 								}}
 							>
+								<input type="checkbox" checked={selectStates[index]} />
 								{questionModel.children.map(child => {
 									return <ModelRender key={child.id} model={child} />
 								})}
@@ -61,6 +67,7 @@ const importQuestionModal = props => {
 						)
 					})}
 				</div>
+				<p>The selected questions above will be duplicated into your question bank</p>
 			</Suspense>
 		</Dialog>
 	)

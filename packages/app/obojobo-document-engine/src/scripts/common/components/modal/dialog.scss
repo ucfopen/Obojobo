@@ -12,7 +12,7 @@
 		}
 
 		> .dialog-content {
-			margin-bottom: 2em;
+			margin-bottom: 1em;
 
 			@include mq($until: tablet) {
 				margin-bottom: 2em;
