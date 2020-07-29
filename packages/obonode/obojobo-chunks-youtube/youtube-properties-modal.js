@@ -15,6 +15,7 @@ class YouTubeProperties extends React.Component {
 		this.videoUrlInputRef = React.createRef()
 		this.state = {
 			content: this.props.content,
+			videoInputValidClass: '',
 			startTimeError: '',
 			endTimeError: ''
 		}
@@ -29,17 +30,17 @@ class YouTubeProperties extends React.Component {
 	}
 
 	convertStringToSeconds(str) {
-		let arr = str.split(':')
+		const arr = str.split(':')
 		let s = 0,
 			m = 1
 
 		// just return the string if it's not valid,
 		// the user is probably still typing
-		if (arr.length === 0) {
+		if (arr.length === 1) {
 			return str
 		}
 
-		while (arr.length > 0) {
+		while (arr.length > 1) {
 			s += m * parseInt(arr.pop(), 10)
 			m *= 60
 		}
@@ -74,11 +75,11 @@ class YouTubeProperties extends React.Component {
 
 		this.setState({
 			...this.state,
+			videoInputValidClass,
 			content: {
 				...this.state.content,
 				videoId,
 				videoUrl,
-				videoInputValidClass,
 				startTime,
 				endTime
 			}
@@ -89,8 +90,6 @@ class YouTubeProperties extends React.Component {
 		const startTime = event.target.value
 
 		this.setState({
-			startTimeError: '',
-			endTimeError: '',
 			content: {
 				...this.state.content,
 				startTime
@@ -102,8 +101,6 @@ class YouTubeProperties extends React.Component {
 		const endTime = event.target.value
 
 		this.setState({
-			startTimeError: '',
-			endTimeError: '',
 			content: {
 				...this.state.content,
 				endTime
@@ -115,8 +112,6 @@ class YouTubeProperties extends React.Component {
 		const startTime = this.convertStringToSeconds(event.target.value)
 
 		this.setState({
-			startTimeError: '',
-			endTimeError: '',
 			content: {
 				...this.state.content,
 				startTime
@@ -128,8 +123,6 @@ class YouTubeProperties extends React.Component {
 		const endTime = this.convertStringToSeconds(event.target.value)
 
 		this.setState({
-			startTimeError: '',
-			endTimeError: '',
 			content: {
 				...this.state.content,
 				endTime
@@ -138,26 +131,20 @@ class YouTubeProperties extends React.Component {
 	}
 
 	onConfirm() {
-		const { startTime, endTime, videoId } = this.state.content
+		const { startTime, endTime } = this.state.content
 
-		const videoInfo = ParseYoutubeUrl.youTubeParseUrl(videoId)
+		const startTimeInt = parseInt(startTime, 10)
+		const endTimeInt = parseInt(endTime, 10)
 
-		this.setState({
-			videoId: videoInfo.videoId,
-			content: {
-				...this.state.content
-			}
-		})
-
-		if (startTime < 0) {
+		if (startTimeInt < 0) {
 			return this.setState({ startTimeError: 'Start time must be > 0' })
 		}
 
-		if (endTime < 0) {
+		if (endTimeInt < 0) {
 			return this.setState({ endTimeError: 'End time must be > 0' })
 		}
 
-		if (startTime && endTime && endTime <= startTime) {
+		if (endTimeInt <= startTimeInt) {
 			return this.setState({ endTimeError: 'End time must be > start time' })
 		}
 
@@ -197,7 +184,7 @@ class YouTubeProperties extends React.Component {
 						value={this.state.content.videoUrl || ''}
 						onChange={this.handleUrlChange}
 						onBlur={this.handleUrlBlur}
-						className={this.state.content.videoInputValidClass}
+						className={this.state.videoInputValidClass}
 					/>
 					<input
 						id="obojobo-draft--chunks--youtube--video-id"

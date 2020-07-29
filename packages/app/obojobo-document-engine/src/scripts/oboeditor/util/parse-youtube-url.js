@@ -23,9 +23,12 @@ const ParseYoutubeUrl = {
 				videoStartTime = 0
 			}
 
-			videoEndTime = youTubeSiteRegexMatch[10] ? parseInt(youTubeSiteRegexMatch[10], 10) : 0
+			// if (typeof youTubeSiteRegexMatch[7] !== 'undefined') {
+			// 	newVideoId = youTubeSiteRegexMatch[7]
+			// }
+
 			newVideoId = youTubeSiteRegexMatch[7]
-			// newVideoId = youTubeSiteRegexMatch[7].length === 11 ? youTubeSiteRegexMatch[7] : false
+			videoEndTime = youTubeSiteRegexMatch[10] ? parseInt(youTubeSiteRegexMatch[10], 10) : 0
 		}
 
 		return {
