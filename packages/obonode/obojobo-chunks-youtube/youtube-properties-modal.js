@@ -10,6 +10,7 @@ const { MoreInfoButton } = Common.components
 class YouTubeProperties extends React.Component {
 	constructor(props) {
 		super(props)
+		this.convertStringToSeconds = this.convertStringToSeconds.bind(this)
 		this.idInputRef = React.createRef()
 		this.videoUrlInputRef = React.createRef()
 		this.state = {
@@ -19,9 +20,31 @@ class YouTubeProperties extends React.Component {
 		}
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
+		this.handleStartTimeBlur = this.handleStartTimeBlur.bind(this)
+		this.handleEndTimeBlur = this.handleEndTimeBlur.bind(this)
 		this.handleStartTimeChange = this.handleStartTimeChange.bind(this)
 		this.handleEndTimeChange = this.handleEndTimeChange.bind(this)
 		this.handleUrlChange = this.handleUrlChange.bind(this)
+		this.handleUrlBlur = this.handleUrlBlur.bind(this)
+	}
+
+	convertStringToSeconds(str) {
+		let arr = str.split(':')
+		let s = 0,
+			m = 1
+
+		// just return the string if it's not valid,
+		// the user is probably still typing
+		if (arr.length === 0) {
+			return str
+		}
+
+		while (arr.length > 0) {
+			s += m * parseInt(arr.pop(), 10)
+			m *= 60
+		}
+
+		return s
 	}
 
 	focusOnFirstElement() {
@@ -29,6 +52,18 @@ class YouTubeProperties extends React.Component {
 	}
 
 	handleUrlChange(event) {
+		const videoUrl = event.target.value
+
+		this.setState({
+			...this.state,
+			content: {
+				...this.state.content,
+				videoUrl
+			}
+		})
+	}
+
+	handleUrlBlur(event) {
 		const videoInfo = ParseYoutubeUrl.youTubeParseUrl(event.target.value)
 		const videoId = videoInfo.videoId === false ? '' : videoInfo.videoId
 		const videoInputValidClass =
@@ -51,7 +86,7 @@ class YouTubeProperties extends React.Component {
 	}
 
 	handleStartTimeChange(event) {
-		const startTime = Number(event.target.value)
+		const startTime = event.target.value
 
 		this.setState({
 			startTimeError: '',
@@ -64,7 +99,33 @@ class YouTubeProperties extends React.Component {
 	}
 
 	handleEndTimeChange(event) {
-		const endTime = Number(event.target.value)
+		const endTime = event.target.value
+
+		this.setState({
+			startTimeError: '',
+			endTimeError: '',
+			content: {
+				...this.state.content,
+				endTime
+			}
+		})
+	}
+
+	handleStartTimeBlur(event) {
+		const startTime = this.convertStringToSeconds(event.target.value)
+
+		this.setState({
+			startTimeError: '',
+			endTimeError: '',
+			content: {
+				...this.state.content,
+				startTime
+			}
+		})
+	}
+
+	handleEndTimeBlur(event) {
+		const endTime = this.convertStringToSeconds(event.target.value)
 
 		this.setState({
 			startTimeError: '',
@@ -135,6 +196,7 @@ class YouTubeProperties extends React.Component {
 						ref={this.videoUrlInputRef}
 						value={this.state.content.videoUrl || ''}
 						onChange={this.handleUrlChange}
+						onBlur={this.handleUrlBlur}
 						className={this.state.content.videoInputValidClass}
 					/>
 					<input
@@ -146,19 +208,21 @@ class YouTubeProperties extends React.Component {
 
 					<label>Start time (optional):</label>
 					<input
-						type="number"
+						type="text"
 						min="0"
 						value={this.state.content.startTime || ''}
 						onChange={this.handleStartTimeChange}
+						onBlur={this.handleStartTimeBlur}
 					/>
 					<small>Seconds or MM:SS format (e.g. 135 or 2:15)</small>
 					<span className="error">{this.state.startTimeError}</span>
 					<label>End time (optional):</label>
 					<input
-						type="number"
+						type="text"
 						min="1"
 						value={this.state.content.endTime || ''}
 						onChange={this.handleEndTimeChange}
+						onBlur={this.handleEndTimeBlur}
 					/>
 					<span className="error">{this.state.endTimeError}</span>
 				</div>
