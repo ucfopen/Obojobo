@@ -36,7 +36,7 @@ class MateriaSettingsDialog extends React.Component {
 
 		this.settingsItems = [
 			{
-				label: 'Name',
+				label: 'Title',
 				prop: 'title',
 			},
 			{
@@ -48,49 +48,66 @@ class MateriaSettingsDialog extends React.Component {
 				prop: 'width',
 				units: 'px',
 				type: 'number',
+				placeholder: 'auto'
 			},
 			{
 				label: 'Height',
 				prop: 'height',
 				units: 'px',
 				type: 'number',
+				placeholder: 'auto'
 			}
 		]
 	}
 
-	handleEventChange(prop, event){
-		this.setState({ [prop]: event.target.value })
+	onSettingChange(prop, event){
+		const value = event.target.value
+		const stateChanges = { [prop]: value}
+
+		// if src is cleared, clear icon & engine too
+		// because we only know what they are when using
+		// the lti launched content picker
+		if(prop === 'src' && !value){
+			stateChanges.icon = ''
+			stateChanges.widgetEngine = ''
+		}
+
+		this.setState(stateChanges)
 	}
 
 	focusOnFirstElement() {
-		if (this.inputRef && this.inputRef.current) {
-			return this.inputRef.current.focus()
+		if (this.inputRef.current) {
+			this.inputRef.current.focus()
 		}
 	}
 
+	standardizeIconUrl(url){
+		// makes sure we're getting the 92x92 px icon at 2x pixel density
+		return url.replace(/icon-.+\.png/, 'icon-92@2x.png')
+	}
+
 	onPick(event){
+
+		// captures cancel button clicks
 		if(event.type === 'click'){
-			return this.setState({pickerOpen: false})
+			this.setState({pickerOpen: false})
+			return
 		}
-		// Returned postMessage (in obojobo)
-		if(event.data && event.data.embed_type && event.data.url){
-			return this.setState({pickerOpen: false, src: event.data.url})
-		}
-		// Materia special selection postMessage
+
+		// Materia custom selection message (not a standard LTI thing)
 		if(event.data && typeof event.data === 'string'){
 			try{
 				const data = JSON.parse(event.data)
-				console.log(data)
-				const {name: title, url, widget} = data
+				const {name: title, embed_url: src, img: icon, widget} = data
 				const height = parseInt(widget.height, 10)
 				const width = parseInt(widget.width, 10)
-				return this.setState({
+				this.setState({
 					height,
 					width,
 					title,
-					src: data.embed_url,
+					src,
 					widgetEngine: widget.name,
-					icon: data.img.replace(/icon-.+\.png/, 'icon-92@2x.png'),
+					icon: this.standardizeIconUrl(icon),
 					pickerOpen: false,
 					isUnlocked: false
 				})
@@ -158,22 +175,24 @@ class MateriaSettingsDialog extends React.Component {
 							altAction
 							onClick={this.toggleEditLock}
 						>
-							{this.state.isUnlocked ? 'Close Customize' : 'Customize'}
+							{this.state.isUnlocked ? 'Hide Customize' : 'Customize'}
 						</Button>
 
 						{this.state.isUnlocked
 							? <div className="obojobo-draft-settings--container">
 								{this.settingsItems.map(item =>
 									<>
-										<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>{item.label}:</label>
+										<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>
+											{item.label}:
+										</label>
 										<div>
 											<input
 													type={item.type || 'text'}
 													id={`obojobo-draft-seetings--item-${item.prop}`}
 													disabled={item.editable === false}
 													value={this.state[item.prop] || ''}
-													placeholder={(item.placeholder || item.label) + " not set"}
-													onChange={this.handleEventChange.bind(this, item.prop)}
+													placeholder={(item.placeholder || `${item.label} not set`) }
+													onChange={this.onSettingChange.bind(this, item.prop)}
 											/>
 											{item.units
 												? <span className="obojobo-draft-settings--units">{item.units}</span>

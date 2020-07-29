@@ -27,8 +27,9 @@ export default class Materia extends React.Component {
 	}
 
 	onPostMessageFromMateria(event){
+		// iframe isn't present OR
 		// postmessage didn't come from the iframe we're listening to
-		if(event.source !== this.iframeRef.current.contentWindow) return
+		if(!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) return
 
 		// postmessage isn't expected domain
 		if(!this.state.model.modelState.src.includes(event.origin)) return
@@ -77,7 +78,7 @@ export default class Materia extends React.Component {
 					onShow={this.onShow}
 				/>
 				{this.state.score !== null
-					? <div className="label">{`Score: ${this.state.score}`}</div>
+					? <div className="label">{`Score: ${this.state.score}%`}</div>
 					: <div className="label">{this.state.model.modelState.title}</div>
 				}
 			</div>

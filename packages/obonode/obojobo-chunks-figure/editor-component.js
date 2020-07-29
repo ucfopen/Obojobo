@@ -156,7 +156,7 @@ class Figure extends React.Component {
 								lazyLoad={false}
 							/>
 						</div>
-						<figcaption className="align-center">{this.props.children}</figcaption>
+						<figcaption className="obojobo-draft--chunk-caption">{this.props.children}</figcaption>
 					</figure>
 				</div>
 			</Node>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import {
@@ -11,10 +10,9 @@ import {
 import MateriaSettingsDialog from './materia-settings-dialog'
 import './viewer-component.scss'
 import './editor-component.scss'
-
-const { ModalUtil } = Common.util
-const { Button } = Common.components
-const isOrNot = Common.util.isOrNot
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+import Button from 'obojobo-document-engine/src/scripts/common/components/button'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 class MateriaEditor extends React.Component {
 	constructor(props) {
@@ -71,7 +69,6 @@ class MateriaEditor extends React.Component {
 		}
 
 		return title || src
-
 	}
 
 	deleteNode() {
@@ -95,13 +92,7 @@ class MateriaEditor extends React.Component {
 
 	render() {
 		const content = this.props.element.content
-		const { selected } = this.props
-
-		const previewStyle = {
-			height: (content.height || '500') + 'px',
-			userSelect: 'none'
-		}
-
+		const selected = this.props.selected
 		const className =
 			'obojobo-draft--chunks--materia viewer pad is-previewing ' +
 			isOrNot(content.border, 'bordered') +
@@ -110,44 +101,46 @@ class MateriaEditor extends React.Component {
 			isOrNot(!content.src, 'missing-src') +
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
-		const isSelected = isOrNot(selected, 'selected')
-
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div
-						className={`editor-container  ${isSelected}`}
-						style={previewStyle}
-						onClick={this.focusMe}
-					>
-						<Button
-							className="delete-button"
-							onClick={this.deleteNode}
-							onKeyDown={this.returnFocusOnShiftTab}
-							tabIndex={selected ? 0 : -1}
+					<div className="obojobo-draft--revealable-container-wrapper">
+						<div
+							className={`obojobo-draft--revealable-container editor-container ${isOrNot(selected, 'selected')}`}
+							style={{userSelect: 'none'}}
+							onClick={this.focusMe}
 						>
-							×
-						</Button>
-						<div className="iframe-toolbar" >
-							{content.icon
-								? <div className="widget-icon" contentEditable={false}><img src={content.icon} alt={content.widgetEngine} /></div>
-								: null
-							}
-							<div className="title" aria-hidden contentEditable={false}>
-								{this.getTitle(content.src || null, content.title)}
-							</div>
 							<Button
-								className="properties-button"
-								onClick={this.showMateriaSettingsDialog}
-								onKeyDown={this.returnFocusOnTab}
+								className="delete-button"
+								onClick={this.deleteNode}
+								onKeyDown={this.returnFocusOnShiftTab}
 								tabIndex={selected ? 0 : -1}
 							>
-								Widget Settings...
+								×
 							</Button>
+							<div >
+								{content.icon
+									? <div className="widget-icon" contentEditable={false}><img src={content.icon} alt={content.widgetEngine} /></div>
+									: null
+								}
+								<Button
+									className="properties-button"
+									onClick={this.showMateriaSettingsDialog}
+									onKeyDown={this.returnFocusOnTab}
+									tabIndex={selected ? 0 : -1}
+								>
+									Widget Settings...
+								</Button>
+							</div>
 						</div>
 					</div>
+
+					<div className="obojobo-draft--chunk-caption" aria-hidden contentEditable={false}>
+						{this.getTitle(content.src || null, content.title)}
+					</div>
+
+					{this.props.children}
 				</div>
-				{this.props.children}
 			</Node>
 		)
 	}

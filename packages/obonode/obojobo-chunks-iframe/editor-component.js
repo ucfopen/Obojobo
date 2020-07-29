@@ -103,11 +103,6 @@ class IFrame extends React.Component {
 		const content = this.props.element.content
 		const { selected } = this.props
 
-		const previewStyle = {
-			height: (content.height || '500') + 'px',
-			userSelect: 'none'
-		}
-
 		const className =
 			'obojobo-draft--chunks--iframe viewer pad is-previewing ' +
 			isOrNot(content.border, 'bordered') +
@@ -121,35 +116,38 @@ class IFrame extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div
-						className={`editor-container  ${isSelected}`}
-						style={previewStyle}
-						onClick={this.focusIframe}
-					>
-						<Button
-							className="delete-button"
-							onClick={this.deleteNode}
-							onKeyDown={this.returnFocusOnShiftTab}
-							tabIndex={selected ? 0 : -1}
+					<div className="obojobo-draft--revealable-container-wrapper">
+						<div
+							className={`editor-container obojobo-draft--revealable-container ${isSelected}`}
+							onClick={this.focusIframe}
 						>
-							×
-						</Button>
-						<div className="iframe-toolbar">
-							<span className="title" aria-hidden contentEditable={false}>
-								{this.getTitle(content.src || null, content.title)}
-							</span>
 							<Button
-								className="properties-button"
-								onClick={this.showIFramePropertiesModal}
-								onKeyDown={this.returnFocusOnTab}
+								className="delete-button"
+								onClick={this.deleteNode}
+								onKeyDown={this.returnFocusOnShiftTab}
 								tabIndex={selected ? 0 : -1}
 							>
-								IFrame Properties
+								×
 							</Button>
+							<div className="iframe-toolbar">
+								<Button
+									className="properties-button"
+									onClick={this.showIFramePropertiesModal}
+									onKeyDown={this.returnFocusOnTab}
+									tabIndex={selected ? 0 : -1}
+								>
+									IFrame Properties
+								</Button>
+							</div>
 						</div>
 					</div>
+
+					<div className="obojobo-draft--chunk-caption" aria-hidden contentEditable={false}>
+						{this.getTitle(content.src || null, content.title)}
+					</div>
+
+					{this.props.children}
 				</div>
-				{this.props.children}
 			</Node>
 		)
 	}
