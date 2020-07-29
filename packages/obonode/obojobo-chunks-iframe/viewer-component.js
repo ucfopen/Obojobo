@@ -172,7 +172,8 @@ export default class IFrame extends React.Component {
 						isOrNot(isShowing, 'showing') +
 						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
 						isOrNot(ms.src === null, 'missing-src') +
-						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
+						isOrNot(scaleDimensions.scale > 1, 'scaled-up') +
+						isOrNot(ms.size, 'large')
 					}
 					ref="main"
 				>

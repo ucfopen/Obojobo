@@ -18,7 +18,8 @@ class IFrameProperties extends React.Component {
 			src: '',
 			title: '',
 			width: 640,
-			controls: ''
+			controls: '',
+			size: ''
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
@@ -31,6 +32,7 @@ class IFrameProperties extends React.Component {
 		this.handleBorderChange = this.handleBorderChange.bind(this)
 		this.handleAutoloadChange = this.handleAutoloadChange.bind(this)
 		this.handleFitChange = this.handleFitChange.bind(this)
+		this.handleSizeChange = this.handleSizeChange.bind(this)
 		this.handleZoomChange = this.handleZoomChange.bind(this)
 	}
 
@@ -59,6 +61,12 @@ class IFrameProperties extends React.Component {
 		const fit = event.target.value
 
 		this.setState({ fit })
+	}
+
+	handleSizeChange(event) {
+		const size = event.target.value
+
+		this.setState({ size })
 	}
 
 	handleWidthChange(event) {
@@ -191,6 +199,17 @@ class IFrameProperties extends React.Component {
 							>
 								<option value="scale">Scale</option>
 								<option value="scroll">Scroll</option>
+							</select>
+						</div>
+						<div>
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--size">Size:</label>
+							<select
+								id="obojobo-draft--chunks--iframe--properties-modal--size"
+								value={this.state.size || "large"}
+								onChange={this.handleSizeChange}
+							>
+								<option value="large">Large</option>
+								<option value="medium">Medium</option>
 							</select>
 						</div>
 						<div>

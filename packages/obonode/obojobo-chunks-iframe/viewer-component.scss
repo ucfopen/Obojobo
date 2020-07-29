@@ -209,4 +209,22 @@
 			}
 		}
 	}
+
+	&.is-large {
+		padding: 0 !important;
+
+		> .container {
+			min-width: 100%;
+		}
+
+		> .iframe-container {
+			min-width: 100%;
+		}
+	}
+
+	&.is-not-large {
+		// Then, it is medium-sized.
+		background-color: red !important // test;
+		border: 5px solid green !important // test;
+	}
 }
