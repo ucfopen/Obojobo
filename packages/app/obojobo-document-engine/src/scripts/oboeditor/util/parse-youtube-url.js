@@ -7,7 +7,8 @@ const ParseYoutubeUrl = {
 		let youTubeSiteRegexMatch = false
 
 		// eslint-disable-next-line no-console
-		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?^\s]*)*[&?t=]*([0-9]*)*[&?(amp;)?start=]*([0-9]*)*[&?(amp;)?end=]*([0-9]*)*.*/
+		const youTubeSiteRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?"^\s]*)*[&?t=]*([0-9]*)*[&?(amp;)?start=]*([0-9]*)*[&?(amp;)?end=]*([0-9]*)*.*/
+
 		if (typeof videoUrl !== 'undefined') {
 			youTubeSiteRegexMatch = videoUrl.match(youTubeSiteRegex)
 		}
@@ -22,10 +23,6 @@ const ParseYoutubeUrl = {
 			} else {
 				videoStartTime = 0
 			}
-
-			// if (typeof youTubeSiteRegexMatch[7] !== 'undefined') {
-			// 	newVideoId = youTubeSiteRegexMatch[7]
-			// }
 
 			newVideoId = youTubeSiteRegexMatch[7]
 			videoEndTime = youTubeSiteRegexMatch[10] ? parseInt(youTubeSiteRegexMatch[10], 10) : 0
