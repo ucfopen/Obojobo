@@ -1,7 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const { general: generalConfig, media: mediaConfig } = oboRequire('server/config')
-const { idleMinutes, warnMinutes, autoExpireMinutes } = generalConfig.editLocks
+const {
+	idleTimeUntilReleaseLockMinutes,
+	idleTimeUntilWarningMinutes,
+	dbLockDurationMinutes
+} = generalConfig.editLocks
 const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
 const { check, requireCanViewEditor, requireCurrentDocument, checkValidationRules } = oboRequire(
 	'server/express_validators'
@@ -31,9 +35,9 @@ router
 				readOnly: readOnly === '1' || readOnly === 'true',
 				revisionId: req.query.revision_id || '',
 				editLocks: {
-					idleMinutes: parseFloat(idleMinutes),
-					warnMinutes: parseFloat(warnMinutes),
-					autoExpireMinutes: parseFloat(autoExpireMinutes)
+					idleTimeUntilReleaseLockMinutes: parseFloat(idleTimeUntilReleaseLockMinutes),
+					idleTimeUntilWarningMinutes: parseFloat(idleTimeUntilWarningMinutes),
+					dbLockDurationMinutes: parseFloat(dbLockDurationMinutes)
 				}
 			},
 			assetForEnv,

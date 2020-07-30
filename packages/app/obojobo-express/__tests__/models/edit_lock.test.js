@@ -2,7 +2,7 @@ describe('Edit Lock Model', () => {
 	jest.mock('../../server/db')
 	jest.mock('../../server/config', () => ({}))
 
-	const MOCK_EXPIRE_MINUTES = 'mock-expire-minutes'
+	const DB_LOCK_DURATION = 'mock-expire-minutes'
 	let db
 	let EditLock
 	let config
@@ -12,7 +12,7 @@ describe('Edit Lock Model', () => {
 		jest.resetAllMocks()
 		db = require('../../server/db')
 		config = require('../../server/config')
-		config.general = { editLocks: { autoExpireMinutes: MOCK_EXPIRE_MINUTES } }
+		config.general = { editLocks: { dbLockDurationMinutes: DB_LOCK_DURATION } }
 		EditLock = require('../../server/models/edit_lock')
 	})
 	afterEach(() => {})
@@ -42,7 +42,7 @@ describe('Edit Lock Model', () => {
 		return EditLock.deleteExpiredLocks().then(() => {
 			expect(db.result).toHaveBeenCalledTimes(1)
 			expect(db.result).toHaveBeenCalledWith(
-				expect.stringContaining(`${MOCK_EXPIRE_MINUTES} minutes`),
+				expect.stringContaining(`${DB_LOCK_DURATION} minutes`),
 				null,
 				expect.any(Function)
 			)
@@ -157,7 +157,7 @@ describe('Edit Lock Model', () => {
 		return EditLock.fetchByDraftId().then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining(`${MOCK_EXPIRE_MINUTES} minutes`),
+				expect.stringContaining(`${DB_LOCK_DURATION} minutes`),
 				expect.anything()
 			)
 		})
@@ -207,7 +207,7 @@ describe('Edit Lock Model', () => {
 		return EditLock.create(1, 2, 3).then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining(`${MOCK_EXPIRE_MINUTES} minutes`),
+				expect.stringContaining(`${DB_LOCK_DURATION} minutes`),
 				expect.anything()
 			)
 		})

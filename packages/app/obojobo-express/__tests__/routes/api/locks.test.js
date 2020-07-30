@@ -160,7 +160,27 @@ describe('Route api/locks', () => {
 			})
 	})
 
-	test('post lock returns a 500 when an error occurs', () => {
+	test('post lock returns a 403 when the contentId does not match', () => {
+		expect.hasAssertions()
+		userHasPermissionToDraft.mockImplementationOnce(() => {
+			throw new Error('Current version of draft does not match requested lock.')
+		})
+
+		return request(app)
+			.post('/api/locks/mock-draft-id')
+			.then(response => {
+				expect(response.statusCode).toBe(403)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Draft has been updated by someone else.'
+				)
+			})
+	})
+
+	test('post lock returns a 500 when an unexpected error occurs', () => {
 		expect.hasAssertions()
 		userHasPermissionToDraft.mockImplementationOnce(() => {
 			throw new Error('mock-error')
