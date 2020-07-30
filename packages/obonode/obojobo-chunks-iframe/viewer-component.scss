@@ -119,6 +119,22 @@
 		}
 	}
 
+	&.is-size-large {
+		padding: 0 !important;
+
+		> .container {
+			min-width: 100%;
+		}
+
+		> .iframe-container {
+			min-width: 100%;
+		}
+	}
+
+	&.is-size-medium {
+		padding: 0 3em;
+	}
+
 	&.is-missing-src {
 		> .container {
 			$error-color: lighten($color-error, 65%);
@@ -208,23 +224,5 @@
 				}
 			}
 		}
-	}
-
-	&.is-large {
-		padding: 0 !important;
-
-		> .container {
-			min-width: 100%;
-		}
-
-		> .iframe-container {
-			min-width: 100%;
-		}
-	}
-
-	&.is-not-large {
-		// Then, it is medium-sized.
-		background-color: red !important // test;
-		border: 5px solid green !important // test;
 	}
 }
