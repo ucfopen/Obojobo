@@ -1,10 +1,11 @@
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import SimpleDialog from 'obojobo-document-engine/src/scripts/common/components/modal/simple-dialog'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import MateriaPickerDialog from './materia-picker-dialog'
 import './materia-settings-dialog.scss'
-import DialogSettings from 'obojobo-document-engine/src/scripts/common/components/modal/dialog-settings'
+import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
+import SettingsDialogForm from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-form'
+import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
 
 class MateriaSettingsDialog extends React.Component {
 	constructor(props) {
@@ -133,60 +134,43 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	render() {
+		// Display the LTI Widget Picker
 		if(this.state.pickerOpen){
 			return (
 				<MateriaPickerDialog onPick={this.onPick} onCancel={this.onPick}/>
 			)
 		}
 
-		return (
-			<SimpleDialog
-				cancelOk
-				title="Materia Widget Settings"
-				onConfirm={this.onConfirm}
-				onCancel={this.props.onCancel}
-				focusOnFirstElement={this.focusOnFirstElement}
+		// Display the settings dialog
+		return <SettingsDialog
+			title="Materia Widget Settings"
+			onConfirm={this.onConfirm}
+			onCancel={this.props.onCancel}
 			>
-				<div className={'obojobo-draft--chunks--materia--properties-modal'}>
+				<SettingsDialogRow className="info">
+					{this.state.icon ? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div> : null}
+					{this.state.caption	? <div className="widget-name">{this.state.caption}</div> : null}
+					<Button
+						id="obojobo-draft--chunks--materia--properties-modal--src"
+						className="correct-button"
+						onClick={this.openPicker}
+						ref={this.inputRef}
+					>
+						{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
+					</Button>
+				</SettingsDialogRow>
 
-					<div className="row info">
-						{this.state.icon
-							? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div>
-							: null
-						}
-						{this.state.caption
-							? <div className="widget-name">{this.state.caption}</div>
-							: null
-						}
-						<Button
-							id="obojobo-draft--chunks--materia--properties-modal--src"
-							className="correct-button"
-							onClick={this.openPicker}
-							ref={this.inputRef}
-						>
-							{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
-						</Button>
-					</div>
-
-					<div className="row center">
-
-						<Button
-							className={`toggle-view-button ${isOrNot(this.state.isUnlocked, 'open')}`}
-							altAction
-							onClick={this.toggleEditLock}
-						>
-							{this.state.isUnlocked ? 'Hide Customize' : 'Customize'}
-						</Button>
-
-						{this.state.isUnlocked
-							? <DialogSettings config={this.settingsItems} settings={this.state} onChange={this.onSettingChange} />
-							: null
-						}
-					</div>
-
-				</div>
-			</SimpleDialog>
-		)
+				<SettingsDialogRow className="center">
+					<Button
+						altAction
+						className={`toggle-view-button ${isOrNot(this.state.isUnlocked, 'open')}`}
+						onClick={this.toggleEditLock}
+					>
+						{this.state.isUnlocked ? 'Hide Customize' : 'Customize'}
+					</Button>
+					{this.state.isUnlocked ? <SettingsDialogForm settings={this.state} config={this.settingsItems} onChange={this.onSettingChange} /> : null}
+				</SettingsDialogRow>
+			</SettingsDialog>
 	}
 }
 

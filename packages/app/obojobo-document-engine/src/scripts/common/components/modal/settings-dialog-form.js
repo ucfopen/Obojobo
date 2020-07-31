@@ -1,11 +1,19 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
-const DialogSettings = ({config, settings, onChange}) => {
+const SettingsForm = ({config, settings, onChange}) => {
+	// memoize onChange callback functions
+	// a parallel array to config (index will match config index)
+	const memoizedOnChanges = useMemo(
+		() => {
+			return config.map(c => {
+				return event => { onChange(c.prop, event)
+			}})
+		}, [config, onChange]
+	)
 
 	return (
-
 		<div className="obojobo-draft-settings--container">
-			{config.map(item =>
+			{config.map((item, index) =>
 				<>
 					<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>
 						{item.label}:
@@ -17,7 +25,7 @@ const DialogSettings = ({config, settings, onChange}) => {
 								disabled={item.editable === false}
 								value={settings[item.prop] || ''}
 								placeholder={(item.placeholder || `${item.label} not set`) }
-								onChange={event => { onChange(item.prop, event) }}
+								onChange={memoizedOnChanges[index]}
 						/>
 						{item.units
 							? <span className="obojobo-draft-settings--units">{item.units}</span>
@@ -28,7 +36,6 @@ const DialogSettings = ({config, settings, onChange}) => {
 			)}
 		</div>
 	)
-
 }
 
-export default DialogSettings
+export default SettingsForm
