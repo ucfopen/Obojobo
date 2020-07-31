@@ -1,0 +1,94 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--materia--properties-modal {
+	text-align: left;
+	min-width: 20em;
+	width: 40vw;
+	display: flex;
+	flex-flow: column wrap;
+
+	.row {
+		flex: 1 1 100%;
+		transition: flex 0.3s ease-out;
+		margin-bottom: 1em;
+
+		&.highlight{
+			text-align: center;
+			background: #f4f4f4;
+			padding: 1em;
+		}
+
+		&.center{
+			text-align: center;
+		}
+
+		.toggle-view-button {
+			text-align: center;
+			font-size: .8em;
+
+			button{
+				border: 0;
+			}
+
+			&.is-not-open {
+				margin-bottom: -1em;
+			}
+
+			&.is-open {
+				margin-bottom: 1.2em;
+			}
+		}
+
+	}
+
+
+	input {
+		@include text-input();
+
+		vertical-align: top;
+
+		&[type='number'] {
+			width: 5.8em;
+		}
+	}
+
+	h2 {
+		font-size: 1em;
+	}
+
+	select {
+		vertical-align: top;
+		font-size: 0.8em;
+		margin-top: 0.2em;
+		height: 1.8em;
+		width: 5.8em;
+	}
+
+	.options {
+		text-align: center;
+		margin-top: 1em;
+	}
+
+	.obojobo-draft--components--slider {
+		display: block;
+		height: 1.8em;
+
+		> label {
+			padding-right: 0;
+		}
+
+		> span {
+			display: inline-block;
+			padding-right: 0.5em;
+			width: 7em;
+			vertical-align: middle;
+			height: 1.8em;
+			padding-top: 0.9em;
+			line-height: 0;
+		}
+	}
+
+	.obojobo-draft--components--slider > span:first-child {
+		width: 7em;
+	}
+}

@@ -1,3 +1,5 @@
+import './settings-dialog.scss'
+
 import React from 'react'
 import SimpleDialog from 'obojobo-document-engine/src/scripts/common/components/modal/simple-dialog'
 
@@ -15,7 +17,6 @@ const SettingsDialog = ({title, children, onConfirm, onCancel }) => {
 		</SimpleDialog>
 	)
 }
-
 
 export default SettingsDialog
 

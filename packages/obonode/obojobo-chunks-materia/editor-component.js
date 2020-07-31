@@ -1,3 +1,6 @@
+import './viewer-component.scss'
+import './editor-component.scss'
+
 import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
@@ -8,8 +11,6 @@ import {
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 import MateriaSettingsDialog from './materia-settings-dialog'
-import './viewer-component.scss'
-import './editor-component.scss'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'

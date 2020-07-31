@@ -1,3 +1,5 @@
+import './settings-dialog-form.scss'
+
 import React, {useMemo} from 'react'
 
 const SettingsForm = ({config, settings, onChange}) => {
@@ -12,7 +14,7 @@ const SettingsForm = ({config, settings, onChange}) => {
 	)
 
 	return (
-		<div className="obojobo-draft-settings--container">
+		<div className="obojobo-draft-settings--form">
 			{config.map((item, index) =>
 				<>
 					<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>

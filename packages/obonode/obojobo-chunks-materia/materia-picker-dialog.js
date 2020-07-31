@@ -1,3 +1,5 @@
+import './materia-picker-dialog.scss'
+
 import React, { useEffect, useRef, useMemo } from 'react'
 import Dialog from 'obojobo-document-engine/src/scripts/common/components/modal/dialog'
 

@@ -1,8 +1,9 @@
+import './materia-settings-dialog.scss'
+
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import MateriaPickerDialog from './materia-picker-dialog'
-import './materia-settings-dialog.scss'
 import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
 import SettingsDialogForm from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-form'
 import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
@@ -147,7 +148,7 @@ class MateriaSettingsDialog extends React.Component {
 			onConfirm={this.onConfirm}
 			onCancel={this.props.onCancel}
 			>
-				<SettingsDialogRow className="info">
+				<SettingsDialogRow className="highlight">
 					{this.state.icon ? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div> : null}
 					{this.state.caption	? <div className="widget-name">{this.state.caption}</div> : null}
 					<Button

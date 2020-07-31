@@ -1,0 +1,18 @@
+.obojobo-draft-settings--form {
+	display: grid;
+	grid-template-columns: [labels] auto [inputs] 1fr;
+	width: 100%;
+	column-gap: 10px;
+	row-gap: 15px;
+	align-items: center;
+	text-align: left;
+
+	input{
+		width: 100%;
+	}
+
+	.obojobo-draft-settings--units {
+		margin-left: 0.3em;
+		vertical-align: middle;
+	}
+}
