@@ -4,6 +4,7 @@ import SimpleDialog from 'obojobo-document-engine/src/scripts/common/components/
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import MateriaPickerDialog from './materia-picker-dialog'
 import './materia-settings-dialog.scss'
+import DialogSettings from 'obojobo-document-engine/src/scripts/common/components/modal/dialog-settings'
 
 class MateriaSettingsDialog extends React.Component {
 	constructor(props) {
@@ -29,6 +30,7 @@ class MateriaSettingsDialog extends React.Component {
 		this.onPick = this.onPick.bind(this)
 		this.toggleEditLock = this.toggleEditLock.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
+		this.onSettingChange = this.onSettingChange.bind(this)
 
 		this.settingsItems = [
 			{
@@ -177,29 +179,7 @@ class MateriaSettingsDialog extends React.Component {
 						</Button>
 
 						{this.state.isUnlocked
-							? <div className="obojobo-draft-settings--container">
-								{this.settingsItems.map(item =>
-									<>
-										<label htmlFor={`obojobo-draft-seetings--item-${item.prop}`}>
-											{item.label}:
-										</label>
-										<div>
-											<input
-													type={item.type || 'text'}
-													id={`obojobo-draft-seetings--item-${item.prop}`}
-													disabled={item.editable === false}
-													value={this.state[item.prop] || ''}
-													placeholder={(item.placeholder || `${item.label} not set`) }
-													onChange={this.onSettingChange.bind(this, item.prop)}
-											/>
-											{item.units
-												? <span className="obojobo-draft-settings--units">{item.units}</span>
-												: null
-											}
-										</div>
-									</>
-								)}
-							</div>
+							? <DialogSettings config={this.settingsItems} settings={this.state} onChange={this.onSettingChange} />
 							: null
 						}
 					</div>
