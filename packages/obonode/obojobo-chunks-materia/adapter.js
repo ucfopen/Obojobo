@@ -1,78 +1,43 @@
-import Common from 'obojobo-document-engine/src/scripts/common'
+import cloneProps from 'obojobo-document-engine/src/scripts/common/util/clone-props'
+import TextGroupAdapter from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter'
+import TextGroup from 'obojobo-document-engine/src/scripts/common/text-group/text-group'
+import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
 
-import IFrameMediaTypes from './iframe-media-types'
-import IFrameFitTypes from './iframe-fit-types'
-import IFrameControlTypes from './iframe-control-types'
-
-const cloneProps = Common.util.cloneProps
 const propsList = [
-	'autoload',
-	'border',
 	'controls',
-	'fit',
 	'height',
 	'icon',
-	'initialZoom',
 	'src',
-	'title',
-	'type',
 	'widgetEngine',
 	'width',
 ]
 
 export default {
-	construct(model) {
-		model.setStateProp('type', IFrameMediaTypes.MEDIA, p => p.toLowerCase(), [
-			IFrameMediaTypes.WEBPAGE,
-			IFrameMediaTypes.MEDIA
-		])
-
-		let defaultBorder
-		let defaultFit
-		let defaultControls
-
-		switch (model.modelState.type) {
-			case IFrameMediaTypes.WEBPAGE:
-				defaultBorder = true
-				defaultFit = IFrameFitTypes.SCROLL
-				defaultControls = [
-					IFrameControlTypes.ZOOM,
-					IFrameControlTypes.RELOAD,
-					IFrameControlTypes.NEW_WINDOW
-				]
-				break
-
-			case IFrameMediaTypes.MEDIA:
-			default:
-				defaultBorder = false
-				defaultFit = IFrameFitTypes.SCALE
-				defaultControls = [IFrameControlTypes.RELOAD]
-				break
+	construct(model, attrs) {
+		// process the caption text
+		if (attrs && attrs.content && attrs.content.textGroup) {
+			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 1, {})
+		} else {
+			model.modelState.textGroup = TextGroup.create(1, {})
 		}
 
-		model.setStateProp('border', defaultBorder)
-		model.setStateProp('fit', defaultFit, p => p.toLowerCase(), [
-			IFrameFitTypes.SCROLL,
-			IFrameFitTypes.SCALE
-		])
 		model.setStateProp('src', null)
 		model.setStateProp('width', null, p => parseInt(p, 10) || null)
 		model.setStateProp('height', null, p => parseInt(p, 10) || null)
 		model.setStateProp('widgetEngine', null)
 		model.setStateProp('icon', null)
-		model.setStateProp('initialZoom', 1, p => parseFloat(p) || 1)
-		model.setStateProp('autoload', false, p => p === true)
-		model.setStateProp('title', null)
-		model.setStateProp('controls', defaultControls, p =>
+		model.setStateProp('controls', [IFrameControlTypes.RELOAD], p =>
 			p.split(',').map(c => c.toLowerCase().replace(/ /g, ''))
 		)
 	},
 
 	clone(model, clone) {
+		TextGroupAdapter.clone(model, clone)
 		cloneProps(clone.modelState, model.modelState, propsList)
 	},
 
 	toJSON(model, json) {
+		TextGroupAdapter.toJSON(model, json)
 		cloneProps(json.content, model.modelState, propsList)
 	},
 

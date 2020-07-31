@@ -24,17 +24,10 @@ const slateToObo = node => {
 			triggers: node.content.triggers,
 			textGroup: [captionLine],
 			src: node.content.src,
-			title: node.content.title,
-			type: node.content.type,
 			widgetEngine: node.content.widgetEngine,
 			icon: node.content.icon,
-			border: node.content.border,
-			fit: node.content.fit,
 			width: node.content.width,
-			height: node.content.height,
-			initialZoom: node.content.initialZoom,
-			autoload: node.content.autoload,
-			controls: node.content.controls
+			height: node.content.height
 		})
 	}
 }

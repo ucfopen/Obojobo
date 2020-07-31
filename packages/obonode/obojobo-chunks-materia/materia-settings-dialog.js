@@ -10,13 +10,9 @@ class MateriaSettingsDialog extends React.Component {
 		super(props)
 
 		const defaultState = {
-			autoload: false,
-			border: true,
 			height: 0,
 			width: 0,
-			initialZoom: 1,
-			fit: 'scale',
-			title: '',
+			caption: '',
 			src: '',
 			icon: '',
 			widgetEngine: '',
@@ -25,7 +21,7 @@ class MateriaSettingsDialog extends React.Component {
 			// start closed if there's no src (empty node)
 			isUnlocked: (!props.content.icon && props.content.src)
 		}
-		this.state = { ...defaultState, ...props.content, title: props.title }
+		this.state = { ...defaultState, ...props.content, caption: props.caption }
 
 		this.inputRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
@@ -35,6 +31,10 @@ class MateriaSettingsDialog extends React.Component {
 		this.onConfirm = this.onConfirm.bind(this)
 
 		this.settingsItems = [
+			{
+				label: 'Caption',
+				prop: 'caption'
+			},
 			{
 				label: 'Link',
 				prop: 'src',
@@ -84,7 +84,7 @@ class MateriaSettingsDialog extends React.Component {
 
 	onPick(event){
 
-		// captures cancel button clicks
+		// handles cancel button clicks from the picker
 		if(event.type === 'click'){
 			this.setState({pickerOpen: false})
 			return
@@ -94,7 +94,7 @@ class MateriaSettingsDialog extends React.Component {
 		if(event.data && typeof event.data === 'string'){
 			try{
 				const data = JSON.parse(event.data)
-				const {name: title, embed_url: src, img: icon, widget} = data
+				const {name: caption, embed_url: src, img: icon, widget} = data
 				const height = parseInt(widget.height, 10)
 				const width = parseInt(widget.width, 10)
 				this.setState({
@@ -102,13 +102,15 @@ class MateriaSettingsDialog extends React.Component {
 					width,
 					src,
 					widgetEngine: widget.name,
-					title,
+					caption: this.state.caption || caption, // don't update if title is already set so we don't overwrite customization
 					icon: this.standardizeIconUrl(icon),
 					pickerOpen: false,
 					isUnlocked: false
 				})
 			} catch(e){
 				// do nothing
+				console.error('Error parsing Materia resource selection.')
+				console.error(e)
 			}
 		}
 
@@ -124,8 +126,8 @@ class MateriaSettingsDialog extends React.Component {
 
 	onConfirm(){
 		// extract the properties out of state we want to save
-		const { title, height, width, src, widgetEngine, icon } = this.state
-		this.props.onConfirm({ title, height, width, src, widgetEngine, icon })
+		const { caption, height, width, src, widgetEngine, icon } = this.state
+		this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
 	}
 
 	render() {
@@ -150,8 +152,8 @@ class MateriaSettingsDialog extends React.Component {
 							? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div>
 							: null
 						}
-						{this.state.title
-							? <div className="widget-name">{this.state.title}</div>
+						{this.state.caption
+							? <div className="widget-name">{this.state.caption}</div>
 							: null
 						}
 						<Button
@@ -201,8 +203,6 @@ class MateriaSettingsDialog extends React.Component {
 							: null
 						}
 					</div>
-
-
 
 				</div>
 			</SimpleDialog>

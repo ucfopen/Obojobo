@@ -49,7 +49,7 @@ class MateriaEditor extends React.Component {
 		ModalUtil.show(
 			<MateriaSettingsDialog
 				content={this.props.element.content}
-				title={this.props.element.children[0].text}
+				caption={this.props.element.children[0].text}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseMateriaSettingsDialog}
 			/>
@@ -64,10 +64,10 @@ class MateriaEditor extends React.Component {
 
 	changeProperties(content) {
 		// copy title to the caption
-		this.setCaption(content.title)
+		this.setCaption(content.caption)
 
 		// omit title from slate content
-		delete content.title
+		delete content.caption
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(

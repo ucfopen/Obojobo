@@ -2,28 +2,32 @@ import './viewer-component.scss'
 
 import IFrame from 'obojobo-chunks-iframe/viewer-component'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
 
 export default class Materia extends React.Component {
 	constructor(props) {
 		super(props)
 		this.iframeRef = React.createRef()
-		this.onPostMessageFromMateria = this.onPostMessageFromMateria.bind(this)
-		this.onShow = this.onShow.bind(this)
 
+		// manipulate iframe settings
 		const model = props.model.clone()
-		model.modelState.src = this.createLaunchSrc(model.modelState.src)
+		model.modelState.src = this.srcToLTILaunchUrl(model.modelState.src)
 		model.modelState.border = true;
 		model.modelState.fit = 'scale';
 		model.modelState.initialZoom = 1;
 
+		// state setup
 		this.state = {
+			model,
 			score: null,
 			verifiedScore: false,
-			model: model,
 			open: false
 		}
+
+		// function binding
+		this.onPostMessageFromMateria = this.onPostMessageFromMateria.bind(this)
+		this.onShow = this.onShow.bind(this)
 	}
 
 	onPostMessageFromMateria(event){
@@ -59,12 +63,39 @@ export default class Materia extends React.Component {
 		window.removeEventListener("message", this.onPostMessageFromMateria, false)
 	}
 
-	createLaunchSrc(src) {
+	srcToLTILaunchUrl(src) {
 		return `${window.location.origin}/materia-lti-launch?endpoint=${encodeURI(src)}&isPreview=${this.props.moduleData.isPreviewing}`
 	}
 
 	onShow(){
 		this.setState({open: true})
+	}
+
+	renderTextCaption(){
+		return this.state.model.modelState.textGroup.first.text
+			? <div className="label">
+					<TextGroupEl
+						parentModel={this.state.model}
+						textItem={this.state.model.modelState.textGroup.first}
+						groupIndex="0"
+					/>
+				</div>
+			: null
+	}
+
+	renderScoreCaption(){
+		return this.state.score !== null
+			? <div className="label">{`Score: ${this.state.score}`}</div>
+			: null
+	}
+
+	renderCaptionOrScore(){
+		try {
+			return this.renderScoreCaption() || this.renderTextCaption()
+		} catch(e){
+			console.error('Error bulding Materia Caption')
+			return null
+		}
 	}
 
 	render() {
@@ -74,13 +105,10 @@ export default class Materia extends React.Component {
 					ref={this.iframeRef}
 					model={this.state.model}
 					moduleData={this.props.moduleData}
-					label={`Start ${this.state.model.modelState.widgetEngine}`}
+					label={`Start ${this.state.model.modelState.widgetEngine || 'Widget'}`}
 					onShow={this.onShow}
 				/>
-				{this.state.score !== null
-					? <div className="label">{`Score: ${this.state.score}%`}</div>
-					: <div className="label">{this.state.model.modelState.title}</div>
-				}
+				{this.renderCaptionOrScore()}
 			</div>
 		)
 	}
