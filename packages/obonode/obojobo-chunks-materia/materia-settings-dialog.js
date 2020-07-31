@@ -16,8 +16,8 @@ class MateriaSettingsDialog extends React.Component {
 			width: 0,
 			initialZoom: 1,
 			fit: 'scale',
-			src: '',
 			title: '',
+			src: '',
 			icon: '',
 			widgetEngine: '',
 			pickerOpen: false,
@@ -25,7 +25,7 @@ class MateriaSettingsDialog extends React.Component {
 			// start closed if there's no src (empty node)
 			isUnlocked: (!props.content.icon && props.content.src)
 		}
-		this.state = { ...defaultState, ...props.content }
+		this.state = { ...defaultState, ...props.content, title: props.title }
 
 		this.inputRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
@@ -35,10 +35,6 @@ class MateriaSettingsDialog extends React.Component {
 		this.onConfirm = this.onConfirm.bind(this)
 
 		this.settingsItems = [
-			{
-				label: 'Title',
-				prop: 'title',
-			},
 			{
 				label: 'Link',
 				prop: 'src',
@@ -104,9 +100,9 @@ class MateriaSettingsDialog extends React.Component {
 				this.setState({
 					height,
 					width,
-					title,
 					src,
 					widgetEngine: widget.name,
+					title,
 					icon: this.standardizeIconUrl(icon),
 					pickerOpen: false,
 					isUnlocked: false
@@ -128,8 +124,8 @@ class MateriaSettingsDialog extends React.Component {
 
 	onConfirm(){
 		// extract the properties out of state we want to save
-		const { height, width, title, src, widgetEngine, icon } = this.state
-		this.props.onConfirm({ height, width, title, src, widgetEngine, icon })
+		const { title, height, width, src, widgetEngine, icon } = this.state
+		this.props.onConfirm({ title, height, width, src, widgetEngine, icon })
 	}
 
 	render() {

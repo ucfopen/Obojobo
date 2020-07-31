@@ -19,4 +19,8 @@
 		bottom: 8px;
 		right: 8px;
 	}
+
+	.obojobo-draft--chunk-caption span[data-placeholder]::before{
+		position: relative;
+	}
 }

@@ -35,12 +35,21 @@ class MateriaEditor extends React.Component {
 		})
 	}
 
+	setCaption(caption){
+		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
+		// clear out contents
+		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
+		// copy caption into slate children text
+		Transforms.insertText(this.props.editor, caption, {at: path})
+	}
+
 	showMateriaSettingsDialog(event) {
 		event.preventDefault()
 		event.stopPropagation()
 		ModalUtil.show(
 			<MateriaSettingsDialog
 				content={this.props.element.content}
+				title={this.props.element.children[0].text}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseMateriaSettingsDialog}
 			/>
@@ -54,6 +63,12 @@ class MateriaEditor extends React.Component {
 	}
 
 	changeProperties(content) {
+		// copy title to the caption
+		this.setCaption(content.title)
+
+		// omit title from slate content
+		delete content.title
+
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -61,14 +76,6 @@ class MateriaEditor extends React.Component {
 			{ at: path }
 		)
 		this.onCloseMateriaSettingsDialog()
-	}
-
-	getTitle(src, title) {
-		if (src === null) {
-			return 'No widget linked'
-		}
-
-		return title || src
 	}
 
 	deleteNode() {
@@ -118,7 +125,7 @@ class MateriaEditor extends React.Component {
 							>
 								×
 							</Button>
-							<div >
+							<div>
 								{content.icon
 									? <div className="widget-icon" contentEditable={false}><img src={content.icon} alt={content.widgetEngine} /></div>
 									: null
@@ -135,11 +142,8 @@ class MateriaEditor extends React.Component {
 						</div>
 					</div>
 
-					<div className="obojobo-draft--chunk-caption" aria-hidden contentEditable={false}>
-						{this.getTitle(content.src || null, content.title)}
-					</div>
+					<div className="obojobo-draft--chunk-caption">{this.props.children}</div>
 
-					{this.props.children}
 				</div>
 			</Node>
 		)
