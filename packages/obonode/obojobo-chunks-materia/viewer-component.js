@@ -83,15 +83,9 @@ export default class Materia extends React.Component {
 			: null
 	}
 
-	renderScoreCaption(){
-		return this.state.score !== null
-			? <div className="label">{`Score: ${this.state.score}`}</div>
-			: null
-	}
-
 	renderCaptionOrScore(){
 		try {
-			return this.renderScoreCaption() || this.renderTextCaption()
+			return this.renderTextCaption()
 		} catch(e){
 			console.error('Error bulding Materia Caption')
 			return null
