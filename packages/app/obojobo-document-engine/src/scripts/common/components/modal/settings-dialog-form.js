@@ -1,28 +1,7 @@
 import './settings-dialog-form.scss'
 import React, {useMemo} from 'react'
-
+import Switch from '../switch'
 import 'obojobo-document-engine/src/scripts/common/components/switch.scss'
-
-/* istanbul ignore next */
-const noOp = () => {}
-
-const SwitchCore = ({checked = false, onChange = noOp, forwardedRef}) => (
-	<div className="obojobo-draft--components--switch">
-		<label className="switch">
-			<input
-				className="switch-slider"
-				type="checkbox"
-				checked={checked}
-				onChange={onChange}
-				ref={forwardedRef}
-			/>
-			<div className="switch-slider round" />
-		</label>
-	</div>
-)
-
-const Switch = React.forwardRef((props, ref) => <SwitchCore {...props} forwardedRef={ref} />)
-
 
 const renderInput = (item, value, onChange, ref) => {
 	const id = `obojobo-draft-seetings--item-${item.prop}`
@@ -87,6 +66,7 @@ const SettingsFormCore = ({config, settings, onChange, forwardedRef}) => {
 	return (
 		<div className="obojobo-draft-settings--form">
 			{config.map((item, index) => {
+				// lazily assign fowardedRef only to the first input
 				const ref = index === 0 ? forwardedRef : null
 				return item.type === 'heading'
 					?  <h2>{item.text}:</h2>
