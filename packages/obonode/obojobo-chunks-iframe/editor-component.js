@@ -47,6 +47,7 @@ class IFrame extends React.Component {
 		ModalUtil.show(
 			<IframeProperties
 				content={this.props.element.content}
+				title={this.props.element.children[0].text}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseIFramePropertiesModal}
 			/>
@@ -60,7 +61,21 @@ class IFrame extends React.Component {
 		unfreezeEditor(this.props.editor)
 	}
 
+	// set text held in the slate text node
+	// used wen returning from the settings dialog to set the title/caption
+	setChildText(text){
+		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
+		// clear out contents
+		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
+		// copy caption into slate children text
+		Transforms.insertText(this.props.editor, text, {at: path})
+	}
+
 	changeProperties(content) {
+		// copy title/caption to the slate text
+		// using slate text so you can click on the caption to edit it
+		this.setChildText(content.title)
+
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -142,11 +157,7 @@ class IFrame extends React.Component {
 						</div>
 					</div>
 
-					<div className="obojobo-draft--chunk-caption" aria-hidden contentEditable={false}>
-						{this.getTitle(content.src || null, content.title)}
-					</div>
-
-					{this.props.children}
+					<div className="obojobo-draft--chunk-caption">{this.props.children}</div>
 				</div>
 			</Node>
 		)

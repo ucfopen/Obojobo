@@ -36,14 +36,6 @@ class MateriaEditor extends React.Component {
 		})
 	}
 
-	setCaption(caption){
-		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
-		// clear out contents
-		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
-		// copy caption into slate children text
-		Transforms.insertText(this.props.editor, caption, {at: path})
-	}
-
 	showMateriaSettingsDialog(event) {
 		event.preventDefault()
 		event.stopPropagation()
@@ -63,9 +55,21 @@ class MateriaEditor extends React.Component {
 		unfreezeEditor(this.props.editor)
 	}
 
+	// set text held in the slate text node
+	// used wen returning from the settings dialog to set the title/caption
+	// using slate text so you can click on the caption to edit it
+	setChildText(text){
+		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
+		// clear out text contents
+		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
+		// set text into slate children text
+		Transforms.insertText(this.props.editor, text, {at: path})
+	}
+
 	changeProperties(content) {
-		// copy title to the caption
-		this.setCaption(content.caption)
+		// copy title/caption to the slate text
+		// using slate text so you can click on the caption to edit it
+		this.setChildText(content.caption)
 
 		// omit title from slate content
 		delete content.caption

@@ -1,3 +1,4 @@
+import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 /**
@@ -9,6 +10,15 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * @returns {Object} An Obojobo Iframe node
  */
 const slateToObo = node => {
+	// convert textgroups into title property
+	const captionLine = {
+		text: { value: '', styleList: [] },
+		data: null
+	}
+	TextUtil.slateToOboText(node, captionLine)
+
+	const title = captionLine.text.value
+
 	// translate controls from content props to a comma seperated list
 	const controls = []
 	if (node.content.newWindow) controls.push('new-window')
@@ -22,7 +32,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			src: node.content.src,
-			title: node.content.title,
+			title,
 			type: node.content.type,
 			border: node.content.border,
 			fit: node.content.fit,
@@ -42,13 +52,19 @@ const slateToObo = node => {
  */
 const oboToSlate = node => {
 	const slateNode = Object.assign({}, node)
+
+	// convert controls from comma separated string into an array
 	const ctrl = slateNode.content.controls || ''
 	slateNode.content.newWindow = ctrl.includes('new-window')
 	slateNode.content.reload = ctrl.includes('reload')
 	slateNode.content.zoom = ctrl.includes('zoom')
 	delete slateNode.content.controls
+
+	// convert initialZoom from 1 = 100% -> 100 = 100%
 	slateNode.content.initialZoom = slateNode.content.initialZoom * 100
-	slateNode.children = [{ text: '' }]
+
+	slateNode.children = [{ text: slateNode.content.title }]
+
 	return slateNode
 }
 

@@ -4,6 +4,7 @@ import emptyNode from './empty-node.json'
 import Icon from './icon'
 import EditorComponent from './editor-component'
 import Converter from './converter'
+import { Element, Editor, Node } from 'slate'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
@@ -18,15 +19,22 @@ const IFrame = {
 		emptyNode
 	},
 	plugins: {
-		// Editor Plugins - These get attached to the editor object an override it's default functions
-		// They may affect multiple nodes simultaneously
-		isVoid(element, editor, next) {
-			if (element.type === IFRAME_NODE) return true
+		decorate([node, path], editor) {
+			// Define a placeholder decoration
+			if (Element.isElement(node) && Node.string(node) === '') {
+				const point = Editor.start(editor, path)
 
-			return next(element)
+				return [
+					{
+						placeholder: 'Type an IFrame caption here',
+						anchor: point,
+						focus: point
+					}
+				]
+			}
+
+			return []
 		},
-		// Editable Plugins - These are used by the PageEditor component to augment React functions
-		// They affect individual nodes independently of one another
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
 		}

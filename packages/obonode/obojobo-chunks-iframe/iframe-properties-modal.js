@@ -22,7 +22,7 @@ class IFrameProperties extends React.Component {
 			reload: false,
 			zoom: false,
 		}
-		this.state = { ...defaultState, ...props.content }
+		this.state = { ...defaultState, ...props.content, title: props.title }
 		this.inputRef = React.createRef()
 
 		this.settingsItems = [
