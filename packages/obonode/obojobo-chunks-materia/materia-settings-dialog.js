@@ -1,5 +1,3 @@
-import './materia-settings-dialog.scss'
-
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
@@ -7,6 +5,8 @@ import MateriaPickerDialog from './materia-picker-dialog'
 import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
 import SettingsDialogForm from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-form'
 import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
+
+import './materia-settings-dialog.scss'
 
 class MateriaSettingsDialog extends React.Component {
 	constructor(props) {
@@ -76,9 +76,8 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		if (this.inputRef.current) {
-			this.inputRef.current.focus()
-		}
+		if (!this.inputRef.current) return
+		this.inputRef.current.focus()
 	}
 
 	standardizeIconUrl(url){
@@ -144,9 +143,10 @@ class MateriaSettingsDialog extends React.Component {
 
 		// Display the settings dialog
 		return <SettingsDialog
-			title="Materia Widget Settings"
-			onConfirm={this.onConfirm}
-			onCancel={this.props.onCancel}
+				title="Materia Widget Settings"
+				onConfirm={this.onConfirm}
+				onCancel={this.props.onCancel}
+				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<SettingsDialogRow className="highlight">
 					{this.state.icon ? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div> : null}

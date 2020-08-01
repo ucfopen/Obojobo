@@ -1,86 +1,112 @@
 import React from 'react'
-import Common from 'Common'
-
-const { SimpleDialog } = Common.components.modal
-const { Switch } = Common.components
+import SettingsDialog from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog'
+import SettingsDialogForm from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-form'
+import SettingsDialogRow from 'obojobo-document-engine/src/scripts/common/components/modal/settings-dialog-row'
 
 import './iframe-properties-modal.scss'
 
 class IFrameProperties extends React.Component {
 	constructor(props) {
 		super(props)
+		// combinde defaults with props
 		const defaultState = {
 			autoload: false,
 			border: false,
 			fit: '',
 			height: 480,
-			initialZoom: 1,
+			initialZoom: 100,
 			src: '',
 			title: '',
 			width: 640,
-			controls: ''
+			newWindow: false,
+			reload: false,
+			zoom: false,
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
 
+		this.settingsItems = [
+			{
+				label: 'URL',
+				prop: 'src',
+			},
+			{
+				label: 'Caption',
+				prop: 'title'
+			},
+			{
+				label: 'Width',
+				prop: 'width',
+				units: 'px',
+				type: 'number',
+				placeholder: 'auto',
+				min: 100,
+				max: 2000
+			},
+			{
+				label: 'Height',
+				prop: 'height',
+				units: 'px',
+				type: 'number',
+				placeholder: 'auto',
+				min: 100,
+				max: 2000
+			},
+			{
+				label: 'Border',
+				prop: 'border',
+				type: 'switch'
+			},
+			{
+				label: 'Autoload',
+				prop: 'autoload',
+				type: 'switch'
+			},
+			{
+				label: 'Fit',
+				prop: 'fit',
+				type: 'select',
+				options: ['scale', 'scroll']
+			},
+			{
+				label: 'Initial Zoom',
+				prop: 'initialZoom',
+				units: '%',
+				type: 'number',
+				min: 1,
+				max: 500
+			},
+			{
+				type: 'heading',
+				text: 'Controls'
+			},
+			{
+				label: 'Reload',
+				prop: 'reload',
+				type: 'switch'
+			},
+			{
+				label: 'New Window',
+				prop: 'newWindow',
+				type: 'switch'
+			},
+			{
+				label: 'Zoom',
+				prop: 'zoom',
+				type: 'switch'
+			}
+		]
+
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
-		this.handleTitleChange = this.handleTitleChange.bind(this)
-		this.handleURLChange = this.handleURLChange.bind(this)
-		this.handleWidthChange = this.handleWidthChange.bind(this)
-		this.handleHeightChange = this.handleHeightChange.bind(this)
-		this.handleBorderChange = this.handleBorderChange.bind(this)
-		this.handleAutoloadChange = this.handleAutoloadChange.bind(this)
-		this.handleFitChange = this.handleFitChange.bind(this)
-		this.handleZoomChange = this.handleZoomChange.bind(this)
+		this.onSettingChange = this.onSettingChange.bind(this)
+		this.onConfirm = this.onConfirm.bind(this)
 	}
 
 	componentDidMount() {
+		if(!this.inputRef.current) return
+
 		this.inputRef.current.focus()
 		this.inputRef.current.select()
-	}
-
-	handleTitleChange(event) {
-		const title = event.target.value
-
-		this.setState({ title })
-	}
-
-	handleURLChange(event) {
-		const src = event.target.value
-
-		this.setState({ src })
-	}
-
-	handleBorderChange(checked) {
-		this.setState({ border: checked })
-	}
-
-	handleFitChange(event) {
-		const fit = event.target.value
-
-		this.setState({ fit })
-	}
-
-	handleWidthChange(event) {
-		const width = event.target.value
-
-		this.setState({ width })
-	}
-
-	handleHeightChange(event) {
-		const height = event.target.value
-
-		this.setState({ height })
-	}
-
-	handleZoomChange(event) {
-		const initialZoom = event.target.value
-
-		this.setState({ initialZoom })
-	}
-
-	handleAutoloadChange(checked) {
-		this.setState({ autoload: checked })
 	}
 
 	handleControlChange(property, checked) {
@@ -98,138 +124,47 @@ class IFrameProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
+		if(!this.inputRef.current) return
 		this.inputRef.current.focus()
 	}
 
-	render() {
-		const controlList = this.state.controls ? this.state.controls.split(',') : []
+	onConfirm(){
+		 // extract the properties out of state we want to save
+		const { autoload, border, fit, height, initialZoom, src, title, width, newWindow, reload, zoom } = this.state
+		this.props.onConfirm({ autoload, border, fit, height, initialZoom, src, title, width, newWindow, reload, zoom})
+	}
 
+	onSettingChange(setting, event){
+		let stateChanges = {}
+		switch(setting.type){
+			case 'switch':
+				stateChanges[setting.prop] = event.target.checked
+				break;
+
+			default:
+				stateChanges[setting.prop] = event.target.value
+				break;
+		}
+		this.setState(stateChanges)
+	}
+
+	render() {
 		return (
-			<SimpleDialog
-				cancelOk
-				title="IFrame Properties"
-				onConfirm={() => this.props.onConfirm(this.state)}
+			<SettingsDialog
+				title="IFrame Propterties"
+				onConfirm={this.onConfirm}
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<div className={'iframe-properties'}>
-					<div className="info">
-						<div>
-							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--title">Title:</label>
-							<input
-								type="text"
-								id="obojobo-draft--chunks--iframe--properties-modal--title"
-								ref={this.inputRef}
-								value={this.state.title || ''}
-								placeholder="IFrame Title"
-								onChange={this.handleTitleChange}
-							/>
-						</div>
-
-						<div>
-							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--src">Source:</label>
-							<input
-								type="text"
-								id="obojobo-draft--chunks--iframe--properties-modal--src"
-								value={this.state.src || ''}
-								placeholder="Web Address"
-								onChange={this.handleURLChange}
-							/>
-						</div>
-					</div>
-
-					<div className="options">
-						<h2>Options:</h2>
-						<div>
-							<label>Dimensions:</label>
-							<input
-								id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
-								name="custom-width"
-								min="1"
-								max="20000"
-								step="1"
-								type="number"
-								placeholder="Width"
-								aria-label="Width"
-								value={this.state.width}
-								onChange={this.handleWidthChange}
-							/>
-							<span className="px-label">px ×</span>
-							<input
-								id="obojobo-draft--chunks--iframe--properties-modal--custom-height"
-								min="1"
-								max="200000"
-								step="1"
-								type="number"
-								placeholder="Height"
-								aria-label="Height"
-								value={this.state.height}
-								onChange={this.handleHeightChange}
-							/>
-							<span className="px-label">px</span>
-						</div>
-						<div>
-							<Switch
-								title="Border"
-								initialChecked={this.state.border}
-								handleCheckChange={this.handleBorderChange}
-							/>
-						</div>
-						<div>
-							<Switch
-								title="Autoload"
-								initialChecked={this.state.autoload}
-								handleCheckChange={this.handleAutoloadChange}
-							/>
-						</div>
-						<div>
-							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--fit">Fit:</label>
-							<select
-								id="obojobo-draft--chunks--iframe--properties-modal--fit"
-								value={this.state.fit || 'scale'}
-								onChange={this.handleFitChange}
-							>
-								<option value="scale">Scale</option>
-								<option value="scroll">Scroll</option>
-							</select>
-						</div>
-						<div>
-							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom">
-								Initial Zoom:
-							</label>
-							<input
-								id="obojobo-draft--chunks--iframe--properties-modal--zoom"
-								min="0.01"
-								max="1000"
-								step=".01"
-								type="number"
-								placeholder="Decimal Value"
-								value={this.state.initialZoom}
-								onChange={this.handleZoomChange}
-							/>
-						</div>
-					</div>
-
-					<div className="controls">
-						<h2>Controls:</h2>
-						<Switch
-							title="Reload"
-							initialChecked={controlList.includes('reload')}
-							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
-						/>
-						<Switch
-							title="New Window"
-							initialChecked={controlList.includes('new-window')}
-							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
-						/>
-						<Switch
-							title="Zoom"
-							initialChecked={controlList.includes('zoom')}
-							handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
-						/>
-					</div>
-				</div>
-			</SimpleDialog>
+				<SettingsDialogRow>
+					<SettingsDialogForm
+						settings={this.state}
+						config={this.settingsItems}
+						onChange={this.onSettingChange}
+						ref={this.inputRef}
+					/>
+				</SettingsDialogRow>
+			</SettingsDialog>
 		)
 	}
 }
