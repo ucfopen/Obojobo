@@ -78,8 +78,8 @@ const SettingsFormCore = ({config, settings, onChange, forwardedRef}) => {
 	// a parallel array to config (index will match config index)
 	const memoizedOnChanges = useMemo(
 		() => {
-			return config.map(c => {
-				return event => { onChange(c, event)
+			return config.map(configItem => {
+				return event => { onChange(configItem, event)
 			}})
 		}, [config, onChange]
 	)

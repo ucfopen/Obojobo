@@ -119,9 +119,9 @@ class TriggerListModal extends React.Component {
 
 	updateActionValue(triggerIndex, actionIndex, key, event) {
 		const value = {}
-		// If there is a target, event is actually an event
-		// If there is no target, event is a boolean produced by the Switch
-		value[key] = event.target ? event.target.value : event
+		// pull changes off the event
+		// checkbox handles events from <Switch> being a checkbox
+		value[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
 
 		// Update triggers[triggerIndex].actions[actionIndex].value.key
 		// The nested loops insure that React's immutable state is updated properly
@@ -243,7 +243,7 @@ class TriggerListModal extends React.Component {
 						<Switch
 							title="Animate Scroll"
 							initialChecked={action.value.animateScroll}
-							handleCheckChange={this.updateActionValue.bind(
+							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
 								actionIndex,
@@ -266,7 +266,7 @@ class TriggerListModal extends React.Component {
 						<Switch
 							title="Fade Out Other Items"
 							initialChecked={action.value.fade || false}
-							handleCheckChange={this.updateActionValue.bind(
+							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
 								actionIndex,
@@ -276,7 +276,7 @@ class TriggerListModal extends React.Component {
 						<Switch
 							title="Animate Scroll"
 							initialChecked={action.value.animateScroll || false}
-							handleCheckChange={this.updateActionValue.bind(
+							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
 								actionIndex,

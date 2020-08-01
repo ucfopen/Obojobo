@@ -60,14 +60,14 @@ class MateriaSettingsDialog extends React.Component {
 		]
 	}
 
-	onSettingChange(prop, event){
+	onSettingChange(setting, event){
 		const value = event.target.value
-		const stateChanges = { [prop]: value}
+		const stateChanges = { [setting.prop]: value}
 
 		// if src is cleared, clear icon & engine too
 		// because we only know what they are when using
 		// the lti launched content picker
-		if(prop === 'src' && !value){
+		if(setting.prop === 'src' && !value){
 			stateChanges.icon = ''
 			stateChanges.widgetEngine = ''
 		}
