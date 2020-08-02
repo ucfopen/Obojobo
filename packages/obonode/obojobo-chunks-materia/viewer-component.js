@@ -1,9 +1,9 @@
-import './viewer-component.scss'
-
 import IFrame from 'obojobo-chunks-iframe/viewer-component'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
+
+import './viewer-component.scss'
 
 export default class Materia extends React.Component {
 	constructor(props) {
@@ -64,7 +64,9 @@ export default class Materia extends React.Component {
 	}
 
 	srcToLTILaunchUrl(src) {
-		return `${window.location.origin}/materia-lti-launch?endpoint=${encodeURI(src)}&isPreview=${this.props.moduleData.isPreviewing}`
+		const visitId = this.props.moduleData.navState.visitId
+		const nodeId = this.props.model.id
+		return `${window.location.origin}/materia-lti-launch?visitId=${visitId}&nodeId=${nodeId}`
 	}
 
 	onShow(){

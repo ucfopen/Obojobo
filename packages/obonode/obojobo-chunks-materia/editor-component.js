@@ -1,6 +1,3 @@
-import './viewer-component.scss'
-import './editor-component.scss'
-
 import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
@@ -14,6 +11,9 @@ import MateriaSettingsDialog from './materia-settings-dialog'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+
+import './viewer-component.scss'
+import './editor-component.scss'
 
 class MateriaEditor extends React.Component {
 	constructor(props) {

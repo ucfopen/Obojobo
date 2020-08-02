@@ -2,12 +2,14 @@ const router = require('express').Router() //eslint-disable-line new-cap
 const util = require('util')
 const xml2js = require('xml2js');
 const crypto = require('crypto')
+const logger = require('obojobo-express/server/logger')
+const insertEvent = require('obojobo-express/server/insert_event')
+const uuid = require('uuid').v4
 const querystring = require('querystring')
 const bodyParser = require('body-parser')
 const sig = require('oauth-signature')
 const {
-	requireCanViewDrafts,
-	requireCurrentUser,
+	requireCurrentUser, requireCurrentVisit, requireCurrentDocument,
 } = require('obojobo-express/server/express_validators')
 
 const oauthKey = 'materia-key'
@@ -55,8 +57,11 @@ const ltiContext = {
 
 const defaultResourceLinkId = 'obojobo-dev-resource-id'
 // util to get a baseUrl for inernal requests
-// const baseUrl = req => `${req.protocol}://${req.get('host')}`
-const baseUrl = req => `${req.protocol}://${req.get('host')}`
+const isDockerMateriaDev = true;
+const baseUrl = req => {
+	if(isDockerMateriaDev) return 'https://host.docker.internal:8080'
+	return `${req.protocol}://${req.get('host')}`
+}
 
 // constructs a signed lti request and sends it.
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
@@ -144,18 +149,17 @@ router
 		// @TODO store event for score passback
 		// @TODO: put the score in a database!
 		// @TODO: make the client aware that we've got a verifed score (or error!)
-		console.log('passback heard!')
-		let success = true
+		let success = false
 
 		try{
 			verifyScorePassback(req)
 			const {messageID, sourcedid, score} = await getValuesFromPassbackXML(req.body)
+			success = true
 
-			console.log('SERVER RECEIVED A VALID SIGNED SCORE FROM MATERIA!!!')
-			console.log(`Message ID: ${messageID}, sourcedid: ${sourcedid}, score: ${score}`)
+			logger.info('SERVER RECEIVED A VALID SIGNED SCORE FROM MATERIA!!!')
+			logger.info(`Message ID: ${messageID}, sourcedid: ${sourcedid}, score: ${score}`)
  		} catch(e){
-			console.log(e)
-			success = false
+			logger.error(e)
 		}
 
 		res.type('application/xml');
@@ -186,26 +190,58 @@ router
 // will post for us - taking them to the widget
 router
 	.route('/materia-lti-launch')
-	.get([requireCurrentUser])
-	.get((req, res) => {
+	.get([requireCurrentUser, requireCurrentVisit]) // @TODO add visitId, draftDocument, resource_link_id=chunk id
+	.get( async (req, res) => {
+		const currentDocument = await req.currentVisit.draftDocument
+		const materiaNode = currentDocument.getChildNodeById(req.query.nodeId)
+		const resource_link_id = materiaNode.node.id
+		const endpoint = materiaNode.node.content.src
+
 		// @TODO store event for lti launch
 		// @TODO validate input more, restrict to viewer launches
-		const isPreview = req.query.isPreview === 'true'
 		const method = 'POST'
-		const endpoint = decodeURI(`${req.query.endpoint}`)
 		const params = {
 			lis_outcome_service_url: `${baseUrl(req)}/materia-lti-score-passback`,
 			lti_message_type: 'basic-lti-launch-request',
-			lis_result_sourcedid: '00000-00000',
+			lis_result_sourcedid: `${req.currentVisit}_${resource_link_id}`,
 			lti_version: 'LTI-1p0',
-			resource_link_id: defaultResourceLinkId,
+			resource_link_id,
 		}
-		const user = req.query.isPreview === 'true' ? buildLTIInstructor(req.currentUser) : buildLTIStudent(req.currentUser)
+		const user = req.currentVisit.is_preview ? buildLTIInstructor(req.currentUser) : buildLTIStudent(req.currentUser)
 		renderLtiLaunch({ ...user, ...params, ...ltiToolConsumer, ...ltiContext }, method, endpoint, res)
 	})
 
+// const insertLaunchEvent = (
+// 	userId,
+// 	isPreveiw,
+// 	endpoint,
+// 	visitId
+// ) => {
+// 	return insertEvent({
+// 		action: 'lti:replaceResult',
+// 		actorTime: new Date().toISOString(),
+// 		isPreview: false,
+// 		payload: {
+// 			launchId: launch ? launch.id : null,
+// 			launchKey: launch ? launch.key : null,
+// 			body: {
+// 				lis_outcome_service_url: outcomeData.serviceURL,
+// 				lis_result_sourcedid: outcomeData.resultSourcedId
+// 			},
+// 			result: ltiResult
+// 		},
+// 		visitId,
+// 		userId,
+// 		ip: '',
+// 		eventVersion: '2.1.0',
+// 		metadata: {},
+// 		draftId: draftDocument.draftId,
+// 		contentId: draftDocument.contentId
+// 	}).catch(err => {
+// 		logger.error('There was an error inserting the lti event:', err)
+// 	})
+// }
 
-https://docker.for.mac.localhost:8080/materia-lti-picker-return?embed_type=basic_lti&url=https://localhost/embed/P6q9Y/test
 
 
 router
@@ -242,6 +278,9 @@ router
 		}
 		renderLtiLaunch({ ...buildLTIInstructor(req.currentUser), ...params, ...ltiToolConsumer, ...ltiContext }, method, endpoint, res)
 	})
+
+
+
 
 
 module.exports = router

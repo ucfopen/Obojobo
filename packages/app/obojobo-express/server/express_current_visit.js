@@ -8,20 +8,27 @@ const getCurrentVisitFromRequest = req => {
 		return Promise.resolve()
 	}
 
-	// In certain cases, events are sent via `navigator.sendBeacon`.
-	// Request's headers cannot be set. Therefore, `req.body` is still in JSON fotmat
-	try {
-		req.body = JSON.parse(req.body)
-	} catch (e) {} // eslint-disable-line no-empty
-
 	// Figure out where the visitId is in this request
+console.log(req.query)
 	let visitId = null
-	if (req.body && req.body.event && req.body.event.visitId) {
-		// visitId is burried in a event posted in the body
-		visitId = req.body.event.visitId
-	} else if (req.body && req.body.visitId) {
-		// visitId posted directly to body
-		visitId = req.body.visitId
+	if (req.params && req.params.visitId) {
+		visitId = req.params.visitId
+	} else if(req.query && req.query.visitId ){
+		visitId = req.query.visitId
+	} else {
+		// In certain cases, events are sent via `navigator.sendBeacon`.
+		// Request's headers cannot be set. Therefore, `req.body` is still in JSON fotmat
+		try {
+			req.body = JSON.parse(req.body)
+		} catch (e) {} // eslint-disable-line no-empty
+
+		if (req.body && req.body.event && req.body.event.visitId) {
+			// visitId is burried in a event posted in the body
+			visitId = req.body.event.visitId
+		} else if (req.body && req.body.visitId) {
+			// visitId posted directly to body
+			visitId = req.body.visitId
+		}
 	}
 
 	if (visitId === null) {
