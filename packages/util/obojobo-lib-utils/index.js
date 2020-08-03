@@ -45,6 +45,7 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	if (type === 'obonodes') type = 'server'
 	if (type === 'middleware') scripts = manifest.obojobo.expressMiddleware
 	if (type === 'migrations') scripts = manifest.obojobo.migrations
+	if (type === 'parsers') scripts = manifest.obojobo.parsers
 	else if (manifest.obojobo[`${type}Scripts`]) {
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
