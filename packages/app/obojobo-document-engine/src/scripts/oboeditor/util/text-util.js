@@ -124,6 +124,14 @@ const TextUtil = {
 						}
 
 						line.text.styleList.push(style)
+					} else if (type === 'color') {
+						const style = {
+							start: currIndex,
+							end: currIndex + textRange.text.length,
+							type: type,
+							data: value
+						}
+						line.text.styleList.push(style)
 					}
 				})
 
