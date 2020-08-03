@@ -422,7 +422,7 @@ exports[`Nav renders opened 1`] = `
 </nav>
 `;
 
-exports[`Nav renders unlocked 1`] = `
+exports[`Nav renders red alert classes appropriately (redAlert=false) 1`] = `
 <nav
   aria-label="Navigation"
   className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
@@ -466,10 +466,10 @@ exports[`Nav renders unlocked 1`] = `
 </nav>
 `;
 
-exports[`Nav renders red alert status (redAlert=true) 1`] = `
+exports[`Nav renders red alert classes appropriately (redAlert=true) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-red-alert"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -479,6 +479,7 @@ exports[`Nav renders red alert status (redAlert=true) 1`] = `
     <button
       className="button"
       contentEditable={false}
+      disabled={true}
       onClick={[Function]}
     >
       Skip Navigation
@@ -491,7 +492,7 @@ exports[`Nav renders red alert status (redAlert=true) 1`] = `
     Toggle Navigation Menu
   </button>
   <ul
-    aria-hidden={false}
+    aria-hidden={true}
     tabIndex="-1"
   />
   <button
@@ -509,10 +510,10 @@ exports[`Nav renders red alert status (redAlert=true) 1`] = `
 </nav>
 `;
 
-exports[`Nav renders red alert status (redAlert=false) 1`] = `
+exports[`Nav renders unlocked 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-open is-enabled is-not-red-alert"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -522,6 +523,7 @@ exports[`Nav renders red alert status (redAlert=false) 1`] = `
     <button
       className="button"
       contentEditable={false}
+      disabled={true}
       onClick={[Function]}
     >
       Skip Navigation
@@ -534,7 +536,7 @@ exports[`Nav renders red alert status (redAlert=false) 1`] = `
     Toggle Navigation Menu
   </button>
   <ul
-    aria-hidden={false}
+    aria-hidden={true}
     tabIndex="-1"
   />
   <button

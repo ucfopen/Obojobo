@@ -247,7 +247,9 @@ const NavUtil = {
 
 	setRedAlert(redAlert) {
 		return Dispatcher.trigger('nav:redAlert', {
-			redAlert: redAlert
+			value: {
+				redAlert
+			}
 		})
 	},
 

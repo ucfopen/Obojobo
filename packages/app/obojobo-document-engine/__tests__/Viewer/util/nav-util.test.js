@@ -499,16 +499,21 @@ describe('NavUtil', () => {
 	})
 
 	test('setRedAlert calls Dispatcher.trigger', () => {
-		NavUtil.setRedAlert('mockRedAlert')
+		const redAlert = true
+		NavUtil.setRedAlert(redAlert)
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
-			redAlert: 'mockRedAlert'
+			value: { redAlert }
 		})
 	})
 
-	test('isRedAlertEnabled returns if red alert is enabled', () => {
-		expect(NavUtil.isRedAlertEnabled({ redAlert: true })).toBe(true)
-		expect(NavUtil.isRedAlertEnabled({ redAlert: false })).toBe(false)
+	test('isRedAlertEnabled returns the red alert status from a state object', () => {
+		const redAlert = true
+		const navState = {
+			redAlert
+		}
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
+		expect(isRedAlertEnabled).toBe(redAlert)
 	})
 
 	test('isNavEnabled returns if the nav is enabled', () => {

@@ -204,38 +204,54 @@ describe('Nav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('renders red alert status (redAlert=true)', () => {
+	test('renders red alert classes appropriately (redAlert=true)', () => {
+		const redAlert = true
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		NavUtil.isRedAlertEnabled.mockReturnValueOnce(true)
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(redAlert)
 		const props = {
 			navState: {
-				open: true,
-				locked: false,
-				redAlert: true
+				redAlert
 			}
 		}
-
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
 		expect(tree.props.className).toEqual(expect.stringContaining('is-red-alert'))
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('renders red alert status (redAlert=false)', () => {
+	test('renders red alert classes appropriately (redAlert=false)', () => {
+		const redAlert = false
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		NavUtil.isRedAlertEnabled.mockReturnValueOnce(false)
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(redAlert)
 		const props = {
 			navState: {
-				open: true,
-				locked: false,
-				redAlert: false
+				redAlert
 			}
 		}
-
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
 		expect(tree.props.className).toEqual(expect.stringContaining('is-not-red-alert'))
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('onClickRedAlert calls NavUtil.isRedAlertEnabled and NavUtil.setRedAlert', () => {
+		const redAlert = true
+		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(redAlert)
+		const props = {
+			navState: {
+				redAlert
+			}
+		}
+		const component = mount(<Nav {...props} />)
+		component.instance().selfRef = {
+			current: {
+				contains: () => false
+			}
+		}
+		component.instance().onClickRedAlert()
+		expect(NavUtil.isRedAlertEnabled).toHaveBeenCalled()
+		expect(NavUtil.setRedAlert).toHaveBeenCalledWith(redAlert)
 	})
 
 	test('onClick link checks NavUtil.canNavigate and changes the page', () => {

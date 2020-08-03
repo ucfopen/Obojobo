@@ -510,11 +510,11 @@ exports[`NavStore nav:redAlert event fires and updates state 2`] = `
 Array [
   Object {
     "action": "nav:redAlert",
-    "draftId": "mockDraftId",
+    "draftId": undefined,
     "eventVersion": "1.0.0",
     "payload": Object {
-      "from": "mockRedAlert",
-      "to": "mockRedAlert",
+      "from": false,
+      "to": true,
     },
     "visitId": undefined,
   },
@@ -523,10 +523,7 @@ Array [
 
 exports[`NavStore nav:redAlert event fires and updates state 3`] = `
 Object {
-  "draftId": "mockDraftId",
-  "locked": "unchanged",
-  "open": "unchanged",
-  "redAlert": "mockRedAlert",
+  "redAlert": true,
 }
 `;
 

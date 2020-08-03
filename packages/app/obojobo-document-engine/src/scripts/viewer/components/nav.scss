@@ -2,6 +2,7 @@
 
 .viewer--components--nav {
 	$color-nav-bg: #fbfbfb;
+	$color-nav-bg-red-alert: #ff0000;
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
@@ -397,7 +398,7 @@
 	}
 
 	&.is-red-alert {
-		background-color: $color-dangerous;
+		background-color: $color-nav-bg-red-alert;
 	}
 
 	&.is-not-open .viewer--components--logo {

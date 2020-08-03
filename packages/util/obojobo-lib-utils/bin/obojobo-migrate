@@ -21,19 +21,17 @@ const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
 const config = require('obojobo-express/server/config')
 const args = process.argv.slice(2).join(' ')
 const isCreateMode = args.includes('create')
+const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
+const configPath = `${tempDir}/dbconfig.json`
+// use obojobo's config parser to create a json file for db-migrate
+fs.writeFileSync(configPath, JSON.stringify({development: config.db, production: config.db}, null, '\t'))
 
 let command
 
 if (!isCreateMode) {
-	const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
-	const configPath = `${tempDir}/dbconfig.json`
-
 	try {
 		// useful to understand how args are being inserted into the command
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
-
-		// use obojobo's config parser to create a json file for db-migrate
-		fs.writeFileSync(configPath, JSON.stringify({development: config.db, production: config.db}, null, '\t'))
 
 		// gather all the migrations into a tmp dir
 		utils.gatherAllMigrations().forEach(dir => fs.copySync(dir, tempDir))

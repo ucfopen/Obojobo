@@ -24,6 +24,7 @@ export default class Nav extends React.Component {
 		this.selfRef = React.createRef()
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
 		this.closeNavOnMobile = this.closeNavOnMobile.bind(this)
+		this.onClickRedAlert = this.onClickRedAlert.bind(this)
 	}
 
 	isMobileSize() {
@@ -189,18 +190,23 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
+	onClickRedAlert() {
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(this.props.navState)
+		NavUtil.setRedAlert(!isRedAlertEnabled)
+	}
+
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
 		const lockEl = this.getLockEl(navState.locked)
 		const isNavInaccessible = navState.disabled || !navState.open
-		const isRedAlert = NavUtil.isRedAlertEnabled(navState)
+		const isRedAlertEnabled = NavUtil.isRedAlertEnabled(navState)
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
 			isOrNot(!navState.disabled, 'enabled') +
-			isOrNot(isRedAlert, 'red-alert')
+			isOrNot(isRedAlertEnabled, 'red-alert')
 
 		return (
 			<nav
@@ -250,12 +256,7 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
-				<button
-					className="red-alert-button"
-					onClick={() => {
-						NavUtil.setRedAlert(!NavUtil.isRedAlertEnabled(navState))
-					}}
-				>
+				<button className="red-alert-button" onClick={this.onClickRedAlert}>
 					Red Alert
 				</button>
 				<Logo />

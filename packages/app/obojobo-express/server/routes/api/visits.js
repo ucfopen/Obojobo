@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const db = oboRequire('server/db')
 const logger = oboRequire('server/logger')
 const ltiUtil = oboRequire('server/lti')
 const viewerState = oboRequire('server/viewer/viewer_state')
@@ -51,7 +52,9 @@ router
 		let viewState
 		let visitStartReturnExtensionsProps
 		let launch
+		let isRedAlertEnabled = false
 
+		const userId = req.currentUser.id
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
 		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
@@ -60,6 +63,23 @@ router
 			.getCurrentVisitFromRequest()
 			.catch(() => {
 				throw 'Unable to start visit, visitId is no longer valid'
+			})
+			.then(() =>
+				db.oneOrNone(
+					`
+						SELECT is_enabled FROM red_alert_status
+						WHERE
+							user_id = $[userId]
+							AND draft_id = $[draftId]
+					`,
+					{
+						userId,
+						draftId
+					}
+				)
+			)
+			.then(result => {
+				if (result) isRedAlertEnabled = result.is_enabled
 			})
 			.then(() => {
 				// error so the student starts a new view w/ newer version
@@ -139,7 +159,8 @@ router
 					isPreviewing: req.currentVisit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartReturnExtensionsProps
+					extensions: visitStartReturnExtensionsProps,
+					isRedAlertEnabled
 				})
 			})
 			.catch(err => {
