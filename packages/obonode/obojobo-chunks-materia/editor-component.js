@@ -2,6 +2,7 @@ import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Editor, Transforms } from 'slate'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import {
 	freezeEditor,
@@ -11,6 +12,7 @@ import MateriaSettingsDialog from './materia-settings-dialog'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 import './viewer-component.scss'
 import './editor-component.scss'
@@ -18,6 +20,8 @@ import './editor-component.scss'
 class MateriaEditor extends React.Component {
 	constructor(props) {
 		super(props)
+		// get configured Materia Host from Editor settings
+		this.materiaHost = EditorStore.getState().settings.moduleSettings.obojoboChunksMateria.host
 		this.focusMe = this.focusMe.bind(this)
 		this.deleteNode = this.deleteNode.bind(this)
 		this.showMateriaSettingsDialog = this.showMateriaSettingsDialog.bind(this)
@@ -39,10 +43,15 @@ class MateriaEditor extends React.Component {
 	showMateriaSettingsDialog(event) {
 		event.preventDefault()
 		event.stopPropagation()
+		const { draftId, contentId } = OboModel.getRoot().attributes
 		ModalUtil.show(
 			<MateriaSettingsDialog
 				content={this.props.element.content}
+				draftId={draftId}
+				contentId={contentId}
+				nodeId={this.props.element.id}
 				caption={this.props.element.children[0].text}
+				materiaHost={this.materiaHost}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseMateriaSettingsDialog}
 			/>

@@ -44,6 +44,12 @@ class Draft {
 		this.root = this.processRawNode(rawDraft)
 	}
 
+	getTitle(){
+		return this.root && this.root.node && this.root.node.content && this.root.node.content.title
+			? this.root.node.content.title
+			: ''
+	}
+
 	yell() {
 		return Promise.all(this.root.yell.apply(this.root, arguments)).then(() => {
 			return this

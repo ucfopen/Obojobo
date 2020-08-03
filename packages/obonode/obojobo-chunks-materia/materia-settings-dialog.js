@@ -27,6 +27,7 @@ class MateriaSettingsDialog extends React.Component {
 		this.state = { ...defaultState, ...props.content, caption: props.caption }
 
 		this.inputRef = React.createRef()
+		this.pickerIframeRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.openPicker = this.openPicker.bind(this)
 		this.onPick = this.onPick.bind(this)
@@ -86,12 +87,17 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	onPick(event){
-
 		// handles cancel button clicks from the picker
 		if(event.type === 'click'){
 			this.setState({pickerOpen: false})
 			return
 		}
+
+		// only proceed if it's a postmessage
+		if(event.type !== 'message') return
+
+		// only listen to postmessages from materia
+		if(event.origin !== this.props.materiaHost) return
 
 		// Materia custom selection message (not a standard LTI thing)
 		if(event.data && typeof event.data === 'string'){
@@ -137,7 +143,14 @@ class MateriaSettingsDialog extends React.Component {
 		// Display the LTI Widget Picker
 		if(this.state.pickerOpen){
 			return (
-				<MateriaPickerDialog onPick={this.onPick} onCancel={this.onPick}/>
+				<MateriaPickerDialog
+					onPick={this.onPick}
+					onCancel={this.onPick}
+					draftId={this.props.draftId}
+					contentId={this.props.contentId}
+					nodeId={this.props.nodeId}
+					ref={this.pickerIframeRef}
+				/>
 			)
 		}
 

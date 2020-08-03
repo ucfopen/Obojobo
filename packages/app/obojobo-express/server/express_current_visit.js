@@ -2,14 +2,14 @@ const VisitModel = oboRequire('server/models/visit')
 const logger = oboRequire('server/logger')
 
 // this doesn't resolve with a Visit
+// internally requires the current user to be logged in!!
+// also checks that the current user is the owner of this visit
 // preferred method is to access currentVisit from your req object
-const getCurrentVisitFromRequest = req => {
-	if (req.currentVisit) {
-		return Promise.resolve()
-	}
+const getCurrentVisitFromRequest = async req => {
+	if (req.currentVisit) return
 
 	// Figure out where the visitId is in this request
-console.log(req.query)
+
 	let visitId = null
 	if (req.params && req.params.visitId) {
 		visitId = req.params.visitId
@@ -32,13 +32,26 @@ console.log(req.query)
 	}
 
 	if (visitId === null) {
-		logger.warn('Missing required Visit Id')
-		return Promise.reject(new Error('Missing required Visit Id'))
+		const msg = 'Missing required Visit Id'
+		logger.warn(msg)
+		throw Error(msg)
 	}
 
-	return VisitModel.fetchById(visitId).then(visit => {
-		req.currentVisit = visit
-	})
+	// allow the current user to be loaded
+	await req.requireCurrentUser()
+
+	// fetch the requested visit
+	const visit = await VisitModel.fetchById(visitId)
+
+	// verify the visit owner is the current user
+	if(req.currentUser.id !== visit.user_id){
+		const msg = `Visit ${visitId} doesn't belong to current user ${req.currentUser.id}`
+		logger.warn(msg)
+		throw Error(msg)
+	}
+
+	// save current visit on req
+	req.currentVisit = visit
 }
 
 module.exports = (req, res, next) => {
