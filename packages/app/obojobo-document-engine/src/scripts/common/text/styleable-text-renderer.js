@@ -170,6 +170,14 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			return newChild
 		}
 
+		case StyleType.COLOR:
+			nodeToWrap.html = `<span style="color:${styleRange.data}">${text}</span>`
+			newChild = new MockElement(styleType, Object.assign({}, styleRange.data))
+			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
+			newChild.addChild(nodeToWrap)
+			nodeToWrap.text = text
+
+			return newChild
 		case StyleType.MONOSPACE:
 			styleType = 'code'
 		// Intentional fallthrough

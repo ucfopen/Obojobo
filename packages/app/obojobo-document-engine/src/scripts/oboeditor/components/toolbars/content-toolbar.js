@@ -5,11 +5,13 @@ import LinkMark from '../marks/link-mark'
 import ScriptMarks from '../marks/script-marks'
 import AlignMarks from '../marks/align-marks'
 import IndentMarks from '../marks/indent-marks'
+import ColorMark from '../marks/color-marks'
 import ParagraphStyles from './paragraph-styles'
 import ListDropper from './list-dropper'
 import './content-toolbar.scss'
 
 const contentMarks = [
+	...ColorMark.marks,
 	...BasicMarks.marks,
 	...LinkMark.marks,
 	...ScriptMarks.marks,
