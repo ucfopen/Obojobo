@@ -90,12 +90,16 @@ const TextUtil = {
 
 				// Otherwise, add the type and the data to the mark
 				leaf[style.type] = true
-				if (style.type === 'a') {
-					leaf.href = style.data.href
-				}
-				if (style.type === 'sup') {
-					if (!leaf.num) leaf.num = 0
-					leaf.num += style.data
+				switch (style.type) {
+					case 'a':
+						leaf.href = style.data.href
+						break
+					case 'sup':
+						if (!leaf.num) leaf.num = 0
+						leaf.num += style.data
+						break
+					case 'color':
+						leaf.color = style.data
 				}
 			})
 

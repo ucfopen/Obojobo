@@ -56,7 +56,7 @@ const ContentToolbar = props => {
 						title={mark.name + shortcut}
 						aria-label={mark.name + shortcut}
 					>
-						<Icon />
+						<Icon editor={props.editor} />
 					</button>
 				)
 			})}
