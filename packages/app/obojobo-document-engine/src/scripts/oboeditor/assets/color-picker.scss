@@ -1,0 +1,46 @@
+@import '~styles/includes';
+
+.text-color-icon {
+	position: relative;
+}
+
+.color-picker {
+	border: 1px solid $color-shadow;
+	background-color: $color-bg;
+	padding: 0.1em;
+	width: fit-content;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+	border-radius: 0.25em;
+
+	.color-picker--color-choices {
+		display: flex;
+	}
+
+	.color-choice {
+		width: 1.2em;
+		height: 1.2em;
+		border-radius: 100%;
+		margin: 0.3em;
+		border: solid 1px rgb(218, 220, 224);
+	}
+
+	.color-picker--button {
+		border: none;
+		background-color: inherit;
+		font-size: 0.9em;
+		cursor: pointer;
+		display: inline-block;
+		color: $color-action;
+		text-decoration: underline;
+	}
+
+	.color-picker--button:hover {
+		background: #eee;
+	}
+
+	input {
+		font-size: 0.8em;
+		margin: 0.5em;
+		padding: 0.3em;
+	}
+}
