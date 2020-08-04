@@ -1,6 +1,6 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--materia--properties-modal {
+.obojobo-draft--components--modal--settings-dialog {
 	text-align: left;
 	min-width: 20em;
 	width: 40vw;
@@ -12,21 +12,21 @@
 		transition: flex 0.3s ease-out;
 		margin-bottom: 1em;
 
-		&.highlight{
+		&.highlight {
 			text-align: center;
 			background: #f4f4f4;
 			padding: 1em;
 		}
 
-		&.center{
+		&.center {
 			text-align: center;
 		}
 
 		.toggle-view-button {
 			text-align: center;
-			font-size: .8em;
+			font-size: 0.8em;
 
-			button{
+			button {
 				border: 0;
 			}
 
@@ -38,9 +38,7 @@
 				margin-bottom: 1.2em;
 			}
 		}
-
 	}
-
 
 	input {
 		@include text-input();
@@ -57,11 +55,11 @@
 	}
 
 	select {
+		@include select-input();
+
 		vertical-align: top;
 		font-size: 0.8em;
 		margin-top: 0.2em;
-		height: 1.8em;
-		width: 5.8em;
 	}
 
 	.options {

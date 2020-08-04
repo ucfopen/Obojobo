@@ -6,40 +6,14 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="editor-container   is-not-selected"
-      onClick={[Function]}
-      style={
-        Object {
-          "height": "200px",
-          "userSelect": "none",
-        }
-      }
+      className="obojobo-draft--revealable-container-wrapper"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        className="editor-container obojobo-draft--revealable-container  is-not-selected"
+        onClick={[Function]}
       >
-        <button
-          className="button"
-          contentEditable={false}
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          tabIndex={-1}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="iframe-toolbar"
-      >
-        <span
-          aria-hidden={true}
-          className="title"
-          contentEditable={false}
-        >
-          mockTitle
-        </span>
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
@@ -48,16 +22,36 @@ exports[`IFrame Editor Node IFrame component 1`] = `
             onKeyDown={[Function]}
             tabIndex={-1}
           >
-            IFrame Properties
+            ×
           </button>
+        </div>
+        <div
+          className="iframe-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={-1}
+            >
+              IFrame Properties
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
   </div>
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component handles tab 1`] = `"<div><div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up\\"><div class=\\"editor-container   is-not-selected\\" style=\\"height: 500px; user-select: none;\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"iframe-toolbar\\"><span class=\\"title\\" aria-hidden=\\"true\\" contenteditable=\\"false\\">IFrame missing src attribute</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">IFrame Properties</button></div></div></div></div></div>"`;
+exports[`IFrame Editor Node IFrame component handles tab 1`] = `"<div><div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up\\"><div class=\\"obojobo-draft--revealable-container-wrapper\\"><div class=\\"editor-container obojobo-draft--revealable-container  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">IFrame Properties</button></div></div></div></div><div class=\\"obojobo-draft--chunk-caption\\"></div></div></div>"`;
 
 exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
 <div>
@@ -65,40 +59,14 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
     className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="editor-container   is-selected"
-      onClick={[Function]}
-      style={
-        Object {
-          "height": "500px",
-          "userSelect": "none",
-        }
-      }
+      className="obojobo-draft--revealable-container-wrapper"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        className="editor-container obojobo-draft--revealable-container  is-selected"
+        onClick={[Function]}
       >
-        <button
-          className="button"
-          contentEditable={false}
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          tabIndex={0}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="iframe-toolbar"
-      >
-        <span
-          aria-hidden={true}
-          className="title"
-          contentEditable={false}
-        >
-          mockSrc
-        </span>
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
@@ -107,11 +75,31 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            IFrame Properties
+            ×
           </button>
+        </div>
+        <div
+          className="iframe-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={0}
+            >
+              IFrame Properties
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
   </div>
 </div>
 `;

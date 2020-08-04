@@ -22,7 +22,7 @@ class MateriaSettingsDialog extends React.Component {
 			pickerOpen: false,
 			// start open if theres no icon and src is set (custom link)
 			// start closed if there's no src (empty node)
-			isUnlocked: (!props.content.icon && props.content.src)
+			isUnlocked: !props.content.icon && props.content.src
 		}
 		this.state = { ...defaultState, ...props.content, caption: props.caption }
 
@@ -37,12 +37,8 @@ class MateriaSettingsDialog extends React.Component {
 
 		this.settingsItems = [
 			{
-				label: 'Caption',
-				prop: 'caption'
-			},
-			{
-				label: 'Link',
-				prop: 'src',
+				label: 'URL',
+				prop: 'src'
 			},
 			{
 				label: 'Width',
@@ -61,14 +57,14 @@ class MateriaSettingsDialog extends React.Component {
 		]
 	}
 
-	onSettingChange(setting, event){
+	onSettingChange(setting, event) {
 		const value = event.target.value
-		const stateChanges = { [setting.prop]: value}
+		const stateChanges = { [setting.prop]: value }
 
 		// if src is cleared, clear icon & engine too
 		// because we only know what they are when using
 		// the lti launched content picker
-		if(setting.prop === 'src' && !value){
+		if (setting.prop === 'src' && !value) {
 			stateChanges.icon = ''
 			stateChanges.widgetEngine = ''
 		}
@@ -81,29 +77,29 @@ class MateriaSettingsDialog extends React.Component {
 		this.inputRef.current.focus()
 	}
 
-	standardizeIconUrl(url){
+	standardizeIconUrl(url) {
 		// makes sure we're getting the 92x92 px icon at 2x pixel density
 		return url.replace(/icon-.+\.png/, 'icon-92@2x.png')
 	}
 
-	onPick(event){
+	onPick(event) {
 		// handles cancel button clicks from the picker
-		if(event.type === 'click'){
-			this.setState({pickerOpen: false})
+		if (event.type === 'click') {
+			this.setState({ pickerOpen: false })
 			return
 		}
 
 		// only proceed if it's a postmessage
-		if(event.type !== 'message') return
+		if (event.type !== 'message') return
 
 		// only listen to postmessages from materia
-		if(event.origin !== this.props.materiaHost) return
+		if (event.origin !== this.props.materiaHost) return
 
 		// Materia custom selection message (not a standard LTI thing)
-		if(event.data && typeof event.data === 'string'){
-			try{
+		if (event.data && typeof event.data === 'string') {
+			try {
 				const data = JSON.parse(event.data)
-				const {name: caption, embed_url: src, img: icon, widget} = data
+				const { name: caption, embed_url: src, img: icon, widget } = data
 				const height = parseInt(widget.height, 10)
 				const width = parseInt(widget.width, 10)
 				this.setState({
@@ -116,24 +112,23 @@ class MateriaSettingsDialog extends React.Component {
 					pickerOpen: false,
 					isUnlocked: false
 				})
-			} catch(e){
+			} catch (e) {
 				// do nothing
 				console.error('Error parsing Materia resource selection.')
 				console.error(e)
 			}
 		}
-
 	}
 
-	toggleEditLock(){
-		this.setState({isUnlocked: !this.state.isUnlocked})
+	toggleEditLock() {
+		this.setState({ isUnlocked: !this.state.isUnlocked })
 	}
 
-	openPicker(){
-		this.setState({pickerOpen: true})
+	openPicker() {
+		this.setState({ pickerOpen: true })
 	}
 
-	onConfirm(){
+	onConfirm() {
 		// extract the properties out of state we want to save
 		const { caption, height, width, src, widgetEngine, icon } = this.state
 		this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
@@ -141,7 +136,7 @@ class MateriaSettingsDialog extends React.Component {
 
 	render() {
 		// Display the LTI Widget Picker
-		if(this.state.pickerOpen){
+		if (this.state.pickerOpen) {
 			return (
 				<MateriaPickerDialog
 					onPick={this.onPick}
@@ -155,15 +150,20 @@ class MateriaSettingsDialog extends React.Component {
 		}
 
 		// Display the settings dialog
-		return <SettingsDialog
+		return (
+			<SettingsDialog
 				title="Materia Widget Settings"
 				onConfirm={this.onConfirm}
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
 				<SettingsDialogRow className="highlight">
-					{this.state.icon ? <div className="widget-icon"><img src={this.state.icon} alt={this.state.widgetEngine} /></div> : null}
-					{this.state.caption	? <div className="widget-name">{this.state.caption}</div> : null}
+					{this.state.icon ? (
+						<div className="widget-icon">
+							<img src={this.state.icon} alt={this.state.widgetEngine} />
+						</div>
+					) : null}
+					{this.state.caption ? <div className="widget-name">{this.state.caption}</div> : null}
 					<Button
 						id="obojobo-draft--chunks--materia--properties-modal--src"
 						className="correct-button"
@@ -182,9 +182,16 @@ class MateriaSettingsDialog extends React.Component {
 					>
 						{this.state.isUnlocked ? 'Hide Customize' : 'Customize'}
 					</Button>
-					{this.state.isUnlocked ? <SettingsDialogForm settings={this.state} config={this.settingsItems} onChange={this.onSettingChange} /> : null}
+					{this.state.isUnlocked ? (
+						<SettingsDialogForm
+							settings={this.state}
+							config={this.settingsItems}
+							onChange={this.onSettingChange}
+						/>
+					) : null}
 				</SettingsDialogRow>
 			</SettingsDialog>
+		)
 	}
 }
 

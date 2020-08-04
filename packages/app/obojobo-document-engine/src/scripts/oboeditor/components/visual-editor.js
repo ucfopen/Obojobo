@@ -182,7 +182,6 @@ class VisualEditor extends React.Component {
 	}
 
 	checkIfSaved(event) {
-return undefined
 		if (this.props.readOnly) {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
