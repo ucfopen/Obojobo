@@ -1,3 +1,6 @@
+// importing styles here because there is now actual component
+import './viewer-component.scss'
+
 const MODULE_NODE = 'ObojoboDraft.Modules.Module'
 
 const Module = {

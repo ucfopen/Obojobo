@@ -22,7 +22,6 @@ const onBlur = function() {
 }
 
 const ie = false
-//@cc_on ie = true;
 if (ie) {
 	document.onfocusin = onFocus
 	document.onfocusout = onBlur
