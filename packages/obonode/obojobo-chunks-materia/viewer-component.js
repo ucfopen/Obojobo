@@ -13,9 +13,9 @@ export default class Materia extends React.Component {
 		// manipulate iframe settings
 		const model = props.model.clone()
 		model.modelState.src = this.srcToLTILaunchUrl(model.modelState.src)
-		model.modelState.border = true;
-		model.modelState.fit = 'scale';
-		model.modelState.initialZoom = 1;
+		model.modelState.border = true
+		model.modelState.fit = 'scale'
+		model.modelState.initialZoom = 1
 
 		// state setup
 		this.state = {
@@ -30,37 +30,41 @@ export default class Materia extends React.Component {
 		this.onShow = this.onShow.bind(this)
 	}
 
-	onPostMessageFromMateria(event){
+	onPostMessageFromMateria(event) {
 		// iframe isn't present OR
 		// postmessage didn't come from the iframe we're listening to
-		if(!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) return
+		if (!this.iframeRef.current || event.source !== this.iframeRef.current.contentWindow) {
+			return
+		}
 
 		// postmessage isn't expected domain
-		if(!this.state.model.modelState.src.includes(event.origin)) return
+		if (!this.state.model.modelState.src.includes(event.origin)) {
+			return
+		}
 
-		try{
-			if(typeof event.data !== 'string') return
+		if (typeof event.data !== 'string') {
+			return
+		}
+
+		try {
 			const data = JSON.parse(event.data)
-			if(data.type === 'materiaScoreRecorded'){
 
-				console.log('POSTMESSAGE FROM MATERIA')
-				console.log(`SCORE IS ${data.score} !!!!!`)
-				this.setState({score: data.score})
+			switch (data.type) {
+				case 'materiaScoreRecorded':
+					this.setState({ score: data.score })
+					break
 			}
-			else{
-				console.log(data)
-			}
-		} catch(e){
-			console.log(e)
+		} catch (e) {
+			console.error(e)
 		}
 	}
 
 	componentDidMount() {
-		window.addEventListener("message", this.onPostMessageFromMateria, false)
+		window.addEventListener('message', this.onPostMessageFromMateria, false)
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("message", this.onPostMessageFromMateria, false)
+		window.removeEventListener('message', this.onPostMessageFromMateria, false)
 	}
 
 	srcToLTILaunchUrl(src) {
@@ -69,26 +73,26 @@ export default class Materia extends React.Component {
 		return `${window.location.origin}/materia-lti-launch?visitId=${visitId}&nodeId=${nodeId}`
 	}
 
-	onShow(){
-		this.setState({open: true})
+	onShow() {
+		this.setState({ open: true })
 	}
 
-	renderTextCaption(){
-		return this.state.model.modelState.textGroup.first.text
-			? <div className="label">
-					<TextGroupEl
-						parentModel={this.state.model}
-						textItem={this.state.model.modelState.textGroup.first}
-						groupIndex="0"
-					/>
-				</div>
-			: null
+	renderTextCaption() {
+		return this.state.model.modelState.textGroup.first.text ? (
+			<div className="label">
+				<TextGroupEl
+					parentModel={this.state.model}
+					textItem={this.state.model.modelState.textGroup.first}
+					groupIndex="0"
+				/>
+			</div>
+		) : null
 	}
 
-	renderCaptionOrScore(){
+	renderCaptionOrScore() {
 		try {
 			return this.renderTextCaption()
-		} catch(e){
+		} catch (e) {
 			console.error('Error bulding Materia Caption')
 			return null
 		}
@@ -96,7 +100,7 @@ export default class Materia extends React.Component {
 
 	render() {
 		return (
-			<div className={`obojobo-draft--chunks--materia ${isOrNot(this.state.open, 'open')}`} >
+			<div className={`obojobo-draft--chunks--materia ${isOrNot(this.state.open, 'open')}`}>
 				<IFrame
 					ref={this.iframeRef}
 					model={this.state.model}

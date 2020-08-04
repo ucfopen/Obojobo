@@ -20,7 +20,7 @@ class IFrameProperties extends React.Component {
 			width: 640,
 			newWindow: false,
 			reload: false,
-			zoom: false,
+			zoom: false
 		}
 		this.state = { ...defaultState, ...props.content, title: props.title }
 		this.inputRef = React.createRef()
@@ -28,11 +28,11 @@ class IFrameProperties extends React.Component {
 		this.settingsItems = [
 			{
 				label: 'URL',
-				prop: 'src',
+				prop: 'src'
 			},
 			{
-				label: 'Caption',
-				prop: 'title'
+				type: 'heading',
+				text: 'Style'
 			},
 			{
 				label: 'Width',
@@ -58,15 +58,13 @@ class IFrameProperties extends React.Component {
 				type: 'switch'
 			},
 			{
-				label: 'Autoload',
-				prop: 'autoload',
-				type: 'switch'
-			},
-			{
 				label: 'Fit',
 				prop: 'fit',
 				type: 'select',
-				options: ['scale', 'scroll']
+				options: [
+					{ label: 'Scale (Content scales down if not enough space)', value: 'scale' },
+					{ label: 'Scroll (Scrollbars appear if not enough space)', value: 'scroll' }
+				]
 			},
 			{
 				label: 'Initial Zoom',
@@ -75,6 +73,15 @@ class IFrameProperties extends React.Component {
 				type: 'number',
 				min: 1,
 				max: 500
+			},
+			{
+				type: 'heading',
+				text: 'Behavior'
+			},
+			{
+				label: 'Autoload',
+				prop: 'autoload',
+				type: 'switch'
 			},
 			{
 				type: 'heading',
@@ -103,7 +110,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	componentDidMount() {
-		if(!this.inputRef.current) return
+		if (!this.inputRef.current) return
 
 		this.inputRef.current.focus()
 		this.inputRef.current.select()
@@ -124,34 +131,60 @@ class IFrameProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		if(!this.inputRef.current) return
+		if (!this.inputRef.current) return
 		this.inputRef.current.focus()
 	}
 
-	onConfirm(){
-		 // extract the properties out of state we want to save
-		const { autoload, border, fit, height, initialZoom, src, title, width, newWindow, reload, zoom } = this.state
-		this.props.onConfirm({ autoload, border, fit, height, initialZoom, src, title, width, newWindow, reload, zoom})
+	onConfirm() {
+		// extract the properties out of state we want to save
+		const {
+			autoload,
+			border,
+			fit,
+			height,
+			initialZoom,
+			src,
+			title,
+			width,
+			newWindow,
+			reload,
+			zoom
+		} = this.state
+		this.props.onConfirm({
+			autoload,
+			border,
+			fit,
+			height,
+			initialZoom,
+			src,
+			title,
+			width,
+			newWindow,
+			reload,
+			zoom
+		})
 	}
 
-	onSettingChange(setting, event){
-		let stateChanges = {}
-		switch(setting.type){
+	onSettingChange(setting, event) {
+		const stateChanges = {}
+
+		switch (setting.type) {
 			case 'switch':
 				stateChanges[setting.prop] = event.target.checked
-				break;
+				break
 
 			default:
 				stateChanges[setting.prop] = event.target.value
-				break;
+				break
 		}
+
 		this.setState(stateChanges)
 	}
 
 	render() {
 		return (
 			<SettingsDialog
-				title="IFrame Propterties"
+				title="IFrame Properties"
 				onConfirm={this.onConfirm}
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}

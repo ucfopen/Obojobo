@@ -1,24 +1,39 @@
-.obojobo-draft-settings--form {
+.obojobo-draft--settings--form {
 	display: grid;
 	grid-template-columns: [labels] auto [inputs] 1fr;
 	width: 100%;
-	column-gap: 10px;
-	row-gap: 15px;
+	column-gap: 0.7em;
+	row-gap: 0.3em;
 	align-items: center;
 	text-align: left;
+	font-size: 1em;
 
-	input{
-		width: 100%;
+	> div {
+		min-height: 2em;
+		display: flex;
+		align-items: center;
 	}
 
-	h2{
+	input {
+		width: 100%;
+		vertical-align: middle;
+		box-sizing: border-box;
+		min-height: 2.5em;
+	}
+
+	select {
+		font-size: 0.7em;
+	}
+
+	h2 {
 		grid-column: 1 / span 2;
-		margin-bottom: .2em;
+		margin-bottom: 0.2em;
 		border-bottom: 1px solid #e7e7e7;
 	}
 
-	.obojobo-draft-settings--units {
+	.obojobo-draft--settings--units {
 		margin-left: 0.3em;
 		vertical-align: middle;
+		font-size: 0.8em;
 	}
 }

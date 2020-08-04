@@ -3,7 +3,7 @@ import './settings-dialog.scss'
 import React from 'react'
 import SimpleDialog from 'obojobo-document-engine/src/scripts/common/components/modal/simple-dialog'
 
-const SettingsDialog = ({title, children, onConfirm, onCancel, focusOnFirstElement }) => {
+const SettingsDialog = ({ title, children, onConfirm, onCancel, focusOnFirstElement }) => {
 	return (
 		<SimpleDialog
 			cancelOk
@@ -12,12 +12,9 @@ const SettingsDialog = ({title, children, onConfirm, onCancel, focusOnFirstEleme
 			onCancel={onCancel}
 			focusOnFirstElement={focusOnFirstElement}
 		>
-			<div className={'obojobo-draft--chunks--materia--properties-modal'}>
-				{children}
-			</div>
+			<div className={'obojobo-draft--components--modal--settings-dialog'}>{children}</div>
 		</SimpleDialog>
 	)
 }
 
 export default SettingsDialog
-
