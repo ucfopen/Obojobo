@@ -99,7 +99,7 @@ const TextUtil = {
 						leaf.num += style.data
 						break
 					case 'color':
-						leaf.color = style.data
+						leaf.color = style.data.text
 				}
 			})
 
@@ -133,7 +133,7 @@ const TextUtil = {
 							start: currIndex,
 							end: currIndex + textRange.text.length,
 							type: type,
-							data: value
+							data: { text: textRange.color }
 						}
 						line.text.styleList.push(style)
 					}
