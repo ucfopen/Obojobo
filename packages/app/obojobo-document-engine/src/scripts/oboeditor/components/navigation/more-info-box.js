@@ -130,8 +130,9 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
-	handleAbstractToggleChange(changeFn, booleanValue) {
-		this.setState(prevState => ({ content: changeFn(prevState.content, booleanValue) }))
+	handleAbstractToggleChange(changeFn, event) {
+		const enabled = event.target.checked // must be stored because target becomes null before setState callback is called
+		this.setState(prevState => ({ content: changeFn(prevState.content, enabled) }))
 	}
 
 	onSave() {
@@ -230,7 +231,7 @@ class MoreInfoBox extends React.Component {
 						key={description.description}
 						title={description.description}
 						initialChecked={this.state.content[description.name]}
-						handleCheckChange={this.handleSwitchChange.bind(this, description.name)}
+						onChange={this.handleSwitchChange.bind(this, description.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
@@ -239,8 +240,8 @@ class MoreInfoBox extends React.Component {
 					<Switch
 						key={description.description}
 						title={description.description}
-						initialChecked={description.value(this.state.content)}
-						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}
+						checked={description.value(this.state.content)}
+						onChange={this.handleAbstractToggleChange.bind(this, description.onChange)}
 					/>
 				)
 		}

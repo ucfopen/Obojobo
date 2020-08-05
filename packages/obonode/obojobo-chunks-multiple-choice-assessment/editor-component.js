@@ -30,11 +30,12 @@ class MCAssessment extends React.Component {
 		)
 	}
 
-	changeShuffle(shuffle) {
+	changeShuffle(event) {
+		console.log(event.target.checked)
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
 			this.props.editor,
-			{ content: { ...this.props.element.content, shuffle } },
+			{ content: { ...this.props.element.content, shuffle: event.target.checked } },
 			{ at: path }
 		)
 	}
@@ -89,8 +90,8 @@ class MCAssessment extends React.Component {
 					</label>
 					<Switch
 						title="Shuffle Choices"
-						initialChecked={content.shuffle}
-						handleCheckChange={this.changeShuffle}
+						checked={content.shuffle}
+						onChange={this.changeShuffle}
 					/>
 				</div>
 				<div>
