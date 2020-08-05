@@ -491,6 +491,7 @@ describe('VisualEditor', () => {
 
 	test('changes the Editor title', () => {
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -552,6 +553,7 @@ describe('VisualEditor', () => {
 
 	test('changes the Editor title to blank', () => {
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -877,6 +879,7 @@ describe('VisualEditor', () => {
 		}
 
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [] },
@@ -896,57 +899,110 @@ describe('VisualEditor', () => {
 
 		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
+		const preventDefault = jest.fn()
 		instance.editor = editor
 
+		// save
+		expect(props.saveDraft).not.toHaveBeenCalled()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 's',
 			metaKey: true
 		})
+		expect(props.saveDraft).toHaveBeenCalled()
 
+		// undo ctrll z
+		expect(editor.undo).not.toHaveBeenCalled()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 'z',
 			metaKey: true
 		})
+		expect(editor.undo).toHaveBeenCalled()
 
+		// redo with ctrl y
+		editor.redo.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 'y',
 			metaKey: true
 		})
+		expect(editor.redo).toHaveBeenCalled()
 
+		// redo with ctrl shift z
+		editor.redo.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
+			key: 'z',
+			shiftKey: true,
+			metaKey: true
+		})
+		expect(editor.redo).toHaveBeenCalled()
+
+		// escape
+		expect(ReactEditor.blur).not.toHaveBeenCalled()
+		instance.onKeyDownGlobal({
+			preventDefault,
 			key: 'Escape'
 		})
+		expect(ReactEditor.blur).toHaveBeenCalled()
 
+		// open inline insert menu (top one) with -
+		expect(editor.toggleEditable).not.toHaveBeenCalled()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
-			key: 's'
-		})
-
-		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: '-',
 			metaKey: true
 		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
 
+		// open inline insert menu (top one) with shift -
+		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
+			key: '_',
+			metaKey: true
+		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
+
+		// open inline insert menu (bottom one) with =
+		editor.toggleEditable.mockClear()
+		instance.onKeyDownGlobal({
+			preventDefault,
 			key: '=',
 			metaKey: true
 		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
+
+		// open inline insert menu (bottom one) with shift =
+		editor.toggleEditable.mockClear()
+		instance.onKeyDownGlobal({
+			preventDefault,
+			key: '+',
+			metaKey: true
+		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
 
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 'i',
 			metaKey: true,
 			shiftKey: true
 		})
 
-		expect(editor.undo).toHaveBeenCalled()
-		expect(editor.redo).toHaveBeenCalled()
+		instance.onKeyDownGlobal({
+			preventDefault,
+			key: 'I',
+			metaKey: true,
+			shiftKey: true
+		})
+
+		// for coverage, falls through all tests
+		// without triggering anything
+		instance.onKeyDownGlobal({
+			preventDefault,
+			key: 's'
+		})
 	})
 
 	test('onKeyDown runs through full list of options', () => {

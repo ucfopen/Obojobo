@@ -153,6 +153,7 @@ class EditorApp extends React.Component {
 	}
 
 	displayLockedState(title, message) {
+		// entering a unrecoverable state, stop renewing locks
 		clearInterval(this.renewLockInterval)
 		this.renewLockInterval = null
 
@@ -163,7 +164,8 @@ class EditorApp extends React.Component {
 	}
 
 	startRenewEditLockInterval(draftId) {
-		// allow this function to be called again
+		// block this function from being called again
+		// while it's waiting for api calls
 		if (this._isCreatingRenewableEditLock) return Promise.resolve()
 		this._isCreatingRenewableEditLock = true
 
@@ -178,12 +180,15 @@ class EditorApp extends React.Component {
 						this.handleEditLockError(error)
 					})
 				}, this.editLocks.renewLockIntervalMs)
+				// end code that happens on interval
 			})
 			.catch(error => {
+				// unable to lock on initial run
+				// note this will not capture errors thrown inside the interval
 				this.handleEditLockError(error)
 			})
 			.then(() => {
-				// allow this function to be called again
+				// unblock so function to be called again
 				this._isCreatingRenewableEditLock = false
 			})
 	}
