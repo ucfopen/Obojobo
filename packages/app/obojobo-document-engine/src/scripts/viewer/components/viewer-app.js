@@ -181,7 +181,10 @@ export default class ViewerApp extends React.Component {
 						isPreviewing,
 						viewSessionId
 					},
-					() => Dispatcher.trigger('viewer:loaded', true)
+					() => {
+						Dispatcher.trigger('viewer:loaded', true)
+						if (!document.hidden) this.sendViewStart()
+					}
 				)
 			})
 			.catch(err => {
@@ -324,6 +327,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onVisibilityChange() {
+		// hiding
 		if (document.hidden) {
 			this.leftEpoch = new Date()
 
@@ -335,8 +339,13 @@ export default class ViewerApp extends React.Component {
 			}).then(res => {
 				this.leaveEvent = res.value
 			})
-		} else {
-			APIUtil.postEvent({
+
+			return
+		}
+
+		// returning
+		if (this.leaveEvent) {
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
 				eventVersion: '2.0.0',
@@ -350,7 +359,21 @@ export default class ViewerApp extends React.Component {
 
 			delete this.leaveEvent
 			delete this.leftEpoch
+			return
 		}
+
+		// first view
+		this.sendViewStart()
+	}
+
+	// first view Event
+	sendViewStart() {
+		ViewerAPI.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:initialView',
+			eventVersion: '1.0.0',
+			visitId: this.state.navState.visitId
+		})
 	}
 
 	getTextForVariable(event, variable, textModel) {
