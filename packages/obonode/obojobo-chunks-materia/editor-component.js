@@ -128,7 +128,10 @@ class MateriaEditor extends React.Component {
 					<div className="obojobo-draft--revealable-container-wrapper">
 						<div
 							className={`obojobo-draft--revealable-container editor-container ${isOrNot(selected, 'selected')}`}
-							style={{userSelect: 'none'}}
+							style={{
+								maxWidth: `${content.width}px`,
+								maxHeight: `${content.height}px`
+							}}
 							onClick={this.focusMe}
 						>
 							<Button
