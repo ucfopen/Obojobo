@@ -22,7 +22,7 @@ import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-const { DOMUtil, focus } = Common.page
+const { focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
@@ -96,7 +96,9 @@ export default class ViewerApp extends React.Component {
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onFocus = this.onFocus.bind(this)
-		this.onScroll = this.onScroll.bind(this)
+		this.startObservingForIntersectionChanges = this.startObservingForIntersectionChanges.bind(this)
+		this.onIntersectionChange = this.onIntersectionChange.bind(this)
+		// this.onScroll = this.onScroll.bind(this)
 		this.onResize = this.onResize.bind(this)
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
@@ -255,6 +257,7 @@ export default class ViewerApp extends React.Component {
 
 		// use Focus Store values to update DOM Focus
 		this.updateDOMFocus()
+		this.startObservingForIntersectionChanges()
 	}
 
 	updateDOMFocus() {
@@ -396,7 +399,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onScroll() {
+	startObservingForIntersectionChanges() {
 		const focusState = this.state.focusState
 
 		if (!focusState.visualFocusTarget) {
@@ -412,10 +415,47 @@ export default class ViewerApp extends React.Component {
 		if (!el) {
 			return
 		}
-		if (!DOMUtil.isElementVisible(el)) {
-			return FocusUtil.clearFadeEffect()
-		}
+
+		this.observer = new IntersectionObserver(this.onIntersectionChange, {
+			root: null,
+			rootMargin: '0px',
+			threshhold: 0
+		})
+
+		this.observer.observe(el)
 	}
+
+	onIntersectionChange(changes) {
+		const change = changes[0]
+
+		if (change.intersectionRatio > 0) {
+			return false
+		}
+
+		FocusUtil.clearFadeEffect()
+		return true
+	}
+
+	// onScroll() {
+	// 	const focusState = this.state.focusState
+
+	// 	if (!focusState.visualFocusTarget) {
+	// 		return
+	// 	}
+
+	// 	const component = FocusUtil.getVisuallyFocussedModel(focusState)
+	// 	if (!component) {
+	// 		return
+	// 	}
+
+	// 	const el = component.getDomEl()
+	// 	if (!el) {
+	// 		return
+	// 	}
+	// 	if (!DOMUtil.isElementVisible(el)) {
+	// 		return FocusUtil.clearFadeEffect()
+	// 	}
+	// }
 
 	onResize() {
 		Dispatcher.trigger(
@@ -638,7 +678,7 @@ export default class ViewerApp extends React.Component {
 				ref={this.containerRef}
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
-				onScroll={this.onScroll}
+				// onScroll={this.onScroll}
 				className={classNames}
 			>
 				<IdleTimer
