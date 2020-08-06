@@ -16,6 +16,7 @@ class Table extends React.Component {
 
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
 		this.toggleHeader = this.toggleHeader.bind(this)
+		this.toggleFixedWidthCell = this.toggleFixedWidthCell.bind(this)
 	}
 
 	toggleHeader() {
@@ -44,6 +45,20 @@ class Table extends React.Component {
 		}
 	}
 
+	toggleFixedWidthCell() {
+		const editor = this.props.editor
+
+		const fixedWidth = !this.props.element.fixedWidth
+
+		// Toggling the fixed width cell property.
+		const tablePath = ReactEditor.findPath(editor, this.props.element)
+		Transforms.setNodes(
+			editor,
+			{ content: { ...this.props.element.content, fixedWidth } },
+			{ at: tablePath }
+		)
+	}
+
 	// Only return on tab - the table cell menu returns on shift+tab
 	returnFocusOnTab(event) {
 		if (event.key === 'Tab' && !event.shiftKey) {
@@ -63,17 +78,27 @@ class Table extends React.Component {
 					>
 						Toggle Header
 					</Button>
+					<Button
+						className="toggle-fixed-width"
+						onClick={this.toggleFixedWidthCell}
+						onKeyDown={this.returnFocusOnTab}
+					>
+						Toggle Fixed Width Cells
+					</Button>
 				</div>
 			</div>
 		)
 	}
 
 	render() {
+
+		const { fixedWidth } = this.props.element
+
 		return (
 			<Component {...this.props}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
-						<table className="view" key="table">
+						<table className={fixedWidth ? 'view' : 'view no-fixed-width'} key="table">
 							<tbody>{this.props.children}</tbody>
 						</table>
 					</div>

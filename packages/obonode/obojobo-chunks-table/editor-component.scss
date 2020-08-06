@@ -1,6 +1,10 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
+	.view.no-fixed-width {
+		table-layout: auto;
+	}
+
 	.view {
 		th {
 			position: relative;

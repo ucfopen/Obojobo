@@ -3,6 +3,7 @@ import GridTextGroup from './grid-text-group'
 const Adapter = {
 	construct(model, attrs) {
 		model.setStateProp('header', true)
+		model.setStateProp('fixedWidth', true)
 
 		if (attrs && attrs.content && attrs.content.textGroup) {
 			model.modelState.textGroup = GridTextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
