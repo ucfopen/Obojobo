@@ -33,6 +33,14 @@ Common.Registry.registerModel('ObojoboDraft.Sections.Assessment', {
 
 			return AssessmentUtil.getAttemptsRemaining(viewerProps.assessmentState, assessmentModel)
 		},
+		'assessment:attemptsTaken'(textModel, viewerProps) {
+			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sessions.Assessment')
+			if (!assessmentModel) {
+				return null
+			}
+
+			return viewerProps.assessmentState.attempts.length
+		},
 		'assessment:attemptsAmount'(textModel) {
 			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
 			if (!assessmentModel) {

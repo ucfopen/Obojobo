@@ -32,6 +32,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(register[1]).toHaveProperty('getNavItem', expect.any(Function))
 		expect(register[1]).toHaveProperty('variables', {
 			'assessment:attemptsAmount': expect.any(Function),
+			'assessment:attemptsTaken': expect.any(Function),
 			'assessment:attemptsRemaining': expect.any(Function)
 		})
 	})
@@ -144,6 +145,38 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 			modelState: { attempts: 17 }
 		})
 		expect(vari).toEqual('mockRemaining')
+	})
+
+	test('assessment:attemptsTaken returns `null` when there is no assessment', () => {
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const model = {
+			getParentOfType: jest.fn().mockReturnValueOnce(null)
+		}
+
+		// retrieve the method from the variables
+		const funct = register[1].variables['assessment:attemptsTaken']
+		expect(funct).toEqual(expect.any(Function))
+
+		const vari = funct(model)
+		expect(vari).toEqual(null)
+	})
+
+	test('assessment:attemptsTaken returns number of attempts taken', () => {
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const model = {
+			getParentOfType: jest.fn().mockReturnValueOnce('mockModel')
+		}
+		const viewerProps = {
+			assessmentState: {
+				attempts: ['mockAttempt1', 'mockAttempt2', 'mockAttempt3']
+			}
+		}
+
+		const funct = register[1].variables['assessment:attemptsTaken']
+		expect(funct).toEqual(expect.any(Function))
+
+		const vari = funct(model, viewerProps)
+		expect(vari).toEqual(3)
 	})
 
 	test('assessment:attemptsAmount returns `null` when there is no assessment', () => {
