@@ -1,5 +1,4 @@
 import React from 'react'
-
 import ColorPicker from './color-picker'
 
 class TextColorPickerIcon extends React.Component {
@@ -24,10 +23,6 @@ class TextColorPickerIcon extends React.Component {
 
 	componentDidMount() {
 		document.addEventListener('mousedown', this.onWindowMouseDown, false)
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.onWindowMouseDown, false)
 	}
 
 	render() {

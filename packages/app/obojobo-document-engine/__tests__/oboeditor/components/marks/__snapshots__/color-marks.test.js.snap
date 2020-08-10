@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ColorMark renderLeaf diplays expected style 1`] = `
+Object {
+  "children": <span
+    style={
+      Object {
+        "color": "#000000",
+      }
+    }
+  >
+    mockChild
+  </span>,
+  "leaf": Object {
+    "color": "#000000",
+  },
+}
+`;
+
+exports[`ColorMark renderLeaf does nothing 1`] = `
+Object {
+  "children": "mockChild",
+  "leaf": Object {},
+}
+`;

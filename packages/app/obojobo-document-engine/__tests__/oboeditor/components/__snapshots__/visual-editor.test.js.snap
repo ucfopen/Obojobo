@@ -54,6 +54,9 @@ Array [
     "renderLeaf": [Function],
   },
   Object {
+    "renderLeaf": [Function],
+  },
+  Object {
     "isVoid": [MockFunction] {
       "calls": Array [
         Array [
@@ -542,6 +545,50 @@ exports[`VisualEditor VisualEditor component 1`] = `
     <div
       className="visual-editor--content-toolbar"
     >
+      <button
+        aria-label="Color"
+        onClick={[Function]}
+        title="Color"
+      >
+        <div
+          className="text-color-icon"
+        >
+          <svg
+            className="icon"
+            focusable="false"
+            height="20px"
+            onClick={[Function]}
+            style={
+              Object {
+                "margin": "6.5px 5.5px 5.5px 5.5px",
+              }
+            }
+            viewBox="0,0,2048,2048"
+            width="21px"
+          >
+            <path
+              d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+            <path
+              d="M 51 1997 v -410 h 1946 v 410 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 z"
+              type="path"
+            />
+            <path
+              d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+          </svg>
+        </div>
+      </button>
       <button
         aria-label="Bold
 Ctrl+B"
@@ -1123,6 +1170,50 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Color"
+        onClick={[Function]}
+        title="Color"
+      >
+        <div
+          className="text-color-icon"
+        >
+          <svg
+            className="icon"
+            focusable="false"
+            height="20px"
+            onClick={[Function]}
+            style={
+              Object {
+                "margin": "6.5px 5.5px 5.5px 5.5px",
+              }
+            }
+            viewBox="0,0,2048,2048"
+            width="21px"
+          >
+            <path
+              d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+            <path
+              d="M 51 1997 v -410 h 1946 v 410 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 z"
+              type="path"
+            />
+            <path
+              d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+          </svg>
+        </div>
+      </button>
+      <button
         aria-label="Bold
 Ctrl+B"
         onClick={[Function]}
@@ -1702,6 +1793,50 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
     <div
       className="visual-editor--content-toolbar"
     >
+      <button
+        aria-label="Color"
+        onClick={[Function]}
+        title="Color"
+      >
+        <div
+          className="text-color-icon"
+        >
+          <svg
+            className="icon"
+            focusable="false"
+            height="20px"
+            onClick={[Function]}
+            style={
+              Object {
+                "margin": "6.5px 5.5px 5.5px 5.5px",
+              }
+            }
+            viewBox="0,0,2048,2048"
+            width="21px"
+          >
+            <path
+              d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+            <path
+              d="M 51 1997 v -410 h 1946 v 410 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 z"
+              type="path"
+            />
+            <path
+              d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+          </svg>
+        </div>
+      </button>
       <button
         aria-label="Bold
 Ctrl+B"
@@ -2329,6 +2464,50 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Color"
+        onClick={[Function]}
+        title="Color"
+      >
+        <div
+          className="text-color-icon"
+        >
+          <svg
+            className="icon"
+            focusable="false"
+            height="20px"
+            onClick={[Function]}
+            style={
+              Object {
+                "margin": "6.5px 5.5px 5.5px 5.5px",
+              }
+            }
+            viewBox="0,0,2048,2048"
+            width="21px"
+          >
+            <path
+              d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+            <path
+              d="M 51 1997 v -410 h 1946 v 410 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 z"
+              type="path"
+            />
+            <path
+              d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+          </svg>
+        </div>
+      </button>
+      <button
         aria-label="Bold
 Ctrl+B"
         onClick={[Function]}
@@ -2904,6 +3083,50 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
     <div
       className="visual-editor--content-toolbar"
     >
+      <button
+        aria-label="Color"
+        onClick={[Function]}
+        title="Color"
+      >
+        <div
+          className="text-color-icon"
+        >
+          <svg
+            className="icon"
+            focusable="false"
+            height="20px"
+            onClick={[Function]}
+            style={
+              Object {
+                "margin": "6.5px 5.5px 5.5px 5.5px",
+              }
+            }
+            viewBox="0,0,2048,2048"
+            width="21px"
+          >
+            <path
+              d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+            <path
+              d="M 51 1997 v -410 h 1946 v 410 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+              type="path"
+            />
+            <path
+              d="M 2048 1536 v 512 h -2048 v -512 z"
+              type="path"
+            />
+            <path
+              d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+              type="path"
+            />
+          </svg>
+        </div>
+      </button>
       <button
         aria-label="Bold
 Ctrl+B"

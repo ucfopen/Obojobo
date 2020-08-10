@@ -62,7 +62,7 @@ describe('Content Toolbar', () => {
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
