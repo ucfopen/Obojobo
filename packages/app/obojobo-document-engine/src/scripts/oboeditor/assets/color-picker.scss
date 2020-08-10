@@ -16,7 +16,7 @@
 		display: flex;
 	}
 
-	.color-choice {
+	.color-picker--color-cell {
 		width: 1.2em;
 		height: 1.2em;
 		border-radius: 100%;
@@ -32,15 +32,26 @@
 		display: inline-block;
 		color: $color-action;
 		text-decoration: underline;
+
+		&:hover {
+			background: #eee;
+		}
 	}
 
-	.color-picker--button:hover {
-		background: #eee;
-	}
+	.color-picker--input {
+		display: flex;
+		padding: 0.4em;
 
-	input {
-		font-size: 0.8em;
-		margin: 0.5em;
-		padding: 0.3em;
+		input {
+			flex: 1;
+			font-size: 0.8em;
+			padding: 0.3em;
+			margin-right: 0.4em;
+		}
+
+		.button {
+			padding: 0.1em 0.5em;
+			height: 2em;
+		}
 	}
 }

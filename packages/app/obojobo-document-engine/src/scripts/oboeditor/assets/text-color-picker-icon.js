@@ -1,25 +1,74 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import ColorPicker from './color-picker'
 
-const TextColorPickerIcon = props => {
-	const [isSelected, setIsSelected] = useState(false)
+class TextColorPickerIcon extends React.Component {
+	constructor(props) {
+		super(props)
+		this.domRef = React.createRef()
 
-	return (
-		<div className="text-color-icon">
-			<img
-				style={{ width: '22px', height: '22px', margin: '5px' }}
-				onClick={() => {
-					setIsSelected(!isSelected)
-					props.editor.toggleEditable(false)
-				}}
-				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABjUlEQVRoge2ZPU7DMBSAP0qHXgFVFQxcAIkdCRZ+Jq6AYKdMLHAlYOgBulfiAgyoggWmbEitVIYSCSVO4ufY2KXvk95iyc/PjT+/RgFFURQP3ACfwAcwjFyLM0fAohCHUSty5InyRh6jVuTAFjCjvJEZ0A+xYCdEUuAK6BrGu8BFoDW90wFeKT+NPKbAZqziJJxRvYk8TqNVJ8Ak+cpJXyV5cOl9y35JWfLpT/wmaemrJL8D7g3jyUpvkjw/QlVHLknpmzr5SnR6m1+87oklg40DdQ4lgaTApKWXHJmkpZdKHET6jZbz+yyPVbEJPgMvFXN2gb3C2BzYAd5b1uOM6cy7RjTpm/6uS6OV9KaXH1tOgO3C2Bx4sJx/Xlh/ABwDoxY1OdFW2iQ6vY9rNIlO76OxRe/0Pgvw1uklsveAA2CfsuSw7AE94EuQ780wPgBugQkwFuSzZkTzFSq5cXznsyazWDiLmM+aYcPiGXAdMZ+iKOuA5MVqEayKeqxqDPV95M/RjaTGv9mIoihrwjdEnSlPQwzPyAAAAABJRU5ErkJggg=="
-			/>
-			{isSelected ? (
-				<ColorPicker editor={props.editor} onClose={() => setIsSelected(false)} />
-			) : null}
-		</div>
-	)
+		this.state = {
+			isSelected: false
+		}
+
+		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
+	}
+
+	onWindowMouseDown(event) {
+		if (!this.domRef.current) return
+		if (this.domRef.current.contains(event.target)) return // clicked inside this element
+
+		this.setState({ isSelected: false })
+		this.props.editor.toggleEditable(true)
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onWindowMouseDown, false)
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onWindowMouseDown, false)
+	}
+
+	render() {
+		return (
+			<div className="text-color-icon" ref={this.domRef}>
+				<svg
+					className="icon"
+					height="20px"
+					width="21px"
+					style={{ margin: '6.5px 5.5px 5.5px 5.5px' }}
+					viewBox="0,0,2048,2048"
+					focusable="false"
+					onClick={() => {
+						this.props.editor.toggleEditable(false)
+						this.setState({ isSelected: true })
+					}}
+				>
+					<path
+						type="path"
+						d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+					></path>
+					<path type="path" d="M 51 1997 v -410 h 1946 v 410 z"></path>
+					<path
+						type="path"
+						d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
+					></path>
+					<path type="path" d="M 2048 1536 v 512 h -2048 v -512 z"></path>
+					<path
+						type="path"
+						d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
+					></path>
+				</svg>
+				{this.state.isSelected ? (
+					<ColorPicker
+						editor={this.props.editor}
+						onClose={() => this.setState({ isSelected: false })}
+					/>
+				) : null}
+			</div>
+		)
+	}
 }
 
 export default TextColorPickerIcon

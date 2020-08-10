@@ -20,7 +20,10 @@
 		border: none;
 		background: transparent;
 		cursor: pointer;
-		opacity: 0.6;
+
+		svg {
+			opacity: 0.6;
+		}
 
 		svg path {
 			fill: $color-text;
