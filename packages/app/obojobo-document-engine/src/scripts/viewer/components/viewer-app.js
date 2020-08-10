@@ -97,8 +97,8 @@ export default class ViewerApp extends React.Component {
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onFocus = this.onFocus.bind(this)
 		this.startObservingForIntersectionChanges = this.startObservingForIntersectionChanges.bind(this)
+		this.stopObservingForIntersectionChanges = this.stopObservingForIntersectionChanges.bind(this)
 		this.onIntersectionChange = this.onIntersectionChange.bind(this)
-		// this.onScroll = this.onScroll.bind(this)
 		this.onResize = this.onResize.bind(this)
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
@@ -425,6 +425,15 @@ export default class ViewerApp extends React.Component {
 		this.observer.observe(el)
 	}
 
+	stopObservingForIntersectionChanges() {
+		if (!this.observer) return false
+
+		this.observer.disconnect()
+		delete this.observer
+
+		return true
+	}
+
 	onIntersectionChange(changes) {
 		const change = changes[0]
 
@@ -433,29 +442,9 @@ export default class ViewerApp extends React.Component {
 		}
 
 		FocusUtil.clearFadeEffect()
+		this.stopObservingForIntersectionChanges()
 		return true
 	}
-
-	// onScroll() {
-	// 	const focusState = this.state.focusState
-
-	// 	if (!focusState.visualFocusTarget) {
-	// 		return
-	// 	}
-
-	// 	const component = FocusUtil.getVisuallyFocussedModel(focusState)
-	// 	if (!component) {
-	// 		return
-	// 	}
-
-	// 	const el = component.getDomEl()
-	// 	if (!el) {
-	// 		return
-	// 	}
-	// 	if (!DOMUtil.isElementVisible(el)) {
-	// 		return FocusUtil.clearFadeEffect()
-	// 	}
-	// }
 
 	onResize() {
 		Dispatcher.trigger(
@@ -678,7 +667,6 @@ export default class ViewerApp extends React.Component {
 				ref={this.containerRef}
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
-				// onScroll={this.onScroll}
 				className={classNames}
 			>
 				<IdleTimer

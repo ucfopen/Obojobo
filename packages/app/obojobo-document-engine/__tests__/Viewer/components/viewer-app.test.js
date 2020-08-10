@@ -768,7 +768,9 @@ describe('ViewerApp', () => {
 	})
 
 	test('onIntersectionChange calls FocusUtil.clearFadeEffect if intersectionRation reaches 0', () => {
-		const thisValue = {}
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn()
+		}
 		const changes = [
 			{
 				intersectionRatio: 0.0
@@ -776,7 +778,21 @@ describe('ViewerApp', () => {
 		]
 
 		expect(ViewerApp.prototype.onIntersectionChange.bind(thisValue)(changes)).toBe(true)
+		expect(thisValue.stopObservingForIntersectionChanges).toHaveBeenCalled()
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+	})
+
+	test('stopObservingForIntersectionChanges disconnects and deletes any observers', () => {
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind({})()).toBe(false)
+
+		const mockDisconnect = jest.fn()
+		const thisValue = {
+			observer: {
+				disconnect: mockDisconnect
+			}
+		}
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind(thisValue)()).toBe(true)
+		expect(thisValue.observer).not.toBeDefined()
 	})
 
 	test('onIdle posts an Event', done => {
