@@ -400,6 +400,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	startObservingForIntersectionChanges() {
+		this.stopObservingForIntersectionChanges()
 		const focusState = this.state.focusState
 
 		if (!focusState.visualFocusTarget) {

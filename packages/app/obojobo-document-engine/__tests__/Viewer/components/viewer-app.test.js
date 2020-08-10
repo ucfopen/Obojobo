@@ -662,6 +662,7 @@ describe('ViewerApp', () => {
 		const oldIntersectionObserver = window.IntersectionObserver
 
 		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
 			state: {
 				focusState: {
 					visualFocusTarget: null
@@ -681,6 +682,7 @@ describe('ViewerApp', () => {
 		const oldIntersectionObserver = window.IntersectionObserver
 
 		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
 			state: {
 				focusState: {
 					visualFocusTarget: 'invalid-id'
@@ -702,6 +704,7 @@ describe('ViewerApp', () => {
 		const oldIntersectionObserver = window.IntersectionObserver
 
 		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
 			state: {
 				focusState: {
 					visualFocusTarget: 'id'
@@ -729,6 +732,7 @@ describe('ViewerApp', () => {
 		window.IntersectionObserver.prototype.observe = jest.fn()
 
 		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
 			onIntersectionChange: jest.fn(),
 			state: {
 				focusState: {
