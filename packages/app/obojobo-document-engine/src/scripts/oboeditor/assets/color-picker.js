@@ -3,11 +3,12 @@ import './color-picker.scss'
 import React, { useState } from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
+import Button from 'obojobo-document-engine/src/scripts/common/components/button.js'
 
 const COLOR_MARK = 'color'
 const colorChoices = [
 	[
-		'#000000',
+		'rgb(0, 0, 0)',
 		'rgb(255, 255, 255)',
 		'rgb(239, 239, 239)',
 		'rgb(204, 204, 204)',
@@ -15,7 +16,7 @@ const colorChoices = [
 		'rgb(67, 67, 67)'
 	],
 	[
-		'#ff0000',
+		'rgb(255, 0, 0)',
 		'rgb(244, 204, 204)',
 		'rgb(234, 153, 153)',
 		'rgb(224, 102, 102)',
@@ -66,7 +67,7 @@ const colorChoices = [
 
 const ColorPicker = props => {
 	const [expanded, setExpanded] = useState(false)
-	const [value, setValue] = useState('')
+	const [hex, setHex] = useState('')
 
 	const onClick = color => {
 		const { editor } = props
@@ -78,45 +79,47 @@ const ColorPicker = props => {
 		editor.toggleEditable(true)
 	}
 
+	const onChange = event => {
+		event.preventDefault()
+		const value = event.target.value
+		if (value === '' || (!isNaN(Number('0x' + value)) && value.length <= 6)) {
+			setHex(value)
+		}
+	}
+
 	return (
 		<div className="color-picker">
 			<div className="color-picker--color-choices">
-				{colorChoices.map(colors => {
-					if (expanded) {
-						return (
-							<div key={colors[0]}>
-								{colors.map(color => (
-									<div
-										key={color}
-										className="color-choice"
-										style={{ backgroundColor: color }}
-										onClick={() => onClick(color)}
-									/>
-								))}
-							</div>
-						)
-					} else {
-						return (
-							<div
-								key={colors[0]}
-								className="color-choice"
-								style={{ backgroundColor: colors[0] }}
-								onClick={() => onClick(colors[0])}
-							/>
-						)
-					}
-				})}
+				{colorChoices.map(colors =>
+					expanded ? (
+						<div key={colors[0]}>
+							{colors.map(color => (
+								<div
+									key={color}
+									className="color-picker--color-cell"
+									style={{ backgroundColor: color }}
+									onClick={() => onClick(color)}
+								/>
+							))}
+						</div>
+					) : (
+						<div
+							key={colors[0]}
+							className="color-picker--color-cell"
+							style={{ backgroundColor: colors[0] }}
+							onClick={() => onClick(colors[0])}
+						/>
+					)
+				)}
 			</div>
 			{!expanded ? (
 				<button className="color-picker--button" onClick={() => setExpanded(!expanded)}>
 					More Color
 				</button>
 			) : (
-				<div>
-					<input value={value} onChange={event => setValue(event.target.value)} />
-					<button className="color-picker--button" onClick={() => onClick('#' + value)}>
-						OK
-					</button>
+				<div className="color-picker--input">
+					<input value={hex} onChange={onChange} placeholder="Hex value (Ex: #000000)" />
+					<Button onClick={() => onClick('#' + hex)}>OK</Button>
 				</div>
 			)}
 		</div>

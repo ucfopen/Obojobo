@@ -47,7 +47,7 @@ const ContentToolbar = props => {
 				// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
 				// for keyboard shortcuts
 				const hotKey = isMac ? '⌘+' : 'Ctrl+'
-				const shortcut = '\n' + hotKey + mark.shortcut
+				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
 
 				return (
 					<button
