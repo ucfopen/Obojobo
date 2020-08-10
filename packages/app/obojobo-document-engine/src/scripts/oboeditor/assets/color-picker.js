@@ -3,8 +3,9 @@ import './color-picker.scss'
 import React, { useState } from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
-import Button from 'obojobo-document-engine/src/scripts/common/components/button.js'
+import Common from '../../common'
 
+const { Button } = Common.components
 const COLOR_MARK = 'color'
 const colorChoices = [
 	[
