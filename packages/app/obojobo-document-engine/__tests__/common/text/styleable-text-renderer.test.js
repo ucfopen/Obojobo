@@ -184,7 +184,7 @@ describe('styleableTextRenderer', () => {
 		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
-			`"<span>dog <span><span style=\\"color:#000000\\">fox</span></span> cat</span>"`
+			`"<span>dog <color text=\\"#000000\\"><span style=\\"color:#000000\\">fox</span></color> cat</span>"`
 		)
 	})
 

@@ -172,7 +172,7 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 
 		case StyleType.COLOR:
 			nodeToWrap.html = `<span style="color:${styleRange.data.text}">${text}</span>`
-			newChild = new MockElement('span', {})
+			newChild = new MockElement('color', styleRange.data)
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			nodeToWrap.text = text
