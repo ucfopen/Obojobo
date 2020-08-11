@@ -22,6 +22,8 @@ import './viewer'
 import ViewerComponent from './viewer-component'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
+const { AssessmentUtil } = Viewer.util
+
 describe('ObojoboDraft.Sections.Assessment registration', () => {
 	test('registerModel registers expected vars', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
@@ -153,6 +155,8 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 			getParentOfType: jest.fn().mockReturnValueOnce(null)
 		}
 
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel = jest.fn()
+
 		// retrieve the method from the variables
 		const funct = register[1].variables['assessment:attemptsTaken']
 		expect(funct).toEqual(expect.any(Function))
@@ -161,22 +165,28 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(vari).toEqual(null)
 	})
 
-	test('assessment:attemptsTaken returns number of attempts taken', () => {
+	test('assessment:attemptsTaken calls AssessmentUtil', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce('mockModel')
 		}
 		const viewerProps = {
-			assessmentState: {
-				attempts: ['mockAttempt1', 'mockAttempt2', 'mockAttempt3']
-			}
+			assessmentState: 'mockAssessmentState'
 		}
+		const AssessmentUtil = Viewer.util.AssessmentUtil
 
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel.mockReturnValueOnce('mockTaken')
+
+		// retrieve the method from the variables
 		const funct = register[1].variables['assessment:attemptsTaken']
 		expect(funct).toEqual(expect.any(Function))
 
 		const vari = funct(model, viewerProps)
-		expect(vari).toEqual(3)
+		expect(AssessmentUtil.getNumberOfAttemptsCompletedForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			'mockModel'
+		)
+		expect(vari).toEqual('mockTaken')
 	})
 
 	test('assessment:attemptsAmount returns `null` when there is no assessment', () => {
