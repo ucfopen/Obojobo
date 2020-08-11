@@ -130,7 +130,7 @@ class Question extends React.Component {
 							)}
 						</div>
 					</div>
-					<Button className="delete-button" onClick={() => this.delete()}>
+					<Button className="delete-button" onClick={() => this.delete()} contentEditable={false}>
 						×
 					</Button>
 				</div>

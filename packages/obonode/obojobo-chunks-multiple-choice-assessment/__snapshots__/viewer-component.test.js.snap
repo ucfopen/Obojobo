@@ -77,7 +77,7 @@ exports[`MCAssessment Component not shuffled (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -141,7 +141,7 @@ exports[`MCAssessment Component not shuffled (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -263,7 +263,7 @@ exports[`MCAssessment Component not shuffled 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -327,7 +327,7 @@ exports[`MCAssessment Component not shuffled 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -449,7 +449,7 @@ exports[`MCAssessment Component not shuffled, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -513,7 +513,7 @@ exports[`MCAssessment Component not shuffled, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -615,7 +615,7 @@ exports[`MCAssessment Component not shuffled, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -679,7 +679,7 @@ exports[`MCAssessment Component not shuffled, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -788,7 +788,7 @@ exports[`MCAssessment Component not shuffled, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -853,7 +853,7 @@ exports[`MCAssessment Component not shuffled, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -965,7 +965,7 @@ exports[`MCAssessment Component not shuffled, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1030,7 +1030,7 @@ exports[`MCAssessment Component not shuffled, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1135,7 +1135,7 @@ exports[`MCAssessment Component pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1199,7 +1199,7 @@ exports[`MCAssessment Component pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1325,7 +1325,7 @@ exports[`MCAssessment Component pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1389,7 +1389,7 @@ exports[`MCAssessment Component pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1511,7 +1511,7 @@ exports[`MCAssessment Component pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1575,7 +1575,7 @@ exports[`MCAssessment Component pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1681,7 +1681,7 @@ exports[`MCAssessment Component pick-all, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1745,7 +1745,7 @@ exports[`MCAssessment Component pick-all, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1854,7 +1854,7 @@ exports[`MCAssessment Component pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -1919,7 +1919,7 @@ exports[`MCAssessment Component pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2035,7 +2035,7 @@ exports[`MCAssessment Component pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2100,7 +2100,7 @@ exports[`MCAssessment Component pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2205,7 +2205,7 @@ exports[`MCAssessment Component pick-one-multiple-correct (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2269,7 +2269,7 @@ exports[`MCAssessment Component pick-one-multiple-correct (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2391,7 +2391,7 @@ exports[`MCAssessment Component pick-one-multiple-correct 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2455,7 +2455,7 @@ exports[`MCAssessment Component pick-one-multiple-correct 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2577,7 +2577,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, assessment (survey) 1
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2641,7 +2641,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, assessment (survey) 1
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2743,7 +2743,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2807,7 +2807,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2916,7 +2916,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, review (survey) 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -2981,7 +2981,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, review (survey) 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3093,7 +3093,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3158,7 +3158,7 @@ exports[`MCAssessment Component pick-one-multiple-correct, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3273,7 +3273,7 @@ exports[`MCAssessment Component submitted (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3342,7 +3342,7 @@ exports[`MCAssessment Component submitted (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3388,7 +3388,7 @@ exports[`MCAssessment Component submitted (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3529,7 +3529,7 @@ exports[`MCAssessment Component submitted, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3598,7 +3598,7 @@ exports[`MCAssessment Component submitted, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3644,7 +3644,7 @@ exports[`MCAssessment Component submitted, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3760,7 +3760,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3806,7 +3806,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3874,7 +3874,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -3920,7 +3920,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4066,7 +4066,7 @@ exports[`MCAssessment Component submitted, pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4112,7 +4112,7 @@ exports[`MCAssessment Component submitted, pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4180,7 +4180,7 @@ exports[`MCAssessment Component submitted, pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4226,7 +4226,7 @@ exports[`MCAssessment Component submitted, pick-all, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4349,7 +4349,7 @@ exports[`MCAssessment Component submitted, pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4395,7 +4395,7 @@ exports[`MCAssessment Component submitted, pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4470,7 +4470,7 @@ exports[`MCAssessment Component submitted, pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4516,7 +4516,7 @@ exports[`MCAssessment Component submitted, pick-all, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4640,7 +4640,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct (survey) 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4709,7 +4709,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct (survey) 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4755,7 +4755,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct (survey) 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4896,7 +4896,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, assessment
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -4965,7 +4965,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, assessment
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5011,7 +5011,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, assessment
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5129,7 +5129,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, review (su
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5205,7 +5205,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, review (su
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5251,7 +5251,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct, review (su
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5382,7 +5382,7 @@ exports[`MCAssessment Component submitted, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5458,7 +5458,7 @@ exports[`MCAssessment Component submitted, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5504,7 +5504,7 @@ exports[`MCAssessment Component submitted, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5633,7 +5633,7 @@ exports[`MCAssessment Component with correct score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5679,7 +5679,7 @@ exports[`MCAssessment Component with correct score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5742,7 +5742,7 @@ exports[`MCAssessment Component with correct score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5908,7 +5908,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -5954,7 +5954,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6017,7 +6017,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6117,7 +6117,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -6230,7 +6230,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6276,7 +6276,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6339,7 +6339,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6408,7 +6408,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -6528,7 +6528,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6574,7 +6574,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6638,7 +6638,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6721,7 +6721,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -6834,7 +6834,7 @@ exports[`MCAssessment Component with correct score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6880,7 +6880,7 @@ exports[`MCAssessment Component with correct score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -6943,7 +6943,7 @@ exports[`MCAssessment Component with correct score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7082,7 +7082,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7128,7 +7128,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7191,7 +7191,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7361,7 +7361,7 @@ exports[`MCAssessment Component with correct score, pick-all, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7407,7 +7407,7 @@ exports[`MCAssessment Component with correct score, pick-all, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7470,7 +7470,7 @@ exports[`MCAssessment Component with correct score, pick-all, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7616,7 +7616,7 @@ exports[`MCAssessment Component with correct score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7662,7 +7662,7 @@ exports[`MCAssessment Component with correct score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7726,7 +7726,7 @@ exports[`MCAssessment Component with correct score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7875,7 +7875,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7921,7 +7921,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -7984,7 +7984,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8150,7 +8150,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, a
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8196,7 +8196,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, a
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8259,7 +8259,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, a
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8401,7 +8401,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, r
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8447,7 +8447,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, r
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8511,7 +8511,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, r
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8667,7 +8667,7 @@ exports[`MCAssessment Component with correct score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8713,7 +8713,7 @@ exports[`MCAssessment Component with correct score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8777,7 +8777,7 @@ exports[`MCAssessment Component with correct score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8921,7 +8921,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -8990,7 +8990,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9036,7 +9036,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9196,7 +9196,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9265,7 +9265,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9311,7 +9311,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9410,7 +9410,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -9518,7 +9518,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9587,7 +9587,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9633,7 +9633,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9701,7 +9701,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -9816,7 +9816,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9892,7 +9892,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -9938,7 +9938,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10020,7 +10020,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
               className="text-chunk obojobo-draft--chunks--single-text pad"
             >
               <span
-                className="text align-left"
+                className="obo-text align-left"
                 data-group-index={0}
                 data-indent={0}
               >
@@ -10128,7 +10128,7 @@ exports[`MCAssessment Component with incorrect score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10197,7 +10197,7 @@ exports[`MCAssessment Component with incorrect score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10243,7 +10243,7 @@ exports[`MCAssessment Component with incorrect score, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10386,7 +10386,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10432,7 +10432,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10500,7 +10500,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10546,7 +10546,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10725,7 +10725,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10771,7 +10771,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10839,7 +10839,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -10885,7 +10885,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11035,7 +11035,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11081,7 +11081,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11156,7 +11156,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11202,7 +11202,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11350,7 +11350,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11419,7 +11419,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11465,7 +11465,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11625,7 +11625,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11694,7 +11694,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11740,7 +11740,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11876,7 +11876,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11952,7 +11952,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -11998,7 +11998,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12148,7 +12148,7 @@ exports[`MCAssessment Component with incorrect score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12224,7 +12224,7 @@ exports[`MCAssessment Component with incorrect score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12270,7 +12270,7 @@ exports[`MCAssessment Component with incorrect score, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12403,7 +12403,7 @@ exports[`MCAssessment Component with sortedIds (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12467,7 +12467,7 @@ exports[`MCAssessment Component with sortedIds (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12589,7 +12589,7 @@ exports[`MCAssessment Component with sortedIds 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12653,7 +12653,7 @@ exports[`MCAssessment Component with sortedIds 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12775,7 +12775,7 @@ exports[`MCAssessment Component with sortedIds, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12839,7 +12839,7 @@ exports[`MCAssessment Component with sortedIds, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -12941,7 +12941,7 @@ exports[`MCAssessment Component with sortedIds, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13005,7 +13005,7 @@ exports[`MCAssessment Component with sortedIds, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13108,7 +13108,7 @@ exports[`MCAssessment Component with sortedIds, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13179,7 +13179,7 @@ exports[`MCAssessment Component with sortedIds, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13285,7 +13285,7 @@ exports[`MCAssessment Component with sortedIds, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13356,7 +13356,7 @@ exports[`MCAssessment Component with sortedIds, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13461,7 +13461,7 @@ exports[`MCAssessment MCAssessment component (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13525,7 +13525,7 @@ exports[`MCAssessment MCAssessment component (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13647,7 +13647,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13711,7 +13711,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13848,7 +13848,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13894,7 +13894,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -13957,7 +13957,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14123,7 +14123,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, ass
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14169,7 +14169,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, ass
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14232,7 +14232,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, ass
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14374,7 +14374,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, rev
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14420,7 +14420,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, rev
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14484,7 +14484,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, rev
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14618,7 +14618,7 @@ exports[`MCAssessment MCAssessment component, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14682,7 +14682,7 @@ exports[`MCAssessment MCAssessment component, assessment (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14784,7 +14784,7 @@ exports[`MCAssessment MCAssessment component, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14848,7 +14848,7 @@ exports[`MCAssessment MCAssessment component, assessment 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -14957,7 +14957,7 @@ exports[`MCAssessment MCAssessment component, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -15022,7 +15022,7 @@ exports[`MCAssessment MCAssessment component, review (survey) 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -15134,7 +15134,7 @@ exports[`MCAssessment MCAssessment component, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >
@@ -15199,7 +15199,7 @@ exports[`MCAssessment MCAssessment component, review 1`] = `
                   className="text-chunk obojobo-draft--chunks--single-text pad"
                 >
                   <span
-                    className="text align-left"
+                    className="obo-text align-left"
                     data-group-index={0}
                     data-indent={0}
                   >

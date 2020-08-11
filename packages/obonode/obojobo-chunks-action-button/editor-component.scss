@@ -4,12 +4,16 @@
 	position: relative;
 
 	.button {
-		min-width: 12em;
+		min-width: 7em;
 		display: inline-block;
 		user-select: auto;
+		cursor: text;
+		padding: 0.4rem 1em;
+		text-align: center;
 
 		span[data-placeholder]::before {
 			min-width: 10em;
+			transform: translate(-50%, 0);
 		}
 	}
 

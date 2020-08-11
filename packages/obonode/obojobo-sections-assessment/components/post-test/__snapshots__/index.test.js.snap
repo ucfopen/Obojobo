@@ -261,7 +261,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -299,7 +299,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -429,7 +429,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -467,7 +467,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -594,7 +594,7 @@ exports[`PostTest PostTest component with review 1`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -632,7 +632,7 @@ exports[`PostTest PostTest component with review 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -752,7 +752,7 @@ exports[`PostTest PostTest component with review 2`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -790,7 +790,7 @@ exports[`PostTest PostTest component with review 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -917,7 +917,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -955,7 +955,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1075,7 +1075,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1113,7 +1113,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1240,7 +1240,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1278,7 +1278,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1398,7 +1398,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1436,7 +1436,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1553,7 +1553,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1591,7 +1591,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1711,7 +1711,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1749,7 +1749,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
