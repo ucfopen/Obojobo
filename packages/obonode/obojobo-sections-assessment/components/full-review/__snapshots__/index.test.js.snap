@@ -29,6 +29,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -251,6 +252,7 @@ exports[`FullReview FullReview component with attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -283,6 +285,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -315,6 +318,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -347,6 +351,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -379,6 +384,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -396,6 +402,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt undefined"

@@ -14,6 +14,7 @@ exports[`Actions editor Node component 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -27,4 +28,4 @@ exports[`Actions editor Node component 1`] = `
 </div>
 `;
 
-exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Action</button></div></div></div>"`;
+exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">Add Action</button></div></div></div>"`;

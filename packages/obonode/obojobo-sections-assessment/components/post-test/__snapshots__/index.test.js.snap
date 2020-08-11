@@ -50,6 +50,7 @@ exports[`PostTest PostTest component 1`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -132,6 +133,7 @@ exports[`PostTest PostTest component 2`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -221,6 +223,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -287,6 +290,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -387,6 +391,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -453,6 +458,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -550,6 +556,7 @@ exports[`PostTest PostTest component with review 1`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -616,6 +623,7 @@ exports[`PostTest PostTest component with review 1`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -706,6 +714,7 @@ exports[`PostTest PostTest component with review 2`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -772,6 +781,7 @@ exports[`PostTest PostTest component with review 2`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -869,6 +879,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -935,6 +946,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -1025,6 +1037,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1091,6 +1104,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -1188,6 +1202,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1254,6 +1269,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -1344,6 +1360,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1410,6 +1427,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -1497,6 +1515,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1563,6 +1582,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
@@ -1653,6 +1673,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
         </div>
         <div
           className="obojobo-draft--components--button is-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1719,6 +1740,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
