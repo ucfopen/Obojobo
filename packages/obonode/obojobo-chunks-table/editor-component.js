@@ -48,7 +48,7 @@ class Table extends React.Component {
 	toggleFixedWidthCell() {
 		const editor = this.props.editor
 
-		const fixedWidth = !this.props.element.fixedWidth
+		const fixedWidth = !this.props.element.content.fixedWidth
 
 		// Toggling the fixed width cell property.
 		const tablePath = ReactEditor.findPath(editor, this.props.element)
@@ -67,7 +67,7 @@ class Table extends React.Component {
 		}
 	}
 
-	renderButton() {
+	renderButtons() {
 		return (
 			<div className="buttonbox-box" contentEditable={false}>
 				<div className="box-border">
@@ -92,7 +92,7 @@ class Table extends React.Component {
 
 	render() {
 
-		const { fixedWidth } = this.props.element
+		const { fixedWidth } = this.props.element.content
 
 		return (
 			<Component {...this.props}>
@@ -102,7 +102,7 @@ class Table extends React.Component {
 							<tbody>{this.props.children}</tbody>
 						</table>
 					</div>
-					{this.props.selected ? this.renderButton() : null}
+					{this.props.selected ? this.renderButtons() : null}
 				</div>
 			</Component>
 		)

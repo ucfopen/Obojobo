@@ -16,11 +16,13 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.textGroup = model.modelState.textGroup.clone()
+		clone.modelState.fixedWidth = model.modelState.fixedWidth
 		return (clone.modelState.header = model.modelState.header)
 	},
 
 	toJSON(model, json) {
 		json.content.textGroup = model.modelState.textGroup.toDescriptor()
+		json.content.fixedWidth = model.modelState.fixedWidth
 		return (json.content.header = model.modelState.header)
 	},
 

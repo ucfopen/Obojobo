@@ -30,10 +30,10 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		fixedWidth: true, // Not reading property here from oboToSlate as well.
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
+            fixedWidth: node.content.fixedWidth, // Not reading property here from oboToSlate as well.
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
@@ -57,9 +57,7 @@ const oboToSlate = node => {
 	slateNode.content.numCols = node.content.textGroup.numCols
 	slateNode.content.numRows = node.content.textGroup.numRows
 	slateNode.children = []
-	slateNode.fixedWidth = true // Not managing to access the fixedWidth property
-    // from node.
-    // The value of fixedWidth here will be sent to the editor component's props.
+	slateNode.content.fixedWidth = node.content.fixedWidth || true
 
 	let currRow
 	node.content.textGroup.textGroup.forEach((line, index) => {

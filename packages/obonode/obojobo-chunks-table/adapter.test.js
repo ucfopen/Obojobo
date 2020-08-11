@@ -60,7 +60,7 @@ describe('Table adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		const a = new OboModel({ header: 'mockHeader' })
+		const a = new OboModel({ header: 'mockHeader', fixedWidth: 'mockWidth' })
 		const b = new OboModel({})
 
 		TableAdapter.construct(a)

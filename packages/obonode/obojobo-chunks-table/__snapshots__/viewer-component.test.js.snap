@@ -13,6 +13,9 @@ exports[`Table Table component 1`] = `
   <div
     className="obojobo-draft--chunks--table viewer pad"
   >
+    <p>
+      here: 
+    </p>
     <div
       className="container"
     >
@@ -118,6 +121,9 @@ exports[`Table Table component without header 1`] = `
   <div
     className="obojobo-draft--chunks--table viewer pad"
   >
+    <p>
+      here: 
+    </p>
     <div
       className="container"
     >
