@@ -342,6 +342,8 @@ describe('VisualEditor', () => {
 	})
 
 	test('VisualEditor component alters value majorly', () => {
+		jest.spyOn(Editor, 'marks').mockReturnValue({ color: '#010101' })
+
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -374,6 +376,7 @@ describe('VisualEditor', () => {
 			model: { title: 'Mock Title' }
 		}
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		jest.spyOn(Editor, 'marks').mockReturnValue({ color: '#010101' })
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
 				commonAncestorContainer: {
@@ -407,6 +410,7 @@ describe('VisualEditor', () => {
 			model: { title: 'Mock Title' }
 		}
 		jest.spyOn(ReactEditor, 'isFocused').mockReturnValue(true)
+		jest.spyOn(Editor, 'marks').mockReturnValue({ color: '#010101' })
 		window.getSelection = jest.fn().mockReturnValue({
 			getRangeAt: () => ({
 				commonAncestorContainer: {

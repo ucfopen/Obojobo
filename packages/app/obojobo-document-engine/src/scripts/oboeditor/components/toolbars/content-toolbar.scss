@@ -20,13 +20,10 @@
 		border: none;
 		background: transparent;
 		cursor: pointer;
+		position: relative;
 
 		svg {
 			opacity: 0.6;
-		}
-
-		svg path {
-			fill: $color-text;
 		}
 
 		svg line {

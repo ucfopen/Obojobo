@@ -1,32 +1,34 @@
 @import '~styles/includes';
 
-.text-color-icon {
-	position: relative;
-}
-
 .color-picker {
+	$button-background-color: #eeeeee;
+
+	position: absolute;
+	left: 0;
 	border: 1px solid $color-shadow;
 	background-color: $color-bg;
 	padding: 0.1em;
 	width: fit-content;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 	border-radius: 0.25em;
+	z-index: 1000;
 
 	.color-picker--color-choices {
 		display: flex;
 	}
 
 	.color-picker--color-cell {
-		width: 1.2em;
-		height: 1.2em;
+		width: 2em;
+		height: 2em;
 		border-radius: 100%;
-		margin: 0.3em;
+		margin: 0.6em;
 		border: solid 1px rgb(218, 220, 224);
+		display: block;
+		cursor: pointer;
 	}
 
 	.color-picker--button {
 		border: none;
-		background-color: inherit;
 		font-size: 0.9em;
 		cursor: pointer;
 		display: inline-block;
@@ -34,7 +36,7 @@
 		text-decoration: underline;
 
 		&:hover {
-			background: #eee;
+			background-color: $button-background-color;
 		}
 	}
 
@@ -43,7 +45,8 @@
 		padding: 0.4em;
 
 		input {
-			flex: 1;
+			flex-grow: 1;
+			width: 1em;
 			font-size: 0.8em;
 			padding: 0.3em;
 			margin-right: 0.4em;

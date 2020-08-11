@@ -2,12 +2,19 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import TextColorIcon from 'obojobo-document-engine/src/scripts/oboeditor/assets/text-color-picker-icon'
-
+import { Editor } from 'slate'
 jest.mock('slate-react')
 jest.mock('slate')
 
 describe('TextColorIcon', () => {
 	test('TextColorIcon component', () => {
+		const component = mount(<TextColorIcon />)
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('TextColorIcon component matches text color', () => {
+		jest.spyOn(Editor, 'marks').mockReturnValue({ color: 'mock color' })
+
 		const component = mount(<TextColorIcon />)
 		expect(component.html()).toMatchSnapshot()
 	})

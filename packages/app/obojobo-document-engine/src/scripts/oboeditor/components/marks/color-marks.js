@@ -1,5 +1,4 @@
 import React from 'react'
-
 import TextColorPickerIcon from '../../assets/text-color-picker-icon'
 
 const COLOR_MARK = 'color'

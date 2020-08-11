@@ -50,7 +50,7 @@ describe('Color Picker', () => {
 
 		const component = mount(<ColorPicker {...props} />)
 		component
-			.find('button')
+			.find('.color-picker--button')
 			.at(0)
 			.simulate('click')
 		component
@@ -70,23 +70,28 @@ describe('Color Picker', () => {
 		}
 
 		const component = mount(<ColorPicker {...props} />)
+
+		// click on "More Color"
 		component
-			.find('button')
+			.find('.color-picker--button')
 			.at(0)
 			.simulate('click')
 
+		// Invalid Hex
 		component
 			.find('input')
 			.at(0)
 			.simulate('change', { target: { value: 'invalid' } })
 		expect(component.find('input').get(0).props.value).toBe('')
 
+		// Valid hex
 		component
 			.find('input')
 			.at(0)
 			.simulate('change', { target: { value: '111111' } })
 		expect(component.find('input').get(0).props.value).toBe('111111')
 
+		// Empty string
 		component
 			.find('input')
 			.at(0)
@@ -94,7 +99,7 @@ describe('Color Picker', () => {
 		expect(component.find('input').get(0).props.value).toBe('')
 	})
 
-	test('ColorPicker - click ok', () => {
+	test('click ok', () => {
 		const props = {
 			editor: {
 				toggleEditable: jest.fn()
@@ -103,8 +108,10 @@ describe('Color Picker', () => {
 		}
 
 		const component = mount(<ColorPicker {...props} />)
+
+		// Click on "More Color"
 		component
-			.find('button')
+			.find('.color-picker--button')
 			.at(0)
 			.simulate('click')
 		component
@@ -112,11 +119,10 @@ describe('Color Picker', () => {
 			.at(0)
 			.simulate('change', { target: { value: '111111' } })
 		component
-			.find('button')
+			.find('.button')
 			.at(0)
 			.simulate('click')
 
 		expect(props.onClose).toHaveBeenCalled()
-		expect(props.editor.toggleEditable).toHaveBeenCalled()
 	})
 })

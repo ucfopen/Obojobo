@@ -2,7 +2,6 @@ import './color-picker.scss'
 
 import React, { useState } from 'react'
 import { Editor } from 'slate'
-import { ReactEditor } from 'slate-react'
 import Common from '../../common'
 
 const { Button } = Common.components
@@ -71,13 +70,8 @@ const ColorPicker = props => {
 	const [hex, setHex] = useState('')
 
 	const onClick = color => {
-		const { editor } = props
-
-		Editor.addMark(editor, COLOR_MARK, color)
-
-		ReactEditor.focus(editor)
+		Editor.addMark(props.editor, COLOR_MARK, color)
 		props.onClose()
-		editor.toggleEditable(true)
 	}
 
 	const onChange = event => {
@@ -95,7 +89,7 @@ const ColorPicker = props => {
 					expanded ? (
 						<div key={colors[0]}>
 							{colors.map(color => (
-								<div
+								<button
 									key={color}
 									className="color-picker--color-cell"
 									style={{ backgroundColor: color }}
@@ -104,7 +98,7 @@ const ColorPicker = props => {
 							))}
 						</div>
 					) : (
-						<div
+						<button
 							key={colors[0]}
 							className="color-picker--color-cell"
 							style={{ backgroundColor: colors[0] }}
