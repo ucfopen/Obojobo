@@ -550,7 +550,7 @@ describe('VisualEditor', () => {
 		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
 	})
 
-	test('changes the Editor title to blank', () => {
+	test('can not change the Editor title to blank', () => {
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -606,9 +606,18 @@ describe('VisualEditor', () => {
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
 
-		// verify save and rename are called
-		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', '')
-		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
+		// verify save and rename are not called
+		expect(EditorUtil.renameModule).not.toHaveBeenCalled()
+		expect(saveModule).not.toHaveBeenCalled()
+
+		// verify input aria-invalid tag is set and warning div exists
+		expect(
+			thing
+				.find('input')
+				.at(0)
+				.props()['aria-invalid']
+		).toBe(true)
+		expect(thing.find('.empty-title-warning').length).toBe(1)
 	})
 
 	test('Ensures the plugins work as expected', () => {
@@ -1174,5 +1183,21 @@ describe('VisualEditor', () => {
 		})()
 
 		expect(disconnect).toHaveBeenCalled()
+	})
+
+	test('PageEditor component doesnt save if readOnly is enabled', () => {
+		const props = { readOnly: true }
+		const mockFn = jest.fn()
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportCurrentToJSON')
+		const component = mount(<VisualEditor {...props} />)
+		const instance = component.instance()
+
+		instance.markUnsaved()
+		instance.saveModule('mockId')
+
+		// eslint-disable-next-line no-undefined
+		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
+		expect(spy).not.toHaveBeenCalled()
+		expect(instance.state.saved).toBe(false)
 	})
 })

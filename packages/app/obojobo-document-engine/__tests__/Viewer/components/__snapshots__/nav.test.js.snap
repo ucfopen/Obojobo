@@ -275,6 +275,50 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 </nav>
 `;
 
+exports[`Nav renders blank title 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  >
+    <li
+      className="heading is-not-selected"
+    >
+       
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
 exports[`Nav renders closed 1`] = `
 <nav
   aria-label="Navigation"

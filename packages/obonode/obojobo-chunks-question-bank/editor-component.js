@@ -14,6 +14,10 @@ import emptyQB from './empty-node.json'
 const { Button } = Common.components
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const stopPropagation = event => {
+	event.stopPropagation()
+}
+
 class QuestionBank extends React.Component {
 	constructor(props) {
 		super(props)
@@ -30,6 +34,11 @@ class QuestionBank extends React.Component {
 
 		this.freezeEditor = this.freezeEditor.bind(this)
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
+
+		this.remove = this.remove.bind(this)
+		this.addQuestion = this.addQuestion.bind(this)
+		this.addQuestionBank = this.addQuestionBank.bind(this)
+		this.changeChooseType = this.changeChooseType.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -39,14 +48,17 @@ class QuestionBank extends React.Component {
 		Transforms.setNodes(this.props.editor, { content: { ...content, ...this.state } }, { at: path })
 	}
 
-	onChangeContent(key, event) {
-		const newContent = { [key]: event.target.value }
-		this.setState(newContent) // update the display now
-	}
-
 	componentDidUpdate(prevProps) {
 		if (prevProps.selected && !this.props.selected) {
 			this.updateNodeFromState()
+		}
+	}
+
+	contentToStateObj(content) {
+		return {
+			chooseAll: content.chooseAll,
+			choose: content.choose || 1,
+			select: content.select || 'sequential'
 		}
 	}
 
@@ -76,6 +88,25 @@ class QuestionBank extends React.Component {
 		this.setState({ chooseAll }) // update the display now
 	}
 
+	onChangeContent(key, event) {
+		let val = event.target.value
+		if (key === 'choose') val = Math.max(parseInt(val, 10), 1)
+		const newContent = { [key]: val }
+		this.setState(newContent) // update the display now
+	}
+
+	freezeEditor() {
+		clearTimeout(window.restoreEditorFocusId)
+		this.props.editor.toggleEditable(false)
+	}
+
+	unfreezeEditor() {
+		window.restoreEditorFocusId = setTimeout(() => {
+			this.updateNodeFromState()
+			this.props.editor.toggleEditable(true)
+		})
+	}
+
 	displaySettings(editor, element) {
 		const radioGroupName = `${element.id}-choose`
 		return (
@@ -88,7 +119,7 @@ class QuestionBank extends React.Component {
 							name={radioGroupName}
 							value="all"
 							checked={this.state.chooseAll}
-							onChange={this.changeChooseType.bind(this)}
+							onChange={this.changeChooseType}
 							onFocus={this.freezeEditor}
 							onBlur={this.unfreezeEditor}
 						/>
@@ -101,7 +132,7 @@ class QuestionBank extends React.Component {
 							name={radioGroupName}
 							value="pick"
 							checked={!this.state.chooseAll}
-							onChange={this.changeChooseType.bind(this)}
+							onChange={this.changeChooseType}
 							onFocus={this.freezeEditor}
 							onBlur={this.unfreezeEditor}
 						/>
@@ -109,9 +140,10 @@ class QuestionBank extends React.Component {
 					</label>
 					<input
 						type="number"
+						min="1"
 						value={this.state.choose}
 						disabled={this.state.chooseAll}
-						onClick={event => event.stopPropagation()}
+						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'choose')}
 						onFocus={this.freezeEditor}
 						onBlur={this.unfreezeEditor}
@@ -121,7 +153,7 @@ class QuestionBank extends React.Component {
 					How should questions be selected?
 					<select
 						value={this.state.select}
-						onClick={event => event.stopPropagation()}
+						onClick={stopPropagation}
 						onChange={this.onChangeContent.bind(this, 'select')}
 						onFocus={this.freezeEditor}
 						onBlur={this.unfreezeEditor}
@@ -135,26 +167,6 @@ class QuestionBank extends React.Component {
 		)
 	}
 
-	freezeEditor() {
-		clearTimeout(this.restoreEditorFocusId)
-		this.props.editor.toggleEditable(false)
-	}
-
-	unfreezeEditor() {
-		this.restoreEditorFocusId = setTimeout(() => {
-			this.updateNodeFromState()
-			this.props.editor.toggleEditable(true)
-		})
-	}
-
-	contentToStateObj(content) {
-		return {
-			chooseAll: content.chooseAll,
-			choose: content.choose || 1,
-			select: content.select || 'sequential'
-		}
-	}
-
 	render() {
 		const { editor, element, children } = this.props
 		return (
@@ -162,7 +174,7 @@ class QuestionBank extends React.Component {
 				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 					<Button
 						className="delete-button"
-						onClick={this.remove.bind(this)}
+						onClick={this.remove}
 						onFocus={this.freezeEditor}
 						onBlur={this.unfreezeEditor}
 					>
@@ -171,8 +183,8 @@ class QuestionBank extends React.Component {
 					{this.displaySettings(editor, element, element.content)}
 					{children}
 					<div className="button-bar" contentEditable={false}>
-						<Button onClick={this.addQuestion.bind(this)}>Add Question</Button>
-						<Button onClick={this.addQuestionBank.bind(this)}>Add Question Bank</Button>
+						<Button onClick={this.addQuestion}>Add Question</Button>
+						<Button onClick={this.addQuestionBank}>Add Question Bank</Button>
 					</div>
 				</div>
 			</Node>

@@ -1064,6 +1064,97 @@ Object {
 }
 `;
 
+exports[`XML to Draft Object Tranformation Converts numericassessment xml to numericassessment node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "textGroup": Array [
+              Object {
+                "data": null,
+                "text": Object {
+                  "styleList": Array [],
+                  "value": "The answer is 1",
+                },
+              },
+            ],
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "content": Object {
+                "answer": 1,
+                "requirement": "exact",
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Feedback",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericChoice",
+        },
+      ],
+      "content": Object {
+        "units": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [
+                Object {
+                  "data": Object {},
+                  "end": 5,
+                  "start": 0,
+                  "type": "_latex",
+                },
+              ],
+              "value": "m/s^2",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.NumericAssessment",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
 exports[`XML to Draft Object Tranformation Converts page xml to page node 1`] = `
 Object {
   "children": Array [
