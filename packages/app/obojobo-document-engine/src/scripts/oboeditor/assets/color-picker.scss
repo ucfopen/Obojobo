@@ -1,8 +1,6 @@
 @import '~styles/includes';
 
 .color-picker {
-	$button-background-color: #eeeeee;
-
 	position: absolute;
 	left: 0;
 	border: 1px solid $color-shadow;
@@ -22,21 +20,23 @@
 		height: 2em;
 		border-radius: 100%;
 		margin: 0.6em;
-		border: solid 1px rgb(218, 220, 224);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 		display: block;
 		cursor: pointer;
 	}
 
 	.color-picker--button {
 		border: none;
-		font-size: 0.9em;
 		cursor: pointer;
 		display: inline-block;
 		color: $color-action;
 		text-decoration: underline;
+		background: transparent;
+		font-size: 0.7em;
+		margin: 0.5em;
 
 		&:hover {
-			background-color: $button-background-color;
+			background-color: #eeeeee;
 		}
 	}
 
@@ -50,6 +50,8 @@
 			font-size: 0.8em;
 			padding: 0.3em;
 			margin-right: 0.4em;
+			border: 1px solid #cccccc;
+			border-radius: $dimension-rounded-radius;
 		}
 
 		.button {

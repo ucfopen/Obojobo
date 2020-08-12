@@ -1,6 +1,11 @@
 @import '../../../scss/includes';
 
 .visual-editor--editor-app {
+	span::selection {
+		background-color: highlight;
+		color: inherit;
+	}
+
 	.draft-toolbars {
 		position: fixed;
 		top: 0;

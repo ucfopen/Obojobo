@@ -109,7 +109,7 @@ const ColorPicker = props => {
 			</div>
 			{!expanded ? (
 				<button className="color-picker--button" onClick={() => setExpanded(!expanded)}>
-					More Color
+					More Colors
 				</button>
 			) : (
 				<div className="color-picker--input">
