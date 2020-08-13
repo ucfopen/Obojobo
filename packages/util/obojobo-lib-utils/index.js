@@ -46,6 +46,7 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	if (type === 'middleware') scripts = manifest.obojobo.expressMiddleware
 	if (type === 'migrations') scripts = manifest.obojobo.migrations
 	if (type === 'parsers') scripts = manifest.obojobo.parsers
+	if (type === 'config') scripts = manifest.obojobo.config
 	else if (manifest.obojobo[`${type}Scripts`]) {
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
@@ -79,11 +80,14 @@ const getAllOboNodeScriptPathsByType = type => {
 	return flat.filter(a => a !== null)
 }
 
-const gatherAllMigrations = () => {
+// returns an array of resolved directories for any
+// obo node index registry that supplies relative directories
+// like 'migrations' and 'config'
+const getAllOboNodeRegistryDirsByType = type => {
 	const modules = searchNodeModulesForOboNodes()
 	const allDirs = []
 	modules.forEach(module => {
-		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
+		const dir = getOboNodeScriptPathsFromPackage(module, type)
 		if (!dir) return
 		const basedir = path.dirname(resolver(module))
 		allDirs.push(`${basedir}/${dir}`)
@@ -96,7 +100,7 @@ const migrateUp = () => {
 	const { execSync } = require('child_process')
 	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
 	const configPath = resolver('obojobo-express/server/config/db.json')
-	const migrationDirs = gatherAllMigrations()
+	const migrationDirs = getAllOboNodeRegistryDirsByType('migrations')
 
 	migrationDirs.forEach(dir => {
 		// eslint-disable-next-line no-console
@@ -187,7 +191,7 @@ module.exports = {
 	searchNodeModulesForOboNodes,
 	getAllOboNodeScriptPathsByType,
 	flattenArray,
-	gatherAllMigrations,
+	getAllOboNodeRegistryDirsByType,
 	migrateUp,
 	gatherClientScriptsFromModules,
 	setResolver

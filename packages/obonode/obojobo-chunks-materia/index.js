@@ -1,6 +1,6 @@
 module.exports = {
 	obojobo: {
-		// migrations: 'server/migrations',
+		config: 'server/config',
 		expressMiddleware: 'server/index.js',
 		parsers: 'materia-format-parser.js',
 		clientScripts: {

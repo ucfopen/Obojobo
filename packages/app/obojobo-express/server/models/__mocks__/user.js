@@ -1,4 +1,4 @@
-const permissions = oboRequire('server/config').permissions
+const permissions = oboRequire('server/config').permissionGroups
 let saveOrCreateCallbackFn = jest.fn()
 
 class MockUser {
@@ -20,7 +20,7 @@ class MockUser {
 		this.roles = roles
 
 		// creates 'canEditDrafts' getter if 'canEditDrafts' is set in config/role_groups.json
-		for (const permName in permissions) {
+		for (const permName in permissionGroups) {
 			Object.defineProperty(this, permName, {
 				get: this.hasPermission.bind(this, permName)
 			})
@@ -28,8 +28,8 @@ class MockUser {
 	}
 
 	hasPermission(permName) {
-		if (!permissions[permName]) return false
-		return this.hasOneOfRole(permissions[permName])
+		if (!permissionGroups[permName]) return false
+		return this.hasOneOfRole(permissionGroups[permName])
 	}
 
 	saveOrCreate() {

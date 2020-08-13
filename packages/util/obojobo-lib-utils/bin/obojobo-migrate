@@ -13,7 +13,7 @@ will execute: `db-migrate create add-a-table --config /path/to/obojobo-express/c
  */
 
 const path = require('path')
-const utils = require('../index')
+const { getAllOboNodeRegistryDirsByType } = require('../index')
 const fs = require('fs-extra')
 const os = require('os')
 const { execSync } = require('child_process')
@@ -36,7 +36,7 @@ if (!isCreateMode) {
 		fs.writeFileSync(configPath, JSON.stringify({development: config.db, production: config.db}, null, '\t'))
 
 		// gather all the migrations into a tmp dir
-		utils.gatherAllMigrations().forEach(dir => fs.copySync(dir, tempDir))
+		getAllOboNodeRegistryDirsByType('migrations').forEach(dir => fs.copySync(dir, tempDir))
 
 		// log and execute
 		console.log(command)

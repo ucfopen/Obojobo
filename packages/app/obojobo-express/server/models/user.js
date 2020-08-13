@@ -1,5 +1,5 @@
 const db = oboRequire('server/db')
-const permissions = oboRequire('server/config').permissions
+const permissionGroups = oboRequire('server/config').permissionGroups
 const crypto = require('crypto')
 const oboEvents = oboRequire('server/obo_events')
 const copyAttributesFn = require('obojobo-document-engine/src/scripts/common/util/clone-props')
@@ -27,7 +27,7 @@ class User {
 		this.roles = roles
 
 		// creates 'canEditDrafts' getter if 'canEditDrafts' is set in config/role_groups.json
-		for (const permName in permissions) {
+		for (const permName in permissionGroups) {
 			Object.defineProperty(this, permName, {
 				get: this.hasPermission.bind(this, permName)
 			})
@@ -115,8 +115,8 @@ class User {
 	}
 
 	hasPermission(permName) {
-		if (!permissions[permName]) return false
-		return this.hasOneOfRole(permissions[permName])
+		if (!permissionGroups[permName]) return false
+		return this.hasOneOfRole(permissionGroups[permName])
 	}
 
 	get avatarUrl() {
