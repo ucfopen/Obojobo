@@ -145,8 +145,10 @@ describe('NumericRule', () => {
 	})
 
 	test('getRuleSigFigs returns a BigValueRange of the given range', () => {
-		expect(NumericRule.getRuleSigFigs({ sigFigs: '2' })).toEqual(new BigValueRange('2'))
-		expect(NumericRule.getRuleSigFigs({ sigFigs: '(2,6]' })).toEqual(new BigValueRange('(2,6]'))
+		expect(NumericRule.getRuleSigFigs({ sigFigs: '2', types: '' })).toEqual(new BigValueRange('2'))
+		expect(NumericRule.getRuleSigFigs({ sigFigs: '(2,6]', types: '' })).toEqual(
+			new BigValueRange('(2,6]')
+		)
 	})
 
 	test('getRuleSigFigs throws error if given an invalid range', () => {
@@ -161,6 +163,14 @@ describe('NumericRule', () => {
 		expect(() => {
 			NumericRule.getRuleSigFigs({ sigFigs: '(*,2]' })
 		}).toThrow('sigFigs range must be larger than 0')
+
+		expect(() => {
+			NumericRule.getRuleSigFigs({ sigFigs: '9', types: 'fractional' })
+		}).toThrow('sigFigs cannot be defined if fractional values are allowed')
+
+		expect(() => {
+			NumericRule.getRuleSigFigs({ sigFigs: '[1,3)', types: 'fractional,decimal' })
+		}).toThrow('sigFigs cannot be defined if fractional values are allowed')
 	})
 
 	test('getRuleDecimalDigits returns an infinte BigValueRange if not given a digits value', () => {
@@ -293,67 +303,25 @@ describe('NumericRule', () => {
 		}).toThrow('Invalid scientific type given')
 	})
 
-	test('getUnitsMatch returns "matches-unit" if falsy value given', () => {
-		expect(NumericRule.getUnitsMatch({ unitsMatch: null })).toBe('matches-unit')
-		expect(NumericRule.getUnitsMatch({ unitsMatch: false })).toBe('matches-unit')
-		expect(NumericRule.getUnitsMatch({ unitsMatch: '' })).toBe('matches-unit')
-		expect(NumericRule.getUnitsMatch({})).toBe('matches-unit')
-	})
-
-	test('getUnitsMatch returns value if valid value given', () => {
-		expect(NumericRule.getUnitsMatch({ unitsMatch: 'no-unit' })).toBe('no-unit')
-		expect(NumericRule.getUnitsMatch({ unitsMatch: 'any-unit' })).toBe('any-unit')
-		expect(NumericRule.getUnitsMatch({ unitsMatch: 'ignore-unit' })).toBe('ignore-unit')
-		expect(NumericRule.getUnitsMatch({ unitsMatch: 'matches-unit' })).toBe('matches-unit')
-	})
-
-	test('getUnitsMatch throws if invalid value given', () => {
-		expect(() => {
-			NumericRule.getUnitsMatch({ unitsMatch: true })
-		}).toThrow('Invalid unitsMatch property')
-	})
-
-	test('getAllUnits returns both the unit in value with additionalUnits', () => {
-		expect(NumericRule.getAllUnits({ additionalUnits: '' }, { unit: '' })).toEqual([''])
-		expect(NumericRule.getAllUnits({}, { unit: '' })).toEqual([''])
-		expect(NumericRule.getAllUnits({ additionalUnits: '' }, { unit: 'g' })).toEqual(['g'])
-		expect(NumericRule.getAllUnits({ additionalUnits: 'grams' }, { unit: 'g' })).toEqual([
-			'g',
-			'grams'
-		])
-		expect(
-			NumericRule.getAllUnits({ additionalUnits: 'grams,another-unit' }, { unit: 'g' })
-		).toEqual(['g', 'grams', 'another-unit'])
-		expect(NumericRule.getAllUnits({ additionalUnits: 'g,g,g' }, { unit: 'g' })).toEqual(['g'])
-		expect(NumericRule.getAllUnits({ additionalUnits: 'g' }, { unit: '' })).toEqual(['g'])
-	})
-
-	test('getUnitsAreCaseSensitive only returns true if value is true', () => {
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: false })).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: 0 })).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: 1 })).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: 'true' })).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: '' })).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({})).toBe(false)
-		expect(NumericRule.getUnitsAreCaseSensitive({ unitsAreCaseSensitive: true })).toBe(true)
-	})
-
 	test('getRuleValue returns an infinite range if nothing given', () => {
-		expect(NumericRule.getRuleValue({})).toEqual(new NumericEntryRange('*'))
-		expect(NumericRule.getRuleValue({ value: null })).toEqual(new NumericEntryRange('*'))
-		expect(NumericRule.getRuleValue({ value: false })).toEqual(new NumericEntryRange('*'))
-		expect(NumericRule.getRuleValue({ value: 0 })).toEqual(new NumericEntryRange('*'))
-		expect(NumericRule.getRuleValue({ value: '' })).toEqual(new NumericEntryRange('*'))
+		expect(NumericRule.getRuleValue({})).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ value: null })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ value: false })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ value: 0 })).toEqual(new NumericEntryRange('0'))
+	})
+
+	test('getRuleValue throws error when given an invalid range', () => {
+		expect(() => {
+			NumericRule.getRuleValue({ value: '' })
+		}).toThrow('Invalid range given for value')
 	})
 
 	test('getRuleValue returns a NumericEntryRange', () => {
 		expect(NumericRule.getRuleValue({ value: '0' })).toEqual(new NumericEntryRange('0'))
-		expect(NumericRule.getRuleValue({ value: '1.77g' })).toEqual(new NumericEntryRange('1.77g'))
-		expect(NumericRule.getRuleValue({ value: '(*,*)kCal' })).toEqual(
-			new NumericEntryRange('(*,*)kCal')
-		)
-		expect(NumericRule.getRuleValue({ value: '[0xF0 bytes,0xFF bytes]' })).toEqual(
-			new NumericEntryRange('[0xF0 bytes,0xFF bytes]')
+		expect(NumericRule.getRuleValue({ value: '1.77' })).toEqual(new NumericEntryRange('1.77'))
+		expect(NumericRule.getRuleValue({ value: '(*,*)' })).toEqual(new NumericEntryRange('(*,*)'))
+		expect(NumericRule.getRuleValue({ value: '[0xF0,0xFF]' })).toEqual(
+			new NumericEntryRange('[0xF0,0xFF]')
 		)
 	})
 
@@ -372,9 +340,6 @@ describe('NumericRule', () => {
 				strawberries: true,
 				score: true,
 				round: true,
-				unitsMatch: true,
-				additionalUnits: true,
-				unitsAreCaseSensitive: true,
 				scientificTypes: true,
 				blackberries: true,
 				value: true
@@ -387,7 +352,7 @@ describe('NumericRule', () => {
 			new NumericRule(
 				{
 					percentError: 0.2,
-					types: 'decimal,fractional',
+					types: 'decimal,scientific',
 					sigFigs: '[1,3]',
 					decimals: '[0,2]',
 					isInteger: false,
@@ -395,13 +360,10 @@ describe('NumericRule', () => {
 					isValidScientific: true,
 					score: 100,
 					round: 'decimals',
-					unitsMatch: 'ignore-unit',
-					additionalUnits: 'g',
-					unitsAreCaseSensitive: false,
 					scientificTypes: 'e',
-					value: '6.78 grams'
+					value: '6.78'
 				},
-				['decimal', 'fractional']
+				['decimal', 'scientific']
 			)
 		).toMatchSnapshot()
 	})

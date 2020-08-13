@@ -75,21 +75,6 @@ describe('NumericMatches', () => {
 		expect(matches.numMatches).toBe(0)
 	})
 
-	test('removeShorterExactMatches removes shorter exact matches', () => {
-		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.TypeExactLong()
-		const mockExactShort = new NumericClasses.TypeExactShort()
-		matches.add(mockExactLong)
-		matches.add(mockExactShort)
-
-		expect(matches.status).toBe('singleExact')
-		expect(matches.matches).toEqual({
-			exact: ['typeExactLong'],
-			inferred: []
-		})
-		expect(matches.numMatches).toBe(1)
-	})
-
 	test('remove will remove matches', () => {
 		const matches = new NumericMatches()
 		const mockExactLong = new NumericClasses.TypeExactLong()

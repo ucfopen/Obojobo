@@ -5,7 +5,7 @@ import ValueRange from '../../range/value-range'
 describe('ValueRange', () => {
 	test('Constructor with no arguments creates class with expected values', () => {
 		expect(new ValueRange().toJSON()).toEqual({
-			isempty: false,
+			isEmpty: false,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -14,7 +14,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		input                                                               | isempty  | min     | isMinInclusive | max     | isMaxInclusive
+		input                                                               | isEmpty  | min     | isMinInclusive | max     | isMaxInclusive
 		${''}                                                               | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${null}                                                             | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${false}                                                            | ${true}  | ${null} | ${null}        | ${null} | ${null}
@@ -35,7 +35,7 @@ describe('ValueRange', () => {
 		${'(*,*)'}                                                          | ${false} | ${null} | ${null}        | ${null} | ${null}
 		${'*'}                                                              | ${false} | ${null} | ${null}        | ${null} | ${null}
 		${'(1,1)'}                                                          | ${true}  | ${null} | ${null}        | ${null} | ${null}
-		${{ isempty: true }}                                                | ${true}  | ${null} | ${null}        | ${null} | ${null}
+		${{ isEmpty: true }}                                                | ${true}  | ${null} | ${null}        | ${null} | ${null}
 		${{ min: 1 }}                                                       | ${false} | ${1}    | ${true}        | ${null} | ${null}
 		${{ min: 1, isMinInclusive: false }}                                | ${false} | ${1}    | ${false}       | ${null} | ${null}
 		${{ min: 1, isMinInclusive: true }}                                 | ${false} | ${1}    | ${true}        | ${null} | ${null}
@@ -44,10 +44,10 @@ describe('ValueRange', () => {
 		${{ max: 2, isMaxInclusive: true }}                                 | ${false} | ${null} | ${null}        | ${2}    | ${true}
 		${{ min: 1, isMinInclusive: false, max: 2, isMaxInclusive: false }} | ${false} | ${1}    | ${false}       | ${2}    | ${false}
 	`(
-		`Constructor($input)={isempty:$isempty,min:$min,isMinInclusive:$isMinInclusive,max:$max,isMaxInclusive:$isMaxInclusive}`,
-		({ input, isempty, min, isMinInclusive, max, isMaxInclusive }) => {
+		`Constructor($input)={isEmpty:$isEmpty,min:$min,isMinInclusive:$isMinInclusive,max:$max,isMaxInclusive:$isMaxInclusive}`,
+		({ input, isEmpty, min, isMinInclusive, max, isMaxInclusive }) => {
 			expect(new ValueRange(input).toJSON()).toEqual({
-				isempty,
+				isEmpty,
 				min,
 				isMinInclusive,
 				max,
@@ -75,14 +75,14 @@ describe('ValueRange', () => {
 	test('init resets values to default all-values range', () => {
 		const r = new ValueRange()
 
-		r.isempty = 'a'
+		r.isEmpty = 'a'
 		r.min = 'b'
 		r.max = 'c'
 		r.isMinInclusive = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isempty: 'a',
+			isEmpty: 'a',
 			min: 'b',
 			max: 'c',
 			isMinInclusive: 'd',
@@ -92,7 +92,7 @@ describe('ValueRange', () => {
 		r.init()
 
 		expect(r.toJSON()).toEqual({
-			isempty: false,
+			isEmpty: false,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -100,27 +100,27 @@ describe('ValueRange', () => {
 		})
 	})
 
-	test('close results values to a empty range', () => {
+	test('empty sets values to a empty range', () => {
 		const r = new ValueRange()
 
-		r.isempty = 'a'
+		r.isEmpty = 'a'
 		r.min = 'b'
 		r.max = 'c'
 		r.isMinInclusive = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isempty: 'a',
+			isEmpty: 'a',
 			min: 'b',
 			max: 'c',
 			isMinInclusive: 'd',
 			isMaxInclusive: 'e'
 		})
 
-		r.close()
+		r.empty()
 
 		expect(r.toJSON()).toEqual({
-			isempty: true,
+			isEmpty: true,
 			min: null,
 			isMinInclusive: null,
 			max: null,
@@ -478,14 +478,14 @@ describe('ValueRange', () => {
 
 	test('toJSON returns a JSON representation of a range', () => {
 		const r = new ValueRange()
-		r.isempty = 'a'
+		r.isEmpty = 'a'
 		r.min = 'b'
 		r.isMinInclusive = 'c'
 		r.max = 'd'
 		r.isMaxInclusive = 'e'
 
 		expect(r.toJSON()).toEqual({
-			isempty: 'a',
+			isEmpty: 'a',
 			min: 'b',
 			isMinInclusive: 'c',
 			max: 'd',
@@ -795,7 +795,7 @@ describe('ValueRange', () => {
 	})
 
 	test.each`
-		range       | isFinite
+		range       | isBounded
 		${'[-1,1]'} | ${true}
 		${'(-1,1]'} | ${true}
 		${'(*,1]'}  | ${false}
@@ -803,8 +803,8 @@ describe('ValueRange', () => {
 		${'*'}      | ${false}
 		${'1'}      | ${true}
 		${''}       | ${true}
-	`(`$range isFinite={$isFinite}`, ({ range, isFinite }) => {
-		expect(new ValueRange(range).isFinite).toBe(isFinite)
+	`(`$range isBounded={$isBounded}`, ({ range, isBounded }) => {
+		expect(new ValueRange(range).isBounded).toBe(isBounded)
 	})
 
 	test.each`

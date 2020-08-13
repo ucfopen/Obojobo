@@ -137,7 +137,7 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @return {boolean} True if the string representation is less than Number.MAX_SAFE_INTEGER
 	 */
 	static isSafe(valueString) {
-		return Hexadecimal.getValue(valueString) <= Number.MAX_SAFE_INTEGER
+		return Hexadecimal.getNumberFromString(valueString) <= Number.MAX_SAFE_INTEGER
 	}
 
 	/**
@@ -163,7 +163,7 @@ module.exports = class Hexadecimal extends Numeric {
 	 * Hexadecimal.getBigValueFromString('0xFF') //Big(255)
 	 */
 	static getBigValueFromString(valueString) {
-		return Big(Hexadecimal.getValue(valueString))
+		return Big(Hexadecimal.getNumberFromString(valueString))
 	}
 
 	/**
@@ -171,10 +171,10 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getValue('0x2') //2
-	 * Hexadecimal.getValue('FF') //255
+	 * Hexadecimal.getNumberFromString('0x2') //2
+	 * Hexadecimal.getNumberFromString('FF') //255
 	 */
-	static getValue(valueString) {
+	static getNumberFromString(valueString) {
 		switch (this.getInputType(valueString)) {
 			case HEX_TYPE_ZERO_X:
 				return Number(valueString)

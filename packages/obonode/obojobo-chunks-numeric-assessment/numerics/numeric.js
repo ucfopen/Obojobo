@@ -43,8 +43,7 @@ module.exports = class Numeric {
 	static getNullParseObject() {
 		return {
 			matchType: MATCH_NONE,
-			valueString: '',
-			fullString: ''
+			valueString: ''
 		}
 	}
 

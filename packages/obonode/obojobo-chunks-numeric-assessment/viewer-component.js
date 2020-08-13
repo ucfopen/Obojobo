@@ -190,56 +190,57 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			}
 		}
 
-		if (!range.isBounded) {
-			if (range.min === null) {
-				// Values from -Infinity to some value:
+		if (range.isBounded) {
+			const isFullyInclusive = range.isMinInclusive && range.isMaxInclusive
+			if (isFullyInclusive) {
 				return {
-					type: 'text-and-value',
-					text: range.isMaxInclusive ? 'At most' : 'Less than',
-					value: max
-				}
-			} else {
-				// Values from some value to Infinity:
-				return {
-					type: 'text-and-value',
-					text: range.isMinInclusive ? 'At least' : 'Greater than',
-					value: min
+					type: 'range',
+					min,
+					max,
+					conjunction: 'to'
 				}
 			}
-		}
 
-		const isFullyInclusive = range.isMinInclusive && range.isMaxInclusive
-		if (isFullyInclusive) {
+			let minPrefix = ''
+			let maxPrefix = ''
+
+			if (range.isMinInclusive) {
+				minPrefix = 'Greater than or equal to'
+			} else {
+				minPrefix = 'Greater than'
+			}
+
+			if (range.isMaxInclusive) {
+				maxPrefix = 'less than or equal to'
+			} else {
+				maxPrefix = 'less than'
+			}
+
 			return {
 				type: 'range',
+				minPrefix,
+				maxPrefix,
 				min,
 				max,
-				conjunction: 'to'
+				conjunction: 'and'
 			}
 		}
 
-		let minPrefix = ''
-		let maxPrefix = ''
-
-		if (range.isMinInclusive) {
-			minPrefix = 'Greater than or equal to'
-		} else {
-			minPrefix = 'Greater than'
+		if (range.isLowerBounded) {
+			// Values from some value to Infinity:
+			return {
+				type: 'text-and-value',
+				text: range.isMinInclusive ? 'At least' : 'Greater than',
+				value: min
+			}
 		}
 
-		if (range.isMaxInclusive) {
-			maxPrefix = 'less than or equal to'
-		} else {
-			maxPrefix = 'less than'
-		}
-
+		//range.isUpperBounded:
+		// Values from -Infinity to some value:
 		return {
-			type: 'range',
-			minPrefix,
-			maxPrefix,
-			min,
-			max,
-			conjunction: 'and'
+			type: 'text-and-value',
+			text: range.isMaxInclusive ? 'At most' : 'Less than',
+			value: max
 		}
 	}
 

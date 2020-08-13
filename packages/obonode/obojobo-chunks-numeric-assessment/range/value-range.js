@@ -29,7 +29,8 @@
  * 	min: 2,
  * 	isMinInclusive: true,
  * 	max: 4,
- * 	isMaxInclusive: false
+ * 	isMaxInclusive: false,
+ * 	isEmpty: false
  * }
  */
 
@@ -426,7 +427,7 @@ class ValueRange {
 	toString() {
 		if (this.isEmpty) return ''
 		if (this.isSingular) return this.toStringFn(this.min)
-		if (this.isUniversal) return '*'
+		if (this.isUniversal) return '(*,*)'
 
 		let lhs = ''
 		if (this.isMinInclusive === true) {
@@ -591,11 +592,27 @@ class ValueRange {
 	}
 
 	/**
-	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. [*,7])
+	 * True if this range is finite (i.e. [6,7]), false otherwise (i.e. (*,7])
 	 * @type {boolean}
 	 */
 	get isBounded() {
 		return this.isEmpty || (this.min !== null && this.max !== null)
+	}
+
+	/**
+	 * True if the min value of this range is finite (i.e. [6,...), false otherwise (i.e. (*,...)
+	 * @type {boolean}
+	 */
+	get isLowerBounded() {
+		return this.isEmpty || this.min !== null
+	}
+
+	/**
+	 * True if the max value of this range is finite (i.e. ...,9]), false otherwise (i.e. ...,*))
+	 * @type {boolean}
+	 */
+	get isUpperBounded() {
+		return this.isEmpty || this.max !== null
 	}
 
 	/**

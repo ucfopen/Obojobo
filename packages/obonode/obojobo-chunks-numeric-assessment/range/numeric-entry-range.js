@@ -101,7 +101,7 @@ module.exports = class NumericEntryRange extends ValueRange {
 	 */
 	toBigValueRange() {
 		return new BigValueRange({
-			isClosed: this.isClosed,
+			isEmpty: this.isEmpty,
 			isMinInclusive: this.isMinInclusive,
 			isMaxInclusive: this.isMaxInclusive,
 			min: this.min !== null && this.min.numericInstance ? this.min.numericInstance.bigValue : null,

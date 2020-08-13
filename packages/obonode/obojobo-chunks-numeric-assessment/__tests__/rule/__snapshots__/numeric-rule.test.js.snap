@@ -2,13 +2,9 @@
 
 exports[`NumericRule constructor sets valid values 1`] = `
 NumericRule {
-  "allUnits": Array [
-    "grams",
-    "g",
-  ],
   "allowedTypes": Array [
     "decimal",
-    "fractional",
+    "scientific",
   ],
   "decimals": Object {
     "isEmpty": false,
@@ -35,15 +31,12 @@ NumericRule {
     "max": "3",
     "min": "1",
   },
-  "unitsAreCaseSensitive": false,
-  "unitsMatch": "ignore-unit",
   "value": Object {
     "isEmpty": false,
     "isMaxInclusive": true,
     "isMinInclusive": true,
     "max": "6.78",
     "min": "6.78",
-    "unit": "grams",
   },
 }
 `;

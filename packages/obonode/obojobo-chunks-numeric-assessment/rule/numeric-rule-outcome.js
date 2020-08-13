@@ -38,7 +38,14 @@ module.exports = class NumericRuleOutcome {
 	static getPercentErrorRange(rule) {
 		const bigValueRange = rule.value.toBigValueRange()
 
-		const absError = bigValueRange.min
+		// If the range is universal (infinite - "(*,*)") then there's nothing to extend...
+		if (bigValueRange.isUniversal) {
+			return bigValueRange
+		}
+
+		const definedValue = bigValueRange.isLowerBounded ? bigValueRange.min : bigValueRange.max
+
+		const absError = definedValue
 			.times(rule.errorValue)
 			.div(100)
 			.abs()
@@ -69,11 +76,11 @@ module.exports = class NumericRuleOutcome {
 	 * @return {BigValueRange}
 	 */
 	static extendBigValueRange(range, byAmount) {
-		if (range.min) {
+		if (range.isLowerBounded) {
 			range.min = range.min.minus(byAmount)
 		}
 
-		if (range.max) {
+		if (range.isUpperBounded) {
 			range.max = range.max.plus(byAmount)
 		}
 

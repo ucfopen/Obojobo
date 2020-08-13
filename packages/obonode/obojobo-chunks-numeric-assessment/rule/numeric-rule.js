@@ -341,7 +341,9 @@ module.exports = class NumericRule {
 	 * @return {NumericEntryRange}
 	 */
 	static getRuleValue(config, types) {
-		if (typeof config.value === 'undefined' || config.value === null) return new NumericEntryRange()
+		if (typeof config.value === 'undefined' || config.value === null || config.value === false) {
+			return new NumericEntryRange('(*,*)')
+		}
 
 		const range = new NumericEntryRange('' + config.value, types)
 

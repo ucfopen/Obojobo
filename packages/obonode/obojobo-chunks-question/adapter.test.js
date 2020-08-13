@@ -15,8 +15,10 @@ describe('Question adapter', () => {
 	test('construct builds with attributes', () => {
 		const attrs = {
 			content: {
-				mode: 'review',
-				practice: false,
+				type: 'default',
+				correctLabels: 'a|b|c',
+				incorrectLabels: 'x|y|z',
+				revealAnswer: 'when-incorrect',
 				solution: {
 					id: '249138ca-be09-4ab5-b015-3a8107b4c79e',
 					type: 'ObojoboDraft.Pages.Page',

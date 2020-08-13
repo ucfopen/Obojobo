@@ -16,22 +16,22 @@ describe('Decimal', () => {
 		expect(Decimal.isSafe()).toEqual(true)
 	})
 
-	test('getBigValue returns a Big object', () => {
-		expect(Decimal.getBigValue('-2.3')).toEqual(Big(-2.3))
-		expect(Decimal.getBigValue('2.')).toEqual(Big(2))
+	test('getBigValueFromString returns a Big object', () => {
+		expect(Decimal.getBigValueFromString('-2.3')).toEqual(Big(-2.3))
+		expect(Decimal.getBigValueFromString('2.')).toEqual(Big(2))
 	})
 
-	test('getString returns a decimal string of a Big object', () => {
-		expect(Decimal.getString(Big(0))).toBe('0')
-		expect(Decimal.getString(Big(0.1))).toBe('0.1')
-		expect(Decimal.getString(Big(-0.1))).toBe('-0.1')
-		expect(Decimal.getString(Big(20))).toBe('20')
-		expect(Decimal.getString(Big(-20))).toBe('-20')
-		expect(Decimal.getString(Big(20.002))).toBe('20.002')
-		expect(Decimal.getString(Big(-20.002))).toBe('-20.002')
+	test('getStringFromBigValue returns a decimal string of a Big object', () => {
+		expect(Decimal.getStringFromBigValue(Big(0))).toBe('0')
+		expect(Decimal.getStringFromBigValue(Big(0.1))).toBe('0.1')
+		expect(Decimal.getStringFromBigValue(Big(-0.1))).toBe('-0.1')
+		expect(Decimal.getStringFromBigValue(Big(20))).toBe('20')
+		expect(Decimal.getStringFromBigValue(Big(-20))).toBe('-20')
+		expect(Decimal.getStringFromBigValue(Big(20.002))).toBe('20.002')
+		expect(Decimal.getStringFromBigValue(Big(-20.002))).toBe('-20.002')
 		const bigString =
 			'9999999999999999999999999999999999999999.8888888888888888888888888888888888888888'
-		expect(Decimal.getString(Big(bigString))).toBe(bigString)
+		expect(Decimal.getStringFromBigValue(Big(bigString))).toBe(bigString)
 	})
 
 	test.each`
@@ -77,8 +77,27 @@ describe('Decimal', () => {
 		${'08020.0280'}  | ${'8020.028'}
 		${'-08020.0280'} | ${'-8020.028'}
 		${'+08020.0280'} | ${'8020.028'}
-	`(`getString(getBigValue($input))=$expected`, ({ input, expected }) => {
-		expect(Decimal.getString(Decimal.getBigValue(input))).toBe(expected)
+	`(`getString(getBigValueFromString($input))=$expected`, ({ input, expected }) => {
+		expect(Decimal.getStringFromBigValue(Decimal.getBigValueFromString(input))).toBe(expected)
+	})
+
+	test.each`
+		input           | expected
+		${'0'}          | ${''}
+		${'-0'}         | ${''}
+		${'5'}          | ${''}
+		${'-5'}         | ${''}
+		${'0.2'}        | ${''}
+		${'-0.2'}       | ${''}
+		${'0000'}       | ${''}
+		${'0000.0000'}  | ${'0000'}
+		${'-0000.0000'} | ${'0000'}
+		${'0010.00200'} | ${'00'}
+		${'0010.501'}   | ${''}
+		${'0010'}       | ${''}
+		${'100.'}       | ${'.'}
+	`(`getTrailingSigFigContentFromString($input)=$expected`, ({ input, expected }) => {
+		expect(Decimal.getTrailingSigFigContentFromString(input)).toBe(expected)
 	})
 
 	test.each`
@@ -224,207 +243,74 @@ describe('Decimal', () => {
 	})
 
 	test.each`
-		input                 | matchType  | valueString | unit
-		${'0'}                | ${'exact'} | ${'0'}      | ${''}
-		${'000000'}           | ${'exact'} | ${'000000'} | ${''}
-		${'-0g'}              | ${'exact'} | ${'-0'}     | ${'g'}
-		${'0.0 g'}            | ${'exact'} | ${'0.0'}    | ${'g'}
-		${'0.'}               | ${'exact'} | ${'0.'}     | ${''}
-		${'-0.Miles'}         | ${'exact'} | ${'-0.'}    | ${'Miles'}
-		${'-.0 Miles'}        | ${'exact'} | ${'-.0'}    | ${'Miles'}
-		${'+.0'}              | ${'exact'} | ${'+.0'}    | ${''}
-		${'2kCal'}            | ${'exact'} | ${'2'}      | ${'kCal'}
-		${'-2 kCal'}          | ${'exact'} | ${'-2'}     | ${'kCal'}
-		${'1.21 Ω'}           | ${'exact'} | ${'1.21'}   | ${'Ω'}
-		${'99.9%'}            | ${'exact'} | ${'99.9'}   | ${'%'}
-		${'-.2'}              | ${'exact'} | ${'-.2'}    | ${''}
-		${'1/2'}              | ${'none'}  | ${''}       | ${''}
-		${'0/2'}              | ${'none'}  | ${''}       | ${''}
-		${'-0/2g'}            | ${'none'}  | ${''}       | ${''}
-		${'6/6 g'}            | ${'none'}  | ${''}       | ${''}
-		${'6.6/6'}            | ${'none'}  | ${''}       | ${''}
-		${'9/2Miles'}         | ${'none'}  | ${''}       | ${''}
-		${'-9/2 Miles'}       | ${'none'}  | ${''}       | ${''}
-		${'+33/22'}           | ${'none'}  | ${''}       | ${''}
-		${'2/2kCal'}          | ${'none'}  | ${''}       | ${''}
-		${'-2/2 kCal'}        | ${'none'}  | ${''}       | ${''}
-		${'1/21 Ω'}           | ${'none'}  | ${''}       | ${''}
-		${'99/9%'}            | ${'none'}  | ${''}       | ${''}
-		${'-0/0'}             | ${'none'}  | ${''}       | ${''}
-		${'6.02e23'}          | ${'exact'} | ${'6.02'}   | ${'e23'}
-		${'60.2e23'}          | ${'exact'} | ${'60.2'}   | ${'e23'}
-		${'6.02e2.3'}         | ${'exact'} | ${'6.02'}   | ${'e2.3'}
-		${'60.2x10^23'}       | ${'exact'} | ${'60.2'}   | ${'x10^23'}
-		${'6*10^23'}          | ${'exact'} | ${'6'}      | ${'*10^23'}
-		${"-6.02'23"}         | ${'exact'} | ${'-6.02'}  | ${"'23"}
-		${'-6.02ee-23'}       | ${'exact'} | ${'-6.02'}  | ${'ee-23'}
-		${'+6.02e+23 mols'}   | ${'exact'} | ${'+6.02'}  | ${'e+23 mols'}
-		${'6.02x10^23 mols'}  | ${'exact'} | ${'6.02'}   | ${'x10^23 mols'}
-		${'6.02*10^23 mols'}  | ${'exact'} | ${'6.02'}   | ${'*10^23 mols'}
-		${"6.02'23 mols"}     | ${'exact'} | ${'6.02'}   | ${"'23 mols"}
-		${'6.02ee23 mols'}    | ${'exact'} | ${'6.02'}   | ${'ee23 mols'}
-		${'6.02e10^23 mols'}  | ${'exact'} | ${'6.02'}   | ${'e10^23 mols'}
-		${'6.02ee10^23 mols'} | ${'exact'} | ${'6.02'}   | ${'ee10^23 mols'}
-		${'6.02x23 mols'}     | ${'exact'} | ${'6.02'}   | ${'x23 mols'}
-		${'6.02*23 mols'}     | ${'exact'} | ${'6.02'}   | ${'*23 mols'}
-		${"6.02''23 mols"}    | ${'exact'} | ${'6.02'}   | ${"''23 mols"}
-		${'6.02^23 mols'}     | ${'none'}  | ${''}       | ${''}
-		${'6.02e23mols'}      | ${'exact'} | ${'6.02'}   | ${'e23mols'}
-		${'6.02x10^23mols'}   | ${'exact'} | ${'6.02'}   | ${'x10^23mols'}
-		${'6.02*10^23mols'}   | ${'exact'} | ${'6.02'}   | ${'*10^23mols'}
-		${"6.02'23mols"}      | ${'exact'} | ${'6.02'}   | ${"'23mols"}
-		${'6.02ee23mols'}     | ${'exact'} | ${'6.02'}   | ${'ee23mols'}
-		${'6.02mols'}         | ${'exact'} | ${'6.02'}   | ${'mols'}
-		${'6.02e10^23mols'}   | ${'exact'} | ${'6.02'}   | ${'e10^23mols'}
-		${'6.02ee10^23mols'}  | ${'exact'} | ${'6.02'}   | ${'ee10^23mols'}
-		${'6.02x23mols'}      | ${'exact'} | ${'6.02'}   | ${'x23mols'}
-		${'6.02*23mols'}      | ${'exact'} | ${'6.02'}   | ${'*23mols'}
-		${"6.02''23mols"}     | ${'exact'} | ${'6.02'}   | ${"''23mols"}
-		${'6.02^23mols'}      | ${'none'}  | ${''}       | ${''}
-		${'0b0'}              | ${'exact'} | ${'0'}      | ${'b0'}
-		${'0b1'}              | ${'exact'} | ${'0'}      | ${'b1'}
-		${'0b1011'}           | ${'exact'} | ${'0'}      | ${'b1011'}
-		${'0'}                | ${'exact'} | ${'0'}      | ${''}
-		${'1'}                | ${'exact'} | ${'1'}      | ${''}
-		${'1011'}             | ${'exact'} | ${'1011'}   | ${''}
-		${'0b2'}              | ${'exact'} | ${'0'}      | ${'b2'}
-		${'2'}                | ${'exact'} | ${'2'}      | ${''}
-		${'0b0 bytes'}        | ${'exact'} | ${'0'}      | ${'b0 bytes'}
-		${'0b1 bytes'}        | ${'exact'} | ${'0'}      | ${'b1 bytes'}
-		${'0b1011 bytes'}     | ${'exact'} | ${'0'}      | ${'b1011 bytes'}
-		${'0 bytes'}          | ${'exact'} | ${'0'}      | ${'bytes'}
-		${'1 bytes'}          | ${'exact'} | ${'1'}      | ${'bytes'}
-		${'1011 bytes'}       | ${'exact'} | ${'1011'}   | ${'bytes'}
-		${'0b2 bytes'}        | ${'exact'} | ${'0'}      | ${'b2 bytes'}
-		${'2 bytes'}          | ${'exact'} | ${'2'}      | ${'bytes'}
-		${'-0b0'}             | ${'exact'} | ${'-0'}     | ${'b0'}
-		${'-0b1 bytes'}       | ${'exact'} | ${'-0'}     | ${'b1 bytes'}
-		${'-0'}               | ${'exact'} | ${'-0'}     | ${''}
-		${'-01 bytes'}        | ${'exact'} | ${'-01'}    | ${'bytes'}
-		${'0b0bytes'}         | ${'exact'} | ${'0'}      | ${'b0bytes'}
-		${'0b1bytes'}         | ${'exact'} | ${'0'}      | ${'b1bytes'}
-		${'0b1011bytes'}      | ${'exact'} | ${'0'}      | ${'b1011bytes'}
-		${'0bytes'}           | ${'exact'} | ${'0'}      | ${'bytes'}
-		${'1bytes'}           | ${'exact'} | ${'1'}      | ${'bytes'}
-		${'1011bytes'}        | ${'exact'} | ${'1011'}   | ${'bytes'}
-		${'0b2bytes'}         | ${'exact'} | ${'0'}      | ${'b2bytes'}
-		${'2bytes'}           | ${'exact'} | ${'2'}      | ${'bytes'}
-		${'-0b0'}             | ${'exact'} | ${'-0'}     | ${'b0'}
-		${'-0b1bytes'}        | ${'exact'} | ${'-0'}     | ${'b1bytes'}
-		${'-0'}               | ${'exact'} | ${'-0'}     | ${''}
-		${'-01bytes'}         | ${'exact'} | ${'-01'}    | ${'bytes'}
-		${'0o0'}              | ${'exact'} | ${'0'}      | ${'o0'}
-		${'0o1'}              | ${'exact'} | ${'0'}      | ${'o1'}
-		${'0o7'}              | ${'exact'} | ${'0'}      | ${'o7'}
-		${'0o8'}              | ${'exact'} | ${'0'}      | ${'o8'}
-		${'0o777'}            | ${'exact'} | ${'0'}      | ${'o777'}
-		${'0o781'}            | ${'exact'} | ${'0'}      | ${'o781'}
-		${'7'}                | ${'exact'} | ${'7'}      | ${''}
-		${'8'}                | ${'exact'} | ${'8'}      | ${''}
-		${'0o0 bytes'}        | ${'exact'} | ${'0'}      | ${'o0 bytes'}
-		${'0o1 bytes'}        | ${'exact'} | ${'0'}      | ${'o1 bytes'}
-		${'0o7 bytes'}        | ${'exact'} | ${'0'}      | ${'o7 bytes'}
-		${'0o8 bytes'}        | ${'exact'} | ${'0'}      | ${'o8 bytes'}
-		${'0o777 bytes'}      | ${'exact'} | ${'0'}      | ${'o777 bytes'}
-		${'0o781 bytes'}      | ${'exact'} | ${'0'}      | ${'o781 bytes'}
-		${'7 bytes'}          | ${'exact'} | ${'7'}      | ${'bytes'}
-		${'8 bytes'}          | ${'exact'} | ${'8'}      | ${'bytes'}
-		${'0o0bytes'}         | ${'exact'} | ${'0'}      | ${'o0bytes'}
-		${'0o1bytes'}         | ${'exact'} | ${'0'}      | ${'o1bytes'}
-		${'0o7bytes'}         | ${'exact'} | ${'0'}      | ${'o7bytes'}
-		${'0o8bytes'}         | ${'exact'} | ${'0'}      | ${'o8bytes'}
-		${'0o777bytes'}       | ${'exact'} | ${'0'}      | ${'o777bytes'}
-		${'0o781bytes'}       | ${'exact'} | ${'0'}      | ${'o781bytes'}
-		${'7bytes'}           | ${'exact'} | ${'7'}      | ${'bytes'}
-		${'8bytes'}           | ${'exact'} | ${'8'}      | ${'bytes'}
-		${'0x0'}              | ${'exact'} | ${'0'}      | ${'x0'}
-		${'0x0F'}             | ${'exact'} | ${'0'}      | ${'x0F'}
-		${'0xfa'}             | ${'exact'} | ${'0'}      | ${'xfa'}
-		${'-0xfa'}            | ${'exact'} | ${'-0'}     | ${'xfa'}
-		${'+0xfa'}            | ${'exact'} | ${'+0'}     | ${'xfa'}
-		${'0xG6'}             | ${'exact'} | ${'0'}      | ${'xG6'}
-		${'#0'}               | ${'none'}  | ${''}       | ${''}
-		${'#DEADBEEF'}        | ${'none'}  | ${''}       | ${''}
-		${'#692B'}            | ${'none'}  | ${''}       | ${''}
-		${'-#692B'}           | ${'none'}  | ${''}       | ${''}
-		${'+#692B'}           | ${'none'}  | ${''}       | ${''}
-		${'#ZAP'}             | ${'none'}  | ${''}       | ${''}
-		${'$0'}               | ${'none'}  | ${''}       | ${''}
-		${'$CCC'}             | ${'none'}  | ${''}       | ${''}
-		${'$bAdFaD'}          | ${'none'}  | ${''}       | ${''}
-		${'-$bAdFaD'}         | ${'none'}  | ${''}       | ${''}
-		${'+$bAdFaD'}         | ${'none'}  | ${''}       | ${''}
-		${'$HEX'}             | ${'none'}  | ${''}       | ${''}
-		${'B'}                | ${'none'}  | ${''}       | ${''}
-		${'0F'}               | ${'exact'} | ${'0'}      | ${'F'}
-		${'F0'}               | ${'none'}  | ${''}       | ${''}
-		${'-F0'}              | ${'none'}  | ${''}       | ${''}
-		${'+F0'}              | ${'none'}  | ${''}       | ${''}
-		${'999A999'}          | ${'exact'} | ${'999'}    | ${'A999'}
-		${'999H999'}          | ${'exact'} | ${'999'}    | ${'H999'}
-		${'0'}                | ${'exact'} | ${'0'}      | ${''}
-		${'6928'}             | ${'exact'} | ${'6928'}   | ${''}
-		${'-6928'}            | ${'exact'} | ${'-6928'}  | ${''}
-		${'+6928'}            | ${'exact'} | ${'+6928'}  | ${''}
-		${'0x0 bytes'}        | ${'exact'} | ${'0'}      | ${'x0 bytes'}
-		${'0x0F bytes'}       | ${'exact'} | ${'0'}      | ${'x0F bytes'}
-		${'0xfa bytes'}       | ${'exact'} | ${'0'}      | ${'xfa bytes'}
-		${'-0xfa bytes'}      | ${'exact'} | ${'-0'}     | ${'xfa bytes'}
-		${'+0xfa bytes'}      | ${'exact'} | ${'+0'}     | ${'xfa bytes'}
-		${'0xG6 bytes'}       | ${'exact'} | ${'0'}      | ${'xG6 bytes'}
-		${'#0 bytes'}         | ${'none'}  | ${''}       | ${''}
-		${'#DEADBEEF bytes'}  | ${'none'}  | ${''}       | ${''}
-		${'#692B bytes'}      | ${'none'}  | ${''}       | ${''}
-		${'-#692B bytes'}     | ${'none'}  | ${''}       | ${''}
-		${'+#692B bytes'}     | ${'none'}  | ${''}       | ${''}
-		${'#ZAP bytes'}       | ${'none'}  | ${''}       | ${''}
-		${'$0 bytes'}         | ${'none'}  | ${''}       | ${''}
-		${'$CCC bytes'}       | ${'none'}  | ${''}       | ${''}
-		${'$bAdFaD bytes'}    | ${'none'}  | ${''}       | ${''}
-		${'-$bAdFaD bytes'}   | ${'none'}  | ${''}       | ${''}
-		${'+$bAdFaD bytes'}   | ${'none'}  | ${''}       | ${''}
-		${'$HEX bytes'}       | ${'none'}  | ${''}       | ${''}
-		${'B bytes'}          | ${'none'}  | ${''}       | ${''}
-		${'0F bytes'}         | ${'exact'} | ${'0'}      | ${'F bytes'}
-		${'F0 bytes'}         | ${'none'}  | ${''}       | ${''}
-		${'-F0 bytes'}        | ${'none'}  | ${''}       | ${''}
-		${'+F0 bytes'}        | ${'none'}  | ${''}       | ${''}
-		${'999A999 bytes'}    | ${'exact'} | ${'999'}    | ${'A999 bytes'}
-		${'999H999 bytes'}    | ${'exact'} | ${'999'}    | ${'H999 bytes'}
-		${'0 bytes'}          | ${'exact'} | ${'0'}      | ${'bytes'}
-		${'6928 bytes'}       | ${'exact'} | ${'6928'}   | ${'bytes'}
-		${'-6928 bytes'}      | ${'exact'} | ${'-6928'}  | ${'bytes'}
-		${'+6928 bytes'}      | ${'exact'} | ${'+6928'}  | ${'bytes'}
-		${'0x0bytes'}         | ${'exact'} | ${'0'}      | ${'x0bytes'}
-		${'0x0Fbytes'}        | ${'exact'} | ${'0'}      | ${'x0Fbytes'}
-		${'0xfabytes'}        | ${'exact'} | ${'0'}      | ${'xfabytes'}
-		${'-0xfabytes'}       | ${'exact'} | ${'-0'}     | ${'xfabytes'}
-		${'+0xfabytes'}       | ${'exact'} | ${'+0'}     | ${'xfabytes'}
-		${'0xG6bytes'}        | ${'exact'} | ${'0'}      | ${'xG6bytes'}
-		${'#0bytes'}          | ${'none'}  | ${''}       | ${''}
-		${'#DEADBEEFbytes'}   | ${'none'}  | ${''}       | ${''}
-		${'#692Bbytes'}       | ${'none'}  | ${''}       | ${''}
-		${'-#692Bbytes'}      | ${'none'}  | ${''}       | ${''}
-		${'+#692Bbytes'}      | ${'none'}  | ${''}       | ${''}
-		${'#ZAPbytes'}        | ${'none'}  | ${''}       | ${''}
-		${'$0bytes'}          | ${'none'}  | ${''}       | ${''}
-		${'$CCCbytes'}        | ${'none'}  | ${''}       | ${''}
-		${'$bAdFaDbytes'}     | ${'none'}  | ${''}       | ${''}
-		${'-$bAdFaDbytes'}    | ${'none'}  | ${''}       | ${''}
-		${'+$bAdFaDbytes'}    | ${'none'}  | ${''}       | ${''}
-		${'$HEXbytes'}        | ${'none'}  | ${''}       | ${''}
-		${'Bbytes'}           | ${'none'}  | ${''}       | ${''}
-		${'0Fbytes'}          | ${'exact'} | ${'0'}      | ${'Fbytes'}
-		${'F0bytes'}          | ${'none'}  | ${''}       | ${''}
-		${'-F0bytes'}         | ${'none'}  | ${''}       | ${''}
-		${'+F0bytes'}         | ${'none'}  | ${''}       | ${''}
-		${'999A999bytes'}     | ${'exact'} | ${'999'}    | ${'A999bytes'}
-		${'999H999bytes'}     | ${'exact'} | ${'999'}    | ${'H999bytes'}
-		${'0bytes'}           | ${'exact'} | ${'0'}      | ${'bytes'}
-		${'6928bytes'}        | ${'exact'} | ${'6928'}   | ${'bytes'}
-		${'-6928bytes'}       | ${'exact'} | ${'-6928'}  | ${'bytes'}
-		${'+6928bytes'}       | ${'exact'} | ${'+6928'}  | ${'bytes'}
-	`(`parse($input)={$matchType,$valueString,$unit}`, ({ input, matchType, valueString, unit }) => {
-		expect(Decimal.parse(input)).toEqual({ matchType, valueString, unit })
+		input           | matchType  | valueString
+		${'0'}          | ${'exact'} | ${'0'}
+		${'000000'}     | ${'exact'} | ${'0'}
+		${'0.'}         | ${'exact'} | ${'0.'}
+		${'+.0'}        | ${'exact'} | ${'0.0'}
+		${'-.2'}        | ${'exact'} | ${'-0.2'}
+		${'1/2'}        | ${'none'}  | ${''}
+		${'0/2'}        | ${'none'}  | ${''}
+		${'6.6/6'}      | ${'none'}  | ${''}
+		${'+33/22'}     | ${'none'}  | ${''}
+		${'-0/0'}       | ${'none'}  | ${''}
+		${'6.02e23'}    | ${'none'}  | ${''}
+		${'60.2e23'}    | ${'none'}  | ${''}
+		${'6.02e2.3'}   | ${'none'}  | ${''}
+		${'60.2x10^23'} | ${'none'}  | ${''}
+		${'6*10^23'}    | ${'none'}  | ${''}
+		${"-6.02'23"}   | ${'none'}  | ${''}
+		${'-6.02ee-23'} | ${'none'}  | ${''}
+		${'0b0'}        | ${'none'}  | ${''}
+		${'0b1'}        | ${'none'}  | ${''}
+		${'0b1011'}     | ${'none'}  | ${''}
+		${'0'}          | ${'exact'} | ${'0'}
+		${'1'}          | ${'exact'} | ${'1'}
+		${'1011'}       | ${'exact'} | ${'1011'}
+		${'0b2'}        | ${'none'}  | ${''}
+		${'2'}          | ${'exact'} | ${'2'}
+		${'-0b0'}       | ${'none'}  | ${''}
+		${'-0'}         | ${'exact'} | ${'-0'}
+		${'-0b0'}       | ${'none'}  | ${''}
+		${'-0'}         | ${'exact'} | ${'-0'}
+		${'0o0'}        | ${'none'}  | ${''}
+		${'0o1'}        | ${'none'}  | ${''}
+		${'0o7'}        | ${'none'}  | ${''}
+		${'0o8'}        | ${'none'}  | ${''}
+		${'0o777'}      | ${'none'}  | ${''}
+		${'0o781'}      | ${'none'}  | ${''}
+		${'7'}          | ${'exact'} | ${'7'}
+		${'8'}          | ${'exact'} | ${'8'}
+		${'0x0'}        | ${'none'}  | ${''}
+		${'0x0F'}       | ${'none'}  | ${''}
+		${'0xfa'}       | ${'none'}  | ${''}
+		${'-0xfa'}      | ${'none'}  | ${''}
+		${'+0xfa'}      | ${'none'}  | ${''}
+		${'0xG6'}       | ${'none'}  | ${''}
+		${'#0'}         | ${'none'}  | ${''}
+		${'#DEADBEEF'}  | ${'none'}  | ${''}
+		${'#692B'}      | ${'none'}  | ${''}
+		${'-#692B'}     | ${'none'}  | ${''}
+		${'+#692B'}     | ${'none'}  | ${''}
+		${'#ZAP'}       | ${'none'}  | ${''}
+		${'$0'}         | ${'none'}  | ${''}
+		${'$CCC'}       | ${'none'}  | ${''}
+		${'$bAdFaD'}    | ${'none'}  | ${''}
+		${'-$bAdFaD'}   | ${'none'}  | ${''}
+		${'+$bAdFaD'}   | ${'none'}  | ${''}
+		${'$HEX'}       | ${'none'}  | ${''}
+		${'B'}          | ${'none'}  | ${''}
+		${'0F'}         | ${'none'}  | ${''}
+		${'F0'}         | ${'none'}  | ${''}
+		${'-F0'}        | ${'none'}  | ${''}
+		${'+F0'}        | ${'none'}  | ${''}
+		${'999A999'}    | ${'none'}  | ${''}
+		${'999H999'}    | ${'none'}  | ${''}
+		${'0'}          | ${'exact'} | ${'0'}
+		${'6928'}       | ${'exact'} | ${'6928'}
+		${'-6928'}      | ${'exact'} | ${'-6928'}
+		${'+6928'}      | ${'exact'} | ${'6928'}
+	`(`parse($input)={$matchType,$valueString}`, ({ input, matchType, valueString }) => {
+		expect(Decimal.parse(input)).toEqual({ matchType, valueString })
 	})
 })

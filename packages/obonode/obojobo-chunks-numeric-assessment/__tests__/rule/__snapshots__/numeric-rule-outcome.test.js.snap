@@ -7,12 +7,8 @@ NumericRuleOutcome {
   "isExpectedNumSigFigs": true,
   "isExpectedScientific": true,
   "isExpectedType": true,
-  "isExpectedUnits": true,
   "isMatched": true,
   "rule": NumericRule {
-    "allUnits": Array [
-      "",
-    ],
     "allowedTypes": Array [
       "scientific",
       "decimal",
@@ -50,15 +46,12 @@ NumericRuleOutcome {
       "max": null,
       "min": null,
     },
-    "unitsAreCaseSensitive": false,
-    "unitsMatch": "matches-unit",
     "value": Object {
       "isEmpty": false,
       "isMaxInclusive": true,
       "isMinInclusive": true,
       "max": "42",
       "min": "42",
-      "unit": "",
     },
   },
   "scoreOutcome": Object {

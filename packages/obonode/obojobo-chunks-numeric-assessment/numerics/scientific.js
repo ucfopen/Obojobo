@@ -75,34 +75,6 @@ module.exports = class Scientific extends Numeric {
 	}
 
 	/**
-	 * Return the value string portion of a given input string
-	 * @param {string} str
-	 * @return {string}
-	 * @example
-	 * Scientific.getValueString('6.02e23') //'6.02e23'
-	 */
-	static getValueString(str) {
-		switch (Scientific.getInputType(str)) {
-			case SCIENTIFIC_TYPE_APOS:
-				return aposScientificNotationRegex.exec(str)[0]
-
-			case SCIENTIFIC_TYPE_ASTERISK:
-				return asteriskScientificNotationRegex.exec(str)[0]
-
-			case SCIENTIFIC_TYPE_E:
-				return eScientificNotationRegex.exec(str)[0]
-
-			case SCIENTIFIC_TYPE_EE:
-				return eeScientificNotationRegex.exec(str)[0]
-
-			case SCIENTIFIC_TYPE_X:
-				return xScientificNotationRegex.exec(str)[0]
-		}
-
-		return null
-	}
-
-	/**
 	 * Gets details about an answer string.
 	 * @param {string} str A potential string representation of a scientific value
 	 * @return {NumericParseObject|NullNumericParseObject}
@@ -112,12 +84,13 @@ module.exports = class Scientific extends Numeric {
 	 * Scientific.parse("6.02") //{ matchType:'none', valueString:'' }
 	 */
 	static parse(str) {
-		const valueString = Scientific.getValueString(str)
-		if (!valueString) return Scientific.getNullParseObject()
+		if (!Scientific.getInputType(str)) {
+			return Scientific.getNullParseObject()
+		}
 
 		return {
 			matchType: MATCH_EXACT,
-			valueString
+			valueString: str
 		}
 	}
 
@@ -171,7 +144,9 @@ module.exports = class Scientific extends Numeric {
 	 * Scientific.getNumDecimalDigits('4.9e-2') //3
 	 */
 	static getNumDecimalDigits(valueString) {
-		return Decimal.getNumDecimalDigits(Scientific.getTerms(valueString).bigValue)
+		return Decimal.getNumDecimalDigits(
+			Decimal.getStringFromBigValue(Scientific.getTerms(valueString).bigValue)
+		)
 	}
 
 	/**

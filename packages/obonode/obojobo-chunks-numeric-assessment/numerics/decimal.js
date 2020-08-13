@@ -45,12 +45,12 @@ class Decimal extends Numeric {
 	 * @param {string} str A decimal string
 	 * @return {string}
 	 * @example
-	 * Decimal.getTrailingContentFromString("0010.00200") // "00"
-	 * Decimal.getTrailingContentFromString("0010.501") // ""
-	 * Decimal.getTrailingContentFromString("0010") // ""
-	 * Decimal.getTrailingContentFromString("100.") // "."
+	 * Decimal.getTrailingSigFigContentFromString("0010.00200") // "00"
+	 * Decimal.getTrailingSigFigContentFromString("0010.501") // ""
+	 * Decimal.getTrailingSigFigContentFromString("0010") // ""
+	 * Decimal.getTrailingSigFigContentFromString("100.") // "."
 	 */
-	static getTrailingContentFromString(str) {
+	static getTrailingSigFigContentFromString(str) {
 		const dotPos = str.indexOf('.')
 		if (dotPos === -1) {
 			return ''
@@ -91,9 +91,9 @@ class Decimal extends Numeric {
 		const bigValueString = Decimal.getStringFromBigValue(
 			Decimal.getBigValueFromString(unparsedValueString)
 		)
-		const trailingContent = Decimal.getTrailingContentFromString(unparsedValueString)
+		const trailingContent = Decimal.getTrailingSigFigContentFromString(unparsedValueString)
 		let valueString
-		if (bigValueString.indexOf('.') === -1 && trailingContent) {
+		if (bigValueString.indexOf('.') === -1 && trailingContent && trailingContent !== '.') {
 			valueString = `${bigValueString}.${trailingContent}`
 		} else {
 			valueString = `${bigValueString}${trailingContent}`

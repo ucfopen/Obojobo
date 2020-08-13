@@ -11,14 +11,14 @@ describe('NumericAnswerResults', () => {
 			getInstance: type => {
 				return {
 					label: `label:${type}`,
-					formattedString: `formattedString:${type}`
+					toString: () => `toString:${type}`
 				}
 			}
 		}
 
 		expect(NumericAnswerResults.getSuggestions(mockMatches)).toEqual([
-			{ label: 'label:mockType1', stringValue: 'formattedString:mockType1' },
-			{ label: 'label:mockType2', stringValue: 'formattedString:mockType2' }
+			{ label: 'label:mockType1', stringValue: 'toString:mockType1' },
+			{ label: 'label:mockType2', stringValue: 'toString:mockType2' }
 		])
 	})
 

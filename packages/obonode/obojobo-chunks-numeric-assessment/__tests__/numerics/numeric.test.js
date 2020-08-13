@@ -16,8 +16,7 @@ describe('Numeric', () => {
 	test('getNullParseObject returns expected value', () => {
 		expect(Numeric.getNullParseObject()).toEqual({
 			matchType: 'none',
-			valueString: '',
-			unit: ''
+			valueString: ''
 		})
 	})
 
@@ -29,7 +28,7 @@ describe('Numeric', () => {
 		const parseSpy = jest.spyOn(Numeric, 'parse').mockReturnValue({
 			valueString: 'mockValueString'
 		})
-		const getBigValueSpy = jest.spyOn(Numeric, 'getBigValue').mockReturnValue({
+		const getBigValueFromStringSpy = jest.spyOn(Numeric, 'getBigValueFromString').mockReturnValue({
 			eq: bigValue => bigValue
 		})
 
@@ -37,22 +36,15 @@ describe('Numeric', () => {
 
 		expect(result).toBe('mockBigValue')
 		expect(parseSpy).toHaveBeenCalledWith('mockString')
-		expect(getBigValueSpy).toHaveBeenCalledWith('mockValueString')
+		expect(getBigValueFromStringSpy).toHaveBeenCalledWith('mockValueString')
 
 		parseSpy.mockRestore()
-		getBigValueSpy.mockRestore()
+		getBigValueFromStringSpy.mockRestore()
 	})
 
-	test('getStringWithUnit returns the value of getString with a unit', () => {
-		expect(Numeric.getStringWithUnit({ toString: () => 'mock-value' }, '')).toBe('mock-value')
-		expect(Numeric.getStringWithUnit({ toString: () => 'mock-value' }, 'unit')).toBe(
-			'mock-value unit'
-		)
-	})
-
-	test('getString calls toString on the passed in value', () => {
+	test('getStringFromBigValue calls toString on the passed in value', () => {
 		const toString = jest.fn().mockReturnValue('mock-to-string')
-		expect(Numeric.getString({ toString })).toBe('mock-to-string')
+		expect(Numeric.getStringFromBigValue({ toString })).toBe('mock-to-string')
 		expect(toString).toHaveBeenCalled()
 	})
 
@@ -60,8 +52,8 @@ describe('Numeric', () => {
 		expect(Numeric.isSafe()).toBe(false)
 	})
 
-	test('getBigValue returns null', () => {
-		expect(Numeric.getBigValue()).toBe(null)
+	test('getBigValueFromString returns null', () => {
+		expect(Numeric.getBigValueFromString()).toBe(null)
 	})
 
 	test('getRoundedBigValue returns a rounded big object', () => {
@@ -87,52 +79,33 @@ describe('Numeric', () => {
 		expect(Numeric.getNumDecimalDigits()).toBe(0)
 	})
 
-	test.each`
-		unit              | isValid
-		${''}             | ${true}
-		${' '}            | ${true}
-		${'g'}            | ${true}
-		${'G'}            | ${true}
-		${'grams'}        | ${true}
-		${'Grams'}        | ${true}
-		${'m/s^2'}        | ${true}
-		${'boiled goose'} | ${true}
-		${'%'}            | ${true}
-		${'Ω'}            | ${true}
-		${'_'}            | ${true}
-		${'0'}            | ${false}
-		${'2'}            | ${false}
-		${'.6'}           | ${false}
-		${'/2'}           | ${false}
-	`(`isValidUnit($unit)=$isValid`, ({ unit, isValid }) => {
-		expect(Numeric.isValidUnit(unit)).toBe(isValid)
-	})
-
-	test('constructor calls getString if passed in a non string and calls init', () => {
-		const getStringSpy = jest.spyOn(Numeric, 'getString').mockReturnValue('mock-string')
+	test('constructor calls getStringFromBigValue if passed in a non string and calls init', () => {
+		const getStringFromBigValueSpy = jest
+			.spyOn(Numeric, 'getStringFromBigValue')
+			.mockReturnValue('mock-string')
 		const initSpy = jest.spyOn(Numeric.prototype, 'init')
 
 		new Numeric(null)
-		expect(getStringSpy).toHaveBeenLastCalledWith(null)
+		expect(getStringFromBigValueSpy).toHaveBeenLastCalledWith(null)
 		expect(initSpy).toHaveBeenLastCalledWith('mock-string')
 
 		new Numeric(true)
-		expect(getStringSpy).toHaveBeenLastCalledWith(true)
+		expect(getStringFromBigValueSpy).toHaveBeenLastCalledWith(true)
 		expect(initSpy).toHaveBeenLastCalledWith('mock-string')
 
 		new Numeric(7.5)
-		expect(getStringSpy).toHaveBeenLastCalledWith(7.5)
+		expect(getStringFromBigValueSpy).toHaveBeenLastCalledWith(7.5)
 		expect(initSpy).toHaveBeenLastCalledWith('mock-string')
 
 		new Numeric({})
-		expect(getStringSpy).toHaveBeenLastCalledWith({})
+		expect(getStringFromBigValueSpy).toHaveBeenLastCalledWith({})
 		expect(initSpy).toHaveBeenLastCalledWith('mock-string')
 
 		new Numeric('passed-in-string')
-		expect(getStringSpy).toHaveBeenCalledTimes(4)
+		expect(getStringFromBigValueSpy).toHaveBeenCalledTimes(4)
 		expect(initSpy).toHaveBeenLastCalledWith('passed-in-string')
 
-		getStringSpy.mockRestore()
+		getStringFromBigValueSpy.mockRestore()
 		initSpy.mockRestore()
 	})
 
@@ -140,52 +113,71 @@ describe('Numeric', () => {
 		const n = new Numeric('mock-string')
 		const parseSpy = jest.spyOn(Numeric, 'parse').mockReturnValue({
 			matchType: 'mock-match-type',
-			unit: 'mock-unit',
 			valueString: 'mock-value-string'
 		})
-		const getBigValueSpy = jest.spyOn(Numeric, 'getBigValue').mockReturnValue('mock-big-value')
+		const isSafeSpy = jest.spyOn(Numeric, 'isSafe').mockReturnValue(true)
+		const getBigValueFromStringSpy = jest
+			.spyOn(Numeric, 'getBigValueFromString')
+			.mockReturnValue('mock-big-value')
 
 		n.init('new-value')
 
-		expect(n.string).toBe('new-value')
+		expect(n.inputString).toBe('new-value')
 		expect(n.matchType).toBe('mock-match-type')
-		expect(n.unit).toBe('mock-unit')
 		expect(n.valueString).toBe('mock-value-string')
 		expect(n.bigValue).toBe('mock-big-value')
-		expect(n.formattedString).toBe('mock-big-value mock-unit')
 
 		parseSpy.mockRestore()
-		getBigValueSpy.mockRestore()
+		isSafeSpy.mockRestore()
+		getBigValueFromStringSpy.mockRestore()
+	})
+
+	test('init does not set bigValue if not safe', () => {
+		const n = new Numeric('mock-string')
+		const parseSpy = jest.spyOn(Numeric, 'parse').mockReturnValue({
+			matchType: 'mock-match-type',
+			valueString: 'mock-value-string'
+		})
+		const isSafeSpy = jest.spyOn(Numeric, 'isSafe').mockReturnValue(false)
+		const getBigValueFromStringSpy = jest
+			.spyOn(Numeric, 'getBigValueFromString')
+			.mockReturnValue('mock-big-value')
+
+		n.init('new-value')
+
+		expect(n.inputString).toBe('new-value')
+		expect(n.matchType).toBe('mock-match-type')
+		expect(n.valueString).toBe('mock-value-string')
+		expect(n.bigValue).toBe(null)
+
+		parseSpy.mockRestore()
+		isSafeSpy.mockRestore()
+		getBigValueFromStringSpy.mockRestore()
 	})
 
 	test('init does not set bigValue or formattedString if match type is none', () => {
 		const n = new Numeric('mock-string')
 		const parseSpy = jest.spyOn(Numeric, 'parse').mockReturnValue({
 			matchType: 'none',
-			unit: 'mock-unit',
 			valueString: 'mock-value-string'
 		})
-		const getBigValueSpy = jest.spyOn(Numeric, 'getBigValue')
-		const getStringWithUnitSpy = jest.spyOn(Numeric, 'getStringWithUnit')
+		const getBigValueFromStringSpy = jest.spyOn(Numeric, 'getBigValueFromString')
 
 		n.init('new-value')
 
-		expect(getBigValueSpy).not.toHaveBeenCalled()
-		expect(getStringWithUnitSpy).not.toHaveBeenCalled()
+		expect(getBigValueFromStringSpy).not.toHaveBeenCalled()
 
 		parseSpy.mockRestore()
-		getBigValueSpy.mockRestore()
-		getStringWithUnitSpy.mockRestore()
+		getBigValueFromStringSpy.mockRestore()
 	})
 
 	test('setBigValue calls init with the new value', () => {
 		const n = new Numeric('mock-string')
-		n.unit = 'mock-unit'
 		const spy = jest.spyOn(Numeric.prototype, 'init')
 
 		n.setBigValue('new-value')
 
-		expect(spy).toHaveBeenCalledWith('new-value mock-unit')
+		expect(spy).toHaveBeenCalledWith('new-value')
 
 		spy.mockRestore()
 	})
@@ -205,30 +197,6 @@ describe('Numeric', () => {
 
 		getRoundedBigValueSpy.mockRestore()
 		setBigValueSpy.mockRestore()
-	})
-
-	test('setUnit calls init with the new unit', () => {
-		const n = new Numeric('mock-string')
-		n.bigValue = Big(123)
-		n.unit = ''
-
-		const spy = jest.spyOn(Numeric.prototype, 'init')
-
-		n.setUnit('mock-unit')
-
-		expect(spy).toHaveBeenCalledWith('123 mock-unit')
-
-		spy.mockRestore()
-	})
-
-	test('clearUnit resets unit to ""', () => {
-		const n = new Numeric('mock-string')
-		const spy = jest.spyOn(Numeric.prototype, 'setUnit').mockImplementation(jest.fn())
-
-		n.clearUnit()
-		expect(spy).toHaveBeenCalledWith('')
-
-		spy.mockRestore()
 	})
 
 	test('toObject returns the expected values', () => {
@@ -273,46 +241,17 @@ describe('Numeric', () => {
 		toObjectSpy.mockRestore()
 	})
 
-	test('clone creates a copy', () => {
-		const spy = jest.spyOn(Numeric.prototype, 'getStringWithUnit').mockReturnValue('mock-string')
-
+	test('clone creates a copy with this.inputString', () => {
 		const n = new Numeric('mock-string')
 		const n2 = n.clone()
 
 		expect(n).not.toBe(n2)
 		expect(n).toEqual(n2)
-
-		spy.mockRestore()
 	})
 
-	test('getString calls static method', () => {
-		const spy = jest.spyOn(Numeric, 'getString').mockReturnValue('mock-return-value')
-
+	test('toString returns this.valueString', () => {
 		const n = new Numeric('mock-string')
-		expect(n.getString()).toEqual('mock-return-value')
-		expect(spy).toHaveBeenCalled()
-
-		spy.mockRestore()
-	})
-
-	test('getStringWithUnit calls static method', () => {
-		const spy = jest.spyOn(Numeric, 'getStringWithUnit').mockReturnValue('mock-return-value')
-
-		const n = new Numeric('mock-string')
-		expect(n.getStringWithUnit()).toEqual('mock-return-value')
-		expect(spy).toHaveBeenCalled()
-
-		spy.mockRestore()
-	})
-
-	test('toString calls static method', () => {
-		const spy = jest.spyOn(Numeric, 'getStringWithUnit').mockReturnValue('mock-return-value')
-
-		const n = new Numeric('mock-string')
-		expect(n.toString()).toEqual('mock-return-value')
-		expect(spy).toHaveBeenCalled()
-
-		spy.mockRestore()
+		expect(n.toString()).toEqual(n.valueString)
 	})
 
 	test('isEqual calls static method', () => {
@@ -353,16 +292,6 @@ describe('Numeric', () => {
 		expect(spy).toHaveBeenCalled()
 
 		spy.mockRestore()
-	})
-
-	test('isWithUnit returns true if unit is defined', () => {
-		const n = new Numeric('mock-string')
-
-		n.unit = ''
-		expect(n.isWithUnit).toBe(false)
-
-		n.unit = 'mock-unit'
-		expect(n.isWithUnit).toBe(true)
 	})
 
 	test('numDecimalDigits calls static method', () => {
