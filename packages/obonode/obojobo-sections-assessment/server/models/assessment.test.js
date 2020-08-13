@@ -189,8 +189,8 @@ describe('AssessmentModel', () => {
 		const attempts = [
 			{
 				isFinished: true,
-				finishTime: new Date(),
-				startTime: new Date()
+				completedAt: new Date(),
+				createdAt: new Date()
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -204,20 +204,20 @@ describe('AssessmentModel', () => {
 			{
 				isFinished: true,
 				attemptNumber: 50,
-				finishTime: new Date(101),
-				startTime: new Date(300)
+				completedAt: new Date(101),
+				createdAt: new Date(300)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 1,
-				finishTime: new Date(301),
-				startTime: new Date(100)
+				completedAt: new Date(301),
+				createdAt: new Date(100)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 5,
-				finishTime: new Date(201),
-				startTime: new Date(200)
+				completedAt: new Date(201),
+				createdAt: new Date(200)
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -226,21 +226,21 @@ describe('AssessmentModel', () => {
 		Array [
 		  Object {
 		    "attemptNumber": 1,
-		    "finishTime": 1970-01-01T00:00:00.301Z,
+		    "completedAt": 1970-01-01T00:00:00.301Z,
+		    "createdAt": 1970-01-01T00:00:00.100Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.100Z,
 		  },
 		  Object {
 		    "attemptNumber": 5,
-		    "finishTime": 1970-01-01T00:00:00.201Z,
+		    "completedAt": 1970-01-01T00:00:00.201Z,
+		    "createdAt": 1970-01-01T00:00:00.200Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.200Z,
 		  },
 		  Object {
 		    "attemptNumber": 50,
-		    "finishTime": 1970-01-01T00:00:00.101Z,
+		    "completedAt": 1970-01-01T00:00:00.101Z,
+		    "createdAt": 1970-01-01T00:00:00.300Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.300Z,
 		  },
 		]
 	`)
@@ -250,8 +250,8 @@ describe('AssessmentModel', () => {
 		const attempts = [
 			{
 				isFinished: false,
-				finishTime: null,
-				startTime: new Date(300)
+				completedAt: null,
+				createdAt: new Date(300)
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -264,21 +264,21 @@ describe('AssessmentModel', () => {
 		const attempts = [
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 8,
-				startTime: new Date(300)
+				createdAt: new Date(300)
 			},
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 7,
-				startTime: new Date(600)
+				createdAt: new Date(600)
 			},
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 1,
-				startTime: new Date(200)
+				createdAt: new Date(200)
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -292,26 +292,26 @@ describe('AssessmentModel', () => {
 			{
 				isFinished: true,
 				attemptNumber: 4,
-				finishTime: new Date(302),
-				startTime: new Date(300)
+				completedAt: new Date(302),
+				createdAt: new Date(300)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 1,
-				finishTime: new Date(102),
-				startTime: new Date(100)
+				completedAt: new Date(102),
+				createdAt: new Date(100)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 2,
-				finishTime: new Date(202),
-				startTime: new Date(200)
+				completedAt: new Date(202),
+				createdAt: new Date(200)
 			},
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 3, // this is before the last attempt
-				startTime: new Date(301)
+				createdAt: new Date(301)
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -325,32 +325,32 @@ describe('AssessmentModel', () => {
 			{
 				isFinished: true,
 				attemptNumber: 1,
-				finishTime: new Date(102),
-				startTime: new Date(100)
+				completedAt: new Date(102),
+				createdAt: new Date(100)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 2,
-				finishTime: new Date(202),
-				startTime: new Date(200)
+				completedAt: new Date(202),
+				createdAt: new Date(200)
 			},
 			{
 				isFinished: true,
 				attemptNumber: 3,
-				finishTime: new Date(302),
-				startTime: new Date(300)
+				completedAt: new Date(302),
+				createdAt: new Date(300)
 			},
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 5,
-				startTime: new Date(303) // AFTER last finish time - should be returned
+				createdAt: new Date(303) // AFTER last finish time - should be returned
 			},
 			{
 				isFinished: false,
-				finishTime: null,
+				completedAt: null,
 				attemptNumber: 4,
-				startTime: new Date(301) // BEFORE last finish time - should be filtered out
+				createdAt: new Date(301) // BEFORE last finish time - should be filtered out
 			}
 		]
 		const res = AssessmentModel.removeAllButLastIncompleteAttempts(attempts)
@@ -360,27 +360,27 @@ describe('AssessmentModel', () => {
 		Array [
 		  Object {
 		    "attemptNumber": 1,
-		    "finishTime": 1970-01-01T00:00:00.102Z,
+		    "completedAt": 1970-01-01T00:00:00.102Z,
+		    "createdAt": 1970-01-01T00:00:00.100Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.100Z,
 		  },
 		  Object {
 		    "attemptNumber": 2,
-		    "finishTime": 1970-01-01T00:00:00.202Z,
+		    "completedAt": 1970-01-01T00:00:00.202Z,
+		    "createdAt": 1970-01-01T00:00:00.200Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.200Z,
 		  },
 		  Object {
 		    "attemptNumber": 3,
-		    "finishTime": 1970-01-01T00:00:00.302Z,
+		    "completedAt": 1970-01-01T00:00:00.302Z,
+		    "createdAt": 1970-01-01T00:00:00.300Z,
 		    "isFinished": true,
-		    "startTime": 1970-01-01T00:00:00.300Z,
 		  },
 		  Object {
 		    "attemptNumber": 5,
-		    "finishTime": null,
+		    "completedAt": null,
+		    "createdAt": 1970-01-01T00:00:00.303Z,
 		    "isFinished": false,
-		    "startTime": 1970-01-01T00:00:00.303Z,
 		  },
 		]
 	`)

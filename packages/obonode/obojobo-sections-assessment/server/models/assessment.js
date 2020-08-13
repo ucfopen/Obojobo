@@ -189,7 +189,7 @@ class AssessmentModel {
 			})
 	}
 
-	// get attempts for user and resour
+	// get attempts for user and resourceLinkId
 	static async fetchAttemptHistory(
 		userId,
 		draftId,
@@ -298,7 +298,7 @@ class AssessmentModel {
 	3. place the last incomplete attempt at the end
 
 	Filter out any incomplete attempts that have a startTime after
-	the last complete attempts' finishTime
+	the last complete attempts' completedAt
 	This function assumes that attempts are all for the same assessment_id
 	*/
 	static removeAllButLastIncompleteAttempts(attempts) {
@@ -308,7 +308,6 @@ class AssessmentModel {
 		_attempts = _attempts.sort(sortByAttemptNumber)
 		const complete = _attempts.filter(r => r.isFinished)
 		let incomplete = _attempts.filter(r => !r.isFinished)
-
 		// if both arrays have content
 		if (incomplete.length) {
 			// exit early if there's no complete items
@@ -317,9 +316,10 @@ class AssessmentModel {
 				return incomplete.slice(-1)
 			}
 			// grab the last completed finishTime
-			const lastFinishTime = complete.slice(-1)[0].finishTime
-			// filter all incompletes that started before lastFinishTime
-			incomplete = incomplete.filter(r => r.startTime > lastFinishTime)
+			const lastCompletedTime = complete.slice(-1)[0].completedAt
+
+			// filter all incompletes that started before lastCompletedTime
+			incomplete = incomplete.filter(r => r.createdAt > lastCompletedTime)
 			// make array with only the last item (or an empty array)
 			incomplete = incomplete.slice(-1)
 			// append the last item to the end (incomplete can be an empty array)
