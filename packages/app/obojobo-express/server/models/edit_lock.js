@@ -1,5 +1,5 @@
 const db = require('../db')
-const editLockExpireMinutes = oboRequire('server/config').general.editLocks.autoExpireMinutes
+const { dbLockDurationMinutes } = oboRequire('server/config').general.editLocks
 
 class EditLock {
 	constructor(props) {
@@ -15,7 +15,7 @@ class EditLock {
 			`
 			DELETE
 			FROM edit_locks
-			WHERE created_at < now() - interval '${editLockExpireMinutes} minutes'
+			WHERE created_at < now() - interval '${dbLockDurationMinutes} minutes'
 				`,
 			null,
 			r => r.rowCount // extract rowCount from query data
@@ -53,7 +53,7 @@ class EditLock {
 				created_at AS "createdAt"
 			FROM edit_locks
 			WHERE draft_id = $[draftId]
-			AND created_at > now() - interval '${editLockExpireMinutes} minutes'
+			AND created_at > now() - interval '${dbLockDurationMinutes} minutes'
 			ORDER BY created_at DESC
 			LIMIT 1
 		`,
@@ -99,7 +99,7 @@ class EditLock {
 					FROM edit_locks
 					WHERE draft_id = $[draftId]
 					AND user_id != $[userId]
-					AND created_at > now() - interval '${editLockExpireMinutes} minutes'
+					AND created_at > now() - interval '${dbLockDurationMinutes} minutes'
 				) RETURNING
 					id,
 					user_id AS "userId",

@@ -45,14 +45,31 @@ class EditorApp extends React.Component {
 		// caluclate edit lock settings
 		const msPerMin = 60000
 		const locks = props.settings.editLocks
-		this.editLocks = {
-			autoExpireMs: msPerMin * locks.autoExpireMinutes * 0.9,
-			warnMs: msPerMin * locks.warnMinutes,
-			idleMs: msPerMin * locks.idleMinutes
-		}
 
-		// Make Slate nodes generate with UUIDs
-		//KeyUtils.setGenerator(generateId)
+		/*
+		Locks are created so that only one author can be editing a draft at a time.
+		Each lock is stored in the database and remains active for dbLockDurationMinutes.
+		Here we renew the lock on an interval, every renewLockIntervalMs. This value must
+		be shorter than dbLockDurationMinutes to ensure the lock is renewed, so after 90%
+		of dbLockDurationMinutes has passed we go ahead and ask the server to renew the lock.
+
+		Once the user has remained idle for idleTimeUntilReleaseLockMs we tell the server
+		that we are releasing our lock, allowing for other authors to edit the same draft.
+		A dialog is shown notifying the user that the document is in a frozen state.
+		When returning from idle the lock will be renewed and authoring will continue if
+		there isn't an active lock (in other words, nobody else is editing the document).
+		If there IS an active lock already we display a message that the document is being
+		edited and we hide the UI.
+
+		To help prevent accidental idle periods we display a warning message if the client
+		remains idle for idleTimeUntilWarningMs. This lets the author know that their lock
+		will be released soon.
+		*/
+		this.editLocks = {
+			renewLockIntervalMs: locks.dbLockDurationMinutes * 0.9 * msPerMin,
+			idleTimeUntilWarningMs: locks.idleTimeUntilWarningMinutes * msPerMin,
+			idleTimeUntilReleaseLockMs: locks.idleTimeUntilReleaseLockMinutes * msPerMin
+		}
 
 		// === SET UP DATA STORES ===
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
@@ -136,6 +153,10 @@ class EditorApp extends React.Component {
 	}
 
 	displayLockedState(title, message) {
+		// entering a unrecoverable state, stop renewing locks
+		clearInterval(this.renewLockInterval)
+		this.renewLockInterval = null
+
 		this.setState({
 			requestStatus: 'invalid',
 			requestError: { title, message }
@@ -143,7 +164,8 @@ class EditorApp extends React.Component {
 	}
 
 	startRenewEditLockInterval(draftId) {
-		// allow this function to be called again
+		// block this function from being called again
+		// while it's waiting for api calls
 		if (this._isCreatingRenewableEditLock) return Promise.resolve()
 		this._isCreatingRenewableEditLock = true
 		return this.createEditLock(draftId, this.state.model.get('contentId'))
@@ -155,13 +177,16 @@ class EditorApp extends React.Component {
 					this.createEditLock(draftId, this.state.model.get('contentId')).catch(error => {
 						this.handleEditLockError(error)
 					})
-				}, this.editLocks.autoExpireMs)
+				}, this.editLocks.renewLockIntervalMs)
+				// end code that happens on interval
 			})
 			.catch(error => {
+				// unable to lock on initial run
+				// note this will not capture errors thrown inside the interval
 				this.handleEditLockError(error)
 			})
 			.then(() => {
-				// allow this function to be called again
+				// unblock so function to be called again
 				this._isCreatingRenewableEditLock = false
 			})
 	}
@@ -355,7 +380,10 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				<ObojoboIdleTimer timeout={this.editLocks.idleMs} warning={this.editLocks.warnMs} />
+				<ObojoboIdleTimer
+					timeout={this.editLocks.idleTimeUntilReleaseLockMs}
+					warning={this.editLocks.idleTimeUntilWarningMs}
+				/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>

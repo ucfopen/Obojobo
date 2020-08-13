@@ -37,7 +37,6 @@ router
 				req.params.draftId,
 				req.body.contentId
 			)
-
 			// send response to user
 			if (!myLock || myLock.userId !== req.currentUser.id) {
 				return res.notAuthorized('Someone else is currently editing this module.')
@@ -51,7 +50,16 @@ router
 			EditLock.deleteExpiredLocks()
 		} catch (e) {
 			logger.error(e)
-			res.unexpected('Unexpected error while creating edit lock.')
+
+			switch (e.message) {
+				case 'Current version of draft does not match requested lock.':
+					res.reject('Draft has been updated by someone else.')
+					break
+
+				default:
+					res.unexpected('Unexpected error while creating edit lock.')
+					break
+			}
 		}
 	})
 

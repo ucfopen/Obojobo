@@ -49,9 +49,9 @@ describe('EditorApp', () => {
 		defaultProps = {
 			settings: {
 				editLocks: {
-					autoExpireMinutes: 1,
-					warnMinutes: 2,
-					idleMinutes: 3
+					dbLockDurationMinutes: 1,
+					idleTimeUntilWarningMinutes: 2,
+					idleTimeUntilReleaseLockMinutes: 3
 				}
 			}
 		}
@@ -351,12 +351,12 @@ describe('EditorApp', () => {
 			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(1)
 
 			// move forward to just before the timeout
-			jest.advanceTimersByTime(msPerSec * 1 * 0.89)
-			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(1)
+			jest.advanceTimersByTime(msPerSec * 1 * 0.9 - 1)
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(1)
 
 			// move forward to the timeout
-			jest.advanceTimersByTime(msPerSec * 1 * 0.01)
-			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(2)
+			jest.advanceTimersByTime(1)
+			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
 
 			// move forward to the next timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9)

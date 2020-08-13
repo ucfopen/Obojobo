@@ -4,11 +4,8 @@ import 'codemirror/theme/monokai.css'
 import 'codemirror/addon/fold/foldgutter.css'
 
 import React, { Suspense } from 'react'
-import EditorAPI from '../../../scripts/viewer/util/editor-api'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
-import ModalUtil from '../../common/util/modal-util'
-import SimpleDialog from '../../common/components/modal/simple-dialog'
 import EditorTitleInput from './editor-title-input'
 
 const CodeMirror = React.lazy(() =>
@@ -109,17 +106,9 @@ class CodeEditor extends React.Component {
 	}
 
 	sendSave(draftId, code, mode) {
-		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
-		return EditorAPI.postDraft(draftId, code, format)
-			.then(result => {
-				if (result.status !== 'ok') throw Error(result.value.message)
-
-				this.setState({ saved: true })
-			})
-			.catch(e => {
-				if (e instanceof Error) e = e.message
-				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
-			})
+		return this.props.saveDraft(draftId, code, mode).then(isSaved => {
+			this.setState({ saved: isSaved })
+		})
 	}
 
 	// Makes CodeMirror commands match Slate commands
