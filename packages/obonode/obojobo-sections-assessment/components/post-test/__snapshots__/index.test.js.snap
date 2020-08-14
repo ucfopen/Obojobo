@@ -1544,7 +1544,7 @@ exports[`PostTest PostTest component with review with imported score 1`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1581,7 +1581,7 @@ exports[`PostTest PostTest component with review with imported score 1`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >
@@ -1700,7 +1700,7 @@ exports[`PostTest PostTest component with review with imported score 2`] = `
           >
             <h1>
               <span
-                className="text align-center"
+                className="obo-text align-center"
                 data-group-index="0"
                 data-indent={0}
               >
@@ -1737,7 +1737,7 @@ exports[`PostTest PostTest component with review with imported score 2`] = `
                 tabIndex="0"
               >
                 <span
-                  className="text"
+                  className="obo-text"
                   data-group-index="0"
                   data-indent={0}
                 >

@@ -352,11 +352,11 @@ describe('EditorApp', () => {
 
 			// move forward to just before the timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9 - 1)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(1)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(1)
 
 			// move forward to the timeout
 			jest.advanceTimersByTime(1)
-			expect(APIUtil.requestEditLock).toHaveBeenCalledTimes(2)
+			expect(EditorAPI.requestEditLock).toHaveBeenCalledTimes(2)
 
 			// move forward to the next timeout
 			jest.advanceTimersByTime(msPerSec * 1 * 0.9)

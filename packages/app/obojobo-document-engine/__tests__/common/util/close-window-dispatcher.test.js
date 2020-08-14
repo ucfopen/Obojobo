@@ -1,14 +1,20 @@
-import enableWindowCloseDispatcher from '../../../src/scripts/common/util/close-window-dispatcher'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
 	trigger: jest.fn()
 }))
 
 describe('Close Window Dispatcher', () => {
 	let visibilityState = 'visible'
+	let enableWindowCloseDispatcher
+	let Dispatcher
 	beforeEach(() => {
+		jest.resetModules()
 		jest.clearAllMocks()
+
+		// require + resetModules to ensure internal vars are reset between tests
+		Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
+		enableWindowCloseDispatcher = require('../../../src/scripts/common/util/close-window-dispatcher')
+			.default
+
 		jest.spyOn(window, 'addEventListener')
 		visibilityState = 'visible'
 		Object.defineProperty(window, 'visibilityState', {
@@ -52,21 +58,21 @@ describe('Close Window Dispatcher', () => {
 		)
 	})
 
-	test('onBeforeWindowClose dispatches closeAttempt and closeNow', () => {
+	test('onBeforeUnload dispatches closeAttempt', () => {
 		// setup
 		enableWindowCloseDispatcher()
-		const [eventName, onBeforeWindowClose] = window.addEventListener.mock.calls[0]
+		const [listerEventName, onBeforeUnload] = window.addEventListener.mock.calls[0]
 		const event = {
 			preventDefault: jest.fn()
 		}
 
 		// execute
-		onBeforeWindowClose(event)
+		onBeforeUnload(event)
 
 		// verify
-		expect(eventName).toBe('beforeunload') // make sure we got the right listeners
+		expect(listerEventName).toBe('beforeunload') // make sure we got the right listeners
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('window:closeAttempt', expect.any(Function))
-		expect(Dispatcher.trigger).toHaveBeenLastCalledWith('window:closeNow')
+		expect(Dispatcher.trigger).not.toHaveBeenLastCalledWith('window:closeNow')
 		expect(event.preventDefault).not.toHaveBeenCalled()
 		expect(event).not.toHaveProperty('returnValue')
 	})
@@ -74,7 +80,7 @@ describe('Close Window Dispatcher', () => {
 	test('onBeforeWindowClose delays closing when preventClose is called', () => {
 		// setup
 		enableWindowCloseDispatcher()
-		const [eventName, onBeforeWindowClose] = window.addEventListener.mock.calls[0]
+		const [listerEventName, onBeforeWindowClose] = window.addEventListener.mock.calls[0]
 		const event = {
 			preventDefault: jest.fn()
 		}
@@ -88,17 +94,30 @@ describe('Close Window Dispatcher', () => {
 		onBeforeWindowClose(event)
 
 		// verify
-		expect(eventName).toBe('beforeunload') // make sure we got the right listeners
+		expect(listerEventName).toBe('beforeunload') // make sure we got the right listeners
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('window:closeAttempt', expect.any(Function))
 		expect(Dispatcher.trigger).not.toHaveBeenCalledWith('window:closeNow')
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(event).toHaveProperty('returnValue', '')
 	})
 
-	test('visibilitychange calls onBeforeWindowClose', () => {
+	test('unload triggers window:closeNow', () => {
 		// setup
 		enableWindowCloseDispatcher()
-		const [eventName, onVisibilityChange] = window.addEventListener.mock.calls[2]
+		const [listerEventName, dispatchCloseNow] = window.addEventListener.mock.calls[2]
+
+		// execute
+		dispatchCloseNow()
+
+		// verify
+		expect(listerEventName).toBe('unload') // make sure we got the right listeners
+		expect(Dispatcher.trigger).toHaveBeenLastCalledWith('window:closeNow')
+	})
+
+	test('visibilitychange triggers window:closeNow', () => {
+		// setup
+		enableWindowCloseDispatcher()
+		const [listerEventName, onVisibilityChange] = window.addEventListener.mock.calls[3]
 		const event = {
 			preventDefault: jest.fn()
 		}
@@ -108,15 +127,14 @@ describe('Close Window Dispatcher', () => {
 		onVisibilityChange(event)
 
 		// verify
-		expect(eventName).toBe('visibilitychange') // make sure we got the right listeners
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('window:closeAttempt', expect.any(Function))
+		expect(listerEventName).toBe('visibilitychange') // make sure we got the right listeners
 		expect(Dispatcher.trigger).toHaveBeenLastCalledWith('window:closeNow')
 	})
 
 	test('visibilitychange doesnt call onBeforeWindowClose when not hidden', () => {
 		// setup
 		enableWindowCloseDispatcher()
-		const [eventName, onVisibilityChange] = window.addEventListener.mock.calls[2]
+		const [listerEventName, onVisibilityChange] = window.addEventListener.mock.calls[3]
 		const event = {
 			preventDefault: jest.fn()
 		}
@@ -126,7 +144,22 @@ describe('Close Window Dispatcher', () => {
 		onVisibilityChange(event)
 
 		// verify
-		expect(eventName).toBe('visibilitychange') // make sure we got the right listeners
+		expect(listerEventName).toBe('visibilitychange') // make sure we got the right listeners
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+	})
+
+	test('dispatchCloseNow triggers window:closeNow once', () => {
+		// setup
+		enableWindowCloseDispatcher()
+		const [listerEventName, dispatchCloseNow] = window.addEventListener.mock.calls[2]
+
+		// execute repeatidly
+		dispatchCloseNow()
+		dispatchCloseNow()
+		dispatchCloseNow()
+
+		// verify
+		expect(listerEventName).toBe('unload') // make sure we got the right listeners
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 	})
 })
