@@ -19,9 +19,11 @@ class CodeEditor extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const title = EditorUtil.getTitleFromString(props.initialCode, props.mode)
+
 		this.state = {
 			code: props.initialCode,
-			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
+			title,
 			saved: true,
 			editor: null,
 			options: {

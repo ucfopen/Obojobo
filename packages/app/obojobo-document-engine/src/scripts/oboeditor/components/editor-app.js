@@ -27,6 +27,9 @@ const VISUAL_MODE = 'visual'
 class EditorApp extends React.Component {
 	constructor(props) {
 		super(props)
+		// store the current version id for locking
+		// not stored on state because no effect on render
+		this.contentId = null
 
 		this.state = {
 			model: null,
@@ -89,12 +92,12 @@ class EditorApp extends React.Component {
 	saveDraft(draftId, draftSrc, xmlOrJSON = 'json') {
 		const mode = xmlOrJSON === 'xml' ? 'text/plain' : 'application/json'
 		return EditorAPI.postDraft(draftId, draftSrc, mode)
-			.then(result => {
+			.then(({ contentId, result }) => {
 				if (result.status !== 'ok') {
 					throw Error(result.value.message)
 				}
 
-				this.state.model.set('contentId', result.value.id)
+				this.contentId = contentId // keep new contentId for edit locks
 				return true
 			})
 			.catch(e => {
@@ -126,12 +129,11 @@ class EditorApp extends React.Component {
 	}
 
 	getCodeEditorState(draftId, draftModel) {
+		const title = EditorUtil.getTitleFromString(draftModel, this.state.mode)
 		OboModel.clearAll()
 		const obomodel = OboModel.create({
 			type: 'ObojoboDraft.Modules.Module',
-			content: {
-				title: EditorUtil.getTitleFromString(draftModel, this.state.mode)
-			}
+			content: { title }
 		})
 
 		EditorStore.init(obomodel, null, this.props.settings, window.location.pathname, this.state.mode)
@@ -168,13 +170,13 @@ class EditorApp extends React.Component {
 		// while it's waiting for api calls
 		if (this._isCreatingRenewableEditLock) return Promise.resolve()
 		this._isCreatingRenewableEditLock = true
-		return this.createEditLock(draftId, this.state.model.get('contentId'))
+		return this.createEditLock(draftId, this.contentId)
 			.then(() => {
 				// success!
 				// create the lock interval to keep checking & renewing
 				clearInterval(this.renewLockInterval)
 				this.renewLockInterval = setInterval(() => {
-					this.createEditLock(draftId, this.state.model.get('contentId')).catch(error => {
+					this.createEditLock(draftId, this.contentId).catch(error => {
 						this.handleEditLockError(error)
 					})
 				}, this.editLocks.renewLockIntervalMs)
@@ -206,30 +208,29 @@ class EditorApp extends React.Component {
 
 	reloadDraft(draftId, mode) {
 		return EditorAPI.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
-			.then(response => {
-				let json
-				switch (mode) {
-					case XML_MODE:
-						// Calling getFullDraft with xml will return plain text xml
-						return response
-					default:
-						json = JSON.parse(response)
-						if (json.status === 'error') {
-							const error = Error(json.value.message)
-							error.type = json.value.type
-							throw error
-						}
+			.then(({ contentId, body }) => {
+				this.contentId = contentId
+				if (mode !== XML_MODE) {
+					// parse json response that contains the draft json
+					const json = JSON.parse(body)
+					// check the api status
+					if (json.status === 'error') {
+						const error = Error(json.value.message)
+						error.type = json.value.type
+						throw error
+					}
+					// stringify and format the draft data
+					body = JSON.stringify(json.value, null, 4)
+				}
 
-						return JSON.stringify(json.value, null, 4)
-				}
+				return body
 			})
-			.then(draftModel => {
-				switch (mode) {
-					case VISUAL_MODE:
-						return this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
-					default:
-						return this.setState({ ...this.getCodeEditorState(draftId, draftModel), mode })
-				}
+			.then(body => {
+				const editorState =
+					mode === VISUAL_MODE
+						? this.getVisualEditorState(draftId, body)
+						: this.getCodeEditorState(draftId, body)
+				return this.setState({ ...editorState, mode })
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console

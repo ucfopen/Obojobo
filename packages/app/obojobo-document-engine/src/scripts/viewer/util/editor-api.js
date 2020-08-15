@@ -6,11 +6,26 @@ const EditorAPI = {
 	},
 
 	getFullDraft(id, format = 'json') {
-		return API.get(`/api/drafts/${id}/full`, format).then(res => res.text())
+		let contentId
+		return API.get(`/api/drafts/${id}/full`, format)
+			.then(res => {
+				contentId = res.headers.get('Obo-DraftContentId')
+				return res.text()
+			})
+			.then(body => ({
+				contentId,
+				body
+			}))
 	},
 
 	postDraft(id, draftString, format = 'application/json') {
-		return API.postWithFormat(`/api/drafts/${id}`, draftString, format).then(API.processJsonResults)
+		let contentId
+		return API.postWithFormat(`/api/drafts/${id}`, draftString, format)
+			.then(res => {
+				contentId = res.headers.get('Obo-DraftContentId')
+				return API.processJsonResults(res)
+			})
+			.then(result => ({ contentId, result }))
 	},
 
 	// If `content` and `format` are not specified, the default draft will be created

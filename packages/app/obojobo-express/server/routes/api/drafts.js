@@ -50,18 +50,20 @@ router
 				// get the current version
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
-
+			const draftDocument = draftModel.document
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
 					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-						xml = jsonToXml(draftModel.document)
+						xml = jsonToXml(draftDocument)
 					}
+					res.set('Obo-DraftContentId', draftDocument.contentId)
 					res.send(xml)
 				},
 				default: () => {
-					res.success(draftModel.document)
+					res.set('Obo-DraftContentId', draftDocument.contentId)
+					res.success(draftDocument)
 				}
 			})
 		} catch (e) {
@@ -128,7 +130,10 @@ router
 		}
 
 		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
-			.then(res.success)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -138,7 +143,10 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(res.success)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 
@@ -194,6 +202,7 @@ router
 					documentInput,
 					xml || null
 				).then(id => {
+					res.set('Obo-DraftContentId', id)
 					res.success({ id })
 				})
 			})
