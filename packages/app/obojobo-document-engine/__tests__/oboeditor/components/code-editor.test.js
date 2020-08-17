@@ -351,23 +351,10 @@ describe('CodeEditor', () => {
 
 		component.instance().onKeyDown({
 			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-
-		component.instance().onKeyDown({
-			preventDefault: jest.fn(),
-			key: 'y',
-			metaKey: true
-		})
-
-		component.instance().onKeyDown({
-			preventDefault: jest.fn(),
 			key: 's'
 		})
 
-		expect(editor.undo).toHaveBeenCalled()
-		expect(editor.redo).toHaveBeenCalled()
+		expect(EditorUtil.getTitleFromString).toHaveBeenCalled()
 	})
 
 	test('setEditor changes state', () => {

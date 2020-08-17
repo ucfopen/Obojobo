@@ -200,19 +200,9 @@ class VisualEditor extends React.Component {
 			return this.saveModule(this.props.draftId)
 		}
 
-		if (
-			(event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
-			((event.key === 'z' || event.key === 'Z') &&
-				(event.ctrlKey || event.metaKey) &&
-				event.shiftKey)
-		) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			return this.editor.redo()
-		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			return this.editor.undo()
 		}
 
 		if (event.key === 'Escape') {
