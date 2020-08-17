@@ -6,10 +6,10 @@ const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 const ltiInstructor = {
 	lis_person_contact_email_primary: 'zach@obojobo.com',
-	lis_person_name_family: 'Berry',
-	lis_person_name_full: 'Zachary Allen Berry',
-	lis_person_name_given: 'Zach',
-	lis_person_sourcedid: 'sis:942a8dd9',
+	lis_person_name_family: 'Instructor1',
+	lis_person_name_full: 'Test Instructor1',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstinstructor1',
 	roles: 'Instructor',
 	user_id: '29129',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
@@ -17,10 +17,10 @@ const ltiInstructor = {
 
 const ltiInstructor2 = {
 	lis_person_contact_email_primary: 'frankie@obojobo.com',
-	lis_person_name_family: 'Yonekura',
-	lis_person_name_full: 'Francisca Yonekura',
-	lis_person_name_given: 'Francisca',
-	lis_person_sourcedid: 'sis:2801233',
+	lis_person_name_family: 'Instructor2',
+	lis_person_name_full: 'Test Instructor2',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstinstructor2',
 	roles: 'Instructor',
 	user_id: '234111',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
@@ -28,10 +28,10 @@ const ltiInstructor2 = {
 
 const ltiLearner = {
 	lis_person_contact_email_primary: 'ian@obojobo.com',
-	lis_person_name_family: 'Turgeon',
-	lis_person_name_full: 'Ian Emerson Turgeon',
-	lis_person_name_given: 'Ian',
-	lis_person_sourcedid: 'sis:942a8d23',
+	lis_person_name_family: 'Learner1',
+	lis_person_name_full: 'Test Learner1',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstlearner1',
 	roles: 'Learner',
 	user_id: '29111',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
