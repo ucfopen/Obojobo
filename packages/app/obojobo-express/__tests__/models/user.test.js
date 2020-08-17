@@ -247,7 +247,6 @@ describe('user model', () => {
 			email: 'e@m.com',
 			username: 'someusername'
 		}
-		db.none.mockResolvedValueOnce()
 		db.manyOrNone.mockResolvedValueOnce([mockUserResult, mockUserResult])
 
 		const users = await User.searchForUsers('some-input')
@@ -309,7 +308,7 @@ describe('user model', () => {
 	})
 
 	test('searchForUsers errors predictably', () => {
-		db.none.mockRejectedValueOnce('mock-error')
+		db.manyOrNone.mockRejectedValueOnce('mock-error')
 
 		return expect(User.searchForUsers('some-input')).rejects.toThrowError(
 			'Error searching for users.'

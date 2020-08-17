@@ -78,27 +78,17 @@ class User {
 	static searchForUsers(searchInput) {
 		// Create a quick function for quickly searching users (if missing)
 		return db
-			.none(
-				`CREATE OR REPLACE FUNCTION obo_immutable_concat_ws(s text, t1 text, t2 text)
-				RETURNS text AS
-				$func$
-				SELECT concat_ws(s, t1, t2)
-				$func$ LANGUAGE sql IMMUTABLE;
-				`
+			.manyOrNone(
+				`SELECT
+					*
+				FROM users
+				WHERE obo_immutable_concat_ws(' ', first_name, last_name)ILIKE $[searchInput]
+				OR email ILIKE $[searchInput]
+				OR username ILIKE $[searchInput]
+				ORDER BY first_name, last_name
+				LIMIT 25`,
+				{ searchInput: `%${searchInput}%` }
 			)
-			.then(() => {
-				return db.manyOrNone(
-					`SELECT
-						*
-					FROM users
-					WHERE obo_immutable_concat_ws(' ', first_name, last_name)ILIKE $[searchInput]
-					OR email ILIKE $[searchInput]
-					OR username ILIKE $[searchInput]
-					ORDER BY first_name, last_name
-					LIMIT 25`,
-					{ searchInput: `%${searchInput}%` }
-				)
-			})
 			.then(results => results.map(r => User.dbResultToModel(r)))
 			.catch(error => {
 				logger.logError('Error searchForUsers', error)
