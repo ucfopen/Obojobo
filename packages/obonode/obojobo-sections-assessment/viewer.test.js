@@ -22,8 +22,6 @@ import './viewer'
 import ViewerComponent from './viewer-component'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-const { AssessmentUtil } = Viewer.util
-
 describe('ObojoboDraft.Sections.Assessment registration', () => {
 	test('registerModel registers expected vars', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
@@ -154,6 +152,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce(null)
 		}
+		const AssessmentUtil = Viewer.util.AssessmentUtil
 
 		AssessmentUtil.getNumberOfAttemptsCompletedForModel = jest.fn()
 
