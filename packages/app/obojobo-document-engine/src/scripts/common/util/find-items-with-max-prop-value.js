@@ -7,10 +7,10 @@
 const digNested = (item, nestedPropArray) => nestedPropArray.reduce((o, i) => o[i], item)
 const digOne = (item, propArray) => item[propArray[0]]
 
-const findItemsWithMaxPropValue = (items, nestedProperty) => {
+const findItemsWithMaxPropValue = (items, path) => {
 	if (items.length === 0) return []
 
-	const splitProp = nestedProperty.split('.')
+	const splitProp = path.split('.')
 	const dig = splitProp.length === 1 ? digOne : digNested
 	let maxValue = Number.NEGATIVE_INFINITY // initialize to minimum value
 	let itemsWithMaxValue = [] // all items w/ max value
