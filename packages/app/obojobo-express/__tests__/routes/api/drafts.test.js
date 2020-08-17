@@ -500,20 +500,21 @@ describe('api draft route', () => {
 	// new draft
 
 	test('new draft returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/new')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 			})
 	})
 
 	test('new draft with "application/json" returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 
 		return request(app)
@@ -522,13 +523,14 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 			})
 	})
 
 	test('new draft with "application/xml" returns success', () => {
-		expect.assertions(5)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		xml.mockReturnValueOnce({})
 
@@ -541,8 +543,9 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 				expect(xml).toHaveBeenCalled()
 			})
 	})
@@ -617,15 +620,16 @@ describe('api draft route', () => {
 	// new tutorial
 
 	test('new tutorial returns success', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/tutorial')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+				expect(response).toHaveProperty('body.status', 'ok')
+				expect(response).toHaveProperty('body.value.id', 'mockDraftId')
+				expect(response).toHaveProperty('body.value.contentId', 'mockContentId')
 			})
 	})
 

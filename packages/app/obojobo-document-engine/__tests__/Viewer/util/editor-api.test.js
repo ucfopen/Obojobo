@@ -26,13 +26,19 @@ describe('EditorAPI', () => {
 		get = jest.spyOn(API, 'get')
 		get.mockResolvedValueOnce({
 			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
+			text: () => JSON.stringify(mockJsonResult),
+			headers: {
+				get: () => 'mockContentId'
+			}
 		})
 
 		postWithFormat = jest.spyOn(API, 'postWithFormat')
 		postWithFormat.mockResolvedValueOnce({
 			json: () => mockJsonResult,
-			text: () => JSON.stringify(mockJsonResult)
+			text: () => JSON.stringify(mockJsonResult),
+			headers: {
+				get: () => 'mockContentId'
+			}
 		})
 
 		deleteMethod = jest.spyOn(API, 'delete')
@@ -60,14 +66,14 @@ describe('EditorAPI', () => {
 		const res = await EditorAPI.getFullDraft('mock-draft-id')
 
 		expect(get).toHaveBeenCalledWith('/api/drafts/mock-draft-id/full', 'json')
-		expect(res).toBe('{}')
+		expect(res).toEqual({ body: '{}', contentId: 'mockContentId' })
 	})
 
 	test('getFullDraft fetches with the correct args with format', async () => {
 		const res = await EditorAPI.getFullDraft('mock-draft-id', 'application/xml')
 
 		expect(get).toHaveBeenCalledWith('/api/drafts/mock-draft-id/full', 'application/xml')
-		expect(res).toBe('{}')
+		expect(res).toEqual({ body: '{}', contentId: 'mockContentId' })
 	})
 
 	test('postDraft fetches with the correct args', async () => {
@@ -78,7 +84,7 @@ describe('EditorAPI', () => {
 			'contents',
 			'application/json'
 		)
-		expect(res).toBe(mockJsonResult)
+		expect(res).toEqual({ result: {}, contentId: 'mockContentId' })
 	})
 
 	test('postDraft fetches with the correct args with format', async () => {
@@ -89,7 +95,7 @@ describe('EditorAPI', () => {
 			'contents',
 			'application/xml'
 		)
-		expect(res).toBe(mockJsonResult)
+		expect(res).toEqual({ result: {}, contentId: 'mockContentId' })
 	})
 
 	test('createNewDraft fetches with the correct args', async () => {
