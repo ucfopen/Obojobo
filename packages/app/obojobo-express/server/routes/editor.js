@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { general: generalConfig, media: mediaConfig } = oboRequire('server/config')
+const { isTrueParam } = oboRequire('server/util/is_true_param')
 const {
 	idleTimeUntilReleaseLockMinutes,
 	idleTimeUntilWarningMinutes,
@@ -28,11 +29,10 @@ router
 		checkValidationRules
 	])
 	.get((req, res) => {
-		const readOnly = req.query.read_only && '' + req.query.read_only.toLowerCase()
 		const options = {
 			settings: {
 				allowedUploadTypes,
-				readOnly: readOnly === '1' || readOnly === 'true',
+				readOnly: isTrueParam(req.query.read_only),
 				revisionId: req.query.revision_id || '',
 				editLocks: {
 					idleTimeUntilReleaseLockMinutes: parseFloat(idleTimeUntilReleaseLockMinutes),
