@@ -51,9 +51,6 @@ const ViewerApi = {
 		}).then(API.processJsonResults)
 	},
 
-	// @TODO: make this more generic named
-	// and fire an event on the server
-	// and have assessment listening to do what it do
 	clearPreviewScores({ draftId, visitId }) {
 		return API.post('/api/assessments/clear-preview-scores', {
 			draftId,
