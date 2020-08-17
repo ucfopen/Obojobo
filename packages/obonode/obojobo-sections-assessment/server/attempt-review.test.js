@@ -48,7 +48,7 @@ describe('attempt review', () => {
 	test('attemptReview for 2 attempts with review = always', async () => {
 		const attemptReview = require('./attempt-review')
 
-		AssessmentModel.fetchAttemptByID.mockReturnValue({
+		AssessmentModel.fetchAttemptById.mockReturnValue({
 			draftId: 'mock-draft-id',
 			assessmentId: 'mock-assessment-id',
 			draftContentId: 'mock-content-id',

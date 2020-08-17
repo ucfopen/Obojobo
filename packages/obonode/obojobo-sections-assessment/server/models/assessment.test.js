@@ -537,16 +537,16 @@ describe('AssessmentModel', () => {
 		expect(AssessmentScore.prototype.create).toHaveBeenCalledTimes(1)
 	})
 
-	test('fetchAttemptByID queries and returns a model', async () => {
+	test('fetchAttemptById queries and returns a model', async () => {
 		db.oneOrNone.mockResolvedValueOnce(makeMockAttempt())
-		const attempt = await AssessmentModel.fetchAttemptByID('mock-id')
+		const attempt = await AssessmentModel.fetchAttemptById('mock-id')
 		expect(attempt).toBeInstanceOf(AssessmentModel)
 		expect(db.oneOrNone.mock.calls[0][1]).toEqual({ attemptId: 'mock-id' })
 	})
 
-	test('fetchAttemptByID errors', () => {
+	test('fetchAttemptById errors', () => {
 		db.oneOrNone.mockRejectedValueOnce('mock-error')
-		return expect(AssessmentModel.fetchAttemptByID('mock-id')).rejects.toBe('mock-error')
+		return expect(AssessmentModel.fetchAttemptById('mock-id')).rejects.toBe('mock-error')
 	})
 
 	test('fetchAttemptHistory errors', () => {

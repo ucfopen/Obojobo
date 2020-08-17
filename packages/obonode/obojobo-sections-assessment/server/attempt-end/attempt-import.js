@@ -36,7 +36,7 @@ const attemptImport = async req => {
 		throw Error('Scores can only be imported if no assessment attempts have been made.')
 	}
 
-	const originalAttempt = await AssessmentModel.fetchAttemptByID(originalScore.attemptId)
+	const originalAttempt = await AssessmentModel.fetchAttemptById(originalScore.attemptId)
 
 	if (originalAttempt.userId !== req.currentUser.id) {
 		throw Error('Original attempt was not created by the current user.')

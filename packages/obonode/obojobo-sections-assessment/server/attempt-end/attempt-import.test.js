@@ -145,7 +145,7 @@ describe('attempt-import', () => {
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
 		mockAttempt.userId = 'not-the-same-user'
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
 
 		return expect(attemptImport(mockReq)).rejects.toThrowError(
 			'Original attempt was not created by the current user.'
@@ -155,7 +155,7 @@ describe('attempt-import', () => {
 	test('inserts attempt end event', async () => {
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
 		mockAttempt.importAsNewAttempt.mockResolvedValueOnce(mockAttempt)
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
@@ -186,7 +186,7 @@ describe('attempt-import', () => {
 	test('sends hights score via lti', async () => {
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
 		mockAttempt.importAsNewAttempt.mockResolvedValueOnce(mockAttempt)
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
@@ -213,7 +213,7 @@ describe('attempt-import', () => {
 		// setup
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
 		mockAttempt.importAsNewAttempt.mockResolvedValueOnce(mockAttempt)
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
@@ -253,7 +253,7 @@ describe('attempt-import', () => {
 		// setup
 		AssessmentScore.fetchById.mockResolvedValueOnce(mockAssessmentScore)
 		AssessmentModel.fetchAttemptHistory.mockResolvedValueOnce([])
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
 		mockAttempt.importAsNewAttempt.mockResolvedValueOnce(mockAttempt)
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')

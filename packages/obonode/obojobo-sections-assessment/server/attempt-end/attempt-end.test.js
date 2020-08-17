@@ -77,7 +77,7 @@ describe('attempt-end', () => {
 
 		// set up mock returns
 		mockCurrentDocument.getChildNodeById.mockReturnValueOnce('mockChildNode')
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce(mockFetchAttemptByID)
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockFetchAttemptByID)
 		AssessmentModel.getAttemptNumber.mockResolvedValueOnce('mock-attempt-number')
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(['mock-response'])
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mockHistory')
@@ -90,7 +90,7 @@ describe('attempt-end', () => {
 		await expect(endAttempt(mockReq, mockRes)).resolves.toEqual({ assessmentModdedScore: 88 })
 
 		// make sure all the steps were called with the expected variables
-		expect(AssessmentModel.fetchAttemptByID).toHaveBeenCalledWith('mock-attempt-id')
+		expect(AssessmentModel.fetchAttemptById).toHaveBeenCalledWith('mock-attempt-id')
 		expect(AssessmentModel.getAttemptNumber).toHaveBeenCalledWith(
 			'mockAttemptUserId',
 			'mockDraftId',
@@ -197,7 +197,7 @@ describe('attempt-end', () => {
 
 	test('endAttempt rejects when attempting to end attempt module not matching currentDocument', async () => {
 		const endAttempt = require('./attempt-end')
-		AssessmentModel.fetchAttemptByID.mockResolvedValueOnce({})
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce({})
 		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
 			Error('Cannot end an attempt for a different module')
 		)

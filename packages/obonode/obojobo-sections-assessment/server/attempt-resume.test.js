@@ -85,7 +85,7 @@ describe('Resume Attempt Route', () => {
 		}
 		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
-		AssessmentModel.fetchAttemptByID.mockResolvedValue(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
 
 		const result = await resumeAttempt(
 			mockCurrentUser,
@@ -151,7 +151,7 @@ describe('Resume Attempt Route', () => {
 		}
 		const mockCurrentVisit = { is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
-		AssessmentModel.fetchAttemptByID.mockResolvedValue(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
 
 		await resumeAttempt(
 			mockCurrentUser,
@@ -201,7 +201,7 @@ describe('Resume Attempt Route', () => {
 		}
 		const mockCurrentVisit = { id: 'mockVisitId', is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
-		AssessmentModel.fetchAttemptByID.mockResolvedValue(mockAttempt)
+		AssessmentModel.fetchAttemptById.mockResolvedValue(mockAttempt)
 		// const mockAttempt = await AssessmentModel.getAttempt()
 
 		await resumeAttempt(

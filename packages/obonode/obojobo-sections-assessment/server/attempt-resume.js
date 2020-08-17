@@ -17,7 +17,7 @@ const resumeAttempt = async (
 	// see: attemptStart.getSendToClientPromises
 	const req = {} // @TODO see if we can get rid of these
 	const res = {} // @TODO see if we can get rid of these
-	const attempt = await AssessmentModel.fetchAttemptByID(attemptId)
+	const attempt = await AssessmentModel.fetchAttemptById(attemptId)
 	const assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
 
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))

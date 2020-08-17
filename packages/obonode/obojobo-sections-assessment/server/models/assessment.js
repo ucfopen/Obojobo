@@ -169,7 +169,7 @@ class AssessmentModel {
 		)
 	}
 
-	static fetchAttemptByID(attemptId) {
+	static fetchAttemptById(attemptId) {
 		return db
 			.oneOrNone(
 				`
@@ -184,7 +184,7 @@ class AssessmentModel {
 				return new AssessmentModel(result)
 			})
 			.catch(error => {
-				logger.error('Assessment fetchAttemptByID Error', error.message)
+				logger.error('Assessment fetchAttemptById Error', error.message)
 				return Promise.reject(error)
 			})
 	}

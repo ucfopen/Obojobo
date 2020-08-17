@@ -12,7 +12,7 @@ const endAttempt = async (req, res) => {
 	)
 
 	// get this attempt from the db
-	const attempt = await AssessmentModel.fetchAttemptByID(req.params.attemptId)
+	const attempt = await AssessmentModel.fetchAttemptById(req.params.attemptId)
 
 	// ensure the attempt is for the current module & version
 	if (
