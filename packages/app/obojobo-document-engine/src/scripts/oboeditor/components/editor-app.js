@@ -210,26 +210,30 @@ class EditorApp extends React.Component {
 		return EditorAPI.getFullDraft(draftId, mode === VISUAL_MODE ? 'json' : mode)
 			.then(({ contentId, body }) => {
 				this.contentId = contentId
-				if (mode !== XML_MODE) {
-					// parse json response that contains the draft json
-					const json = JSON.parse(body)
-					// check the api status
-					if (json.status === 'error') {
-						const error = Error(json.value.message)
-						error.type = json.value.type
-						throw error
-					}
-					// stringify and format the draft data
-					body = JSON.stringify(json.value, null, 4)
-				}
+				switch (mode) {
+					case XML_MODE:
+						return body
 
-				return body
+					default: // block added for scoping vars to the default case
+					{
+						// parse json response that contains the draft json
+						const json = JSON.parse(body)
+						// check the api status
+						if (json.status === 'error') {
+							const error = Error(json.value.message)
+							error.type = json.value.type
+							throw error
+						}
+						// stringify and format the draft data
+						return JSON.stringify(json.value, null, 4)
+					}
+				}
 			})
-			.then(body => {
+			.then(draft => {
 				const editorState =
 					mode === VISUAL_MODE
-						? this.getVisualEditorState(draftId, body)
-						: this.getCodeEditorState(draftId, body)
+						? this.getVisualEditorState(draftId, draft)
+						: this.getCodeEditorState(draftId, draft)
 				return this.setState({ ...editorState, mode })
 			})
 			.catch(err => {
