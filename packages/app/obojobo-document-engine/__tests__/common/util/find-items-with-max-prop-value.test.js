@@ -7,6 +7,12 @@ describe('findItemsWithMaxPropValue Util', () => {
 		expect(result).toEqual([{ nested: { value: 20 } }])
 	})
 
+	test('finds extra deeply nested max value', () => {
+		const items = [{ top: { upperMiddle: { middle: { lowerMiddle: { bottom: 10 } } } } }, { top: { upperMiddle: { middle: { lowerMiddle: { bottom: 20 } } } } }, { top: { upperMiddle: { middle: { lowerMiddle: { bottom: 12 } } } } }]
+		const result = findItemsWithMaxPropValue(items, 'top.upperMiddle.middle.lowerMiddle.bottom')
+		expect(result).toEqual([{ top: { upperMiddle: { middle: { lowerMiddle: { bottom: 20 } } } } }])
+	})
+
 	test('finds single nested max value', () => {
 		const items = [{ value: 0 }, { value: 1 }, { value: -10 }]
 		const result = findItemsWithMaxPropValue(items, 'value')
