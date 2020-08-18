@@ -21,6 +21,16 @@ const isInsertDisabledForItem = (selectedNodes, name, selection) => {
 	return false
 }
 
+const containsFigureNode = selectedNodes => {
+	for (const [node] of selectedNodes) {
+		if (node.type === 'ObojoboDraft.Chunks.Figure') {
+			return true
+		}
+	}
+
+	return false
+}
+
 const selectAll = editor => {
 	const edges = Editor.edges(editor, [])
 	Transforms.select(editor, { focus: edges[0], anchor: edges[1] })
@@ -46,14 +56,27 @@ const FileToolbarViewer = props => {
 			)
 		})()
 
-		const insertMenuItems = insertableItems.map(item => ({
-			name: item.name,
-			action: () => {
-				Transforms.insertNodes(editor, item.cloneBlankNode())
-				ReactEditor.focus(editor)
-			},
-			disabled: isInsertDisabledForItem(selectedNodes, item.name, sel)
-		}))
+		const insertMenuItems = insertableItems.map(item => {
+			return {
+				name: item.name,
+				action: () => {
+					const endPath = Editor.path(editor, editor.selection, { edge: 'start' })
+
+					// If the current selection is a figure, insert the new item at
+					// the end of the figure. Inserting an item while in a figure caption
+					// duplicates the figure.
+					if (containsFigureNode(selectedNodes)) {
+						Transforms.insertNodes(editor, item.cloneBlankNode(), {
+							at: Editor.end(editor, endPath)
+						})
+					} else {
+						Transforms.insertNodes(editor, item.cloneBlankNode())
+					}
+					ReactEditor.focus(editor)
+				},
+				disabled: isInsertDisabledForItem(selectedNodes, item.name, sel)
+			}
+		})
 
 		return (
 			<div className="visual-editor--drop-down-menu">
