@@ -25,6 +25,11 @@
 		color: $color-bg;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid darken($color-action, 20%);
+
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 1px $color-bg, 0 0 0 3px $color-browser-focus;
+		}
 	}
 
 	&.is-dangerous {
