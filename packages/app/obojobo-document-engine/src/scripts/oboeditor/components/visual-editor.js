@@ -23,6 +23,7 @@ import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -148,6 +149,12 @@ class VisualEditor extends React.Component {
 	}
 
 	componentDidMount() {
+		Dispatcher.on('modal:show', () => {
+			this.toggleEditable(false)
+		})
+		Dispatcher.on('modal:hide', () => {
+			this.toggleEditable(true)
+		})
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
 		// Setup global keydown to listen to all global keys
