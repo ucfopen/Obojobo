@@ -77,26 +77,11 @@ describe('Color Picker', () => {
 			.at(0)
 			.simulate('click')
 
-		// Invalid Hex
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: 'invalid' } })
-		expect(component.find('input').get(0).props.value).toBe('')
-
-		// Valid hex
 		component
 			.find('input')
 			.at(0)
 			.simulate('change', { target: { value: '111111' } })
 		expect(component.find('input').get(0).props.value).toBe('111111')
-
-		// Empty string
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: '' } })
-		expect(component.find('input').get(0).props.value).toBe('')
 	})
 
 	test('click ok', () => {

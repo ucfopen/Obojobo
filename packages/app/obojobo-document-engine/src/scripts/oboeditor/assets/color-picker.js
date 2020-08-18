@@ -67,7 +67,7 @@ const colorChoices = [
 
 const ColorPicker = props => {
 	const [expanded, setExpanded] = useState(false)
-	const [hex, setHex] = useState('')
+	const [color, setColor] = useState('')
 
 	const onClick = color => {
 		Editor.addMark(props.editor, COLOR_MARK, color)
@@ -76,10 +76,7 @@ const ColorPicker = props => {
 
 	const onChange = event => {
 		event.preventDefault()
-		const value = event.target.value
-		if (value === '' || (!isNaN(Number('0x' + value)) && value.length <= 6)) {
-			setHex(value)
-		}
+		setColor(event.target.value)
 	}
 
 	return (
@@ -113,8 +110,8 @@ const ColorPicker = props => {
 				</button>
 			) : (
 				<div className="color-picker--input">
-					<input value={hex} onChange={onChange} placeholder="Hex value (Ex: #000000)" />
-					<Button onClick={() => onClick('#' + hex)}>OK</Button>
+					<input type="color" value={color} onChange={onChange} />
+					<Button onClick={() => onClick(color)}>OK</Button>
 				</div>
 			)}
 		</div>
