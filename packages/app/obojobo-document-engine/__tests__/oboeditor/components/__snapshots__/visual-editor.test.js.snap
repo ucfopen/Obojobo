@@ -780,11 +780,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -798,11 +798,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1380,11 +1380,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1398,11 +1398,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1980,11 +1980,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1998,11 +1998,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2626,11 +2626,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2644,11 +2644,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3222,11 +3222,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3240,11 +3240,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+R"
       >
         <svg
           viewBox="0 0 32 32"
