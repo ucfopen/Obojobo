@@ -162,6 +162,19 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
+	test('Latex when window is invalid', () => {
+		const windowSpy = jest.spyOn(global, 'window', 'get')
+		windowSpy.mockImplementation(() => undefined) // eslint-disable-line no-undefined
+
+		const st = new StyleableText('dog fox cat')
+		st.styleText('_latex', 4, 7, { a: 1 })
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toMatchInlineSnapshot(
+			`"<span>dog <span class=\\"latex\\" role=\\"math\\" a=\\"1\\" alt=\\"fox\\">fox</span> cat</span>"`
+		)
+	})
+
 	test('Monospace', () => {
 		const st = new StyleableText('dog fox cat')
 		st.styleText('monospace', 4, 7, { a: 1 })

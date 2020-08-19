@@ -128,17 +128,40 @@ class EditorApp extends React.Component {
 			})
 	}
 
+	loadDraftRevision(draftId, revisionId) {
+		const mode = 'visual'
+
+		return APIUtil.getDraftRevision(draftId, revisionId)
+			.then(response => {
+				if (response.status === 'error') throw response.status
+
+				return JSON.stringify(response.value.json, null, 4)
+			})
+			.then(draftModel => {
+				return this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
+			})
+			.catch(err => {
+				// eslint-disable-next-line no-console
+				console.error(err)
+				return this.setState({ requestStatus: 'invalid', requestError: err, mode })
+			})
+	}
+
 	componentDidMount() {
 		const urlTokens = document.location.pathname.split('/')
+		const revisionId = this.props.settings && this.props.settings.revisionId
 
 		// get draftID from location
 		const draftId = urlTokens[3] ? urlTokens[3] : null
 
-		// get the mode from the location
-		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if (mode === 'classic') mode = XML_MODE // convert classic to xml
-
 		ModalStore.init()
+
+		if (revisionId) {
+			// If this is a revision, load it in the editor. Note that
+			// revisions will always lode in visual mode
+			return this.loadDraftRevision(draftId, revisionId)
+		}
+
 		return this.reloadDraft(draftId, this.state.mode)
 	}
 
@@ -170,6 +193,11 @@ class EditorApp extends React.Component {
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
 				insertableItems={Common.Registry.insertableItems}
+				readOnly={
+					// Prevents editing a draft that's a revision,
+					// even if the url was visited manually
+					this.props.settings && (this.props.settings.readOnly || this.props.settings.revisionId)
+				}
 			/>
 		)
 	}

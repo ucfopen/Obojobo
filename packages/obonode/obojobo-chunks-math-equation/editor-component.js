@@ -8,6 +8,10 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
+import {
+	freezeEditor,
+	unfreezeEditor
+} from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 
 const { Button } = Common.components
 const isOrNot = Common.util.isOrNot
@@ -176,7 +180,7 @@ class MathEquation extends React.Component {
 
 	openAndFreezeEditor() {
 		this.setState({ open: true })
-		this.props.editor.toggleEditable(false)
+		freezeEditor(this.props.editor)
 		// Waits for the readOnly state to percolate before focusing
 		setTimeout(() => {
 			this.equationInput.current.focus()
@@ -186,13 +190,7 @@ class MathEquation extends React.Component {
 
 	closeAndUnfreezeEditor() {
 		this.setState({ open: false })
-		this.props.editor.toggleEditable(true)
-		// Waits for the readOnly state to percolate before focusing
-		setTimeout(() => {
-			// Focusing on the input causes the editor to lose selection
-			Transforms.select(this.props.editor, this.props.editor.prevSelection)
-			ReactEditor.focus(this.props.editor)
-		}, 200)
+		unfreezeEditor(this.props.editor)
 	}
 
 	renderAttributes() {

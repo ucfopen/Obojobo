@@ -10,8 +10,9 @@ $mq-responsive: true;
 // stakeholders, designers, developers, and testers.
 /* stylelint-disable value-keyword-case */
 $mq-breakpoints: (
-	zero: 0,
-	mobile: 321px,
+	zero: 1px,
+	// $mq complains if 0 is used WITHOUT units. style-lint complains if 0 is used WITH units. compromise.
+		mobile: 321px,
 	tablet: 769px,
 	desktop: 980px,
 	wide: 1300px,

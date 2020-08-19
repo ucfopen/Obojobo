@@ -7,6 +7,10 @@ import { Editor, Transforms } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
+import {
+	freezeEditor,
+	unfreezeEditor
+} from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
 
 import IframeProperties from './iframe-properties-modal'
 
@@ -25,6 +29,7 @@ class IFrame extends React.Component {
 		this.changeProperties = this.changeProperties.bind(this)
 		this.returnFocusOnShiftTab = this.returnFocusOnShiftTab.bind(this)
 		this.returnFocusOnTab = this.returnFocusOnTab.bind(this)
+		this.onCloseIFramePropertiesModal = this.onCloseIFramePropertiesModal.bind(this)
 	}
 
 	focusIframe() {
@@ -36,20 +41,33 @@ class IFrame extends React.Component {
 		})
 	}
 
-	showIFramePropertiesModal() {
+	showIFramePropertiesModal(event) {
+		event.preventDefault()
+		event.stopPropagation()
 		ModalUtil.show(
-			<IframeProperties content={this.props.element.content} onConfirm={this.changeProperties} />
+			<IframeProperties
+				content={this.props.element.content}
+				onConfirm={this.changeProperties}
+				onCancel={this.onCloseIFramePropertiesModal}
+			/>
 		)
+
+		freezeEditor(this.props.editor)
+	}
+
+	onCloseIFramePropertiesModal() {
+		ModalUtil.hide()
+		unfreezeEditor(this.props.editor)
 	}
 
 	changeProperties(content) {
-		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
 			{ content: { ...this.props.element.content, ...content } },
 			{ at: path }
 		)
+		this.onCloseIFramePropertiesModal()
 	}
 
 	getTitle(src, title) {

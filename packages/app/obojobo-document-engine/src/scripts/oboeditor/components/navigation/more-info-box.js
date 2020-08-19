@@ -31,10 +31,11 @@ class MoreInfoBox extends React.Component {
 			needsUpdate: false,
 			error: null,
 			isOpen: false,
+			modalOpen: false,
 			content: this.props.content
 		}
 
-		this.handleClick = this.handleClick.bind(this)
+		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -46,26 +47,30 @@ class MoreInfoBox extends React.Component {
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 
-		this.node = React.createRef()
+		this.domRef = React.createRef()
 		this.idInput = React.createRef()
 	}
 
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onWindowMouseDown, false)
+	}
+
 	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onWindowMouseDown, false)
 		this.close()
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.open && this.props.open !== prevProps.open) {
-			// When props are toggled open, set the state to open
-			// This way state can handle actually opening the MoreInfoBox
-			// imporving the consistency of the UI
-			return this.setState({ isOpen: true })
+		// When props.open changes to open, update state and re-render
+		const isOpeningByProps = this.props.open && this.props.open !== prevProps.open
+		if (isOpeningByProps) {
+			this.setState({ isOpen: true })
+			return
 		}
 
-		// This autofocuses the id input box when the node is opened
-		// for easy use by keyboard users
-		if (this.state.isOpen && this.state.isOpen !== prevState.isOpen) {
-			document.addEventListener('mousedown', this.handleClick, false)
+		// when opening, focus/select the first input for keyboard users
+		const isOpening = this.state.isOpen && this.state.isOpen !== prevState.isOpen
+		if (isOpening) {
 			this.idInput.current.focus()
 			setTimeout(() => {
 				this.idInput.current.select()
@@ -82,8 +87,12 @@ class MoreInfoBox extends React.Component {
 		}
 	}
 
-	handleClick(event) {
-		if (!this.node.current || this.node.current.contains(event.target)) return
+	onWindowMouseDown(event) {
+		// do nothing if...
+		if (!this.state.isOpen) return // not open
+		if (this.state.modalOpen) return // modal is open
+		if (!this.domRef.current) return // not currently rendered on the dom
+		if (this.domRef.current.contains(event.target)) return // clicked inside this element
 
 		// When the click is outside the box, close the box
 		return this.onSave()
@@ -107,7 +116,7 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent),
+			content: Object.assign({}, prevState.content, newContent),
 			needsUpdate: true
 		}))
 	}
@@ -133,7 +142,8 @@ class MoreInfoBox extends React.Component {
 		if (!error) {
 			// Wrapping these methods in a Timeout prevents a race condition with editor updates
 			this.props.markUnsaved()
-			return this.close()
+			this.close()
+			return
 		}
 
 		this.setState({ error })
@@ -155,24 +165,30 @@ class MoreInfoBox extends React.Component {
 	}
 
 	close() {
-		document.removeEventListener('mousedown', this.handleClick, false)
-		if (this.props.onBlur) this.props.onBlur('info')
-		return this.setState({ isOpen: false })
+		if (this.state.isOpen === true) {
+			if (this.props.onBlur) this.props.onBlur('info')
+			this.setState({ isOpen: false })
+		}
 	}
 
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
-		document.removeEventListener('mousedown', this.handleClick, false)
 		ModalUtil.show(<TriggerListModal content={this.state.content} onClose={this.closeModal} />)
+		this.setState({ modalOpen: true })
 	}
 
+	// TriggerListModal.onClose is called w/ no arguments when canceled
+	// TriggerListModal.onClose is called w/ triggers when save+closed
 	closeModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
-			needsUpdate: true
+			needsUpdate: true,
+			modalOpen: false
 		}))
-		document.addEventListener('mousedown', this.handleClick, false)
-		ModalUtil.hide()
 	}
 
 	renderItem(description) {
@@ -185,6 +201,7 @@ class MoreInfoBox extends React.Component {
 							type="text"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
+							placeholder={description.placeholder || ''}
 							onClick={stopPropagation}
 						/>
 					</div>
@@ -321,7 +338,7 @@ class MoreInfoBox extends React.Component {
 	render() {
 		return (
 			<div
-				ref={this.node}
+				ref={this.domRef}
 				className={'visual-editor--more-info ' + (this.props.className || '')}
 				onKeyDown={this.onKeyDown}
 			>

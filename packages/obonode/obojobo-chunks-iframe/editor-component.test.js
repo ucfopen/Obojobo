@@ -6,6 +6,7 @@ import IFrame from './editor-component'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')

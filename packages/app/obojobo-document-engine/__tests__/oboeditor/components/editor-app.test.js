@@ -19,7 +19,6 @@ import testObject from 'test-object.json'
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
-const CLASSIC_MODE = 'classic'
 const XML_MODE = 'xml'
 
 describe('EditorApp', () => {
@@ -60,32 +59,6 @@ describe('EditorApp', () => {
 		})
 	})
 
-	test('EditorApp component displays xml in classic mode', done => {
-		expect.assertions(1)
-
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart' }
-		})
-
-		APIUtil.getFullDraft
-			.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-			.mockResolvedValueOnce(
-				'<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc></ObojoboDraftDoc>'
-			)
-		EditorStore.getState.mockReturnValueOnce({})
-
-		const component = mount(<EditorApp />)
-		component.instance().switchMode(CLASSIC_MODE)
-
-		setTimeout(() => {
-			component.update()
-			expect(component.html()).toMatchSnapshot()
-			component.unmount()
-			done()
-		})
-	})
-
 	test('EditorApp component displays xml', done => {
 		expect.assertions(1)
 
@@ -117,31 +90,6 @@ describe('EditorApp', () => {
 
 		// No visit or draft id
 		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
-
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart' }
-		})
-
-		APIUtil.getFullDraft.mockResolvedValueOnce(JSON.stringify({ value: testObject }))
-		EditorStore.getState.mockReturnValueOnce({})
-
-		const component = mount(<EditorApp />)
-		setTimeout(() => {
-			component.update()
-
-			expect(component.html()).toMatchSnapshot()
-
-			component.unmount()
-			done()
-		})
-	})
-
-	test('EditorApp component with classic mode', done => {
-		expect.assertions(1)
-
-		// No visit or draft id
-		jest.spyOn(String.prototype, 'split').mockReturnValueOnce(['', '', CLASSIC_MODE])
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -260,6 +208,59 @@ describe('EditorApp', () => {
 			expect(component.html()).toMatchSnapshot()
 			// eslint-disable-next-line no-console
 			expect(console.error).not.toHaveBeenCalled()
+			component.unmount()
+		})
+	})
+
+	test('EditorApp component loads draft revision', () => {
+		expect.assertions(3)
+
+		APIUtil.getDraftRevision.mockResolvedValueOnce({ value: { json: testObject } })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const props = {
+			settings: {
+				revisionId: 'mockId'
+			}
+		}
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...props} />)
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().mode).toEqual('visual')
+			expect(component.state().draft).toEqual(testObject)
+
+			component.unmount()
+		})
+	})
+
+	test('EditorApp renders error when loading draft revision', () => {
+		expect.assertions(4)
+
+		APIUtil.getDraftRevision.mockResolvedValueOnce({ status: 'error' })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		const props = {
+			settings: {
+				revisionId: 'mockId'
+			}
+		}
+		const spy = jest.spyOn(EditorApp.prototype, 'loadDraftRevision')
+		const component = mount(<EditorApp {...props} />)
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component.update()
+
+			expect(spy).toHaveBeenCalled()
+			expect(component.state().requestStatus).toEqual('invalid')
+			expect(component.state().requestError).toEqual('error')
+			expect(component.state().mode).toEqual('visual')
+
 			component.unmount()
 		})
 	})
