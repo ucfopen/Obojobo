@@ -1,0 +1,343 @@
+@import '../../client/css/defaults';
+
+$border-color: rgba(0, 0, 0, 0.1);
+$border: 1px solid $border-color;
+$menu-transition-time: 0.25s;
+$color-nav-highlight: $color-obojobo-blue;
+$color-nav-hover: darken($color-highlight, 25%);
+
+.version-history-dialog {
+	font-family: $font-default;
+	width: calc(100vw - 3em);
+
+	.loading--container {
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+.version-history-dialog--header {
+	height: 3em;
+	box-sizing: border-box;
+	position: relative;
+	border-bottom: $border;
+
+	.repository--module-icon--image {
+		width: 1.5em;
+		height: 1.75em;
+		display: inline-block;
+		vertical-align: middle;
+		position: absolute;
+		left: 0.75em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.title {
+		position: absolute;
+		left: 4em;
+		font-size: 0.725em;
+		font-weight: bold;
+		color: black;
+		margin: 0;
+		max-width: 50%;
+		vertical-align: middle;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.close-button {
+		position: absolute;
+		right: 0.5em;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+}
+
+.version-history-dialog--body {
+	background-color: #f2f2f2;
+	display: flex;
+	height: calc(95vh - 3em);
+
+	span {
+		display: block;
+		background-color: white;
+	}
+}
+
+.version-history-list {
+	$open-width-max: 12em;
+	$open-width-min: 9.5em;
+	$closed-width: 1.5em;
+
+	flex: 1;
+	max-width: $open-width-max;
+	min-width: $open-width-min;
+	border-right: $border;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	transition: min-width $menu-transition-time, max-width $menu-transition-time;
+
+	.menu-collapsed {
+		display: none;
+		position: relative;
+		height: 100%;
+		background-color: white;
+		padding-top: 0.9em;
+	}
+
+	.toggle-button {
+		background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/arrow.svg');
+		background-color: transparent;
+		background-position: center center;
+		background-repeat: no-repeat;
+		border: none;
+		cursor: pointer;
+		height: 1.32rem;
+		overflow: hidden;
+		text-indent: -9999px;
+		transition: background-color $menu-transition-time;
+		transition: transform $menu-transition-time;
+		width: 1.6rem;
+		margin-right: 0.5em;
+		position: absolute;
+		top: 1em;
+		right: 0;
+	}
+
+	// Classes used by CSSTransition when the
+	// menu is collapsed/expanded
+	&.exit-done,
+	&.enter-active {
+		overflow-y: hidden;
+
+		.menu-expanded {
+			display: none;
+		}
+
+		.menu-collapsed {
+			display: block;
+		}
+
+		.toggle-button {
+			transform: rotate(180deg);
+			float: none;
+			margin: 0 auto;
+			display: block;
+
+			&:not(:hover) {
+				background-image: url('../../../obojobo-document-engine/src/scripts/viewer/components/hamburger.svg');
+			}
+		}
+	}
+
+	&.enter-active {
+		min-width: 0;
+		max-width: 0;
+	}
+
+	&.exit {
+		min-width: 0;
+		max-width: 0;
+	}
+
+	&.exit-done {
+		min-width: $closed-width;
+		max-width: $closed-width;
+	}
+}
+
+.version-history-list--title {
+	white-space: nowrap; // prevent wrapping during animation
+	padding: 0.9em 0 0.9em 1.5em;
+	font-weight: bold;
+	font-size: 0.8em;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: white;
+	position: sticky;
+	top: 0;
+
+	.desc {
+		font-weight: 300;
+		font-size: 0.8em;
+		font-style: italic;
+		color: #6f6e6e;
+	}
+}
+
+.version-history-list--item {
+	border-top: $border;
+	border-bottom: $border;
+	padding: 1em 1.5em;
+	background-color: white;
+	font-size: 0.75em;
+	min-width: 14em;
+	cursor: pointer;
+
+	.date {
+		margin-bottom: 0.4em;
+		font-weight: bold;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.username {
+		color: $color-text-minor;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		margin-bottom: 0.2em;
+	}
+
+	.version {
+		color: #0d4fa7;
+		margin-top: 0.4em;
+		display: inline;
+	}
+
+	.version.latest {
+		background-color: lighten($color-nav-highlight, 55%);
+		color: $color-nav-highlight;
+		font-size: 0.8em;
+		width: 8.5em;
+		text-align: center;
+		border-radius: 5em;
+		margin-top: 0.6em;
+		padding: 0.2em 0.5em;
+	}
+
+	.version.restored {
+		background-color: $color-action;
+		color: white;
+		font-size: 0.8em;
+		width: 8.5em;
+		text-align: center;
+		border-radius: 5em;
+		margin-top: 0.6em;
+		padding: 0.2em 0.5em;
+		margin-left: 0.8em;
+	}
+
+	span {
+		background: transparent;
+	}
+
+	&.is-selected {
+		background-image: url('/images/hex_transparent.svg');
+		background-repeat: no-repeat;
+		background-origin: content-box;
+		background-position-x: 9em;
+		border-top: $border;
+		border-bottom: $border;
+		background-color: lighten($color-nav-highlight, 62%);
+
+		.date {
+			color: $color-nav-highlight;
+		}
+	}
+
+	&:hover {
+		background-color: lighten($color-nav-highlight, 58%);
+
+		.date {
+			color: $color-nav-hover;
+		}
+	}
+}
+
+.editor-preview {
+	flex: 4;
+	padding: 1em;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+
+	iframe {
+		border: 2px solid $color-action;
+		border-bottom-right-radius: 0.4em;
+		border-bottom-left-radius: 0.4em;
+		width: 100%;
+		height: calc(100% - 4em);
+	}
+
+	.preview-button {
+		margin-right: 1em;
+
+		&.disabled {
+			cursor: default;
+			pointer-events: none;
+			opacity: 0.4;
+		}
+	}
+
+	.restore-button,
+	.toggle-nav-button,
+	.preview-button {
+		float: right;
+	}
+
+	.restore-button:disabled {
+		// Prevents the restore button from adjusting
+		// its size when it's disabled
+		border: 0;
+	}
+}
+
+.editor-preview--header {
+	height: 2.5em;
+	padding: 0.8em;
+	margin-right: -4px;
+	border: $border;
+	border-bottom: none;
+
+	span {
+		font-weight: bold;
+		margin-bottom: 0.5em;
+	}
+
+	small {
+		display: block;
+		color: $color-text-minor;
+		font-size: 0.7em;
+	}
+}
+
+.restore-confirm-dialog {
+	padding: 1.5em 3em;
+	max-width: 23em;
+
+	.dialog-title {
+		font-weight: bold;
+		font-size: 1.25em;
+		text-align: center;
+		margin: 0 0 1em 0;
+	}
+
+	.dialog-content {
+		margin-bottom: 1.5em;
+		text-align: center;
+
+		small {
+			display: block;
+			margin-top: 1.5em;
+			color: $color-text-minor;
+			font-size: 0.7em;
+		}
+	}
+
+	.dialog-controls {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.repository--button {
+			margin: 0 0.5em;
+			font-size: 0.75em;
+		}
+	}
+}
