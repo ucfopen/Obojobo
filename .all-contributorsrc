@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "maufcost",
+      "name": "Mauricio Figueiredo",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/39862359?v=4",
+      "profile": "https://github.com/maufcost",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
