@@ -953,12 +953,6 @@ describe('VisualEditor', () => {
 
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-
-		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
 			key: 'y',
 			metaKey: true
 		})
@@ -992,7 +986,6 @@ describe('VisualEditor', () => {
 			shiftKey: true
 		})
 
-		expect(editor.undo).toHaveBeenCalled()
 		expect(editor.redo).toHaveBeenCalled()
 	})
 
