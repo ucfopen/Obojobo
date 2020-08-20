@@ -23,6 +23,7 @@ jest.mock('../../../../src/scripts/oboeditor/components/toolbars/format-menu', (
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 describe('FileToolbarViewer', () => {
 	let editor
@@ -442,5 +443,50 @@ describe('FileToolbarViewer', () => {
 			anchor: 'mock-edge2'
 		})
 		expect(ReactEditor.focus).toHaveBeenCalledWith(editor)
+	})
+
+	test('FileToolbarView inserts at the end when the selection contains a figure', () => {
+		const props = {
+			mode: 'visual',
+			saved: 'true',
+			isDeletable: null,
+			insertableItems: [
+				{
+					name: 'mock',
+					cloneBlankNode: jest.fn().mockReturnValue('mock-clone')
+				}
+			]
+		}
+		const mockPath = [1, 0, 0]
+		const mockEndPoint = {
+			offset: 0,
+			path: [1, 1]
+		}
+
+		// mock selection inside a mock node
+		Editor.nodes.mockReturnValue([[{ type: FIGURE_NODE }]])
+		Editor.path.mockReturnValue(mockPath)
+		Editor.end.mockReturnValue(mockEndPoint)
+		Range.isCollapsed.mockReturnValueOnce(true)
+
+		const component = shallow(<FileToolbarViewer {...props} />)
+		const insertMenuProps = component.find(FileToolbar).props().insertMenu.props.children.props
+
+		expect(insertMenuProps).toHaveProperty('name', 'Insert')
+		expect(insertMenuProps).toHaveProperty('menu', expect.any(Array))
+		expect(insertMenuProps.menu[0]).toEqual({
+			name: 'mock',
+			action: expect.any(Function),
+			disabled: false
+		})
+
+		insertMenuProps.menu[0].action()
+
+		expect(Editor.end).toHaveBeenCalledWith(editor, mockPath)
+		expect(Transforms.insertNodes).toHaveBeenCalledWith(editor, 'mock-clone', {
+			at: {
+				...mockEndPoint
+			}
+		})
 	})
 })

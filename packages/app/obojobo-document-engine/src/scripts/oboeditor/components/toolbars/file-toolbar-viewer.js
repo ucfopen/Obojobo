@@ -62,9 +62,8 @@ const FileToolbarViewer = props => {
 				action: () => {
 					const endPath = Editor.path(editor, editor.selection, { edge: 'start' })
 
-					// If the current selection is a figure, insert the new item at
-					// the end of the figure. Inserting an item while in a figure caption
-					// duplicates the figure.
+					// If the current selection contains a figure, insert the new
+					// item below to avoid splitting the figure.
 					if (containsFigureNode(selectedNodes)) {
 						Transforms.insertNodes(editor, item.cloneBlankNode(), {
 							at: Editor.end(editor, endPath)
