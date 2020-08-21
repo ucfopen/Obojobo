@@ -401,7 +401,6 @@ describe('KeyDown Util', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		// ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
 			preventDefault: jest.fn()
