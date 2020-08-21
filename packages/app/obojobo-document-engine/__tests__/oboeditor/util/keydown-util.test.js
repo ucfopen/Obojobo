@@ -381,4 +381,38 @@ describe('KeyDown Util', () => {
 		expect(Transforms.setNodes).toHaveBeenCalled()
 		expect(Transforms.collapse).toHaveBeenCalled()
 	})
+
+	test('breakToText converts to text when selection is at the start of a node', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+		jest.spyOn(Transforms, 'select').mockReturnValue(true)
+
+		const editor = {
+			children: [
+				{
+					type: 'mockNode',
+					children: [{ text: 'some' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 0 },
+				focus: { path: [0, 0], offset: 0 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		// ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(Transforms.select).toHaveBeenCalled()
+		expect(Transforms.collapse).toHaveBeenCalled()
+	})
 })
