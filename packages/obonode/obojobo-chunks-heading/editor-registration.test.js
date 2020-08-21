@@ -1,6 +1,7 @@
 import { Transforms } from 'slate'
 
 import Heading from './editor-registration'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
@@ -86,6 +87,20 @@ describe('Heading editor', () => {
 
 		Heading.plugins.onKeyDown([{}, [0]], editor, event)
 		expect(editor.insertText).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders Heading when passed', () => {
