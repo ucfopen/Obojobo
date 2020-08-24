@@ -1,6 +1,7 @@
 $color-action: #6714bd;
 $color-button-bg: lighten($color-action, 9%);
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
+$color-action-low-opacity: lighten($color-action, 50%);
 $color-error: #990000;
 $color-dangerous: #d40000;
 $color-dangerous-minor: desaturate($color-dangerous, 20%);
@@ -9,6 +10,7 @@ $color-text-minor: lighten($color-text, 40%);
 $color-text-subheading: #a20e83;
 $color-bg: #ffffff;
 $color-shadow: rgba(0, 0, 0, 0.3);
+$color-shadow-lighter: rgba(0, 0, 0, 0.1);
 $color-highlight: #93c6ff;
 $color-bg2: #f4f4f4;
 $color-bg3: #131313;

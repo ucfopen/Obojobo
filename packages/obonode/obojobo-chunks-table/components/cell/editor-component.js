@@ -292,7 +292,7 @@ class Cell extends React.Component {
 					onClick={this.toggleOpen}
 					onKeyDown={this.returnFocusOnShiftTab}
 				>
-					{'⌃'}
+					<div className="table-options-icon"></div>
 				</button>
 				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
 					<button onClick={this.addRowAbove}>Insert Row Above</button>
