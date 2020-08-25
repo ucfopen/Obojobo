@@ -205,7 +205,7 @@ class IFrameProperties extends React.Component {
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--size">Size:</label>
 							<select
 								id="obojobo-draft--chunks--iframe--properties-modal--size"
-								value={this.state.size || "large"}
+								value={this.state.size || "medium"}
 								onChange={this.handleSizeChange}
 							>
 								<option value="large">Large</option>
