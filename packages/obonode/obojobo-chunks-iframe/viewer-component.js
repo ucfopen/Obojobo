@@ -199,7 +199,7 @@ export default class IFrame extends React.Component {
 									title={ms.title}
 									src={src}
 									frameBorder="0"
-									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+									allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
 									style={iframeStyle}
 									loading="lazy"
 								/>

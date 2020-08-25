@@ -12,6 +12,11 @@ const APIUtil = {
 			}
 		})
 	}
+
+	// NOTE: The repository uses redux, unlike the viewer and editor
+	// DO NOT add all your api calls here by default
+	// this only exists for very simple pages that haven't adopted redux yet.
+	// Make your API calls via redux actions please
 }
 
 module.exports = APIUtil
