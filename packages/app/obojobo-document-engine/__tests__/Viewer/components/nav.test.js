@@ -188,6 +188,20 @@ describe('Nav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('renders blank title', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([{ id: 4, type: 'heading', label: '' }])
+		const props = {
+			navState: {
+				open: false,
+				locked: false,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('onClick link checks NavUtil.canNavigate and changes the page', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{

@@ -105,11 +105,12 @@
 
 	.input-item {
 		font-family: $font-monospace;
-		border-radius: 3px;
+		border-radius: $dimension-rounded-radius;
 		font-size: 1em;
 		width: 17em;
 		padding: 0.7em 0 0.7em 0.5em;
 		margin-right: 1.5em;
 		margin-bottom: 1em;
+		border: 1px solid $color-shadow;
 	}
 }
