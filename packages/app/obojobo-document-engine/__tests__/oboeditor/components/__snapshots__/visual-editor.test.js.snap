@@ -530,6 +530,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Skip to Editor
       </button>
@@ -1115,6 +1116,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Skip to Editor
       </button>
@@ -1700,6 +1702,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Skip to Editor
       </button>
@@ -2331,6 +2334,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Skip to Editor
       </button>
@@ -2912,6 +2916,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         Skip to Editor
       </button>

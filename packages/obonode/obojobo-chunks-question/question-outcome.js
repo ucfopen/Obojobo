@@ -8,7 +8,7 @@ const QuestionOutcome = props => {
 
 	if (isModeSurvey) {
 		return (
-			<div className="result-container">
+			<div className="result-container" aria-hidden={!isForScreenReader}>
 				<p className="result survey">{props.feedbackText}</p>
 			</div>
 		)

@@ -22,12 +22,50 @@ const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { ErrorUtil } = Common.util
+const { focus } = Common.page
 const { TextGroupEl } = Common.chunk.textChunk
 
 const KEY_FEEDBACK = 'feedback'
 const LONG_RESPONSE_NUM_CHARS = 19
 
 export default class NumericAssessment extends OboQuestionAssessmentComponent {
+	static focusOnContent(model, opts = {}) {
+		let el
+
+		switch (opts.region) {
+			case 'answers':
+				el = model.getDomEl().querySelector('.correct-answers')
+				break
+
+			default:
+				el = model.getDomEl()
+				break
+		}
+
+		if (!el) return false
+
+		focus(el, opts.scroll)
+
+		return true
+	}
+
+	static getRevealAnswerDefault() {
+		return 'when-incorrect'
+	}
+
+	static getInstructions(questionModel) {
+		return (
+			<React.Fragment>
+				<span className="for-screen-reader-only">{`Form with one input. `}</span>
+				{questionModel.modelState.type === 'survey' ? 'Input your response' : 'Input your answer'}
+			</React.Fragment>
+		)
+	}
+
+	static isResponseEmpty(response) {
+		return response.value === ''
+	}
+
 	constructor(props) {
 		super(props)
 
@@ -35,23 +73,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
-	}
-
-	static getRevealAnswerDefault() {
-		return 'when-incorrect'
-	}
-
-	static getInstructions() {
-		return (
-			<React.Fragment>
-				<span className="for-screen-reader-only">{`Form with one input. `}</span>
-				Input your answer
-			</React.Fragment>
-		)
-	}
-
-	static isResponseEmpty(response) {
-		return response.value === ''
 	}
 
 	setFeedback(feedback) {
@@ -342,6 +363,53 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
+	getScreenReaderInputDescription(isSurvey, hasResponse, score, unitsText) {
+		const responseOrAnswer = isSurvey ? 'response' : 'answer'
+
+		if (!hasResponse) {
+			// User has not input any answer yet
+			if (unitsText.length === 0) {
+				return `Input your ${responseOrAnswer}.`
+			}
+
+			return `Input your ${responseOrAnswer} in ${unitsText}.`
+		}
+
+		switch (score) {
+			case null:
+				// User has answered but nothing has been scored/submitted yet
+				return `Your current ${responseOrAnswer}`
+
+			case 'no-score':
+				// User has submitted a survey question
+				return `Your ${responseOrAnswer}`
+
+			case 100:
+				// User has submitted a correct graded question
+				return `Your correct ${responseOrAnswer}`
+
+			default:
+				// User has submitted a correct graded question
+				return `Your incorrect ${responseOrAnswer}`
+		}
+	}
+
+	getPlaceholderText(isReview, isSurvey) {
+		if (isReview && isSurvey) {
+			return '(No response given)'
+		}
+
+		if (isReview) {
+			return '(No answer given)'
+		}
+
+		if (isSurvey) {
+			return 'Your response...'
+		}
+
+		return 'Your answer...'
+	}
+
 	render() {
 		const score = this.props.score
 		const scoreClass = this.props.scoreClass
@@ -352,6 +420,8 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const FeedbackComponent = feedbackModel ? feedbackModel.getComponentClass() : null
 		const correctRules = this.evaluator.grader.rules.filter(rule => rule.score === 100)
 		const questionResponse = this.props.response ? this.props.response.value : null
+		const isSurvey = this.props.questionModel.modelState.type === 'survey'
+		const isReview = this.props.mode === 'review'
 
 		let results
 		try {
@@ -370,6 +440,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 		const isExactlyCorrect =
 			isScored && score === 100 && results.details.matchingOutcome.scoreOutcome.isExactlyCorrect
+
+		const ariaInputLabelId = `obojobo-draft--chunks--numeric-assessment--answer-input--${this.props.model.get(
+			'id'
+		)}`
 
 		const className =
 			'obojobo-draft--chunks--numeric-assessment' +
@@ -393,14 +467,24 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			>
 				<div className="input-section pad">
 					<div className="input-container">
+						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						<input
 							autoComplete="off"
 							className="numeric-assessment--input"
-							placeholder={this.props.mode !== 'review' ? 'Your answer...' : '(No answer given)'}
+							aria-labelledby={ariaInputLabelId}
+							placeholder={this.getPlaceholderText(isReview, isSurvey)}
 							value={responseValue}
-							disabled={this.props.mode === 'review'}
+							disabled={isReview}
 							onBlur={this.onInputBlur}
 						/>
+						<div id={ariaInputLabelId} className="for-screen-reader-only">
+							{this.getScreenReaderInputDescription(
+								isSurvey,
+								hasResponse,
+								score,
+								this.props.model.modelState.units.first.text.value
+							)}
+						</div>
 						<div className="units">
 							<TextGroupEl
 								textItem={this.props.model.modelState.units.first}
@@ -408,7 +492,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 								parentModel={this.props.model}
 							/>
 						</div>
-						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						{score === 100 && !isExactlyCorrect ? (
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}
@@ -422,16 +505,9 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					{isScored && feedback ? (
 						<FeedbackComponent model={feedbackModel} moduleData={this.props.moduleData} />
 					) : null}
-					{this.props.mode === 'review' ? (
+					{isReview ? (
 						<div className="review">
-							<Flag
-								type={Flag.getType(
-									score === 100,
-									score === 100,
-									true,
-									this.props.questionModel.modelState.type === 'survey'
-								)}
-							/>
+							<Flag type={Flag.getType(score === 100, score === 100, true, isSurvey)} />
 							{score !== 'no-score' && score !== 100 ? (
 								<div className="correct-answers">
 									{correctRules.length === 1 ? (

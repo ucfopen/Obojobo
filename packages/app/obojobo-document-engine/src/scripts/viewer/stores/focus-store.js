@@ -49,7 +49,8 @@ class FocusStore extends Store {
 				payload.value.id,
 				payload.value.scroll,
 				payload.value.animateScroll,
-				payload.value.fade
+				payload.value.fade,
+				payload.value.region
 			)
 		})
 		Dispatcher.on('focus:clearFadeEffect', this._clearFadeEffect.bind(this))
@@ -65,11 +66,12 @@ class FocusStore extends Store {
 		}
 	}
 
-	_updateFocusTarget(type, target = null, scroll = true, animateScroll = false) {
+	_updateFocusTarget(type, target = null, scroll = true, animateScroll = false, region = null) {
 		this.state.type = type
 		this.state.target = target
 		this.state.scroll = ('' + scroll).toLowerCase() === 'true'
 		this.state.animateScroll = ('' + animateScroll).toLowerCase() === 'true'
+		this.state.region = region
 		this.state.visualFocusTarget = null
 	}
 
@@ -78,8 +80,8 @@ class FocusStore extends Store {
 		this.triggerChange()
 	}
 
-	_focusComponent(id, scroll = true, animateScroll = false, fade = false) {
-		this._updateFocusTarget(TYPE_COMPONENT, id, scroll, animateScroll)
+	_focusComponent(id, scroll = true, animateScroll = false, fade = false, region = null) {
+		this._updateFocusTarget(TYPE_COMPONENT, id, scroll, animateScroll, region)
 		this.state.visualFocusTarget = fade ? id : null
 		this.triggerChange()
 	}

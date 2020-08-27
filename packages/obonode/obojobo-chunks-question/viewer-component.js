@@ -27,6 +27,7 @@ const ANIMATION_TRANSITION_TIME_MS = 800
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
+const FOCUS_TARGET_ANSWERS = 'answers'
 
 export default class Question extends OboQuestionComponent {
 	constructor() {
@@ -187,7 +188,7 @@ export default class Question extends OboQuestionComponent {
 
 		this.reveal()
 
-		this.nextFocus = FOCUS_TARGET_RESULTS
+		this.nextFocus = FOCUS_TARGET_ANSWERS
 	}
 
 	retry() {
@@ -312,14 +313,15 @@ export default class Question extends OboQuestionComponent {
 
 			case FOCUS_TARGET_QUESTION:
 				delete this.nextFocus
-				// const d = document.getElementsByClassName('viewer--viewer-app')[0]
-				// const st = d.scrollTop
 				FocusUtil.focusComponent(this.props.model.get('id'), { scroll: false })
+				break
 
-				// setTimeout(() => {
-				// 	const d2 = document.getElementsByClassName('viewer--viewer-app')[0]
-				// 	d2.scrollTop = st
-				// }, 0)
+			case FOCUS_TARGET_ANSWERS:
+				delete this.nextFocus
+				FocusUtil.focusComponent(
+					this.constructor.getQuestionAssessmentModel(this.props.model).get('id'),
+					{ scroll: false, region: 'answers' }
+				)
 				break
 		}
 	}

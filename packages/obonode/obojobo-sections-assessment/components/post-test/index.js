@@ -37,7 +37,12 @@ class AssessmentPostTest extends React.Component {
 	}
 
 	focusOnContent() {
-		focus(this.h1Ref)
+		// If the focus is not at the default (document.body) then we assume it's on a modal
+		// and we don't want to steal focus, so we do nothing. However if the focus is at
+		// the default location we move focus to the top of this component page.
+		if (document.activeElement === document.body) {
+			focus(this.h1Ref)
+		}
 	}
 
 	// WARNING - ASYNC

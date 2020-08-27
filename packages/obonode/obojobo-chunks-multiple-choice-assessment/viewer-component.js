@@ -11,6 +11,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 const { OboModel } = Common.models
 const { OboComponent, OboQuestionAssessmentComponent } = Viewer.components
 const { QuestionUtil } = Viewer.util
+const { focus } = Common.page
 
 const PICK_ALL_INCORRECT_MESSAGE =
 	'You have either missed some correct answers or selected some incorrect answers.'
@@ -23,6 +24,16 @@ const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
 
 export default class MCAssessment extends OboQuestionAssessmentComponent {
+	static focusOnContent(model, opts = {}) {
+		const el = model.getDomEl()
+
+		if (!el) return false
+
+		focus(el, opts.scroll)
+
+		return true
+	}
+
 	static getDetails(questionModel, questionAssessmentModel, score) {
 		if (questionAssessmentModel.modelState.responseType === 'pick-all' && score !== 100) {
 			return PICK_ALL_INCORRECT_MESSAGE

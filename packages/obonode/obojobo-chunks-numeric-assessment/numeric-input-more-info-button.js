@@ -8,7 +8,7 @@ const { MoreInfoButton } = Common.components
 const NumericInputMoreInfoButton = () => {
 	return (
 		<div className="obojobo-draft--chunks--numeric-assessment--input-more-info">
-			<MoreInfoButton ariaLabel="Click to explain attempt score in detail">
+			<MoreInfoButton ariaLabel="Click for some examples of how to input your answer">
 				<div className="wrapper">
 					<span className="about">How to input your answer - some examples:</span>
 					<ul>
@@ -26,7 +26,7 @@ const NumericInputMoreInfoButton = () => {
 						</li>
 						<li>
 							<b>Hexadecimal:</b>
-							<span>0xF90F</span>, <span>#F90F</span>, <span>$F9OF</span>
+							<span>0xF90F</span>, <span>#F90F</span>, <span>$F90F</span>
 						</li>
 						<li>
 							<b>Octal:</b>

@@ -76,9 +76,32 @@ exports[`PostTest PostTest component 1`] = `
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -324,9 +347,32 @@ exports[`PostTest PostTest component with recorded score 1`] = `
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -657,9 +703,32 @@ exports[`PostTest PostTest component with review 1`] = `
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -980,9 +1049,32 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -1303,9 +1395,32 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -1616,9 +1731,32 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
     <h1>
       Attempt History:
     </h1>
-    <span>
-      Loading...
-    </span>
+    <div
+      aria-label="Loading content"
+      className="obojobo-draft--components--throbber"
+    >
+      <div
+        aria-hidden={true}
+        className="throbber"
+      >
+        <svg
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="none"
+            r="35"
+            stroke="black"
+            strokeDasharray="60 110"
+            strokeWidth="10"
+            transform="rotate(0.82332 50 50)"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 `;

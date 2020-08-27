@@ -290,6 +290,7 @@ exports[`Nav renders blank title 1`] = `
       contentEditable={false}
       disabled={true}
       onClick={[Function]}
+      type="button"
     >
       Skip Navigation
     </button>
