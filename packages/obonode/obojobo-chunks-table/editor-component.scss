@@ -22,31 +22,16 @@
 			font-weight: bold;
 			position: absolute;
 			right: 0.2em;
-			top: 0.5em;
-			height: 1.2em;
-			width: 1.2em;
+			top: 0.8em;
+			height: 0.5em;
+			width: 1.5em;
 			padding: 0;
 			color: $color-text-minor;
-			border: none;
-			background-color: $color-transparent;
+			transform: rotate(-180deg);
 
 			&.is-open {
 				transform: none;
-				top: 0.5em;
-			}
-
-			> div.table-options-icon {
-				background-image: url("./table-options-icon.svg");
-				background-repeat: no-repeat;
-				height: 100%;
-				width: 100%;
-				cursor: pointer;
-				margin: 0;
-				padding: 0;
-
-				&:hover {
-					background-image: url("./table-options-icon-hovered.svg");
-				}
+				top: 0.8em;
 			}
 		}
 
@@ -64,16 +49,12 @@
 		.drop-content-cell {
 			display: none;
 			text-align: right;
-			border: 1px solid $color-shadow-lighter;
+			border: 1px solid $color-shadow;
 			border-radius: $dimension-rounded-radius;
 			overflow: hidden;
 			position: relative;
 			top: 1.4em;
 			right: 0.2em;
-<<<<<<< HEAD
-			box-shadow: 0 2px 2px $color-shadow;
-=======
->>>>>>> 43707b68600703c2334afb0a023bc7b9602ff1c1
 			font-family: $font-default;
 
 			&.is-open {
@@ -83,23 +64,14 @@
 			button {
 				display: block;
 				width: 100%;
-				text-align: center;
+				text-align: right;
 				border: none;
 				background-color: $color-bg;
-<<<<<<< HEAD
-				padding: $dimension-padding / 4;
-				cursor: pointer;
-=======
->>>>>>> 43707b68600703c2334afb0a023bc7b9602ff1c1
 
 				&:hover {
-					background-color: $color-action-low-opacity;
-					color: $color-action;
+					background-color: $color-obojobo-blue;
+					color: $color-bg;
 				}
-			}
-
-			:not(:last-child) {
-				border-bottom: 1px solid $color-shadow-lighter;
 			}
 		}
 	}
