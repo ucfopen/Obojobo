@@ -28,8 +28,8 @@ class ParagraphStyles extends React.Component {
 	componentDidUpdate() {
 		// When the menu is open, focus on the current dropdown item
 		if (this.state.isOpen) {
-			this.menu = this.menu.filter(Boolean)
-			this.menu[this.state.currentFocus].focus()
+			this.menu = this.menu.filter(item => !!item.htmlElement)
+			this.menu[this.state.currentFocus].htmlElement.focus()
 		}
 	}
 
@@ -48,24 +48,29 @@ class ParagraphStyles extends React.Component {
 	}
 
 	onKeyDown(event) {
-		this.menu = this.menu.filter(Boolean)
+		this.menu = this.menu.filter(item => !!item.htmlElement)
+		const menuItem = this.menu[this.state.currentFocus]
+
 		if (this.state.isOpen) event.stopPropagation()
 
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
+				event.preventDefault()
 				this.setState({ isOpen: true, currentFocus: 0 })
 				event.stopPropagation()
 				break
 
 			// Close the menu and return focus to the link item
 			case 'ArrowLeft':
+				event.preventDefault()
 				this.setState({ isOpen: false })
 				this.menuButton.current.focus()
 				break
 
 			// Move down through the submenu
 			case 'ArrowDown':
+				event.preventDefault()
 				this.setState(currentState => ({
 					currentFocus: (currentState.currentFocus + 1) % this.menu.length
 				}))
@@ -73,10 +78,20 @@ class ParagraphStyles extends React.Component {
 
 			// Move up through the submenu
 			case 'ArrowUp':
+				event.preventDefault()
 				this.setState(currentState => ({
 					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
 				}))
 				break
+			case 'Enter':
+				event.preventDefault()
+				if (menuItem.node === HEADING_NODE) {
+					this.props.editor.changeToType(menuItem.node, {
+						headingLevel: menuItem.headingLevel
+					})
+				} else {
+					this.props.editor.changeToType(menuItem.node)
+				}
 		}
 	}
 
@@ -142,65 +157,97 @@ class ParagraphStyles extends React.Component {
 				</button>
 				<div className={'paragraph-styles-menu ' + isOrNot(this.state.isOpen, 'open')}>
 					<button
-						onClick={() => this.props.editor.changeToType(TEXT_NODE)}
+						onMouseDown={() => this.props.editor.changeToType(TEXT_NODE)}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: TEXT_NODE
+							})
 						}}
 					>
 						<p>Normal Text</p>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(CODE_NODE)}
+						onMouseDown={() => {
+							this.props.editor.changeToType(CODE_NODE)
+						}}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: CODE_NODE
+							})
 						}}
 					>
 						<pre>Code</pre>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 1
+							})
 						}}
 					>
 						<h1>Heading 1</h1>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 2
+							})
 						}}
 					>
 						<h2>Heading 2</h2>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 3
+							})
 						}}
 					>
 						<h3>Heading 3</h3>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 4
+							})
 						}}
 					>
 						<h4>Heading 4</h4>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 5
+							})
 						}}
 					>
 						<h5>Heading 5</h5>
 					</button>
 					<button
-						onClick={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })}
+						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })}
 						ref={item => {
-							this.menu.push(item)
+							this.menu.push({
+								htmlElement: item,
+								node: HEADING_NODE,
+								headingLevel: 6
+							})
 						}}
 					>
 						<h6>Heading 6</h6>

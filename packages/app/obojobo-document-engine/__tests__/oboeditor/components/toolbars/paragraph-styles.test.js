@@ -87,35 +87,35 @@ describe('Paragraph Styles', () => {
 		component
 			.find('button')
 			.at(1)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(2)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(3)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(4)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(5)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(6)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(7)
-			.simulate('click')
+			.simulate('mousedown')
 		component
 			.find('button')
 			.at(8)
-			.simulate('click')
+			.simulate('mousedown')
 
 		expect(editor.changeToType).toHaveBeenCalledTimes(8)
 	})
@@ -143,7 +143,8 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowRight',
-				stopPropagation: jest.fn()
+				stopPropagation: jest.fn(),
+				preventDefault: jest.fn()
 			})
 
 		expect(component.html()).toMatchSnapshot()
@@ -153,7 +154,8 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowLeft',
-				stopPropagation: jest.fn()
+				stopPropagation: jest.fn(),
+				preventDefault: jest.fn()
 			})
 
 		expect(component.html()).toMatchSnapshot()
@@ -179,7 +181,8 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowUp',
-				stopPropagation: jest.fn()
+				stopPropagation: jest.fn(),
+				preventDefault: jest.fn()
 			})
 
 		expect(component.state()).toMatchSnapshot()
@@ -189,7 +192,8 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowDown',
-				stopPropagation: jest.fn()
+				stopPropagation: jest.fn(),
+				preventDefault: jest.fn()
 			})
 
 		expect(component.state()).toMatchSnapshot()
