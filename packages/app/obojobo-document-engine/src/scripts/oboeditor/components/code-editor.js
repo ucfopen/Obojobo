@@ -158,16 +158,6 @@ class CodeEditor extends React.Component {
 			event.preventDefault()
 			this.saveAndGetTitleFromCode()
 		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.undo()
-		}
-
-		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.redo()
-		}
 	}
 
 	setEditor(editor) {

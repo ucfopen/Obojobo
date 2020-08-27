@@ -70,7 +70,10 @@
 			position: relative;
 			top: 1.4em;
 			right: 0.2em;
+<<<<<<< HEAD
 			box-shadow: 0 2px 2px $color-shadow;
+=======
+>>>>>>> 43707b68600703c2334afb0a023bc7b9602ff1c1
 			font-family: $font-default;
 
 			&.is-open {
@@ -83,8 +86,11 @@
 				text-align: center;
 				border: none;
 				background-color: $color-bg;
+<<<<<<< HEAD
 				padding: $dimension-padding / 4;
 				cursor: pointer;
+=======
+>>>>>>> 43707b68600703c2334afb0a023bc7b9602ff1c1
 
 				&:hover {
 					background-color: $color-action-low-opacity;

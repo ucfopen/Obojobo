@@ -4,7 +4,7 @@ import React from 'react'
 
 const Line = props => (
 	<span
-		className={'text align-' + props.element.content.align}
+		className={'obo-text align-' + props.element.content.align}
 		data-indent={props.element.content.indent}
 		data-hanging-indent={props.element.content.hangingIndent}
 	>

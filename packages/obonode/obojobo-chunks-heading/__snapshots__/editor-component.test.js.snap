@@ -7,7 +7,7 @@ exports[`Heading Editor Node Heading component 1`] = `
   >
     <h1>
       <span
-        className="text align-undefined"
+        className="obo-text align-undefined"
       />
     </h1>
   </div>

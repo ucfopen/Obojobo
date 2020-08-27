@@ -7,6 +7,7 @@ const EditorTitleInput = ({ renameModule, title }) => {
 
 	// eslint-disable-next-line prefer-const
 	let [stateTitle, setStateTitle] = useState(title)
+	const [emptyTitleError, setEmptyTitleError] = useState(false)
 
 	// update state.title when props.title changes
 	// because useState doesn't do that
@@ -14,40 +15,65 @@ const EditorTitleInput = ({ renameModule, title }) => {
 		setStateTitle(title)
 	}, [title])
 
+	let emptyTitleErrorRender = null
+	if (emptyTitleError) {
+		emptyTitleErrorRender = (
+			<div className="empty-title-warning">Module title can not be empty!</div>
+		)
+	}
+
 	return (
-		<input
-			className="editor--components--editor-title-input"
-			value={stateTitle}
-			placeholder="(Untitled Module)"
-			onChange={event => {
-				setStateTitle(event.target.value)
-			}}
-			onBlur={() => {
-				if (stateTitle !== title) renameModule(stateTitle.trim())
-			}}
-			onKeyDown={event => {
-				switch (event.key) {
-					case 's':
-						if (!event.ctrlKey && !event.metaKey) break
-						event.preventDefault() // prevent browser save menu
-						event.target.blur() // blur to allow renameModule to run
-						break
+		<div className="editor--components--editor-title-input-parent">
+			<input
+				className="editor--components--editor-title-input"
+				value={stateTitle}
+				placeholder="Module Title"
+				onChange={event => {
+					if (emptyTitleError && event.target.value !== '') setEmptyTitleError(false)
+					setStateTitle(event.target.value)
+				}}
+				onBlur={event => {
+					if (stateTitle !== title) {
+						const newTitle = stateTitle.trim()
 
-					case 'Enter':
-						// will cause onBlur to be called
-						event.target.blur()
-						break
+						if (newTitle !== '') {
+							renameModule(newTitle)
+						} else {
+							// refocus the input, aria labels and class change will indicate error
+							setEmptyTitleError(true)
+							event.target.focus()
+						}
+					}
+				}}
+				onKeyDown={event => {
+					switch (event.key) {
+						case 's':
+							if (!event.ctrlKey && !event.metaKey) break
+							event.preventDefault() // prevent browser save menu
+							event.target.blur() // blur to allow renameModule to run
+							break
 
-					case 'Escape':
-						// reset to original title
-						stateTitle = title
-						setStateTitle(title)
-						event.target.blur()
-						break
-				}
-			}}
-			aria-label="Rename Module"
-		/>
+						case 'Enter':
+							// will cause onBlur to be called
+							event.target.blur()
+							break
+
+						case 'Escape':
+							// reset to original title
+							stateTitle = title
+							setStateTitle(title)
+							setEmptyTitleError(false)
+							event.target.blur()
+							break
+						default:
+							break
+					}
+				}}
+				aria-label={`Rename Module ${emptyTitleError ? '. Module title must not be empty.' : ''}`}
+				aria-invalid={emptyTitleError}
+			/>
+			{emptyTitleErrorRender}
+		</div>
 	)
 }
 

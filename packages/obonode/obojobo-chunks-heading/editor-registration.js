@@ -1,6 +1,5 @@
 import React from 'react'
 import { Element, Editor, Node, Transforms } from 'slate'
-import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -57,9 +56,6 @@ const Heading = {
 		},
 		onKeyDown(entry, editor, event) {
 			switch (event.key) {
-				case 'Enter':
-					return KeyDownUtil.breakToText(event, editor, entry)
-
 				case 'Tab':
 					event.preventDefault()
 					return editor.insertText('\t')
