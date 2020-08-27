@@ -179,7 +179,7 @@ export default class Nav extends React.Component {
 	renderHeading(index, item) {
 		return (
 			<li key={index} className={'heading is-not-selected'}>
-				{item.label}
+				{item.label || '\u00A0'}
 			</li>
 		)
 	}

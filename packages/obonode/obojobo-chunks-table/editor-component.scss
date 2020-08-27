@@ -59,6 +59,7 @@
 			position: relative;
 			top: 1.4em;
 			right: 0.2em;
+			font-family: $font-default;
 
 			&.is-open {
 				display: block;
@@ -69,6 +70,7 @@
 				width: 100%;
 				text-align: right;
 				border: none;
+				background-color: $color-bg;
 
 				&:hover {
 					background-color: $color-obojobo-blue;

@@ -95,7 +95,7 @@ describe('CodeEditor', () => {
 		expect(thing.html()).toMatchSnapshot()
 	})
 
-	test('changes the Editor title to blank', () => {
+	test('can not change the Editor title to blank', () => {
 		const props = {
 			initialCode: '{ "content": {} }',
 			mode: JSON_MODE
@@ -118,6 +118,14 @@ describe('CodeEditor', () => {
 			.find('input')
 			.at(0)
 			.simulate('blur')
+
+		expect(
+			thing
+				.find('input')
+				.at(0)
+				.props()['aria-invalid']
+		).toBe(true)
+		expect(thing.find('.empty-title-warning').length).toBe(1)
 
 		expect(thing.html()).toMatchSnapshot()
 	})
@@ -343,23 +351,10 @@ describe('CodeEditor', () => {
 
 		component.instance().onKeyDown({
 			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-
-		component.instance().onKeyDown({
-			preventDefault: jest.fn(),
-			key: 'y',
-			metaKey: true
-		})
-
-		component.instance().onKeyDown({
-			preventDefault: jest.fn(),
 			key: 's'
 		})
 
-		expect(editor.undo).toHaveBeenCalled()
-		expect(editor.redo).toHaveBeenCalled()
+		expect(EditorUtil.getTitleFromString).toHaveBeenCalled()
 	})
 
 	test('setEditor changes state', () => {
