@@ -50,7 +50,8 @@ class DraftSummary {
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
-		this.userFullName = `${first_name} ${last_name}`
+
+		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
@@ -147,7 +148,8 @@ class DraftSummary {
 				id,
 				draft_id,
 				created_at,
-				content
+				content,
+				user_id
 			FROM drafts_content
 			WHERE draft_id = $[draftId] AND id = $[revisionId]
 		`
