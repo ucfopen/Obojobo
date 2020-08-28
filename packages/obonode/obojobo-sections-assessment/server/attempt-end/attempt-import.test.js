@@ -38,7 +38,8 @@ describe('attempt-import', () => {
 		mockAttempt = {
 			id: 'mock-attempt-id',
 			userId: 'mockCurrentUserId',
-			importAsNewAttempt: jest.fn()
+			importAsNewAttempt: jest.fn(),
+			attemptNumber: 1
 		}
 
 		mockAssessmentScore = {
@@ -51,6 +52,7 @@ describe('attempt-import', () => {
 		}
 
 		mockCurrentVisit = {
+			id: 'mockCurrentVisitId',
 			is_preview: 'mockIsPreview',
 			resource_link_id: 'mockResourceLinkId',
 			score_importable: true
@@ -160,25 +162,23 @@ describe('attempt-import', () => {
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
-		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+		insertEvents.insertAttemptEndEvents.mockResolvedValueOnce()
 		await attemptImport(mockReq)
 		expect(insertEvents.insertAttemptEndEvents).toHaveBeenCalledTimes(1)
 		expect(insertEvents.insertAttemptEndEvents.mock.calls[0]).toMatchInlineSnapshot(`
 		Array [
-		  Object {
-		    "id": "mockCurrentUserId",
-		  },
-		  Object {
-		    "contentId": "mockContentId",
-		    "draftId": "mockDraftId",
-		    "getChildNodeById": [MockFunction],
-		  },
+		  "mockCurrentUserId",
+		  "mockDraftId",
+		  "mockContentId",
 		  undefined,
 		  "mock-attempt-id",
-		  undefined,
+		  1,
 		  "mockIsPreview",
 		  "mockHostName",
 		  "mockRemoteAddress",
+		  "mockCurrentVisitId",
+		  "mockScoreAttemptId",
+		  "mock-score-id",
 		]
 	`)
 	})
@@ -191,7 +191,7 @@ describe('attempt-import', () => {
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
-		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+		insertEvents.insertAttemptEndEvents.mockResolvedValueOnce()
 		await attemptImport(mockReq)
 		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
 		expect(lti.sendHighestAssessmentScore.mock.calls[0]).toMatchInlineSnapshot(`
@@ -218,33 +218,28 @@ describe('attempt-import', () => {
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
-		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+		insertEvents.insertAttemptEndEvents.mockResolvedValueOnce()
 		mockReq.params.assessmentId = 'mock-assessment-id-req-param'
 
 		// execute
 		await attemptImport(mockReq)
 
 		// verify
-		expect(insertEvents.insertAttemptImportedEvents).toHaveBeenCalledTimes(1)
-		expect(insertEvents.insertAttemptImportedEvents.mock.calls[0]).toMatchInlineSnapshot(`
+		expect(insertEvents.insertAttemptEndEvents).toHaveBeenCalledTimes(1)
+		expect(insertEvents.insertAttemptEndEvents.mock.calls[0]).toMatchInlineSnapshot(`
 		Array [
 		  "mockCurrentUserId",
 		  "mockDraftId",
 		  "mockContentId",
 		  "mock-assessment-id-req-param",
 		  "mock-attempt-id",
-		  "imported-score-id",
-		  "mockScoreAttemptId",
-		  "mock-score-id",
+		  1,
 		  "mockIsPreview",
-		  "mock-lti-scoreSent",
-		  "mock-lti-status",
-		  "mock-lti-statusDetails",
-		  "mock-lti-gradebookStatus",
-		  "mock-lti-ltiAssessmentScoreId",
 		  "mockHostName",
 		  "mockRemoteAddress",
-		  "mockResourceLinkId",
+		  "mockCurrentVisitId",
+		  "mockScoreAttemptId",
+		  "mock-score-id",
 		]
 	`)
 	})
@@ -258,7 +253,7 @@ describe('attempt-import', () => {
 		mockAssessmentScore.importAsNewScore.mockResolvedValueOnce({ id: 'imported-score-id' })
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mock-history')
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockLtiRequestResult)
-		insertEvents.insertAttemptImportedEvents.mockResolvedValueOnce()
+		insertEvents.insertAttemptEndEvents.mockResolvedValueOnce()
 
 		// execute
 		const result = await attemptImport(mockReq)

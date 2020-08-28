@@ -1,8 +1,4 @@
-const {
-	insertAttemptEndEvents,
-	insertAttemptScoredEvents,
-	insertAttemptImportedEvents
-} = require('./insert-events')
+const { insertAttemptEndEvents, insertAttemptScoredEvents } = require('./insert-events')
 const mockInsertEvent = require('obojobo-express/server/insert_event')
 
 const mockCreateAssessmentAttemptSubmittedEvent = jest
@@ -43,40 +39,121 @@ describe('attempt-end/insert events', () => {
 		jest.clearAllMocks()
 	})
 
-	test('insertAttemptEndEvents', async () => {
+	test('insertAttemptEndEvents when not importing', async () => {
 		await insertAttemptEndEvents(
-			mockUser,
-			mockDraftDocument,
+			mockUser.id,
+			mockDraftDocument.draftId,
+			mockDraftDocument.contentId,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
 			'mockIsPreview',
 			'mockHostName',
-			'mockRemoteAddress'
+			'mockRemoteAddress',
+			'mockVisitId'
 		)
-		expect(mockCreateAssessmentAttemptSubmittedEvent).toBeCalledWith({
-			actor: { type: 'user', id: 'mockUserId' },
-			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId'
-		})
-		expect(mockInsertEvent).toBeCalledWith({
-			action: 'assessment:attemptEnd',
-			actorTime: '2016-09-22T16:57:14.500Z',
-			caliperPayload: 'mockSubmitCaliperPayload',
-			contentId: 'mockContentId',
-			draftId: 'mockDraftId',
-			eventVersion: '1.2.0',
-			ip: 'mockRemoteAddress',
-			isPreview: 'mockIsPreview',
-			metadata: {},
-			payload: { attemptCount: 'mockAttemptNumber', attemptId: 'mockAttemptId' },
-			userId: 'mockUserId'
-		})
+		expect(mockCreateAssessmentAttemptSubmittedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "actor": Object {
+		    "id": "mockUserId",
+		    "type": "user",
+		  },
+		  "assessmentId": "mockAssessmentId",
+		  "attemptId": "mockAttemptId",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "extensions": Object {
+		    "attemptCount": "mockAttemptNumber",
+		    "imported": false,
+		    "originalAttemptId": null,
+		    "originalScoreId": null,
+		  },
+		}
+	`)
+
+		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "action": "assessment:attemptEnd",
+		  "actorTime": "2016-09-22T16:57:14.500Z",
+		  "caliperPayload": "mockSubmitCaliperPayload",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "eventVersion": "1.3.0",
+		  "ip": "mockRemoteAddress",
+		  "isPreview": "mockIsPreview",
+		  "metadata": Object {},
+		  "payload": Object {
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptId": "mockAttemptId",
+		    "imported": false,
+		    "originalAttemptId": null,
+		    "originalScoreId": null,
+		  },
+		  "userId": "mockUserId",
+		  "visitId": "mockVisitId",
+		}
+	`)
 	})
 
-	test('insertAttemptScoredEvents', async () => {
+	test('insertAttemptEndEvents when importing', async () => {
+		await insertAttemptEndEvents(
+			mockUser.id,
+			mockDraftDocument.draftId,
+			mockDraftDocument.contentId,
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockIsPreview',
+			'mockHostName',
+			'mockRemoteAddress',
+			'mockVisitId',
+			'mockOriginalAttemptId',
+			'mockOriginalScoreId'
+		)
+		expect(mockCreateAssessmentAttemptSubmittedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "actor": Object {
+		    "id": "mockUserId",
+		    "type": "user",
+		  },
+		  "assessmentId": "mockAssessmentId",
+		  "attemptId": "mockAttemptId",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "extensions": Object {
+		    "attemptCount": "mockAttemptNumber",
+		    "imported": true,
+		    "originalAttemptId": "mockOriginalAttemptId",
+		    "originalScoreId": "mockOriginalScoreId",
+		  },
+		}
+	`)
+
+		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "action": "assessment:attemptEnd",
+		  "actorTime": "2016-09-22T16:57:14.500Z",
+		  "caliperPayload": "mockSubmitCaliperPayload",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "eventVersion": "1.3.0",
+		  "ip": "mockRemoteAddress",
+		  "isPreview": "mockIsPreview",
+		  "metadata": Object {},
+		  "payload": Object {
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptId": "mockAttemptId",
+		    "imported": true,
+		    "originalAttemptId": "mockOriginalAttemptId",
+		    "originalScoreId": "mockOriginalScoreId",
+		  },
+		  "userId": "mockUserId",
+		  "visitId": "mockVisitId",
+		}
+	`)
+	})
+
+	test('insertAttemptScoredEvents without imported scores', async () => {
 		await insertAttemptScoredEvents(
 			mockUser,
 			mockDraftDocument,
@@ -95,8 +172,10 @@ describe('attempt-end/insert events', () => {
 			'mockHostname',
 			'mockRemoteAddress',
 			'mockScoreDetails',
-			'mockResourceLinkId'
+			'mockResourceLinkId',
+			'mockVisitId'
 		)
+
 		expect(mockGetLatestHighestAssessmentScoreRecord).toBeCalledWith(
 			'mockUserId',
 			'mockDraftId',
@@ -104,104 +183,150 @@ describe('attempt-end/insert events', () => {
 			'mockResourceLinkId',
 			'mockIsPreview'
 		)
-		expect(mockCreateAssessmentAttemptScoredEvent).toBeCalledWith({
-			actor: { type: 'serverApp' },
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			attemptScore: 'mockAttemptScore',
-			contentId: 'mockContentId',
-			draftId: 'mockDraftId',
-			extensions: {
-				assessmentScore: 'mockAssessmentScore',
-				attemptCount: 'mockAttemptNumber',
-				attemptScore: 'mockAttemptScore',
-				highestAssessmentScore: 'mockHighestAssessmentScore',
-				ltiScoreSent: 'mockLtiScoreSent'
-			}
-		})
-		expect(mockInsertEvent).toBeCalledWith({
-			action: 'assessment:attemptScored',
-			actorTime: '2016-09-22T16:57:14.500Z',
-			caliperPayload: 'mockScoreCaliperPayload',
-			contentId: 'mockContentId',
-			draftId: 'mockDraftId',
-			eventVersion: '2.1.0',
-			ip: 'mockRemoteAddress',
-			isPreview: 'mockIsPreview',
-			metadata: {},
-			payload: {
-				assessmentScore: 'mockAssessmentScore',
-				assessmentScoreId: 'mockAssessmentScoreId',
-				attemptCount: 'mockAttemptNumber',
-				attemptId: 'mockAttemptId',
-				attemptScore: 'mockAttemptScore',
-				highestAssessmentScore: 'mockHighestAssessmentScore',
-				ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-				ltiGradeBookStatus: 'mockLtiGradebookStatus',
-				ltiScoreSent: 'mockLtiScoreSent',
-				ltiScoreStatus: 'mockLtiScoreStatus',
-				ltiStatusDetails: 'mockLtiStatusDetails',
-				scoreDetails: 'mockScoreDetails'
-			},
-			userId: 'mockUserId'
-		})
-	})
 
-	test('insertAttemptImportedEvents', async () => {
-		await insertAttemptImportedEvents(
-			'mock-userId',
-			'mock-draftId',
-			'mock-contentId',
-			'mock-assessmentId',
-			'mock-attemptId',
-			'mock-scoreId',
-			'mock-originalAttemptId',
-			'mock-originalScoreId',
-			'mock-isPreview',
-			'mock-ltiScoreSent',
-			'mock-ltiScoreStatus',
-			'mock-ltiStatusDetails',
-			'mock-ltiGradeBookStatus',
-			'mock-ltiAssessmentScoreId',
-			'mock-hostname',
-			'mock-remoteAddress',
-			'mock-resourceLinkId'
-		)
-
-		expect(mockCreateAssessmentAttemptImportedEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		expect(mockCreateAssessmentAttemptScoredEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
 		  "actor": Object {
-		    "id": "mock-userId",
-		    "type": "user",
+		    "type": "serverApp",
 		  },
-		  "assessmentId": "mock-assessmentId",
-		  "attemptId": "mock-attemptId",
-		  "contentId": "mock-contentId",
-		  "draftId": "mock-draftId",
-		  "originalAttemptId": "mock-originalAttemptId",
-		  "originalScoreId": "mock-originalScoreId",
-		  "resourceLinkId": "mock-resourceLinkId",
+		  "assessmentId": "mockAssessmentId",
+		  "attemptId": "mockAttemptId",
+		  "attemptScore": "mockAttemptScore",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "extensions": Object {
+		    "assessmentScore": "mockAssessmentScore",
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptScore": "mockAttemptScore",
+		    "highestAssessmentScore": "mockHighestAssessmentScore",
+		    "imported": false,
+		    "ltiScoreSent": "mockLtiScoreSent",
+		    "originalAttemptId": null,
+		    "originalScoreId": null,
+		  },
 		}
 	`)
+
 		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
-		  "action": "assessment:attemptEnd",
+		  "action": "assessment:attemptScored",
 		  "actorTime": "2016-09-22T16:57:14.500Z",
-		  "caliperPayload": "mockImportCaliperPayload",
-		  "contentId": "mock-contentId",
-		  "draftId": "mock-draftId",
-		  "eventVersion": "1.1.0",
-		  "ip": "mock-remoteAddress",
-		  "isPreview": "mock-isPreview",
+		  "caliperPayload": "mockScoreCaliperPayload",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "eventVersion": "2.2.0",
+		  "ip": "mockRemoteAddress",
+		  "isPreview": "mockIsPreview",
 		  "metadata": Object {},
 		  "payload": Object {
-		    "attemptCount": 1,
-		    "attemptId": "mock-attemptId",
-		    "originalAttemptId": "mock-originalAttemptId",
-		    "originalScoreId": "mock-originalScoreId",
-		    "resourceLinkId": "mock-resourceLinkId",
+		    "assessmentScore": "mockAssessmentScore",
+		    "assessmentScoreId": "mockAssessmentScoreId",
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptId": "mockAttemptId",
+		    "attemptScore": "mockAttemptScore",
+		    "highestAssessmentScore": "mockHighestAssessmentScore",
+		    "imported": false,
+		    "ltiAssessmentScoreId": "mockLtiAssessmentScoreId",
+		    "ltiGradeBookStatus": "mockLtiGradebookStatus",
+		    "ltiScoreSent": "mockLtiScoreSent",
+		    "ltiScoreStatus": "mockLtiScoreStatus",
+		    "ltiStatusDetails": "mockLtiStatusDetails",
+		    "originalAttemptId": null,
+		    "originalScoreId": null,
+		    "scoreDetails": "mockScoreDetails",
 		  },
-		  "userId": "mock-userId",
+		  "userId": "mockUserId",
+		  "visitId": "mockVisitId",
+		}
+	`)
+	})
+
+	test('insertAttemptScoredEvents with imported scores', async () => {
+		await insertAttemptScoredEvents(
+			mockUser,
+			mockDraftDocument,
+			'mockAssessmentId',
+			'mockAssessmentScoreId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockAttemptScore',
+			'mockAssessmentScore',
+			'mockIsPreview',
+			'mockLtiScoreSent',
+			'mockLtiScoreStatus',
+			'mockLtiStatusDetails',
+			'mockLtiGradebookStatus',
+			'mockLtiAssessmentScoreId',
+			'mockHostname',
+			'mockRemoteAddress',
+			'mockScoreDetails',
+			'mockResourceLinkId',
+			'mockVisitId',
+			'mockOriginalAttemptId',
+			'mockOriginalScoreId'
+		)
+
+		expect(mockGetLatestHighestAssessmentScoreRecord).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockResourceLinkId',
+			'mockIsPreview'
+		)
+
+		expect(mockCreateAssessmentAttemptScoredEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "actor": Object {
+		    "type": "serverApp",
+		  },
+		  "assessmentId": "mockAssessmentId",
+		  "attemptId": "mockAttemptId",
+		  "attemptScore": "mockAttemptScore",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "extensions": Object {
+		    "assessmentScore": "mockAssessmentScore",
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptScore": "mockAttemptScore",
+		    "highestAssessmentScore": "mockHighestAssessmentScore",
+		    "imported": true,
+		    "ltiScoreSent": "mockLtiScoreSent",
+		    "originalAttemptId": "mockOriginalAttemptId",
+		    "originalScoreId": "mockOriginalScoreId",
+		  },
+		}
+	`)
+
+		expect(mockInsertEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+		Object {
+		  "action": "assessment:attemptScored",
+		  "actorTime": "2016-09-22T16:57:14.500Z",
+		  "caliperPayload": "mockScoreCaliperPayload",
+		  "contentId": "mockContentId",
+		  "draftId": "mockDraftId",
+		  "eventVersion": "2.2.0",
+		  "ip": "mockRemoteAddress",
+		  "isPreview": "mockIsPreview",
+		  "metadata": Object {},
+		  "payload": Object {
+		    "assessmentScore": "mockAssessmentScore",
+		    "assessmentScoreId": "mockAssessmentScoreId",
+		    "attemptCount": "mockAttemptNumber",
+		    "attemptId": "mockAttemptId",
+		    "attemptScore": "mockAttemptScore",
+		    "highestAssessmentScore": "mockHighestAssessmentScore",
+		    "imported": true,
+		    "ltiAssessmentScoreId": "mockLtiAssessmentScoreId",
+		    "ltiGradeBookStatus": "mockLtiGradebookStatus",
+		    "ltiScoreSent": "mockLtiScoreSent",
+		    "ltiScoreStatus": "mockLtiScoreStatus",
+		    "ltiStatusDetails": "mockLtiStatusDetails",
+		    "originalAttemptId": "mockOriginalAttemptId",
+		    "originalScoreId": "mockOriginalScoreId",
+		    "scoreDetails": "mockScoreDetails",
+		  },
+		  "userId": "mockUserId",
+		  "visitId": "mockVisitId",
 		}
 	`)
 	})

@@ -70,14 +70,18 @@ const attemptImport = async req => {
 
 	// save an event
 	await insertEvents.insertAttemptEndEvents(
-		req.currentUser,
-		req.currentDocument,
+		req.currentUser.id,
+		req.currentDocument.draftId,
+		req.currentDocument.contentId,
 		req.params.assessmentId,
 		importedAttempt.id,
 		importedAttempt.attemptNumber,
 		req.currentVisit.is_preview,
 		req.hostname,
-		req.connection.remoteAddress
+		req.connection.remoteAddress,
+		req.currentVisit.id,
+		originalScore.attemptId,
+		originalScore.id
 	)
 
 	// send the lti score
@@ -89,16 +93,15 @@ const attemptImport = async req => {
 		req.currentVisit.resource_link_id
 	)
 
-	// save events for the lti scores
-	await insertEvents.insertAttemptImportedEvents(
-		req.currentUser.id,
-		req.currentDocument.draftId,
-		req.currentDocument.contentId,
-		req.params.assessmentId,
-		importedAttempt.id,
+	await insertEvents.insertAttemptScoredEvents(
+		req.currentUser,
+		req.currentDocument,
+		importedAttempt.assessmentId,
 		importedScore.id,
-		originalScore.attemptId,
-		originalScore.id,
+		importedAttempt.id,
+		importedAttempt.attemptNumber,
+		importedAttempt.attemptScore,
+		importedAttempt.attemptScore,
 		req.currentVisit.is_preview,
 		ltiRequest.scoreSent,
 		ltiRequest.status,
@@ -107,7 +110,11 @@ const attemptImport = async req => {
 		ltiRequest.ltiAssessmentScoreId,
 		req.hostname,
 		req.connection.remoteAddress,
-		req.currentVisit.resource_link_id
+		{},
+		req.currentVisit.resource_link_id,
+		req.currentVisit.id,
+		originalScore.attemptId,
+		originalScore.id
 	)
 
 	return { history, importedScore }

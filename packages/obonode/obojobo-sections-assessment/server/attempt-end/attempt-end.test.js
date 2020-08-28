@@ -19,6 +19,7 @@ describe('attempt-end', () => {
 	}
 
 	const mockCurrentVisit = {
+		id: 'mockCurrentVisitId',
 		is_preview: 'mockIsPreview',
 		resource_link_id: 'mockResourceLinkId'
 	}
@@ -124,14 +125,16 @@ describe('attempt-end', () => {
 			'mockResourceLinkId'
 		)
 		expect(insertEvents.insertAttemptEndEvents).toHaveBeenCalledWith(
-			mockCurrentUser,
-			mockCurrentDocument,
+			mockCurrentUser.id,
+			mockCurrentDocument.draftId,
+			mockCurrentDocument.contentId,
 			'mockAssessmentId',
 			'mock-attempt-id',
 			'mock-attempt-number',
 			'mockIsPreview',
 			'mockHostName',
-			'mockRemoteAddress'
+			'mockRemoteAddress',
+			'mockCurrentVisitId'
 		)
 		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
 			'mockCurrentUserId',
@@ -189,7 +192,7 @@ describe('attempt-end', () => {
 		    "End attempt \\"mock-attempt-id\\" - sendLTIScore success",
 		  ],
 		  Array [
-		    "End attempt \\"mock-attempt-id\\" - sendLTIScore success",
+		    "End attempt \\"mock-attempt-id\\" - insertAttemptScoredEvents success",
 		  ],
 		]
 	`)

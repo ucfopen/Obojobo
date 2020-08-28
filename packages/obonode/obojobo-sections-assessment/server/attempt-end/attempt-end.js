@@ -74,14 +74,16 @@ const endAttempt = async (req, res) => {
 
 	// save an event
 	await insertEvents.insertAttemptEndEvents(
-		req.currentUser,
-		req.currentDocument,
+		req.currentUser.id,
+		req.currentDocument.draftId,
+		req.currentDocument.contentId,
 		attempt.assessmentId,
 		req.params.attemptId,
 		attemptNumber,
 		req.currentVisit.is_preview,
 		req.hostname,
-		req.connection.remoteAddress
+		req.connection.remoteAddress,
+		req.currentVisit.id
 	)
 	logSuccess('insertAttemptEndEvent')
 
@@ -116,7 +118,7 @@ const endAttempt = async (req, res) => {
 		calculatedScores.assessmentScoreDetails,
 		req.currentVisit.resource_link_id
 	)
-	logSuccess('sendLTIScore')
+	logSuccess('insertAttemptScoredEvents')
 
 	return calculatedScores.assessmentScoreDetails
 }
