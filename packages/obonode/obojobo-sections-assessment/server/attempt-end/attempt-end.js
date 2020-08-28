@@ -79,7 +79,7 @@ const endAttempt = async (req, res) => {
 		req.currentDocument.contentId,
 		attempt.assessmentId,
 		req.params.attemptId,
-		attemptNumber,
+		attemptNumber || 1,
 		req.currentVisit.is_preview,
 		req.hostname,
 		req.connection.remoteAddress,
@@ -104,7 +104,7 @@ const endAttempt = async (req, res) => {
 		attempt.assessmentId,
 		assessmentScoreId,
 		req.params.attemptId,
-		attemptNumber,
+		attemptNumber || 1,
 		calculatedScores.attempt.attemptScore,
 		calculatedScores.assessmentScoreDetails.assessmentModdedScore,
 		req.currentVisit.is_preview,
@@ -116,7 +116,8 @@ const endAttempt = async (req, res) => {
 		req.hostname,
 		req.connection.remoteAddress,
 		calculatedScores.assessmentScoreDetails,
-		req.currentVisit.resource_link_id
+		req.currentVisit.resource_link_id,
+		req.currentVisit.id
 	)
 	logSuccess('insertAttemptScoredEvents')
 

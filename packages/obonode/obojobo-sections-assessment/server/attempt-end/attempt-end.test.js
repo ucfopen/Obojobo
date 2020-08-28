@@ -161,7 +161,8 @@ describe('attempt-end', () => {
 			'mockHostName',
 			'mockRemoteAddress',
 			{ assessmentModdedScore: 88 },
-			'mockResourceLinkId'
+			'mockResourceLinkId',
+			'mockCurrentVisitId'
 		)
 
 		// make sure logger.info looks good
@@ -196,6 +197,83 @@ describe('attempt-end', () => {
 		  ],
 		]
 	`)
+	})
+
+	test('endAttempt defaults to attempt 1', async () => {
+		// set up all the mock results
+		const mockFetchAttemptByID = {
+			userId: 'mockAttemptUserId',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
+			assessmentId: 'mockAssessmentId',
+			state: 'mockAttemptState'
+		}
+
+		const mockCalculatedScore = {
+			attempt: {
+				attemptScore: 99
+			},
+			assessmentScoreDetails: {
+				assessmentModdedScore: 88
+			}
+		}
+
+		const mockHighestScore = {
+			status: 'mockLtiStatus',
+			scoreSent: 'mockScoreSent',
+			statusDetails: 'mockLtiStatusDetails',
+			gradebookStatus: 'mockLtiGradebookStatus',
+			ltiAssessmentScoreId: 'mockLtiAssessmentScoreId'
+		}
+
+		// set up mock returns
+		mockCurrentDocument.getChildNodeById.mockReturnValueOnce('mockChildNode')
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockFetchAttemptByID)
+		AssessmentModel.getAttemptNumber.mockResolvedValueOnce(null)
+		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(['mock-response'])
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mockHistory')
+		AssessmentModel.completeAttempt.mockResolvedValueOnce('mock-assessment-score-id')
+		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
+		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
+
+		// call end attempt
+		const endAttempt = require('./attempt-end')
+		await expect(endAttempt(mockReq, mockRes)).resolves.toEqual({ assessmentModdedScore: 88 })
+
+		expect(insertEvents.insertAttemptEndEvents).toHaveBeenCalledWith(
+			mockCurrentUser.id,
+			mockCurrentDocument.draftId,
+			mockCurrentDocument.contentId,
+			'mockAssessmentId',
+			'mock-attempt-id',
+			1,
+			'mockIsPreview',
+			'mockHostName',
+			'mockRemoteAddress',
+			'mockCurrentVisitId'
+		)
+
+		expect(insertEvents.insertAttemptScoredEvents).toHaveBeenCalledWith(
+			mockCurrentUser,
+			mockCurrentDocument,
+			'mockAssessmentId',
+			'mock-assessment-score-id',
+			'mock-attempt-id',
+			1,
+			99,
+			88,
+			'mockIsPreview',
+			'mockScoreSent',
+			'mockLtiStatus',
+			'mockLtiStatusDetails',
+			'mockLtiGradebookStatus',
+			'mockLtiAssessmentScoreId',
+			'mockHostName',
+			'mockRemoteAddress',
+			{ assessmentModdedScore: 88 },
+			'mockResourceLinkId',
+			'mockCurrentVisitId'
+		)
 	})
 
 	test('endAttempt rejects when attempting to end attempt module not matching currentDocument', async () => {

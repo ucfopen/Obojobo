@@ -39,7 +39,10 @@ describe('attempt-import', () => {
 			id: 'mock-attempt-id',
 			userId: 'mockCurrentUserId',
 			importAsNewAttempt: jest.fn(),
-			attemptNumber: 1
+			attemptNumber: 1,
+			result: {
+				attemptScore: 'mockAttemptScore'
+			}
 		}
 
 		mockAssessmentScore = {
