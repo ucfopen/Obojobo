@@ -4,12 +4,14 @@ import Common from '../../common'
 import FocusUtil from '../util/focus-util'
 import Logo from './logo'
 import NavUtil from '../util/nav-util'
+import AssessmentUtil from '../util/assessment-util'
 import React from 'react'
 
 const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
 const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 const TIMER_MOBILE_NAV_COLLAPSE = 900
 const MOBILE_MEDIA_QUERY = '(max-width: 480px)'
 
@@ -143,12 +145,22 @@ export default class Nav extends React.Component {
 			ariaLabel = 'Go to ' + ariaLabel
 		}
 
-		return (
-			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
-				{lockEl}
-			</li>
-		)
+		if (item.flags.assessment) {
+			return (
+				<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+					{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
+					<span className="assessment-info">{this.getAssessmentInfo(item)}</span>
+					{lockEl}
+				</li>
+			)
+		} else {
+			return (
+				<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+					{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
+					{lockEl}
+				</li>
+			)
+		}
 	}
 
 	renderSubLink(index, isSelected, list, isItemDisabled, lockEl) {
@@ -187,6 +199,24 @@ export default class Nav extends React.Component {
 	getLockEl(isLocked) {
 		if (!isLocked) return null
 		return <div className="lock-icon" />
+	}
+
+	getAssessmentInfo(item) {
+		const assessmentModel = OboModel.models[item.id]
+		const score = AssessmentUtil.getAssessmentScoreForModel(
+			this.props.assessmentState,
+			assessmentModel
+		)
+		const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(
+			this.props.assessmentState,
+			assessmentModel
+		)
+
+		if (score !== null) {
+			return `${Math.round(score)}% - ${attemptsRemaining} attempts remaining`
+		} else {
+			return `${attemptsRemaining} attempts remaining`
+		}
 	}
 
 	render() {
