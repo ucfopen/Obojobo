@@ -267,6 +267,35 @@ describe('Nav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('renders assessment information with singular attempt', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false,
+					assessment: true
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(1)
+
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('onClick link checks NavUtil.canNavigate and changes the page', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{

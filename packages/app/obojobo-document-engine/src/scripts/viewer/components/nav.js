@@ -212,10 +212,18 @@ export default class Nav extends React.Component {
 			assessmentModel
 		)
 
-		if (score !== null) {
-			return `${Math.round(score)}% - ${attemptsRemaining} attempts remaining`
+		let placeholder
+
+		if (attemptsRemaining !== 1) {
+			placeholder = 'attempts'
 		} else {
-			return `${attemptsRemaining} attempts remaining`
+			placeholder = 'attempt'
+		}
+
+		if (score !== null) {
+			return `${Math.round(score)}% - ${attemptsRemaining} ${placeholder} remaining`
+		} else {
+			return `${attemptsRemaining} ${placeholder} remaining`
 		}
 	}
 
