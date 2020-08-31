@@ -85,6 +85,7 @@
 				background-color: $color-bg;
 				padding: $dimension-padding / 4;
 				cursor: pointer;
+				font-family: $font-default;
 
 				&:hover {
 					background-color: $color-action-low-opacity;
