@@ -22,6 +22,7 @@ import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -147,6 +148,12 @@ class VisualEditor extends React.Component {
 	}
 
 	componentDidMount() {
+		Dispatcher.on('modal:show', () => {
+			this.toggleEditable(false)
+		})
+		Dispatcher.on('modal:hide', () => {
+			this.toggleEditable(true)
+		})
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
 		// Setup global keydown to listen to all global keys
@@ -201,17 +208,9 @@ class VisualEditor extends React.Component {
 			return this.saveModule(this.props.draftId)
 		}
 
-		if (
-			(event.key === 'y' && ctrlOrMetaKey) ||
-			((event.key === 'z' || event.key === 'Z') && ctrlOrMetaKey && event.shiftKey)
-		) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			return this.editor.redo()
-		}
-
-		if (event.key === 'z' && ctrlOrMetaKey) {
-			event.preventDefault()
-			return this.editor.undo()
 		}
 
 		if (event.key === 'Escape') {

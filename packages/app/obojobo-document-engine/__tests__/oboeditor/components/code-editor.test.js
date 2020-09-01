@@ -298,18 +298,24 @@ describe('CodeEditor', () => {
 		expect(editor.undo).not.toHaveBeenCalled()
 		component.instance().onKeyDown({
 			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-		expect(editor.undo).toHaveBeenCalled()
 
-		expect(editor.redo).not.toHaveBeenCalled()
-		component.instance().onKeyDown({
-			preventDefault: jest.fn(),
-			key: 'y',
-			metaKey: true
+			// 	key: 'z',
+			// 	metaKey: true
+			// })
+			// expect(editor.undo).toHaveBeenCalled()
+
+			// expect(editor.redo).not.toHaveBeenCalled()
+			// component.instance().onKeyDown({
+			// 	preventDefault: jest.fn(),
+			// 	key: 'y',
+			// 	metaKey: true
+			// })
+			// expect(editor.redo).toHaveBeenCalled()
+
+			key: 's'
 		})
-		expect(editor.redo).toHaveBeenCalled()
+
+		expect(EditorUtil.getTitleFromString).toHaveBeenCalled()
 	})
 
 	test('setEditor changes state', () => {
