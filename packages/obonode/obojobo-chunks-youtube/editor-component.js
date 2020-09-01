@@ -63,10 +63,7 @@ class YouTube extends React.Component {
 	focusYoutube() {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		const start = Editor.start(this.props.editor, path)
-		Transforms.setSelection(this.props.editor, {
-			focus: start,
-			anchor: start
-		})
+		Transforms.select(this.props.editor, start)
 	}
 
 	returnFocusOnTab(event) {

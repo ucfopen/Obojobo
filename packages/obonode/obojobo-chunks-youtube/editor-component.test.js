@@ -40,6 +40,17 @@ describe('YouTube Editor Node', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
+	test('YouTube is selected when clicked', () => {
+		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} selected />)
+
+		component
+			.find('.obojobo-draft--chunks--you-tube')
+			.at(0)
+			.simulate('click')
+
+		expect(Transforms.select).toHaveBeenCalled()
+	})
+
 	test('YouTube component handles tab', () => {
 		const component = mount(<YouTube element={{ content: { videoId: 'gJ390e5sjHk' } }} selected />)
 

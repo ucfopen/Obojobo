@@ -2,7 +2,7 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React, { memo } from 'react'
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
@@ -39,6 +39,7 @@ class QuestionBank extends React.Component {
 		this.addQuestion = this.addQuestion.bind(this)
 		this.addQuestionBank = this.addQuestionBank.bind(this)
 		this.changeChooseType = this.changeChooseType.bind(this)
+		this.focusQuestionBank = this.focusQuestionBank.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -107,6 +108,11 @@ class QuestionBank extends React.Component {
 		})
 	}
 
+	focusQuestionBank() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
+	}
+
 	displaySettings(editor, element) {
 		const radioGroupName = `${element.id}-choose`
 		return (
@@ -171,7 +177,10 @@ class QuestionBank extends React.Component {
 		const { editor, element, children } = this.props
 		return (
 			<Node {...this.props}>
-				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
+				<div
+					className={'obojobo-draft--chunks--question-bank editor-bank'}
+					onClick={this.focusQuestionBank}
+				>
 					<Button
 						className="delete-button"
 						onClick={this.remove}

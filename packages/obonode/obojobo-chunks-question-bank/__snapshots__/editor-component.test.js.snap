@@ -4,6 +4,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
 <div>
   <div
     className="obojobo-draft--chunks--question-bank editor-bank"
+    onClick={[Function]}
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
