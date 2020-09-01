@@ -458,9 +458,9 @@ class AssessmentModel {
 		})
 	}
 
-	// @TODO delete the id here
 	clone() {
-		const clone = Object.assign({}, this)
+		// eslint-disable-next-line no-unused-vars
+		const { id, ...clone } = this // clone properties, except id
 		return new AssessmentModel(clone)
 	}
 
@@ -487,13 +487,10 @@ class AssessmentModel {
 
 	importAsNewAttempt(resourceLinkId, dbTransaction) {
 		const newAttempt = this.clone()
-		delete newAttempt.id
 		newAttempt.isImported = true
 		newAttempt.importedAttemptId = this.id
 		newAttempt.completedAt = new Date()
 		newAttempt.resourceLinkId = resourceLinkId
-		// dispatch an event?
-		// store a caliper event?
 		return newAttempt.create(dbTransaction)
 	}
 }
