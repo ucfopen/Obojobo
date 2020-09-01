@@ -5,7 +5,7 @@ const logger = require('obojobo-express/server/logger')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
 const endAttempt = require('./attempt-end/attempt-end')
-const attemptReview = require('./attempt-review')
+const { attemptReview } = require('./attempt-review')
 const attemptImport = require('./attempt-end/attempt-import')
 const { logAndRespondToUnexpected } = require('./util')
 const {

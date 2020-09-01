@@ -18,7 +18,7 @@ const mockCurrentVisit = {
 }
 const bodyParser = require('body-parser')
 const request = require('supertest')
-const reviewAttempt = require('./attempt-review')
+const { attemptReview } = require('./attempt-review')
 const AssessmentModel = require('./models/assessment')
 const { startAttempt } = require('./attempt-start')
 const resumeAttempt = require('./attempt-resume')
@@ -299,7 +299,8 @@ describe('server/express', () => {
 				'mock-question-id-3': { id: 'mock-question-id-3' }
 			}
 		}
-		reviewAttempt.mockResolvedValueOnce(returnValue)
+
+		attemptReview.mockResolvedValueOnce(returnValue)
 
 		const response = await request(app)
 			.post('/api/assessments/attempt/review')
