@@ -145,22 +145,15 @@ export default class Nav extends React.Component {
 			ariaLabel = 'Go to ' + ariaLabel
 		}
 
-		if (item.flags.assessment) {
-			return (
-				<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-					{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
+		return (
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
+				{item.flags.assessment ? (
 					<span className="assessment-info">{this.getAssessmentInfo(item)}</span>
-					{lockEl}
-				</li>
-			)
-		} else {
-			return (
-				<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-					{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
-					{lockEl}
-				</li>
-			)
-		}
+				) : null}
+				{lockEl}
+			</li>
+		)
 	}
 
 	renderSubLink(index, isSelected, list, isItemDisabled, lockEl) {
