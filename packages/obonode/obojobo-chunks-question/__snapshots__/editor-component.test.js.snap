@@ -4,6 +4,7 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 <div>
   <div
     className="component obojobo-draft--chunks--question is-viewed pad is-type-default"
+    onClick={[Function]}
   >
     <div
       className="flipper question-editor"
@@ -58,6 +59,7 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
 <div>
   <div
     className="component obojobo-draft--chunks--question is-viewed pad is-type-survey"
+    onClick={[Function]}
   >
     <div
       className="flipper question-editor"

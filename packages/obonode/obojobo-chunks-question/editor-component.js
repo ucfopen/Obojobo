@@ -1,7 +1,7 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
@@ -22,6 +22,7 @@ class Question extends React.Component {
 		this.addSolution = this.addSolution.bind(this)
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
+		this.focusQuestion = this.focusQuestion.bind(this)
 	}
 
 	onSetType(event) {
@@ -85,6 +86,11 @@ class Question extends React.Component {
 		)
 	}
 
+	focusQuestion() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.select(this.props.editor, Editor.start(this.props.editor, path))
+	}
+
 	render() {
 		const element = this.props.element
 		const content = element.content
@@ -103,6 +109,7 @@ class Question extends React.Component {
 			<Node {...this.props} className="obojobo-draft--chunks--question--wrapper">
 				<div
 					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${content.type}`}
+					onClick={this.focusQuestion}
 				>
 					<div className="flipper question-editor">
 						<div className="content-back">
