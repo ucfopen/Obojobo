@@ -16,4 +16,10 @@ const PeopleListItem = props => (
 	</li>
 )
 
+PeopleListItem.defaultProps = {
+	firstName: '',
+	lastName: '',
+	isMe: false
+}
+
 module.exports = PeopleListItem
