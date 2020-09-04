@@ -34,7 +34,7 @@ exports[`Choice Editor Node Choice component 1`] = `
     <div />
   </div>
   <div
-    className="obojobo-draft--components--button is-not-dangerous align-center add-feedback"
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback"
   >
     <button
       className="button"

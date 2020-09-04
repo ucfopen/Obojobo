@@ -266,10 +266,6 @@ class AssessmentStore extends Store {
 			throw "Can't acknowledge end attempt - No assessment!"
 		}
 
-		if (machine.getCurrentState() !== END_ATTEMPT_SUCCESSFUL) {
-			throw "Can't acknowledge end attempt - Not in end attempt state!"
-		}
-
 		machine.send(AssessmentStateActions.ACKNOWLEDGE)
 	}
 
@@ -280,10 +276,6 @@ class AssessmentStore extends Store {
 
 		if (!machine) {
 			throw "Can't acknowledge start attempt failed - No assessment!"
-		}
-
-		if (machine.getCurrentState() !== START_ATTEMPT_FAILED) {
-			throw "Can't acknowledge start attempt failed - Not in start attempt failed state!"
 		}
 
 		console.log('@TODO - this should happen in the state machine', assessmentModel)
@@ -358,10 +350,6 @@ class AssessmentStore extends Store {
 
 		if (!machine) {
 			throw "Can't send responses - No assessment!"
-		}
-
-		if (machine.getCurrentState() !== IN_ATTEMPT) {
-			throw "Can't send responses - Not currently in an attempt!"
 		}
 
 		machine.send(SENDING_RESPONSES)

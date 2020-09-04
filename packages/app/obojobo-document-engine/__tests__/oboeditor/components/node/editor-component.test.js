@@ -79,7 +79,7 @@ describe('Component Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Node builds the expected component when not selected null contentDescription', () => {
+	test.only('Node builds the expected component when not selected null contentDescription', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
 		Editor.parent.mockReturnValue([mockParentNode])

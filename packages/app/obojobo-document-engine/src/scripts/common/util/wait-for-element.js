@@ -1,6 +1,6 @@
 // Modified from https://paul.kinlan.me/waiting-for-an-element-to-be-created/
 const waitForElement = selector => {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 		const element = document.querySelector(selector)
 
 		if (element) {

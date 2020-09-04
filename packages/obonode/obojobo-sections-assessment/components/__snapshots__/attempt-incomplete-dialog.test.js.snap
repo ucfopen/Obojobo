@@ -13,8 +13,10 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
     aria-labelledby="obojobo-draft--components--modal--modal--content"
     className="obojobo-draft--components--modal--modal"
     role="dialog"
+    tabIndex="-1"
   >
     <input
+      aria-label="Start of dialog"
       className="first-tab"
       onFocus={[Function]}
       type="text"
@@ -71,6 +73,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
       </div>
     </div>
     <input
+      aria-label="End of dialog"
       className="last-tab"
       onFocus={[Function]}
       type="text"

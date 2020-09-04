@@ -195,7 +195,6 @@ class VisualEditor extends React.Component {
 	}
 
 	onKeyDownGlobal(event) {
-		return
 		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			return this.saveModule(this.props.draftId)

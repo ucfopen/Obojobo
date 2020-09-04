@@ -10,6 +10,7 @@ import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatch
 import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import Header from 'obojobo-document-engine/src/scripts/viewer/components/header'
+import ModalContainer from 'obojobo-document-engine/src/scripts/common/components/modal-container'
 import MediaStore from 'obojobo-document-engine/src/scripts/viewer/stores/media-store'
 import ModalStore from 'obojobo-document-engine/src/scripts/common/stores/modal-store'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
@@ -40,6 +41,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/stores/assessment-store')
 jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 jest.mock('obojobo-document-engine/src/scripts/common/util/insert-dom-tag')
+jest.mock('obojobo-document-engine/src/scripts/common/components/modal-container')
 
 describe('ViewerApp', () => {
 	let restoreConsole

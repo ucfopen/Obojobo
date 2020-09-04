@@ -2,10 +2,50 @@
 
 exports[`ModalContainer ModalContainer component 1`] = `
 <div
-  className="obojobo-draft--components--modal-container"
+  className="obojobo-draft--components--modal-container is-not-active"
 >
   <div
-    className="content"
+    className="content legacy"
+  />
+  <div
+    className="content portal"
+    id="obojobo-draft--components--modal-container--content"
+  />
+</div>
+`;
+
+exports[`ModalContainer ModalContainer works with legacy modals 1`] = `
+<div
+  className="obojobo-draft--components--modal-container is-active"
+>
+  <div
+    className="content legacy"
+  >
+    <div>
+      modalItem
+    </div>
+  </div>
+  <div
+    className="content portal"
+    id="obojobo-draft--components--modal-container--content"
+  />
+</div>
+`;
+
+exports[`ModalContainer ModalContainer works with portal modals 1`] = `
+<div
+  className="obojobo-draft--components--modal-container is-active"
+>
+  <div
+    className="content legacy"
+  >
+    <div>
+      modalItem
+    </div>
+  </div>
+  <div
+    className="content portal"
+    id="obojobo-draft--components--modal-container--content"
   />
 </div>
 `;

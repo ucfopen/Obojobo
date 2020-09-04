@@ -3,6 +3,8 @@
 exports[`Feedback Editor Node Feedback builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--abstract-assessment--feedback editor-feedback"
+  contentEditable={true}
+  suppressContentEditableWarning={true}
 >
   <button
     className="delete-button"

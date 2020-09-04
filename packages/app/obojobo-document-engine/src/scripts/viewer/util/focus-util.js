@@ -48,6 +48,8 @@ const FocusUtil = {
 		state.target = null
 		state.scroll = true
 		state.animateScroll = false
+		state.region = null
+		state.visualFocusTarget = null
 
 		return item
 	},

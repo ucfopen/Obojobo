@@ -18,39 +18,28 @@ describe('FocusUtil', () => {
 			value: {
 				id: 'testId',
 				fade: false,
-				animateScroll: false
+				animateScroll: false,
+				scroll: true,
+				region: null
 			}
 		})
 	})
 
 	test('focusComponent will dispatch the correct event with different options', () => {
-		FocusUtil.focusComponent('testId', { fade: true })
+		FocusUtil.focusComponent('testId', {
+			fade: true,
+			scroll: false,
+			animateScroll: true,
+			region: 'mock-region'
+		})
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
 				fade: true,
-				animateScroll: false
-			}
-		})
-
-		FocusUtil.focusComponent('testId', { animateScroll: true })
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				fade: false,
-				animateScroll: true
-			}
-		})
-
-		FocusUtil.focusComponent('testId', { fade: true, animateScroll: true })
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				fade: true,
-				animateScroll: true
+				animateScroll: true,
+				scroll: false,
+				region: 'mock-region'
 			}
 		})
 	})
@@ -74,45 +63,53 @@ describe('FocusUtil', () => {
 		const mockState = {
 			type: 'mock-type',
 			target: 'mock-target',
+			scroll: false,
 			animateScroll: false,
-			visualFocusTarget: 'mock-target'
+			visualFocusTarget: 'mock-target',
+			region: 'mock-region'
 		}
+		const initialMockState = { ...mockState }
+
 		expect(FocusUtil.getFocussedItem(mockState)).toEqual({
 			type: 'mock-type',
 			target: 'mock-target',
 			options: {
 				animateScroll: false,
-				fade: true
+				fade: true,
+				scroll: false,
+				region: 'mock-region'
 			}
 		})
-		expect(mockState).toEqual({
-			type: 'mock-type',
-			target: 'mock-target',
-			animateScroll: false,
-			visualFocusTarget: 'mock-target'
-		})
+		expect(mockState).toEqual(initialMockState)
 	})
 
 	test('getFocussedItemAndClear returns an object about the focussed item (but also clears the state at the same time - except for visualFocusTarget)', () => {
 		const mockState = {
 			type: 'mock-type',
 			target: 'mock-target',
+			scroll: false,
 			animateScroll: false,
-			visualFocusTarget: 'some-target'
+			visualFocusTarget: 'mock-target',
+			region: 'mock-region'
 		}
+
 		expect(FocusUtil.getFocussedItemAndClear(mockState)).toEqual({
 			type: 'mock-type',
 			target: 'mock-target',
 			options: {
 				animateScroll: false,
-				fade: false
+				fade: true,
+				scroll: false,
+				region: 'mock-region'
 			}
 		})
 		expect(mockState).toEqual({
 			type: null,
 			target: null,
+			scroll: true,
 			animateScroll: false,
-			visualFocusTarget: 'some-target'
+			region: null,
+			visualFocusTarget: null
 		})
 	})
 

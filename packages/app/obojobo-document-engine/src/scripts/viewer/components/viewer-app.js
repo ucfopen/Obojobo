@@ -19,8 +19,6 @@ import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
 import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
-import ModalPortal from '../../common/components/modal-portal'
-
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 

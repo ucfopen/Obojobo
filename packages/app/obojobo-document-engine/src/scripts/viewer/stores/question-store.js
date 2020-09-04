@@ -13,9 +13,7 @@ const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const { uuid, timeoutPromise } = Common.util
 
-// const SET_RESPONSE_EVENT_SEND_DELAY_MS = 4750
 const SEND_RESPONSE_TIMEOUT_MS = 15000
-// const SEND_RESPONSE_TIMEOUT_MS = 1000
 
 const getNewContextState = () => {
 	return {
@@ -32,87 +30,21 @@ const getNewContextState = () => {
 
 class QuestionStore extends Store {
 	constructor() {
-		let model
 		super('questionStore')
 
 		Dispatcher.on({
 			'question:forceSendAllResponses': payload => {
-				const { context } = payload.value
-
-				const contextState = this.getContextState(context)
-				if (!contextState) return
-
-				const sendingResponsePromises = Object.values(contextState.sendingResponsePromises)
-
-				const sendErrorResponsesPromises = Object.values(contextState.responseMetadata)
-					.filter(responseMetadata => {
-						return responseMetadata.sendState === QuestionResponseSendStates.ERROR
-					})
-					.map(responseMetadata => {
-						return this.sendResponse(responseMetadata.details.questionId, context)
-					})
-
-				const promises = sendingResponsePromises.concat(sendErrorResponsesPromises)
-
-				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, Promise.all(promises))
-					.then(values => {
-						Dispatcher.trigger('question:forceSentAllResponses', {
-							value: { context, success: values.length === 0 || values.every(v => v) }
-						})
-					})
-					.catch(e => {
-						Dispatcher.trigger('question:forceSentAllResponses', {
-							value: { context, success: false }
-						})
-					})
+				this.forceSendAllResponses(payload.value)
 			},
+
 			'question:sendResponse': payload => {
-				const { context, id } = payload.value
-
-				const contextState = this.getContextState(context)
-				if (!contextState) return
-
-				const responseMetadata = contextState.responseMetadata[id]
-				if (!responseMetadata) return
-
-				const sendResponsePromise = this.sendResponse(id, context)
-
-				contextState.sendingResponsePromises[id] = sendResponsePromise
-
-				timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, sendResponsePromise).catch(e =>
-					this.onSendResponseError(e, contextState, id)
-				)
-
-				this.triggerChange()
+				this.sendResponse(payload.value).then(() => {
+					this.triggerChange()
+				})
 			},
 
 			'question:setResponse': payload => {
-				const {
-					context,
-					id,
-					response,
-					targetId,
-					assessmentId,
-					attemptId,
-					sendResponseImmediately
-				} = payload.value
-				const questionId = id
-				// const contextState = this.getOrCreateContextState(context)
-
-				this.setResponse({
-					questionId,
-					response,
-					targetId,
-					context,
-					assessmentId,
-					attemptId,
-					sendResponseImmediately
-				})
-
-				if (sendResponseImmediately) {
-					QuestionUtil.sendResponse(id, context)
-				}
-
+				if (!this.setResponse(payload.value)) return
 				this.triggerChange()
 			},
 
@@ -121,287 +53,69 @@ class QuestionStore extends Store {
 				this.triggerChange()
 			},
 
-			'assessment:endAttempt': payload => {
-				if (!this.clearResponse(payload.value.id, payload.value.context)) return
-				this.triggerChange()
-			},
-
 			'question:setData': payload => {
-				const { context, key, value } = payload.value
-				const contextState = this.getOrCreateContextState(context)
-
-				contextState.data[key] = value
+				this.setData(payload.value)
 				this.triggerChange()
 			},
 
 			'question:showExplanation': payload => {
-				const { id, context } = payload.value
-				const root = OboModel.getRoot()
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:showExplanation',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context
-					}
-				})
-
-				QuestionUtil.setData(id, context, 'showingExplanation', true)
+				this.showExplanation(payload.value)
+				this.triggerChange()
 			},
 
 			'question:hideExplanation': payload => {
-				const { id, context, actor } = payload.value
-				const root = OboModel.getRoot()
-
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:hideExplanation',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						actor
-					}
-				})
-
-				QuestionUtil.clearData(id, context, 'showingExplanation')
+				this.hideExplanation(payload.value)
+				this.triggerChange()
 			},
 
 			'question:clearData': payload => {
-				const { context, key } = payload.value
-
-				if (!this.hasContextState(context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-
-				delete contextState.data[key]
+				if (!this.clearData(payload.value)) return
 				this.triggerChange()
 			},
 
 			'question:hide': payload => {
-				const { id, context } = payload.value
-
-				if (!this.hasContextState(context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-
-				APIUtil.postEvent({
-					draftId: OboModel.models[id].getRoot().get('draftId'),
-					action: 'question:hide',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context
-					}
-				})
-
-				delete contextState.viewedQuestions[id]
-				delete contextState.revealedQuestions[id]
-				if (contextState.viewing === id) {
-					contextState.viewing = null
-				}
-
+				if (!this.hide(payload.value)) return
 				this.triggerChange()
 			},
 
 			'question:view': payload => {
-				const { id, context } = payload.value
-				const contextState = this.getOrCreateContextState(context)
-				const root = OboModel.models[id].getRoot()
-
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:view',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context
-					}
-				})
-
-				contextState.viewedQuestions[id] = true
-				contextState.viewing = id
-
+				this.view(payload.value)
 				this.triggerChange()
 			},
 
 			'question:checkAnswer': payload => {
-				const { id, context } = payload.value
-				const questionModel = OboModel.models[id]
-				const root = questionModel.getRoot()
-
-				if (!this.hasContextState(context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-				const scoreInfo = contextState.scores[id]
-
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:checkAnswer',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context,
-						response: contextState.responses[id],
-						scoreId: scoreInfo.id,
-						score: scoreInfo.score
-					}
-				})
+				if (!this.checkAnswer(payload.value)) return
+				this.triggerChange()
 			},
 
 			'question:submitResponse': payload => {
-				const { id, context } = payload.value
-				const questionModel = OboModel.models[id]
-				const root = questionModel.getRoot()
-
-				if (!this.hasContextState(context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:submitResponse',
-					eventVersion: '1.0.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context,
-						response: contextState.responses[id]
-					}
-				})
+				if (!this.submitResponse(payload.value)) return
+				this.triggerChange()
 			},
 
 			'question:retry': payload => {
-				const { id, context } = payload.value
-				const questionModel = OboModel.models[id]
-				const root = questionModel.getRoot()
-
-				// if (!this.clearResponses(id, context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-
-				// contextState.responses[id] = response
-				this.clearResponse(id, context)
-				delete contextState.revealedQuestions[id]
-
+				if (!this.retry(payload.value)) return
 				this.triggerChange()
-
-				APIUtil.postEvent({
-					draftId: root.get('draftId'),
-					action: 'question:retry',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId: id,
-						context
-					}
-				})
-
-				if (QuestionUtil.isShowingExplanation(this.state, questionModel, context)) {
-					QuestionUtil.hideExplanation(id, context, 'viewerClient')
-				}
-
-				QuestionUtil.clearScore(id, context)
 			},
 
 			'question:revealAnswer': payload => {
-				const { context, id } = payload.value
-				const questionId = id
-				const contextState = this.getOrCreateContextState(context)
-
-				contextState.revealedQuestions[id] = true
-
-				// contextState.responses[questionId] = response
-
-				// QuestionUtil.setScore(questionId, 100, 'Answer Revealed', null, context)
-
+				if (!this.revealAnswer(payload.value)) return
 				this.triggerChange()
-
-				APIUtil.postEvent({
-					draftId: OboModel.getRoot().get('draftId'),
-					action: 'question:revealAnswer',
-					eventVersion: '1.0.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						questionId,
-						context
-					}
-				})
 			},
 
 			'question:scoreSet': payload => {
-				const scoreId = uuid()
-				const { itemId, context, score, details, feedbackText, detailedText } = payload.value
-
-				const contextState = this.getOrCreateContextState(context)
-
-				contextState.scores[itemId] = {
-					id: scoreId,
-					score,
-					details,
-					feedbackText,
-					detailedText,
-					itemId
-				}
-
-				if (score === 100 || score === 'no-score') {
-					FocusUtil.clearFadeEffect()
-				}
-
+				if (!this.scoreSet(payload.value)) return
 				this.triggerChange()
-
-				// Skip sending an event if this is an explicit non-scored result
-				if (score === 'no-score') {
-					return
-				}
-
-				model = OboModel.models[itemId]
-				APIUtil.postEvent({
-					draftId: model.getRoot().get('draftId'),
-					action: 'question:scoreSet',
-					eventVersion: '1.1.0',
-					visitId: NavStore.getState().visitId,
-					payload: {
-						id: scoreId,
-						itemId: itemId,
-						score: score,
-						details: details,
-						context: context
-					}
-				})
 			},
 
 			'question:scoreClear': payload => {
-				const { itemId, context } = payload.value
-
-				if (!this.hasContextState(context)) return
-
-				const contextState = this.getOrCreateContextState(context)
-
-				const scoreItem = contextState.scores[itemId]
-
-				model = OboModel.models[scoreItem.itemId]
-
-				delete contextState.scores[payload.value.itemId]
+				if (!this.scoreClear(payload.value)) return
 				this.triggerChange()
+			},
 
-				// Skip sending an event if this is an explicit non-scored result
-				if (scoreItem.score === 'no-score') {
-					return
-				}
-
-				APIUtil.postEvent({
-					draftId: model.getRoot().get('draftId'),
-					action: 'question:scoreClear',
-					eventVersion: '1.0.0',
-					visitId: NavStore.getState().visitId,
-					payload: scoreItem
-				})
+			'assessment:endAttempt': payload => {
+				if (!this.clearResponse(payload.value.id, payload.value.context)) return
+				this.triggerChange()
 			},
 
 			'nav:setContext': payload => {
@@ -412,7 +126,106 @@ class QuestionStore extends Store {
 		})
 	}
 
-	sendResponse(id, context) {
+	onPostResponseSuccess(responseStatus, contextState, id) {
+		// If the sendState isn't 'sending' then we may have already timed out. In this case
+		// we ignore the result
+		if (contextState.responseMetadata[id].sendState !== QuestionResponseSendStates.SENDING) {
+			return false
+		}
+
+		const isResponseOk = responseStatus === 'ok'
+
+		contextState.responseMetadata[id].sendState = isResponseOk
+			? QuestionResponseSendStates.RECORDED
+			: QuestionResponseSendStates.ERROR
+
+		delete contextState.sendingResponsePromises[id]
+
+		Dispatcher.trigger('question:responseSent', {
+			success: isResponseOk,
+			id
+		})
+
+		this.triggerChange()
+
+		return isResponseOk
+	}
+
+	onPostResponseError(contextState, id) {
+		delete contextState.sendingResponsePromises[id]
+		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
+
+		Dispatcher.trigger('question:responseSent', {
+			successful: false,
+			id
+		})
+
+		this.triggerChange()
+
+		return false
+	}
+
+	getPostResponsePromises(context) {
+		const contextState = this.getContextState(context)
+		if (!contextState) return null
+
+		const sendingResponsePromises = Object.values(contextState.sendingResponsePromises)
+		const sendErrorResponsesPromises = Object.values(contextState.responseMetadata)
+			.filter(responseMetadata => {
+				return (
+					responseMetadata.sendState === QuestionResponseSendStates.ERROR ||
+					responseMetadata.sendState === QuestionResponseSendStates.NOT_SENT
+				)
+			})
+			.map(responseMetadata => {
+				return this.postResponse(responseMetadata.details.questionId, context)
+			})
+
+		return [...sendingResponsePromises, ...sendErrorResponsesPromises]
+	}
+
+	// Sends all un-recorded responses for a given context
+	forceSendAllResponses({ context }) {
+		const promises = this.getPostResponsePromises(context)
+		if (!promises) return false
+
+		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, Promise.all(promises))
+			.then(values => {
+				Dispatcher.trigger('question:forceSentAllResponses', {
+					value: { context, success: values.length === 0 || values.every(v => v), error: null }
+				})
+
+				return true
+			})
+			.catch(e => {
+				Dispatcher.trigger('question:forceSentAllResponses', {
+					value: { context, success: false, error: e.message }
+				})
+
+				return true
+			})
+	}
+
+	sendResponse({ context, id }) {
+		const contextState = this.getContextState(context)
+		if (!contextState) return false
+
+		const responseMetadata = contextState.responseMetadata[id]
+		if (!responseMetadata) return false
+
+		const postResponsePromise = this.postResponse(id, context)
+
+		contextState.sendingResponsePromises[id] = postResponsePromise
+
+		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
+			// eslint-disable-next-line no-console
+			console.error(e)
+
+			return this.onPostResponseError(contextState, id)
+		})
+	}
+
+	postResponse(id, context) {
 		const contextState = this.getContextState(context)
 		const responseMetadata = contextState.responseMetadata[id]
 
@@ -427,57 +240,13 @@ class QuestionStore extends Store {
 			actorTime: responseMetadata.time
 		})
 			.then(result => {
-				// if (result.response.status === 'ok') {
-				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.RECORDED
-				// } else {
-				// 	contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
-				// }
-				// If the sendState isn't 'sending' then we may have already timed out. In this case
-				// we ignore the result
-				if (contextState.responseMetadata[id].sendState !== QuestionResponseSendStates.SENDING) {
-					return false
-				}
-
-				const successful = result.response.status === 'ok'
-				// const successful = Math.random() > 0.5
-
-				contextState.responseMetadata[id].sendState = successful
-					? QuestionResponseSendStates.RECORDED
-					: QuestionResponseSendStates.ERROR
-
-				delete contextState.sendingResponsePromises[id]
-
-				Dispatcher.trigger('question:responseSent', {
-					successful,
-					id
-				})
-
-				this.triggerChange()
-
-				return successful
+				this.onPostResponseSuccess(result.response.status, contextState, id)
 			})
-			.catch(e => this.onSendResponseError(e, contextState, id))
-	}
-
-	onSendResponseError(error, contextState, id) {
-		console.error('ERROR', error)
-
-		delete contextState.sendingResponsePromises[id]
-		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
-		// delete contextState.responses[id]
-
-		Dispatcher.trigger('question:responseSent', {
-			successful: false,
-			id
-		})
-
-		this.triggerChange()
-
-		return false
+			.catch(e => this.onPostResponseError(e, contextState, id))
 	}
 
 	setResponse({
-		questionId,
+		id,
 		response,
 		targetId,
 		context,
@@ -488,12 +257,12 @@ class QuestionStore extends Store {
 		if (!this.hasContextState(context)) return false
 
 		const contextState = this.getOrCreateContextState(context)
-		contextState.responses[questionId] = response
-		contextState.responseMetadata[questionId] = {
+		contextState.responses[id] = response
+		contextState.responseMetadata[id] = {
 			time: new Date(),
 			sendState: QuestionResponseSendStates.NOT_SENT,
 			details: {
-				questionId,
+				id,
 				response,
 				targetId,
 				context,
@@ -501,6 +270,10 @@ class QuestionStore extends Store {
 				attemptId,
 				sendResponseImmediately
 			}
+		}
+
+		if (sendResponseImmediately) {
+			QuestionUtil.sendResponse(id, context)
 		}
 
 		return true
@@ -512,6 +285,255 @@ class QuestionStore extends Store {
 		const contextState = this.getOrCreateContextState(context)
 		delete contextState.responses[questionId]
 		delete contextState.responseMetadata[questionId]
+
+		return true
+	}
+
+	setData({ context, key, value }) {
+		const contextState = this.getOrCreateContextState(context)
+		contextState.data[key] = value
+	}
+
+	showExplanation({ id, context }) {
+		const root = OboModel.getRoot()
+		APIUtil.postEvent({
+			draftId: root.get('draftId'),
+			action: 'question:showExplanation',
+			eventVersion: '1.1.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context
+			}
+		})
+
+		QuestionUtil.setData(id, context, 'showingExplanation', true)
+	}
+
+	hideExplanation({ id, context, actor }) {
+		const root = OboModel.getRoot()
+
+		APIUtil.postEvent({
+			draftId: root.get('draftId'),
+			action: 'question:hideExplanation',
+			eventVersion: '1.2.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context,
+				actor
+			}
+		})
+
+		QuestionUtil.clearData(id, context, 'showingExplanation')
+	}
+
+	clearData({ context, key }) {
+		if (!this.hasContextState(context)) return false
+
+		delete this.getOrCreateContextState(context).data[key]
+
+		return true
+	}
+
+	hide({ id, context }) {
+		if (!this.hasContextState(context)) return false
+
+		const contextState = this.getOrCreateContextState(context)
+
+		APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:hide',
+			eventVersion: '1.1.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context
+			}
+		})
+
+		delete contextState.viewedQuestions[id]
+		delete contextState.revealedQuestions[id]
+		if (contextState.viewing === id) {
+			contextState.viewing = null
+		}
+
+		return true
+	}
+
+	view({ id, context }) {
+		const contextState = this.getOrCreateContextState(context)
+		const root = OboModel.getRoot()
+
+		APIUtil.postEvent({
+			draftId: root.get('draftId'),
+			action: 'question:view',
+			eventVersion: '1.1.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context
+			}
+		})
+
+		contextState.viewedQuestions[id] = true
+		contextState.viewing = id
+	}
+
+	checkAnswer({ id, context }) {
+		if (!this.hasContextState(context)) return false
+
+		const contextState = this.getOrCreateContextState(context)
+		const scoreInfo = contextState.scores[id]
+
+		APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:checkAnswer',
+			eventVersion: '1.1.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context,
+				response: contextState.responses[id],
+				scoreId: scoreInfo.id,
+				score: scoreInfo.score
+			}
+		})
+
+		return true
+	}
+
+	submitResponse({ id, context }) {
+		if (!this.hasContextState(context)) return false
+
+		const contextState = this.getOrCreateContextState(context)
+
+		APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:submitResponse',
+			eventVersion: '1.0.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context,
+				response: contextState.responses[id]
+			}
+		})
+
+		return true
+	}
+
+	retry({ id, context }) {
+		if (!this.hasContextState(context)) return false
+
+		const questionModel = OboModel.models[id]
+		const contextState = this.getOrCreateContextState(context)
+
+		this.clearResponse(id, context)
+		delete contextState.revealedQuestions[id]
+
+		this.triggerChange()
+
+		APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:retry',
+			eventVersion: '1.1.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId: id,
+				context
+			}
+		})
+
+		if (QuestionUtil.isShowingExplanation(this.state, questionModel, context)) {
+			QuestionUtil.hideExplanation(id, context, 'viewerClient')
+		}
+
+		QuestionUtil.clearScore(id, context)
+
+		return true
+	}
+
+	revealAnswer({ context, id }) {
+		if (!this.hasContextState(context)) return false
+
+		const questionId = id
+		const contextState = this.getOrCreateContextState(context)
+
+		contextState.revealedQuestions[id] = true
+
+		APIUtil.postEvent({
+			draftId: OboModel.getRoot().get('draftId'),
+			action: 'question:revealAnswer',
+			eventVersion: '1.0.0',
+			visitId: NavStore.getState().visitId,
+			payload: {
+				questionId,
+				context
+			}
+		})
+
+		return true
+	}
+
+	scoreSet({ itemId, context, score, details, feedbackText, detailedText }) {
+		if (!this.hasContextState(context)) return false
+
+		const scoreId = uuid()
+		const contextState = this.getOrCreateContextState(context)
+
+		contextState.scores[itemId] = {
+			id: scoreId,
+			score,
+			details,
+			feedbackText,
+			detailedText,
+			itemId
+		}
+
+		if (score === 100 || score === 'no-score') {
+			FocusUtil.clearFadeEffect()
+		}
+
+		// Skip sending an event if this is an explicit non-scored result
+		if (score !== 'no-score') {
+			APIUtil.postEvent({
+				draftId: OboModel.getRoot().get('draftId'),
+				action: 'question:scoreSet',
+				eventVersion: '1.1.0',
+				visitId: NavStore.getState().visitId,
+				payload: {
+					id: scoreId,
+					itemId: itemId,
+					score: score,
+					details: details,
+					context: context
+				}
+			})
+		}
+
+		return true
+	}
+
+	scoreClear({ itemId, context }) {
+		if (!this.hasContextState(context)) return false
+
+		const contextState = this.getOrCreateContextState(context)
+		const scoreItem = contextState.scores[itemId]
+
+		delete contextState.scores[itemId]
+		this.triggerChange()
+
+		// Skip sending an event if this is an explicit non-scored result
+		if (scoreItem.score !== 'no-score') {
+			APIUtil.postEvent({
+				draftId: OboModel.getRoot().get('draftId'),
+				action: 'question:scoreClear',
+				eventVersion: '1.0.0',
+				visitId: NavStore.getState().visitId,
+				payload: scoreItem
+			})
+		}
 
 		return true
 	}

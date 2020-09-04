@@ -1,11 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NumericOption NumericOption renders as expected with default requirement 1`] = `
-<div>
+<div
+  className="is-type-exact"
+>
   <label
-    className="select"
+    className="select requirement"
   >
-    Requirement
+    Answer Type
     <select
       className="select-item"
       name="requirement"
@@ -23,16 +25,16 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
     </select>
   </label>
   <label
-    className="input"
+    className="input answer"
   >
     Answer
     <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="answer"
-      onBlur={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -40,11 +42,13 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`exact\` 1`] = `
-<div>
+<div
+  className="is-type-exact"
+>
   <label
-    className="select"
+    className="select requirement"
   >
-    Requirement
+    Answer Type
     <select
       className="select-item"
       name="requirement"
@@ -63,16 +67,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     </select>
   </label>
   <label
-    className="input"
+    className="input answer"
   >
     Answer
     <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="answer"
-      onBlur={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -80,11 +84,13 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`margin\` 1`] = `
-<div>
+<div
+  className="is-type-margin"
+>
   <label
-    className="select"
+    className="select requirement"
   >
-    Requirement
+    Answer Type
     <select
       className="select-item"
       name="requirement"
@@ -103,12 +109,27 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     </select>
   </label>
   <label
-    className="select"
+    className="input answer"
   >
-    Type
+    Answer
+    <input
+      autoComplete="off"
+      className="input-item"
+      contentEditable={false}
+      name="answer"
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      value=""
+    />
+  </label>
+  <label
+    className="select margin-type"
+  >
+    Error Type
     <select
       className="select-item"
-      name="type"
+      name="margin-type"
       onClick={[Function]}
     >
       <option>
@@ -120,30 +141,17 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     </select>
   </label>
   <label
-    className="input"
+    className="input margin-value"
   >
-    Answer
+    ± Error
     <input
-      className="input-item"
-      contentEditable={false}
-      name="answer"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      value=""
-    />
-  </label>
-  <label
-    className="input"
-  >
-    Margin
-    <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="margin"
-      onBlur={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -151,11 +159,13 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`precise\` 1`] = `
-<div>
+<div
+  className="is-type-exact"
+>
   <label
-    className="select"
+    className="select requirement"
   >
-    Requirement
+    Answer Type
     <select
       className="select-item"
       name="requirement"
@@ -173,16 +183,16 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
     </select>
   </label>
   <label
-    className="input"
+    className="input answer"
   >
     Answer
     <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="answer"
-      onBlur={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -190,11 +200,13 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`p
 `;
 
 exports[`NumericOption NumericOption renders as expected with requirement of \`range\` 1`] = `
-<div>
+<div
+  className="is-type-range"
+>
   <label
-    className="select"
+    className="select requirement"
   >
-    Requirement
+    Answer Type
     <select
       className="select-item"
       name="requirement"
@@ -213,40 +225,42 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     </select>
   </label>
   <label
-    className="input"
+    className="input start"
   >
     Start
     <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="start"
-      onBlur={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
   <label
-    className="input"
+    className="input end"
   >
     End
     <input
+      autoComplete="off"
       className="input-item"
       contentEditable={false}
       name="end"
-      onBlur={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
+      onMouseDown={[Function]}
       value=""
     />
   </label>
 </div>
 `;
 
-exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
+exports[`NumericOption NumericOption with requirement of \`exact\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-exact\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input answer\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;
 
-exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"select\\">Type<select class=\\"select-item\\" name=\\"type\\"><option>Percent</option><option>Absolute</option></select></label><label class=\\"input\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" value=\\"\\"></label><label class=\\"input\\">Margin<input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
+exports[`NumericOption NumericOption with requirement of \`margin\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-margin\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input answer\\">Answer<input class=\\"input-item\\" name=\\"answer\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label><label class=\\"select margin-type\\">Error Type<select class=\\"select-item\\" name=\\"margin-type\\"><option>Percent</option><option>Absolute</option></select></label><label class=\\"input margin-value\\">± Error<input class=\\"input-item\\" name=\\"margin\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;
 
 exports[`NumericOption NumericOption with requirement of \`precise\`, event.stopPropagation() is called when click 1`] = `"<tr><td><select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option><option>Precise response</option></select></td><td><select class=\\"select-item\\" name=\\"type\\"><option>Significant digits</option><option>Decimal places</option></select></td><td><input class=\\"input-item\\" name=\\"answer\\" value=\\"\\"></td><td><input class=\\"input-item\\" name=\\"precision\\" value=\\"\\"></td></tr>"`;
 
-exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<div><label class=\\"select\\">Requirement<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input\\">Start<input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" value=\\"\\"></label><label class=\\"input\\">End<input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" value=\\"\\"></label></div>"`;
+exports[`NumericOption NumericOption with requirement of \`range\`, event.stopPropagation() is called when click 1`] = `"<div class=\\"is-type-range\\"><label class=\\"select requirement\\">Answer Type<select class=\\"select-item\\" name=\\"requirement\\"><option>Exact answer</option><option>Margin of error</option><option>Within a range</option></select></label><label class=\\"input start\\">Start<input class=\\"input-item\\" name=\\"start\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label><label class=\\"input end\\">End<input class=\\"input-item\\" name=\\"end\\" contenteditable=\\"false\\" autocomplete=\\"off\\" value=\\"\\"></label></div>"`;

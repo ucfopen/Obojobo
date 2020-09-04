@@ -200,8 +200,6 @@ const QuestionUtil = {
 		const componentClass = assessmentModel.getComponentClass()
 		if (!componentClass) return false
 
-		// debugger
-
 		return componentClass.isResponseEmpty(response)
 	},
 
@@ -230,8 +228,6 @@ const QuestionUtil = {
 		return contextState.responseMetadata[model.get('id')] || null
 	},
 
-	// @TODO: Name?
-	// True if the question:setResponse recieved an answer
 	getResponseSendState(state, model, context) {
 		const responseMetadata = QuestionUtil.getResponseMetadata(state, model, context)
 		if (!responseMetadata) return null

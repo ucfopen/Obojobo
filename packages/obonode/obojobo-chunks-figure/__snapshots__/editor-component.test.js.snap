@@ -23,6 +23,7 @@ exports[`Figure Editor Node Figure component 1`] = `
             onClick={[Function]}
             onKeyDown={[Function]}
             tabIndex="-1"
+            type="button"
           >
             ×
           </button>
@@ -39,6 +40,7 @@ exports[`Figure Editor Node Figure component 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex="-1"
+              type="button"
             >
               Image Properties
             </button>
@@ -63,7 +65,7 @@ exports[`Figure Editor Node Figure component 1`] = `
 </div>
 `;
 
-exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><figure class=\\"container\\"><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center\\"></figcaption></figure></div></div>"`;
+exports[`Figure Editor Node Figure component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--figure viewer undefined  is-not-selected\\"><div contenteditable=\\"false\\" class=\\"accessibility-warning\\" style=\\"user-select: none;\\">Accessibility Warning: No Alt Text!</div><figure class=\\"container\\"><div class=\\"figure-box   is-not-selected\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button type=\\"button\\" class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption class=\\"align-center\\"></figcaption></figure></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div>
@@ -94,6 +96,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
             onClick={[Function]}
             onKeyDown={[Function]}
             tabIndex="-1"
+            type="button"
           >
             ×
           </button>
@@ -110,6 +113,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex="-1"
+              type="button"
             >
               Image Properties
             </button>
@@ -167,6 +171,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
             onClick={[Function]}
             onKeyDown={[Function]}
             tabIndex="-1"
+            type="button"
           >
             ×
           </button>
@@ -183,6 +188,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex="-1"
+              type="button"
             >
               Image Properties
             </button>
@@ -239,6 +245,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
             onClick={[Function]}
             onKeyDown={[Function]}
             tabIndex="-1"
+            type="button"
           >
             ×
           </button>
@@ -255,6 +262,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               tabIndex="-1"
+              type="button"
             >
               Image Properties
             </button>
