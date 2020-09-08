@@ -154,7 +154,7 @@ describe('Paragraph Styles', () => {
 				preventDefault: jest.fn()
 			})
 
-		expect(mockChangeToType).toHaveBeenCalledWith(TEXT_NODE)
+		expect(mockChangeToType).toHaveBeenCalledWith(TEXT_NODE, {})
 
 		component
 			.find('div')

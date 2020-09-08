@@ -22,6 +22,7 @@ class ParagraphStyles extends React.Component {
 		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.changeToType = this.changeToType.bind(this)
 		this.menuButton = React.createRef()
 	}
 
@@ -85,14 +86,18 @@ class ParagraphStyles extends React.Component {
 				break
 			case 'Enter':
 				event.preventDefault()
+
 				if (menuItem.node === HEADING_NODE) {
-					this.props.editor.changeToType(menuItem.node, {
-						headingLevel: menuItem.headingLevel
-					})
+					this.changeToType(menuItem.node, { headingLevel: menuItem.headingLevel })
 				} else {
-					this.props.editor.changeToType(menuItem.node)
+					this.changeToType(menuItem.node)
 				}
 		}
+	}
+
+	changeToType(nodeType, opts = {}) {
+		this.props.editor.changeToType(nodeType, opts)
+		this.setState({ isOpen: false })
 	}
 
 	toggleLevelSelect() {
@@ -157,7 +162,7 @@ class ParagraphStyles extends React.Component {
 				</button>
 				<div className={'paragraph-styles-menu ' + isOrNot(this.state.isOpen, 'open')}>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(TEXT_NODE)}
+						onMouseDown={() => this.changeToType(TEXT_NODE)}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -168,9 +173,7 @@ class ParagraphStyles extends React.Component {
 						<p>Normal Text</p>
 					</button>
 					<button
-						onMouseDown={() => {
-							this.props.editor.changeToType(CODE_NODE)
-						}}
+						onMouseDown={() => this.changeToType(CODE_NODE)}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -181,7 +184,7 @@ class ParagraphStyles extends React.Component {
 						<pre>Code</pre>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 1 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 1 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -193,7 +196,7 @@ class ParagraphStyles extends React.Component {
 						<h1>Heading 1</h1>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 2 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 2 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -205,7 +208,7 @@ class ParagraphStyles extends React.Component {
 						<h2>Heading 2</h2>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 3 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 3 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -217,7 +220,7 @@ class ParagraphStyles extends React.Component {
 						<h3>Heading 3</h3>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 4 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 4 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -229,7 +232,7 @@ class ParagraphStyles extends React.Component {
 						<h4>Heading 4</h4>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 5 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 5 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
@@ -241,7 +244,7 @@ class ParagraphStyles extends React.Component {
 						<h5>Heading 5</h5>
 					</button>
 					<button
-						onMouseDown={() => this.props.editor.changeToType(HEADING_NODE, { headingLevel: 6 })}
+						onMouseDown={() => this.changeToType(HEADING_NODE, { headingLevel: 6 })}
 						ref={item => {
 							this.menu.push({
 								htmlElement: item,
