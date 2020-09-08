@@ -1,5 +1,7 @@
 @import '~styles/includes';
 
+$color-action-low-opacity: lighten($color-action, 50%);
+
 .obojobo-draft--chunks--table.viewer {
 	.view {
 		th {
@@ -64,7 +66,7 @@
 		.drop-content-cell {
 			display: none;
 			text-align: right;
-			border: 1px solid $color-shadow-lighter;
+			border: 1px solid $color-shadow-light;
 			border-radius: $dimension-rounded-radius;
 			overflow: hidden;
 			position: relative;
@@ -86,6 +88,7 @@
 				padding: $dimension-padding / 4;
 				cursor: pointer;
 				font-family: $font-default;
+				font-size: 0.8em;
 
 				&:hover {
 					background-color: $color-action-low-opacity;
