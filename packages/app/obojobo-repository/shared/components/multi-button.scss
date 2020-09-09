@@ -84,14 +84,4 @@
 			display: block;
 		}
 	}
-
-	&:hover {
-		color: $color-action;
-		background-color: white;
-		border: 1px solid darken($color-banner-bg, 10%);
-
-		.child-buttons {
-			display: block;
-		}
-	}
 }

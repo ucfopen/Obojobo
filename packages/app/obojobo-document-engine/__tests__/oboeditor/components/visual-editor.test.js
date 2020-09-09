@@ -57,6 +57,7 @@ describe('VisualEditor', () => {
 				}
 			])
 		)
+		Editor.marks = jest.fn().mockReturnValue({})
 	})
 
 	afterEach(() => {
