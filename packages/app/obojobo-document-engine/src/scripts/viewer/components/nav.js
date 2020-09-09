@@ -207,16 +207,18 @@ export default class Nav extends React.Component {
 
 		let placeholder
 
-		if (attemptsRemaining !== 1) {
-			placeholder = 'attempts'
+		if (attemptsRemaining === Infinity) {
+			placeholder = 'Unlimited attempts'
+		} else if (attemptsRemaining !== 1) {
+			placeholder = `${attemptsRemaining} attempts remaining`
 		} else {
-			placeholder = 'attempt'
+			placeholder = `${attemptsRemaining} attempt remaining`
 		}
 
 		if (score !== null) {
-			return `${Math.round(score)}% - ${attemptsRemaining} ${placeholder} remaining`
+			return `${Math.round(score)}% - ${placeholder}`
 		} else {
-			return `${attemptsRemaining} ${placeholder} remaining`
+			return `${placeholder}`
 		}
 	}
 
