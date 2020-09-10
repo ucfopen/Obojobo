@@ -57,6 +57,7 @@ describe('VisualEditor', () => {
 				}
 			])
 		)
+		Editor.marks = jest.fn().mockReturnValue({})
 	})
 
 	afterEach(() => {
@@ -970,13 +971,15 @@ describe('VisualEditor', () => {
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: '-',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: '=',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 
 		instance.onKeyDownGlobal({

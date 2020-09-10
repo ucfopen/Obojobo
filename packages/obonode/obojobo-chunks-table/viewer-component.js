@@ -50,11 +50,14 @@ const Table = props => {
 		return <tr key={rowNum}>{row}</tr>
 	})
 
+	const fixedWidth = data.fixedWidth
+
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<div className="obojobo-draft--chunks--table viewer pad">
+				<p>here: {fixedWidth}</p>
 				<div className="container">
-					<table className="view" key="table">
+					<table className={fixedWidth ? 'view' : 'view no-fixed-width'} key="table">
 						<thead key="thead">{header}</thead>
 						<tbody key="tbody">{rows}</tbody>
 					</table>

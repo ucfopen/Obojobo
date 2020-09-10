@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PeopleListItem renders correctly with default props 1`] = `
+<li
+  className="people-list-item"
+>
+  <div
+    className="avatar "
+  >
+    <div
+      className="avatar--image"
+    >
+      <img
+        alt=""
+      />
+    </div>
+  </div>
+  <div
+    className="user-info"
+  >
+    <div
+      className="user-name"
+    >
+       
+       
+    </div>
+    <div
+      className="user-username"
+    />
+  </div>
+</li>
+`;
+
+exports[`PeopleListItem renders correctly with standard props plus "isMe=true" provided 1`] = `
+<li
+  className="people-list-item"
+>
+  <div
+    className="avatar "
+  >
+    <div
+      className="avatar--image"
+    >
+      <img
+        alt=""
+      />
+    </div>
+  </div>
+  <div
+    className="user-info"
+  >
+    <div
+      className="user-name"
+    >
+      firstName lastName
+       
+      <i>
+        (me)
+      </i>
+    </div>
+    <div
+      className="user-username"
+    />
+  </div>
+  usuallyAButton
+</li>
+`;
+
+exports[`PeopleListItem renders correctly with standard props provided 1`] = `
+<li
+  className="people-list-item"
+>
+  <div
+    className="avatar "
+  >
+    <div
+      className="avatar--image"
+    >
+      <img
+        alt=""
+      />
+    </div>
+  </div>
+  <div
+    className="user-info"
+  >
+    <div
+      className="user-name"
+    >
+      firstName lastName
+       
+    </div>
+    <div
+      className="user-username"
+    />
+  </div>
+  usuallyAButton
+</li>
+`;

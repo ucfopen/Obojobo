@@ -14,11 +14,9 @@ const ScriptMark = {
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
-				case '-':
 				case ',':
 					event.preventDefault()
 					return editor.toggleScript(-1)
-				case '=':
 				case '.':
 					event.preventDefault()
 					return editor.toggleScript(1)

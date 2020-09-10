@@ -5,7 +5,10 @@ const mapStoreStateToProps = state => ({
 	people: state.searchPeople.items,
 	searchString: state.shareSearchString
 })
-const mapActionsToProps = { onSearchChange: searchForUser, clearPeopleSearchResults }
+const mapActionsToProps = {
+	onSearchChange: searchForUser,
+	clearPeopleSearchResults
+}
 
 module.exports = connect(
 	mapStoreStateToProps,
