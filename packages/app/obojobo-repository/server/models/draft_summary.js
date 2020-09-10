@@ -99,11 +99,11 @@ class DraftSummary {
 		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
 		count += 1 // add 1 so we'll know if there are more to get after count
 
-		let whereQuery = 'drafts_content.draft_id = $[draftId]'
+		let whereAfterversion = ''
 		// if afterVersionId is provided, we'll reduce
 		// the results to any revisions saved before afterVersionId
 		if (afterVersionId) {
-			whereQuery += `
+			whereAfterversion = `
 				AND drafts_content.created_at < (
 					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
 				)`
@@ -121,7 +121,8 @@ class DraftSummary {
 			JOIN users
 				ON drafts_content.user_id = users.id
 			WHERE
-				${whereQuery}
+				drafts_content.draft_id = $[draftId]
+				${whereAfterversion}
 			ORDER BY
 				drafts_content.created_at DESC
 			LIMIT $[count];

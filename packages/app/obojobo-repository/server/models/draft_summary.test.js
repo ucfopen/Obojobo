@@ -1,4 +1,4 @@
-describe.only('DraftSummary Model', () => {
+describe('DraftSummary Model', () => {
 	jest.mock('obojobo-express/server/db')
 	jest.mock('obojobo-express/server/logger')
 	let db
@@ -80,7 +80,26 @@ describe.only('DraftSummary Model', () => {
 		ORDER BY updated_at DESC
 	`
 
-	const checkAgainstMockRawSummary = summary => {
+	const fetchAllDraftRevisionsQuery = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+				
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+	const expectIsMockSummary = summary => {
 		expect(summary).toBeInstanceOf(DraftSummary)
 		expect(summary.draftId).toBe('mockDraftId')
 		expect(summary.title).toBe('mockDraftTitle')
@@ -100,7 +119,7 @@ describe.only('DraftSummary Model', () => {
 
 		return DraftSummary.fetchById('mockDraftId').then(summary => {
 			expect(db.one).toHaveBeenCalledWith(query, { id: 'mockDraftId' })
-			checkAgainstMockRawSummary(summary)
+			expectIsMockSummary(summary)
 		})
 	})
 
@@ -118,6 +137,8 @@ describe.only('DraftSummary Model', () => {
 	})
 
 	test('fetchByUserId generates the correct query and returns a DraftSummary object', () => {
+		expect.hasAssertions()
+
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawDraftSummary)
 
@@ -128,7 +149,7 @@ describe.only('DraftSummary Model', () => {
 
 		return DraftSummary.fetchByUserId(0).then(summary => {
 			expect(db.any).toHaveBeenCalledWith(query, { userId: 0 })
-			checkAgainstMockRawSummary(summary)
+			expectIsMockSummary(summary)
 		})
 	})
 
@@ -178,26 +199,8 @@ describe.only('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
-
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
-			expect(db.any).toHaveBeenCalledWith(query, {
+			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
 				afterVersionId: null,
 				count: 51,
 				draftId: 'mockDraftId'
@@ -248,6 +251,7 @@ describe.only('DraftSummary Model', () => {
 				ON drafts_content.user_id = users.id
 			WHERE
 				drafts_content.draft_id = $[draftId]
+				
 				AND drafts_content.created_at < (
 					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
 				)
@@ -307,26 +311,8 @@ describe.only('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockDbReturn)
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
-
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
-			expect(db.any).toHaveBeenCalledWith(query, {
+			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
 				afterVersionId: null,
 				count: 51,
 				draftId: 'mockDraftId'
@@ -343,26 +329,8 @@ describe.only('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
-
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1).then(() => {
-			expect(db.any).toHaveBeenCalledWith(query, {
+			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
 				afterVersionId: null,
 				count: 11, //minimum count value is 10, plus one
 				draftId: 'mockDraftId'
@@ -376,26 +344,8 @@ describe.only('DraftSummary Model', () => {
 		db.any = jest.fn()
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
-
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1000).then(() => {
-			expect(db.any).toHaveBeenCalledWith(query, {
+			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
 				afterVersionId: null,
 				count: 101, //maximum count value is 100, plus one
 				draftId: 'mockDraftId'
@@ -408,29 +358,11 @@ describe.only('DraftSummary Model', () => {
 
 		db.any.mockRejectedValueOnce(new Error('not found in db'))
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
-
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').catch(err => {
 			expect(logger.error).toHaveBeenCalledWith(
 				'fetchAllDraftRevisions',
 				'not found in db',
-				query,
+				fetchAllDraftRevisionsQuery,
 				'mockDraftId'
 			)
 			expect(err).toBe('Error loading DraftSummary by query')

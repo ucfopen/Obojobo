@@ -69,9 +69,7 @@ describe('Collection Model', () => {
 		})
 	})
 
-	test('create with no title returns a collection and logs its creation', () => {
-		logger.info = jest.fn()
-
+	test('create with no title returns a collection', () => {
 		expect.hasAssertions()
 		const userId = 1
 		const mockNewRawCollection = {
@@ -83,12 +81,41 @@ describe('Collection Model', () => {
 
 		db.one.mockResolvedValueOnce(mockNewRawCollection)
 
-		return CollectionModel.create('', userId).then(model => {
+		const mockCallObject = {
+			user_id: userId
+		}
+
+		return CollectionModel.create(mockCallObject).then(model => {
 			expect(model).toBeInstanceOf(CollectionModel)
 			expect(model.id).toBe('mockCollectionId')
 			expect(model.title).toBe('mockCollectionTitle')
 			expect(model.userId).toBe(userId)
 			expect(model.createdAt).toBe(mockNewRawCollection.created_at)
+		})
+	})
+
+	test('create calls db.one() correctly', () => {
+		expect.hasAssertions()
+		const mockCallObject = {
+			title: 'mockCollectionTitle',
+			user_id: 1
+		}
+
+		db.one.mockResolvedValueOnce({})
+
+		const createQuery = `
+				INSERT INTO repository_collections
+					(title, user_id)
+				VALUES
+					($[title], $[user_id])
+				RETURNING
+					id,
+					title,
+					user_id as userId,
+					created_at as createdAt`
+
+		return CollectionModel.create(mockCallObject).then(() => {
+			expect(db.one).toHaveBeenCalledWith(createQuery, mockCallObject)
 		})
 	})
 
