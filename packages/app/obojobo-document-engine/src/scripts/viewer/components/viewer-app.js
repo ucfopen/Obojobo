@@ -669,9 +669,7 @@ export default class ViewerApp extends React.Component {
 							<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
 								Unlock navigation
 							</button>
-							<button onClick={this.clearPreviewScores}>
-								Reset assessments &amp; questions
-							</button>
+							<button onClick={this.clearPreviewScores}>Reset assessments &amp; questions</button>
 						</div>
 						<div className="border" />
 					</div>

@@ -91,7 +91,6 @@ class Table extends React.Component {
 	}
 
 	render() {
-
 		const { fixedWidth } = this.props.element.content
 
 		return (

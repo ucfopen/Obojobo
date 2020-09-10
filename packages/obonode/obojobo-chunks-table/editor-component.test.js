@@ -18,8 +18,7 @@ jest.mock(
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
-		const component = renderer.create(
-			<Table element={{ content: { fixedWidth: true } }}/>)
+		const component = renderer.create(<Table element={{ content: { fixedWidth: true } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

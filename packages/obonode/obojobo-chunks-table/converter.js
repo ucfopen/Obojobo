@@ -17,7 +17,7 @@ const slateToObo = node => {
 	const textGroup = node.children.flatMap(row => {
 		return row.children.map(cell => {
 			const textLine = {
-				text: { value: "", styleList: [] }
+				text: { value: '', styleList: [] }
 			}
 
 			TextUtil.slateToOboText(cell, textLine)
@@ -33,7 +33,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
-            fixedWidth: node.content.fixedWidth, // Not reading property here from oboToSlate as well.
+			fixedWidth: node.content.fixedWidth, // Not reading property here from oboToSlate as well.
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
@@ -42,7 +42,6 @@ const slateToObo = node => {
 		})
 	}
 }
-
 
 /**
  * Generates a Slate node from an Obojobo Code node.
