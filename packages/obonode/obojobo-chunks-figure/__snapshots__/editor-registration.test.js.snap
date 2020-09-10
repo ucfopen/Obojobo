@@ -21,7 +21,7 @@ Array [
         0,
       ],
     },
-    "placeholder": "Type your caption here",
+    "placeholder": "Type an image caption here",
   },
 ]
 `;
