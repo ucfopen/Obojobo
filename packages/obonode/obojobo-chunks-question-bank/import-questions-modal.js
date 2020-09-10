@@ -60,9 +60,11 @@ const importQuestionModal = props => {
 								}}
 							>
 								<input type="checkbox" checked={selectStates[index]} />
-								{questionModel.children.map(child => {
-									return <ModelRender key={child.id} model={child} />
-								})}
+								<div>
+									{questionModel.children.map(child => {
+										return <ModelRender key={child.id} model={child} />
+									})}
+								</div>
 							</div>
 						)
 					})}
