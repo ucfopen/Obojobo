@@ -379,17 +379,24 @@ describe('DraftSummary Model', () => {
 			id: 'mockRevisionId',
 			draft_id: 'mockDraftId',
 			created_at: mockCreationDate,
-			content: 'mockDraftContent'
+			content: 'mockDraftContent',
+			first_name: 'firstname',
+			last_name: 'lastname'
 		})
 
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return DraftSummary.fetchDraftRevisionById('mockDraftId', 'mockRevisionId').then(revision => {
@@ -402,6 +409,7 @@ describe('DraftSummary Model', () => {
 			expect(revision.createdAt).toBe(mockCreationDate)
 			expect(revision.json).toBe('mockDraftContent')
 			expect(revision.revisionId).toBe('mockRevisionId')
+			expect(revision.userFullName).toBe('firstname lastname')
 		})
 	})
 
@@ -412,12 +420,17 @@ describe('DraftSummary Model', () => {
 
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return DraftSummary.fetchDraftRevisionById('mockDraftId', 'mockRevisionId').catch(err => {
