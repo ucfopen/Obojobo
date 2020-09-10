@@ -50,7 +50,8 @@ class DraftSummary {
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
-		this.userFullName = `${first_name} ${last_name}`
+
+		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
@@ -143,12 +144,17 @@ class DraftSummary {
 	static fetchDraftRevisionById(draftId, revisionId) {
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return db
