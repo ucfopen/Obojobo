@@ -48,12 +48,15 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('nav:afterNavChange', payload => {
+			// when the first page is an assessment, this listener can be called before we're ready
+			// load and cache assessmentIds after the page changes
 			if (!this.assessmentIds) {
 				this.assessmentIds = new Set()
 				const assessmentModels = OboModel.getRoot().getDirectChildrenOfType(ASSESSMENT_NODE_TYPE)
 				assessmentModels.forEach(m => this.assessmentIds.add(m.get('id')))
 			}
 
+			// if the target page is an assessment, get the attempt history
 			if (this.assessmentIds.has(payload.value.to)) this.getAttemptHistory()
 		})
 	}

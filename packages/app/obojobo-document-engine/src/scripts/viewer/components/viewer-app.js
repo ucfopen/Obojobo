@@ -116,6 +116,9 @@ export default class ViewerApp extends React.Component {
 			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
+				// assessment store must initialize before NavStore goes to the first page
+				AssessmentStore.init(extensions)
+
 				NavStore.init(
 					this.props.draftId,
 					model,
@@ -125,7 +128,6 @@ export default class ViewerApp extends React.Component {
 					viewState
 				)
 
-				AssessmentStore.init(extensions)
 				enableWindowCloseDispatcher()
 
 				window.onresize = this.onResize

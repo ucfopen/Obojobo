@@ -101,7 +101,8 @@ const memoGetCompletedAttemptsCount = () => {
 			let finishedAttemptCount = 0
 			history.forEach(attempt => {
 				// attempt.result is null when incomplete
-				if (attempt.result && attempt.result.attemptScore) finishedAttemptCount++
+				// any score in attemptScore counts as a finished attempt
+				if (attempt.result && attempt.result.attemptScore >= 0) finishedAttemptCount++
 			})
 
 			cache[cacheKey] = finishedAttemptCount
