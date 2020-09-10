@@ -1,8 +1,8 @@
 @import '~styles/includes';
 
-$color-action-low-opacity: lighten($color-action, 50%);
-
 .obojobo-draft--chunks--table.viewer {
+	$color-action-low-opacity: lighten($color-action, 50%);
+
 	.view {
 		th {
 			position: relative;
@@ -18,7 +18,9 @@ $color-action-low-opacity: lighten($color-action, 50%);
 		position: absolute;
 		top: -0.3em;
 		right: 0;
-		z-index: 99;
+		z-index: $z-index-above-all;
+		font-size: 1rem;
+		width: 10rem;
 
 		> button {
 			font-weight: bold;
@@ -32,13 +34,8 @@ $color-action-low-opacity: lighten($color-action, 50%);
 			border: none;
 			background-color: $color-transparent;
 
-			&.is-open {
-				transform: none;
-				top: 0.8em;
-			}
-
 			> div.table-options-icon {
-				background-image: url("./table-options-icon.svg");
+				background-image: url('./table-options-icon.svg');
 				background-repeat: no-repeat;
 				height: 100%;
 				width: 100%;
@@ -47,7 +44,15 @@ $color-action-low-opacity: lighten($color-action, 50%);
 				padding: 0;
 
 				&:hover {
-					background-image: url("./table-options-icon-hovered.svg");
+					background-image: url('./table-options-icon-hovered.svg');
+				}
+			}
+
+			&.is-open {
+				transform: none;
+
+				> div.table-options-icon {
+					background-image: url('./table-options-icon-hovered.svg');
 				}
 			}
 		}
@@ -59,7 +64,6 @@ $color-action-low-opacity: lighten($color-action, 50%);
 
 			span.is-not-open {
 				transform: none;
-				top: 0.8em;
 			}
 		}
 

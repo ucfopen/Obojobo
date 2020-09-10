@@ -9,12 +9,14 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const SHOW_DROP_DOWN_MENU_DELAY_MS = 150
 
 class Cell extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isOpen: false
+			isOpen: false,
+			isShowingDropDownMenu: false
 		}
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -306,18 +308,48 @@ class Cell extends React.Component {
 		)
 	}
 
+	showDropDownMenu() {
+		if (!this.props.selected) return
+
+		this.setState({
+			isShowingDropDownMenu: true
+		})
+	}
+
+	componentDidMount() {
+		if (this.props.selected) {
+			this.showDropDownMenu()
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		// If the cell is no longer selected remove any isOpen state, otherwise it will remain open
+		// when reentering the cell
+		if (prevProps.selected && !this.props.selected) {
+			this.setState({
+				isOpen: false,
+				isShowingDropDownMenu: false
+			})
+		} else if (!prevProps.selected && this.props.selected) {
+			// Clicking in a cell where the drop down menu is causes the drop menu to close right
+			// away and the focus is lost from the table. To get around this, we hold off on
+			// showing the drop down menu for a tiny bit before making it appear.
+			setTimeout(() => this.showDropDownMenu(), SHOW_DROP_DOWN_MENU_DELAY_MS)
+		}
+	}
+
 	render() {
 		if (this.props.element.content.header) {
 			return (
 				<th>
-					{this.props.selected ? this.renderDropdown() : null}
+					{this.state.isShowingDropDownMenu ? this.renderDropdown() : null}
 					{this.props.children}
 				</th>
 			)
 		}
 		return (
 			<td>
-				{this.props.selected ? this.renderDropdown() : null}
+				{this.state.isShowingDropDownMenu ? this.renderDropdown() : null}
 				{this.props.children}
 			</td>
 		)
