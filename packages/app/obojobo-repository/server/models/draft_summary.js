@@ -145,13 +145,17 @@ class DraftSummary {
 	static fetchDraftRevisionById(draftId, revisionId) {
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content,
-				user_id
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return db
