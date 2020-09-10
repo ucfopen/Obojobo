@@ -1,7 +1,7 @@
 require('./module-permissions-dialog.scss')
 
 const React = require('react')
-const ModuleIamge = require('./module-image')
+const ModuleImage = require('./module-image')
 const Button = require('./button')
 const ButtonLink = require('./button-link')
 const { urlForEditor } = require('../repository-utils')
@@ -18,7 +18,7 @@ const deleteModule = (title, draftId, deleteFn) => {
 const ModuleOptionsDialog = props => (
 	<div className="module-permissions-dialog">
 		<div className="top-bar">
-			<ModuleIamge id={props.draftId} />
+			<ModuleImage id={props.draftId} />
 			<div className="module-title">{props.title}</div>
 			<Button className="close-button" ariaLabel="Close" onClick={props.onClose}>
 				×
@@ -38,6 +38,7 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Write, edit, and update.</div>
 
 				<Button
+					id="moduleOptionsDialog-shareButton"
 					onClick={() => {
 						props.showModulePermissions(props)
 					}}
@@ -46,10 +47,16 @@ const ModuleOptionsDialog = props => (
 				</Button>
 				<div className="label">Add or remove collaborators.</div>
 
-				<Button onClick={() => props.showVersionHistory(props)}>Version History</Button>
+				<Button
+					id="moduleOptionsDialog-showVersionHistoryButton"
+					onClick={() => props.showVersionHistory(props)}
+				>
+					Version History
+				</Button>
 				<div className="label">View and restore previous versions.</div>
 
 				<Button
+					id="moduleOptionsDialog-downloadJSONButton"
 					onClick={() => {
 						downloadDocument(props.draftId, 'json')
 					}}
@@ -59,6 +66,7 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Download a copy in JSON format.</div>
 
 				<Button
+					id="moduleOptionsDialog-downloadXMLButton"
 					onClick={() => {
 						downloadDocument(props.draftId, 'xml')
 					}}
@@ -73,6 +81,7 @@ const ModuleOptionsDialog = props => (
 				<div className="label">Visit this modules public page.</div>
 
 				<Button
+					id="moduleOptionsDialog-deleteButton"
 					className="dangerous-button delete-button"
 					onClick={() => {
 						deleteModule(props.title, props.draftId, props.deleteModule)
