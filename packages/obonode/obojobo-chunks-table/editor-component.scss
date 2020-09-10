@@ -3,7 +3,7 @@
 .obojobo-draft--chunks--table.viewer {
 	$color-action-low-opacity: lighten($color-action, 50%);
 
-	.view.no-fixed-width {
+	.view.is-display-type-auto {
 		table-layout: auto;
 	}
 
@@ -123,6 +123,7 @@
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
+		width: 34em;
 
 		@mixin point() {
 			content: ' ';
@@ -138,6 +139,17 @@
 		.box-border {
 			background-color: $color-bg2;
 			padding: 1em;
+
+			.obojobo-draft--components--button {
+				position: relative;
+				z-index: 1;
+				font-size: 1.2em;
+				margin: 0 0.25em;
+
+				> button {
+					width: 15em;
+				}
+			}
 		}
 
 		&::before {
@@ -145,16 +157,6 @@
 
 			background-color: $color-bg2;
 			box-shadow: -$box-shadow-overlay;
-		}
-
-		.obojobo-draft--components--button {
-			position: relative;
-			z-index: 1;
-			font-size: 1.2em;
-		}
-
-		.toggle-fixed-width {
-			margin-left: 0.4em;
 		}
 	}
 }

@@ -3,7 +3,7 @@ import GridTextGroup from './grid-text-group'
 const Adapter = {
 	construct(model, attrs) {
 		model.setStateProp('header', true)
-		model.setStateProp('fixedWidth', true)
+		model.setStateProp('display', 'fixed', v => ('' + v).toLowerCase().trim(), ['fixed', 'auto'])
 
 		if (attrs && attrs.content && attrs.content.textGroup) {
 			model.modelState.textGroup = GridTextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
@@ -16,14 +16,14 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.textGroup = model.modelState.textGroup.clone()
-		clone.modelState.fixedWidth = model.modelState.fixedWidth
-		return (clone.modelState.header = model.modelState.header)
+		clone.modelState.display = model.modelState.display
+		clone.modelState.header = model.modelState.header
 	},
 
 	toJSON(model, json) {
 		json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		json.content.fixedWidth = model.modelState.fixedWidth
-		return (json.content.header = model.modelState.header)
+		json.content.display = model.modelState.display
+		json.content.header = model.modelState.header
 	},
 
 	toText(model) {
