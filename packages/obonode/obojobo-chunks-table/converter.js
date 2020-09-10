@@ -17,7 +17,7 @@ const slateToObo = node => {
 	const textGroup = node.children.flatMap(row => {
 		return row.children.map(cell => {
 			const textLine = {
-				text: { value: "", styleList: [] }
+				text: { value: '', styleList: [] }
 			}
 
 			TextUtil.slateToOboText(cell, textLine)
@@ -34,6 +34,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
+			display: node.content.display,
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
@@ -42,7 +43,6 @@ const slateToObo = node => {
 		})
 	}
 }
-
 
 /**
  * Generates a Slate node from an Obojobo Code node.
@@ -57,9 +57,7 @@ const oboToSlate = node => {
 	slateNode.content.numCols = node.content.textGroup.numCols
 	slateNode.content.numRows = node.content.textGroup.numRows
 	slateNode.children = []
-	slateNode.fixedWidth = true // Not managing to access the fixedWidth property
-    // from node.
-    // The value of fixedWidth here will be sent to the editor component's props.
+	slateNode.content.display = node.content.display || 'fixed'
 
 	let currRow
 	node.content.textGroup.textGroup.forEach((line, index) => {

@@ -73,6 +73,7 @@ Object {
     },
   ],
   "content": Object {
+    "display": "fixed",
     "header": true,
     "numCols": 2,
     "numRows": undefined,
