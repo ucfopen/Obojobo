@@ -30,7 +30,6 @@ const slateToObo = node => {
 		id: node.id,
 		type: node.type,
 		children: [],
-		fixedWidth: true, // Not reading property here from oboToSlate as well.
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
@@ -53,11 +52,13 @@ const slateToObo = node => {
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
+	const display = ('' + node.content.display).toLowerCase().trim()
+
 	const slateNode = Object.assign({}, node)
 	slateNode.content.numCols = node.content.textGroup.numCols
 	slateNode.content.numRows = node.content.textGroup.numRows
 	slateNode.children = []
-	slateNode.content.display = node.content.display || 'fixed'
+	slateNode.content.display = display === 'auto' ? 'auto' : 'fixed'
 
 	let currRow
 	node.content.textGroup.textGroup.forEach((line, index) => {

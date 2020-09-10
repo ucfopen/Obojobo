@@ -8,6 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -20,6 +21,7 @@ const renderOptionsDialog = props => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
+		showVersionHistory={props.showVersionHistory}
 	/>
 )
 
@@ -37,6 +39,18 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
+const renderVersionHistoryDialog = props => (
+	<VersionHistoryDialog
+		{...props.selectedModule}
+		title={`${props.selectedModule.title} - Version History`}
+		onClose={props.closeModal}
+		isHistoryLoading={props.versionHistory.isFetching}
+		hasHistoryLoaded={props.versionHistory.hasFetched}
+		versionHistory={props.versionHistory.items}
+		restoreVersion={props.restoreVersion}
+	/>
+)
+
 const renderModalDialog = props => {
 	let dialog
 	let title
@@ -49,6 +63,11 @@ const renderModalDialog = props => {
 		case 'module-permissions':
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
+			break
+
+		case 'module-version-history':
+			title = 'Module Version History'
+			dialog = renderVersionHistoryDialog(props)
 			break
 
 		default:
@@ -98,6 +117,8 @@ const Dashboard = props => {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 
 	// Set a cookie when sortOrder changes on the client
+	// can't undefine document to test this 'else' case without breaking everything - maybe later
+	/* istanbul ignore else */
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()
