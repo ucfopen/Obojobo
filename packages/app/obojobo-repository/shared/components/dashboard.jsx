@@ -117,6 +117,8 @@ const Dashboard = props => {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
 
 	// Set a cookie when sortOrder changes on the client
+	// can't undefine document to test this 'else' case without breaking everything - maybe later
+	/* istanbul ignore else */
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()

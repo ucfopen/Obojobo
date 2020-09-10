@@ -7,17 +7,17 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 /**
  * Generates an Obojobo Table Node from a Slate node.
- * Copies the id, type, triggers, and heading, and condenses 
- * Rows and Columns (and their text children - including marks) 
+ * Copies the id, type, triggers, and heading, and condenses
+ * Rows and Columns (and their text children - including marks)
  * into a gridTextGroup
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Table node 
+ * @returns {Object} An Obojobo Table node
  */
 const slateToObo = node => {
 	const textGroup = node.children.flatMap(row => {
 		return row.children.map(cell => {
 			const textLine = {
-				text: { value: "", styleList: [] }
+				text: { value: '', styleList: [] }
 			}
 
 			TextUtil.slateToOboText(cell, textLine)
@@ -33,6 +33,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
+			fixedWidth: node.content.fixedWidth, // Not reading property here from oboToSlate as well.
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
@@ -42,13 +43,12 @@ const slateToObo = node => {
 	}
 }
 
-
 /**
  * Generates a Slate node from an Obojobo Code node.
  * Copies all attributes, and converts a textGroup into Slate Text children
  * Each textItem in the textgroup becomes a separate CodeLine node in order
  * to properly leverage the Slate Editor's capabilities
- * @param {Object} node An Obojobo Code node 
+ * @param {Object} node An Obojobo Code node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
@@ -56,6 +56,7 @@ const oboToSlate = node => {
 	slateNode.content.numCols = node.content.textGroup.numCols
 	slateNode.content.numRows = node.content.textGroup.numRows
 	slateNode.children = []
+	slateNode.content.fixedWidth = node.content.fixedWidth || true
 
 	let currRow
 	node.content.textGroup.textGroup.forEach((line, index) => {
@@ -63,7 +64,7 @@ const oboToSlate = node => {
 			currRow = {
 				type: TABLE_NODE,
 				subtype: TABLE_ROW_NODE,
-				content: { 
+				content: {
 					header: node.content.header && slateNode.children.length === 0,
 					numCols: slateNode.content.numCols
 				},

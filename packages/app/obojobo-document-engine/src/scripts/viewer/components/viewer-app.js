@@ -651,7 +651,13 @@ export default class ViewerApp extends React.Component {
 				{hideViewer ? null : (
 					<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 				)}
-				{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
+				{hideViewer ? null : (
+					<Nav
+						ref={this.navRef}
+						navState={this.state.navState}
+						assessmentState={this.state.assessmentState}
+					/>
+				)}
 				{hideViewer ? null : prevComp}
 				{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
 				{hideViewer ? null : nextComp}
@@ -663,9 +669,7 @@ export default class ViewerApp extends React.Component {
 							<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
 								Unlock navigation
 							</button>
-							<button onClick={this.clearPreviewScores}>
-								Reset assessments &amp; questions
-							</button>
+							<button onClick={this.clearPreviewScores}>Reset assessments &amp; questions</button>
 						</div>
 						<div className="border" />
 					</div>
