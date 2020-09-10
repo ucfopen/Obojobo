@@ -2,6 +2,7 @@
 	"type":"ObojoboDraft.Chunks.Table",
 	"content": {
 		"header": true,
+		"fixedWidth": true,
 		"textGroup": { "numRows": 2, "numCols": 2 },
 		"numCols": 2
 	},

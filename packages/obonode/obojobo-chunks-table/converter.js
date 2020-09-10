@@ -33,7 +33,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
-            fixedWidth: node.content.fixedWidth, // Not reading property here from oboToSlate as well.
+            fixedWidth: node.content.fixedWidth,
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
