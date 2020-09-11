@@ -13,14 +13,11 @@ exports[`Table Table component 1`] = `
   <div
     className="obojobo-draft--chunks--table viewer pad"
   >
-    <p>
-      here: 
-    </p>
     <div
       className="container"
     >
       <table
-        className="view"
+        className="view is-display-type-fixed"
       >
         <thead>
           <tr>
@@ -121,14 +118,11 @@ exports[`Table Table component with flexible cell sizes 1`] = `
   <div
     className="obojobo-draft--chunks--table viewer pad"
   >
-    <p>
-      here: 
-    </p>
     <div
       className="container"
     >
       <table
-        className="view no-fixed-width"
+        className="view is-display-type-fixed"
       >
         <thead>
           <tr>
@@ -229,14 +223,11 @@ exports[`Table Table component without header 1`] = `
   <div
     className="obojobo-draft--chunks--table viewer pad"
   >
-    <p>
-      here: 
-    </p>
     <div
       className="container"
     >
       <table
-        className="view"
+        className="view is-display-type-fixed"
       >
         <thead />
         <tbody>

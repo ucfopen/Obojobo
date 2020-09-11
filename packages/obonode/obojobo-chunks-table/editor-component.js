@@ -48,13 +48,13 @@ class Table extends React.Component {
 	toggleFixedWidthCell() {
 		const editor = this.props.editor
 
-		const fixedWidth = !this.props.element.content.fixedWidth
+		const display = this.props.element.content.display === 'auto' ? 'fixed' : 'auto'
 
 		// Toggling the fixed width cell property.
 		const tablePath = ReactEditor.findPath(editor, this.props.element)
 		Transforms.setNodes(
 			editor,
-			{ content: { ...this.props.element.content, fixedWidth } },
+			{ content: { ...this.props.element.content, display } },
 			{ at: tablePath }
 		)
 	}
@@ -68,6 +68,8 @@ class Table extends React.Component {
 	}
 
 	renderButtons() {
+		const { display } = this.props.element.content
+
 		return (
 			<div className="buttonbox-box" contentEditable={false}>
 				<div className="box-border">
@@ -83,7 +85,7 @@ class Table extends React.Component {
 						onClick={this.toggleFixedWidthCell}
 						onKeyDown={this.returnFocusOnTab}
 					>
-						Toggle Fixed Width Cells
+						{display === 'auto' ? 'Switch to fixed width cells' : 'Switch to auto width cells'}
 					</Button>
 				</div>
 			</div>
@@ -91,13 +93,13 @@ class Table extends React.Component {
 	}
 
 	render() {
-		const { fixedWidth } = this.props.element.content
+		const { display } = this.props.element.content
 
 		return (
 			<Component {...this.props}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
-						<table className={fixedWidth ? 'view' : 'view no-fixed-width'} key="table">
+						<table className={`view is-display-type-${display}`} key="table">
 							<tbody>{this.props.children}</tbody>
 						</table>
 					</div>

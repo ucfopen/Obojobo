@@ -59,8 +59,32 @@ describe('Table adapter', () => {
 		expect(model.modelState.textGroup).toEqual(tempGridTextGroup)
 	})
 
+	test.each`
+		input                                               | output
+		${''}                                               | ${'fixed'}
+		${'fixed'}                                          | ${'fixed'}
+		${'auto'}                                           | ${'auto'}
+		${'invalid-value'}                                  | ${'fixed'}
+		${'  FIxEd  '}                                      | ${'fixed'}
+		${'  aUTO  '}                                       | ${'auto'}
+		${true}                                             | ${'fixed'}
+		${false}                                            | ${'fixed'}
+		${'true'}                                           | ${'fixed'}
+		${'false'}                                          | ${'fixed'}
+		${null}                                             | ${'fixed'}
+		${'null'}                                           | ${'fixed'}
+		${undefined /* eslint-disable-line no-undefined */} | ${'fixed'}
+		${'undefined'}                                      | ${'fixed'}
+	`('display property "$input" = "$output"', ({ input, output }) => {
+		const model = new OboModel({ content: { display: input } })
+
+		TableAdapter.construct(model)
+
+		expect(model.modelState.display).toBe(output)
+	})
+
 	test('clone creates a copy', () => {
-		const a = new OboModel({ header: 'mockHeader', fixedWidth: 'mockWidth' })
+		const a = new OboModel({ header: 'mockHeader', display: 'mockDisplay' })
 		const b = new OboModel({})
 
 		TableAdapter.construct(a)

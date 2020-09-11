@@ -146,7 +146,7 @@ describe('repository dashboard route', () => {
 				expect(mockDashboardComponentConstructor).toHaveBeenCalledWith({
 					title: 'Dashboard',
 					currentUser: mockCurrentUser,
-					sortOrder: 'alphabetical',
+					sortOrder: 'newest',
 					myModules: mockModuleSummary
 				})
 				expect(response.statusCode).toBe(200)

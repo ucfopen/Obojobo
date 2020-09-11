@@ -1,7 +1,9 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
-	.view.no-fixed-width {
+	$color-action-low-opacity: lighten($color-action, 50%);
+
+	.view.is-display-type-auto {
 		table-layout: auto;
 	}
 
@@ -20,22 +22,42 @@
 		position: absolute;
 		top: -0.3em;
 		right: 0;
-		z-index: 99;
+		z-index: $z-index-above-all;
+		font-size: 1rem;
+		width: 10rem;
 
 		> button {
 			font-weight: bold;
 			position: absolute;
 			right: 0.2em;
-			top: 0.8em;
-			height: 0.5em;
-			width: 1.5em;
+			top: 0.5em;
+			height: 1.2em;
+			width: 1.2em;
 			padding: 0;
 			color: $color-text-minor;
-			transform: rotate(-180deg);
+			border: none;
+			background-color: $color-transparent;
+
+			> div.table-options-icon {
+				background-image: url('./table-options-icon.svg');
+				background-repeat: no-repeat;
+				height: 100%;
+				width: 100%;
+				cursor: pointer;
+				margin: 0;
+				padding: 0;
+
+				&:hover {
+					background-image: url('./table-options-icon-hovered.svg');
+				}
+			}
 
 			&.is-open {
 				transform: none;
-				top: 0.8em;
+
+				> div.table-options-icon {
+					background-image: url('./table-options-icon-hovered.svg');
+				}
 			}
 		}
 
@@ -46,19 +68,19 @@
 
 			span.is-not-open {
 				transform: none;
-				top: 0.8em;
 			}
 		}
 
 		.drop-content-cell {
 			display: none;
 			text-align: right;
-			border: 1px solid $color-shadow;
+			border: 1px solid $color-shadow-light;
 			border-radius: $dimension-rounded-radius;
 			overflow: hidden;
 			position: relative;
 			top: 1.4em;
 			right: 0.2em;
+			box-shadow: 0 2px 2px $color-shadow;
 			font-family: $font-default;
 
 			&.is-open {
@@ -68,13 +90,17 @@
 			button {
 				display: block;
 				width: 100%;
-				text-align: right;
+				text-align: center;
 				border: none;
 				background-color: $color-bg;
+				padding: $dimension-padding / 4;
+				cursor: pointer;
+				font-family: $font-default;
+				font-size: 0.8em;
 
 				&:hover {
-					background-color: $color-obojobo-blue;
-					color: $color-bg;
+					background-color: $color-action-low-opacity;
+					color: $color-action;
 				}
 			}
 		}
@@ -97,6 +123,7 @@
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
+		width: 34em;
 
 		@mixin point() {
 			content: ' ';
@@ -112,6 +139,17 @@
 		.box-border {
 			background-color: $color-bg2;
 			padding: 1em;
+
+			.obojobo-draft--components--button {
+				position: relative;
+				z-index: 1;
+				font-size: 1.2em;
+				margin: 0 0.25em;
+
+				> button {
+					width: 15em;
+				}
+			}
 		}
 
 		&::before {
@@ -119,16 +157,6 @@
 
 			background-color: $color-bg2;
 			box-shadow: -$box-shadow-overlay;
-		}
-
-		.obojobo-draft--components--button {
-			position: relative;
-			z-index: 1;
-			font-size: 1.2em;
-		}
-
-		.toggle-fixed-width {
-			margin-left: 0.4em;
 		}
 	}
 }

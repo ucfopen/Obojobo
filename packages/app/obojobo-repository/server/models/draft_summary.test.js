@@ -260,7 +260,6 @@ describe('DraftSummary Model', () => {
 					count: 21,
 					draftId: 'mockDraftId'
 				})
-
 				expect(history.revisions.length).toBeLessThan(mockRawRevisionHistory.length)
 				for (let i = 1; i < history.length; i++) {
 					const revision = history.revisions[i]
@@ -312,7 +311,6 @@ describe('DraftSummary Model', () => {
 				count: 51,
 				draftId: 'mockDraftId'
 			})
-
 			expect(history.revisions.length).toBe(50)
 			// would only be true if the number of results returned was equal to the max number per batch
 			expect(history.hasMoreResults).toBe(true)
