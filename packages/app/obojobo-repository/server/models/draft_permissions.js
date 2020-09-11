@@ -37,11 +37,11 @@ class DraftPermissions {
 			.manyOrNone(
 				`SELECT
 				users.id,
-				users.first_name AS "firstName",
-				users.last_name AS "lastName",
+				users.first_name,
+				users.last_name,
 				users.email,
 				users.username,
-				users.created_at AS "createdAt",
+				users.created_at,
 				users.roles
 			FROM repository_map_user_to_draft
 			JOIN users
