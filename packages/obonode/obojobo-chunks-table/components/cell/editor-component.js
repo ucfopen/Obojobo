@@ -200,45 +200,47 @@ class Cell extends React.Component {
 		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
 		const rowIndex = rowPath[rowPath.length - 1]
 
-		if (rowIndex === 0) {
-			// If this is the only row in the table, delete the table
-			if (tableParent.children.length === 1) {
-				return Transforms.removeNodes(editor, { at: tablePath })
-			}
+		return Editor.withoutNormalizing(editor, () => {
+			if (rowIndex === 0) {
+				// If this is the only row in the table, delete the table
+				if (tableParent.children.length === 1) {
+					return Transforms.removeNodes(editor, { at: tablePath })
+				}
 
-			// Set sibling as new header
-			const sibling = tableParent.children[1]
-			const siblingPath = tablePath.concat(rowIndex + 1)
-			const header = { header: tableParent.content.header }
+				// Set sibling as new header
+				const sibling = tableParent.children[1]
+				const siblingPath = tablePath.concat(rowIndex + 1)
+				const header = { header: tableParent.content.header }
 
-			for (const [child, childPath] of Node.children(editor, siblingPath)) {
+				for (const [child, childPath] of Node.children(editor, siblingPath)) {
+					Transforms.setNodes(
+						editor,
+						{
+							content: { ...child.content, ...header }
+						},
+						{ at: childPath }
+					)
+				}
+
 				Transforms.setNodes(
 					editor,
 					{
-						content: { ...child.content, ...header }
+						content: { ...sibling.content, ...header }
 					},
-					{ at: childPath }
+					{ at: siblingPath }
 				)
 			}
 
 			Transforms.setNodes(
 				editor,
 				{
-					content: { ...sibling.content, ...header }
+					content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
 				},
-				{ at: siblingPath }
+				{ at: tablePath }
 			)
-		}
 
-		Transforms.setNodes(
-			editor,
-			{
-				content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
-			},
-			{ at: tablePath }
-		)
-
-		return Transforms.removeNodes(editor, { at: rowPath })
+			return Transforms.removeNodes(editor, { at: rowPath })
+		})
 	}
 
 	deleteCol() {
