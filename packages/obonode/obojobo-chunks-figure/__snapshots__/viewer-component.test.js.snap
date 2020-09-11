@@ -45,7 +45,7 @@ exports[`Figure Figure component 1`] = `
         />
         <figcaption>
           <span
-            className="text"
+            className="obo-text"
             data-group-index="0"
           >
             <span>
@@ -106,7 +106,7 @@ exports[`Figure Figure component costom size with no height 1`] = `
         />
         <figcaption>
           <span
-            className="text"
+            className="obo-text"
             data-group-index="0"
           >
             <span>
@@ -167,7 +167,7 @@ exports[`Figure Figure component costom size with no width 1`] = `
         />
         <figcaption>
           <span
-            className="text"
+            className="obo-text"
             data-group-index="0"
           >
             <span>
@@ -219,7 +219,7 @@ exports[`Figure Figure component size small 1`] = `
         />
         <figcaption>
           <span
-            className="text"
+            className="obo-text"
             data-group-index="0"
           >
             <span>

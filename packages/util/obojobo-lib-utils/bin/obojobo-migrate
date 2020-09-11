@@ -24,16 +24,17 @@ const isCreateMode = args.includes('create')
 
 let command
 
-if (!isCreateMode) {
-	const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
-	const configPath = `${tempDir}/dbconfig.json`
+// crete a temp directory to collect all migrations and render a config filer for db-migrate
+const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
 
+// render Obojobo's dynamic db config to a static .json file for db-migrate
+const configPath = `${tempDir}/dbconfig.json`
+fs.writeFileSync(configPath, JSON.stringify({development: config.db, production: config.db}, null, '\t'))
+
+if (!isCreateMode) {
 	try {
 		// useful to understand how args are being inserted into the command
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
-
-		// use obojobo's config parser to create a json file for db-migrate
-		fs.writeFileSync(configPath, JSON.stringify({development: config.db, production: config.db}, null, '\t'))
 
 		// gather all the migrations into a tmp dir
 		utils.gatherAllMigrations().forEach(dir => fs.copySync(dir, tempDir))
@@ -53,7 +54,9 @@ if (!isCreateMode) {
 	return
 }
 
-// look for my obojobo config - assumes cwd is the root of a project
+// Create Mode
+
+// `obojobo-migrate create` must be run in the package you want migrations created in
 const myIndex = require(`${process.cwd()}/index.js`)
 if (!(myIndex.obojobo && myIndex.obojobo.migrations)) {
 	/*
@@ -65,7 +68,8 @@ if (!(myIndex.obojobo && myIndex.obojobo.migrations)) {
 		}
 	}
 	 */
-	console.log('unable to find obojobo.migrations defined in the current working directory')
+	console.log(`Not able to find obojobo.migrations defined in ${myIndex}`)
+	console.log('Run `obojobo-migrate create` in the root directory of the desired package.')
 }
 
 const localMigrationsDir = `${process.cwd()}/${myIndex.obojobo.migrations}`
