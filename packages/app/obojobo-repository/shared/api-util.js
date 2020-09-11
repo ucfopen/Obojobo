@@ -4,7 +4,7 @@ const ViewerAPI = {
 	copyModule(draftId) {
 		return API.post(`/api/drafts/${draftId}/copy`).then(result => {
 			if (result.status === 200) {
-				window.location = '/dashboard'
+				window.location.assign('/dashboard')
 			} else if (result.status === 401) {
 				window.alert('You are not authorized to copy this module') //eslint-disable-line no-alert
 			} else {

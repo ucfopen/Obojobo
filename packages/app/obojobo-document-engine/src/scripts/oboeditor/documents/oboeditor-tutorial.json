@@ -3358,7 +3358,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (CTRL+Q). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer",
+											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (CTRL+/). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer",
 											"styleList": [
 												{
 													"end": 244,

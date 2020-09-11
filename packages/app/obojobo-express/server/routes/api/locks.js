@@ -2,7 +2,7 @@ const express = require('express')
 const logger = oboRequire('server/logger')
 const router = express.Router()
 const EditLock = oboRequire('server/models/edit_lock')
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const { checkValidationRules, requireDraftId, requireContentId, requireCanViewEditor } = oboRequire(
 	'server/express_validators'
 )
@@ -24,7 +24,10 @@ router
 	.post([requireDraftId, requireCanViewEditor, requireContentId, checkValidationRules])
 	.post(async (req, res) => {
 		try {
-			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+				req.currentUser.id,
+				req.params.draftId
+			)
 
 			if (!hasPerms) {
 				return res.notAuthorized('You do not have the required access to edit this module.')

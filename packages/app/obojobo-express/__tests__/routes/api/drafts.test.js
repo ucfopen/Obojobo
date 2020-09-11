@@ -4,14 +4,12 @@ jest.mock('../../../server/db')
 jest.mock('../../../server/logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 jest.mock('obojobo-document-json-parser/json-to-xml-parser')
-jest.mock('obojobo-repository/server/services/permissions', () => ({
-	userHasPermissionToDraft: jest.fn()
-}))
+jest.mock('obojobo-repository/server/models/draft_permissions')
 
 import DraftModel from '../../../server/models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -67,8 +65,8 @@ describe('api draft route', () => {
 		db.any.mockReset()
 		xml.mockReset()
 		jsonToXml.mockReset()
-		userHasPermissionToDraft.mockReset()
-		userHasPermissionToDraft.mockResolvedValue(true)
+		DraftPermissions.userHasPermissionToDraft.mockReset()
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValue(true)
 	})
 	afterEach(() => {})
 
@@ -359,7 +357,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user is not the author', () => {
 		expect.assertions(5)
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
@@ -385,7 +383,7 @@ describe('api draft route', () => {
 
 	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
 		expect.assertions(4)
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
 
 		return request(app)

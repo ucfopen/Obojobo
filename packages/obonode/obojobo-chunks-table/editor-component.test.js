@@ -18,7 +18,7 @@ jest.mock(
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
-		const component = renderer.create(<Table />)
+		const component = renderer.create(<Table element={{ content: { fixedWidth: true } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -29,7 +29,7 @@ describe('Table Editor Node', () => {
 			<Table
 				selected={true}
 				element={{
-					content: { header: true },
+					content: { header: true, fixedWidth: true },
 					children: [{ content: {} }]
 				}}
 			/>
@@ -45,12 +45,61 @@ describe('Table Editor Node', () => {
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
+	test('Table component toggles fixed width cells', () => {
+		const component = mount(
+			<Table
+				selected={true}
+				element={{
+					content: { header: true, fixedWidth: true },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		Node.children.mockReturnValue([[{ content: {} }, [0]]])
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('Table component has correct className with flexible-width cells', () => {
+		const component = mount(
+			<Table
+				selected={true}
+				element={{
+					content: { header: true, fixedWidth: false },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		expect(component.find('table').hasClass('no-fixed-width')).toBe(true)
+	})
+
+	test('Table component has correct className with fixed-width cells', () => {
+		const component = mount(
+			<Table
+				selected={true}
+				element={{
+					content: { header: true, fixedWidth: true },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		expect(component.find('table').hasClass('view')).toBe(true)
+	})
+
 	test('Table component handles tabbing', () => {
 		const component = mount(
 			<Table
 				selected={true}
 				element={{
-					content: { header: true },
+					content: { header: true, fixedWidth: true },
 					children: [{ content: {} }]
 				}}
 			/>

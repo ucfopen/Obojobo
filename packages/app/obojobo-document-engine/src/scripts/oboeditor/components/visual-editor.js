@@ -219,7 +219,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey) {
+		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -243,7 +243,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey) {
+		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)

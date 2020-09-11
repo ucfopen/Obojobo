@@ -56,6 +56,7 @@ describe('VisualEditor', () => {
 				}
 			])
 		)
+		Editor.marks = jest.fn().mockReturnValue({})
 	})
 
 	afterEach(() => {
@@ -977,16 +978,18 @@ describe('VisualEditor', () => {
 		instance.onKeyDownGlobal({
 			preventDefault,
 			key: '-',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 		expect(editor.toggleEditable).toHaveBeenCalled()
 
-		// open inline insert menu (top one) with shift -
+		// open inline insert menu (top one) with shift _
 		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault,
+			preventDefault: jest.fn(),
 			key: '_',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 		expect(editor.toggleEditable).toHaveBeenCalled()
 
@@ -995,16 +998,18 @@ describe('VisualEditor', () => {
 		instance.onKeyDownGlobal({
 			preventDefault,
 			key: '=',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 		expect(editor.toggleEditable).toHaveBeenCalled()
 
-		// open inline insert menu (bottom one) with shift =
+		// open inline insert menu (bottom one) with shift +
 		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
 			preventDefault,
 			key: '+',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 		expect(editor.toggleEditable).toHaveBeenCalled()
 

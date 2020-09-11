@@ -4,9 +4,7 @@ jest.mock('../../../server/models/edit_lock', () => ({
 	deleteExpiredLocks: jest.fn(),
 	deleteByDraftIdAndUser: jest.fn()
 }))
-jest.mock('obojobo-repository/server/services/permissions', () => ({
-	userHasPermissionToDraft: jest.fn()
-}))
+jest.mock('obojobo-repository/server/models/draft_permissions')
 jest.unmock('express') // needed to use supertest
 
 const mockCurrentUser = { id: 'mock-current-user-id' }
@@ -23,18 +21,17 @@ jest.mock('../../../server/express_validators', () => ({
 }))
 
 describe('Route api/locks', () => {
-	let userHasPermissionToDraft
 	let request
 	let bodyParser
 	let EditLock
 	let app
+	let DraftPermissions
 
 	beforeEach(() => {
 		jest.clearAllMocks()
 		// jest.resetModules()
 		global.oboJestMockConfig()
-		userHasPermissionToDraft = require('obojobo-repository/server/services/permissions')
-			.userHasPermissionToDraft
+		DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 		request = require('supertest')
 		const express = require('express')
 		bodyParser = require('body-parser')
@@ -76,7 +73,7 @@ describe('Route api/locks', () => {
 
 	test('post lock calls expected Validators', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		expect(mockValidatorThatPasses).toHaveBeenCalledTimes(0)
@@ -91,7 +88,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns expected results', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		expect(mockValidatorThatPasses).toHaveBeenCalledTimes(0)
@@ -107,7 +104,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns not authorized when user doesnt have permission to draft', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 
 		return request(app)
 			.post('/api/locks/mock-draft-id')
@@ -125,7 +122,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns not authorized when a different user has a lock', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: 'someone-else' })
 
 		return request(app)
@@ -143,7 +140,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns not authorized when creating a lock doesnt work', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: 'some-other-user' })
 
@@ -162,7 +159,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns a 403 when the contentId does not match', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockImplementationOnce(() => {
+		DraftPermissions.userHasPermissionToDraft.mockImplementationOnce(() => {
 			throw new Error('Current version of draft does not match requested lock.')
 		})
 
@@ -182,7 +179,7 @@ describe('Route api/locks', () => {
 
 	test('post lock returns a 500 when an unexpected error occurs', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockImplementationOnce(() => {
+		DraftPermissions.userHasPermissionToDraft.mockImplementationOnce(() => {
 			throw new Error('mock-error')
 		})
 
@@ -202,7 +199,7 @@ describe('Route api/locks', () => {
 
 	test('post lock calls EditLock.deleteExpiredLocks', () => {
 		expect.hasAssertions()
-		userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		EditLock.fetchByDraftId.mockReturnValueOnce({ userId: mockCurrentUser.id })
 		EditLock.create.mockReturnValueOnce({ userId: mockCurrentUser.id })
 

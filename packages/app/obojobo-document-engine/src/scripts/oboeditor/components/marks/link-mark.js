@@ -66,8 +66,8 @@ const LinkMark = {
 	marks: [
 		{
 			name: 'Link',
+			type: LINK_MARK,
 			shortcut: 'K',
-			type: LinkMark,
 			icon: LinkIcon,
 			action: editor => {
 				// If we have part of the selection inside a button, prevent links

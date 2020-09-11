@@ -553,7 +553,11 @@ export default class ViewerApp extends React.Component {
 		return (
 			<React.Fragment>
 				<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
-				<Nav ref={this.navRef} navState={this.state.navState} />
+				<Nav
+					ref={this.navRef}
+					navState={this.state.navState}
+					assessmentState={this.state.assessmentState}
+				/>
 				<InlineNavButton type="prev" {...prevProps} />
 				<ModuleComponent model={this.state.model} moduleData={this.state} />
 				<InlineNavButton type="next" {...nextProps} />

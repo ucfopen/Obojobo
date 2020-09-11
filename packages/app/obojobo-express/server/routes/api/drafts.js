@@ -9,7 +9,7 @@ const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xm
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const {
 	checkValidationRules,
 	requireDraftId,
@@ -34,7 +34,10 @@ router
 	.get(async (req, res) => {
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
-			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+				req.currentUser.id,
+				req.params.draftId
+			)
 
 			if (!hasPerms) {
 				return res.notAuthorized(

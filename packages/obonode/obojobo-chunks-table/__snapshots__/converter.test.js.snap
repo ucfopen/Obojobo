@@ -73,6 +73,7 @@ Object {
     },
   ],
   "content": Object {
+    "fixedWidth": true,
     "header": true,
     "numCols": 2,
     "numRows": undefined,
