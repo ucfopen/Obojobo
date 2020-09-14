@@ -1,9 +1,12 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
+	> .container {
+		overflow: auto;
+	}
+
 	.view.is-display-type-auto {
 		table-layout: auto;
-		word-break: break-word;
 	}
 
 	.view {
