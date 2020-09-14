@@ -141,4 +141,39 @@ describe('Table', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('When the scrollbar is showing the state changes', () => {
+		const thisValue = {
+			containerRef: {
+				current: {
+					scrollWidth: 0,
+					clientWidth: 0
+				}
+			},
+			setState: jest.fn()
+		}
+
+		// scrollWidth < clientWidth
+		thisValue.containerRef.current.scrollWidth = 10
+		thisValue.containerRef.current.clientWidth = 20
+
+		Table.prototype.componentDidMount.bind(thisValue)()
+		expect(thisValue.setState).not.toHaveBeenCalled()
+
+		// scrollWidth === clientWidth
+		thisValue.containerRef.current.scrollWidth = 15
+		thisValue.containerRef.current.clientWidth = 15
+
+		Table.prototype.componentDidMount.bind(thisValue)()
+		expect(thisValue.setState).not.toHaveBeenCalled()
+
+		// scrollWidth > clientWidth
+		thisValue.containerRef.current.scrollWidth = 20
+		thisValue.containerRef.current.clientWidth = 10
+
+		Table.prototype.componentDidMount.bind(thisValue)()
+		expect(thisValue.setState).toHaveBeenCalledWith({
+			isShowingScrollbar: true
+		})
+	})
 })
