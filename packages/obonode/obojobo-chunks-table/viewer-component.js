@@ -3,65 +3,97 @@ import './viewer-component.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { TextGroupEl } = Common.chunk.textChunk
 const { OboComponent } = Viewer.components
 
-const Table = props => {
-	let header, row
-	const { model } = props
-	const modelState = model.modelState
-	const { numCols } = modelState.textGroup
+class Table extends React.Component {
+	constructor(props) {
+		super(props)
 
-	if (modelState.header) {
-		row = modelState.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
-			<th
-				key={index}
-				className={`cell row-0 col-${index}`}
-				data-table-position={model.get('id') + ',0,' + index}
-			>
-				<TextGroupEl parentModel={props.model} textItem={textGroupItem} groupIndex={index} />
-			</th>
-		))
+		this.state = {
+			isShowingScrollbar: false
+		}
 
-		header = <tr key="header">{row}</tr>
-	} else {
-		header = null
+		this.containerRef = React.createRef()
 	}
 
-	const startIndex = modelState.header ? 1 : 0
-	const rows = __range__(startIndex, modelState.textGroup.numRows, false).map(rowNum => {
-		row = modelState.textGroup.items
-			.slice(rowNum * numCols, (rowNum + 1) * numCols)
-			.map((textGroupItem, index) => (
-				<td
+	componentDidMount() {
+		const el = this.containerRef.current
+
+		if (!el) {
+			return
+		}
+
+		if (el.scrollWidth > el.clientWidth) {
+			this.setState({
+				isShowingScrollbar: true
+			})
+		}
+	}
+
+	render() {
+		let header, row
+		const { model } = this.props
+		const modelState = model.modelState
+		const { numCols } = modelState.textGroup
+
+		if (modelState.header) {
+			row = modelState.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
+				<th
 					key={index}
-					className={`cell row-${rowNum} col-${index}`}
-					data-table-position={model.get('id') + ',' + rowNum + ',' + index}
+					className={`cell row-0 col-${index}`}
+					data-table-position={model.get('id') + ',0,' + index}
 				>
-					<TextGroupEl
-						parentModel={props.model}
-						textItem={textGroupItem}
-						groupIndex={rowNum * numCols + index}
-					/>
-				</td>
+					<TextGroupEl parentModel={this.props.model} textItem={textGroupItem} groupIndex={index} />
+				</th>
 			))
 
-		return <tr key={rowNum}>{row}</tr>
-	})
+			header = <tr key="header">{row}</tr>
+		} else {
+			header = null
+		}
 
-	return (
-		<OboComponent model={props.model} moduleData={props.moduleData}>
-			<div className="obojobo-draft--chunks--table viewer pad">
-				<div className="container">
-					<table className={`view is-display-type-${modelState.display}`} key="table">
-						<thead key="thead">{header}</thead>
-						<tbody key="tbody">{rows}</tbody>
-					</table>
+		const startIndex = modelState.header ? 1 : 0
+		const rows = __range__(startIndex, modelState.textGroup.numRows, false).map(rowNum => {
+			row = modelState.textGroup.items
+				.slice(rowNum * numCols, (rowNum + 1) * numCols)
+				.map((textGroupItem, index) => (
+					<td
+						key={index}
+						className={`cell row-${rowNum} col-${index}`}
+						data-table-position={model.get('id') + ',' + rowNum + ',' + index}
+					>
+						<TextGroupEl
+							parentModel={this.props.model}
+							textItem={textGroupItem}
+							groupIndex={rowNum * numCols + index}
+						/>
+					</td>
+				))
+
+			return <tr key={rowNum}>{row}</tr>
+		})
+
+		return (
+			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
+				<div
+					className={`obojobo-draft--chunks--table viewer pad ${isOrNot(
+						this.state.isShowingScrollbar,
+						'showing-scrollbar'
+					)}`}
+				>
+					<div ref={this.containerRef} className="container">
+						<table className={`view is-display-type-${modelState.display}`} key="table">
+							<thead key="thead">{header}</thead>
+							<tbody key="tbody">{rows}</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-		</OboComponent>
-	)
+			</OboComponent>
+		)
+	}
 }
 
 function __range__(left, right) {
