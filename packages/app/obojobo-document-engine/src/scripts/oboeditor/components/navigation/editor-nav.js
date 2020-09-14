@@ -135,8 +135,10 @@ class EditorNav extends React.PureComponent {
 
 		return (
 			<div className={className}>
-				<ul>{this.renderItems(list)}</ul>
-				{!containsAssessment ? this.renderAddAssessmentButton() : null}
+				<div className="sticky">
+					<ul>{this.renderItems(list)}</ul>
+					{!containsAssessment ? this.renderAddAssessmentButton() : null}
+				</div>
 			</div>
 		)
 	}

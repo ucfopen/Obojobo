@@ -23,6 +23,12 @@
 	border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
 	align-items: stretch;
 
+	.sticky {
+		position: -webkit-sticky; // Safari compatibility.
+		position: sticky;
+		top: 0.1em;
+	}
+
 	hr {
 		border: none;
 		border-bottom: 1px solid $color-bg;
