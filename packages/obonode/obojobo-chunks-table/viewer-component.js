@@ -10,11 +10,11 @@ const { OboComponent } = Viewer.components
 const Table = props => {
 	let header, row
 	const { model } = props
-	const data = model.modelState
-	const { numCols } = data.textGroup
+	const modelState = model.modelState
+	const { numCols } = modelState.textGroup
 
-	if (data.header) {
-		row = data.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
+	if (modelState.header) {
+		row = modelState.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
 			<th
 				key={index}
 				className={`cell row-0 col-${index}`}
@@ -29,9 +29,9 @@ const Table = props => {
 		header = null
 	}
 
-	const startIndex = data.header ? 1 : 0
-	const rows = __range__(startIndex, data.textGroup.numRows, false).map(rowNum => {
-		row = data.textGroup.items
+	const startIndex = modelState.header ? 1 : 0
+	const rows = __range__(startIndex, modelState.textGroup.numRows, false).map(rowNum => {
+		row = modelState.textGroup.items
 			.slice(rowNum * numCols, (rowNum + 1) * numCols)
 			.map((textGroupItem, index) => (
 				<td
@@ -54,7 +54,7 @@ const Table = props => {
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<div className="obojobo-draft--chunks--table viewer pad">
 				<div className="container">
-					<table className="view" key="table">
+					<table className={`view is-display-type-${modelState.display}`} key="table">
 						<thead key="thead">{header}</thead>
 						<tbody key="tbody">{rows}</tbody>
 					</table>

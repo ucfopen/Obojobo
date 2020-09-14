@@ -5,6 +5,8 @@ import renderer from 'react-test-renderer'
 import Table from './editor-component'
 
 import { Transforms, Node } from 'slate'
+import { ReactEditor } from 'slate-react'
+
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
@@ -18,7 +20,7 @@ jest.mock(
 
 describe('Table Editor Node', () => {
 	test('Table component', () => {
-		const component = renderer.create(<Table />)
+		const component = renderer.create(<Table element={{ content: { display: 'fixed' } }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -29,7 +31,7 @@ describe('Table Editor Node', () => {
 			<Table
 				selected={true}
 				element={{
-					content: { header: true },
+					content: { header: true, display: 'fixed' },
 					children: [{ content: {} }]
 				}}
 			/>
@@ -45,12 +47,102 @@ describe('Table Editor Node', () => {
 		expect(Transforms.setNodes).toHaveBeenCalled()
 	})
 
+	test('Table component toggles fixed width cells', () => {
+		const spy = jest.spyOn(ReactEditor, 'findPath').mockReturnValue([0])
+
+		const editor = jest.fn()
+		const component = mount(
+			<Table
+				selected={true}
+				editor={editor}
+				element={{
+					content: { header: true, display: 'auto' },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		Node.children.mockReturnValue([[{ content: {} }, [0]]])
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{ content: { header: true, display: 'fixed' } },
+			{ at: [0] }
+		)
+
+		spy.mockRestore()
+	})
+
+	test('Table component toggles auto width cells', () => {
+		const spy = jest.spyOn(ReactEditor, 'findPath').mockReturnValue([0])
+
+		const editor = jest.fn()
+		const component = mount(
+			<Table
+				selected={true}
+				editor={editor}
+				element={{
+					content: { header: true, display: 'fixed' },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		Node.children.mockReturnValue([[{ content: {} }, [0]]])
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			editor,
+			{ content: { header: true, display: 'auto' } },
+			{ at: [0] }
+		)
+
+		spy.mockRestore()
+	})
+
+	test('Table component has correct className with flexible-width cells', () => {
+		const component = mount(
+			<Table
+				selected={true}
+				element={{
+					content: { header: true, display: 'auto' },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		expect(component.find('table').hasClass('is-display-type-auto')).toBe(true)
+	})
+
+	test('Table component has correct className with fixed-width cells', () => {
+		const component = mount(
+			<Table
+				selected={true}
+				element={{
+					content: { header: true, display: 'fixed' },
+					children: [{ content: {} }]
+				}}
+			/>
+		)
+
+		expect(component.find('table').hasClass('view')).toBe(true)
+	})
+
 	test('Table component handles tabbing', () => {
 		const component = mount(
 			<Table
 				selected={true}
 				element={{
-					content: { header: true },
+					content: { header: true, display: 'fixed' },
 					children: [{ content: {} }]
 				}}
 			/>
