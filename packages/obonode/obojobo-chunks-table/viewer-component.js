@@ -4,6 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 
 const { TextGroupEl } = Common.chunk.textChunk
 const { OboComponent } = Viewer.components
@@ -17,20 +18,29 @@ class Table extends React.Component {
 		}
 
 		this.containerRef = React.createRef()
+		this.updateIfScrollbarNeeded = this.updateIfScrollbarNeeded.bind(this)
 	}
 
 	componentDidMount() {
+		Dispatcher.on('viewer:contentAreaResized', this.updateIfScrollbarNeeded)
+
+		this.updateIfScrollbarNeeded()
+	}
+
+	componentWillUnmount() {
+		Dispatcher.off('viewer:contentAreaResized', this.updateIfScrollbarNeeded)
+	}
+
+	updateIfScrollbarNeeded() {
 		const el = this.containerRef.current
 
 		if (!el) {
 			return
 		}
 
-		if (el.scrollWidth > el.clientWidth) {
-			this.setState({
-				isShowingScrollbar: true
-			})
-		}
+		this.setState({
+			isShowingScrollbar: el.scrollWidth > el.clientWidth
+		})
 	}
 
 	render() {
