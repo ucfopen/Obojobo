@@ -21,7 +21,7 @@ const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
 const config = require('obojobo-express/server/config')
 const args = process.argv.slice(2).join(' ')
 const isCreateMode = args.includes('create')
-
+const NODE_ENV = process.env.NODE_ENV || 'development'
 let command
 
 // crete a temp directory to collect all migrations and render a config filer for db-migrate
@@ -33,7 +33,9 @@ fs.writeFileSync(configPath, JSON.stringify({development: config.db, production:
 
 if (!isCreateMode) {
 	try {
-		// useful to understand how args are being inserted into the command
+		console.log(`Using db.json env: ${NODE_ENV}.`)
+		console.log(`use 'NODE_ENV=<environment> obojobo-migrate ...' to change`)
+
 		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
 
 		// gather all the migrations into a tmp dir

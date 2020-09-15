@@ -21,7 +21,7 @@ class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false,
+			isFetchingEndAttempt: false,
 			currentStep: Assessment.getCurrentStep(props)
 		}
 		this.onEndAttempt = this.onEndAttempt.bind(this)
@@ -92,11 +92,11 @@ class Assessment extends React.Component {
 	}
 
 	onEndAttempt() {
-		this.setState({ isFetching: true })
+		this.setState({ isFetchingEndAttempt: true })
 	}
 
 	onAttemptEnded() {
-		this.setState({ isFetching: false })
+		this.setState({ isFetchingEndAttempt: false })
 	}
 
 	isAttemptComplete() {
@@ -117,7 +117,7 @@ class Assessment extends React.Component {
 
 	onClickSubmit() {
 		// disable multiple clicks
-		if (this.state.isFetching) return
+		if (this.state.isFetchingEndAttempt) return
 
 		if (!this.isAttemptComplete()) {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
@@ -221,6 +221,10 @@ class Assessment extends React.Component {
 	}
 
 	render() {
+		if (this.props.moduleData.assessmentState.attemptHistoryLoadState !== 'loaded') {
+			return 'Loading...'
+		}
+
 		const childEl = (() => {
 			switch (this.state.curStep) {
 				case 'pre-test':
@@ -235,7 +239,7 @@ class Assessment extends React.Component {
 							moduleData={this.props.moduleData}
 							onClickSubmit={this.onClickSubmit}
 							isAttemptComplete={this.isAttemptComplete()}
-							isFetching={this.state.isFetching}
+							isFetching={this.state.isFetchingEndAttempt}
 						/>
 					)
 

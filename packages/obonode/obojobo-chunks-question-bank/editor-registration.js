@@ -29,21 +29,21 @@ const QuestionBank = {
 			if (Element.isElement(node) && node.type === QUESTION_BANK_NODE) {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// The first child should always be a content node
-					if(Element.isElement(child) && !(child.type === QUESTION_BANK_NODE || child.type === QUESTION_NODE)){
-						Transforms.removeNodes(
-							editor,
-							{ at: childPath }
-						)
+					if (
+						Element.isElement(child) &&
+						!(child.type === QUESTION_BANK_NODE || child.type === QUESTION_NODE)
+					) {
+						Transforms.removeNodes(editor, { at: childPath })
 						return
 					}
 
 					// Wrap loose text children in a Question
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: QUESTION_NODE,
-								content: { type: 'default' },
+								content: { type: 'default' }
 							},
 							{ at: childPath }
 						)
@@ -59,7 +59,7 @@ const QuestionBank = {
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
 		}
-	},
+	}
 }
 
 export default QuestionBank

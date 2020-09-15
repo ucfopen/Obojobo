@@ -27,7 +27,7 @@ describe('Split Text Parent', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
@@ -35,7 +35,7 @@ describe('Split Text Parent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		splitParent([editor.children[0],[0]], editor, event)
+		splitParent([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -60,7 +60,7 @@ describe('Split Text Parent', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 0 },
 				focus: { path: [0, 0, 0], offset: 0 }
 			},
@@ -68,7 +68,7 @@ describe('Split Text Parent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		splitParent([editor.children[0],[0]], editor, event)
+		splitParent([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.splitNodes).toHaveBeenCalled()

@@ -10,6 +10,8 @@ jest.mock(
 	{ virtual: true }
 )
 
+jest.setTimeout(10000) // extend test timeout?
+
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
 

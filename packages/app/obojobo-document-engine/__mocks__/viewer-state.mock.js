@@ -14,7 +14,7 @@ const initModuleData = () => {
 	ModalStore.init()
 	FocusStore.init()
 	NavStore.init()
-	AssessmentStore.init()
+	AssessmentStore.init([])
 
 	moduleData.navState = NavStore.getState()
 	moduleData.questionState = QuestionStore.getState()

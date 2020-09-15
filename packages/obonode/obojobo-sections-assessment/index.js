@@ -1,5 +1,6 @@
 module.exports = {
 	obojobo: {
+		migrations: 'migrations',
 		serverScripts: 'server/assessment.js',
 		expressMiddleware: 'server/express.js',
 		clientScripts: {
