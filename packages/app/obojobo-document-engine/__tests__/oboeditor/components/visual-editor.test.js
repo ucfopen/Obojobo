@@ -7,6 +7,8 @@ import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalStore from '../../../src/scripts/common/stores/modal-store'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -55,6 +57,7 @@ describe('VisualEditor', () => {
 				}
 			])
 		)
+		Editor.marks = jest.fn().mockReturnValue({})
 	})
 
 	afterEach(() => {
@@ -73,6 +76,42 @@ describe('VisualEditor', () => {
 		}
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('VisualEditor component - editor is disable when modal is opened', () => {
+		ModalStore.init()
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<VisualEditor {...props} />)
+
+		Dispatcher.trigger('modal:show', { value: 'mockValue' })
+		expect(component.getInstance().state.editable).toEqual(false)
+	})
+
+	test('VisualEditor component - editor is disable when modal is closed', () => {
+		ModalStore.init()
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<VisualEditor {...props} />)
+
+		Dispatcher.trigger('modal:hide', { value: 'mockValue' })
+		expect(component.getInstance().state.editable).toEqual(true)
 	})
 
 	test('VisualEditor component with decoration', () => {
@@ -915,12 +954,6 @@ describe('VisualEditor', () => {
 
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-
-		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
 			key: 'y',
 			metaKey: true
 		})
@@ -938,13 +971,15 @@ describe('VisualEditor', () => {
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: '-',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: '=',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
 
 		instance.onKeyDownGlobal({
@@ -954,7 +989,6 @@ describe('VisualEditor', () => {
 			shiftKey: true
 		})
 
-		expect(editor.undo).toHaveBeenCalled()
 		expect(editor.redo).toHaveBeenCalled()
 	})
 

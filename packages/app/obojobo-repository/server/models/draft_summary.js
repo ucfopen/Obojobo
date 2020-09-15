@@ -50,7 +50,8 @@ class DraftSummary {
 		this.editor = editor
 		this.json = content
 		this.revisionId = id
-		this.userFullName = `${first_name} ${last_name}`
+
+		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
 		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
@@ -67,7 +68,7 @@ class DraftSummary {
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
 			`JOIN repository_map_user_to_draft
-					ON repository_map_user_to_draft.draft_id = drafts.id`,
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
 			{ userId }
 		)
@@ -78,7 +79,7 @@ class DraftSummary {
 			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				logger.error('fetchAndJoinWhere Error', error.message, joinSQL, whereSQL, queryValues)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
@@ -99,15 +100,14 @@ class DraftSummary {
 		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
 		count += 1 // add 1 so we'll know if there are more to get after count
 
+		let whereAfterversion = ''
 		// if afterVersionId is provided, we'll reduce
 		// the results to any revisions saved before afterVersionId
-		let whereAfterVersion = ''
 		if (afterVersionId) {
-			whereAfterVersion = `
+			whereAfterversion = `
 				AND drafts_content.created_at < (
 					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
-				)
-			`
+				)`
 		}
 
 		const query = `
@@ -123,7 +123,7 @@ class DraftSummary {
 				ON drafts_content.user_id = users.id
 			WHERE
 				drafts_content.draft_id = $[draftId]
-				${whereAfterVersion}
+				${whereAfterversion}
 			ORDER BY
 				drafts_content.created_at DESC
 			LIMIT $[count];
@@ -144,19 +144,24 @@ class DraftSummary {
 	static fetchDraftRevisionById(draftId, revisionId) {
 		const query = `
 			SELECT
-				id,
-				draft_id,
-				created_at,
-				content
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
 			FROM drafts_content
-			WHERE draft_id = $[draftId] AND id = $[revisionId]
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
 		`
 
 		return db
 			.one(query, { draftId, revisionId })
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchAllDraftVersions', error.message, query, draftId)
+				logger.error('fetchDraftRevisionById', error.message, query, { draftId, revisionId })
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}

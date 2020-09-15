@@ -35,7 +35,7 @@ exports[`IFrame IFrame component renders 1`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -103,7 +103,7 @@ exports[`IFrame IFrame component renders 2`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -171,7 +171,7 @@ exports[`IFrame IFrame component renders 3`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -239,7 +239,7 @@ exports[`IFrame IFrame component renders 4`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -307,7 +307,7 @@ exports[`IFrame IFrame component renders 5`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -375,7 +375,7 @@ exports[`IFrame IFrame component renders 6`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -791,7 +791,7 @@ exports[`IFrame IFrame component renders 13`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -859,7 +859,7 @@ exports[`IFrame IFrame component renders 14`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -927,7 +927,7 @@ exports[`IFrame IFrame component renders 15`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -995,7 +995,7 @@ exports[`IFrame IFrame component renders 16`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -1063,7 +1063,7 @@ exports[`IFrame IFrame component renders 17`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"
@@ -1131,7 +1131,7 @@ exports[`IFrame IFrame component renders 18`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"

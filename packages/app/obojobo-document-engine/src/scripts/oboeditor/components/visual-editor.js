@@ -23,6 +23,7 @@ import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -148,6 +149,12 @@ class VisualEditor extends React.Component {
 	}
 
 	componentDidMount() {
+		Dispatcher.on('modal:show', () => {
+			this.toggleEditable(false)
+		})
+		Dispatcher.on('modal:hide', () => {
+			this.toggleEditable(true)
+		})
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
 		// Setup global keydown to listen to all global keys
@@ -200,19 +207,9 @@ class VisualEditor extends React.Component {
 			return this.saveModule(this.props.draftId)
 		}
 
-		if (
-			(event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
-			((event.key === 'z' || event.key === 'Z') &&
-				(event.ctrlKey || event.metaKey) &&
-				event.shiftKey)
-		) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			return this.editor.redo()
-		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			return this.editor.undo()
 		}
 
 		if (event.key === 'Escape') {
@@ -221,7 +218,11 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
+		if (
+			(event.key === '-' || event.key === '_') &&
+			(event.ctrlKey || event.metaKey) &&
+			event.shiftKey
+		) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -245,7 +246,11 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
+		if (
+			(event.key === '=' || event.key === '+') &&
+			(event.ctrlKey || event.metaKey) &&
+			event.shiftKey
+		) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
