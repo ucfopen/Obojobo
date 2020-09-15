@@ -4486,7 +4486,8 @@
 								"border": false,
 								"autoload": false,
 								"controls": "reload",
-								"initialZoom": 1
+								"initialZoom": 1,
+								"size": "medium"
 							},
 							"children": []
 						},
@@ -4554,7 +4555,8 @@
 								"border": false,
 								"autoload": false,
 								"controls": "reload",
-								"initialZoom": 1
+								"initialZoom": 1,
+								"size": "medium"
 							},
 							"children": []
 						},
@@ -4586,7 +4588,8 @@
 								"border": false,
 								"autoload": false,
 								"controls": "reload",
-								"initialZoom": 1
+								"initialZoom": 1,
+								"size": "medium"
 							},
 							"children": []
 						},
@@ -4758,6 +4761,23 @@
 											"hangingIndent": false
 										},
 										"text": {
+											"value": "Size: Size of the entire iframe will scale up and down (If large, it will the fit the Youtube's iframe width)",
+											"styleList": [
+												{
+													"end": 4,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
 											"value": "Initial Zoom: Sets a scale multiplier for the IFrame content. A value of 1 keeps the content at its default size, decimal values such as 0.5 will make the content smaller, and values greater than 1 will make the content larger.",
 											"styleList": [
 												{
@@ -4822,7 +4842,8 @@
 								"border": true,
 								"autoload": false,
 								"controls": "reload",
-								"initialZoom": "1"
+								"initialZoom": "1",
+								"size": "medium"
 							},
 							"children": []
 						},
@@ -4926,7 +4947,8 @@
 								"border": false,
 								"autoload": false,
 								"controls": "new-window,zoom",
-								"initialZoom": 1
+								"initialZoom": 1,
+								"size": "medium"
 							},
 							"children": []
 						}

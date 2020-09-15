@@ -24,7 +24,7 @@ const slateToObo = node => ({
 		initialZoom: node.content.initialZoom,
 		autoload: node.content.autoload,
 		controls: node.content.controls,
-        size: node.content.size
+		size: node.content.size
 	})
 })
 
