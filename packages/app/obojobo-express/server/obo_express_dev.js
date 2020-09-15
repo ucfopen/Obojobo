@@ -197,7 +197,9 @@ module.exports = app => {
 			accept_unsigned: 'false',
 			auto_create: 'true',
 			can_confirm: 'false',
-			content_item_return_url: `${baseUrl(req)}/lti/dev/return/resource_selection?test=this%20is%20a%20test`,
+			content_item_return_url: `${baseUrl(
+				req
+			)}/lti/dev/return/resource_selection?test=this%20is%20a%20test`,
 			launch_presentation_css_url: 'https://example.fake/nope.css',
 			launch_presentation_locale: 'en-US',
 			lti_message_type: 'ContentItemSelectionRequest',

@@ -35,7 +35,11 @@ class DraftSummary {
 		created_at,
 		updated_at,
 		revision_count,
-		editor
+		editor,
+		content,
+		id,
+		first_name,
+		last_name
 	}) {
 		this.draftId = draft_id
 		this.title = title
@@ -43,8 +47,12 @@ class DraftSummary {
 		this.createdAt = created_at
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
-		this.revisionCount = Number(revision_count)
 		this.editor = editor
+		this.json = content
+		this.revisionId = id
+
+		if (first_name && last_name) this.userFullName = `${first_name} ${last_name}`
+		if (revision_count) this.revisionCount = Number(revision_count)
 	}
 
 	static fetchById(id) {
@@ -60,7 +68,7 @@ class DraftSummary {
 	static fetchByUserId(userId) {
 		return DraftSummary.fetchAndJoinWhere(
 			`JOIN repository_map_user_to_draft
-					ON repository_map_user_to_draft.draft_id = drafts.id`,
+				ON repository_map_user_to_draft.draft_id = drafts.id`,
 			`repository_map_user_to_draft.user_id = $[userId]`,
 			{ userId }
 		)
@@ -71,7 +79,7 @@ class DraftSummary {
 			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
-				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				logger.error('fetchAndJoinWhere Error', error.message, joinSQL, whereSQL, queryValues)
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
@@ -82,6 +90,78 @@ class DraftSummary {
 			.then(DraftSummary.resultsToObjects)
 			.catch(error => {
 				logger.error('fetchWhere Error', error.message, whereSQL, queryValues)
+				return Promise.reject('Error loading DraftSummary by query')
+			})
+	}
+
+	static async fetchAllDraftRevisions(draftId, afterVersionId = null, count = 50) {
+		const MAX_COUNT = 100
+		const MIN_COUNT = 10
+		count = Math.max(Math.min(MAX_COUNT, count), MIN_COUNT)
+		count += 1 // add 1 so we'll know if there are more to get after count
+
+		let whereAfterversion = ''
+		// if afterVersionId is provided, we'll reduce
+		// the results to any revisions saved before afterVersionId
+		if (afterVersionId) {
+			whereAfterversion = `
+				AND drafts_content.created_at < (
+					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
+				)`
+		}
+
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE
+				drafts_content.draft_id = $[draftId]
+				${whereAfterversion}
+			ORDER BY
+				drafts_content.created_at DESC
+			LIMIT $[count];
+		`
+
+		try {
+			const results = await db.any(query, { draftId, afterVersionId, count })
+			const hasMoreResults = results.length === count
+			if (hasMoreResults) results.pop() // remove last element
+			const revisions = DraftSummary.resultsToObjects(results)
+			return { revisions, hasMoreResults }
+		} catch (error) {
+			logger.error('fetchAllDraftRevisions', error.message, query, draftId)
+			return Promise.reject('Error loading DraftSummary by query')
+		}
+	}
+
+	static fetchDraftRevisionById(draftId, revisionId) {
+		const query = `
+			SELECT
+				drafts_content.id,
+				drafts_content.draft_id,
+				drafts_content.created_at,
+				drafts_content.content,
+				drafts_content.user_id,
+				users.first_name,
+				users.last_name
+			FROM drafts_content
+			JOIN users
+				ON drafts_content.user_id = users.id
+			WHERE drafts_content.draft_id = $[draftId] AND drafts_content.id = $[revisionId]
+		`
+
+		return db
+			.one(query, { draftId, revisionId })
+			.then(DraftSummary.resultsToObjects)
+			.catch(error => {
+				logger.error('fetchDraftRevisionById', error.message, query, { draftId, revisionId })
 				return Promise.reject('Error loading DraftSummary by query')
 			})
 	}
