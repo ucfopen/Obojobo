@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
@@ -50,7 +51,7 @@ module.exports =
 						issuer: {
 							test: /\.js$/
 						},
-						use: ['@svgr/webpack'],
+						use: ['@svgr/webpack']
 					},
 					// Load SVGs into strings when imported elsewhere
 					{
@@ -126,7 +127,9 @@ module.exports =
 					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
 				]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new ManifestPlugin({ publicPath: '/static/' })
+				new ManifestPlugin({ publicPath: '/static/' }),
+				// Ignore all locale files of moment.js
+				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

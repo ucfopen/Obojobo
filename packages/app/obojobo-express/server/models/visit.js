@@ -6,13 +6,14 @@ const DraftDocument = require('./draft')
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
 // them from being used again
-const deactivateOldVisitsAndCreateNewVisit = async (
+const deactivateOldVisitsAndCreateNewVisit = async ({
 	userId,
 	draftId,
 	resourceLinkId,
-	launchId,
-	isPreview
-) => {
+	launchId = null,
+	isPreview = false,
+	nodeOptions = { isScoreImportable: false }
+}) => {
 	return db.taskIf(async t => {
 		// deactivate all my visits for this draft
 		const deactivatedVisits = await t.manyOrNone(
@@ -47,8 +48,26 @@ const deactivateOldVisitsAndCreateNewVisit = async (
 		// Create a new visit
 		const visit = await t.one(
 			`INSERT INTO visits
-			(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
-			VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
+				(
+					draft_id,
+					draft_content_id,
+					user_id,
+					launch_id,
+					resource_link_id,
+					is_active,
+					is_preview,
+					score_importable
+				)
+			VALUES (
+				$[draftId],
+				$[draftContentId],
+				$[userId],
+				$[launchId],
+				$[resourceLinkId],
+				true,
+				$[isPreview],
+				$[isScoreImportable]
+			)
 			RETURNING id`,
 			{
 				draftId,
@@ -56,7 +75,8 @@ const deactivateOldVisitsAndCreateNewVisit = async (
 				userId,
 				resourceLinkId,
 				launchId,
-				isPreview
+				isPreview,
+				isScoreImportable: nodeOptions.isScoreImportable
 			}
 		)
 
@@ -85,19 +105,21 @@ class Visit {
 		}
 	}
 
-	get draftDocument(){
-		if(this._memoizedDraftDocument) return Promise.resolve(this.memoizedDraftDocument)
-		return DraftDocument.fetchDraftByVersion(this.draft_id, this.draft_content_id).then(draftDocument => {
-			this._memoizedDraftDocument = draftDocument
-			return draftDocument
-		})
+	get draftDocument() {
+		if (this._memoizedDraftDocument) return Promise.resolve(this.memoizedDraftDocument)
+		return DraftDocument.fetchDraftByVersion(this.draft_id, this.draft_content_id).then(
+			draftDocument => {
+				this._memoizedDraftDocument = draftDocument
+				return draftDocument
+			}
+		)
 	}
 
 	static fetchById(visitId, requireIsActive = true) {
 		return db
 			.one(
 				`
-			SELECT id, user_id, is_active, is_preview, draft_id, draft_content_id, resource_link_id
+			SELECT id, user_id, is_active, is_preview, draft_id, draft_content_id, resource_link_id, score_importable
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}
@@ -108,24 +130,36 @@ class Visit {
 			)
 			.then(result => new Visit(result))
 			.catch(error => {
-				logger.error('Visit fetchById Error', visitId, error.message)
-				return Promise.reject(error)
+				logger.logError('Visit fetchById Error', error)
+				throw error
 			})
 	}
 
 	// create a student visit
 	// deactivates all previous visits
-	static createVisit(userId, draftId, resourceLinkId, launchId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, resourceLinkId, launchId, false)
+	static createVisit(userId, draftId, resourceLinkId, launchId, nodeOptions) {
+		return deactivateOldVisitsAndCreateNewVisit({
+			userId,
+			draftId,
+			resourceLinkId,
+			launchId,
+			nodeOptions
+		})
 	}
 
 	// create a preview visit
 	// deactivates all previous visits
 	static createPreviewVisit(userId, draftId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, 'preview', null, true)
+		return deactivateOldVisitsAndCreateNewVisit({
+			userId,
+			draftId,
+			resourceLinkId: 'preview',
+			isPreview: true
+		})
 	}
 }
 
 Visit.EVENT_NEW_VISIT = 'EVENT_NEW_VISIT'
+Visit.EVENT_BEFORE_NEW_VISIT = 'EVENT_BEFORE_NEW_VISIT'
 
 module.exports = Visit

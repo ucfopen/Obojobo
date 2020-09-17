@@ -15,7 +15,7 @@ exports[`Heading Heading component 1`] = `
   >
     <h1>
       <span
-        className="text align-left"
+        className="obo-text align-left"
         data-group-index="0"
         data-indent={0}
       >
@@ -47,7 +47,7 @@ exports[`Heading Heading component level 2 1`] = `
   >
     <h2>
       <span
-        className="text align-left"
+        className="obo-text align-left"
         data-group-index="0"
         data-indent={0}
       >
@@ -79,7 +79,7 @@ exports[`Heading Heading component level 3 1`] = `
   >
     <h3>
       <span
-        className="text align-left"
+        className="obo-text align-left"
         data-group-index="0"
         data-indent={0}
       >

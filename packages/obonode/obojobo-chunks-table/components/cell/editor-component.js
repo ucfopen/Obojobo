@@ -9,12 +9,14 @@ import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/comp
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
+const SHOW_DROP_DOWN_MENU_DELAY_MS = 150
 
 class Cell extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isOpen: false
+			isOpen: false,
+			isShowingDropDownMenu: false
 		}
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -198,45 +200,47 @@ class Cell extends React.Component {
 		const [tableParent, tablePath] = Editor.parent(editor, rowPath)
 		const rowIndex = rowPath[rowPath.length - 1]
 
-		if (rowIndex === 0) {
-			// If this is the only row in the table, delete the table
-			if (tableParent.children.length === 1) {
-				return Transforms.removeNodes(editor, { at: tablePath })
-			}
+		return Editor.withoutNormalizing(editor, () => {
+			if (rowIndex === 0) {
+				// If this is the only row in the table, delete the table
+				if (tableParent.children.length === 1) {
+					return Transforms.removeNodes(editor, { at: tablePath })
+				}
 
-			// Set sibling as new header
-			const sibling = tableParent.children[1]
-			const siblingPath = tablePath.concat(rowIndex + 1)
-			const header = { header: tableParent.content.header }
+				// Set sibling as new header
+				const sibling = tableParent.children[1]
+				const siblingPath = tablePath.concat(rowIndex + 1)
+				const header = { header: tableParent.content.header }
 
-			for (const [child, childPath] of Node.children(editor, siblingPath)) {
+				for (const [child, childPath] of Node.children(editor, siblingPath)) {
+					Transforms.setNodes(
+						editor,
+						{
+							content: { ...child.content, ...header }
+						},
+						{ at: childPath }
+					)
+				}
+
 				Transforms.setNodes(
 					editor,
 					{
-						content: { ...child.content, ...header }
+						content: { ...sibling.content, ...header }
 					},
-					{ at: childPath }
+					{ at: siblingPath }
 				)
 			}
 
 			Transforms.setNodes(
 				editor,
 				{
-					content: { ...sibling.content, ...header }
+					content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
 				},
-				{ at: siblingPath }
+				{ at: tablePath }
 			)
-		}
 
-		Transforms.setNodes(
-			editor,
-			{
-				content: { ...tableParent.content, numRows: tableParent.content.numRows - 1 }
-			},
-			{ at: tablePath }
-		)
-
-		return Transforms.removeNodes(editor, { at: rowPath })
+			return Transforms.removeNodes(editor, { at: rowPath })
+		})
 	}
 
 	deleteCol() {
@@ -292,7 +296,7 @@ class Cell extends React.Component {
 					onClick={this.toggleOpen}
 					onKeyDown={this.returnFocusOnShiftTab}
 				>
-					{'⌃'}
+					<div className="table-options-icon"></div>
 				</button>
 				<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
 					<button onClick={this.addRowAbove}>Insert Row Above</button>
@@ -306,18 +310,48 @@ class Cell extends React.Component {
 		)
 	}
 
+	showDropDownMenu() {
+		if (!this.props.selected) return
+
+		this.setState({
+			isShowingDropDownMenu: true
+		})
+	}
+
+	componentDidMount() {
+		if (this.props.selected) {
+			this.showDropDownMenu()
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		// If the cell is no longer selected remove any isOpen state, otherwise it will remain open
+		// when reentering the cell
+		if (prevProps.selected && !this.props.selected) {
+			this.setState({
+				isOpen: false,
+				isShowingDropDownMenu: false
+			})
+		} else if (!prevProps.selected && this.props.selected) {
+			// Clicking in a cell where the drop down menu is causes the drop menu to close right
+			// away and the focus is lost from the table. To get around this, we hold off on
+			// showing the drop down menu for a tiny bit before making it appear.
+			setTimeout(() => this.showDropDownMenu(), SHOW_DROP_DOWN_MENU_DELAY_MS)
+		}
+	}
+
 	render() {
 		if (this.props.element.content.header) {
 			return (
 				<th>
-					{this.props.selected ? this.renderDropdown() : null}
+					{this.state.isShowingDropDownMenu ? this.renderDropdown() : null}
 					{this.props.children}
 				</th>
 			)
 		}
 		return (
 			<td>
-				{this.props.selected ? this.renderDropdown() : null}
+				{this.state.isShowingDropDownMenu ? this.renderDropdown() : null}
 				{this.props.children}
 			</td>
 		)

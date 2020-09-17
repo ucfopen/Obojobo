@@ -14,7 +14,7 @@ const {
 	expandLisResultSourcedId,
 	createPassbackResult,
 	getValuesFromPassbackXML
-} = require('./route-controllers')
+} = require('./route-helpers')
 const materiaEvent = require('./materia-event')
 const {
 	requireCurrentUser,

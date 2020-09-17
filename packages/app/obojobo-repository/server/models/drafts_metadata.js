@@ -21,7 +21,7 @@ class DraftsMetadata {
 				ON CONFLICT (draft_id, key) DO UPDATE SET
 					value = $[value],
 					updated_at = 'now()'
-			  `,
+				`,
 				this
 			)
 			.then(() => {

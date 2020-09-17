@@ -1,16 +1,17 @@
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import APIUtil from 'src/scripts/viewer/util/api-util'
 import VisualEditor from 'src/scripts/oboeditor/components/visual-editor'
 import React from 'react'
 import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalStore from '../../../src/scripts/common/stores/modal-store'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
-jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 	helpers: {
@@ -55,6 +56,7 @@ describe('VisualEditor', () => {
 				}
 			])
 		)
+		Editor.marks = jest.fn().mockReturnValue({})
 	})
 
 	afterEach(() => {
@@ -73,6 +75,42 @@ describe('VisualEditor', () => {
 		}
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('VisualEditor component - editor is disable when modal is opened', () => {
+		ModalStore.init()
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<VisualEditor {...props} />)
+
+		Dispatcher.trigger('modal:show', { value: 'mockValue' })
+		expect(component.getInstance().state.editable).toEqual(false)
+	})
+
+	test('VisualEditor component - editor is disable when modal is closed', () => {
+		ModalStore.init()
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = renderer.create(<VisualEditor {...props} />)
+
+		Dispatcher.trigger('modal:hide', { value: 'mockValue' })
+		expect(component.getInstance().state.editable).toEqual(true)
 	})
 
 	test('VisualEditor component with decoration', () => {
@@ -491,6 +529,7 @@ describe('VisualEditor', () => {
 
 	test('changes the Editor title', () => {
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -552,6 +591,7 @@ describe('VisualEditor', () => {
 
 	test('can not change the Editor title to blank', () => {
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [{ type: 'mockNode' }] },
@@ -621,8 +661,6 @@ describe('VisualEditor', () => {
 	})
 
 	test('Ensures the plugins work as expected', () => {
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
-
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -842,7 +880,7 @@ describe('VisualEditor', () => {
 			eventMap[event] = cb
 		})
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
+
 		const props = {
 			insertableItems: 'mock-insertable-items',
 			page: {
@@ -886,6 +924,7 @@ describe('VisualEditor', () => {
 		}
 
 		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
 			insertableItems: 'mock-insertable-items',
 			page: {
 				attributes: { children: [] },
@@ -905,57 +944,99 @@ describe('VisualEditor', () => {
 
 		const component = mount(<VisualEditor {...props} />)
 		const instance = component.instance()
+		const preventDefault = jest.fn()
 		instance.editor = editor
 
+		// save
+		props.saveDraft.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 's',
 			metaKey: true
 		})
+		expect(props.saveDraft).toHaveBeenCalled()
 
-		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
-			key: 'z',
-			metaKey: true
-		})
-
+		// undo ctrl y
+		editor.redo.mockClear()
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
 			key: 'y',
 			metaKey: true
 		})
+		expect(editor.redo).toHaveBeenCalled()
 
+		// escape
+		ReactEditor.blur.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: 'Escape'
 		})
+		expect(ReactEditor.blur).toHaveBeenCalled()
 
+		// open inline insert menu (top one) with -
+		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
-			key: 's'
-		})
-
-		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
 			key: '-',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
 
+		// open inline insert menu (top one) with shift _
+		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
 			preventDefault: jest.fn(),
+			key: '_',
+			metaKey: true,
+			shiftKey: true
+		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
+
+		// open inline insert menu (bottom one) with =
+		editor.toggleEditable.mockClear()
+		instance.onKeyDownGlobal({
+			preventDefault,
 			key: '=',
-			metaKey: true
+			metaKey: true,
+			shiftKey: true
 		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
 
+		// open inline insert menu (bottom one) with shift +
+		editor.toggleEditable.mockClear()
 		instance.onKeyDownGlobal({
-			preventDefault: jest.fn(),
+			preventDefault,
+			key: '+',
+			metaKey: true,
+			shiftKey: true
+		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
+
+		editor.toggleEditable.mockClear()
+		instance.onKeyDownGlobal({
+			preventDefault,
 			key: 'i',
 			metaKey: true,
 			shiftKey: true
 		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
 
-		expect(editor.undo).toHaveBeenCalled()
-		expect(editor.redo).toHaveBeenCalled()
+		// sometimes shift i registers as upper case I
+		editor.toggleEditable.mockClear()
+		instance.onKeyDownGlobal({
+			preventDefault,
+			key: 'I',
+			metaKey: true,
+			shiftKey: true
+		})
+		expect(editor.toggleEditable).toHaveBeenCalled()
+
+		// type something that doesn't match any listeners (for coverage)
+		instance.onKeyDownGlobal({
+			preventDefault,
+			key: 'q'
+		})
 	})
 
 	test('onKeyDown runs through full list of options', () => {

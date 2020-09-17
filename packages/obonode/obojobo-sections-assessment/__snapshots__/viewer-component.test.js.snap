@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Assessment Assessment component 1`] = `
+exports[`Assessment Assessment component after loading 1`] = `
 <div
   className="component obojobo-draft--sections--assessment"
   data-focussed={false}
@@ -59,3 +59,5 @@ exports[`Assessment Assessment component in test stage 1`] = `
   tabIndex={-1}
 />
 `;
+
+exports[`Assessment Assessment component is loading 1`] = `"Loading..."`;

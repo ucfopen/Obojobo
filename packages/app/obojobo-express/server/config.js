@@ -83,6 +83,8 @@ const getConfigFileData = (configFile, env) => {
 		// combine with default if it exists
 		return deepFreeze({ ...defaultObject, ...envObject })
 	} catch (error) {
+		/* istanbul ignore next */
+		if (env === 'test') console.warn(error) // eslint-disable-line no-console
 		logger.error(`Error loading config file: ${configFile}`)
 		logger.error(error.toString())
 		return deepFreeze({})
@@ -108,17 +110,18 @@ const configDirs = getAllOboNodeRegistryDirsByType('config')
 // load each json config file and place it in the
 // configuration object
 configDirs.forEach(dir => {
-	const path = require('path');
-	const fs = require('fs');
+	const path = require('path')
+	const fs = require('fs')
 	// sync because this only happens on startup
 	const files = fs.readdirSync(dir)
 	files.forEach(file => {
-		if(!file.endsWith('.json')) return
+		if (!file.endsWith('.json')) return
 		const name = camelCase(path.basename(file, '.json'))
 		const fPath = path.join(dir, file)
-		if(configuration[name] !== undefined) logger.error(`Config name ${name} already registered, not loading: ${fPath}`)
+		if (configuration[name] !== undefined)
+			logger.error(`Config name ${name} already registered, not loading: ${fPath}`)
 		const cfg = getConfigFileData(fPath, env)
-		if(cfg) configuration[name] = cfg
+		if (cfg) configuration[name] = cfg
 	})
 })
 

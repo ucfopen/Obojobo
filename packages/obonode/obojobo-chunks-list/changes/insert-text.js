@@ -21,8 +21,9 @@ const insertText = (entry, editor, event) => {
 		!Range.isCollapsed(editor.selection) ||
 		Node.string(lineNode) !== '' ||
 		!Editor.isEnd(editor, editor.selection.focus, nodeRange)
-	)
+	) {
 		return
+	}
 
 	event.preventDefault()
 

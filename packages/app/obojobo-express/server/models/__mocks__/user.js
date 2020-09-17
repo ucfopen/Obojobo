@@ -44,6 +44,10 @@ class MockUser {
 		return false
 	}
 
+	toJSON() {
+		return { mockUser: true }
+	}
+
 	static set saveOrCreateCallback(fn) {
 		saveOrCreateCallbackFn = fn
 	}

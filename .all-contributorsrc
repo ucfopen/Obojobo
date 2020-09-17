@@ -6,6 +6,16 @@
   "commit": false,
   "contributors": [
     {
+      "login": "maufcost",
+      "name": "Mauricio Figueiredo",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/39862359?v=4",
+      "profile": "https://github.com/maufcost",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
       "login": "vutoan1245",
       "name": "Toan Vu",
       "avatar_url": "https://avatars0.githubusercontent.com/u/23706824?v=4",

@@ -33,6 +33,7 @@ const slateToObo = node => {
 		content: withoutUndefined({
 			triggers: node.content.triggers,
 			header: node.content.header,
+			display: node.content.display,
 			textGroup: {
 				numRows: node.children.length,
 				numCols: node.children[0].children.length,
@@ -51,10 +52,13 @@ const slateToObo = node => {
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
+	const display = ('' + node.content.display).toLowerCase().trim()
+
 	const slateNode = Object.assign({}, node)
 	slateNode.content.numCols = node.content.textGroup.numCols
 	slateNode.content.numRows = node.content.textGroup.numRows
 	slateNode.children = []
+	slateNode.content.display = display === 'auto' ? 'auto' : 'fixed'
 
 	let currRow
 	node.content.textGroup.textGroup.forEach((line, index) => {

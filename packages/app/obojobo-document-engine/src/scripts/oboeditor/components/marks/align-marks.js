@@ -54,14 +54,14 @@ const AlignMarks = {
 		},
 		{
 			name: 'Center Align',
-			shortcut: 'R',
+			shortcut: 'E',
 			type: ALIGN_CENTER,
 			icon: CenterIcon,
 			action: editor => editor.setAlign(ALIGN_CENTER)
 		},
 		{
 			name: 'Right Align',
-			shortcut: 'E',
+			shortcut: 'R',
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)
