@@ -27,9 +27,9 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^10.1.0-alpha1",
-		"obojobo-chunks-iframe": "^10.1.0-alpha1",
-		"obojobo-document-engine": "^10.1.0-alpha1",
+		"obojobo-lib-utils": "^10.1.0",
+		"obojobo-chunks-iframe": "^10.1.0",
+		"obojobo-document-engine": "^10.1.0",
 		"xml2js": "0.4.23",
 		"uuid": "^8.1.0"
 	},
