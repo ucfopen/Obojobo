@@ -3,6 +3,12 @@
 .obojobo-draft--chunks--table.viewer {
 	$color-action-low-opacity: lighten($color-action, 50%);
 
+	> .container {
+		// We need to disable the overflow rule for auto-width table cells since this will hide
+		// the table insert/delete menu
+		overflow: inherit;
+	}
+
 	.view.is-display-type-auto {
 		table-layout: auto;
 	}
@@ -157,6 +163,14 @@
 
 			background-color: $color-bg2;
 			box-shadow: -$box-shadow-overlay;
+		}
+	}
+
+	&.is-showing-scrollbar {
+		> .container {
+			// Disable any additional padding provided by the viewer since we don't show scrollbars
+			// in the editor
+			padding-bottom: 0;
 		}
 	}
 }
