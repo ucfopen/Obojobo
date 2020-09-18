@@ -1,7 +1,7 @@
 import React from 'react'
 
 import emptyNode from './empty-node.json'
-import Icon from './icon'
+import Icon from './editor-icon.svg'
 import EditorComponent from './editor-component'
 import Converter from './converter'
 

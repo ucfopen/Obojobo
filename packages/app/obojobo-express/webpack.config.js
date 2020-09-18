@@ -51,7 +51,20 @@ module.exports =
 						issuer: {
 							test: /\.js$/
 						},
-						use: ['@svgr/webpack']
+						use: [{
+							loader:'@svgr/webpack',
+							options: {
+								svgoConfig:{
+									plugins: [
+										{
+											prefixIds: {
+												prefixClassNames: false // don't prefix class names in svgs
+											}
+										}
+									]
+								}
+							}
+						}],
 					},
 					// Load SVGs into strings when imported elsewhere
 					{
