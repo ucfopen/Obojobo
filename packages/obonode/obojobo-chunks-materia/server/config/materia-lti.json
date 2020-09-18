@@ -1,8 +1,8 @@
 {
 	"default":
 	{
-		"oauthKey": "materia-key",
-		"oauthSecret": "materia-secret",
+		"oauthKey": "materia-lti-key",
+		"oauthSecret": "materia-lti-secret",
 		"oboFamilyCode": "obojobo-next",
 		"oboName": "Obojobo Next"
 	},
