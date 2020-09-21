@@ -39,6 +39,8 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 let restoreConsole
 
+jest.useFakeTimers()
+
 describe('VisualEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -584,6 +586,8 @@ describe('VisualEditor', () => {
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
 
+		jest.runOnlyPendingTimers()
+
 		// verify save and rename are called
 		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', 'mock new title')
 		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
@@ -954,6 +958,8 @@ describe('VisualEditor', () => {
 			key: 's',
 			metaKey: true
 		})
+
+		jest.runOnlyPendingTimers()
 		expect(props.saveDraft).toHaveBeenCalled()
 
 		// undo ctrl y

@@ -62,11 +62,13 @@ exports[`Rubric editor Rubric renders 1`] = `
         <input
           max="100"
           min="0"
+          name="passingAttemptScore"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value=""
         />
         %
       </label>
@@ -101,11 +103,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="passedResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value=""
         />
         %
       </label>
@@ -145,11 +149,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="failedResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value=""
         />
         %
       </label>
@@ -194,11 +200,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="unableToPassResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value=""
         />
         %
       </label>

@@ -2,6 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import Rubric from './editor-component'
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
@@ -34,11 +35,40 @@ describe('Rubric editor', () => {
 						]
 					}
 				}}
+				editor={{ selection: [0, 0] }}
 			/>
 		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Rubric calls updateNodeFromState when saved', () => {
+		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
+		renderer.create(
+			<Rubric
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+
+		Dispatcher.trigger('editor:save')
+		expect(Transforms.setNodes).toHaveBeenCalled()
+	})
+
+	test('Rubric calls Dispatcher.off when unmount', () => {
+		jest.spyOn(Dispatcher, 'off').mockReturnValue(true)
+		const component = renderer.create(
+			<Rubric
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
+				}}
+			/>
+		)
+		component.getInstance().componentWillUnmount()
+		expect(Dispatcher.off).toHaveBeenCalled()
 	})
 
 	test('Rubric changes type', () => {
@@ -91,75 +121,28 @@ describe('Rubric editor', () => {
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { target: { value: 100 } })
+			.simulate('change', { target: { name: 'passingAttemptScore', value: 100 } })
 		component
 			.find('input')
 			.at(2)
 			.simulate('blur')
 
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(component.instance().state.passingAttemptScore).toBe(100)
 	})
 
-	test('Rubric changes pass result', () => {
+	test('Rubric updates slate state', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
 				element={{
-					content: { passedType: 'set-value', mods: [] }
+					content: { unableToPassType: 'set-value', mods: [] }
 				}}
 			/>
 		)
 
-		component
-			.find('select')
-			.at(0)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', { target: { value: '$attempt_score' } })
+		component.instance().updateNodeFromState()
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { value: 100 } })
-
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
-	})
-
-	test('Rubric changes failed result', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		const component = mount(
-			<Rubric
-				element={{
-					content: { failedType: 'set-value', mods: [] }
-				}}
-			/>
-		)
-
-		component
-			.find('select')
-			.at(1)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('select')
-			.at(1)
-			.simulate('change', { target: { value: '$attempt_score' } })
-
-		component
-			.find('input')
-			.at(4)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('input')
-			.at(4)
-			.simulate('change', { target: { value: 100 } })
-
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
 	})
 
 	test('Rubric changes unable to pass result', () => {
@@ -188,9 +171,9 @@ describe('Rubric editor', () => {
 		component
 			.find('input')
 			.at(5)
-			.simulate('change', { target: { value: 100 } })
+			.simulate('change', { target: { name: 'unableToPassResult', value: '100' } })
 
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
+		expect(component.instance().state.unableToPassResult).toBe('100')
 	})
 
 	test('Rubric opens mod dialog', () => {
