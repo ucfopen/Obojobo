@@ -74,10 +74,17 @@ const KeyDownUtil = {
 		}
 	},
 	breakToText: (event, editor, entry) => {
-		const [, nodePath] = entry
+		const [node, nodePath] = entry
 		const nodeRange = Editor.range(editor, nodePath)
 		const nodeEnd = Editor.end(editor, nodeRange)
 		const selectionEnd = Editor.end(editor, editor.selection)
+		const nodeStart = Editor.start(editor, nodeRange)
+		const selectionStart = Editor.start(editor, editor.selection)
+		const toStartOfNode = {
+			anchor: selectionStart,
+			focus: nodeStart
+		}
+
 		event.preventDefault()
 
 		const toEndOfNode = {
@@ -103,6 +110,25 @@ const KeyDownUtil = {
 				},
 				{ split: true }
 			)
+		}
+
+		if (Range.isCollapsed(toStartOfNode)) {
+			// Duplicate the node that's being split
+			const newNode = { ...node }
+
+			// Insert the duplicate below this node
+			Transforms.insertNodes(editor, newNode, { at: toEndOfNode })
+
+			// Transform the duplicated node to a text node
+			const nextPath = [...nodePath]
+			nextPath[nextPath.length - 1]++
+			Transforms.setNodes(editor, { type: TEXT_NODE, content: {} }, { at: nextPath })
+
+			// Move the selection to the start of the duplicated (now text) node
+			Transforms.select(editor, nextPath)
+			Transforms.collapse(editor, 'start')
+
+			return
 		}
 
 		// Set the heading after the selection to text

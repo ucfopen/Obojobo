@@ -20,6 +20,10 @@
 		border: none;
 		background: transparent;
 		cursor: pointer;
+		opacity: 0.6;
+		border-left: 1px solid white;
+		border-top: 1px solid white;
+		border-bottom: 1px solid white;
 
 		svg {
 			opacity: 0.6;
@@ -33,9 +37,10 @@
 			stroke: $color-text;
 		}
 
-		&:hover {
+		&:hover,
+		&.is-selected {
 			opacity: 1;
-			background: lighten($color-action, 48%);
+			background: lighten($color-action, 55%);
 
 			svg path {
 				fill: $color-action;
@@ -44,6 +49,10 @@
 			svg line {
 				stroke: $color-action;
 			}
+		}
+
+		&:hover {
+			background: lighten($color-action, 48%);
 		}
 	}
 

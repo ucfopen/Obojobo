@@ -2,7 +2,6 @@ import getStatusResult from './get-status-result'
 
 const getReportDetailsForAttempt = (assessmentRubric, scoreInfo) => {
 	const statusResult = getStatusResult(assessmentRubric, scoreInfo.status)
-
 	return {
 		rubricType: assessmentRubric.type,
 		mods: scoreInfo.rewardedMods.map(modIndex => assessmentRubric.mods[modIndex]),

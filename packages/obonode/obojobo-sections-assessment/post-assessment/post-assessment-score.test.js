@@ -11,7 +11,7 @@ import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -51,9 +51,7 @@ describe('Actions editor', () => {
 	})
 
 	test('changeRange updates the range', () => {
-		const component = shallow(
-			<PostAssessmentScore element={{ content: { for: '[0,100]' } }}/>
-		)
+		const component = shallow(<PostAssessmentScore element={{ content: { for: '[0,100]' } }} />)
 		const tree = component.html()
 
 		component.instance().changeRange('mock range')
@@ -67,7 +65,8 @@ describe('Actions editor', () => {
 			<PostAssessmentScore
 				element={{
 					content: { for: '[0,100]' }
-				}}/>
+				}}
+			/>
 		)
 		const tree = component.html()
 

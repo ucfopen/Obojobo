@@ -19,7 +19,7 @@ describe('Normalize Table', () => {
 
 	test('normalizeNode on Table calls next if all Table children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -34,7 +34,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -51,7 +51,7 @@ describe('Normalize Table', () => {
 
 	test('normalizeNode on Table calls NormalizeUtil to wrap loose Table Cells', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -61,7 +61,7 @@ describe('Normalize Table', () => {
 						{
 							type: TABLE_NODE,
 							subtype: TABLE_CELL_NODE,
-							content: { header: false},
+							content: { header: false },
 							children: [{ text: 'mockTable', b: true }]
 						}
 					]
@@ -81,7 +81,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -96,7 +96,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -115,7 +115,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -135,7 +135,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -150,7 +150,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -162,14 +162,14 @@ describe('Normalize Table', () => {
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
-		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0,0] })
+		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0, 0] })
 	})
 
 	test('normalizeNode on Table calls Transforms if children cols is greater than cols', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -184,7 +184,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -203,7 +203,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -218,7 +218,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -230,14 +230,14 @@ describe('Normalize Table', () => {
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
-		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0,0] })
+		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0, 0] })
 	})
 
 	test('normalizeNode on Table calls Transforms if children header is set on non-first row', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -252,7 +252,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -277,14 +277,14 @@ describe('Normalize Table', () => {
 		}
 		normalizeNode([editor.children[0], [0]], editor, next)
 
-		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0,1] })
+		expect(Transforms.setNodes).toHaveBeenCalledWith(editor, expect.any(Object), { at: [0, 1] })
 	})
 
 	test('normalizeNode on Table calls Transforms if children is less than rows', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -318,7 +318,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -333,7 +333,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -346,7 +346,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -363,7 +363,7 @@ describe('Normalize Table', () => {
 
 	test('normalizeNode on TableRow calls next if all TableRow children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -378,7 +378,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -397,7 +397,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'moveNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -412,7 +412,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_ROW_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -431,7 +431,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -463,7 +463,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -490,7 +490,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -524,7 +524,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -539,7 +539,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -558,7 +558,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -573,13 +573,13 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								},
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -596,7 +596,7 @@ describe('Normalize Table', () => {
 
 	test('normalizeNode on TableRow calls NormalizeUtil if parent is invalid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -611,7 +611,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -624,15 +624,15 @@ describe('Normalize Table', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0].children[0])
 		})
-		
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on TableCell calls next if all TableCell children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -647,7 +647,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -666,7 +666,7 @@ describe('Normalize Table', () => {
 		jest.spyOn(Transforms, 'liftNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -681,7 +681,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [
 										{
 											type: 'invalidNode',
@@ -703,7 +703,7 @@ describe('Normalize Table', () => {
 
 	test('normalizeNode on TableCell calls NormalizeUtil if parent is invalid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -718,7 +718,7 @@ describe('Normalize Table', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									content: { header: false},
+									content: { header: false },
 									children: [{ text: 'mockTable', b: true }]
 								}
 							]
@@ -731,8 +731,8 @@ describe('Normalize Table', () => {
 		NormalizeUtil.wrapOrphanedSiblings.mockImplementation((editor, entry, wrapper, match) => {
 			match(editor.children[0].children[0].children[0])
 		})
-		
-		normalizeNode([editor.children[0].children[0].children[0], [0,0,0]], editor, next)
+
+		normalizeNode([editor.children[0].children[0].children[0], [0, 0, 0]], editor, next)
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})

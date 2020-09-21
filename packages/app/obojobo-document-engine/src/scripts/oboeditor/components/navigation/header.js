@@ -21,7 +21,7 @@ class Header extends React.Component {
 			newTitle = ''
 		}
 
-		if (newTitle !== oldTitle) {
+		if (newTitle !== oldTitle && newTitle !== '') {
 			EditorUtil.renamePage(pageId, newTitle)
 		}
 
@@ -29,7 +29,7 @@ class Header extends React.Component {
 	}
 
 	renderLabel(label) {
-		return <span>{label}</span>
+		return <span>{label || '\u00A0'}</span>
 	}
 
 	saveId(oldId, newId) {
@@ -52,6 +52,7 @@ class Header extends React.Component {
 		const model = OboModel.models[item.id]
 
 		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
+		if (newContent.title === '') return 'Module title must not be empty!'
 		model.triggers = newContent.triggers || []
 
 		model.set({ content: newContent }) // may cause store update?
@@ -67,7 +68,9 @@ class Header extends React.Component {
 			{
 				name: 'title',
 				description: 'Title',
-				type: 'input'
+				placeholder: 'Module Title',
+				type: 'input',
+				required: true
 			},
 			{
 				name: 'start',

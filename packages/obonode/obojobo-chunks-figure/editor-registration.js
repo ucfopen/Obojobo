@@ -46,7 +46,7 @@ const Figure = {
 
 				return [
 					{
-						placeholder: 'Type your caption here',
+						placeholder: 'Type an image caption here',
 						anchor: point,
 						focus: point
 					}

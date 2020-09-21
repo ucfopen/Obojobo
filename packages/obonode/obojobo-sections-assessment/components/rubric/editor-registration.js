@@ -16,11 +16,8 @@ const plugins = {
 		// If the element is a Rubric Node, make sure it has an Assessment parent
 		if (node.type === RUBRIC_NODE && !node.subtype) {
 			const [parent] = Editor.parent(editor, path)
-			if(!Element.isElement(parent) || parent.type !== ASSESSMENT_NODE) {
-				Transforms.removeNodes(
-					editor, 
-					{ at: path }
-				)
+			if (!Element.isElement(parent) || parent.type !== ASSESSMENT_NODE) {
+				Transforms.removeNodes(editor, { at: path })
 				return
 			}
 		}

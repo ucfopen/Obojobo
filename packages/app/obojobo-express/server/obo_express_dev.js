@@ -2,24 +2,36 @@ const sig = require('oauth-signature')
 const config = require('./config')
 const oauthKey = Object.keys(config.lti.keys)[0]
 const oauthSecret = config.lti.keys[oauthKey]
+const { isTrueParam } = require('obojobo-express/server/util/is_true_param')
 
 const ltiInstructor = {
 	lis_person_contact_email_primary: 'zach@obojobo.com',
-	lis_person_name_family: 'Berry',
-	lis_person_name_full: 'Zachary Allen Berry',
-	lis_person_name_given: 'Zach',
-	lis_person_sourcedid: 'sis:942a8dd9',
+	lis_person_name_family: 'Instructor1',
+	lis_person_name_full: 'Test Instructor1',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstinstructor1',
 	roles: 'Instructor',
 	user_id: '29129',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
 }
 
+const ltiInstructor2 = {
+	lis_person_contact_email_primary: 'frankie@obojobo.com',
+	lis_person_name_family: 'Instructor2',
+	lis_person_name_full: 'Test Instructor2',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstinstructor2',
+	roles: 'Instructor',
+	user_id: '234111',
+	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
+}
+
 const ltiLearner = {
 	lis_person_contact_email_primary: 'ian@obojobo.com',
-	lis_person_name_family: 'Turgeon',
-	lis_person_name_full: 'Ian Emerson Turgeon',
-	lis_person_name_given: 'Ian',
-	lis_person_sourcedid: 'sis:942a8d23',
+	lis_person_name_family: 'Learner1',
+	lis_person_name_full: 'Test Learner1',
+	lis_person_name_given: 'Test',
+	lis_person_sourcedid: 'sis:tstlearner1',
 	roles: 'Learner',
 	user_id: '29111',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
@@ -101,20 +113,38 @@ module.exports = app => {
 			</style>
 			</head><body>
 			<h1>Obojobo Next Express Dev Utils</h1>
-			<h2>LTI & Auth</h2>
+			<h2>LTI Tools</h2>
 			<ul>
 				<li><a href="/lti">LTI Instructions</a></li>
-				<li>LTI Course Nav: <a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Instructor</a> <a href="/lti/dev/launch/course_navigation?student=1&resource_link_id=whatever-you-want"">Student</a></li>
-				<li>LTI Resource Selection: (iframe) <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection')">Instructor</a> <a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection?student=1')">Student</a></li>
-				<li>LTI Assignment: <a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Instructor</a> <a href="/lti/dev/launch/view?student=1&resource_link_id=whatever-you-want">Student</a></li>
-				<li><a href="/profile">Whoami</a></li>
-				<li><a href="/profile/logout">Logout</a></li>
+				<li><b>LTI Course Nav:</b> (simulate LTI launch from clicking on LMS nav menu link)
+					<ul>
+						<li><a href="/lti/dev/launch/course_navigation?resource_link_id=course_1">Instructor</a></li>
+						<li><a href="/lti/dev/launch/course_navigation?resource_link_id=course_1&instructor=2">Instructor2</a></li>
+						<li><a href="/lti/dev/launch/course_navigation?resource_link_id=course_1&student=1">Student</a></li>
+					</ul>
+				</li>
+				<li><b>LTI Resource Selection:</b> (simulate LTI launch for resource/assignment selection)
+					<ul>
+						<li><a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection')">Instructor</a></li>
+						<li><a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection?instructor=2')">Instructor2</a></li>
+						<li><a href="#" onClick="launchInIframe('/lti/dev/launch/resource_selection?student=1')">Student</a></li>
+					</ul>
+				</li>
+				<li><b>LTI Assignment:</b> (simulate LTI launch for an assignment)
+					<ul>
+						<li><a href="/lti/dev/launch/view?resource_link_id=course_1">Instructor for course_1</a></li>
+						<li><a href="/lti/dev/launch/view?resource_link_id=course_1&student=1">Student for course_1</a></li>
+						<li><a href="/lti/dev/launch/view?resource_link_id=course_2&student=1">Student for course_2</a></li>
+						<li><a href="/lti/dev/launch/view?resource_link_id=course_2&student=1&score_import=1">Student for course_2 w/ import enabled</a></li>
+					</ul>
+				</li>
 			</ul>
-			<h2>Application</h2>
+			<h2>Build Tools</h2>
 			<ul>
 				<li><a href="/routes">Express Routes</a></li>
 				<li><a href="/webpack-dev-server">Webpack Dev Server Assets</a></li>
 			</ul>
+			<h2>Iframe for simulating assignment selection overlay</h2>
 			<iframe id="the-iframe"></iframe>
 			</body></html>`)
 	})
@@ -141,7 +171,8 @@ module.exports = app => {
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
 		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
-		const person = req.query.student ? ltiLearner : ltiInstructor
+		const instructorOneOrTwo = req.query.instructor === '2' ? ltiInstructor2 : ltiInstructor
+		const person = req.query.student ? ltiLearner : instructorOneOrTwo
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
@@ -177,12 +208,11 @@ module.exports = app => {
 			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
-			resource_link_id
+			resource_link_id,
+			score_import: isTrueParam(req.query.score_import) ? 'true' : 'false'
 		}
-		renderLtiLaunch({ ...person, ...params }, method, endpoint, res)
+		renderLtiLaunch({ ...ltiContext, ...person, ...params }, method, endpoint, res)
 	})
-
-	ltiLearner
 
 	// builds a valid resourse selection lti launch and submits it
 	app.get('/lti/dev/launch/resource_selection', (req, res) => {
@@ -197,7 +227,9 @@ module.exports = app => {
 			accept_unsigned: 'false',
 			auto_create: 'true',
 			can_confirm: 'false',
-			content_item_return_url: `${baseUrl(req)}/lti/dev/return/resource_selection?test=this%20is%20a%20test`,
+			content_item_return_url: `${baseUrl(
+				req
+			)}/lti/dev/return/resource_selection?test=this%20is%20a%20test`,
 			launch_presentation_css_url: 'https://example.fake/nope.css',
 			launch_presentation_locale: 'en-US',
 			lti_message_type: 'ContentItemSelectionRequest',

@@ -24,6 +24,11 @@ PageDashboardServer.defaultProps = {
 	myModules: [],
 	moduleSearchString: '',
 	shareSearchString: '',
+	versionHistory: {
+		hasFetched: false,
+		isFetching: false,
+		items: []
+	},
 	searchPeople: {
 		hasFetched: false,
 		isFetching: false,

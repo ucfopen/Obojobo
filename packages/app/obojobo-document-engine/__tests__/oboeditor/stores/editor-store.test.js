@@ -3,7 +3,7 @@
 import Common from '../../../src/scripts/common/index'
 import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 
 // spy on dispatcher before loading EditorStore
 const Dispatcher = Common.flux.Dispatcher
