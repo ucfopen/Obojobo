@@ -47,7 +47,6 @@ class IFrame extends React.Component {
 		ModalUtil.show(
 			<IframeProperties
 				content={this.props.element.content}
-				title={this.props.element.children[0].text}
 				onConfirm={this.changeProperties}
 				onCancel={this.onCloseIFramePropertiesModal}
 			/>
@@ -61,21 +60,7 @@ class IFrame extends React.Component {
 		unfreezeEditor(this.props.editor)
 	}
 
-	// set text held in the slate text node
-	// used wen returning from the settings dialog to set the title/caption
-	setChildText(text){
-		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
-		// clear out contents
-		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
-		// copy caption into slate children text
-		Transforms.insertText(this.props.editor, text, {at: path})
-	}
-
 	changeProperties(content) {
-		// copy title/caption to the slate text
-		// using slate text so you can click on the caption to edit it
-		this.setChildText(content.title)
-
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		Transforms.setNodes(
 			this.props.editor,
@@ -118,6 +103,11 @@ class IFrame extends React.Component {
 		const content = this.props.element.content
 		const { selected } = this.props
 
+		const previewStyle = {
+			height: (content.height || '500') + 'px',
+			userSelect: 'none'
+		}
+
 		const className =
 			'obojobo-draft--chunks--iframe viewer pad is-previewing ' +
 			isOrNot(content.border, 'bordered') +
@@ -131,34 +121,35 @@ class IFrame extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div className="obojobo-draft--revealable-container-wrapper">
-						<div
-							className={`editor-container obojobo-draft--revealable-container ${isSelected}`}
-							onClick={this.focusIframe}
+					<div
+						className={`editor-container  ${isSelected}`}
+						style={previewStyle}
+						onClick={this.focusIframe}
+					>
+						<Button
+							className="delete-button"
+							onClick={this.deleteNode}
+							onKeyDown={this.returnFocusOnShiftTab}
+							tabIndex={selected ? 0 : -1}
 						>
+							×
+						</Button>
+						<div className="iframe-toolbar">
+							<span className="title" aria-hidden contentEditable={false}>
+								{this.getTitle(content.src || null, content.title)}
+							</span>
 							<Button
-								className="delete-button"
-								onClick={this.deleteNode}
-								onKeyDown={this.returnFocusOnShiftTab}
+								className="properties-button"
+								onClick={this.showIFramePropertiesModal}
+								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>
-								×
+								IFrame Properties
 							</Button>
-							<div className="iframe-toolbar">
-								<Button
-									className="properties-button"
-									onClick={this.showIFramePropertiesModal}
-									onKeyDown={this.returnFocusOnTab}
-									tabIndex={selected ? 0 : -1}
-								>
-									IFrame Properties
-								</Button>
-							</div>
 						</div>
 					</div>
-
-					<div className="obojobo-draft--chunk-caption">{this.props.children}</div>
 				</div>
+				{this.props.children}
 			</Node>
 		)
 	}

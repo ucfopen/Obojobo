@@ -27,15 +27,9 @@ const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const isOrNot = Common.util.isOrNot
 
-class IFrameCore extends React.Component {
+export default class IFrame extends React.Component {
 	constructor(props) {
 		super(props)
-
-		this.iframeRef = props.forwardedRef || React.createRef()
-		this.buttonSkipToTopRef = React.createRef()
-		this.buttonSkipToBottomRef = React.createRef()
-		this.mainRef = React.createRef()
-		this.selfRef = React.createRef()
 
 		this.boundOnClickContainer = this.onClickContainer.bind(this)
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
@@ -53,18 +47,18 @@ class IFrameCore extends React.Component {
 	}
 
 	onClickSkipToBottom() {
-		this.buttonSkipToTopRef.focus()
+		this.refs.buttonSkipToTop.focus()
 	}
 
 	onClickSkipToTop() {
-		this.buttonSkipToBottomRef.focus()
+		this.refs.buttonSkipToBottom.focus()
 	}
 
 	getMeasuredDimensions() {
-		const cs = window.getComputedStyle(this.mainRef.current, null)
+		const cs = window.getComputedStyle(this.refs.main, null)
 
 		return {
-			width: ReactDOM.findDOMNode(this.selfRef.current).getBoundingClientRect().width,
+			width: ReactDOM.findDOMNode(this.refs.self).getBoundingClientRect().width,
 			padding:
 				parseFloat(cs.getPropertyValue('padding-left')) +
 				parseFloat(cs.getPropertyValue('padding-right'))
@@ -81,7 +75,6 @@ class IFrameCore extends React.Component {
 	}
 
 	onClickContainer() {
-		if (this.props.onShow) this.props.onShow()
 		MediaUtil.show(this.props.model.get('id'))
 		FocusUtil.focusComponent(this.props.model.get('id'))
 	}
@@ -95,7 +88,7 @@ class IFrameCore extends React.Component {
 	}
 
 	onClickReload() {
-		this.iframeRef.current.src = withProtocol(this.props.model.modelState.src)
+		this.refs.iframe.src = withProtocol(this.props.model.modelState.src)
 	}
 
 	componentDidMount() {
@@ -113,7 +106,7 @@ class IFrameCore extends React.Component {
 			window.ResizeObserver.prototype.disconnect
 		) {
 			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
-			this.resizeObserver.observe(ReactDOM.findDOMNode(this.selfRef.current))
+			this.resizeObserver.observe(ReactDOM.findDOMNode(this.refs.self))
 		} else {
 			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 		}
@@ -141,6 +134,7 @@ class IFrameCore extends React.Component {
 
 		const {
 			zoomValues,
+			displayedTitle,
 			ariaRegionLabel,
 			scaleDimensions,
 			isShowing,
@@ -166,7 +160,7 @@ class IFrameCore extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				ref={this.selfRef}
+				ref="self"
 				role="region"
 				aria-label={ariaRegionLabel}
 			>
@@ -180,7 +174,7 @@ class IFrameCore extends React.Component {
 						isOrNot(ms.src === null, 'missing-src') +
 						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
 					}
-					ref={this.mainRef}
+					ref="main"
 				>
 					<div
 						className="container"
@@ -191,7 +185,7 @@ class IFrameCore extends React.Component {
 							<Button
 								altAction
 								className="button-skip top"
-								ref={this.buttonSkipToBottomRef}
+								ref="buttonSkipToBottom"
 								onClick={this.boundSkipToBottom}
 							>
 								You are at the beginning of this embedded content. Click to skip to the end.
@@ -200,7 +194,7 @@ class IFrameCore extends React.Component {
 						<div className="iframe-container">
 							{isShowing ? (
 								<iframe
-									ref={this.iframeRef}
+									ref="iframe"
 									title={ms.title}
 									src={src}
 									frameBorder="0"
@@ -213,50 +207,48 @@ class IFrameCore extends React.Component {
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
-						{isShowing ? (
-							<>
-								<Button
-									altAction
-									className="button-skip bottom"
-									ref={this.buttonSkipToTopRef}
-									onClick={this.boundSkipToTop}
-								>
-									You are at the end of this embedded content. Click to skip to the beginning.
-								</Button>
-								<Controls
-									newWindowSrc={src}
-									controlsOptions={controlsOpts}
-									isZoomResettable={!zoomValues.isZoomAtDefault}
-									isZoomOutDisabled={isAtMinScale}
-									isZoomInDisabled={isAtMaxScale}
-									reload={this.boundOnReload}
-									zoomIn={this.onClickSetZoom.bind(
-										this,
-										parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
-									)}
-									zoomOut={this.onClickSetZoom.bind(
-										this,
-										parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
-									)}
-									zoomReset={this.boundOnZoomReset}
-								/>
-							</>
-						) : (
+						{isShowing ? null : (
 							<div className="click-to-load">
+								<span className="title" aria-hidden>
+									{displayedTitle}
+								</span>
 								{ms.src === null ? null : (
-									<Button ariaLabel="Click to load external content">
-										{this.props.label || 'View Content'}
-									</Button>
+									<Button ariaLabel="Click to load external content">View Content</Button>
 								)}
 							</div>
 						)}
+						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip bottom"
+								ref="buttonSkipToTop"
+								onClick={this.boundSkipToTop}
+							>
+								You are at the end of this embedded content. Click to skip to the beginning.
+							</Button>
+						) : null}
+						{isShowing ? (
+							<Controls
+								newWindowSrc={src}
+								controlsOptions={controlsOpts}
+								isZoomResettable={!zoomValues.isZoomAtDefault}
+								isZoomOutDisabled={isAtMinScale}
+								isZoomInDisabled={isAtMaxScale}
+								reload={this.boundOnReload}
+								zoomIn={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomOut={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomReset={this.boundOnZoomReset}
+							/>
+						) : null}
 					</div>
 				</div>
 			</OboComponent>
 		)
 	}
 }
-
-// wrap export with forwardRef
-const IFrame = React.forwardRef((props, ref) => <IFrameCore {...props} forwardedRef={ref} />)
-export default IFrame

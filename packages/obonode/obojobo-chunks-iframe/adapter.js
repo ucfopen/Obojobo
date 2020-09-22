@@ -1,10 +1,10 @@
+import Common from 'obojobo-document-engine/src/scripts/common'
+
 import IFrameMediaTypes from './iframe-media-types'
 import IFrameFitTypes from './iframe-fit-types'
 import IFrameControlTypes from './iframe-control-types'
-import TextGroupAdapter from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter'
-import TextGroup from 'obojobo-document-engine/src/scripts/common/text-group/text-group'
-import cloneProps from 'obojobo-document-engine/src/scripts/common/util/clone-props'
 
+const cloneProps = Common.util.cloneProps
 const propsList = [
 	'type',
 	'src',
@@ -19,14 +19,7 @@ const propsList = [
 ]
 
 export default {
-	construct(model, attrs) {
-		// process the caption text
-		if (attrs && attrs.content && attrs.content.textGroup) {
-			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 1, {})
-		} else {
-			model.modelState.textGroup = TextGroup.create(1, {})
-		}
-
+	construct(model) {
 		model.setStateProp('type', IFrameMediaTypes.MEDIA, p => p.toLowerCase(), [
 			IFrameMediaTypes.WEBPAGE,
 			IFrameMediaTypes.MEDIA
@@ -72,12 +65,10 @@ export default {
 	},
 
 	clone(model, clone) {
-		TextGroupAdapter.clone(model, clone)
 		cloneProps(clone.modelState, model.modelState, propsList)
 	},
 
 	toJSON(model, json) {
-		TextGroupAdapter.toJSON(model, json)
 		cloneProps(json.content, model.modelState, propsList)
 	},
 

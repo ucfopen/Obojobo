@@ -216,7 +216,7 @@ describe('IFrame adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		model = new MockOboModel({src: 'mockSrc'})
+		model = new MockOboModel({ src: 'mockSrc' })
 		const json = { content: {} }
 
 		IFrameAdapter.construct(model)
