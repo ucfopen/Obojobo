@@ -36,11 +36,15 @@
 
 		.image-toolbar {
 			position: absolute;
+			top: 50%;
+			left: 0;
 			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			transform: translate(0, -50%);
+
+			.obojobo-draft--components--button {
+				margin-top: 0.2em;
+				margin-bottom: 0.2em;
+			}
 		}
 
 		.delete-button {

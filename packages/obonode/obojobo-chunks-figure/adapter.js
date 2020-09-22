@@ -5,7 +5,6 @@ const { TextGroup } = Common.textGroup
 
 const Adapter = {
 	construct(model, attrs) {
-		// process the fig caption
 		if (attrs && attrs.content && attrs.content.textGroup) {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 1, {})
 		} else {

@@ -1,5 +1,4 @@
 @import '~styles/includes';
-@import '~styles/chunk-caption';
 
 .obojobo-draft--chunks--figure {
 	text-align: center;
@@ -31,8 +30,11 @@
 		}
 	}
 
-	.obojobo-draft--chunk-caption {
-		max-width: calc(100% - 1em); // override default padding since images can be very narrow
+	figcaption {
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: $color-text-minor;
+		max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
 	}
 
 	&.custom {
