@@ -114,8 +114,8 @@ class MateriaSettingsDialog extends React.Component {
 				})
 			} catch (e) {
 				// do nothing
-				console.error('Error parsing Materia resource selection.')
-				console.error(e)
+				console.error('Error parsing Materia resource selection.') // eslint-disable-line no-console
+				console.error(e) // eslint-disable-line no-console
 			}
 		}
 	}

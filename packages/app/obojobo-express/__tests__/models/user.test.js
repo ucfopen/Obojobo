@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-new */
-
+jest.unmock('fs') // need for config loading
 jest.mock('../../server/db')
 jest.mock('../../server/obo_events')
 const originalnow = Date.prototype.now
@@ -50,6 +50,7 @@ describe('user model', () => {
 			username: 'someusername',
 			roles: ['roleName', 'otherRoleName']
 		})
+
 		expect(u.roles).toHaveLength(2)
 		expect(u.canDoThing).toBe(true)
 		expect(u.canDoThingOtherThing).toBe(undefined)

@@ -25,7 +25,7 @@ const nameMap = new Map()
 	.set('YouTube', 'ObojoboDraft.Chunks.YouTube')
 
 // load name maps dynamically registered
-getAllOboNodeScriptPathsByType('parsers').map(file => {
+getAllOboNodeScriptPathsByType('parsers').forEach(file => {
 	const { name, xmlTag } = require(file)
 	nameMap.set(name, xmlTag)
 })

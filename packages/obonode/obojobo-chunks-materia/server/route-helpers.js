@@ -100,13 +100,14 @@ const getValuesFromPassbackXML = async body => {
 
 // extract request headers into an object we can use
 const extractAuthHeaders = headers => {
-	if (!headers || !headers.authorization)
+	if (!headers || !headers.authorization){
 		throw Error('Authorization header missing from score passback request')
+	}
 	return headers.authorization
 		.split(' ')[1]
 		.replace(/"/g, '')
 		.split(',')
-		.reduce((all, cur, i) => {
+		.reduce((all, cur) => {
 			return Object.assign({}, all, querystring.parse(cur))
 		}, {})
 }
@@ -146,9 +147,9 @@ const verifyAuthSignature = (endpoint, authHeaders, bodyHash) => {
 	// check our signature against the one we received
 	if (hmac_sha1 !== authHeaders.oauth_signature) {
 		logger.error('Materia Replace Result Header oAuth Signature Mismatch')
-		lggger.info(headers)
+		logger.info(headers)
 		logger.info(endpoint)
-		lggger.info(hmac_sha1)
+		logger.info(hmac_sha1)
 		throw Error('Materia Replace Result Header oAuth Signature Mismatch')
 	}
 

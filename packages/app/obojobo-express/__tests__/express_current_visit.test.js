@@ -12,7 +12,10 @@ describe('current user middleware', () => {
 	beforeEach(() => {
 		mockArgs = (() => {
 			const res = {}
-			const req = { session: {} }
+			const req = {
+				session: {},
+				requireCurrentUser: jest.fn()
+			}
 			const mockJson = jest.fn().mockImplementation(() => {
 				return true
 			})

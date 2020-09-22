@@ -25,7 +25,7 @@ const parserMap = new Map()
 	.set('ObojoboDraft.Sections.Content', require('./parsers/content-node-parser'))
 
 // load parsers dynamically registered
-getAllOboNodeScriptPathsByType('parsers').map(file => {
+getAllOboNodeScriptPathsByType('parsers').forEach(file => {
 	const { name, xmlToJson } = require(file)
 	parserMap.set(name, xmlToJson)
 })

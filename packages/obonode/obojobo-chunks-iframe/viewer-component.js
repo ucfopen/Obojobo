@@ -141,7 +141,6 @@ class IFrameCore extends React.Component {
 
 		const {
 			zoomValues,
-			displayedTitle,
 			ariaRegionLabel,
 			scaleDimensions,
 			isShowing,

@@ -12,7 +12,7 @@ export default class Materia extends React.Component {
 
 		// manipulate iframe settings
 		const model = props.model.clone()
-		model.modelState.src = this.srcToLTILaunchUrl(model.modelState.src)
+		model.modelState.src = this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id)
 		model.modelState.border = true
 		model.modelState.fit = 'scale'
 		model.modelState.initialZoom = 1
@@ -55,7 +55,7 @@ export default class Materia extends React.Component {
 					break
 			}
 		} catch (e) {
-			console.error(e)
+			console.error(e) // eslint-disable-line no-console
 		}
 	}
 
@@ -67,9 +67,7 @@ export default class Materia extends React.Component {
 		window.removeEventListener('message', this.onPostMessageFromMateria, false)
 	}
 
-	srcToLTILaunchUrl(src) {
-		const visitId = this.props.moduleData.navState.visitId
-		const nodeId = this.props.model.id
+	srcToLTILaunchUrl(visitId, nodeId) {
 		return `${window.location.origin}/materia-lti-launch?visitId=${visitId}&nodeId=${nodeId}`
 	}
 
@@ -93,7 +91,7 @@ export default class Materia extends React.Component {
 		try {
 			return this.renderTextCaption()
 		} catch (e) {
-			console.error('Error bulding Materia Caption')
+			console.error('Error bulding Materia Caption') // eslint-disable-line no-console
 			return null
 		}
 	}

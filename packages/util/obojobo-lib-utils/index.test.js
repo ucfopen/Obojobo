@@ -258,32 +258,6 @@ describe('obojobo lib utils', () => {
 		expect(result).toEqual([1, 2, 3])
 	})
 
-	test('gatherAllMigrations does', () => {
-		const { gatherAllMigrations } = require('obojobo-lib-utils')
-		const migrations = gatherAllMigrations()
-		expect(migrations).toHaveLength(1)
-		expect(migrations[0]).toContain('path-to-obojobo-sections-content-migrations')
-	})
-
-	test('migrateUp calls db-migrate with configured migration paths', () => {
-		const mockExecSync = jest.fn()
-		mockExecSync.mockReturnValueOnce('├─ obojobo-lib-utils')
-		require('child_process').execSync = mockExecSync
-
-		// trick the script were testing into resolving a mock file
-		mockVirtual('obojobo-lib-utils').obojobo = {
-			migrations: '__mocks__/mock-migrations'
-		}
-
-		const { migrateUp } = jest.requireActual('obojobo-lib-utils')
-		migrateUp()
-
-		expect(mockExecSync).toHaveBeenCalledTimes(2)
-		expect(mockExecSync.mock.calls[1][0]).toContain('db-migrate/bin/db-migrate up')
-		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-express/server/config/db.json')
-		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-lib-utils/__mocks__/mock-migrations')
-	})
-
 	test('gatherClientScriptsFromModules combines clientScripts as expectd', () => {
 		const list = `yarn list v1.13.0
 			├─ obojobo-mock-lib@

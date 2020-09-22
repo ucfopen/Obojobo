@@ -30,8 +30,6 @@ router
 		checkValidationRules
 	])
 	.get((req, res) => {
-		const readOnly = req.query.read_only && '' + req.query.read_only.toLowerCase()
-
 		// allow modules to provide editor settings
 		// Example:
 		// oboEvents.on('EDITOR_SETTINGS', event => { event.moduleSettings.obojoboChunksSample = {var: value}})

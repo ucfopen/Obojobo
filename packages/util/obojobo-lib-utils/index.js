@@ -95,20 +95,6 @@ const getAllOboNodeRegistryDirsByType = type => {
 	return allDirs
 }
 
-// locates migrations, config, and runs db-migrate up
-const migrateUp = () => {
-	const { execSync } = require('child_process')
-	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
-	const configPath = resolver('obojobo-express/server/config/db.json')
-	const migrationDirs = getAllOboNodeRegistryDirsByType('migrations')
-
-	migrationDirs.forEach(dir => {
-		// eslint-disable-next-line no-console
-		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-		execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-	})
-}
-
 const gatherClientScriptsFromModules = () => {
 	const defaultOrderKey = '500'
 	const modules = searchNodeModulesForOboNodes()
@@ -192,7 +178,6 @@ module.exports = {
 	getAllOboNodeScriptPathsByType,
 	flattenArray,
 	getAllOboNodeRegistryDirsByType,
-	migrateUp,
 	gatherClientScriptsFromModules,
 	setResolver
 }

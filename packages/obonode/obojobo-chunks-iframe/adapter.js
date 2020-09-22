@@ -77,7 +77,7 @@ export default {
 	},
 
 	toJSON(model, json) {
-		TextGroupAdapter.clone(model, json)
+		TextGroupAdapter.toJSON(model, json)
 		cloneProps(json.content, model.modelState, propsList)
 	},
 

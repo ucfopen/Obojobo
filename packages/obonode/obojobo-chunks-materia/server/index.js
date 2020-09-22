@@ -1,3 +1,4 @@
+
 const router = require('express').Router() //eslint-disable-line new-cap
 const logger = require('obojobo-express/server/logger')
 const uuid = require('uuid').v4
@@ -39,7 +40,7 @@ const baseUrl = (req, isForServerRequest = true) => {
 	return `${req.protocol}://${req.get('host')}`
 }
 
-const renderError = (title, message) => {
+const renderError = (res, title, message) => {
 	res.set('Content-Type', 'text/html')
 	res.send(
 		`<html><head><title>Error - ${title}</title></head><body><h1>${title}</h1><p>${message}</p></body></html>`
@@ -124,6 +125,7 @@ router
 
 		if (!materiaNode) {
 			renderError(
+				res,
 				'Materia Widget Not Found',
 				`The Materia node id ${req.query.nodeId} was not found in the current draft: ${currentDocument.id} v.${currentDocument.contentId}.`
 			)
@@ -136,6 +138,7 @@ router
 		// verify the endpoint is the configured materia server
 		if (!endpoint.startsWith(config.clientMateriaHost)) {
 			renderError(
+				res,
 				'Materia Widget Url Restricted',
 				`The widget url ${endpoint} does not match the configured Materia server located at ${config.clientMateriaHost}.`
 			)

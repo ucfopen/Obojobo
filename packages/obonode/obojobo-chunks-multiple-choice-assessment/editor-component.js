@@ -31,7 +31,6 @@ class MCAssessment extends React.Component {
 	}
 
 	changeShuffle(event) {
-		console.log(event.target.checked)
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
 			this.props.editor,

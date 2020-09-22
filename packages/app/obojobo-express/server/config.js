@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const logger = require('./logger')
 const configuration = {}
-const CONFIG_DIR = path.resolve(__dirname, 'config')
 const env = process.env.NODE_ENV || 'development'
 const deepFreeze = require('deep-freeze')
 const { getAllOboNodeRegistryDirsByType } = require('obojobo-lib-utils')
@@ -110,16 +109,15 @@ const configDirs = getAllOboNodeRegistryDirsByType('config')
 // load each json config file and place it in the
 // configuration object
 configDirs.forEach(dir => {
-	const path = require('path')
-	const fs = require('fs')
 	// sync because this only happens on startup
 	const files = fs.readdirSync(dir)
 	files.forEach(file => {
 		if (!file.endsWith('.json')) return
 		const name = camelCase(path.basename(file, '.json'))
 		const fPath = path.join(dir, file)
-		if (configuration[name] !== undefined)
+		if (typeof configuration[name] !== 'undefined'){
 			logger.error(`Config name ${name} already registered, not loading: ${fPath}`)
+		}
 		const cfg = getConfigFileData(fPath, env)
 		if (cfg) configuration[name] = cfg
 	})
