@@ -27,18 +27,6 @@ global.oboJestMockConfig = () => {
 	}
 
 	const configPath = path.resolve(__dirname, 'server', 'config')
-
-	// mock obojobo-express attempt to load list of config files
-	// fs.mockReaddirSync(configPath, [
-	// 	'db.json',
-	// 	'lti.json',
-	// 	'draft.json',
-	// 	'media.json',
-	// 	'general.json',
-	// 	'permission_groups.json',
-	// ])
-
-	// mock obojobo-express config file contents
 	fs.__setMockFileContents(`${configPath}/db.json`, JSON.stringify(dbJson))
 }
 
