@@ -1,7 +1,7 @@
 import { Editor, Node, Element, Transforms } from 'slate'
 
 import Converter from './converter'
-import Icon from './editor-icon.svg'
+import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import Line from './components/line/editor-component'
 import EditorComponent from './editor-component'

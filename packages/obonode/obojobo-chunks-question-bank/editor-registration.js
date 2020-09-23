@@ -2,7 +2,7 @@ import React from 'react'
 import { Node, Element, Transforms, Text } from 'slate'
 
 import emptyNode from './empty-node.json'
-import Icon from './editor-icon.svg'
+import Icon from './icon'
 import EditorComponent from './editor-component'
 import Converter from './converter'
 

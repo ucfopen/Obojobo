@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table Icon Icon 1`] = `
+<svg
+  viewBox="0 0 32 32"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g
+    opacity="0.25"
+  >
+    <rect
+      className="fill"
+      height="7.19"
+      strokeLinecap="round"
+      strokeMiterlimit="10"
+      width="11.06"
+      x="4.94"
+      y="5.21"
+    />
+  </g>
+  <rect
+    className="stroke"
+    fill="none"
+    height="21.58"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    width="22.12"
+    x="4.94"
+    y="5.21"
+  />
+  <rect
+    className="stroke"
+    fill="none"
+    height="7.19"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    width="11.06"
+    x="4.94"
+    y="12.4"
+  />
+  <rect
+    className="stroke"
+    fill="none"
+    height="7.19"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    width="11.06"
+    x="4.94"
+    y="19.6"
+  />
+  <g
+    opacity="0.25"
+  >
+    <rect
+      className="fill"
+      height="7.19"
+      strokeLinecap="round"
+      strokeMiterlimit="10"
+      width="11.06"
+      x="16"
+      y="5.21"
+    />
+  </g>
+  <rect
+    className="stroke"
+    fill="none"
+    height="7.19"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    width="11.06"
+    x="16"
+    y="12.4"
+  />
+  <rect
+    className="stroke"
+    fill="none"
+    height="7.19"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    width="11.06"
+    x="16"
+    y="19.6"
+  />
+  <line
+    className="stroke"
+    fill="none"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+    x1="16"
+    x2="16"
+    y1="5.21"
+    y2="26.79"
+  />
+</svg>
+`;

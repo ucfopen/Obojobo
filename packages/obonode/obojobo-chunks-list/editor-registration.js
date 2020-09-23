@@ -2,7 +2,7 @@ import React from 'react'
 import { Editor, Node, Element, Transforms } from 'slate'
 
 import emptyNode from './empty-node.json'
-import Icon from './editor-icon.svg'
+import Icon from './icon'
 import EditorComponent from './editor-component'
 import Level from './components/level/editor-component'
 import Line from './components/line/editor-component'
