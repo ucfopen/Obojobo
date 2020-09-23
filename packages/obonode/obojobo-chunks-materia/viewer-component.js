@@ -103,7 +103,7 @@ export default class Materia extends React.Component {
 					ref={this.iframeRef}
 					model={this.state.model}
 					moduleData={this.props.moduleData}
-					label={`Start ${this.state.model.modelState.widgetEngine || 'Widget'}`}
+					title={`${this.state.model.modelState.widgetEngine || 'Materia'} Widget`}
 					onShow={this.onShow}
 				/>
 				{this.renderCaptionOrScore()}

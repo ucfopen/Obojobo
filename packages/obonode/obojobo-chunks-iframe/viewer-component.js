@@ -210,7 +210,7 @@ export default class IFrame extends React.Component {
 						{isShowing ? null : (
 							<div className="click-to-load">
 								<span className="title" aria-hidden>
-									{displayedTitle}
+									{this.props.title || displayedTitle}
 								</span>
 								{ms.src === null ? null : (
 									<Button ariaLabel="Click to load external content">View Content</Button>
