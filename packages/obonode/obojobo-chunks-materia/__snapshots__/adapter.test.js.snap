@@ -2,17 +2,29 @@
 
 exports[`IFrame adapter construct builds without attributes 1`] = `
 Object {
-  "autoload": false,
-  "border": false,
   "controls": Array [
     "reload",
   ],
-  "fit": "scale",
   "height": null,
-  "initialZoom": 1,
+  "icon": null,
   "src": null,
-  "title": null,
-  "type": "media",
+  "textGroup": TextGroup {
+    "dataTemplate": Object {},
+    "items": Array [
+      TextGroupItem {
+        "data": Object {},
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": 1,
+  },
+  "widgetEngine": null,
   "width": null,
 }
 `;
@@ -20,17 +32,22 @@ Object {
 exports[`IFrame adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "autoload": false,
-    "border": false,
     "controls": Array [
       "reload",
     ],
-    "fit": "scale",
     "height": null,
-    "initialZoom": 1,
+    "icon": null,
     "src": "mockSrc",
-    "title": null,
-    "type": "media",
+    "textGroup": Array [
+      Object {
+        "data": Object {},
+        "text": Object {
+          "styleList": null,
+          "value": "",
+        },
+      },
+    ],
+    "widgetEngine": null,
     "width": null,
   },
 }

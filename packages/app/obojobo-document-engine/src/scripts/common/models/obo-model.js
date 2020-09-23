@@ -59,7 +59,7 @@ class OboModel extends Backbone.Model {
 		if (!item) {
 			// @TODO: make this more visible to the user
 			// Maybe we should make a node for use when a node is missing?
-			console.error(`The node type ${typeOrNameOrJson} was not found in the registry`) // eslint-disable-line no-console
+			console.error(`The node type ${typeOrNameOrJson} was not loaded by the Registry`) // eslint-disable-line no-console
 			return null
 		}
 

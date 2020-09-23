@@ -51,8 +51,8 @@ class IFrameProperties extends React.Component {
 		this.setState({ src })
 	}
 
-	handleBorderChange(checked) {
-		this.setState({ border: checked })
+	handleBorderChange(event) {
+		this.setState({ border: event.target.checked })
 	}
 
 	handleFitChange(event) {
@@ -79,16 +79,16 @@ class IFrameProperties extends React.Component {
 		this.setState({ initialZoom })
 	}
 
-	handleAutoloadChange(checked) {
-		this.setState({ autoload: checked })
+	handleAutoloadChange(event) {
+		this.setState({ autoload: event.target.checked })
 	}
 
-	handleControlChange(property, checked) {
+	handleControlChange(property, event) {
 		const controls = new Set(this.state.controls.split(','))
 
 		// Use checked value to determine the control string for the changed property
 		// Use controlList values to determine control strings for unchanged properties
-		if (checked) {
+		if (event.target.checked) {
 			controls.add(property)
 		} else {
 			controls.delete(property)
@@ -171,15 +171,15 @@ class IFrameProperties extends React.Component {
 						<div>
 							<Switch
 								title="Border"
-								initialChecked={this.state.border}
-								handleCheckChange={this.handleBorderChange}
+								checked={this.state.border}
+								onChange={this.handleBorderChange}
 							/>
 						</div>
 						<div>
 							<Switch
 								title="Autoload"
-								initialChecked={this.state.autoload}
-								handleCheckChange={this.handleAutoloadChange}
+								checked={this.state.autoload}
+								onChange={this.handleAutoloadChange}
 							/>
 						</div>
 						<div>
@@ -214,18 +214,18 @@ class IFrameProperties extends React.Component {
 						<h2>Controls:</h2>
 						<Switch
 							title="Reload"
-							initialChecked={controlList.includes('reload')}
-							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
+							checked={controlList.includes('reload')}
+							onChange={this.handleControlChange.bind(this, 'reload')}
 						/>
 						<Switch
 							title="New Window"
-							initialChecked={controlList.includes('new-window')}
-							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
+							checked={controlList.includes('new-window')}
+							onChange={this.handleControlChange.bind(this, 'new-window')}
 						/>
 						<Switch
 							title="Zoom"
-							initialChecked={controlList.includes('zoom')}
-							handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
+							checked={controlList.includes('zoom')}
+							onChange={this.handleControlChange.bind(this, 'zoom')}
 						/>
 					</div>
 				</div>

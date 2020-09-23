@@ -130,8 +130,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const borderSwitch = testInstance.findByProps({ title: 'Border' })
 
-		// execute that switch's handleCheckChange
-		borderSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		borderSwitch.props.onChange({target:{checked: true}})
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -238,8 +238,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Autoload' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({target:{checked: true}})
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -269,8 +269,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Reload' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({target:{checked: true}})
 		expect(testInstance.instance.state.controls).toBe(',reload')
 
 		// capture the changes
@@ -282,7 +282,7 @@ describe('IFrame Properties Modal', () => {
 		expect(startState).not.toEqual(endState)
 
 		// turn it back off
-		autoloadSwitch.props.handleCheckChange(false)
+		autoloadSwitch.props.onChange({target:{checked: false}})
 		expect(testInstance.instance.state.controls).toBe('')
 	})
 
@@ -305,8 +305,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'New Window' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({target:{checked: true}})
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -336,8 +336,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Zoom' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({target:{checked: true}})
 
 		// capture the changes
 		const endState = testRenderer.toJSON()

@@ -14,7 +14,10 @@ describe('current user middleware', () => {
 			const res = {}
 			const req = {
 				session: {},
-				requireCurrentUser: jest.fn()
+				requireCurrentUser: jest.fn(),
+				currentUser:{
+					id: 'mock-user-id'
+				}
 			}
 			const mockJson = jest.fn().mockImplementation(() => {
 				return true
@@ -66,6 +69,8 @@ describe('current user middleware', () => {
 		req.body = {
 			visitId: 'mock-visit-id-8'
 		}
+		MockVisitModel.fetchById.mockResolvedValueOnce(new MockVisitModel({user_id: 'mock-user-id'}))
+
 		return req.getCurrentVisitFromRequest().then(result => {
 			expect(result).toBeUndefined()
 			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
@@ -78,6 +83,8 @@ describe('current user middleware', () => {
 		req.params = {
 			visitId: 'mock-visit-id-8'
 		}
+		MockVisitModel.fetchById.mockResolvedValueOnce(new MockVisitModel({user_id: 'mock-user-id'}))
+
 		return req.getCurrentVisitFromRequest().then(result => {
 			expect(result).toBeUndefined()
 			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
@@ -90,6 +97,8 @@ describe('current user middleware', () => {
 		req.query = {
 			visitId: 'mock-visit-id-8'
 		}
+		MockVisitModel.fetchById.mockResolvedValueOnce(new MockVisitModel({user_id: 'mock-user-id'}))
+
 		return req.getCurrentVisitFromRequest().then(result => {
 			expect(result).toBeUndefined()
 			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
@@ -104,6 +113,8 @@ describe('current user middleware', () => {
 				visitId: 'mock-visit-id-9'
 			}
 		}
+		MockVisitModel.fetchById.mockResolvedValueOnce(new MockVisitModel({user_id: 'mock-user-id'}))
+
 		return req.getCurrentVisitFromRequest().then(result => {
 			expect(result).toBeUndefined()
 			expect(req.currentVisit).toBeInstanceOf(MockVisitModel)
@@ -115,6 +126,7 @@ describe('current user middleware', () => {
 		const { req } = mockArgs
 		req.params = {}
 		req.query = {}
+
 		return req.getCurrentVisitFromRequest().catch(error => {
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toContain('Missing required Visit Id')

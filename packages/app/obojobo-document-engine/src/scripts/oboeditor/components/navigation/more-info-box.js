@@ -121,9 +121,9 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
-	handleSwitchChange(key, booleanValue) {
+	handleSwitchChange(key, event) {
 		const newContent = {}
-		newContent[key] = booleanValue
+		newContent[key] = event.target.checked
 
 		this.setState(prevState => ({
 			content: Object.assign(prevState.content, newContent)
