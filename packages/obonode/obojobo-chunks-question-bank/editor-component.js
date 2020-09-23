@@ -196,7 +196,10 @@ class QuestionBank extends React.Component {
 	}
 
 	diplayImportQuestionModal() {
-		const questionList = this.getQuestionList(OboModel.getRoot())
+		const Question = Common.Registry.getItemForType(QUESTION_NODE)
+		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
+			Question.oboToSlate(question.attributes)
+		)
 
 		ModalUtil.show(
 			<ImportQuestionModal

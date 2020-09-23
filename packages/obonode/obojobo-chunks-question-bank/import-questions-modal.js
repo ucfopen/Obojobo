@@ -1,27 +1,18 @@
 import './import-questions-modal.scss'
 
-import React, { useState, Suspense } from 'react'
+import React, { useState } from 'react'
 import Common from 'Common'
+import NodeRenderer from './node-renderer'
 
 const { Dialog } = Common.components.modal
 const { isOrNot, ModalUtil } = Common.util
-
-const ModelRender = React.lazy(() => import('./model-renderer'))
 
 const importQuestionModal = props => {
 	const { questionList } = props
 	const [selectStates, setSelectStates] = useState(questionList.map(() => false))
 
 	const confirm = () => {
-		const questionNode = Common.Registry.getItemForType('ObojoboDraft.Chunks.Question')
-
-		const results = questionList
-			.filter((_question, index) => selectStates[index])
-			.map(question => {
-				return questionNode.oboToSlate(question.attributes)
-			})
-
-		props.importQuestions(results)
+		props.importQuestions(questionList.filter((_question, index) => selectStates[index]))
 		ModalUtil.hide()
 	}
 
@@ -44,33 +35,32 @@ const importQuestionModal = props => {
 			title="Select questions from the current module to import"
 			buttons={buttons}
 		>
-			<Suspense fallback={<div>Loading...</div>}>
-				<div className="import-model--question-content">
-					{questionList.map((questionModel, index) => {
-						return (
-							<div
-								key={questionModel.id}
-								className={
-									'import-model--question-content--single' +
-									isOrNot(selectStates[index], 'selected')
-								}
-								onClick={() => {
-									selectStates[index] = !selectStates[index]
-									setSelectStates([...selectStates])
-								}}
-							>
-								<input type="checkbox" checked={selectStates[index]} />
-								<div>
-									{questionModel.children.map(child => {
-										return <ModelRender key={child.id} model={child} />
-									})}
-								</div>
+			<div className="import-model--question-content">
+				{questionList.map((question, index) => {
+					const questionContent = question.children.filter(
+						child => child.type !== 'ObojoboDraft.Chunks.MCAssessment'
+					)
+					const className =
+						'import-model--question-content--single' + isOrNot(selectStates[index], 'selected')
+
+					return (
+						<div
+							key={question.id}
+							className={className}
+							onClick={() => {
+								selectStates[index] = !selectStates[index]
+								setSelectStates([...selectStates])
+							}}
+						>
+							<input type="checkbox" checked={selectStates[index]} />
+							<div>
+								<NodeRenderer key={question} value={questionContent} />
 							</div>
-						)
-					})}
-				</div>
-				<p>The selected questions above will be duplicated into your question bank</p>
-			</Suspense>
+						</div>
+					)
+				})}
+			</div>
+			<p>The selected questions above will be duplicated into your question bank</p>
 		</Dialog>
 	)
 }

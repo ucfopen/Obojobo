@@ -1,7 +1,7 @@
 @import '~styles/includes';
 
 .import-questions-model {
-	max-width: 60vw;
+	max-width: 70vw;
 
 	.import-model--question-content {
 		background: $color-bg2;
@@ -20,9 +20,14 @@
 			margin: 1em;
 			position: relative;
 			display: flex;
+			text-align: left;
 
-			input {
+			> input {
 				margin: 1.4em 1.5em;
+			}
+
+			> div {
+				flex: 1;
 			}
 
 			.pad {
