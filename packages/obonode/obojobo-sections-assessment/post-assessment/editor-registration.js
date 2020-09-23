@@ -20,7 +20,7 @@ const plugins = {
 				// Wrap non-Score childen in a score node
 				if (child.subtype !== SCORE_NODE) {
 					Transforms.wrapNodes(
-						editor, 
+						editor,
 						{
 							type: ACTIONS_NODE,
 							subtype: SCORE_NODE,
@@ -34,11 +34,8 @@ const plugins = {
 
 			// Actions parent normalization
 			const [parent] = Editor.parent(editor, path)
-			if(!Element.isElement(parent) || parent.type !== ASSESSMENT_NODE) {
-				Transforms.unwrapNodes(
-					editor, 
-					{ at: path }
-				)
+			if (!Element.isElement(parent) || parent.type !== ASSESSMENT_NODE) {
+				Transforms.unwrapNodes(editor, { at: path })
 				return
 			}
 		}
@@ -50,15 +47,15 @@ const plugins = {
 				// Unwrap non-text children
 				if (index === 0 && child.type !== PAGE_NODE) {
 					NormalizeUtil.wrapOrphanedSiblings(
-						editor, 
-						[child, childPath], 
-						{ type: PAGE_NODE,  content: {}, children: []}, 
+						editor,
+						[child, childPath],
+						{ type: PAGE_NODE, content: {}, children: [] },
 						node => node
 					)
 					return
 				}
 
-				if(index > 0){
+				if (index > 0) {
 					Transforms.removeNodes(editor, { at: childPath })
 					return
 				}
@@ -68,15 +65,9 @@ const plugins = {
 
 			// Score parent normalization - if parent is not Actions unwrap the Score children
 			const [parent] = Editor.parent(editor, path)
-			if(!Element.isElement(parent) || parent.type !== ACTIONS_NODE) {
-				Transforms.unwrapNodes(
-					editor, 
-					{ at: path.concat(0) }
-				)
-				Transforms.unwrapNodes(
-					editor, 
-					{ at: path }
-				)
+			if (!Element.isElement(parent) || parent.type !== ACTIONS_NODE) {
+				Transforms.unwrapNodes(editor, { at: path.concat(0) })
+				Transforms.unwrapNodes(editor, { at: path })
 				return
 			}
 		}

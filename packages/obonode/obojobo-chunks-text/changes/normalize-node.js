@@ -25,7 +25,7 @@ const normalizeNode = (entry, editor, next) => {
 			// Wrap loose text children in a TextLine
 			if (Text.isText(child)) {
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: TEXT_NODE,
 						subtype: TEXT_LINE_NODE,
@@ -52,11 +52,11 @@ const normalizeNode = (entry, editor, next) => {
 
 		// TextLine parent normalization
 		const [parent] = Editor.parent(editor, path)
-		if(!Element.isElement(parent) || parent.type !== TEXT_NODE) {
+		if (!Element.isElement(parent) || parent.type !== TEXT_NODE) {
 			NormalizeUtil.wrapOrphanedSiblings(
-				editor, 
-				entry, 
-				{ type: TEXT_NODE, children: [], content: {}}, 
+				editor,
+				entry,
+				{ type: TEXT_NODE, children: [], content: {} },
 				node => node.subtype === TEXT_LINE_NODE
 			)
 			return

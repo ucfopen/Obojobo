@@ -4,4 +4,11 @@
 
 const logger = require('debug-logger')('obojobo_server')
 
+// add a special method for logging error objects
+logger.logError = (msg, error) => {
+	logger.error(msg)
+	logger.error(error)
+	return msg
+}
+
 module.exports = logger

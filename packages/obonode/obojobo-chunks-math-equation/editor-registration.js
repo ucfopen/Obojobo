@@ -21,7 +21,7 @@ const MathEquation = {
 		// Editor Plugins - These get attached to the editor object an override it's default functions
 		// They may affect multiple nodes simultaneously
 		isVoid(element, editor, next) {
-			if(element.type === MATH_NODE) return true
+			if (element.type === MATH_NODE) return true
 
 			return next(element)
 		},

@@ -8,7 +8,7 @@ import { Transforms } from 'slate'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
@@ -21,9 +21,7 @@ describe('Solution Editor Node', () => {
 	})
 
 	test('Solution component deletes self', () => {
-		const component = mount(
-			<Solution element={{ content: {}}}/>
-		)
+		const component = mount(<Solution element={{ content: {} }} />)
 
 		component.find('button').simulate('click')
 

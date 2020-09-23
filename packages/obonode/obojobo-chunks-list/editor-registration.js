@@ -92,7 +92,7 @@ const plugins = {
 			case 'K':
 			case 'l':
 			case 'L':
-				if (event.shiftKey) {
+				if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
 					event.preventDefault()
 					ListUtil.toggleType(entry[0], editor)
 				}

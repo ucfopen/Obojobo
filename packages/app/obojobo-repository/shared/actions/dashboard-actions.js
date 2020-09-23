@@ -229,7 +229,7 @@ const promptUserForModuleFileUpload = async () => {
 
 const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
-	if (!file) boundResolve()
+	if (!file) return boundResolve()
 
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')

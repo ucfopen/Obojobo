@@ -83,6 +83,8 @@ const getConfigFileData = (configFile, env) => {
 		// combine with default if it exists
 		return deepFreeze({ ...defaultObject, ...envObject })
 	} catch (error) {
+		/* istanbul ignore next */
+		if (env === 'test') console.warn(error) // eslint-disable-line no-console
 		logger.error(`Error loading config file: ${configFile}`)
 		logger.error(error.toString())
 		return deepFreeze({})

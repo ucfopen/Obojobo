@@ -8,7 +8,7 @@ jest.mock('slate-react')
 describe('HTML editor', () => {
 	test('plugins.normalizeNode calls next if the node is not an ActionButton', () => {
 		const next = jest.fn()
-		HTML.plugins.normalizeNode([ {},[] ], {}, next)
+		HTML.plugins.normalizeNode([{}, []], {}, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -20,7 +20,7 @@ describe('HTML editor', () => {
 		}
 		const next = jest.fn()
 
-		HTML.plugins.normalizeNode([ button,[0] ],{ children: [button] }, next)
+		HTML.plugins.normalizeNode([button, [0]], { children: [button] }, next)
 		expect(next).toHaveBeenCalled()
 	})
 
@@ -30,7 +30,7 @@ describe('HTML editor', () => {
 		const button = {
 			type: HTML_NODE,
 			children: [
-				{ 
+				{
 					type: 'mockElement',
 					children: [{ text: '' }]
 				}
@@ -42,24 +42,14 @@ describe('HTML editor', () => {
 		}
 		const next = jest.fn()
 
-		HTML.plugins.normalizeNode([ button,[0] ], editor, next)
+		HTML.plugins.normalizeNode([button, [0]], editor, next)
 		expect(Transforms.liftNodes).toHaveBeenCalled()
 	})
 
 	test('plugins.decorate exits when not relevent', () => {
-		expect(
-			HTML.plugins.decorate(
-				[{ text: 'mock text' }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(HTML.plugins.decorate([{ text: 'mock text' }], {})).toMatchSnapshot()
 
-		expect(
-			HTML.plugins.decorate(
-				[{ children: [{ text: 'mock text' }] }],
-				{}
-			)
-		).toMatchSnapshot()
+		expect(HTML.plugins.decorate([{ children: [{ text: 'mock text' }] }], {})).toMatchSnapshot()
 	})
 
 	test('plugins.decorate renders a placeholder', () => {
@@ -67,12 +57,7 @@ describe('HTML editor', () => {
 			children: [{ children: [{ text: '' }] }]
 		}
 
-		expect(
-			HTML.plugins.decorate(
-				[{ children: [{ text: '' }] }, [0]],
-				editor
-			)
-		).toMatchSnapshot()
+		expect(HTML.plugins.decorate([{ children: [{ text: '' }] }, [0]], editor)).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no special key', () => {
@@ -81,7 +66,7 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown([{},[0]], {}, event)
+		HTML.plugins.onKeyDown([{}, [0]], {}, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -94,7 +79,7 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown([{},[0]], {}, event)
+		HTML.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertText).toHaveBeenCalled()
 	})
@@ -106,8 +91,8 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown([{},[0]], {}, event)
-		
+		HTML.plugins.onKeyDown([{}, [0]], {}, event)
+
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertText).toHaveBeenCalled()
 	})
