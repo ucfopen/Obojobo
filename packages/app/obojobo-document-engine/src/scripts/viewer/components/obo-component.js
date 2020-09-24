@@ -23,7 +23,6 @@ class OboComponent extends React.Component {
 		}
 
 		const isFocussed =
-			this.props.moduleData.focusState &&
 			FocusUtil.getVisuallyFocussedModel(this.props.moduleData.focusState) === this.props.model
 
 		const otherProps = {}

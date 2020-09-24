@@ -203,12 +203,6 @@ describe('IFrame', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('IFrame component readOnly', () => {
-		createRenderSettings(true, true, true, 0.5)
-		const component = renderer.create(<IFrame model={model} moduleData={moduleData} readOnly />)
-		expect(component.toJSON()).toMatchSnapshot()
-	})
-
 	test('IFrame sets state when "viewer:contentAreaResized" is fired', () => {
 		const component = shallow(<IFrame model={model} moduleData={moduleData} />)
 
