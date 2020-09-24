@@ -117,6 +117,7 @@ configDirs.forEach(dir => {
 		const fPath = path.join(dir, file)
 		if (typeof configuration[name] !== 'undefined'){
 			logger.error(`Config name ${name} already registered, not loading: ${fPath}`)
+			return
 		}
 		const cfg = getConfigFileData(fPath, env)
 		if (cfg) configuration[name] = deepFreeze(cfg) // freeze each to prevent overwriting

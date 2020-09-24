@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current visit middleware getCurrentVisitFromRequest rejects when visitId does not belong to current user 1`] = `"Visit mock-visit-id-9 doesn't belong to current user mock-user-id"`;

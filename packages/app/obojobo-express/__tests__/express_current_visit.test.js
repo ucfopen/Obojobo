@@ -6,7 +6,7 @@ jest.mock('../server/models/visit')
 
 const MockVisitModel = oboRequire('server/models/visit')
 
-describe('current user middleware', () => {
+describe('current visit middleware', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
@@ -122,7 +122,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	test('getCurrentVisitFromRequest rejects when visitId isnt in req', () => {
+	test('getCurrentVisitFromRequest rejects when visitId is not in req', () => {
 		const { req } = mockArgs
 		req.params = {}
 		req.query = {}
@@ -131,5 +131,17 @@ describe('current user middleware', () => {
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toContain('Missing required Visit Id')
 		})
+	})
+
+	test('getCurrentVisitFromRequest rejects when visitId does not belong to current user', () => {
+		const { req } = mockArgs
+		req.body = {
+			event: {
+				visitId: 'mock-visit-id-9'
+			}
+		}
+		MockVisitModel.fetchById.mockResolvedValueOnce(new MockVisitModel({user_id: 'different-mock-user-id'}))
+
+		return expect(req.getCurrentVisitFromRequest).rejects.toThrow("Visit mock-visit-id-9 doesn't belong to current user mock-user-id")
 	})
 })
