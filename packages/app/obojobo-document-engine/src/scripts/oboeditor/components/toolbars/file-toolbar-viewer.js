@@ -5,6 +5,8 @@ import FileToolbar from './file-toolbar'
 import DropDownMenu from './drop-down-menu'
 import FormatMenu from './format-menu'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+
 const isInsertDisabledForItem = (selectedNodes, name, selection) => {
 	if (!selection) return true
 
@@ -60,16 +62,28 @@ const FileToolbarViewer = props => {
 			return {
 				name: item.name,
 				action: () => {
-					const endPath = Editor.path(editor, editor.selection, { edge: 'start' })
+					const path = Editor.path(editor, editor.selection, { edge: 'start' })
+					const prevChildrenCount = editor.children.length
 
-					// If the current selection contains a figure, insert the new
-					// item below to avoid splitting the figure.
-					if (containsFigureNode(selectedNodes)) {
-						Transforms.insertNodes(editor, item.cloneBlankNode(), {
-							at: Editor.end(editor, endPath)
-						})
-					} else {
-						Transforms.insertNodes(editor, item.cloneBlankNode())
+					Transforms.insertNodes(editor, item.cloneBlankNode())
+
+					// Since inserting a node inside a figure caption can sometimes
+					// cause figure to be duplicated after the caption is split, we
+					// need to convert the duplicated figure below to a text node.
+					if (
+						containsFigureNode(selectedNodes) &&
+						editor.children.length !== prevChildrenCount + 1
+					) {
+						Transforms.setNodes(
+							editor,
+							{
+								type: TEXT_NODE,
+								content: {}
+							},
+							{
+								at: [path[0] + 2]
+							}
+						)
 					}
 					ReactEditor.focus(editor)
 				},
