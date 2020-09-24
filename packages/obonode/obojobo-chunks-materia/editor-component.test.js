@@ -1,114 +1,187 @@
+jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model')
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('slate')
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
+
+jest.mock('./materia-settings-dialog', () =>
+	global.mockReactComponent(this, 'MockMateriaSettingsDialog')
+)
+
 import React from 'react'
+import { Transforms } from 'slate'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
-import IFrame from './editor-component'
-
+import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
+import Materia from './editor-component'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 
-describe('IFrame Editor Node', () => {
+describe('Materia Editor Node', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
-	})
-	test('IFrame component', () => {
-		const component = renderer.create(
-			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							width: 200,
-							height: 200,
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: 'mockSrc',
-							title: 'mockTitle'
-						})
+		EditorStore.getState.mockReturnValue({
+			settings: {
+				moduleSettings: {
+					obojoboChunksMateria: {
+						host: 'mock-host-setting'
 					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
+				}
+			}
+		})
+	})
 
+	test('component renders', () => {
+		const props = {
+			element: {
+				content: {}
+			},
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			}
+		}
+		const component = renderer.create(<Materia {...props} />)
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('IFrame renders with no size correctly', () => {
-		const component = renderer.create(
-			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: 'mockSrc'
-						})
-					}
-				}}
-			/>
-		)
+	test('Materia renders with no size correctly', () => {
+		const props = {
+			element: {
+				content: {}
+			},
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			}
+		}
+		const component = renderer.create(<Materia {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('IFrame component edits properties', () => {
-		const change = {
-			removeNodeByKey: jest.fn()
+	test('Materia component edits properties', () => {
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1,
-							src: ''
-						})
-					}
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
+		const component = mount(<Materia {...props} />)
+
+		OboModel.getRoot.mockReturnValueOnce({
+			attributes: { draftId: 'mock-draft-id', contentId: 'mock-content-id' }
+		})
 
 		component
-			.find('button')
+			.find('.properties-button')
 			.at(0)
-			.simulate('click')
+			.props()
+			.onClick({
+				preventDefault: jest.fn(),
+				stopPropagation: jest.fn()
+			})
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+		expect(ModalUtil.show.mock.calls[0][0]).toMatchInlineSnapshot(`
+		<MockMateriaSettingsDialog
+		  caption="mock caption"
+		  content={Object {}}
+		  contentId="mock-content-id"
+		  draftId="mock-draft-id"
+		  materiaHost="mock-host-setting"
+		  onCancel={[Function]}
+		  onConfirm={[Function]}
+		/>
+	`)
 
 		component.unmount()
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initialZoom: 1
-						})
-					}
-				}}
-				editor={editor}
-			/>
-		)
+		const component = mount(<Materia {...props} />)
 
-		component.instance().changeProperties({ mockProperties: 'mock value' })
+		component.instance().changeProperties({
+			icon: 'new icon',
+			src: 'new src',
+			widgetEngine: 'new engine',
+			caption: 'new caption'
+		})
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		// expect text changes to the caption
+		expect(Transforms.delete).toHaveBeenCalled()
+		expect(Transforms.insertText).toHaveBeenCalledWith(props.editor, 'new caption', {at: undefined}) //eslint-disable-line no-undefined
+
+		// expect update to the node
+		expect(Transforms.setNodes).toHaveBeenCalledWith(props.editor, {content:{icon: 'new icon', src: 'new src', widgetEngine: 'new engine'}}, {at: undefined}) //eslint-disable-line no-undefined
+
+		// expect dialog hidden
+		expect(ModalUtil.hide).toHaveBeenCalled()
+
 	})
 })

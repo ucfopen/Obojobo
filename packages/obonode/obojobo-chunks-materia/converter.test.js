@@ -1,15 +1,25 @@
 import Converter from './converter'
 
-describe('IFrame Converter', () => {
+describe('Materia Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
-			key: 'mockKey',
+			id: 'mockKey',
 			type: 'mockType',
-			data: {
-				get: () => null
+			content: {
+				src: 'https://materia.ucf.edu/mock-widget',
+				widgetEngine: 'Adventure',
+				icon: 'https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png',
+				width: 800,
+				height: 600,
+				textGroup: [{
+					text: {
+						value: 'Widget Caption'
+					}
+				}]
 			},
-			text: 'mockText'
+			children: [ { text: 'Widget Caption' } ]
 		}
+
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchSnapshot()
@@ -21,6 +31,7 @@ describe('IFrame Converter', () => {
 			type: 'mockType',
 			content: {}
 		}
+
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
@@ -30,8 +41,22 @@ describe('IFrame Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { type: 'media' }
+			content: {
+				src: "https://materia.ucf.edu/mock-widget",
+				widgetEngine: "Adventure",
+				icon: "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
+				width: 800,
+				height: 600,
+				textGroup: [
+					{
+						text: {
+							value: 'Widget Caption'
+						}
+					}
+				]
+			}
 		}
+
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
@@ -41,8 +66,22 @@ describe('IFrame Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { type: 'webpage' }
+			content: {
+				src: "https://materia.ucf.edu/mock-widget",
+				widgetEngine: "Adventure",
+				icon: "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
+				width: 800,
+				height: 600,
+				textGroup: [
+					{
+						text: {
+							value: 'Widget Caption'
+						}
+					}
+				]
+			}
 		}
+
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()

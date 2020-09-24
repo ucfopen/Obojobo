@@ -16,7 +16,7 @@ import ViewerComponent from './viewer-component'
 describe('ObojoboDraft.Chunks.IFrame registration', () => {
 	test('registerModel registers expected vars', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
-		expect(register[0]).toBe('ObojoboDraft.Chunks.IFrame')
+		expect(register[0]).toBe('ObojoboDraft.Chunks.Materia')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)

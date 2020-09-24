@@ -198,7 +198,7 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('changes action', () => {
+	test('changes action type', () => {
 		const content = {
 			triggers: [
 				{
@@ -239,18 +239,22 @@ describe('TriggerListModal', () => {
 		}
 		const component = mount(<TriggerListModal content={content} />)
 
-		component
-			.find('input')
-			.at(2)
-			.simulate('change', {
-				target: { value: 'mock-id' }
-			})
+		// make sure this is the expected label/input combo
+		const inputLabel = component.find('label').at(2)
+		expect(inputLabel.props().children).toBe('Item Id')
 
-		component
-			.find('input')
-			.at(2)
-			.simulate('change', { target: null })
 
+		// change the value
+		component.find('input').at(2).simulate('change', { target: { type: 'text', value: '10'} })
+
+		// check that the value changed
+		expect(component.find('input').at(2).props()).toHaveProperty('value', "10")
+
+		// check the change to state
+		expect(component.state()).toHaveProperty('triggers')
+		expect(component.state().triggers[0].actions).toContainEqual({type: 'nav:goto', value: {id: "10"}})
+
+		// check the rendered component
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})

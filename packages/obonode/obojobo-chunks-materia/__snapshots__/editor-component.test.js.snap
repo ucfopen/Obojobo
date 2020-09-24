@@ -1,73 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IFrame Editor Node IFrame component 1`] = `
-<div
-  className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
->
+exports[`Materia Editor Node Materia renders with no size correctly 1`] = `
+<div>
   <div
-    className="editor-container"
-    style={
-      Object {
-        "height": "200px",
-      }
-    }
+    className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
   >
     <div
-      className="iframe-toolbar"
+      className="obojobo-draft--revealable-container-wrapper"
     >
-      <span
-        aria-hidden={true}
-        className="title"
-      >
-        mockTitle
-      </span>
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        className="obojobo-draft--revealable-container editor-container  is-not-selected"
+        onClick={[Function]}
+        style={
+          Object {
+            "maxHeight": "undefinedpx",
+            "maxWidth": "undefinedpx",
+          }
+        }
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
-          IFrame Properties
-        </button>
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={-1}
+            >
+              Widget Settings...
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
   </div>
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
-<div
-  className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
->
+exports[`Materia Editor Node component renders 1`] = `
+<div>
   <div
-    className="editor-container"
-    style={
-      Object {
-        "height": "500px",
-      }
-    }
+    className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
   >
     <div
-      className="iframe-toolbar"
+      className="obojobo-draft--revealable-container-wrapper"
     >
-      <span
-        aria-hidden={true}
-        className="title"
-      >
-        mockSrc
-      </span>
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        className="obojobo-draft--revealable-container editor-container  is-not-selected"
+        onClick={[Function]}
+        style={
+          Object {
+            "maxHeight": "undefinedpx",
+            "maxWidth": "undefinedpx",
+          }
+        }
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
-          IFrame Properties
-        </button>
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={-1}
+            >
+              Widget Settings...
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
   </div>
 </div>
 `;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IFrame adapter construct builds without attributes 1`] = `
+exports[`Materia adapter construct builds without attributes 1`] = `
 Object {
   "controls": Array [
     "reload",
@@ -29,7 +29,7 @@ Object {
 }
 `;
 
-exports[`IFrame adapter toJSON builds a JSON representation 1`] = `
+exports[`Materia adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
     "controls": Array [

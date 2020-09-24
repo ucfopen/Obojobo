@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IFrame editor plugins.renderNode calls next 1`] = `undefined`;
-
-exports[`IFrame editor plugins.renderNode renders a button when passed 1`] = `
-<IFrame
+exports[`Materia editorRegistration plugins.renderNode renders an Materia when passed 1`] = `
+<MockMateria
   attributes={
     Object {
       "dummy": "dummyData",
@@ -15,7 +13,7 @@ exports[`IFrame editor plugins.renderNode renders a button when passed 1`] = `
       "data": Object {
         "get": [Function],
       },
-      "type": "ObojoboDraft.Chunks.IFrame",
+      "type": "ObojoboDraft.Chunks.Materia",
     }
   }
 />

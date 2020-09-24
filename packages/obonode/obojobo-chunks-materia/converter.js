@@ -4,8 +4,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 /**
  * Generates an Obojobo Materia from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
- * src, title, type, border, fit, width, height, initalZoom, autoload,
- * and controlls attributes.
+ * src, widgetEngine, icon, width, and height
  * @param {Object} node A Slate Node
  * @returns {Object} An Obojobo Materia node
  */

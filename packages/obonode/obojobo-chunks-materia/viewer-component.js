@@ -91,7 +91,7 @@ export default class Materia extends React.Component {
 		try {
 			return this.renderTextCaption()
 		} catch (e) {
-			console.error('Error bulding Materia Caption') // eslint-disable-line no-console
+			console.error('Error building Materia Caption') // eslint-disable-line no-console
 			return null
 		}
 	}

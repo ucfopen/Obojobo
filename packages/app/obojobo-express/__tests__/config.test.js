@@ -1,14 +1,20 @@
+jest.mock('../server/logger')
+jest.mock('obojobo-lib-utils')
 const env_node = process.env.NODE_ENV
 const ogConsoleWarn = console.warn // eslint-disable-line no-console
 const path = require('path')
 let logger
+
 
 const configPath = path.resolve(__dirname + '/../server/config')
 describe('config', () => {
 	beforeEach(() => {
 		delete process.env.NODE_ENV
 		jest.resetModules()
-		jest.mock('../server/logger')
+		// speed up tests by mocking the path resolution of configs
+		const { getAllOboNodeRegistryDirsByType } = require('obojobo-lib-utils')
+		getAllOboNodeRegistryDirsByType.mockReturnValue([configPath])
+
 		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 	})
@@ -31,7 +37,7 @@ describe('config', () => {
 		const config = oboRequire('server/config')
 		expect(config).toHaveProperty('db')
 		expect(config).toHaveProperty('lti')
-		expect(config).toHaveProperty('permissions')
+		expect(config).toHaveProperty('permissionGroups')
 		expect(config).toHaveProperty('general')
 		expect(config).toHaveProperty('media')
 	})
@@ -119,6 +125,7 @@ describe('config', () => {
 				driver: 'postgres'
 			}
 		}
+		console.warn = jest.fn() // eslint-disable-line no-console
 
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
@@ -127,6 +134,7 @@ describe('config', () => {
 		expect(logger.error).toHaveBeenCalledWith(
 			expect.stringContaining('Error: Missing config environment for "default" and "test"')
 		)
+		expect(console.warn).toHaveBeenCalled() // eslint-disable-line no-console
 		expect(config.db).toEqual({})
 	})
 

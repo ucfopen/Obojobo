@@ -80,13 +80,13 @@ const getConfigFileData = (configFile, env) => {
 		}
 
 		// combine with default if it exists
-		return deepFreeze({ ...defaultObject, ...envObject })
+		return { ...defaultObject, ...envObject }
 	} catch (error) {
 		/* istanbul ignore next */
 		if (env === 'test') console.warn(error) // eslint-disable-line no-console
 		logger.error(`Error loading config file: ${configFile}`)
 		logger.error(error.toString())
-		return deepFreeze({})
+		return {}
 	}
 }
 
@@ -119,8 +119,10 @@ configDirs.forEach(dir => {
 			logger.error(`Config name ${name} already registered, not loading: ${fPath}`)
 		}
 		const cfg = getConfigFileData(fPath, env)
-		if (cfg) configuration[name] = cfg
+		if (cfg) configuration[name] = deepFreeze(cfg) // freeze each to prevent overwriting
 	})
 })
+
+deepFreeze(configuration)
 
 module.exports = configuration

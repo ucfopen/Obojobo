@@ -1,63 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+exports[`Materia Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "autoload": false,
-      "border": false,
-      "controls": "reload",
-      "fit": "scale",
-      "initialZoom": 1,
-      "type": "media",
+  "children": Array [
+    Object {
+      "text": "",
     },
-  },
-  "key": "mockKey",
-  "object": "block",
+  ],
+  "content": Object {},
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
-exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with media defaults 1`] = `
+exports[`Materia Converter oboToSlate converts an OboNode to a Slate node with media defaults 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "autoload": false,
-      "border": false,
-      "controls": "reload",
-      "fit": "scale",
-      "initialZoom": 1,
-      "type": "media",
+  "children": Array [
+    Object {
+      "text": "Widget Caption",
     },
+  ],
+  "content": Object {
+    "height": 600,
+    "icon": "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
+    "src": "https://materia.ucf.edu/mock-widget",
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "Widget Caption",
+        },
+      },
+    ],
+    "widgetEngine": "Adventure",
+    "width": 800,
   },
-  "key": "mockKey",
-  "object": "block",
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
-exports[`IFrame Converter oboToSlate converts an OboNode to a Slate node with webpage defaults 1`] = `
+exports[`Materia Converter oboToSlate converts an OboNode to a Slate node with webpage defaults 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "autoload": false,
-      "border": true,
-      "controls": "zoom,reload,new-window",
-      "fit": "scroll",
-      "initialZoom": 1,
-      "type": "webpage",
+  "children": Array [
+    Object {
+      "text": "Widget Caption",
     },
+  ],
+  "content": Object {
+    "height": 600,
+    "icon": "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
+    "src": "https://materia.ucf.edu/mock-widget",
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "Widget Caption",
+        },
+      },
+    ],
+    "widgetEngine": "Adventure",
+    "width": 800,
   },
-  "key": "mockKey",
-  "object": "block",
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
-exports[`IFrame Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+exports[`Materia Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
-  "content": Object {},
+  "content": Object {
+    "height": 600,
+    "icon": "https://github.com/ucfopen/adventure-materia-widget/raw/master/src/_icons/icon-92.png",
+    "src": "https://materia.ucf.edu/mock-widget",
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "Widget Caption",
+        },
+      },
+    ],
+    "widgetEngine": "Adventure",
+    "width": 800,
+  },
   "id": "mockKey",
   "type": "mockType",
 }
