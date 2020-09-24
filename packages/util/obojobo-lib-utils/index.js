@@ -85,14 +85,14 @@ const getAllOboNodeScriptPathsByType = type => {
 // like 'migrations' and 'config'
 const getAllOboNodeRegistryDirsByType = type => {
 	const modules = searchNodeModulesForOboNodes()
-	const allDirs = []
-	modules.forEach(module => {
-		const dir = getOboNodeScriptPathsFromPackage(module, type)
+	const allDirs = new Set()
+	modules.forEach(oboNodePackage => {
+		const dir = getOboNodeScriptPathsFromPackage(oboNodePackage, type)
 		if (!dir) return
-		const basedir = path.dirname(resolver(module))
-		allDirs.push(`${basedir}/${dir}`)
+		const basedir = path.dirname(resolver(oboNodePackage))
+		allDirs.add(`${basedir}/${dir}`)
 	})
-	return allDirs
+	return Array.from(allDirs)
 }
 
 const gatherClientScriptsFromModules = () => {

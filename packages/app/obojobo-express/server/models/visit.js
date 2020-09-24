@@ -106,7 +106,7 @@ class Visit {
 	}
 
 	get draftDocument() {
-		if (this._memoizedDraftDocument) return Promise.resolve(this.memoizedDraftDocument)
+		if (this._memoizedDraftDocument) return Promise.resolve(this._memoizedDraftDocument)
 		return DraftDocument.fetchDraftByVersion(this.draft_id, this.draft_content_id).then(
 			draftDocument => {
 				this._memoizedDraftDocument = draftDocument

@@ -1,10 +1,11 @@
 jest.mock('../../server/db')
 jest.mock('../../server/logger')
-
+jest.mock('../../server/models/draft')
 import Visit from '../../server/models/visit'
 import logger from '../../server/logger'
 
 const db = oboRequire('server/db')
+const DraftDocument = require('../../server/models/draft')
 
 describe('Visit Model', () => {
 	beforeEach(() => {
@@ -34,6 +35,29 @@ describe('Visit Model', () => {
 				draft_content_id: 'mockContentId'
 			})
 		})
+	})
+
+	test('draftDocument loads a draft and memoize it', async () => {
+		const mockDocument = {id:'mock'}
+		DraftDocument.fetchDraftByVersion.mockResolvedValueOnce(mockDocument)
+
+		const v = new Visit({draft_id: 10, draft_content_id: 5})
+
+		const doc = await v.draftDocument
+
+		// should return what DraftDocument.fetchDraftByVersion resolves with
+		expect(doc).toStrictEqual(mockDocument)
+		// sends the right arguments to DraftDocument.fetchDraftByVersion
+		expect(DraftDocument.fetchDraftByVersion).toHaveBeenCalledWith(10, 5)
+		// DraftDocument.fetchDraftByVersion only called once (useful for next test)
+		expect(DraftDocument.fetchDraftByVersion).toHaveBeenCalledTimes(1)
+
+		// get the document again
+		const sameDoc = await v.draftDocument
+		// DraftDocument.fetchDraftByVersion shouldn't have been called again if it was memoized
+		expect(DraftDocument.fetchDraftByVersion).toHaveBeenCalledTimes(1)
+		// verify we got the same result again
+		expect(sameDoc).toStrictEqual(mockDocument)
 	})
 
 	test('fetchById allows you to return non active visits with argument', () => {
