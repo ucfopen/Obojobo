@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssessmentScore deletePreviewScores calls expected queries 1`] = `
+Array [
+  Array [
+    "
+				SELECT assessment_scores.id
+				FROM assessment_scores
+				JOIN attempts
+					ON attempts.id = assessment_scores.attempt_id
+				WHERE assessment_scores.user_id = $[userId]
+				AND assessment_scores.draft_id = $[draftId]
+				AND attempts.resource_link_id = $[resourceLinkId]
+				AND assessment_scores.is_preview = true
+			",
+    Object {
+      "draftId": "mock-draft-id",
+      "resourceLinkId": "resource-link-id",
+      "userId": "mock-user-id",
+    },
+  ],
+]
+`;
+
+exports[`AssessmentScore deletePreviewScores calls expected queries 2`] = `
+Array [
+  Array [
+    "
+						DELETE FROM lti_assessment_scores
+						WHERE assessment_score_id IN ($[ids:csv])
+					",
+    Object {
+      "ids": Array [
+        5,
+        99,
+      ],
+    },
+  ],
+  Array [
+    "
+						DELETE FROM assessment_scores
+						WHERE id IN ($[ids:csv])
+					",
+    Object {
+      "ids": Array [
+        5,
+        99,
+      ],
+    },
+  ],
+]
+`;

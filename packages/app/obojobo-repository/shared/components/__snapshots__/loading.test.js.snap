@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading renders correctly with default props 1`] = `
+Array [
+  "child1",
+  "child2",
+]
+`;
+
+exports[`Loading renders correctly with some props provided 1`] = `
+<div
+  className="loading--container"
+>
+  Loading...
+</div>
+`;
+
+exports[`Loading renders correctly with standard props provided 1`] = `
+<div
+  className="loading--container"
+>
+  different loading text
+</div>
+`;

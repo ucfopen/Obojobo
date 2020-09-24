@@ -372,25 +372,24 @@ class Media {
 		return (fileTypeInfo && allowedFileTypes.test(fileTypeInfo.ext)) || isSvg(file)
 	}
 
-	static createAndSave(userId, fileInfo) {
+	static async createAndSave(userId, fileInfo) {
 		let file
 
 		try {
 			file = fs.readFileSync(fileInfo.path)
-		} catch (err) {
+		} catch (error) {
 			// calling methods expect a thenable object to be returned
-			return Promise.reject(err)
+			logger.logError('Error Reading media file', error)
+			throw error
 		}
 
 		if (!Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)) {
 			// Delete the temporary media stored by Multer
 			fs.unlinkSync(fileInfo.path)
-			return Promise.reject(
-				new Error(
-					`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
-						.split('|')
-						.join(', ')}`
-				)
+			throw new Error(
+				`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
+					.split('|')
+					.join(', ')}`
 			)
 		}
 
@@ -418,9 +417,9 @@ class Media {
 				// ID of the user media, not the binary data
 				return mediaRecord
 			})
-			.catch(err => {
-				logger.error(err)
-				throw err
+			.catch(error => {
+				logger.logError('Error saving media file', error)
+				throw error
 			})
 	}
 }

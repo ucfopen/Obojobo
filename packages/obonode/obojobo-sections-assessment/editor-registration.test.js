@@ -30,7 +30,7 @@ describe('Assessment editor', () => {
 
 	test('normalizeNode on Assessment calls next if all Assessment children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -74,7 +74,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing Rubric', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -98,7 +98,7 @@ describe('Assessment editor', () => {
 							type: ACTIONS_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
-						} 
+						}
 					]
 				}
 			],
@@ -112,7 +112,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing Actions', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -144,7 +144,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing QuestionBank', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -170,7 +170,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing Page', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -189,7 +189,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing Page out of order', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -214,7 +214,7 @@ describe('Assessment editor', () => {
 
 	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped Page', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -233,7 +233,7 @@ describe('Assessment editor', () => {
 							type: ACTIONS_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
-						}, 
+						},
 						{
 							id: 'mockKey',
 							type: RUBRIC_NODE,
@@ -260,7 +260,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing QuestionBank out of order', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -291,7 +291,7 @@ describe('Assessment editor', () => {
 
 	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped QuestionBank', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -310,7 +310,7 @@ describe('Assessment editor', () => {
 							type: ACTIONS_NODE,
 							content: {},
 							children: [{ text: 'mockCode', b: true }]
-						}, 
+						},
 						{
 							id: 'mockKey',
 							type: RUBRIC_NODE,
@@ -337,7 +337,7 @@ describe('Assessment editor', () => {
 	test('normalizeNode on Assessment calls Transforms when missing Actions out of order', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -374,7 +374,7 @@ describe('Assessment editor', () => {
 
 	test('normalizeNode on Assessment calls NormalizeUtil with unwrapped Actions', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

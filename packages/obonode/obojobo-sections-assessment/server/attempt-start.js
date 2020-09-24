@@ -1,5 +1,4 @@
-const Assessment = require('./assessment')
-const VisitModel = require('obojobo-express/server/models/visit')
+const AssessmentModel = require('./models/assessment')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
@@ -10,52 +9,42 @@ const ACTION_ASSESSMENT_ATTEMPT_START = 'assessment:attemptStart'
 const ACTION_ASSESSMENT_SEND_TO_ASSESSMENT = 'ObojoboDraft.Sections.Assessment:sendToAssessment'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+const ERROR_IMPORT_USED = 'Import score has already been used'
 
 const startAttempt = (req, res) => {
-	const assessmentProperties = {
-		user: null,
-		isPreview: null,
-		draftTree: null,
-		id: null,
-		node: null,
-		nodeChildrenIds: null,
-		questionBank: null,
-		attemptHistory: null,
-		numAttemptsTaken: null,
-		questionUsesMap: null,
-		resourceLinkId: null
-	}
 	let attemptState
-	let currentDocument = null
+	let assessmentProperties
+	let assessmentNode
 
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			assessmentProperties.user = user
-			return VisitModel.fetchById(req.body.visitId)
-		})
-		.then(visit => {
-			assessmentProperties.isPreview = visit.is_preview
-			assessmentProperties.resourceLinkId = visit.resource_link_id
+	return Promise.resolve()
+		.then(() => {
+			attemptState
+			assessmentProperties = {
+				user: req.currentUser,
+				isPreview: req.currentVisit.is_preview,
+				draftTree: req.currentDocument,
+				id: req.body.assessmentId,
+				oboNode: null,
+				nodeChildrenIds: null,
+				questionBank: null,
+				attemptHistory: null,
+				numAttemptsTaken: null,
+				questionUsesMap: null,
+				resourceLinkId: req.currentVisit.resource_link_id
+			}
 
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			const assessmentNode = currentDocument.getChildNodeById(req.body.assessmentId)
-
-			assessmentProperties.draftTree = currentDocument
-			assessmentProperties.id = req.body.assessmentId
+			// @TODO: make sure assessmentID is found
+			assessmentNode = req.currentDocument.getChildNodeById(req.body.assessmentId)
 			assessmentProperties.oboNode = assessmentNode
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
 			assessmentProperties.questionBank = assessmentNode.children[1]
 
-			return Assessment.getCompletedAssessmentAttemptHistory(
-				assessmentProperties.user.id,
-				currentDocument.draftId,
+			return AssessmentModel.getCompletedAssessmentAttemptHistory(
+				req.currentUser.id,
+				req.currentDocument.draftId,
 				req.body.assessmentId,
-				assessmentProperties.isPreview,
-				assessmentProperties.resourceLinkId
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
 			)
 		})
 		.then(attemptHistory => {
@@ -71,23 +60,32 @@ const startAttempt = (req, res) => {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 			}
 
-			attemptState = getState(assessmentProperties)
+			// look to see if import has been used before
+			const isImportUsed = attemptHistory.find(attempt => attempt.isImported === true)
+			if (isImportUsed) {
+				throw new Error(ERROR_IMPORT_USED)
+			}
 
-			return Promise.all(
-				getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
+			attemptState = getState(assessmentProperties)
+			const toClientPromises = getSendToClientPromises(
+				assessmentProperties.oboNode,
+				attemptState,
+				req,
+				res
 			)
+			return Promise.all(toClientPromises)
 		})
 		.then(() => {
-			return Assessment.insertNewAttempt(
-				assessmentProperties.user.id,
-				currentDocument.draftId,
-				currentDocument.contentId,
+			return AssessmentModel.createNewAttempt(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentDocument.contentId,
 				req.body.assessmentId,
 				{
 					chosen: attemptState.chosen
 				},
-				assessmentProperties.isPreview,
-				assessmentProperties.resourceLinkId
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
 			)
 		})
 		.then(result => {
@@ -95,16 +93,14 @@ const startAttempt = (req, res) => {
 				assessmentProperties.oboNode.draftTree,
 				result.state.chosen
 			)
-
 			res.success(result)
-
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
-				assessmentProperties.user.id,
-				currentDocument,
+				req.currentUser.id,
+				req.currentDocument,
 				req.body.assessmentId,
-				assessmentProperties.isPreview,
+				req.currentVisit.is_preview,
 				req.hostname,
 				req.connection.remoteAddress,
 				req.body.visitId
@@ -113,7 +109,9 @@ const startAttempt = (req, res) => {
 		.catch(error => {
 			switch (error.message) {
 				case ERROR_ATTEMPT_LIMIT_REACHED:
-					return res.reject(ERROR_ATTEMPT_LIMIT_REACHED)
+				case ERROR_IMPORT_USED:
+					return res.reject(error.message)
+
 				default:
 					logAndRespondToUnexpected(ERROR_UNEXPECTED_DB_ERROR, res, req, error)
 			}
@@ -186,9 +184,9 @@ const getSendToClientPromises = (assessmentNode, attemptState, req, res) => {
 		// A nodeInstance must be fetched from the draftTree since the state of an assessment only holds question/questionBank node ids and types.
 		// Questions and question banks can be yelled at once an instance is retrieved.s
 		const nodeInstance = assessmentNode.draftTree.getChildNodeById(node.id)
-		promises = promises.concat(nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
+		const yellReturn = nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res)
+		promises = promises.concat(yellReturn)
 	}
-
 	return promises
 }
 

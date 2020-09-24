@@ -11,7 +11,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	Registry: {
-		contentTypes: [ 'ObojoboDraft.Chunks.Text' ]
+		contentTypes: ['ObojoboDraft.Chunks.Text']
 	},
 	components: {
 		// eslint-disable-next-line react/display-name
@@ -46,7 +46,7 @@ describe('MCFeedback editor', () => {
 
 	test('normalizeNode on MCFeedback calls next if all MCFeedback children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -70,7 +70,7 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -79,7 +79,7 @@ describe('MCFeedback editor', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -103,7 +103,7 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -112,7 +112,7 @@ describe('MCFeedback editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -130,14 +130,14 @@ describe('MCFeedback editor', () => {
 			],
 			isInline: () => false
 		}
-		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCFeedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on MCFeedback calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

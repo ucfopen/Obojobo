@@ -9,15 +9,13 @@ jest.mock('slate')
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
 describe('MCAssessment Editor Node', () => {
 	test('MCAssessment builds the expected component', () => {
-		const component = renderer.create(
-			<MCAssessment element={{ content: {} }}/>
-		)
+		const component = renderer.create(<MCAssessment element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -25,12 +23,13 @@ describe('MCAssessment Editor Node', () => {
 
 	test('MCAssessment adds a new choice', () => {
 		const component = mount(
-			<MCAssessment 
-				element={{ 
-					questionType: 'mock-question-type', 
+			<MCAssessment
+				element={{
+					questionType: 'mock-question-type',
 					content: {},
 					children: []
-				}}/>
+				}}
+			/>
 		)
 		ReactEditor.findPath.mockReturnValueOnce([0])
 
@@ -44,11 +43,12 @@ describe('MCAssessment Editor Node', () => {
 
 	test('MCAssessment changes response type', () => {
 		const component = mount(
-			<MCAssessment 
-				element={{ 
-					questionType: 'mock-question-type', 
-					content: {} 
-				}}/>
+			<MCAssessment
+				element={{
+					questionType: 'mock-question-type',
+					content: {}
+				}}
+			/>
 		)
 
 		component
@@ -61,11 +61,12 @@ describe('MCAssessment Editor Node', () => {
 
 	test('MCAssessment toggles shuffle', () => {
 		const component = mount(
-			<MCAssessment 
-				element={{ 
-					questionType: 'mock-question-type', 
-					content: {} 
-				}}/>
+			<MCAssessment
+				element={{
+					questionType: 'mock-question-type',
+					content: {}
+				}}
+			/>
 		)
 
 		component

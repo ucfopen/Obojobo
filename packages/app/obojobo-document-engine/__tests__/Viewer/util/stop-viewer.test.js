@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 jest.mock('../../../src/scripts/common/components/modal/no-button-modal')
 jest.mock('sysend')
 jest.mock('../../../src/scripts/common/index', () => ({
@@ -18,7 +18,7 @@ jest.mock('../../../src/scripts/common/index', () => ({
 
 const Common = require('../../../src/scripts/common/index')
 const StopViewer = require('../../../src/scripts/viewer/util/stop-viewer')
-const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api').default
 const sysend = require('sysend')
 const ModalUtil = Common.util.ModalUtil
 const Dispatcher = Common.flux.Dispatcher
@@ -27,13 +27,13 @@ describe('Stop Viewer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.clearAllTimers()
-		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 	})
 
 	test('startHeartBeat loads session right away', () => {
 		expect.hasAssertions()
 		StopViewer.startHeartBeat('mock-draft-id')
-		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalled()
+		expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalled()
 	})
 
 	test('startHeartBeat registers a sysend listener', () => {
@@ -60,13 +60,13 @@ describe('Stop Viewer', () => {
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		// first call starts right away
-		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
-		expect(APIUtil.getVisitSessionStatus.mock.calls[0][0]).toBe('mock-draft-id')
+		expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.getVisitSessionStatus.mock.calls[0][0]).toBe('mock-draft-id')
 
 		// second call after the setInterval runs
 		jest.advanceTimersByTime(20000)
-		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(2)
-		expect(APIUtil.getVisitSessionStatus.mock.calls[1][0]).toBe('mock-draft-id')
+		expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(2)
+		expect(ViewerAPI.getVisitSessionStatus.mock.calls[1][0]).toBe('mock-draft-id')
 	})
 
 	test('startHeartBeat sysend listener calls stopHeartBeat', () => {
@@ -92,9 +92,9 @@ describe('Stop Viewer', () => {
 		sysendListener({ windowId: 0, draftId: 'mock-draft-id' })
 
 		// first call starts right away
-		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 		jest.runOnlyPendingTimers()
-		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 	})
 
 	test('sysend listener does nothing when triggered by same window', () => {
@@ -127,20 +127,20 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat stops the interval when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
-			expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
+			expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 			jest.runOnlyPendingTimers()
-			expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
+			expect(ViewerAPI.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 		})
 	})
 
 	test('executeHeartBeat shows modal when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
@@ -151,7 +151,7 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat dispatches when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
@@ -162,7 +162,7 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat broadcasts even when statis is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {

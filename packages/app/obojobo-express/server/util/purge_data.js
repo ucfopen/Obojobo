@@ -95,10 +95,10 @@ const historyPurge = async purgeDate => {
 }
 
 exports.purgeData = async () => {
-	const configMode = config.general.demoPurgeMode || 'none'
+	const purgeMode = config.general.demoMode.purgeMode || 'none'
 	let purgeMethod = false
 
-	switch (configMode) {
+	switch (purgeMode) {
 		case MODE_PURGE_HISTORY:
 			purgeMethod = historyPurge
 			break
@@ -109,7 +109,7 @@ exports.purgeData = async () => {
 	}
 
 	if (purgeMethod) {
-		const demoPurgeDaysAgo = config.general.demoPurgeDaysAgo || 7
+		const demoPurgeDaysAgo = config.general.demoMode.purgeDaysAgo || 7
 		const purgeDate = moment()
 			.startOf('day')
 			.subtract(demoPurgeDaysAgo, 'days')
@@ -118,6 +118,6 @@ exports.purgeData = async () => {
 }
 
 exports.isPurgeEnabled = () => {
-	const configMode = config.general.demoPurgeMode || 'none'
-	return configMode === MODE_PURGE_ALL || configMode === MODE_PURGE_HISTORY
+	const purgeMode = config.general.demoMode.purgeMode || 'none'
+	return purgeMode === MODE_PURGE_ALL || purgeMode === MODE_PURGE_HISTORY
 }
