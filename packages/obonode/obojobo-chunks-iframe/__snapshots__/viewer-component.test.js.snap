@@ -34,7 +34,7 @@ exports[`IFrame IFrame component readOnly 1`] = `
         className="iframe-container"
       >
         <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
           frameBorder="0"
           loading="lazy"
           src="http://www.example.com"

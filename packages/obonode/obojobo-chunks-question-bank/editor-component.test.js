@@ -197,12 +197,6 @@ describe('QuestionBank editor', () => {
 	})
 
 	test('QuestionBank component adds question', () => {
-		Registry.getItemForType.mockReturnValueOnce({
-			insertJSON: {
-				type: 'Mock'
-			}
-		})
-
 		const props = {
 			element: {
 				content: {},
@@ -384,11 +378,16 @@ describe('QuestionBank editor', () => {
 		}
 
 		ReactEditor.findPath.mockReturnValueOnce([])
-
+		OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'ObojoboDraft.Chunks.Question',
+			attributes: {}
+		})
+		Registry.getItemForType.mockReturnValueOnce({
+			oboToSlate: () => {}
+		})
 		// Use QuestionBank.type to bypass memo()
 		const component = mount(<QuestionBank.type {...props} />)
 
-		OboModel.getRoot.mockReturnValueOnce({ get: () => 'mock_type', children: [] })
 		component.instance().diplayImportQuestionModal()
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})

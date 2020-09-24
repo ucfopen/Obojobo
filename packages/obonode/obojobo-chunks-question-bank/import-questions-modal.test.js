@@ -6,7 +6,7 @@ import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-uti
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
-jest.mock('./model-renderer', () => () => <div>Item</div>)
+jest.mock('./node-renderer', () => () => <div>Item</div>)
 jest.mock('obojobo-document-engine/src/scripts/common/registry')
 
 describe('ImportQuestionModal', () => {

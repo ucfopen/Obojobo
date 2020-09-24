@@ -52,7 +52,7 @@ const importQuestionModal = props => {
 								setSelectStates([...selectStates])
 							}}
 						>
-							<input type="checkbox" checked={selectStates[index]} />
+							<input type="checkbox" checked={selectStates[index]} readOnly />
 							<div>
 								<NodeRenderer key={question} value={questionContent} />
 							</div>
