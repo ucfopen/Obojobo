@@ -36,7 +36,7 @@ const orderedList = [
 ]
 
 const getIsSelected = (marks, mark) => {
-	if (!mark || !marks || !marks[mark.type]) {
+	if (!mark || !marks || mark.type === 'color' || !marks[mark.type]) {
 		return false
 	}
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Editor } from 'slate'
 import ColorPicker from './color-picker'
 
 class TextColorPickerIcon extends React.Component {
@@ -21,40 +22,35 @@ class TextColorPickerIcon extends React.Component {
 		this.props.editor.toggleEditable(true)
 	}
 
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onWindowMouseDown)
+	}
+
 	componentDidMount() {
 		document.addEventListener('mousedown', this.onWindowMouseDown, false)
 	}
 
 	render() {
+		const marks = Editor.marks(this.props.editor)
+		const color = marks && marks.color ? marks.color : '#000000'
 		return (
-			<div className="text-color-icon" ref={this.domRef}>
-				<svg
-					className="icon"
-					height="20px"
-					width="21px"
-					style={{ margin: '6.5px 5.5px 5.5px 5.5px' }}
-					viewBox="0,0,2048,2048"
-					focusable="false"
-					onClick={() => {
-						this.props.editor.toggleEditable(false)
-						this.setState({ isSelected: true })
-					}}
-				>
+			<div
+				className="text-color-icon"
+				ref={this.domRef}
+				onClick={() => {
+					this.props.editor.toggleEditable(false)
+					this.setState({ isSelected: true })
+				}}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="-512 -700 3072 3072">
+					<path fill={color} d="M2048,1721.67V2048H0V1721.67Z" />
 					<path
-						type="path"
-						d="M 2048 2048 h -2048 v -512 h 2048 m -589 -102 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
-					></path>
-					<path type="path" d="M 51 1997 v -410 h 1946 v 410 z"></path>
-					<path
-						type="path"
-						d="M 2048 1536 v 512 h -2048 v -512 m 1946 102 h -1844 v 308 h 1844 z"
-					></path>
-					<path type="path" d="M 2048 1536 v 512 h -2048 v -512 z"></path>
-					<path
-						type="path"
-						d="M 1459 1434 l -147 -410 h -571 l -143 410 h -137 l 507 -1332 h 124 l 504 1332 m -569 -1169 h -4 l -240 658 h 487 z"
-					></path>
+						height="2px"
+						width="2px"
+						d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+					/>
 				</svg>
+
 				{this.state.isSelected ? (
 					<ColorPicker
 						editor={this.props.editor}

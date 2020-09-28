@@ -8,62 +8,13 @@ import Common from '../../common'
 const { Button } = Common.components
 const COLOR_MARK = 'color'
 const colorChoices = [
-	[
-		'rgb(0, 0, 0)',
-		'rgb(255, 255, 255)',
-		'rgb(239, 239, 239)',
-		'rgb(204, 204, 204)',
-		'rgb(153, 153, 153)',
-		'rgb(67, 67, 67)'
-	],
-	[
-		'rgb(255, 0, 0)',
-		'rgb(244, 204, 204)',
-		'rgb(234, 153, 153)',
-		'rgb(224, 102, 102)',
-		'rgb(204, 0, 0)',
-		'rgb(153, 0, 0)'
-	],
-	[
-		'rgb(255, 153, 0)',
-		'rgb(252, 229, 205)',
-		'rgb(249, 203, 156)',
-		'rgb(246, 178, 107)',
-		'rgb(230, 145, 56)',
-		'rgb(180, 95, 6)'
-	],
-	[
-		'rgb(255, 255, 0)',
-		'rgb(255, 242, 204)',
-		'rgb(255, 229, 153)',
-		'rgb(255, 217, 102)',
-		'rgb(241, 194, 50)',
-		'rgb(191, 144, 0)'
-	],
-	[
-		'rgb(0, 255, 0)',
-		'rgb(217, 234, 211)',
-		'rgb(182, 215, 168)',
-		'rgb(147, 196, 125)',
-		'rgb(106, 168, 79)',
-		'rgb(56, 118, 29)'
-	],
-	[
-		'rgb(0, 0, 255)',
-		'rgb(207, 226, 243)',
-		'rgb(159, 197, 232)',
-		'rgb(111, 168, 220)',
-		'rgb(60, 120, 216)',
-		'rgb(17, 85, 204)'
-	],
-	[
-		'rgb(255, 0, 255)',
-		'rgb(234, 209, 220)',
-		'rgb(213, 166, 189)',
-		'rgb(194, 123, 160)',
-		'rgb(166, 77, 121)',
-		'rgb(116, 27, 71)'
-	]
+	['#000000', '#434343', '#999999', '#cccccc', '#ffffff'],
+	['#990000', '#cc0000', '#e06666', '#ea9999', '#f4cccc'],
+	['#b45f06', '#e69138', '#f6b26b', '#f9cb9c', '#fce5cd'],
+	['#bf9000', '#f1c232', '#ffd966', '#ffe599', '#fff2cc'],
+	['#38761d', '#6aa84f', '#93c47d', '#b6d7a8', '#d9ead3'],
+	['#1155cc', '#3c78d8', '#6fa8dc', '#9fc5e8', '#cfe2f3'],
+	['#741b47', '#a64d79', '#c27ba0', '#d5a6bd', '#ead1dc']
 ]
 
 const ColorPicker = props => {
@@ -72,11 +23,10 @@ const ColorPicker = props => {
 
 	const onClick = color => {
 		const { editor } = props
+		props.onClose()
 
 		Editor.addMark(editor, COLOR_MARK, color)
-
 		ReactEditor.focus(editor)
-		props.onClose()
 		editor.toggleEditable(true)
 	}
 
@@ -89,7 +39,7 @@ const ColorPicker = props => {
 	}
 
 	return (
-		<div className="color-picker">
+		<div className="color-picker" onClick={e => e.stopPropagation()}>
 			<div className="color-picker--color-choices">
 				{colorChoices.map(colors =>
 					expanded ? (
@@ -119,6 +69,7 @@ const ColorPicker = props => {
 				</button>
 			) : (
 				<div className="color-picker--input">
+					<span backgroundColor={hex}></span>
 					<input value={hex} onChange={onChange} placeholder="Hex value (Ex: #000000)" />
 					<Button onClick={() => onClick('#' + hex)}>OK</Button>
 				</div>
