@@ -87,92 +87,37 @@ describe('Paragraph Styles', () => {
 		component
 			.find('button')
 			.at(1)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(2)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(3)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(4)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(5)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(6)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(7)
-			.simulate('mousedown')
+			.simulate('click')
 		component
 			.find('button')
 			.at(8)
-			.simulate('mousedown')
+			.simulate('click')
 
 		expect(editor.changeToType).toHaveBeenCalledTimes(8)
-	})
-
-	test('Paragraph Styles calls editor.changeToType on Enter pressed', () => {
-		const mockChangeToType = jest.fn()
-		const editor = {
-			children: [
-				{
-					type: 'MockNode',
-					children: [{ text: 'mockText' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false,
-			changeToType: mockChangeToType
-		}
-
-		const component = mount(<ParagraphStyles editor={editor} />)
-
-		component
-			.find('div')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowRight',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
-			})
-			.simulate('keyDown', {
-				key: 'Enter',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
-			})
-
-		expect(mockChangeToType).toHaveBeenCalledWith(TEXT_NODE, {})
-
-		component
-			.find('div')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowUp',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
-			})
-			.simulate('keyDown', {
-				key: 'Enter',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
-			})
-
-		expect(mockChangeToType).toHaveBeenCalledWith(HEADING_NODE, {
-			headingLevel: 6
-		})
 	})
 
 	test('Paragraph Styles component opens and closes menu with keys', () => {
@@ -198,8 +143,7 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowRight',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
+				stopPropagation: jest.fn()
 			})
 
 		expect(component.html()).toMatchSnapshot()
@@ -209,8 +153,7 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowLeft',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
+				stopPropagation: jest.fn()
 			})
 
 		expect(component.html()).toMatchSnapshot()
@@ -236,8 +179,7 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowUp',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
+				stopPropagation: jest.fn()
 			})
 
 		expect(component.state()).toMatchSnapshot()
@@ -247,8 +189,7 @@ describe('Paragraph Styles', () => {
 			.at(0)
 			.simulate('keyDown', {
 				key: 'ArrowDown',
-				stopPropagation: jest.fn(),
-				preventDefault: jest.fn()
+				stopPropagation: jest.fn()
 			})
 
 		expect(component.state()).toMatchSnapshot()
