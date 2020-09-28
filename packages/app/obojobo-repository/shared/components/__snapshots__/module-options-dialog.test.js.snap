@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard expected props 1`] = `
+<div
+  className="module-permissions-dialog"
+>
+  <div
+    className="top-bar"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <svg
+        version="1.1"
+        viewBox="0 0 130 150"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<image xlink:href=\\"/library/module-icon/mockDraftId\\" width=\\"150\\" height=\\"150\\" />",
+              }
+            }
+            height="150"
+            id="module-img-id-mockDraftId"
+            patternUnits="userSpaceOnUse"
+            width="150"
+          />
+        </defs>
+        <path
+          d="M56.29165124598851 4.999999999999999Q64.9519052838329 0 73.61215932167728 4.999999999999999L121.24355652982142 32.5Q129.9038105676658 37.5 129.9038105676658 47.5L129.9038105676658 102.5Q129.9038105676658 112.5 121.24355652982142 117.5L73.61215932167728 145Q64.9519052838329 150 56.29165124598851 145L8.660254037844387 117.5Q0 112.5 0 102.5L0 47.5Q0 37.5 8.660254037844387 32.5Z"
+          fill="url(#module-img-id-mockDraftId)"
+        />
+      </svg>
+    </div>
+    <div
+      className="module-title"
+    >
+      Mock Module Title
+    </div>
+    <button
+      aria-label="Close"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="wrapper"
+  >
+    <h1
+      className="title"
+    >
+      Module Options
+    </h1>
+    <div
+      className="buttons-with-labels"
+    >
+      <a
+        className="repository--button "
+        href="/preview/mockDraftId"
+        target="_blank"
+      >
+        Preview
+      </a>
+      <div
+        className="label"
+      >
+        View with preview controls.
+      </div>
+      <a
+        className="repository--button "
+        href="/url/for/editor"
+        target="_blank"
+      >
+        Edit
+      </a>
+      <div
+        className="label"
+      >
+        Write, edit, and update.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Share
+      </button>
+      <div
+        className="label"
+      >
+        Add or remove collaborators.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Version History
+      </button>
+      <div
+        className="label"
+      >
+        View and restore previous versions.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Download JSON
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in JSON format.
+      </div>
+      <button
+        className="repository--button "
+        onClick={[Function]}
+      >
+        Download XML
+      </button>
+      <div
+        className="label"
+      >
+        Download a copy in XML format.
+      </div>
+      <a
+        className="repository--button "
+        href="/library/mockDraftId"
+        target="_blank"
+      >
+        Public Page
+      </a>
+      <div
+        className="label"
+      >
+        Visit this modules public page.
+      </div>
+      <button
+        className="repository--button dangerous-button delete-button"
+        onClick={[Function]}
+      >
+        Delete
+      </button>
+      <div
+        className="label delete-label"
+      >
+        Say farewell.
+      </div>
+    </div>
+    <button
+      className="repository--button done-button secondary-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+</div>
+`;
