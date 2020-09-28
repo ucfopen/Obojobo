@@ -8,7 +8,7 @@
 		border-radius: $dimension-rounded-radius;
 		max-height: 55vh;
 		min-width: 35em;
-		overflow-y: scroll;
+		overflow: scroll;
 		font-size: 0.75em;
 
 		.import-model--question-content--single {
