@@ -177,6 +177,12 @@ describe('MoreInfoBox', () => {
 						name: 'mockAbstractToggle',
 						value: () => false,
 						onChange: () => true
+					},
+					{
+						type: 'button',
+						description: 'Mock Button',
+						name: 'Mock Name',
+						action: jest.fn()
 					}
 				]}
 			/>
