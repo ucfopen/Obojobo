@@ -2469,6 +2469,101 @@
 								}
 							},
 							"children": []
+						},
+						{
+							"id": "6d641c38-1f62-4b3f-abea-a1c05e7eb32b",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Automatic Width Cells",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "e9c5ca8f-07b4-4ac3-bd26-65a25c5975f6",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "When tables are inserted, their cells have fixed width.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "To make the width of table cells flexible relative to cell contents, click on one of the cells and use the Switch to auto width cells button. To make cells have fixed width back again, click on one of the cells and use the Switch to fixed width cells button.",
+											"styleList": [
+												{
+													"end": 134,
+													"data": {},
+													"type": "monospace",
+													"start": 106
+												},
+												{
+													"end": 254,
+													"data": {},
+													"type": "monospace",
+													"start": 223
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"id": "640648f0-26d4-4f7f-a92a-e0c1f75141a7",
+							"type": "ObojoboDraft.Chunks.Table",
+							"content": {
+								"header": true,
+								"display": "auto",
+								"textGroup": {
+									"numCols": 2,
+									"numRows": 2,
+									"textGroup": [
+										{
+											"text": {
+												"value": "Course Name",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "Professor",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "United States History: 1492-1877 (3 Credit Hours)",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "Dr. Doe",
+												"styleList": []
+											}
+										}
+									]
+								}
+							},
+							"children": []
 						}
 					]
 				},
