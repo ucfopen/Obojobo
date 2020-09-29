@@ -1,6 +1,7 @@
 @import '~styles/includes';
 
 .color-picker {
+	$border-color: #cccccc;
 	$button-background: #eeeeee;
 	$gap: 0.4em;
 
@@ -29,18 +30,19 @@
 		width: 1.4em;
 		height: 1.4em;
 		border-radius: 100%;
-		border: solid 1px rgb(218, 220, 224);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 		margin-top: $gap;
 	}
 
 	.color-picker--button {
 		border: none;
-		background-color: $color-bg;
-		font-size: 0.9em;
 		cursor: pointer;
 		display: inline-block;
 		color: $color-action;
 		text-decoration: underline;
+		background: transparent;
+		font-size: 0.7em;
+		margin: 0.5em;
 
 		&:hover {
 			background: $button-background;
@@ -50,32 +52,33 @@
 	.color-picker--input {
 		display: flex;
 		align-items: center;
-		margin: 0.4em 0.3em;
+		margin: 0.3em;
 
 		.color-picker--holder {
+			display: inline-block;
 			width: 1em;
 			height: 1em;
 			border-radius: 50%;
-			border: solid 1px rgb(218, 220, 224);
+			border: 1px solid rgba(0, 0, 0, 0.1);
 			padding: 0.3em;
 
 			img {
 				height: 1em;
 				width: 1em;
 			}
+
+			input[type='color'] {
+				display: none;
+			}
 		}
 
-		input[type='color'] {
-			display: none;
-		}
-
-		input[type='text'] {
-			flex: 1;
-			font-size: 0.7em;
-			min-width: 1em;
-			padding: 0.3em;
+		input {
+			flex-grow: 1;
+			padding: 0.2em;
 			margin: 0 0.3em;
-			height: 1.5em;
+			height: 1.9em;
+			border-radius: $dimension-rounded-radius;
+			border: solid 1px $border-color;
 		}
 
 		.button {
