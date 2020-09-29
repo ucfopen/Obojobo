@@ -458,7 +458,7 @@ describe('FileToolbarViewer', () => {
 				}
 			]
 		}
-		const mockPath = [0, 0]
+		const mockPath = [0, 0, 0]
 
 		Editor.nodes.mockReturnValue([[{ type: FIGURE_NODE }]])
 		Editor.path.mockReturnValue(mockPath)
@@ -484,7 +484,7 @@ describe('FileToolbarViewer', () => {
 				content: {}
 			},
 			{
-				at: [mockPath[0] + 2]
+				at: [0, 2]
 			}
 		)
 	})
