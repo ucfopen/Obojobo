@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleMenu ModuleMenu renders correctly with className prop 1`] = `
+<div
+  className="repository--module-icon--menu-wrapper"
+>
+  <div
+    className="repository--module-icon--menu extra-class"
+  >
+    <a
+      className="repository--button "
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview
+    </a>
+    <a
+      className="repository--button "
+      href="/url/for/editor"
+      target="_blank"
+    >
+      Edit
+    </a>
+    <button
+      className="repository--button "
+      onClick={[Function]}
+    >
+      Share
+    </button>
+    <hr />
+    <button
+      className="repository--button more"
+      onClick={[Function]}
+    >
+      More...
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ModuleMenu ModuleMenu renders correctly with standard expected props 1`] = `
+<div
+  className="repository--module-icon--menu-wrapper"
+>
+  <div
+    className="repository--module-icon--menu "
+  >
+    <a
+      className="repository--button "
+      href="/preview/mockDraftId"
+      target="_blank"
+    >
+      Preview
+    </a>
+    <a
+      className="repository--button "
+      href="/url/for/editor"
+      target="_blank"
+    >
+      Edit
+    </a>
+    <button
+      className="repository--button "
+      onClick={[Function]}
+    >
+      Share
+    </button>
+    <hr />
+    <button
+      className="repository--button more"
+      onClick={[Function]}
+    >
+      More...
+    </button>
+  </div>
+</div>
+`;

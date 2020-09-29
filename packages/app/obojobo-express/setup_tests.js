@@ -27,7 +27,7 @@ global.oboJestMockConfig = () => {
 	}
 
 	// get the actual empty.xml
-	const realFs = require.requireActual('fs')
+	const realFs = jest.requireActual('fs')
 	const configPath = path.resolve(__dirname, 'server', 'config')
 	const bypassMock = file => {
 		fs.__setMockFileContents(file, realFs.readFileSync(file))
@@ -69,5 +69,6 @@ global.mockStaticDate = () => {
 
 process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
-	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	console.error('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	throw Error('Unhandled Rejection at: Promise')
 })

@@ -1,36 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ActionButton editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`ActionButton editor plugins.decorate exits when not relevent 1`] = `Array []`;
+
+exports[`ActionButton editor plugins.decorate exits when not relevent 2`] = `Array []`;
+
+exports[`ActionButton editor plugins.decorate renders a placeholder 1`] = `
+Array [
+  Object {
+    "anchor": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "focus": Object {
+      "offset": 0,
+      "path": Array [
+        0,
+        0,
+      ],
+    },
+    "placeholder": "Your label here",
+  },
+]
+`;
 
 exports[`ActionButton editor plugins.renderNode renders a button when passed 1`] = `
-<ActionButton
+<SlateWrapper
   attributes={
     Object {
       "dummy": "dummyData",
     }
   }
   dummy="dummyData"
-  node={
+  element={
     Object {
-      "data": Object {
-        "get": [Function],
-      },
+      "content": Object {},
       "type": "ObojoboDraft.Chunks.ActionButton",
     }
   }
-/>
-`;
-
-exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
-
-exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
-
-exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
-
-exports[`ActionButton editor plugins.renderPlaceholder renders a placeholder 1`] = `
-<span
-  className="placeholder align-center required"
-  contentEditable={false}
-  data-placeholder="Your Label Here"
 />
 `;

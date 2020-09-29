@@ -17,8 +17,7 @@ class AssessmentReviewView extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-
-		NavUtil.setContext(`assessmentReview:${lastAttempt.attemptId}`)
+		NavUtil.setContext(`assessmentReview:${lastAttempt.id}`)
 	}
 
 	render() {
@@ -30,24 +29,25 @@ class AssessmentReviewView extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
+
 		const scoreReporter = new AssessmentScoreReporter({
 			assessmentRubric: this.props.model.modelState.rubric.toObject(),
 			totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
-			allAttempts: attempts
+			allScoreDetails: attempts.map(a => a.scoreDetails)
 		})
 
-		const attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
-			const date = new Date(attempt.finishTime)
-			const dateString = formatDate(date, 'M/D/YY [at] h:mma')
-			const machineDateString = formatDate(date)
-			const ariaDateString = formatDate(date, 'MMMM Do YYYY [at] h:mma')
-			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
-			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.questionScores)
+		const attemptReviewComponent = (attempt, isAHighestScoringNonNullAttempt) => {
+			const date = new Date(attempt.completedAt)
+			const dateString = formatDate(date, "M/dd/yy 'at' h:mmaaaa")
+			const machineDateString = formatDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+			const ariaDateString = formatDate(date, "MMMM Do yyyy 'at' h:mmaaaa")
+			const numCorrect = AssessmentUtil.getNumCorrect(attempt.result.questionScores)
+			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.result.questionScores)
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
 
-			let attemptScoreSummary = Math.round(attempt.attemptScore) + '%'
-			if (attempt.attemptScore !== attempt.assessmentScore) {
+			let attemptScoreSummary = Math.round(attempt.result.attemptScore) + '%'
+			if (attempt.result.attemptScore !== attempt.assessmentScore) {
 				attemptScoreSummary +=
 					' → ' +
 					(attempt.assessmentScore === null
@@ -71,7 +71,7 @@ class AssessmentReviewView extends React.Component {
 								</h4>
 								<div className="attempt-info-content">
 									<div>
-										Submitted{' '}
+										{attempt.isImported ? 'Imported ' : 'Submitted '}
 										<time dateTime={machineDateString} aria-hidden="true">
 											{dateString}
 										</time>
@@ -94,10 +94,9 @@ class AssessmentReviewView extends React.Component {
 					<div
 						className={`review ${this.props.showFullReview ? 'is-full-review' : 'is-basic-review'}`}
 					>
-						{attempt.questionScores.map((scoreObj, index) => {
+						{attempt.result.questionScores.map((scoreObj, index) => {
 							const questionModel = OboModel.create(attempt.state.questionModels[scoreObj.id])
 							const QuestionComponent = questionModel.getComponentClass()
-
 							return this.props.showFullReview ? (
 								<QuestionComponent
 									model={questionModel}
@@ -119,7 +118,7 @@ class AssessmentReviewView extends React.Component {
 			for (const i in attempts) {
 				const attempt = attempts[i]
 
-				if (context === `assessmentReview:${attempt.attemptId}`) {
+				if (context === `assessmentReview:${attempt.id}`) {
 					return parseInt(i, 10)
 				}
 			}
@@ -130,7 +129,7 @@ class AssessmentReviewView extends React.Component {
 		const attemptButtons = attempts.map((attempt, index) => {
 			return (
 				<Button
-					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}
+					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.id}`)}
 					key={index}
 					ariaLabel={'Attempt ' + attempt.attemptNumber}
 				>
@@ -140,9 +139,8 @@ class AssessmentReviewView extends React.Component {
 		})
 
 		attempts.forEach(attempt => {
-			attemptReviewComponents[`assessmentReview:${attempt.attemptId}`] = attemptReviewComponent(
+			attemptReviewComponents[`assessmentReview:${attempt.id}`] = attemptReviewComponent(
 				attempt,
-				this.props.assessment,
 				highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null
 			)
 		})

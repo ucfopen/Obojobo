@@ -9,6 +9,7 @@
 	border-bottom: 1px solid $color-shadow;
 	font-family: $font-default;
 	font-size: 0.8em;
+	margin-top: 2.3em;
 
 	button {
 		font-size: 1em;
@@ -23,6 +24,12 @@
 			opacity: 1;
 			background: lighten($color-action, 48%);
 		}
+	}
+
+	.preview-button {
+		position: absolute;
+		right: 1.5em;
+		top: 1em;
 	}
 
 	.saved-message {

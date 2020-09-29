@@ -9,6 +9,7 @@ $color-text-minor: lighten($color-text, 40%);
 $color-text-subheading: #a20e83;
 $color-bg: #ffffff;
 $color-shadow: rgba(0, 0, 0, 0.3);
+$color-shadow-light: rgba(0, 0, 0, 0.1);
 $color-highlight: #93c6ff;
 $color-bg2: #f4f4f4;
 $color-bg3: #131313;
@@ -33,6 +34,7 @@ $duration-animation-default: 0.2s;
 
 // default for obobjobo
 // in documents: headers, buttons, dialogs
+/* stylelint-disable-next-line value-keyword-case */
 $font-default: 'Libre Franklin', Arial, sans-serif;
 
 // use for larger blocks of text
@@ -51,6 +53,7 @@ $dimension-toolbar-height: 2.7em;
 $dimension-nav-menu: 18rem;
 $dimension-nav-menu-small: 14rem;
 $dimension-nav-menu-xsmall: 10rem;
+$dimension-prev-next-button-height: 6.5rem;
 $dimension-rounded-radius: 0.25em;
 $dimension-header-padding: 1rem;
 $dimension-preview-banner: 3rem;

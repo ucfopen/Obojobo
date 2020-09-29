@@ -3,13 +3,14 @@ const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/server/models/user')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
+const DraftPermissions = require('../models/draft_permissions')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/server/express_validators')
-const { userHasPermissionToCopy } = require('../services/permissions')
+
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
@@ -18,6 +19,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('homepage.css')
 		}
 		res.render('pages/page-homepage.jsx', props)
@@ -49,6 +51,7 @@ router
 	.get((req, res) => {
 		const props = {
 			currentUser: req.currentUser,
+			// must use webpackAssetPath for all webpack assets to work in dev and production!
 			appCSSUrl: webpackAssetPath('repository.css')
 		}
 		res.render('pages/page-login.jsx', props)
@@ -68,6 +71,7 @@ router
 					page: 1,
 					pageCount: 1,
 					currentUser: req.currentUser,
+					// must use webpackAssetPath for all webpack assets to work in dev and production!
 					appCSSUrl: webpackAssetPath('repository.css')
 				}
 				res.render('pages/page-library.jsx', props)
@@ -93,13 +97,18 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
-			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+			const canCopy = await DraftPermissions.userHasPermissionToCopy(
+				req.currentUser.id,
+				module.draftId
+			)
 
 			const props = {
 				module,
 				owner,
 				currentUser: req.currentUser,
+				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('repository.css'),
+				appJsUrl: webpackAssetPath('page-module.js'),
 				canCopy
 			}
 			res.render('pages/page-module-server.jsx', props)

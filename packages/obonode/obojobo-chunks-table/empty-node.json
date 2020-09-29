@@ -1,120 +1,47 @@
 {
-	"object":"block",
-	"type":"ObojoboDraft.Chunks.Table",
-	"isVoid":false,
-	"data":{
-		"content": {
-			"header": true,
-			"textGroup": { "numRows": 1, "numCols": 2 },
-			"numCols": 2
-		}
+	"type": "ObojoboDraft.Chunks.Table",
+	"content": {
+		"header": true,
+		"display": "fixed",
+		"textGroup": { "numRows": 2, "numCols": 2 },
+		"numCols": 2
 	},
-	"nodes":[
+	"children": [
 		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.Table.Row",
-			"isVoid":false,
-			"data": { "content": { "header": true, "numCols": 2 } },
-			"nodes":[
+			"type": "ObojoboDraft.Chunks.Table",
+			"subtype": "ObojoboDraft.Chunks.Table.Row",
+			"content": { "header": true, "numCols": 2 },
+			"children": [
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid":false,
-					"data": { "content": { "header": true } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
+					"type": "ObojoboDraft.Chunks.Table",
+					"subtype": "ObojoboDraft.Chunks.Table.Cell",
+					"content": { "header": true },
+					"children": [{ "text": "" }]
 				},
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid":false,
-					"data": { "content": { "header": true } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
+					"type": "ObojoboDraft.Chunks.Table",
+					"subtype": "ObojoboDraft.Chunks.Table.Cell",
+					"content": { "header": true },
+					"children": [{ "text": "" }]
 				}
 			]
 		},
 		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.Table.Row",
-			"isVoid":false,
-			"data": { "content": { "header": false, "numCols": 2 } },
-			"nodes":[
+			"type": "ObojoboDraft.Chunks.Table",
+			"subtype": "ObojoboDraft.Chunks.Table.Row",
+			"content": { "header": false, "numCols": 2 },
+			"children": [
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid": false,
-					"data": { "content": { "header": false } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
+					"type": "ObojoboDraft.Chunks.Table",
+					"subtype": "ObojoboDraft.Chunks.Table.Cell",
+					"content": { "header": false },
+					"children": [{ "text": "" }]
 				},
 				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid": false,
-					"data": { "content": { "header": false } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"object":"block",
-			"type":"ObojoboDraft.Chunks.Table.Row",
-			"isVoid":false,
-			"data": { "content": { "header": false, "numCols": 2 } },
-			"nodes":[
-				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid":false,
-					"data": { "content": { "header": false } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
-				},
-				{
-					"object":"block",
-					"type":"ObojoboDraft.Chunks.Table.Cell",
-					"isVoid": false,
-					"data": { "content": { "header": false } },
-					"nodes":[
-						{
-							"object":"text",
-							"leaves":[
-								{"object":"leaf","text":"","marks":[]}
-							]
-						}
-					]
+					"type": "ObojoboDraft.Chunks.Table",
+					"subtype": "ObojoboDraft.Chunks.Table.Cell",
+					"content": { "header": false },
+					"children": [{ "text": "" }]
 				}
 			]
 		}

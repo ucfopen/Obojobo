@@ -1,17 +1,18 @@
 jest.mock('../../../src/scripts/common/models/obo-model')
-
-import FocusStore from '../../../src/scripts/viewer/stores/focus-store'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-
 jest.mock('../../../src/scripts/common/page/focus')
 jest.mock('../../../src/scripts/common/flux/dispatcher')
 
 describe('FocusStore', () => {
+	let FocusStore
+	let Dispatcher
+
 	beforeEach(() => {
+		jest.resetAllMocks()
+		jest.resetModules()
+		Dispatcher = require('../../../src/scripts/common/flux/dispatcher').default
+		FocusStore = require('../../../src/scripts/viewer/stores/focus-store').default
 		FocusStore.init()
 		FocusStore.triggerChange = jest.fn()
-
-		jest.resetAllMocks()
 	})
 
 	test('constructor adds event listeners for the focus events', () => {
@@ -24,9 +25,8 @@ describe('FocusStore', () => {
 	})
 
 	test('Expect focus event handlers to call internal methods', () => {
-		FocusStore.constructor()
-
-		const focusComponentHandler = Dispatcher.on.mock.calls[2][1]
+		expect(Dispatcher.on.mock.calls[4][0]).toBe('focus:component')
+		const focusComponentHandler = Dispatcher.on.mock.calls[4][1]
 
 		const focusComponentSpy = jest.spyOn(FocusStore, '_focusComponent')
 

@@ -224,6 +224,11 @@ class ChunkStyleList {
 		// [b: [b], i: [i], a: [google, microsoft]]
 		const datasToCheck = {}
 		const dataValues = {}
+
+		// Same as above, but for any styles encountered that are not currently supported
+		const unhandledDatasToCheck = {}
+		const unhandledDataValues = {}
+
 		for (const styleName in StyleType) {
 			styleType = StyleType[styleName]
 			datasToCheck[styleType] = []
@@ -232,13 +237,34 @@ class ChunkStyleList {
 
 		for (i = this.styles.length - 1; i >= 0; i--) {
 			const styleRange = this.styles[i]
+			const curType = styleRange.type
 			const curData = styleRange.data
 			const curEncodedData = JSON.stringify(curData)
 
-			if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
-				datasToCheck[styleRange.type].push(curEncodedData)
-				dataValues[styleRange.type].push(curData)
+			// Check first in the expected style range types for the current one
+			// If it's in there, store this range's data with the normal data
+			// If it isn't, store this range's data with the unhandled data
+			if (!datasToCheck[curType]) {
+				// Since we can't predict how many unhandled ranges we might have,
+				// we will need to create keys for each as we find them
+				if (!unhandledDatasToCheck[curType]) {
+					unhandledDatasToCheck[curType] = [curEncodedData]
+					unhandledDataValues[curType] = [curData]
+				} else if (unhandledDatasToCheck[curType].indexOf(curEncodedData) === -1) {
+					unhandledDatasToCheck[curType].push(curEncodedData)
+					unhandledDataValues[curType].push(curData)
+				}
+			} else if (datasToCheck[curType].indexOf(curEncodedData) === -1) {
+				datasToCheck[curType].push(curEncodedData)
+				dataValues[curType].push(curData)
 			}
+		}
+
+		// Arrange unexpected tags alphabetically then add them to the normal data arrays
+		const unhandledTagsKeys = Object.keys(unhandledDatasToCheck).sort()
+		for (const unhandledTag of unhandledTagsKeys) {
+			datasToCheck[unhandledTag] = unhandledDatasToCheck[unhandledTag]
+			dataValues[unhandledTag] = unhandledDataValues[unhandledTag]
 		}
 
 		for (styleType in dataValues) {

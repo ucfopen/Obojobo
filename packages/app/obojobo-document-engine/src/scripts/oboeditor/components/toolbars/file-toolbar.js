@@ -1,117 +1,71 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
 import DropDownMenu from './drop-down-menu'
 
-import BasicMarks from '../marks/basic-marks'
-import LinkMark from '../marks/link-mark'
-import ScriptMarks from '../marks/script-marks'
-import AlignMarks from '../marks/align-marks'
-import IndentMarks from '../marks/indent-marks'
-
 import './file-toolbar.scss'
 
-const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
+const { Button } = Common.components
 
-const textMenu = {
-	name: 'Text',
-	type: 'sub-menu',
-	menu: textMarks.map(mark => ({
-		name: mark.name,
-		type: 'action',
-		markAction: mark.action
-		// action to be assigned in render
-	}))
+const openPreview = draftId => {
+	const previewURL = window.location.origin + '/preview/' + draftId
+	window.open(previewURL, '_blank')
 }
-
-const paragraphMenu = {
-	name: 'Paragraph styles',
-	type: 'sub-menu',
-	menu: [
-		{ name: 'Normal Text', type: 'action', disabled: true },
-		{ name: 'Heading 1', type: 'action', disabled: true },
-		{ name: 'Heading 2', type: 'action', disabled: true },
-		{ name: 'Heading 3', type: 'action', disabled: true },
-		{ name: 'Heading 4', type: 'action', disabled: true },
-		{ name: 'Heading 5', type: 'action', disabled: true },
-		{ name: 'Heading 6', type: 'action', disabled: true }
-	]
-}
-
-const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
-
-const alignMenu = {
-	name: 'Align & indent',
-	type: 'sub-menu',
-	menu: alignIndentMarks.map(mark => ({
-		name: mark.name,
-		type: 'action',
-		markAction: mark.action
-		// action to be assigned in render
-	}))
-}
-
-const bulletsMenu = {
-	name: 'Bullets & numbering',
-	type: 'sub-menu',
-	menu: [
-		{
-			name: 'Bulleted List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Disc', type: 'action', disabled: true },
-				{ name: 'Circle', type: 'action', disabled: true },
-				{ name: 'Square', type: 'action', disabled: true }
-			]
-		},
-		{
-			name: 'Numbered List',
-			type: 'sub-menu',
-			menu: [
-				{ name: 'Numbers', type: 'action', disabled: true },
-				{ name: 'Uppercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Uppercase Roman Numerals', type: 'action', disabled: true },
-				{ name: 'Lowercase Alphabet', type: 'action', disabled: true },
-				{ name: 'Lowercase Roman Numerals', type: 'action', disabled: true }
-			]
-		}
-	]
-}
-
-const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
-
-// Build all the menu objects outside of the render function to prevent re-rendering children
-const editMenu = [
-	{ name: 'Undo', type: 'action' },
-	{ name: 'Redo', type: 'action' },
-	{ name: 'Delete', type: 'action' },
-	{ name: 'Select all', type: 'action' }
-]
 
 const FileToolbar = props => {
-	// insert actions on menu items
-	// note that `editor.current` needs to be evaluated at execution time of the action!
-	const editor = props.editorRef
-	editMenu[0].action = () => editor.current.undo()
-	editMenu[1].action = () => editor.current.redo()
-	editMenu[2].action = () => editor.current.delete()
-	editMenu[3].action = () => editor.current.moveToRangeOfDocument().focus()
-	textMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-	})
-	alignMenu.menu.forEach(i => {
-		i.action = () => i.markAction(editor.current)
-	})
+	const editor = props.editor
+	// selectAll is provided by Slate editor or as a prop
+	const selectAll = props.selectAll || editor.selectAll
+
+	const onPreviewClickHandler = useCallback(() => {
+		openPreview(props.draftId)
+	}, [props.draftId])
+
+	const onSelectAllHandler = useCallback(() => {
+		selectAll(editor)
+	}, [selectAll, editor])
+
+	const editMenu = [
+		{
+			name: 'Undo',
+			shortcut: 'CTRL+Z',
+			shortcutMac: '⌘Z',
+			type: 'action',
+			action: editor.undo
+		},
+		{
+			name: 'Redo',
+			shortcut: 'CTRL+Y',
+			shortcutMac: '⌘Y',
+			type: 'action',
+			action: editor.redo
+		},
+		{
+			name: 'Delete',
+			type: 'action',
+			action: editor.deleteFragment,
+			disabled: props.isDeletable === null ? true : props.isDeletable
+		},
+		{
+			name: 'Select all',
+			shortcut: 'CTRL+A',
+			shortcutMac: '⌘A',
+			type: 'action',
+			action: onSelectAllHandler
+		}
+	]
 
 	const saved = props.saved ? 'saved' : ''
+
 	return (
 		<div className={`visual-editor--file-toolbar`}>
 			<FileMenu
-				model={props.model}
+				title={props.title}
 				draftId={props.draftId}
 				onSave={props.onSave}
-				onRename={props.onRename}
+				reload={props.reload}
 				mode={props.mode}
 			/>
 			<div className="visual-editor--drop-down-menu">
@@ -122,18 +76,13 @@ const FileToolbar = props => {
 				switchMode={props.switchMode}
 				onSave={props.onSave}
 				mode={props.mode}
-				togglePlaceholders={props.togglePlaceholders}
-				showPlaceholders={props.showPlaceholders}
 			/>
-			{/* <div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Insert" menu={props.insertableItems} />
-			</div> */}
-			{props.mode === 'visual' ? (
-				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Format" menu={formatMenu} />
-				</div>
-			) : null}
+			{props.insertMenu}
+			{props.formatMenu}
 			<div className={'saved-message ' + saved}>Saved!</div>
+			<Button onClick={onPreviewClickHandler} className={'preview-button'}>
+				Preview Module
+			</Button>
 		</div>
 	)
 }

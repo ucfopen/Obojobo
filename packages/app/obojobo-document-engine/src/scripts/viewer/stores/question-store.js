@@ -1,6 +1,6 @@
 import Common from 'Common'
 
-import APIUtil from '../util/api-util'
+import ViewerAPI from '../util/viewer-api'
 import QuestionUtil from '../util/question-util'
 import FocusUtil from '../util/focus-util'
 
@@ -35,7 +35,7 @@ class QuestionStore extends Store {
 
 				this.triggerChange()
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: OboModel.getRoot().get('draftId'),
 					action: 'question:setResponse',
 					eventVersion: '2.1.0',
@@ -72,7 +72,7 @@ class QuestionStore extends Store {
 			'question:showExplanation': payload => {
 				const { id, context } = payload.value
 				const root = OboModel.getRoot()
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:showExplanation',
 					eventVersion: '1.1.0',
@@ -90,7 +90,7 @@ class QuestionStore extends Store {
 				const { id, context, actor } = payload.value
 				const root = OboModel.getRoot()
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:hideExplanation',
 					eventVersion: '1.1.0',
@@ -122,7 +122,7 @@ class QuestionStore extends Store {
 
 				const contextState = this.getOrCreateContextState(context)
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: OboModel.models[id].getRoot().get('draftId'),
 					action: 'question:hide',
 					eventVersion: '1.1.0',
@@ -146,7 +146,7 @@ class QuestionStore extends Store {
 				const contextState = this.getOrCreateContextState(context)
 				const root = OboModel.models[id].getRoot()
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:view',
 					eventVersion: '1.1.0',
@@ -173,7 +173,7 @@ class QuestionStore extends Store {
 				const contextState = this.getOrCreateContextState(context)
 				const scoreInfo = contextState.scores[id]
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:checkAnswer',
 					eventVersion: '1.1.0',
@@ -197,7 +197,7 @@ class QuestionStore extends Store {
 
 				const contextState = this.getOrCreateContextState(context)
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:submitResponse',
 					eventVersion: '1.0.0',
@@ -217,7 +217,7 @@ class QuestionStore extends Store {
 
 				if (!this.clearResponses(id, context)) return
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:retry',
 					eventVersion: '1.1.0',
@@ -259,7 +259,7 @@ class QuestionStore extends Store {
 				}
 
 				model = OboModel.models[itemId]
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: model.getRoot().get('draftId'),
 					action: 'question:scoreSet',
 					eventVersion: '1.0.0',
@@ -292,7 +292,7 @@ class QuestionStore extends Store {
 					return
 				}
 
-				APIUtil.postEvent({
+				ViewerAPI.postEvent({
 					draftId: model.getRoot().get('draftId'),
 					action: 'question:scoreClear',
 					eventVersion: '1.0.0',

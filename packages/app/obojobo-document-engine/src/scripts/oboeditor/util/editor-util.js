@@ -3,8 +3,11 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const domParser = new DOMParser()
+const serial = new XMLSerializer()
 
 const XML_MODE = 'xml'
+const XML_MIME = 'application/xml'
+const MODULE_NODE_NAME = 'ObojoboDraft.Modules.Module'
 
 const getFlatList = function(item) {
 	let list = []
@@ -26,6 +29,14 @@ const getFlatList = function(item) {
 }
 
 const EditorUtil = {
+	renameModule(moduleId, newName) {
+		return Dispatcher.trigger('editor:renameModule', {
+			value: {
+				moduleId,
+				name: newName
+			}
+		})
+	},
 	rebuildMenu(model) {
 		return Dispatcher.trigger('editor:rebuildMenu', {
 			value: {
@@ -134,36 +145,41 @@ const EditorUtil = {
 		})
 	},
 	getTitleFromXML(draftModel) {
+		let title = ''
 		try {
-			const doc = domParser.parseFromString(draftModel, 'application/xml')
+			// convert xml string to XMLDocument
+			const doc = domParser.parseFromString(draftModel, XML_MIME)
+			// find the module element (only one right now)
 			let els = doc.getElementsByTagName('Module')
 			if (els.length === 0) {
-				els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+				els = doc.getElementsByTagName(MODULE_NODE_NAME)
 			}
 			if (els.length > 0) {
+				// get the attributes off the module element
 				const el = els[0]
-				const title = el.getAttribute('title')
-				if (!this.isEmptyString(title)) return title
+				const _title = el.getAttribute('title')
+				if (!this.isEmptyString(_title)) title = _title
 			}
-
-			return '(Unnamed Module)'
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
 		}
+
+		return title
 	},
 	getTitleFromJSON(draftModel) {
+		let title = ''
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
-
-			return json.content.title
+			if (json.content && !this.isEmptyString(json.content.title)) {
+				title = json.content.title
+			}
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return '(Unnamed Module)'
 		}
+
+		return title
 	},
 	isEmptyString(string) {
 		return !string || !/[^\s]/.test(string)
@@ -172,9 +188,27 @@ const EditorUtil = {
 		switch (mode) {
 			case XML_MODE:
 				return this.getTitleFromXML(draftModel)
+
 			default:
 				return this.getTitleFromJSON(draftModel)
 		}
+	},
+	setModuleTitleInJSON(code, title) {
+		const json = JSON.parse(code)
+		json.content.title = title
+		return JSON.stringify(json, null, 4)
+	},
+	setModuleTitleInXML(code, title) {
+		const doc = domParser.parseFromString(code, XML_MIME)
+		let els = doc.getElementsByTagName('Module')
+		if (els.length === 0) {
+			els = doc.getElementsByTagName(MODULE_NODE_NAME)
+		}
+		if (els.length > 0) {
+			const el = els[0]
+			el.setAttribute('title', title)
+		}
+		return serial.serializeToString(doc)
 	}
 }
 

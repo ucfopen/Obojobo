@@ -28,7 +28,8 @@ describe('current user middleware', () => {
 		mockRes = {
 			json: jest.fn(),
 			notAuthorized: jest.fn(),
-			badInput: jest.fn()
+			badInput: jest.fn(),
+			missing: jest.fn()
 		}
 		mockReq = {
 			session: {},
@@ -137,9 +138,10 @@ describe('current user middleware', () => {
 		).resolves.toBeUndefined()
 	})
 
-	test('getCurrentUser calls next', () => {
+	test('requireCurrentDocument calls next', () => {
 		expect.assertions(1)
-		mockReq.requireCurrentDocument = jest.fn().mockResolvedValue(mockDocument)
+		mockReq.currentDocument = mockDocument
+		mockReq.requireCurrentDocument = jest.fn().mockResolvedValue()
 		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toHaveBeenCalled()
 		})
@@ -153,44 +155,11 @@ describe('current user middleware', () => {
 		).resolves.toBeUndefined()
 	})
 
-	test('requireCurrentDocument calls next when invalid', () => {
+	test('requireCurrentDocument calls missing when invalid', () => {
 		expect.assertions(1)
 		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
 		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toHaveBeenCalled()
-		})
-	})
-
-	test('requireCurrentDocument sets _validationErrors when failed', () => {
-		expect.assertions(3)
-		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
-
-		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
-				location: 'request',
-				param: 'currentDocument',
-				value: undefined,
-				msg: 'missing from request'
-			})
-		})
-	})
-
-	test('requireCurrentDocument doesnt overwrite _validationErrors when failed', () => {
-		expect.assertions(4)
-		mockReq.requireCurrentDocument = jest.fn().mockRejectedValue('mock-error')
-		mockReq._validationErrors = ['test']
-		return Validators.requireCurrentDocument(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(2)
-			expect(mockReq._validationErrors).toContainEqual('test')
-			expect(mockReq._validationErrors).toContainEqual({
-				location: 'request',
-				param: 'currentDocument',
-				value: undefined,
-				msg: 'missing from request'
-			})
+			expect(mockRes.missing).toHaveBeenCalled()
 		})
 	})
 
@@ -219,6 +188,94 @@ describe('current user middleware', () => {
 				msg: 'must be a valid UUID',
 				param: 'draftId',
 				value: 'not-a-valid-UUID'
+			})
+		})
+	})
+
+	test('requireMultipleAttemptIds resolves in body', () => {
+		mockReq.body.attemptIds = [validUUID()]
+
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return expect(Promise.all(allChecks)).resolves.toEqual([undefined, undefined])
+	})
+
+	test('requireMultipleAttemptIds resolves in body with multiple ids', () => {
+		mockReq.body.attemptIds = [validUUID(), validUUID()]
+
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return expect(Promise.all(allChecks)).resolves.toEqual([undefined, undefined])
+	})
+
+	test('requireMultipleAttemptIds rejects when filled with non-uuids', () => {
+		mockReq.body.attemptIds = ['Callie', 'Dega', validUUID()]
+
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(2)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid UUID',
+				param: 'attemptIds[0]',
+				value: 'Callie'
+			})
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid UUID',
+				param: 'attemptIds[1]',
+				value: 'Dega'
+			})
+		})
+	})
+
+	test('requireMultipleAttemptIds rejects when not defined', () => {
+		delete mockReq.body.attemptIds
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(1)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be an array of UUIDs',
+				param: 'attemptIds',
+				value: undefined
+			})
+		})
+	})
+
+	test('requireMultipleAttemptIds rejects when given a uuid not in an array', () => {
+		mockReq.body.attemptIds = validUUID()
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(37)
+			expect(mockReq._validationErrors[0]).toEqual({
+				location: 'body',
+				msg: 'must be an array of UUIDs',
+				param: 'attemptIds',
+				value: mockReq.body.attemptIds
+			})
+		})
+	})
+
+	// @TODO: add in the future
+	test.skip('requireMultipleAttemptIds rejects when empty', () => {
+		mockReq.body.attemptIds = []
+		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
+
+		return Promise.all(allChecks).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(1)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be an array of UUIDs',
+				param: 'attemptIds',
+				value: undefined
 			})
 		})
 	})
@@ -288,11 +345,7 @@ describe('current user middleware', () => {
 			event_version: '1.0.0'
 		}
 
-		const allChecks = []
-
-		Validators.requireEvent.forEach(f => {
-			allChecks.push(f(mockReq, mockRes, mockNext))
-		})
+		const allChecks = Validators.requireEvent.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(4)
@@ -309,11 +362,7 @@ describe('current user middleware', () => {
 			event_version: '1'
 		}
 
-		const allChecks = []
-
-		Validators.requireEvent.forEach(f => {
-			allChecks.push(f(mockReq, mockRes, mockNext))
-		})
+		const allChecks = Validators.requireEvent.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(4)
@@ -450,5 +499,75 @@ describe('current user middleware', () => {
 		expect(mockRes.badInput).toHaveBeenCalledWith(
 			'mock-param-1 mock-msg-1, got mock-value-1, mock-param-2 mock-msg-2, got mock-value-2'
 		)
+	})
+
+	test('validImportedAssessmentScoreId resolves', () => {
+		return expect(
+			Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext)
+		).resolves.toBeUndefined()
+	})
+
+	test('validImportedAssessmentScoreId rejects', () => {
+		mockReq.body.importedAssessmentScoreId = 'not-a-valid-INT'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(1)
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: 'not-a-valid-INT'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId passes with positive int', () => {
+		mockReq.body.importedAssessmentScoreId = '50'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toHaveLength(0)
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors with negative int', () => {
+		mockReq.body.importedAssessmentScoreId = '-10'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: '-10'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors with 0', () => {
+		mockReq.body.importedAssessmentScoreId = '0'
+
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: '0'
+			})
+		})
+	})
+
+	test('validImportedAssessmentScoreId registers errors when undefined', () => {
+		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
+			expect(mockReq).toHaveProperty('_validationErrors')
+			expect(mockReq._validationErrors).toContainEqual({
+				location: 'body',
+				msg: 'must be a valid score id',
+				param: 'importedAssessmentScoreId',
+				value: undefined
+			})
+		})
 	})
 })

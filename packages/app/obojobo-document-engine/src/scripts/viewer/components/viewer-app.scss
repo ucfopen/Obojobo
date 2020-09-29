@@ -32,6 +32,7 @@
 		z-index: $z-index-above-content;
 		border-bottom: 1px solid transparentize($color-shadow, 0.2);
 		opacity: 0.95;
+		word-wrap: break-word;
 
 		/* prettier-ignore */
 		transition:
@@ -94,6 +95,7 @@
 				padding: 0.4em;
 				background-color: $color-bg;
 				color: $color-preview;
+				border: none;
 			}
 		}
 
@@ -108,7 +110,7 @@
 		}
 	}
 
-	&.is-open-nav.is-enabled-nav {
+	&.is-open-nav.is-not-disabled-nav {
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
 

@@ -100,15 +100,6 @@ const getGradebookStatus = (
 		return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
 	}
 
-	// if (
-	// 	requiredDataError !== null ||
-	// 	(outcomeDataError !== null && outcomeDataError !== ERROR_FATAL_NO_SECRET_FOR_KEY)
-	// ) {
-	// 	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
-	// }
-
-	// return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
-
 	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
 }
 
@@ -122,34 +113,20 @@ const getLatestHighestAssessmentScoreRecord = (
 	resourceLinkId,
 	isPreview = false
 ) => {
-	const result = {
-		id: null,
-		userId: null,
-		draftId: null,
-		contentId: null,
-		assessmentId: null,
-		attemptId: null,
-		score: null,
-		scoreDetails: null,
-		isPreview: null,
-		error: null
-	}
-
 	return db
-		.oneOrNone(
+		.one(
 			`
 				SELECT
 					T1.id,
-					T1.created_at,
-					T1.user_id,
-					T1.draft_id,
-					T1.draft_content_id,
-					T1.assessment_id,
-					T1.attempt_id,
+					T1.user_id AS "userId",
+					T1.draft_id AS "draftId",
+					T1.draft_content_id AS "contentId",
+					T1.assessment_id AS "assessmentId",
+					T1.attempt_id AS "attemptId",
 					T1.score,
-					T1.is_preview,
-					T1.score_details,
-					T1.resource_link_id
+					T1.score_details AS "scoreDetails",
+					T1.is_preview AS "isPreview",
+					T1.resource_link_id AS "resourceLinkId"
 				FROM
 				(
 					SELECT
@@ -179,29 +156,16 @@ const getLatestHighestAssessmentScoreRecord = (
 				isPreview
 			}
 		)
-		.then(dbResult => {
-			if (!dbResult) {
+		.catch(error => {
+			logger.error('Error in getLatestHighestAssessmentScoreRecord')
+			logger.error(error)
+			if (
+				error instanceof db.errors.QueryResultError &&
+				error.code === db.errors.queryResultErrorCode.noData
+			) {
 				throw Error(ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND)
 			}
-
-			result.id = dbResult.id
-			result.userId = dbResult.user_id
-			result.draftId = dbResult.draft_id
-			result.contentId = dbResult.draft_content_id
-			result.assessmentId = dbResult.assessment_id
-			result.attemptId = dbResult.attempt_id
-			result.score = dbResult.score
-			result.scoreDetails = dbResult.score_details
-			result.isPreview = dbResult.is_preview
-			result.resourceLinkId = dbResult.resource_link_id
-
-			return result
-		})
-		.catch(e => {
-			logger.error('Error in getLatestHighestAssessmentScoreRecord')
-			logger.error(e)
-			result.error = e
-			return result
+			throw error
 		})
 }
 
@@ -234,14 +198,13 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 			`
 			SELECT
 				DISTINCT ON (T1.assessment_id)
-				T1.assessment_id,
-				T1.assessment_score_id,
-				T1.score_sent,
-				T1.lti_sent_date,
+				T1.assessment_id AS "assessmentId",
+				T1.assessment_score_id AS "assessmentScoreId",
+				T1.score_sent AS "scoreSent",
+				T1.lti_sent_date AS "sentDate",
 				T1.status,
-				T1.gradebook_status,
-				T1.status_details,
-				T1.lti_id
+				T1.gradebook_status AS "gradebookStatus",
+				T1.status_details AS "statusDetails"
 			FROM
 			(
 				SELECT
@@ -275,22 +238,11 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 		.then(result => {
 			const ltiStatesByAssessmentId = {}
 
-			if (!result || !result.length || result.length === 0) {
-				return ltiStatesByAssessmentId
+			if (result && result.length) {
+				result.forEach(row => {
+					ltiStatesByAssessmentId[row.assessmentId] = row
+				})
 			}
-
-			result.forEach(row => {
-				ltiStatesByAssessmentId[row.assessment_id] = {
-					assessmentId: row.assessment_id,
-					assessmentScoreId: row.assessment_score_id,
-					scoreSent: row.score_sent,
-					sentDate: row.lti_sent_date,
-					status: row.status,
-					gradebookStatus: row.gradebook_status,
-					statusDetails: row.status_details
-				}
-			})
-
 			return ltiStatesByAssessmentId
 		})
 		.catch(e => {
@@ -336,10 +288,6 @@ const getRequiredDataForReplaceResult = function(
 	)
 		.then(assessmentScoreResult => {
 			result.assessmentScoreRecord = assessmentScoreResult
-
-			if (assessmentScoreResult.error) {
-				throw assessmentScoreResult.error
-			}
 
 			logger.info(
 				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result.assessmentScoreRecord.score}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${result.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.isPreview}"`,
@@ -531,7 +479,14 @@ const sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, ltiResult) => {
+const insertReplaceResultEvent = (
+	userId,
+	draftDocument,
+	launch,
+	outcomeData,
+	ltiResult,
+	visitId
+) => {
 	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -545,9 +500,10 @@ const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, lt
 			},
 			result: ltiResult
 		},
+		visitId,
 		userId,
 		ip: '',
-		eventVersion: '2.0.0',
+		eventVersion: '2.1.0',
 		metadata: {},
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId
@@ -675,12 +631,13 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (
+const sendHighestAssessmentScore = async (
 	userId,
 	draftDocument,
 	assessmentId,
 	isPreview,
-	resourceLinkId
+	resourceLinkId,
+	visitId
 ) => {
 	const logId = uuid()
 	let requiredData = null
@@ -701,108 +658,120 @@ const sendHighestAssessmentScore = (
 		logId
 	)
 
-	return getRequiredDataForReplaceResult(
-		userId,
-		draftDocument.draftId,
-		assessmentId,
-		logId,
-		resourceLinkId,
+	try {
+		const requiredDataResult = await getRequiredDataForReplaceResult(
+			userId,
+			draftDocument.draftId,
+			assessmentId,
+			logId,
+			resourceLinkId,
+			isPreview
+		)
+
+		result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
+
+		requiredData = requiredDataResult
+		outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+
+		result.outcomeServiceURL = outcomeData.serviceURL
+
+		if (isPreview) {
+			throw Error(ERROR_PREVIEW_MODE)
+		}
+
+		if (requiredData.ltiScoreToSend === null) {
+			throw Error(ERROR_SCORE_IS_NULL)
+		}
+
+		if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
+			throw Error(ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH)
+		}
+
+		if (requiredData.error !== null) {
+			throw requiredData.error
+		}
+
+		if (outcomeData.error !== null) {
+			throw outcomeData.error
+		}
+
+		result.scoreSent = requiredData.ltiScoreToSend
+
+		logger.info(
+			`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
+			logId
+		)
+
+		const ltiRequestResult = await sendReplaceResultRequest(
+			outcomeData.outcomeService,
+			requiredData.ltiScoreToSend
+		)
+
+		logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
+
+		if (ltiRequestResult !== true) {
+			throw Error(ERROR_FATAL_REPLACE_RESULT_FAILED)
+		}
+
+		result.status = STATUS_SUCCESS
+	} catch (error) {
+		const errorResult = logAndGetStatusForError(error, requiredData, logId)
+		result.status = errorResult.status
+		result.statusDetails = errorResult.statusDetails
+	}
+
+	// ALWAYS RUNS DUE TO CATCH ABOVE
+	result.gradebookStatus = getGradebookStatus(
+		outcomeData.type,
+		requiredData.scoreType,
+		result.status === STATUS_SUCCESS,
 		isPreview
 	)
-		.then(requiredDataResult => {
-			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
-			requiredData = requiredDataResult
-			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+	logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
 
-			result.outcomeServiceURL = outcomeData.serviceURL
+	try {
+		const assessmentScoreIdOrNull = requiredData.assessmentScoreRecord
+			? requiredData.assessmentScoreRecord.id
+			: null
 
-			if (isPreview) {
-				throw Error(ERROR_PREVIEW_MODE)
-			}
+		const scoreId = await insertLTIAssessmentScore(
+			assessmentScoreIdOrNull,
+			result.launchId,
+			result.scoreSent,
+			result.status,
+			result.statusDetails,
+			result.gradebookStatus,
+			logId
+		)
 
-			if (requiredData.ltiScoreToSend === null) {
-				throw Error(ERROR_SCORE_IS_NULL)
-			}
+		logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
 
-			if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
-				throw Error(ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH)
-			}
+		result.ltiAssessmentScoreId = scoreId
+		result.dbStatus = DB_STATUS_RECORDED
+	} catch (error) {
+		logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
 
-			if (requiredData.error !== null) {
-				throw requiredData.error
-			}
+		result.dbStatus = DB_STATUS_ERROR
+	}
 
-			if (outcomeData.error !== null) {
-				throw outcomeData.error
-			}
+	try {
+		// ALWAYS RUNS DUE TO CATCH ABOVE
+		insertReplaceResultEvent(
+			userId,
+			draftDocument,
+			requiredData.launch,
+			outcomeData,
+			result,
+			visitId
+		)
+	} catch (error) {
+		logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
+	}
 
-			result.scoreSent = requiredData.ltiScoreToSend
-
-			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData.launch.key}"`,
-				logId
-			)
-
-			return sendReplaceResultRequest(outcomeData.outcomeService, requiredData.ltiScoreToSend)
-		})
-		.then(ltiRequestResult => {
-			logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
-
-			if (ltiRequestResult !== true) {
-				throw Error(ERROR_FATAL_REPLACE_RESULT_FAILED)
-			}
-
-			result.status = STATUS_SUCCESS
-		})
-		.catch(error => {
-			const errorResult = logAndGetStatusForError(error, requiredData, logId)
-
-			result.status = errorResult.status
-			result.statusDetails = errorResult.statusDetails
-		})
-		.then(() => {
-			result.gradebookStatus = getGradebookStatus(
-				outcomeData.type,
-				requiredData.scoreType,
-				result.status === STATUS_SUCCESS,
-				isPreview
-			)
-
-			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
-
-			return insertLTIAssessmentScore(
-				requiredData.assessmentScoreRecord.id,
-				result.launchId,
-				result.scoreSent,
-				result.status,
-				result.statusDetails,
-				result.gradebookStatus,
-				logId
-			)
-		})
-		.then(scoreId => {
-			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
-
-			result.ltiAssessmentScoreId = scoreId
-			result.dbStatus = DB_STATUS_RECORDED
-		})
-		.catch(error => {
-			logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
-
-			result.dbStatus = DB_STATUS_ERROR
-		})
-		.then(() => {
-			insertReplaceResultEvent(userId, draftDocument, requiredData.launch, outcomeData, result)
-		})
-		.catch(error => {
-			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
-			return Promise.resolve() // Go to next then
-		})
-		.then(() => {
-			logger.info(`LTI complete`, logId)
-			return result
-		})
+	// ALWAYS RUNS DUE TO CATCH ABOVE
+	logger.info(`LTI complete`, logId)
+	return result
 }
 
 module.exports = {
@@ -812,7 +781,6 @@ module.exports = {
 	getLatestHighestAssessmentScoreRecord,
 	getLatestSuccessfulLTIAssessmentScoreRecord,
 	getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId,
-	// getRequiredDataForReplaceResult,
 	getOutcomeServiceForLaunch,
 	retrieveLtiLaunch,
 	findSecretForKey,

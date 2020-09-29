@@ -9,12 +9,12 @@ class Level extends React.Component {
 
 	getListStyle() {
 		return {
-			listStyleType: this.props.node.data.get('content').bulletStyle
+			listStyleType: this.props.element.content.bulletStyle
 		}
 	}
 
 	renderList() {
-		if (this.props.node.data.get('content').type === 'unordered') {
+		if (this.props.element.content.type === 'unordered') {
 			return <ul style={this.getListStyle()}>{this.props.children}</ul>
 		} else {
 			return <ol style={this.getListStyle()}>{this.props.children}</ol>

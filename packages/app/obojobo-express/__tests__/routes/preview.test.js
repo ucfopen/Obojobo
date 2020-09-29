@@ -11,6 +11,7 @@ jest.unmock('express')
 let mockCurrentUser
 let mockSaveSessionSuccess = true
 let mockSaveSessionRejectValue
+
 jest.mock('../../server/express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
@@ -30,6 +31,11 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
+	res.render = jest
+		.fn()
+		.mockImplementation((template, message) =>
+			res.send(`mock template rendered: ${template} with message: ${message}`)
+		)
 	next()
 })
 
@@ -37,6 +43,7 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 const request = require('supertest')
 const express = require('express')
 const app = express()
+
 app.use(oboRequire('server/express_current_user'))
 app.use(oboRequire('server/express_current_document'))
 app.use('/', oboRequire('server/express_response_decorator'))
@@ -58,7 +65,7 @@ describe('preview route', () => {
 
 	test('preview requires user with canPreviewDrafts permission', () => {
 		expect.assertions(3)
-		mockCurrentUser = { id: 66, canPreviewDrafts: false }
+		mockCurrentUser.canPreviewDrafts = false
 		return request(app)
 			.get(`/${validUUID()}/`)
 			.then(response => {
@@ -69,13 +76,16 @@ describe('preview route', () => {
 	})
 
 	test('preview requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
+		mockCurrentDocument = null
 		return request(app)
 			.get(`/${validUUID()}/`)
 			.then(response => {
+				expect(response.statusCode).toBe(404)
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.text).toBe(
+					'mock template rendered: 404 with message: currentDocument missing from request, got null'
+				)
 			})
 	})
 

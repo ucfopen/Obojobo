@@ -1,17 +1,32 @@
+const debouncePromise = require('debounce-promise')
+const dayjs = require('dayjs')
+const advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 // =================== API =======================
 
+const JSON_MIME_TYPE = 'application/json'
+const XML_MIME_TYPE = 'application/xml'
 const defaultOptions = () => ({
 	method: 'GET',
 	credentials: 'include',
 	headers: {
-		Accept: 'application/json',
-		'Content-Type': 'application/json'
+		Accept: JSON_MIME_TYPE,
+		'Content-Type': JSON_MIME_TYPE
 	}
 })
 
-const apiSearchForUser = searchString => {
-	return fetch(`/api/users/search?q=${searchString}`, defaultOptions()).then(res => res.json())
+const throwIfNotOk = res => {
+	if (!res.ok) throw Error(`Error requesting ${res.url}, status code: ${res.status}`)
+	return res
 }
+
+const apiSearchForUser = searchString => {
+	return fetch(`/api/users/search?q=${searchString}`, defaultOptions())
+		.then(throwIfNotOk)
+		.then(res => res.json())
+}
+
+const apiSearchForUserDebounced = debouncePromise(apiSearchForUser, 300)
 
 const apiAddPermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'POST', body: `{"userId":${userId}}` }
@@ -20,6 +35,69 @@ const apiAddPermissionsToModule = (draftId, userId) => {
 
 const apiGetPermissionsForModule = draftId => {
 	return fetch(`/api/drafts/${draftId}/permission`, defaultOptions()).then(res => res.json())
+}
+
+const apiSaveDraft = async (draftId, draftJSON) => {
+	if (typeof draftJSON !== 'string') draftJSON = JSON.stringify(draftJSON)
+	const options = { ...defaultOptions(), method: 'POST', body: draftJSON }
+	const result = await fetch(`/api/drafts/${draftId}`, options)
+	const data = await result.json()
+	return data
+}
+
+const apiGetVersionHistory = async draftId => {
+	// limit to keep this from running away accidentally
+	const emergencyLimit = 100
+	const options = { ...defaultOptions() }
+
+	// load all the history, can be multiple api calls
+	let nextUrl = `/api/drafts/${draftId}/revisions`
+	let count = 0
+	const history = []
+
+	while (nextUrl) {
+		if (count > emergencyLimit) break
+		const res = await fetch(nextUrl, options)
+		nextUrl = false
+		// are there more to load in the response headers?
+		const linkHeader = res.headers.get('link')
+		if (linkHeader) {
+			const match = linkHeader.match(/<(.+?)>;\s+rel="next"/)
+			nextUrl = match ? match[1] : false
+		}
+		const data = await res.json()
+		// append to list
+		history.push(...data.value)
+		count++
+	}
+
+	// convert the result to what we need
+	return history.map((draft, index) => ({
+		createdAt: new Date(draft.createdAt),
+		createdAtDisplay: dayjs(draft.createdAt).format('MMMM Do - h:mm A'),
+		id: draft.revisionId,
+		username: draft.userFullName,
+		selected: index === 0,
+		versionNumber: history.length - index
+	}))
+}
+
+const apiRestoreVersion = async (draftId, versionId) => {
+	const options = { ...defaultOptions() }
+	// get a revision
+	const res = await fetch(`/api/drafts/${draftId}/revisions/${versionId}`, options)
+	const data = await res.json()
+	const fullDraft = data.value.json
+	// save the revision on top
+	const saveResult = await apiSaveDraft(draftId, fullDraft)
+	if (saveResult.status !== 'ok') throw Error('Failed restoring draft.')
+	const newVersionId = saveResult.value.id
+	// load history
+	const history = await apiGetVersionHistory(draftId)
+	// mark the restored item
+	const restoredVersion = history.find(data => data.id === newVersionId)
+	restoredVersion.isRestored = true
+	return history
 }
 
 const apiDeletePermissionsToModule = (draftId, userId) => {
@@ -36,9 +114,9 @@ const apiGetMyModules = () => {
 	return fetch('/api/drafts', defaultOptions()).then(res => res.json())
 }
 
-const apiCreateNewModule = useTutorial => {
+const apiCreateNewModule = (useTutorial, body = {}) => {
 	const url = useTutorial ? '/api/drafts/tutorial' : '/api/drafts/new'
-	const options = { ...defaultOptions(), method: 'POST' }
+	const options = { ...defaultOptions(), method: 'POST', body: JSON.stringify(body) }
 	return fetch(url, options).then(res => res.json())
 }
 
@@ -48,6 +126,23 @@ const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
 const showModulePermissions = module => ({
 	type: SHOW_MODULE_PERMISSIONS,
 	module
+})
+
+const SHOW_VERSION_HISTORY = 'SHOW_VERSION_HISTORY'
+const showVersionHistory = module => ({
+	type: SHOW_VERSION_HISTORY,
+	meta: { module },
+	promise: apiGetVersionHistory(module.draftId)
+})
+
+const RESTORE_VERSION = 'RESTORE_VERSION'
+const restoreVersion = (draftId, versionId) => ({
+	type: RESTORE_VERSION,
+	meta: {
+		draftId,
+		versionId
+	},
+	promise: apiRestoreVersion(draftId, versionId)
 })
 
 const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -62,7 +157,7 @@ const searchForUser = searchString => ({
 	meta: {
 		searchString
 	},
-	promise: apiSearchForUser(searchString)
+	promise: apiSearchForUserDebounced(searchString)
 })
 
 const ADD_USER_TO_MODULE = 'ADD_USER_TO_MODULE'
@@ -116,6 +211,46 @@ const showModuleMore = module => ({
 	module
 })
 
+const IMPORT_MODULE_FILE = 'IMPORT_MODULE_FILE'
+const importModuleFile = searchString => ({
+	type: IMPORT_MODULE_FILE,
+	promise: promptUserForModuleFileUpload(searchString)
+})
+
+const promptUserForModuleFileUpload = async () => {
+	return new Promise((resolve, reject) => {
+		const fileSelector = document.createElement('input')
+		fileSelector.setAttribute('type', 'file')
+		fileSelector.setAttribute('accept', `${JSON_MIME_TYPE}, ${XML_MIME_TYPE}`)
+		fileSelector.onchange = moduleUploadFileSelected.bind(this, resolve, reject)
+		fileSelector.click()
+	})
+}
+
+const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
+	const file = event.target.files[0]
+	if (!file) return boundResolve()
+
+	const reader = new global.FileReader()
+	reader.readAsText(file, 'UTF-8')
+	reader.onload = moduleUploadFileLoaded.bind(this, boundResolve, boundReject, file.type)
+}
+
+const moduleUploadFileLoaded = async (boundResolve, boundReject, fileType, e) => {
+	try {
+		const body = {
+			content: e.target.result,
+			format: fileType === JSON_MIME_TYPE ? JSON_MIME_TYPE : XML_MIME_TYPE
+		}
+
+		await apiCreateNewModule(false, body)
+		window.location.reload()
+		boundResolve()
+	} catch (e) {
+		boundReject()
+	}
+}
+
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
 	LOAD_USER_SEARCH,
@@ -128,6 +263,9 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_VERSION_HISTORY,
+	RESTORE_VERSION,
+	IMPORT_MODULE_FILE,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -138,5 +276,8 @@ module.exports = {
 	showModulePermissions,
 	loadUsersForModule,
 	clearPeopleSearchResults,
-	showModuleMore
+	showModuleMore,
+	showVersionHistory,
+	restoreVersion,
+	importModuleFile
 }

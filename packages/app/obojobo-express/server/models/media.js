@@ -210,6 +210,48 @@ class Media {
 		}
 	}
 
+	static fetchByUserId(userId, start, count) {
+		if (!userId || !Number.isInteger(start) || !Number.isInteger(count)) {
+			throw new Error('Invalid argument.')
+		}
+
+		return db
+			.manyOrNone(
+				`
+					SELECT
+						id,
+						file_name as "fileName",
+						created_at as "createdAt"
+					FROM
+						media
+					WHERE
+						user_id = $[userId]
+					ORDER BY
+						created_at DESC
+					LIMIT $[count]
+					OFFSET $[start]
+				`,
+				{
+					userId,
+					start,
+					count: count + 1 // ask for 1 more then we need to determine if there are more
+				}
+			)
+			.then(res => {
+				const hasMore = res.length > count
+				// remove the extra result if it's present
+				const media = hasMore ? res.splice(0, count) : res
+				return {
+					media,
+					hasMore
+				}
+			})
+			.catch(err => {
+				logger.error(err)
+				throw err
+			})
+	}
+
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
 		let mediaBinaryId = null
 
@@ -330,25 +372,24 @@ class Media {
 		return (fileTypeInfo && allowedFileTypes.test(fileTypeInfo.ext)) || isSvg(file)
 	}
 
-	static createAndSave(userId, fileInfo) {
+	static async createAndSave(userId, fileInfo) {
 		let file
 
 		try {
 			file = fs.readFileSync(fileInfo.path)
-		} catch (err) {
+		} catch (error) {
 			// calling methods expect a thenable object to be returned
-			return Promise.reject(err)
+			logger.logError('Error Reading media file', error)
+			throw error
 		}
 
 		if (!Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)) {
 			// Delete the temporary media stored by Multer
 			fs.unlinkSync(fileInfo.path)
-			return Promise.reject(
-				new Error(
-					`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
-						.split('|')
-						.join(', ')}`
-				)
+			throw new Error(
+				`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
+					.split('|')
+					.join(', ')}`
 			)
 		}
 
@@ -376,9 +417,9 @@ class Media {
 				// ID of the user media, not the binary data
 				return mediaRecord
 			})
-			.catch(err => {
-				logger.error(err)
-				throw err
+			.catch(error => {
+				logger.logError('Error saving media file', error)
+				throw error
 			})
 	}
 }

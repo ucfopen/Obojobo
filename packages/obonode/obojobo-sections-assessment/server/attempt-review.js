@@ -1,28 +1,58 @@
-const Assessment = require('./assessment')
+const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
 const DraftModel = require('obojobo-express/server/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/server/logger')
 
-const getQuestionModelsFromAttempt = async attemptId => {
-	const attempt = await Assessment.getAttempt(attemptId)
+// Extract draft caching to another function?
+const getQuestionModelsFromAttempt = async (
+	attemptId,
+	getDraftByVersion,
+	getCompletedAttemptsCount
+) => {
+	const attempt = await AssessmentModel.fetchAttemptById(attemptId)
+	const draftDocument = await getDraftByVersion(attempt.draftId, attempt.draftContentId)
+	const assessmentNode = draftDocument.getChildNodeById(attempt.assessmentId)
 
-	// @TODO: memoize or cache this
-	const draftDocument = await DraftModel.fetchDraftByVersion(
-		attempt.draft_id,
-		attempt.draft_content_id
-	)
+	let concealScores
+	switch (assessmentNode.node.content.review) {
+		case 'no-attempts-remaining':
+			// code block used to keep scope clean in 'case'
+			{
+				// default to hide
+				concealScores = true
+				const attemptsAllowed = parseInt(assessmentNode.node.content.attempts, 10)
+				const completedAttemptCount = await getCompletedAttemptsCount(
+					attempt.userId,
+					attempt.draftId,
+					attempt.assessmentId,
+					attempt.isPreview,
+					attempt.resourceLinkId
+				)
 
-	const assessmentNode = draftDocument.getChildNodeById(attempt.assessment_id)
+				concealScores = completedAttemptCount < attemptsAllowed
+			}
+			break
 
-	if (assessmentNode.node.content.review !== 'always') {
-		// @TODO: are res & req needed for OboModel.yell()?!
+		case 'never':
+			concealScores = true
+			break
+
+		case 'always':
+		default:
+			concealScores = false
+			break
+	}
+
+	// let the nodes prep content to send to the client
+	if (concealScores) {
 		const res = {}
 		const req = {}
 		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 	}
 
 	const attemptQuestionModels = getFullQuestionsFromDraftTree(draftDocument, attempt.state.chosen)
+
 	const attemptQuestionModelsMap = {}
 	for (const questionModel of attemptQuestionModels) {
 		attemptQuestionModelsMap[questionModel.id] = questionModel
@@ -31,14 +61,70 @@ const getQuestionModelsFromAttempt = async attemptId => {
 	return attemptQuestionModelsMap
 }
 
-const reviewAttempt = async attemptIds => {
-	try {
-		// aysnc, let's get all the attmpts
-		const promises = []
-		for (const attemptId of attemptIds) {
-			promises.push(getQuestionModelsFromAttempt(attemptId))
+// returns a function that loads a draft document
+// calling that returned function again with the same arguments will return a cached value
+// the cache is scoped to the memoized function, call memoGetDraftByVersion twice
+// and you'll receive 2 different functions with 2 different caches
+// the cache should be garbage collected after the reference to the returned function is cleaned up
+const memoGetDraftByVersion = () => {
+	const cache = {} // a place to cache draftDocuments for reuse
+	return async (draftId, draftContentId) => {
+		const cacheKey = draftContentId
+		if (!cache[cacheKey]) {
+			cache[cacheKey] = await DraftModel.fetchDraftByVersion(draftId, draftContentId)
 		}
-		const results = await Promise.all(promises)
+
+		return cache[cacheKey]
+	}
+}
+
+// returns a function that loads attempt history and extracts the number of finished attempts
+// calling that returned function again with the same arguments will return a cached value
+// the cache is scoped to the memoized function, call memoGetCompletedAttemptsCount twice
+// and you'll receive 2 different functions with 2 different caches
+// the cache should be garbage collected after the reference to the returned function is cleaned up
+const memoGetCompletedAttemptsCount = () => {
+	const cache = {}
+	return async (userId, draftId, assessmentId, isPreview, resourceLinkId) => {
+		const cacheKey = `${userId}_${draftId}_${assessmentId}_${isPreview}_${resourceLinkId}`
+
+		if (!cache[cacheKey]) {
+			const history = await AssessmentModel.getCompletedAssessmentAttemptHistory(
+				userId,
+				draftId,
+				assessmentId,
+				isPreview,
+				resourceLinkId
+			)
+
+			// count attempts with final attemptScore
+			let finishedAttemptCount = 0
+			history.forEach(attempt => {
+				// attempt.result is null when incomplete
+				// any score in attemptScore counts as a finished attempt
+				if (attempt.result && attempt.result.attemptScore >= 0) finishedAttemptCount++
+			})
+
+			cache[cacheKey] = finishedAttemptCount
+		}
+
+		return cache[cacheKey]
+	}
+}
+
+const attemptReview = async attemptIds => {
+	try {
+		const results = []
+		const getDraftByVersion = memoGetDraftByVersion()
+		const getCompletedAttemptsCount = memoGetCompletedAttemptsCount()
+
+		// aysnc, let's get all the attempts
+		for (const attemptId of attemptIds) {
+			results.push(
+				await getQuestionModelsFromAttempt(attemptId, getDraftByVersion, getCompletedAttemptsCount)
+			)
+		}
+
 		// now build an object
 		// { <attemptId>: questionModels }
 		let n = 0
@@ -50,11 +136,14 @@ const reviewAttempt = async attemptIds => {
 
 		return questionModels
 	} catch (error) {
-		logger.error('reviewAttempt Error')
+		logger.error('attemptReview Error')
 		logger.error(error)
 	}
 }
 
 module.exports = {
-	reviewAttempt
+	attemptReview,
+	memoGetCompletedAttemptsCount,
+	memoGetDraftByVersion,
+	getQuestionModelsFromAttempt
 }

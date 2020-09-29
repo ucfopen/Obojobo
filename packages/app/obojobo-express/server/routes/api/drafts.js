@@ -9,13 +9,14 @@ const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xm
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const {
 	checkValidationRules,
 	requireDraftId,
 	requireCanViewEditor,
 	requireCanCreateDrafts,
-	requireCanDeleteDrafts
+	requireCanDeleteDrafts,
+	checkContentId
 } = oboRequire('server/express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -25,14 +26,18 @@ const isNoDataFromQueryError = e => {
 }
 
 // Get a complete Draft Document Tree (for editing)
+// optional query variable: contentId=<draftContentId>
 // mounted as /api/drafts/:draftId/full
 router
 	.route('/:draftId/full')
-	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.get([requireDraftId, requireCanViewEditor, checkContentId, checkValidationRules])
 	.get(async (req, res) => {
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
-			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+				req.currentUser.id,
+				req.params.draftId
+			)
 
 			if (!hasPerms) {
 				return res.notAuthorized(
@@ -40,19 +45,28 @@ router
 				)
 			}
 
-			const draftModel = await DraftModel.fetchById(req.params.draftId)
-
+			let draftModel
+			if (req.query.contentId) {
+				// a specific verion is requested
+				draftModel = await DraftModel.fetchDraftByVersion(req.params.draftId, req.query.contentId)
+			} else {
+				// get the current version
+				draftModel = await DraftModel.fetchById(req.params.draftId)
+			}
+			const draftDocument = draftModel.document
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
 					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-						xml = jsonToXml(draftModel.document)
+						xml = jsonToXml(draftDocument)
 					}
+					res.set('Obo-DraftContentId', draftDocument.contentId)
 					res.send(xml)
 				},
 				default: () => {
-					res.success(draftModel.document)
+					res.set('Obo-DraftContentId', draftDocument.contentId)
+					res.success(draftDocument)
 				}
 			})
 		} catch (e) {
@@ -94,8 +108,35 @@ router
 	.route('/new')
 	.post(requireCanCreateDrafts)
 	.post((req, res, next) => {
-		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
-			.then(res.success)
+		const content = req.body.content
+		const format = req.body.format
+
+		let draftJson = !format ? draftTemplate : null
+		let draftXml = !format ? draftTemplateXML : null
+
+		if (format === 'application/json') {
+			draftJson = content
+		} else if (format === 'application/xml') {
+			draftXml = content
+			try {
+				const convertedXml = xmlToDraftObject(draftXml, true)
+				if (convertedXml) {
+					draftJson = convertedXml
+				} else {
+					logger.error('Parse XML non-error?', convertedXml)
+					return res.unexpected()
+				}
+			} catch (e) {
+				logger.error('Parse XML Failed:', e, content)
+				return res.unexpected(e)
+			}
+		}
+
+		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -105,7 +146,10 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(res.success)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 
@@ -139,8 +183,9 @@ router
 				}
 
 				if (!documentInput || typeof documentInput !== 'object') {
-					logger.error('Posting draft failed - format unexpected:', req.body)
-					res.badInput('Posting draft failed - format unexpected')
+					const msg = 'Posting draft failed - format unexpected'
+					logger.error(msg, req.body)
+					res.badInput(msg)
 					return
 				}
 
@@ -148,12 +193,19 @@ router
 				const duplicateId = DraftModel.findDuplicateIds(documentInput)
 
 				if (duplicateId !== null) {
-					logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
-					res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
+					const msg = `Posting draft failed - duplicate id "${duplicateId}"`
+					logger.error(msg)
+					res.badInput(msg)
 					return
 				}
 
-				return DraftModel.updateContent(req.params.draftId, documentInput, xml || null).then(id => {
+				return DraftModel.updateContent(
+					req.params.draftId,
+					req.currentUser.id,
+					documentInput,
+					xml || null
+				).then(id => {
+					res.set('Obo-DraftContentId', id)
 					res.success({ id })
 				})
 			})

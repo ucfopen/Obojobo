@@ -3,36 +3,50 @@ const insertEvent = require('obojobo-express/server/insert_event')
 const lti = require('obojobo-express/server/lti')
 
 const insertAttemptEndEvents = (
-	user,
-	draftDocument,
+	userId,
+	draftId,
+	contentId,
 	assessmentId,
 	attemptId,
 	attemptNumber,
 	isPreview,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	visitId,
+	originalAttemptId = null,
+	originalScoreId = null
 ) => {
 	const { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
 		payload: {
-			attemptId: attemptId,
-			attemptCount: attemptNumber
+			attemptId,
+			attemptCount: attemptNumber,
+			imported: originalAttemptId !== null,
+			originalAttemptId,
+			originalScoreId
 		},
-		userId: user.id,
+		visitId,
+		userId,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draftDocument.draftId,
-		contentId: draftDocument.contentId,
-		eventVersion: '1.1.0',
+		draftId,
+		contentId,
+		eventVersion: '1.3.0',
 		isPreview: isPreview,
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
-			actor: { type: 'user', id: user.id },
-			draftId: draftDocument.draftId,
-			contentId: draftDocument.contentId,
+			actor: { type: 'user', id: userId },
+			draftId,
+			contentId,
 			assessmentId,
-			attemptId: attemptId
+			attemptId,
+			extensions: {
+				attemptCount: attemptNumber,
+				imported: originalAttemptId !== null,
+				originalAttemptId,
+				originalScoreId
+			}
 		})
 	})
 }
@@ -55,7 +69,10 @@ const insertAttemptScoredEvents = (
 	hostname,
 	remoteAddress,
 	scoreDetails,
-	resourceLinkId
+	resourceLinkId,
+	visitId,
+	originalAttemptId = null,
+	originalScoreId = null
 ) => {
 	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
@@ -83,14 +100,18 @@ const insertAttemptScoredEvents = (
 					ltiGradeBookStatus,
 					assessmentScoreId,
 					ltiAssessmentScoreId,
-					scoreDetails
+					scoreDetails,
+					imported: originalAttemptId !== null,
+					originalAttemptId,
+					originalScoreId
 				},
+				visitId,
 				userId: user.id,
 				ip: remoteAddress,
 				metadata: {},
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
-				eventVersion: '2.0.0',
+				eventVersion: '2.2.0',
 				isPreview: isPreview,
 				caliperPayload: createAssessmentAttemptScoredEvent({
 					actor: { type: 'serverApp' },
@@ -104,7 +125,10 @@ const insertAttemptScoredEvents = (
 						attemptScore,
 						assessmentScore,
 						highestAssessmentScore: highestAssessmentScoreRecord.score,
-						ltiScoreSent
+						ltiScoreSent,
+						imported: originalAttemptId !== null,
+						originalAttemptId,
+						originalScoreId
 					}
 				})
 			})

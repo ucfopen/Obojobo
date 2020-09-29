@@ -1,5 +1,6 @@
 jest.mock('../../server/models/visit')
 jest.mock('../../server/insert_event')
+jest.mock('../../server/obo_events')
 jest.mock(
 	'../../server/asset_resolver',
 	() => ({
@@ -43,6 +44,11 @@ jest.mock('../../server/express_current_document', () => (req, res, next) => {
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
+	res.render = jest
+		.fn()
+		.mockImplementation((template, message) =>
+			res.send(`mock template rendered: ${template} with message: ${message}`)
+		)
 	next()
 })
 
@@ -73,6 +79,7 @@ app.use('/', oboRequire('server/routes/viewer'))
 describe('viewer route', () => {
 	const insertEvent = oboRequire('server/insert_event')
 	const VisitModel = oboRequire('server/models/visit')
+	const oboEvents = oboRequire('server/obo_events')
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -115,7 +122,7 @@ describe('viewer route', () => {
 	})
 
 	test('launch visit requires a currentDocument', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 		mockCurrentDocument = null
 
 		return request(app)
@@ -123,8 +130,7 @@ describe('viewer route', () => {
 			.type('application/x-www-form-urlencoded')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -193,6 +199,31 @@ describe('viewer route', () => {
 			})
 	})
 
+	test('launch visit allows EVENT_BEFORE_NEW_VISIT to alter req', () => {
+		expect.assertions(4)
+		VisitModel.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		// use event listener to alter req
+		oboEvents.emit.mockImplementation((event, options) => {
+			options.req.visitOptions = {}
+		})
+
+		mockCurrentDocument = { draftId: validUUID() }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(insertEvent).toHaveBeenCalledTimes(1)
+				expect(insertEvent.mock.calls[0]).toMatchSnapshot()
+			})
+	})
+
 	test('launch visit doesnt redirect with session errors', () => {
 		expect.assertions(3)
 
@@ -229,15 +260,14 @@ describe('viewer route', () => {
 	})
 
 	test('view visit requires a current document', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		mockCurrentDocument = null
 		return request(app)
 			.get('/' + validUUID() + '/visit/' + validUUID())
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
+				expect(response.statusCode).toBe(404)
 			})
 	})
 
@@ -291,7 +321,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Obojobo Next Document Viewer')
+				expect(response.text).toBe('mock template rendered: viewer with message: [object Object]')
 			})
 	})
 

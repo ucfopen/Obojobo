@@ -52,7 +52,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
         tabIndex="0"
       >
         <span
-          className="text align-undefined"
+          className="obo-text"
           data-group-index="0"
           data-indent={0}
         >

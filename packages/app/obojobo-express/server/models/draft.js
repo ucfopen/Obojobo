@@ -21,11 +21,13 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 
 	// Check all children nodes
 	let duplicateId = null
-	for (const child of jsonTreeNode.children) {
-		duplicateId = findDuplicateIdsRecursive(child, idSet)
-		if (duplicateId) {
-			// return as soon as a duplicate is found
-			return duplicateId
+	if (Array.isArray(jsonTreeNode.children)) {
+		for (const child of jsonTreeNode.children) {
+			duplicateId = findDuplicateIdsRecursive(child, idSet)
+			if (duplicateId) {
+				// return as soon as a duplicate is found
+				return duplicateId
+			}
 		}
 	}
 
@@ -89,6 +91,10 @@ class Draft {
 			.then(() => {
 				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
 			})
+			.catch(error => {
+				logger.logError('Draft fetchById Error', error)
+				throw error
+			})
 	}
 
 	static fetchById(id) {
@@ -120,8 +126,8 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
-				return Promise.reject(error)
+				logger.logError('Draft fetchById Error', error)
+				throw error
 			})
 	}
 
@@ -155,58 +161,65 @@ class Draft {
 				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
-				logger.error('fetchByVersion Error', error.message)
-				return Promise.reject(error)
+				logger.logError('fetchByVersion Error', error)
+				throw error
 			})
 	}
 
 	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
 		let newDraft
 
-		return db.tx(transactionDb => {
-			// Create a draft first
-			return transactionDb
-				.one(
-					`
+		return db
+			.tx(transactionDb => {
+				// Create a draft first
+				return transactionDb
+					.one(
+						`
 						INSERT INTO drafts
 							(user_id)
 						VALUES
 							($[userId])
 						RETURNING *`,
-					{ userId }
-				)
-				.then(newDraftResult => {
-					newDraft = newDraftResult
-					// Add content referencing the draft
-					return transactionDb.one(
-						`
-							INSERT INTO drafts_content
-								(draft_id, content, xml)
-							VALUES
-								($[draftId], $[jsonContent], $[xmlContent])
-							RETURNING *`,
-						{ draftId: newDraft.id, jsonContent, xmlContent }
+						{ userId }
 					)
-				})
-				.then(newContentResult => {
-					newDraft.content = newContentResult
-					oboEvents.emit(Draft.EVENT_NEW_DRAFT_CREATED, newDraft)
-					return newDraft
-				})
-		})
+					.then(newDraftResult => {
+						newDraft = newDraftResult
+						// Add content referencing the draft
+						return transactionDb.one(
+							`
+							INSERT INTO drafts_content
+								(draft_id, user_id, content, xml)
+							VALUES
+								($[draftId], $[userId], $[jsonContent], $[xmlContent])
+							RETURNING *`,
+							{ draftId: newDraft.id, userId, jsonContent, xmlContent }
+						)
+					})
+					.then(newContentResult => {
+						newDraft.content = newContentResult
+						oboEvents.emit(Draft.EVENT_NEW_DRAFT_CREATED, newDraft)
+						return newDraft
+					})
+			})
+			.catch(error => {
+				logger.logError('Error createWithContent', error)
+				throw error
+			})
 	}
 
-	static updateContent(draftId, jsonContent, xmlContent) {
+	static updateContent(draftId, userId, jsonContent, xmlContent) {
 		return db
 			.one(
 				`
-				INSERT INTO drafts_content(
+				INSERT INTO drafts_content (
 					draft_id,
+					user_id,
 					content,
 					xml
 				)
 				VALUES(
 					$[draftId],
+					$[userId],
 					$[jsonContent],
 					$[xmlContent]
 				)
@@ -214,6 +227,7 @@ class Draft {
 			`,
 				{
 					draftId,
+					userId,
 					jsonContent,
 					xmlContent
 				}
@@ -221,6 +235,10 @@ class Draft {
 			.then(insertContentResult => {
 				oboEvents.emit(Draft.EVENT_DRAFT_UPDATED, { draftId, jsonContent, xmlContent })
 				return insertContentResult.id
+			})
+			.catch(error => {
+				logger.logError('Error Draft.updateContent', error)
+				throw error
 			})
 	}
 
@@ -250,6 +268,10 @@ class Draft {
 			.then(xml => {
 				if (xml) return xml.xml
 				return null
+			})
+			.catch(error => {
+				logger.logError('Error xmlDocument', error)
+				throw error
 			})
 	}
 

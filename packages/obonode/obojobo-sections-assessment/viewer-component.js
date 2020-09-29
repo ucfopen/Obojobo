@@ -12,6 +12,7 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
+const { Dialog } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil, FocusUtil } = Viewer.util
@@ -20,7 +21,7 @@ class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false,
+			isFetchingEndAttempt: false,
 			currentStep: Assessment.getCurrentStep(props)
 		}
 		this.onEndAttempt = this.onEndAttempt.bind(this)
@@ -91,11 +92,11 @@ class Assessment extends React.Component {
 	}
 
 	onEndAttempt() {
-		this.setState({ isFetching: true })
+		this.setState({ isFetchingEndAttempt: true })
 	}
 
 	onAttemptEnded() {
-		this.setState({ isFetching: false })
+		this.setState({ isFetchingEndAttempt: false })
 	}
 
 	isAttemptComplete() {
@@ -116,16 +117,65 @@ class Assessment extends React.Component {
 
 	onClickSubmit() {
 		// disable multiple clicks
-		if (this.state.isFetching) return
+		if (this.state.isFetchingEndAttempt) return
 
 		if (!this.isAttemptComplete()) {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
 			return
 		}
-		return this.endAttempt()
+
+		const remainAttempts = AssessmentUtil.getAttemptsRemaining(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
+		if (remainAttempts === 1) {
+			ModalUtil.show(
+				<Dialog
+					width="32rem"
+					title="This is your last attempt"
+					buttons={[
+						{
+							value: 'Cancel',
+							altAction: true,
+							default: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'OK - Submit Last Attempt',
+							onClick: this.endAttempt
+						}
+					]}
+				>
+					<p>{"You won't be able to submit another attempt after this one."}</p>
+				</Dialog>
+			)
+		} else {
+			ModalUtil.show(
+				<Dialog
+					width="32rem"
+					title="Just to confirm..."
+					buttons={[
+						{
+							value: 'Cancel',
+							altAction: true,
+							default: true,
+							onClick: ModalUtil.hide
+						},
+						{
+							value: 'OK - Submit',
+							onClick: this.endAttempt
+						}
+					]}
+				>
+					<p>Are you ready to submit?</p>
+				</Dialog>
+			)
+		}
 	}
 
 	endAttempt() {
+		ModalUtil.hide()
 		return AssessmentUtil.endAttempt({
 			model: this.props.model,
 			context: this.props.moduleData.navState.context,
@@ -171,6 +221,10 @@ class Assessment extends React.Component {
 	}
 
 	render() {
+		if (this.props.moduleData.assessmentState.attemptHistoryLoadState !== 'loaded') {
+			return 'Loading...'
+		}
+
 		const childEl = (() => {
 			switch (this.state.curStep) {
 				case 'pre-test':
@@ -185,7 +239,7 @@ class Assessment extends React.Component {
 							moduleData={this.props.moduleData}
 							onClickSubmit={this.onClickSubmit}
 							isAttemptComplete={this.isAttemptComplete()}
-							isFetching={this.state.isFetching}
+							isFetching={this.state.isFetchingEndAttempt}
 						/>
 					)
 

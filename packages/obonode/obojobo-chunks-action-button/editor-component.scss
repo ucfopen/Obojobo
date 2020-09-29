@@ -4,12 +4,16 @@
 	position: relative;
 
 	.button {
-		min-width: 12em;
+		min-width: 7em;
 		display: inline-block;
 		user-select: auto;
+		cursor: text;
+		padding: 0.4rem 1em;
+		text-align: center;
 
 		span[data-placeholder]::before {
 			min-width: 10em;
+			transform: translate(-50%, 0);
 		}
 	}
 
@@ -18,9 +22,9 @@
 		text-align: center;
 		border-radius: $dimension-rounded-radius;
 		font-size: 0.75em;
-		top: 4.5em;
 		left: 50%;
-		transform: translate(-50%, 0);
+		bottom: 0%;
+		transform: translate(-50%, 105%);
 		font-family: $font-default;
 		box-sizing: border-box;
 		min-height: 2.5em;
@@ -28,6 +32,7 @@
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
+		user-select: none;
 
 		@mixin point() {
 			content: ' ';
@@ -55,9 +60,15 @@
 		.trigger-list {
 			background-color: $color-bg;
 			border-radius: $dimension-rounded-radius;
+			padding: $dimension-padding / 4 $dimension-padding / 2;
+			box-sizing: border-box;
 
 			.title {
 				font-weight: bold;
+			}
+
+			.no-actions {
+				color: $color-text-minor;
 			}
 		}
 

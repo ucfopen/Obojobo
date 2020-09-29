@@ -1,28 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List Editor Node List component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+exports[`List Editor Node List component when not selected 1`] = `
+<div>
+  <div
+    className="text-chunk obojobo-draft--chunks--list pad"
+  />
+</div>
+`;
+
+exports[`List Editor Node List component when selected 1`] = `
+<div>
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
     <div
-      className="obojobo-draft--components--button is-not-dangerous align-center"
+      className="buttonbox-box"
+      contentEditable={false}
     >
-      <button
-        className="button"
-        contentEditable={false}
-        onClick={[Function]}
+      <div
+        className="box-border"
       >
-        Swap to Ordered
-      </button>
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center toggle-header"
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+          >
+            Switch to ordered
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 `;
 
-exports[`List Editor Node List component toggles type 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Swap to Unordered</button></div></div></div>"`;
+exports[`List Editor Node List toggleType calls setNodes on the list and each level 1`] = `
+Array [
+  Object {
+    "selection": Object {
+      "anchor": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+      "focus": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+    },
+  },
+  Object {
+    "content": Object {
+      "listStyles": Object {
+        "indents": Object {},
+        "type": "ordered",
+      },
+    },
+  },
+  Object {
+    "at": Array [
+      0,
+      1,
+      1,
+    ],
+  },
+]
+`;
 
-exports[`List Editor Node List component toggles type from unordered to ordered 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" contenteditable=\\"false\\">Swap to Ordered</button></div></div></div>"`;
+exports[`List Editor Node List toggleType calls setNodes on the list and each level 2`] = `
+Array [
+  Object {
+    "selection": Object {
+      "anchor": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+      "focus": Object {
+        "path": Array [
+          0,
+          1,
+          1,
+        ],
+      },
+    },
+  },
+  Object {
+    "content": Object {
+      "type": "ordered",
+    },
+  },
+  Object {
+    "at": "mock-level-path",
+  },
+]
+`;

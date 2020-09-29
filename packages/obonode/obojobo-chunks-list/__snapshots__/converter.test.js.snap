@@ -2,280 +2,253 @@
 
 exports[`List Converter oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "listStyles": Object {
-        "indents": Object {},
-      },
-      "textGroup": Array [
-        Object {
-          "text": Object {
-            "value": "mockLine1",
-          },
-        },
-        Object {
-          "data": Object {
-            "indent": 5,
-          },
-          "text": Object {
-            "value": "mockLine1",
-          },
-        },
-        Object {
-          "text": Object {
-            "value": "mockLine2",
-          },
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "data": Object {
-        "content": Object {
-          "bulletStyle": "decimal",
-          "type": undefined,
-        },
-      },
-      "nodes": Array [
+      "children": Array [
         Object {
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": undefined,
-              "object": "text",
+              "text": "mockLine1",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Line",
+          "content": Object {},
+          "subtype": "ObojoboDraft.Chunks.List.Line",
+          "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "data": Object {
-            "content": Object {
-              "bulletStyle": "upper-alpha",
-              "type": undefined,
-            },
-          },
-          "nodes": Array [
+          "children": Array [
             Object {
-              "data": Object {
-                "content": Object {
-                  "bulletStyle": "upper-roman",
-                  "type": undefined,
-                },
-              },
-              "nodes": Array [
+              "children": Array [
                 Object {
-                  "data": Object {
-                    "content": Object {
-                      "bulletStyle": "lower-alpha",
-                      "type": undefined,
-                    },
-                  },
-                  "nodes": Array [
+                  "children": Array [
                     Object {
-                      "data": Object {
-                        "content": Object {
-                          "bulletStyle": "lower-roman",
-                          "type": undefined,
-                        },
-                      },
-                      "nodes": Array [
+                      "children": Array [
                         Object {
-                          "data": Object {
-                            "content": Object {
-                              "bulletStyle": undefined,
-                              "type": undefined,
-                            },
-                          },
-                          "nodes": Array [
+                          "children": Array [
                             Object {
-                              "nodes": Array [
+                              "children": Array [
                                 Object {
-                                  "leaves": undefined,
-                                  "object": "text",
+                                  "text": "mockLine1",
                                 },
                               ],
-                              "object": "block",
-                              "type": "ObojoboDraft.Chunks.List.Line",
+                              "content": Object {},
+                              "subtype": "ObojoboDraft.Chunks.List.Line",
+                              "type": "ObojoboDraft.Chunks.List",
                             },
                           ],
-                          "object": "block",
-                          "type": "ObojoboDraft.Chunks.List.Level",
+                          "content": Object {
+                            "bulletStyle": undefined,
+                            "type": undefined,
+                          },
+                          "subtype": "ObojoboDraft.Chunks.List.Level",
+                          "type": "ObojoboDraft.Chunks.List",
                         },
                       ],
-                      "object": "block",
-                      "type": "ObojoboDraft.Chunks.List.Level",
+                      "content": Object {
+                        "bulletStyle": "upper-roman",
+                        "type": undefined,
+                      },
+                      "subtype": "ObojoboDraft.Chunks.List.Level",
+                      "type": "ObojoboDraft.Chunks.List",
                     },
                   ],
-                  "object": "block",
-                  "type": "ObojoboDraft.Chunks.List.Level",
+                  "content": Object {
+                    "bulletStyle": "upper-alpha",
+                    "type": undefined,
+                  },
+                  "subtype": "ObojoboDraft.Chunks.List.Level",
+                  "type": "ObojoboDraft.Chunks.List",
                 },
               ],
-              "object": "block",
-              "type": "ObojoboDraft.Chunks.List.Level",
+              "content": Object {
+                "bulletStyle": "lower-roman",
+                "type": undefined,
+              },
+              "subtype": "ObojoboDraft.Chunks.List.Level",
+              "type": "ObojoboDraft.Chunks.List",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Level",
+          "content": Object {
+            "bulletStyle": "lower-alpha",
+            "type": undefined,
+          },
+          "subtype": "ObojoboDraft.Chunks.List.Level",
+          "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": undefined,
-              "object": "text",
+              "text": "mockLine2",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Line",
+          "content": Object {},
+          "subtype": "ObojoboDraft.Chunks.List.Line",
+          "type": "ObojoboDraft.Chunks.List",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.List.Level",
+      "content": Object {
+        "bulletStyle": "decimal",
+        "type": undefined,
+      },
+      "subtype": "ObojoboDraft.Chunks.List.Level",
+      "type": "ObojoboDraft.Chunks.List",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "listStyles": Object {
+      "indents": Object {},
+    },
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "mockLine1",
+        },
+      },
+      Object {
+        "data": Object {
+          "indent": 5,
+        },
+        "text": Object {
+          "value": "mockLine1",
+        },
+      },
+      Object {
+        "text": Object {
+          "value": "mockLine2",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
 
 exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style and triggers 1`] = `
 Object {
-  "data": Object {
-    "content": Object {
-      "listStyles": Object {
-        "indents": Object {},
-        "type": "unordered",
-      },
-      "textGroup": Array [
-        Object {
-          "text": Object {
-            "value": "mockLine1",
-          },
-        },
-        Object {
-          "text": Object {
-            "value": "mockLine2",
-          },
-        },
-        Object {
-          "data": Object {
-            "indent": 5,
-          },
-          "text": Object {
-            "value": "mockLine3",
-          },
-        },
-      ],
-      "triggers": "mock-triggers",
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+  "children": Array [
     Object {
-      "data": Object {
-        "content": Object {
-          "bulletStyle": "disc",
-          "type": "unordered",
-        },
-      },
-      "nodes": Array [
+      "children": Array [
         Object {
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": undefined,
-              "object": "text",
+              "text": "mockLine1",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Line",
+          "content": Object {},
+          "subtype": "ObojoboDraft.Chunks.List.Line",
+          "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "nodes": Array [
+          "children": Array [
             Object {
-              "leaves": undefined,
-              "object": "text",
+              "text": "mockLine2",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Line",
+          "content": Object {},
+          "subtype": "ObojoboDraft.Chunks.List.Line",
+          "type": "ObojoboDraft.Chunks.List",
         },
         Object {
-          "data": Object {
-            "content": Object {
-              "bulletStyle": "circle",
-              "type": "unordered",
-            },
-          },
-          "nodes": Array [
+          "children": Array [
             Object {
-              "data": Object {
-                "content": Object {
-                  "bulletStyle": "square",
-                  "type": "unordered",
-                },
-              },
-              "nodes": Array [
+              "children": Array [
                 Object {
-                  "data": Object {
-                    "content": Object {
-                      "bulletStyle": undefined,
-                      "type": "unordered",
-                    },
-                  },
-                  "nodes": Array [
+                  "children": Array [
                     Object {
-                      "data": Object {
-                        "content": Object {
-                          "bulletStyle": undefined,
-                          "type": "unordered",
-                        },
-                      },
-                      "nodes": Array [
+                      "children": Array [
                         Object {
-                          "data": Object {
-                            "content": Object {
-                              "bulletStyle": undefined,
-                              "type": "unordered",
-                            },
-                          },
-                          "nodes": Array [
+                          "children": Array [
                             Object {
-                              "nodes": Array [
+                              "children": Array [
                                 Object {
-                                  "leaves": undefined,
-                                  "object": "text",
+                                  "text": "mockLine3",
                                 },
                               ],
-                              "object": "block",
-                              "type": "ObojoboDraft.Chunks.List.Line",
+                              "content": Object {
+                                "hangingIndent": false,
+                              },
+                              "subtype": "ObojoboDraft.Chunks.List.Line",
+                              "type": "ObojoboDraft.Chunks.List",
                             },
                           ],
-                          "object": "block",
-                          "type": "ObojoboDraft.Chunks.List.Level",
+                          "content": Object {
+                            "bulletStyle": undefined,
+                            "type": "unordered",
+                          },
+                          "subtype": "ObojoboDraft.Chunks.List.Level",
+                          "type": "ObojoboDraft.Chunks.List",
                         },
                       ],
-                      "object": "block",
-                      "type": "ObojoboDraft.Chunks.List.Level",
+                      "content": Object {
+                        "bulletStyle": undefined,
+                        "type": "unordered",
+                      },
+                      "subtype": "ObojoboDraft.Chunks.List.Level",
+                      "type": "ObojoboDraft.Chunks.List",
                     },
                   ],
-                  "object": "block",
-                  "type": "ObojoboDraft.Chunks.List.Level",
+                  "content": Object {
+                    "bulletStyle": undefined,
+                    "type": "unordered",
+                  },
+                  "subtype": "ObojoboDraft.Chunks.List.Level",
+                  "type": "ObojoboDraft.Chunks.List",
                 },
               ],
-              "object": "block",
-              "type": "ObojoboDraft.Chunks.List.Level",
+              "content": Object {
+                "bulletStyle": "square",
+                "type": "unordered",
+              },
+              "subtype": "ObojoboDraft.Chunks.List.Level",
+              "type": "ObojoboDraft.Chunks.List",
             },
           ],
-          "object": "block",
-          "type": "ObojoboDraft.Chunks.List.Level",
+          "content": Object {
+            "bulletStyle": "circle",
+            "type": "unordered",
+          },
+          "subtype": "ObojoboDraft.Chunks.List.Level",
+          "type": "ObojoboDraft.Chunks.List",
         },
       ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.List.Level",
+      "content": Object {
+        "bulletStyle": "disc",
+        "type": "unordered",
+      },
+      "subtype": "ObojoboDraft.Chunks.List.Level",
+      "type": "ObojoboDraft.Chunks.List",
     },
   ],
-  "object": "block",
+  "content": Object {
+    "listStyles": Object {
+      "indents": Object {},
+      "type": "unordered",
+    },
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "value": "mockLine1",
+        },
+      },
+      Object {
+        "text": Object {
+          "value": "mockLine2",
+        },
+      },
+      Object {
+        "data": Object {
+          "hangingIndent": false,
+          "indent": 5,
+        },
+        "text": Object {
+          "value": "mockLine3",
+        },
+      },
+    ],
+    "triggers": "mock-triggers",
+  },
+  "id": "mockKey",
   "type": "mockType",
 }
 `;
@@ -285,18 +258,27 @@ Object {
   "children": Array [],
   "content": Object {
     "listStyles": Object {
-      "indents": Array [
-        Object {},
-        Object {},
-      ],
+      "indents": Object {
+        "0": Object {},
+        "1": Object {},
+      },
+      "type": undefined,
     },
     "textGroup": Array [
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
@@ -305,13 +287,20 @@ Object {
           "indent": 1,
         },
         "text": Object {
-          "styleList": Array [],
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
           "value": "mockText",
         },
       },
     ],
   },
   "id": "mockKey",
-  "type": "mockType",
+  "type": "ObojoboDraft.Chunks.List",
 }
 `;

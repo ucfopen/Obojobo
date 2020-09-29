@@ -1,7 +1,7 @@
 require('./module-permissions-dialog.scss')
 
 const React = require('react')
-const ModuleIamge = require('./module-image')
+const ModuleImage = require('./module-image')
 const ReactModal = require('react-modal')
 const Button = require('./button')
 const PeopleSearchDialog = require('./people-search-dialog-hoc')
@@ -64,11 +64,29 @@ class ModulePermissionsDialog extends React.Component {
 	}
 
 	render() {
+		let accessListItemsRender = null
+		if (this.props.draftPermissions[this.props.draftId]) {
+			accessListItemsRender = this.props.draftPermissions[this.props.draftId].items.map(p => (
+				<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
+					<Button
+						className="close-button"
+						onClick={() => {
+							this.removePerson(p.id)
+						}}
+					>
+						×
+					</Button>
+				</PeopleListItem>
+			))
+		}
+
 		return (
 			<div className="module-permissions-dialog">
 				<div className="top-bar">
-					<ModuleIamge id={this.props.draftId} />
-					<div className="module-title">{this.props.title}</div>
+					<ModuleImage id={this.props.draftId} />
+					<div className="module-title" title={this.props.title}>
+						{this.props.title}
+					</div>
 					<Button className="close-button" onClick={this.props.onClose}>
 						×
 					</Button>
@@ -76,28 +94,12 @@ class ModulePermissionsDialog extends React.Component {
 				<div className="wrapper">
 					<h1 className="title">Module Access</h1>
 					<div className="sub-title">People who can edit this module</div>
-					<Button className="new-button" onClick={this.openPeoplePicker}>
+					<Button id="modulePermissionsDialog-addPeopleButton" onClick={this.openPeoplePicker}>
 						Add People
 					</Button>
 				</div>
 				<div className="access-list-wrapper">
-					<ul className="access-list">
-						{/* eslint-disable no-mixed-spaces-and-tabs */
-						this.props.draftPermissions[this.props.draftId]
-							? this.props.draftPermissions[this.props.draftId].items.map(p => (
-									<PeopleListItem key={p.id} isMe={p.id === this.props.currentUserId} {...p}>
-										<Button
-											className="close-button"
-											onClick={() => {
-												this.removePerson(p.id)
-											}}
-										>
-											×
-										</Button>
-									</PeopleListItem>
-							  ))
-							: null}
-					</ul>
+					<ul className="access-list">{accessListItemsRender}</ul>
 				</div>
 				<div className="wrapper">
 					{this.renderModal()}

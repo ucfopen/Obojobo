@@ -2,6 +2,7 @@ import './image.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import { isUUID } from './utils'
 
 const isOrNot = Common.util.isOrNot
 
@@ -37,13 +38,11 @@ class Image extends React.Component {
 			return <div className="img-placeholder" />
 		}
 
-		const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-		const isUrlUUID = uuidRegex.test(data.url)
 		let src
 
 		const lazyLoad = typeof this.props.lazyLoad === 'undefined' ? true : !!this.props.lazyLoad
 
-		if (!isUrlUUID) {
+		if (!isUUID(data.url)) {
 			// If this is an external URL we simply use that url:
 			src = data.url
 		} else if (data.height || data.width) {
@@ -59,14 +58,14 @@ class Image extends React.Component {
 			src = `/api/media/${data.url}/${data.size}`
 		}
 
-		const imgStyles = {}
+		const customStyle = {}
 		if (data.size === 'custom') {
 			if (data.width) {
-				imgStyles.width = data.width + 'px'
+				customStyle.width = data.width + 'px'
 			}
 
 			if (data.height) {
-				imgStyles.height = data.height + 'px'
+				customStyle.height = data.height + 'px'
 			}
 		}
 
@@ -76,7 +75,7 @@ class Image extends React.Component {
 					'obojobo-draft--chunks--figure--image is-not-valid' +
 					isOrNot(this.state.isLoaded, 'loaded')
 				}
-				style={imgStyles}
+				style={customStyle}
 			/>
 		) : (
 			<img
@@ -86,10 +85,10 @@ class Image extends React.Component {
 				src={src}
 				unselectable="on"
 				alt={data.alt}
-				style={imgStyles}
 				onLoad={this.boundOnLoad}
 				onError={this.boundOnError}
 				loading={lazyLoad ? 'lazy' : null}
+				style={customStyle}
 			/>
 		)
 	}

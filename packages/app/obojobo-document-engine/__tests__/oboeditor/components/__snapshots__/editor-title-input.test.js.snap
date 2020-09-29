@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorTitleInput EditorTitleInput component 1`] = `
+<div
+  className="editor--components--editor-title-input-parent"
+>
+  <input
+    aria-invalid={false}
+    aria-label="Rename Module "
+    className="editor--components--editor-title-input"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    placeholder="Module Title"
+    value="mock-title"
+  />
+</div>
+`;

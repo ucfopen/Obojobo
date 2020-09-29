@@ -42,7 +42,76 @@ describe('Header', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('saveContent updates the model', () => {
+	test('renamePage handles null', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header'
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		const result = component.instance().renamePage('page-id', 'old-title', null)
+
+		expect(result).toBe('')
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('renamePage handles undefined', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header'
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		// eslint-disable-next-line no-undefined
+		const result = component.instance().renamePage('page-id', 'old-title', undefined)
+
+		expect(result).toBe('')
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('renamePage trims the new title', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header'
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		const result = component.instance().renamePage('page-id', 'old-title', '  new title  ')
+
+		expect(result).toBe('new title')
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith('page-id', 'new title')
+	})
+
+	test('renamePage doesnt call renamePage if new title matches oldTitle', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header'
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		const result = component.instance().renamePage('page-id', 'old-title', 'old-title')
+
+		expect(result).toBe('old-title')
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('saveContent updates the model when the new module title is valid', () => {
 		const props = {
 			index: 0,
 			list: [
@@ -59,6 +128,8 @@ describe('Header', () => {
 		}
 		const component = mount(<Header {...props} />)
 		component.instance().saveContent({}, {})
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
 		component.instance().saveContent(
 			{},
 			{
@@ -66,15 +137,49 @@ describe('Header', () => {
 				title: '     '
 			}
 		)
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
 		component.instance().saveContent(
 			{},
 			{
-				triggers: [],
 				title: 'Mock Title'
 			}
 		)
+		expect(Common.models.OboModel.models['5'].set).toHaveBeenCalledTimes(1)
+	})
 
-		expect(Common.models.OboModel.models['5'].set).toHaveBeenCalledTimes(3)
+	test('saveContent returns a message when the new module title is not a non-empty string', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+
+		let saveContentResponse
+
+		saveContentResponse = component.instance().saveContent({}, {})
+		expect(saveContentResponse).toBe('Module title must not be empty!')
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
+
+		saveContentResponse = component.instance().saveContent(
+			{},
+			{
+				triggers: [],
+				title: '     '
+			}
+		)
+		expect(saveContentResponse).toBe('Module title must not be empty!')
+		expect(Common.models.OboModel.models['5'].set).not.toHaveBeenCalled()
 	})
 
 	test('saveId updates the model', () => {
@@ -97,6 +202,28 @@ describe('Header', () => {
 		component.instance().saveId('5', 'mock-id')
 
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
+	})
+
+	test('saveId does not allow an empty id', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		component.instance().saveId('5', '')
+
+		expect(Common.models.OboModel.models['5'].setId).not.toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
 	test('saveId does not update the model', () => {

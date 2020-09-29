@@ -2,13 +2,13 @@ import '../css/module-selector.scss'
 ;(function() {
 	// settings set by the view
 	const SETTINGS_IS_ASSIGNMENT = __isAssignment // eslint-disable-line no-undef
-	const SETTINGS_RETURN_URL = __returnUrl // eslint-disable-line no-undef
 	const TAB_COMMUNITY = 'Community Library'
 	const TAB_PERSONAL = 'My Modules'
 	const SECTION_MODULE_SELECT = 'section-module-selection'
 	const SECTION_SELECT_OBJECT = 'section-select-object'
 	const SECTION_PROGRESS = 'section-progress'
-	const SECTION_PRE_PROGRESS = 'pre-progress'
+	const SECTION_EMBED_OPTIONS = 'section-options'
+	const SECTION_PRE_PROGRESS = 'section-pre-progress'
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
@@ -28,6 +28,8 @@ import '../css/module-selector.scss'
 	let searchIntervalId = -1
 	let section = null
 	let selectedItem = null
+	let allowScorePassback
+	let sectionState = null
 
 	function empty(el) {
 		while (el.firstChild) el.removeChild(el.firstChild)
@@ -143,6 +145,12 @@ import '../css/module-selector.scss'
 
 	// navigation
 	function gotoSection(sectionId, skipFadeAnimation = false, addClass = '') {
+		sectionState = {
+			sectionId,
+			skipFadeAnimation,
+			addClass
+		}
+
 		if (sectionId === SECTION_PRE_PROGRESS) {
 			showProgress()
 			return
@@ -223,7 +231,6 @@ import '../css/module-selector.scss'
 			)
 			const formEl = document.getElementById('submit-form')
 			formEl.querySelector('input[name=content_items]').value = JSON.stringify(ltiData)
-			formEl.setAttribute('action', SETTINGS_RETURN_URL)
 			formEl.submit()
 		}, 1000)
 	}
@@ -246,7 +253,13 @@ import '../css/module-selector.scss'
 	}
 
 	function buildLaunchUrl(draftId) {
-		return window.location.origin + '/view/' + draftId
+		return (
+			window.location.origin +
+			'/view/' +
+			draftId +
+			'?score_import=' +
+			(allowScorePassback ? 'true' : 'false')
+		)
 	}
 
 	// list pages
@@ -315,12 +328,12 @@ import '../css/module-selector.scss'
 		const lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
 		const sectionEl = document.querySelector(className)
 		const listEl = sectionEl.querySelector('ul')
+		// hide all no-item lists
+		document.querySelectorAll('.no-items').forEach(el => hide(el))
 
 		if (items.length === 0) {
 			show(sectionEl.querySelector('.no-items'))
 		} else {
-			hide(sectionEl.querySelector('.no-items'))
-
 			const len = lastIndex
 			for (let i = data.last; i < len; i++) {
 				appendListItem(items[i], listEl)
@@ -384,16 +397,27 @@ import '../css/module-selector.scss'
 			gotoSection(SECTION_SELECT_OBJECT, false, 'blue')
 			gotoTab(TAB_PERSONAL)
 		})
+
+		document.getElementById('finish-button').addEventListener('click', event => {
+			event.preventDefault()
+			allowScorePassback =
+				document.querySelector("input[name='allow_import']:checked").value === '1'
+			gotoSection(SECTION_PRE_PROGRESS)
+		})
+
+		document.getElementById('finish-cancel-button').addEventListener('click', event => {
+			event.preventDefault()
+			gotoSection(SECTION_SELECT_OBJECT, sectionState.skipFadeAnimation, sectionState.addClass)
+		})
 	}
 
 	function onEmbedClick(event) {
 		event.preventDefault()
-
 		const oboItemEl = this.parentNode.parentNode.parentNode
 		const draftId = oboItemEl.getAttribute('data-lo-id')
 		selectedItem = getDraftById(draftId)
 
-		gotoSection(SECTION_PRE_PROGRESS)
+		gotoSection(SECTION_EMBED_OPTIONS)
 	}
 
 	function handleError(result) {

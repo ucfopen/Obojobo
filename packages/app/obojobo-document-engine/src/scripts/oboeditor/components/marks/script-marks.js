@@ -1,4 +1,6 @@
 import React from 'react'
+import { Editor } from 'slate'
+import { ReactEditor } from 'slate-react'
 
 import SupIcon from '../../assets/sup-icon'
 import SubIcon from '../../assets/sub-icon'
@@ -8,65 +10,56 @@ const SCRIPT_MARK = 'sup'
 const ScriptMark = {
 	plugins: {
 		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey)) return next()
+			if (event.shiftKey) return
+			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
-				case '-':
 				case ',':
 					event.preventDefault()
 					return editor.toggleScript(-1)
-				case '=':
 				case '.':
 					event.preventDefault()
 					return editor.toggleScript(1)
-				default:
-					return next()
 			}
 		},
-		renderMark(props, editor, next) {
-			switch (props.mark.type) {
-				case SCRIPT_MARK:
-					if (props.mark.data.get('num') === 1) {
-						return <sup>{props.children}</sup>
-					} else {
-						return <sub>{props.children}</sub>
-					}
-				default:
-					return next()
-			}
+		renderLeaf(props) {
+			let { children } = props
+			const { leaf } = props
+
+			if (leaf[SCRIPT_MARK] && leaf.num > 0) children = <sup>{props.children}</sup>
+			if (leaf[SCRIPT_MARK] && leaf.num < 0) children = <sub>{props.children}</sub>
+
+			props.children = children
+			return props
 		},
-		queries: {
+		commands: {
 			toggleScript: (editor, modifier) => {
-				const value = editor.value
-				const hasScript = value.marks.some(mark => {
-					if (mark.type !== SCRIPT_MARK) return false
+				const marks = Editor.marks(editor)
+				const isActive = marks.sup === true && marks.num === modifier
 
-					return mark.data.get('num') === modifier
-				})
-
-				if (hasScript) {
-					return editor.removeMark({
-						type: 'sup',
-						data: { num: modifier }
-					})
+				if (isActive) {
+					Editor.removeMark(editor, 'sup')
+					Editor.removeMark(editor, 'num')
 				} else {
-					return editor.addMark({
-						type: 'sup',
-						data: { num: modifier }
-					})
+					Editor.addMark(editor, 'sup', true)
+					Editor.addMark(editor, 'num', modifier)
 				}
+
+				ReactEditor.focus(editor)
 			}
 		}
 	},
 	marks: [
 		{
 			name: 'Superscript',
+			shortcut: '.',
 			type: SCRIPT_MARK,
 			icon: SupIcon,
 			action: editor => editor.toggleScript(1)
 		},
 		{
 			name: 'Subscript',
+			shortcut: ',',
 			type: SCRIPT_MARK,
 			icon: SubIcon,
 			action: editor => editor.toggleScript(-1)

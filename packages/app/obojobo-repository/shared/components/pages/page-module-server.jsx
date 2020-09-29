@@ -7,8 +7,8 @@ const PageModuleServer = props => {
 		<DefaultLayout
 			title={`${props.module.title} - an Obojobo Module`}
 			className="repository--module"
-			appScriptUrl="/static/page-module.js"
-			appCSSUrl="/static/page-module.css"
+			appScriptUrl={props.appJsUrl}
+			appCSSUrl={props.appCSSUrl}
 		>
 			<span id="react-hydrate-root" data-react-props={convertPropsToString(props)} />
 		</DefaultLayout>

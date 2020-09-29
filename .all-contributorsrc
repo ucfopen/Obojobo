@@ -1,0 +1,215 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "maufcost",
+      "name": "Mauricio Figueiredo",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/39862359?v=4",
+      "profile": "https://github.com/maufcost",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "vutoan1245",
+      "name": "Toan Vu",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/23706824?v=4",
+      "profile": "https://github.com/vutoan1245",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "ctcuff",
+      "name": "Cameron Cuff",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7400747?v=4",
+      "profile": "https://ctcuff.github.io",
+      "contributions": [
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "AnthonyRodriguez726",
+      "name": "AnthonyRodriguez726",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11856062?v=4",
+      "profile": "https://github.com/AnthonyRodriguez726",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "rmanbaird",
+      "name": "Ralph Baird",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/22771644?v=4",
+      "profile": "https://github.com/rmanbaird",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "clpetersonucf",
+      "name": "Corey Peterson",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1268547?v=4",
+      "profile": "https://github.com/clpetersonucf",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "SidTheEngineer",
+      "name": "Sid",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/19176417?v=4",
+      "profile": "https://github.com/SidTheEngineer",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "JonGuilbe",
+      "name": "Jonathan Guilbe",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9093729?v=4",
+      "profile": "https://github.com/JonGuilbe",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "keeeeeegan",
+      "name": "Keegan Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/229935?v=4",
+      "profile": "http://keeganberry.com",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "adrianfish",
+      "name": "Adrian Fish",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/134546?v=4",
+      "profile": "https://github.com/adrianfish",
+      "contributions": [
+        "code",
+        "bug",
+        "ideas"
+      ]
+    },
+    {
+      "login": "FrenjaminBanklin",
+      "name": "Brandon Stull",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1275983?v=4",
+      "profile": "https://github.com/FrenjaminBanklin",
+      "contributions": [
+        "code",
+        "bug",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "ssilverm",
+      "name": "Shea",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1273237?v=4",
+      "profile": "http://blog.sheasilverman.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "samuel-belcastro",
+      "name": "Samuel Belcastro",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/17661897?v=4",
+      "profile": "https://github.com/samuel-belcastro",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "gitnix",
+      "name": "Ryan Eppers",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5448785?v=4",
+      "profile": "https://github.com/gitnix",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "platform",
+        "question",
+        "review",
+        "tool",
+        "review"
+      ]
+    },
+    {
+      "login": "qwertynerd97",
+      "name": "Elli Howard",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/36134301?v=4",
+      "profile": "https://github.com/qwertynerd97",
+      "contributions": [
+        "a11y",
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "iturgeon",
+      "name": "Ian Turgeon",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73480?v=4",
+      "profile": "https://ianturgeon.com",
+      "contributions": [
+        "code",
+        "test",
+        "ideas",
+        "platform",
+        "projectManagement",
+        "maintenance",
+        "tool"
+      ]
+    },
+    {
+      "login": "zachberry",
+      "name": "Zachary Berry",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/73479?v=4",
+      "profile": "http://www.zachberry.com",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "design",
+        "ideas",
+        "projectManagement",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Obojobo",
+  "projectOwner": "ucfopen",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

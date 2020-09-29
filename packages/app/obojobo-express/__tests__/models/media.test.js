@@ -66,8 +66,6 @@ describe('media model', () => {
 	const mediaModelCacheImage = MediaModel.saveImageAtNewSize
 	const mediaModelValidFileType = MediaModel.isValidFileType
 
-	beforeAll(() => {})
-	afterAll(() => {})
 	beforeEach(() => {
 		jest.clearAllMocks()
 		db.one.mockReset()
@@ -76,7 +74,6 @@ describe('media model', () => {
 		MediaModel.saveImageAtNewSize = mediaModelCacheImage
 		MediaModel.isValidFileType = mediaModelValidFileType
 	})
-	afterEach(() => {})
 
 	test('storeImageInDb identifies invalid arguments', () => {
 		expect.assertions(8)
@@ -323,7 +320,7 @@ describe('media model', () => {
 		expect.hasAssertions()
 
 		fs.readFileSync = jest.fn().mockImplementationOnce(() => {
-			throw new Error('Mock error from readFileSync')
+			throw Error('Mock error from readFileSync')
 		})
 
 		return expect(MediaModel.createAndSave(mockUserId, mockFileInfo)).rejects.toThrow(
@@ -345,7 +342,7 @@ describe('media model', () => {
 	})
 
 	test('createAndSave correctly catches errors from storeImageInDb', async () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		MediaModel.isValidFileType = jest.fn()
 		MediaModel.isValidFileType.mockReturnValueOnce(true)
@@ -357,6 +354,58 @@ describe('media model', () => {
 
 		await expect(MediaModel.createAndSave(mockUserId, mockFileInfo)).rejects.toMatchObject({
 			message: 'Mock error from storeImageInDb'
+		})
+	})
+
+	test('fetchByUserId throws error for invalid argument', () => {
+		expect.assertions(1)
+
+		const mockStart = null
+		const mockCount = null
+		const testInvalidArgument = () => {
+			MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)
+		}
+
+		expect(testInvalidArgument).toThrowError('Invalid argument.')
+	})
+
+	test('fetchByUserId correctly catches errors', async () => {
+		expect.assertions(1)
+
+		const mockStart = 0
+		const mockCount = 1
+		db.manyOrNone.mockRejectedValueOnce(new Error('Mock error'))
+
+		await expect(MediaModel.fetchByUserId(mockUserId, mockStart, mockCount)).rejects.toMatchObject({
+			message: 'Mock error'
+		})
+	})
+
+	test('fetchByUserId retrieves correct data', async () => {
+		expect.hasAssertions()
+
+		const mockStart = 0
+		const mockCount = 1
+		const mockResults = []
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(0)
+			expect(results.hasMore).toEqual(false)
+		})
+	})
+
+	test('fetchByUserId retrieves results', async () => {
+		expect.hasAssertions()
+
+		const mockStart = 0
+		const mockCount = 1
+		const mockResults = ['mock-media-item', 'mock-media-item-2']
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		await MediaModel.fetchByUserId(mockUserId, mockStart, mockCount).then(results => {
+			expect(results.media.length).toEqual(1)
+			expect(results.hasMore).toEqual(true)
 		})
 	})
 

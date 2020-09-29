@@ -4,20 +4,18 @@ import renderer from 'react-test-renderer'
 
 import MCChoice from './editor-component'
 
+import { Transforms } from 'slate'
+jest.mock('slate')
+import { ReactEditor } from 'slate-react'
+jest.mock('slate-react')
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
+	() => item => item
+)
+
 describe('MCChoice Editor Node', () => {
 	test('MCChoice component', () => {
-		const component = renderer.create(
-			<MCChoice
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: []
-				}}
-			/>
-		)
+		const component = renderer.create(<MCChoice element={{ content: {}, children: [] }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -25,16 +23,7 @@ describe('MCChoice Editor Node', () => {
 
 	test('MCChoice component correct choice', () => {
 		const component = renderer.create(
-			<MCChoice
-				node={{
-					data: {
-						get: () => {
-							return { score: 100 }
-						}
-					},
-					nodes: { size: 2 }
-				}}
-			/>
+			<MCChoice element={{ content: { score: 100 }, children: [{}, {}] }} />
 		)
 		const tree = component.toJSON()
 
@@ -42,79 +31,37 @@ describe('MCChoice Editor Node', () => {
 	})
 
 	test('MCChoice component deletes itself', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<MCChoice
-				node={{
-					key: 'mockKey',
-					nodes: [],
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
+		const component = mount(<MCChoice element={{ content: { score: 100 }, children: [{}, {}] }} />)
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('MCChoice component edits score', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<MCChoice
-				node={{
-					key: 'mockKey',
-					nodes: [],
-					data: {
-						get: () => ({
-							score: 0
-						})
-					}
-				}}
-				editor={editor}
-			/>
+			<MCChoice element={{ content: { score: 0 }, children: [{}, {}] }} editor={null} />
 		)
+		ReactEditor.findPath.mockReturnValue([0])
 
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
-			data: { content: { score: 100 } }
-		})
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			null,
+			{
+				content: { score: 100 }
+			},
+			{ at: [0] }
+		)
 
 		const component2 = mount(
-			<MCChoice
-				node={{
-					key: 'mockKey',
-					nodes: [],
-					data: {
-						get: () => {
-							return {
-								score: 100
-							}
-						}
-					}
-				}}
-				editor={editor}
-			/>
+			<MCChoice element={{ content: { score: 100 }, children: [{}, {}] }} editor={null} />
 		)
 
 		component2
@@ -122,29 +69,18 @@ describe('MCChoice Editor Node', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
-			data: { content: { score: 0 } }
-		})
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			null,
+			{
+				content: { score: 0 }
+			},
+			{ at: [0] }
+		)
 	})
 
 	test('MCChoice component adds feedback', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
 		const component = mount(
-			<MCChoice
-				node={{
-					key: 'mockKey',
-					nodes: [],
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
+			<MCChoice element={{ content: { score: 100 }, children: [] }} editor={null} />
 		)
 
 		component
@@ -152,6 +88,6 @@ describe('MCChoice Editor Node', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 })

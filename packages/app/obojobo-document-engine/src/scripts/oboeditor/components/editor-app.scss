@@ -1,6 +1,8 @@
 @import '../../../scss/includes';
 
 .visual-editor--editor-app {
+	margin-bottom: 10rem;
+
 	.draft-toolbars {
 		position: fixed;
 		top: 0;
@@ -8,13 +10,6 @@
 		right: 0;
 		z-index: $z-index-above-all;
 		background-color: $color-bg;
-
-		.draft-title {
-			font-size: 1.2em;
-			padding-left: 0.7em;
-			padding-top: 0.5em;
-			font-family: $font-default;
-		}
 	}
 
 	code {

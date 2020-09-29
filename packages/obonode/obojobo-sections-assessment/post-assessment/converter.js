@@ -8,12 +8,12 @@ const slateToObo = node => {
 	const Page = Common.Registry.getItemForType(PAGE_NODE)
 	const json = []
 
-	node.nodes.forEach(action => {
+	node.children.forEach(action => {
 		const slateAction = {
-			for: action.data.get('for')
+			for: action.content.for
 		}
 
-		action.nodes.forEach(page => {
+		action.children.forEach(page => {
 			slateAction.page = Page.slateToObo(page)
 		})
 
@@ -25,21 +25,29 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const Page = Common.Registry.getItemForType(PAGE_NODE)
-	const json = {}
-	json.object = 'block'
-	json.type = ACTIONS_NODE
-	json.nodes = []
+	const json = {
+		type: ACTIONS_NODE,
+		children: []
+	}
+
 	node.forEach(action => {
-		const slateAction = {
-			object: 'block',
-			type: SCORE_NODE,
-			data: { for: action.for },
-			nodes: []
+		const content = { for: action.for }
+
+		// Convert legacy from/to attributes to newer 'for' attribute:
+		if (!action.for && action.to && action.from) {
+			content.for = `[${action.from},${action.to}]`
 		}
 
-		slateAction.nodes.push(Page.oboToSlate(action.page))
+		const slateAction = {
+			type: ACTIONS_NODE,
+			subtype: SCORE_NODE,
+			content,
+			children: []
+		}
 
-		json.nodes.push(slateAction)
+		slateAction.children.push(Page.oboToSlate(action.page))
+
+		json.children.push(slateAction)
 	})
 
 	return json

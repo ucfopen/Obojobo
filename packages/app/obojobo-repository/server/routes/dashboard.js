@@ -14,7 +14,7 @@ router
 	.route('/dashboard')
 	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
-		let sortOrder = 'alphabetical'
+		let sortOrder = 'newest'
 		const cookies = req.headers.cookie.split(';')
 		const cookieSort = cookies.find(cookie => cookie.includes('sortOrder'))
 
@@ -28,6 +28,7 @@ router
 				myModules,
 				sortOrder,
 				currentUser: req.currentUser,
+				// must use webpackAssetPath for all webpack assets to work in dev and production!
 				appCSSUrl: webpackAssetPath('dashboard.css'),
 				appJsUrl: webpackAssetPath('dashboard.js')
 			}

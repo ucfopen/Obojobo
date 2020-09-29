@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
@@ -37,7 +38,8 @@ module.exports =
 			},
 			entry: entriesFromObojoboModules,
 			output: {
-				path: path.join(__dirname, 'public', 'compiled'),
+				publicPath: '/static/',
+				path: path.join(__dirname, 'server', 'public', 'compiled'),
 				filename: `${filename}.js`
 			},
 			module: {
@@ -54,7 +56,7 @@ module.exports =
 					},
 					{
 						test: /\.(js|jsx)$/,
-						exclude: '/node_modules',
+						exclude: /node_modules/,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -74,7 +76,13 @@ module.exports =
 									plugins: [require('autoprefixer')]
 								}
 							},
-							'sass-loader'
+							{
+								loader: 'sass-loader',
+								options: {
+									// expose SASS variable for build environment
+									prependData: `$is_production: '${is_production}';`
+								}
+							}
 						]
 					},
 					{
@@ -99,13 +107,16 @@ module.exports =
 				Common: 'Common',
 				Viewer: 'Viewer',
 				slate: 'Slate',
-				'slate-react': 'SlateReact',
-				immutable: 'Immutable'
+				'slate-react': 'SlateReact'
 			},
 			plugins: [
-				new WatchIgnorePlugin([path.join(__dirname, 'public', 'compiled', 'manifest.json')]),
+				new WatchIgnorePlugin([
+					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
+				]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new ManifestPlugin({ publicPath: '/static/' })
+				new ManifestPlugin({ publicPath: '/static/' }),
+				// Ignore all locale files of moment.js
+				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

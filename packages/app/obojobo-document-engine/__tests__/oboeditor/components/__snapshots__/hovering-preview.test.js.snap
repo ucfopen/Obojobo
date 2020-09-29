@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HoveringPreview renders with LaTeX 1`] = `
+<div
+  className="hovering-preview"
+  contentEditable={false}
+>
+  <p>
+    Preview:
+  </p>
+  <span
+    className="preview-latex"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "mock-katex-render-for-	heta-with-options-{\\"throwOnError\\":false}",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`HoveringPreview renders without LaTeX 1`] = `null`;

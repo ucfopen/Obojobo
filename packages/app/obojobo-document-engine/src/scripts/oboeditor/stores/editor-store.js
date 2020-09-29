@@ -42,8 +42,11 @@ class EditorStore extends Store {
 				'editor:movePage': payload => {
 					this.movePage(payload.value.pageId, payload.value.index)
 				},
+				'editor:renameModule': payload => {
+					this.renamePageOrModule(payload.value.moduleId, payload.value.name)
+				},
 				'editor:renamePage': payload => {
-					this.renamePage(payload.value.pageId, payload.value.name)
+					this.renamePageOrModule(payload.value.pageId, payload.value.name)
 				},
 				'editor:setStartPage': payload => {
 					this.setStartPage(payload.value.pageId)
@@ -224,10 +227,10 @@ class EditorStore extends Store {
 		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
-	renamePage(pageId, newName) {
-		const pageModel = OboModel.models[pageId]
-		pageModel.get('content').title = newName
-		pageModel.title = newName
+	renamePageOrModule(nodeId, newName) {
+		const pageOrModule = OboModel.models[nodeId]
+		pageOrModule.get('content').title = newName
+		pageOrModule.title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 		this.triggerChange()

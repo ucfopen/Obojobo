@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAnswer editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`MCAnswer editor plugins.renderNode renders a node 1`] = `
 <MCAnswer
   attributes={

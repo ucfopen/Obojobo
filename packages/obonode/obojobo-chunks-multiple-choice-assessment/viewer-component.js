@@ -7,7 +7,7 @@ import MCAssessmentExplanation from './mc-assessment-explanation'
 import MCAssessmentSubmitAndResultsFooter from './mc-assessment-submit-and-results-footer'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import _ from 'underscore'
+import shuffle from 'obojobo-document-engine/src/scripts/common/util/shuffle'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboModel } = Common.models
@@ -342,7 +342,7 @@ export default class MCAssessment extends React.Component {
 	sortIds() {
 		if (!this.getSortedIds()) {
 			let ids = this.props.model.children.models.map(model => model.get('id'))
-			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
+			if (this.props.model.modelState.shuffle) ids = shuffle(ids)
 			QuestionUtil.setData(
 				this.props.model.get('id'),
 				this.props.moduleData.navState.context,
