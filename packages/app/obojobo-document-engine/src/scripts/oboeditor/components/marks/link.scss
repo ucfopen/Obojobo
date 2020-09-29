@@ -87,9 +87,8 @@
 }
 
 *[data-hanging-indent='true'] .editor--components--mark--link .href-menu {
-	overflow: hidden;
-
 	a {
-		text-indent: 2rem;
+		margin-left: 2rem;
+		text-indent: 0;
 	}
 }
