@@ -2,6 +2,7 @@ import React from 'react'
 import { Editor } from 'slate'
 import ColorPicker from './color-picker'
 import Dispatcher from '../../common/flux/dispatcher'
+import { freezeEditor, unfreezeEditor } from '../../oboeditor/util/freeze-unfreeze-editor'
 
 class TextColorPickerIcon extends React.Component {
 	constructor(props) {
@@ -9,18 +10,19 @@ class TextColorPickerIcon extends React.Component {
 		this.domRef = React.createRef()
 
 		this.state = {
-			isSelected: false
+			isOpen: false
 		}
 
 		this.onWindowMouseDown = this.onWindowMouseDown.bind(this)
 		this.open = this.open.bind(this)
+		this.close = this.close.bind(this)
 	}
 
 	onWindowMouseDown(event) {
 		if (!this.domRef.current) return
 		if (this.domRef.current.contains(event.target)) return // clicked inside this element
 
-		this.setState({ isSelected: false })
+		this.setState({ isOpen: false })
 		this.props.editor.toggleEditable(true)
 	}
 
@@ -35,8 +37,13 @@ class TextColorPickerIcon extends React.Component {
 	}
 
 	open() {
-		this.props.editor.toggleEditable(false)
-		this.setState({ isSelected: true })
+		this.setState({ isOpen: true })
+		freezeEditor(this.props.editor)
+	}
+
+	close() {
+		this.setState({ isOpen: false })
+		unfreezeEditor(this.props.editor)
 	}
 
 	render() {
@@ -49,12 +56,7 @@ class TextColorPickerIcon extends React.Component {
 					<path d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z" />
 				</svg>
 
-				{this.state.isSelected ? (
-					<ColorPicker
-						editor={this.props.editor}
-						onClose={() => this.setState({ isSelected: false })}
-					/>
-				) : null}
+				{this.state.isOpen ? <ColorPicker editor={this.props.editor} close={this.close} /> : null}
 			</div>
 		)
 	}

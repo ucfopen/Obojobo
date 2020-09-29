@@ -25,11 +25,10 @@ const ColorPicker = props => {
 
 	const addColor = color => {
 		const { editor } = props
-		props.onClose()
+		props.close()
 
 		Editor.addMark(editor, COLOR_MARK, color)
 		ReactEditor.focus(editor)
-		editor.toggleEditable(true)
 	}
 
 	const onChangeText = event => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import ColorPicker from 'obojobo-document-engine/src/scripts/oboeditor/assets/color-picker.js'
+import ColorPicker from 'obojobo-document-engine/src/scripts/oboeditor/assets/color-picker'
 
 jest.mock('slate-react')
 jest.mock('slate')
@@ -12,12 +12,12 @@ describe('Color Picker', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ColorPicker - click on a cell', () => {
+	test('Click on a color cell', () => {
 		const props = {
 			editor: {
 				toggleEditable: jest.fn()
 			},
-			onClose: jest.fn()
+			close: jest.fn()
 		}
 
 		const component = mount(<ColorPicker {...props} />)
@@ -26,12 +26,12 @@ describe('Color Picker', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(props.onClose).toHaveBeenCalled()
+		expect(props.close).toHaveBeenCalled()
 	})
 
 	test('ColorPicker expanded', () => {
-		const onClose = jest.fn()
-		const component = mount(<ColorPicker onClose={onClose} />)
+		const close = jest.fn()
+		const component = mount(<ColorPicker close={close} />)
 		component
 			.find('button')
 			.at(0)
@@ -45,10 +45,12 @@ describe('Color Picker', () => {
 			editor: {
 				toggleEditable: jest.fn()
 			},
-			onClose: jest.fn()
+			close: jest.fn()
 		}
 
 		const component = mount(<ColorPicker {...props} />)
+
+		// Expand color options
 		component
 			.find('button')
 			.at(0)
@@ -58,65 +60,97 @@ describe('Color Picker', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(props.onClose).toHaveBeenCalled()
+		expect(props.close).toHaveBeenCalled()
 	})
 
-	test('ColorPicker - onChange', () => {
+	test('onChangeText', () => {
 		const props = {
 			editor: {
 				toggleEditable: jest.fn()
 			},
-			onClose: jest.fn()
+			close: jest.fn()
 		}
 
 		const component = mount(<ColorPicker {...props} />)
+
+		// Expand color options
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: 'invalid' } })
-		expect(component.find('input').get(0).props.value).toBe('')
+		const input = component.find('input').at(1)
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: '111111' } })
-		expect(component.find('input').get(0).props.value).toBe('111111')
+		// Invalid input
+		input.simulate('change', { target: { value: 'invalid' } })
+		expect(component.find('input').get(1).props.value).toBe('')
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', { target: { value: '' } })
-		expect(component.find('input').get(0).props.value).toBe('')
+		// Add the missing '#'
+		input.simulate('change', { target: { value: '111111' } })
+		expect(component.find('input').get(1).props.value).toBe('#111111')
+
+		// Valid
+		input.simulate('change', { target: { value: '#111111' } })
+		expect(component.find('input').get(1).props.value).toBe('#111111')
+
+		// Empty string
+		input.simulate('change', { target: { value: '' } })
+		expect(component.find('input').get(1).props.value).toBe('')
 	})
 
-	test('ColorPicker - click ok', () => {
+	test('onChangeColor', () => {
 		const props = {
 			editor: {
 				toggleEditable: jest.fn()
 			},
-			onClose: jest.fn()
+			close: jest.fn()
 		}
 
 		const component = mount(<ColorPicker {...props} />)
+
+		// Expand color options
 		component
 			.find('button')
+			.at(0)
+			.simulate('click')
+
+		const input = component.find('input').at(0)
+
+		input.simulate('change', { target: { value: '#000000' } })
+		expect(component.find('input').get(1).props.value).toBe('#000000')
+	})
+
+	test('Click OK', () => {
+		const props = {
+			editor: {
+				toggleEditable: jest.fn()
+			},
+			close: jest.fn()
+		}
+
+		const component = mount(<ColorPicker {...props} />)
+
+		// Expand color options
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		component
+			.find('.color-picker--holder')
 			.at(0)
 			.simulate('click')
 		component
 			.find('input')
-			.at(0)
+			.at(1)
 			.simulate('change', { target: { value: '111111' } })
+
+		// Click OK
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(props.onClose).toHaveBeenCalled()
-		expect(props.editor.toggleEditable).toHaveBeenCalled()
+		expect(props.close).toHaveBeenCalled()
 	})
 })

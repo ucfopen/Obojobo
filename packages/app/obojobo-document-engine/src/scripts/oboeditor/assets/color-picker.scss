@@ -1,6 +1,7 @@
 @import '~styles/includes';
 
 .color-picker {
+	$button-background: #eeeeee;
 	$gap: 0.4em;
 
 	border: 1px solid $color-shadow;
@@ -10,6 +11,7 @@
 	position: absolute;
 	left: 0;
 	z-index: 1000;
+	animation: ease-in-out 0.2s;
 
 	.color-picker--color-choices {
 		display: grid;
@@ -33,7 +35,7 @@
 
 	.color-picker--button {
 		border: none;
-		background-color: inherit;
+		background-color: $color-bg;
 		font-size: 0.9em;
 		cursor: pointer;
 		display: inline-block;
@@ -41,7 +43,7 @@
 		text-decoration: underline;
 
 		&:hover {
-			background: #eee;
+			background: $button-background;
 		}
 	}
 
@@ -79,7 +81,6 @@
 		.button {
 			padding: 0.1em 0.5em;
 			height: 2em;
-			// margin: 0 0.3em;
 		}
 	}
 }
