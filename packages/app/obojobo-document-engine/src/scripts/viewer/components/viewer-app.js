@@ -295,7 +295,7 @@ export default class ViewerApp extends React.Component {
 		if (Component && Component.focusOnContent) {
 			Component.focusOnContent(model, opts)
 		} else {
-			focus(el)
+			focus(el, opts.preventScroll)
 		}
 
 		if (opts.animateScroll) {

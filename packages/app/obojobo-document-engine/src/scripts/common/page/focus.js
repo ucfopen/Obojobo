@@ -1,9 +1,10 @@
+import '../../viewer/focus-polyfill'
+
 // This is mostly for VoiceOver. Sets the tabindex of an element to 0 temporarily
 // and calls focus. This makes it more likely for VoiceOver to read
-
 const TIMEOUT_RESTORE_TAB_INDEX_MS = 1000
 
-export default el => {
+export default (el, preventScroll = false) => {
 	const isElement = el && el.focus && el.getAttribute && el.setAttribute
 	// in case we get a ref with current containing the dom element
 	const isRefWithCurrent =
@@ -18,7 +19,7 @@ export default el => {
 	// VoiceOver requires tabindex of 0 to read the element
 	element.setAttribute('tabindex', '0')
 
-	element.focus()
+	element.focus({ preventScroll })
 
 	setTimeout(() => {
 		element.setAttribute('tabindex', tabIndex)
