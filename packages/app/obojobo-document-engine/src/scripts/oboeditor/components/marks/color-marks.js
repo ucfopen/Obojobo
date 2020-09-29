@@ -1,6 +1,7 @@
 import React from 'react'
 
 import TextColorPickerIcon from '../../assets/text-color-picker-icon'
+import Dispatcher from '../../../common/flux/dispatcher'
 
 const COLOR_MARK = 'color'
 
@@ -21,7 +22,7 @@ const ColorMark = {
 			name: 'Color',
 			type: COLOR_MARK,
 			icon: TextColorPickerIcon,
-			action: () => {}
+			action: () => Dispatcher.trigger('color-picker:open')
 		}
 	]
 }

@@ -1,23 +1,34 @@
 @import '~styles/includes';
 
 .color-picker {
+	$gap: 0.4em;
+
 	border: 1px solid $color-shadow;
 	background-color: $color-bg;
-	padding: 0.1em;
-	width: fit-content;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 	border-radius: 0.25em;
+	position: absolute;
+	left: 0;
+	z-index: 1000;
 
 	.color-picker--color-choices {
+		display: grid;
+		grid-auto-flow: column;
+		gap: $gap;
+		margin: 0 $gap;
+	}
+
+	.color-picker--color-row {
 		display: flex;
+		flex-direction: column;
 	}
 
 	.color-picker--color-cell {
-		width: 1.2em;
-		height: 1.2em;
+		width: 1.4em;
+		height: 1.4em;
 		border-radius: 100%;
-		margin: 0.3em;
 		border: solid 1px rgb(218, 220, 224);
+		margin-top: $gap;
 	}
 
 	.color-picker--button {
@@ -36,18 +47,39 @@
 
 	.color-picker--input {
 		display: flex;
-		padding: 0.4em;
+		align-items: center;
+		margin: 0.4em 0.3em;
 
-		input {
-			flex: 1;
-			font-size: 0.8em;
+		.color-picker--holder {
+			width: 1em;
+			height: 1em;
+			border-radius: 50%;
+			border: solid 1px rgb(218, 220, 224);
 			padding: 0.3em;
-			margin-right: 0.4em;
+
+			img {
+				height: 1em;
+				width: 1em;
+			}
+		}
+
+		input[type='color'] {
+			display: none;
+		}
+
+		input[type='text'] {
+			flex: 1;
+			font-size: 0.7em;
+			min-width: 1em;
+			padding: 0.3em;
+			margin: 0 0.3em;
+			height: 1.5em;
 		}
 
 		.button {
 			padding: 0.1em 0.5em;
 			height: 2em;
+			// margin: 0 0.3em;
 		}
 	}
 }

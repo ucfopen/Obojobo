@@ -1,9 +1,10 @@
 import './color-picker.scss'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from '../../common'
+import EyeDropper from './eye-dropper.svg'
 
 const { Button } = Common.components
 const COLOR_MARK = 'color'
@@ -20,8 +21,9 @@ const colorChoices = [
 const ColorPicker = props => {
 	const [expanded, setExpanded] = useState(false)
 	const [hex, setHex] = useState('')
+	const colorRef = useRef()
 
-	const onClick = color => {
+	const addColor = color => {
 		const { editor } = props
 		props.onClose()
 
@@ -30,12 +32,24 @@ const ColorPicker = props => {
 		editor.toggleEditable(true)
 	}
 
-	const onChange = event => {
-		event.preventDefault()
-		const value = event.target.value
-		if (value === '' || (!isNaN(Number('0x' + value)) && value.length <= 6)) {
+	const onChangeText = event => {
+		let value = event.target.value
+
+		if (value === '') {
 			setHex(value)
+			return
 		}
+
+		if (value.charAt(0) === '#') {
+			value = value.slice(1)
+		}
+		if (value === '' || (!isNaN(Number('0x' + value)) && value.length <= 6)) {
+			setHex('#' + value)
+		}
+	}
+
+	const onChangeColor = event => {
+		setHex(event.target.value)
 	}
 
 	return (
@@ -43,13 +57,13 @@ const ColorPicker = props => {
 			<div className="color-picker--color-choices">
 				{colorChoices.map(colors =>
 					expanded ? (
-						<div key={colors[0]}>
+						<div className="color-picker--color-row" key={colors[0]}>
 							{colors.map(color => (
 								<div
 									key={color}
 									className="color-picker--color-cell"
 									style={{ backgroundColor: color }}
-									onClick={() => onClick(color)}
+									onClick={() => addColor(color)}
 								/>
 							))}
 						</div>
@@ -58,7 +72,7 @@ const ColorPicker = props => {
 							key={colors[0]}
 							className="color-picker--color-cell"
 							style={{ backgroundColor: colors[0] }}
-							onClick={() => onClick(colors[0])}
+							onClick={() => addColor(colors[0])}
 						/>
 					)
 				)}
@@ -69,9 +83,21 @@ const ColorPicker = props => {
 				</button>
 			) : (
 				<div className="color-picker--input">
-					<span backgroundColor={hex}></span>
-					<input value={hex} onChange={onChange} placeholder="Hex value (Ex: #000000)" />
-					<Button onClick={() => onClick('#' + hex)}>OK</Button>
+					<span
+						className="color-picker--holder"
+						style={{ backgroundColor: hex }}
+						onClick={() => colorRef.current.click()}
+					>
+						<input type="color" ref={colorRef} value={hex} onChange={onChangeColor} />
+						<img src={EyeDropper} alt="Eye Dropping Icon" />
+					</span>
+					<input
+						type="text"
+						value={hex}
+						onChange={onChangeText}
+						placeholder="Hex value (Ex: #000000)"
+					/>
+					<Button onClick={() => addColor(hex)}>OK</Button>
 				</div>
 			)}
 		</div>
