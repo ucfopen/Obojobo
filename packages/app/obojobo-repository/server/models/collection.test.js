@@ -56,16 +56,15 @@ describe('Collection Model', () => {
 	})
 
 	test('fetchById returns error when no match is found in the database', () => {
-		logger.error = jest.fn()
-
 		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
 
-		db.one.mockRejectedValueOnce(new Error('not found in db'))
+		db.one.mockRejectedValueOnce(mockError)
 
 		return CollectionModel.fetchById('mockCollectionId').catch(err => {
-			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
-			expect(err).toBeInstanceOf(Error)
-			expect(err.message).toBe('not found in db')
+			expect(logger.logError).toHaveBeenCalledWith('Collection fetchById Error', mockError)
+			expect(err).toBe(mockError)
 		})
 	})
 
@@ -147,13 +146,14 @@ describe('Collection Model', () => {
 	})
 
 	test('loadRelatedDrafts returns errors if DraftSummary.fetchAndJoinWhere fails', () => {
-		logger.error = jest.fn()
-
+		expect.hasAssertions()
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
 		const DraftSummary = require('./draft_summary')
 		DraftSummary.fetchAndJoinWhere = jest.fn()
 
 		db.one.mockResolvedValueOnce(mockRawCollection)
-		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(new Error('not found in db'))
+		DraftSummary.fetchAndJoinWhere.mockRejectedValueOnce(mockError)
 
 		const joinSQL = `
 			JOIN repository_map_drafts_to_collections
@@ -169,9 +169,7 @@ describe('Collection Model', () => {
 				expect(DraftSummary.fetchAndJoinWhere).toHaveBeenCalledWith(joinSQL, whereSQL, {
 					collectionId: 'mockCollectionId'
 				})
-				expect(error).toBeInstanceOf(Error)
-				expect(error.message).toBe('not found in db')
-				expect(logger.error).toHaveBeenCalledWith('loadModules Error', 'not found in db')
+				expect(error).toBe(mockError)
 			})
 	})
 })

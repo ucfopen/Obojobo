@@ -11,7 +11,7 @@ exports[`Table Table component 1`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--table viewer pad"
+    className="obojobo-draft--chunks--table viewer pad  is-not-showing-scrollbar"
   >
     <div
       className="container"
@@ -116,7 +116,7 @@ exports[`Table Table component with flexible cell sizes 1`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--table viewer pad"
+    className="obojobo-draft--chunks--table viewer pad  is-not-showing-scrollbar"
   >
     <div
       className="container"
@@ -221,7 +221,7 @@ exports[`Table Table component without header 1`] = `
   tabIndex={-1}
 >
   <div
-    className="obojobo-draft--chunks--table viewer pad"
+    className="obojobo-draft--chunks--table viewer pad  is-not-showing-scrollbar"
   >
     <div
       className="container"

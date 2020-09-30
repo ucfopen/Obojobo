@@ -145,36 +145,41 @@ const EditorUtil = {
 		})
 	},
 	getTitleFromXML(draftModel) {
+		let title = ''
 		try {
+			// convert xml string to XMLDocument
 			const doc = domParser.parseFromString(draftModel, XML_MIME)
+			// find the module element (only one right now)
 			let els = doc.getElementsByTagName('Module')
 			if (els.length === 0) {
 				els = doc.getElementsByTagName(MODULE_NODE_NAME)
 			}
 			if (els.length > 0) {
+				// get the attributes off the module element
 				const el = els[0]
-				const title = el.getAttribute('title')
-				if (!this.isEmptyString(title)) return title
+				const _title = el.getAttribute('title')
+				if (!this.isEmptyString(_title)) title = _title
 			}
-
-			return ''
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return ''
 		}
+
+		return title
 	},
 	getTitleFromJSON(draftModel) {
+		let title = ''
 		try {
 			const json = JSON.parse(draftModel)
-			if (!json.content || this.isEmptyString(json.content.title)) return ''
-
-			return json.content.title
+			if (json.content && !this.isEmptyString(json.content.title)) {
+				title = json.content.title
+			}
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err)
-			return ''
 		}
+
+		return title
 	},
 	isEmptyString(string) {
 		return !string || !/[^\s]/.test(string)

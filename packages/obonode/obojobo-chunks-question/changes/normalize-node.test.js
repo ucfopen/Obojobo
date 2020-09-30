@@ -4,7 +4,7 @@ import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/no
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		contentTypes: [ 'ObojoboDraft.Chunks.Break' ]
+		contentTypes: ['ObojoboDraft.Chunks.Break']
 	}
 }))
 
@@ -31,7 +31,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on Question calls next if all Question children are valid with solution', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -69,7 +69,7 @@ describe('Normalize List', () => {
 
 	test('normalizeNode on Question calls next if all Question children are valid without solution', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -102,7 +102,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -130,7 +130,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -157,7 +157,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -184,7 +184,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -218,7 +218,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -252,7 +252,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -291,7 +291,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -311,7 +311,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -336,7 +336,7 @@ describe('Normalize List', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

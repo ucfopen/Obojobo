@@ -14,7 +14,6 @@ class MCAssessment extends DraftNode {
 
 	onCalculateScore(app, question, responseRecord, setScore) {
 		if (!question.contains(this.node)) return
-
 		switch (this.node.content.responseType) {
 			case 'pick-all': {
 				const correctIds = new Set(

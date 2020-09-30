@@ -68,53 +68,88 @@ describe('List Wrap Level', () => {
 																								{
 																									type: LIST_NODE,
 																									subtype: LIST_LEVEL_NODE,
-																									content: { type: 'unordered', bulletStyle: 'disc' },
+																									content: {
+																										type: 'unordered',
+																										bulletStyle: 'disc'
+																									},
 																									children: [
 																										{
 																											type: LIST_NODE,
 																											subtype: LIST_LEVEL_NODE,
-																											content: { type: 'unordered', bulletStyle: 'disc' },
+																											content: {
+																												type: 'unordered',
+																												bulletStyle: 'disc'
+																											},
 																											children: [
 																												{
 																													type: LIST_NODE,
 																													subtype: LIST_LEVEL_NODE,
-																													content: { type: 'unordered', bulletStyle: 'disc' },
+																													content: {
+																														type: 'unordered',
+																														bulletStyle: 'disc'
+																													},
 																													children: [
 																														{
 																															type: LIST_NODE,
 																															subtype: LIST_LEVEL_NODE,
-																															content: { type: 'unordered', bulletStyle: 'disc' },
+																															content: {
+																																type: 'unordered',
+																																bulletStyle: 'disc'
+																															},
 																															children: [
 																																{
 																																	type: LIST_NODE,
 																																	subtype: LIST_LEVEL_NODE,
-																																	content: { type: 'unordered', bulletStyle: 'disc' },
+																																	content: {
+																																		type: 'unordered',
+																																		bulletStyle: 'disc'
+																																	},
 																																	children: [
 																																		{
 																																			type: LIST_NODE,
 																																			subtype: LIST_LEVEL_NODE,
-																																			content: { type: 'unordered', bulletStyle: 'disc' },
+																																			content: {
+																																				type: 'unordered',
+																																				bulletStyle: 'disc'
+																																			},
 																																			children: [
 																																				{
 																																					type: LIST_NODE,
 																																					subtype: LIST_LEVEL_NODE,
-																																					content: { type: 'unordered', bulletStyle: 'disc' },
+																																					content: {
+																																						type: 'unordered',
+																																						bulletStyle: 'disc'
+																																					},
 																																					children: [
 																																						{
 																																							type: LIST_NODE,
 																																							subtype: LIST_LEVEL_NODE,
-																																							content: { type: 'unordered', bulletStyle: 'disc' },
+																																							content: {
+																																								type: 'unordered',
+																																								bulletStyle: 'disc'
+																																							},
 																																							children: [
 																																								{
 																																									type: LIST_NODE,
 																																									subtype: LIST_LEVEL_NODE,
-																																									content: { type: 'unordered', bulletStyle: 'disc' },
+																																									content: {
+																																										type:
+																																											'unordered',
+																																										bulletStyle:
+																																											'disc'
+																																									},
 																																									children: [
 																																										{
 																																											type: LIST_NODE,
 																																											subtype: LIST_LINE_NODE,
 																																											content: {},
-																																											children: [{ text: 'mockList', b: true }]
+																																											children: [
+																																												{
+																																													text:
+																																														'mockList',
+																																													b: true
+																																												}
+																																											]
 																																										}
 																																									]
 																																								}
@@ -155,7 +190,7 @@ describe('List Wrap Level', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0], offset: 0 },
 				focus: { path: [0, 0], offset: 0 }
 			},
@@ -163,7 +198,7 @@ describe('List Wrap Level', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		wrapLevel([editor.children[0],[0]], editor, event)
+		wrapLevel([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.wrapNodes).not.toHaveBeenCalled()
@@ -196,7 +231,7 @@ describe('List Wrap Level', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0], offset: 0 },
 				focus: { path: [0, 0], offset: 0 }
 			},
@@ -204,7 +239,7 @@ describe('List Wrap Level', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		wrapLevel([editor.children[0],[0]], editor, event)
+		wrapLevel([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
@@ -237,7 +272,7 @@ describe('List Wrap Level', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0], offset: 0 },
 				focus: { path: [0, 0], offset: 0 }
 			},
@@ -245,7 +280,7 @@ describe('List Wrap Level', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		wrapLevel([editor.children[0],[0]], editor, event)
+		wrapLevel([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
