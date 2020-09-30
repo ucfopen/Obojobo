@@ -5,7 +5,6 @@ import ViewerAPI from 'obojobo-document-engine/src/scripts/viewer/util/viewer-ap
 import AssessmentStore from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
-import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
 import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
@@ -635,107 +634,145 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onScroll does nothing if no visualFocusTarget', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no visualFocusTarget', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: null
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = null
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 
-			component.instance().onScroll()
+		expect(thisValue.observer).not.toBeDefined()
 
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
-		})
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if no visually focused component', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no visually focused component', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'invalid-id'
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = 'invalid-id'
-			FocusUtil.getVisuallyFocussedModel = jest.fn()
+		FocusUtil.getVisuallyFocussedModel = jest.fn()
 
-			component.instance().onScroll()
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
+		expect(thisValue.observer).not.toBeDefined()
 
-			component.unmount()
-			done()
-		})
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if no element found for component', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no element found for component', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'id'
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({
-				getDomEl: jest.fn()
-			})
-
-			component.instance().onScroll()
-
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
+		FocusUtil.getVisuallyFocussedModel = () => ({
+			getDomEl: jest.fn()
 		})
+
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
+
+		expect(thisValue.observer).not.toBeDefined()
+
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if element is visible', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges creates new IntersectionObserver and calls observe if focused element exists', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		// Mock IntersectonObserver
+		window.IntersectionObserver = jest.fn()
+		window.IntersectionObserver.prototype.observe = jest.fn()
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
-			DOMUtil.isElementVisible.mockReturnValueOnce(true)
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			onIntersectionChange: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'id'
+				}
+			}
+		}
 
-			component.instance().onScroll()
-
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
+		FocusUtil.getVisuallyFocussedModel = () => ({
+			getDomEl: () => true
 		})
+
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
+
+		expect(thisValue.observer).toBeDefined()
+		expect(window.IntersectionObserver).toHaveBeenCalledWith(thisValue.onIntersectionChange, {
+			root: null,
+			rootMargin: '0px',
+			threshhold: 0
+		})
+		expect(thisValue.observer.observe).toHaveBeenCalledWith(
+			FocusUtil.getVisuallyFocussedModel().getDomEl()
+		)
+
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll calls FocusUtil.clearFadeEffect if a visually focused component is no longer visible', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('onIntersectionChange does nothing if intersectionRatio is higher than 0', () => {
+		const thisValue = {}
+		const changes = [
+			{
+				intersectionRatio: 0.9
+			}
+		]
 
-		setTimeout(() => {
-			component.update()
+		expect(ViewerApp.prototype.onIntersectionChange.bind(thisValue)(changes)).toBe(false)
+	})
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
-			DOMUtil.isElementVisible.mockReturnValueOnce(false)
+	test('onIntersectionChange calls FocusUtil.clearFadeEffect if intersectionRation reaches 0', () => {
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn()
+		}
+		const changes = [
+			{
+				intersectionRatio: 0.0
+			}
+		]
 
-			component.instance().onScroll()
+		expect(ViewerApp.prototype.onIntersectionChange.bind(thisValue)(changes)).toBe(true)
+		expect(thisValue.stopObservingForIntersectionChanges).toHaveBeenCalled()
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+	})
 
-			expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+	test('stopObservingForIntersectionChanges disconnects and deletes any observers', () => {
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind({})()).toBe(false)
 
-			component.unmount()
-			done()
-		})
+		const mockDisconnect = jest.fn()
+		const thisValue = {
+			observer: {
+				disconnect: mockDisconnect
+			}
+		}
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind(thisValue)()).toBe(true)
+		expect(thisValue.observer).not.toBeDefined()
 	})
 
 	test('onIdle posts an Event', done => {
