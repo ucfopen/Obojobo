@@ -6,7 +6,7 @@ import Level from './editor-component'
 describe('List editor', () => {
 	test('Level component', () => {
 		const component = renderer.create(
-			<Level element={{ content: { bulletStyle: 'square', type: 'unordered' } }}/>
+			<Level element={{ content: { bulletStyle: 'square', type: 'unordered' } }} />
 		)
 		const tree = component.toJSON()
 
@@ -15,7 +15,7 @@ describe('List editor', () => {
 
 	test('Level component ordered', () => {
 		const component = renderer.create(
-			<Level element={{ content: { bulletStyle: 'alpha', type: 'ordered' } }}/>
+			<Level element={{ content: { bulletStyle: 'alpha', type: 'ordered' } }} />
 		)
 		const tree = component.toJSON()
 

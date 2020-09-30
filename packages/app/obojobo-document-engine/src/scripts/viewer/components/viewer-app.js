@@ -1,13 +1,13 @@
 import '../../../scss/main.scss'
 import './viewer-app.scss'
 
-import APIUtil from '../util/api-util'
+import ViewerAPI from '../util/viewer-api'
 import AssessmentStore from '../stores/assessment-store'
 import Common from 'Common'
 import FocusStore from '../stores/focus-store'
 import FocusUtil from '../util/focus-util'
 import Header from './header'
-import IdleTimer from 'react-idle-timer'
+import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
 import InlineNavButton from './inline-nav-button'
 import MediaStore from '../stores/media-store'
 import Nav from './nav'
@@ -17,18 +17,19 @@ import QuestionStore from '../stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../util/get-lti-outcome-service-hostname'
+import enableWindowCloseDispatcher from '../../common/util/close-window-dispatcher'
 import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
-const IDLE_TIMEOUT_DURATION_MS = 60000 * 10 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
+const IDLE_TIMEOUT_DURATION_MS = 60000 * 30 // 30 minutes in milliseconds
 
 const { focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
-const { SimpleDialog } = Common.components.modal
-const { ModalUtil } = Common.util
-const { ModalStore } = Common.stores
+const { ModalUtil, isOrNot } = Common.util
+const SimpleDialog = Common.components.modal.SimpleDialog
+const ModalStore = Common.stores.ModalStore
 
 Dispatcher.on('viewer:alert', payload =>
 	ModalUtil.show(
@@ -39,60 +40,40 @@ Dispatcher.on('viewer:alert', payload =>
 )
 
 export default class ViewerApp extends React.Component {
-	// === REACT LIFECYCLE METHODS ===
-
 	constructor(props) {
 		super(props)
 
 		this.navRef = React.createRef()
-		this.nextRef = React.createRef()
-		this.prevRef = React.createRef()
 		this.containerRef = React.createRef()
-		this.idleTimerRef = React.createRef()
 
 		Dispatcher.on('viewer:scrollToTop', payload => {
 			this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
 		})
+		Dispatcher.on('window:closeNow', this.sendCloseEvent.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
+		Dispatcher.on('window:inactive', this.onIdle.bind(this))
+		Dispatcher.on('window:returnFromInactive', this.onReturnFromIdle.bind(this))
 
-		const state = {
+		this.state = {
 			model: null,
-			navState: null,
-			mediaState: null,
-			questionState: null,
-			assessmentState: null,
-			modalState: null,
-			focusState: null,
 			loading: true,
 			requestStatus: 'unknown',
 			isPreviewing: false,
 			lti: { outcomeServiceHostname: null },
 			viewSessionId: null
 		}
-		this.navTargetId = null
-		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
-		this.onAssessmentStoreChange = () =>
-			this.setState({
-				assessmentState: AssessmentStore.getState()
-			})
-		this.onModalStoreChange = () =>
-			this.setState({
-				modalState: ModalStore.getState()
-			})
-		this.onFocusStoreChange = () =>
-			this.setState({
-				focusState: FocusStore.getState()
-			})
-		this.onMediaStoreChange = () =>
-			this.setState({
-				mediaState: MediaStore.getState()
-			})
 
-		this.onIdle = this.onIdle.bind(this)
-		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
-		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
-		this.sendCloseEvent = this.sendCloseEvent.bind(this)
+		// setup store listeners
+		// be sure to unregister stores on unMount
+		this.stores = {}
+		this.storeListeners = {}
+		this.registerStore(NavStore, 'navState')
+		this.registerStore(QuestionStore, 'questionState')
+		this.registerStore(AssessmentStore, 'assessmentState')
+		this.registerStore(ModalStore, 'modalState')
+		this.registerStore(FocusStore, 'focusState')
+		this.registerStore(MediaStore, 'mediaState')
+
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onFocus = this.onFocus.bind(this)
@@ -102,23 +83,14 @@ export default class ViewerApp extends React.Component {
 		this.onResize = this.onResize.bind(this)
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
-
-		this.state = state
-
-		// === SET UP DATA STORES ===
-		NavStore.onChange(this.onNavStoreChange)
-		QuestionStore.onChange(this.onQuestionStoreChange)
-		AssessmentStore.onChange(this.onAssessmentStoreChange)
-		ModalStore.onChange(this.onModalStoreChange)
-		FocusStore.onChange(this.onFocusStoreChange)
-		MediaStore.onChange(this.onMediaStoreChange)
+		this.onDelayResize = this.onDelayResize.bind(this)
 	}
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
 
 		let visitIdFromApi
-		let attemptHistory
+		let extensions
 		let viewState
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
@@ -126,7 +98,7 @@ export default class ViewerApp extends React.Component {
 
 		Dispatcher.trigger('viewer:loading')
 
-		APIUtil.requestStart(this.props.visitId, this.props.draftId)
+		ViewerAPI.requestStart(this.props.visitId, this.props.draftId)
 			.then(visit => {
 				QuestionStore.init()
 				ModalStore.init()
@@ -137,18 +109,21 @@ export default class ViewerApp extends React.Component {
 
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
-				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
+				extensions = visit.value.extensions
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
-				return APIUtil.getDraft(this.props.draftId)
+				return ViewerAPI.getDraft(this.props.draftId)
 			})
 			.then(injectKatexIfNeeded)
 			.then(draftModel => {
 				const model = OboModel.create(draftModel)
 
+				// assessment store must initialize before NavStore goes to the first page
+				AssessmentStore.init(extensions)
+
 				NavStore.init(
-					OboModel.getRoot().get('draftId'),
+					this.props.draftId,
 					model,
 					model.modelState.start,
 					window.location.pathname,
@@ -156,15 +131,13 @@ export default class ViewerApp extends React.Component {
 					viewState
 				)
 
-				AssessmentStore.init(attemptHistory)
+				enableWindowCloseDispatcher()
 
-				window.onbeforeunload = this.onBeforeWindowClose
 				window.onresize = this.onResize
 
-				this.boundOnDelayResize = this.onDelayResize.bind(this)
-				Dispatcher.on('nav:open', this.boundOnDelayResize)
-				Dispatcher.on('nav:close', this.boundOnDelayResize)
-				Dispatcher.on('nav:toggle', this.boundOnDelayResize)
+				Dispatcher.on('nav:open', this.onDelayResize)
+				Dispatcher.on('nav:close', this.onDelayResize)
+				Dispatcher.on('nav:toggle', this.onDelayResize)
 
 				this.setState(
 					{
@@ -195,18 +168,29 @@ export default class ViewerApp extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavStore.offChange(this.onNavStoreChange)
-		QuestionStore.offChange(this.onQuestionStoreChange)
-		AssessmentStore.offChange(this.onAssessmentStoreChange)
-		ModalStore.offChange(this.onModalStoreChange)
-		FocusStore.offChange(this.onFocusStoreChange)
-		MediaStore.offChange(this.onMediaStoreChange)
-
+		this.unRegisterStores()
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return !nextState.loading
+	}
+
+	registerStore(store, stateName) {
+		const storePair = {
+			store,
+			listener: () => this.setState({ [stateName]: store.getState() })
+		}
+		this.stores[stateName] = storePair
+		store.onChange(this.stores[stateName].listener)
+	}
+
+	unRegisterStores() {
+		for (const stateName in this.stores) {
+			const { store, listener } = this.stores[stateName]
+			store.offChange(listener)
+			delete this.stores[stateName]
+		}
 	}
 
 	isDOMFocusInsideNav() {
@@ -315,7 +299,7 @@ export default class ViewerApp extends React.Component {
 		if (Component && Component.focusOnContent) {
 			Component.focusOnContent(model, opts)
 		} else {
-			focus(el)
+			focus(el, opts.preventScroll)
 		}
 
 		if (opts.animateScroll) {
@@ -330,7 +314,7 @@ export default class ViewerApp extends React.Component {
 		if (document.hidden) {
 			this.leftEpoch = new Date()
 
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
 				eventVersion: '1.0.0',
@@ -339,7 +323,7 @@ export default class ViewerApp extends React.Component {
 				this.leaveEvent = res.value
 			})
 		} else {
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
 				eventVersion: '2.0.0',
@@ -459,16 +443,14 @@ export default class ViewerApp extends React.Component {
 		window.setTimeout(this.onResize, NAV_CLOSE_DURATION_MS)
 	}
 
-	onIdle() {
-		this.lastActiveEpoch = new Date(this.idleTimerRef.current.getLastActiveTime())
-
-		APIUtil.postEvent({
+	onIdle(event) {
+		ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
 			visitId: this.state.navState.visitId,
 			payload: {
-				lastActiveTime: this.lastActiveEpoch,
+				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}
 		}).then(res => {
@@ -476,60 +458,33 @@ export default class ViewerApp extends React.Component {
 		})
 	}
 
-	onReturnFromIdle() {
-		APIUtil.postEvent({
+	onReturnFromIdle(event) {
+		ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
 			eventVersion: '2.1.0',
 			visitId: this.state.navState.visitId,
 			payload: {
-				lastActiveTime: this.lastActiveEpoch,
-				inactiveDuration: Date.now() - this.lastActiveEpoch,
+				lastActiveTime: event.lastActiveEpoch,
+				inactiveDuration: event.inactiveDuration,
 				relatedEventId: this.inactiveEvent.extensions.internalEventId
 			}
 		})
 
-		delete this.lastActiveEpoch
 		delete this.inactiveEvent
 	}
 
-	onBeforeWindowClose() {
-		let closePrevented = false
-		// calling this function will prevent the window from closing
-		const preventClose = () => {
-			closePrevented = true
-		}
-
-		Dispatcher.trigger('viewer:closeAttempted', preventClose)
-
-		if (closePrevented) {
-			return true // Returning true will cause browser to ask user to confirm leaving page
-		}
-
-		this.sendCloseEvent()
-
-		/* eslint-disable-next-line */
-		return undefined // Returning undefined will allow browser to close normally
-	}
-
 	sendCloseEvent() {
-		const body = {
+		ViewerAPI.postEventBeacon({
 			draftId: this.state.model.get('draftId'),
-			visitId: this.state.navState.visitId,
-			event: {
-				action: 'viewer:close',
-				draft_id: this.state.model.get('draftId'),
-				actor_time: new Date().toISOString(),
-				event_version: '1.0.0',
-				visitId: this.state.navState.visitId
-			}
-		}
-
-		navigator.sendBeacon('/api/events', JSON.stringify(body))
+			action: 'viewer:close',
+			eventVersion: '1.0.0',
+			visitId: this.state.navState.visitId
+		})
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores({
+		ViewerAPI.clearPreviewScores({
 			draftId: this.state.model.get('draftId'),
 			visitId: this.state.navState.visitId
 		}).then(res => {
@@ -574,6 +529,84 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 
+	buildPageNavProps() {
+		const canNavigate = NavUtil.canNavigate(this.state.navState)
+		const prevItem = NavUtil.getPrev(this.state.navState)
+		const nextItem = NavUtil.getNext(this.state.navState)
+
+		let prevProps
+		let nextProps
+
+		if (prevItem) {
+			prevProps = {
+				title: prevItem.label ? 'Back: ' + prevItem.label : 'Back',
+				ariaLabel: prevItem.label ? 'Go back to ' + prevItem.label : 'Go back',
+				disabled: !canNavigate
+			}
+		} else {
+			prevProps = {
+				title: `Start of ${this.state.model.title}`,
+				ariaLabel: `This is the start of ${this.state.model.title}.`,
+				disabled: true
+			}
+		}
+
+		if (nextItem) {
+			nextProps = {
+				title: nextItem.label ? 'Next: ' + nextItem.label : 'Next',
+				ariaLabel: nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward',
+				disabled: !canNavigate
+			}
+		} else {
+			nextProps = {
+				title: `End of ${this.state.model.title}`,
+				ariaLabel: `You have reached the end of ${this.state.model.title}.`,
+				disabled: true
+			}
+		}
+
+		return {
+			prevProps,
+			nextProps
+		}
+	}
+
+	renderViewer() {
+		NavUtil.isNavEnabled(this.state.navState)
+		const { prevProps, nextProps } = this.buildPageNavProps()
+		const ModuleComponent = this.state.model.getComponentClass()
+		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
+		let navTargetLabel = ''
+		if (navTargetItem && navTargetItem.label) {
+			navTargetLabel = navTargetItem.label
+		}
+
+		return (
+			<React.Fragment>
+				<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
+				<Nav
+					ref={this.navRef}
+					navState={this.state.navState}
+					assessmentState={this.state.assessmentState}
+				/>
+				<InlineNavButton type="prev" {...prevProps} />
+				<ModuleComponent model={this.state.model} moduleData={this.state} />
+				<InlineNavButton type="next" {...nextProps} />
+			</React.Fragment>
+		)
+	}
+
+	getViewerClassNames() {
+		const s = this.state
+		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
+		return (
+			isOrNot(s.isPreviewing, 'previewing') +
+			isOrNot(s.navState.open, 'open-nav') +
+			isOrNot(s.navState.disabled, 'disabled-nav') +
+			isOrNot(visuallyFocussedModel, 'focus-state-active')
+		)
+	}
+
 	render() {
 		if (this.state.loading) return null
 
@@ -581,109 +614,20 @@ export default class ViewerApp extends React.Component {
 			return this.renderRequestStatusError()
 		}
 
-		let nextComp, nextItem, prevComp, prevItem
-		window.__lo = this.state.model
-		window.__s = this.state
-
-		const ModuleComponent = this.state.model.getComponentClass()
-
-		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
-		let navTargetLabel = ''
-		if (navTargetItem && navTargetItem.label) {
-			navTargetLabel = navTargetItem.label
-		}
-
-		const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
-
-		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
-
-		if (isNavEnabled) {
-			const canNavigate = NavUtil.canNavigate(this.state.navState)
-
-			prevItem = NavUtil.getPrev(this.state.navState)
-			if (prevItem) {
-				const navText = prevItem.label ? 'Back: ' + prevItem.label : 'Back'
-				const navLabel = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={`Start of ${this.state.model.title}`}
-						ariaLabel={`This is the start of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-
-			nextItem = NavUtil.getNext(this.state.navState)
-			if (nextItem) {
-				const navText = nextItem.label ? 'Next: ' + nextItem.label : 'Next'
-				const navLabel = nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={`End of ${this.state.model.title}`}
-						ariaLabel={`You have reached the end of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-		}
-
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		const hideViewer = modalItem && modalItem.hideViewer
-
-		const classNames = [
-			'viewer--viewer-app',
-			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
-			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
-			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
-			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
-			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
-		].join(' ')
 
 		return (
 			<div
 				ref={this.containerRef}
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
-				className={classNames}
+				className={'viewer--viewer-app' + this.getViewerClassNames()}
 			>
-				<IdleTimer
-					ref={this.idleTimerRef}
-					element={window}
-					timeout={IDLE_TIMEOUT_DURATION_MS}
-					onIdle={this.onIdle}
-					onActive={this.onReturnFromIdle}
-				/>
-				{hideViewer ? null : (
-					<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
-				)}
-				{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
-				{hideViewer ? null : prevComp}
-				{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
-				{hideViewer ? null : nextComp}
+				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DURATION_MS} />
+
+				{hideViewer ? null : this.renderViewer()}
+
 				{this.state.isPreviewing ? (
 					<div className="preview-banner">
 						<span>Preview mode</span>
@@ -692,14 +636,14 @@ export default class ViewerApp extends React.Component {
 							<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>
 								Unlock navigation
 							</button>
-							<button className="button-clear-scores" onClick={this.clearPreviewScores}>
-								Reset assessments &amp; questions
-							</button>
+							<button onClick={this.clearPreviewScores}>Reset assessments &amp; questions</button>
 						</div>
 						<div className="border" />
 					</div>
 				) : null}
+
 				<FocusBlocker moduleData={this.state} />
+
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
 				) : null}

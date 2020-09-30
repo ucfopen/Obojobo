@@ -28,7 +28,7 @@ describe('Increase Text Indent', () => {
 					]
 				}
 			],
-			selection: { 
+			selection: {
 				anchor: { path: [0, 0, 0], offset: 1 },
 				focus: { path: [0, 0, 0], offset: 1 }
 			},
@@ -36,7 +36,7 @@ describe('Increase Text Indent', () => {
 		}
 		const event = { preventDefault: jest.fn() }
 
-		increaseIndent([editor.children[0],[0]], editor, event)
+		increaseIndent([editor.children[0], [0]], editor, event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setNodes).toHaveBeenCalledWith(

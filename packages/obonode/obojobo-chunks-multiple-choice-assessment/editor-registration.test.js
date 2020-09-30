@@ -35,7 +35,7 @@ describe('MCAssessment editor', () => {
 
 	test('normalizeNode on MCAssessment calls next if all MCAssessment children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -59,7 +59,7 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -68,7 +68,7 @@ describe('MCAssessment editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -92,7 +92,7 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
@@ -101,7 +101,7 @@ describe('MCAssessment editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -119,14 +119,14 @@ describe('MCAssessment editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAssessment.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on MCAssessment calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

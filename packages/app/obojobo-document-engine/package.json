@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "9.1.1",
+	"version": "10.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -101,6 +101,7 @@
 			"<rootDir>/src/scripts/oboeditor/app.js",
 			"<rootDir>/src/scripts/oboeditor/dist.js",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
+			"<rootDir>/src/scripts/viewer/focus-polyfill.js",
 			".json",
 			"<rootDir>/src/scripts/common/index.js",
 			"<rootDir>/src/scripts/common/dist.js",

@@ -16,9 +16,9 @@ const normalizeNode = (entry, editor, next) => {
 		let index = 0
 		for (const [child, childPath] of Node.children(editor, path)) {
 			// The first node should be a MCAnswer
-			if(index === 0 && Element.isElement(child) && child.type !== MCANSWER_NODE) {
+			if (index === 0 && Element.isElement(child) && child.type !== MCANSWER_NODE) {
 				// If the first child is a MCFEEDBACK, insert a MCAnswer above it
-				if(child.type === MCFEEDBACK_NODE) {
+				if (child.type === MCFEEDBACK_NODE) {
 					Transforms.insertNodes(
 						editor,
 						{
@@ -47,7 +47,7 @@ const normalizeNode = (entry, editor, next) => {
 				// Otherwise, wrap the child in a MCAnswer and let MCAnswer
 				// normalization decide what to do with it
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: MCANSWER_NODE,
 						content: {}
@@ -65,7 +65,7 @@ const normalizeNode = (entry, editor, next) => {
 			}
 
 			// A MCChoice should not ever have more than 2 nodes
-			if(index > 1) {
+			if (index > 1) {
 				Transforms.removeNodes(editor, { at: childPath })
 				return
 			}
@@ -74,7 +74,7 @@ const normalizeNode = (entry, editor, next) => {
 			// This will result in subsequent normalizations to wrap it in a text node
 			if (Text.isText(child)) {
 				Transforms.wrapNodes(
-					editor, 
+					editor,
 					{
 						type: MCANSWER_NODE,
 						content: {}
@@ -88,23 +88,26 @@ const normalizeNode = (entry, editor, next) => {
 		}
 
 		// MCChoice parent normalization
-		// Note - collects up all MCChoice sibilngs, 
+		// Note - collects up all MCChoice sibilngs,
 		// as well as any orphaned MCFeedback and MCAnswer
 		const [parent] = Editor.parent(editor, path)
-		if(!Element.isElement(parent) || parent.type !== MCASSESSMENT_NODE) {
+		if (!Element.isElement(parent) || parent.type !== MCASSESSMENT_NODE) {
 			NormalizeUtil.wrapOrphanedSiblings(
-				editor, 
-				entry, 
-				{ 
-					type: MCASSESSMENT_NODE, 
+				editor,
+				entry,
+				{
+					type: MCASSESSMENT_NODE,
 					content: {
 						responseType: 'pick-one',
 						shuffle: false
 					},
 					questionType: 'default',
 					children: []
-				}, 
-				node => node.type === MCCHOICE_NODE || node.type === MCFEEDBACK_NODE || node.type === MCANSWER_NODE
+				},
+				node =>
+					node.type === MCCHOICE_NODE ||
+					node.type === MCFEEDBACK_NODE ||
+					node.type === MCANSWER_NODE
 			)
 			return
 		}
