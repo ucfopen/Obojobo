@@ -9,6 +9,14 @@ jest.mock('slate-react')
 jest.mock('slate')
 
 describe('TextColorIcon', () => {
+	beforeEach(() => {
+		Editor.marks.mockReturnValue({})
+	})
+
+	afterEach(() => {
+		Editor.marks.mockRestore()
+	})
+
 	test('TextColorIcon component', () => {
 		const component = mount(<TextColorIcon />)
 		expect(component.html()).toMatchSnapshot()
@@ -38,7 +46,7 @@ describe('TextColorIcon', () => {
 		Dispatcher.trigger('color-picker:open')
 		component.update()
 		component
-			.find('.color-picker--color-cell')
+			.find('.color-cell')
 			.at(0)
 			.simulate('click')
 
@@ -46,7 +54,7 @@ describe('TextColorIcon', () => {
 		component.unmount()
 	})
 
-	test('TextColorIcon handels mousedown', () => {
+	test('TextColorIcon handles mousedown', () => {
 		const props = {
 			editor: {
 				toggleEditable: jest.fn()

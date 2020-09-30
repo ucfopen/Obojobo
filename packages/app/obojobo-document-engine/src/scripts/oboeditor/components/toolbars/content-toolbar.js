@@ -13,8 +13,8 @@ import ListDropper from './list-dropper'
 import './content-toolbar.scss'
 
 const contentMarks = [
-	...ColorMark.marks,
 	...BasicMarks.marks,
+	...ColorMark.marks,
 	...LinkMark.marks,
 	...ScriptMarks.marks,
 	...AlignMarks.marks,

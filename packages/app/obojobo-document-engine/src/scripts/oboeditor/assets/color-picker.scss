@@ -1,9 +1,7 @@
 @import '~styles/includes';
 
-.color-picker {
-	$border-color: #cccccc;
-	$button-background: #eeeeee;
-	$gap: 0.4em;
+.editor--components--color-picker {
+	$gap: 0.3em;
 
 	border: 1px solid $color-shadow;
 	background-color: $color-bg;
@@ -11,79 +9,130 @@
 	border-radius: 0.25em;
 	position: absolute;
 	left: 0;
-	z-index: 1000;
+	z-index: $z-index-above-all;
 	animation: ease-in-out 0.2s;
+	top: 2.5em;
+	width: 11.5em;
 
-	.color-picker--color-choices {
+	.color-choices {
 		display: grid;
 		grid-auto-flow: column;
 		gap: $gap;
 		margin: 0 $gap;
 	}
 
-	.color-picker--color-row {
+	.color-row {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 
-	.color-picker--color-cell {
-		width: 1.4em;
-		height: 1.4em;
+	.color-cell {
+		width: 1.2em;
+		height: 1.2em;
 		border-radius: 100%;
-		border: 1px solid rgba(0, 0, 0, 0.1);
+		border: solid 1px $color-shadow;
+		margin: 0;
 		margin-top: $gap;
+		cursor: pointer;
+
+		&:hover,
+		&.is-selected {
+			border: solid 2px $color-shadow;
+			transform: translate(-1px, -1px);
+			margin-bottom: -2px; //stylelint-disable-line unit-blacklist
+			margin-right: -2px; //stylelint-disable-line unit-blacklist
+		}
 	}
 
-	.color-picker--button {
+	.expand-button {
 		border: none;
+		background-color: $color-bg;
+		font-size: 0.8em;
 		cursor: pointer;
 		display: inline-block;
 		color: $color-action;
 		text-decoration: underline;
-		background: transparent;
-		font-size: 0.7em;
-		margin: 0.5em;
+		width: calc(100% - 1em);
+		padding: 0.4em 0;
+		box-sizing: border-box;
+		margin: 0.4em 0.5em;
+		border-radius: $dimension-rounded-radius;
+		font-family: $font-default;
 
 		&:hover {
-			background: $button-background;
+			background: $color-action-bg;
 		}
 	}
 
-	.color-picker--input {
+	form {
 		display: flex;
 		align-items: center;
-		margin: 0.3em;
+		margin: 0.4em 0.3em;
+		height: 1.8em;
+		padding-top: 0.45em;
+		gap: $gap;
 
-		.color-picker--holder {
-			display: inline-block;
-			width: 1em;
-			height: 1em;
+		.custom-color-icon {
+			width: 1.2em;
+			height: 1.2em;
 			border-radius: 50%;
-			border: 1px solid rgba(0, 0, 0, 0.1);
-			padding: 0.3em;
+			flex: none;
+			border: solid 1px $color-shadow;
+			position: relative;
+			cursor: pointer;
 
 			img {
-				height: 1em;
-				width: 1em;
+				height: 0.8em;
+				width: 0.8em;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				pointer-events: none;
 			}
 
-			input[type='color'] {
-				display: none;
+			&:hover {
+				border: solid 2px $color-shadow;
+				transform: translate(-1px, -1px);
+				margin-bottom: -2px; //stylelint-disable-line unit-blacklist
+				margin-right: -2px; //stylelint-disable-line unit-blacklist
 			}
 		}
 
-		input {
-			flex-grow: 1;
-			padding: 0.2em;
-			margin: 0 0.3em;
-			height: 1.9em;
+		input[type='color'] {
+			position: absolute;
+			pointer-events: none;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border: none;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			opacity: 0;
+		}
+
+		input[type='text'] {
+			font-size: 0.7em;
+			min-width: 1em;
+			padding: 0.3em;
+			margin: 0;
+			height: 100%;
 			border-radius: $dimension-rounded-radius;
-			border: solid 1px $border-color;
+			border: 1px solid $color-shadow;
+			box-sizing: border-box;
 		}
 
-		.button {
-			padding: 0.1em 0.5em;
-			height: 2em;
+		.obojobo-draft--components--button {
+			height: 100%;
+
+			button {
+				padding: 0.1em 0.5em;
+				height: 100%;
+			}
 		}
 	}
 }

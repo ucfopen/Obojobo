@@ -7,6 +7,12 @@ const COLOR_MARK = 'color'
 
 const ColorMark = {
 	plugins: {
+		onKeyDown(event) {
+			if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'p') {
+				event.preventDefault()
+				Dispatcher.trigger('color-picker:open')
+			}
+		},
 		renderLeaf(props) {
 			let { children } = props
 			const { leaf } = props
@@ -20,6 +26,7 @@ const ColorMark = {
 	marks: [
 		{
 			name: 'Color',
+			shortcut: 'Shift+P',
 			type: COLOR_MARK,
 			icon: TextColorPickerIcon,
 			action: () => Dispatcher.trigger('color-picker:open')
