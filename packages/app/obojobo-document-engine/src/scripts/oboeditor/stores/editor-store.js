@@ -229,8 +229,8 @@ class EditorStore extends Store {
 
 	renamePageOrModule(nodeId, newName) {
 		const pageOrModule = OboModel.models[nodeId]
-		pageOrModule.get('content').title = newName
-		pageOrModule.title = newName
+		const content = pageOrModule.get('content')
+		pageOrModule.set('content', { ...content, title: newName })
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 		this.triggerChange()
