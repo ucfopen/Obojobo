@@ -167,16 +167,17 @@ describe('api visits route', () => {
 		expect.assertions(5)
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = { draftId: 111 }
+		mockCurrentVisit = null
 		return request(app)
 			.post('/api/start')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(422)
+				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty('type', 'missing')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'visitId must be a valid UUID, got undefined'
+					'currentVisit missing from request, got undefined'
 				)
 			})
 	})
@@ -191,17 +192,18 @@ describe('api visits route', () => {
 			contentId: validUUID()
 		}
 		mockCurrentVisit = 'mock-fetch-reject'
+
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(403)
+				expect(response.statusCode).toBe(404)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'reject')
+				expect(response.body.value).toHaveProperty('type', 'missing')
 				expect(response.body.value).toHaveProperty(
 					'message',
-					'Unable to start visit, visitId is no longer valid'
+					'currentVisit missing from request, got undefined'
 				)
 			})
 	})
@@ -236,6 +238,14 @@ describe('api visits route', () => {
 			yell: jest.fn().mockResolvedValueOnce(),
 			contentId: 'some-invalid-content-id'
 		}
+
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })
@@ -264,7 +274,16 @@ describe('api visits route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body.value).toMatchSnapshot()
+				expect(response.body.value).toMatchInlineSnapshot(`
+			Object {
+			  "extensions": Array [],
+			  "isPreviewing": true,
+			  "lti": Object {
+			    "lisOutcomeServiceUrl": null,
+			  },
+			  "visitId": "00000000-0000-0000-0000-000000000000",
+			}
+		`)
 			})
 	})
 

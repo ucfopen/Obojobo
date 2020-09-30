@@ -322,13 +322,6 @@ header {
 	margin-top: 0;
 }
 
-.instance-copy-note {
-	font-size: 12pt;
-	margin-top: 2em;
-	color: #72305a;
-	display: none;
-}
-
 .section {
 	height: 100%;
 }
@@ -427,6 +420,20 @@ header {
 	p {
 		font-size: 10pt;
 		margin-top: 2em;
+	}
+}
+
+#section-options {
+	display: none;
+
+	.option-list {
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	.buttons {
+		margin-top: 20px;
 	}
 }
 

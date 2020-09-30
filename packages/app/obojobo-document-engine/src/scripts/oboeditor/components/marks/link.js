@@ -15,6 +15,7 @@ class Link extends React.Component {
 		super(props)
 
 		this.hrefMenuRef = React.createRef()
+		this.changeLinkValue = this.changeLinkValue.bind(this)
 		this.onIntersectionChange = this.onIntersectionChange.bind(this)
 		this.startObservingForIntersectionChanges = this.startObservingForIntersectionChanges.bind(this)
 		this.stopObserveringForIntersectionChanges = this.stopObserveringForIntersectionChanges.bind(

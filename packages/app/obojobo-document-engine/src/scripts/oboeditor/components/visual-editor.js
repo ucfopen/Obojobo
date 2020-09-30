@@ -1,6 +1,5 @@
 import './visual-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
@@ -202,7 +201,9 @@ class VisualEditor extends React.Component {
 	}
 
 	onKeyDownGlobal(event) {
-		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		const ctrlOrMetaKey = event.ctrlKey || event.metaKey
+
+		if (event.key === 's' && ctrlOrMetaKey) {
 			event.preventDefault()
 			return this.saveModule(this.props.draftId)
 		}
@@ -218,11 +219,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if (
-			(event.key === '-' || event.key === '_') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -246,11 +243,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if (
-			(event.key === '=' || event.key === '+') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -274,12 +267,8 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		// Open top insert menu: i and I occur on different systems as the key when shift is held
-		if (
-			(event.key === 'i' || event.key === 'I') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		// Open chunk settings dialog
+		if ((event.key === 'i' || event.key === 'I') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -349,7 +338,9 @@ class VisualEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			this.exportToJSON(prevProps.page, prevState.value)
+			if (OboModel.models[prevProps.page.id]) {
+				this.exportToJSON(prevProps.page, prevState.value)
+			}
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
@@ -399,8 +390,10 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-		this.setState({ saved: true })
-		return APIUtil.postDraft(draftId, JSON.stringify(json))
+
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
+			this.setState({ saved: isSaved })
+		})
 	}
 
 	exportToJSON(page, value) {

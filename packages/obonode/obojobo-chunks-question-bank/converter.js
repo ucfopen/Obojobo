@@ -5,21 +5,21 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 const getChooseValue = (chooseAll, choose) => {
-	if(chooseAll) return 'all'
+	if (chooseAll) return 'all'
 
-	if(!choose) return '1'
+	if (!choose) return '1'
 
-	if(!Number.isFinite(parseInt(choose, 10))) return '1'
+	if (!Number.isFinite(parseInt(choose, 10))) return '1'
 
 	return choose
 }
 /**
  * Generates an Obojobo QuestionBank Node from a Slate node.
- * Copies the id, type, triggers, and saves the choose and select 
+ * Copies the id, type, triggers, and saves the choose and select
  * attributes from the settings node.  It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo QuestionBank node 
+ * @returns {Object} An Obojobo QuestionBank node
  */
 const slateToObo = node => {
 	const children = []
@@ -52,7 +52,7 @@ const slateToObo = node => {
  * Generates a Slate node from an Obojobo Question Bank node.
  * Copies all attributes, and calls the appropriate converters for the children
  * It also adds the chooseAll attribute to help display the choose field
- * @param {Object} node An Obojobo Question node 
+ * @param {Object} node An Obojobo Question node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
@@ -67,8 +67,8 @@ const oboToSlate = node => {
 	})
 
 	slateNode.content.chooseAll = !Number.isFinite(parseInt(node.content.choose, 10))
-	if(slateNode.content.chooseAll) slateNode.content.choose = 1
-	
+	if (slateNode.content.chooseAll) slateNode.content.choose = 1
+
 	return slateNode
 }
 
