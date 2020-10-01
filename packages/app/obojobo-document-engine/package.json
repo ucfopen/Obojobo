@@ -51,7 +51,7 @@
 		"react-codemirror2": "^7.2.1",
 		"react-compound-slider": "^2.5.0",
 		"react-dom": "^16.13.1",
-		"react-idle-timer": "^4.2.12",
+		"react-idle-timer": "4.2.12",
 		"react-transition-group": "^4.4.1",
 		"sass-mq": "^5.0.1",
 		"slate": "0.57.2",
