@@ -54,17 +54,20 @@ const AssessmentUtil = {
 			return []
 		}
 
-		return assessment.highestAssessmentScoreAttempts
+		return assessment.highestAttemptScoreAttempts
 	},
 
 	getAssessmentScoreForModel(state, model) {
-		const attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		const highestAttemptsByAssessmentScore = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
+			state,
+			model
+		)
 
-		if (attempts.length === 0) {
+		if (highestAttemptsByAssessmentScore.length === 0) {
 			return null
 		}
 
-		return attempts[0].assessmentScore
+		return highestAttemptsByAssessmentScore[0].assessmentScore
 	},
 
 	getLastAttemptScoresForModel(state, model) {

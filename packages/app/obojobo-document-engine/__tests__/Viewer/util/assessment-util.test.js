@@ -163,7 +163,7 @@ describe('AssessmentUtil', () => {
 	test('getHighestAttemptsForModelByAttemptScore returns high scores', () => {
 		jest.spyOn(AssessmentUtil, 'getAssessmentForModel')
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
-			highestAssessmentScoreAttempts: 'mockHighest'
+			highestAttemptScoreAttempts: 'mockHighest'
 		})
 
 		const attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore()
