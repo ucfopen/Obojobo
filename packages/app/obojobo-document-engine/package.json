@@ -63,9 +63,6 @@
 		"underscore": "1.10.2",
 		"url-parse": "^1.4.7 "
 	},
-	"devDependencies": {
-		"lint-staged": "^10.2.6"
-	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
 		"testMatch": [
