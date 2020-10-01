@@ -112,7 +112,7 @@ const ColorPicker = props => {
 					expanded ? (
 						<div className="color-row" key={colors[0]}>
 							{colors.map(color => (
-								<div
+								<button
 									key={color}
 									className={`color-cell${isOrNot(safeColorString === color, 'selected')}`}
 									style={{ backgroundColor: color }}
@@ -121,7 +121,7 @@ const ColorPicker = props => {
 							))}
 						</div>
 					) : (
-						<div
+						<button
 							key={colors[0]}
 							className={`color-cell${isOrNot(safeColorString === colors[0], 'selected')}`}
 							style={{ backgroundColor: colors[0] }}
