@@ -82,7 +82,9 @@ describe('attempt-end', () => {
 		AssessmentModel.getAttemptNumber.mockResolvedValueOnce('mock-attempt-number')
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(['mock-response'])
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mockHistory')
-		AssessmentModel.completeAttempt.mockResolvedValueOnce('mock-assessment-score-id')
+		AssessmentModel.completeAttempt.mockResolvedValueOnce({
+			assessmentScoreId: 'mock-assessment-score-id'
+		})
 		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
 
@@ -232,7 +234,9 @@ describe('attempt-end', () => {
 		AssessmentModel.getAttemptNumber.mockResolvedValueOnce(null)
 		AssessmentModel.fetchResponsesForAttempts.mockResolvedValueOnce(['mock-response'])
 		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce('mockHistory')
-		AssessmentModel.completeAttempt.mockResolvedValueOnce('mock-assessment-score-id')
+		AssessmentModel.completeAttempt.mockResolvedValueOnce({
+			assessmentScoreId: 'mock-assessment-score-id'
+		})
 		getCalculatedScores.mockResolvedValueOnce(mockCalculatedScore)
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockHighestScore)
 
