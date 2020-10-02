@@ -140,7 +140,7 @@ class MoreInfoBox extends React.Component {
 			this.props.saveContent(this.props.content, this.state.content) ||
 			this.props.saveId(this.props.id, this.state.currentId)
 		if (!error) {
-			// Wrapping these methods in a Timeout prevents a race condition with editor updates
+			this.setState({ error })
 			this.props.markUnsaved()
 			this.close()
 			return
