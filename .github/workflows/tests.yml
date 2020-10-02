@@ -8,13 +8,15 @@ jobs:
         node-version: [12.11.1, 12.x]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
+    - uses: actions/checkout@v2
+
     - name: Run tests with Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn
+
+    - name: Cache Yarn Deps
+      uses: c-hive/gha-yarn-cache@v1
+
     - run: yarn install
     - run: yarn test:ci
