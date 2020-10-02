@@ -27,7 +27,7 @@ jobs:
     - run: yarn install
     - run: yarn lerna version --no-push --no-commit-hooks --force-publish --yes ${{ github.event.inputs.newTag }}
     - run: |
-      git config --global user.name 'UCF CDL Robot'
-      git config --global user.email 'ucfcdl-robot@users.noreply.github.com'
-      git push
-      git push origin ${{ github.event.inputs.newTag }}
+        git config --global user.name 'UCF CDL Robot'
+        git config --global user.email 'ucfcdl-robot@users.noreply.github.com'
+        git push
+        git push origin ${{ github.event.inputs.newTag }}
