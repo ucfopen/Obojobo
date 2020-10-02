@@ -1,0 +1,25 @@
+name: prettier
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: NPM - Test, Build, Deploy
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.11.1
+
+    - name: Cache Yarn Deps
+      uses: c-hive/gha-yarn-cache@v1
+
+    - run: yarn lerna run prettier:run
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4.1.2
+      with:
+        commit_message: Automated prettier format changes
+        branch: ${{ github.head_ref }}
