@@ -57,17 +57,20 @@ const AssessmentUtil = {
 		return assessment.highestAttemptScoreAttempts
 	},
 
-	getAssessmentScoreForModel(state, model) {
-		const highestAttemptsByAssessmentScore = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
-			state,
-			model
-		)
-
-		if (highestAttemptsByAssessmentScore.length === 0) {
+	getAssessmentScoreForModel(state /*, model*/) {
+		// currently assuming there's only one assessment per module!
+		if (
+			!state.assessmentSummary ||
+			!state.assessmentSummary[0] ||
+			!state.assessmentSummary[0].scores
+		) {
 			return null
 		}
 
-		return highestAttemptsByAssessmentScore[0].assessmentScore
+		const scores = state.assessmentSummary[0].scores.map(s => (s === null ? -1 : s))
+		const max = Math.max.apply(null, scores)
+
+		return max === -1 ? null : max
 	},
 
 	getLastAttemptScoresForModel(state, model) {
