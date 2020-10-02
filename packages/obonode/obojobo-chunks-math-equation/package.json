@@ -30,9 +30,6 @@
 		"katex": "^0.11.1",
 		"obojobo-lib-utils": "^10.1.0"
 	},
-	"devDependencies": {
-		"lint-staged": "^10.2.6"
-	},
 	"jest": {
 		"testMatch": [
 			"**/*.test.js"

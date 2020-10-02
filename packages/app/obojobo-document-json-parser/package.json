@@ -4,7 +4,6 @@
     "xml-formatter": "^2.0.1"
   },
   "devDependencies": {
-    "lint-staged": "^10.2.6",
     "obojobo-lib-utils": "^10.1.0"
   },
   "name": "obojobo-document-json-parser",
