@@ -481,7 +481,7 @@ describe('EditorStore', () => {
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
-	test('renamePageOrModule rebuilds menu', () => {
+	test('renamePageOrModule updates a page title and rebuilds menu', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		jest.spyOn(EditorStore, 'triggerChange')
 		EditorStore.triggerChange.mockReturnValueOnce(true)
@@ -499,6 +499,7 @@ describe('EditorStore', () => {
 		EditorStore.renamePageOrModule('mockId', 'mockTitle')
 
 		expect(mockSet).toHaveBeenCalledWith('content', { title: 'mockTitle', value: 'other-value' })
+		expect(Common.models.OboModel.models['mockId'].title).toBe('mockTitle')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})
