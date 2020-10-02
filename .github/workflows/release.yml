@@ -1,0 +1,33 @@
+name: Manually tag a release
+on:
+  workflow_dispatch:
+    inputs:
+      branchToTag:
+        description: 'Branch to tag'
+        required: true
+      newTag:
+        description: 'New tag (ex: v1.0.0-alpha1)'
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      ref: ${{ github.event.inputs.branchToTag }}
+
+    - name: NPM - Test, Build, Deploy
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.11.1
+        registry-url: https://registry.npmjs.org/
+
+    - name: Cache Yarn Deps
+      uses: c-hive/gha-yarn-cache@v1
+
+    - run: yarn install
+    - run: yarn lerna version --no-push --no-commit-hooks --force-publish --yes ${{ github.event.inputs.newTag }}
+    - run: |
+      git config --global user.name 'UCF CDL Robot'
+      git config --global user.email 'ucfcdl-robot@users.noreply.github.com'
+      git push
+      git push origin ${{ github.event.inputs.newTag }}
