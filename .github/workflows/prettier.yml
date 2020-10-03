@@ -1,21 +1,18 @@
 name: prettier
 on:
-  pull_request:
+  pull_request_target:
   push:
     branches:
     - main
     - master
     - dev/*
 jobs:
-  build:
+  prettier:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.head_ref }}
-      env:
-        GIT_TRACE: 1
-        GIT_CURL_VERBOSE: 1
 
     - name: NPM - Test, Build, Deploy
       uses: actions/setup-node@v1
@@ -31,5 +28,5 @@ jobs:
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4.1.2
       with:
-        commit_message: Automated prettier format changes
+        commit_message: Automated prettier formatting changes
         branch: ${{ github.head_ref }}
