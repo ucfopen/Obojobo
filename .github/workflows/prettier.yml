@@ -1,14 +1,37 @@
 name: prettier
 on:
+  # for pull requests from this repo
+  pull_request:
+  # for pull requests from forks
   pull_request_target:
+  # for any pushes that may sidestep pr workflow
   push:
     branches:
     - main
     - master
     - dev/*
+    - hotfix/*
 jobs:
   prettier:
+    # filter out the event that shouldn't apply
+    # prevents running twice when not necessary
+    # if push, make sure it's this repo
+    # if pr, make sure it's this repo
+    # if pr_target, make sure it's a fork
+    if: >-
+      (
+        github.event_name == 'push' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      ) || (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      ) || (
+        github.event_name == 'pull_request_target' &&
+        github.event.pull_request.head.repo.full_name != github.repository
+      )
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
       with:
