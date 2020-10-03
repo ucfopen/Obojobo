@@ -1,5 +1,11 @@
 name: prettier
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+    - master
+    - dev/*
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +22,7 @@ jobs:
     - name: Cache Yarn Deps
       uses: c-hive/gha-yarn-cache@v1
 
+    - run: yarn install --frozen-lockfile
     - run: yarn lerna run prettier:run
 
     - name: Commit changes
