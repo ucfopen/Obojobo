@@ -1,4 +1,4 @@
-name: Manually tag a release
+name: Tag a release
 on:
   workflow_dispatch:
     inputs:
@@ -9,11 +9,12 @@ on:
         description: 'New tag (ex: v1.0.0-alpha1)'
         required: true
 jobs:
-  build:
+  tagRelease:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      ref: ${{ github.event.inputs.branchToTag }}
+      with:
+        ref: refs/heads/${{ github.event.inputs.branchToTag }}
 
     - name: NPM - Test, Build, Deploy
       uses: actions/setup-node@v1
@@ -24,10 +25,12 @@ jobs:
     - name: Cache Yarn Deps
       uses: c-hive/gha-yarn-cache@v1
 
-    - run: yarn install
-    - run: yarn lerna version --no-push --no-commit-hooks --force-publish --yes ${{ github.event.inputs.newTag }}
-    - run: |
-        git config --global user.name 'UCF CDL Robot'
-        git config --global user.email 'ucfcdl-robot@users.noreply.github.com'
-        git push
-        git push origin ${{ github.event.inputs.newTag }}
+    - run: yarn install --frozen-lockfile
+    - run: yarn lerna version --no-push --no-commit-hooks --force-publish --no-git-tag-version --yes ${{ github.event.inputs.newTag }}
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4.1.2
+      with:
+        commit_message: Version ${{ github.event.inputs.newTag }}
+        tagging_message: ${{ github.event.inputs.newTag }}
+        branch: ${{ github.event.inputs.branchToTag }}
