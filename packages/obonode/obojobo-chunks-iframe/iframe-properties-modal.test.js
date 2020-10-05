@@ -347,4 +347,23 @@ describe('IFrame Properties Modal', () => {
 
 		expect(startState).not.toEqual(endState)
 	})
+
+	test('IFrameProperties component changes Sizing', () => {
+		const component = mount(
+			<IFrameProperties
+				content={{
+					controls: '',
+					border: false,
+					initialZoom: 1
+				}}
+			/>
+		)
+
+		component
+			.find('#obojobo-draft--chunks--iframe--properties-model--sizing')
+			.at(0)
+			.simulate('change', { target: { value: 'changed' } })
+
+		expect(component.html()).toMatchSnapshot()
+	})
 })

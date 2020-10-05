@@ -50,7 +50,6 @@
 	> .container,
 	> .container-placeholder {
 		width: 100%;
-		margin: 0 auto;
 		max-width: 100%;
 		position: relative;
 
@@ -66,6 +65,7 @@
 			right: 0;
 			overflow: hidden;
 			border-radius: $dimension-rounded-radius;
+			width: 100%;
 
 			> iframe {
 				background: $color-bg2;
@@ -116,6 +116,36 @@
 			left: 0;
 			right: 0;
 			transform: translate(0, 0.3em);
+		}
+	}
+
+	&.is-sizing-fixed {
+		padding: 0 !important;
+
+		> .container,
+		> .container-placeholder {
+			margin: 0 auto;
+		}
+	}
+
+	&.is-sizing-text-width {
+		width: 100%;
+		max-width: 100%;
+
+		> .container,
+		> .container-placeholder {
+			width: 87%;
+			max-width: 87%;
+			margin: 0 auto;
+		}
+	}
+
+	&.is-sizing-max-width {
+		> .container,
+		> .container-placeholder {
+			margin: 0;
+			max-width: 100%;
+			width: auto !important;
 		}
 	}
 

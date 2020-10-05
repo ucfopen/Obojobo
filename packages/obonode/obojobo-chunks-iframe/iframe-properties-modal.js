@@ -18,7 +18,8 @@ class IFrameProperties extends React.Component {
 			src: '',
 			title: '',
 			width: 640,
-			controls: ''
+			controls: '',
+			sizing: ''
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
@@ -32,6 +33,7 @@ class IFrameProperties extends React.Component {
 		this.handleAutoloadChange = this.handleAutoloadChange.bind(this)
 		this.handleFitChange = this.handleFitChange.bind(this)
 		this.handleZoomChange = this.handleZoomChange.bind(this)
+		this.handleSizingChange = this.handleSizingChange.bind(this)
 	}
 
 	componentDidMount() {
@@ -77,6 +79,12 @@ class IFrameProperties extends React.Component {
 		const initialZoom = event.target.value
 
 		this.setState({ initialZoom })
+	}
+
+	handleSizingChange(event) {
+		const sizing = event.target.value
+
+		this.setState({ sizing })
 	}
 
 	handleAutoloadChange(checked) {
@@ -126,7 +134,7 @@ class IFrameProperties extends React.Component {
 							/>
 						</div>
 
-						<div>
+						<div className="source-wrapper">
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--src">Source:</label>
 							<input
 								type="text"
@@ -168,7 +176,7 @@ class IFrameProperties extends React.Component {
 							/>
 							<span className="px-label">px</span>
 						</div>
-						<div>
+						<div className="border-wrapper">
 							<Switch
 								title="Border"
 								initialChecked={this.state.border}
@@ -193,7 +201,7 @@ class IFrameProperties extends React.Component {
 								<option value="scroll">Scroll</option>
 							</select>
 						</div>
-						<div>
+						<div className="zoom-wrapper">
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom">
 								Initial Zoom:
 							</label>
@@ -207,6 +215,18 @@ class IFrameProperties extends React.Component {
 								value={this.state.initialZoom}
 								onChange={this.handleZoomChange}
 							/>
+						</div>
+						<div>
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing">Sizing:</label>
+							<select
+								id="obojobo-draft--chunks--iframe--properties-model--sizing"
+								value={this.state.sizing || 'fixed'}
+								onChange={this.handleSizingChange}
+							>
+								<option value="fixed">Fixed</option>
+								<option value="text-width">Text Width</option>
+								<option value="max-width">Max Width</option>
+							</select>
 						</div>
 					</div>
 
