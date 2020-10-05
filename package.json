@@ -22,9 +22,9 @@
 		"test:ci:each": "lerna run test:ci"
 	},
 	"devDependencies": {
-		"husky": "^4.2.5",
-		"jest-runner-eslint": "^0.8.0",
-		"lerna": "^3.21.0",
+		"husky": "^4.3.0",
+		"jest-runner-eslint": "^0.10.0",
+		"lerna": "^3.22.1",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {

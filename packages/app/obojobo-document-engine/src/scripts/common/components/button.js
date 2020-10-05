@@ -41,7 +41,7 @@ export default class Button extends React.Component {
 			(this.props.className ? ` ${this.props.className}` : '')
 
 		return (
-			<div className={className}>
+			<div className={className} contentEditable={false}>
 				<button
 					ref={this.buttonRef}
 					className={'button'}

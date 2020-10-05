@@ -8,10 +8,13 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
+import ImportQuestionModal from './import-questions-modal'
 
 import emptyQB from './empty-node.json'
 
 const { Button } = Common.components
+const { ModalUtil } = Common.util
+const { OboModel } = Common.models
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 const stopPropagation = event => {
@@ -39,6 +42,9 @@ class QuestionBank extends React.Component {
 		this.addQuestion = this.addQuestion.bind(this)
 		this.addQuestionBank = this.addQuestionBank.bind(this)
 		this.changeChooseType = this.changeChooseType.bind(this)
+		this.getQuestionList = this.getQuestionList.bind(this)
+		this.importQuestionList = this.importQuestionList.bind(this)
+		this.diplayImportQuestionModal = this.diplayImportQuestionModal.bind(this)
 	}
 
 	updateNodeFromState() {
@@ -167,10 +173,56 @@ class QuestionBank extends React.Component {
 		)
 	}
 
+	getQuestionList(root) {
+		if (root.get('type') === QUESTION_NODE) return [root]
+
+		let questionList = []
+		root.children.forEach(child => {
+			questionList = questionList.concat(this.getQuestionList(child))
+		})
+
+		return questionList
+	}
+
+	importQuestionList(nodes) {
+		const { editor, element } = this.props
+
+		const path = ReactEditor.findPath(editor, element)
+		nodes.forEach((node, index) => {
+			Transforms.insertNodes(editor, node, {
+				at: path.concat(element.children.length + index)
+			})
+		})
+	}
+
+	diplayImportQuestionModal() {
+		const Question = Common.Registry.getItemForType(QUESTION_NODE)
+		const questionList = this.getQuestionList(OboModel.getRoot()).map(question =>
+			Question.oboToSlate(question.attributes)
+		)
+
+		ModalUtil.show(
+			<ImportQuestionModal
+				questionList={questionList}
+				editor={this.props.editor}
+				importQuestions={this.importQuestionList}
+			/>
+		)
+	}
+
 	render() {
 		const { editor, element, children } = this.props
+		const contentDescription = [
+			{
+				name: 'Import Questions',
+				description: 'Import',
+				type: 'button',
+				action: this.diplayImportQuestionModal
+			}
+		]
+
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 					<Button
 						className="delete-button"

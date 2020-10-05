@@ -27,7 +27,7 @@ export default class Question extends React.Component {
 		this.onClickBlocker = this.onClickBlocker.bind(this)
 	}
 
-	static focusOnContent(model) {
+	static focusOnContent(model, opts = { preventScroll: false }) {
 		const el = model.getDomEl()
 
 		if (!el) return false
@@ -46,7 +46,7 @@ export default class Question extends React.Component {
 
 		if (!focusableEl) return false
 
-		focus(focusableEl)
+		focus(focusableEl, opts.preventScroll)
 		return true
 	}
 

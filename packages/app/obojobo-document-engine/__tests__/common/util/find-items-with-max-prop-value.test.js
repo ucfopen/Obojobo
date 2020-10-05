@@ -24,9 +24,20 @@ describe('findItemsWithMaxPropValue Util', () => {
 	})
 
 	test('finds all with max value', () => {
-		const items = [{ name: 1, value: 99 }, { name: 2, value: 99 }, { name: 3, value: 98 }]
+		const items = [
+			{ name: 1, value: 99 },
+			{ name: 2, value: 99 },
+			{ name: 3, value: 98 },
+			{ name: 4, value: null }
+		]
 		const result = findItemsWithMaxPropValue(items, 'value')
 		expect(result).toEqual([{ name: 1, value: 99 }, { name: 2, value: 99 }])
+	})
+
+	test('finds items with null when no other values exist', () => {
+		const items = [{ name: 1, value: null }, { name: 2, value: null }]
+		const result = findItemsWithMaxPropValue(items, 'value')
+		expect(result).toEqual([{ name: 1, value: null }, { name: 2, value: null }])
 	})
 
 	test('skips items without the nested key', () => {
