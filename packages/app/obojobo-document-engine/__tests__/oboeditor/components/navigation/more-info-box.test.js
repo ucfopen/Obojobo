@@ -177,6 +177,12 @@ describe('MoreInfoBox', () => {
 						name: 'mockAbstractToggle',
 						value: () => false,
 						onChange: () => true
+					},
+					{
+						type: 'button',
+						description: 'Mock Button',
+						name: 'Mock Name',
+						action: jest.fn()
 					}
 				]}
 			/>
@@ -734,5 +740,32 @@ describe('MoreInfoBox', () => {
 			state: {}
 		})(mockProps)
 		expect(mockSetState).toHaveBeenCalledWith({ content: 'newMockValue' })
+	})
+
+	test('onSave sets and clears state.error', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest
+					.fn()
+					.mockReturnValueOnce('error!')
+					.mockReturnValueOnce(null)}
+				saveContent={jest.fn().mockReturnValue(null)}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+				isAssessment
+			/>
+		)
+
+		// saveId() will return an error, make sure its on state
+		component.instance().onSave()
+		const aftState = component.state()
+		expect(aftState).toHaveProperty('error', 'error!')
+
+		// saveId() returns null this time, make sure state gets updated
+		component.instance().onSave()
+		const aftState2 = component.state()
+		expect(aftState2).toHaveProperty('error', null)
 	})
 })

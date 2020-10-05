@@ -525,6 +525,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1125,6 +1126,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1725,6 +1727,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -2371,6 +2374,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -2967,6 +2971,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
