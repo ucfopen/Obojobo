@@ -201,6 +201,16 @@ describe('AssessmentUtil', () => {
 		expect(score).toEqual(null)
 	})
 
+	test('getAssessmentScoreForModel returns null if no scores exist', () => {
+		const state = {
+			assessmentSummary: [{ scores: [] }]
+		}
+
+		const score = AssessmentUtil.getAssessmentScoreForModel(state)
+
+		expect(score).toEqual(null)
+	})
+
 	test('getLastAttemptScoresForModel returns null with no assessment', () => {
 		const model = {
 			get: jest
