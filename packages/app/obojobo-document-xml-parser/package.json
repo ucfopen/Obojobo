@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "minimist": "^1.2.5",
-    "obojobo-lib-utils": "^10.2.0-alpha1",
+    "obojobo-lib-utils": "^10.2.0-alpha2",
     "xml-js": "^1.0.2"
   },
   "name": "obojobo-document-xml-parser",
-  "version": "10.2.0-alpha1",
+  "version": "10.2.0-alpha2",
   "license": "AGPL-3.0-only",
   "main": "xml2draft.js",
   "scripts": {
