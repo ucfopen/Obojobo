@@ -62,7 +62,8 @@ const AssessmentUtil = {
 		if (
 			!state.assessmentSummary ||
 			!state.assessmentSummary[0] ||
-			!state.assessmentSummary[0].scores
+			!state.assessmentSummary[0].scores ||
+			state.assessmentSummary[0].scores.length === 0
 		) {
 			return null
 		}
