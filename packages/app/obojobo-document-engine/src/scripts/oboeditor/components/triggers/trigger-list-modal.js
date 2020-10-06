@@ -1,10 +1,10 @@
 import './trigger-list-modal.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
-const { SimpleDialog } = Common.components.modal
-const { Button, Switch } = Common.components
+import SimpleDialog from '../../../common/components/modal/simple-dialog'
+import Button from '../../../common/components/button'
+import Switch from '../../../common/components/switch'
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
@@ -266,12 +266,7 @@ class TriggerListModal extends React.Component {
 						<Switch
 							title="Fade Out Other Items"
 							initialChecked={action.value.fade || false}
-							onChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'fade'
-							)}
+							onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}
 						/>
 						<Switch
 							title="Animate Scroll"

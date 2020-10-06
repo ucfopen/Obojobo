@@ -15,16 +15,16 @@ class MateriaSettingsDialog extends React.Component {
 		const defaultState = {
 			height: 0,
 			width: 0,
-			caption: '',
+			caption: '' || props.content.caption || props.caption,
 			src: '',
 			icon: '',
 			widgetEngine: '',
 			pickerOpen: false,
 			// start open if theres no icon and src is set (custom link)
 			// start closed if there's no src (empty node)
-			isUnlocked: !props.content.icon && props.content.src
+			showCustomize: !props.content.icon && props.content.src
 		}
-		this.state = { ...defaultState, ...props.content, caption: props.caption }
+		this.state = { ...defaultState, ...props.content }
 
 		this.inputRef = React.createRef()
 		this.pickerIframeRef = React.createRef()
@@ -110,7 +110,7 @@ class MateriaSettingsDialog extends React.Component {
 					caption: this.state.caption || caption, // don't update if title is already set so we don't overwrite customization
 					icon: this.standardizeIconUrl(icon),
 					pickerOpen: false,
-					isUnlocked: false
+					showCustomize: false
 				})
 			} catch (e) {
 				// do nothing
@@ -121,7 +121,7 @@ class MateriaSettingsDialog extends React.Component {
 	}
 
 	toggleEditLock() {
-		this.setState({ isUnlocked: !this.state.isUnlocked })
+		this.setState({ showCustomize: !this.state.showCustomize })
 	}
 
 	openPicker() {
@@ -177,12 +177,12 @@ class MateriaSettingsDialog extends React.Component {
 				<SettingsDialogRow className="center">
 					<Button
 						altAction
-						className={`toggle-view-button ${isOrNot(this.state.isUnlocked, 'open')}`}
+						className={`toggle-view-button ${isOrNot(this.state.showCustomize, 'open')}`}
 						onClick={this.toggleEditLock}
 					>
-						{this.state.isUnlocked ? 'Hide Customize' : 'Customize'}
+						{this.state.showCustomize ? 'Hide Customize' : 'Customize'}
 					</Button>
-					{this.state.isUnlocked ? (
+					{this.state.showCustomize ? (
 						<SettingsDialogForm
 							settings={this.state}
 							config={this.settingsItems}

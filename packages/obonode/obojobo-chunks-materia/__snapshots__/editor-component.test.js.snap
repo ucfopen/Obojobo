@@ -20,6 +20,7 @@ exports[`Materia Editor Node Materia renders with no size correctly 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -34,6 +35,7 @@ exports[`Materia Editor Node Materia renders with no size correctly 1`] = `
         <div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -75,6 +77,7 @@ exports[`Materia Editor Node component renders 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -89,6 +92,7 @@ exports[`Materia Editor Node component renders 1`] = `
         <div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            contentEditable={false}
           >
             <button
               className="button"

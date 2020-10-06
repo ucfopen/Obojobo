@@ -233,7 +233,7 @@ class MoreInfoBox extends React.Component {
 						key={item.description}
 						title={item.description}
 						checked={this.state.content[item.name]}
-						handleCheckChange={this.handleSwitchChange.bind(this, item.name)}
+						onChange={this.handleSwitchChange.bind(this, item.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt

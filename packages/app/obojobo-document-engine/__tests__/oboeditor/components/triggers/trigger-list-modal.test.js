@@ -243,20 +243,91 @@ describe('TriggerListModal', () => {
 		const inputLabel = component.find('label').at(2)
 		expect(inputLabel.props().children).toBe('Item Id')
 
-
 		// change the value
-		component.find('input').at(2).simulate('change', { target: { type: 'text', value: '10'} })
+		component
+			.find('input')
+			.at(2)
+			.simulate('change', { target: { type: 'text', value: '10' } })
 
 		// check that the value changed
-		expect(component.find('input').at(2).props()).toHaveProperty('value', "10")
+		expect(
+			component
+				.find('input')
+				.at(2)
+				.props()
+		).toHaveProperty('value', '10')
 
 		// check the change to state
 		expect(component.state()).toHaveProperty('triggers')
-		expect(component.state().triggers[0].actions).toContainEqual({type: 'nav:goto', value: {id: "10"}})
+		expect(component.state().triggers[0].actions).toContainEqual({
+			type: 'nav:goto',
+			value: { id: '10' }
+		})
 
 		// check the rendered component
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('updateActionValue responds to checkbox boolean values', () => {
+		// prepare state
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		// set default state expectation
+		// on the first trigger's first action
+		expect(component.state().triggers[0].actions[0]).not.toHaveProperty('value.animateScroll')
+
+		// call updateAction, simulating a checkbox checked on animateScroll
+		component
+			.instance()
+			.updateActionValue(0, 0, 'animateScroll', { target: { type: 'checkbox', checked: true } })
+
+		// expect animateScroll to be set to true
+		expect(component.state().triggers[0].actions[0]).toHaveProperty('value.animateScroll', true)
+	})
+
+	test('updateActionValue responds to input string values', () => {
+		// prepare state
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+
+		// set default state expectation
+		// on the first trigger's first action
+		expect(component.state().triggers[0].actions[0]).not.toHaveProperty('value.animateScroll')
+
+		// call updateAction, simulating a checkbox checked on animateScroll
+		component
+			.instance()
+			.updateActionValue(0, 0, 'animateScroll', { target: { type: 'text', value: 'mock-value' } })
+
+		// expect animateScroll to be set to true
+		expect(component.state().triggers[0].actions[0]).toHaveProperty(
+			'value.animateScroll',
+			'mock-value'
+		)
 	})
 
 	test.each`
