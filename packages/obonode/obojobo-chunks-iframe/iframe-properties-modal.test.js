@@ -348,7 +348,7 @@ describe('IFrame Properties Modal', () => {
 		expect(startState).not.toEqual(endState)
 	})
 
-	test('IFrameProperties component changes Sizing', () => {
+	test('IFrameProperties component changes sizing', () => {
 		const component = mount(
 			<IFrameProperties
 				content={{
