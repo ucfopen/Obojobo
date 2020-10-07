@@ -9,12 +9,15 @@ import renderer from 'react-test-renderer'
 
 require('./viewer') // used to register this oboModel
 
-describe('Materia', () => {
+describe('Materia viewer component', () => {
 	let model
 	let moduleData
+	const consoleError = console.error
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		jest.spyOn(window, 'addEventListener')
+		jest.spyOn(window, 'removeEventListener')
 
 		OboModel.__setNextGeneratedLocalId('mock-uuid')
 		model = OboModel.create({
@@ -38,14 +41,177 @@ describe('Materia', () => {
 	afterEach(() => {
 	})
 
-	test('Materia component renders', () => {
+	test('renders', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+		const component = renderer.create(<Materia {...props} />)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('adds and removes listener for postmessage when mounting and unmounting', () => {
+		expect.hasAssertions()
 		const props = {
 			model,
 			moduleData
 		}
 
 		const component = renderer.create(<Materia {...props} />)
-		expect(component.toJSON()).toMatchSnapshot()
+
+		const inst = component.getInstance()
+		// make sure it's listening on mount
+		expect(window.addEventListener).toHaveBeenCalledWith('message', inst.onPostMessageFromMateria, false)
+		expect(window.removeEventListener).not.toHaveBeenCalledWith('message', inst.onPostMessageFromMateria, false)
+
+		// make sure it's not listening when unmounted
+		component.unmount()
+		expect(window.removeEventListener).toHaveBeenCalledWith('message', inst.onPostMessageFromMateria, false)
 	})
 
+
+	test('onPostMessageFromMateria without an iframe ref doesnt update state', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {}
+		const event = {source: '', data: JSON.stringify({score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria without a matching iframe and event source doesnt update state', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'different-mock-window'}}
+		const event = {source: 'mock-window', data: JSON.stringify({score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria blocks events not coming fom the src domain', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://not-localhost/'}}
+		const event = {source: 'http://localhost/whatever', data: JSON.stringify({score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria blocks events with an origin that doesnt match modelState srcn', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://localhost/whatever'}}
+		const event = {origin: 'http://not-localhost' ,source: 'http://localhost/whatever', data: JSON.stringify({score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria ignores messages where data is not a string', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://localhost/whatever'}}
+		const event = {origin: 'http://localhost' ,source: 'http://localhost/whatever', data: {score: 100} }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria ignores messages with a data type that isnt materiaScoreRecorded', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://localhost/whatever'}}
+		const event = {origin: 'http://localhost' ,source: 'http://localhost/whatever', data: JSON.stringify({type: 'notmateriaScoreRecorded', score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+	})
+
+	test('onPostMessageFromMateria updates the score', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://localhost/whatever'}}
+		const event = {origin: 'http://localhost' ,source: 'http://localhost/whatever', data: JSON.stringify({type: 'materiaScoreRecorded', score: 100}) }
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', 100)
+	})
+
+
+	test('onPostMessageFromMateria handles json parsing errors', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+
+		const inst = component.getInstance()
+		inst.iframeRef = {current:{contentWindow: 'http://localhost/whatever'}}
+		const event = {origin: 'http://localhost' ,source: 'http://localhost/whatever', data: '!]&({}' }
+		jest.spyOn(console, 'error')
+		inst.onPostMessageFromMateria(event)
+		expect(inst.state).toHaveProperty('score', null)
+		expect(console.error).toHaveBeenCalled()
+	})
+
+	test('srcToLTILaunchUrl formats strings as expected', () => {
+		expect.hasAssertions()
+		const props = {
+			model,
+			moduleData
+		}
+
+		const component = renderer.create(<Materia {...props} />)
+		const inst = component.getInstance()
+		expect(inst.srcToLTILaunchUrl('visit-id', 'node-id')).toBe('http://localhost/materia-lti-launch?visitId=visit-id&nodeId=node-id')
+		expect(inst.srcToLTILaunchUrl('99-9999-999', 'fff-fff-fff')).toBe("http://localhost/materia-lti-launch?visitId=99-9999-999&nodeId=fff-fff-fff")
+	})
 })
