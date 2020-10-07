@@ -12,14 +12,12 @@ import Materia from './viewer-component'
 import OboModel from 'obojobo-document-engine/__mocks__/obo-model-mock'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
 
 require('./viewer') // used to register this oboModel
 
 describe('Materia viewer component', () => {
 	let model
 	let moduleData
-	const consoleError = console.error
 
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -233,10 +231,10 @@ describe('Materia viewer component', () => {
 			data: '!]&({}'
 		}
 		jest.spyOn(console, 'error')
-		console.error.mockReturnValueOnce() // consume error output
+		console.error.mockReturnValueOnce() // eslint-disable-line no-console
 		inst.onPostMessageFromMateria(event)
 		expect(inst.state).toHaveProperty('score', null)
-		expect(console.error).toHaveBeenCalled()
+		expect(console.error).toHaveBeenCalled() // eslint-disable-line no-console
 	})
 
 	test('srcToLTILaunchUrl formats strings as expected', () => {
@@ -278,7 +276,6 @@ describe('Materia viewer component', () => {
 		}
 
 		const component = renderer.create(<Materia {...props} />)
-		const inst = component.getInstance()
 
 		// find the textGroupEL by a unique prop
 		// if it's found, it was rendered

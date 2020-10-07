@@ -53,6 +53,7 @@ global.mockReactComponent = (target, name) => {
 global.mockForwardRefComponent = (target, name) => {
 	// some extra magic to deal with mocking a react method that uses forwardRef
 	const React = require('react')
+	// eslint-disable-next-line react/display-name
 	return React.forwardRef((props, ref) => {
 		const MockComp = global.mockReactComponent(target, name)
 		return <MockComp {...props} theRef={ref}></MockComp>
