@@ -314,75 +314,8 @@ describe('KeyDown Util', () => {
 		expect(Transforms.collapse).toHaveBeenCalled()
 	})
 
-	test('breakToText inserts text', () => {
-		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
-
-		const editor = {
-			children: [
-				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 4 },
-				focus: { path: [0, 0], offset: 4 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		ReactEditor.findPath.mockReturnValueOnce([0])
-
-		const event = {
-			preventDefault: jest.fn()
-		}
-
-		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.insertNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
-
-		// make sure the inserted node is correct type
-		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
-		expect(insertedNode.children[0]).toHaveProperty('type', 'ObojoboDraft.Chunks.Text')
-		expect(insertedNode.children[0]).toHaveProperty('subtype', 'ObojoboDraft.Chunks.Text.TextLine')
-		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
-	})
-
-	test('breakToText converts to text', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
-
-		const editor = {
-			children: [
-				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		ReactEditor.findPath.mockReturnValueOnce([0])
-
-		const event = {
-			preventDefault: jest.fn()
-		}
-
-		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.setNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
-	})
-
 	test('breakToText converts to text when selection is at the start of a node', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 		jest.spyOn(Transforms, 'select').mockReturnValue(true)

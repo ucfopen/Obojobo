@@ -1,4 +1,4 @@
-import { Text, Editor, Transforms, Range, Path, Element, Point } from 'slate'
+import { Text, Editor, Transforms, Range, Path, Element, Point, Node } from 'slate'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -75,76 +75,45 @@ const KeyDownUtil = {
 	},
 	breakToText: (event, editor, entry) => {
 		const [node, nodePath] = entry
-		const nodeRange = Editor.range(editor, nodePath)
-		const nodeEnd = Editor.end(editor, nodeRange)
-		const selectionEnd = Editor.end(editor, editor.selection)
-		const nodeStart = Editor.start(editor, nodeRange)
+		const nodeEnd = Editor.end(editor, [...nodePath, node.children.length - 1])
 		const selectionStart = Editor.start(editor, editor.selection)
-		const toStartOfNode = {
-			anchor: selectionStart,
-			focus: nodeStart
-		}
 
 		event.preventDefault()
 
 		const toEndOfNode = {
-			anchor: selectionEnd,
+			anchor: selectionStart,
 			focus: nodeEnd
 		}
 
-		// If the Range is collapsed at the end of the node, just insert text
-		if (Range.isCollapsed(toEndOfNode)) {
-			return Transforms.insertNodes(
-				editor,
+		const newTextRange = {
+			anchor: { offset: selectionStart.offset, path: [...selectionStart.path] },
+			focus: { offset: nodeEnd.offset, path: [...nodeEnd.path] }
+		}
+		newTextRange.anchor.path.shift()
+		newTextRange.focus.path.shift()
+
+		const texts = Node.fragment(node, newTextRange)
+		const newNode = {
+			type: TEXT_NODE,
+			children: [
 				{
 					type: TEXT_NODE,
-					content: {},
-					children: [
-						{
-							type: TEXT_NODE,
-							subtype: TEXT_LINE_NODE,
-							content: { indent: 0, align: 'left' },
-							children: [{ text: '' }]
-						}
-					]
-				},
-				{ split: true }
-			)
+					subtype: TEXT_LINE_NODE,
+					content: { indent: 0, align: 'left' },
+					children: [...texts]
+				}
+			]
 		}
+		Transforms.insertNodes(editor, newNode, { at: toEndOfNode })
 
-		if (Range.isCollapsed(toStartOfNode)) {
-			// Duplicate the node that's being split
-			const newNode = { ...node }
+		// Transform the duplicated node to a text node
+		const nextPath = [...nodePath]
+		nextPath[nextPath.length - 1]++
+		Transforms.setNodes(editor, { type: TEXT_NODE, content: {} }, { at: nextPath })
 
-			// Insert the duplicate below this node
-			Transforms.insertNodes(editor, newNode, { at: toEndOfNode })
-
-			// Transform the duplicated node to a text node
-			const nextPath = [...nodePath]
-			nextPath[nextPath.length - 1]++
-			Transforms.setNodes(editor, { type: TEXT_NODE, content: {} }, { at: nextPath })
-
-			// Move the selection to the start of the duplicated (now text) node
-			Transforms.select(editor, nextPath)
-			Transforms.collapse(editor, 'start')
-
-			return
-		}
-
-		// Set the heading after the selection to text
-		Transforms.setNodes(
-			editor,
-			{
-				type: TEXT_NODE,
-				content: {}
-			},
-			{
-				at: toEndOfNode,
-				split: true
-			}
-		)
-		Transforms.delete(editor, { at: Range.intersection(nodeRange, editor.selection) })
-		return Transforms.collapse(editor, { edge: 'end' })
+		// Move the selection to the start of the duplicated (now text) node
+		Transforms.select(editor, nextPath)
+		Transforms.collapse(editor, 'start')
 	}
 }
 
