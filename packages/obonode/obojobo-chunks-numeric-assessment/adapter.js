@@ -7,20 +7,13 @@ const Adapter = {
 	construct(model, attrs) {
 		const children = attrs && attrs.children ? attrs.children : []
 
-		console.log('um', attrs, model.modelState)
-
 		model.modelState.scoreRules = numericChoicesToScoreRuleConfigs(children || [])
-		// model.setStateProp('units', '', v => '' + v)
 
 		model.modelState.units = TextGroup.fromDescriptor(attrs.content.units, 1, {
 			indent: 0,
 			hangingIndent: false,
 			align: 'left'
 		})
-
-		console.log('um2', attrs, model.modelState)
-
-		window.__na = model
 	},
 
 	clone(model, clone) {

@@ -1,15 +1,15 @@
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
- // TODO - remove type when viewer is abstracted out
+// TODO - remove type when viewer is abstracted out
 import { FEEDBACK_NODE } from '../constants'
- 
+
 /**
  * Generates an Obojobo Feedback Node from a Slate node.
  * Copies the id, type, and triggers. It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo Feedback node 
+ * @returns {Object} An Obojobo Feedback node
  */
 const slateToObo = (node, type) => ({
 	id: node.id,
@@ -23,7 +23,7 @@ const slateToObo = (node, type) => ({
 /**
  * Generates a Slate node from an Obojobo Feedback node.
  * Copies all attributes, and calls the appropriate converters for the children
- * @param {Object} node An Obojobo Feedback node 
+ * @param {Object} node An Obojobo Feedback node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

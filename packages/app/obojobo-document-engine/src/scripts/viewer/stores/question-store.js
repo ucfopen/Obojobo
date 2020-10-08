@@ -1,6 +1,6 @@
 import Common from 'Common'
 
-import APIUtil from '../util/api-util'
+import ViewerAPI from '../util/viewer-api'
 import QuestionUtil from '../util/question-util'
 import FocusUtil from '../util/focus-util'
 
@@ -152,6 +152,7 @@ class QuestionStore extends Store {
 	}
 
 	onPostResponseError(contextState, id) {
+		console.log('onPostResponseError', contextState, id)
 		delete contextState.sendingResponsePromises[id]
 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
 
@@ -198,6 +199,7 @@ class QuestionStore extends Store {
 				return true
 			})
 			.catch(e => {
+				console.error('Unable to send all responses', e)
 				Dispatcher.trigger('question:forceSentAllResponses', {
 					value: { context, success: false, error: e.message }
 				})
@@ -213,16 +215,19 @@ class QuestionStore extends Store {
 		const responseMetadata = contextState.responseMetadata[id]
 		if (!responseMetadata) return false
 
+		console.log('send response', id, context)
+
 		const postResponsePromise = this.postResponse(id, context)
 
 		contextState.sendingResponsePromises[id] = postResponsePromise
 
-		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
-			// eslint-disable-next-line no-console
-			console.error(e)
+		// return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
+		// 	// eslint-disable-next-line no-console
+		// 	console.error(e)
 
-			return this.onPostResponseError(contextState, id)
-		})
+		// 	return this.onPostResponseError(contextState, id)
+		// })
+		return postResponsePromise
 	}
 
 	postResponse(id, context) {
@@ -231,7 +236,7 @@ class QuestionStore extends Store {
 
 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.SENDING
 
-		return APIUtil.postEvent({
+		return ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:setResponse',
 			eventVersion: '2.2.0',
@@ -240,9 +245,11 @@ class QuestionStore extends Store {
 			actorTime: responseMetadata.time
 		})
 			.then(result => {
-				this.onPostResponseSuccess(result.response.status, contextState, id)
+				return this.onPostResponseSuccess(result.status, contextState, id)
 			})
-			.catch(e => this.onPostResponseError(e, contextState, id))
+			.catch(e => {
+				return this.onPostResponseError(e, contextState, id)
+			})
 	}
 
 	setResponse({
@@ -262,7 +269,7 @@ class QuestionStore extends Store {
 			time: new Date(),
 			sendState: QuestionResponseSendStates.NOT_SENT,
 			details: {
-				id,
+				questionId: id,
 				response,
 				targetId,
 				context,
@@ -296,7 +303,7 @@ class QuestionStore extends Store {
 
 	showExplanation({ id, context }) {
 		const root = OboModel.getRoot()
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: root.get('draftId'),
 			action: 'question:showExplanation',
 			eventVersion: '1.1.0',
@@ -313,7 +320,7 @@ class QuestionStore extends Store {
 	hideExplanation({ id, context, actor }) {
 		const root = OboModel.getRoot()
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: root.get('draftId'),
 			action: 'question:hideExplanation',
 			eventVersion: '1.2.0',
@@ -341,7 +348,7 @@ class QuestionStore extends Store {
 
 		const contextState = this.getOrCreateContextState(context)
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:hide',
 			eventVersion: '1.1.0',
@@ -365,7 +372,7 @@ class QuestionStore extends Store {
 		const contextState = this.getOrCreateContextState(context)
 		const root = OboModel.getRoot()
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: root.get('draftId'),
 			action: 'question:view',
 			eventVersion: '1.1.0',
@@ -386,7 +393,7 @@ class QuestionStore extends Store {
 		const contextState = this.getOrCreateContextState(context)
 		const scoreInfo = contextState.scores[id]
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:checkAnswer',
 			eventVersion: '1.1.0',
@@ -408,7 +415,7 @@ class QuestionStore extends Store {
 
 		const contextState = this.getOrCreateContextState(context)
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:submitResponse',
 			eventVersion: '1.0.0',
@@ -434,7 +441,7 @@ class QuestionStore extends Store {
 
 		this.triggerChange()
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:retry',
 			eventVersion: '1.1.0',
@@ -462,7 +469,7 @@ class QuestionStore extends Store {
 
 		contextState.revealedQuestions[id] = true
 
-		APIUtil.postEvent({
+		ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:revealAnswer',
 			eventVersion: '1.0.0',
@@ -497,7 +504,7 @@ class QuestionStore extends Store {
 
 		// Skip sending an event if this is an explicit non-scored result
 		if (score !== 'no-score') {
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: OboModel.getRoot().get('draftId'),
 				action: 'question:scoreSet',
 				eventVersion: '1.1.0',
@@ -526,7 +533,7 @@ class QuestionStore extends Store {
 
 		// Skip sending an event if this is an explicit non-scored result
 		if (scoreItem.score !== 'no-score') {
-			APIUtil.postEvent({
+			ViewerAPI.postEvent({
 				draftId: OboModel.getRoot().get('draftId'),
 				action: 'question:scoreClear',
 				eventVersion: '1.0.0',
@@ -582,4 +589,6 @@ class QuestionStore extends Store {
 }
 
 const questionStore = new QuestionStore()
+window.__qs = questionStore
+
 export default questionStore

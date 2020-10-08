@@ -17,7 +17,7 @@ describe('Choice normalization', () => {
 
 	test('normalizeNode on Choice calls next if all Choice children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -42,7 +42,7 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -51,7 +51,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -76,7 +76,7 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
@@ -112,7 +112,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -137,7 +137,7 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
@@ -185,7 +185,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -215,7 +215,7 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -224,7 +224,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -259,7 +259,7 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -268,7 +268,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -287,14 +287,14 @@ describe('Choice normalization', () => {
 			isInline: () => false,
 			isVoid: () => false
 		}
-		normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on Choice calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

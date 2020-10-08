@@ -9,7 +9,7 @@ const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xm
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
-const { userHasPermissionToDraft } = require('obojobo-repository/server/services/permissions')
+const DraftPermissions = require('obojobo-repository/server/models/draft_permissions')
 const {
 	checkValidationRules,
 	requireDraftId,
@@ -32,12 +32,15 @@ router
 	.route('/:draftId/full')
 	.get([requireDraftId, requireCanViewEditor, checkContentId, checkValidationRules])
 	.get(async (req, res) => {
-		if (Math.random() > 0.5) {
-			res.unexpected('oops')
-		}
+		// if (Math.random() > 0.5) {
+		// 	res.unexpected('oops')
+		// }
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
-			const hasPerms = await userHasPermissionToDraft(req.currentUser.id, req.params.draftId)
+			const hasPerms = await DraftPermissions.userHasPermissionToDraft(
+				req.currentUser.id,
+				req.params.draftId
+			)
 
 			if (!hasPerms) {
 				return res.notAuthorized(
@@ -53,18 +56,20 @@ router
 				// get the current version
 				draftModel = await DraftModel.fetchById(req.params.draftId)
 			}
-
+			const draftDocument = draftModel.document
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
 					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
-						xml = jsonToXml(draftModel.document)
+						xml = jsonToXml(draftDocument)
 					}
+					res.set('Obo-DraftContentId', draftDocument.contentId)
 					res.send(xml)
 				},
 				default: () => {
-					res.success(draftModel.document)
+					res.set('Obo-DraftContentId', draftDocument.contentId)
+					res.success(draftDocument)
 				}
 			})
 		} catch (e) {
@@ -131,7 +136,10 @@ router
 		}
 
 		return DraftModel.createWithContent(req.currentUser.id, draftJson, draftXml)
-			.then(res.success)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -141,7 +149,10 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(res.success)
+			.then(draft => {
+				res.set('Obo-DraftContentId', draft.content.id)
+				res.success({ id: draft.id, contentId: draft.content.id })
+			})
 			.catch(res.unexpected)
 	})
 
@@ -197,6 +208,7 @@ router
 					documentInput,
 					xml || null
 				).then(id => {
+					res.set('Obo-DraftContentId', id)
 					res.success({ id })
 				})
 			})

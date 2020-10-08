@@ -6,7 +6,7 @@ import Assessment from './editor-component'
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 jest.mock(
@@ -16,9 +16,7 @@ jest.mock(
 
 describe('Assessment editor', () => {
 	test('Node component', () => {
-		const component = renderer.create(
-			<Assessment element={{ content: {} }}/>
-		)
+		const component = renderer.create(<Assessment element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

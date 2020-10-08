@@ -281,10 +281,8 @@ describe('Component Editor Node', () => {
 		const component = rtr.create(<Node {...mockProps} />)
 		component.getInstance().moveNode(0)
 
-		expect(Transforms.moveNodes).toHaveBeenCalledWith(mockProps.editor, {
-			at: [0],
-			to: 'mock-previous-return'
-		})
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('Node component move node up', () => {
@@ -293,10 +291,8 @@ describe('Component Editor Node', () => {
 		const component = rtr.create(<Node {...mockProps} />)
 		component.getInstance().moveNode(1)
 
-		expect(Transforms.moveNodes).toHaveBeenCalledWith(mockProps.editor, {
-			at: [0],
-			to: 'mock-next-return'
-		})
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('onOpen and onClose call toggleEditable', () => {

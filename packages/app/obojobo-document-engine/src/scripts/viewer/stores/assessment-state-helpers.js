@@ -1,6 +1,6 @@
 import { Machine, interpret, assign } from 'xstate'
 
-import APIUtil from '../util/api-util'
+import AssessmentAPI from '../util/assessment-api'
 import Common from 'Common'
 import NavStore from '../stores/nav-store'
 import AssessmentNetworkStates from './assessment-store/assessment-network-states'
@@ -17,6 +17,7 @@ import LTIResyncStates from './assessment-store/lti-resync-states'
 import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 import React from 'react'
+import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
@@ -62,6 +63,7 @@ const {
 
 class AssessmentStateHelpers {
 	static async startAttempt(assessmentId) {
+		console.log('startATtempt', assessmentId)
 		return this.onRequest(
 			await this.sendStartAttemptRequest(assessmentId),
 			this.onAttemptStarted.bind(this)
@@ -91,20 +93,28 @@ class AssessmentStateHelpers {
 			QuestionUtil.forceSendAllResponsesForContext(
 				this.composeNavContextString(assessmentId, attemptId)
 			)
+		}).catch(e => {
+			console.error(e)
 		})
 	}
 
 	static async endAttempt(draftId, attemptId) {
-		return this.onRequest(
-			await this.sendEndAttemptRequest(draftId, attemptId),
-			this.onAttemptEnded.bind(this)
-		)
+		const res = await this.sendEndAttemptRequest(draftId, attemptId)
+		const attemptHistory = await this.getAttemptHistory(res.value.assessmentId)
+
+		const assessmentModel = OboModel.models[res.value.assessmentId]
+
+		this.signalAttemptEnded(assessmentModel)
+		// this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
+
+		// return assessment
+		return attemptHistory
 	}
 
 	static async sendStartAttemptRequest(assessmentId) {
 		const model = OboModel.models[assessmentId]
 
-		return await APIUtil.startAttempt({
+		return await AssessmentAPI.startAttempt({
 			draftId: model.getRoot().get('draftId'),
 			assessmentId: model.get('id'),
 			visitId: NavStore.getState().visitId
@@ -112,7 +122,7 @@ class AssessmentStateHelpers {
 	}
 
 	static async sendResumeAttemptRequest(draftId, attemptId) {
-		return await APIUtil.resumeAttempt({
+		return await AssessmentAPI.resumeAttempt({
 			draftId,
 			attemptId,
 			visitId: NavStore.getState().visitId
@@ -120,7 +130,7 @@ class AssessmentStateHelpers {
 	}
 
 	static async sendEndAttemptRequest(draftId, attemptId) {
-		return await APIUtil.endAttempt({
+		return await AssessmentAPI.endAttempt({
 			attemptId,
 			draftId,
 			visitId: NavStore.getState().visitId
@@ -174,106 +184,148 @@ class AssessmentStateHelpers {
 		Dispatcher.trigger('assessment:attemptStarted', assessmentId)
 	}
 
-	static onAttemptEnded(res) {
-		/*
-		example response
-		{
-			"status": "ok",
-			"value": {
-				"assessmentId": "my-assessment",
-				"attempts": [
-					{
-						"userId": "1",
-						"draftId": "00000000-0000-0000-0000-000000000000",
-						"contentId": "b156af29-faf5-4c61-a035-1cc33d8f1bf5",
-						"attemptId": "d9b51660-60f4-4e13-a877-9c8339d3ecd8",
-						"assessmentScoreId": "6",
-						"attemptNumber": 1,
-						"assessmentId": "my-assessment",
-						"startTime": "2020-05-15T20:12:07.163Z",
-						"finishTime": "2020-05-15T21:11:45.301Z",
-						"isFinished": true,
-						"state": {
-							"chosen": [
-								{
-									"id": "e32101dd-8f0e-4bec-b519-968270efb426",
-									"type": "ObojoboDraft.Chunks.Question"
-								},
-								{
-									"id": "f1ebeb0e-606f-4d1e-b8b9-2ba4fbfbfa0f",
-									"type": "ObojoboDraft.Chunks.Question"
-								},
-								{
-									"id": "fa4c4db0-30f1-4386-9ce9-956aaf228378",
-									"type": "ObojoboDraft.Chunks.Question"
-								},
-								{
-									"id": "5345c7c6-ac69-4e9f-80da-6037765fa612",
-									"type": "ObojoboDraft.Chunks.QuestionBank"
-								},
-								{
-									"id": "af4ea08a-e488-4156-a2a0-c0f9a64c58eb",
-									"type": "ObojoboDraft.Chunks.QuestionBank"
-								}
-							]
-						},
-						"questionScores": [
-							{
-								"id": "e32101dd-8f0e-4bec-b519-968270efb426",
-								"score": 0
-							},
-							{
-								"id": "f1ebeb0e-606f-4d1e-b8b9-2ba4fbfbfa0f",
-								"score": 0
-							},
-							{
-								"id": "fa4c4db0-30f1-4386-9ce9-956aaf228378",
-								"score": 0
-							}
-						],
-						"responses": [],
-						"attemptScore": 0,
-						"assessmentScore": 0,
-						"assessmentScoreDetails": {
-							"status": "passed",
-							"rewardTotal": 0,
-							"attemptScore": 0,
-							"rewardedMods": [],
-							"attemptNumber": 1,
-							"assessmentScore": 0,
-							"assessmentModdedScore": 0
-						}
-					}
-				],
-				"ltiState": null
+	static async getAttemptHistory(assessmentId) {
+		return this.onRequest(
+			await this.sendGetAttemptHistoryRequest(assessmentId),
+			this.onGetAttemptHistory.bind(this)
+		)
+	}
+
+	static async sendGetAttemptHistoryRequest(assessmentId) {
+		try {
+			const model = OboModel.models[assessmentId]
+
+			const historyResponse = await AssessmentAPI.getAttemptHistory({
+				draftId: model.getRoot().get('draftId'),
+				visitId: NavStore.getState().visitId
+			})
+
+			const history = historyResponse.value
+			const assessment = history.find(assessment => assessment.assessmentId === assessmentId)
+			const attemptIds = assessment.attempts.map(attempt => attempt.id)
+
+			const review = await AssessmentAPI.reviewAttempt(attemptIds)
+
+			assessment.attempts.forEach(attempt => {
+				attempt.state.questionModels = review[attempt.id]
+			})
+
+			return historyResponse
+		} catch (e) {
+			console.error(e)
+			return null
+		}
+	}
+
+	static onGetAttemptHistory(res) {
+		// const attemptsByAssessment = res.value
+
+		// this.updateStateAfterAttemptHistory(attemptsByAssessment)
+
+		// Return the response so that the assessment data can be added to the context
+		return res
+	}
+
+	// static async onAttemptEnded(res) {
+	// 	/*
+	// 	example response
+	// 	{
+	// 		status: 'ok',
+	// 		value: {
+	// 			assessmentId: ...,
+	// 			attemptId: ...,
+	// 			assessmentScoreId: ...,
+	// 			assessmentModdedScore: 0
+	// 			assessmentScore: 0
+	// 			attemptNumber: 2
+	// 			attemptScore: 0
+	// 			rewardTotal: 0
+	// 			rewardedMods: []
+	// 			status: "passed"
+	// 		}
+	// 	}
+	// 	*/
+
+	// }
+
+	// Turns the assessment history response into local state data
+	static getUpdatedAssessmentData(assessmentItem) {
+		const attempts = assessmentItem.attempts
+
+		// is the 'state' property needed as well?
+		return {
+			id: assessmentItem.assessmentId,
+			attempts,
+			current: null,
+			unfinishedAttempt: attempts.find(a => !a.isFinished) || null,
+			lti: assessmentItem.ltiState,
+			ltiNetworkState: LTINetworkStates.IDLE,
+			ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
+			attemptHistoryNetworkState: 'loaded',
+			highestAttemptScoreAttempts: findItemsWithMaxPropValue(attempts, 'result.attemptScore'),
+			highestAssessmentScoreAttempts: findItemsWithMaxPropValue(attempts, 'assessmentScore'),
+			isScoreImported: attempts.some(a => a.isImported)
+		}
+	}
+
+	static getStateSummaryFromAssessmentState(assessmentState) {
+		const summary = {
+			assessmentId: assessmentState.id,
+			importUsed: assessmentState.isScoreImported,
+			unfinishedAttemptId: null,
+			scores: []
+		}
+
+		assessmentState.attempts.forEach(attempt => {
+			if (!attempt.isFinished) {
+				summary.unfinishedAttemptId = attempt.id
+			} else {
+				summary.scores.push(attempt.assessmentScore)
 			}
-		}
-
-		*/
-		const assessment = this.getInternalAssessmentObjectFromResponse(res.value)
-		const attempts = assessment.attempts //res.value.attempts
-		const lastAttempt = attempts[attempts.length - 1]
-		const { assessmentId, attemptId, attemptNumber } = lastAttempt
-		const assessmentModel = OboModel.models[assessmentId]
-
-		this.signalAttemptEnded(assessmentModel)
-		this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
-
-		return assessment
-	}
-
-	static updateStateByContextForAttempt(attempt) {
-		const scores = {}
-		attempt.questionScores.forEach(scoreData => {
-			scores[scoreData.id] = scoreData
 		})
-		const stateToUpdate = {
-			scores,
-			responses: attempt.responses
-		}
 
-		QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+		console.log('@TODO find a place to delete the importable score!')
+
+		// can no longer import now that we have a score
+		// if (summary.scores.length) {
+		// 	delete this.state.importableScores[assessId]
+		// }
+
+		return summary
 	}
+
+	static updateQuestionStore(assessmentItem) {
+		// UPDATE QUESTION STORE
+		assessmentItem.attempts.forEach(attempt => {
+			const qState = {
+				scores: {},
+				responses: {}
+			}
+
+			attempt.result.questionScores.forEach(score => {
+				qState.scores[score.id] = score
+			})
+
+			attempt.questionResponses.forEach(resp => {
+				qState.responses[resp.questionId] = resp.response
+			})
+
+			QuestionStore.updateStateByContext(qState, `assessmentReview:${attempt.id}`)
+		})
+	}
+
+	// static updateStateByContextForAttempt(attempt) {
+	// 	const scores = {}
+	// 	attempt.questionScores.forEach(scoreData => {
+	// 		scores[scoreData.id] = scoreData
+	// 	})
+	// 	const stateToUpdate = {
+	// 		scores,
+	// 		responses: attempt.responses
+	// 	}
+
+	// 	QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+	// }
 
 	// static hideQuestions(chosenQuestions, navContext) {
 	// 	chosenQuestions.forEach(question => {
@@ -299,38 +351,37 @@ class AssessmentStateHelpers {
 	}
 
 	// Converts the assessmentResponse return value to an object that Obojobo can more easily use!
-	static getInternalAssessmentObjectFromResponse(assessmentResponse) {
-		const attempts = assessmentResponse.attempts
+	// static getInternalAssessmentObjectFromResponse(assessmentResponse) {
+	// 	const attempts = assessmentResponse.attempts
 
-		const getLastOf = array => {
-			return array && array.length > 0 ? array[array.length - 1] : null
-		}
+	// 	const getLastOf = array => {
+	// 		return array && array.length > 0 ? array[array.length - 1] : null
+	// 	}
 
-		return {
-			lti: assessmentResponse.ltiState,
-			highestAttemptScoreAttempts: AssessmentUtil.findHighestAttempts(attempts, 'attemptScore'),
-			highestAssessmentScoreAttempts: AssessmentUtil.findHighestAttempts(
-				attempts,
-				'assessmentScore'
-			),
-			unfinishedAttempt: getLastOf(attempts.filter(attempt => !attempt.isFinished)),
-			attempts: attempts
-				.filter(attempt => attempt.isFinished)
-				.map(attempt => {
-					// Server returns responses in an array, but we use a object keyed by the questionId:
-					if (!Array.isArray(attempt.responses)) {
-						return attempt
-					}
+	// 	console.log('@TODO DRY VIOLATION!', assessmentResponse)
 
-					const responsesById = {}
-					attempt.responses.forEach(r => {
-						responsesById[r.id] = r.response
-					})
+	// 	return {
+	// 		lti: assessmentResponse.ltiState,
+	// 		highestAttemptScoreAttempts: findItemsWithMaxPropValue(attempts, 'attemptScore'),
+	// 		highestAssessmentScoreAttempts: findItemsWithMaxPropValue(attempts, 'assessmentScore'),
+	// 		unfinishedAttempt: getLastOf(attempts.filter(attempt => !attempt.isFinished)),
+	// 		attempts: attempts
+	// 			.filter(attempt => attempt.isFinished)
+	// 			.map(attempt => {
+	// 				// Server returns responses in an array, but we use a object keyed by the questionId:
+	// 				if (!Array.isArray(attempt.responses)) {
+	// 					return attempt
+	// 				}
 
-					return { ...attempt, responses: responsesById }
-				})
-		}
-	}
+	// 				const responsesById = {}
+	// 				attempt.responses.forEach(r => {
+	// 					responsesById[r.id] = r.response
+	// 				})
+
+	// 				return { ...attempt, responses: responsesById }
+	// 			})
+	// 	}
+	// }
 }
 
 export default AssessmentStateHelpers

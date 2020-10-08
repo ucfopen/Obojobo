@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonLink renders when given props 1`] = `
+<a
+  className="repository--button extraClass"
+  href="/path/to/url"
+  target="_blank"
+>
+  Link Text
+</a>
+`;
+
+exports[`ButtonLink renders with no extra classes 1`] = `
+<a
+  className="repository--button "
+  href="/path/to/url"
+  target="_blank"
+>
+  Link Text
+</a>
+`;

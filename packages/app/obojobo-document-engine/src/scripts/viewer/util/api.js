@@ -38,6 +38,20 @@ const API = {
 		})
 	},
 
+	postWithFormat(endpoint, body, format) {
+		if (!body) body = '{}'
+
+		return fetch(endpoint, {
+			method: 'POST',
+			credentials: 'include',
+			body: body,
+			headers: {
+				Accept: format,
+				'Content-Type': format
+			}
+		})
+	},
+
 	delete(endpoint) {
 		return fetch(endpoint, {
 			method: 'DELETE',
@@ -55,7 +69,9 @@ const API = {
 			credentials: 'include',
 			body: formData
 		}).then(processJsonResults)
-	}
+	},
+
+	processJsonResults
 }
 
 module.exports = API

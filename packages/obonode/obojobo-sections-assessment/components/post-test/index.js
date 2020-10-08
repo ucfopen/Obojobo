@@ -4,10 +4,11 @@ import FullReview from '../full-review'
 import LTIStatus from './lti-status'
 import React from 'react'
 import Viewer from 'Viewer'
+import AssessmentApi from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
-const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
+const { AssessmentUtil, NavUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 const { Throbber } = Common.components
 
@@ -15,21 +16,15 @@ class AssessmentPostTest extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
-			attempts: null,
-			isFetching: true
-		}
-
 		this.h1Ref = React.createRef()
 		this.ltiStatusRef = React.createRef()
 		this.boundFocusOnContent = this.focusOnContent.bind(this)
 		this.onClickResendScore = this.onClickResendScore.bind(this)
-		this.renderFullReview = this.renderFullReview.bind(this)
+		this.renderReview = this.renderReview.bind(this)
 	}
 
 	componentDidMount() {
 		Dispatcher.on(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
-		this.fetchAttemptReviews() // WARNING - ASYNC
 	}
 
 	componentWillUnmount() {
@@ -45,44 +40,22 @@ class AssessmentPostTest extends React.Component {
 		}
 	}
 
-	// WARNING - ASYNC
-	fetchAttemptReviews() {
-		const attemptIds = []
+	onClickResendScore() {
+		AssessmentUtil.resendLTIScore(this.props.model)
+	}
+
+	renderReview() {
+		const showFullReview = AssessmentUtil.isFullReviewAvailableForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 
 		const attempts = AssessmentUtil.getAllAttempts(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
 
-		attempts.forEach(attempt => {
-			attemptIds.push(attempt.attemptId)
-		})
-
-		return APIUtil.reviewAttempt(attemptIds).then(result => {
-			attempts.forEach(attempt => {
-				attempt.state.questionModels = result[attempt.attemptId]
-			})
-
-			this.setState({
-				attempts,
-				isFetching: false
-			})
-		})
-	}
-
-	onClickResendScore() {
-		AssessmentUtil.resendLTIScore(this.props.model)
-	}
-
-	renderFullReview() {
-		const showFullReview = AssessmentUtil.isFullReviewAvailableForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-
-		return (
-			<FullReview {...this.props} showFullReview={showFullReview} attempts={this.state.attempts} />
-		)
+		return <FullReview {...this.props} showFullReview={showFullReview} attempts={attempts} />
 	}
 
 	renderScoreActionsPage(props) {
@@ -119,13 +92,22 @@ class AssessmentPostTest extends React.Component {
 					{Math.round(assessmentScore)}
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>
-				<span className="from-attempt">{`From attempt ${highestAttempts[0].assessmentScoreDetails.attemptNumber}`}</span>
+				{props.moduleData.assessmentState.importHasBeenUsed ? (
+					<span className="from-attempt">Imported Score</span>
+				) : (
+					<span className="from-attempt">{`From attempt ${highestAttempts[0].scoreDetails.attemptNumber}`}</span>
+				)}
 			</div>
 		)
 	}
 
 	render() {
 		const props = this.props
+
+		const isAttemptHistoryLoadedForModel = AssessmentUtil.isAttemptHistoryLoadedForModel(
+			props.moduleData.assessmentState,
+			props.model
+		)
 
 		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			props.moduleData.assessmentState,
@@ -141,25 +123,31 @@ class AssessmentPostTest extends React.Component {
 
 		return (
 			<div className="score unlock">
-				<div className="overview">
-					<h1 ref={this.h1Ref} tabIndex="-1">
-						{assessmentLabel} Overview
-					</h1>
-					{this.renderRecordedScore(assessmentScore, props)}
-					<LTIStatus
-						ref={this.ltiStatusRef}
-						ltiState={ltiState}
-						isPreviewing={props.moduleData.isPreviewing}
-						externalSystemLabel={props.moduleData.lti.outcomeServiceHostname}
-						onClickResendScore={this.onClickResendScore}
-						assessmentScore={assessmentScore}
-					/>
-					<div className="score-actions-page pad">{this.renderScoreActionsPage(props)}</div>
-				</div>
-				<div className="attempt-history">
-					<h1>Attempt History:</h1>
-					{this.state.isFetching ? <Throbber /> : this.renderFullReview()}
-				</div>
+				{isAttemptHistoryLoadedForModel ? (
+					<React.Fragment>
+						<div className="overview">
+							<h1 ref={this.h1Ref} tabIndex="-1">
+								{assessmentLabel} Overview
+							</h1>
+							{this.renderRecordedScore(assessmentScore, props)}
+							<LTIStatus
+								ref={this.ltiStatusRef}
+								ltiState={ltiState}
+								isPreviewing={props.moduleData.isPreviewing}
+								externalSystemLabel={props.moduleData.lti.outcomeServiceHostname}
+								onClickResendScore={this.onClickResendScore}
+								assessmentScore={assessmentScore}
+							/>
+							<div className="score-actions-page pad">{this.renderScoreActionsPage(props)}</div>
+						</div>
+						<div className="attempt-history">
+							<h1>Attempt History:</h1>
+							{this.renderReview()}
+						</div>
+					</React.Fragment>
+				) : (
+					<Throbber />
+				)}
 			</div>
 		)
 	}

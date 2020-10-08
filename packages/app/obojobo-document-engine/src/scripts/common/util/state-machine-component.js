@@ -13,7 +13,8 @@ export default class Dialog extends React.Component {
 		this.state = {
 			log: '',
 			hackPortals: [],
-			showHackPortals: false
+			showHackPortals: false,
+			assessmentState: ''
 		}
 
 		// const originalOnTransition = props.machine.onTransition
@@ -35,7 +36,7 @@ export default class Dialog extends React.Component {
 	}
 
 	onTransition(newState, old) {
-		console.log('ON TRANS', old.type + '->' + newState.value)
+		console.log('State Transition:', old.type + '->' + newState.value)
 		this.setState({ log: old.type + '->' + newState.value + '\n' + this.state.log })
 	}
 
@@ -75,6 +76,12 @@ export default class Dialog extends React.Component {
 		})
 	}
 
+	updateAssessmentStateDisplay() {
+		this.setState({
+			assessmentState: JSON.stringify(this.props.assessmentState.assessments, null, 2)
+		})
+	}
+
 	render() {
 		return (
 			<div
@@ -91,45 +98,6 @@ export default class Dialog extends React.Component {
 			>
 				{this.props.machine ? (
 					<div>
-						<button
-							onClick={() => {
-								ModalUtil.show(
-									<SimpleDialog ok title="summoned-dialog">
-										Spontaneously conjured dialog
-									</SimpleDialog>
-								)
-							}}
-						>
-							Spawn Alert Dialog
-						</button>
-						<br />
-						<button
-							onClick={() => {
-								this.alterHackPortals(true)
-							}}
-						>
-							Remove Hack Portal
-						</button>
-						<button
-							onClick={() => {
-								this.alterHackPortals()
-							}}
-						>
-							Add Hack Portal
-						</button>
-						<br />
-						<button
-							onClick={() => {
-								this.setState({ showHackPortals: !this.state.showHackPortals })
-							}}
-						>
-							Toggle Hack Portals
-						</button>
-						<br />
-						{this.state.showHackPortals ? (
-							<ModalPortal>{this.state.hackPortals}</ModalPortal>
-						) : null}
-						<br />
 						<label>
 							<span>Step:</span>
 							<select
@@ -157,6 +125,11 @@ export default class Dialog extends React.Component {
 						<textarea
 							style={{ fontSize: '10px', width: 360, height: 160 }}
 							value={this.state.log}
+						/>
+						<textarea
+							onClick={this.updateAssessmentStateDisplay.bind(this)}
+							style={{ fontSize: '10px', width: 360, height: 800, display: 'block' }}
+							value={this.state.assessmentState}
 						/>
 					</div>
 				) : (

@@ -160,16 +160,15 @@ class Node extends React.Component {
 		const targetPath =
 			thisSiblingIndex < targetIndex ? Path.next(thisPath) : Path.previous(thisPath)
 
-		const options = {
-			at: thisPath,
-			to: targetPath
-		}
-
 		// All kinds of issues pop up if the selection spans multiple chunks
 		// when using moveNode.  So set the selection to the start of the currently moving element
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, thisPath))
 
-		Transforms.moveNodes(this.props.editor, options)
+		// As for slate 0.57.2 does not support undo/redo for Transforms.moveNodes,
+		// this bypass solution will delete the current node and insert it to the appropriate location
+		const curNode = { ...this.props.element }
+		this.deleteNode()
+		Transforms.insertNodes(this.props.editor, curNode, { at: targetPath })
 	}
 
 	renderMoreInfo() {

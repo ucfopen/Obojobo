@@ -27,6 +27,15 @@ const AssessmentUtil = {
 		return assessment
 	},
 
+	getAssessmentSummaryForModel(state, model) {
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		return state.assessmentSummaries[assessment.id] || null
+	},
+
 	getAssessmentMachineForModel(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
@@ -69,6 +78,7 @@ const AssessmentUtil = {
 
 	getHighestAttemptsForModelByAttemptScore(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
 		if (!assessment) {
 			return []
 		}
@@ -77,35 +87,16 @@ const AssessmentUtil = {
 	},
 
 	getAssessmentScoreForModel(state, model) {
-		const attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		const summary = AssessmentUtil.getAssessmentSummaryForModel(state, model)
 
-		if (attempts.length === 0) {
+		if (!summary || summary.scores.length === 0) {
 			return null
 		}
 
-		return attempts[0].assessmentScore
-	},
+		const scores = summary.scores.map(s => (s === null ? -1 : s))
+		const max = Math.max.apply(null, scores)
 
-	getLastAttemptScoresForModel(state, model) {
-		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment) {
-			return null
-		}
-
-		if (assessment.attempts.length === 0) {
-			return []
-		}
-
-		return assessment.attempts[assessment.attempts.length - 1].questionScores
-	},
-
-	getAssessmentStateForModel(state, model) {
-		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment) {
-			return null
-		}
-
-		return assessment.state
+		return max === -1 ? null : max
 	},
 
 	getCurrentAttemptForModel(state, model) {
@@ -122,6 +113,7 @@ const AssessmentUtil = {
 	},
 
 	getAttemptsRemaining(state, model) {
+		if (state.importHasBeenUsed === true) return 0
 		return Math.max(
 			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
 			0
@@ -129,7 +121,17 @@ const AssessmentUtil = {
 	},
 
 	hasAttemptsRemaining(state, model) {
+		if (state.importHasBeenUsed === true) return false
 		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
+	},
+
+	getImportableScoreForModel(state, model) {
+		const assessmentId = model.get('id')
+		if (!state.importableScores[assessmentId]) {
+			return null
+		}
+
+		return state.importableScores[assessmentId].highestScore
 	},
 
 	getLTIStateForModel(state, model) {
@@ -143,6 +145,15 @@ const AssessmentUtil = {
 			networkState: assessment.ltiNetworkState,
 			resyncState: assessment.ltiResyncState
 		}
+	},
+
+	isAttemptHistoryLoadedForModel(state, model) {
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		return assessment.attemptHistoryNetworkState === 'loaded'
 	},
 
 	// getAssessmentStep(state, model) {
@@ -170,17 +181,6 @@ const AssessmentUtil = {
 			default:
 				return true
 		}
-	},
-
-	getResponseCount(questionModels, questionState, context) {
-		const count = (acc, questionModel) => {
-			if (QuestionUtil.getResponse(questionState, questionModel, context)) {
-				return acc + 1
-			}
-			return acc
-		}
-
-		return questionModels.reduce(count, 0)
 	},
 
 	getRecordedResponseCount(questionModels, questionState, context) {
@@ -337,12 +337,13 @@ const AssessmentUtil = {
 	},
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
-		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment || assessment.attempts.length === 0) {
+		const summary = AssessmentUtil.getAssessmentSummaryForModel(state, model)
+
+		if (!summary) {
 			return 0
 		}
 
-		return assessment.attempts.length
+		return summary.scores.length
 	},
 
 	getNumPossibleCorrect(questionScores) {
@@ -353,27 +354,16 @@ const AssessmentUtil = {
 		return questionScores.map(q => q.score).filter(score => parseInt(score, 10) === 100).length
 	},
 
-	findHighestAttempts(attempts, scoreProperty) {
-		if (attempts.length === 0) return []
+	getUnfinishedAttemptId(state, model) {
+		const summary = AssessmentUtil.getAssessmentSummaryForModel(state, model)
 
-		const attemptsByScore = {}
-		let highestScore = -1
+		if (!summary) return null
 
-		attempts.forEach(attempt => {
-			const score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+		return summary.unfinishedAttemptId || null
+	},
 
-			if (score > highestScore) {
-				highestScore = score
-			}
-
-			if (!attemptsByScore[score]) {
-				attemptsByScore[score] = []
-			}
-
-			attemptsByScore[score].push(attempt)
-		})
-
-		return attemptsByScore[highestScore]
+	hasUnfinishedAttempt(state, model) {
+		return AssessmentUtil.getUnfinishedAttemptId(state, model) !== null
 	},
 
 	startAttempt(model) {

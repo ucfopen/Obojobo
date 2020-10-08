@@ -14,24 +14,20 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	}
 }))
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
 describe('Feedback Editor Node', () => {
 	test('Feedback builds the expected component', () => {
-		const component = renderer.create(
-			<Feedback element={{ content: {} }}/>
-		)
+		const component = renderer.create(<Feedback element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Feedback component deletes itself', () => {
-		const component = shallow(
-			<Feedback element={{ content: {} }}/>
-		)
+		const component = shallow(<Feedback element={{ content: {} }} />)
 
 		component.find('Button').simulate('click')
 

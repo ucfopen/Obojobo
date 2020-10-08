@@ -40,7 +40,7 @@ const getReportForAttempt = (assessmentModel, allAttempts, attemptNumber) => {
 	const reporter = new AssessmentScoreReporter({
 		assessmentRubric: assessmentModel.modelState.rubric.toObject(),
 		totalNumberOfAttemptsAllowed: assessmentModel.modelState.attempts,
-		allAttempts
+		allScoreDetails: allAttempts.map(a => a.scoreDetails)
 	})
 
 	return reporter.getReportFor(attemptNumber)
@@ -76,10 +76,8 @@ const getDialog = (
 	assessmentModel,
 	assessment
 ) => {
-	console.log('getDialog', assessmentMachineState)
 	switch (assessmentMachineState) {
 		case PROMPTING_FOR_RESUME:
-			console.log('sracd', PROMPTING_FOR_RESUME)
 			return (
 				<SimpleDialog
 					ok
@@ -97,7 +95,6 @@ const getDialog = (
 			)
 
 		case SEND_RESPONSES_FAILED:
-			console.log('sracd', SEND_RESPONSES_FAILED)
 			return (
 				<SimpleDialog onConfirm={() => continueAttempt(assessmentModel)} ok title="Error">
 					<p>Sorry, something went wrong sending your responses. Please try submitting again.</p>
@@ -123,7 +120,6 @@ const getDialog = (
 		// 	)
 
 		case ENDING_ATTEMPT:
-			console.log('sracd', ENDING_ATTEMPT)
 			return (
 				<Dialog
 					// buttons={[
@@ -251,7 +247,6 @@ const getDialog = (
 		}
 
 		case SEND_RESPONSES_SUCCESSFUL: {
-			console.log('sracd', SENDING_RESPONSES, currentAttemptStatus)
 			switch (currentAttemptStatus) {
 				case CurrentAssessmentStates.NO_ATTEMPT:
 				case CurrentAssessmentStates.NO_QUESTIONS:
@@ -331,6 +326,8 @@ const getDialog = (
 // }
 
 const AssessmentDialog = props => {
+	console.log('ASSESSMENT DIALOG', props.currentAttemptStatus, props.assessmentMachineState)
+
 	return getDialog(
 		props.currentAttemptStatus,
 		props.assessmentMachineState,

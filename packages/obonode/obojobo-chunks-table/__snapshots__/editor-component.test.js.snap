@@ -9,7 +9,7 @@ exports[`Table Editor Node Table component 1`] = `
       className="container"
     >
       <table
-        className="view"
+        className="view is-display-type-fixed"
       >
         <tbody />
       </table>
@@ -18,4 +18,4 @@ exports[`Table Editor Node Table component 1`] = `
 </div>
 `;
 
-exports[`Table Editor Node Table component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody></tbody></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Toggle Header</button></div></div></div></div></div>"`;
+exports[`Table Editor Node Table component handles tabbing 1`] = `"<div><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view is-display-type-fixed\\"><tbody></tbody></table></div><div class=\\"buttonbox-box\\" contenteditable=\\"false\\"><div class=\\"box-border\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-header\\"><button class=\\"button\\" contenteditable=\\"false\\">Toggle Header</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center toggle-fixed-width\\"><button class=\\"button\\" contenteditable=\\"false\\">Switch to auto width cells</button></div></div></div></div></div>"`;

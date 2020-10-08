@@ -11,6 +11,8 @@ import Test from './components/test'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import StateMachineComponent from 'obojobo-document-engine/src/scripts/common/util/state-machine-component'
+import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
+import AssessmentStateActions from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-state-actions'
 
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
@@ -20,7 +22,7 @@ const { SimpleDialog, Dialog, ModalPortal } = Common.components.modal
 // const { Dialog } = Common.components.modal
 
 const { AssessmentUtil } = Viewer.util
-const { AssessmentNetworkStates, AssessmentStateActions } = Viewer.stores.assessmentStore
+// const { AssessmentNetworkStates, AssessmentStateActions } = Viewer.stores.assessmentStore
 const { NavUtil, FocusUtil, CurrentAssessmentStates } = Viewer.util
 
 const {
@@ -114,8 +116,8 @@ class Assessment extends React.Component {
 	}
 
 	componentDidMount() {
-		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
-		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
+		// Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
+		// Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 
 		// if we're in an active attempt - notify the navUtil we're in Assessment
 		const attemptInfo = AssessmentUtil.getCurrentAttemptForModel(
@@ -217,22 +219,22 @@ class Assessment extends React.Component {
 		// 	)
 		// }
 
-		// AssessmentUtil.forceSendResponsesForCurrentAttempt(
-		// 	this.props.model,
-		// 	this.props.moduleData.navState.context
-		// )
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
+		AssessmentUtil.forceSendResponsesForCurrentAttempt(
+			this.props.model,
+			this.props.moduleData.navState.context
 		)
+
+		// console.log('@TODO - should this be here?')
+		// const machine = AssessmentUtil.getAssessmentMachineForModel(
+		// 	this.props.moduleData.assessmentState,
+		// 	this.props.model
+		// )
+		// machine.send(AssessmentStateActions.SEND_RESPONSES)
 
 		// ModalUtil.hide()
 		// ModalUtil.hide()
 		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
 		// }
-
-		machine.send(AssessmentStateActions.SEND_RESPONSES)
 
 		// machine.forceSendAllResponses()
 		// machine.gotoStep(AssessmentNetworkStates.TRYING_TO_SUBMIT)
@@ -375,9 +377,10 @@ class Assessment extends React.Component {
 						this.props.model
 					)}
 				</h1> */}
-				{/* <StateMachineComponent
+				<StateMachineComponent
+					assessmentState={this.props.moduleData.assessmentState}
 					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
-				></StateMachineComponent> */}
+				></StateMachineComponent>
 				{childEl}
 
 				<ModalPortal>

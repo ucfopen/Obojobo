@@ -10,7 +10,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	Registry: {
-		contentTypes: [ 'ObojoboDraft.Chunks.Text' ]
+		contentTypes: ['ObojoboDraft.Chunks.Text']
 	},
 	components: {
 		// eslint-disable-next-line react/display-name
@@ -45,7 +45,7 @@ describe('Feedback editor', () => {
 
 	test('normalizeNode on Feedback calls next if all Feedback children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -69,7 +69,7 @@ describe('Feedback editor', () => {
 			],
 			isInline: () => false
 		}
-		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -78,7 +78,7 @@ describe('Feedback editor', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -102,7 +102,7 @@ describe('Feedback editor', () => {
 			],
 			isInline: () => false
 		}
-		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -111,7 +111,7 @@ describe('Feedback editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -129,14 +129,14 @@ describe('Feedback editor', () => {
 			],
 			isInline: () => false
 		}
-		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		Feedback.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on Feedback calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

@@ -11,7 +11,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		contentTypes: [ 'ObojoboDraft.Chunks.Text' ]
+		contentTypes: ['ObojoboDraft.Chunks.Text']
 	}
 }))
 
@@ -43,7 +43,7 @@ describe('MCAnswer editor', () => {
 
 	test('normalizeNode on MCAnswer calls next if all MCAnswer children are valid', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -67,7 +67,7 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -76,7 +76,7 @@ describe('MCAnswer editor', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -100,7 +100,7 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
@@ -109,7 +109,7 @@ describe('MCAnswer editor', () => {
 		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',
@@ -127,14 +127,14 @@ describe('MCAnswer editor', () => {
 			],
 			isInline: () => false
 		}
-		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0,0]], editor, next)
+		MCAnswer.plugins.normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
 		expect(Transforms.wrapNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on MCFeedback calls Transforms with invalid parent', () => {
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

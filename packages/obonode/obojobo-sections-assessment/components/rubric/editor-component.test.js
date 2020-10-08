@@ -9,7 +9,7 @@ import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
@@ -47,7 +47,8 @@ describe('Rubric editor', () => {
 			<Rubric
 				element={{
 					content: { mods: [] }
-				}}/>
+				}}
+			/>
 		)
 		component
 			.find('input')
@@ -75,9 +76,9 @@ describe('Rubric editor', () => {
 				}}
 				editor={{
 					toggleEditable: jest.fn()
-				}}/>
+				}}
+			/>
 		)
-
 
 		component
 			.find('input')
@@ -105,7 +106,8 @@ describe('Rubric editor', () => {
 			<Rubric
 				element={{
 					content: { passedType: 'set-value', mods: [] }
-				}}/>
+				}}
+			/>
 		)
 
 		component
@@ -135,7 +137,8 @@ describe('Rubric editor', () => {
 			<Rubric
 				element={{
 					content: { failedType: 'set-value', mods: [] }
-				}}/>
+				}}
+			/>
 		)
 
 		component
@@ -165,7 +168,8 @@ describe('Rubric editor', () => {
 			<Rubric
 				element={{
 					content: { unableToPassType: 'set-value', mods: [] }
-				}}/>
+				}}
+			/>
 		)
 
 		component
@@ -209,10 +213,11 @@ describe('Rubric editor', () => {
 							]
 						}
 					]
-				}}/>
+				}}
+			/>
 		)
 
-		ReactEditor.findPath.mockReturnValueOnce([0,0])
+		ReactEditor.findPath.mockReturnValueOnce([0, 0])
 
 		component
 			.find('button')
@@ -228,7 +233,8 @@ describe('Rubric editor', () => {
 			<Rubric
 				element={{
 					content: { unableToPassType: 'set-value', mods: [] }
-				}}/>
+				}}
+			/>
 		)
 
 		component.instance().changeMods({ mods: [] })

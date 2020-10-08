@@ -7,6 +7,7 @@ let variableHandlers
 const noop = () => {}
 let memoInsertable
 let memoContent
+let memoModals
 
 class _Registry {
 	init() {
@@ -84,6 +85,7 @@ class _Registry {
 				default: false,
 				insertItem: null,
 				componentClass: null,
+				modalClass: null,
 				commandHandler: null,
 				variables: {},
 				variableHandler: noop,
@@ -165,6 +167,16 @@ class _Registry {
 				.map(item => item.type)
 		}
 		return memoContent
+	}
+
+	get modals() {
+		if (!memoModals) {
+			memoModals = Array.from(items.values())
+				.filter(item => item.modalClass)
+				.map(item => ({ type: item.type, modalClass: item.modalClass }))
+		}
+
+		return memoModals
 	}
 }
 

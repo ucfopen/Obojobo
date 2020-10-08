@@ -1,11 +1,9 @@
 const convert = require('xml-js')
-
 const nameTransform = require('./src/name-transformer')
 const extensionTransform = require('./src/extension-transform')
 const htmlTransform = require('./src/html-transform')
 const draftJsonTransform = require('./src/draft-json-transform')
 const attrElementToAttrItem = require('./src/attr-element-to-attr-item')
-
 const parseTg = require('./src/text-group-parser')
 const scoreParser = require('./src/score-action-parser')
 const parseTriggers = require('./src/triggers-parser')

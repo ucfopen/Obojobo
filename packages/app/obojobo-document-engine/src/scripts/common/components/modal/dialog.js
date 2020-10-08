@@ -12,7 +12,7 @@ export default class Dialog extends React.Component {
 	}
 
 	static get defaultProps() {
-		return { centered: true }
+		return { centered: true, buttons: [] }
 	}
 
 	componentDidMount() {
@@ -90,6 +90,7 @@ export default class Dialog extends React.Component {
 								/>
 							)
 						})}
+						{this.props.customControls}
 					</div>
 				</Modal>
 			</div>

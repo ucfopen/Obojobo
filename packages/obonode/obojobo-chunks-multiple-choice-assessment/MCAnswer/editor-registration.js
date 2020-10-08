@@ -34,7 +34,7 @@ const MCAnswer = {
 					// Wrap loose text children in a Text Node
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: TEXT_NODE,
 								content: { indent: 0 }
@@ -48,15 +48,15 @@ const MCAnswer = {
 				// MCAnswer parent normalization
 				// Note - collect up an adjacent Feedback, if it exists
 				const [parent] = Editor.parent(editor, path)
-				if(!Element.isElement(parent) || parent.type !== CHOICE_NODE) {
+				if (!Element.isElement(parent) || parent.type !== CHOICE_NODE) {
 					NormalizeUtil.wrapOrphanedSiblings(
-						editor, 
-						entry, 
-						{ 
-							type: CHOICE_NODE, 
+						editor,
+						entry,
+						{
+							type: CHOICE_NODE,
 							content: { score: 0 },
 							children: []
-						}, 
+						},
 						node => node.type === FEEDBACK_NODE
 					)
 					return

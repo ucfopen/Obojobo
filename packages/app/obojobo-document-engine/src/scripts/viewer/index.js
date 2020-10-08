@@ -1,16 +1,13 @@
-import APIUtil from './util/api-util'
+import ViewerAPI from './util/viewer-api'
 import AssessmentScoreReportView from './assessment/assessment-score-report-view'
 import AssessmentScoreReporter from './assessment/assessment-score-reporter'
 import AssessmentStore from './stores/assessment-store'
+import AssessmentNetworkStates from './stores/assessment-store/assessment-network-states'
 import AssessmentUtil from './util/assessment-util'
 import CurrentAssessmentStates from './util/current-assessment-states'
 import FocusStore from './stores/focus-store'
 import FocusUtil from './util/focus-util'
 import Header from './components/header'
-import LTINetworkStates from './stores/assessment-store/lti-network-states'
-import LTIResyncStates from './stores/assessment-store/lti-resync-states'
-import AssessmentNetworkStates from './stores/assessment-store/assessment-network-states'
-import AssessmentStateActions from './stores/assessment-store/assessment-state-actions'
 import Logo from './components/logo'
 import MediaStore from './stores/media-store'
 import MediaUtil from './util/media-util'
@@ -40,10 +37,7 @@ export default {
 	stores: {
 		AssessmentStore,
 		assessmentStore: {
-			LTINetworkStates,
-			LTIResyncStates,
-			AssessmentNetworkStates,
-			AssessmentStateActions
+			AssessmentNetworkStates
 		},
 		NavStore,
 		MediaStore,
@@ -58,7 +52,7 @@ export default {
 		AssessmentUtil,
 		CurrentAssessmentStates,
 		NavUtil,
-		APIUtil,
+		ViewerAPI,
 		MediaUtil,
 		QuestionUtil,
 		FocusUtil,

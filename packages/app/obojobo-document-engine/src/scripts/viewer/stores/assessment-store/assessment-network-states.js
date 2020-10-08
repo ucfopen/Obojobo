@@ -1,5 +1,7 @@
 export default {
+	INIT: 'init',
 	NOT_IN_ATTEMPT: 'notInAttempt',
+	NOTIFYING_OF_IMPORT: 'notifyingOfImport',
 	PROMPTING_FOR_IMPORT: 'promptingForImport',
 	PROMPTING_FOR_RESUME: 'promptingForResume',
 	// AWAITING_START_ATTEMPT_RESPONSE: 'awaitingStartAttemptResponse',
@@ -33,7 +35,10 @@ export default {
 	// END_ATTEMPT_FAILED:'',
 	END_ATTEMPT_SUCCESSFUL: 'endAttemptSuccessful',
 	// PROMPT_FOR_IMPORT:'',
-	IMPORTING_ATTEMPT: 'importingAttempt'
+	IMPORTING_ATTEMPT: 'importingAttempt',
+	IMPORTING_ATTEMPT_FAILED: 'importingAttemptFailed',
 	// IMPORT_ATTEMPT_FAILED:'',
 	// IMPORT_ATTEMPT_SUCCESSFUL
+	FETCHING_ATTEMPT_HISTORY: 'fetchingAttemptHistory',
+	FETCH_HISTORY_FAILED: 'fetchHistoryFailed'
 }
