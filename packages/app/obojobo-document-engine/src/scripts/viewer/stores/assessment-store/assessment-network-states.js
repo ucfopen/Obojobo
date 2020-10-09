@@ -1,7 +1,6 @@
 export default {
 	INIT: 'init',
 	NOT_IN_ATTEMPT: 'notInAttempt',
-	NOTIFYING_OF_IMPORT: 'notifyingOfImport',
 	PROMPTING_FOR_IMPORT: 'promptingForImport',
 	PROMPTING_FOR_RESUME: 'promptingForResume',
 	// AWAITING_START_ATTEMPT_RESPONSE: 'awaitingStartAttemptResponse',
@@ -19,6 +18,7 @@ export default {
 	END_ATTEMPT_FAILED: 'endAttemptFailed',
 
 	// WILL_RESUME_ATTEMPT:'',
+	PRE_STARTING_ATTEMPT: 'preStartingAttempt',
 	STARTING_ATTEMPT: 'startingAttempt',
 	RESUMING_ATTEMPT: 'resumingAttempt',
 	// IN_ATTEMPT:'',

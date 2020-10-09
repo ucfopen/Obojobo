@@ -102,6 +102,14 @@ class AssessmentStore extends Store {
 			this.startAttempt(payload.value.id)
 		})
 
+		Dispatcher.on('assessment:importAttempt', payload => {
+			this.importAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:abandonImport', payload => {
+			this.abandonImport(payload.value.id)
+		})
+
 		Dispatcher.on('assessment:endAttempt', payload => {
 			// this.endAttemptWithAPICall(payload.value.id, payload.value.context)
 			this.endAttempt(payload.value.id, payload.value.context)
@@ -191,6 +199,12 @@ class AssessmentStore extends Store {
 		}
 		*/
 
+		console.log(
+			'importableScore',
+			ext.importableScore,
+			arrayToObject([ext.importableScore], 'assessmentId')
+		)
+
 		this.state = {
 			assessments: {}, // assessments found in attempt history
 			machines: {},
@@ -212,63 +226,15 @@ class AssessmentStore extends Store {
 
 			this.state.assessments[id] = getNewAssessmentObject(id)
 			this.state.machines[id] = new AssessmentStateMachine(id, this.state)
+			this.state.machines[id].start(this.triggerChange.bind(this))
 		})
 
-		this.startMachines()
+		if (ext.importableScore) {
+			this.displayScoreImportNotice()
+		}
 	}
 
-	// reInit(extensions) {
-	// 	this.init(extensions)
-	// 	this.startMachines()
-	// }
-
-	startMachines() {
-		Object.values(this.state.machines).forEach(machine =>
-			machine.start(this.triggerChange.bind(this))
-		)
-	}
-
-	updateStateAfterAttemptHistory(attemptsByAssessment) {
-		// copy data into our state
-		attemptsByAssessment.forEach(assessmentItem => {
-			const { assessmentId } = assessmentItem
-
-			const newAssessmentState = this.getUpdatedAssessmentData(assessmentItem)
-			const newAssessmentSummary = this.getStateSummaryFromAssessmentState(newAssessmentState)
-
-			this.state.assessments[assessmentId] = newAssessmentState
-			this.state.assessmentSummaries[assessmentId] = newAssessmentSummary
-
-			// can no longer import now that we have a score
-			if (newAssessmentSummary.scores.length === 0) {
-				delete this.state.importableScores[assessmentId]
-			}
-
-			this.updateQuestionStore(assessmentItem)
-		})
-
-		console.log('usaah', attemptsByAssessment, this.state)
-	}
-
-	startImportScoresWithAPICall(draftId, visitId, assessmentId) {
-		return AssessmentAPI.importScore({
-			visitId,
-			draftId,
-			assessmentId,
-			importedAssessmentScoreId: this.state.importableScores[assessmentId].assessmentScoreId
-		}).then(result => {
-			if (result.status !== 'ok') {
-				return ErrorUtil.errorResponse(result)
-			}
-
-			this.state.isScoreImported = true
-			// load new attempt history
-			this.state.attemptHistoryNetworkState = ATTEMPT_HISTORY_NOT_LOADED
-			return this.getAttemptHistory()
-		})
-	}
-
-	async startAttempt(id, context) {
+	startAttempt(id, context) {
 		const assessmentModel = OboModel.models[id]
 
 		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
@@ -277,28 +243,31 @@ class AssessmentStore extends Store {
 			throw "Can't start attempt - No assessment!"
 		}
 
-		// import has been used, do nothing
-		if (this.state.isScoreImported === true) {
-			this.displayImportAlreadyUsed()
-			return
+		machine.send(AssessmentStateActions.START_ATTEMPT)
+	}
+
+	importAttempt(id, context) {
+		const assessmentModel = OboModel.models[id]
+
+		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
+
+		if (!machine) {
+			throw "Can't import attempt - No assessment!"
 		}
 
-		let shouldImport = false
+		machine.send(AssessmentStateActions.IMPORT_ATTEMPT)
+	}
 
-		if (this.state.importableScores && this.state.importableScores[id]) {
-			// import high score or start an attempt (true = import, false = new attempt)
-			shouldImport = await this.displayPreAttemptImportScoreNotice(
-				this.state.importableScores[id].highestScore
-			)
+	abandonImport(id, context) {
+		const assessmentModel = OboModel.models[id]
 
-			ModalUtil.hide()
+		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
+
+		if (!machine) {
+			throw "Can't abandon import - No assessment!"
 		}
 
-		if (shouldImport) {
-			machine.send(AssessmentStateActions.IMPORT_ATTEMPT)
-		} else {
-			machine.send(AssessmentStateActions.START_ATTEMPT)
-		}
+		machine.send(AssessmentStateActions.ABANDON_IMPORT)
 	}
 
 	endAttempt(id, context) {
@@ -368,15 +337,15 @@ class AssessmentStore extends Store {
 		return (this.state = newState)
 	}
 
-	displayPreAttemptImportScoreNotice(highestScore) {
-		return new Promise(resolve => {
-			const shouldImport = choice => resolve(choice)
+	// displayPreAttemptImportScoreNotice(highestScore) {
+	// 	return new Promise(resolve => {
+	// 		const shouldImport = choice => resolve(choice)
 
-			ModalUtil.show(
-				<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
-			)
-		})
-	}
+	// 		ModalUtil.show(
+	// 			<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
+	// 		)
+	// 	})
+	// }
 
 	displayScoreImportNotice() {
 		Dispatcher.trigger('viewer:alert', {

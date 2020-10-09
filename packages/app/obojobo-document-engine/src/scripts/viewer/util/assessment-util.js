@@ -113,7 +113,10 @@ const AssessmentUtil = {
 	},
 
 	getAttemptsRemaining(state, model) {
-		if (state.importHasBeenUsed === true) return 0
+		if (AssessmentUtil.isScoreImported(state, model)) {
+			return 0
+		}
+
 		return Math.max(
 			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
 			0
@@ -121,8 +124,7 @@ const AssessmentUtil = {
 	},
 
 	hasAttemptsRemaining(state, model) {
-		if (state.importHasBeenUsed === true) return false
-		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
+		return AssessmentUtil.getAttemptsRemaining(state, model) > 0
 	},
 
 	getImportableScoreForModel(state, model) {
@@ -132,6 +134,15 @@ const AssessmentUtil = {
 		}
 
 		return state.importableScores[assessmentId].highestScore
+	},
+
+	isScoreImported(state, model) {
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		return assessment.isScoreImported
 	},
 
 	getLTIStateForModel(state, model) {
@@ -403,6 +414,22 @@ const AssessmentUtil = {
 
 	resumeAttempt(model) {
 		return Dispatcher.trigger('assessment:resumeAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	importAttempt(model) {
+		return Dispatcher.trigger('assessment:importAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	abandonImport(model) {
+		return Dispatcher.trigger('assessment:abandonImport', {
 			value: {
 				id: model.get('id')
 			}

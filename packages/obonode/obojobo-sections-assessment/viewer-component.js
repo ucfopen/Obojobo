@@ -395,6 +395,14 @@ class Assessment extends React.Component {
 						currentAttemptStatus={this.getCurrentAttemptStatus()}
 						assessmentModel={this.props.model}
 						assessment={assessment}
+						importableScore={AssessmentUtil.getImportableScoreForModel(
+							this.props.moduleData.assessmentState,
+							this.props.model
+						)}
+						numAttemptsRemaining={AssessmentUtil.getAttemptsRemaining(
+							this.props.moduleData.assessmentState,
+							this.props.model
+						)}
 					/>
 				</ModalPortal>
 			</OboComponent>

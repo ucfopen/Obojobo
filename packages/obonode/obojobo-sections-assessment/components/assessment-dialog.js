@@ -5,6 +5,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+import PreAttemptImportScoreDialog from './dialogs/pre-attempt-import-score-dialog'
 
 const { AssessmentScoreReportView, AssessmentScoreReporter } = Viewer.assessment
 
@@ -68,13 +69,23 @@ const acknowledgeEndAttemptFailed = assessmentModel => {
 	AssessmentUtil.acknowledgeEndAttemptFailed(assessmentModel)
 }
 
+const onImportChoice = (shouldImport, assessmentModel) => {
+	if (shouldImport) {
+		AssessmentUtil.importAttempt(assessmentModel)
+	} else {
+		AssessmentUtil.abandonImport(assessmentModel)
+	}
+}
+
 const getDialog = (
 	currentAttemptStatus,
 	assessmentMachineState,
 	// onCancel,
 	endAttemptFn,
 	assessmentModel,
-	assessment
+	assessment,
+	importableScore,
+	numAttemptsRemaining
 ) => {
 	switch (assessmentMachineState) {
 		case PROMPTING_FOR_RESUME:
@@ -92,6 +103,16 @@ const getDialog = (
 						off.
 					</p>
 				</SimpleDialog>
+			)
+
+		case PROMPTING_FOR_IMPORT:
+			return (
+				<PreAttemptImportScoreDialog
+					highestScore={importableScore}
+					onChoice={shouldImport => {
+						onImportChoice(shouldImport, assessmentModel)
+					}}
+				/>
 			)
 
 		case SEND_RESPONSES_FAILED:
@@ -163,6 +184,17 @@ const getDialog = (
 							title="No attempts left"
 						>
 							<p>You have attempted this assessment the maximum number of times available.</p>
+						</SimpleDialog>
+					)
+
+				case 'import score has already been used':
+					return (
+						<SimpleDialog
+							onConfirm={() => acknowledgeStartAttemptFailed(assessmentModel)}
+							ok
+							title="Import already used"
+						>
+							<p>You&apos;ve imported your score, which means you cannot attempt the assessment.</p>
 						</SimpleDialog>
 					)
 
@@ -302,15 +334,39 @@ const getDialog = (
 					)
 
 				case CurrentAssessmentStates.READY_TO_SUBMIT:
-					return (
-						<SimpleDialog
-							title="Just to confirm"
-							onCancel={() => continueAttempt(assessmentModel)}
-							onConfirm={endAttemptFn}
-						>
-							<p>Are you ready to submit?</p>
-						</SimpleDialog>
-					)
+					switch (numAttemptsRemaining) {
+						case 1:
+							return (
+								<Dialog
+									width="32rem"
+									title="This is your last attempt"
+									buttons={[
+										{
+											value: 'Cancel',
+											altAction: true,
+											default: true,
+											onClick: () => continueAttempt(assessmentModel)
+										},
+										{
+											value: 'OK - Submit Last Attempt',
+											onClick: endAttemptFn
+										}
+									]}
+								>
+									<p>{"You won't be able to submit another attempt after this one."}</p>
+								</Dialog>
+							)
+						default:
+							return (
+								<SimpleDialog
+									title="Just to confirm"
+									onCancel={() => continueAttempt(assessmentModel)}
+									onConfirm={endAttemptFn}
+								>
+									<p>Are you ready to submit?</p>
+								</SimpleDialog>
+							)
+					}
 			}
 		}
 	}
@@ -335,7 +391,9 @@ const AssessmentDialog = props => {
 		props.endAttempt,
 		// props.onResponse,
 		props.assessmentModel,
-		props.assessment
+		props.assessment,
+		props.importableScore,
+		props.numAttemptsRemaining
 	)
 }
 

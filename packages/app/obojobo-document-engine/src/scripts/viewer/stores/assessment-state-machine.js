@@ -30,6 +30,7 @@ const { SimpleDialog, Dialog } = Common.components.modal
 const {
 	INIT,
 	PROMPTING_FOR_RESUME,
+	PRE_STARTING_ATTEMPT,
 	STARTING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
@@ -43,7 +44,6 @@ const {
 	ENDING_ATTEMPT,
 	END_ATTEMPT_FAILED,
 	END_ATTEMPT_SUCCESSFUL,
-	NOTIFYING_OF_IMPORT,
 	PROMPTING_FOR_IMPORT,
 	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
@@ -55,10 +55,10 @@ const {
 const {
 	FETCH_ATTEMPT_HISTORY,
 	START_ATTEMPT,
-	NOTIFY_OF_IMPORT,
 	PROMPT_FOR_IMPORT,
 	PROMPT_FOR_RESUME,
 	IMPORT_ATTEMPT,
+	ABANDON_IMPORT,
 	RESUME_ATTEMPT,
 	TRY_TO_SUBMIT,
 	SEND_RESPONSES,
@@ -102,9 +102,9 @@ const updateContextWithAttemptHistoryResponse = assign({
 			state.assessmentSummaries[assessmentId] = newAssessmentSummary
 
 			// can no longer import now that we have a score
-			if (newAssessmentSummary.scores.length === 0) {
-				delete state.importableScores[assessmentId]
-			}
+			// if (newAssessmentSummary.scores.length === 0) {
+			delete state.importableScores[assessmentId]
+			// }
 
 			AssessmentStateHelpers.updateQuestionStore(assessmentItem)
 		})
@@ -142,6 +142,15 @@ const updateContextWithFetchHistoryError = assign({
 	}
 })
 
+// const updateContextRemoveImportableScore = assign({
+// 	assessmentStoreState: (context, event) => {
+// 		delete context.assessmentStoreState.importableScores[context.assessmentId]
+// 		getAssessmentContext(context).isScoreImported = true
+
+// 		return context.assessmentStoreState
+// 	}
+// })
+
 const getAssessmentContext = context => {
 	return context.assessmentStoreState.assessments[context.assessmentId]
 }
@@ -165,8 +174,7 @@ class AssessmentStateMachine {
 						// since INIT is the initial state!)
 						always: [
 							{ target: PROMPTING_FOR_RESUME, cond: 'isAttemptNeedingToBeResumed' },
-							{ target: NOTIFYING_OF_IMPORT, cond: 'isImportAvailable' },
-							{ target: NOT_IN_ATTEMPT, cond: 'isNotResumingAndNoImportAvailable' }
+							{ target: NOT_IN_ATTEMPT, cond: 'isNotResuming' }
 						]
 						// on: {
 						// 	[ACKNOWLEDGE]: {
@@ -187,8 +195,7 @@ class AssessmentStateMachine {
 								target: FETCHING_ATTEMPT_HISTORY,
 								cond: 'isAttemptHistoryNotLoaded'
 							},
-							[START_ATTEMPT]: STARTING_ATTEMPT,
-							[PROMPT_FOR_IMPORT]: PROMPTING_FOR_IMPORT
+							[START_ATTEMPT]: PRE_STARTING_ATTEMPT
 						}
 					},
 					[FETCHING_ATTEMPT_HISTORY]: {
@@ -212,6 +219,12 @@ class AssessmentStateMachine {
 							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
 						}
 					},
+					[PRE_STARTING_ATTEMPT]: {
+						always: [
+							{ target: STARTING_ATTEMPT, cond: 'isNoImportAvailable' },
+							{ target: PROMPTING_FOR_IMPORT, cond: 'isImportAvailable' }
+						]
+					},
 					[STARTING_ATTEMPT]: {
 						invoke: {
 							id: 'startAttempt',
@@ -228,22 +241,27 @@ class AssessmentStateMachine {
 							}
 						}
 					},
-					[NOTIFYING_OF_IMPORT]: {
-						on: {
-							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
-						}
-					},
 					[PROMPTING_FOR_IMPORT]: {
 						on: {
-							[START_ATTEMPT]: STARTING_ATTEMPT,
+							[ABANDON_IMPORT]: STARTING_ATTEMPT,
 							[IMPORT_ATTEMPT]: IMPORTING_ATTEMPT
 						}
 					},
 					[IMPORTING_ATTEMPT]: {
 						invoke: {
 							id: 'importAttempt',
-							src: () => {},
-							onDone: IN_ATTEMPT,
+							src: async context => {
+								return await AssessmentStateHelpers.importAttempt(
+									context.assessmentId,
+									context.assessmentStoreState.importableScores[context.assessmentId]
+										.assessmentScoreId
+								)
+							},
+							onDone: {
+								target: END_ATTEMPT_SUCCESSFUL,
+								// actions: [updateContextRemoveImportableScore]
+								actions: [updateContextWithAttemptHistoryResponse]
+							},
 							onError: {
 								target: IMPORT_ATTEMPT_FAILED,
 								actions: [updateContextWithCurrentAttemptError]
@@ -363,19 +381,23 @@ class AssessmentStateMachine {
 			},
 			{
 				guards: {
-					isNotResumingAndNoImportAvailable: (context, event) => {
-						const model = OboModel.models[context.assessmentId]
-						return (
-							AssessmentUtil.getImportableScoreForModel(context.assessmentStoreState, model) ===
-								null && !AssessmentUtil.hasUnfinishedAttempt(context.assessmentStoreState, model)
-						)
-					},
 					isImportAvailable: (context, event) => {
 						const model = OboModel.models[context.assessmentId]
 						return (
 							AssessmentUtil.getImportableScoreForModel(context.assessmentStoreState, model) !==
 							null
 						)
+					},
+					isNoImportAvailable: context => {
+						const model = OboModel.models[context.assessmentId]
+						return (
+							AssessmentUtil.getImportableScoreForModel(context.assessmentStoreState, model) ===
+							null
+						)
+					},
+					isNotResuming: (context, event) => {
+						const model = OboModel.models[context.assessmentId]
+						return !AssessmentUtil.hasUnfinishedAttempt(context.assessmentStoreState, model)
 					},
 					isAttemptNeedingToBeResumed: (context, event) => {
 						const model = OboModel.models[context.assessmentId]

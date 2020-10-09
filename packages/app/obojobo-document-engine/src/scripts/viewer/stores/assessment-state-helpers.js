@@ -111,6 +111,25 @@ class AssessmentStateHelpers {
 		return attemptHistory
 	}
 
+	static async importAttempt(assessmentId, importedAssessmentScoreId) {
+		console.log('@TODO - Most of this is copied from above!')
+		const model = OboModel.models[assessmentId]
+
+		const res = await AssessmentAPI.importScore({
+			draftId: model.getRoot().get('draftId'),
+			assessmentId: model.get('id'),
+			visitId: NavStore.getState().visitId,
+			importedAssessmentScoreId
+		})
+		const attemptHistory = await this.getAttemptHistory(assessmentId)
+
+		const assessmentModel = OboModel.models[assessmentId]
+
+		this.signalAttemptEnded(assessmentModel)
+
+		return attemptHistory
+	}
+
 	static async sendStartAttemptRequest(assessmentId) {
 		const model = OboModel.models[assessmentId]
 
@@ -201,7 +220,17 @@ class AssessmentStateHelpers {
 			})
 
 			const history = historyResponse.value
+			console.log('history', history)
+			if (history.length === 0) {
+				return historyResponse
+			}
+
 			const assessment = history.find(assessment => assessment.assessmentId === assessmentId)
+
+			if (!assessment) {
+				return historyResponse
+			}
+
 			const attemptIds = assessment.attempts.map(attempt => attempt.id)
 
 			const review = await AssessmentAPI.reviewAttempt(attemptIds)
@@ -283,13 +312,6 @@ class AssessmentStateHelpers {
 				summary.scores.push(attempt.assessmentScore)
 			}
 		})
-
-		console.log('@TODO find a place to delete the importable score!')
-
-		// can no longer import now that we have a score
-		// if (summary.scores.length) {
-		// 	delete this.state.importableScores[assessId]
-		// }
 
 		return summary
 	}
