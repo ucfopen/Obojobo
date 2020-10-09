@@ -179,7 +179,7 @@ class QuestionStore extends Store {
 				)
 			})
 			.map(responseMetadata => {
-				return this.postResponse(responseMetadata.details.questionId, context)
+				return this.getPostResponsePromise(responseMetadata.details.questionId, context)
 			})
 
 		return [...sendingResponsePromises, ...sendErrorResponsesPromises]
@@ -217,25 +217,33 @@ class QuestionStore extends Store {
 
 		console.log('send response', id, context)
 
-		const postResponsePromise = this.postResponse(id, context)
+		const postResponsePromise = this.getPostResponsePromise(id, context)
 
 		contextState.sendingResponsePromises[id] = postResponsePromise
 
-		// return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
+		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
+			console.error(e)
+			return this.onPostResponseError(contextState, id)
+		})
+		// .catch(e => {
+		// 	return this.onPostResponseError(contextState, id)
+		// })
+		//.catch(e => {
 		// 	// eslint-disable-next-line no-console
 		// 	console.error(e)
 
 		// 	return this.onPostResponseError(contextState, id)
 		// })
-		return postResponsePromise
+		// return postResponsePromise
 	}
 
-	postResponse(id, context) {
+	getPostResponsePromise(id, context) {
 		const contextState = this.getContextState(context)
 		const responseMetadata = contextState.responseMetadata[id]
 
 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.SENDING
 
+		// return () => {
 		return ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:setResponse',
@@ -250,6 +258,7 @@ class QuestionStore extends Store {
 			.catch(e => {
 				return this.onPostResponseError(e, contextState, id)
 			})
+		// }
 	}
 
 	setResponse({

@@ -107,9 +107,21 @@ router
 	.post((req, res) => {
 		return endAttempt(req, res)
 			.then(res.success)
-			.catch(error =>
-				logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
-			)
+			.catch(error => {
+				switch (error.message) {
+					case 'Cannot end an attempt for a different module':
+					case 'Cannot end an attempt that has already ended':
+						return logAndRespondToUnexpected(error.message, res, req, error)
+
+					default:
+						return logAndRespondToUnexpected(
+							'Unexpected error completing your attempt',
+							res,
+							req,
+							error
+						)
+				}
+			})
 	})
 
 // @TODO: seems like attemptid should be in the url and switch to GET?

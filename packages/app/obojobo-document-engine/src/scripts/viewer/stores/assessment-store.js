@@ -145,6 +145,10 @@ class AssessmentStore extends Store {
 			this.acknowledgeResumeAttemptFailed(payload.value.id)
 		})
 
+		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
+			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
+		})
+
 		Dispatcher.on('assessment:resumeAttempt', payload => {
 			this.resumeAttempt(payload.value.id)
 		})
@@ -422,6 +426,32 @@ class AssessmentStore extends Store {
 		}
 
 		machine.send(AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeImportAttemptFailed(id) {
+		const assessmentModel = OboModel.models[id]
+
+		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
+
+		if (!machine) {
+			throw "Can't acknowledge import attempt failed - No assessment!"
+		}
+
+		machine.send(AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeFetchHistoryFailed(id, retry = false) {
+		const assessmentModel = OboModel.models[id]
+
+		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
+
+		if (!machine) {
+			throw "Can't acknowledge fetch history failed - No assessment!"
+		}
+
+		machine.send(
+			retry ? AssessmentStateActions.FETCH_ATTEMPT_HISTORY : AssessmentStateActions.ACKNOWLEDGE
+		)
 	}
 
 	resumeAttempt(id) {

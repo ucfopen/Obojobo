@@ -468,6 +468,23 @@ const AssessmentUtil = {
 		})
 	},
 
+	acknowledgeImportAttemptFailed(model) {
+		return Dispatcher.trigger('assessment:acknowledgeImportAttemptFailed', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	acknowledgeFetchHistoryFailed(model, retry = false) {
+		return Dispatcher.trigger('assessment:acknowledgeFetchHistoryFailed', {
+			value: {
+				id: model.get('id'),
+				retry
+			}
+		})
+	},
+
 	resendLTIScore(model) {
 		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {

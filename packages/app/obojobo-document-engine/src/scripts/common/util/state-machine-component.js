@@ -82,6 +82,16 @@ export default class Dialog extends React.Component {
 		})
 	}
 
+	updateFail(windowVar) {
+		if (typeof window[windowVar] === 'undefined') {
+			window[windowVar] = true
+		} else {
+			window[windowVar] = !window[windowVar]
+		}
+
+		this.forceUpdate()
+	}
+
 	render() {
 		return (
 			<div
@@ -98,6 +108,77 @@ export default class Dialog extends React.Component {
 			>
 				{this.props.machine ? (
 					<div>
+						<div style={{ fontSize: '10pt', fontFamily: 'sans-serif' }}>
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failImportScore')}
+								/>
+								<span>Error import score</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failResumeAttempt')}
+								/>
+								<span>Error resume attempt</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failGetAttemptHistory')}
+								/>
+								<span>Error getAttemptHistory</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failStartAttempt')}
+								/>
+								<span>Error start attempt</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failEndAttempt')}
+								/>
+								<span>Error end attempt</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failReviewAttempt')}
+								/>
+								<span>Error review attempt</span>
+							</label>
+							<br />
+
+							<label>
+								<input
+									type="checkbox"
+									checked={window.__failImportScore}
+									onChange={this.updateFail.bind(this, '__failTimeoutPromise')}
+								/>
+								<span>Error timeoutPromise</span>
+							</label>
+						</div>
+						<hr />
 						<label>
 							<span>Step:</span>
 							<select

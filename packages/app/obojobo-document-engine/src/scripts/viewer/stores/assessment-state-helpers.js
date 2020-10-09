@@ -61,20 +61,137 @@ const {
 	// RETRY
 } = AssessmentStateActions
 
-class AssessmentStateHelpers {
-	static async startAttempt(assessmentId) {
-		console.log('startATtempt', assessmentId)
-		return this.onRequest(
-			await this.sendStartAttemptRequest(assessmentId),
-			this.onAttemptStarted.bind(this)
-		)
+const getErrorFromResponse = res => {
+	return Error(res ? res.value.message : 'Request Failed')
+}
+
+class AssessmentAPIHelpers {
+	static sendStartAttemptRequest(assessmentId) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.startAttempt({
+			draftId: model.getRoot().get('draftId'),
+			assessmentId: model.get('id'),
+			visitId: NavStore.getState().visitId
+		})
 	}
 
-	static async resumeAttempt(draftId, attemptId) {
-		return this.onRequest(
-			await this.sendResumeAttemptRequest(draftId, attemptId),
-			this.onAttemptStarted.bind(this)
+	static sendResumeAttemptRequest(assessmentId, attemptId) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.resumeAttempt({
+			draftId: model.getRoot().get('draftId'),
+			attemptId,
+			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static sendEndAttemptRequest(assessmentId, attemptId) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.endAttempt({
+			attemptId,
+			draftId: model.getRoot().get('draftId'),
+			visitId: NavStore.getState().visitId
+		})
+	}
+
+	static sendImportScoreRequest(assessmentId, importedAssessmentScoreId) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.importScore({
+			draftId: model.getRoot().get('draftId'),
+			assessmentId: model.get('id'),
+			visitId: NavStore.getState().visitId,
+			importedAssessmentScoreId
+		})
+	}
+
+	static sendGetAttemptHistoryRequest(assessmentId) {
+		const model = OboModel.models[assessmentId]
+
+		return AssessmentAPI.getAttemptHistory({
+			draftId: model.getRoot().get('draftId'),
+			visitId: NavStore.getState().visitId
+		})
+	}
+}
+
+class AssessmentStateHelpers {
+	static async onError(res = null) {
+		throw Error(res ? res.value.message : 'Request Failed')
+	}
+
+	static async startAttempt(assessmentId) {
+		const res = await AssessmentAPIHelpers.sendStartAttemptRequest(assessmentId)
+
+		if (res.status !== 'ok') {
+			throw getErrorFromResponse(res)
+		}
+
+		return this.onAttemptStarted(res)
+	}
+
+	static async resumeAttempt(assessmentId, attemptId) {
+		const res = await AssessmentAPIHelpers.sendResumeAttemptRequest(assessmentId, attemptId)
+
+		if (res.status !== 'ok') {
+			throw getErrorFromResponse(res)
+		}
+
+		return this.onAttemptStarted(res)
+	}
+
+	static async endAttempt(assessmentId, attemptId) {
+		const model = OboModel.models[assessmentId]
+
+		const res = await AssessmentAPIHelpers.sendEndAttemptRequest(assessmentId, attemptId)
+
+		if (res.status !== 'ok') {
+			throw getErrorFromResponse(res)
+		}
+
+		const attemptHistory = await this.getAttemptHistoryWithReviewData(assessmentId)
+
+		this.signalAttemptEnded(model)
+
+		return attemptHistory
+	}
+
+	static async importAttempt(assessmentId, importedAssessmentScoreId) {
+		const model = OboModel.models[assessmentId]
+
+		const res = await AssessmentAPIHelpers.sendImportScoreRequest(
+			assessmentId,
+			importedAssessmentScoreId
 		)
+
+		if (res.status !== 'ok') {
+			throw getErrorFromResponse(res)
+		}
+
+		const attemptHistory = await this.getAttemptHistoryWithReviewData(assessmentId)
+
+		this.signalAttemptEnded(model)
+
+		return attemptHistory
+	}
+
+	static async getAttemptHistoryWithReviewData(assessmentId) {
+		const historyResponse = await AssessmentAPIHelpers.sendGetAttemptHistoryRequest(assessmentId)
+
+		if (historyResponse.status !== 'ok') {
+			throw getErrorFromResponse(historyResponse)
+		}
+
+		const assessment = historyResponse.value.find(
+			assessment => assessment.assessmentId === assessmentId
+		)
+		if (assessment) {
+			await this.updateAttemptHistoryWithReviewData(assessment)
+		}
+
+		return historyResponse
 	}
 
 	static sendResponses(assessmentId, attemptId) {
@@ -93,79 +210,7 @@ class AssessmentStateHelpers {
 			QuestionUtil.forceSendAllResponsesForContext(
 				this.composeNavContextString(assessmentId, attemptId)
 			)
-		}).catch(e => {
-			console.error(e)
 		})
-	}
-
-	static async endAttempt(draftId, attemptId) {
-		const res = await this.sendEndAttemptRequest(draftId, attemptId)
-		const attemptHistory = await this.getAttemptHistory(res.value.assessmentId)
-
-		const assessmentModel = OboModel.models[res.value.assessmentId]
-
-		this.signalAttemptEnded(assessmentModel)
-		// this.updateStateByContextForAttempt(assessment.attempts[assessment.attempts.length - 1])
-
-		// return assessment
-		return attemptHistory
-	}
-
-	static async importAttempt(assessmentId, importedAssessmentScoreId) {
-		console.log('@TODO - Most of this is copied from above!')
-		const model = OboModel.models[assessmentId]
-
-		const res = await AssessmentAPI.importScore({
-			draftId: model.getRoot().get('draftId'),
-			assessmentId: model.get('id'),
-			visitId: NavStore.getState().visitId,
-			importedAssessmentScoreId
-		})
-		const attemptHistory = await this.getAttemptHistory(assessmentId)
-
-		const assessmentModel = OboModel.models[assessmentId]
-
-		this.signalAttemptEnded(assessmentModel)
-
-		return attemptHistory
-	}
-
-	static async sendStartAttemptRequest(assessmentId) {
-		const model = OboModel.models[assessmentId]
-
-		return await AssessmentAPI.startAttempt({
-			draftId: model.getRoot().get('draftId'),
-			assessmentId: model.get('id'),
-			visitId: NavStore.getState().visitId
-		})
-	}
-
-	static async sendResumeAttemptRequest(draftId, attemptId) {
-		return await AssessmentAPI.resumeAttempt({
-			draftId,
-			attemptId,
-			visitId: NavStore.getState().visitId
-		})
-	}
-
-	static async sendEndAttemptRequest(draftId, attemptId) {
-		return await AssessmentAPI.endAttempt({
-			attemptId,
-			draftId,
-			visitId: NavStore.getState().visitId
-		})
-	}
-
-	static async onRequest(res, successFn) {
-		if (res.status !== 'ok') {
-			return this.onError(res)
-		}
-
-		return successFn(res)
-	}
-
-	static async onError(res = null) {
-		throw Error(res ? res.value.message : 'Request Failed')
 	}
 
 	static onAttemptStarted(res) {
@@ -203,85 +248,22 @@ class AssessmentStateHelpers {
 		Dispatcher.trigger('assessment:attemptStarted', assessmentId)
 	}
 
-	static async getAttemptHistory(assessmentId) {
-		return this.onRequest(
-			await this.sendGetAttemptHistoryRequest(assessmentId),
-			this.onGetAttemptHistory.bind(this)
-		)
+	static async updateAttemptHistoryWithReviewData(assessment) {
+		const attemptIds = assessment.attempts.map(attempt => attempt.id)
+
+		const review = await AssessmentAPI.reviewAttempt(attemptIds)
+
+		assessment.attempts.forEach(attempt => {
+			attempt.state.questionModels = review[attempt.id]
+		})
+
+		return assessment
 	}
-
-	static async sendGetAttemptHistoryRequest(assessmentId) {
-		try {
-			const model = OboModel.models[assessmentId]
-
-			const historyResponse = await AssessmentAPI.getAttemptHistory({
-				draftId: model.getRoot().get('draftId'),
-				visitId: NavStore.getState().visitId
-			})
-
-			const history = historyResponse.value
-			console.log('history', history)
-			if (history.length === 0) {
-				return historyResponse
-			}
-
-			const assessment = history.find(assessment => assessment.assessmentId === assessmentId)
-
-			if (!assessment) {
-				return historyResponse
-			}
-
-			const attemptIds = assessment.attempts.map(attempt => attempt.id)
-
-			const review = await AssessmentAPI.reviewAttempt(attemptIds)
-
-			assessment.attempts.forEach(attempt => {
-				attempt.state.questionModels = review[attempt.id]
-			})
-
-			return historyResponse
-		} catch (e) {
-			console.error(e)
-			return null
-		}
-	}
-
-	static onGetAttemptHistory(res) {
-		// const attemptsByAssessment = res.value
-
-		// this.updateStateAfterAttemptHistory(attemptsByAssessment)
-
-		// Return the response so that the assessment data can be added to the context
-		return res
-	}
-
-	// static async onAttemptEnded(res) {
-	// 	/*
-	// 	example response
-	// 	{
-	// 		status: 'ok',
-	// 		value: {
-	// 			assessmentId: ...,
-	// 			attemptId: ...,
-	// 			assessmentScoreId: ...,
-	// 			assessmentModdedScore: 0
-	// 			assessmentScore: 0
-	// 			attemptNumber: 2
-	// 			attemptScore: 0
-	// 			rewardTotal: 0
-	// 			rewardedMods: []
-	// 			status: "passed"
-	// 		}
-	// 	}
-	// 	*/
-
-	// }
 
 	// Turns the assessment history response into local state data
 	static getUpdatedAssessmentData(assessmentItem) {
 		const attempts = assessmentItem.attempts
 
-		// is the 'state' property needed as well?
 		return {
 			id: assessmentItem.assessmentId,
 			attempts,
@@ -317,7 +299,6 @@ class AssessmentStateHelpers {
 	}
 
 	static updateQuestionStore(assessmentItem) {
-		// UPDATE QUESTION STORE
 		assessmentItem.attempts.forEach(attempt => {
 			const qState = {
 				scores: {},
@@ -336,33 +317,6 @@ class AssessmentStateHelpers {
 		})
 	}
 
-	// static updateStateByContextForAttempt(attempt) {
-	// 	const scores = {}
-	// 	attempt.questionScores.forEach(scoreData => {
-	// 		scores[scoreData.id] = scoreData
-	// 	})
-	// 	const stateToUpdate = {
-	// 		scores,
-	// 		responses: attempt.responses
-	// 	}
-
-	// 	QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
-	// }
-
-	// static hideQuestions(chosenQuestions, navContext) {
-	// 	chosenQuestions.forEach(question => {
-	// 		if (question.type !== QUESTION_NODE_TYPE) {
-	// 			return
-	// 		}
-
-	// 		QuestionUtil.hideQuestion(question.id, navContext)
-	// 	})
-	// }
-
-	// static clearResponses(responses, navContext) {
-	// 	responses.forEach(questionId => QuestionUtil.clearResponse(questionId, navContext))
-	// }
-
 	static signalAttemptEnded(assessmentModel) {
 		assessmentModel.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', assessmentModel.get('id'))
@@ -371,39 +325,6 @@ class AssessmentStateHelpers {
 	static composeNavContextString(assessmentId, attemptId) {
 		return `assessment:${assessmentId}:${attemptId}`
 	}
-
-	// Converts the assessmentResponse return value to an object that Obojobo can more easily use!
-	// static getInternalAssessmentObjectFromResponse(assessmentResponse) {
-	// 	const attempts = assessmentResponse.attempts
-
-	// 	const getLastOf = array => {
-	// 		return array && array.length > 0 ? array[array.length - 1] : null
-	// 	}
-
-	// 	console.log('@TODO DRY VIOLATION!', assessmentResponse)
-
-	// 	return {
-	// 		lti: assessmentResponse.ltiState,
-	// 		highestAttemptScoreAttempts: findItemsWithMaxPropValue(attempts, 'attemptScore'),
-	// 		highestAssessmentScoreAttempts: findItemsWithMaxPropValue(attempts, 'assessmentScore'),
-	// 		unfinishedAttempt: getLastOf(attempts.filter(attempt => !attempt.isFinished)),
-	// 		attempts: attempts
-	// 			.filter(attempt => attempt.isFinished)
-	// 			.map(attempt => {
-	// 				// Server returns responses in an array, but we use a object keyed by the questionId:
-	// 				if (!Array.isArray(attempt.responses)) {
-	// 					return attempt
-	// 				}
-
-	// 				const responsesById = {}
-	// 				attempt.responses.forEach(r => {
-	// 					responsesById[r.id] = r.response
-	// 				})
-
-	// 				return { ...attempt, responses: responsesById }
-	// 			})
-	// 	}
-	// }
 }
 
 export default AssessmentStateHelpers

@@ -40,10 +40,6 @@ router
 			caliperPayload: caliperEvent
 		}
 
-		if (event.action === 'question:setResponse') {
-			// return
-		}
-
 		return insertEvent(insertObject)
 			.then(result => {
 				insertObject.createdAt = result.created_at

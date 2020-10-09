@@ -34,7 +34,8 @@ const {
 	PROMPTING_FOR_IMPORT,
 	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
-	IMPORT_ATTEMPT_SUCCESSFUL
+	IMPORT_ATTEMPT_SUCCESSFUL,
+	FETCH_HISTORY_FAILED
 } = AssessmentNetworkStates
 
 const getReportForAttempt = (assessmentModel, allAttempts, attemptNumber) => {
@@ -67,6 +68,14 @@ const acknowledgeResumeAttemptFailed = assessmentModel => {
 
 const acknowledgeEndAttemptFailed = assessmentModel => {
 	AssessmentUtil.acknowledgeEndAttemptFailed(assessmentModel)
+}
+
+const acknowledgeImportAttemptFailed = assessmentModel => {
+	AssessmentUtil.acknowledgeImportAttemptFailed(assessmentModel)
+}
+
+const acknowledgeFetchHistoryFailed = (assessmentModel, retry) => {
+	AssessmentUtil.acknowledgeFetchHistoryFailed(assessmentModel, retry)
 }
 
 const onImportChoice = (shouldImport, assessmentModel) => {
@@ -274,6 +283,63 @@ const getDialog = (
 					width="35rem"
 				>
 					<p>{`Something went wrong ending your attempt: ${assessment.current.error}. Please try again.`}</p>
+				</Dialog>
+			)
+		}
+
+		case IMPORT_ATTEMPT_FAILED: {
+			return (
+				<Dialog
+					centered
+					buttons={[
+						{
+							value: `Close`,
+							onClick: () => acknowledgeImportAttemptFailed(assessmentModel),
+							default: true
+						}
+					]}
+					title="Error"
+					width="35rem"
+				>
+					<p>{`Something went wrong importing your attempt: ${assessment.current.error}. Please try again.`}</p>
+				</Dialog>
+			)
+		}
+
+		case FETCH_HISTORY_FAILED: {
+			return (
+				// <SimpleDialog
+				// 	onConfirm={() => acknowledgeFetchHistoryFailed(assessmentModel)}
+				// 	ok
+				// 	title="Error"
+				// >
+				// 	<p>
+				// 		Sorry, something went wrong fetching your assessment history. Close this window and
+				// 		revisit this module.
+				// 	</p>
+				// </SimpleDialog>
+
+				<Dialog
+					centered
+					buttons={[
+						{
+							value: 'Close',
+							altAction: true,
+							onClick: () => acknowledgeFetchHistoryFailed(assessmentModel, false)
+						},
+						{
+							value: `Try again`,
+							onClick: () => acknowledgeFetchHistoryFailed(assessmentModel, true),
+							default: true
+						}
+					]}
+					title="Error"
+					width="35rem"
+				>
+					<p>
+						Something went wrong fetching your assessment history. If the problem persists, close
+						this window and revisit this module
+					</p>
 				</Dialog>
 			)
 		}

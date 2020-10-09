@@ -26,6 +26,10 @@ const endAttempt = async (req, res) => {
 		throw Error('Cannot end an attempt for a different module')
 	}
 
+	if (attempt.completedAt !== null) {
+		throw Error('Cannot end an attempt that has already ended')
+	}
+
 	const attemptNumber = await AssessmentModel.getAttemptNumber(
 		attempt.userId,
 		attempt.draftId,

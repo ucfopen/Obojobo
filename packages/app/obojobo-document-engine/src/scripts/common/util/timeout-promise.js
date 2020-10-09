@@ -1,7 +1,7 @@
 const timeoutPromise = (ms, promise) => {
-	if (Math.random() > 0.5) {
+	if (window.__failTimeoutPromise) {
 		console.error('timeoutPromise fake error')
-		ms = 0
+		ms = 1
 	}
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {

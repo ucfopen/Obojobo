@@ -79,6 +79,7 @@ const updateContextWithAssessmentResponse = assign({
 		const assessmentContext = getAssessmentContext(context)
 
 		assessmentContext.current = event.data.value
+		assessmentContext.attemptHistoryNetworkState === 'none'
 
 		return context.assessmentStoreState
 	}
@@ -127,20 +128,9 @@ const updateContextWithCurrentAttemptError = assign({
 	}
 })
 
-const updateContextWithFetchHistoryError = assign({
-	assessmentStoreState: (context, event) => {
-		console.log('@TODO - This is duplicated, needs to put the error somewhere better!')
-		const assessmentContext = getAssessmentContext(context)
-
-		if (!assessmentContext.current) {
-			assessmentContext.current = {}
-		}
-
-		assessmentContext.current.error = event.data.message
-
-		return context.assessmentStoreState
-	}
-})
+const logError = (context, event) => {
+	console.error(event.data)
+}
 
 // const updateContextRemoveImportableScore = assign({
 // 	assessmentStoreState: (context, event) => {
@@ -202,7 +192,9 @@ class AssessmentStateMachine {
 						invoke: {
 							id: 'fetchAttemptHistory',
 							src: async context => {
-								return await AssessmentStateHelpers.getAttemptHistory(context.assessmentId)
+								return await AssessmentStateHelpers.getAttemptHistoryWithReviewData(
+									context.assessmentId
+								)
 							},
 							onDone: {
 								target: NOT_IN_ATTEMPT,
@@ -210,12 +202,13 @@ class AssessmentStateMachine {
 							},
 							onError: {
 								target: FETCH_HISTORY_FAILED,
-								actions: [updateContextWithFetchHistoryError]
+								actions: [logError]
 							}
 						}
 					},
 					[FETCH_HISTORY_FAILED]: {
 						on: {
+							[FETCH_ATTEMPT_HISTORY]: FETCHING_ATTEMPT_HISTORY,
 							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
 						}
 					},
@@ -237,7 +230,7 @@ class AssessmentStateMachine {
 							},
 							onError: {
 								target: START_ATTEMPT_FAILED,
-								actions: [updateContextWithCurrentAttemptError]
+								actions: [logError, updateContextWithCurrentAttemptError]
 							}
 						}
 					},
@@ -264,7 +257,7 @@ class AssessmentStateMachine {
 							},
 							onError: {
 								target: IMPORT_ATTEMPT_FAILED,
-								actions: [updateContextWithCurrentAttemptError]
+								actions: [logError, updateContextWithCurrentAttemptError]
 							}
 						}
 					},
@@ -284,13 +277,12 @@ class AssessmentStateMachine {
 							id: 'resumeAttempt',
 							src: async context => {
 								const assessmentModel = OboModel.models[context.assessmentId]
-								const draftId = assessmentModel.getRoot().get('draftId')
 								const attemptId = AssessmentUtil.getUnfinishedAttemptId(
 									context.assessmentStoreState,
 									assessmentModel
 								)
 
-								return await AssessmentStateHelpers.resumeAttempt(draftId, attemptId)
+								return await AssessmentStateHelpers.resumeAttempt(assessmentId, attemptId)
 							},
 							onDone: {
 								target: IN_ATTEMPT,
@@ -298,7 +290,7 @@ class AssessmentStateMachine {
 							},
 							onError: {
 								target: RESUME_ATTEMPT_FAILED,
-								actions: [updateContextWithCurrentAttemptError]
+								actions: [logError, updateContextWithCurrentAttemptError]
 							}
 						}
 					},
@@ -332,7 +324,7 @@ class AssessmentStateMachine {
 							onDone: SEND_RESPONSES_SUCCESSFUL,
 							onError: {
 								target: SEND_RESPONSES_FAILED,
-								actions: [updateContextWithCurrentAttemptError]
+								actions: [logError, updateContextWithCurrentAttemptError]
 							}
 						}
 					},
@@ -353,9 +345,8 @@ class AssessmentStateMachine {
 							id: 'endAttempt',
 							src: async context => {
 								const { assessmentId, attemptId } = getAssessmentContext(context).current
-								const draftId = OboModel.models[assessmentId].getRoot().get('draftId')
 
-								return await AssessmentStateHelpers.endAttempt(draftId, attemptId)
+								return await AssessmentStateHelpers.endAttempt(assessmentId, attemptId)
 							},
 							onDone: {
 								target: END_ATTEMPT_SUCCESSFUL,
@@ -363,7 +354,7 @@ class AssessmentStateMachine {
 							},
 							onError: {
 								target: END_ATTEMPT_FAILED,
-								actions: [updateContextWithCurrentAttemptError]
+								actions: [logError, updateContextWithCurrentAttemptError]
 							}
 						}
 					},
