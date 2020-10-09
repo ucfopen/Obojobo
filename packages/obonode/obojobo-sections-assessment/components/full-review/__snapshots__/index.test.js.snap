@@ -29,6 +29,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -150,7 +151,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             className="attempt-info-content"
           >
             <div>
-              Submitted 
+              Submitted
               <time
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
@@ -165,14 +166,14 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             </div>
             <div>
               6
-               out of 
+               out of
               7
                question
               s
                correct
             </div>
             <div>
-              Attempt Score: 
+              Attempt Score:
               <strong>
                 80% → 80%
               </strong>
@@ -251,6 +252,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -372,7 +374,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
             className="attempt-info-content"
           >
             <div>
-              Imported 
+              Imported
               <time
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
@@ -387,14 +389,14 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
             </div>
             <div>
               6
-               out of 
+               out of
               7
                question
               s
                correct
             </div>
             <div>
-              Attempt Score: 
+              Attempt Score:
               <strong>
                 50%
               </strong>
@@ -473,6 +475,7 @@ exports[`FullReview FullReview component with attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -506,6 +509,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -539,6 +543,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -572,6 +577,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -605,6 +611,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt 3"
@@ -623,6 +630,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Attempt undefined"

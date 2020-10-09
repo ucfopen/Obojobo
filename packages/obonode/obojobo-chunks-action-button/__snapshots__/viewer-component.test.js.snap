@@ -15,6 +15,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -45,6 +46,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"

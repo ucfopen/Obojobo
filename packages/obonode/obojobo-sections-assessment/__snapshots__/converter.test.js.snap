@@ -188,7 +188,7 @@ Object {
     },
     "triggers": Array [],
   },
-  "id": "otherMockKey",
+  "id": "otherMockKeyNotInModels",
   "type": "mockType",
 }
 `;
@@ -211,7 +211,7 @@ Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
     },
   },
-  "id": "otherMockKey",
+  "id": "otherMockKeyNotInModels",
   "type": "mockType",
 }
 `;
@@ -239,7 +239,7 @@ Object {
       },
     ],
   },
-  "id": "otherMockKey",
+  "id": "otherMockKeyNotInModels",
   "type": "mockType",
 }
 `;

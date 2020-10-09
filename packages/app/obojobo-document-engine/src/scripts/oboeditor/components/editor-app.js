@@ -15,11 +15,12 @@ import enableWindowCloseDispatcher from '../../common/util/close-window-dispatch
 import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 
-const { ModalContainer, Throbber } = Common.components
-const { ModalUtil } = Common.util
-const { ModalStore } = Common.stores
-const { OboModel } = Common.models
-const { Dispatcher } = Common.flux
+const ModalContainer = Common.components.ModalContainer
+const Throbber = Common.components.Throbber
+const ModalUtil = Common.util.ModalUtil
+const ModalStore = Common.stores.ModalStore
+const OboModel = Common.models.OboModel
+const Dispatcher = Common.flux.Dispatcher
 
 const XML_MODE = 'xml'
 const VISUAL_MODE = 'visual'

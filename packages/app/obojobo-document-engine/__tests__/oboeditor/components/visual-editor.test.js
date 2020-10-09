@@ -8,6 +8,7 @@ import Component from 'src/scripts/oboeditor/components/node/editor'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import OboModel from 'src/scripts/common/models/obo-model'
 
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
@@ -19,6 +20,7 @@ jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 		oboToSlate: jest.fn().mockReturnValue({ text: '' })
 	}
 }))
+jest.mock('src/scripts/common/models/obo-model')
 // Editor Store
 jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: 'mock-id' }
@@ -285,7 +287,75 @@ describe('VisualEditor', () => {
 		expect(thing.toJSON()).toMatchSnapshot()
 	})
 
+	test('VisualEditor component with deleted page to another page', () => {
+		const prevProps = {
+			page: {
+				id: 122,
+				set: jest.fn(),
+				attributes: {
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				},
+				get: jest.fn().mockReturnValue(ASSESSMENT_NODE),
+				toJSON: () => ({
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				})
+			},
+			model: { title: 'Mock Title' }
+		}
+
+		const newProps = {
+			page: {
+				id: 123,
+				set: jest.fn(),
+				attributes: {
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				},
+				get: jest.fn(),
+				toJSON: () => ({
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
+				})
+			},
+			model: { title: 'Mock Title' }
+		}
+
+		const spy = jest.spyOn(VisualEditor.prototype, 'exportToJSON').mockReturnValueOnce()
+
+		// render
+		const thing = mount(<VisualEditor {...prevProps} />)
+		thing.setProps(newProps)
+		thing.update()
+
+		// save action should have occured
+		expect(spy).not.toHaveBeenCalled()
+		spy.mockClear()
+	})
+
 	test('VisualEditor component with page updating to another page', () => {
+		OboModel.models = { 122: 'mock content' }
 		const prevProps = {
 			page: {
 				id: 122,

@@ -39,6 +39,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -51,6 +52,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -113,6 +115,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -125,6 +128,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -187,6 +191,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -204,6 +209,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
           </span>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -266,6 +272,7 @@ exports[`SimpleDialog SimpleDialog ok 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -328,6 +335,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -345,6 +353,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
           </span>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -368,4 +377,4 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
 </div>
 `;
 
-exports[`SimpleDialog focusOnFirstElement without props 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\" tabindex=\\"-1\\"><input aria-label=\\"Start of dialog\\" class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><div class=\\"dialog-content\\" style=\\"text-align: center;\\">Content</div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button type=\\"button\\" class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input aria-label=\\"End of dialog\\" class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`SimpleDialog focusOnFirstElement without props 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog \\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><div class=\\"dialog-content\\" style=\\"text-align: center;\\">Content</div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;

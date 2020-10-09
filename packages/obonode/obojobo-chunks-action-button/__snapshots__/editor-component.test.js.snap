@@ -35,6 +35,7 @@ exports[`ActionButton Editor Node builds the expected component (with no onClick
         </div>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -213,6 +214,7 @@ exports[`ActionButton Editor Node builds the expected component when selected 1`
         </div>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+          contentEditable={false}
         >
           <button
             className="button"

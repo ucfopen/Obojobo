@@ -20,18 +20,36 @@ describe('FocusUtil', () => {
 				fade: false,
 				animateScroll: false,
 				scroll: true,
-				region: null
+				region: null,
+				preventScroll: false
 			}
 		})
 	})
 
 	test('focusComponent will dispatch the correct event with different options', () => {
-		FocusUtil.focusComponent('testId', {
-			fade: true,
-			scroll: false,
-			animateScroll: true,
-			region: 'mock-region'
+		FocusUtil.focusComponent('testId', { fade: true })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: true,
+				animateScroll: false,
+				preventScroll: false
+			}
 		})
+
+		FocusUtil.focusComponent('testId', { animateScroll: true })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: false,
+				animateScroll: true,
+				preventScroll: false
+			}
+		})
+
+		FocusUtil.focusComponent('testId', { fade: true, animateScroll: true })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
@@ -39,7 +57,23 @@ describe('FocusUtil', () => {
 				fade: true,
 				animateScroll: true,
 				scroll: false,
-				region: 'mock-region'
+				region: 'mock-region',
+				preventScroll: false
+			}
+		})
+
+		FocusUtil.focusComponent('testId', {
+			fade: true,
+			animateScroll: true,
+			preventScroll: true
+		})
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: true,
+				animateScroll: true,
+				preventScroll: true
 			}
 		})
 	})

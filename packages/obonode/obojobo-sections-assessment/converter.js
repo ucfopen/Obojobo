@@ -24,10 +24,10 @@ const slateToObo = node => {
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
 	const model = OboModel.models[node.id]
-	const content = model ? { ...node.content, ...model.get('content') } : node.content
+	const content = model ? { ...node.content, ...model.get('content') } : { ...node.content }
 
-	// Remove rubric if it has been deleted
 	delete content.rubric
+	delete content.scoreActions
 
 	const children = []
 	node.children.forEach(child => {

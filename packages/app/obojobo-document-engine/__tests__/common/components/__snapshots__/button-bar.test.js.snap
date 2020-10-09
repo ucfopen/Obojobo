@@ -15,6 +15,7 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
   >
     <div
       className="obojobo-draft--components--button alt-action is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         aria-selected={true}

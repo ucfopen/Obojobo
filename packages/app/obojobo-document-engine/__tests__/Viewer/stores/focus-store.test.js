@@ -77,46 +77,53 @@ describe('FocusStore', () => {
 	test('init sets initial state', () => {
 		const focusStore = new FocusStoreClass()
 
-		focusStore.init()
+		focusComponentHandler({
+			value: {
+				id: 'mock-id',
+				animateScroll: false,
+				fade: true,
+				preventScroll: false
+			}
+		})
+		expect(focusComponentSpy).toHaveBeenCalledWith('mock-id', false, true, false)
 
 		expect(focusStore.state).toEqual({
 			target: null,
 			type: null,
-			scroll: true,
+			visualFocusTarget: null,
 			animateScroll: false,
-			visualFocusTarget: null
+			preventScroll: false
 		})
 	})
 
-	test('_updateFocusTarget sets state properties', () => {
-		const focusStore = new FocusStoreClass()
+	test('updateFocusTarget sets state properties', () => {
+		FocusStore._updateFocusTarget('type', 'target', false, false)
+		expect(FocusStore.getState()).toEqual({
+			target: 'target',
+			type: 'type',
+			visualFocusTarget: null,
+			animateScroll: false,
+			preventScroll: false
+		})
 
-		focusStore.init()
-		focusStore._updateFocusTarget('mock-type', 'mock-target', true, true, 'mock-region')
-
-		expect(focusStore.state).toEqual({
-			type: 'mock-type',
-			target: 'mock-target',
-			scroll: true,
+		FocusStore._updateFocusTarget('type', 'target', true, true)
+		expect(FocusStore.getState()).toEqual({
+			target: 'target',
+			type: 'type',
+			visualFocusTarget: null,
 			animateScroll: true,
-			region: 'mock-region',
-			visualFocusTarget: null
+			preventScroll: true
 		})
 	})
 
-	test('_updateFocusTarget sets scroll and animateScroll to true even when a string', () => {
-		const focusStore = new FocusStoreClass()
-
-		focusStore.init()
-		focusStore._updateFocusTarget('mock-type', 'mock-target', 'true', 'tRuE', 'mock-region')
-
-		expect(focusStore.state).toEqual({
-			type: 'mock-type',
-			target: 'mock-target',
-			scroll: true,
-			animateScroll: true,
-			region: 'mock-region',
-			visualFocusTarget: null
+	test('fade property updates visualFocusTarget', () => {
+		FocusStore._focusComponent('mock-id', false, true, false)
+		expect(FocusStore.getState()).toEqual({
+			target: 'mock-id',
+			type: 'component',
+			visualFocusTarget: 'mock-id',
+			animateScroll: false,
+			preventScroll: false
 		})
 	})
 
@@ -132,63 +139,50 @@ describe('FocusStore', () => {
 
 		focusStore.init()
 		focusStore._focusOnNavTarget()
+	})
 
-		expect(updateFocusTargetSpy).toHaveBeenCalledWith(FocusStore.TYPE_NAV_TARGET)
-		expect(triggerChangeSpy).toHaveBeenCalledTimes(1)
+	test('focusComponent updates focus target and triggers change', () => {
+		const updateFocusTargetSpy = jest.spyOn(FocusStore, '_updateFocusTarget')
+		FocusStore._focusComponent('mock-id', true, false, false)
+		expect(updateFocusTargetSpy).toHaveBeenCalledWith(
+			FocusStore.TYPE_COMPONENT,
+			'mock-id',
+			true,
+			false
+		)
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 
 		updateFocusTargetSpy.mockRestore()
 		triggerChangeSpy.mockRestore()
 	})
 
-	test('_focusComponent updates the focus target (with default values), sets visualFocusTarget and triggers change', () => {
-		const updateFocusTargetSpy = jest
-			.spyOn(FocusStoreClass.prototype, '_updateFocusTarget')
-			.mockImplementation(jest.fn())
-		const triggerChangeSpy = jest
-			.spyOn(FocusStoreClass.prototype, 'triggerChange')
-			.mockImplementation(jest.fn())
-
-		const focusStore = new FocusStoreClass()
-
-		focusStore.init()
-		focusStore._focusComponent('mock-id')
-
-		expect(focusStore.state.visualFocusTarget).toEqual(null)
+	test('focusComponent updates focus target, triggers change and updates visualFocusTarget if fade=true', () => {
+		const updateFocusTargetSpy = jest.spyOn(FocusStore, '_updateFocusTarget')
+		FocusStore._focusComponent('mock-id', true, true, true)
 		expect(updateFocusTargetSpy).toHaveBeenCalledWith(
 			FocusStore.TYPE_COMPONENT,
 			'mock-id',
 			true,
-			false,
-			null
+			true
 		)
-		expect(triggerChangeSpy).toHaveBeenCalledTimes(1)
+		expect(FocusStore.getState().visualFocusTarget).toBe('mock-id')
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 
 		updateFocusTargetSpy.mockRestore()
 		triggerChangeSpy.mockRestore()
 	})
 
-	test('_focusComponent updates the focus target (with custom values), sets visualFocusTarget and triggers change', () => {
-		const updateFocusTargetSpy = jest
-			.spyOn(FocusStoreClass.prototype, '_updateFocusTarget')
-			.mockImplementation(jest.fn())
-		const triggerChangeSpy = jest
-			.spyOn(FocusStoreClass.prototype, 'triggerChange')
-			.mockImplementation(jest.fn())
-
-		const focusStore = new FocusStoreClass()
-
-		focusStore.init()
-		focusStore._focusComponent('mock-id', false, true, true, 'mock-region')
-
-		expect(focusStore.state.visualFocusTarget).toEqual('mock-id')
+	test('focusComponent defaults to animateScroll=false, fade=false, preventScroll=false', () => {
+		const updateFocusTargetSpy = jest.spyOn(FocusStore, '_updateFocusTarget')
+		FocusStore._focusComponent('mock-id')
 		expect(updateFocusTargetSpy).toHaveBeenCalledWith(
 			FocusStore.TYPE_COMPONENT,
 			'mock-id',
 			false,
-			true,
-			'mock-region'
+			false
 		)
-		expect(triggerChangeSpy).toHaveBeenCalledTimes(1)
+		expect(FocusStore.getState().visualFocusTarget).toBe(null)
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 
 		updateFocusTargetSpy.mockRestore()
 		triggerChangeSpy.mockRestore()
@@ -244,5 +238,9 @@ describe('FocusStore', () => {
 		const mockState = {}
 		FocusStore.setState(mockState)
 		expect(FocusStore.state).toBe(mockState)
+	})
+
+	test('@TODO Need to make sure this is testing region and preventScroll', () => {
+		expect(false).toBe(true)
 	})
 })

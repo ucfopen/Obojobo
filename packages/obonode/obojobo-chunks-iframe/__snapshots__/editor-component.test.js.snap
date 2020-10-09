@@ -17,6 +17,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -41,6 +42,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -78,6 +80,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -102,6 +105,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          contentEditable={false}
         >
           <button
             className="button"

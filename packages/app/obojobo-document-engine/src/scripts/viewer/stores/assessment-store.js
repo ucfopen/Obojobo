@@ -337,16 +337,6 @@ class AssessmentStore extends Store {
 		return (this.state = newState)
 	}
 
-	// displayPreAttemptImportScoreNotice(highestScore) {
-	// 	return new Promise(resolve => {
-	// 		const shouldImport = choice => resolve(choice)
-
-	// 		ModalUtil.show(
-	// 			<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
-	// 		)
-	// 	})
-	// }
-
 	displayScoreImportNotice() {
 		Dispatcher.trigger('viewer:alert', {
 			value: {
@@ -460,6 +450,32 @@ class AssessmentStore extends Store {
 		console.log('@TODO - Decide how to handle not in right state errors')
 
 		machine.send(AssessmentStateActions.CONTINUE_ATTEMPT)
+	}
+
+	displayPreAttemptImportScoreNotice(highestScore) {
+		return new Promise(resolve => {
+			const shouldImport = choice => resolve(choice)
+
+			ModalUtil.show(
+				<PreAttemptImportScoreDialog highestScore={highestScore} onChoice={shouldImport} />
+			)
+		})
+	}
+
+	displayResultsModal(label, attemptNumber, scoreReport) {
+		ModalUtil.show(
+			<ResultsDialog
+				label={label}
+				attemptNumber={attemptNumber}
+				scoreReport={scoreReport}
+				onShowClick={this.onCloseResultsDialog.bind(this)}
+			/>
+		)
+	}
+
+	displayUnfinishedAttemptNotice(attemptId) {
+		const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
+		ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
 	}
 }
 

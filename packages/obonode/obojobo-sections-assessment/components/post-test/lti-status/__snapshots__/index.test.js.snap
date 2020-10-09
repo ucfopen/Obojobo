@@ -46,6 +46,7 @@ exports[`LTIStatus LTIStatus component shows loading state 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -87,6 +88,7 @@ exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti st
     </div>
     <div
       className="obojobo-draft--components--button is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -127,6 +129,7 @@ exports[`LTIStatus LTIStatus component with error shows additional information i
     </div>
     <div
       className="obojobo-draft--components--button is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -175,6 +178,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INV
     </div>
     <div
       className="obojobo-draft--components--button is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -215,6 +219,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEW
     </div>
     <div
       className="obojobo-draft--components--button is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -255,6 +260,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STA
     </div>
     <div
       className="obojobo-draft--components--button is-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"

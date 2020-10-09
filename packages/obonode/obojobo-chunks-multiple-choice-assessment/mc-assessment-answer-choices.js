@@ -10,9 +10,9 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 		this.resultsRef = React.createRef()
 	}
 
-	focusOnResults() {
-		focus(this.resultsRef.current)
-	}
+	// focusOnResults() {
+	// 	focus(this.resultsRef.current)
+	// }
 
 	render() {
 		const responseType = this.props.responseType

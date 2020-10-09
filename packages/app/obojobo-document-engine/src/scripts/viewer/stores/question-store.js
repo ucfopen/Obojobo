@@ -589,6 +589,5 @@ class QuestionStore extends Store {
 }
 
 const questionStore = new QuestionStore()
-window.__qs = questionStore
 
 export default questionStore

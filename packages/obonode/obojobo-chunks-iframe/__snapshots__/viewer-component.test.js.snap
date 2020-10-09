@@ -21,6 +21,7 @@ exports[`IFrame IFrame component renders 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -49,6 +50,7 @@ exports[`IFrame IFrame component renders 1`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -89,6 +91,7 @@ exports[`IFrame IFrame component renders 2`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -117,6 +120,7 @@ exports[`IFrame IFrame component renders 2`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -157,6 +161,7 @@ exports[`IFrame IFrame component renders 3`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -185,6 +190,7 @@ exports[`IFrame IFrame component renders 3`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -225,6 +231,7 @@ exports[`IFrame IFrame component renders 4`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -253,6 +260,7 @@ exports[`IFrame IFrame component renders 4`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -293,6 +301,7 @@ exports[`IFrame IFrame component renders 5`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -321,6 +330,7 @@ exports[`IFrame IFrame component renders 5`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -361,6 +371,7 @@ exports[`IFrame IFrame component renders 6`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -389,6 +400,7 @@ exports[`IFrame IFrame component renders 6`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -450,6 +462,7 @@ exports[`IFrame IFrame component renders 7`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -508,6 +521,7 @@ exports[`IFrame IFrame component renders 8`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -566,6 +580,7 @@ exports[`IFrame IFrame component renders 9`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -624,6 +639,7 @@ exports[`IFrame IFrame component renders 10`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -682,6 +698,7 @@ exports[`IFrame IFrame component renders 11`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -740,6 +757,7 @@ exports[`IFrame IFrame component renders 12`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -777,6 +795,7 @@ exports[`IFrame IFrame component renders 13`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -805,6 +824,7 @@ exports[`IFrame IFrame component renders 13`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -845,6 +865,7 @@ exports[`IFrame IFrame component renders 14`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -873,6 +894,7 @@ exports[`IFrame IFrame component renders 14`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -913,6 +935,7 @@ exports[`IFrame IFrame component renders 15`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -941,6 +964,7 @@ exports[`IFrame IFrame component renders 15`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -981,6 +1005,7 @@ exports[`IFrame IFrame component renders 16`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1009,6 +1034,7 @@ exports[`IFrame IFrame component renders 16`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1049,6 +1075,7 @@ exports[`IFrame IFrame component renders 17`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1077,6 +1104,7 @@ exports[`IFrame IFrame component renders 17`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1117,6 +1145,7 @@ exports[`IFrame IFrame component renders 18`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1145,6 +1174,7 @@ exports[`IFrame IFrame component renders 18`] = `
       />
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -1206,6 +1236,7 @@ exports[`IFrame IFrame component renders 19`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -1264,6 +1295,7 @@ exports[`IFrame IFrame component renders 20`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -1322,6 +1354,7 @@ exports[`IFrame IFrame component renders 21`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -1380,6 +1413,7 @@ exports[`IFrame IFrame component renders 22`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -1438,6 +1472,7 @@ exports[`IFrame IFrame component renders 23`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"
@@ -1496,6 +1531,7 @@ exports[`IFrame IFrame component renders 24`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Click to load external content"

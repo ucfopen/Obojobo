@@ -125,12 +125,13 @@ const endAttempt = async (req, res) => {
 	)
 	logSuccess('insertAttemptScoredEvents')
 
-	return {
-		assessmentId: attempt.assessmentId,
-		attemptId: req.params.attemptId,
-		assessmentScoreId,
-		...calculatedScores.assessmentScoreDetails
-	}
+	// return {
+	// 	assessmentId: attempt.assessmentId,
+	// 	attemptId: req.params.attemptId,
+	// 	assessmentScoreId,
+	// 	...calculatedScores.assessmentScoreDetails
+	// }
+	return calculatedScores.assessmentScoreDetails
 }
 
 module.exports = endAttempt

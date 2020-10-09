@@ -55,7 +55,7 @@ export default class Question extends OboQuestionComponent {
 		return questionModel.children.at(questionModel.children.models.length - 1)
 	}
 
-	static focusOnContent(model, opts = {}) {
+	static focusOnContent(model, opts = { preventScroll: false }) {
 		const el = model.getDomEl()
 
 		if (!el) return false
@@ -74,7 +74,7 @@ export default class Question extends OboQuestionComponent {
 
 		if (!focusableEl) return false
 
-		focus(focusableEl, opts.scroll)
+		focus(focusableEl, opts.preventScroll)
 		return true
 	}
 
@@ -308,19 +308,20 @@ export default class Question extends OboQuestionComponent {
 				if (this.getScore() !== null) {
 					delete this.nextFocus
 					focus(this.resultsRef.current, false)
+					// this.answerChoicesRef.current.focusOnResults()
 				}
 				break
 
 			case FOCUS_TARGET_QUESTION:
 				delete this.nextFocus
-				FocusUtil.focusComponent(this.props.model.get('id'), { scroll: false })
+				FocusUtil.focusComponent(this.props.model.get('id'), { preventScroll: true })
 				break
 
 			case FOCUS_TARGET_ANSWERS:
 				delete this.nextFocus
 				FocusUtil.focusComponent(
 					this.constructor.getQuestionAssessmentModel(this.props.model).get('id'),
-					{ scroll: false, region: 'answers' }
+					{ preventScroll: true, region: 'answers' }
 				)
 				break
 		}

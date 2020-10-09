@@ -6,6 +6,7 @@ exports[`Solution Editor Node Solution component 1`] = `
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
   >
     <button
       className="button"

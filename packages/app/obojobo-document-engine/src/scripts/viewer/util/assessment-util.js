@@ -89,7 +89,7 @@ const AssessmentUtil = {
 	getAssessmentScoreForModel(state, model) {
 		const summary = AssessmentUtil.getAssessmentSummaryForModel(state, model)
 
-		if (!summary || summary.scores.length === 0) {
+		if (!summary || !summary.scores || summary.scores.length === 0) {
 			return null
 		}
 

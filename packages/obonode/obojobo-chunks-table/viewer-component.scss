@@ -1,6 +1,11 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--table.viewer {
+	> .container {
+		// This allows auto-width tables with really long strings of text to still fit within the viewer
+		overflow: auto;
+	}
+
 	.view.is-display-type-auto {
 		table-layout: auto;
 	}
@@ -33,5 +38,11 @@
 
 	> .table-editor-buttons {
 		text-align: center;
+	}
+
+	&.is-showing-scrollbar {
+		> .container {
+			padding-bottom: 1em;
+		}
 	}
 }

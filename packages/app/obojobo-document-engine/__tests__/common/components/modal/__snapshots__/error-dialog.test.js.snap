@@ -52,6 +52,7 @@ exports[`ErrorDialog ErrorDialog component 1`] = `
           >
             <div
               className="obojobo-draft--components--button is-not-dangerous align-center"
+              contentEditable={false}
             >
               <button
                 className="button"
