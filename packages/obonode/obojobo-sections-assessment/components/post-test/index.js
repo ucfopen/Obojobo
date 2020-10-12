@@ -4,7 +4,6 @@ import FullReview from '../full-review'
 import LTIStatus from './lti-status'
 import React from 'react'
 import Viewer from 'Viewer'
-import AssessmentApi from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 
 const { OboModel } = Common.models
 const { focus } = Common.page

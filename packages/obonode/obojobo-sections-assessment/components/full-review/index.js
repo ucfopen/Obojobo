@@ -17,6 +17,7 @@ class AssessmentReviewView extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
+
 		NavUtil.setContext(`assessmentReview:${lastAttempt.id}`)
 	}
 
@@ -41,8 +42,6 @@ class AssessmentReviewView extends React.Component {
 			const dateString = formatDate(date, "M/dd/yy 'at' h:mmaaaa")
 			const machineDateString = formatDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
 			const ariaDateString = formatDate(date, "MMMM do yyyy 'at' h:mmaaaa")
-			// const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
-			// const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.questionScores)
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.result.questionScores)
 			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.result.questionScores)
 

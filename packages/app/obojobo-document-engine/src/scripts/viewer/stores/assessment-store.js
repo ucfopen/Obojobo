@@ -145,6 +145,10 @@ class AssessmentStore extends Store {
 			this.acknowledgeResumeAttemptFailed(payload.value.id)
 		})
 
+		Dispatcher.on('assessment:acknowledgeImportAttemptFailed', payload => {
+			this.acknowledgeImportAttemptFailed(payload.value.id)
+		})
+
 		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
 			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
 		})

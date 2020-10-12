@@ -301,7 +301,7 @@ const getDialog = (
 					title="Error"
 					width="35rem"
 				>
-					<p>{`Something went wrong importing your attempt: ${assessment.current.error}. Please try again.`}</p>
+					<p>{`Something went wrong importing your attempt score: ${assessment.current.error}. Please try again.`}</p>
 				</Dialog>
 			)
 		}
