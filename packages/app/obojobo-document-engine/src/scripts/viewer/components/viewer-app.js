@@ -172,7 +172,7 @@ export default class ViewerApp extends React.Component {
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 
 		// Removing the intersection observer.
-		this.stopObservingForIntersectionChanges();
+		this.stopObservingForIntersectionChanges()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -391,7 +391,9 @@ export default class ViewerApp extends React.Component {
 		const focusState = this.state.focusState
 
 		// Only creates an Intersection Observer object when the 'visualFocusTarget'
-		// property of 'focusState' is set.
+		// property of 'focusState' is set - this is when all of the elements of the
+		// page are faded except for the visualFocusTarget (for example, when answering
+		// a practice question)
 		if (!focusState.visualFocusTarget) {
 			return
 		}
@@ -411,7 +413,7 @@ export default class ViewerApp extends React.Component {
 		this.observer = new IntersectionObserver(this.onIntersectionChange, {
 			root: null,
 			rootMargin: '0px',
-			threshhold: 0
+			threshold: 0
 		})
 
 		this.observer.observe(el)
