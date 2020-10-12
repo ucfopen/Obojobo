@@ -38,12 +38,13 @@ describe('AlignMarks', () => {
 		expect(editor.setAlign).not.toHaveBeenCalled()
 	})
 
-	test('onKeyDown toggles Left if CTRL/CMD + L is pressed', () => {
+	test('onKeyDown toggles Left if CTRL/CMD + Shift + L is pressed', () => {
 		const mockChange = {
 			setAlign: jest.fn()
 		}
 		const mockEvent = {
 			ctrlKey: true,
+			shiftKey: true,
 			key: 'l',
 			preventDefault: jest.fn()
 		}
@@ -53,12 +54,13 @@ describe('AlignMarks', () => {
 		expect(mockChange.setAlign).toHaveBeenCalledWith(ALIGN_LEFT)
 	})
 
-	test('onKeyDown toggles Right if CTRL/CMD + R is pressed', () => {
+	test('onKeyDown toggles Right if CTRL/CMD + Shift + R is pressed', () => {
 		const mockChange = {
 			setAlign: jest.fn()
 		}
 		const mockEvent = {
 			ctrlKey: true,
+			shiftKey: true,
 			key: 'r',
 			preventDefault: jest.fn()
 		}
@@ -68,12 +70,13 @@ describe('AlignMarks', () => {
 		expect(mockChange.setAlign).toHaveBeenCalledWith(ALIGN_RIGHT)
 	})
 
-	test('onKeyDown toggles Center if CTRL/CMD + E is pressed', () => {
+	test('onKeyDown toggles Center if CTRL/CMD + Shift + E is pressed', () => {
 		const mockChange = {
 			setAlign: jest.fn()
 		}
 		const mockEvent = {
 			ctrlKey: true,
+			shiftKey: true,
 			key: 'e',
 			preventDefault: jest.fn()
 		}
