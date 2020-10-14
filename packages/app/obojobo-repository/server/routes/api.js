@@ -4,6 +4,7 @@ const Collection = require('../models/collection')
 const CollectionSummary = require('../models/collection_summary')
 const Draft = require('obojobo-express/server/models/draft')
 const DraftSummary = require('../models/draft_summary')
+const DraftPermissions = require('../models/draft_permissions')
 const DraftsMetadata = require('../models/drafts_metadata')
 const {
 	requireCanPreviewDrafts,
@@ -16,14 +17,6 @@ const {
 } = require('obojobo-express/server/express_validators')
 const UserModel = require('obojobo-express/server/models/user')
 const { searchForUserByString } = require('../services/search')
-const {
-	addUserPermissionToDraft,
-	userHasPermissionToDraft,
-	fetchAllUsersWithPermissionToDraft,
-	removeUserPermissionToDraft,
-	userHasPermissionToCopy,
-	userHasPermissionToCollection
-} = require('../services/permissions')
 const { fetchAllCollectionsForDraft } = require('../services/collections')
 const { getUserModuleCount } = require('../services/count')
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
@@ -62,7 +55,7 @@ router
 				return DraftSummary.fetchRecentByUserId(req.currentUser.id)
 			})
 			.then(modules => {
-				return res.success({allCount, modules})
+				return res.success({ allCount, modules })
 			})
 			.catch(res.unexpected)
 	})
@@ -80,7 +73,7 @@ router
 				return DraftSummary.fetchByUserId(req.currentUser.id)
 			})
 			.then(modules => {
-				return res.success({allCount, modules})
+				return res.success({ allCount, modules })
 			})
 			.catch(res.unexpected)
 	})
@@ -157,7 +150,7 @@ router
 			const userId = req.currentUser.id
 			const draftId = req.currentDocument.draftId
 
-			const canCopy = await userHasPermissionToCopy(userId, draftId)
+			const canCopy = await DraftPermissions.userHasPermissionToCopy(userId, draftId)
 			if (!canCopy) {
 				res.notAuthorized('Current user has no permissions to copy this draft')
 				return
@@ -203,8 +196,11 @@ router
 	.route('/drafts/:draftId/permission')
 	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
-		return fetchAllUsersWithPermissionToDraft(req.currentDocument.draftId)
-			.then(res.success)
+		return DraftPermissions.getDraftOwners(req.currentDocument.draftId)
+			.then(users => {
+				const filteredUsers = users.map(u => u.toJSON())
+				res.success(filteredUsers)
+			})
 			.catch(res.unexpected)
 	})
 
@@ -218,7 +214,7 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
 			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return
@@ -229,7 +225,7 @@ router
 			await UserModel.fetchById(userId)
 
 			// add permissions
-			await addUserPermissionToDraft(userId, draftId)
+			await DraftPermissions.addOwnerToDraft(draftId, userId)
 			res.success()
 		} catch (error) {
 			res.unexpected(error)
@@ -246,7 +242,7 @@ router
 			const draftId = req.currentDocument.draftId
 
 			// check currentUser's permissions
-			const canShare = await userHasPermissionToDraft(req.currentUser.id, draftId)
+			const canShare = await DraftPermissions.userHasPermissionToDraft(req.currentUser.id, draftId)
 			if (!canShare) {
 				res.notAuthorized('Current User has no permissions to selected draft')
 				return
@@ -257,7 +253,7 @@ router
 			const userToRemove = await UserModel.fetchById(userIdToRemove)
 
 			// remove perms
-			await removeUserPermissionToDraft(userToRemove.id, draftId)
+			await DraftPermissions.removeOwnerFromDraft(draftId, userToRemove.id)
 			res.success()
 		} catch (error) {
 			res.unexpected(error)
@@ -286,10 +282,9 @@ router
 				return DraftSummary.fetchAllInCollectionForUser(req.params.collectionId, req.currentUser.id)
 			})
 			.then(modules => {
-				return res.success({allCount, modules})
+				return res.success({ allCount, modules })
 			})
 			.catch(res.unexpected)
-
 	})
 
 router
@@ -309,7 +304,7 @@ router
 				return DraftSummary.fetchByDraftTitleAndUser(req.query.q, req.currentUser.id)
 			})
 			.then(modules => {
-				return res.success({allCount, modules})
+				return res.success({ allCount, modules })
 			})
 			.catch(res.unexpected)
 	})
@@ -331,14 +326,19 @@ router
 	.route('/collections/rename')
 	.post([requireCanCreateDrafts, checkValidationRules])
 	.post(async (req, res, next) => {
-		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.body.id)
-		if (!hasPerms) {
-			return res.notAuthorized('You must be the creator of this collection to rename it')
+		try {
+			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				req.body.id
+			)
+			if (!hasPerms) {
+				return res.notAuthorized('You must be the creator of this collection to rename it')
+			}
+			const collection = await Collection.rename(req.body.id, req.body.title, req.currentUser.id)
+			res.success(collection)
+		} catch (error) {
+			res.unexpected(error)
 		}
-
-		return Collection.rename(req.body.id, req.body.title, req.currentUser.id)
-			.then(res.success)
-			.catch(res.unexpected)
 	})
 
 // Delete a collection
@@ -347,14 +347,20 @@ router
 	.route('/collections/:id')
 	.delete([requireCanDeleteDrafts, checkValidationRules])
 	.delete(async (req, res, next) => {
-		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
-		if (!hasPerms) {
-			return res.notAuthorized('You must be the creator of this collection to delete it')
-		}
+		try {
+			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				req.params.id
+			)
+			if (!hasPerms) {
+				return res.notAuthorized('You must be the creator of this collection to delete it')
+			}
 
-		return Collection.delete(req.params.id, req.currentUser.id)
-			.then(res.success)
-			.catch(res.unexpected)
+			const collection = await Collection.delete(req.params.id, req.currentUser.id)
+			res.success(collection)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 
 // Add a module to a collection
@@ -363,14 +369,24 @@ router
 	.route('/collections/:id/module/add')
 	.post([requireCanCreateDrafts, checkValidationRules])
 	.post(async (req, res, next) => {
-		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
-		if (!hasPerms) {
-			return res.notAuthorized('You must be the creator of this collection to add modules to it')
-		}
+		try {
+			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				req.params.id
+			)
+			if (!hasPerms) {
+				return res.notAuthorized('You must be the creator of this collection to add modules to it')
+			}
 
-		return Collection.addModule(req.params.id, req.body.draftId, req.currentUser.id)
-			.then(res.success)
-			.catch(res.unexpected)
+			const collection = await Collection.addModule(
+				req.params.id,
+				req.body.draftId,
+				req.currentUser.id
+			)
+			res.success(collection)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 
 // Remove a module from a collection
@@ -379,16 +395,26 @@ router
 	.route('/collections/:id/module/remove')
 	.delete([requireCanDeleteDrafts, checkValidationRules])
 	.delete(async (req, res, next) => {
-		const hasPerms = await userHasPermissionToCollection(req.currentUser.id, req.params.id)
-		if (!hasPerms) {
-			return res.notAuthorized(
-				'You must be the creator of this collection to remove modules from it'
+		try {
+			const hasPerms = await DraftPermissions.userHasPermissionToCollection(
+				req.currentUser.id,
+				req.params.id
 			)
-		}
+			if (!hasPerms) {
+				return res.notAuthorized(
+					'You must be the creator of this collection to remove modules from it'
+				)
+			}
 
-		return Collection.removeModule(req.params.id, req.body.draftId, req.currentUser.id)
-			.then(res.success)
-			.catch(res.unexpected)
+			const collection = await Collection.removeModule(
+				req.params.id,
+				req.body.draftId,
+				req.currentUser.id
+			)
+			res.success(collection)
+		} catch (error) {
+			res.unexpected(error)
+		}
 	})
 
 module.exports = router

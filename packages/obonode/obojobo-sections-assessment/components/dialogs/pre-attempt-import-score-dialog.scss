@@ -1,0 +1,87 @@
+@import '~styles/includes';
+
+.obojobo-draft--components--modal--dialog.pre-attempt-import {
+	max-width: 40rem;
+
+	.content {
+		.controls {
+			display: flex;
+			align-items: stretch;
+			align-content: center;
+
+			> .choice-box {
+				width: 50%;
+				background: #f9f4ff;
+				border-radius: $dimension-rounded-radius;
+				padding: 1em 0.5em;
+				position: relative;
+				box-sizing: border-box;
+				display: flex;
+				flex-direction: column;
+
+				h2 {
+					margin-top: 0;
+					font-size: 1.1em;
+				}
+
+				.choice-desc {
+					font-size: 0.9em;
+					margin-bottom: 1.5em;
+					flex-grow: 1;
+				}
+
+				> .obojobo-draft--components--button > button {
+					width: 100%;
+				}
+			}
+
+			> .or-box {
+				align-self: center;
+				margin: 0 1em;
+				color: $color-text-minor;
+			}
+
+			@include mq($until: tablet) {
+				margin: 0;
+
+				> .choice-box {
+					font-size: 0.9em;
+					padding: 0.5em 0.2em;
+
+					h2 {
+						font-size: 0.8em;
+						margin-bottom: 0.6em;
+					}
+
+					.choice-desc {
+						font-size: 0.7em;
+					}
+
+					> .obojobo-draft--components--button {
+						font-size: 0.9em;
+					}
+				}
+
+				> .or-box {
+					font-size: 0.8em;
+					margin: 0.2em;
+				}
+			}
+		}
+
+		@include mq($until: tablet) {
+			.obojobo-draft--components--modal--modal {
+				padding: 0.5rem 0.5em;
+			}
+
+			.heading {
+				font-size: 1.1em;
+			}
+
+			.dialog-content {
+				margin-bottom: 1.2em;
+				font-size: 0.75em;
+			}
+		}
+	}
+}

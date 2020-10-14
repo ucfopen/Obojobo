@@ -229,7 +229,14 @@ class EditorStore extends Store {
 
 	renamePageOrModule(nodeId, newName) {
 		const pageOrModule = OboModel.models[nodeId]
-		pageOrModule.get('content').title = newName
+		const content = pageOrModule.get('content')
+
+		// clone content object and replace the title
+		pageOrModule.set('content', { ...content, title: newName })
+		// Module has title implemented on the object itself instead of inside content
+		// The other types don't, but due to confusion between the two,
+		// the code across obojobo has started to expect it.
+		// This makes sure module and page titles change in the editor right away.
 		pageOrModule.title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())

@@ -3,13 +3,14 @@ const Collection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/server/models/user')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
+const DraftPermissions = require('../models/draft_permissions')
 const GeoPattern = require('geopattern')
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/server/express_validators')
-const { userHasPermissionToCopy } = require('../services/permissions')
+
 const publicLibCollectionId = require('../../shared/publicLibCollectionId')
 
 router
@@ -96,7 +97,10 @@ router
 				owner = await UserModel.fetchById(module.userId)
 			}
 
-			const canCopy = await userHasPermissionToCopy(req.currentUser.id, module.draftId)
+			const canCopy = await DraftPermissions.userHasPermissionToCopy(
+				req.currentUser.id,
+				module.draftId
+			)
 
 			const props = {
 				module,

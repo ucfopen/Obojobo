@@ -51,7 +51,7 @@ const ActionButton = {
 
 				return [
 					{
-						placeholder: 'Type your label here',
+						placeholder: 'Your label here',
 						anchor: point,
 						focus: point
 					}

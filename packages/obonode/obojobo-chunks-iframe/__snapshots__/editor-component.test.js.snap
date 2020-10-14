@@ -17,6 +17,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -40,6 +41,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -57,7 +59,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component handles tab 1`] = `"<div><div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up\\"><div class=\\"editor-container   is-not-selected\\" style=\\"height: 500px; user-select: none;\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"iframe-toolbar\\"><span class=\\"title\\" aria-hidden=\\"true\\" contenteditable=\\"false\\">IFrame missing src attribute</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">IFrame Properties</button></div></div></div></div></div>"`;
+exports[`IFrame Editor Node IFrame component handles tab 1`] = `"<div><div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up\\"><div class=\\"editor-container   is-not-selected\\" style=\\"height: 500px; user-select: none;\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">×</button></div><div class=\\"iframe-toolbar\\"><span class=\\"title\\" aria-hidden=\\"true\\" contenteditable=\\"false\\">IFrame missing src attribute</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\" contenteditable=\\"false\\"><button class=\\"button\\" tabindex=\\"-1\\" contenteditable=\\"false\\">IFrame Properties</button></div></div></div></div></div>"`;
 
 exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
 <div>
@@ -76,6 +78,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
     >
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -99,6 +102,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         </span>
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          contentEditable={false}
         >
           <button
             className="button"

@@ -122,13 +122,15 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<Button className="add-solution" onClick={this.addSolution} contentEditable={false}>
-									Add Solution
-								</Button>
+								<div contentEditable={false}>
+									<Button className="add-solution" onClick={this.addSolution}>
+										Add Solution
+									</Button>
+								</div>
 							)}
 						</div>
 					</div>
-					<Button className="delete-button" onClick={() => this.delete()}>
+					<Button className="delete-button" onClick={() => this.delete()} contentEditable={false}>
 						×
 					</Button>
 				</div>

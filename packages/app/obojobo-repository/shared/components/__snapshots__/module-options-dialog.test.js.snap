@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModuleOptionsDialog ModuleOptionsDialog renders correctly with standard expected props 1`] = `
+exports[`ModuleOptionsDialog renders correctly with standard expected props 1`] = `
 <div
   className="module-permissions-dialog"
 >

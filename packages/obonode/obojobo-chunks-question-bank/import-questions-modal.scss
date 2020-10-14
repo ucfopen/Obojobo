@@ -1,0 +1,57 @@
+@import '~styles/includes';
+
+.import-questions-model {
+	max-width: 70vw;
+
+	.import-model--question-content {
+		background: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		max-height: 55vh;
+		min-width: 35em;
+		overflow: scroll;
+		font-size: 0.75em;
+
+		.import-model--question-content--single {
+			background: $color-bg;
+			border: 1px solid $color-shadow;
+			border-radius: $dimension-rounded-radius;
+			user-select: none;
+			cursor: pointer;
+			margin: 1em;
+			position: relative;
+			display: flex;
+			text-align: left;
+
+			> input {
+				margin: 1.4em 1.5em;
+			}
+
+			> div {
+				flex: 1;
+			}
+
+			.container {
+				max-width: 30em;
+			}
+
+			.pad {
+				padding-left: 0;
+			}
+
+			&.is-selected {
+				background: transparentize($color-action, 0.9);
+				border: 1px solid $color-action;
+			}
+
+			* {
+				pointer-events: none;
+			}
+		}
+	}
+
+	p {
+		margin: 1em 0 -1em;
+		font-size: 0.8em;
+		color: $color-text-minor;
+	}
+}

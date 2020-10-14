@@ -56,13 +56,15 @@ describe('LayoutDefault', () => {
 		expect(scripts).toHaveLength(3)
 		expect(scripts.at(0).prop('crossOrigin')).toBe(false)
 		expect(scripts.at(1).prop('crossOrigin')).toBe(false)
-		expect(scripts.at(1).prop('src')).toBe('//unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js')
+		expect(scripts.at(1).prop('src')).toBe(
+			'//unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js'
+		)
 		// only the third tag has a variable location - the first two are hard-coded
 		expect(scripts.at(2).prop('src')).toBe('./script.js')
 	})
 
 	test('renders correctly with appScriptUrl prop provided and isDev is true', () => {
-		const component = shallow(<LayoutDefault appScriptUrl={'./script.js'} isDev={true}/>)
+		const component = shallow(<LayoutDefault appScriptUrl={'./script.js'} isDev={true} />)
 
 		const links = component.find('link')
 		// if 'appCSSUrl' is not in props, only the default stylesheet link will render
@@ -73,7 +75,9 @@ describe('LayoutDefault', () => {
 		expect(scripts).toHaveLength(3)
 		expect(scripts.at(0).prop('crossOrigin')).toBe('true')
 		expect(scripts.at(1).prop('crossOrigin')).toBe('true')
-		expect(scripts.at(1).prop('src')).toBe('//unpkg.com/react-dom@16.13.1/umd/react-dom.development.js')
+		expect(scripts.at(1).prop('src')).toBe(
+			'//unpkg.com/react-dom@16.13.1/umd/react-dom.development.js'
+		)
 		// only the third tag has a variable location - the first two are hard-coded
 		expect(scripts.at(2).prop('src')).toBe('./script.js')
 	})

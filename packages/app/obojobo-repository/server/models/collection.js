@@ -29,8 +29,7 @@ class Collection {
 				return new Collection(selectResult)
 			})
 			.catch(error => {
-				logger.error('fetchById Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('Collection fetchById Error', error)
 			})
 	}
 
@@ -128,8 +127,7 @@ class Collection {
 				return this
 			})
 			.catch(error => {
-				logger.error('loadModules Error', error.message)
-				return Promise.reject(error)
+				throw logger.logError('loadModules Error', error)
 			})
 	}
 }

@@ -11,7 +11,7 @@ jest.mock('slate')
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 jest.mock(
-	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper', 
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper',
 	() => item => item
 )
 
@@ -21,9 +21,7 @@ describe('Actions editor', () => {
 	})
 
 	test('Node component', () => {
-		const component = renderer.create(
-			<PostAssessment element={{ content: {} }}/>
-		)
+		const component = renderer.create(<PostAssessment element={{ content: {} }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -35,7 +33,8 @@ describe('Actions editor', () => {
 				element={{
 					content: {},
 					children: []
-				}}/>
+				}}
+			/>
 		)
 		const tree = component.html()
 
@@ -51,7 +50,8 @@ describe('Actions editor', () => {
 				element={{
 					content: {},
 					children: []
-				}}/>
+				}}
+			/>
 		)
 		ReactEditor.findPath.mockReturnValueOnce([])
 
