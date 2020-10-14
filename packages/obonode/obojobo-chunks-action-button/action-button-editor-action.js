@@ -1,11 +1,17 @@
 import React, { memo } from 'react'
 
 const ActionButtonEditorAction = props => {
-	let description
+	let description;
 
 	switch (props.type) {
 		case 'nav:goto':
-			description = `Go to "${props.value.id}"`
+
+			if (props.value.id) {
+				description = `Go to ${props.value.id}`
+			}else {
+				description = 'Go to ""'
+			}
+
 			break
 		case 'nav:prev':
 			description = 'Go to the previous page'
@@ -14,7 +20,13 @@ const ActionButtonEditorAction = props => {
 			description = 'Go to the next page'
 			break
 		case 'nav:openExternalLink':
-			description = `Open ${props.value.url}`
+
+			if (props.value.url) {
+				description = `Open ${props.value.url}`
+			}else {
+				description = 'Open ""'
+			}
+
 			break
 		case 'nav:lock':
 			description = 'Lock navigation'
