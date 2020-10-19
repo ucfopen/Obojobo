@@ -85,3 +85,10 @@
 		}
 	}
 }
+
+*[data-hanging-indent='true'] .editor--components--mark--link .href-menu {
+	a {
+		margin-left: 2rem;
+		text-indent: 0;
+	}
+}

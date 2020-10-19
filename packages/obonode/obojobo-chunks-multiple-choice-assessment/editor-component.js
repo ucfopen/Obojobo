@@ -95,9 +95,11 @@ class MCAssessment extends React.Component {
 				</div>
 				<div>
 					{this.props.children}
-					<Button className={'choice-button pad'} onClick={this.addChoice}>
-						{'+ Add Choice'}
-					</Button>
+					<div contentEditable={false}>
+						<Button className={'choice-button pad'} onClick={this.addChoice}>
+							{'+ Add Choice'}
+						</Button>
+					</div>
 				</div>
 			</div>
 		)

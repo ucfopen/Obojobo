@@ -340,7 +340,9 @@ class VisualEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			this.exportToJSON(prevProps.page, prevState.value)
+			if (OboModel.models[prevProps.page.id]) {
+				this.exportToJSON(prevProps.page, prevState.value)
+			}
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()

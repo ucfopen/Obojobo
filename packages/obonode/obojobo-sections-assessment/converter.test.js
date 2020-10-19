@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 import Converter from './converter'
-
+import Common from 'obojobo-document-engine/src/scripts/common/index'
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		getItemForType: type => ({
@@ -65,7 +65,7 @@ describe('Assessment Converter', () => {
 
 	test('slateToObo converts a Slate node to an OboNode with no model', () => {
 		const createSlateNode = triggersValue => ({
-			id: 'otherMockKey',
+			id: 'otherMockKeyNotInModels',
 			type: 'mockType',
 			content: {
 				rubric: true,
@@ -95,6 +95,42 @@ describe('Assessment Converter', () => {
 
 		slateNode = createSlateNode([{ type: 'someTrigger' }])
 		expect(Converter.slateToObo(slateNode)).toMatchSnapshot()
+	})
+
+	test('slateToObo doesnt change node content when id is found in model list', () => {
+		const slateNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			content: {
+				rubric: true,
+				triggers: []
+			},
+			children: []
+		}
+
+		const mockContents = { contents: 'mock' }
+		Common.models.OboModel.models.mockKey.get.mockReturnValueOnce(mockContents)
+
+		const result = Converter.slateToObo(slateNode)
+
+		expect(result.content).not.toStrictEqual(slateNode.content)
+		expect(result.content).not.toStrictEqual(mockContents)
+	})
+
+	test('slateToObo doesnt change node content when id is NOT found in model list', () => {
+		const slateNode = {
+			id: 'otherMockKeyNotInModels',
+			type: 'mockType',
+			content: {
+				rubric: true,
+				triggers: []
+			},
+			children: []
+		}
+
+		const result = Converter.slateToObo(slateNode)
+
+		expect(result.content).not.toStrictEqual(slateNode.content)
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
