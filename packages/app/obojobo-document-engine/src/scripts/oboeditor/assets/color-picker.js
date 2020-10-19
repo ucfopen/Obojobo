@@ -20,7 +20,7 @@ const colorChoices = [
 ]
 
 const getSelectionColor = editor => {
-	return (Editor.marks(editor).color || '').toLowerCase()
+	return ((Editor.marks(editor) && Editor.marks(editor).color) || '').toLowerCase()
 }
 
 // Returns true if the color of the selected text is set, but isn't one of the first row of colors.
