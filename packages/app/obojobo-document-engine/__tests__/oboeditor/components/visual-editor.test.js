@@ -106,6 +106,38 @@ describe('VisualEditor', () => {
 			})
 	})
 
+	test('VisualEditor component update save indicator when API ran successfully', () => {
+		APIUtil.postDraft.mockResolvedValue({ status: 'ok' })
+
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				},
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: {
+				title: 'Mock Title',
+				children: [],
+				flatJSON: jest.fn().mockReturnValue({ content: {} })
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component.instance().markUnsaved = jest.fn()
+
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(component.instance().state.saveState).toBe('saveSuccessful')
+			})
+	})
+
 	test('VisualEditor component with decoration', () => {
 		const props = {
 			insertableItems: 'mock-insertable-items',
@@ -479,8 +511,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": false,
-		  "saved": true,
-		  "saving": false,
+		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -510,8 +541,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": true,
-		  "saved": false,
-		  "saving": false,
+		  "saveState": "",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -883,7 +913,7 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
-		component.setState({ saved: false })
+		component.setState({ saveState: '' })
 
 		expect(eventMap.beforeunload({})).toEqual(true)
 
