@@ -916,25 +916,25 @@
 											"align": "left"
 										},
 										"text": {
-											"value": "The alignment can be changed by using the buttons in the toolbar, or by pressing CTRL+L for left align, CRL+R for right align, or CTRL+E for center align.",
+											"value": "The alignment can be changed by using the buttons in the toolbar, or by pressing CTRL+Shift+L for left align, CTRL+Shift+R for right align, or CTRL+Shift+E for center align.",
 											"styleList": [
 												{
-													"end": 87,
+													"end": 93,
 													"data": {},
 													"type": "monospace",
 													"start": 81
 												},
 												{
-													"end": 109,
+													"end": 122,
 													"data": {},
 													"type": "monospace",
-													"start": 104
+													"start": 110
 												},
 												{
-													"end": 136,
+													"end": 155,
 													"data": {},
 													"type": "monospace",
-													"start": 130
+													"start": 143
 												}
 											]
 										}
