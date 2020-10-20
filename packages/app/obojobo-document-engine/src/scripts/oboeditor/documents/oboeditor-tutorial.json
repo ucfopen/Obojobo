@@ -6919,6 +6919,140 @@
 							]
 						},
 						{
+                            "id": "c6537df9-3e5b-4ffb-84d4-4cb75c2922ef",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "data": {},
+                                        "text": {
+                                            "value": "Importing Questions",
+                                            "styleList": []
+                                        }
+                                    }
+                                ],
+                                "headingLevel": 2
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "db3d821e-67ce-4db9-abc8-f1e55c7d06cd",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "data": {
+                                            "align": "left",
+                                            "indent": 0
+                                        },
+                                        "text": {
+                                            "value": "Any Question that has been added to the module can be imported into a Question Bank. To import Questions, select anywhere inside the Question Bank and click on the circle with three dots at the top right of the Question Bank to open the details menu. Clicking the Import Questions button within this menu will open a dialog that displays all of the Questions that are in the current module. Inside the dialog, clicking Cancel will close it without importing any Questions, and clicking Import will update the Question Bank to include all of the questions that were selected.",
+                                            "styleList": []
+                                        }
+                                    },
+                                    {
+                                        "data": {
+                                            "align": "left",
+                                            "indent": 0
+                                        },
+                                        "text": {
+                                            "value": "Try it! Import a few Questions into this Question Bank.",
+                                            "styleList": [
+                                                {
+                                                    "end": 7,
+                                                    "data": {},
+                                                    "type": "b",
+                                                    "start": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "42ebe38b-f021-445c-a2b6-39f83211fa4b",
+                            "type": "ObojoboDraft.Chunks.QuestionBank",
+                            "content": {
+                                "choose": "all",
+                                "select": "sequential"
+                            },
+                            "children": [
+                                {
+                                    "id": "beddcfff-1e52-4c61-8dc0-bc40f6286fe5",
+                                    "type": "ObojoboDraft.Chunks.Question",
+                                    "content": {
+                                        "type": "default"
+                                    },
+                                    "children": [
+                                        {
+                                            "id": "602b9c31-2e7a-4cf8-abc6-113f54288435",
+                                            "type": "ObojoboDraft.Chunks.Text",
+                                            "content": {
+                                                "textGroup": [
+                                                    {
+                                                        "data": {
+                                                            "indent": 0
+                                                        },
+                                                        "text": {
+                                                            "value": "",
+                                                            "styleList": []
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "children": []
+                                        },
+                                        {
+                                            "id": "45f7f8a3-94f5-4cf8-8349-7d204b62f95d",
+                                            "type": "ObojoboDraft.Chunks.MCAssessment",
+                                            "content": {
+                                                "shuffle": true,
+                                                "responseType": "pick-one"
+                                            },
+                                            "children": [
+                                                {
+                                                    "id": "26e6b1ab-7b83-497e-96da-3d94ad365744",
+                                                    "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                                                    "content": {
+                                                        "score": 0
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "id": "424798e4-cc3b-4eca-aa3a-1f6fd9933609",
+                                                            "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                                                            "content": {},
+                                                            "children": [
+                                                                {
+                                                                    "id": "04eca18a-a8a5-4915-8501-cb7efec3245c",
+                                                                    "type": "ObojoboDraft.Chunks.Text",
+                                                                    "content": {
+                                                                        "textGroup": [
+                                                                            {
+                                                                                "data": {
+                                                                                    "indent": 0
+                                                                                },
+                                                                                "text": {
+                                                                                    "value": "",
+                                                                                    "styleList": []
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "children": []
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+						{
 							"id": "84d5b7f4-cd7e-44e8-b9a3-898a3082c034",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
