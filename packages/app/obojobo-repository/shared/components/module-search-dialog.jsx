@@ -6,30 +6,35 @@ const Button = require('./button')
 const Search = require('./search')
 const CollectionModuleListItem = require('./collection-module-list-item')
 
-const ModuleSearchDialog = props => {
+const ModuleSearchDialog = ({
+	collectionId,
+	searchModules = [],
+	collectionModules = [],
+	clearModuleSearchResults,
+	onSelectModule,
+	onSearchChange,
+	onClose
+}) => {
 	// clear results on initial render
 	useEffect(() => {
-		props.clearModuleSearchResults()
+		clearModuleSearchResults()
 	}, [])
 
-	const onSelectModule = module => {
-		props.onSelectModule(module.draftId)
-	}
-
-	const handleSearchChange = searchString => {
-		props.onSearchChange(searchString, props.collectionId)
-	}
-
 	const renderModuleList = () => {
-		return props.searchModules.map(module => {
+		return searchModules.map(module => {
 			let buttonRender = (
-				<Button className="select-button" onClick={() => onSelectModule(module)}>
+				<Button
+					className="select-button"
+					onClick={() => {
+						onSelectModule(module.draftId)
+					}}
+				>
 					Select
 				</Button>
 			)
 			let alreadyInCollection = false
 
-			if (props.collectionModules.some(m => module.draftId === m.draftId)) {
+			if (collectionModules.some(m => module.draftId === m.draftId)) {
 				buttonRender = null
 				alreadyInCollection = true
 			}
@@ -49,11 +54,17 @@ const ModuleSearchDialog = props => {
 	return (
 		<div className="module-search-dialog">
 			<div className="wrapper">
-				<Button className="close-button" ariaLabel="Close" onClick={props.onClose}>
+				<Button className="close-button" ariaLabel="Close" onClick={onClose}>
 					×
 				</Button>
 				<h1 className="title">Find Modules to Add</h1>
-				<Search onChange={handleSearchChange} focusOnMount={true} placeholder="Search..." />
+				<Search
+					onChange={() => {
+						onSearchChange(searchString, collectionId)
+					}}
+					focusOnMount={true}
+					placeholder="Search..."
+				/>
 			</div>
 			<div className="module-list-wrapper">
 				<ul className="module-list">{renderModuleList()}</ul>
