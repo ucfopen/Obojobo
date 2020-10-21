@@ -62,7 +62,8 @@ const createScore = (attemptIRI, scoredBy, score, scoreId = getNewGeneratedId())
 // actor: (type: Person, REQUIRED) Current user
 const createAssessmentEvent = (obj, IRI) => {
 	const required = ['action', 'assessmentId', 'attemptId', 'draftId', 'contentId']
-	validateCaliperEvent({ required }, obj, ACTOR_USER)
+	const optional = ['referrer']
+	validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
 
 	const options = assignCaliperOptions(obj)
 
@@ -72,6 +73,10 @@ const createAssessmentEvent = (obj, IRI) => {
 	caliperEvent.setAction(action)
 	caliperEvent.setObject(IRI.getAssessmentIRI(contentId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
+
+	if (obj.referrer) {
+		caliperEvent.referrer = IRI.getAssessmentAttemptIRI(obj.referrer)
+	}
 	Object.assign(caliperEvent.extensions, extensions)
 
 	return updateEventToVersion1_1(caliperEvent)
@@ -193,6 +198,33 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 
 		createAssessmentAttemptSubmittedEvent: obj => {
 			obj.action = 'Submitted'
+			return createAssessmentEvent(obj, IRI)
+		},
+
+		createAssessmentAttemptImportedEvent: ({
+			actor,
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			originalScoreId,
+			originalAttemptId,
+			resourceLinkId
+		}) => {
+			const obj = {
+				action: 'Submitted',
+				referrer: originalAttemptId,
+				actor,
+				draftId,
+				contentId,
+				assessmentId,
+				attemptId,
+				extensions: {
+					originalScoreId,
+					originalAttemptId,
+					resourceLinkId
+				}
+			}
 			return createAssessmentEvent(obj, IRI)
 		},
 

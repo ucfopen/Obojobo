@@ -130,7 +130,7 @@ const normalizeNode = (entry, editor, next) => {
 		}
 
 		// List Level self-normalization - ensure that listStyles is the source of truth
-		// Because parent normalization has already occurred, 
+		// Because parent normalization has already occurred,
 		// there should always be an ancestor
 		const [listNode, listPath] = Editor.above(editor, {
 			at: path,
@@ -166,7 +166,9 @@ const normalizeNode = (entry, editor, next) => {
 		// create styles for this LIST_LEVEL_NODE
 		const stylesToSet = {}
 		if (node.content.type !== desired.type) stylesToSet.type = desired.type
-		if (node.content.bulletStyle !== desired.bulletStyle) stylesToSet.bulletStyle = desired.bulletStyle
+		if (node.content.bulletStyle !== desired.bulletStyle) {
+			stylesToSet.bulletStyle = desired.bulletStyle
+		}
 
 		// only update if needed
 		if (stylesToSet.type || stylesToSet.bulletStyle) {

@@ -96,4 +96,19 @@ describe('editor route', () => {
 				expect(response.text).toBe('Not Authorized')
 			})
 	})
+
+	test('get visual editor handles readOnly setting', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
+		mockCurrentUser.isGuest = () => false
+
+		return request(app)
+			.get('/visual/draft/mockId')
+			.query({ read_only: '1' })
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.text).toContain('"readOnly":true')
+			})
+	})
 })

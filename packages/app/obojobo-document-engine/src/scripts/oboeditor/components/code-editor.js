@@ -1,15 +1,11 @@
-import React, { Suspense } from 'react'
-
 import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import 'codemirror/addon/fold/foldgutter.css'
 
-import APIUtil from '../../../scripts/viewer/util/api-util'
+import React, { Suspense } from 'react'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
-import ModalUtil from '../../common/util/modal-util'
-import SimpleDialog from '../../common/components/modal/simple-dialog'
 import EditorTitleInput from './editor-title-input'
 
 const CodeMirror = React.lazy(() =>
@@ -23,10 +19,12 @@ class CodeEditor extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const title = EditorUtil.getTitleFromString(props.initialCode, props.mode)
+
 		this.state = {
 			code: props.initialCode,
-			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
-			saved: true,
+			title,
+			saveState: 'saveSuccessful',
 			editor: null,
 			options: {
 				lineNumbers: true,
@@ -62,7 +60,7 @@ class CodeEditor extends React.Component {
 	}
 
 	checkIfSaved(event) {
-		if (!this.state.saved) {
+		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
@@ -71,7 +69,7 @@ class CodeEditor extends React.Component {
 	}
 
 	onBeforeChange(editor, data, code) {
-		this.setState({ code, saved: false, saving: false })
+		this.setState({ code, saveState: '' })
 	}
 
 	setTitleInCode(code, mode, title) {
@@ -110,18 +108,10 @@ class CodeEditor extends React.Component {
 	}
 
 	sendSave(draftId, code, mode) {
-		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
-		this.setState({ saved: false, saving: true })
-		return APIUtil.postDraft(draftId, code, format)
-			.then(result => {
-				if (result.status !== 'ok') throw Error(result.value.message)
-				this.setState({ saved: this.state.saving, saving: false })
-			})
-			.catch(e => {
-				this.setState({ saved: false, saving: false })
-				if (e instanceof Error) e = e.message
-				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
-			})
+		this.setState({ saveState: 'saving' })
+		return this.props.saveDraft(draftId, code, mode).then(isSaved => {
+			this.setState({ saveState: isSaved ? 'saveSuccessful' : 'saveFailed' })
+		})
 	}
 
 	// Makes CodeMirror commands match Slate commands
@@ -159,16 +149,6 @@ class CodeEditor extends React.Component {
 			event.preventDefault()
 			this.saveAndGetTitleFromCode()
 		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.undo()
-		}
-
-		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.redo()
-		}
 	}
 
 	setEditor(editor) {
@@ -187,8 +167,7 @@ class CodeEditor extends React.Component {
 							draftId={this.props.draftId}
 							switchMode={this.props.switchMode}
 							onSave={this.saveAndGetTitleFromCode}
-							saved={this.state.saved}
-							saving={this.state.saving}
+							saveState={this.state.saveState}
 							mode={this.props.mode}
 						/>
 					) : null}

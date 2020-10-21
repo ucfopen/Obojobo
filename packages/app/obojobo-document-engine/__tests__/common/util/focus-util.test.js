@@ -18,7 +18,8 @@ describe('FocusUtil', () => {
 			value: {
 				id: 'testId',
 				fade: false,
-				animateScroll: false
+				animateScroll: false,
+				preventScroll: false
 			}
 		})
 	})
@@ -30,7 +31,8 @@ describe('FocusUtil', () => {
 			value: {
 				id: 'testId',
 				fade: true,
-				animateScroll: false
+				animateScroll: false,
+				preventScroll: false
 			}
 		})
 
@@ -40,7 +42,8 @@ describe('FocusUtil', () => {
 			value: {
 				id: 'testId',
 				fade: false,
-				animateScroll: true
+				animateScroll: true,
+				preventScroll: false
 			}
 		})
 
@@ -50,7 +53,23 @@ describe('FocusUtil', () => {
 			value: {
 				id: 'testId',
 				fade: true,
-				animateScroll: true
+				animateScroll: true,
+				preventScroll: false
+			}
+		})
+
+		FocusUtil.focusComponent('testId', {
+			fade: true,
+			animateScroll: true,
+			preventScroll: true
+		})
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: true,
+				animateScroll: true,
+				preventScroll: true
 			}
 		})
 	})

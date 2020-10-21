@@ -1,5 +1,7 @@
 const debouncePromise = require('debounce-promise')
-
+const dayjs = require('dayjs')
+const advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 // =================== API =======================
 
 const JSON_MIME_TYPE = 'application/json'
@@ -35,6 +37,69 @@ const apiGetPermissionsForModule = draftId => {
 	return fetch(`/api/drafts/${draftId}/permission`, defaultOptions()).then(res => res.json())
 }
 
+const apiSaveDraft = async (draftId, draftJSON) => {
+	if (typeof draftJSON !== 'string') draftJSON = JSON.stringify(draftJSON)
+	const options = { ...defaultOptions(), method: 'POST', body: draftJSON }
+	const result = await fetch(`/api/drafts/${draftId}`, options)
+	const data = await result.json()
+	return data
+}
+
+const apiGetVersionHistory = async draftId => {
+	// limit to keep this from running away accidentally
+	const emergencyLimit = 100
+	const options = { ...defaultOptions() }
+
+	// load all the history, can be multiple api calls
+	let nextUrl = `/api/drafts/${draftId}/revisions`
+	let count = 0
+	const history = []
+
+	while (nextUrl) {
+		if (count > emergencyLimit) break
+		const res = await fetch(nextUrl, options)
+		nextUrl = false
+		// are there more to load in the response headers?
+		const linkHeader = res.headers.get('link')
+		if (linkHeader) {
+			const match = linkHeader.match(/<(.+?)>;\s+rel="next"/)
+			nextUrl = match ? match[1] : false
+		}
+		const data = await res.json()
+		// append to list
+		history.push(...data.value)
+		count++
+	}
+
+	// convert the result to what we need
+	return history.map((draft, index) => ({
+		createdAt: new Date(draft.createdAt),
+		createdAtDisplay: dayjs(draft.createdAt).format('MMMM Do - h:mm A'),
+		id: draft.revisionId,
+		username: draft.userFullName,
+		selected: index === 0,
+		versionNumber: history.length - index
+	}))
+}
+
+const apiRestoreVersion = async (draftId, versionId) => {
+	const options = { ...defaultOptions() }
+	// get a revision
+	const res = await fetch(`/api/drafts/${draftId}/revisions/${versionId}`, options)
+	const data = await res.json()
+	const fullDraft = data.value.json
+	// save the revision on top
+	const saveResult = await apiSaveDraft(draftId, fullDraft)
+	if (saveResult.status !== 'ok') throw Error('Failed restoring draft.')
+	const newVersionId = saveResult.value.id
+	// load history
+	const history = await apiGetVersionHistory(draftId)
+	// mark the restored item
+	const restoredVersion = history.find(data => data.id === newVersionId)
+	restoredVersion.isRestored = true
+	return history
+}
+
 const apiDeletePermissionsToModule = (draftId, userId) => {
 	const options = { ...defaultOptions(), method: 'DELETE' }
 	return fetch(`/api/drafts/${draftId}/permission/${userId}`, options).then(res => res.json())
@@ -61,6 +126,23 @@ const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
 const showModulePermissions = module => ({
 	type: SHOW_MODULE_PERMISSIONS,
 	module
+})
+
+const SHOW_VERSION_HISTORY = 'SHOW_VERSION_HISTORY'
+const showVersionHistory = module => ({
+	type: SHOW_VERSION_HISTORY,
+	meta: { module },
+	promise: apiGetVersionHistory(module.draftId)
+})
+
+const RESTORE_VERSION = 'RESTORE_VERSION'
+const restoreVersion = (draftId, versionId) => ({
+	type: RESTORE_VERSION,
+	meta: {
+		draftId,
+		versionId
+	},
+	promise: apiRestoreVersion(draftId, versionId)
 })
 
 const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -147,7 +229,7 @@ const promptUserForModuleFileUpload = async () => {
 
 const moduleUploadFileSelected = (boundResolve, boundReject, event) => {
 	const file = event.target.files[0]
-	if (!file) boundResolve()
+	if (!file) return boundResolve()
 
 	const reader = new global.FileReader()
 	reader.readAsText(file, 'UTF-8')
@@ -181,6 +263,8 @@ module.exports = {
 	DELETE_MODULE,
 	FILTER_MODULES,
 	SHOW_MODULE_MORE,
+	SHOW_VERSION_HISTORY,
+	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
 	filterModules,
 	deleteModule,
@@ -193,5 +277,7 @@ module.exports = {
 	loadUsersForModule,
 	clearPeopleSearchResults,
 	showModuleMore,
+	showVersionHistory,
+	restoreVersion,
 	importModuleFile
 }

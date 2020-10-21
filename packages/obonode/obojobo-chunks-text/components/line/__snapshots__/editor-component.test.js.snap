@@ -2,7 +2,7 @@
 
 exports[`Line Editor Node Line builds the expected component 1`] = `
 <span
-  className="text align-left"
+  className="obo-text align-left"
   data-indent={0}
 />
 `;

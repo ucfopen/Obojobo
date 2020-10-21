@@ -5,12 +5,14 @@ const insertEvent = oboRequire('server/insert_event')
 const createCaliperEvent = oboRequire('server/routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('server/routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('server/routes/api/events/caliper_utils')
+const oboEvents = require('../obo_events')
 const ltiLaunch = oboRequire('server/express_lti_launch')
 const { assetForEnv, webpackAssetPath } = oboRequire('server/asset_resolver')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireVisitId,
+	requireCurrentVisit,
 	requireCurrentUser
 } = oboRequire('server/express_validators')
 
@@ -30,12 +32,18 @@ router
 		}
 
 		let createdVisitId
+		// fire an event and allow nodes to alter node visit
+		// Warning - I don't thinks async can work in any listeners
+		oboEvents.emit(Visit.EVENT_BEFORE_NEW_VISIT, { req })
+
+		const nodeVisitOptions = req.visitOptions ? req.visitOptions : {}
 
 		return Visit.createVisit(
 			req.currentUser.id,
 			req.currentDocument.draftId,
 			req.oboLti.body.resource_link_id,
-			req.oboLti.launchId
+			req.oboLti.launchId,
+			nodeVisitOptions
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
 				createdVisitId = visitId
@@ -54,7 +62,7 @@ router
 						deactivatedVisitId
 					},
 					resourceLinkId: req.oboLti.body.resource_link_id,
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),
@@ -75,14 +83,16 @@ router
 // mounted as /view/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
+	.get([
+		requireCurrentUser,
+		requireCurrentDocument,
+		requireVisitId,
+		requireCurrentVisit,
+		checkValidationRules
+	])
 	.get((req, res) => {
-		let currentVisit
-		return Visit.fetchById(req.params.visitId, false)
-			.then(visit => {
-				currentVisit = visit
-				return req.currentDocument.yell('internal:sendToClient', req, res)
-			})
+		return req.currentDocument
+			.yell('internal:sendToClient', req, res)
 			.then(() => {
 				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
@@ -94,13 +104,17 @@ router
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
 					visitId: req.params.visitId,
-					payload: { visitId: req.params.visitId },
-					eventVersion: '1.1.0',
-					isPreview: currentVisit.is_preview,
+					payload: {
+						visitId: req.params.visitId,
+						isScoreImportable: req.currentDocument.score_importable
+					},
+					eventVersion: '1.2.0',
+					isPreview: req.currentDocument.is_preview,
 					caliperPayload: createViewerOpenEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),
-						visitId: req.params.visitId
+						visitId: req.params.visitId,
+						extensions: { isScoreImportable: req.currentDocument.score_importable }
 					})
 				})
 			})

@@ -1,4 +1,4 @@
-jest.mock('../../../src/scripts/viewer/util/api-util', () => ({
+jest.mock('../../../src/scripts/viewer/util/viewer-api', () => ({
 	postEvent: jest.fn(),
 	getVisitSessionStatus: jest.fn()
 }))
@@ -23,7 +23,7 @@ jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
 
 const Common = require('../../../src/scripts/common/index').default
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
-const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api')
 const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
 
 // spy on dispatcher before loading navstore
@@ -40,7 +40,7 @@ describe('NavStore', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		NavStore.setState()
-		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
+		ViewerAPI.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 	})
 
 	test('Regisers events w/ dispatcher', () => {
@@ -89,8 +89,8 @@ describe('NavStore', () => {
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:gotoPath event does not go to incorrect item', () => {
@@ -105,8 +105,8 @@ describe('NavStore', () => {
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
 
 		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:setFlag event updates state and calls trigger', () => {
@@ -141,8 +141,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:prev']()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:prev does not change to invalid page', () => {
@@ -156,8 +156,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:prev']()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:next changes page and posts event', () => {
@@ -175,8 +175,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:next']()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:next does not change to invalid page', () => {
@@ -190,8 +190,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:next']()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:goto changes page and posts event', () => {
@@ -209,8 +209,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:goto does not go to a fake page', () => {
@@ -227,8 +227,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('nav:lock event fires and updates state', () => {
@@ -245,8 +245,8 @@ describe('NavStore', () => {
 		eventCallbacks['nav:lock']()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -263,8 +263,8 @@ describe('NavStore', () => {
 		eventCallbacks['nav:unlock']()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -283,8 +283,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -304,8 +304,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
@@ -324,8 +324,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 
 		eventCallbacks['nav:close']()
@@ -333,7 +333,7 @@ describe('NavStore', () => {
 
 		// no change
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
@@ -353,8 +353,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
 		expect(NavStore.getState()).toHaveProperty('open', false)
 	})
 
@@ -375,9 +375,9 @@ describe('NavStore', () => {
 		eventCallbacks['nav:toggle']()
 		jest.runOnlyPendingTimers()
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(2)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
-		expect(APIUtil.postEvent.mock.calls[1][0]).toHaveProperty('action', 'nav:open')
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(2)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(ViewerAPI.postEvent.mock.calls[1][0]).toHaveProperty('action', 'nav:open')
 		expect(NavStore.getState()).toHaveProperty('open', true)
 	})
 
@@ -396,8 +396,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -417,8 +417,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -437,8 +437,8 @@ describe('NavStore', () => {
 		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -613,8 +613,14 @@ describe('NavStore', () => {
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:afterNavChange', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('gotoItem sends updates history with no previous item', () => {
@@ -643,8 +649,14 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('nav:afterNavChange', {
+			value: {
+				from: 'mockId',
+				to: 'newItem'
+			}
+		})
 	})
 
 	test('generateNav with no model returns empty object', () => {

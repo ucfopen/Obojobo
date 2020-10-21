@@ -15,7 +15,9 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      ⌃
+      <div
+        className="table-options-icon"
+      />
     </button>
     <div
       className="drop-content-cell  is-not-open"
@@ -55,9 +57,9 @@ exports[`Cell Editor Node Cell component as selected header 1`] = `
 </th>
 `;
 
-exports[`Cell Editor Node Cell component handles tabbing 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-not-open\\">⌃</button><div class=\\"drop-content-cell  is-not-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
+exports[`Cell Editor Node Cell component handles tabbing 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-not-open\\"><div class=\\"table-options-icon\\"></div></button><div class=\\"drop-content-cell  is-not-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
 
-exports[`Cell Editor Node Cell component opens drop down 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\">⌃</button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
+exports[`Cell Editor Node Cell component opens drop down 1`] = `"<table><thead><tr><th><div class=\\"dropdown-cell\\" contenteditable=\\"false\\"><button class=\\" is-open\\"><div class=\\"table-options-icon\\"></div></button><div class=\\"drop-content-cell  is-open\\"><button>Insert Row Above</button><button>Insert Row Below</button><button>Insert Column Left</button><button>Insert Column Right</button><button>Delete Row</button><button>Delete Column</button></div></div></th></tr></thead></table>"`;
 
 exports[`Cell Editor Node Cell component selected 1`] = `
 <td>
@@ -70,7 +72,9 @@ exports[`Cell Editor Node Cell component selected 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      ⌃
+      <div
+        className="table-options-icon"
+      />
     </button>
     <div
       className="drop-content-cell  is-not-open"

@@ -1,6 +1,5 @@
 import './visual-editor.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorUtil from '../util/editor-util'
 import AlignMarks from './marks/align-marks'
 import BasicMarks from './marks/basic-marks'
@@ -23,8 +22,7 @@ import HoveringPreview from './hovering-preview'
 
 const { OboModel } = Common.models
 const { Button } = Common.components
-const { SimpleDialog } = Common.components.modal
-const { ModalUtil } = Common.util
+const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -150,6 +148,12 @@ class VisualEditor extends React.Component {
 	}
 
 	componentDidMount() {
+		Dispatcher.on('modal:show', () => {
+			this.toggleEditable(false)
+		})
+		Dispatcher.on('modal:hide', () => {
+			this.toggleEditable(true)
+		})
 		// Setup unload to prompt user before closing
 		window.addEventListener('beforeunload', this.checkIfSaved)
 		// Setup global keydown to listen to all global keys
@@ -184,33 +188,29 @@ class VisualEditor extends React.Component {
 	}
 
 	checkIfSaved(event) {
+		if (this.props.readOnly) {
+			//eslint-disable-next-line
+			return undefined // Returning undefined will allow browser to close normally
+		}
 		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 		//eslint-disable-next-line
-		return undefined // Returning undefined will allow browser to close normally
+		return undefined
 	}
 
 	onKeyDownGlobal(event) {
-		if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+		const ctrlOrMetaKey = event.ctrlKey || event.metaKey
+
+		if (event.key === 's' && ctrlOrMetaKey) {
 			event.preventDefault()
 			return this.saveModule(this.props.draftId)
 		}
 
-		if (
-			(event.key === 'y' && (event.ctrlKey || event.metaKey)) ||
-			((event.key === 'z' || event.key === 'Z') &&
-				(event.ctrlKey || event.metaKey) &&
-				event.shiftKey)
-		) {
+		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
 			event.preventDefault()
 			return this.editor.redo()
-		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			return this.editor.undo()
 		}
 
 		if (event.key === 'Escape') {
@@ -219,7 +219,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open top insert menu: - and _ account for users potentially using the shift key
-		if ((event.key === '-' || event.key === '_') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '-' || event.key === '_') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -243,7 +243,7 @@ class VisualEditor extends React.Component {
 		}
 
 		// Open bottom insert menu: = and + account for users potentially using the shift key
-		if ((event.key === '=' || event.key === '+') && (event.ctrlKey || event.metaKey)) {
+		if ((event.key === '=' || event.key === '+') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -267,12 +267,8 @@ class VisualEditor extends React.Component {
 			)
 		}
 
-		// Open top insert menu: i and I occur on different systems as the key when shift is held
-		if (
-			(event.key === 'i' || event.key === 'I') &&
-			(event.ctrlKey || event.metaKey) &&
-			event.shiftKey
-		) {
+		// Open chunk settings dialog
+		if ((event.key === 'i' || event.key === 'I') && ctrlOrMetaKey && event.shiftKey) {
 			event.preventDefault()
 			// Prevent keyboard stealing by locking the editor to readonly
 			this.editor.toggleEditable(false)
@@ -343,7 +339,9 @@ class VisualEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.editor.selection = null
 			this.editor.prevSelection = null
-			this.exportToJSON(prevProps.page, prevState.value)
+			if (OboModel.models[prevProps.page.id]) {
+				this.exportToJSON(prevProps.page, prevState.value)
+			}
 			return this.setState({ value: this.importFromJSON(), editable: true }, () => {
 				Transforms.select(this.editor, Editor.start(this.editor, []))
 				this.setEditorFocus()
@@ -357,6 +355,10 @@ class VisualEditor extends React.Component {
 	}
 
 	saveModule(draftId) {
+		if (this.props.readOnly) {
+			return
+		}
+
 		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
@@ -390,18 +392,14 @@ class VisualEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 		this.setState({ saveState: 'saving' })
-		return APIUtil.postDraft(draftId, JSON.stringify(json)).then(result => {
-			if (result.status === 'ok') {
+
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
+			if (isSaved) {
 				if (this.state.saveState === 'saving') {
 					this.setState({ saveState: 'saveSuccessful' })
 				}
 			} else {
 				this.setState({ saveState: 'saveFailed' })
-				ModalUtil.show(
-					<SimpleDialog ok title="Error">
-						There was an issue saving your document - please try again.
-					</SimpleDialog>
-				)
 			}
 		})
 	}
@@ -530,30 +528,35 @@ class VisualEditor extends React.Component {
 
 	render() {
 		const className =
-			'editor--page-editor ' + isOrNot(this.state.showPlaceholders, 'show-placeholders')
+			'editor--page-editor ' +
+			isOrNot(this.state.showPlaceholders, 'show-placeholders') +
+			isOrNot(this.props.readOnly, 'read-only')
+
 		return (
 			<div className={className} ref={this.pageEditorContainerRef}>
 				<Slate editor={this.editor} value={this.state.value} onChange={this.onChange}>
 					<HoveringPreview pageEditorContainerRef={this.pageEditorContainerRef} />
-					<div className="draft-toolbars">
-						<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
-						<Button className="skip-nav" onClick={this.setEditorFocus}>
-							Skip to Editor
-						</Button>
-						<FileToolbarViewer
-							title={this.props.model.title}
-							draftId={this.props.draftId}
-							onSave={this.saveModule}
-							reload={this.reload}
-							switchMode={this.props.switchMode}
-							saveState={this.state.saveState}
-							mode={'visual'}
-							insertableItems={this.props.insertableItems}
-							togglePlaceholders={this.togglePlaceholders}
-							showPlaceholders={this.state.showPlaceholders}
-						/>
-						<ContentToolbar editor={this.editor} value={this.state.value} />
-					</div>
+					{this.props.readOnly ? null : (
+						<div className="draft-toolbars">
+							<EditorTitleInput title={this.props.model.title} renameModule={this.renameModule} />
+							<Button className="skip-nav" onClick={this.setEditorFocus}>
+								Skip to Editor
+							</Button>
+							<FileToolbarViewer
+								title={this.props.model.title}
+								draftId={this.props.draftId}
+								onSave={this.saveModule}
+								reload={this.reload}
+								switchMode={this.props.switchMode}
+								saveState={this.state.saveState}
+								mode={'visual'}
+								insertableItems={this.props.insertableItems}
+								togglePlaceholders={this.togglePlaceholders}
+								showPlaceholders={this.state.showPlaceholders}
+							/>
+							<ContentToolbar editor={this.editor} value={this.state.value} />
+						</div>
+					)}
 					<EditorNav
 						navState={this.props.navState}
 						model={this.props.model}
@@ -569,7 +572,7 @@ class VisualEditor extends React.Component {
 								renderElement={this.renderElement}
 								renderLeaf={this.renderLeaf}
 								decorate={this.decorate}
-								readOnly={!this.state.editable}
+								readOnly={!this.state.editable || this.props.readOnly}
 								onKeyDown={this.onKeyDown}
 								onCut={this.onCut}
 							/>

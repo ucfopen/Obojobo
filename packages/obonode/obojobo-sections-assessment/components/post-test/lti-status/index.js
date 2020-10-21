@@ -2,11 +2,11 @@ import './index.scss'
 
 import Common from 'Common'
 import React from 'react'
-import Viewer from 'Viewer'
+import LTINetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/lti-network-states'
+import LTIResyncStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/lti-resync-states'
 
 const { Button } = Common.components
 const { focus } = Common.page
-const { LTINetworkStates, LTIResyncStates } = Viewer.stores.assessmentStore
 
 const UIStates = {
 	UI_NOT_LTI: 'notLTI',
