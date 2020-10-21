@@ -155,8 +155,8 @@ describe('Convert Text to List', () => {
 				}
 			],
 			selection: {
-				anchor: { path: [0, 0, 0], offset: 2 },
-				focus: { path: [0, 0, 0], offset: 2 }
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
 			},
 			isInline: () => false,
 			isVoid: () => false,
@@ -173,5 +173,46 @@ describe('Convert Text to List', () => {
 
 		const removedNode = Transforms.removeNodes.mock.calls[1][1].at
 		expect(removedNode).toEqual([0])
+	})
+
+	test('convertIfList does not call Transforms.delete if no text after cursor', () => {
+		jest.spyOn(Transforms, 'delete').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
+		ReactEditor.findPath.mockReturnValueOnce([0])
+		looksLikeListItem.mockReturnValueOnce({ type: 'mockType' })
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: {},
+							children: [{ text: '*' }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 1 }
+			},
+			isInline: () => false,
+			isVoid: () => false,
+			apply: jest.fn()
+		}
+		const event = { preventDefault: jest.fn() }
+
+		convertIfList([editor.children[0], [0]], editor, event)
+
+		expect(looksLikeListItem).toHaveBeenCalled()
+		expect(Transforms.delete).not.toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalledTimes(2)
 	})
 })

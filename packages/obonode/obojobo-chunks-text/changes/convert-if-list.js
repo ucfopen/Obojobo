@@ -30,7 +30,9 @@ const convertIfList = function(entry, editor, event) {
 		event.preventDefault()
 
 		// Delete any text after the cursor to prevent duplicated content
-		Transforms.delete(editor, { at: Range.intersection(nodeRange, toEndOfLine) })
+		if (nodeStr.length > cursorOffset) {
+			Transforms.delete(editor, { at: Range.intersection(nodeRange, toEndOfLine) })
+		}
 
 		Transforms.insertNodes(
 			editor,
