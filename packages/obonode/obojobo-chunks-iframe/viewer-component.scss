@@ -242,5 +242,12 @@
 				}
 			}
 		}
+
+		&.is-sizing-text-width {
+			> .container {
+				margin: 0 auto;
+				max-width: 87%;
+			}
+		}
 	}
 }

@@ -3,6 +3,7 @@ import Common from 'Common'
 
 const { SimpleDialog } = Common.components.modal
 const { Switch } = Common.components
+import IFrameSizingTypes from './iframe-sizing-types'
 
 import './iframe-properties-modal.scss'
 
@@ -19,7 +20,7 @@ class IFrameProperties extends React.Component {
 			title: '',
 			width: 640,
 			controls: '',
-			sizing: ''
+			sizing: IFrameSizingTypes.FIXED
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
@@ -217,10 +218,12 @@ class IFrameProperties extends React.Component {
 							/>
 						</div>
 						<div>
-							<label htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing">Sizing:</label>
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing">
+								Sizing:
+							</label>
 							<select
 								id="obojobo-draft--chunks--iframe--properties-model--sizing"
-								value={this.state.sizing || 'fixed'}
+								value={this.state.sizing}
 								onChange={this.handleSizingChange}
 							>
 								<option value="fixed">Fixed</option>

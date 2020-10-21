@@ -47,6 +47,9 @@ const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
 })
 
 const getScaleAmount = (actualWidth, padding, setWidth) => {
+	if (actualWidth > setWidth) {
+		return (actualWidth - padding) / setWidth
+	}
 	return Math.min(1, (actualWidth - padding) / setWidth)
 }
 

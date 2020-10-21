@@ -292,7 +292,7 @@ describe('render-settings', () => {
 
 		expect(s(1, 2, 3)).toBe(-1 / 3)
 		expect(s(3, 2, 1)).toBe(1)
-		expect(s(100, 0, 1)).toBe(1)
+		expect(s(100, 0, 1)).toBe(100)
 		expect(s(200, 20, 400)).toBe(180 / 400)
 	})
 
