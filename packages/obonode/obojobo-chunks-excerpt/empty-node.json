@@ -1,23 +1,25 @@
 {
 	"type": "ObojoboDraft.Chunks.Excerpt",
 	"content": {
-		"bodyStyle": "filled-box",
-		"topEdge": "normal",
-		"bottomEdge": "normal",
-		"width": "smaller-than-content",
-		"font": "serif"
+		"preset": "simple-filled"
 	},
 	"children": [
 		{
 			"type": "ObojoboDraft.Chunks.Excerpt",
-			"subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptText",
+			"subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptContent",
 			"content": {},
 			"children": [
 				{
-					"type": "ObojoboDraft.Chunks.Excerpt",
-					"subtype": "ObojoboDraft.Chunks.Excerpt.ExcerptLine",
-					"content": { "indent": 0, "hangingIndent": 0 },
-					"children": [{ "text": "" }]
+					"type": "ObojoboDraft.Chunks.Text",
+					"content": {},
+					"children": [
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"subtype": "ObojoboDraft.Chunks.Text.TextLine",
+							"content": { "indent": 0 },
+							"children": [{ "text": "" }]
+						}
+					]
 				}
 			]
 		},

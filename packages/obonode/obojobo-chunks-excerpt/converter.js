@@ -1,5 +1,6 @@
 import { Editor, Transforms, Range, Path } from 'slate'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 import SelectionUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/selection-util'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
@@ -17,23 +18,23 @@ const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
  * @returns {Object} An Obojobo Excerpt node
  */
 const slateToObo = node => {
-	const excerptText = node.children[0].children
+	const excerptContent = node.children[0].children
 	const citationText = node.children[1].children
 
-	const excerptTextGroup = excerptText.map(line => {
-		const textLine = {
-			text: { value: '', styleList: [] },
-			data: {
-				indent: line.content.indent,
-				hangingIndent: line.content.hangingIndent,
-				align: line.content.align
-			}
-		}
+	// const excerptTextGroup = excerptText.map(line => {
+	// 	const textLine = {
+	// 		text: { value: '', styleList: [] },
+	// 		data: {
+	// 			indent: line.content.indent,
+	// 			hangingIndent: line.content.hangingIndent,
+	// 			align: line.content.align
+	// 		}
+	// 	}
 
-		TextUtil.slateToOboText(line, textLine)
+	// 	TextUtil.slateToOboText(line, textLine)
 
-		return textLine
-	})
+	// 	return textLine
+	// })
 
 	const citationTextGroup = citationText.map(line => {
 		console.log('line be', line)
@@ -55,32 +56,40 @@ const slateToObo = node => {
 	console.log('slate to obo', {
 		id: node.id,
 		type: node.type,
-		children: [],
+		children: excerptContent.map(child =>
+			Common.Registry.getItemForType(child.type).slateToObo(child)
+		),
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			excerpt: excerptTextGroup,
 			citation: citationTextGroup,
 			bodyStyle: node.content.bodyStyle,
 			topEdge: node.content.topEdge,
 			bottomEdge: node.content.bottomEdge,
 			width: node.content.width,
-			font: node.content.font
+			font: node.content.font,
+			fontStyle: node.content.fontStyle,
+			lineHeight: node.content.lineHeight,
+			fontSize: node.content.fontSize
 		})
 	})
 
 	return {
 		id: node.id,
 		type: node.type,
-		children: [],
+		children: excerptContent.map(child =>
+			Common.Registry.getItemForType(child.type).slateToObo(child)
+		),
 		content: withoutUndefined({
 			triggers: node.content.triggers,
-			excerpt: excerptTextGroup,
 			citation: citationTextGroup,
 			bodyStyle: node.content.bodyStyle,
 			topEdge: node.content.topEdge,
 			bottomEdge: node.content.bottomEdge,
 			width: node.content.width,
-			font: node.content.font
+			font: node.content.font,
+			fontStyle: node.content.fontStyle,
+			lineHeight: node.content.lineHeight,
+			fontSize: node.content.fontSize
 		})
 	}
 }
@@ -99,20 +108,11 @@ const oboToSlate = node => {
 	slateNode.children = [
 		{
 			type: 'ObojoboDraft.Chunks.Excerpt',
-			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptText',
+			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptContent',
 			content: {},
-			children: node.content.excerpt.map(line => {
-				const indent = line.data ? line.data.indent : 0
-				const hangingIndent = line.data ? line.data.hangingIndent : false
-				const align = line.data ? line.data.align : 'left'
-
-				return {
-					type: EXCERPT_NODE,
-					subtype: EXCERPT_TEXT_LINE_NODE,
-					content: { indent, hangingIndent, align },
-					children: TextUtil.parseMarkings(line)
-				}
-			})
+			children: slateNode.children.map(child =>
+				Common.Registry.getItemForType(child.type).oboToSlate(child)
+			)
 		},
 		{
 			type: 'ObojoboDraft.Chunks.Excerpt',

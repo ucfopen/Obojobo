@@ -32,15 +32,38 @@ const adapter = {
 			})
 		}
 
+		model.setStateProp('preset', 'simple-filled', p => p.toLowerCase(), [
+			'simple-filled',
+			'simple-bordered',
+			'card',
+			'fiction',
+			'non-fiction',
+			'historical',
+			'poem',
+			'white-paper',
+			'instruction-manual',
+			'typewritten',
+			'receipt',
+			'computer-modern',
+			'computer-hacker-green',
+			'computer-hacker-orange',
+			'computer-c64'
+		])
+
 		model.setStateProp('bodyStyle', 'filled-box', p => p.toLowerCase(), [
 			'filled-box',
 			'bordered-box',
+			'card',
 			'white-paper',
 			'modern-paper',
 			'yellow-paper',
 			'aged-paper',
 			'modern-book-page',
 			'old-book-page',
+			'command-line',
+			'term-green',
+			'term-orange',
+			'term-c64',
 			'none'
 		])
 
@@ -64,6 +87,20 @@ const adapter = {
 			'medium',
 			'small',
 			'extra-small'
+		])
+
+		model.setStateProp('fontStyle', 'regular', p => p.toLowerCase(), ['regular', 'small-caps'])
+
+		model.setStateProp('lineHeight', 'regular', p => p.toLowerCase(), [
+			'compact',
+			'regular',
+			'generous'
+		])
+
+		model.setStateProp('fontSize', 'regular', p => p.toLowerCase(), [
+			'smaller',
+			'regular',
+			'larger'
 		])
 	},
 
