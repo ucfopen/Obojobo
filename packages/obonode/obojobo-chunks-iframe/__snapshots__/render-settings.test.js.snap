@@ -14,9 +14,9 @@ Object {
   },
   "displayedTitle": "src",
   "iframeStyle": Object {
-    "height": "25.102040816326532%",
-    "transform": "scale(3.983739837398374)",
-    "width": "25.102040816326532%",
+    "height": "100%",
+    "transform": "scale(1)",
+    "width": "100%",
   },
   "isAtMaxScale": false,
   "isAtMinScale": false,
@@ -25,7 +25,7 @@ Object {
     "containerStyle": Object {
       "width": 123,
     },
-    "scale": 3.983739837398374,
+    "scale": 1,
   },
   "zoomValues": Object {
     "currentZoom": 1,
