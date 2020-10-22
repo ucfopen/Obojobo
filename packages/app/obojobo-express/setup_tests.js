@@ -69,5 +69,6 @@ global.mockStaticDate = () => {
 
 process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
-	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	console.error('Unhandled Rejection at: Promise', p, 'reason:', reason)
+	throw Error('Unhandled Rejection at: Promise')
 })

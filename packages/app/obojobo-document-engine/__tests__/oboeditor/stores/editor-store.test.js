@@ -3,7 +3,7 @@
 import Common from '../../../src/scripts/common/index'
 import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 
 // spy on dispatcher before loading EditorStore
 const Dispatcher = Common.flux.Dispatcher
@@ -481,21 +481,25 @@ describe('EditorStore', () => {
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
-	test('renamePageOrModule rebuilds menu', () => {
+	test('renamePageOrModule updates a page title and rebuilds menu', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		jest.spyOn(EditorStore, 'triggerChange')
 		EditorStore.triggerChange.mockReturnValueOnce(true)
 
+		const mockSet = jest.fn()
 		Common.models.OboModel.models['mockId'] = {
 			get: () => ({
-				title: 'mock-title'
-			})
+				title: 'mock-title',
+				value: 'other-value'
+			}),
+			set: mockSet
 		}
 		Common.models.OboModel.getRoot.mockReturnValueOnce('mockRoot')
 
 		EditorStore.renamePageOrModule('mockId', 'mockTitle')
 
-		expect(Common.models.OboModel.models.mockId.title).toEqual('mockTitle')
+		expect(mockSet).toHaveBeenCalledWith('content', { title: 'mockTitle', value: 'other-value' })
+		expect(Common.models.OboModel.models['mockId'].title).toBe('mockTitle')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})

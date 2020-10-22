@@ -298,12 +298,12 @@ describe('Normalize List', () => {
 				{
 					id: 'mockKey',
 					type: LIST_NODE,
-					content: { 
-						listStyles: { 
+					content: {
+						listStyles: {
 							indents: {
 								0: { bulletStyle: 'circle' }
 							}
-						} 
+						}
 					},
 					children: [
 						{

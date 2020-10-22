@@ -8,7 +8,7 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
 	off: jest.fn()
 }))
 
-jest.mock('../../../src/scripts/viewer/util/api-util', () => ({
+jest.mock('../../../src/scripts/viewer/util/viewer-api', () => ({
 	postEvent: jest.fn()
 }))
 
@@ -29,7 +29,7 @@ const uuid = require('../../../src/scripts/common/util/uuid')
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util')
 const OboModel = require('../../../__mocks__/_obo-model-with-chunks').default
-const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+const ViewerAPI = require('../../../src/scripts/viewer/util/viewer-api')
 const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
 const QuestionStore = require('../../../src/scripts/viewer/stores/question-store').default
 
@@ -139,8 +139,8 @@ describe('QuestionStore', () => {
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toEqual({
 			action: 'question:setResponse',
 			draftId: 'mockDraftId',
 			eventVersion: '2.1.0',
@@ -175,8 +175,8 @@ describe('QuestionStore', () => {
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0][0]).toEqual({
 			action: 'question:setResponse',
 			draftId: 'mockDraftId',
 			eventVersion: '2.1.0',
@@ -632,7 +632,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test('question:checkAnswer calls APIUtil.postEvent', () => {
+	test('question:checkAnswer calls ViewerAPI.postEvent', () => {
 		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
 		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
@@ -661,8 +661,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			action: 'question:checkAnswer',
 			draftId: 'mockDraftId',
 			eventVersion: '1.1.0',
@@ -708,7 +708,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(0)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(0)
 		expect(QuestionStore.getState()).toEqual({
 			contexts: {
 				mockContext: {
@@ -727,7 +727,7 @@ describe('QuestionStore', () => {
 		spy.mockRestore()
 	})
 
-	test('question:submitResponse calls APIUtil.postEvent', () => {
+	test('question:submitResponse calls ViewerAPI.postEvent', () => {
 		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
 		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
@@ -756,8 +756,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			action: 'question:submitResponse',
 			draftId: 'mockDraftId',
 			eventVersion: '1.0.0',
@@ -801,7 +801,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(0)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(0)
 		expect(QuestionStore.getState()).toEqual({
 			contexts: {
 				mockContext: {
@@ -913,7 +913,7 @@ describe('QuestionStore', () => {
 		})
 
 		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 	})
 
 	test('question:showExplanation calls postEvent and sets question data', () => {
@@ -926,8 +926,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 
 		expect(QuestionUtil.setData).toHaveBeenCalledTimes(1)
 		expect(QuestionUtil.setData).toHaveBeenCalledWith(
@@ -951,8 +951,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 
 		expect(QuestionUtil.clearData).toHaveBeenCalledTimes(1)
 		expect(QuestionUtil.clearData).toHaveBeenCalledWith(
@@ -1071,8 +1071,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('question:scoreClear calls triggerChange', () => {
@@ -1147,8 +1147,8 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(ViewerAPI.postEvent).toHaveBeenCalledTimes(1)
+		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
 	test('question:scoreClear does nothing if no context exists', () => {
@@ -1174,7 +1174,7 @@ describe('QuestionStore', () => {
 		})
 
 		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 	})
 
 	test('question:scoreClear does not post event if a no-score score is being cleared', () => {
@@ -1200,7 +1200,7 @@ describe('QuestionStore', () => {
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalled()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 	})
 
 	test('question:retry clears responses, hides explanations and clears scores', () => {
@@ -1291,7 +1291,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(QuestionUtil.clearScore).not.toHaveBeenCalled()
 		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
 		expect(QuestionUtil.isShowingExplanation).not.toHaveBeenCalled()

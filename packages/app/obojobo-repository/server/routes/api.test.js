@@ -1,9 +1,9 @@
 jest.mock('../models/collection')
 jest.mock('../models/draft_summary')
 jest.mock('obojobo-express/server/models/draft')
+jest.mock('../models/draft_permissions')
 jest.mock('../models/drafts_metadata')
 jest.mock('../services/search')
-jest.mock('../services/permissions')
 jest.mock('obojobo-express/server/models/user')
 jest.mock('obojobo-express/server/insert_event')
 jest.unmock('fs') // need fs working for view rendering
@@ -14,9 +14,9 @@ let DraftSummary
 let Draft
 let DraftsMetadata
 let SearchServices
-let PermissionsServices
 let UserModel
 let insertEvent
+let DraftPermissions
 
 // override requireCurrentUser for tests to provide our own user
 let mockCurrentUser
@@ -87,7 +87,7 @@ describe('repository api route', () => {
 		Draft = require('obojobo-express/server/models/draft')
 		DraftsMetadata = require('../models/drafts_metadata')
 		SearchServices = require('../services/search')
-		PermissionsServices = require('../services/permissions')
+		DraftPermissions = require('../models/draft_permissions')
 		UserModel = require('obojobo-express/server/models/user')
 		insertEvent = require('obojobo-express/server/insert_event')
 	})
@@ -360,7 +360,7 @@ describe('repository api route', () => {
 			}
 		}
 
-		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
 
 		Draft.fetchById = jest.fn()
 		Draft.fetchById.mockResolvedValueOnce(mockDraft)
@@ -370,7 +370,7 @@ describe('repository api route', () => {
 			.post('/drafts/mockDraftId/copy')
 			.send({ visitId: 'mockVisitId' })
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -420,7 +420,7 @@ describe('repository api route', () => {
 			}
 		}
 
-		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(true)
 
 		Draft.fetchById = jest.fn()
 		Draft.fetchById.mockResolvedValueOnce(mockDraft)
@@ -438,13 +438,13 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/copy returns the expected response when user can not copy draft', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCopy.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToCopy.mockResolvedValueOnce(false)
 
 		return request(app)
 			.post('/drafts/mockDraftId/copy')
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -455,13 +455,13 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/copy handles thrown errors', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToCopy.mockRejectedValueOnce('database error')
+		DraftPermissions.userHasPermissionToCopy.mockRejectedValueOnce('database error')
 
 		return request(app)
 			.post('/drafts/mockDraftId/copy')
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
-				expect(PermissionsServices.userHasPermissionToCopy).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledTimes(1)
+				expect(DraftPermissions.userHasPermissionToCopy).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
@@ -473,14 +473,13 @@ describe('repository api route', () => {
 	test('get /drafts/:draftId/permission returns the expected response', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.fetchAllUsersWithPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.getDraftOwners.mockResolvedValueOnce([new UserModel()])
 
 		return request(app)
 			.get('/drafts/mockDraftId/permission')
 			.then(response => {
-				expect(PermissionsServices.fetchAllUsersWithPermissionToDraft).toHaveBeenCalledWith(
-					mockCurrentDocument.draftId
-				)
+				expect(DraftPermissions.getDraftOwners).toHaveBeenCalledWith(mockCurrentDocument.draftId)
+				expect(response.body).toEqual([{ mockUser: true }])
 				expect(response.statusCode).toBe(200)
 			})
 	})
@@ -488,23 +487,24 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/permission runs correctly when current user has perms to draft', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.addOwnerToDraft.mockResolvedValueOnce()
+
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce(true)
-		PermissionsServices.addUserPermissionToDraft.mockResolvedValueOnce(true)
 
 		return request(app)
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).toHaveBeenCalledWith(1)
-				expect(PermissionsServices.addUserPermissionToDraft).toHaveBeenCalledWith(
-					1,
-					mockCurrentDocument.draftId
+				expect(DraftPermissions.addOwnerToDraft).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					1
 				)
 				expect(response.statusCode).toBe(200)
 			})
@@ -513,19 +513,19 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/permission runs correctly when current user does not have perms to draft', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		UserModel.fetchById = jest.fn()
 
 		return request(app)
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).not.toHaveBeenCalled()
-				expect(PermissionsServices.addUserPermissionToDraft).not.toHaveBeenCalled()
+				expect(DraftPermissions.addOwnerToDraft).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(401)
 			})
 	})
@@ -533,23 +533,23 @@ describe('repository api route', () => {
 	test('post /drafts/:draftId/permission catches unexpected errors correctly', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce(true)
-		PermissionsServices.addUserPermissionToDraft.mockRejectedValueOnce('database error')
+		DraftPermissions.addOwnerToDraft.mockRejectedValueOnce('database error')
 
 		return request(app)
 			.post('/drafts/mockDraftId/permission')
 			.send({ userId: 1 })
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).toHaveBeenCalledWith(1)
-				expect(PermissionsServices.addUserPermissionToDraft).toHaveBeenCalledWith(
-					1,
-					mockCurrentDocument.draftId
+				expect(DraftPermissions.addOwnerToDraft).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					1
 				)
 				expect(response.statusCode).toBe(500)
 				expect(response.body).toHaveProperty('status', 'error')
@@ -561,22 +561,22 @@ describe('repository api route', () => {
 	test('delete /drafts/:draftId/permission/:userId runs correctly when current user has perms to draft', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce({ id: 1 })
-		PermissionsServices.removeUserPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.removeOwnerFromDraft.mockResolvedValueOnce(true)
 
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).toHaveBeenCalledWith('1')
-				expect(PermissionsServices.removeUserPermissionToDraft).toHaveBeenCalledWith(
-					1,
-					mockCurrentDocument.draftId
+				expect(DraftPermissions.removeOwnerFromDraft).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					1
 				)
 				expect(response.statusCode).toBe(200)
 			})
@@ -585,18 +585,18 @@ describe('repository api route', () => {
 	test('delete /drafts/:draftId/permission/:userId runs correctly when current user does not have perms to draft', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(false)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(false)
 		UserModel.fetchById = jest.fn()
 
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).not.toHaveBeenCalled()
-				expect(PermissionsServices.removeUserPermissionToDraft).not.toHaveBeenCalled()
+				expect(DraftPermissions.removeOwnerFromDraft).not.toHaveBeenCalled()
 				expect(response.statusCode).toBe(401)
 			})
 	})
@@ -604,22 +604,22 @@ describe('repository api route', () => {
 	test('delete /drafts/:draftId/permission/:userId catches unexpected errors correctly', () => {
 		expect.hasAssertions()
 
-		PermissionsServices.userHasPermissionToDraft.mockResolvedValueOnce(true)
+		DraftPermissions.userHasPermissionToDraft.mockResolvedValueOnce(true)
 		UserModel.fetchById = jest.fn()
 		UserModel.fetchById.mockResolvedValueOnce({ id: 1 })
-		PermissionsServices.removeUserPermissionToDraft.mockRejectedValueOnce('database error')
+		DraftPermissions.removeOwnerFromDraft.mockRejectedValueOnce('database error')
 
 		return request(app)
 			.delete('/drafts/mockDraftId/permission/1')
 			.then(response => {
-				expect(PermissionsServices.userHasPermissionToDraft).toHaveBeenCalledWith(
+				expect(DraftPermissions.userHasPermissionToDraft).toHaveBeenCalledWith(
 					mockCurrentUser.id,
 					mockCurrentDocument.draftId
 				)
 				expect(UserModel.fetchById).toHaveBeenCalledWith('1')
-				expect(PermissionsServices.removeUserPermissionToDraft).toHaveBeenCalledWith(
-					1,
-					mockCurrentDocument.draftId
+				expect(DraftPermissions.removeOwnerFromDraft).toHaveBeenCalledWith(
+					mockCurrentDocument.draftId,
+					1
 				)
 				expect(response.statusCode).toBe(500)
 				expect(response.error).toHaveProperty('text', 'Server Error: database error')

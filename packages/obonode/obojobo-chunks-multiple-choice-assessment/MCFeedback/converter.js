@@ -6,7 +6,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
  * Copies the id, type, and triggers. It also calls the appropriate
  * slateToObo methods for each of its child components
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo MCFeedback node 
+ * @returns {Object} An Obojobo MCFeedback node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -20,7 +20,7 @@ const slateToObo = node => ({
 /**
  * Generates a Slate node from an Obojobo MCFeedback node.
  * Copies all attributes, and calls the appropriate converters for the children
- * @param {Object} node An Obojobo MCFeedback node 
+ * @param {Object} node An Obojobo MCFeedback node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {
