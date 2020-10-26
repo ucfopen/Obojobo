@@ -315,7 +315,7 @@ describe('AssessmentStore', () => {
 		AssessmentAPI.startAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
-				message: 'Invalid ID'
+				message: 'ID not found'
 			}
 		})
 

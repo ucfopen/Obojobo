@@ -54,7 +54,7 @@ const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 const ERROR_IMPORT_USED = 'Import score has already been used'
-const ERROR_ASSESSMENT_INVALID_ID = 'Invalid ID'
+const ERROR_ASSESSMENT_ID_NOT_FOUND = 'ID not found'
 
 describe('start attempt route', () => {
 	let mockDraft
@@ -265,7 +265,7 @@ describe('start attempt route', () => {
 
 		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
-			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ASSESSMENT_INVALID_ID)
+			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ASSESSMENT_ID_NOT_FOUND)
 		})
 	})
 

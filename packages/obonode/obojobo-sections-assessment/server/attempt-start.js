@@ -10,7 +10,7 @@ const ACTION_ASSESSMENT_SEND_TO_ASSESSMENT = 'ObojoboDraft.Sections.Assessment:s
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 const ERROR_IMPORT_USED = 'Import score has already been used'
-const ERROR_ASSESSMENT_INVALID_ID = 'Invalid ID'
+const ERROR_ASSESSMENT_ID_NOT_FOUND = 'ID not found'
 
 const startAttempt = (req, res) => {
 	let attemptState
@@ -38,7 +38,7 @@ const startAttempt = (req, res) => {
 			assessmentNode = req.currentDocument.getChildNodeById(req.body.assessmentId)
 
 			if (!assessmentNode) {
-				throw new Error(ERROR_ASSESSMENT_INVALID_ID)
+				throw new Error(ERROR_ASSESSMENT_ID_NOT_FOUND)
 			}
 
 			assessmentProperties.oboNode = assessmentNode
@@ -116,7 +116,7 @@ const startAttempt = (req, res) => {
 			switch (error.message) {
 				case ERROR_ATTEMPT_LIMIT_REACHED:
 				case ERROR_IMPORT_USED:
-				case ERROR_ASSESSMENT_INVALID_ID:
+				case ERROR_ASSESSMENT_ID_NOT_FOUND:
 					return res.reject(error.message)
 
 				default:
