@@ -1,4 +1,4 @@
-import { Transforms, Point } from 'slate'
+import { Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 
@@ -337,6 +337,7 @@ describe('KeyDown Util', () => {
 		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
+			isDefaultPrevented: () => false,
 			preventDefault: jest.fn()
 		}
 
@@ -352,33 +353,15 @@ describe('KeyDown Util', () => {
 		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
-	test('breakToText skips when multile node are selected', () => {
-		jest.spyOn(Point, 'isBefore').mockReturnValue(false)
-		jest.spyOn(Point, 'equals').mockReturnValue(false)
-
-		const editor = {
-			children: [
-				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 4 },
-				focus: { path: [0, 0], offset: 4 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		ReactEditor.findPath.mockReturnValueOnce([0])
-
+	test('breakToText skips when default event is prevented', () => {
 		const event = {
+			isDefaultPrevented: () => true,
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+		KeyDownUtil.breakToText(event, {})
 
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 		expect(Transforms.insertNodes).not.toHaveBeenCalled()
 	})
 })
