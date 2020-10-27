@@ -3,7 +3,7 @@ import { Editor, Range, Transforms } from 'slate'
 import looksLikeListItem from '../../obojobo-chunks-list/list-detector'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const convertIfList = function(entry, editor, event) {
 	const [node, nodePath] = entry
@@ -42,8 +42,8 @@ const convertIfList = function(entry, editor, event) {
 				children: [
 					{
 						type: LIST_NODE,
-						subtype: LIST_LINE_NODE,
-						content: {},
+						subtype: LIST_LEVEL_NODE,
+						content: { start: isList.symbolIndex },
 						children: [{ text: nodeStr.substring(cursorOffset) }]
 					}
 				]
