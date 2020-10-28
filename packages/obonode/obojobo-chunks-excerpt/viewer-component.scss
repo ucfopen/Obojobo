@@ -250,6 +250,22 @@
 		}
 	}
 
+	&.is-body-style-type-x {
+		.excerpt-content {
+			background: #fdf5ea; //				repeating-linear-gradient(0deg, #e1e1ff, #e1e1ff 1px, transparent 1px, transparent 20px);
+			background-attachment: fixed;
+			border-radius: 0.12em;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			/* border: 1px solid rgba(0, 0, 0, 0.03); */
+			border-bottom: 1px solid rgb(220, 217, 212);
+
+			.text {
+				// line-height: 2em;
+				color: #565655;
+			}
+		}
+	}
+
 	&.is-body-style-type-aged-paper {
 		.excerpt-content {
 			// line-height: 2em;

@@ -288,6 +288,7 @@ class Excerpt extends React.Component {
 								<option value="white-paper">White Paper</option>
 								<option value="modern-paper">Modern Paper</option>
 								<option value="yellow-paper">Yellow Paper</option>
+								<option value="x">x</option>
 								<option value="aged-paper">Aged Paper</option>
 								<option value="command-line">Command Line</option>
 								<option value="term-green">CRT Terminal (Green)</option>
