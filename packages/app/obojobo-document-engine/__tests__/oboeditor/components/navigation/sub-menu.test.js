@@ -350,6 +350,55 @@ describe('SubMenu', () => {
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
+	test('saveId validates the id', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
+		component.instance().validateId = jest.fn()
+		Common.models.OboModel.models['7'].setId = jest.fn()
+		component.instance().validateId.mockReturnValueOnce(true)
+		component.instance().saveId('7', '7!')
+
+		expect(component.instance().validateId).toHaveBeenCalled()
+		expect(Common.models.OboModel.models['7'].setId).not.toHaveBeenCalled()
+	})
+
+	test('validateId correctly detects invalid characters', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
+
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
+
+		expect(component.instance().validateId('mock-id')).toBe(false)
+		expect(component.instance().validateId('mock_id')).toBe(false)
+		expect(component.instance().validateId('mock:id')).toBe(false)
+		expect(component.instance().validateId('mock.id')).toBe(false)
+		expect(component.instance().validateId('mock+id')).toBe(true)
+		expect(component.instance().validateId('mock=id')).toBe(true)
+		expect(component.instance().validateId('abc123')).toBe(false)
+		expect(component.instance().validateId('ABC123')).toBe(false)
+		expect(component.instance().validateId('"mock-id"')).toBe(true)
+		expect(component.instance().validateId('/mock-id/')).toBe(true)
+		expect(component.instance().validateId('[mock-id]')).toBe(true)
+	})
+
 	test('saveContent updates model', () => {
 		const itemList = [
 			{

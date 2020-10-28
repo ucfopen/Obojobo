@@ -253,6 +253,31 @@ describe('Component Editor Node', () => {
 		)
 	})
 
+	test('saveId validates the id', () => {
+		const component = rtr.create(<Node {...mockProps} />)
+		component.getInstance().validateId = jest.fn()
+		component.getInstance().validateId.mockReturnValueOnce(true)
+		component.getInstance().saveId('5', '5!')
+
+		expect(component.getInstance().validateId).toHaveBeenCalled()
+	})
+
+	test('validateId correctly detects invalid characters', () => {
+		const component = rtr.create(<Node {...mockProps} />)
+
+		expect(component.getInstance().validateId('mock-id')).toBe(false)
+		expect(component.getInstance().validateId('mock_id')).toBe(false)
+		expect(component.getInstance().validateId('mock:id')).toBe(false)
+		expect(component.getInstance().validateId('mock.id')).toBe(false)
+		expect(component.getInstance().validateId('mock+id')).toBe(true)
+		expect(component.getInstance().validateId('mock=id')).toBe(true)
+		expect(component.getInstance().validateId('abc123')).toBe(false)
+		expect(component.getInstance().validateId('ABC123')).toBe(false)
+		expect(component.getInstance().validateId('"mock-id"')).toBe(true)
+		expect(component.getInstance().validateId('/mock-id/')).toBe(true)
+		expect(component.getInstance().validateId('[mock-id]')).toBe(true)
+	})
+
 	test('saveContent calls Transforms.setNodes', () => {
 		const component = rtr.create(<Node {...mockProps} />)
 		component.getInstance().saveContent({}, {})

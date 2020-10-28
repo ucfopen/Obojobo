@@ -50,6 +50,11 @@ class Node extends React.Component {
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, targetPath))
 	}
 
+	validateId(newId) {
+		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
+		return validation.test(newId)
+	}
+
 	saveId(prevId, newId) {
 		if (prevId === newId) return
 
@@ -58,6 +63,10 @@ class Node extends React.Component {
 
 		if (!newId) {
 			return 'Please enter an id.'
+		}
+
+		if (this.validateId(newId)) {
+			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 
 		if (!model.setId(newId)) {

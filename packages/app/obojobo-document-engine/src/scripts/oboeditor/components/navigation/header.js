@@ -32,16 +32,25 @@ class Header extends React.Component {
 		return <span>{label || '\u00A0'}</span>
 	}
 
+	validateId(newId) {
+		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
+		return validation.test(newId)
+	}
+
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
 
 		if (!newId) {
-			return 'Please enter an id'
+			return 'Please enter an id.'
+		}
+
+		if (this.validateId(newId)) {
+			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 
 		// prettier-ignore
 		if (!model.setId(newId)) {
-			return 'The id "' + newId + '" already exists. Please choose a unique id'
+			return 'The id "' + newId + '" already exists. Please choose a unique id.'
 		}
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())

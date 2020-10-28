@@ -247,4 +247,58 @@ describe('Header', () => {
 
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
+
+	test('saveId validates the id', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		component.instance().validateId = jest.fn()
+		component.instance().validateId.mockReturnValueOnce(true)
+		component.instance().saveId('5', '5!')
+
+		expect(component.instance().validateId).toHaveBeenCalled()
+		expect(Common.models.OboModel.models['5'].setId).not.toHaveBeenCalled()
+	})
+
+	test('validateId correctly detects invalid characters', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+
+		expect(component.instance().validateId('mock-id')).toBe(false)
+		expect(component.instance().validateId('mock_id')).toBe(false)
+		expect(component.instance().validateId('mock:id')).toBe(false)
+		expect(component.instance().validateId('mock.id')).toBe(false)
+		expect(component.instance().validateId('mock+id')).toBe(true)
+		expect(component.instance().validateId('mock=id')).toBe(true)
+		expect(component.instance().validateId('abc123')).toBe(false)
+		expect(component.instance().validateId('ABC123')).toBe(false)
+		expect(component.instance().validateId('"mock-id"')).toBe(true)
+		expect(component.instance().validateId('/mock-id/')).toBe(true)
+		expect(component.instance().validateId('[mock-id]')).toBe(true)
+	})
 })

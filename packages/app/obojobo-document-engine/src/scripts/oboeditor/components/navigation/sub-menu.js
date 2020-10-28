@@ -90,15 +90,24 @@ class SubMenu extends React.Component {
 		return !/[\S]/.test(str)
 	}
 
+	validateId(newId) {
+		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
+		return validation.test(newId)
+	}
+
 	saveId(oldId, newId) {
 		if (!newId) {
-			return 'Please enter an id'
+			return 'Please enter an id.'
+		}
+
+		if (this.validateId(newId)) {
+			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 
 		const model = OboModel.models[oldId]
 
 		if (!model.setId(newId)) {
-			return 'The id "' + newId + '" already exists. Please choose a unique id'
+			return 'The id "' + newId + '" already exists. Please choose a unique id.'
 		}
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
