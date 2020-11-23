@@ -85,7 +85,8 @@ class TriggerListModal extends React.Component {
 				return {
 					id: '',
 					fade: false,
-					animateScroll: true
+					animateScroll: true,
+					preventScroll: false
 				}
 
 			default:
@@ -281,6 +282,16 @@ class TriggerListModal extends React.Component {
 								triggerIndex,
 								actionIndex,
 								'animateScroll'
+							)}
+						/>
+						<Switch
+							title="Prevent Scroll"
+							initialChecked={action.value.preventScroll || false}
+							handleCheckChange={this.updateActionValue.bind(
+								this,
+								triggerIndex,
+								actionIndex,
+								'preventScroll'
 							)}
 						/>
 					</div>
