@@ -612,4 +612,24 @@ describe('AssessmentUtil', () => {
 		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state3)).toBe(0)
 		expect(AssessmentUtil.getNumberOfAttemptsCompleted(state4)).toBe(0)
 	})
+
+	test('isHighestScore returns true if an attempt is the highest score', () => {
+		const attempt = {
+			assessmentScore: 100,
+			result: {
+				attemptScore: 100
+			}
+		}
+		expect(AssessmentUtil.isHighestScore(attempt)).toEqual(true)
+	})
+
+	test('isHighestScore returns false if an attempt is not the highest score', () => {
+		const attempt = {
+			assessmentScore: 95.0,
+			result: {
+				attemptScore: 100
+			}
+		}
+		expect(AssessmentUtil.isHighestScore(attempt)).toEqual(false)
+	})
 })

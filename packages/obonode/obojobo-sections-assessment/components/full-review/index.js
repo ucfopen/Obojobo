@@ -36,13 +36,15 @@ class AssessmentReviewView extends React.Component {
 			allScoreDetails: attempts.map(a => a.scoreDetails)
 		})
 
-		const attemptReviewComponent = (attempt, isAHighestScoringNonNullAttempt) => {
+		const attemptReviewComponent = (attempt, isNonNullAttempt) => {
 			const date = new Date(attempt.completedAt)
 			const dateString = formatDate(date, "M/dd/yy 'at' h:mmaaaa")
 			const machineDateString = formatDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
 			const ariaDateString = formatDate(date, "MMMM Do yyyy 'at' h:mmaaaa")
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.result.questionScores)
 			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.result.questionScores)
+			const isHighestScore = AssessmentUtil.isHighestScore(attempt)
+			const isAHighestScoringNonNullAttempt = isNonNullAttempt && isHighestScore
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
 
@@ -141,7 +143,9 @@ class AssessmentReviewView extends React.Component {
 		attempts.forEach(attempt => {
 			attemptReviewComponents[`assessmentReview:${attempt.id}`] = attemptReviewComponent(
 				attempt,
-				highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null
+				highestAttempts.indexOf(attempt) > -1 &&
+					attempt.assessmentScore !== null &&
+					attempt.result.attemptScore === attempt.assessmentScore
 			)
 		})
 

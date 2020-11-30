@@ -223,6 +223,10 @@ const AssessmentUtil = {
 				id: model.get('id')
 			}
 		})
+	},
+
+	isHighestScore(attempt) {
+		return attempt.result.attemptScore === attempt.assessmentScore
 	}
 }
 
