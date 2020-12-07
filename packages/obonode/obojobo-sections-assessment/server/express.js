@@ -91,8 +91,18 @@ router
 
 			res.success(attempt)
 		} catch (error) {
-			// logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
-			logAndRespondToUnexpected(error.message, res, req, error)
+			const resumeError = 'Cannot resume an attempt for a different module'
+			let errorMessage = ''
+
+			switch (error.message) {
+				case resumeError:
+					errorMessage = resumeError
+					break
+				default:
+					errorMessage = 'Unexpected error resuming your attempt'
+			}
+
+			logAndRespondToUnexpected(errorMessage, res, req, error)
 		}
 	})
 
@@ -109,12 +119,12 @@ router
 		return endAttempt(req, res)
 			.then(res.success)
 			.catch(error => {
-				const MODULE_UPDATED_ERROR = 'Cannot end an attempt for a different module'
+				const endError = 'Cannot end an attempt for a different module'
 				let errorMessage = ''
 
 				switch (error.message) {
-					case MODULE_UPDATED_ERROR:
-						errorMessage = MODULE_UPDATED_ERROR
+					case endError:
+						errorMessage = endError
 						break
 					default:
 						errorMessage = 'Unexpected error completing your attempt'

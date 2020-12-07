@@ -30,5 +30,4 @@ const UpdatedModuleDialog = ({ onConfirm }) => (
 	</Dialog>
 )
 
-
 export default UpdatedModuleDialog

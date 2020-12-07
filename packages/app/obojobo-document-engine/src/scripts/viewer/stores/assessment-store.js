@@ -211,20 +211,22 @@ class AssessmentStore extends Store {
 			draftId: navState.draftId,
 			attemptId: unfinishedAttemptId,
 			visitId: navState.visitId
-		}).then(response => {
-			const { status, value } = response
-
+		}).then(res => {
 			// This error occurs when someone tries to resume an attempt
 			// for an assessment that was updated. In this case, the attempt
-			// gets invalidated and we'll try to start a new attempt.
-			if (status !== 'ok' && value.message.toLowerCase().includes('invalid attempt')) {
+			// was invalidated so we'll try to start a new attempt.
+			if (
+				res.status === 'error' &&
+				res.value.message.toLowerCase() === 'cannot resume an attempt for a different module'
+			) {
 				// IMPORTANT: This assumes that the id of the assessment
 				// being resumed hasn't changed since the user started it.
 				const summary = this.findUnfinishedAttemptInAssessmentSummary(this.state.assessmentSummary)
 				this.startAttemptWithImportScoreOption(summary.assessmentId)
 				return
 			}
-			this.updateStateAfterStartAttempt(value)
+
+			this.updateStateAfterStartAttempt(res.value)
 			this.triggerChange()
 		})
 	}
@@ -351,7 +353,7 @@ class AssessmentStore extends Store {
 							// This error occurs when someone tries to submit an attempt
 							// for an assessment that was updated. In this case, we need
 							// to let the user write down their answers and restart
-							// a new attempt, discarding the old one
+							// a new attempt
 							return Promise.reject(new Error(res.value.message))
 						default:
 							return ErrorUtil.errorResponse(res)
