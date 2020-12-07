@@ -3,6 +3,7 @@ const camelcaseKeys = require('camelcase-keys')
 const logger = require('obojobo-express/server/logger')
 const lti = require('obojobo-express/server/lti')
 const AssessmentScore = require('./assessment-score')
+const FILTER_INVALID = "AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')"
 
 // if the attempt is imported, return the importedAttemptId, otherwise return this attempt's id
 const attemptIdOrImportedId = attempt =>
@@ -52,6 +53,7 @@ class AssessmentModel {
 					AND completed_at IS NOT NULL
 					AND is_preview = $[isPreview]
 					AND resource_link_id = $[resourceLinkId]
+					${FILTER_INVALID}
 				ORDER BY completed_at`,
 			{ userId, draftId, assessmentId, isPreview, resourceLinkId }
 		)
@@ -134,6 +136,7 @@ class AssessmentModel {
 					AND ATT.resource_link_id = $[resourceLinkId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
 					AND ATT.is_preview = $[isPreview]
+					${FILTER_INVALID}
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
@@ -156,13 +159,15 @@ class AssessmentModel {
 				PARTITION by assessment_id
 				ORDER BY completed_at, created_at
 			) AS "attempt_number",
-			id
+			id,
+			state
 			FROM attempts
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
 			AND resource_link_id = $[resourceLinkId]
 			AND is_preview = $[isPreview]
+			${FILTER_INVALID}
 			ORDER BY completed_at
 			`,
 			{ userId, draftId, isPreview, resourceLinkId }
@@ -456,6 +461,26 @@ class AssessmentModel {
 			// when they return combine and batch execute in transaction
 			return Promise.all(queries).then(([p1, p2]) => transaction.batch(p1.concat(p2)))
 		})
+	}
+
+	static invalidateAttempt(attemptId) {
+		return db
+			.oneOrNone(
+				`
+				UPDATE attempts
+				SET state = jsonb_set(state, '{invalid}', 'true')
+				WHERE id = $[attemptId]
+				RETURNING *
+				`,
+				{ attemptId }
+			)
+			.then(result => {
+				return new AssessmentModel(result)
+			})
+			.catch(error => {
+				logger.error('Assessment invalidateAttempt Error', error.message)
+				return Promise.reject(error)
+			})
 	}
 
 	clone() {

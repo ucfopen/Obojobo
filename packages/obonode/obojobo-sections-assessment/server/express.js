@@ -91,7 +91,8 @@ router
 
 			res.success(attempt)
 		} catch (error) {
-			logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
+			// logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
+			logAndRespondToUnexpected(error.message, res, req, error)
 		}
 	})
 
@@ -107,9 +108,20 @@ router
 	.post((req, res) => {
 		return endAttempt(req, res)
 			.then(res.success)
-			.catch(error =>
-				logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
-			)
+			.catch(error => {
+				const MODULE_UPDATED_ERROR = 'Cannot end an attempt for a different module'
+				let errorMessage = ''
+
+				switch (error.message) {
+					case MODULE_UPDATED_ERROR:
+						errorMessage = MODULE_UPDATED_ERROR
+						break
+					default:
+						errorMessage = 'Unexpected error completing your attempt'
+				}
+
+				logAndRespondToUnexpected(errorMessage, res, req, error)
+			})
 	})
 
 // @TODO: seems like attemptid should be in the url and switch to GET?

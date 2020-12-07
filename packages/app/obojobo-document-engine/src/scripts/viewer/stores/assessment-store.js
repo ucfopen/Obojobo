@@ -14,6 +14,7 @@ import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-pro
 import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import UpdatedModuleDialog from 'obojobo-sections-assessment/components/dialogs/updated-module-dialog'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -211,7 +212,19 @@ class AssessmentStore extends Store {
 			attemptId: unfinishedAttemptId,
 			visitId: navState.visitId
 		}).then(response => {
-			this.updateStateAfterStartAttempt(response.value)
+			const { status, value } = response
+
+			// This error occurs when someone tries to resume an attempt
+			// for an assessment that was updated. In this case, the attempt
+			// gets invalidated and we'll try to start a new attempt.
+			if (status !== 'ok' && value.message.toLowerCase().includes('invalid attempt')) {
+				// IMPORTANT: This assumes that the id of the assessment
+				// being resumed hasn't changed since the user started it.
+				const summary = this.findUnfinishedAttemptInAssessmentSummary(this.state.assessmentSummary)
+				this.startAttemptWithImportScoreOption(summary.assessmentId)
+				return
+			}
+			this.updateStateAfterStartAttempt(value)
 			this.triggerChange()
 		})
 	}
@@ -333,7 +346,16 @@ class AssessmentStore extends Store {
 		})
 			.then(res => {
 				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res)
+					switch (res.value.message.toLowerCase()) {
+						case 'cannot end an attempt for a different module':
+							// This error occurs when someone tries to submit an attempt
+							// for an assessment that was updated. In this case, we need
+							// to let the user write down their answers and restart
+							// a new attempt, discarding the old one
+							return Promise.reject(new Error(res.value.message))
+						default:
+							return ErrorUtil.errorResponse(res)
+					}
 				}
 
 				this.state.attemptHistoryLoadState = 'none'
@@ -368,7 +390,24 @@ class AssessmentStore extends Store {
 				this.triggerChange()
 			})
 			.catch(e => {
-				console.error(e) /* eslint-disable-line no-console */
+				const onConfirm = () => {
+					ModalUtil.hide()
+
+					// IMPORTANT: This assumes that the id of the assessment
+					// being resumed hasn't changed since the user started it.
+					this.startAttemptWithImportScoreOption(assessmentId)
+				}
+
+				switch(e.message.toLowerCase()) {
+					case 'cannot end an attempt for a different module':
+						// Manually trigger an attempt end so the assessment component
+						// doesn't permanently disable its submit button
+						Dispatcher.trigger('assessment:attemptEnded', assessmentId)
+						ModalUtil.show(<UpdatedModuleDialog onConfirm={onConfirm} />, false)
+						break
+					default:
+						console.error(e) /* eslint-disable-line no-console */
+				}
 			})
 	}
 

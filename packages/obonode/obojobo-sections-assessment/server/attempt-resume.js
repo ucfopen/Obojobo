@@ -3,6 +3,7 @@ const attemptStart = require('./attempt-start')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ERROR_INVALID_ATTEMPT = 'Invalid attempt'
 
 const resumeAttempt = async (
 	currentUser,
@@ -19,6 +20,17 @@ const resumeAttempt = async (
 	const res = {} // @TODO see if we can get rid of these
 	const attempt = await AssessmentModel.fetchAttemptById(attemptId)
 	const assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
+
+	// Check to make sure this attempt is for the current module
+	if (
+		currentDocument.draftId !== attempt.draftId ||
+		currentDocument.contentId !== attempt.draftContentId
+	) {
+		// Discard this attempt if the module was updated
+		// while the user was away from the assessment
+		await AssessmentModel.invalidateAttempt(attemptId)
+		throw new Error(ERROR_INVALID_ATTEMPT)
+	}
 
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 

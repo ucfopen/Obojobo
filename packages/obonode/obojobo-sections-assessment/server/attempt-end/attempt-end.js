@@ -19,6 +19,9 @@ const endAttempt = async (req, res) => {
 		req.currentDocument.draftId !== attempt.draftId ||
 		req.currentDocument.contentId !== attempt.draftContentId
 	) {
+		// Discard this attempt if the module was updated while the
+		// user was taking the assessment
+		await AssessmentModel.invalidateAttempt(attempt.id)
 		throw Error('Cannot end an attempt for a different module')
 	}
 
