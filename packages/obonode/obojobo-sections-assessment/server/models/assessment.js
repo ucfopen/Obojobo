@@ -3,7 +3,6 @@ const camelcaseKeys = require('camelcase-keys')
 const logger = require('obojobo-express/server/logger')
 const lti = require('obojobo-express/server/lti')
 const AssessmentScore = require('./assessment-score')
-const FILTER_INVALID = "AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')"
 
 // if the attempt is imported, return the importedAttemptId, otherwise return this attempt's id
 const attemptIdOrImportedId = attempt =>
@@ -53,7 +52,7 @@ class AssessmentModel {
 					AND completed_at IS NOT NULL
 					AND is_preview = $[isPreview]
 					AND resource_link_id = $[resourceLinkId]
-					${FILTER_INVALID}
+					AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 				ORDER BY completed_at`,
 			{ userId, draftId, assessmentId, isPreview, resourceLinkId }
 		)
@@ -136,7 +135,7 @@ class AssessmentModel {
 					AND ATT.resource_link_id = $[resourceLinkId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
 					AND ATT.is_preview = $[isPreview]
-					${FILTER_INVALID}
+					AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
@@ -167,7 +166,7 @@ class AssessmentModel {
 			AND draft_id = $[draftId]
 			AND resource_link_id = $[resourceLinkId]
 			AND is_preview = $[isPreview]
-			${FILTER_INVALID}
+			AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 			ORDER BY completed_at
 			`,
 			{ userId, draftId, isPreview, resourceLinkId }
