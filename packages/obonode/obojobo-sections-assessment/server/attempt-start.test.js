@@ -54,6 +54,7 @@ const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 const ERROR_IMPORT_USED = 'Import score has already been used'
+const ERROR_INVALID_ASSESSMENT_ID = 'This Assessment ID does not exist'
 
 describe('start attempt route', () => {
 	let mockDraft
@@ -203,6 +204,29 @@ describe('start attempt route', () => {
 		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+		})
+	})
+
+	test('startAttempt rejects with an expected error when a given assessment id does not exist', () => {
+		const mockAssessmentNode = {
+			getChildNodeById: jest.fn(() => {})
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockInvalidAssessmentId'
+			},
+			currentVisit: { is_preview: false },
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		mockRes = { reject: jest.fn() }
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_INVALID_ASSESSMENT_ID)
 		})
 	})
 
