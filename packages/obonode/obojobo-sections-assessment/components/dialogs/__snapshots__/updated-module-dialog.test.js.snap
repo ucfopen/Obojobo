@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
+<div
+  className="obojobo-draft--components--modal--dialog "
+  style={
+    Object {
+      "width": "32rem",
+    }
+  }
+>
+  <div
+    aria-labelledby="obojobo-draft--components--modal--modal--content"
+    className="obojobo-draft--components--modal--modal"
+    role="dialog"
+  >
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+    <div
+      className="content"
+      id="obojobo-draft--components--modal--modal--content"
+    >
+      <h1
+        className="heading"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        Updated Module
+      </h1>
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          A portion of this module was just updated. Unfortunately, it must be restarted. Click cancel to review and catalog your answers or restart to start a new attempt.
+        </p>
+      </div>
+      <div
+        className="controls"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[MockFunction]}
+          >
+            Cancel
+          </button>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[MockFunction]}
+          >
+            Restart
+          </button>
+        </div>
+      </div>
+    </div>
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+  </div>
+</div>
+`;
