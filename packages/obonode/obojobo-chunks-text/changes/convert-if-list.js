@@ -38,12 +38,23 @@ const convertIfList = function(entry, editor, event) {
 			editor,
 			{
 				type: LIST_NODE,
-				content: { listStyles: { type: isList.type } },
+				content: {
+					listStyles: {
+						type: isList.type,
+						indents: [
+							{
+								start: isList.symbolIndex,
+								type: isList.type,
+								bulletStyle: isList.symbolStyle
+							}
+						]
+					}
+				},
 				children: [
 					{
 						type: LIST_NODE,
 						subtype: LIST_LEVEL_NODE,
-						content: { start: isList.symbolIndex },
+						content: {},
 						children: [{ text: nodeStr.substring(cursorOffset) }]
 					}
 				]
