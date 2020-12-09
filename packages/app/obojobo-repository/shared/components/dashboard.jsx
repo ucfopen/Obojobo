@@ -48,6 +48,8 @@ const renderVersionHistoryDialog = props => (
 		hasHistoryLoaded={props.versionHistory.hasFetched}
 		versionHistory={props.versionHistory.items}
 		restoreVersion={props.restoreVersion}
+		checkModuleLock={props.checkModuleLock}
+		currentUserId={props.currentUser.id}
 	/>
 )
 
