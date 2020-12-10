@@ -57,6 +57,8 @@ describe('Resume Attempt Route', () => {
 			assessmentId: 'mockAssessmentId',
 			id: 'mockAttemptId',
 			number: 'mockAttemptNumber',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
 			state: {
 				chosen: [questionNode1, questionNode2, nonQuestionNode]
 			}
@@ -100,6 +102,8 @@ describe('Resume Attempt Route', () => {
 		Object {
 		  "assessmentId": "mockAssessmentId",
 		  "attemptId": "mockAttemptId",
+		  "draftContentId": "mockContentId",
+		  "draftId": "mockDraftId",
 		  "number": "mockAttemptNumber",
 		  "questions": Array [
 		    "mock-to-object",
@@ -132,6 +136,8 @@ describe('Resume Attempt Route', () => {
 			assessmentId: 'mockAssessmentId',
 			id: 'mockAttemptId',
 			number: 'mockAttemptNumber',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
 			state: {
 				chosen: [] // skip building attempt.questions
 			}
@@ -182,6 +188,8 @@ describe('Resume Attempt Route', () => {
 			assessmentId: 'mockAssessmentId',
 			id: 'mockAttemptId',
 			number: 'mockAttemptNumber',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
 			state: {
 				chosen: [] // skip building attempt.questions
 			}
@@ -246,5 +254,35 @@ describe('Resume Attempt Route', () => {
 		  "visitId": "mockVisitId",
 		}
 	`)
+	})
+
+	test('rejects when attempting to resume module not matching the currentDocument', async () => {
+		expect.hasAssertions()
+
+		const mockAttempt = {
+			draftId: 'differentMockDraftId',
+			draftContentId: 'differentMockContentId'
+		}
+
+		const mockCurrentDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			getChildNodeById: jest.fn()
+		}
+
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
+
+		await expect(
+			resumeAttempt(
+				'mockCurrentUser',
+				'mockCurrentVisit',
+				mockCurrentDocument,
+				'mockAttemptId',
+				'mockHostName',
+				'mockRemoteAddress'
+			)
+		).rejects.toThrow(Error('Cannot resume an attempt for a different module'))
+
+		await expect(AssessmentModel.invalidateAttempt).toHaveBeenCalledWith('mockAttemptId')
 	})
 })

@@ -193,9 +193,12 @@ describe('server/express', () => {
 	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
+		const errorString = 'Cannot resume an attempt for a different module'
 
-		const response = await request(app)
+		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
+		resumeAttempt.mockRejectedValueOnce(new Error(errorString))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
 
@@ -204,6 +207,20 @@ describe('server/express', () => {
 			status: 'error',
 			value: {
 				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: errorString,
 				type: 'unexpected'
 			}
 		})
@@ -253,9 +270,12 @@ describe('server/express', () => {
 	test('POST /api/assessments/attempt/mock-attempt-id/end fails', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		endAttempt.mockRejectedValueOnce(mockReturnValue)
+		const errorStr = 'Cannot end an attempt for a different module'
 
-		const response = await request(app)
+		endAttempt.mockRejectedValueOnce(mockReturnValue)
+		endAttempt.mockRejectedValueOnce(new Error(errorStr))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
 
@@ -264,6 +284,20 @@ describe('server/express', () => {
 			status: 'error',
 			value: {
 				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: errorStr,
 				type: 'unexpected'
 			}
 		})
