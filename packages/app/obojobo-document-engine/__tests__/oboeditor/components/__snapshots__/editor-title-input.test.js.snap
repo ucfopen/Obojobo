@@ -8,6 +8,7 @@ exports[`EditorTitleInput EditorTitleInput component 1`] = `
     aria-invalid={false}
     aria-label="Rename Module "
     className="editor--components--editor-title-input"
+    maxLength="300"
     onBlur={[Function]}
     onChange={[Function]}
     onKeyDown={[Function]}
