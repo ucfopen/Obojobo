@@ -392,25 +392,29 @@ class AssessmentStore extends Store {
 				this.triggerChange()
 			})
 			.catch(e => {
-				const onConfirm = () => {
-					ModalUtil.hide()
-
-					// IMPORTANT: This assumes that the id of the assessment
-					// being resumed hasn't changed since the user started it.
-					this.startAttemptWithImportScoreOption(assessmentId)
-				}
-
 				switch(e.message.toLowerCase()) {
 					case 'cannot end an attempt for a different module':
 						// Manually trigger an attempt end so the assessment component
 						// doesn't permanently disable its submit button
 						Dispatcher.trigger('assessment:attemptEnded', assessmentId)
-						ModalUtil.show(<UpdatedModuleDialog onConfirm={onConfirm} />, false)
+						ModalUtil.show(
+							<UpdatedModuleDialog
+								onConfirm={this.onCloseUpdatedModuleDialog.bind(this, assessmentId)}
+							/>,
+							false
+						)
 						break
 					default:
 						console.error(e) /* eslint-disable-line no-console */
 				}
 			})
+	}
+
+	onCloseUpdatedModuleDialog(assessmentId) {
+		ModalUtil.hide()
+		// IMPORTANT: This assumes that the id of the assessment
+		// being resumed hasn't changed since the user started it.
+		this.startAttemptWithImportScoreOption(assessmentId)
 	}
 
 	onCloseResultsDialog() {
