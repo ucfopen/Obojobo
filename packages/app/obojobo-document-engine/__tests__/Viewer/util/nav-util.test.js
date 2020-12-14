@@ -517,4 +517,33 @@ describe('NavUtil', () => {
 		NavUtil.resetContext()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:resetContext')
 	})
+
+	test('clearSelection clears the current selection', () => {
+		const mockRemoveAllRanges = jest.fn()
+		const mockEmpty = jest.fn()
+
+		// Need to make sure removeAllRanges gets called by default
+		// while empty gets called if removeAllRanges isn't available
+		window.getSelection = jest
+			.fn()
+			.mockReturnValueOnce({
+				removeAllRanges: mockRemoveAllRanges,
+				empty: null
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: mockEmpty
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: null
+			})
+
+		NavUtil.clearSelection()
+		NavUtil.clearSelection()
+		NavUtil.clearSelection()
+
+		expect(mockRemoveAllRanges).toHaveBeenCalledTimes(1)
+		expect(mockEmpty).toHaveBeenCalledTimes(1)
+	})
 })

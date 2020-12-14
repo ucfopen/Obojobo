@@ -11,6 +11,10 @@ export default class InlineNavButton extends React.Component {
 	}
 
 	onClick(event) {
+		// Make sure any highlighted text gets reset
+		// when navigating to different pages
+		NavUtil.clearSelection()
+
 		if (this.props.onClick) {
 			this.props.onClick()
 			return
