@@ -62,7 +62,7 @@ class AssessmentPostTest extends React.Component {
 			// Some of the questions may contain latex. Need to
 			// make sure window.katex is defined before trying
 			// to render those questions
-			injectKatexIfNeeded({ value: attempts }).then(() => {
+			injectKatexIfNeeded({ value: attempts }).finally(() => {
 				this.setState({
 					attempts,
 					isFetching: false
