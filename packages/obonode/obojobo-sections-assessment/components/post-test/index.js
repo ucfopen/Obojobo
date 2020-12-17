@@ -5,6 +5,7 @@ import LTIStatus from './lti-status'
 import React from 'react'
 import Viewer from 'Viewer'
 import AssessmentApi from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
+import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
@@ -58,9 +59,14 @@ class AssessmentPostTest extends React.Component {
 				attempt.state.questionModels = result[attempt.id]
 			})
 
-			this.setState({
-				attempts,
-				isFetching: false
+			// Some of the questions may contain latex. Need to
+			// make sure window.katex is defined before trying
+			// to render those questions
+			injectKatexIfNeeded({ value: attempts }).then(() => {
+				this.setState({
+					attempts,
+					isFetching: false
+				})
 			})
 		})
 	}
