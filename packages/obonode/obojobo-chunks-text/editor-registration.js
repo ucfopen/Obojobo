@@ -14,6 +14,7 @@ import increaseIndent from './changes/increase-indent'
 import indentOrTab from './changes/indent-or-tab'
 import toggleHangingIndent from './changes/toggle-hanging-indent'
 import splitParent from './changes/split-parent'
+import convertIfList from './changes/convert-if-list'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -77,6 +78,9 @@ const plugins = {
 
 				// TAB
 				return indentOrTab(entry, editor, event)
+
+			case ' ':
+				return convertIfList(entry, editor, event)
 
 			case 'h':
 				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)

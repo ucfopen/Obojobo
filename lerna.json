@@ -1,14 +1,20 @@
 {
-	"packages": ["packages/**/*"],
-	"version": "11.0.0",
-	"command": {
-		"command": {
-			"run": {
-				"npmClient": "yarn"
-			}
-		},
-		"version": {
-			"allowBranch": ["master", "dev/*", "hotfix/*"]
-		}
-	}
+  "packages": [
+    "packages/**/*"
+  ],
+  "version": "11.1.1",
+  "command": {
+    "command": {
+      "run": {
+        "npmClient": "yarn"
+      }
+    },
+    "version": {
+      "allowBranch": [
+        "master",
+        "dev/*",
+        "hotfix/*"
+      ]
+    }
+  }
 }

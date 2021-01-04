@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-code",
-	"version": "10.1.0-alpha1",
+	"version": "11.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Code content chunk for Obojobo",
 	"scripts": {
@@ -27,10 +27,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^10.1.0-alpha1"
-	},
-	"devDependencies": {
-		"lint-staged": "^10.2.6"
+		"obojobo-lib-utils": "^11.1.1"
 	},
 	"jest": {
 		"testMatch": [
