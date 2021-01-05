@@ -175,6 +175,49 @@ class TriggerListModal extends React.Component {
 		}))
 	}
 
+	getScrollType(action) {
+		const { value } = action
+
+		if (value.animateScroll === true || value.animateScroll === 'true') {
+			return 'animateScroll'
+		} else if (value.preventScroll === true || value.preventScroll === 'true') {
+			return 'preventScroll'
+		} else {
+			return 'jumpScroll'
+		}
+	}
+
+	updateScrollType(triggerIndex, actionIndex, event) {
+		const scrollType = event.target.value
+		const value = {
+			animateScroll: false,
+			preventScroll: false
+		}
+
+		if (scrollType !== 'jumpScroll') {
+			value[scrollType] = true
+		}
+
+		// Update triggers[triggerIndex].actions[actionIndex].value.key
+		// The nested loops insure that React's immutable state is updated properly
+		return this.setState(prevState => ({
+			/* eslint-disable no-mixed-spaces-and-tabs */
+			triggers: prevState.triggers.map((trigger, tIndex) =>
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
+							actions: trigger.actions.map((action, aIndex) =>
+								actionIndex === aIndex
+									? Object.assign(action, {
+											value: Object.assign({}, action.value, value)
+									  })
+									: action
+							)
+					  })
+					: trigger
+			)
+		}))
+	}
+
 	renderActionOptions(triggerIndex, actionIndex, action) {
 		switch (action.type) {
 			case 'nav:goto':
@@ -274,26 +317,16 @@ class TriggerListModal extends React.Component {
 								'fade'
 							)}
 						/>
-						<Switch
-							title="Animate Scroll"
-							initialChecked={action.value.animateScroll || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'animateScroll'
-							)}
-						/>
-						<Switch
-							title="Prevent Scroll"
-							initialChecked={action.value.preventScroll || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'preventScroll'
-							)}
-						/>
+						<label>If item is not visible on screen</label>
+						<select
+							className="select-item"
+							value={this.getScrollType(action)}
+							onChange={this.updateScrollType.bind(this, triggerIndex, actionIndex)}
+						>
+							<option value="animateScroll">Smoothly scroll page to the focussed item</option>
+							<option value="jumpScroll">Quickly jump page to the focussed item</option>
+							<option value="preventScroll">Keep the page where it is</option>
+						</select>
 					</div>
 				)
 		}
