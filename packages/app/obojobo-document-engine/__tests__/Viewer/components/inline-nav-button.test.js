@@ -6,8 +6,7 @@ import NavButton from 'src/scripts/viewer/components/inline-nav-button'
 
 jest.mock('src/scripts/viewer/util/nav-util', () => ({
 	goNext: jest.fn(),
-	goPrev: jest.fn(),
-	clearSelection: jest.fn()
+	goPrev: jest.fn()
 }))
 
 const getProps = (type, disabled = false, onClick = null) => ({

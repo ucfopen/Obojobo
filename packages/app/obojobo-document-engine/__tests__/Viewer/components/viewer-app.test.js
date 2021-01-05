@@ -596,6 +596,62 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('clearSelectionIfNavTargetChanging clears current selection', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const mockRemoveAllRanges = jest.fn()
+		const mockEmpty = jest.fn()
+		const component = mount(<ViewerApp />)
+
+		// Need to make sure removeAllRanges gets called by default
+		// while empty gets called if removeAllRanges isn't available
+		const windowSpy = jest
+			.spyOn(window, 'getSelection')
+			.mockReturnValueOnce({
+				removeAllRanges: mockRemoveAllRanges,
+				empty: null
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: mockEmpty
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: null
+			})
+
+		setTimeout(() => {
+			component.update()
+
+			const isNavTargetChangingSpy = jest
+				.spyOn(component.instance(), 'isNavTargetChanging')
+				.mockReturnValueOnce(false)
+				.mockReturnValue(true)
+
+			// window.getSelection() shouldn't be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection().removeAllRanges() should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection().empty() should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection() doesn't have removeAllRanges or empty,
+			// no function should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			expect(mockRemoveAllRanges).toHaveBeenCalledTimes(1)
+			expect(mockEmpty).toHaveBeenCalledTimes(1)
+
+			isNavTargetChangingSpy.mockRestore()
+			windowSpy.mockRestore()
+
+			done()
+		})
+	})
+
 	test('onMouseDown calls clearFadeEffect', done => {
 		expect.assertions(2)
 		mocksForMount()

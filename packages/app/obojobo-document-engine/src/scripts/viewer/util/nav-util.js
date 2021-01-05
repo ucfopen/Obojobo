@@ -251,16 +251,6 @@ const NavUtil = {
 
 	isNavOpen(state) {
 		return state.open
-	},
-
-	clearSelection() {
-		const selection = window.getSelection()
-
-		if (selection.removeAllRanges) {
-			selection.removeAllRanges()
-		} else if (selection.empty) {
-			selection.empty()
-		}
 	}
 }
 
