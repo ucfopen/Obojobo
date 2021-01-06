@@ -454,7 +454,6 @@ describe('FullReview', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(AssessmentUtil.isHighestScore).toHaveBeenCalledTimes(1)
 	})
 
 	test('FullReview component with highest attempt', () => {
@@ -491,7 +490,6 @@ describe('FullReview', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(AssessmentUtil.isHighestScore).toHaveBeenCalledTimes(1)
 	})
 
 	test('FullReview component with two attempts', () => {
@@ -556,7 +554,6 @@ describe('FullReview', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(AssessmentUtil.isHighestScore).toHaveBeenCalledTimes(2)
 	})
 
 	test('FullReview component with five attempts', () => {
@@ -682,7 +679,6 @@ describe('FullReview', () => {
 			fifthAttempt
 		])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
-		AssessmentUtil.isHighestScore.mockReturnValueOnce(true)
 
 		const component = renderer.create(
 			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
@@ -691,7 +687,6 @@ describe('FullReview', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-		expect(AssessmentUtil.isHighestScore).toHaveBeenCalledTimes(5)
 	})
 
 	test('FullReview component with two attempts swaps view when clicked', () => {
@@ -763,7 +758,6 @@ describe('FullReview', () => {
 
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setContext).toHaveBeenCalledWith('assessmentReview:mockAttemptId')
-		expect(AssessmentUtil.isHighestScore).toHaveBeenCalledTimes(2)
 
 		// simulate clicking the button for the second attempt
 		component
