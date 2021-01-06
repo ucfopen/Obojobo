@@ -39,7 +39,10 @@
 
 	&.is-new {
 		background-color: lighten($color-action-minor, 15%);
-		font-weight: bold;
+
+		.repository--module-icon--title {
+			font-weight: bold;
+		}
 	}
 
 	&:hover {
