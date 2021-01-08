@@ -49,12 +49,7 @@ const FocusUtil = {
 	getFocussedItemAndClear(state) {
 		const item = FocusUtil.getFocussedItem(state)
 
-		state.type = null
-		state.target = null
-		state.scroll = true
-		state.animateScroll = false
-		state.region = null
-		state.visualFocusTarget = null
+		Dispatcher.trigger('focus:clear')
 
 		return item
 	},

@@ -8,24 +8,28 @@ It doesn't modify any DOM focus and relies on the ViewerApp or OboNode component
 Additionally you can visually focus a component which will fade away all content except the
 component to focus on.
 
-The state has four possible values: `type`, `target`, `animateScroll` and `visualFocusTarget`
-
-*	`type` is the type of focus.
-*	`target` is the item to focus on.
-*	`animateScroll` is a boolean - If true then the item to focus on should be smoothly scrolled to
+The state contains these values:
+*	`type`: The type of focus
+*	`target`: The id of the OboNode to focus on
+*	`animateScroll`: Boolean - If true then the item to focus on should be smoothly scrolled to
 	(again, it's up to ViewerApp to handle this).
+*	`preventScroll`: Boolean - If true then the page won't move when focus is changed
 *	`visualFocusTarget` is the id of the OboNode component to visually focus on (the content of the
 	document should fade away except the visualFocusTarget component, resulting in highlighting that
 	component - The actual effect is left to ViewerApp to handle).
+*	`region`: This is either null or a string, used for focus:component. This string is passed to
+	the OboNode's focusOnContent method. The OboNode can then focus on the element described by
+	region.
 
 Values for `type`:
 *	TYPE_COMPONENT: Focus on an OboNode component. `target` should be the id. If that component has
 	a `focusOnContent` method it will be called, otherwise the DOM element of the OboNode will be
 	focused. Actually setting the DOM focus is left to ViewerApp. The `focusOnContent` method is
-	expected to set the browser focus to the top-most item of the component.
+	expected to set the browser focus to the top-most item of the component (or whatever element
+	is described by region, if not set to null)
 *	TYPE_NAV_TARGET: Same as above except the component that is being focused will be the current
-	nav target (In other words, this means focus on whatever the user is currently looking at).
-	`target` should be `null`.
+	nav target (In other words, this means focus on whatever page/section the user is currently
+	looking at). `target` should be `null`.
 *	TYPE_VIEWER: This is reserved for focusing on some element of the viewer UI. The `target` should
 	be a valid string describing what part of the UI to focus on. The only valid target currently is
 	VIEWER_TARGET_NAVIGATION which means set focus to the viewer navigation. ViewerApp handles
@@ -42,8 +46,6 @@ class FocusStore extends Store {
 	constructor() {
 		super('focusStore')
 
-		console.log('@TODO double check this is working and modify comments above')
-
 		Dispatcher.on('focus:navTarget', this._focusOnNavTarget.bind(this))
 		Dispatcher.on('focus:navigation', this._focusOnNavigation.bind(this))
 		Dispatcher.on('focus:component', payload => {
@@ -56,13 +58,13 @@ class FocusStore extends Store {
 			)
 		})
 		Dispatcher.on('focus:clearFadeEffect', this._clearFadeEffect.bind(this))
+		Dispatcher.on('focus:clear', this._clear.bind(this))
 	}
 
 	init() {
 		this.state = {
 			target: null,
 			type: null,
-			// scroll: true,
 			animateScroll: false,
 			visualFocusTarget: null,
 			preventScroll: false
@@ -78,7 +80,6 @@ class FocusStore extends Store {
 	) {
 		this.state.type = type
 		this.state.target = target
-		// this.state.scroll = ('' + scroll).toLowerCase() === 'true'
 		this.state.animateScroll = ('' + animateScroll).toLowerCase() === 'true'
 		this.state.region = region
 		this.state.visualFocusTarget = null
@@ -103,6 +104,15 @@ class FocusStore extends Store {
 
 	_clearFadeEffect() {
 		this.state.visualFocusTarget = null
+		this.triggerChange()
+	}
+
+	_clear() {
+		const visualFocusTarget = this.state.visualFocusTarget
+
+		this.init()
+		this.state.visualFocusTarget = visualFocusTarget
+
 		this.triggerChange()
 	}
 

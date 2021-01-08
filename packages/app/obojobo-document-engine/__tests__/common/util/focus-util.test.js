@@ -19,61 +19,25 @@ describe('FocusUtil', () => {
 				id: 'testId',
 				fade: false,
 				animateScroll: false,
-				scroll: true,
 				region: null,
 				preventScroll: false
 			}
 		})
 	})
 
-	test('focusComponent will dispatch the correct event with different options', () => {
-		FocusUtil.focusComponent('testId', { fade: true })
-
+	test.each`
+		opts                        | eventArgs
+		${{}}                       | ${{ fade: false, animateScroll: false, preventScroll: false, region: null }}
+		${{ fade: true }}           | ${{ fade: true, animateScroll: false, preventScroll: false, region: null }}
+		${{ animateScroll: true }}  | ${{ fade: false, animateScroll: true, preventScroll: false, region: null }}
+		${{ preventScroll: true }}  | ${{ fade: false, animateScroll: false, preventScroll: true, region: null }}
+		${{ region: 'mockRegion' }} | ${{ fade: false, animateScroll: false, preventScroll: false, region: 'mockRegion' }}
+	`('FocusUtil.focusComponent("testId", $opts) = "$eventArgs"', ({ opts, eventArgs }) => {
+		FocusUtil.focusComponent('testId', opts)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
-				fade: true,
-				animateScroll: false,
-				preventScroll: false
-			}
-		})
-
-		FocusUtil.focusComponent('testId', { animateScroll: true })
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				fade: false,
-				animateScroll: true,
-				preventScroll: false
-			}
-		})
-
-		FocusUtil.focusComponent('testId', { fade: true, animateScroll: true })
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				fade: true,
-				animateScroll: true,
-				scroll: false,
-				region: 'mock-region',
-				preventScroll: false
-			}
-		})
-
-		FocusUtil.focusComponent('testId', {
-			fade: true,
-			animateScroll: true,
-			preventScroll: true
-		})
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				fade: true,
-				animateScroll: true,
-				preventScroll: true
+				...eventArgs
 			}
 		})
 	})
@@ -97,7 +61,6 @@ describe('FocusUtil', () => {
 		const mockState = {
 			type: 'mock-type',
 			target: 'mock-target',
-			scroll: false,
 			animateScroll: false,
 			visualFocusTarget: 'mock-target',
 			region: 'mock-region'
@@ -110,7 +73,6 @@ describe('FocusUtil', () => {
 			options: {
 				animateScroll: false,
 				fade: true,
-				scroll: false,
 				region: 'mock-region'
 			}
 		})
@@ -121,7 +83,6 @@ describe('FocusUtil', () => {
 		const mockState = {
 			type: 'mock-type',
 			target: 'mock-target',
-			scroll: false,
 			animateScroll: false,
 			visualFocusTarget: 'mock-target',
 			region: 'mock-region'
@@ -133,18 +94,10 @@ describe('FocusUtil', () => {
 			options: {
 				animateScroll: false,
 				fade: true,
-				scroll: false,
 				region: 'mock-region'
 			}
 		})
-		expect(mockState).toEqual({
-			type: null,
-			target: null,
-			scroll: true,
-			animateScroll: false,
-			region: null,
-			visualFocusTarget: null
-		})
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:clear')
 	})
 
 	test('getVisuallyFocussedModel returns on OboModel of the component with visual focus', () => {

@@ -289,8 +289,6 @@ export default class ViewerApp extends React.Component {
 	focusComponent(model, opts) {
 		if (!model) return false
 
-		console.log('@TODO focus(el, opts.scroll) became focus(el, opts.preventScroll)')
-
 		// Save the current scroll location since focus() will scroll the page (there is a
 		// preventScroll option but it is not widely supported). Once focus is called we'll
 		// quickly reset the scroll location to what it was before the focus. This allows
@@ -307,7 +305,7 @@ export default class ViewerApp extends React.Component {
 			focus(el, opts.preventScroll)
 		}
 
-		if (opts.scroll && opts.animateScroll) {
+		if (opts.animateScroll) {
 			this.containerRef.current.scrollTop = currentScrollTop
 			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}
@@ -319,7 +317,7 @@ export default class ViewerApp extends React.Component {
 		if (document.hidden) {
 			this.leftEpoch = new Date()
 
-			ViewerAPI.postEvent({
+			return ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
 				eventVersion: '1.0.0',
@@ -328,33 +326,28 @@ export default class ViewerApp extends React.Component {
 				this.leaveEvent = result.response.value
 			})
 		} else {
-			ViewerAPI.postEvent({
+			const leaveEvent = this.leaveEvent
+			const leftEpoch = this.leftEpoch
+
+			delete this.leaveEvent
+			delete this.leftEpoch
+
+			return ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
 				eventVersion: '2.0.0',
 				visitId: this.state.navState.visitId,
 				payload: {
-					relatedEventId: this.leaveEvent.extensions.internalEventId,
-					leftTime: this.leftEpoch,
-					duration: Date.now() - this.leftEpoch
+					relatedEventId: leaveEvent.extensions.internalEventId,
+					leftTime: leftEpoch,
+					duration: Date.now() - leftEpoch
 				}
 			})
-
-			delete this.leaveEvent
-			delete this.leftEpoch
 		}
 	}
 
-	getTextForVariable(event, varName, textModel) {
-		let text = Common.Registry.getTextForVariable(varName, textModel, this.state)
-		if (typeof text !== 'undefined' && text !== null) {
-			event.text = '' + text
-			return
-		}
-
-		const results = textModel.getTextForVariable(varName)
-		event.text = results.text
-		event.style = results.style
+	getTextForVariable(event, variable, textModel) {
+		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
 	}
 
 	scrollToTop(animateScroll = false) {
@@ -463,7 +456,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle(event) {
-		ViewerAPI.postEvent({
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
@@ -478,7 +471,11 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onReturnFromIdle(event) {
-		ViewerAPI.postEvent({
+		const inactiveEvent = this.inactiveEvent
+
+		delete this.inactiveEvent
+
+		return ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
 			eventVersion: '2.1.0',
@@ -486,11 +483,9 @@ export default class ViewerApp extends React.Component {
 			payload: {
 				lastActiveTime: event.lastActiveEpoch,
 				inactiveDuration: event.inactiveDuration,
-				relatedEventId: this.inactiveEvent.extensions.internalEventId
+				relatedEventId: inactiveEvent.extensions.internalEventId
 			}
 		})
-
-		delete this.inactiveEvent
 	}
 
 	sendCloseEvent() {
@@ -618,6 +613,7 @@ export default class ViewerApp extends React.Component {
 	getViewerClassNames() {
 		const s = this.state
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(s.focusState)
+
 		return (
 			isOrNot(s.isPreviewing, 'previewing') +
 			isOrNot(s.navState.open, 'open-nav') +
