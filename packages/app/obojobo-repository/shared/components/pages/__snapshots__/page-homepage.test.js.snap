@@ -285,7 +285,7 @@ exports[`PageHomepage renders when given props 1`] = `
               <span
                 id="copyright-date"
               >
-                2020
+                2021
               </span>
                
               <a

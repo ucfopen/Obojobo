@@ -25,7 +25,13 @@ module.exports = app => {
 	app.set('views', path.join(__dirname, 'views'))
 
 	// =========== SET UP MIDDLEWARE ================
-	app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-32.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-128.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-152.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-167.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-180.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-192.ico')))
+	app.use(favicon(path.join(__dirname, 'public', 'favicon-196.ico')))
 	app.use(bodyParser.json(config.general.bodyParser.jsonOptions))
 	app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions))
 	app.use(bodyParser.text(config.general.bodyParser.textOptions))
