@@ -204,6 +204,7 @@ class MoreInfoBox extends React.Component {
 							onChange={this.handleContentChange.bind(this, item.name)}
 							placeholder={item.placeholder || ''}
 							onClick={stopPropagation}
+							maxLength="300"
 						/>
 					</div>
 				)
