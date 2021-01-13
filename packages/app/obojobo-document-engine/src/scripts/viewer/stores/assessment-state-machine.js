@@ -132,15 +132,6 @@ const logError = (context, event) => {
 	console.error(event.data)
 }
 
-// const updateContextRemoveImportableScore = assign({
-// 	assessmentStoreState: (context, event) => {
-// 		delete context.assessmentStoreState.importableScores[context.assessmentId]
-// 		getAssessmentContext(context).isScoreImported = true
-
-// 		return context.assessmentStoreState
-// 	}
-// })
-
 const getAssessmentContext = context => {
 	return context.assessmentStoreState.assessments[context.assessmentId]
 }

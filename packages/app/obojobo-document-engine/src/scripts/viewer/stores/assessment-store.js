@@ -1,61 +1,61 @@
 import AssessmentAPI from '../util/assessment-api'
-import ViewerAPI from '../util/viewer-api'
-import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
-import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
+// import ViewerAPI from '../util/viewer-api'
+// import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
+// import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
 import AssessmentUtil from '../util/assessment-util'
-import CurrentAssessmentStates from '../util/current-assessment-states'
+// import CurrentAssessmentStates from '../util/current-assessment-states'
 import Common from 'Common'
-import FocusUtil from '../util/focus-util'
+// import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
 import AssessmentNetworkStates from './assessment-store/assessment-network-states'
 import NavStore from '../stores/nav-store'
-import NavUtil from '../util/nav-util'
-import QuestionStore from './question-store'
-import QuestionUtil from '../util/question-util'
+// import NavUtil from '../util/nav-util'
+// import QuestionStore from './question-store'
+// import QuestionUtil from '../util/question-util'
 import React from 'react'
 import AssessmentStateMachine from './assessment-state-machine'
 import AssessmentStateActions from './assessment-store/assessment-state-actions'
-import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
+// import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
 // import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+// const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
 
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
-const { SimpleDialog, Dialog } = Common.components.modal
+// const { SimpleDialog, Dialog } = Common.components.modal
 
 const {
-	PROMPTING_FOR_RESUME,
-	STARTING_ATTEMPT,
-	RESUMING_ATTEMPT,
-	IN_ATTEMPT,
-	START_ATTEMPT_FAILED,
-	RESUME_ATTEMPT_FAILED,
-	SENDING_RESPONSES,
-	SEND_RESPONSES_SUCCESSFUL,
-	SEND_RESPONSES_FAILED,
-	NOT_IN_ATTEMPT,
-	ENDING_ATTEMPT,
-	END_ATTEMPT_FAILED,
-	END_ATTEMPT_SUCCESSFUL,
-	PROMPTING_FOR_IMPORT,
-	IMPORTING_ATTEMPT,
-	IMPORT_ATTEMPT_FAILED,
-	IMPORT_ATTEMPT_SUCCESSFUL
+	// PROMPTING_FOR_RESUME,
+	// STARTING_ATTEMPT,
+	// RESUMING_ATTEMPT,
+	// IN_ATTEMPT,
+	// START_ATTEMPT_FAILED,
+	// RESUME_ATTEMPT_FAILED,
+	// SENDING_RESPONSES,
+	// SEND_RESPONSES_SUCCESSFUL,
+	// SEND_RESPONSES_FAILED,
+	NOT_IN_ATTEMPT
+	// ENDING_ATTEMPT,
+	// END_ATTEMPT_FAILED,
+	// END_ATTEMPT_SUCCESSFUL,
+	// PROMPTING_FOR_IMPORT,
+	// IMPORTING_ATTEMPT,
+	// IMPORT_ATTEMPT_FAILED,
+	// IMPORT_ATTEMPT_SUCCESSFUL
 } = AssessmentNetworkStates
 
 const ATTEMPT_HISTORY_NOT_LOADED = 'none'
-const ATTEMPT_HISTORY_LOADING = 'loading'
-const ATTEMPT_HISTORY_LOADED = 'loaded'
+// const ATTEMPT_HISTORY_LOADING = 'loading'
+// const ATTEMPT_HISTORY_LOADED = 'loaded'
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
-	state: AssessmentNetworkStates.NO_ATTEMPT_STARTED,
+	// state: AssessmentNetworkStates.NOT_IN_ATTEMPT, //@TODO - Is this used?
 	current: null,
 	// currentResponses: [],
 	attempts: [],
@@ -111,22 +111,15 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			// this.endAttemptWithAPICall(payload.value.id, payload.value.context)
-			this.endAttempt(payload.value.id, payload.value.context)
+			this.endAttempt(payload.value.id)
 		})
 
 		Dispatcher.on('assessment:forceSendResponses', payload => {
-			this.forceSendResponses(payload.value.id, payload.value.context)
+			this.forceSendResponses(payload.value.id)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
 			this.tryResendLTIScore(payload.value.id)
-		})
-
-		Dispatcher.on('window:closeAttempt', shouldPrompt => {
-			if (AssessmentUtil.isInAssessment(this.state)) {
-				shouldPrompt()
-			}
 		})
 
 		Dispatcher.on('assessment:acknowledgeEndAttemptSuccessful', payload => {
@@ -149,16 +142,22 @@ class AssessmentStore extends Store {
 			this.acknowledgeImportAttemptFailed(payload.value.id)
 		})
 
-		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
-			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
-		})
-
 		Dispatcher.on('assessment:resumeAttempt', payload => {
 			this.resumeAttempt(payload.value.id)
 		})
 
 		Dispatcher.on('assessment:continueAttempt', payload => {
 			this.continueAttempt(payload.value.id)
+		})
+
+		Dispatcher.on('assessment:acknowledgeFetchHistoryFailed', payload => {
+			this.acknowledgeFetchHistoryFailed(payload.value.id, payload.value.retry)
+		})
+
+		Dispatcher.on('window:closeAttempt', shouldPrompt => {
+			if (AssessmentUtil.isInAssessment(this.state)) {
+				shouldPrompt()
+			}
 		})
 
 		Dispatcher.on('nav:targetChanged', payload => {
@@ -176,10 +175,6 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	// findUnfinishedAttemptInAssessmentSummary(summaries) {
-	// 	return summaries.find(s => typeof s.unfinishedAttemptId === 'string')
-	// }
-
 	getAssessmentModels() {
 		return Object.values(OboModel.models).filter(
 			model => model.get('type') === ASSESSMENT_NODE_TYPE
@@ -193,35 +188,14 @@ class AssessmentStore extends Store {
 			: []
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
-		// const unfinishedAttempt = this.findUnfinishedAttemptInAssessmentSummary(ext.assessmentSummary)
-		const unfinishedAttempt = ext.assessmentSummary || null
-
-		//importable score
-		/*
-		{
-			highestScore: importableScore.score,
-			assessmentDate: importableScore.createdAt,
-			assessmentId: importableScore.assessmentId,
-			attemptId: importableScore.attemptId,
-			assessmentScoreId: importableScore.id
-		}
-		*/
-
-		console.log(
-			'importableScore',
-			ext.importableScore,
-			arrayToObject([ext.importableScore], 'assessmentId')
-		)
+		const unfinishedAttempt = ext.assessmentSummary[0] || null //@TODO - Correct?
 
 		this.state = {
 			assessments: {}, // assessments found in attempt history
 			machines: {},
 			importableScores: arrayToObject([ext.importableScore], 'assessmentId'),
-			// isScoreImported: false, // @TODO: this will need to be updated to support multiple assessments
-			// importableScore: ext.importableScore,
 			assessmentSummaries: arrayToObject(ext.assessmentSummary, 'assessmentId'),
-			// attemptHistoryNetworkState: 'none', // not loaded yet
-			isResumingAttempt: unfinishedAttempt !== undefined //eslint-disable-line no-undefined
+			isResumingAttempt: unfinishedAttempt !== null //eslint-disable-line no-undefined
 		}
 
 		// Find all the assessments:
@@ -242,56 +216,16 @@ class AssessmentStore extends Store {
 		}
 	}
 
-	startAttempt(id, context) {
+	doMachineAction(id, command) {
 		const assessmentModel = OboModel.models[id]
 
 		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
 
 		if (!machine) {
-			throw "Can't start attempt - No assessment!"
+			throw 'No machine exists for this assessment - Unable to run ' + command
 		}
 
-		machine.send(AssessmentStateActions.START_ATTEMPT)
-	}
-
-	importAttempt(id, context) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't import attempt - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.IMPORT_ATTEMPT)
-	}
-
-	abandonImport(id, context) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't abandon import - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.ABANDON_IMPORT)
-	}
-
-	endAttempt(id, context) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't end attempt - No assessment!"
-		}
-
-		if (machine.getCurrentState() !== SEND_RESPONSES_SUCCESSFUL) {
-			throw "Can't end attempt - Have not sent responses successfully!"
-		}
-
-		machine.send(AssessmentStateActions.END_ATTEMPT)
+		machine.send(command)
 	}
 
 	tryResendLTIScore(assessmentId) {
@@ -303,7 +237,7 @@ class AssessmentStore extends Store {
 
 		return AssessmentAPI.resendLTIAssessmentScore({
 			draftId: assessmentModel.getRoot().get('draftId'),
-			assessmentId: assessmentModel.get('id'),
+			assessmentId,
 			visitId: NavStore.getState().visitId
 		})
 			.then(res => {
@@ -317,7 +251,6 @@ class AssessmentStore extends Store {
 					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
 					res.value
 				)
-				this.triggerChange()
 			})
 			.catch(e => {
 				console.error(e) /* eslint-disable-line no-console */
@@ -364,128 +297,6 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	forceSendResponses(assessmentId, context) {
-		const assessmentModel = OboModel.models[assessmentId]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't send responses - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.SEND_RESPONSES)
-	}
-
-	acknowledgeEndAttemptSuccessful(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge end attempt - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.ACKNOWLEDGE)
-	}
-
-	acknowledgeStartAttemptFailed(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge start attempt failed - No assessment!"
-		}
-
-		console.log('@TODO - this should happen in the state machine', assessmentModel)
-
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
-		assessment.current = null
-
-		machine.send(AssessmentStateActions.ACKNOWLEDGE)
-	}
-
-	acknowledgeEndAttemptFailed(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge end attempt failed - No assessment!"
-		}
-
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
-		delete assessment.current.error
-
-		machine.send(AssessmentStateActions.ACKNOWLEDGE)
-	}
-
-	acknowledgeResumeAttemptFailed(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge resume attempt failed - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.ACKNOWLEDGE)
-	}
-
-	acknowledgeImportAttemptFailed(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge import attempt failed - No assessment!"
-		}
-
-		machine.send(AssessmentStateActions.ACKNOWLEDGE)
-	}
-
-	acknowledgeFetchHistoryFailed(id, retry = false) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't acknowledge fetch history failed - No assessment!"
-		}
-
-		machine.send(
-			retry ? AssessmentStateActions.FETCH_ATTEMPT_HISTORY : AssessmentStateActions.ACKNOWLEDGE
-		)
-	}
-
-	resumeAttempt(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't resume attempt - No assessment!"
-		}
-
-		console.log('@TODO - Decide how to handle not in right state errors')
-
-		machine.send(AssessmentStateActions.RESUME_ATTEMPT)
-	}
-
-	continueAttempt(id) {
-		const assessmentModel = OboModel.models[id]
-
-		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
-
-		if (!machine) {
-			throw "Can't continue attempt - No assessment!"
-		}
-
-		console.log('@TODO - Decide how to handle not in right state errors')
-
-		machine.send(AssessmentStateActions.CONTINUE_ATTEMPT)
-	}
-
 	displayPreAttemptImportScoreNotice(highestScore) {
 		return new Promise(resolve => {
 			const shouldImport = choice => resolve(choice)
@@ -507,9 +318,72 @@ class AssessmentStore extends Store {
 		)
 	}
 
-	displayUnfinishedAttemptNotice(attemptId) {
-		const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
-		ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
+	// displayUnfinishedAttemptNotice(attemptId) {
+	// 	const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
+	// 	ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
+	// }
+
+	startAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.START_ATTEMPT)
+	}
+
+	importAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.IMPORT_ATTEMPT)
+	}
+
+	abandonImport(id) {
+		this.doMachineAction(id, AssessmentStateActions.ABANDON_IMPORT)
+	}
+
+	endAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.END_ATTEMPT)
+	}
+
+	forceSendResponses(id) {
+		this.doMachineAction(id, AssessmentStateActions.SEND_RESPONSES)
+	}
+
+	acknowledgeEndAttemptSuccessful(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeStartAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+
+		console.log('@TODO - this should happen in the state machine')
+		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
+		assessment.current = null
+	}
+
+	acknowledgeEndAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+
+		console.log('@TODO - this should happen in the state machine')
+		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
+		delete assessment.current.error
+	}
+
+	acknowledgeResumeAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeImportAttemptFailed(id) {
+		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
+	}
+
+	acknowledgeFetchHistoryFailed(id, retry = false) {
+		this.doMachineAction(
+			id,
+			retry ? AssessmentStateActions.FETCH_ATTEMPT_HISTORY : AssessmentStateActions.ACKNOWLEDGE
+		)
+	}
+
+	resumeAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.RESUME_ATTEMPT)
+	}
+
+	continueAttempt(id) {
+		this.doMachineAction(id, AssessmentStateActions.CONTINUE_ATTEMPT)
 	}
 }
 
