@@ -49,11 +49,15 @@ const plugins = {
 			case 'Enter':
 				event.preventDefault()
 				if (Range.isCollapsed(editor.selection)) {
-					// Get current Cell
-					const [[, cellPath]] = Editor.nodes(editor, {
+					// Getting the table object.
+					const [tablePath] = Editor.nodes(editor, {
 						mode: 'lowest',
-						match: nodeMatch => Element.isElement(nodeMatch) && !editor.isInline()
+						match: nodeMatch => Element.isElement(nodeMatch)
 					})
+
+					// Getting the cell in which we last clicked on.
+					const cellPath = tablePath[1]
+
 					// Check if there is a row below this one
 					const siblingPath = Path.next(cellPath.slice(0, -1))
 					if (Node.has(editor, siblingPath)) {

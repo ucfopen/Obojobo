@@ -727,7 +727,7 @@ describe('ViewerApp', () => {
 		expect(window.IntersectionObserver).toHaveBeenCalledWith(thisValue.onIntersectionChange, {
 			root: null,
 			rootMargin: '0px',
-			threshhold: 0
+			threshold: 0
 		})
 		expect(thisValue.observer.observe).toHaveBeenCalledWith(
 			FocusUtil.getVisuallyFocussedModel().getDomEl()
