@@ -317,7 +317,7 @@ class TriggerListModal extends React.Component {
 								'fade'
 							)}
 						/>
-						<label>If item is not visible on screen</label>
+						<label>If item not visible on screen</label>
 						<select
 							className="select-item"
 							value={this.getScrollType(action)}
