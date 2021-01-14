@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "obojobo-document-engine": "^11.1.0",
+    "obojobo-document-engine": "^11.1.1",
     "xml-formatter": "^2.0.1"
   },
   "devDependencies": {
-    "obojobo-lib-utils": "^11.1.0"
+    "obojobo-lib-utils": "^11.1.1"
   },
   "name": "obojobo-document-json-parser",
-  "version": "11.1.0",
+  "version": "11.1.1",
   "license": "AGPL-3.0-only",
   "main": "",
   "scripts": {
