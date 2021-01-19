@@ -1,8 +1,12 @@
-import { Transforms, Point } from 'slate'
+import { Transforms, Point, Node } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 
 import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
+
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('KeyDown Util', () => {
 	beforeEach(() => {
@@ -323,7 +327,7 @@ describe('KeyDown Util', () => {
 		const editor = {
 			children: [
 				{
-					type: 'mockNode',
+					type: HEADING_NODE,
 					children: [{ text: 'some' }]
 				}
 			],
@@ -347,12 +351,53 @@ describe('KeyDown Util', () => {
 
 		// make sure the inserted node is correct type
 		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
-		expect(insertedNode.children[0]).toHaveProperty('type', 'ObojoboDraft.Chunks.Text')
-		expect(insertedNode.children[0]).toHaveProperty('subtype', 'ObojoboDraft.Chunks.Text.TextLine')
+		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
+		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
 		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
-	test('breakToText skips when multile node are selected', () => {
+	test('breakToText splits text', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Node, 'fragment')
+
+		const editor = {
+			children: [
+				{
+					type: HEADING_NODE,
+					children: [{ text: 'someText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 4 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+
+		// make sure the correct node fragment is taken
+		const fragmentNode = Node.fragment.mock.results[0].value[0]
+		expect(fragmentNode).toHaveProperty('type', HEADING_NODE)
+		expect(fragmentNode.children[0]).toEqual({ text: 'Text' })
+
+		// make sure the inserted node is correct type
+		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
+		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
+		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
+		expect(insertedNode.children[0].children[0]).toEqual({ text: 'Text' })
+	})
+
+	test('breakToText skips when multiple node are selected', () => {
 		jest.spyOn(Point, 'isBefore').mockReturnValue(false)
 		jest.spyOn(Point, 'equals').mockReturnValue(false)
 
