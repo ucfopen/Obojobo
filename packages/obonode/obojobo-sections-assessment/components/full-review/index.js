@@ -27,7 +27,7 @@ class AssessmentReviewView extends React.Component {
 
 		const attempts = this.props.attempts
 
-		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
+		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)

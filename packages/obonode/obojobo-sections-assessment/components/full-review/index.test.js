@@ -671,7 +671,7 @@ describe('FullReview', () => {
 
 		// Mocking the last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockFifthAttemptId' })
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			firstAttempt,
 			secondAttempt,
 			thirdAttempt,
