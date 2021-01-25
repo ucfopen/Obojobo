@@ -37,6 +37,14 @@
 		background-color: $color-banner-bg;
 	}
 
+	&.is-new {
+		background-color: lighten($color-action-minor, 15%);
+
+		.repository--module-icon--title {
+			font-weight: bold;
+		}
+	}
+
 	&:hover {
 		border-color: $color-banner-bg;
 

@@ -77,7 +77,7 @@ $color-nav-hover: darken($color-highlight, 25%);
 	max-width: $open-width-max;
 	min-width: $open-width-min;
 	border-right: $border;
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: hidden;
 	transition: min-width $menu-transition-time, max-width $menu-transition-time;
 

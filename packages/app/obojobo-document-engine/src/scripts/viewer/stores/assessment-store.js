@@ -14,6 +14,7 @@ import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-pro
 import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -301,7 +302,12 @@ class AssessmentStore extends Store {
 		return await apiCall.call(this, draftId, visitId, assessmentId)
 	}
 
-	updateStateAfterStartAttempt(startAttemptResp) {
+	async updateStateAfterStartAttempt(startAttemptResp) {
+		// Need to make sure katex gets injected when the only
+		// place latex is used is in the assessment, since it
+		// won't be detected when first loading a module.
+		await injectKatexIfNeeded({ value: startAttemptResp })
+
 		const id = startAttemptResp.assessmentId
 		const model = OboModel.models[id]
 

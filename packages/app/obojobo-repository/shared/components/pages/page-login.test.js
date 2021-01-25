@@ -1,6 +1,10 @@
 import React from 'react'
-import PageLogin from './page-login'
 import renderer from 'react-test-renderer'
+
+mockStaticDate()
+
+// require used to make sure it's loaded after mock date
+const PageLogin = require('./page-login')
 
 describe('PageLogin', () => {
 	test('renders when given props', () => {

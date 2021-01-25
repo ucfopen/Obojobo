@@ -69,6 +69,7 @@ const EditorTitleInput = ({ renameModule, title }) => {
 							break
 					}
 				}}
+				maxLength="300"
 				aria-label={`Rename Module ${emptyTitleError ? '. Module title must not be empty.' : ''}`}
 				aria-invalid={emptyTitleError}
 			/>
