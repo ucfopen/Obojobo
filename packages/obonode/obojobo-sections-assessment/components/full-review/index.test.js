@@ -226,7 +226,9 @@ describe('FullReview', () => {
 			id: 'mockAttemptId'
 		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([{ id: 'mockId' }])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{ id: 'mockId' }
+		])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -279,7 +281,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -334,7 +336,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -384,7 +386,7 @@ describe('FullReview', () => {
 			id: 'lastAttemptMockAttemptId'
 		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{ id: 'highestMockAttemptId' }
 		])
 		// mock attempt taken
@@ -433,7 +435,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -478,7 +480,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([mockAttempt])
 		// mock attempt taken
 		const attempts = [mockAttempt]
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
@@ -506,7 +508,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
@@ -710,7 +712,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttemptId' })
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([])
 		// mock attempt taken
 		const attempts = [
 			{
