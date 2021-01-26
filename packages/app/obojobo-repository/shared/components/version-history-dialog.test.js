@@ -49,7 +49,12 @@ describe('VersionHistoryDialog', () => {
 			hasHistoryLoaded: false,
 			versionHistory: [],
 			restoreVersion: jest.fn(),
-			onClose: jest.fn()
+			onClose: jest.fn(),
+			checkModuleLock: jest.fn().mockResolvedValue({
+				// eslint-disable-next-line no-undefined
+				payload: undefined,
+				error: false
+			})
 		}
 	})
 
@@ -237,7 +242,7 @@ describe('VersionHistoryDialog', () => {
 		expect(defaultProps.restoreVersion).not.toHaveBeenCalled()
 	})
 
-	test('revision restoration functions correctly', () => {
+	test('revision restoration functions correctly', async () => {
 		defaultProps.versionHistory = commonVersionHistory
 
 		const reusableComponent = <VersionHistoryDialog {...defaultProps} />
@@ -260,16 +265,131 @@ describe('VersionHistoryDialog', () => {
 
 		expect(component.root.findAllByType(ReactModal).length).toBe(1)
 
-		// since another revision was selected, this should close the confirmation window and call the callback
-		act(() => {
+		// Since another revision was selected, this should close the confirmation window and call the callback.
+		// We also need to wait for checkModuleLock to finish running since it executes in a Promise
+		await act(async () => {
 			component.root.findByProps({ className: 'dialog-controls' }).children[1].props.onClick()
 			component.update(reusableComponent)
 		})
+
 		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+		expect(defaultProps.checkModuleLock).toHaveBeenCalledTimes(1)
 		expect(defaultProps.restoreVersion).toHaveBeenCalledTimes(1)
 		expect(defaultProps.restoreVersion).toHaveBeenCalledWith(
 			'mockDraftId',
 			commonVersionHistory[1].id
+		)
+	})
+
+	test('revision restoration checks lock before restoring', async () => {
+		const mockLock = {
+			createdAt: 'mockDate',
+			draftId: 'mockDraftId',
+			id: '100',
+			userId: '1'
+		}
+
+		defaultProps.versionHistory = commonVersionHistory
+		defaultProps.checkModuleLock = jest.fn().mockResolvedValue({
+			payload: { ...mockLock },
+			error: false
+		})
+
+		const reusableComponent = <VersionHistoryDialog {...defaultProps} />
+		let component
+
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		act(() => {
+			// click the second revision item
+			component.root.findAllByType(VersionHistoryListItem)[1].children[0].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		// have to render the confirmation dialogue to reach the button we need to click
+		act(() => {
+			component.root.findByProps({ className: 'restore-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+
+		// Since another revision was selected, this should close the confirmation window and call the callback.
+		// We also need to wait for checkModuleLock to finish running since it executes in a Promise
+		await act(async () => {
+			component.root.findByProps({ className: 'dialog-controls' }).children[1].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+		expect(defaultProps.checkModuleLock).toHaveBeenCalledTimes(1)
+
+		// close the lock warning dialog and click the restore button
+		act(() => {
+			component.root.findByProps({ className: 'dialog-controls' }).children[1].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(defaultProps.restoreVersion).toHaveBeenCalledTimes(1)
+		expect(defaultProps.restoreVersion).toHaveBeenCalledWith(
+			'mockDraftId',
+			commonVersionHistory[1].id
+		)
+	})
+
+	test('checking module lock shows error dialog on error', async () => {
+		defaultProps.versionHistory = commonVersionHistory
+		defaultProps.checkModuleLock = jest.fn().mockResolvedValue({
+			payload: new Error(),
+			error: true
+		})
+
+		const reusableComponent = <VersionHistoryDialog {...defaultProps} />
+		let component
+
+		act(() => {
+			component = create(reusableComponent)
+		})
+
+		act(() => {
+			// click the second revision item
+			component.root.findAllByType(VersionHistoryListItem)[1].children[0].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		// have to render the confirmation dialogue to reach the button we need to click
+		act(() => {
+			component.root.findByProps({ className: 'restore-button' }).props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+
+		// Since another revision was selected, this should close the confirmation window and call the callback.
+		// We also need to wait for checkModuleLock to run since it executes in a Promise
+		await act(async () => {
+			component.root.findByProps({ className: 'dialog-controls' }).children[1].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(component.root.findAllByType(ReactModal).length).toBe(1)
+		expect(component.getInstance().state).toEqual(
+			expect.objectContaining({ isErrorDialogOpen: true })
+		)
+
+		// close the error dialog
+		act(() => {
+			component.root.findByProps({ className: 'dialog-controls' }).children[0].props.onClick()
+			component.update(reusableComponent)
+		})
+
+		expect(defaultProps.restoreVersion).not.toHaveBeenCalled()
+		expect(defaultProps.checkModuleLock).toHaveBeenCalledTimes(1)
+		expect(component.root.findAllByType(ReactModal).length).toBe(0)
+		expect(component.getInstance().state).toEqual(
+			expect.objectContaining({ isErrorDialogOpen: false })
 		)
 	})
 

@@ -84,6 +84,7 @@ export default class ViewerApp extends React.Component {
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
 		this.onDelayResize = this.onDelayResize.bind(this)
+		this.clearSelectionIfNavTargetChanging = this.clearSelectionIfNavTargetChanging.bind(this)
 	}
 
 	componentDidMount() {
@@ -170,6 +171,9 @@ export default class ViewerApp extends React.Component {
 	componentWillUnmount() {
 		this.unRegisterStores()
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
+
+		// Removing the intersection observer.
+		this.stopObservingForIntersectionChanges()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -211,6 +215,20 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
+	clearSelectionIfNavTargetChanging(prevState) {
+		if (!this.isNavTargetChanging(prevState)) {
+			return
+		}
+
+		const selection = window.getSelection()
+
+		if (selection.removeAllRanges) {
+			selection.removeAllRanges()
+		} else if (selection.empty) {
+			selection.empty()
+		}
+	}
+
 	focusOnContentIfNavTargetChanging(prevState) {
 		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
 
@@ -238,6 +256,7 @@ export default class ViewerApp extends React.Component {
 
 		this.focusOnContentIfNavTargetChanging(prevState)
 		this.scrollToTopIfNavTargetChanging(prevState)
+		this.clearSelectionIfNavTargetChanging(prevState)
 
 		// use Focus Store values to update DOM Focus
 		this.updateDOMFocus()
@@ -387,6 +406,10 @@ export default class ViewerApp extends React.Component {
 		this.stopObservingForIntersectionChanges()
 		const focusState = this.state.focusState
 
+		// Only creates an Intersection Observer object when the 'visualFocusTarget'
+		// property of 'focusState' is set - this is when all of the elements of the
+		// page are faded except for the visualFocusTarget (for example, when answering
+		// a practice question)
 		if (!focusState.visualFocusTarget) {
 			return
 		}
@@ -401,10 +424,12 @@ export default class ViewerApp extends React.Component {
 			return
 		}
 
+		// If an intersection observer is created below, we're 100% sure that
+		// 'focusState.visualFocusTarget' is set.
 		this.observer = new IntersectionObserver(this.onIntersectionChange, {
 			root: null,
 			rootMargin: '0px',
-			threshhold: 0
+			threshold: 0
 		})
 
 		this.observer.observe(el)

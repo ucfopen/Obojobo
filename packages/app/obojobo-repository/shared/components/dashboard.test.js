@@ -292,23 +292,45 @@ describe('Dashboard', () => {
 	})
 
 	test('"New Module" and "Upload..." buttons call functions appropriately', () => {
+		const newModule = {
+			payload: {
+				value: [
+					{
+						draftId: 'mockId1',
+						createdAt: 1
+					},
+					{
+						draftId: 'mockId2',
+						createdAt: 2
+					}
+				]
+			}
+		}
 		dashboardProps.createNewModule = jest.fn()
 		dashboardProps.importModuleFile = jest.fn()
 		const component = create(<Dashboard {...dashboardProps} />)
+
+		const setNewModuleId = jest.fn()
+		const handleClick = jest.spyOn(React, 'useState')
+		handleClick.mockImplementation(newModuleId => [newModuleId, setNewModuleId])
 
 		// three buttons under the 'New Module +' MultiButton component
 		const multiButton = component.root.findByType(MultiButton).children[0]
 
 		// 'New Module' button should call createNewModule with false
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
+		dashboardProps.createNewModule.mockResolvedValue(newModule)
 		multiButton.children[0].props.onClick()
 		expect(dashboardProps.createNewModule).toHaveBeenCalledTimes(1)
+		expect(setNewModuleId).toBeTruthy()
 		dashboardProps.createNewModule.mockReset()
 
 		// 'New Tutorial' button should call createNewModule with true
 		expect(multiButton.children[1].children[0].children[0]).toBe('New Tutorial')
+		dashboardProps.createNewModule.mockResolvedValue(newModule)
 		multiButton.children[1].props.onClick()
 		expect(dashboardProps.createNewModule).toHaveBeenCalledTimes(1)
+		expect(setNewModuleId).toBeTruthy()
 		dashboardProps.createNewModule.mockReset()
 
 		// 'Upload...' button should call importModuleFile with no arguments
