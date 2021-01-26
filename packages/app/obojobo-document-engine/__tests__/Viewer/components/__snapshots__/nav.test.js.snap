@@ -9,6 +9,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -135,6 +136,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -282,6 +284,7 @@ exports[`Nav renders assessment information with score 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -336,6 +339,7 @@ exports[`Nav renders assessment information with singular attempt 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -390,6 +394,7 @@ exports[`Nav renders assessment information with unlimited attempts 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -444,6 +449,7 @@ exports[`Nav renders assessment information without score 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -498,6 +504,7 @@ exports[`Nav renders blank title 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -542,6 +549,7 @@ exports[`Nav renders closed 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -579,6 +587,7 @@ exports[`Nav renders opened 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -617,6 +626,7 @@ exports[`Nav renders unlocked 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"

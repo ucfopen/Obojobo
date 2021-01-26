@@ -74,6 +74,8 @@ class YouTubePlayer extends React.Component {
 
 		this.player = new window.YT.Player(this.playerId, {
 			videoId,
+			// use youtube enhanced privacy mode
+			host: 'https://www.youtube-nocookie.com',
 			playerVars: {
 				start: startTime,
 				end: endTime

@@ -9,11 +9,6 @@ const getTextNodesInOrderRecur = (element, textNodes) => {
 }
 
 const DOMUtil = {
-	isElementVisible(node) {
-		const rect = node.getBoundingClientRect()
-		return !(rect.top > window.innerHeight || rect.bottom < 0)
-	},
-
 	findParentWithAttr(node, targetAttribute, targetValue = null, rootParent = document.body) {
 		while (node !== null && typeof node !== 'undefined' && node !== rootParent) {
 			if (node.getAttribute) {

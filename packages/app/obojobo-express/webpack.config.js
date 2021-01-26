@@ -89,6 +89,7 @@ module.exports =
 						test: /\.(jpe?g|png)$/i,
 						use: [
 							{
+								// @TODO: remove this if it's not used
 								loader: 'responsive-loader',
 								options: {
 									adapter: require('responsive-loader/sharp')

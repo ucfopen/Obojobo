@@ -70,7 +70,6 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
-            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -147,7 +146,6 @@ Array [
               },
             },
             "setAlign": [Function],
-            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -169,7 +167,6 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
-            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -246,7 +243,6 @@ Array [
               },
             },
             "setAlign": [Function],
-            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -272,7 +268,6 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
-            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -349,7 +344,6 @@ Array [
               },
             },
             "setAlign": [Function],
-            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -394,7 +388,6 @@ Array [
             "deleteBackward": [Function],
             "deleteForward": [Function],
             "deleteFragment": [Function],
-            "getFragment": [Function],
             "history": Object {
               "redos": Array [],
               "undos": Array [
@@ -471,7 +464,6 @@ Array [
               },
             },
             "setAlign": [Function],
-            "setFragmentData": [Function],
             "toggleEditable": [Function],
             "toggleMark": [Function],
             "toggleScript": [Function],
@@ -516,6 +508,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -525,6 +518,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -762,11 +756,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
         className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -780,11 +774,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -798,11 +792,11 @@ Ctrl+E"
       </button>
       <button
         aria-label="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1116,6 +1110,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -1125,6 +1120,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1362,11 +1358,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
         className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1380,11 +1376,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1398,11 +1394,11 @@ Ctrl+E"
       </button>
       <button
         aria-label="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1716,6 +1712,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -1725,6 +1722,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1962,11 +1960,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
         className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1980,11 +1978,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1998,11 +1996,11 @@ Ctrl+E"
       </button>
       <button
         aria-label="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2362,6 +2360,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -2371,6 +2370,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -2608,11 +2608,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
         className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2626,11 +2626,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2644,11 +2644,11 @@ Ctrl+E"
       </button>
       <button
         aria-label="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2958,6 +2958,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -2967,6 +2968,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -3204,11 +3206,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
         className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3222,11 +3224,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
         className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+E"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3240,11 +3242,11 @@ Ctrl+E"
       </button>
       <button
         aria-label="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
         className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+R"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"

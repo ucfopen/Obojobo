@@ -11,7 +11,8 @@ const {
 	showModulePermissions,
 	showVersionHistory,
 	restoreVersion,
-	importModuleFile
+	importModuleFile,
+	checkModuleLock
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
@@ -25,7 +26,8 @@ const mapActionsToProps = {
 	showModulePermissions,
 	showVersionHistory,
 	restoreVersion,
-	importModuleFile
+	importModuleFile,
+	checkModuleLock
 }
 module.exports = connect(
 	mapStoreStateToProps,
