@@ -12,6 +12,8 @@
     "version": {
       "allowBranch": [
         "master",
+        "main",
+        "issue/*",
         "dev/*",
         "hotfix/*"
       ]
