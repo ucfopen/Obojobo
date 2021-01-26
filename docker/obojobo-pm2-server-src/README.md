@@ -17,11 +17,15 @@ Obojobo follows The Twelve Factor App methodology pertaining to [environment var
 ## Building a new Release
 
 ```
+# ONLY IF EVERYTHING IS COMMITTED
+# start fresh and make sure no files sneak in
+git clean -dfx
+
 # create a new prerelease (creates new git tag version, npm package versions, and docker image version)
-yarn lerna version --allow-branch issue/production-docker --no-push --no-commit-hooks --force-publish --yes prerelease
+yarn lerna version --allow-branch issue/production-docker --no-push --no-commit-hooks --force-publish --yes v0.0.0-alpha.0
 
 # build the new production ready docker container with updated application
-docker-compose build app
+docker-compose build
 
 # run a web and app server (background mode)
 docker-compose up -d
@@ -33,7 +37,7 @@ docker-compose up -d
 // create a database (can re-use the dev db)
 yarn run db:rebuild
 
-// simulate a load balancer, mainly so we can simulate the TLS (https) terminationg at the LB
+// simulate a load balancer, mainly so we can simulate the TLS (https) terminating at the LB
 // client ==(443)==> ALB ==(80)==> webserver
 docker run --rm -p 443:443 -e REMOTE_URL=http://host.docker.internal:80 bostonuniversity/elb-simulator:latest
 
