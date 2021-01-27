@@ -24,6 +24,12 @@ describe('Inject Katex if Needed Util', () => {
 		expect(global.window).not.toHaveProperty('katex')
 	})
 
+	test('skips loading if katex is already defined', async () => {
+		global.window.katex = 'mockObjectWithKatexLoaded'
+		await injectKatexIfNeeded({ value: { text: 'latex' } })
+		expect(global.window.katex).toEqual('mockObjectWithKatexLoaded')
+	})
+
 	test('handles error when katex loading times out', async () => {
 		expect.assertions(2)
 
