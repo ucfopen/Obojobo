@@ -21,8 +21,6 @@ class AssessmentReviewView extends React.Component {
 	}
 
 	render() {
-		let highestAttemptScore = 0
-
 		const attemptReviewComponents = {}
 
 		const attempts = this.props.attempts
@@ -45,8 +43,12 @@ class AssessmentReviewView extends React.Component {
 			const ariaDateString = formatDate(date, "MMMM Do yyyy 'at' h:mmaaaa")
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.result.questionScores)
 			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.result.questionScores)
+			const highestAttempt = Math.max.apply(
+				Math,
+				highestAttempts.map(score => score.assessmentScore)
+			)
 			const isAHighestScoringNonNullAttempt =
-				isNonNullAttempt && attempt.assessmentScore === highestAttemptScore
+				isNonNullAttempt && attempt.assessmentScore === highestAttempt
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
 
@@ -140,13 +142,6 @@ class AssessmentReviewView extends React.Component {
 					{attempt.attemptNumber}
 				</Button>
 			)
-		})
-
-		// Deciding which is the highest attempt score
-		attempts.forEach(attempt => {
-			if (attempt.assessmentScore !== null && attempt.assessmentScore > highestAttemptScore) {
-				highestAttemptScore = attempt.assessmentScore
-			}
 		})
 
 		attempts.forEach(attempt => {
