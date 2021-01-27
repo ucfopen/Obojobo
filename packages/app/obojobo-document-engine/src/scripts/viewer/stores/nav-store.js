@@ -101,7 +101,11 @@ class NavStore extends Store {
 				},
 				'nav:goto': payload => {
 					oldNavTargetId = this.state.navTargetId
-					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
+					const navItem = this.state.itemsById[payload.value.id]
+
+					if (!navItem) {
+						this.gotoFirst()
+					} else if (this.gotoItem(navItem)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:goto',
@@ -112,8 +116,6 @@ class NavStore extends Store {
 								to: this.state.itemsById[payload.value.id].id
 							}
 						})
-					} else {
-						this.gotoFirst()
 					}
 				},
 				'nav:lock': () => {
