@@ -974,7 +974,6 @@ describe('VisualEditor', () => {
 
 	test('onKeyDown() calls editor functions', () => {
 		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
-		const saveModuleSpy = jest.spyOn(VisualEditor.prototype, 'saveModule')
 
 		const editor = {
 			undo: jest.fn(),
@@ -1020,13 +1019,12 @@ describe('VisualEditor', () => {
 
 		// save
 		props.saveDraft.mockClear()
-		expect(saveModuleSpy).not.toHaveBeenCalled()
 		instance.onKeyDownGlobal({
 			preventDefault,
 			key: 's',
 			metaKey: true
 		})
-		expect(saveModuleSpy).toHaveBeenCalled()
+		expect(props.saveDraft).toHaveBeenCalled()
 
 		// undo ctrl y
 		editor.redo.mockClear()
@@ -1109,8 +1107,6 @@ describe('VisualEditor', () => {
 			preventDefault,
 			key: 'q'
 		})
-
-		saveModuleSpy.mockRestore()
 	})
 
 	test('onKeyDown runs through full list of options', () => {

@@ -353,7 +353,7 @@ class VisualEditor extends React.Component {
 		this.saveModule(this.props.draftId)
 	}
 
-	async saveModule(draftId) {
+	saveModule(draftId) {
 		if (this.props.readOnly) {
 			return
 		}
