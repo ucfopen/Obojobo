@@ -2,7 +2,6 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import Rubric from './editor-component'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
@@ -43,23 +42,49 @@ describe('Rubric editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Rubric calls updateNodeFromState when saved', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		renderer.create(
+	test('Rubric renders with given values', () => {
+		const component = renderer.create(
 			<Rubric
 				element={{
-					content: { unableToPassType: 'set-value', mods: [] }
+					content: {
+						passingAttemptScore: 100,
+						passedResult: '$attempt_score',
+						failedResult: 0,
+						unableToPassResult: null,
+						mods: []
+					}
 				}}
 				editor={{ selection: [0, 0] }}
 			/>
 		)
+		const tree = component.toJSON()
 
-		Dispatcher.trigger('editor:save')
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(tree).toMatchSnapshot()
 	})
 
-	test('Rubric calls Dispatcher.off when unmount', () => {
-		jest.spyOn(Dispatcher, 'off').mockReturnValue(true)
+	test('Rubric calls updateNodeFromState when clicking outside the component', () => {
+		const thisValue = {
+			selfRef: {
+				current: {
+					contains: jest.fn().mockReturnValueOnce(true)
+				}
+			},
+			updateNodeFromState: jest.fn()
+		}
+
+		Rubric.prototype.onDocumentMouseDown.bind(thisValue)({ target: 'mock-target' })
+		expect(thisValue.selfRef.current.contains).toHaveBeenCalledWith('mock-target')
+		expect(thisValue.updateNodeFromState).not.toHaveBeenCalled()
+
+		thisValue.selfRef.current.contains.mockReturnValueOnce(false)
+		Rubric.prototype.onDocumentMouseDown.bind(thisValue)({ target: 'mock-target' })
+		expect(thisValue.selfRef.current.contains).toHaveBeenCalledWith('mock-target')
+		expect(thisValue.updateNodeFromState).toHaveBeenCalled()
+	})
+
+	test('Component adds and removes event listener when mounted, unmount', () => {
+		const addSpy = jest.spyOn(document, 'addEventListener')
+		const rmSpy = jest.spyOn(document, 'removeEventListener')
 		const component = renderer.create(
 			<Rubric
 				element={{
@@ -67,8 +92,14 @@ describe('Rubric editor', () => {
 				}}
 			/>
 		)
+		expect(addSpy).toHaveBeenCalled()
+		expect(rmSpy).not.toHaveBeenCalled()
+
 		component.getInstance().componentWillUnmount()
-		expect(Dispatcher.off).toHaveBeenCalled()
+		expect(rmSpy).toHaveBeenCalled()
+
+		addSpy.mockRestore()
+		rmSpy.mockRestore()
 	})
 
 	test('Rubric changes type', () => {

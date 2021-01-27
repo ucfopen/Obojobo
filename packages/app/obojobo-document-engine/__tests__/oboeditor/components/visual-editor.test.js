@@ -41,8 +41,6 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 let restoreConsole
 
-jest.useFakeTimers()
-
 describe('VisualEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -656,8 +654,6 @@ describe('VisualEditor', () => {
 
 		thing.find('.editor--components--editor-title-input').simulate('blur')
 
-		jest.runOnlyPendingTimers()
-
 		// verify save and rename are called
 		expect(EditorUtil.renameModule).toHaveBeenCalledWith('mock-draft-id', 'mock new title')
 		expect(saveModule).toHaveBeenCalledWith('mock-draft-id')
@@ -978,6 +974,7 @@ describe('VisualEditor', () => {
 
 	test('onKeyDown() calls editor functions', () => {
 		jest.spyOn(ReactEditor, 'blur').mockReturnValue(true)
+		const saveModuleSpy = jest.spyOn(VisualEditor.prototype, 'saveModule')
 
 		const editor = {
 			undo: jest.fn(),
@@ -1023,14 +1020,13 @@ describe('VisualEditor', () => {
 
 		// save
 		props.saveDraft.mockClear()
+		expect(saveModuleSpy).not.toHaveBeenCalled()
 		instance.onKeyDownGlobal({
 			preventDefault,
 			key: 's',
 			metaKey: true
 		})
-
-		jest.runOnlyPendingTimers()
-		expect(props.saveDraft).toHaveBeenCalled()
+		expect(saveModuleSpy).toHaveBeenCalled()
 
 		// undo ctrl y
 		editor.redo.mockClear()
@@ -1113,6 +1109,8 @@ describe('VisualEditor', () => {
 			preventDefault,
 			key: 'q'
 		})
+
+		saveModuleSpy.mockRestore()
 	})
 
 	test('onKeyDown runs through full list of options', () => {

@@ -353,49 +353,46 @@ class VisualEditor extends React.Component {
 		this.saveModule(this.props.draftId)
 	}
 
-	saveModule(draftId) {
+	async saveModule(draftId) {
 		if (this.props.readOnly) {
 			return
 		}
 
-		Dispatcher.trigger('editor:save')
-		setTimeout(() => {
-			this.exportCurrentToJSON()
-			const json = this.props.model.flatJSON()
-			json.content.start = EditorStore.state.startingId
+		this.exportCurrentToJSON()
+		const json = this.props.model.flatJSON()
+		json.content.start = EditorStore.state.startingId
 
-			// deal with content
-			this.props.model.children.forEach(child => {
-				let contentJSON = {}
+		// deal with content
+		this.props.model.children.forEach(child => {
+			let contentJSON = {}
 
-				switch (child.get('type')) {
-					case CONTENT_NODE:
-						contentJSON = child.flatJSON()
+			switch (child.get('type')) {
+				case CONTENT_NODE:
+					contentJSON = child.flatJSON()
 
-						for (const item of Array.from(child.children.models)) {
-							contentJSON.children.push({
-								id: item.get('id'),
-								type: item.get('type'),
-								content: item.get('content'),
-								children: item.get('children')
-							})
-						}
-						break
+					for (const item of Array.from(child.children.models)) {
+						contentJSON.children.push({
+							id: item.get('id'),
+							type: item.get('type'),
+							content: item.get('content'),
+							children: item.get('children')
+						})
+					}
+					break
 
-					case ASSESSMENT_NODE:
-						contentJSON.id = child.get('id')
-						contentJSON.type = child.get('type')
-						contentJSON.children = child.get('children')
-						contentJSON.content = child.get('content')
-						break
-				}
+				case ASSESSMENT_NODE:
+					contentJSON.id = child.get('id')
+					contentJSON.type = child.get('type')
+					contentJSON.children = child.get('children')
+					contentJSON.content = child.get('content')
+					break
+			}
 
-				json.children.push(contentJSON)
-			})
+			json.children.push(contentJSON)
+		})
 
-			return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
-				this.setState({ saved: isSaved })
-			})
+		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
+			this.setState({ saved: isSaved })
 		})
 	}
 

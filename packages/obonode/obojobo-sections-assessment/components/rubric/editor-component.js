@@ -7,7 +7,6 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
 import ModProperties from './mod-properties'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher.js'
 
 const getParsedRange = Common.util.RangeParsing.getParsedRange
 const { Button } = Common.components
@@ -18,12 +17,17 @@ class Rubric extends React.Component {
 		super(props)
 
 		const content = this.props.element.content
+
 		this.state = {
-			passingAttemptScore: content.passingAttemptScore || '',
-			passedResult: content.passedResult || '',
-			failedResult: content.failedResult || '',
-			unableToPassResult: content.unableToPassResult || ''
+			passingAttemptScore:
+				typeof content.passingAttemptScore !== 'undefined' ? content.passingAttemptScore : 100,
+			passedResult: typeof content.passedResult !== 'undefined' ? content.passedResult : 100,
+			failedResult: typeof content.failedResult !== 'undefined' ? content.failedResult : 0,
+			unableToPassResult:
+				typeof content.unableToPassResult !== 'undefined' ? content.unableToPassResult : null
 		}
+
+		this.selfRef = React.createRef()
 
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.freezeEditor = this.freezeEditor.bind(this)
@@ -31,6 +35,7 @@ class Rubric extends React.Component {
 		this.showModModal = this.showModModal.bind(this)
 		this.changeMods = this.changeMods.bind(this)
 		this.onChangeState = this.onChangeState.bind(this)
+		this.onDocumentMouseDown = this.onDocumentMouseDown.bind(this)
 		this.updateNodeFromState = this.updateNodeFromState.bind(this)
 
 		this.passedType = this.changeScoreType.bind(this, 'passedType')
@@ -38,15 +43,18 @@ class Rubric extends React.Component {
 		this.unableToPassType = this.changeScoreType.bind(this, 'unableToPassType')
 	}
 
-	componentDidMount() {
-		Dispatcher.on('editor:save', () => {
-			this.props.editor.selection = null
+	onDocumentMouseDown(event) {
+		if (!this.selfRef.current.contains(event.target)) {
 			this.updateNodeFromState()
-		})
+		}
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onDocumentMouseDown)
 	}
 
 	componentWillUnmount() {
-		Dispatcher.off('editor:save')
+		document.removeEventListener('mousedown', this.onDocumentMouseDown)
 	}
 
 	changeRubricType(event) {
@@ -71,6 +79,7 @@ class Rubric extends React.Component {
 
 	onChangeState(event) {
 		const { name, value } = event.target
+
 		this.setState({ ...this.state, [name]: value })
 	}
 
@@ -140,7 +149,7 @@ class Rubric extends React.Component {
 		const stopPropagation = event => event.stopPropagation()
 
 		return (
-			<div className={className} contentEditable={false}>
+			<div className={className} contentEditable={false} ref={this.selfRef}>
 				<h2 contentEditable={false}>Assessment Scoring</h2>
 				<p>
 					The recorded score for this module is the highest assessment score, and will be sent to
@@ -282,7 +291,7 @@ class Rubric extends React.Component {
 								min="0"
 								max="100"
 								name="unableToPassResult"
-								value={this.state.unableToPassResult}
+								value={this.state.unableToPassResult || 0}
 								onClick={stopPropagation}
 								onChange={this.onChangeState}
 								disabled={content.unableToPassType !== 'set-value'}
