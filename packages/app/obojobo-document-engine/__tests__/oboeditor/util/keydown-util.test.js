@@ -1,4 +1,4 @@
-import { Transforms } from 'slate'
+import { Transforms, Node } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 
@@ -355,6 +355,48 @@ describe('KeyDown Util', () => {
 		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
 		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
 		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
+	})
+
+	test('breakToText splits text', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Node, 'fragment')
+
+		const editor = {
+			children: [
+				{
+					type: HEADING_NODE,
+					children: [{ text: 'someText' }]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0], offset: 4 },
+				focus: { path: [0, 0], offset: 4 }
+			},
+			isInline: () => false,
+			isVoid: () => false
+		}
+		ReactEditor.findPath.mockReturnValueOnce([0])
+
+		const event = {
+			isDefaultPrevented: () => false,
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+
+		// make sure the correct node fragment is taken
+		const fragmentNode = Node.fragment.mock.results[0].value[0]
+		expect(fragmentNode).toHaveProperty('type', HEADING_NODE)
+		expect(fragmentNode.children[0]).toEqual({ text: 'Text' })
+
+		// make sure the inserted node is correct type
+		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
+		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
+		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
+		expect(insertedNode.children[0].children[0]).toEqual({ text: 'Text' })
 	})
 
 	test('breakToText skips when default event is prevented', () => {
