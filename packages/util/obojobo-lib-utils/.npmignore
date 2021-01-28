@@ -6,13 +6,6 @@ yarn-error.log
 __mocks__
 __tests__
 .vscode
-.eslintignore
-.eslintrc
-.prettierignore
-.stylelintignore
-.stylelintrc
-.scss-lint.yml
-prettier.config.js
 Dockerfile
 __snapshots__
 *.test.js

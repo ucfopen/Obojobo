@@ -9,6 +9,7 @@ exports[`YouTube Editor Node YouTube component 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -24,6 +25,7 @@ exports[`YouTube Editor Node YouTube component 1`] = `
     />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -48,6 +50,7 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -68,6 +71,7 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+      contentEditable={false}
     >
       <button
         className="button"

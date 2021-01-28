@@ -63,7 +63,7 @@ describe('YouTube Editor Node', () => {
 
 		const tree = component.html()
 		expect(tree).toMatchInlineSnapshot(
-			`"<div><div contenteditable=\\"false\\" class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\"><button class=\\"button\\" tabindex=\\"0\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`
+			`"<div><div contenteditable=\\"false\\" class=\\"obojobo-draft--chunks--you-tube viewer pad  is-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\" contenteditable=\\"false\\"><button class=\\"button\\" contenteditable=\\"false\\">×</button></div><div id=\\"obojobo-draft--chunks-you-tube-player-mockId\\" class=\\"obojobo-draft--chunks-you-tube-player\\"></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center edit-button\\" contenteditable=\\"false\\"><button class=\\"button\\" tabindex=\\"0\\" contenteditable=\\"false\\">Edit</button></div></div></div>"`
 		)
 	})
 

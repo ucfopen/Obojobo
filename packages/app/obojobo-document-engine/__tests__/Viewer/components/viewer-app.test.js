@@ -1,11 +1,10 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-console */
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import ViewerAPI from 'obojobo-document-engine/src/scripts/viewer/util/viewer-api'
 import AssessmentStore from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
-import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
 import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
@@ -25,8 +24,8 @@ import testObject from 'obojobo-document-engine/test-object.json'
 import mockConsole from 'jest-mock-console'
 import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/viewer-api')
 jest.mock('obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 jest.mock('obojobo-document-engine/src/scripts/common/stores/modal-store')
@@ -47,7 +46,7 @@ describe('ViewerApp', () => {
 	const isDOMFocusInsideNavOriginal = ViewerApp.prototype.isDOMFocusInsideNav
 
 	const mocksForMount = (status = 'ok') => {
-		APIUtil.requestStart.mockResolvedValueOnce({
+		ViewerAPI.requestStart.mockResolvedValueOnce({
 			status: status,
 			value: {
 				visitId: 123,
@@ -60,7 +59,7 @@ describe('ViewerApp', () => {
 				}
 			}
 		})
-		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
+		ViewerAPI.getDraft.mockResolvedValueOnce({ value: testObject })
 		NavStore.getState.mockReturnValueOnce({})
 		FocusStore.getState.mockReturnValueOnce({})
 	}
@@ -125,30 +124,6 @@ describe('ViewerApp', () => {
 			expect(console.error).toHaveBeenCalled()
 
 			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('ViewerApp component with no update removal', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		// This will be reset by jestReset, and is called multiple times
-		NavUtil.canNavigate.mockImplementation(() => {
-			// keeps loading element
-			component.instance().needsRemoveLoadingElement = false
-			// Sets up scrolling
-			return 'mockNav'
-		})
-
-		setTimeout(() => {
-			component.update()
-
-			expect(component.html()).toMatchSnapshot()
-
 			component.unmount()
 			done()
 		})
@@ -296,7 +271,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onNavStoreChange calls setState', done => {
+	test('NavStore Change listener calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -306,7 +281,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			component.instance().onNavStoreChange()
+			component.instance().stores.navState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				navState: {}
@@ -328,7 +303,7 @@ describe('ViewerApp', () => {
 			QuestionStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onQuestionStoreChange()
+			component.instance().stores.questionState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				questionState: {}
@@ -350,7 +325,7 @@ describe('ViewerApp', () => {
 			AssessmentStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onAssessmentStoreChange()
+			component.instance().stores.assessmentState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				assessmentState: {}
@@ -372,7 +347,7 @@ describe('ViewerApp', () => {
 			ModalStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onModalStoreChange()
+			component.instance().stores.modalState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				modalState: {}
@@ -394,7 +369,7 @@ describe('ViewerApp', () => {
 			FocusStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onFocusStoreChange()
+			component.instance().stores.focusState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				focusState: {}
@@ -416,7 +391,7 @@ describe('ViewerApp', () => {
 			MediaStore.getState.mockReturnValueOnce({})
 
 			component.update()
-			component.instance().onMediaStoreChange()
+			component.instance().stores.mediaState.listener()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({
 				mediaState: {}
@@ -428,7 +403,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls APIUtil when leaving', done => {
+	test('onVisibilityChange calls ViewerAPI when leaving', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -437,12 +412,12 @@ describe('ViewerApp', () => {
 		document.hidden = true
 
 		setTimeout(() => {
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:leave',
 				draftId: undefined,
 				eventVersion: '1.0.0',
@@ -455,7 +430,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls APIUtil when returning', done => {
+	test('onVisibilityChange calls ViewerAPI when returning', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -466,12 +441,12 @@ describe('ViewerApp', () => {
 				extensions: { internalEventId: 'mock-id' }
 			}
 			component.instance().leftEpoch = 999
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
 				eventVersion: '2.0.0',
@@ -621,6 +596,62 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('clearSelectionIfNavTargetChanging clears current selection', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const mockRemoveAllRanges = jest.fn()
+		const mockEmpty = jest.fn()
+		const component = mount(<ViewerApp />)
+
+		// Need to make sure removeAllRanges gets called by default
+		// while empty gets called if removeAllRanges isn't available
+		const windowSpy = jest
+			.spyOn(window, 'getSelection')
+			.mockReturnValueOnce({
+				removeAllRanges: mockRemoveAllRanges,
+				empty: null
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: mockEmpty
+			})
+			.mockReturnValueOnce({
+				removeAllRanges: null,
+				empty: null
+			})
+
+		setTimeout(() => {
+			component.update()
+
+			const isNavTargetChangingSpy = jest
+				.spyOn(component.instance(), 'isNavTargetChanging')
+				.mockReturnValueOnce(false)
+				.mockReturnValue(true)
+
+			// window.getSelection() shouldn't be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection().removeAllRanges() should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection().empty() should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			// window.getSelection() doesn't have removeAllRanges or empty,
+			// no function should be called
+			component.instance().clearSelectionIfNavTargetChanging({})
+
+			expect(mockRemoveAllRanges).toHaveBeenCalledTimes(1)
+			expect(mockEmpty).toHaveBeenCalledTimes(1)
+
+			isNavTargetChangingSpy.mockRestore()
+			windowSpy.mockRestore()
+
+			done()
+		})
+	})
+
 	test('onMouseDown calls clearFadeEffect', done => {
 		expect.assertions(2)
 		mocksForMount()
@@ -659,107 +690,145 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onScroll does nothing if no visualFocusTarget', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no visualFocusTarget', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: null
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = null
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 
-			component.instance().onScroll()
+		expect(thisValue.observer).not.toBeDefined()
 
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
-		})
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if no visually focused component', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no visually focused component', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'invalid-id'
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = 'invalid-id'
-			FocusUtil.getVisuallyFocussedModel = jest.fn()
+		FocusUtil.getVisuallyFocussedModel = jest.fn()
 
-			component.instance().onScroll()
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
+		expect(thisValue.observer).not.toBeDefined()
 
-			component.unmount()
-			done()
-		})
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if no element found for component', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges does nothing if no element found for component', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'id'
+				}
+			}
+		}
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({
-				getDomEl: jest.fn()
-			})
-
-			component.instance().onScroll()
-
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
+		FocusUtil.getVisuallyFocussedModel = () => ({
+			getDomEl: jest.fn()
 		})
+
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
+
+		expect(thisValue.observer).not.toBeDefined()
+
+		// Restore the actual IntersectionObserver
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll does nothing if element is visible', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('startObservingForIntersectionChanges creates new IntersectionObserver and calls observe if focused element exists', () => {
+		const oldIntersectionObserver = window.IntersectionObserver
 
-		setTimeout(() => {
-			component.update()
+		// Mock IntersectonObserver
+		window.IntersectionObserver = jest.fn()
+		window.IntersectionObserver.prototype.observe = jest.fn()
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
-			DOMUtil.isElementVisible.mockReturnValueOnce(true)
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn(),
+			onIntersectionChange: jest.fn(),
+			state: {
+				focusState: {
+					visualFocusTarget: 'id'
+				}
+			}
+		}
 
-			component.instance().onScroll()
-
-			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
-
-			component.unmount()
-			done()
+		FocusUtil.getVisuallyFocussedModel = () => ({
+			getDomEl: () => true
 		})
+
+		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
+
+		expect(thisValue.observer).toBeDefined()
+		expect(window.IntersectionObserver).toHaveBeenCalledWith(thisValue.onIntersectionChange, {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0
+		})
+		expect(thisValue.observer.observe).toHaveBeenCalledWith(
+			FocusUtil.getVisuallyFocussedModel().getDomEl()
+		)
+
+		window.IntersectionObserver = oldIntersectionObserver
 	})
 
-	test('onScroll calls FocusUtil.clearFadeEffect if a visually focused component is no longer visible', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
+	test('onIntersectionChange does nothing if intersectionRatio is higher than 0', () => {
+		const thisValue = {}
+		const changes = [
+			{
+				intersectionRatio: 0.9
+			}
+		]
 
-		setTimeout(() => {
-			component.update()
+		expect(ViewerApp.prototype.onIntersectionChange.bind(thisValue)(changes)).toBe(false)
+	})
 
-			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
-			DOMUtil.isElementVisible.mockReturnValueOnce(false)
+	test('onIntersectionChange calls FocusUtil.clearFadeEffect if intersectionRation reaches 0', () => {
+		const thisValue = {
+			stopObservingForIntersectionChanges: jest.fn()
+		}
+		const changes = [
+			{
+				intersectionRatio: 0.0
+			}
+		]
 
-			component.instance().onScroll()
+		expect(ViewerApp.prototype.onIntersectionChange.bind(thisValue)(changes)).toBe(true)
+		expect(thisValue.stopObservingForIntersectionChanges).toHaveBeenCalled()
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+	})
 
-			expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+	test('stopObservingForIntersectionChanges disconnects and deletes any observers', () => {
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind({})()).toBe(false)
 
-			component.unmount()
-			done()
-		})
+		const mockDisconnect = jest.fn()
+		const thisValue = {
+			observer: {
+				disconnect: mockDisconnect
+			}
+		}
+		expect(ViewerApp.prototype.stopObservingForIntersectionChanges.bind(thisValue)()).toBe(true)
+		expect(thisValue.observer).not.toBeDefined()
 	})
 
 	test('onIdle posts an Event', done => {
@@ -768,10 +837,10 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
-			component.instance().onIdle()
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: {} })
+			component.instance().onIdle({ lastActiveEpoch: 'now' })
 
-			expect(APIUtil.postEvent).toHaveBeenCalled()
+			expect(ViewerAPI.postEvent).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -788,13 +857,16 @@ describe('ViewerApp', () => {
 			component.instance().inactiveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance().lastActiveEpoch = 999
-			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
-			component.instance().onReturnFromIdle()
+			component.instance().onReturnFromIdle({
+				lastActiveEpoch: 999,
+				inactiveDuration: 1
+			})
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:returnFromInactive',
 				draftId: undefined,
 				eventVersion: '2.1.0',
@@ -812,52 +884,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onBeforeWindowClose returns undefined', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		global.navigator.sendBeacon = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			const spy = jest.spyOn(Dispatcher, 'trigger')
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(undefined)
-
-			component.unmount()
-			spy.mockRestore()
-			done()
-		})
-	})
-
-	test('onBeforeWindowClose calls closePrevented', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-		const originalTrigger = Dispatcher.trigger
-		Dispatcher.trigger = jest.fn()
-
-		setTimeout(() => {
-			component.update()
-			Dispatcher.trigger.mockImplementationOnce((type, funct) => {
-				funct()
-			})
-
-			const close = component.instance().onBeforeWindowClose()
-
-			expect(Dispatcher.trigger).toHaveBeenCalled()
-			expect(close).toEqual(true)
-
-			component.unmount()
-			Dispatcher.trigger = originalTrigger
-			done()
-		})
-	})
-
 	test('sendCloseEvent calls navigator.sendBeacon', done => {
 		global.navigator.sendBeacon = jest.fn()
 
@@ -870,7 +896,7 @@ describe('ViewerApp', () => {
 
 			component.instance().sendCloseEvent()
 
-			expect(navigator.sendBeacon).toHaveBeenCalled()
+			expect(ViewerAPI.postEventBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -884,13 +910,13 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'ok'
 			})
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -904,14 +930,14 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'not ok',
 				error: 'Not Authorized'
 			})
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -925,7 +951,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.update()
-			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+			ViewerAPI.clearPreviewScores.mockResolvedValueOnce({
 				status: 'not ok',
 				error: 'Not Authorized',
 				value: {
@@ -935,7 +961,7 @@ describe('ViewerApp', () => {
 
 			component.instance().clearPreviewScores()
 
-			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+			expect(ViewerAPI.clearPreviewScores).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -1015,18 +1041,9 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:open',
-				component.instance().boundOnDelayResize
-			)
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:close',
-				component.instance().boundOnDelayResize
-			)
-			expect(Dispatcher.on).toHaveBeenCalledWith(
-				'nav:toggle',
-				component.instance().boundOnDelayResize
-			)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:open', component.instance().onDelayResize)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:close', component.instance().onDelayResize)
+			expect(Dispatcher.on).toHaveBeenCalledWith('nav:toggle', component.instance().onDelayResize)
 
 			component.unmount()
 			done()
@@ -1260,9 +1277,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1295,9 +1312,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1330,9 +1347,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, { preventScroll: false })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, false)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
@@ -1397,6 +1414,10 @@ describe('ViewerApp', () => {
 				getDomEl: () => mockDomEl,
 				getComponentClass: () => jest.fn()
 			}
+			const mockOpts = {
+				animateScroll: true,
+				preventScroll: true
+			}
 
 			// Force focus() to modify the container scrollTop value (to fake browser focus)
 			component.instance().containerRef.current.scrollTop = 0
@@ -1405,9 +1426,9 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
+			expect(component.instance().focusComponent(model, mockOpts)).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(focus).toHaveBeenCalledWith(mockDomEl, true)
 			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
 			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 			expect(component.instance().containerRef.current.scrollTop).toBe(0)
@@ -1674,7 +1695,7 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			expect(component.find('.is-focus-state-inactive').length).toBe(1)
+			expect(component.find('.is-not-focus-state-active').length).toBe(1)
 			expect(component.find('.is-focus-state-active').length).toBe(0)
 
 			component.unmount()

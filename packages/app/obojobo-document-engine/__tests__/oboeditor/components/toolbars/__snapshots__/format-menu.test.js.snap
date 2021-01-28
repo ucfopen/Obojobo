@@ -19,9 +19,9 @@ Ctrl+Shift+4</span></button><button>Heading 5<span>
 Ctrl+Shift+5</span></button><button>Heading 6<span>
 Ctrl+Shift+6</span></button><button>Code<span>
 Ctrl+Shift+C</span></button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Align &amp; indent</button><div class=\\"menu-items\\"><button>Left Align<span>
-Ctrl+L</span></button><button>Center Align<span>
-Ctrl+R</span></button><button>Right Align<span>
-Ctrl+E</span></button><button>Indent<span>
+Ctrl+Shift+L</span></button><button>Center Align<span>
+Ctrl+Shift+E</span></button><button>Right Align<span>
+Ctrl+Shift+R</span></button><button>Indent<span>
 Alt+Tab</span></button><button>Unindent<span>
 Shift+Tab</span></button><button>Hanging Indent<span>
 Ctrl+H</span></button></div></div></div></div></div>"

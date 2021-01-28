@@ -27,9 +27,9 @@ const MCAssessment = {
 				for (const [child, childPath] of Node.children(editor, path)) {
 					// The first node should be a MCChoice
 					// If it is not, wrapping it will result in normalizations to fix it
-					if(Element.isElement(child) && child.type !== MCCHOICE_NODE) {
+					if (Element.isElement(child) && child.type !== MCCHOICE_NODE) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: MCCHOICE_NODE,
 								content: { score: 0 }
@@ -43,7 +43,7 @@ const MCAssessment = {
 					// This will result in subsequent normalizations to wrap it in a text node
 					if (Text.isText(child)) {
 						Transforms.wrapNodes(
-							editor, 
+							editor,
 							{
 								type: MCCHOICE_NODE,
 								content: { score: 0 }
@@ -57,17 +57,17 @@ const MCAssessment = {
 				// MCA parent normalization
 				// Note - Wraps an adjacent Solution node as well
 				const [parent] = Editor.parent(editor, path)
-				if(!Element.isElement(parent) || parent.type !== QUESTION_NODE) {
+				if (!Element.isElement(parent) || parent.type !== QUESTION_NODE) {
 					NormalizeUtil.wrapOrphanedSiblings(
-						editor, 
-						entry, 
-						{ 
-							type: QUESTION_NODE, 
+						editor,
+						entry,
+						{
+							type: QUESTION_NODE,
 							content: {
 								type: node.questionType
 							},
 							children: []
-						}, 
+						},
 						() => node.type === SOLUTION_NODE
 					)
 					return

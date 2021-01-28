@@ -4,6 +4,7 @@
 	width: auto;
 	max-width: 32em;
 	border: 3px solid transparentize($color-action, 0.7);
+	border-radius: $dimension-rounded-radius * 1.65;
 
 	.editor--hidden-text {
 		cursor: default;

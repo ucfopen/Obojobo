@@ -164,12 +164,14 @@ class SubMenu extends React.Component {
 	lockValue(content) {
 		const startAttemptLock = hasTriggerTypeWithActionType(
 			content.triggers,
-			'onNavEnter',
+			'onStartAttempt',
 			'nav:lock'
 		)
-		const endAttemptUnlock =
-			hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-			hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
+		const endAttemptUnlock = hasTriggerTypeWithActionType(
+			content.triggers,
+			'onEndAttempt',
+			'nav:unlock'
+		)
 
 		return startAttemptLock && endAttemptUnlock
 	}
@@ -178,15 +180,13 @@ class SubMenu extends React.Component {
 		let triggers
 		if (isNavLock) {
 			triggers = getTriggersWithActionsAdded(content.triggers || [], {
-				onNavEnter: { type: 'nav:lock' },
-				onEndAttempt: { type: 'nav:unlock' },
-				onNavExit: { type: 'nav:unlock' }
+				onStartAttempt: { type: 'nav:lock' },
+				onEndAttempt: { type: 'nav:unlock' }
 			})
 		} else if (content.triggers) {
 			triggers = getTriggersWithActionsRemoved(content.triggers, {
-				onNavEnter: 'nav:lock',
-				onEndAttempt: 'nav:unlock',
-				onNavExit: 'nav:unlock'
+				onStartAttempt: 'nav:lock',
+				onEndAttempt: 'nav:unlock'
 			})
 		}
 

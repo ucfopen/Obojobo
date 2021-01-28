@@ -1,8 +1,8 @@
 import ListStyles from './list-styles'
 
 const regexes = {
-	bulletListItem: /^[ \t]*(\*)[ \t]+([\s\S]*)/, // Interpert text such as ' * list item' as a bullet in a list
-	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.[ \t]+$/, // Interpret text such as ' 1. list item' as a bullet in a list
+	bulletListItem: /^[ \t]*(\*)/, // Interpert text such as ' * list item' as a bullet in a list
+	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.+$/, // Interpret text such as ' 1. list item' as a bullet in a list
 
 	symbolUpperRoman: /VIII|VII|VI|IV|IX|V|III|II|I/,
 	symbolLowerRoman: /viii|vii|vi|iv|ix|v|iii|ii|i/,
@@ -15,7 +15,7 @@ const regexes = {
 const looksLikeListItem = function(s) {
 	let result = false
 
-	if (s.length === 2) {
+	if (s.length === 1) {
 		if (replace(s, 'bulletListItem')) {
 			result = {
 				type: ListStyles.TYPE_UNORDERED,
@@ -25,7 +25,7 @@ const looksLikeListItem = function(s) {
 				symbolStyle: ''
 			}
 		}
-	} else if (s.length >= 3) {
+	} else if (s.length >= 2) {
 		const numericList = replace(s, 'numericListItem')
 		if (numericList) {
 			const symbolStyle = getSymbolStyle(numericList.symbol)

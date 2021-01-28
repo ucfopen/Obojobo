@@ -13,22 +13,42 @@
 				"extended": false
 			}
 		},
-		"demoPurgeMode": "none",
-		"demoPurgeDaysAgo": 7
+		"demoMode": {
+			"purgeMode": "none",
+			"purgeDaysAgo": 7
+		},
+		"editLocks": {
+			"idleTimeUntilReleaseLockMinutes": 45,
+			"idleTimeUntilWarningMinutes": 40,
+			"dbLockDurationMinutes": 5
+		},
+		"allowImportDefault": true
 	},
 	"test": {
 		"key": "value",
 		"hostname": "obojobo.ucf.edu"
 	},
 	"development": {
-		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
+		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET",
+		"editLocks": {
+			"idleTimeUntilReleaseLockMinutes": 10,
+			"idleTimeUntilWarningMinutes": 5,
+			"dbLockDurationMinutes": 5
+		}
 	},
 	"production": {
-		"secureCookie": {"ENV": "OBO_COOKIE_SECURE"},
+		"secureCookie": { "ENV": "OBO_COOKIE_SECURE" },
 		"cookieSecret": {
 			"ENV": "OBO_COOKIE_SECRET"
 		},
-		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"},
-		"demoPurgeDaysAgo": {"ENV": "OBO_DEMO_PURGE_DAYS_AGO"}
+		"demoMode": {
+			"purgeMode": { "ENV": "OBO_DEMO_PURGE_MODE" },
+			"purgeDaysAgo": { "ENV": "OBO_DEMO_PURGE_DAYS_AGO" }
+		},
+		"editLocks": {
+			"idleTimeUntilReleaseLockMinutes": { "ENV": "OBO_EDITLOCK_TIME_UNTIL_RELEASE_MINUTES" },
+			"idleTimeUntilWarningMinutes": { "ENV": "OBO_EDITLOCK_TIME_UNTIL_WARN_MINUTES" },
+			"dbLockDurationMinutes": { "ENV": "OBO_EDITLOCK_DB_LOCK_DURATION" }
+		}
 	}
 }

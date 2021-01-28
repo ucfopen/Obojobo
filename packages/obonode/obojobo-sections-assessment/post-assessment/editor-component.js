@@ -60,9 +60,11 @@ class PostAssessment extends React.Component {
 			<div className={'scoreactions'}>
 				<h1 contentEditable={false}>Score Actions</h1>
 				{this.props.children}
-				<Button onClick={this.showRangeModal} contentEditable={false}>
-					Add Action
-				</Button>
+				<div contentEditable={false}>
+					<Button onClick={this.showRangeModal} contentEditable={false}>
+						Add Action
+					</Button>
+				</div>
 			</div>
 		)
 	}

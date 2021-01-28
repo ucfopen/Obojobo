@@ -696,23 +696,27 @@ describe('Question', () => {
 
 	test('focusOnContent focuses on the first child component (when question is being shown)', () => {
 		const mockFirstChildEl = jest.fn()
+		const mockOpts = { preventScroll: true }
 
-		const didFocus = Question.focusOnContent({
-			getDomEl: () => ({
-				classList: {
-					contains: () => false
+		const didFocus = Question.focusOnContent(
+			{
+				getDomEl: () => ({
+					classList: {
+						contains: () => false
+					}
+				}),
+				children: {
+					at: () => ({
+						getDomEl: () => mockFirstChildEl
+					})
 				}
-			}),
-			children: {
-				at: () => ({
-					getDomEl: () => mockFirstChildEl
-				})
-			}
-		})
+			},
+			mockOpts
+		)
 
 		expect(didFocus).toBe(true)
 		expect(focus).toHaveBeenCalledTimes(1)
-		expect(focus).toHaveBeenCalledWith(mockFirstChildEl)
+		expect(focus).toHaveBeenCalledWith(mockFirstChildEl, true)
 	})
 
 	test('focusOnContent does nothing when question is being shown and the first child component element can not be found', () => {
@@ -751,19 +755,23 @@ describe('Question', () => {
 
 	test('focusOnContent focuses on the button (when question is still un-opened)', () => {
 		const mockButtonEl = jest.fn()
+		const mockOpts = { preventScroll: true }
 
-		const didFocus = Question.focusOnContent({
-			getDomEl: () => ({
-				classList: {
-					contains: () => true
-				},
-				querySelector: () => mockButtonEl
-			})
-		})
+		const didFocus = Question.focusOnContent(
+			{
+				getDomEl: () => ({
+					classList: {
+						contains: () => true
+					},
+					querySelector: () => mockButtonEl
+				})
+			},
+			mockOpts
+		)
 
 		expect(didFocus).toBe(true)
 		expect(focus).toHaveBeenCalledTimes(1)
-		expect(focus).toHaveBeenCalledWith(mockButtonEl)
+		expect(focus).toHaveBeenCalledWith(mockButtonEl, true)
 	})
 
 	test('focusOnContent does nothing if no DOM element exists', () => {

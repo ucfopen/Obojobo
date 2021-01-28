@@ -5,6 +5,9 @@ jest.mock('slate-react')
 import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('KeyDown Util', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
 	test('deleteEmptyParent', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'move').mockReturnValue(true)
@@ -316,7 +319,6 @@ describe('KeyDown Util', () => {
 
 	test('breakToText inserts text', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
 			children: [
@@ -335,6 +337,7 @@ describe('KeyDown Util', () => {
 		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
+			isDefaultPrevented: () => false,
 			preventDefault: jest.fn()
 		}
 
@@ -342,7 +345,6 @@ describe('KeyDown Util', () => {
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
 
 		// make sure the inserted node is correct type
 		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
@@ -351,34 +353,15 @@ describe('KeyDown Util', () => {
 		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
-	test('breakToText converts to text', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
-
-		const editor = {
-			children: [
-				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-		ReactEditor.findPath.mockReturnValueOnce([0])
-
+	test('breakToText skips when default event is prevented', () => {
 		const event = {
+			isDefaultPrevented: () => true,
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
+		KeyDownUtil.breakToText(event, {})
 
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.setNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(Transforms.insertNodes).not.toHaveBeenCalled()
 	})
 })

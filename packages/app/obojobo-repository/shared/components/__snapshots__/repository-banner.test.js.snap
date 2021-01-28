@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RepositoryBanner renders correctly with no props 1`] = `
+<div
+  className="repository--section-wrapper--full-width repository--section-wrapper--grey "
+>
+  <div
+    className="repository--section-wrapper--full-width-bg"
+  />
+  <section
+    className="repository--title-banner repository--info-banner"
+  >
+    <h1
+      className="repository--title-banner--title"
+    />
+  </section>
+</div>
+`;
+
+exports[`RepositoryBanner renders correctly with props and children 1`] = `
+<div
+  className="repository--section-wrapper--full-width repository--section-wrapper--grey extra-class"
+>
+  <div
+    className="repository--section-wrapper--full-width-bg"
+  />
+  <section
+    className="repository--title-banner repository--info-banner"
+  >
+    child
+    <h1
+      className="repository--title-banner--title"
+      data-title="Banner Title"
+    >
+      Banner Title
+    </h1>
+  </section>
+</div>
+`;

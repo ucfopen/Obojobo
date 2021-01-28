@@ -31,6 +31,7 @@ exports[`Test Test component 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -74,6 +75,7 @@ exports[`Test Test component fetching score 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -118,6 +120,7 @@ exports[`Test Test component with completeAttempt 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
     >
       <button
         className="button"

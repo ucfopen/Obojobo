@@ -259,6 +259,55 @@ describe('Caliper event creator', () => {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
+	test('createAssessmentAttemptImportedEvent', () => {
+		const attemptSubmitted = caliperEvents.createAssessmentAttemptImportedEvent({
+			actor,
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			originalScoreId: 'mock-original-score-id',
+			originalAttemptId: 'mock-original-attempt-id',
+			resourceLinkId: 'mock-resource-link-id'
+		})
+		expect(attemptSubmitted).toMatchInlineSnapshot(`
+		Event {
+		  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+		  "action": "Submitted",
+		  "actor": "https://testHost/api/user/testUserId",
+		  "edApp": "https://testHost/api/system",
+		  "eventTime": "mockDate",
+		  "extensions": Object {
+		    "originalAttemptId": "mock-original-attempt-id",
+		    "originalScoreId": "mock-original-score-id",
+		    "resourceLinkId": "mock-resource-link-id",
+		  },
+		  "generated": "https://testHost/api/attempt/testAttemptId",
+		  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+		  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
+		  "referrer": "https://testHost/api/attempt/mock-original-attempt-id",
+		  "type": "AssessmentEvent",
+		}
+	`)
+	})
+
+	test('createAssessmentAttemptImportedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptImportedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				contentId,
+				assessmentId,
+				attemptId,
+				originalScoreId: 'mock-original-score-id',
+				originalAttemptId: 'mock-original-attempt-id',
+				resourceLinkId: 'mock-resource-link-id'
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
 	test('createAssessmentAttemptScoredEvent', () => {
 		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },

@@ -1,4 +1,4 @@
-import { Text, Editor, Transforms, Range, Path, Element, Point } from 'slate'
+import { Text, Editor, Transforms, Range, Path, Element, Point, Node } from 'slate'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -73,52 +73,45 @@ const KeyDownUtil = {
 			if (deleteForward) Transforms.move(editor)
 		}
 	},
-	breakToText: (event, editor, entry) => {
-		const [, nodePath] = entry
-		const nodeRange = Editor.range(editor, nodePath)
-		const nodeEnd = Editor.end(editor, nodeRange)
-		const selectionEnd = Editor.end(editor, editor.selection)
+	breakToText: (event, editor) => {
+		if (event.isDefaultPrevented()) return
 		event.preventDefault()
 
-		const toEndOfNode = {
-			anchor: selectionEnd,
-			focus: nodeEnd
-		}
+		const selectionStart = Editor.start(editor, editor.selection)
+		const selectionEnd = Editor.end(editor, editor.selection)
+		const nodeEnd = Node.parent(editor, selectionEnd.path)
 
-		// If the Range is collapsed at the end of the node, just insert text
-		if (Range.isCollapsed(toEndOfNode)) {
-			return Transforms.insertNodes(
-				editor,
+		const endPath = [...selectionEnd.path]
+		endPath[endPath.length - 1] = nodeEnd.children.length - 1
+		const endPoint = Editor.end(editor, [...endPath])
+
+		const textRange = {
+			anchor: selectionEnd,
+			focus: endPoint
+		}
+		const deleteRange = {
+			anchor: selectionStart,
+			focus: endPoint
+		}
+		const newTexts = Node.fragment(editor, textRange)
+		const newNode = {
+			type: TEXT_NODE,
+			content: { triggers: [] },
+			children: [
 				{
 					type: TEXT_NODE,
-					content: {},
-					children: [
-						{
-							type: TEXT_NODE,
-							subtype: TEXT_LINE_NODE,
-							content: { indent: 0, align: 'left' },
-							children: [{ text: '' }]
-						}
-					]
-				},
-				{ split: true }
-			)
+					subtype: TEXT_LINE_NODE,
+					content: { indent: 0, align: 'left' },
+					children: [...newTexts[0].children]
+				}
+			]
 		}
+		Transforms.insertNodes(editor, newNode, {
+			at: deleteRange
+		})
 
-		// Set the heading after the selection to text
-		Transforms.setNodes(
-			editor,
-			{
-				type: TEXT_NODE,
-				content: {}
-			},
-			{
-				at: toEndOfNode,
-				split: true
-			}
-		)
-		Transforms.delete(editor, { at: Range.intersection(nodeRange, editor.selection) })
-		return Transforms.collapse(editor, { edge: 'end' })
+		// Move the cursor to the beginning of the duplicated (now text) node
+		Transforms.move(editor, { distance: 1, unit: 'offset' })
 	}
 }
 
