@@ -6,12 +6,12 @@ const { ModalUtil } = Common.util
 
 const UpdatedModuleDialog = ({ onConfirm }) => (
 	<Dialog
-    preventEsc
+		preventEsc
 		width="32rem"
 		title="Updated Module"
 		buttons={[
 			{
-				value: 'Cancel',
+				value: 'Close Dialog',
 				altAction: true,
 				default: true,
 				onClick: ModalUtil.hide
@@ -22,11 +22,9 @@ const UpdatedModuleDialog = ({ onConfirm }) => (
 			}
 		]}
 	>
-		<p>
-      A portion of this module was just updated. Unfortunately,
-      it must be restarted. Click cancel to review and catalog
-      your answers or restart to start a new attempt.
-    </p>
+		<p>A portion of this module was just updated and unfortunately has to be restarted.</p>
+		<p>Click close dialog to review and catalog your answers.</p>
+		<p>When you&apos;re ready, click restart to start a new attempt with the updated module</p>
 	</Dialog>
 )
 

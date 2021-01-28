@@ -42,7 +42,13 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
         }
       >
         <p>
-          A portion of this module was just updated. Unfortunately, it must be restarted. Click cancel to review and catalog your answers or restart to start a new attempt.
+          A portion of this module was just updated and unfortunately has to be restarted.
+        </p>
+        <p>
+          Click close dialog to review and catalog your answers.
+        </p>
+        <p>
+          When you're ready, click restart to start a new attempt with the updated module
         </p>
       </div>
       <div
@@ -57,7 +63,7 @@ exports[`UnfinishedAttemptDialog UnfinishedAttemptDialog component 1`] = `
             contentEditable={false}
             onClick={[MockFunction]}
           >
-            Cancel
+            Close Dialog
           </button>
         </div>
         <div
