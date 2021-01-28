@@ -10,6 +10,7 @@ on:
     - main
     - master
     - dev/*
+    - feature/*
     - hotfix/*
 jobs:
   prettier:
