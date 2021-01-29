@@ -3,7 +3,7 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 /**
  * Generates an Obojobo YouTube node from a Slate node.
  * Copies the id, type, and triggers.  The conversion also saves the
- * videoId, videoUrl, startTime, and endTime attributes.
+ * videoId, startTime, and endTime attributes.
  * @param {Object} node A Slate Node
  * @returns {Object} An Obojobo YouTube node
  */
@@ -14,7 +14,6 @@ const slateToObo = node => ({
 	content: withoutUndefined({
 		triggers: node.content.triggers,
 		videoId: node.content.videoId,
-		videoUrl: node.content.videoUrl,
 		startTime: node.content.startTime,
 		endTime: node.content.endTime
 	})

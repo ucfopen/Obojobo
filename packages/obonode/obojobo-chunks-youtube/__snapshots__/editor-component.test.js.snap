@@ -2,6 +2,9 @@
 
 exports[`YouTube Editor Node YouTube component 1`] = `
 <div>
+  <h1>
+    gJ390e5sjHk
+  </h1>
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
     contentEditable={false}
@@ -43,6 +46,7 @@ exports[`YouTube Editor Node YouTube component 1`] = `
 
 exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
 <div>
+  <h1 />
   <div
     className="obojobo-draft--chunks--you-tube viewer pad  is-not-selected"
     contentEditable={false}

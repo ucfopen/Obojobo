@@ -2,10 +2,9 @@
 
 exports[`Youtube adapter construct builds with attributes 1`] = `
 Object {
-  "endTime": null,
+  "endTime": 10,
   "startTime": 5,
   "videoId": "example_video_id",
-  "videoUrl": "https://www.youtube.com/watch?v=example_video_id",
 }
 `;
 
@@ -14,17 +13,15 @@ Object {
   "endTime": null,
   "startTime": null,
   "videoId": null,
-  "videoUrl": null,
 }
 `;
 
 exports[`Youtube adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "endTime": null,
+    "endTime": 10,
     "startTime": 5,
     "videoId": "example_video_id",
-    "videoUrl": "https://www.youtube.com/watch?v=example_video_id",
   },
 }
 `;

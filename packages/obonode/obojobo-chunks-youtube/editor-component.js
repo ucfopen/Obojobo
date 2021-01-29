@@ -35,6 +35,7 @@ class YouTube extends React.Component {
 	handleSourceChange(content) {
 		ModalUtil.hide()
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+
 		Transforms.setNodes(
 			this.props.editor,
 			{ content: { ...this.props.element.content, ...content } },
@@ -84,6 +85,7 @@ class YouTube extends React.Component {
 
 		return (
 			<Node {...this.props}>
+				<h1>{content.videoId}</h1>
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
