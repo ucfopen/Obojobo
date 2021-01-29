@@ -16,6 +16,10 @@ import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/result
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 import UpdatedModuleDialog from 'obojobo-sections-assessment/components/dialogs/updated-module-dialog'
 import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from 'obojobo-sections-assessment/server/error-constants.js'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -216,10 +220,7 @@ class AssessmentStore extends Store {
 			// This error occurs when someone tries to resume an attempt
 			// for an assessment that was updated. In this case, the attempt
 			// was invalidated so we'll try to start a new attempt.
-			if (
-				res.status === 'error' &&
-				res.value.message.toLowerCase() === 'cannot resume an attempt for a different module'
-			) {
+			if (res.status === 'error' && res.value.message === ERROR_INVALID_ATTEMPT_RESUME) {
 				// IMPORTANT: This assumes that the id of the assessment
 				// being resumed hasn't changed since the user started it.
 				const summary = this.findUnfinishedAttemptInAssessmentSummary(this.state.assessmentSummary)
@@ -354,8 +355,8 @@ class AssessmentStore extends Store {
 		})
 			.then(res => {
 				if (res.status === 'error') {
-					switch (res.value.message.toLowerCase()) {
-						case 'cannot end an attempt for a different module':
+					switch (res.value.message) {
+						case ERROR_INVALID_ATTEMPT_END:
 							// This error occurs when someone tries to submit an attempt
 							// for an assessment that was updated. In this case, we need
 							// to let the user write down their answers and restart
@@ -398,8 +399,8 @@ class AssessmentStore extends Store {
 				this.triggerChange()
 			})
 			.catch(e => {
-				switch (e.message.toLowerCase()) {
-					case 'cannot end an attempt for a different module':
+				switch (e.message) {
+					case ERROR_INVALID_ATTEMPT_END:
 						// Manually trigger an attempt end so the assessment component
 						// doesn't permanently disable its submit button
 						Dispatcher.trigger('assessment:attemptEnded', assessmentId)

@@ -1466,7 +1466,7 @@ describe('AssessmentStore', () => {
 		const mockResumeAttemptResponse = {
 			status: 'error',
 			value: {
-				message: 'cannot resume an attempt for a different module'
+				message: 'Cannot resume an attempt for a different module'
 			}
 		}
 
@@ -1526,7 +1526,7 @@ describe('AssessmentStore', () => {
 		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
-				message: 'cannot end an attempt for a different module'
+				message: 'Cannot end an attempt for a different module'
 			}
 		})
 

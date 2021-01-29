@@ -18,6 +18,12 @@ const {
 	checkValidationRules,
 	validImportedAssessmentScoreId
 } = require('obojobo-express/server/express_validators')
+const {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_UNEXPECTED_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME,
+	ERROR_UNEXPECTED_ATTEMPT_RESUME
+} = require('./error-constants')
 
 // load the server event listeners
 require('./events')
@@ -91,15 +97,14 @@ router
 
 			res.success(attempt)
 		} catch (error) {
-			const resumeError = 'Cannot resume an attempt for a different module'
 			let errorMessage = ''
 
 			switch (error.message) {
-				case resumeError:
-					errorMessage = resumeError
+				case ERROR_INVALID_ATTEMPT_RESUME:
+					errorMessage = ERROR_INVALID_ATTEMPT_RESUME
 					break
 				default:
-					errorMessage = 'Unexpected error resuming your attempt'
+					errorMessage = ERROR_UNEXPECTED_ATTEMPT_RESUME
 			}
 
 			logAndRespondToUnexpected(errorMessage, res, req, error)
@@ -119,15 +124,14 @@ router
 		return endAttempt(req, res)
 			.then(res.success)
 			.catch(error => {
-				const endError = 'Cannot end an attempt for a different module'
 				let errorMessage = ''
 
 				switch (error.message) {
-					case endError:
-						errorMessage = endError
+					case ERROR_INVALID_ATTEMPT_END:
+						errorMessage = ERROR_INVALID_ATTEMPT_END
 						break
 					default:
-						errorMessage = 'Unexpected error completing your attempt'
+						errorMessage = ERROR_UNEXPECTED_ATTEMPT_END
 				}
 
 				logAndRespondToUnexpected(errorMessage, res, req, error)
