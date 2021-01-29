@@ -85,7 +85,6 @@ class YouTube extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<h1>{content.videoId}</h1>
 				<div
 					contentEditable={false}
 					className={`obojobo-draft--chunks--you-tube viewer pad ${isSelected}`}
