@@ -1,5 +1,9 @@
 import mockConsole from 'jest-mock-console'
 import React from 'react'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from 'obojobo-sections-assessment/server/error-constants.js'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn(),
@@ -1466,7 +1470,7 @@ describe('AssessmentStore', () => {
 		const mockResumeAttemptResponse = {
 			status: 'error',
 			value: {
-				message: 'Cannot resume an attempt for a different module'
+				message: ERROR_INVALID_ATTEMPT_RESUME
 			}
 		}
 
@@ -1526,7 +1530,7 @@ describe('AssessmentStore', () => {
 		AssessmentAPI.endAttempt.mockResolvedValueOnce({
 			status: 'error',
 			value: {
-				message: 'Cannot end an attempt for a different module'
+				message: ERROR_INVALID_ATTEMPT_END
 			}
 		})
 
