@@ -4,6 +4,7 @@ jest.mock('../models/assessment')
 jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
+jest.mock('obojobo-express/server/insert_event')
 jest.mock('./insert-events')
 jest.mock('obojobo-express/server/models/draft')
 

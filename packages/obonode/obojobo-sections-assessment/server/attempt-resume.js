@@ -29,6 +29,22 @@ const resumeAttempt = async (
 		// Discard this attempt if the module was updated
 		// while the user was away from the assessment
 		await AssessmentModel.invalidateAttempt(attemptId)
+		await insertEvent({
+			action: 'assessment:attemptInvalidated',
+			actorTime: new Date().toISOString(),
+			payload: {
+				attemptId: attempt.id
+			},
+			userId: currentUser.id,
+			ip: remoteAddress,
+			visitId: currentVisit.id,
+			metadata: {},
+			draftId: currentDocument.draftId,
+			contentId: currentDocument.contentId,
+			eventVersion: '1.0.0',
+			isPreview: currentVisit.is_preview,
+			caliperPayload: {}
+		})
 		throw new Error(ERROR_INVALID_ATTEMPT_RESUME)
 	}
 
