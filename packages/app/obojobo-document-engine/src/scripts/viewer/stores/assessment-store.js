@@ -14,7 +14,12 @@ import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-pro
 import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import UpdatedModuleDialog from 'obojobo-sections-assessment/components/dialogs/updated-module-dialog'
 import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from 'obojobo-sections-assessment/server/error-constants.js'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -211,8 +216,19 @@ class AssessmentStore extends Store {
 			draftId: navState.draftId,
 			attemptId: unfinishedAttemptId,
 			visitId: navState.visitId
-		}).then(response => {
-			this.updateStateAfterStartAttempt(response.value)
+		}).then(res => {
+			// This error occurs when someone tries to resume an attempt
+			// for an assessment that was updated. In this case, the attempt
+			// was invalidated so we'll try to start a new attempt.
+			if (res.status === 'error' && res.value.message === ERROR_INVALID_ATTEMPT_RESUME) {
+				// IMPORTANT: This assumes that the id of the assessment
+				// being resumed hasn't changed since the user started it.
+				const summary = this.findUnfinishedAttemptInAssessmentSummary(this.state.assessmentSummary)
+				this.startAttemptWithImportScoreOption(summary.assessmentId)
+				return
+			}
+
+			this.updateStateAfterStartAttempt(res.value)
 			this.triggerChange()
 		})
 	}
@@ -339,7 +355,16 @@ class AssessmentStore extends Store {
 		})
 			.then(res => {
 				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res)
+					switch (res.value.message) {
+						case ERROR_INVALID_ATTEMPT_END:
+							// This error occurs when someone tries to submit an attempt
+							// for an assessment that was updated. In this case, we need
+							// to let the user write down their answers and restart
+							// a new attempt
+							return Promise.reject(new Error(res.value.message))
+						default:
+							return ErrorUtil.errorResponse(res)
+					}
 				}
 
 				this.state.attemptHistoryLoadState = 'none'
@@ -374,8 +399,29 @@ class AssessmentStore extends Store {
 				this.triggerChange()
 			})
 			.catch(e => {
-				console.error(e) /* eslint-disable-line no-console */
+				switch (e.message) {
+					case ERROR_INVALID_ATTEMPT_END:
+						// Manually trigger an attempt end so the assessment component
+						// doesn't permanently disable its submit button
+						Dispatcher.trigger('assessment:attemptEnded', assessmentId)
+						ModalUtil.show(
+							<UpdatedModuleDialog
+								onConfirm={this.onCloseUpdatedModuleDialog.bind(this, assessmentId)}
+							/>,
+							false
+						)
+						break
+					default:
+						console.error(e) /* eslint-disable-line no-console */
+				}
 			})
+	}
+
+	onCloseUpdatedModuleDialog(assessmentId) {
+		ModalUtil.hide()
+		// IMPORTANT: This assumes that the id of the assessment
+		// being resumed hasn't changed since the user started it.
+		this.startAttemptWithImportScoreOption(assessmentId)
 	}
 
 	onCloseResultsDialog() {

@@ -930,4 +930,22 @@ describe('AssessmentModel', () => {
 		expect(clonedM).toHaveProperty('importedAttemptId', 'my-id')
 		expect(clonedM).toHaveProperty('completedAt', expect.any(Date))
 	})
+
+	test('invalidateAttempt sets invalid to true in state', async () => {
+		db.oneOrNone.mockResolvedValueOnce({
+			...makeMockAttempt(),
+			state: {
+				invalid: true
+			}
+		})
+
+		const invalidAttempt = await AssessmentModel.invalidateAttempt('mock-id')
+
+		expect(invalidAttempt.state.invalid).toBe(true)
+	})
+
+	test('invalidateAttempt errors', () => {
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+		return expect(AssessmentModel.invalidateAttempt('mock-id')).rejects.toBe('mock-error')
+	})
 })
