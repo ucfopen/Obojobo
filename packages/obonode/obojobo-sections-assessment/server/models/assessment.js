@@ -463,17 +463,24 @@ class AssessmentModel {
 	}
 
 	static invalidateAttempt(attemptId) {
+		// Updates an attempts state->invalid key to "true" if no invalid key exists
+		// or invalid is not set to "true" already
 		return db
 			.oneOrNone(
 				`
 				UPDATE attempts
 				SET state = jsonb_set(state, '{invalid}', 'true')
 				WHERE id = $[attemptId]
+				AND (NOT(state ? 'invalid') OR state ->> 'invalid' != 'true')
 				RETURNING *
 				`,
 				{ attemptId }
 			)
 			.then(result => {
+				if (!result) {
+					return null
+				}
+
 				return new AssessmentModel(result)
 			})
 			.catch(error => {

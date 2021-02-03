@@ -2,6 +2,7 @@ const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
+const insertEvents = require('./insert-events')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ERROR_INVALID_ATTEMPT_RESUME = 'Cannot resume an attempt for a different module'
 
@@ -28,23 +29,18 @@ const resumeAttempt = async (
 	) {
 		// Discard this attempt if the module was updated
 		// while the user was away from the assessment
-		await AssessmentModel.invalidateAttempt(attemptId)
-		await insertEvent({
-			action: 'assessment:attemptInvalidated',
-			actorTime: new Date().toISOString(),
-			payload: {
-				attemptId: attempt.id
-			},
-			userId: currentUser.id,
-			ip: remoteAddress,
-			visitId: currentVisit.id,
-			metadata: {},
-			draftId: currentDocument.draftId,
-			contentId: currentDocument.contentId,
-			eventVersion: '1.0.0',
-			isPreview: currentVisit.is_preview,
-			caliperPayload: {}
-		})
+		const invalidatedAttempt = await AssessmentModel.invalidateAttempt(attemptId)
+		if (invalidatedAttempt) {
+			await insertEvents.insertAttemptInvalidatedEvent(
+				attempt.id,
+				currentUser.id,
+				currentVisit.id,
+				currentDocument.draftId,
+				currentDocument.contentId,
+				remoteAddress,
+				currentVisit.is_preview
+			)
+		}
 		throw new Error(ERROR_INVALID_ATTEMPT_RESUME)
 	}
 

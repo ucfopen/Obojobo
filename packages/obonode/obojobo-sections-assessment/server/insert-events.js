@@ -135,7 +135,46 @@ const insertAttemptScoredEvents = (
 		})
 }
 
+/*userId,
+	draftId,
+	contentId,
+	assessmentId,
+	attemptId,
+	attemptNumber,
+	isPreview,
+	hostname,
+	remoteAddress,
+	visitId, */
+
+const insertAttemptInvalidatedEvent = (
+	attemptId,
+	userId,
+	visitId,
+	draftId,
+	contentId,
+	remoteAddress,
+	isPreview
+) => {
+	insertEvent({
+		action: 'assessment:attemptInvalidated',
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attemptId
+		},
+		userId: userId,
+		ip: remoteAddress,
+		visitId,
+		metadata: {},
+		draftId: draftId,
+		contentId: contentId,
+		eventVersion: '1.0.0',
+		isPreview,
+		caliperPayload: {}
+	})
+}
+
 module.exports = {
 	insertAttemptEndEvents,
-	insertAttemptScoredEvents
+	insertAttemptScoredEvents,
+	insertAttemptInvalidatedEvent
 }
