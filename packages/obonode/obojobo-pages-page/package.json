@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-pages-page",
-	"version": "11.0.0",
+	"version": "11.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "Page chunk for Obojobo",
 	"scripts": {
@@ -27,8 +27,8 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^11.0.0",
-		"obojobo-lib-utils": "^11.0.0"
+		"obojobo-document-engine": "^11.1.1",
+		"obojobo-lib-utils": "^11.1.1"
 	},
 	"jest": {
 		"testMatch": [

@@ -71,7 +71,12 @@ module.exports = app => {
 
 	// unknown error handler
 	app.use((err, req, res, next) => {
-		logger.error('Unknown error', err)
-		res.unexpected(err)
+		const timecode = new Date().getTime()
+		logger.error(`Uncaught error (timecode shown on user error page: ${timecode})`, err)
+		// res.unexpected is not always available here
+		if (res.unexpected) return res.unexpected(err)
+
+		res.status(500)
+		res.send(`500 - Internal Server Error: ${timecode}`)
 	})
 }

@@ -168,11 +168,6 @@ describe('EditorStore', () => {
 		expect(EditorUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
-	test('init builds and goes to starting id', () => {
-		EditorStore.init(null, 12, null, 'startingpath', 'visual')
-		expect(EditorUtil.goto).toHaveBeenCalledWith(12)
-	})
-
 	test('init builds and goes to first with no starting id', () => {
 		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
 		EditorStore.init(null, null, null, 'startingpath', 'visual')

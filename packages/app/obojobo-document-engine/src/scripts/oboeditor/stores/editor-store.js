@@ -74,13 +74,8 @@ class EditorStore extends Store {
 		this.buildMenu(model)
 		EditorUtil.gotoPath(startingPath)
 
-		if (startingId != null) {
-			EditorUtil.goto(startingId)
-		} else {
-			const first = EditorUtil.getFirst(this.state)
-
-			if (first && first.id) EditorUtil.goto(first.id)
-		}
+		const first = EditorUtil.getFirst(this.state)
+		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
 	buildMenu(model) {
