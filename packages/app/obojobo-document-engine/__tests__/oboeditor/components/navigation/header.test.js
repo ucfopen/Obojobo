@@ -4,7 +4,9 @@ import Common from 'src/scripts/common'
 import { mount } from 'enzyme'
 
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import validateId from 'src/scripts/oboeditor/util/validate-id'
 jest.mock('src/scripts/oboeditor/util/editor-util')
+jest.mock('src/scripts/oboeditor/util/validate-id')
 
 describe('Header', () => {
 	beforeEach(() => {
@@ -248,6 +250,27 @@ describe('Header', () => {
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
+	test('saveId does nothing if the old and new ids are the same', () => {
+		const props = {
+			index: 0,
+			list: [
+				{
+					id: '5',
+					type: 'header',
+					label: 'label5',
+					contentType: 'Page',
+					flags: {
+						assessment: false
+					}
+				}
+			]
+		}
+		const component = mount(<Header {...props} />)
+		component.instance().saveId('5', '5')
+
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+	})
+
 	test('saveId validates the id', () => {
 		const props = {
 			index: 0,
@@ -264,41 +287,10 @@ describe('Header', () => {
 			]
 		}
 		const component = mount(<Header {...props} />)
-		component.instance().validateId = jest.fn()
-		component.instance().validateId.mockReturnValueOnce(true)
+		validateId.mockReturnValueOnce(true)
 		component.instance().saveId('5', '5!')
 
-		expect(component.instance().validateId).toHaveBeenCalled()
+		expect(validateId).toHaveBeenCalled()
 		expect(Common.models.OboModel.models['5'].setId).not.toHaveBeenCalled()
-	})
-
-	test('validateId correctly detects invalid characters', () => {
-		const props = {
-			index: 0,
-			list: [
-				{
-					id: '5',
-					type: 'header',
-					label: 'label5',
-					contentType: 'Page',
-					flags: {
-						assessment: false
-					}
-				}
-			]
-		}
-		const component = mount(<Header {...props} />)
-
-		expect(component.instance().validateId('mock-id')).toBe(false)
-		expect(component.instance().validateId('mock_id')).toBe(false)
-		expect(component.instance().validateId('mock:id')).toBe(false)
-		expect(component.instance().validateId('mock.id')).toBe(false)
-		expect(component.instance().validateId('mock+id')).toBe(true)
-		expect(component.instance().validateId('mock=id')).toBe(true)
-		expect(component.instance().validateId('abc123')).toBe(false)
-		expect(component.instance().validateId('ABC123')).toBe(false)
-		expect(component.instance().validateId('"mock-id"')).toBe(true)
-		expect(component.instance().validateId('/mock-id/')).toBe(true)
-		expect(component.instance().validateId('[mock-id]')).toBe(true)
 	})
 })

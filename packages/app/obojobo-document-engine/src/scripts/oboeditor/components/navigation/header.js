@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../util/editor-util'
+import validateId from 'obojobo-document-engine/src/scripts/oboeditor/util/validate-id'
 import React from 'react'
 import MoreInfoBox from './more-info-box'
 
@@ -32,19 +33,16 @@ class Header extends React.Component {
 		return <span>{label || '\u00A0'}</span>
 	}
 
-	validateId(newId) {
-		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
-		return validation.test(newId)
-	}
-
 	saveId(oldId, newId) {
+		if (oldId === newId) return
+
 		const model = OboModel.models[oldId]
 
 		if (!newId) {
 			return 'Please enter an id.'
 		}
 
-		if (this.validateId(newId)) {
+		if (validateId(newId)) {
 			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 

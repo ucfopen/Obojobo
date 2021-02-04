@@ -6,6 +6,7 @@ import { Transforms, Path, Editor, Element } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
+import validateId from '../../util/validate-id'
 
 import './editor-component.scss'
 
@@ -50,11 +51,6 @@ class Node extends React.Component {
 		Transforms.select(this.props.editor, Editor.start(this.props.editor, targetPath))
 	}
 
-	validateId(newId) {
-		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
-		return validation.test(newId)
-	}
-
 	saveId(prevId, newId) {
 		if (prevId === newId) return
 
@@ -65,7 +61,7 @@ class Node extends React.Component {
 			return 'Please enter an id.'
 		}
 
-		if (this.validateId(newId)) {
+		if (validateId(newId)) {
 			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 

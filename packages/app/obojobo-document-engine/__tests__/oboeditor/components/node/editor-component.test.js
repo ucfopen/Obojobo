@@ -7,6 +7,7 @@ import Common from '../../../../src/scripts/common'
 import Node from 'src/scripts/oboeditor/components/node/editor-component'
 import InsertMenu from 'src/scripts/oboeditor/components/node/components/insert-menu'
 import MoreInfoBox from 'src/scripts/oboeditor/components/navigation/more-info-box'
+import validateId from 'src/scripts/oboeditor/util/validate-id'
 
 const mockNode = {
 	isInsertable: true,
@@ -17,6 +18,7 @@ const mockNode = {
 	cloneBlankNode: () => ({ type: 'mockNode' })
 }
 
+jest.mock('src/scripts/oboeditor/util/validate-id')
 jest.mock('src/scripts/oboeditor/components/navigation/more-info-box', () =>
 	global.mockReactComponent(this, 'MockMoreInfoBox')
 )
@@ -255,27 +257,10 @@ describe('Component Editor Node', () => {
 
 	test('saveId validates the id', () => {
 		const component = rtr.create(<Node {...mockProps} />)
-		component.getInstance().validateId = jest.fn()
-		component.getInstance().validateId.mockReturnValueOnce(true)
+		validateId.mockReturnValueOnce(true)
 		component.getInstance().saveId('5', '5!')
 
-		expect(component.getInstance().validateId).toHaveBeenCalled()
-	})
-
-	test('validateId correctly detects invalid characters', () => {
-		const component = rtr.create(<Node {...mockProps} />)
-
-		expect(component.getInstance().validateId('mock-id')).toBe(false)
-		expect(component.getInstance().validateId('mock_id')).toBe(false)
-		expect(component.getInstance().validateId('mock:id')).toBe(false)
-		expect(component.getInstance().validateId('mock.id')).toBe(false)
-		expect(component.getInstance().validateId('mock+id')).toBe(true)
-		expect(component.getInstance().validateId('mock=id')).toBe(true)
-		expect(component.getInstance().validateId('abc123')).toBe(false)
-		expect(component.getInstance().validateId('ABC123')).toBe(false)
-		expect(component.getInstance().validateId('"mock-id"')).toBe(true)
-		expect(component.getInstance().validateId('/mock-id/')).toBe(true)
-		expect(component.getInstance().validateId('[mock-id]')).toBe(true)
+		expect(validateId).toHaveBeenCalled()
 	})
 
 	test('saveContent calls Transforms.setNodes', () => {

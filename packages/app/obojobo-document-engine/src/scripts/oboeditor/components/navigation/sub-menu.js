@@ -6,6 +6,7 @@ import React from 'react'
 import MoreInfoBox from './more-info-box'
 import isOrNot from '../../../common/util/isornot'
 import generatePage from '../../documents/generate-page'
+import validateId from '../../util/validate-id'
 
 import {
 	getTriggersWithActionsAdded,
@@ -90,17 +91,12 @@ class SubMenu extends React.Component {
 		return !/[\S]/.test(str)
 	}
 
-	validateId(newId) {
-		const validation = /[^a-z|A-Z|0-9|\-|_|:|.]/
-		return validation.test(newId)
-	}
-
 	saveId(oldId, newId) {
 		if (!newId) {
 			return 'Please enter an id.'
 		}
 
-		if (this.validateId(newId)) {
+		if (validateId(newId)) {
 			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 
