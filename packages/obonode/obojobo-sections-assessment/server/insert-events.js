@@ -135,16 +135,6 @@ const insertAttemptScoredEvents = (
 		})
 }
 
-/*userId,
-	draftId,
-	contentId,
-	assessmentId,
-	attemptId,
-	attemptNumber,
-	isPreview,
-	hostname,
-	remoteAddress,
-	visitId, */
 
 const insertAttemptInvalidatedEvent = (
 	attemptId,
