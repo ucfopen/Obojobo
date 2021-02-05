@@ -4,14 +4,15 @@ jest.mock('../models/assessment')
 jest.mock('obojobo-express/server/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
-jest.mock('./insert-events')
+jest.mock('obojobo-express/server/insert_event')
+jest.mock('../insert-events')
 jest.mock('obojobo-express/server/models/draft')
 
 describe('attempt-end', () => {
 	const lti = require('obojobo-express/server/lti')
 	const AssessmentModel = require('../models/assessment')
 	const getCalculatedScores = require('./get-calculated-scores')
-	const insertEvents = require('./insert-events')
+	const insertEvents = require('../insert-events')
 	const logger = require('obojobo-express/server/logger')
 
 	const mockCurrentUser = {
@@ -280,11 +281,23 @@ describe('attempt-end', () => {
 		)
 	})
 
-	test('endAttempt rejects when attempting to end attempt module not matching currentDocument', async () => {
+	test('endAttempt rejects when attempting to end attempt module not matching currentDocument and inserts an event', async () => {
 		const endAttempt = require('./attempt-end')
 		AssessmentModel.fetchAttemptById.mockResolvedValueOnce({})
+		AssessmentModel.invalidateAttempt.mockResolvedValueOnce(true)
 		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
 			Error('Cannot end an attempt for a different module')
 		)
+		expect(insertEvents.insertAttemptInvalidatedEvent).toHaveBeenCalled()
+	})
+
+	test('endAttempt rejects when attempting to end attempt module not matching currentDocument (but does not insert an event if the attempt was already invalidated)', async () => {
+		const endAttempt = require('./attempt-end')
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce({})
+		AssessmentModel.invalidateAttempt.mockResolvedValueOnce(null)
+		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
+			Error('Cannot end an attempt for a different module')
+		)
+		expect(insertEvents.insertAttemptScoredEvents).not.toHaveBeenCalled()
 	})
 })

@@ -4,6 +4,7 @@ jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
 jest.mock('./models/assessment')
+jest.mock('./insert-events')
 
 jest.mock(
 	'obojobo-express/server/models/visit',
@@ -14,6 +15,7 @@ jest.mock(
 )
 
 const resumeAttempt = require('./attempt-resume')
+const insertEvents = require('./insert-events')
 const attemptStart = require('./attempt-start')
 const insertEvent = require('obojobo-express/server/insert_event')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
@@ -271,6 +273,7 @@ describe('Resume Attempt Route', () => {
 		}
 
 		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.invalidateAttempt.mockResolvedValueOnce(true)
 
 		await expect(
 			resumeAttempt(
@@ -284,5 +287,38 @@ describe('Resume Attempt Route', () => {
 		).rejects.toThrow(Error('Cannot resume an attempt for a different module'))
 
 		await expect(AssessmentModel.invalidateAttempt).toHaveBeenCalledWith('mockAttemptId')
+		expect(insertEvents.insertAttemptInvalidatedEvent).toHaveBeenCalled()
+	})
+
+	test('rejects when attempting to resume module not matching the currentDocument (but does not insert an event if the attempt was already invalidated)', async () => {
+		expect.hasAssertions()
+
+		const mockAttempt = {
+			draftId: 'differentMockDraftId',
+			draftContentId: 'differentMockContentId'
+		}
+
+		const mockCurrentDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			getChildNodeById: jest.fn()
+		}
+
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockAttempt)
+		AssessmentModel.invalidateAttempt.mockResolvedValueOnce(null)
+
+		await expect(
+			resumeAttempt(
+				'mockCurrentUser',
+				'mockCurrentVisit',
+				mockCurrentDocument,
+				'mockAttemptId',
+				'mockHostName',
+				'mockRemoteAddress'
+			)
+		).rejects.toThrow(Error('Cannot resume an attempt for a different module'))
+
+		await expect(AssessmentModel.invalidateAttempt).toHaveBeenCalledWith('mockAttemptId')
+		expect(insertEvents.insertAttemptInvalidatedEvent).not.toHaveBeenCalled()
 	})
 })
