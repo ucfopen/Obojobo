@@ -479,6 +479,7 @@ class AssessmentModel {
 				{ attemptId }
 			)
 			.then(result => {
+				// attempt not found OR was already invalid
 				if (!result) {
 					return null
 				}
