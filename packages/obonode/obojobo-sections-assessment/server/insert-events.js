@@ -158,15 +158,13 @@ const insertAttemptInvalidatedEvent = (
 	insertEvent({
 		action: 'assessment:attemptInvalidated',
 		actorTime: new Date().toISOString(),
-		payload: {
-			attemptId: attemptId
-		},
-		userId: userId,
+		payload: {attemptId},
+		userId,
 		ip: remoteAddress,
 		visitId,
 		metadata: {},
-		draftId: draftId,
-		contentId: contentId,
+		draftId,
+		contentId,
 		eventVersion: '1.0.0',
 		isPreview,
 		caliperPayload: {}
