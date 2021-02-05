@@ -135,7 +135,6 @@ const insertAttemptScoredEvents = (
 		})
 }
 
-
 const insertAttemptInvalidatedEvent = (
 	attemptId,
 	userId,
@@ -148,7 +147,7 @@ const insertAttemptInvalidatedEvent = (
 	insertEvent({
 		action: 'assessment:attemptInvalidated',
 		actorTime: new Date().toISOString(),
-		payload: {attemptId},
+		payload: { attemptId },
 		userId,
 		ip: remoteAddress,
 		visitId,

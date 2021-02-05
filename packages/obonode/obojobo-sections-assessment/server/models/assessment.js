@@ -463,7 +463,7 @@ class AssessmentModel {
 	}
 
 	static invalidateAttempt(attemptId) {
-		// Set attempt state.invalid key to "true" 
+		// Set attempt state.invalid key to "true"
 		// NOTE: db.oneOrNone resolves null if state.invalid is already true
 		// this is useful to determine if the state changed after it resolves
 		return db
