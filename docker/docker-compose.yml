@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: ucfopen/obojobo:nginx-v${TAG}
+    build:
+      context: .
+      dockerfile: dockerfiles/obojobo-nginx-alpine.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+    depends_on:
+      - app
+
+  app:
+    image: ucfopen/obojobo:app-v${TAG}
+    build:
+      context: ../
+      dockerfile: docker/dockerfiles/obojobo-node-debian.Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SECRET_SOURCE: none
+      DB_USER: postgres
+      DB_PASS: mysecretpassword
+      DB_HOST: host.docker.internal
+      DB_NAME: postgres
+      DB_PORT: 5432
+      DB_SSL_JSON: 'false'
+      OBO_LTI_KEYS_JSON: '{"obo-production-lti-key":"CHANGE_THIS_VALUE_NOW"}'
+      OBO_LTI_USERNAME_PARAM: user_id
+      OBO_COOKIE_SECRET: REPLACE_ME_WITH_YOUR_SECRET
+      OBO_COOKIE_SECURE: 'true'
+      DEBUG: obojobo_server:error,obojobo_server:warn
+      YARN_PRODUCTION: 'true'
+      OBO_DEMO_PURGE_MODE: disabled
+      OBO_DEMO_PURGE_DAYS_AGO: 7
+      OBO_EDITLOCK_TIME_UNTIL_RELEASE_MINUTES: 45
+      OBO_EDITLOCK_TIME_UNTIL_WARN_MINUTES: 40
+      OBO_EDITLOCK_DB_LOCK_DURATION: 5
+      PM2_APP_INSTANCES: 1
+      PM2_APP_MAX_MEMORY: 175M
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    name: obo_frontend
