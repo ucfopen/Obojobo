@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    image: ucfopen/obojobo:nginx-v${TAG}
+    image: ucfopen/obojobo:nginx-dev
     build:
       context: .
       dockerfile: dockerfiles/obojobo-nginx-alpine.Dockerfile
@@ -15,7 +15,7 @@ services:
       - app
 
   app:
-    image: ucfopen/obojobo:app-v${TAG}
+    image: ucfopen/obojobo:app-dev
     build:
       context: ../
       dockerfile: docker/dockerfiles/obojobo-node-debian.Dockerfile
