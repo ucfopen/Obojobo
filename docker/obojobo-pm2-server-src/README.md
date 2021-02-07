@@ -21,10 +21,13 @@ Obojobo follows The Twelve Factor App methodology pertaining to [environment var
 # start fresh and make sure no files sneak in
 git clean -dfx
 
-# create a new prerelease (creates new git tag version, npm package versions, and docker image version)
-yarn lerna version --allow-branch issue/production-docker --no-push --no-commit-hooks --force-publish --yes v0.0.0-alpha.0
+# create a new release (creates new git tag version, npm package versions)
+yarn run release:tag
 
-# build the new production ready docker container with updated application
+# publish the current release to npm (requires log in to npm)
+yarn run release:publish
+
+# build production ready docker container with updated application
 docker-compose build
 
 # run a web and app server (background mode)
