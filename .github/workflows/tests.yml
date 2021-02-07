@@ -49,3 +49,8 @@ jobs:
           docker tag ucfopen/obojobo:app-dev ghcr.io/${{ github.repository_owner }}/obojobo:app-${{ steps.tag_name.outputs.GIT_TAG }}
           docker tag ucfopen/obojobo:nginx-dev ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ github.sha }}
           docker tag ucfopen/obojobo:nginx-dev ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ steps.tag_name.outputs.GIT_TAG }}
+          docker push ghcr.io/${{ github.repository_owner }}/obojobo:app-${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/obojobo:app-${{ steps.tag_name.outputs.GIT_TAG }}
+          docker push ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ steps.tag_name.outputs.GIT_TAG }}
+
