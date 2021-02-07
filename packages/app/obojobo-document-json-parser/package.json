@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "obojobo-document-engine": "^11.2.0-alpha.0",
     "xml-formatter": "^2.0.1"
   },
-  "devDependencies": {
+  "peerDependencies": {
+    "obojobo-document-engine": "^11.2.0-alpha.0",
     "obojobo-lib-utils": "^11.2.0-alpha.0"
   },
   "name": "obojobo-document-json-parser",

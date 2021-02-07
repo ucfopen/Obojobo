@@ -26,7 +26,9 @@
 		]
 	},
 	"dependencies": {
-		"express": "~4.17.1",
+		"express": "~4.17.1"
+	},
+	"peerDependencies": {
 		"obojobo-express": "^11.2.0-alpha.0",
 		"obojobo-lib-utils": "^11.2.0-alpha.0",
 		"obojobo-repository": "^11.2.0-alpha.0"

@@ -19,7 +19,7 @@
 			"prettier --write"
 		]
 	},
-	"dependencies": {
+	"peerDependencies": {
 		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {

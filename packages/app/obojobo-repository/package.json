@@ -35,13 +35,15 @@
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
-		"obojobo-express": "^11.2.0-alpha.0",
-		"obojobo-lib-utils": "^11.2.0-alpha.0",
 		"react-modal": "^3.11.2",
 		"react-redux": "^7.2.1",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
 		"sass-mq": "^5.0.1"
+	},
+	"peerDependencies": {
+		"obojobo-express": "^11.2.0-alpha.0",
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [

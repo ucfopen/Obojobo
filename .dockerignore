@@ -9,3 +9,5 @@ packages/**/*.test.js
 packages/**/*.test.jsx
 packages/**/*.test.js.snap
 packages/**/*.test.jsx.snap
+docker/dockerfiles
+docker/docker-compose.yml
