@@ -35,6 +35,9 @@ jobs:
           username: ${{ secrets.CR_USER }}
           password: ${{ secrets.CR_PAT }}
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build App Image
         run: |
           cd docker
