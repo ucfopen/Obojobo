@@ -154,7 +154,7 @@ describe('IFrame Properties Modal', () => {
 		)
 
 		component
-			.find('select')
+			.find('#obojobo-draft--chunks--iframe--properties-modal--fit')
 			.at(0)
 			.simulate('change', { target: { value: 'changed' } })
 

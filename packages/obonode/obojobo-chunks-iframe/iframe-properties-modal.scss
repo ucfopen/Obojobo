@@ -97,15 +97,19 @@
 		width: 7em;
 	}
 
-	.source-wrapper {
+	.sizing-option-container {
+		margin-bottom: 0.9em;
+	}
+
+	.source-option-container {
 		margin-top: 0.3em;
 	}
 
-	.border-wrapper {
-		margin-top: 0.5em;
+	.border-option-container {
+		margin: 0.5em 0;
 	}
 
-	.zoom-wrapper {
-		margin: 0.45em 0 0.2em 0;
+	.zoom-option-container {
+		margin: 0.9em 0 0.2em 0;
 	}
 }
