@@ -195,12 +195,13 @@ describe('IFrame Properties Modal', () => {
 		)
 
 		const widthInput = component.find('input').at(3)
-		expect(widthInput.prop('placeholder')).toBe('Width')
+		expect(widthInput.prop('placeholder')).toBe("''")
 		expect(widthInput.prop('value')).toBe('')
 
 		const select = component.find('select').at(0)
 		select.simulate('change', { target: { value: IFrameSizingTypes.FIXED } })
 		expect(component.state().width).toBe(640)
+		// expect(widthInput.prop('placeholder')).toBe('Width')
 	})
 
 	test('IFrameProperties component changes height', () => {
