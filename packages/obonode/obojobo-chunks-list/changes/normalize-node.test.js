@@ -584,4 +584,54 @@ describe('Normalize List', () => {
 
 		expect(NormalizeUtil.wrapOrphanedSiblings).toHaveBeenCalled()
 	})
+
+	test('normalizeNode on ListLevel calls Transforms.setNodes with the correct listStyle values', () => {
+		const spy = jest.spyOn(Transforms, 'setNodes').mockReturnValue(jest.fn())
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: LIST_NODE,
+					content: {
+						listStyles: {
+							type: 'ordered',
+							indents: [{ type: 'ordered', start: 9, bulletStyle: 'upper-alpha' }]
+						}
+					},
+					children: [
+						{
+							type: LIST_NODE,
+							subtype: LIST_LEVEL_NODE,
+							content: { type: 'unordered', bulletStyle: 'disc', start: 8 },
+							children: [
+								{
+									type: LIST_NODE,
+									subtype: LIST_LINE_NODE,
+									content: {},
+									children: [{ text: 'mockList', b: true }]
+								}
+							]
+						}
+					]
+				}
+			],
+			isInline: () => false,
+			isVoid: () => false
+		}
+		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
+		expect(spy).toHaveBeenCalledWith(
+			editor,
+			{
+				content: {
+					bulletStyle: 'upper-alpha',
+					start: 9,
+					type: 'ordered'
+				}
+			},
+			{ at: [0, 0] }
+		)
+
+		spy.mockRestore()
+	})
 })

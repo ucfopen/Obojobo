@@ -166,7 +166,7 @@ export default class IFrame extends React.Component {
 			>
 				<div
 					className={
-						'obojobo-draft--chunks--iframe' +
+						'obojobo-draft--chunks--iframe viewer pad' +
 						isOrNot(this.props.moduleData.isPreviewing, 'previewing') +
 						isOrNot(ms.border, 'bordered') +
 						isOrNot(isShowing, 'showing') +

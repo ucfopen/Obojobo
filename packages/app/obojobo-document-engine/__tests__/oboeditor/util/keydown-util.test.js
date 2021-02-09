@@ -1,10 +1,17 @@
-import { Transforms } from 'slate'
+import { Transforms, Node } from 'slate'
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 
 import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+
 describe('KeyDown Util', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
 	test('deleteEmptyParent', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValue(true)
 		jest.spyOn(Transforms, 'move').mockReturnValue(true)
@@ -316,12 +323,11 @@ describe('KeyDown Util', () => {
 
 	test('breakToText inserts text', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
 
 		const editor = {
 			children: [
 				{
-					type: 'mockNode',
+					type: HEADING_NODE,
 					children: [{ text: 'some' }]
 				}
 			],
@@ -335,6 +341,7 @@ describe('KeyDown Util', () => {
 		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
+			isDefaultPrevented: () => false,
 			preventDefault: jest.fn()
 		}
 
@@ -342,29 +349,28 @@ describe('KeyDown Util', () => {
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
 
 		// make sure the inserted node is correct type
 		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
-		expect(insertedNode.children[0]).toHaveProperty('type', 'ObojoboDraft.Chunks.Text')
-		expect(insertedNode.children[0]).toHaveProperty('subtype', 'ObojoboDraft.Chunks.Text.TextLine')
+		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
+		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
 		expect(insertedNode.children[0].children[0]).toEqual({ text: '' })
 	})
 
-	test('breakToText converts to text', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
+	test('breakToText splits text', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValue(true)
+		jest.spyOn(Node, 'fragment')
 
 		const editor = {
 			children: [
 				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
+					type: HEADING_NODE,
+					children: [{ text: 'someText' }]
 				}
 			],
 			selection: {
-				anchor: { path: [0, 0], offset: 1 },
-				focus: { path: [0, 0], offset: 1 }
+				anchor: { path: [0, 0], offset: 4 },
+				focus: { path: [0, 0], offset: 4 }
 			},
 			isInline: () => false,
 			isVoid: () => false
@@ -372,37 +378,7 @@ describe('KeyDown Util', () => {
 		ReactEditor.findPath.mockReturnValueOnce([0])
 
 		const event = {
-			preventDefault: jest.fn()
-		}
-
-		KeyDownUtil.breakToText(event, editor, [editor.children[0], [0]], true)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(Transforms.setNodes).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
-	})
-
-	test('breakToText converts to text when selection is at the start of a node', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		jest.spyOn(Transforms, 'collapse').mockReturnValue(true)
-		jest.spyOn(Transforms, 'select').mockReturnValue(true)
-
-		const editor = {
-			children: [
-				{
-					type: 'mockNode',
-					children: [{ text: 'some' }]
-				}
-			],
-			selection: {
-				anchor: { path: [0, 0], offset: 0 },
-				focus: { path: [0, 0], offset: 0 }
-			},
-			isInline: () => false,
-			isVoid: () => false
-		}
-
-		const event = {
+			isDefaultPrevented: () => false,
 			preventDefault: jest.fn()
 		}
 
@@ -410,8 +386,28 @@ describe('KeyDown Util', () => {
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.insertNodes).toHaveBeenCalled()
-		expect(Transforms.setNodes).toHaveBeenCalled()
-		expect(Transforms.select).toHaveBeenCalled()
-		expect(Transforms.collapse).toHaveBeenCalled()
+
+		// make sure the correct node fragment is taken
+		const fragmentNode = Node.fragment.mock.results[0].value[0]
+		expect(fragmentNode).toHaveProperty('type', HEADING_NODE)
+		expect(fragmentNode.children[0]).toEqual({ text: 'Text' })
+
+		// make sure the inserted node is correct type
+		const insertedNode = Transforms.insertNodes.mock.calls[0][1]
+		expect(insertedNode.children[0]).toHaveProperty('type', TEXT_NODE)
+		expect(insertedNode.children[0]).toHaveProperty('subtype', TEXT_LINE_NODE)
+		expect(insertedNode.children[0].children[0]).toEqual({ text: 'Text' })
+	})
+
+	test('breakToText skips when default event is prevented', () => {
+		const event = {
+			isDefaultPrevented: () => true,
+			preventDefault: jest.fn()
+		}
+
+		KeyDownUtil.breakToText(event, {})
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+		expect(Transforms.insertNodes).not.toHaveBeenCalled()
 	})
 })

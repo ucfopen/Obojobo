@@ -244,6 +244,8 @@
 		}
 
 		&.is-last-in-list {
+			border: none;
+
 			&::before {
 				content: '';
 				position: absolute;

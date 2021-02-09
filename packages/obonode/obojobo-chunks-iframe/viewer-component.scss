@@ -129,16 +129,12 @@
 	}
 
 	&.is-sizing-text-width {
-		width: 100%;
-		max-width: 100%;
-
 		> .container,
 		> .container-placeholder {
 			width: 100% !important;
 			max-width: 100%;
 
 			> .iframe-container {
-				width: 87%;
 				margin: 0 auto;
 			}
 		}
@@ -246,7 +242,6 @@
 		&.is-sizing-text-width {
 			> .container {
 				margin: 0 auto;
-				max-width: 87%;
 			}
 		}
 	}

@@ -178,7 +178,7 @@ class IFrameProperties extends React.Component {
 								type="number"
 								placeholder="Width"
 								aria-label="Width"
-								value={this.state.width}
+								value={isSizingSetToTextOrMaxWidth ? '' : this.state.width}
 								onChange={this.handleWidthChange}
 								disabled={isSizingSetToTextOrMaxWidth}
 							/>
