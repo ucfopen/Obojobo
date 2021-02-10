@@ -34,11 +34,72 @@ describe('Rubric editor', () => {
 						]
 					}
 				}}
+				editor={{ selection: [0, 0] }}
 			/>
 		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Rubric renders with given values', () => {
+		const component = renderer.create(
+			<Rubric
+				element={{
+					content: {
+						passingAttemptScore: 100,
+						passedResult: '$attempt_score',
+						failedResult: 0,
+						unableToPassResult: null,
+						mods: []
+					}
+				}}
+				editor={{ selection: [0, 0] }}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Rubric calls updateNodeFromState when clicking outside the component', () => {
+		const thisValue = {
+			selfRef: {
+				current: {
+					contains: jest.fn().mockReturnValueOnce(true)
+				}
+			},
+			updateNodeFromState: jest.fn()
+		}
+
+		Rubric.prototype.onDocumentMouseDown.bind(thisValue)({ target: 'mock-target' })
+		expect(thisValue.selfRef.current.contains).toHaveBeenCalledWith('mock-target')
+		expect(thisValue.updateNodeFromState).not.toHaveBeenCalled()
+
+		thisValue.selfRef.current.contains.mockReturnValueOnce(false)
+		Rubric.prototype.onDocumentMouseDown.bind(thisValue)({ target: 'mock-target' })
+		expect(thisValue.selfRef.current.contains).toHaveBeenCalledWith('mock-target')
+		expect(thisValue.updateNodeFromState).toHaveBeenCalled()
+	})
+
+	test('Component adds and removes event listener when mounted, unmount', () => {
+		const addSpy = jest.spyOn(document, 'addEventListener')
+		const rmSpy = jest.spyOn(document, 'removeEventListener')
+		const component = renderer.create(
+			<Rubric
+				element={{
+					content: { unableToPassType: 'set-value', mods: [] }
+				}}
+			/>
+		)
+		expect(addSpy).toHaveBeenCalled()
+		expect(rmSpy).not.toHaveBeenCalled()
+
+		component.getInstance().componentWillUnmount()
+		expect(rmSpy).toHaveBeenCalled()
+
+		addSpy.mockRestore()
+		rmSpy.mockRestore()
 	})
 
 	test('Rubric changes type', () => {
@@ -91,75 +152,28 @@ describe('Rubric editor', () => {
 		component
 			.find('input')
 			.at(2)
-			.simulate('change', { target: { value: 100 } })
+			.simulate('change', { target: { name: 'passingAttemptScore', value: 100 } })
 		component
 			.find('input')
 			.at(2)
 			.simulate('blur')
 
-		expect(Transforms.setNodes).toHaveBeenCalled()
+		expect(component.instance().state.passingAttemptScore).toBe(100)
 	})
 
-	test('Rubric changes pass result', () => {
+	test('Rubric updates slate state', () => {
 		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
 		const component = mount(
 			<Rubric
 				element={{
-					content: { passedType: 'set-value', mods: [] }
+					content: { unableToPassType: 'set-value', mods: [] }
 				}}
 			/>
 		)
 
-		component
-			.find('select')
-			.at(0)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', { target: { value: '$attempt_score' } })
+		component.instance().updateNodeFromState()
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { value: 100 } })
-
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
-	})
-
-	test('Rubric changes failed result', () => {
-		jest.spyOn(Transforms, 'setNodes').mockReturnValue(true)
-		const component = mount(
-			<Rubric
-				element={{
-					content: { failedType: 'set-value', mods: [] }
-				}}
-			/>
-		)
-
-		component
-			.find('select')
-			.at(1)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('select')
-			.at(1)
-			.simulate('change', { target: { value: '$attempt_score' } })
-
-		component
-			.find('input')
-			.at(4)
-			.simulate('click', { stopPropagation: jest.fn() })
-		component
-			.find('input')
-			.at(4)
-			.simulate('change', { target: { value: 100 } })
-
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
+		expect(Transforms.setNodes).toHaveBeenCalledTimes(1)
 	})
 
 	test('Rubric changes unable to pass result', () => {
@@ -188,9 +202,9 @@ describe('Rubric editor', () => {
 		component
 			.find('input')
 			.at(5)
-			.simulate('change', { target: { value: 100 } })
+			.simulate('change', { target: { name: 'unableToPassResult', value: '100' } })
 
-		expect(Transforms.setNodes).toHaveBeenCalledTimes(2)
+		expect(component.instance().state.unableToPassResult).toBe('100')
 	})
 
 	test('Rubric opens mod dialog', () => {
