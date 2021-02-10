@@ -5,7 +5,7 @@ services:
     image: ucfopen/obojobo:nginx-dev
     build:
       context: .
-      dockerfile: dockerfiles/obojobo-nginx-alpine.Dockerfile
+      dockerfile: ../obojobo-nginx-alpine.Dockerfile
     restart: unless-stopped
     ports:
       - "80:80"
@@ -18,7 +18,7 @@ services:
     image: ucfopen/obojobo:app-dev
     build:
       context: ../
-      dockerfile: docker/dockerfiles/obojobo-node-alpine.Dockerfile
+      dockerfile: ../obojobo-node-alpine.Dockerfile
     restart: unless-stopped
     environment:
       NODE_ENV: production
