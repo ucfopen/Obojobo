@@ -4,9 +4,9 @@ import Common from 'src/scripts/common'
 import { mount } from 'enzyme'
 
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
-import validateId from 'src/scripts/oboeditor/util/validate-id'
+import isValidId from 'src/scripts/oboeditor/util/is-valid-id'
 jest.mock('src/scripts/oboeditor/util/editor-util')
-jest.mock('src/scripts/oboeditor/util/validate-id')
+jest.mock('src/scripts/oboeditor/util/is-valid-id')
 
 describe('Header', () => {
 	beforeEach(() => {
@@ -201,6 +201,7 @@ describe('Header', () => {
 		}
 		const component = mount(<Header {...props} />)
 		Common.models.OboModel.models['5'].setId.mockReturnValueOnce(true)
+		isValidId.mockReturnValueOnce(true)
 		component.instance().saveId('5', 'mock-id')
 
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
@@ -244,6 +245,7 @@ describe('Header', () => {
 			]
 		}
 		const component = mount(<Header {...props} />)
+		isValidId.mockReturnValueOnce(true)
 		Common.models.OboModel.models['5'].setId.mockReturnValueOnce(false)
 		component.instance().saveId('5', 'mock-id')
 
@@ -271,7 +273,7 @@ describe('Header', () => {
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
-	test('saveId validates the id', () => {
+	test('saveId checks if the id is valid', () => {
 		const props = {
 			index: 0,
 			list: [
@@ -287,10 +289,10 @@ describe('Header', () => {
 			]
 		}
 		const component = mount(<Header {...props} />)
-		validateId.mockReturnValueOnce(true)
+		isValidId.mockReturnValueOnce(false)
 		component.instance().saveId('5', '5!')
 
-		expect(validateId).toHaveBeenCalled()
+		expect(isValidId).toHaveBeenCalled()
 		expect(Common.models.OboModel.models['5'].setId).not.toHaveBeenCalled()
 	})
 })

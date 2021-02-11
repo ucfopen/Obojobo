@@ -6,7 +6,7 @@ import { Transforms, Path, Editor, Element } from 'slate'
 
 import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
-import validateId from '../../util/validate-id'
+import isValidId from '../../util/is-valid-id'
 
 import './editor-component.scss'
 
@@ -61,7 +61,7 @@ class Node extends React.Component {
 			return 'Please enter an id.'
 		}
 
-		if (validateId(newId)) {
+		if (!isValidId(newId)) {
 			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 

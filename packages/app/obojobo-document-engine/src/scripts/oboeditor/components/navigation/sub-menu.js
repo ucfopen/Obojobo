@@ -6,7 +6,7 @@ import React from 'react'
 import MoreInfoBox from './more-info-box'
 import isOrNot from '../../../common/util/isornot'
 import generatePage from '../../documents/generate-page'
-import validateId from '../../util/validate-id'
+import isValidId from '../../util/is-valid-id'
 
 import {
 	getTriggersWithActionsAdded,
@@ -96,7 +96,7 @@ class SubMenu extends React.Component {
 			return 'Please enter an id.'
 		}
 
-		if (validateId(newId)) {
+		if (!isValidId(newId)) {
 			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 

@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer'
 
 import Common from '../../../../src/scripts/common'
 import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
-import validateId from '../../../../src/scripts/oboeditor/util/validate-id'
+import isValidId from '../../../../src/scripts/oboeditor/util/is-valid-id'
 import {
 	getTriggersWithActionsAdded,
 	getTriggersWithActionsRemoved,
@@ -57,7 +57,7 @@ jest.mock('../../../../src/scripts/common', () => ({
 }))
 
 jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
-jest.mock('../../../../src/scripts/oboeditor/util/validate-id')
+jest.mock('../../../../src/scripts/oboeditor/util/is-valid-id')
 jest.mock('../../../../src/scripts/common/util/trigger-util')
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null }
@@ -325,6 +325,7 @@ describe('SubMenu', () => {
 		]
 
 		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
+		isValidId.mockReturnValue(true)
 
 		component.instance().saveId('7', 'mock-id')
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
@@ -345,6 +346,7 @@ describe('SubMenu', () => {
 			}
 		]
 		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
+		isValidId.mockReturnValueOnce(true)
 
 		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
@@ -352,7 +354,7 @@ describe('SubMenu', () => {
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
-	test('saveId validates the id', () => {
+	test('saveId checks if the id is valid', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -365,10 +367,10 @@ describe('SubMenu', () => {
 		]
 		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 		Common.models.OboModel.models['7'].setId = jest.fn()
-		validateId.mockReturnValueOnce(true)
+		isValidId.mockReturnValueOnce(false)
 		component.instance().saveId('7', '7!')
 
-		expect(validateId).toHaveBeenCalled()
+		expect(isValidId).toHaveBeenCalled()
 		expect(Common.models.OboModel.models['7'].setId).not.toHaveBeenCalled()
 	})
 
