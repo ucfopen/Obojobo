@@ -101,9 +101,17 @@ class ParagraphStyles extends React.Component {
 	}
 
 	toggleLevelSelect() {
-		this.setState(state => {
-			return { isOpen: !state.isOpen }
-		})
+		// Find the menu item that matches the
+		// current paragraph style and give it focus
+		const nodeType = this.getParagraphStyle()
+		const index = this.menu
+			.filter(item => !!item.htmlElement)
+			.findIndex(item => item.htmlElement.innerText === nodeType)
+
+		this.setState(state => ({
+			isOpen: !state.isOpen,
+			currentFocus: Math.max(index, 0) % this.menu.length
+		}))
 	}
 
 	reduceHeading(list) {

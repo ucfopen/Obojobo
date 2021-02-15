@@ -1,6 +1,6 @@
 const AssessmentScore = require('../models/assessment-score')
 const AssessmentModel = require('../models/assessment')
-const insertEvents = require('./insert-events')
+const insertEvents = require('../insert-events')
 const lti = require('obojobo-express/server/lti')
 const db = require('obojobo-express/server/db')
 

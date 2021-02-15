@@ -101,7 +101,11 @@ class NavStore extends Store {
 				},
 				'nav:goto': payload => {
 					oldNavTargetId = this.state.navTargetId
-					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
+					const navItem = this.state.itemsById[payload.value.id]
+
+					if (!navItem) {
+						this.gotoFirst()
+					} else if (this.gotoItem(navItem)) {
 						ViewerAPI.postEvent({
 							draftId: this.state.draftId,
 							action: 'nav:goto',
@@ -194,9 +198,7 @@ class NavStore extends Store {
 		if (startingId !== null && typeof startingId !== 'undefined') {
 			NavUtil.goto(startingId)
 		} else {
-			const first = NavUtil.getFirst(this.state)
-
-			if (first && first.id) NavUtil.goto(first.id)
+			this.gotoFirst()
 		}
 	}
 
@@ -205,6 +207,11 @@ class NavStore extends Store {
 		this.state.itemsByPath = {}
 		this.state.itemsByFullPath = {}
 		this.state.items = this.generateNav(model)
+	}
+
+	gotoFirst() {
+		const first = NavUtil.getFirst(this.state)
+		if (first && first.id) NavUtil.goto(first.id)
 	}
 
 	gotoItem(navItem) {
