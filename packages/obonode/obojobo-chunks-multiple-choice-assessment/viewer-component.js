@@ -15,13 +15,6 @@ const { focus } = Common.page
 
 const PICK_ALL_INCORRECT_MESSAGE =
 	'You have either missed some correct answers or selected some incorrect answers.'
-const ANIMATION_TRANSITION_TIME_MS = 800
-
-const FEEDBACK_LABELS_TO_SHOW = 'feedbackLabelsToShow'
-
-const FOCUS_TARGET_EXPLANATION = 'explanation'
-const FOCUS_TARGET_RESULTS = 'results'
-const FOCUS_TARGET_QUESTION = 'question'
 
 export default class MCAssessment extends OboQuestionAssessmentComponent {
 	static focusOnContent(model, opts = {}) {
@@ -50,22 +43,7 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		super(props)
 		this.answerChoicesRef = React.createRef()
 
-		// this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
-		// this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
-		// this.onClickReset = this.onClickReset.bind(this)
-		// this.onFormChange = this.onFormChange.bind(this)
-		// this.onFormSubmit = this.onFormSubmit.bind(this)
-		// this.isShowingExplanation = this.isShowingExplanation.bind(this)
-
 		this.sortIds()
-	}
-
-	getCorrectLabels(correctLabels, isReview, isSurvey, hasResponse) {
-		if (correctLabels) {
-			return correctLabels
-		}
-
-		return null
 	}
 
 	static getInstructions(questionModel, questionAssessmentModel) {

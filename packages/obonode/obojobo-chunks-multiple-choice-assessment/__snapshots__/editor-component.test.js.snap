@@ -57,15 +57,16 @@ exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`]
       contentEditable={false}
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
+        className="obojobo-draft--components--button is-not-dangerous align-center choice-button"
         contentEditable={false}
       >
         <button
           className="button"
           contentEditable={false}
           onClick={[Function]}
+          type="button"
         >
-          + Add Choice
+          + Add possible answer
         </button>
       </div>
     </div>
