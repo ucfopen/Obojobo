@@ -7,6 +7,7 @@ import EditorComponent from './editor-component'
 import Level from './components/level/editor-component'
 import Line from './components/line/editor-component'
 import Converter from './converter'
+import ListUtil from './list-util'
 
 import normalizeNode from './changes/normalize-node'
 import onBackspace from './changes/on-backspace'
@@ -21,7 +22,7 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const plugins = {
-	// Editor Plugins - These get attached to the editor object and override it's default functions
+	// Editor Plugins - These get attached to the editor object and override its default functions
 	// They may affect multiple nodes simultaneously
 	insertData(data, editor, next) {
 		// Insert Slate fragments normally
@@ -81,6 +82,20 @@ const plugins = {
 
 			case 'h':
 				if (event.ctrlKey || event.metaKey) return toggleHangingIndent(entry, editor, event)
+				break
+
+			// Allow both L and K to swap between list types
+			// Standard practice is that Ctrl+Shift+K toggles unordered and
+			// Ctrl+Shift+L toggles ordered, but, in the case of lists, toggling
+			// ordered/unordered off is the same as toggling the other on.
+			case 'k':
+			case 'K':
+			case 'l':
+			case 'L':
+				if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
+					event.preventDefault()
+					ListUtil.toggleType(entry[0], editor)
+				}
 		}
 	},
 	renderNode(props) {

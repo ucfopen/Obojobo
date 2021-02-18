@@ -22,6 +22,7 @@ const INCREASE_ZOOM_STEP = 0.1
 
 const { OboComponent } = Viewer.components
 const { Button } = Common.components
+const { withProtocol } = Common.util
 const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const isOrNot = Common.util.isOrNot
@@ -87,7 +88,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		this.refs.iframe.src = this.createSrc(this.props.model.modelState.src)
+		this.refs.iframe.src = withProtocol(this.props.model.modelState.src)
 	}
 
 	componentDidMount() {
@@ -127,23 +128,6 @@ export default class IFrame extends React.Component {
 		}
 	}
 
-	createSrc(src) {
-		src = '' + src
-
-		const lcSrc = src.toLowerCase()
-		if (
-			!(
-				lcSrc.indexOf('http://') === 0 ||
-				lcSrc.indexOf('https://') === 0 ||
-				lcSrc.indexOf('//') === 0
-			)
-		) {
-			src = '//' + src
-		}
-
-		return src
-	}
-
 	render() {
 		const model = this.props.model
 		const ms = model.modelState
@@ -170,7 +154,7 @@ export default class IFrame extends React.Component {
 			this.props.moduleData.mediaState
 		)
 
-		const src = this.createSrc(ms.src)
+		const src = withProtocol(ms.src)
 
 		return (
 			<OboComponent
@@ -214,7 +198,7 @@ export default class IFrame extends React.Component {
 									title={ms.title}
 									src={src}
 									frameBorder="0"
-									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+									allow="geolocation; microphone; camera; midi; encrypted-media; vr; fullscreen"
 									style={iframeStyle}
 									loading="lazy"
 								/>

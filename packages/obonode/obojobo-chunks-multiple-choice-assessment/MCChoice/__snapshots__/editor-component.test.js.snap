@@ -6,6 +6,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -17,6 +18,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   </div>
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -33,6 +35,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
   </div>
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center add-feedback"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -51,6 +54,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -62,6 +66,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
   </div>
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center correct-button"
+    contentEditable={false}
   >
     <button
       className="button"

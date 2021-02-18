@@ -10,6 +10,7 @@ Array [
     "commands": Object {
       "changeToType": [Function],
     },
+    "onKeyDown": [Function],
   },
   Object {
     "insertData": [Function],
@@ -487,7 +488,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -500,21 +501,53 @@ exports[`VisualEditor VisualEditor component 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -527,8 +560,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -541,8 +578,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -567,8 +608,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -587,8 +632,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -610,8 +659,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -636,8 +689,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Link"
+        title="Link
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -654,8 +711,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -672,8 +733,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -690,8 +755,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -704,8 +773,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -718,8 +791,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -732,8 +809,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Indent
+Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -750,8 +831,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -768,8 +853,12 @@ exports[`VisualEditor VisualEditor component 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -796,6 +885,8 @@ exports[`VisualEditor VisualEditor component 1`] = `
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -863,6 +954,8 @@ exports[`VisualEditor VisualEditor component 1`] = `
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -997,7 +1090,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
 
 exports[`VisualEditor VisualEditor component changes pages 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1010,21 +1103,53 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1037,8 +1162,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1051,8 +1180,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1077,8 +1210,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1097,8 +1234,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1120,8 +1261,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1146,8 +1291,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Link"
+        title="Link
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1164,8 +1313,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1182,8 +1335,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1200,8 +1357,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1214,8 +1375,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1228,8 +1393,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1242,8 +1411,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Indent
+Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1260,8 +1433,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1278,8 +1455,12 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1306,6 +1487,8 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -1373,6 +1556,8 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -1507,7 +1692,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
 
 exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1520,21 +1705,53 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1547,8 +1764,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1561,8 +1782,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1587,8 +1812,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -1607,8 +1836,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1630,8 +1863,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -1656,8 +1893,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Link"
+        title="Link
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1674,8 +1915,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -1692,8 +1937,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1710,8 +1959,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1724,8 +1977,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1738,8 +1995,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1752,8 +2013,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Indent
+Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1770,8 +2035,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1788,8 +2057,12 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1816,6 +2089,8 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -1883,6 +2158,8 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -2063,7 +2340,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component with no page 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2076,21 +2353,53 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2103,8 +2412,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2117,8 +2430,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2143,8 +2460,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -2163,8 +2484,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2186,8 +2511,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -2212,8 +2541,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Link"
+        title="Link
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2230,8 +2563,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -2248,8 +2585,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2266,8 +2607,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2280,8 +2625,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2294,8 +2643,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2308,8 +2661,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Indent
+Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2326,8 +2683,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2344,8 +2705,12 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2372,6 +2737,8 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -2439,6 +2806,8 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"
@@ -2569,7 +2938,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
 
 exports[`VisualEditor reload disables event listener and calls location.reload 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2582,21 +2951,53 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Skip to Editor
+      </button>
+    </div>
+    <div
+      className="mockFileToolbarViewer"
+      insertableItems="mock-insertable-items"
+      mode="visual"
+      onSave={[Function]}
+      reload={[Function]}
+      saved={true}
+      showPlaceholders={true}
+      title="Mock Title"
     />
     <div
       className="visual-editor--content-toolbar"
     >
       <button
+        aria-label="Bold
+Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Bold"
+        title="Bold
+Ctrl+B"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2609,8 +3010,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Italic
+Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Italic"
+        title="Italic
+Ctrl+I"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2623,8 +3028,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Strikethrough
+Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Strikethrough"
+        title="Strikethrough
+Ctrl+D"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2649,8 +3058,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Quote
+Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Quote"
+        title="Quote
+Ctrl+\\""
       >
         <svg
           viewBox="0 0 32 32"
@@ -2669,8 +3082,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Monospace
+Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Monospace"
+        title="Monospace
+Ctrl+M"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2692,8 +3109,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Equation
+Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Equation"
+        title="Equation
+Ctrl+/"
       >
         <svg
           viewBox="3 0 28 28"
@@ -2718,8 +3139,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Link
+Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Link"
+        title="Link
+Ctrl+K"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2736,8 +3161,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Superscript
+Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Superscript"
+        title="Superscript
+Ctrl+."
       >
         <svg
           viewBox="0 0 32 32"
@@ -2754,8 +3183,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Subscript
+Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Subscript"
+        title="Subscript
+Ctrl+,"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2772,8 +3205,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Left Align
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Left Align"
+        title="Left Align
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2786,8 +3223,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Center Align
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Center Align"
+        title="Center Align
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2800,8 +3241,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Right Align
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Right Align"
+        title="Right Align
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2814,8 +3259,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Indent
+Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Indent"
+        title="Indent
+Ctrl+Alt+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2832,8 +3281,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Unindent
+Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Unindent"
+        title="Unindent
+Ctrl+Shift+Tab"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2850,8 +3303,12 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         </svg>
       </button>
       <button
+        aria-label="Hanging Indent
+Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
-        title="Hanging Indent"
+        title="Hanging Indent
+Ctrl+H"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2878,6 +3335,8 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
           aria-label="unordered list"
           className="icon"
           onClick={[Function]}
+          title="unordered list
+Ctrl+Shift+K"
         >
           <svg
             version="1.1"
@@ -2945,6 +3404,8 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
           aria-label="ordered list"
           className="icon"
           onClick={[Function]}
+          title="ordered list
+Ctrl+Shift+L"
         >
           <svg
             version="1.1"

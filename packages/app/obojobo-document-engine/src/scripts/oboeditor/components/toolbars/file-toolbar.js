@@ -12,39 +12,6 @@ import './file-toolbar.scss'
 
 const { Button } = Common.components
 
-const insertDisabled = (name, editor) => {
-	if (!editor.selection) return true
-	// If the selected area spans across multiple blocks, the selection is deleted before
-	// inserting, colapsing it down to the type of the first block
-	// Any node in the tree
-	const list = Array.from(
-		Editor.nodes(editor, {
-			at: Editor.path(editor, editor.selection, { edge: 'start' }),
-			match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-		})
-	)
-
-	if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Table')) return true
-
-	if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Question')) {
-		if (name === 'Question' || name === 'Question Bank') return true
-
-		return false
-	}
-
-	return false
-}
-
-const selectAll = editor => {
-	if (Editor.isEditor(editor)) {
-		const edges = Editor.edges(editor, [])
-		Transforms.select(editor, { focus: edges[0], anchor: edges[1] })
-		return ReactEditor.focus(editor)
-	}
-
-	editor.selectAll()
-}
-
 const openPreview = draftId => {
 	const previewURL = window.location.origin + '/preview/' + draftId
 	window.open(previewURL, '_blank')
@@ -92,6 +59,27 @@ class FileToolbar extends React.Component {
 		// note that `editor.current` needs to be evaluated at execution time of the action!
 		const props = this.props
 		const editor = props.editor
+		const selectAll = props.selectAll || editor.selectAll
+
+		const insertDisabled = (name, editor) => {
+			if (!editor.selection) return true
+			// If the selected area spans across multiple blocks, the selection is deleted before
+			// inserting, collapsing it down to the type of the first block
+			// Any node in the tree
+			const list = Array.from(
+				Editor.nodes(editor, {
+					at: Editor.path(editor, editor.selection, { edge: 'start' }),
+					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+				})
+			)
+			if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Table')) return true
+			if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Question')) {
+				if (name === 'Question' || name === 'Question Bank') return true
+				return false
+			}
+			return false
+		}
+
 		const insertMenu = props.insertableItems.map(item => ({
 			name: item.name,
 			action: () => {

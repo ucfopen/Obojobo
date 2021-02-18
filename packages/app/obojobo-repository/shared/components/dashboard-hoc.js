@@ -9,7 +9,10 @@ const {
 	filterModules,
 	deleteModule,
 	showModulePermissions,
-	importModuleFile
+	showVersionHistory,
+	restoreVersion,
+	importModuleFile,
+	checkModuleLock
 } = require('../actions/dashboard-actions')
 const mapStoreStateToProps = state => state
 const mapActionsToProps = {
@@ -21,7 +24,10 @@ const mapActionsToProps = {
 	filterModules,
 	deleteModule,
 	showModulePermissions,
-	importModuleFile
+	showVersionHistory,
+	restoreVersion,
+	importModuleFile,
+	checkModuleLock
 }
 module.exports = connect(
 	mapStoreStateToProps,

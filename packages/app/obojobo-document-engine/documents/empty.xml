@@ -90,6 +90,20 @@
 					</Page>
 				</scoreAction>
 			</scoreActions>
+			<triggers>
+				<trigger type="onStartAttempt">
+					<actions>
+						<action type="nav:lock">
+						</action>
+					</actions>
+				</trigger>
+				<trigger type="onEndAttempt">
+					<actions>
+						<action type="nav:unlock">
+						</action>
+					</actions>
+				</trigger>
+			</triggers>
 		</Assessment>
 
 	</Module>

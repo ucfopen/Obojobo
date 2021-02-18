@@ -14,6 +14,16 @@ describe('ScriptMarks', () => {
 		expect(editor.toggleScript).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			toggleScript: jest.fn()
+		}
+
+		ScriptMarks.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(editor.toggleScript).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			toggleScript: jest.fn()
@@ -30,20 +40,12 @@ describe('ScriptMarks', () => {
 		}
 		const mockEvent = {
 			ctrlKey: true,
-			key: '-',
+			key: ',',
 			preventDefault: jest.fn()
 		}
 
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleScript).toHaveBeenCalledWith(-1)
-
-		mockEvent.key = ','
-		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.toggleScript).toHaveBeenCalledWith(-1)
-
-		mockEvent.key = '='
-		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 
 		mockEvent.key = '.'
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())

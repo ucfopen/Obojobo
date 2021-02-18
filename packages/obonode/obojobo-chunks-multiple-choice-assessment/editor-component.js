@@ -13,6 +13,14 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 class MCAssessment extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.changeResponseType = this.changeResponseType.bind(this)
+		this.changeShuffle = this.changeShuffle.bind(this)
+		this.addChoice = this.addChoice.bind(this)
+	}
+
 	changeResponseType(event) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
 		return Transforms.setNodes(
@@ -74,7 +82,7 @@ class MCAssessment extends React.Component {
 				<div className="mc-settings" contentEditable={false}>
 					<label>
 						Response Type
-						<select value={content.responseType} onChange={this.changeResponseType.bind(this)}>
+						<select value={content.responseType} onChange={this.changeResponseType}>
 							<option value="pick-one">Pick one correct answer</option>
 							<option value="pick-all">Pick all correct answers</option>
 						</select>
@@ -82,14 +90,16 @@ class MCAssessment extends React.Component {
 					<Switch
 						title="Shuffle Choices"
 						initialChecked={content.shuffle}
-						handleCheckChange={this.changeShuffle.bind(this)}
+						handleCheckChange={this.changeShuffle}
 					/>
 				</div>
 				<div>
 					{this.props.children}
-					<Button className={'choice-button pad'} onClick={this.addChoice.bind(this)}>
-						{'+ Add Choice'}
-					</Button>
+					<div contentEditable={false}>
+						<Button className={'choice-button pad'} onClick={this.addChoice}>
+							{'+ Add Choice'}
+						</Button>
+					</div>
 				</div>
 			</div>
 		)

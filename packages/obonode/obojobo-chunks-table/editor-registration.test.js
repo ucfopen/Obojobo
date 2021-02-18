@@ -26,16 +26,22 @@ describe('Table editor', () => {
 		}
 		const next = jest.fn()
 
-		Table.plugins.insertData(data, {
-			children: [{
-				type: 'nonTableNode',
-				children: [{text: ''}]
-			}],
-			selection: {
-				anchor: { path: [0,0], offset: 0 },
-				focus: { path: [0,0], offset: 0 }
-			}
-		}, next)
+		Table.plugins.insertData(
+			data,
+			{
+				children: [
+					{
+						type: 'nonTableNode',
+						children: [{ text: '' }]
+					}
+				],
+				selection: {
+					anchor: { path: [0, 0], offset: 0 },
+					focus: { path: [0, 0], offset: 0 }
+				}
+			},
+			next
+		)
 
 		expect(next).toHaveBeenCalled()
 	})
@@ -49,17 +55,23 @@ describe('Table editor', () => {
 		}
 		const next = jest.fn()
 
-		Table.plugins.insertData(data, {
-			type: TABLE_NODE,
-			children: [{
+		Table.plugins.insertData(
+			data,
+			{
 				type: TABLE_NODE,
-				children: [{text: 'mocktext'}]
-			}],
-			selection: {
-				anchor: { path: [0,0], offset: 1 },
-				focus: { path: [0,0], offset: 1 }
-			}
-		}, next)
+				children: [
+					{
+						type: TABLE_NODE,
+						children: [{ text: 'mocktext' }]
+					}
+				],
+				selection: {
+					anchor: { path: [0, 0], offset: 1 },
+					focus: { path: [0, 0], offset: 1 }
+				}
+			},
+			next
+		)
 
 		expect(Transforms.insertFragment).toHaveBeenCalled()
 	})
@@ -87,7 +99,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([{},[0]], editor, event)
+		Table.plugins.onKeyDown([{}, [0]], editor, event)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -105,7 +117,7 @@ describe('Table editor', () => {
 							children: [
 								{
 									type: TABLE_NODE,
-									subtype: TABLE_CELL_NODE,
+									subtype: TABLE_CELL_NODE
 								}
 							]
 						}
@@ -113,8 +125,8 @@ describe('Table editor', () => {
 				}
 			],
 			selection: {
-				anchor: { path: [0,0,0], offset: 1 },
-				focus: { path: [0,0,0], offset: 3 }
+				anchor: { path: [0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0], offset: 3 }
 			},
 			isInline: () => false
 		}
@@ -123,7 +135,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -141,7 +153,7 @@ describe('Table editor', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									children: [{text: 'mocktext1'}]
+									children: [{ text: 'mocktext1' }]
 								}
 							]
 						}
@@ -149,8 +161,8 @@ describe('Table editor', () => {
 				}
 			],
 			selection: {
-				anchor: { path: [0,0,0,0], offset: 1 },
-				focus: { path: [0,0,0,0], offset: 1 }
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 1 }
 			},
 			isInline: () => false,
 			isVoid: () => false
@@ -160,7 +172,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -180,7 +192,7 @@ describe('Table editor', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									children: [{text: 'mocktext1'}]
+									children: [{ text: 'mocktext1' }]
 								}
 							]
 						},
@@ -191,7 +203,7 @@ describe('Table editor', () => {
 								{
 									type: TABLE_NODE,
 									subtype: TABLE_CELL_NODE,
-									children: [{text: 'mocktext2'}]
+									children: [{ text: 'mocktext2' }]
 								}
 							]
 						}
@@ -199,8 +211,8 @@ describe('Table editor', () => {
 				}
 			],
 			selection: {
-				anchor: { path: [0,0,0,0], offset: 1 },
-				focus: { path: [0,0,0,0], offset: 1 }
+				anchor: { path: [0, 0, 0, 0], offset: 1 },
+				focus: { path: [0, 0, 0, 0], offset: 1 }
 			},
 			isInline: () => false,
 			isVoid: () => false
@@ -210,7 +222,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([editor.children[0],[0]], editor, event)
+		Table.plugins.onKeyDown([editor.children[0], [0]], editor, event)
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(Transforms.setSelection).toHaveBeenCalled()
 	})
@@ -221,7 +233,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([{},[0]], {}, event)
+		Table.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -231,7 +243,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown([{},[0]], {}, event)
+		Table.plugins.onKeyDown([{}, [0]], {}, event)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -239,7 +251,7 @@ describe('Table editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			element: {
-				type: TABLE_NODE,
+				type: TABLE_NODE
 			}
 		}
 
@@ -250,7 +262,7 @@ describe('Table editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			element: {
-				subtype: TABLE_ROW_NODE,
+				subtype: TABLE_ROW_NODE
 			}
 		}
 
@@ -261,7 +273,7 @@ describe('Table editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			element: {
-				subtype: TABLE_CELL_NODE,
+				subtype: TABLE_CELL_NODE
 			}
 		}
 

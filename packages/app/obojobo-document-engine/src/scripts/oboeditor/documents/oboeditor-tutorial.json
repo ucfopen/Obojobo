@@ -916,25 +916,25 @@
 											"align": "left"
 										},
 										"text": {
-											"value": "The alignment can be changed by using the buttons in the toolbar, or by pressing CTRL+L for left align, CRL+R for right align, or CTRL+E for center align.",
+											"value": "The alignment can be changed by using the buttons in the toolbar, or by pressing CTRL+Shift+L for left align, CTRL+Shift+R for right align, or CTRL+Shift+E for center align.",
 											"styleList": [
 												{
-													"end": 87,
+													"end": 93,
 													"data": {},
 													"type": "monospace",
 													"start": 81
 												},
 												{
-													"end": 109,
+													"end": 122,
 													"data": {},
 													"type": "monospace",
-													"start": 104
+													"start": 110
 												},
 												{
-													"end": 136,
+													"end": 155,
 													"data": {},
 													"type": "monospace",
-													"start": 130
+													"start": 143
 												}
 											]
 										}
@@ -2469,6 +2469,101 @@
 								}
 							},
 							"children": []
+						},
+						{
+							"id": "6d641c38-1f62-4b3f-abea-a1c05e7eb32b",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Automatic Width Cells",
+											"styleList": []
+										}
+									}
+								],
+								"headingLevel": 2
+							},
+							"children": []
+						},
+						{
+							"id": "e9c5ca8f-07b4-4ac3-bd26-65a25c5975f6",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "When tables are inserted, their cells have fixed width.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "To make the width of table cells flexible relative to cell contents, click on one of the cells and use the Switch to auto width cells button. To make cells have fixed width back again, click on one of the cells and use the Switch to fixed width cells button.",
+											"styleList": [
+												{
+													"end": 134,
+													"data": {},
+													"type": "monospace",
+													"start": 106
+												},
+												{
+													"end": 254,
+													"data": {},
+													"type": "monospace",
+													"start": 223
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"id": "640648f0-26d4-4f7f-a92a-e0c1f75141a7",
+							"type": "ObojoboDraft.Chunks.Table",
+							"content": {
+								"header": true,
+								"display": "auto",
+								"textGroup": {
+									"numCols": 2,
+									"numRows": 2,
+									"textGroup": [
+										{
+											"text": {
+												"value": "Course Name",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "Professor",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "United States History: 1492-1877 (3 Credit Hours)",
+												"styleList": []
+											}
+										},
+										{
+											"text": {
+												"value": "Dr. Doe",
+												"styleList": []
+											}
+										}
+									]
+								}
+							},
+							"children": []
 						}
 					]
 				},
@@ -3358,7 +3453,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (CTRL+Q). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer",
+											"value": "Math Equations can be displayed inline with any text. To use inline Math Equations, type the LaTeX representation of the Math Equation, highlight the LaTeX, and then either click the LaTeX button in the toolbar or use the LaTeX shortcut (CTRL+/). The highlighted text will then have a light blue background, and will render as a Math Equation in the Obojobo Viewer",
 											"styleList": [
 												{
 													"end": 244,
@@ -6823,6 +6918,140 @@
 								}
 							]
 						},
+						{
+                            "id": "c6537df9-3e5b-4ffb-84d4-4cb75c2922ef",
+                            "type": "ObojoboDraft.Chunks.Heading",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "data": {},
+                                        "text": {
+                                            "value": "Importing Questions",
+                                            "styleList": []
+                                        }
+                                    }
+                                ],
+                                "headingLevel": 2
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "db3d821e-67ce-4db9-abc8-f1e55c7d06cd",
+                            "type": "ObojoboDraft.Chunks.Text",
+                            "content": {
+                                "textGroup": [
+                                    {
+                                        "data": {
+                                            "align": "left",
+                                            "indent": 0
+                                        },
+                                        "text": {
+                                            "value": "Any Question that has been added to the module can be imported into a Question Bank. To import Questions, select anywhere inside the Question Bank and click on the circle with three dots at the top right of the Question Bank to open the details menu. Clicking the Import Questions button within this menu will open a dialog that displays all of the Questions that are in the current module. Inside the dialog, clicking Cancel will close it without importing any Questions, and clicking Import will update the Question Bank to include all of the questions that were selected.",
+                                            "styleList": []
+                                        }
+                                    },
+                                    {
+                                        "data": {
+                                            "align": "left",
+                                            "indent": 0
+                                        },
+                                        "text": {
+                                            "value": "Try it! Import a few Questions into this Question Bank.",
+                                            "styleList": [
+                                                {
+                                                    "end": 7,
+                                                    "data": {},
+                                                    "type": "b",
+                                                    "start": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "children": []
+                        },
+                        {
+                            "id": "42ebe38b-f021-445c-a2b6-39f83211fa4b",
+                            "type": "ObojoboDraft.Chunks.QuestionBank",
+                            "content": {
+                                "choose": "all",
+                                "select": "sequential"
+                            },
+                            "children": [
+                                {
+                                    "id": "beddcfff-1e52-4c61-8dc0-bc40f6286fe5",
+                                    "type": "ObojoboDraft.Chunks.Question",
+                                    "content": {
+                                        "type": "default"
+                                    },
+                                    "children": [
+                                        {
+                                            "id": "602b9c31-2e7a-4cf8-abc6-113f54288435",
+                                            "type": "ObojoboDraft.Chunks.Text",
+                                            "content": {
+                                                "textGroup": [
+                                                    {
+                                                        "data": {
+                                                            "indent": 0
+                                                        },
+                                                        "text": {
+                                                            "value": "",
+                                                            "styleList": []
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "children": []
+                                        },
+                                        {
+                                            "id": "45f7f8a3-94f5-4cf8-8349-7d204b62f95d",
+                                            "type": "ObojoboDraft.Chunks.MCAssessment",
+                                            "content": {
+                                                "shuffle": true,
+                                                "responseType": "pick-one"
+                                            },
+                                            "children": [
+                                                {
+                                                    "id": "26e6b1ab-7b83-497e-96da-3d94ad365744",
+                                                    "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                                                    "content": {
+                                                        "score": 0
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "id": "424798e4-cc3b-4eca-aa3a-1f6fd9933609",
+                                                            "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                                                            "content": {},
+                                                            "children": [
+                                                                {
+                                                                    "id": "04eca18a-a8a5-4915-8501-cb7efec3245c",
+                                                                    "type": "ObojoboDraft.Chunks.Text",
+                                                                    "content": {
+                                                                        "textGroup": [
+                                                                            {
+                                                                                "data": {
+                                                                                    "indent": 0
+                                                                                },
+                                                                                "text": {
+                                                                                    "value": "",
+                                                                                    "styleList": []
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "children": []
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
 						{
 							"id": "84d5b7f4-cd7e-44e8-b9a3-898a3082c034",
 							"type": "ObojoboDraft.Chunks.Heading",

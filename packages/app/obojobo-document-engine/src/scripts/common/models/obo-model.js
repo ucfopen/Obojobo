@@ -32,6 +32,9 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
+	// WARNING - it is not possible to have 2 different documents/modules
+	// loaded via OboModel at once. If you need to clear a previous
+	// OboModel Tree, call OboModel.clearAll()
 	static create(typeOrNameOrJson, attrs = {}) {
 		if (typeof typeOrNameOrJson === 'object') {
 			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
@@ -60,6 +63,10 @@ class OboModel extends Backbone.Model {
 		attrs.type = typeOrNameOrJson
 
 		return new OboModel(attrs, item.adapter)
+	}
+
+	static clearAll() {
+		OboModel.models = {}
 	}
 
 	constructor(attrs, adapter = {}) {
@@ -254,14 +261,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	markDirty() {
-		// if (markChildren == null) { markChildren = false; }
 		this.modelState.dirty = true
 		this.modelState.needsUpdate = true
-
-		// if (markChildren) {
-		// 	return Array.from(this.children.models).map((child) =>
-		// 		child.markDirty());
-		// }
 	}
 
 	markForUpdate(markChildren = false) {
@@ -414,19 +415,9 @@ class OboModel extends Backbone.Model {
 		return this.remove()
 	}
 
-	// getChildrenOfType: (type) ->
-	// 	matching = []
-
-	// 	for child in @children
-	// 		if child.get('type') is type
-	// 			matching.push child
-
-	// 	matching
-
-	// searchChildren: (fn) ->
-	// 	for child in @children
-	// 		if fn(child)
-	// 			child.searchChildren fn
+	getDirectChildrenOfType(type) {
+		return this.children.models.filter(c => c.get('type') === type)
+	}
 
 	contains(child) {
 		while (child !== null) {
@@ -453,8 +444,6 @@ class OboModel extends Backbone.Model {
 	}
 }
 
-OboModel.models = {}
-
 OboModel.getRoot = function() {
 	for (const id in OboModel.models) {
 		return OboModel.models[id].getRoot()
@@ -462,6 +451,8 @@ OboModel.getRoot = function() {
 
 	return null
 }
+
+OboModel.clearAll() // initialize models object
 
 class OboModelCollection extends Backbone.Collection {}
 

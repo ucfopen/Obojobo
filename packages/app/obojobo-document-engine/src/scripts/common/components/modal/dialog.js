@@ -8,10 +8,11 @@ export default class Dialog extends React.Component {
 	constructor(props) {
 		super(props)
 		this.buttonRefs = []
+		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 	}
 
 	static get defaultProps() {
-		return { centered: true }
+		return { centered: true, buttons: [] }
 	}
 
 	componentDidMount() {
@@ -53,7 +54,7 @@ export default class Dialog extends React.Component {
 				<Modal
 					onClose={this.props.onClose}
 					preventEsc={this.props.preventEsc}
-					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+					focusOnFirstElement={this.focusOnFirstElement}
 					className={this.props.modalClassName}
 				>
 					{this.props.title ? (
@@ -87,6 +88,7 @@ export default class Dialog extends React.Component {
 								/>
 							)
 						})}
+						{this.props.customControls}
 					</div>
 				</Modal>
 			</div>

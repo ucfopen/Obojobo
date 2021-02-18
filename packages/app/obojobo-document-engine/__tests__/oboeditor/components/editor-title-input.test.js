@@ -4,7 +4,7 @@ import renderer, { act } from 'react-test-renderer'
 import EditorTitleInput from 'src/scripts/oboeditor/components/editor-title-input'
 
 describe('EditorTitleInput', () => {
-	test('PageEditor component', () => {
+	test('EditorTitleInput component', () => {
 		let component
 		act(() => {
 			component = renderer.create(<EditorTitleInput title="mock-title" renameModule={jest.fn()} />)
@@ -13,7 +13,7 @@ describe('EditorTitleInput', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('PageEditor onChange updates value', () => {
+	test('EditorTitleInput onChange updates value', () => {
 		// setup
 		const mockRenameModule = jest.fn()
 		let component
@@ -38,7 +38,7 @@ describe('EditorTitleInput', () => {
 		expect(inputEl.props.value).toBe('mock-new-title')
 	})
 
-	test('PageEditor onBlur calls renameModule prop', () => {
+	test('EditorTitleInput onBlur calls renameModule prop', () => {
 		// setup
 		const mockRenameModule = jest.fn()
 		let component
@@ -69,7 +69,7 @@ describe('EditorTitleInput', () => {
 		expect(mockRenameModule).toHaveBeenCalledWith('mock-new-title')
 	})
 
-	test('PageEditor onBlur doesnt call renameModule when title hasnt changed', () => {
+	test('EditorTitleInput onBlur doesnt call renameModule when title hasnt changed', () => {
 		// setup
 		const mockRenameModule = jest.fn()
 		let component
@@ -100,7 +100,7 @@ describe('EditorTitleInput', () => {
 		expect(mockRenameModule).not.toHaveBeenCalled()
 	})
 
-	test('PageEditor calls blur when enter is pressed', () => {
+	test('EditorTitleInput calls blur when enter is pressed', () => {
 		const mockBlur = jest.fn()
 		const mockRenameModule = jest.fn()
 		let component
@@ -124,7 +124,7 @@ describe('EditorTitleInput', () => {
 		expect(mockBlur).toHaveBeenCalled()
 	})
 
-	test('PageEditor doesnt call renameModule when escape key is pressed', () => {
+	test('EditorTitleInput doesnt call renameModule when escape key is pressed', () => {
 		const mockBlur = jest.fn()
 		const mockRenameModule = jest.fn()
 		let component
@@ -152,7 +152,7 @@ describe('EditorTitleInput', () => {
 		expect(inputEl.props.value).toBe('mock-title')
 	})
 
-	test('PageEditor pressing ctrl+s calls blur and preventDefault', () => {
+	test('EditorTitleInput pressing ctrl+s calls blur and preventDefault', () => {
 		const mockRenameModule = jest.fn()
 		let component
 		act(() => {
@@ -178,7 +178,7 @@ describe('EditorTitleInput', () => {
 		expect(mockEvent.preventDefault).toHaveBeenCalled()
 	})
 
-	test('PageEditor pressing metaKey+s calls blur and preventDefault', () => {
+	test('EditorTitleInput pressing metaKey+s calls blur and preventDefault', () => {
 		const mockRenameModule = jest.fn()
 		let component
 		act(() => {
@@ -204,7 +204,7 @@ describe('EditorTitleInput', () => {
 		expect(mockEvent.preventDefault).toHaveBeenCalled()
 	})
 
-	test('PageEditor pressing s doesnt call blur or preventDefault', () => {
+	test('EditorTitleInput pressing s doesnt call blur or preventDefault', () => {
 		const mockRenameModule = jest.fn()
 		let component
 		act(() => {
@@ -227,5 +227,88 @@ describe('EditorTitleInput', () => {
 
 		expect(mockEvent.target.blur).not.toHaveBeenCalled()
 		expect(mockEvent.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('title is defaulted to an empty string if one is not provided', () => {
+		let component
+		act(() => {
+			component = renderer.create(<EditorTitleInput />)
+		})
+
+		const inputEl = component.root.findByType('input')
+		expect(inputEl.props.value).toBe('')
+	})
+
+	test('changing title to an empty string and pressing enter refocuses and creates a warning', () => {
+		const mockFocus = jest.fn()
+		const mockRenameModule = jest.fn()
+		let component
+		act(() => {
+			component = renderer.create(
+				<EditorTitleInput title="mock-title" renameModule={mockRenameModule} />
+			)
+		})
+		const inputEl = component.root.findByType('input')
+
+		act(() => {
+			// update the title
+			const mockChangeEvent = { target: { value: '' } }
+			inputEl.props.onChange(mockChangeEvent)
+		})
+
+		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(0)
+
+		act(() => {
+			inputEl.props.onBlur({ target: { focus: mockFocus } })
+		})
+
+		expect(mockRenameModule).not.toHaveBeenCalled()
+		expect(mockFocus).toHaveBeenCalledTimes(1)
+		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(1)
+	})
+
+	test('empty title warning is created and removed correctly when title is no longer empty', () => {
+		const mockFocus = jest.fn()
+		const mockRenameModule = jest.fn()
+		let component
+		act(() => {
+			component = renderer.create(
+				<EditorTitleInput title="mock-title" renameModule={mockRenameModule} />
+			)
+		})
+		const inputEl = component.root.findByType('input')
+
+		act(() => {
+			// update the title
+			const mockChangeEvent = { target: { value: '' } }
+			inputEl.props.onChange(mockChangeEvent)
+		})
+
+		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(0)
+
+		act(() => {
+			inputEl.props.onBlur({ target: { focus: mockFocus } })
+		})
+
+		expect(mockRenameModule).not.toHaveBeenCalled()
+		expect(mockFocus).toHaveBeenCalledTimes(1)
+		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(1)
+
+		// reset calls to mockFocus so we can make sure it isn't called again on the next blur
+		mockFocus.mockReset()
+
+		act(() => {
+			inputEl.props.onChange({ target: { value: 'mock-new-title' } })
+		})
+
+		expect(component.root.findAllByProps({ className: 'empty-title-warning' }).length).toBe(0)
+
+		// bonus check - renameModule should be called now that title is not empty
+		act(() => {
+			inputEl.props.onBlur({ target: { focus: mockFocus } })
+		})
+
+		expect(mockRenameModule).toHaveBeenCalledTimes(1)
+		expect(mockFocus).not.toHaveBeenCalled()
 	})
 })

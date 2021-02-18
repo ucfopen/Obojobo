@@ -9,6 +9,7 @@ exports[`YouTube Editor Node YouTube component 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -24,11 +25,14 @@ exports[`YouTube Editor Node YouTube component 1`] = `
     />
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+      contentEditable={false}
     >
       <button
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         Edit
       </button>
@@ -46,6 +50,7 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
   >
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -59,16 +64,21 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
       className="empty-frame"
     >
       <div>
-        No Video Id.
+        <p>
+          No video specified. Click 'Edit' to add one.
+        </p>
       </div>
     </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center edit-button"
+      contentEditable={false}
     >
       <button
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
       >
         Edit
       </button>

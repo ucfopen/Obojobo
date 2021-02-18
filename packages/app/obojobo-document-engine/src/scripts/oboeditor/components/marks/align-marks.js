@@ -12,6 +12,7 @@ const ALIGN_LEFT = 'left'
 const AlignMarks = {
 	plugins: {
 		onKeyDown(event, editor, next) {
+			if (!event.shiftKey) return
 			if (!(event.ctrlKey || event.metaKey)) return
 
 			switch (event.key) {
@@ -46,18 +47,21 @@ const AlignMarks = {
 	marks: [
 		{
 			name: 'Left Align',
+			shortcut: 'Shift+L',
 			type: ALIGN_LEFT,
 			icon: LeftIcon,
 			action: editor => editor.setAlign(ALIGN_LEFT)
 		},
 		{
 			name: 'Center Align',
+			shortcut: 'Shift+E',
 			type: ALIGN_CENTER,
 			icon: CenterIcon,
 			action: editor => editor.setAlign(ALIGN_CENTER)
 		},
 		{
 			name: 'Right Align',
+			shortcut: 'Shift+R',
 			type: ALIGN_RIGHT,
 			icon: RightIcon,
 			action: editor => editor.setAlign(ALIGN_RIGHT)

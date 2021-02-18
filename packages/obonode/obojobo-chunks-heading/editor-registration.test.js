@@ -1,8 +1,8 @@
 import { Transforms } from 'slate'
 
 import Heading from './editor-registration'
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('slate-react')
@@ -73,6 +73,22 @@ describe('Heading editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			insertText: jest.fn()
+		}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
 	test('plugins.onKeyDown deals with [Enter]', () => {
 		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
 
@@ -81,7 +97,9 @@ describe('Heading editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Heading.plugins.onKeyDown([{}, [0]], {}, event)
+		const editor = {}
+
+		Heading.plugins.onKeyDown([{}, [0]], editor, event)
 		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 

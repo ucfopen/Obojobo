@@ -1,3 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Format Menu FormatMenu node 1`] = `"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Equation</button><button>Link</button><button>Superscript</button><button>Subscript</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Paragraph styles</button><div class=\\"menu-items\\"><button>Normal Text</button><button>Heading 1</button><button>Heading 2</button><button>Heading 3</button><button>Heading 4</button><button>Heading 5</button><button>Heading 6</button><button>Code</button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Align &amp; indent</button><div class=\\"menu-items\\"><button>Left Align</button><button>Center Align</button><button>Right Align</button><button>Indent</button><button>Unindent</button><button>Hanging Indent</button></div></div></div></div></div>"`;
+exports[`FormatMenu component snapshot 1`] = `
+"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold<span>
+Ctrl+B</span></button><button>Italic<span>
+Ctrl+I</span></button><button>Strikethrough<span>
+Ctrl+D</span></button><button>Quote<span>
+Ctrl+\\"</span></button><button>Monospace<span>
+Ctrl+M</span></button><button>Equation<span>
+Ctrl+/</span></button><button>Link<span>
+Ctrl+K</span></button><button>Superscript<span>
+Ctrl+.</span></button><button>Subscript<span>
+Ctrl+,</span></button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Paragraph styles</button><div class=\\"menu-items\\"><button>Normal Text<span>
+Ctrl+Shift+Space</span></button><button>Heading 1<span>
+Ctrl+Shift+1</span></button><button>Heading 2<span>
+Ctrl+Shift+2</span></button><button>Heading 3<span>
+Ctrl+Shift+3</span></button><button>Heading 4<span>
+Ctrl+Shift+4</span></button><button>Heading 5<span>
+Ctrl+Shift+5</span></button><button>Heading 6<span>
+Ctrl+Shift+6</span></button><button>Code<span>
+Ctrl+Shift+C</span></button></div></div><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Align &amp; indent</button><div class=\\"menu-items\\"><button>Left Align<span>
+Ctrl+Shift+L</span></button><button>Center Align<span>
+Ctrl+Shift+E</span></button><button>Right Align<span>
+Ctrl+Shift+R</span></button><button>Indent<span>
+Alt+Tab</span></button><button>Unindent<span>
+Shift+Tab</span></button><button>Hanging Indent<span>
+Ctrl+H</span></button></div></div></div></div></div>"
+`;

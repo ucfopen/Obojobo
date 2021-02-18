@@ -80,15 +80,12 @@ describe('Draft Model', () => {
 		})
 	})
 
-	test('fetchById returns error when not found in database', () => {
+	test('fetchById returns error when not found in database', async () => {
 		expect.hasAssertions()
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return DraftModel.fetchById('whatever').catch(err => {
-			expect(err).toBeInstanceOf(Error)
-			expect(err.message).toBe('not found in db')
-		})
+		await expect(DraftModel.fetchById('whatever')).rejects.toThrow('not found in db')
 	})
 
 	test('createWithContent inserts a new draft', () => {
@@ -121,6 +118,7 @@ describe('Draft Model', () => {
 			// and make sure the content is sent to the query
 			expect(db.one.mock.calls[1][1]).toEqual({
 				jsonContent: mockContent,
+				userId: 555,
 				xmlContent: mockXMLContent,
 				draftId: 'NEWID'
 			})
@@ -156,26 +154,28 @@ describe('Draft Model', () => {
 		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 
-	test('updateContent calls db.one with expected args', () => {
+	test('updateContent calls db.one with expected args', async () => {
 		expect.hasAssertions()
 
-		const id = 555
-		const jsonContent = 'mockJsonContent'
-		const xmlContent = 'mockXmlContent'
+		db.one.mockResolvedValueOnce({ id: 555 })
 
-		db.one.mockResolvedValueOnce({ id })
+		const resultId = await DraftModel.updateContent(
+			555,
+			'mockUserId',
+			'mockJsonContent',
+			'mockXmlContent'
+		)
 
-		return DraftModel.updateContent(id, jsonContent, xmlContent).then(resultId => {
-			expect(resultId).toBe(id)
-			expect(db.one).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftId: id,
-					jsonContent: jsonContent,
-					xmlContent: xmlContent
-				})
-			)
-		})
+		expect(resultId).toBe(555)
+		expect(db.one).toBeCalledWith(
+			expect.any(String),
+			expect.objectContaining({
+				draftId: 555,
+				userId: 'mockUserId',
+				jsonContent: 'mockJsonContent',
+				xmlContent: 'mockXmlContent'
+			})
+		)
 	})
 
 	test('updateContent fails as expected', () => {
@@ -191,6 +191,17 @@ describe('Draft Model', () => {
 		const testTree = {
 			id: 'test-id',
 			children: []
+		}
+
+		const duplicate = DraftModel.findDuplicateIds(testTree)
+
+		expect(duplicate).toBe(null)
+	})
+
+	test('findDuplicateIds hanldes null children', () => {
+		const testTree = {
+			id: 'test-id',
+			children: null
 		}
 
 		const duplicate = DraftModel.findDuplicateIds(testTree)
@@ -299,6 +310,14 @@ describe('Draft Model', () => {
 		})
 	})
 
+	test('deleteByIdAndUser fails as expected', () => {
+		expect.hasAssertions()
+
+		db.none.mockRejectedValueOnce('mock-error')
+
+		return expect(DraftModel.deleteByIdAndUser('draft_id', 'user_id')).rejects.toBe('mock-error')
+	})
+
 	test('getChildNodesByType returns all nodes with a matching type', () => {
 		expect.hasAssertions()
 
@@ -370,5 +389,15 @@ describe('Draft Model', () => {
 			.then(xml => {
 				expect(xml).toBe(null)
 			})
+	})
+
+	test('xmlDocument errors with query error', async () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockRejectedValueOnce('mock-error')
+
+		const draft = await DraftModel.fetchById('whatever')
+		return expect(draft.xmlDocument).rejects.toBe('mock-error')
 	})
 })

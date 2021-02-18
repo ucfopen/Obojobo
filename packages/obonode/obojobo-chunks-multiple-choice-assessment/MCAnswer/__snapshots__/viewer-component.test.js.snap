@@ -23,7 +23,7 @@ exports[`MCAnswer MCAnswer component 1`] = `
       className="text-chunk obojobo-draft--chunks--single-text pad"
     >
       <span
-        className="text align-left"
+        className="obo-text align-left"
         data-group-index={0}
         data-indent={0}
       >

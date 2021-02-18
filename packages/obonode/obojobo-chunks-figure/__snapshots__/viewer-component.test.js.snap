@@ -19,6 +19,13 @@ exports[`Figure Figure component 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
         unselectable="on"
       >
         <img
@@ -38,7 +45,181 @@ exports[`Figure Figure component 1`] = `
         />
         <figcaption>
           <span
-            className="text"
+            className="obo-text"
+            data-group-index="0"
+          >
+            <span>
+              <span>
+                <span>
+                  Example Text
+                </span>
+              </span>
+            </span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure Figure component costom size with no height 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Figure"
+  id="obo-id"
+  tabIndex={-1}
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="container"
+    >
+      <figure
+        style={
+          Object {
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
+        unselectable="on"
+      >
+        <img
+          alt="Alt Text"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="www.example.com/img.jpg"
+          style={
+            Object {
+              "width": "500px",
+            }
+          }
+          unselectable="on"
+        />
+        <figcaption>
+          <span
+            className="obo-text"
+            data-group-index="0"
+          >
+            <span>
+              <span>
+                <span>
+                  Example Text
+                </span>
+              </span>
+            </span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure Figure component costom size with no width 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Figure"
+  id="obo-id"
+  tabIndex={-1}
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="container"
+    >
+      <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+          }
+        }
+        unselectable="on"
+      >
+        <img
+          alt="Alt Text"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="www.example.com/img.jpg"
+          style={
+            Object {
+              "height": "400px",
+            }
+          }
+          unselectable="on"
+        />
+        <figcaption>
+          <span
+            className="obo-text"
+            data-group-index="0"
+          >
+            <span>
+              <span>
+                <span>
+                  Example Text
+                </span>
+              </span>
+            </span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure Figure component size small 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Figure"
+  id="obo-id"
+  tabIndex={-1}
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--figure viewer small"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="container"
+    >
+      <figure
+        style={Object {}}
+        unselectable="on"
+      >
+        <img
+          alt="Alt Text"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          loading="lazy"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="www.example.com/img.jpg"
+          style={Object {}}
+          unselectable="on"
+        />
+        <figcaption>
+          <span
+            className="obo-text"
             data-group-index="0"
           >
             <span>
@@ -75,6 +256,13 @@ exports[`Figure Figure component with no textGroup 1`] = `
       className="container"
     >
       <figure
+        style={
+          Object {
+            "height": "400px",
+            "maxWidth": "100%",
+            "width": "500px",
+          }
+        }
         unselectable="on"
       >
         <img

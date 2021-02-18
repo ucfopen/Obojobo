@@ -34,6 +34,16 @@ describe('LinkMark', () => {
 		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
+	test('onKeyDown does not toggle mark if shift key is pressed', () => {
+		const editor = {
+			changeLinkValue: jest.fn()
+		}
+
+		LinkMark.plugins.onKeyDown({ key: 'q', shiftKey: true }, editor, jest.fn())
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
 	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
 		const editor = {
 			changeLinkValue: jest.fn()

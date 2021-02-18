@@ -24,14 +24,31 @@ Common.Registry.registerModel('ObojoboDraft.Sections.Assessment', {
 	variables: {
 		'assessment:attemptsRemaining'(textModel, viewerProps) {
 			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+			if (!assessmentModel) {
+				return null
+			}
 			if (assessmentModel.modelState.attempts === Infinity) {
 				return 'unlimited'
 			}
 
 			return AssessmentUtil.getAttemptsRemaining(viewerProps.assessmentState, assessmentModel)
 		},
+		'assessment:attemptsTaken'(textModel, viewerProps) {
+			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+			if (!assessmentModel) {
+				return null
+			}
+
+			return AssessmentUtil.getNumberOfAttemptsCompletedForModel(
+				viewerProps.assessmentState,
+				assessmentModel
+			)
+		},
 		'assessment:attemptsAmount'(textModel) {
 			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+			if (!assessmentModel) {
+				return null
+			}
 			if (assessmentModel.modelState.attempts === Infinity) {
 				return 'unlimited'
 			}

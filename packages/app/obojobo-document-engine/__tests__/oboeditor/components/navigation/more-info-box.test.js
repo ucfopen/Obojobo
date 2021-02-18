@@ -79,7 +79,7 @@ describe('MoreInfoBox', () => {
 		const saveContent = jest.fn()
 		const markUnsaved = jest.fn()
 		const onOpen = jest.fn()
-		const onClose = jest.fn()
+		const onBlur = jest.fn()
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
@@ -89,7 +89,7 @@ describe('MoreInfoBox', () => {
 				markUnsaved={markUnsaved}
 				contentDescription={[]}
 				onOpen={onOpen}
-				onClose={onClose}
+				onBlur={onBlur}
 			/>
 		)
 
@@ -99,10 +99,10 @@ describe('MoreInfoBox', () => {
 
 		component.find('.more-info-button').simulate('click')
 		expect(component.instance().state).toHaveProperty('isOpen', false)
-		expect(onClose).toHaveBeenCalled()
 		expect(saveId).not.toHaveBeenCalled()
 		expect(saveContent).not.toHaveBeenCalled()
 		expect(markUnsaved).not.toHaveBeenCalled()
+		expect(onBlur).toHaveBeenCalled()
 
 		component.unmount()
 	})
@@ -177,6 +177,12 @@ describe('MoreInfoBox', () => {
 						name: 'mockAbstractToggle',
 						value: () => false,
 						onChange: () => true
+					},
+					{
+						type: 'button',
+						description: 'Mock Button',
+						name: 'Mock Name',
+						action: jest.fn()
 					}
 				]}
 			/>
@@ -187,7 +193,46 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
+	test('More Info Box input with explicit and default placeholders', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{
+					mockInput1: 'mockInputValue1',
+					mockInput2: 'mockInputValue2'
+				}}
+				contentDescription={[
+					{
+						type: 'input',
+						description: 'Mock Input 1',
+						name: 'mockInput1'
+					},
+					{
+						type: 'input',
+						description: 'Mock Input 2',
+						name: 'mockInput2',
+						placeholder: 'mockPlaceholderValue'
+					}
+				]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		expect(component.find({ value: 'mockInputValue1' }).props().placeholder).toBe('')
+		expect(component.find({ value: 'mockInputValue2' }).props().placeholder).toBe(
+			'mockPlaceholderValue'
+		)
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('More Info Box edits values', () => {
+		jest.spyOn(React, 'createRef').mockReturnValue({
+			current: {
+				select: jest.fn()
+			}
+		})
 		// mocks extracting custom content prop for value
 		const abstractValue = jest.fn().mockImplementation(contentState => contentState.abstractValue)
 		// mocks using checked to change custom content prop
@@ -316,7 +361,6 @@ describe('MoreInfoBox', () => {
 		expect(component.html()).toMatchSnapshot()
 		expect(saveId).toHaveBeenCalled()
 		expect(saveContent).toHaveBeenCalled()
-		jest.runAllTimers()
 		expect(markUnsaved).toHaveBeenCalled()
 	})
 
@@ -339,7 +383,7 @@ describe('MoreInfoBox', () => {
 
 		component
 			.find('input')
-			.at(0)
+			.at(1)
 			.simulate('change', {
 				target: { value: 'changed value' }
 			})
@@ -350,6 +394,29 @@ describe('MoreInfoBox', () => {
 		expect(saveId).toHaveBeenCalled()
 		expect(saveContent).toHaveBeenCalled()
 		expect(markUnsaved).not.toHaveBeenCalled()
+	})
+
+	test('More Info Box runs select on Timeout', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				hideButtonBar
+			/>
+		)
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(jest.runAllTimers).toThrow()
 	})
 
 	test('More Info Box with no button bar', () => {
@@ -368,6 +435,52 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 		component.setState({ isOpen: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box changes to open', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				hideButtonBar
+				open={false}
+			/>
+		)
+		component.setProps({ open: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box prevents tab escape', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('focus')
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -471,11 +584,40 @@ describe('MoreInfoBox', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('More Info Box closes the TriggersModal', () => {
+	test('More Info Box handles escape click', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
 				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'k'
+		})
+
+		component.instance().onKeyDown({
+			preventDefault: jest.fn(),
+			key: 'Escape'
+		})
+
+		expect(saveId).toHaveBeenCalled()
+		expect(saveContent).toHaveBeenCalled()
+	})
+
+	test('More Info Box closes the TriggersModal with updates', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ triggers: ['initial-trigger'] }}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
@@ -483,12 +625,45 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component.instance().closeModal({ triggers: [] })
+		const cmp = component.instance()
+		cmp.closeModal({ triggers: ['mock-trigger'] })
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "mock-trigger",
+		  ],
+		}
+	`)
 	})
 
-	test('More Info Box handles clicks', () => {
+	test('More Info Box closes the TriggersModal without updating', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ triggers: ['initial-trigger'] }}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		const cmp = component.instance()
+		cmp.closeModal()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "initial-trigger",
+		  ],
+		}
+	`)
+	})
+
+	test('More Info Box mousedown listener behaviors', () => {
 		React.createRef = jest.fn()
 		const saveId = jest.fn()
 		const saveContent = jest.fn()
@@ -505,33 +680,45 @@ describe('MoreInfoBox', () => {
 		)
 
 		const nodeInstance = component.instance()
-		nodeInstance.node = {
+		const onSave = jest.spyOn(nodeInstance, 'onSave')
+		onSave.mockReturnValue(null)
+		nodeInstance.domRef = {
 			current: {
 				contains: value => value
 			}
 		}
 
-		nodeInstance.handleClick({ target: true }) // click inside
-		let tree = component.html()
-		expect(tree).toMatchSnapshot()
+		// mousedown when not open
+		nodeInstance.state.isOpen = false
+		nodeInstance.onWindowMouseDown({ target: true })
+		expect(onSave).not.toHaveBeenCalled()
 
-		nodeInstance.node.current = { contains: value => value }
-		nodeInstance.handleClick({ target: false }) // click outside
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
-		expect(saveId).not.toHaveBeenCalled()
+		// mousedown when open, but modal is open
+		nodeInstance.state.isOpen = true
+		nodeInstance.state.modalOpen = true
+		nodeInstance.onWindowMouseDown({ target: true })
+		expect(onSave).not.toHaveBeenCalled()
 
-		nodeInstance.node.current = { contains: value => value }
-		nodeInstance.state.needsUpdate = true
-		nodeInstance.handleClick({ target: false }) // click outside and save
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
-		expect(saveId).toHaveBeenCalled()
+		// mousedown when not rendered on the dom
+		nodeInstance.state.isOpen = true
+		nodeInstance.state.modalOpen = false
+		nodeInstance.domRef = { current: null }
+		nodeInstance.onWindowMouseDown({ target: true })
+		expect(onSave).not.toHaveBeenCalled()
 
-		nodeInstance.node.current = null
-		nodeInstance.handleClick() // click without node
-		tree = component.html()
-		expect(tree).toMatchSnapshot()
+		// mousedown, but click on component's children
+		nodeInstance.state.isOpen = true
+		nodeInstance.state.modalOpen = false
+		nodeInstance.domRef = { current: { contains: () => true } }
+		nodeInstance.onWindowMouseDown({ target: false })
+		expect(onSave).not.toHaveBeenCalled()
+
+		// mousedown, but outside
+		nodeInstance.state.isOpen = true
+		nodeInstance.state.modalOpen = false
+		nodeInstance.domRef = { current: { contains: () => false } }
+		nodeInstance.onWindowMouseDown({ target: false })
+		expect(onSave).toHaveBeenCalled()
 	})
 
 	test('componentDidUpdate calls setState when props.content changes', () => {
@@ -541,15 +728,44 @@ describe('MoreInfoBox', () => {
 		// Calling componentDidUpdate with the same props results in no changes
 		MoreInfoBox.prototype.componentDidUpdate.bind({
 			setState: mockSetState,
-			props: mockProps
+			props: mockProps,
+			state: {}
 		})(mockProps)
 		expect(mockSetState).not.toHaveBeenCalled()
 
 		// Sending different props.content results in updating state
 		MoreInfoBox.prototype.componentDidUpdate.bind({
 			setState: mockSetState,
-			props: { content: 'newMockValue' }
+			props: { content: 'newMockValue' },
+			state: {}
 		})(mockProps)
 		expect(mockSetState).toHaveBeenCalledWith({ content: 'newMockValue' })
+	})
+
+	test('onSave sets and clears state.error', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest
+					.fn()
+					.mockReturnValueOnce('error!')
+					.mockReturnValueOnce(null)}
+				saveContent={jest.fn().mockReturnValue(null)}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+				isAssessment
+			/>
+		)
+
+		// saveId() will return an error, make sure its on state
+		component.instance().onSave()
+		const aftState = component.state()
+		expect(aftState).toHaveProperty('error', 'error!')
+
+		// saveId() returns null this time, make sure state gets updated
+		component.instance().onSave()
+		const aftState2 = component.state()
+		expect(aftState2).toHaveProperty('error', null)
 	})
 })

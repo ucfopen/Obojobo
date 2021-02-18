@@ -1,22 +1,16 @@
-import React from 'react'
-
 import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
-import 'codemirror/mode/xml/xml'
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/addon/fold/foldcode'
-import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/addon/fold/xml-fold.js'
-import { Controlled as CodeMirror } from 'react-codemirror2'
 
-import APIUtil from '../../../scripts/viewer/util/api-util'
+import React, { Suspense } from 'react'
 import EditorUtil from '../../../scripts/oboeditor/util/editor-util'
 import FileToolbar from './toolbars/file-toolbar'
-import ModalUtil from '../../common/util/modal-util'
-import SimpleDialog from '../../common/components/modal/simple-dialog'
 import EditorTitleInput from './editor-title-input'
+
+const CodeMirror = React.lazy(() =>
+	import(/* webpackChunkName: "code-mirror" */ './code-mirror-bundle')
+)
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -25,9 +19,11 @@ class CodeEditor extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const title = EditorUtil.getTitleFromString(props.initialCode, props.mode)
+
 		this.state = {
 			code: props.initialCode,
-			title: EditorUtil.getTitleFromString(props.initialCode, props.mode),
+			title,
 			saved: true,
 			editor: null,
 			options: {
@@ -112,17 +108,9 @@ class CodeEditor extends React.Component {
 	}
 
 	sendSave(draftId, code, mode) {
-		const format = mode === XML_MODE ? 'text/plain' : 'application/json'
-		return APIUtil.postDraft(draftId, code, format)
-			.then(result => {
-				if (result.status !== 'ok') throw Error(result.value.message)
-
-				this.setState({ saved: true })
-			})
-			.catch(e => {
-				if (e instanceof Error) e = e.message
-				ModalUtil.show(<SimpleDialog ok title={`Error: ${e}`} />)
-			})
+		return this.props.saveDraft(draftId, code, mode).then(isSaved => {
+			this.setState({ saved: isSaved })
+		})
 	}
 
 	// Makes CodeMirror commands match Slate commands
@@ -160,16 +148,6 @@ class CodeEditor extends React.Component {
 			event.preventDefault()
 			this.saveAndGetTitleFromCode()
 		}
-
-		if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.undo()
-		}
-
-		if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
-			event.preventDefault()
-			this.state.editor.redo()
-		}
 	}
 
 	setEditor(editor) {
@@ -190,16 +168,17 @@ class CodeEditor extends React.Component {
 							onSave={this.saveAndGetTitleFromCode}
 							saved={this.state.saved}
 							mode={this.props.mode}
-							insertableItems={this.props.insertableItems}
 						/>
 					) : null}
 				</div>
-				<CodeMirror
-					options={this.state.options}
-					value={this.state.code}
-					onBeforeChange={this.onBeforeChange}
-					editorDidMount={this.setEditor}
-				/>
+				<Suspense fallback={<div>Loading...</div>}>
+					<CodeMirror
+						options={this.state.options}
+						value={this.state.code}
+						onBeforeChange={this.onBeforeChange}
+						editorDidMount={this.setEditor}
+					/>
+				</Suspense>
 			</div>
 		)
 	}

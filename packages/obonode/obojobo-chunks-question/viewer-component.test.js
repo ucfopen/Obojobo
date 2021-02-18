@@ -1,6 +1,5 @@
 import Question from './viewer-component'
 import React from 'react'
-import _ from 'underscore'
 import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
@@ -15,6 +14,7 @@ const { getScoreClass } = jest.requireActual(
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer') // dependency on Obojobo.Pages.Page
@@ -228,7 +228,6 @@ const expectClasses = (className, type, mode, answered, correct) => {
 
 describe('Question', () => {
 	beforeAll(() => {
-		_.shuffle = a => a
 		QuestionUtil.getScoreClass = getScoreClass
 	})
 
@@ -697,23 +696,27 @@ describe('Question', () => {
 
 	test('focusOnContent focuses on the first child component (when question is being shown)', () => {
 		const mockFirstChildEl = jest.fn()
+		const mockOpts = { preventScroll: true }
 
-		const didFocus = Question.focusOnContent({
-			getDomEl: () => ({
-				classList: {
-					contains: () => false
+		const didFocus = Question.focusOnContent(
+			{
+				getDomEl: () => ({
+					classList: {
+						contains: () => false
+					}
+				}),
+				children: {
+					at: () => ({
+						getDomEl: () => mockFirstChildEl
+					})
 				}
-			}),
-			children: {
-				at: () => ({
-					getDomEl: () => mockFirstChildEl
-				})
-			}
-		})
+			},
+			mockOpts
+		)
 
 		expect(didFocus).toBe(true)
 		expect(focus).toHaveBeenCalledTimes(1)
-		expect(focus).toHaveBeenCalledWith(mockFirstChildEl)
+		expect(focus).toHaveBeenCalledWith(mockFirstChildEl, true)
 	})
 
 	test('focusOnContent does nothing when question is being shown and the first child component element can not be found', () => {
@@ -752,19 +755,23 @@ describe('Question', () => {
 
 	test('focusOnContent focuses on the button (when question is still un-opened)', () => {
 		const mockButtonEl = jest.fn()
+		const mockOpts = { preventScroll: true }
 
-		const didFocus = Question.focusOnContent({
-			getDomEl: () => ({
-				classList: {
-					contains: () => true
-				},
-				querySelector: () => mockButtonEl
-			})
-		})
+		const didFocus = Question.focusOnContent(
+			{
+				getDomEl: () => ({
+					classList: {
+						contains: () => true
+					},
+					querySelector: () => mockButtonEl
+				})
+			},
+			mockOpts
+		)
 
 		expect(didFocus).toBe(true)
 		expect(focus).toHaveBeenCalledTimes(1)
-		expect(focus).toHaveBeenCalledWith(mockButtonEl)
+		expect(focus).toHaveBeenCalledWith(mockButtonEl, true)
 	})
 
 	test('focusOnContent does nothing if no DOM element exists', () => {

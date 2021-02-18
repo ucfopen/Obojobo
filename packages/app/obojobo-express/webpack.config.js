@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
@@ -37,6 +38,7 @@ module.exports =
 			},
 			entry: entriesFromObojoboModules,
 			output: {
+				publicPath: '/static/',
 				path: path.join(__dirname, 'server', 'public', 'compiled'),
 				filename: `${filename}.js`
 			},
@@ -87,6 +89,7 @@ module.exports =
 						test: /\.(jpe?g|png)$/i,
 						use: [
 							{
+								// @TODO: remove this if it's not used
 								loader: 'responsive-loader',
 								options: {
 									adapter: require('responsive-loader/sharp')
@@ -105,15 +108,16 @@ module.exports =
 				Common: 'Common',
 				Viewer: 'Viewer',
 				slate: 'Slate',
-				'slate-react': 'SlateReact',
-				immutable: 'Immutable'
+				'slate-react': 'SlateReact'
 			},
 			plugins: [
 				new WatchIgnorePlugin([
 					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
 				]),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
-				new ManifestPlugin({ publicPath: '/static/' })
+				new ManifestPlugin({ publicPath: '/static/' }),
+				// Ignore all locale files of moment.js
+				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],

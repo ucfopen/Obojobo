@@ -16,8 +16,45 @@ class Rubric extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const content = this.props.element.content
+
+		this.state = {
+			passingAttemptScore:
+				typeof content.passingAttemptScore !== 'undefined' ? content.passingAttemptScore : 100,
+			passedResult: typeof content.passedResult !== 'undefined' ? content.passedResult : 100,
+			failedResult: typeof content.failedResult !== 'undefined' ? content.failedResult : 0,
+			unableToPassResult:
+				typeof content.unableToPassResult !== 'undefined' ? content.unableToPassResult : null
+		}
+
+		this.selfRef = React.createRef()
+
 		this.unfreezeEditor = this.unfreezeEditor.bind(this)
 		this.freezeEditor = this.freezeEditor.bind(this)
+		this.changeRubricType = this.changeRubricType.bind(this)
+		this.showModModal = this.showModModal.bind(this)
+		this.changeMods = this.changeMods.bind(this)
+		this.onChangeState = this.onChangeState.bind(this)
+		this.onDocumentMouseDown = this.onDocumentMouseDown.bind(this)
+		this.updateNodeFromState = this.updateNodeFromState.bind(this)
+
+		this.passedType = this.changeScoreType.bind(this, 'passedType')
+		this.failedType = this.changeScoreType.bind(this, 'failedType')
+		this.unableToPassType = this.changeScoreType.bind(this, 'unableToPassType')
+	}
+
+	onDocumentMouseDown(event) {
+		if (!this.selfRef.current.contains(event.target)) {
+			this.updateNodeFromState()
+		}
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.onDocumentMouseDown)
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.onDocumentMouseDown)
 	}
 
 	changeRubricType(event) {
@@ -29,6 +66,21 @@ class Rubric extends React.Component {
 			{ content: { ...this.props.element.content, type } },
 			{ at: path }
 		)
+	}
+
+	updateNodeFromState() {
+		const path = ReactEditor.findPath(this.props.editor, this.props.element)
+		Transforms.setNodes(
+			this.props.editor,
+			{ content: { ...this.props.element.content, ...this.state } },
+			{ at: path }
+		)
+	}
+
+	onChangeState(event) {
+		const { name, value } = event.target
+
+		this.setState({ ...this.state, [name]: value })
 	}
 
 	changeScoreType(typeName, event) {
@@ -51,7 +103,7 @@ class Rubric extends React.Component {
 			<ModProperties
 				mods={this.props.element.content.mods}
 				attempts={parent.content.attempts}
-				onConfirm={this.changeMods.bind(this)}
+				onConfirm={this.changeMods}
 			/>
 		)
 	}
@@ -94,9 +146,10 @@ class Rubric extends React.Component {
 	render() {
 		const content = this.props.element.content
 		const className = 'rubric pad ' + 'is-type-' + content.type
+		const stopPropagation = event => event.stopPropagation()
 
 		return (
-			<div className={className} contentEditable={false}>
+			<div className={className} contentEditable={false} ref={this.selfRef}>
 				<h2 contentEditable={false}>Assessment Scoring</h2>
 				<p>
 					The recorded score for this module is the highest assessment score, and will be sent to
@@ -110,8 +163,8 @@ class Rubric extends React.Component {
 							name="score-type"
 							value="highest"
 							checked={content.type === 'highest'}
-							onChange={this.changeRubricType.bind(this)}
-							onClick={event => event.stopPropagation()}
+							onChange={this.changeRubricType}
+							onClick={stopPropagation}
 						/>
 						Use the highest attempt score.
 					</label>
@@ -121,8 +174,8 @@ class Rubric extends React.Component {
 							name="score-type"
 							value="pass-fail"
 							checked={content.type === 'pass-fail'}
-							onChange={this.changeRubricType.bind(this)}
-							onClick={event => event.stopPropagation()}
+							onChange={this.changeRubricType}
+							onClick={stopPropagation}
 						/>
 						Calculate based on a threshold (pass/fail)...
 					</label>
@@ -141,9 +194,10 @@ class Rubric extends React.Component {
 								type="number"
 								min="0"
 								max="100"
-								value={content.passingAttemptScore}
-								onChange={this.changeScoreType.bind(this, 'passingAttemptScore')}
-								onClick={event => event.stopPropagation()}
+								name="passingAttemptScore"
+								value={this.state.passingAttemptScore}
+								onChange={this.onChangeState}
+								onClick={stopPropagation}
 								onFocus={this.freezeEditor}
 								onBlur={this.unfreezeEditor}
 							/>
@@ -155,8 +209,8 @@ class Rubric extends React.Component {
 							When <b>passing</b>, set the assessment score to
 							<select
 								value={content.passedType}
-								onChange={this.changeScoreType.bind(this, 'passedType')}
-								onClick={event => event.stopPropagation()}
+								onChange={this.passedType}
+								onClick={stopPropagation}
 							>
 								<option value="$attempt_score">The attempt score</option>
 								<option value="set-value">Specified value</option>
@@ -167,9 +221,10 @@ class Rubric extends React.Component {
 								type="number"
 								min="0"
 								max="100"
-								value={content.passedResult}
-								onClick={event => event.stopPropagation()}
-								onChange={this.changeScoreType.bind(this, 'passedResult')}
+								name="passedResult"
+								value={this.state.passedResult}
+								onClick={stopPropagation}
+								onChange={this.onChangeState}
 								disabled={content.passedType !== 'set-value'}
 								onFocus={this.freezeEditor}
 								onBlur={this.unfreezeEditor}
@@ -182,8 +237,8 @@ class Rubric extends React.Component {
 							When <b>failing</b>,
 							<select
 								value={content.failedType}
-								onChange={this.changeScoreType.bind(this, 'failedType')}
-								onClick={event => event.stopPropagation()}
+								onChange={this.failedType}
+								onClick={stopPropagation}
 							>
 								<option value="$attempt_score">
 									Set the assessment score to the attempt score
@@ -199,9 +254,10 @@ class Rubric extends React.Component {
 								type="number"
 								min="0"
 								max="100"
-								value={content.failedResult}
-								onClick={event => event.stopPropagation()}
-								onChange={this.changeScoreType.bind(this, 'failedResult')}
+								name="failedResult"
+								value={this.state.failedResult}
+								onClick={stopPropagation}
+								onChange={this.onChangeState}
 								disabled={content.failedType !== 'set-value'}
 								onFocus={this.freezeEditor}
 								onBlur={this.unfreezeEditor}
@@ -214,8 +270,8 @@ class Rubric extends React.Component {
 							And if the student is <b>out of attempts and still did not pass</b>,
 							<select
 								value={content.unableToPassType}
-								onChange={this.changeScoreType.bind(this, 'unableToPassType')}
-								onClick={event => event.stopPropagation()}
+								onChange={this.unableToPassType}
+								onClick={stopPropagation}
 							>
 								<option value="no-value">
 									Don&apos;t do anything, the failing rule will still apply
@@ -234,9 +290,10 @@ class Rubric extends React.Component {
 								type="number"
 								min="0"
 								max="100"
-								value={content.unableToPassResult}
-								onClick={event => event.stopPropagation()}
-								onChange={this.changeScoreType.bind(this, 'unableToPassResult')}
+								name="unableToPassResult"
+								value={this.state.unableToPassResult || 0}
+								onClick={stopPropagation}
+								onChange={this.onChangeState}
 								disabled={content.unableToPassType !== 'set-value'}
 								onFocus={this.freezeEditor}
 								onBlur={this.unfreezeEditor}
@@ -247,7 +304,7 @@ class Rubric extends React.Component {
 				</fieldset>
 				<div className="mods">
 					<div className="title">Extra Credit & Penalties</div>
-					<Button onClick={this.showModModal.bind(this)}>Edit...</Button>
+					<Button onClick={this.showModModal}>Edit...</Button>
 					<ul>
 						{content.mods.map((mod, index) => {
 							const range = getParsedRange(mod.attemptCondition + '')

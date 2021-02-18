@@ -9,7 +9,8 @@ jest.mock('obojobo-express/server/insert_event')
 jest.mock('obojobo-express/server/db')
 jest.mock('obojobo-express/server/models/draft')
 jest.mock('obojobo-express/server/routes/api/events/create_caliper_event')
-jest.mock('underscore')
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle')
+jest.mock('./models/assessment')
 
 jest.mock(
 	'obojobo-express/server/models/visit',
@@ -40,18 +41,19 @@ const {
 	getState,
 	loadChildren
 } = require('./attempt-start.js')
-const _ = require('underscore')
+
 const testJson = require('obojobo-document-engine/test-object.json')
-const Assessment = require('./assessment')
 const insertEvent = require('obojobo-express/server/insert_event')
 const Draft = require('obojobo-express/server/models/draft')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
-const Visit = require('obojobo-express/server/models/visit')
+const AssessmentModel = require('./models/assessment')
+const shuffle = require('obojobo-document-engine/src/scripts/common/util/shuffle')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+const ERROR_IMPORT_USED = 'Import score has already been used'
 
 describe('start attempt route', () => {
 	let mockDraft
@@ -63,11 +65,10 @@ describe('start attempt route', () => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		getRandom.mockReturnValue(0)
-		Visit.fetchById.mockReturnValue({ is_preview: false })
 
 		// mock _.shuffle by always returning the same array
 		// just check to make sure shuffle.toHaveBeenCalled
-		_.shuffle.mockImplementation(arr => arr)
+		shuffle.mockImplementation(arr => arr)
 		mockDraft = new Draft(testJson)
 		mockUsedQuestionMap = new Map()
 
@@ -82,7 +83,7 @@ describe('start attempt route', () => {
 		mockRes = {}
 	})
 
-	test('startAttempt calls database, inserts events, adds assessment questions to response, and returns expected object', done => {
+	test('startAttempt calls database, inserts events, adds assessment questions to response, and returns expected object', () => {
 		mockRes = {
 			success: jest.fn(),
 			reject: jest.fn()
@@ -120,12 +121,6 @@ describe('start attempt route', () => {
 		}
 
 		mockReq = {
-			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
-			requireCurrentUser: jest.fn(() =>
-				Promise.resolve({
-					canViewEditor: true
-				})
-			),
 			body: {
 				draftId: 'mockDraftId',
 				assessmentId: 'mockAssessmentId'
@@ -133,13 +128,13 @@ describe('start attempt route', () => {
 			hostname: 'mockHostname',
 			connection: {
 				remoteAddress: 'mockRemoteAddress'
-			}
+			},
+			currentVisit: { is_preview: false },
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
 		}
 
-		// Set dummy versions of methods called by startAttempt
-		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValueOnce([])
-		Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
-		Assessment.insertNewAttempt = jest.fn().mockReturnValueOnce({
+		const mockAttempt = {
 			attemptId: 'mockAttemptId',
 			state: {
 				chosen: [
@@ -153,25 +148,26 @@ describe('start attempt route', () => {
 					}
 				]
 			}
-		})
-		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		}
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		AssessmentModel.createNewAttempt.mockResolvedValueOnce(mockAttempt)
+
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptStartedEvent
+			createAssessmentAttemptStartedEvent: jest.fn().mockReturnValue('mockCaliperPayload')
 		})
 
+		expect.hasAssertions()
 		return startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.success).toBeCalledTimes(1)
-			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
-			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
-			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
+			expect(AssessmentModel.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
+			expect(AssessmentModel.createNewAttempt).toHaveBeenCalled()
 			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
-
-			return done()
 		})
 	})
 
-	test('startAttempt rejects with an expected error when no attempts remain', done => {
+	test('startAttempt rejects with an expected error when no attempts remain', () => {
 		mockRes = { reject: jest.fn() }
 
 		const mockAssessmentNode = {
@@ -193,25 +189,62 @@ describe('start attempt route', () => {
 		}
 
 		mockReq = {
-			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
-			requireCurrentUser: jest.fn(() =>
-				Promise.resolve({
-					user: {}
-				})
-			),
 			body: {
 				draftId: 'mockDraftId',
 				assessmentId: 'mockAssessmentId'
-			}
+			},
+			currentVisit: { is_preview: false },
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
 		}
 
-		Assessment.getCompletedAssessmentAttemptHistory = jest
-			.fn()
-			.mockResolvedValueOnce(['oneAttempt'])
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce(['oneAttempt'])
 
-		startAttempt(mockReq, mockRes).then(() => {
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
-			done()
+		})
+	})
+
+	test('startAttempt rejects with an expected error when an import was used', () => {
+		mockRes = { reject: jest.fn() }
+
+		const mockAssessmentNode = {
+			getChildNodeById: jest.fn(() => ({
+				node: {
+					content: {
+						// Number of attempts the user is allowed (needs more then tthe number of attempts that are sent).
+						attempts: 10
+					}
+				},
+				children: [
+					{},
+					{
+						childrenSet: ['test', 'test1'],
+						toObject: jest.fn()
+					}
+				]
+			}))
+		}
+
+		mockReq = {
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			currentVisit: { is_preview: false },
+			currentDocument: mockAssessmentNode,
+			currentUser: { id: 4 }
+		}
+
+		AssessmentModel.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([
+			{ isImported: false },
+			{ isImported: true }
+		])
+
+		expect.hasAssertions()
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_IMPORT_USED)
 		})
 	})
 
