@@ -53,6 +53,7 @@ class Header extends React.Component {
 
 		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
 		model.triggers = newContent.triggers || []
+		model.objectives = newContent.objectives || []
 
 		model.set({ content: newContent }) // may cause store update?
 		EditorUtil.setStartPage(newContent.start)

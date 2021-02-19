@@ -75,6 +75,7 @@ class OboModel extends Backbone.Model {
 		this.parent = null
 		this.children = new OboModelCollection()
 		this.triggers = attrs.content && attrs.content.triggers ? attrs.content.triggers : []
+		this.objectives = attrs.content && attrs.content.objectives ? attrs.content.objectives : []
 		this.title = attrs.content && attrs.content.title ? attrs.content.title : null
 
 		this.modelState = {

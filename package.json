@@ -22,6 +22,7 @@
 		"test:ci:each": "lerna run test:ci"
 	},
 	"devDependencies": {
+		"babel-upgrade": "^1.0.1",
 		"husky": "^4.2.5",
 		"jest-runner-eslint": "^0.8.0",
 		"lerna": "^3.21.0",

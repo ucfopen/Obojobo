@@ -1,0 +1,87 @@
+@import '~styles/includes';
+
+.objective-input {
+	position: relative;
+	font-size: 0.85em;
+	border: solid;
+	background: $color-bg;
+	border-radius: 10px;
+	border-color: grey;
+	border-width: 1px;
+	padding: 1em;
+	width: 35em;
+	max-height: 60vh;
+	overflow: auto;
+	margin-bottom: 5px;
+	border-radius: $dimension-rounded-radius;
+
+	.label {
+		font-weight: bolder;
+		position: relative;
+		display: outside;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+		margin-bottom: 0.5em;
+		text-align: left;
+	}
+
+	.objective {
+		position: relative;
+
+		.edit-mode {
+
+			.button {
+				color: $color-action;
+				background-color: $color-bg;
+				border-color: $color-action;
+				border-width: 2px;
+				height: 2.50em;
+				text-align: center;
+		
+				&:hover {
+					color: $color-bg;
+					background-color: $color-action;
+				}
+			}
+			
+			.edit-objective-id-button {
+				color: $color-action;
+				position: relative;
+				background-color: none;
+				border: none;
+				text-align: center;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		
+			.input-item {
+				font-family: $font-monospace;
+				border-radius: 3px;
+				font-size: 1em;
+				width: 100%;
+			}
+		}
+
+		.read-mode {
+			border: none;
+			text-align: left;
+			margin-left: 1em;
+			margin-top: 0.5em;
+			width: 100%;
+		}
+
+		.delete-button {
+			position: absolute;
+			top: 0;
+			right: 0;
+			border: none;
+			font-size: 1em;
+			font-weight: bold;
+			background: none;
+			color: $color-shadow;
+			padding-right: 0.5em;
+		}
+	}
+}
