@@ -278,23 +278,23 @@ const QuestionUtil = {
 	getDetailedTextForModel(state, model, context) {
 		const scoreData = QuestionUtil.getScoreDataForModel(state, model, context)
 		return scoreData ? scoreData.detailedText : null
-	},
-
-	getScoreClass(score) {
-		switch (score) {
-			case null:
-				return 'is-not-scored'
-
-			case 'no-score':
-				return 'is-no-score'
-
-			case 100:
-				return 'is-correct'
-
-			default:
-				return 'is-not-correct'
-		}
 	}
+
+	// getScoreClass(score) {
+	// 	switch (score) {
+	// 		case null:
+	// 			return 'is-not-scored'
+
+	// 		case 'no-score':
+	// 			return 'is-no-score'
+
+	// 		case 100:
+	// 			return 'is-correct'
+
+	// 		default:
+	// 			return 'is-not-correct'
+	// 	}
+	// }
 }
 
 export default QuestionUtil

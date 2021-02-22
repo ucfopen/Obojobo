@@ -1,28 +1,22 @@
 import './viewer-component.scss'
 
 import React from 'react'
-import { CSSTransition } from 'react-transition-group'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import { getLabel } from './feedback-labels'
+import QuestionContent from './Content/viewer-component'
+import QuestionComponent from './question-component'
 
 const { OboComponent, OboQuestionComponent } = Viewer.components
 const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
-const { Button, Throbber } = Common.components
+const { Throbber } = Common.components
 const { focus } = Common.page
 const { QuestionResponseSendStates } = Viewer.stores.questionStore
 
-import QuestionContent from './Content/viewer-component'
-import QuestionFooter from './question-footer'
-import QuestionExplanation from './question-explanation'
-import QuestionOutcome from './question-outcome'
-
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
-const ANIMATION_TRANSITION_TIME_MS = 800
-// const ANIMATION_TRANSITION_TIME_MS = 3000
 
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
@@ -39,6 +33,7 @@ export default class Question extends OboQuestionComponent {
 
 		this.assessmentComponentRef = React.createRef()
 		this.resultsRef = React.createRef()
+		this.explanationRef = React.createRef()
 
 		this.onClickBlocker = this.onClickBlocker.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
@@ -89,7 +84,6 @@ export default class Question extends OboQuestionComponent {
 
 		const response = this.assessmentComponentRef.current.handleFormChange(event, prevResponse)
 
-		// const response = this.assessmentComponentRef.current.composeResponse(event, prevResponse)
 		QuestionUtil.setResponse(
 			this.props.model.get('id'),
 			response.state,
@@ -140,16 +134,16 @@ export default class Question extends OboQuestionComponent {
 		const context = this.props.moduleData.navState.context
 		const isSurvey = modelState.type === 'survey'
 
-		const cacluatedScoreResponse = isSurvey
+		const calculatedScoreResponse = isSurvey
 			? { score: 'no-score', details: null }
 			: this.assessmentComponentRef.current.calculateScore()
 		const detailedText =
-			this.assessmentComponentRef.current.getDetails(cacluatedScoreResponse.score) || null
+			this.assessmentComponentRef.current.getDetails(calculatedScoreResponse.score) || null
 
 		const feedbackText = getLabel(
 			modelState.correctLabels,
 			modelState.incorrectLabel,
-			cacluatedScoreResponse.score,
+			calculatedScoreResponse.score,
 			this.props.mode === 'review',
 			isSurvey,
 			true
@@ -157,8 +151,8 @@ export default class Question extends OboQuestionComponent {
 
 		QuestionUtil.setScore(
 			id,
-			cacluatedScoreResponse.score,
-			cacluatedScoreResponse.details,
+			calculatedScoreResponse.score,
+			calculatedScoreResponse.details,
 			feedbackText,
 			detailedText,
 			context
@@ -196,13 +190,6 @@ export default class Question extends OboQuestionComponent {
 	}
 
 	reveal() {
-		// this.props.model.get('id'),
-		// 	response.state,
-		// 	response.targetId,
-		// 	this.props.moduleData.navState.context,
-		// 	this.props.moduleData.navState.context.split(':')[1],
-		// 	this.props.moduleData.navState.context.split(':')[2]
-
 		QuestionUtil.revealAnswer(this.props.model.get('id'), this.props.moduleData.navState.context)
 	}
 
@@ -297,51 +284,22 @@ export default class Question extends OboQuestionComponent {
 		this.hideExplanation()
 	}
 
-	componentDidUpdate() {
-		switch (this.nextFocus) {
-			case FOCUS_TARGET_EXPLANATION:
-				delete this.nextFocus
-				this.refExplanation.focusOnExplanation()
-				break
-
-			case FOCUS_TARGET_RESULTS:
-				if (this.getScore() !== null) {
-					delete this.nextFocus
-					focus(this.resultsRef.current, false)
-					// this.answerChoicesRef.current.focusOnResults()
-				}
-				break
-
-			case FOCUS_TARGET_QUESTION:
-				delete this.nextFocus
-				FocusUtil.focusComponent(this.props.model.get('id'), { preventScroll: true })
-				break
-
-			case FOCUS_TARGET_ANSWERS:
-				delete this.nextFocus
-				FocusUtil.focusComponent(
-					this.constructor.getQuestionAssessmentModel(this.props.model).get('id'),
-					{ preventScroll: true, region: 'answers' }
-				)
-				break
-		}
-	}
-
-	getFeedbackText(
-		questionState,
-		model,
-		context,
-		correctLabels,
-		incorrectLabels,
-		score,
-		isReview,
-		isSurvey,
-		hasResponse
-	) {
-		const feedbackText = QuestionUtil.getFeedbackTextForModel(questionState, model, context)
+	getFeedbackText() {
+		const feedbackText = QuestionUtil.getFeedbackTextForModel(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
 		if (feedbackText) return feedbackText
 
-		return getLabel(correctLabels, incorrectLabels, score, isReview, isSurvey, hasResponse)
+		return getLabel(
+			this.props.model.modelState.correctLabels,
+			this.props.model.modelState.incorrectLabels,
+			this.getScore(),
+			this.getMode() === 'review',
+			this.props.moduleData.type === 'survey',
+			this.getResponse() !== null
+		)
 	}
 
 	getInstructions() {
@@ -349,20 +307,14 @@ export default class Question extends OboQuestionComponent {
 		return this.assessmentComponentRef.current.getInstructions()
 	}
 
-	// animationOnEntered() {
-	// 	console.log('on enter', this.refExplanation)
-	// 	this.solutionContainerHeight = `${this.refExplanation.current.getBoundingClientRect().height}px`
-	// }
+	getShouldShowRevealAnswerButton() {
+		const mode = this.getMode()
+		const type = this.props.model.modelState.type
+		const questionAssessmentModel = this.constructor.getQuestionAssessmentModel(this.props.model)
+		const score = this.getScore()
 
-	// animationOnExit(el) {
-	// 	el.style.height = this.solutionContainerHeight
-	// }
+		let revealAnswerMode = this.props.model.modelState.revealAnswer
 
-	// animationOnExiting(el) {
-	// 	el.style.height = 0
-	// }
-
-	getShouldShowRevealAnswerButton(mode, type, score, revealAnswerMode, questionAssessmentModel) {
 		// If we don't have a reference yet to the assessment component then abort
 		if (!this.assessmentComponentRef || !this.assessmentComponentRef.current) return false
 
@@ -418,56 +370,107 @@ export default class Question extends OboQuestionComponent {
 		}
 	}
 
-	render() {
-		if (this.props.showContentOnly) {
-			return this.renderContentOnly()
-		}
+	getScoreClass(score) {
+		switch (score) {
+			case null:
+				return 'is-not-scored'
 
-		const model = this.props.model
-		const context = this.props.moduleData.navState.context
-		const questionState = this.props.moduleData.questionState
-		const mode = this.getMode()
-		const type = model.modelState.type
-		const revealAnswer = model.modelState.revealAnswer
-		const score = this.getScore()
-		const scoreClass = QuestionUtil.getScoreClass(score)
-		const response = QuestionUtil.getResponse(
+			case 'no-score':
+				return 'is-no-score'
+
+			case 100:
+				return 'is-correct'
+
+			default:
+				return 'is-not-correct'
+		}
+	}
+
+	getViewState() {
+		switch (this.getMode()) {
+			case 'review':
+				return 'active'
+
+			default:
+				return QuestionUtil.getViewState(
+					this.props.moduleData.questionState,
+					this.props.model,
+					this.props.moduleData.navState.context
+				)
+		}
+	}
+
+	getResponse() {
+		return QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const hasResponse = QuestionUtil.hasResponse(questionState, model, context)
-		const isAnswerScored = QuestionUtil.isScored(questionState, model, context)
-		const isAnswerRevealed = QuestionUtil.isAnswerRevealed(questionState, model, context)
-		const assessment = this.constructor.getQuestionAssessmentModel(model)
-		const shouldShowRevealAnswerButton = this.getShouldShowRevealAnswerButton(
-			mode,
-			type,
-			score,
-			revealAnswer,
-			assessment
+	}
+
+	isAnswerRevealed() {
+		return QuestionUtil.isAnswerRevealed(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
 		)
-		const AssessmentComponent = assessment.getComponentClass()
-		const feedbackText = this.getFeedbackText(
-			questionState,
-			model,
-			context,
-			model.modelState.correctLabels,
-			model.modelState.incorrectLabels,
-			score,
-			mode === 'review',
-			type === 'survey',
-			hasResponse
+	}
+
+	getDetailedText() {
+		return QuestionUtil.getDetailedTextForModel(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
 		)
-		const detailedText = QuestionUtil.getDetailedTextForModel(questionState, model, context)
-		const isShowingExplanationValue = this.isShowingExplanation()
-		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
-		const isAssessmentQuestion = mode === 'assessment'
-		const responseSendState = QuestionUtil.getResponseSendState(questionState, model, context)
-		const isResponseSending = responseSendState === QuestionResponseSendStates.SENDING
-		const isFormDisabled = isResponseSending && isAssessmentQuestion
-		const viewState =
-			mode === 'review' ? 'active' : QuestionUtil.getViewState(questionState, model, context)
+	}
+
+	getResponseSendState() {
+		return QuestionUtil.getResponseSendState(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+	}
+
+	componentDidUpdate() {
+		switch (this.nextFocus) {
+			case FOCUS_TARGET_EXPLANATION:
+				delete this.nextFocus
+				this.explanationRef.focusOnExplanation()
+				break
+
+			case FOCUS_TARGET_RESULTS:
+				if (this.getScore() !== null) {
+					delete this.nextFocus
+					focus(this.resultsRef.current, false)
+				}
+				break
+
+			case FOCUS_TARGET_QUESTION:
+				delete this.nextFocus
+				FocusUtil.focusComponent(this.props.model.get('id'), { preventScroll: true })
+				break
+
+			case FOCUS_TARGET_ANSWERS:
+				delete this.nextFocus
+				FocusUtil.focusComponent(
+					this.constructor.getQuestionAssessmentModel(this.props.model).get('id'),
+					{ preventScroll: true, region: 'answers' }
+				)
+				break
+		}
+	}
+
+	render() {
+		if (this.props.showContentOnly) {
+			return this.renderContentOnly()
+		}
+		const questionModel = this.props.model
+		const questionAssessmentModel = this.constructor.getQuestionAssessmentModel(questionModel)
+		const moduleData = this.props.moduleData
+		const type = questionModel.modelState.type
+		const score = this.getScore()
+		const mode = this.getMode()
 		const startQuestionAriaLabel =
 			mode === 'practice'
 				? 'Try Question'
@@ -476,159 +479,43 @@ export default class Question extends OboQuestionComponent {
 				  ' of ' +
 				  this.props.numQuestionsInBank
 
-		const classNames =
-			'obojobo-draft--chunks--question' +
-			` ${scoreClass}` +
-			` is-${viewState}` +
-			` is-type-${type}` +
-			` is-mode-${mode}` +
-			isOrNot(isFormDisabled, 'form-disabled') +
-			isOrNot(hasResponse, 'responded-to') +
-			isOrNot(this.state.isFlipping, 'flipping')
-
-		return (
-			<OboComponent
-				model={model}
-				moduleData={this.props.moduleData}
-				className={classNames}
-				role="region"
-				aria-label="Question"
-				tag="form"
-				onChange={this.onFormChange}
-				onSubmit={this.onFormSubmit}
-			>
-				<div className="flipper">
-					<div className="content-back">
-						<QuestionContent model={model} moduleData={this.props.moduleData} />
-						{isAnswerScored ? (
-							<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
-								<QuestionOutcome
-									score={score}
-									type={type}
-									feedbackText={feedbackText}
-									detailedText={detailedText}
-									isForScreenReader
-								/>
-							</div>
-						) : null}
-						<fieldset disabled={isFormDisabled}>
-							<legend className="instructions">
-								{this.getInstructions(/*responseType, this.props.type*/)}
-							</legend>
-							<div className="assessment-component">
-								<AssessmentComponent
-									ref={this.assessmentComponentRef}
-									key={assessment.get('id')}
-									model={assessment}
-									moduleData={this.props.moduleData}
-									mode={mode}
-									type={type}
-									hasResponse={hasResponse}
-									score={score}
-									scoreClass={scoreClass}
-									feedbackText={feedbackText}
-									detailedText={detailedText}
-									questionModel={this.props.model}
-									response={response}
-									disabled={isFormDisabled}
-								/>
-							</div>
-						</fieldset>
-						{!isAssessmentQuestion ? (
-							<QuestionFooter
-								score={score}
-								hasResponse={hasResponse}
-								shouldShowRevealAnswerButton={shouldShowRevealAnswerButton}
-								isAnswerRevealed={isAnswerRevealed}
-								mode={mode}
-								type={type}
-								feedbackText={feedbackText}
-								detailedText={detailedText}
-								onClickReset={this.onClickReset}
-								onClickReveal={this.onClickReveal}
-							/>
-						) : null}
-						<CSSTransition
-							in={isShowingExplanationButtonValue}
-							classNames="explanation"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							{isShowingExplanationButtonValue ? (
-								<QuestionExplanation
-									ref={component => (this.refExplanation = component)}
-									isShowingExplanation={isShowingExplanationValue}
-									solutionModel={this.props.model.modelState.solution}
-									moduleData={this.props.moduleData}
-									animationTransitionTime={ANIMATION_TRANSITION_TIME_MS}
-									onClickShowExplanation={this.onClickShowExplanation}
-									onClickHideExplanation={this.onClickHideExplanation}
-								/>
-							) : (
-								<span />
-							)}
-						</CSSTransition>
-					</div>
-					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker}>
-						<Button
-							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
-							ariaLabel={startQuestionAriaLabel}
-							disabled={viewState !== 'hidden'}
-						/>
-					</div>
-				</div>
-
-				{/* <CSSTransition
-					in={responseSendState}
-					classNames="response-status"
-					timeout={ANIMATION_TRANSITION_TIME_MS}
-				> */}
-				{isAssessmentQuestion ? (
-					<div className="response-status-container">
-						<CSSTransition
-							in={responseSendState === QuestionResponseSendStates.NOT_SENT}
-							classNames="response-status"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							<span className="is-response-state-not-sent">&nbsp;</span>
-						</CSSTransition>
-
-						<CSSTransition
-							in={responseSendState === QuestionResponseSendStates.SENDING}
-							classNames="response-status"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							<span className="is-response-state-sending">
-								<Throbber />
-							</span>
-						</CSSTransition>
-
-						<CSSTransition
-							in={responseSendState === QuestionResponseSendStates.RECORDED}
-							classNames="response-status"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							<span className="is-response-state-recorded">Answer Saved</span>
-						</CSSTransition>
-
-						<CSSTransition
-							in={responseSendState === QuestionResponseSendStates.ERROR}
-							classNames="response-status"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							<span className="is-response-state-error">✖ Error sending response</span>
-						</CSSTransition>
-
-						<CSSTransition
-							in={!responseSendState}
-							classNames="response-status"
-							timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
-							<span className="is-response-state-other">&nbsp;</span>
-						</CSSTransition>
-					</div>
-				) : null}
-			</OboComponent>
-		)
+		return React.forwardRef((props, ref) => {
+			return (
+				<QuestionComponent
+					updateExplanationRef={component => {
+						this.explanationRef = component
+					}}
+					questionModel={questionModel}
+					questionAssessmentModel={questionAssessmentModel}
+					moduleData={moduleData}
+					resultsRef={this.resultsRef}
+					assessmentComponentRef={this.assessmentComponentRef}
+					type={type}
+					mode={mode}
+					viewState={this.getViewState()}
+					response={this.getResponse()}
+					score={score}
+					startQuestionAriaLabel={startQuestionAriaLabel}
+					isFlipping={this.state.isFlipping}
+					shouldShowRevealAnswerButton={this.getShouldShowRevealAnswerButton()}
+					isAnswerRevealed={this.isAnswerRevealed()}
+					isShowingExplanation={this.isShowingExplanation()}
+					isShowingExplanationButton={this.isShowingExplanationButton()}
+					instructions={this.getInstructions()}
+					scoreClass={this.getScoreClass(score)}
+					feedbackText={this.getFeedbackText()}
+					detailedText={this.getDetailedText()}
+					responseSendState={this.getResponseSendState()}
+					onFormChange={this.onFormChange}
+					onFormSubmit={this.onFormSubmit}
+					onClickReset={this.onClickReset}
+					onClickReveal={this.onClickReveal}
+					onClickShowExplanation={this.onClickShowExplanation}
+					onClickHideExplanation={this.onClickHideExplanation}
+					onClickBlocker={this.onClickBlocker}
+				/>
+			)
+		})
 	}
 
 	renderContentOnly() {
