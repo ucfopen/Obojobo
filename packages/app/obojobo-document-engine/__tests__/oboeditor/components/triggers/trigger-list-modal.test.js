@@ -269,13 +269,15 @@ describe('TriggerListModal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('updateActionValue responds to checkbox boolean values', () => {
-		// prepare state
+	test('changes scroll type', () => {
 		const content = {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
+					actions: [
+						{ type: 'focus:component', value: { id: 1 } },
+						{ type: 'focus:component', value: { id: 1 } }
+					]
 				},
 				{
 					type: 'onUnmount',
@@ -285,49 +287,51 @@ describe('TriggerListModal', () => {
 		}
 		const component = mount(<TriggerListModal content={content} />)
 
-		// set default state expectation
-		// on the first trigger's first action
-		expect(component.state().triggers[0].actions[0]).not.toHaveProperty('value.animateScroll')
-
-		// call updateAction, simulating a checkbox checked on animateScroll
 		component
-			.instance()
-			.updateActionValue(0, 0, 'animateScroll', { target: { type: 'checkbox', checked: true } })
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'animateScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', true)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
 
-		// expect animateScroll to be set to true
-		expect(component.state().triggers[0].actions[0]).toHaveProperty('value.animateScroll', true)
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'preventScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', true)
+
+		component
+			.find('select')
+			.at(2)
+			.simulate('change', {
+				target: { value: 'jumpScroll' }
+			})
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
 	})
 
-	test('updateActionValue responds to input string values', () => {
-		// prepare state
-		const content = {
-			triggers: [
-				{
-					type: 'onMount',
-					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
-				},
-				{
-					type: 'onUnmount',
-					actions: []
-				}
-			]
+	test('getScrollType returns correct value', () => {
+		const action = {
+			value: {
+				animateScroll: false,
+				preventScroll: false
+			}
 		}
-		const component = mount(<TriggerListModal content={content} />)
 
-		// set default state expectation
-		// on the first trigger's first action
-		expect(component.state().triggers[0].actions[0]).not.toHaveProperty('value.animateScroll')
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('jumpScroll')
 
-		// call updateAction, simulating a checkbox checked on animateScroll
-		component
-			.instance()
-			.updateActionValue(0, 0, 'animateScroll', { target: { type: 'text', value: 'mock-value' } })
+		action.value.preventScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('preventScroll')
 
-		// expect animateScroll to be set to true
-		expect(component.state().triggers[0].actions[0]).toHaveProperty(
-			'value.animateScroll',
-			'mock-value'
-		)
+		action.value.animateScroll = true
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
+		action.value.preventScroll = false
+		expect(TriggerListModal.prototype.getScrollType(action)).toBe('animateScroll')
 	})
 
 	test.each`

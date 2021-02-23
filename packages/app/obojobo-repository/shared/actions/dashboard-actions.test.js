@@ -1003,4 +1003,60 @@ describe('Dashboard Actions', () => {
 			expect(error.message).toBe('Failed restoring draft.')
 		})
 	})
+
+	test('checkModuleLock returns the expected output', () => {
+		const mockLock = {
+			id: 'mockId',
+			userId: 'mockUserId',
+			draftId: 'mockDraftId',
+			createdAt: 'mockDate'
+		}
+		const mockFetchResponse = {
+			...standardFetchResponse,
+			json: jest.fn(() => ({
+				status: 'ok',
+				value: { ...mockLock }
+			}))
+		}
+
+		global.fetch.mockResolvedValueOnce(mockFetchResponse)
+
+		const actionReply = DashboardActions.checkModuleLock('mockDraftId')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/locks/mockDraftId', defaultFetchOptions)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.CHECK_MODULE_LOCK,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.then(res => {
+			expect(mockFetchResponse.json).toHaveBeenCalled()
+			expect(res).toEqual({ ...mockLock })
+		})
+	})
+
+	test('getModuleLock handles errors', () => {
+		const mockFetchResponse = {
+			ok: false,
+			json: jest.fn(() => ({ status: 'not ok' }))
+		}
+
+		global.fetch.mockResolvedValueOnce(mockFetchResponse)
+
+		const actionReply = DashboardActions.checkModuleLock('mockDraftId')
+
+		expect(global.fetch).toHaveBeenCalledWith('/api/locks/mockDraftId', defaultFetchOptions)
+
+		expect(actionReply).toEqual({
+			type: DashboardActions.CHECK_MODULE_LOCK,
+			promise: expect.any(Object)
+		})
+
+		return actionReply.promise.catch(error => {
+			expect(mockFetchResponse.json).toHaveBeenCalled()
+			expect(error).toBeInstanceOf(Error)
+			expect(error.message).toBe('Failed to check lock for module with id mockDraftId.')
+		})
+	})
 })

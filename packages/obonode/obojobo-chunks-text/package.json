@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-text",
-	"version": "11.0.0",
+	"version": "11.2.0",
 	"license": "AGPL-3.0-only",
 	"description": "Text content chunk for Obojobo",
 	"scripts": {
@@ -26,8 +26,8 @@
 		"useTabs": true,
 		"singleQuote": true
 	},
-	"dependencies": {
-		"obojobo-lib-utils": "^11.0.0"
+	"peerDependencies": {
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
