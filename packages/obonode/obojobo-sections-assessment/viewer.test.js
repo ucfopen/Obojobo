@@ -32,6 +32,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(register[1]).toHaveProperty('getNavItem', expect.any(Function))
 		expect(register[1]).toHaveProperty('variables', {
 			'assessment:attemptsAmount': expect.any(Function),
+			'assessment:attemptsTaken': expect.any(Function),
 			'assessment:attemptsRemaining': expect.any(Function)
 		})
 	})
@@ -144,6 +145,47 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 			modelState: { attempts: 17 }
 		})
 		expect(vari).toEqual('mockRemaining')
+	})
+
+	test('assessment:attemptsTaken returns `null` when there is no assessment', () => {
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const model = {
+			getParentOfType: jest.fn().mockReturnValueOnce(null)
+		}
+		const AssessmentUtil = Viewer.util.AssessmentUtil
+
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel = jest.fn()
+
+		// retrieve the method from the variables
+		const funct = register[1].variables['assessment:attemptsTaken']
+		expect(funct).toEqual(expect.any(Function))
+
+		const vari = funct(model)
+		expect(vari).toEqual(null)
+	})
+
+	test('assessment:attemptsTaken calls AssessmentUtil', () => {
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const model = {
+			getParentOfType: jest.fn().mockReturnValueOnce('mockModel')
+		}
+		const viewerProps = {
+			assessmentState: 'mockAssessmentState'
+		}
+		const AssessmentUtil = Viewer.util.AssessmentUtil
+
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel.mockReturnValueOnce('mockTaken')
+
+		// retrieve the method from the variables
+		const funct = register[1].variables['assessment:attemptsTaken']
+		expect(funct).toEqual(expect.any(Function))
+
+		const vari = funct(model, viewerProps)
+		expect(AssessmentUtil.getNumberOfAttemptsCompletedForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			'mockModel'
+		)
+		expect(vari).toEqual('mockTaken')
 	})
 
 	test('assessment:attemptsAmount returns `null` when there is no assessment', () => {

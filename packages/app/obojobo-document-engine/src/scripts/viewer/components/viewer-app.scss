@@ -95,6 +95,7 @@
 				padding: 0.4em;
 				background-color: $color-bg;
 				color: $color-preview;
+				border: none;
 			}
 		}
 
@@ -109,7 +110,7 @@
 		}
 	}
 
-	&.is-open-nav.is-enabled-nav {
+	&.is-open-nav.is-not-disabled-nav {
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
 

@@ -7,7 +7,7 @@
 	"scripts": {
 		"build": "cd node_modules/obojobo-express && yarn build",
 		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
-		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
+		"clean": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
 		"dev": "cd node_modules/obojobo-express && yarn dev",
 		"heroku-postbuild": "yarn build",
 		"lint": "lerna run lint",
@@ -16,15 +16,18 @@
 		"precommit": "lerna run precommit --concurrency 1 && yarn test:ci --bail",
 		"release:publish": "lerna publish from-package",
 		"release:tag": "lerna version --no-push --sign-git-commit --sign-git-tag --no-commit-hooks --force-publish",
+		"version": "yarn update-project-version && yarn update-docker-app-version",
+		"update-project-version": "export VERSION=$(node -p -e \"require('./lerna.json').version\") && sed -i .bak 's/^\t\"version\".*/\t\"version\": \"'\"$VERSION\"'\"/' ./package.json && git add ./package.json",
+		"update-docker-app-version": "export VERSION=$(node -p -e \"require('./lerna.json').version\") && sed -i .bak 's/.*\"version\".*/  \"version\": \"'\"$VERSION\"'\",/' ./docker/obojobo-pm2-server-src/package.json && git add ./docker/obojobo-pm2-server-src/package.json",
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"test:ci:each": "lerna run test:ci"
 	},
 	"devDependencies": {
-		"husky": "^4.2.5",
-		"jest-runner-eslint": "^0.8.0",
-		"lerna": "^3.21.0",
+		"husky": "^4.3.0",
+		"jest-runner-eslint": "^0.10.0",
+		"lerna": "^3.22.1",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
@@ -100,5 +103,5 @@
 		"yarn": "^1.15.2",
 		"node": "^12.11.1"
 	},
-	"version": "12.11.1"
+	"version": "11.2.0"
 }

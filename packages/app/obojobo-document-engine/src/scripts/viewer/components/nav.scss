@@ -206,6 +206,12 @@
 			background: $color-bg;
 			border: solid 2px $color-text-minor;
 		}
+
+		.assessment-info {
+			font-size: 0.75em;
+			font-weight: normal;
+			color: $color-text-minor;
+		}
 	}
 
 	.link,
@@ -238,6 +244,8 @@
 		}
 
 		&.is-last-in-list {
+			border: none;
+
 			&::before {
 				content: '';
 				position: absolute;
