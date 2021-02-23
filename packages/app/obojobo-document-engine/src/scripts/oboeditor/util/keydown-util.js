@@ -73,46 +73,45 @@ const KeyDownUtil = {
 			if (deleteForward) Transforms.move(editor)
 		}
 	},
-	breakToText: (event, editor, entry) => {
-		const [node, nodePath] = entry
-		const nodeEnd = Editor.end(editor, [...nodePath, node.children.length - 1])
-		const selectionEnd = Editor.end(editor, editor.selection)
-		const selectionStart = Editor.start(editor, editor.selection)
-
+	breakToText: (event, editor) => {
+		if (event.isDefaultPrevented()) return
 		event.preventDefault()
 
-		// When multiple nodes are selected, only split the last node.
-		if (Point.isBefore(selectionEnd, nodeEnd) || Point.equals(selectionEnd, nodeEnd)) {
-			const textRange = {
-				anchor: selectionEnd,
-				focus: nodeEnd
-			}
+		const selectionStart = Editor.start(editor, editor.selection)
+		const selectionEnd = Editor.end(editor, editor.selection)
+		const nodeEnd = Node.parent(editor, selectionEnd.path)
 
-			const toEndOfNode = {
-				anchor: selectionStart,
-				focus: nodeEnd
-			}
+		const endPath = [...selectionEnd.path]
+		endPath[endPath.length - 1] = nodeEnd.children.length - 1
+		const endPoint = Editor.end(editor, [...endPath])
 
-			const newTexts = Node.fragment(editor, textRange)
-			const newNode = {
-				type: TEXT_NODE,
-				content: { triggers: [] },
-				children: [
-					{
-						type: TEXT_NODE,
-						subtype: TEXT_LINE_NODE,
-						content: { indent: 0, align: 'left' },
-						children: [...newTexts[0].children]
-					}
-				]
-			}
-
-			Transforms.insertNodes(editor, newNode, { at: toEndOfNode })
-
-			// Move the cursor to the beginning of the duplicated (now text) node
-			Transforms.select(editor, selectionStart)
-			Transforms.move(editor, { distance: 1, unit: 'offset' })
+		const textRange = {
+			anchor: selectionEnd,
+			focus: endPoint
 		}
+		const deleteRange = {
+			anchor: selectionStart,
+			focus: endPoint
+		}
+		const newTexts = Node.fragment(editor, textRange)
+		const newNode = {
+			type: TEXT_NODE,
+			content: { triggers: [] },
+			children: [
+				{
+					type: TEXT_NODE,
+					subtype: TEXT_LINE_NODE,
+					content: { indent: 0, align: 'left' },
+					children: [...newTexts[0].children]
+				}
+			]
+		}
+		Transforms.insertNodes(editor, newNode, {
+			at: deleteRange
+		})
+
+		// Move the cursor to the beginning of the duplicated (now text) node
+		Transforms.move(editor, { distance: 1, unit: 'offset' })
 	}
 }
 

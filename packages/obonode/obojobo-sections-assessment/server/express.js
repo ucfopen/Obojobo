@@ -18,6 +18,12 @@ const {
 	checkValidationRules,
 	validImportedAssessmentScoreId
 } = require('obojobo-express/server/express_validators')
+const {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_UNEXPECTED_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME,
+	ERROR_UNEXPECTED_ATTEMPT_RESUME
+} = require('./error-constants')
 
 // load the server event listeners
 require('./events')
@@ -91,7 +97,17 @@ router
 
 			res.success(attempt)
 		} catch (error) {
-			logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
+			let errorMessage = ''
+
+			switch (error.message) {
+				case ERROR_INVALID_ATTEMPT_RESUME:
+					errorMessage = ERROR_INVALID_ATTEMPT_RESUME
+					break
+				default:
+					errorMessage = ERROR_UNEXPECTED_ATTEMPT_RESUME
+			}
+
+			logAndRespondToUnexpected(errorMessage, res, req, error)
 		}
 	})
 
@@ -107,9 +123,19 @@ router
 	.post((req, res) => {
 		return endAttempt(req, res)
 			.then(res.success)
-			.catch(error =>
-				logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
-			)
+			.catch(error => {
+				let errorMessage = ''
+
+				switch (error.message) {
+					case ERROR_INVALID_ATTEMPT_END:
+						errorMessage = ERROR_INVALID_ATTEMPT_END
+						break
+					default:
+						errorMessage = ERROR_UNEXPECTED_ATTEMPT_END
+				}
+
+				logAndRespondToUnexpected(errorMessage, res, req, error)
+			})
 	})
 
 // @TODO: seems like attemptid should be in the url and switch to GET?

@@ -1,12 +1,17 @@
 {
 	"object": "block",
 	"type": "ObojoboDraft.Chunks.List",
-	"content": { "listStyles": { "type": "unordered" } },
+	"content": {
+		"listStyles": {
+			"type": "unordered",
+			"indents": [{ "type": "unordered", "bulletStyle": "disc" }]
+		}
+	},
 	"children": [
 		{
 			"type": "ObojoboDraft.Chunks.List",
 			"subtype": "ObojoboDraft.Chunks.List.Level",
-			"content": { "type": "unordered", "bulletStyle": "disc" },
+			"content": {},
 			"children": [
 				{
 					"type": "ObojoboDraft.Chunks.List",

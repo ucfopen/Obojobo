@@ -37,6 +37,7 @@ const {
 const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
 const express = require('express')
+const { ERROR_INVALID_ATTEMPT_END, ERROR_INVALID_ATTEMPT_RESUME } = require('./error-constants')
 let app
 
 describe('server/express', () => {
@@ -193,9 +194,11 @@ describe('server/express', () => {
 	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
 
-		const response = await request(app)
+		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
+		resumeAttempt.mockRejectedValueOnce(new Error(ERROR_INVALID_ATTEMPT_RESUME))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
 
@@ -204,6 +207,20 @@ describe('server/express', () => {
 			status: 'error',
 			value: {
 				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_RESUME,
 				type: 'unexpected'
 			}
 		})
@@ -253,9 +270,11 @@ describe('server/express', () => {
 	test('POST /api/assessments/attempt/mock-attempt-id/end fails', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		endAttempt.mockRejectedValueOnce(mockReturnValue)
 
-		const response = await request(app)
+		endAttempt.mockRejectedValueOnce(mockReturnValue)
+		endAttempt.mockRejectedValueOnce(new Error(ERROR_INVALID_ATTEMPT_END))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
 
@@ -264,6 +283,20 @@ describe('server/express', () => {
 			status: 'error',
 			value: {
 				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_END,
 				type: 'unexpected'
 			}
 		})

@@ -1,6 +1,10 @@
 import React from 'react'
-import PageHomepage from './page-homepage'
 import renderer from 'react-test-renderer'
+
+mockStaticDate()
+
+// require used to make sure it's loaded after mock date
+const PageHomepage = require('./page-homepage')
 
 describe('PageHomepage', () => {
 	test('renders when given props', () => {
