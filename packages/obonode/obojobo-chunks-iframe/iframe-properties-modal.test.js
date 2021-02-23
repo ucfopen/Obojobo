@@ -195,7 +195,7 @@ describe('IFrame Properties Modal', () => {
 		)
 
 		const widthInput = component.find('input').at(3)
-		expect(widthInput.prop('placeholder')).toBe("''")
+		expect(widthInput.prop('placeholder')).toBe('--')
 		expect(widthInput.prop('value')).toBe('')
 
 		const select = component.find('select').at(0)

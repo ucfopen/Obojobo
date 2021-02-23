@@ -149,6 +149,10 @@
 		}
 	}
 
+	&.is-sizing-max-width.pad {
+		padding: 0;
+	}
+
 	&.is-missing-src {
 		> .container {
 			$error-color: lighten($color-error, 65%);
