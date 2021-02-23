@@ -13,7 +13,8 @@ const STYLE_ORDER = [
 	StyleType.STRIKETHROUGH,
 	StyleType.MONOSPACE,
 	StyleType.SUPERSCRIPT,
-	StyleType.ITALIC
+	StyleType.ITALIC,
+	StyleType.COLOR
 ]
 
 const getTextNodeFragmentDescriptorsAtHelper = function(
@@ -171,8 +172,9 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 		}
 
 		case StyleType.COLOR:
-			nodeToWrap.html = `<span style="color:${styleRange.data.text}">${text}</span>`
-			newChild = new MockElement('color', styleRange.data)
+			newChild = new MockElement('span', {
+				style: { color: styleRange.data.text }
+			})
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			nodeToWrap.text = text
