@@ -1,5 +1,9 @@
 import mockConsole from 'jest-mock-console'
 import React from 'react'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from 'obojobo-sections-assessment/server/error-constants.js'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn(),
@@ -18,6 +22,9 @@ jest.mock('obojobo-sections-assessment/components/dialogs/pre-attempt-import-sco
 jest.mock('obojobo-sections-assessment/components/dialogs/results-dialog', () =>
 	global.mockReactComponent(this, 'ResultsDialog')
 )
+jest.mock('obojobo-sections-assessment/components/dialogs/updated-module-dialog', () =>
+	global.mockReactComponent(this, 'UpdatedModuleDialog')
+)
 
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../src/scripts/viewer/stores/nav-store')
@@ -32,6 +39,7 @@ jest.mock('../../../src/scripts/viewer/util/focus-util')
 describe('AssessmentStore', () => {
 	let ImportDialog
 	let ResultsDialog
+	let UpdatedModuleDialog
 	let restoreConsole
 	let AssessmentStore
 	let Dispatcher
@@ -124,6 +132,7 @@ describe('AssessmentStore', () => {
 		restoreConsole = mockConsole('error')
 		ImportDialog = require('obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog')
 		ResultsDialog = require('obojobo-sections-assessment/components/dialogs/results-dialog')
+		UpdatedModuleDialog = require('obojobo-sections-assessment/components/dialogs/updated-module-dialog')
 		OboModel = require('../../../__mocks__/_obo-model-with-chunks').default
 		AssessmentStore = require('../../../src/scripts/viewer/stores/assessment-store').default
 		Dispatcher = require('../../../src/scripts/common/flux/dispatcher').default
@@ -298,6 +307,24 @@ describe('AssessmentStore', () => {
 			status: 'error',
 			value: {
 				message: 'Attempt limit reached'
+			}
+		})
+
+		return AssessmentStore.startAttemptWithAPICall('draftId', 'visitId', 'assessmentId').then(
+			() => {
+				expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
+				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+			}
+		)
+	})
+
+	test('startAttemptWithAPICall shows an error if the assessment ID is invalid', () => {
+		OboModel.create(getExampleAssessment())
+
+		AssessmentAPI.startAttempt.mockResolvedValueOnce({
+			status: 'error',
+			value: {
+				message: 'ID not found'
 			}
 		})
 
@@ -603,7 +630,12 @@ describe('AssessmentStore', () => {
 		})
 
 		// reject so we can skip setup for inner logic
-		AssessmentAPI.endAttempt.mockRejectedValueOnce('mock-error')
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
+			status: 'error',
+			value: {
+				message: 'mockError'
+			}
+		})
 
 		await expect(
 			AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')
@@ -637,7 +669,10 @@ describe('AssessmentStore', () => {
 
 		// reject so we can skip setup for inner logic
 		AssessmentAPI.endAttempt.mockResolvedValueOnce({
-			status: 'error'
+			status: 'error',
+			value: {
+				message: 'mockError'
+			}
 		})
 
 		jest.spyOn(AssessmentStore, 'updateStateAfterEndAttempt')
@@ -1442,5 +1477,106 @@ describe('AssessmentStore', () => {
 		jest.spyOn(Dispatcher, 'trigger')
 		AssessmentStore.displayImportAlreadyUsed()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:alert', expect.any(Object))
+	})
+
+	test('resuming an attempt for a different module restarts an attempt', async () => {
+		NavStore.getState.mockReturnValue({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+
+		const mockResumeAttemptResponse = {
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_RESUME
+			}
+		}
+
+		AssessmentStore.state = {
+			assessmentSummary: [
+				{
+					assessmentId: 'mockAssessmentId',
+					unfinishedAttemptId: 'mockUnfinishedId'
+				}
+			]
+		}
+
+		AssessmentAPI.resumeAttempt.mockResolvedValueOnce(mockResumeAttemptResponse)
+
+		jest.spyOn(AssessmentStore, 'updateStateAfterStartAttempt')
+		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
+		jest.spyOn(AssessmentStore, 'findUnfinishedAttemptInAssessmentSummary')
+
+		AssessmentStore.updateStateAfterStartAttempt.mockReturnValueOnce()
+
+		await AssessmentStore.resumeAttemptWithAPICall('resume-attempt-id')
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.updateStateAfterStartAttempt).not.toHaveBeenCalled()
+		expect(AssessmentStore.updateStateAfterStartAttempt).not.toHaveBeenCalledWith()
+		expect(AssessmentStore.triggerChange).not.toHaveBeenCalled()
+
+		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.findUnfinishedAttemptInAssessmentSummary).toHaveBeenCalledTimes(1)
+
+		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledWith(
+			'mockAssessmentId'
+		)
+
+		AssessmentStore.updateStateAfterStartAttempt.mockRestore()
+	})
+
+	test('endAttemptWithAPICall starts a new attempt if module is different', async () => {
+		AssessmentStore.setState({
+			assessments: {
+				['mock-assessment-id']: {
+					current: {
+						attemptId: 'mock-attempt-id',
+						state: {
+							chosen: []
+						}
+					}
+				}
+			}
+		})
+
+		NavStore.getState.mockReturnValueOnce({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		})
+
+		AssessmentAPI.endAttempt.mockResolvedValueOnce({
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_END
+			}
+		})
+
+		jest.spyOn(AssessmentStore, 'updateStateAfterEndAttempt')
+		jest.spyOn(AssessmentStore, 'triggerChange')
+		jest.spyOn(Dispatcher, 'trigger')
+
+		await expect(
+			AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')
+		).resolves.toBe()
+
+		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
+		expect(ModalUtil.show).toHaveBeenCalledWith(
+			<UpdatedModuleDialog onConfirm={expect.any(Function)} />,
+			false
+		)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:attemptEnded', 'mock-assessment-id')
+		expect(AssessmentStore.updateStateAfterEndAttempt).not.toHaveBeenCalled()
+		expect(AssessmentStore.triggerChange).not.toHaveBeenCalled()
+	})
+
+	test('onCloseUpdatedModuleDialog restarts attempt with same id', () => {
+		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
+
+		AssessmentStore.onCloseUpdatedModuleDialog('mock-id')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledWith('mock-id')
 	})
 })
