@@ -18,11 +18,13 @@ const Excerpt = props => {
 			>
 				<blockquote cite="test">
 					<div className="excerpt-content">
-						{props.model.children.models.map((child, index) => {
-							const Component = child.getComponentClass()
+						<div className="wrapper">
+							{props.model.children.models.map((child, index) => {
+								const Component = child.getComponentClass()
 
-							return <Component key={index} model={child} moduleData={props.moduleData} />
-						})}
+								return <Component key={index} model={child} moduleData={props.moduleData} />
+							})}
+						</div>
 						<div className="overlay" />
 					</div>
 

@@ -179,6 +179,19 @@ class Excerpt extends React.Component {
 				}
 			}
 
+			case 'computer-hacker-white': {
+				return {
+					bodyStyle: 'term-white',
+					width: 'medium',
+					font: 'monospace',
+					fontStyle: 'regular',
+					lineHeight: 'regular',
+					fontSize: 'smaller',
+					topEdge: 'normal',
+					bottomEdge: 'normal'
+				}
+			}
+
 			case 'computer-hacker-green': {
 				return {
 					bodyStyle: 'term-green',
@@ -199,6 +212,32 @@ class Excerpt extends React.Component {
 					font: 'monospace',
 					fontStyle: 'regular',
 					lineHeight: 'regular',
+					fontSize: 'smaller',
+					topEdge: 'normal',
+					bottomEdge: 'normal'
+				}
+			}
+
+			case 'modern-text-file': {
+				return {
+					bodyStyle: 'modern-text-file',
+					width: 'large',
+					font: 'helvetica',
+					fontStyle: 'regular',
+					lineHeight: 'generous',
+					fontSize: 'smaller',
+					topEdge: 'normal',
+					bottomEdge: 'normal'
+				}
+			}
+
+			case 'retro-text-file': {
+				return {
+					bodyStyle: 'retro-text-file',
+					width: 'large',
+					font: 'monospace',
+					fontStyle: 'regular',
+					lineHeight: 'generous',
 					fontSize: 'smaller',
 					topEdge: 'normal',
 					bottomEdge: 'normal'
@@ -269,9 +308,12 @@ class Excerpt extends React.Component {
 								<option value="typewritten">Typewritten</option>
 								<option value="receipt">Receipt</option>
 								<option value="computer-modern">Command Line</option>
+								<option value="computer-hacker-white">CRT Terminal (White)</option>
 								<option value="computer-hacker-green">CRT Terminal (Green)</option>
 								<option value="computer-hacker-orange">CRT Terminal (Orange)</option>
 								<option value="computer-c64">Commodore 64 Screen</option>
+								<option value="modern-text-file">Modern Text File</option>
+								<option value="retro-text-file">Retro Text File</option>
 								{/* <option value="modern-book-page">Modern Book Page</option>
 								<option value="old-book-page">Older Book Page</option> */}
 								<option value="none">None</option>
@@ -289,8 +331,11 @@ class Excerpt extends React.Component {
 								<option value="modern-paper">Modern Paper</option>
 								<option value="yellow-paper">Yellow Paper</option>
 								<option value="x">x</option>
+								<option value="retro-text-file">Retro Text File</option>
+								<option value="modern-text-file">Modern Text File</option>
 								<option value="aged-paper">Aged Paper</option>
 								<option value="command-line">Command Line</option>
+								<option value="term-white">CRT Terminal (White)</option>
 								<option value="term-green">CRT Terminal (Green)</option>
 								<option value="term-orange">CRT Terminal (Orange)</option>
 								<option value="term-c64">Commodore 64 Screen</option>

@@ -45,9 +45,12 @@ const adapter = {
 			'typewritten',
 			'receipt',
 			'computer-modern',
+			'computer-hacker-white',
 			'computer-hacker-green',
 			'computer-hacker-orange',
-			'computer-c64'
+			'computer-c64',
+			'modern-text-file',
+			'retro-text-file'
 		])
 
 		model.setStateProp('bodyStyle', 'filled-box', p => p.toLowerCase(), [
@@ -61,9 +64,12 @@ const adapter = {
 			'modern-book-page',
 			'old-book-page',
 			'command-line',
+			'term-white',
 			'term-green',
 			'term-orange',
 			'term-c64',
+			'retro-text-file',
+			'modern-text-file',
 			'none'
 		])
 

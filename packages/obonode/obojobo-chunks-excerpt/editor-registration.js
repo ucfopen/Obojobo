@@ -165,7 +165,7 @@ const Excerpt = {
 				case EXCERPT_CONTENT:
 					return (
 						<div className="excerpt-content">
-							{props.children}
+							<div className="wrapper">{props.children}</div>
 							<div className="overlay" />
 						</div>
 					)
