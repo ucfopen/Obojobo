@@ -81,23 +81,37 @@ describe('DraftSummary Model', () => {
 	`
 
 	const fetchAllDraftRevisionsQuery = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-				
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
+		SELECT
+			drafts_content.id,
+			drafts_content.draft_id,
+			drafts_content.created_at,
+			drafts_content.user_id,
+			users.first_name,
+			users.last_name
+		FROM drafts_content
+		JOIN users
+			ON drafts_content.user_id = users.id
+		WHERE
+			drafts_content.draft_id = $[draftId]
+
+		ORDER BY
+			drafts_content.created_at DESC
+		LIMIT $[count];
+	`
+	const expectQueryToMatch = (query, referenceQuery) => {
+		const spaceRegex = /\s+/g
+		const queryClean = query.replace(spaceRegex, ' ').trim()
+		const refClean = referenceQuery.replace(spaceRegex, ' ').trim()
+
+		expect(queryClean).toBe(refClean)
+	}
+
+	const expectQueryToContain = (query, shouldContainString) => {
+		const spaceRegex = /\s+/g
+		const queryClean = query.replace(spaceRegex, ' ').trim()
+		const stringClean = shouldContainString.replace(spaceRegex, ' ').trim()
+		expect(queryClean).toContain(stringClean)
+	}
 
 	const expectIsMockSummary = summary => {
 		expect(summary).toBeInstanceOf(DraftSummary)
@@ -124,15 +138,14 @@ describe('DraftSummary Model', () => {
 	})
 
 	test('fetchById returns error when no match is found in the database', () => {
-		logger.error = jest.fn()
-
 		expect.hasAssertions()
-
-		db.one.mockRejectedValueOnce(new Error('not found in db'))
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.one.mockRejectedValueOnce(mockError)
 
 		return DraftSummary.fetchById('mockDraftId').catch(err => {
-			expect(logger.error).toHaveBeenCalledWith('fetchById Error', 'not found in db')
-			expect(err).toBe('Error Loading DraftSummary by id')
+			expect(logger.logError).toHaveBeenCalledWith('DraftSummary fetchById Error', mockError)
+			expect(err).toBe(mockError)
 		})
 	})
 
@@ -155,41 +168,32 @@ describe('DraftSummary Model', () => {
 
 	test('fetchAndJoinWhere catches database errors', () => {
 		expect.hasAssertions()
-
-		db.any.mockRejectedValueOnce(new Error('not found in db'))
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.any.mockRejectedValueOnce(mockError)
 
 		const whereSQL = ''
 		const joinSQL = ''
 		const mockQueryValues = { id: 'mockDraftId' }
 
 		return DraftSummary.fetchAndJoinWhere(whereSQL, joinSQL, mockQueryValues).catch(err => {
-			expect(logger.error).toHaveBeenCalledWith(
-				'fetchAndJoinWhere Error',
-				'not found in db',
-				whereSQL,
-				joinSQL,
-				mockQueryValues
-			)
-			expect(err).toBe('Error loading DraftSummary by query')
+			expect(logger.logError).toHaveBeenCalledWith('Error loading DraftSummary by query', mockError)
+			expect(err).toBe(mockError)
 		})
 	})
 
 	test('fetchWhere catches database errors', () => {
 		expect.hasAssertions()
-
-		db.any.mockRejectedValueOnce(new Error('not found in db'))
+		const mockError = new Error('not found in db')
+		logger.logError = jest.fn().mockReturnValueOnce(mockError)
+		db.any.mockRejectedValueOnce(mockError)
 
 		const whereSQL = ''
 		const mockQueryValues = { id: 'mockDraftId' }
 
 		return DraftSummary.fetchWhere(whereSQL, mockQueryValues).catch(err => {
-			expect(logger.error).toHaveBeenCalledWith(
-				'fetchWhere Error',
-				'not found in db',
-				whereSQL,
-				mockQueryValues
-			)
-			expect(err).toBe('Error loading DraftSummary by query')
+			expect(logger.logError).toHaveBeenCalledWith('Error loading DraftSummary by query', mockError)
+			expect(err).toBe(mockError)
 		})
 	})
 
@@ -200,7 +204,9 @@ describe('DraftSummary Model', () => {
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
-			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
+			const [query, options] = db.any.mock.calls[0]
+			expectQueryToMatch(query, fetchAllDraftRevisionsQuery)
+			expect(options).toEqual({
 				afterVersionId: null,
 				count: 51,
 				draftId: 'mockDraftId'
@@ -238,32 +244,18 @@ describe('DraftSummary Model', () => {
 			{ ...mockRawRevisionHistory[2] }
 		])
 
-		const query = `
-			SELECT
-				drafts_content.id,
-				drafts_content.draft_id,
-				drafts_content.created_at,
-				drafts_content.user_id,
-				users.first_name,
-				users.last_name
-			FROM drafts_content
-			JOIN users
-				ON drafts_content.user_id = users.id
-			WHERE
-				drafts_content.draft_id = $[draftId]
-				
-				AND drafts_content.created_at < (
-					SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
-				)
-			ORDER BY
-				drafts_content.created_at DESC
-			LIMIT $[count];
-		`
+		const expectedWhereClause = `
+			AND drafts_content.created_at < (
+				SELECT created_at FROM drafts_content WHERE id = $[afterVersionId]
+			)`
 
 		// bonus test - make sure count is equal to the provided number plus one
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', 'mockAfterVersionId', 20).then(
 			history => {
-				expect(db.any).toHaveBeenCalledWith(query, {
+				const [query, options] = db.any.mock.calls[0]
+				expectQueryToContain(query, expectedWhereClause)
+
+				expect(options).toEqual({
 					afterVersionId: 'mockAfterVersionId',
 					count: 21,
 					draftId: 'mockDraftId'
@@ -312,7 +304,9 @@ describe('DraftSummary Model', () => {
 		db.any.mockResolvedValueOnce(mockDbReturn)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId').then(history => {
-			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
+			const [query, options] = db.any.mock.calls[0]
+			expectQueryToMatch(query, fetchAllDraftRevisionsQuery)
+			expect(options).toEqual({
 				afterVersionId: null,
 				count: 51,
 				draftId: 'mockDraftId'
@@ -330,9 +324,11 @@ describe('DraftSummary Model', () => {
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1).then(() => {
-			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
+			const [query, options] = db.any.mock.calls[0]
+			expectQueryToMatch(query, fetchAllDraftRevisionsQuery)
+			expect(options).toEqual({
 				afterVersionId: null,
-				count: 11, //minimum count value is 10, plus one
+				count: 11,
 				draftId: 'mockDraftId'
 			})
 		})
@@ -345,7 +341,9 @@ describe('DraftSummary Model', () => {
 		db.any.mockResolvedValueOnce(mockRawRevisionHistory)
 
 		return DraftSummary.fetchAllDraftRevisions('mockDraftId', null, 1000).then(() => {
-			expect(db.any).toHaveBeenCalledWith(fetchAllDraftRevisionsQuery, {
+			const [query, options] = db.any.mock.calls[0]
+			expectQueryToMatch(query, fetchAllDraftRevisionsQuery)
+			expect(options).toEqual({
 				afterVersionId: null,
 				count: 101, //maximum count value is 100, plus one
 				draftId: 'mockDraftId'
@@ -362,7 +360,7 @@ describe('DraftSummary Model', () => {
 			expect(logger.error).toHaveBeenCalledWith(
 				'fetchAllDraftRevisions',
 				'not found in db',
-				fetchAllDraftRevisionsQuery,
+				expect.any(String),
 				'mockDraftId'
 			)
 			expect(err).toBe('Error loading DraftSummary by query')

@@ -7,6 +7,11 @@ const injectKatexIfNeeded = async ({ value: draftModel }) => {
 	// AND in text nodes with a styleList item of type _latex
 	// The second can be matched against `"type":"_latex"` without many false positives
 	// However, the html node's classname will generate more false positives
+
+	if (window.katex) {
+		return draftModel
+	}
+
 	const stringModel = JSON.stringify(draftModel)
 
 	if (stringModel.includes('latex')) {

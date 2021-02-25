@@ -155,38 +155,4 @@ describe('DOMUtil', () => {
 	test('getComponentElementById returns null if element not found', () => {
 		expect(DOMUtil.getComponentElementById('obo-does-not-exist')).toBe(null)
 	})
-
-	test('isElementVisible returns correct result', () => {
-		window.innerHeight = 100
-		const getBoundingClientRectMock = jest.fn()
-		const node = {
-			getBoundingClientRect: getBoundingClientRectMock
-		}
-
-		// rect.top = window.innerHeight
-		window.innerHeight = 10
-		getBoundingClientRectMock.mockReturnValue({ top: 10, bottom: 10 })
-		expect(DOMUtil.isElementVisible(node)).toBe(true)
-
-		// rect.top > window.innerHeight
-		getBoundingClientRectMock.mockReturnValue({ top: 100, bottom: 10 })
-		expect(DOMUtil.isElementVisible(node)).toBe(false)
-
-		// rect.top < window.innerHeight
-		window.innerHeight = 100
-		getBoundingClientRectMock.mockReturnValue({ top: 10, bottom: 10 })
-		expect(DOMUtil.isElementVisible(node)).toBe(true)
-
-		// rect.bottom = 0
-		getBoundingClientRectMock.mockReturnValue({ top: 100, bottom: 0 })
-		expect(DOMUtil.isElementVisible(node)).toBe(true)
-
-		// rect.bottom > 0
-		getBoundingClientRectMock.mockReturnValue({ top: 100, bottom: 10 })
-		expect(DOMUtil.isElementVisible(node)).toBe(true)
-
-		// rect.bottom < 0
-		getBoundingClientRectMock.mockReturnValue({ top: 100, bottom: -10 })
-		expect(DOMUtil.isElementVisible(node)).toBe(false)
-	})
 })

@@ -1,4 +1,5 @@
 const env_node = process.env.NODE_ENV
+const ogConsoleWarn = console.warn // eslint-disable-line no-console
 const path = require('path')
 let logger
 
@@ -11,10 +12,9 @@ describe('config', () => {
 		logger = oboRequire('server/logger')
 		global.oboJestMockConfig()
 	})
-	afterEach(() => {})
-	beforeAll(() => {})
-	afterAll(() => {
+	afterEach(() => {
 		process.env.NODE_ENV = env_node
+		console.warn = ogConsoleWarn // eslint-disable-line no-console
 	})
 
 	test('db to have expected props and vals', () => {
@@ -73,6 +73,25 @@ describe('config', () => {
 	})
 
 	test('config logs errors when expected env not set', () => {
+		console.warn = jest.fn() // eslint-disable-line no-console
+		process.env.NODE_ENV = 'test'
+		const fs = require('fs')
+		const mockDBConfig = {
+			whatever: {
+				driver: 'postgres'
+			}
+		}
+
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
+
+		oboRequire('server/config')
+		expect(logger.error).toHaveBeenLastCalledWith(
+			expect.stringContaining('Error: Missing config environment for "default" and "test" for')
+		)
+	})
+
+	test('config logs errors not set and no default provided', () => {
+		console.warn = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
@@ -85,6 +104,8 @@ describe('config', () => {
 		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		const config = oboRequire('server/config')
+		// in test a console.warn is called
+		expect(console.warn).toHaveBeenCalled() // eslint-disable-line no-console
 		expect(logger.error).toHaveBeenCalledTimes(2)
 		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV var DB_USER is not set')
 		expect(config.db).toEqual({})
@@ -110,6 +131,7 @@ describe('config', () => {
 	})
 
 	test('processes DATABASE_URL env variable 2', () => {
+		console.warn = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
@@ -141,6 +163,7 @@ describe('config', () => {
 	})
 
 	test('logs error when env var ending in _JSON doesnt contain valid json', () => {
+		console.warn = jest.fn() // eslint-disable-line no-console
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {

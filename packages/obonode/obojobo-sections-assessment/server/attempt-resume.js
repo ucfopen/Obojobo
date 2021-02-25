@@ -1,8 +1,10 @@
-const Assessment = require('./assessment')
+const AssessmentModel = require('./models/assessment')
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = require('obojobo-express/server/routes/api/events/create_caliper_event')
 const insertEvent = require('obojobo-express/server/insert_event')
+const insertEvents = require('./insert-events')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ERROR_INVALID_ATTEMPT_RESUME = 'Cannot resume an attempt for a different module'
 
 const resumeAttempt = async (
 	currentUser,
@@ -17,8 +19,30 @@ const resumeAttempt = async (
 	// see: attemptStart.getSendToClientPromises
 	const req = {} // @TODO see if we can get rid of these
 	const res = {} // @TODO see if we can get rid of these
-	const attempt = await Assessment.getAttempt(attemptId)
-	const assessmentNode = currentDocument.getChildNodeById(attempt.assessment_id)
+	const attempt = await AssessmentModel.fetchAttemptById(attemptId)
+	const assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
+
+	// Check to make sure this attempt is for the current module
+	if (
+		currentDocument.draftId !== attempt.draftId ||
+		currentDocument.contentId !== attempt.draftContentId
+	) {
+		// Discard this attempt if the module was updated
+		// while the user was away from the assessment
+		const invalidatedAttempt = await AssessmentModel.invalidateAttempt(attemptId)
+		if (invalidatedAttempt) {
+			await insertEvents.insertAttemptInvalidatedEvent(
+				attempt.id,
+				currentUser.id,
+				currentVisit.id,
+				currentDocument.draftId,
+				currentDocument.contentId,
+				remoteAddress,
+				currentVisit.is_preview
+			)
+		}
+		throw new Error(ERROR_INVALID_ATTEMPT_RESUME)
+	}
 
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 
@@ -26,7 +50,8 @@ const resumeAttempt = async (
 
 	for (const node of attempt.state.chosen) {
 		if (node.type === QUESTION_NODE_TYPE) {
-			attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
+			const questionNode = assessmentNode.draftTree.getChildNodeById(node.id)
+			attempt.questions.push(questionNode.toObject())
 		}
 	}
 
@@ -56,6 +81,7 @@ const resumeAttempt = async (
 	})
 
 	// update response
+	// @TODO: why are we doing this?
 	attempt.attemptId = attempt.id
 	delete attempt.id
 	return attempt

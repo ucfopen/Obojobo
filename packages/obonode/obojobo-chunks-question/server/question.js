@@ -16,7 +16,7 @@ class Question extends DraftNode {
 		return this.toObject()
 	}
 
-	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
+	onAttemptEnd(req, res, assessment, responseHistory = [], currentAttempt) {
 		if (!assessment.contains(this.node)) return
 
 		// Survey type questions have no score:
@@ -25,6 +25,7 @@ class Question extends DraftNode {
 			return
 		}
 
+		// get the responses for this node from history
 		const questionResponses = responseHistory.filter(responseRecord => {
 			return responseRecord.question_id === this.node.id
 		})

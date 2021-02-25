@@ -40,14 +40,16 @@ const HTML = {
 		// They affect individual nodes independently of one another
 		decorate([node, path], editor) {
 			// Define a placeholder decoration
-			if(Element.isElement(node) && Node.string(node) === ''){
+			if (Element.isElement(node) && Node.string(node) === '') {
 				const point = Editor.start(editor, path)
 
-				return [{
-					placeholder: '<!-- HTML code here -->',
-					anchor: point,
-					focus: point
-				}]
+				return [
+					{
+						placeholder: '<!-- HTML code here -->',
+						anchor: point,
+						focus: point
+					}
+				]
 			}
 
 			return []
@@ -65,7 +67,7 @@ const HTML = {
 		},
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
-		}, 
+		}
 	}
 }
 
