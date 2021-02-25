@@ -8,13 +8,13 @@ const STYLE_ORDER = [
 	StyleType.COMMENT,
 	StyleType.LATEX,
 	StyleType.LINK,
+	StyleType.COLOR,
 	StyleType.QUOTE,
 	StyleType.BOLD,
 	StyleType.STRIKETHROUGH,
 	StyleType.MONOSPACE,
 	StyleType.SUPERSCRIPT,
-	StyleType.ITALIC,
-	StyleType.COLOR
+	StyleType.ITALIC
 ]
 
 const getTextNodeFragmentDescriptorsAtHelper = function(
