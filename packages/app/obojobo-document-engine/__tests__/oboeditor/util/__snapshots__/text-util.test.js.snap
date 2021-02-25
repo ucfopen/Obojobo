@@ -114,15 +114,15 @@ Object {
       },
       Object {
         "data": Object {},
-        "end": 8,
-        "start": 4,
-        "type": "i",
+        "end": 18,
+        "start": 14,
+        "type": "b",
       },
       Object {
         "data": Object {},
         "end": 8,
         "start": 4,
-        "type": "q",
+        "type": "i",
       },
       Object {
         "data": Object {},
@@ -131,36 +131,12 @@ Object {
         "type": "del",
       },
       Object {
-        "data": Object {},
-        "end": 10,
-        "start": 8,
-        "type": "q",
-      },
-      Object {
-        "data": 13,
-        "end": 10,
-        "start": 8,
-        "type": "sup",
-      },
-      Object {
         "data": Object {
-          "text": "#000000",
+          "href": "mockotherURL",
         },
-        "end": 14,
-        "start": 10,
-        "type": "color",
-      },
-      Object {
-        "data": 14,
-        "end": 18,
-        "start": 14,
-        "type": "sup",
-      },
-      Object {
-        "data": Object {},
-        "end": 18,
-        "start": 14,
-        "type": "b",
+        "end": 23,
+        "start": 18,
+        "type": "a",
       },
       Object {
         "data": Object {
@@ -171,15 +147,45 @@ Object {
         "type": "a",
       },
       Object {
+        "data": Object {},
+        "end": 10,
+        "start": 4,
+        "type": "q",
+      },
+      Object {
+        "data": Object {},
+        "end": 26,
+        "start": 23,
+        "type": "monospace",
+      },
+      Object {
+        "data": 14,
+        "end": 18,
+        "start": 14,
+        "type": "sup",
+      },
+      Object {
+        "data": 13,
+        "end": 10,
+        "start": 8,
+        "type": "sup",
+      },
+      Object {
+        "data": Object {},
+        "end": 26,
+        "start": 23,
+        "type": "_latex",
+      },
+      Object {
         "data": Object {
-          "href": "mockotherURL",
+          "text": "#000000",
         },
-        "end": 23,
-        "start": 18,
-        "type": "a",
+        "end": 14,
+        "start": 10,
+        "type": "color",
       },
     ],
-    "value": "ThisTextIstextFormatted",
+    "value": "ThisTextIstextFormattedabc",
   },
 }
 `;

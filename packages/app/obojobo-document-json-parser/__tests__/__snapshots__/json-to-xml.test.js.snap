@@ -656,19 +656,7 @@ exports[`JSON to XML Parser Converts stress-test.json to xml 1`] = `
 								</code>
 							</b>
 							<q>
-								<b>
-									<code>
-										<i>nown printer took a galley of type and scrambled it to make a type</i>
-									</code>
-								</b>
-							</q>
-							<q>
-								<b>
-									<i> speci</i>
-								</b>
-							</q>
-							<q>
-								<b>men book. It has survived not only five centuries, but also the leap into</b>
+								<b><code><i>nown printer took a galley of type and scrambled it to make a type</i></code><i> speci</i>men book. It has survived not only five centuries, but also the leap into</b>
 							</q>
 							<latex>
 								<q>
@@ -676,64 +664,16 @@ exports[`JSON to XML Parser Converts stress-test.json to xml 1`] = `
 								</q>
 							</latex>
 							<q>
-								<b> remai</b>
+								<b> remai<i>ning essentially unchanged. It was popularised in the 19</i>60s w</b>
 							</q>
-							<q>
-								<b>
-									<i>ning essentially unchanged. It was popularised in the 19</i>
-								</b>
-							</q>
-							<q>
-								<b>60s w</b>
-							</q>
-							<b>ith the release of Letraset sheet</b>
-							<b>
-								<sup>s containin</sup>
-							</b>
-							<b>g Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</b>
+							<b>ith the release of Letraset sheet<sup>s containin</sup>g Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</b>
 						</t>
 						<t align=\\"left\\" indent=\\"0\\"></t>
 						<t align=\\"left\\" indent=\\"0\\">
 							<b>Why do we use it?</b>
 						</t>
 						<t align=\\"left\\" indent=\\"0\\">
-							<b>It is a long established fact that a reader will be distracted by the readable content of a pa</b>
-							<b>
-								<i>ge when looking at its layout. The point of using Lorem Ipsum is that it has a more-</i>
-							</b>
-							<b>
-								<del>
-									<i>or-less normal distribution of letters, as opposed to us</i>
-								</del>
-							</b>
-							<b>
-								<del>
-									<code>
-										<i>ing &#39;C</i>
-									</code>
-								</del>
-							</b>
-							<b>
-								<del>
-									<code>
-										<sup>
-											<i>ontent her</i>
-										</sup>
-									</code>
-								</del>
-							</b>
-							<b>
-								<del>
-									<sup>
-										<i>e, c</i>
-									</sup>
-								</del>
-							</b>
-							<b>
-								<del>
-									<i>ontent here&#39;, making it look like readable English. Many desktop publishing pac</i>
-								</del>
-							</b>
+							<b>It is a long established fact that a reader will be distracted by the readable content of a pa<i>ge when looking at its layout. The point of using Lorem Ipsum is that it has a more-</i><del><i>or-less normal distribution of letters, as opposed to us</i><code><i>ing &#39;C</i><sup><i>ontent her</i></sup></code><sup><i>e, c</i></sup><i>ontent here&#39;, making it look like readable English. Many desktop publishing pac</i></del></b>
 							<del>
 								<i>kages and web page editors now use Lorem Ipsum as their default model text, and a search for &#39;lorem ipsum&#39; will uncover many web sites still in the</i>
 							</del>
@@ -744,24 +684,10 @@ exports[`JSON to XML Parser Converts stress-test.json to xml 1`] = `
 						<t align=\\"left\\" indent=\\"0\\">
 							<i>Where does it come from?</i>
 						</t>
-						<t align=\\"left\\" indent=\\"0\\"><i>Contrary to popul</i>ar belief, Lorem Ipsum is not simply random text. It has roots in a piece of c<i>la</i><q><i>ssical</i></q><latex><q><i> Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Ha</i></q></latex><latex><i>mpden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and goi</i></latex><latex><del><i>ng through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &#34;de F</i></del></latex><latex><q><del><i>inib</i></del></q></latex><q><del><i>us Bonorum et Maloru</i></del></q><q><i>m&#34; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the R</i></q><q>enaissance. Th</q><q><sub>e first line of Lorem Ipsum, &#34;Lorem ipsum dolor sit amet..&#34;, comes from a line in section 1.10.32.</sub></q></t>
+						<t align=\\"left\\" indent=\\"0\\"><i>Contrary to popul</i>ar belief, Lorem Ipsum is not simply random text. It has roots in a piece of c<i>la</i><q><i>ssical</i></q><latex><q><i> Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Ha</i></q><i>mpden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and goi</i><del><i>ng through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &#34;de F</i></del><q><del><i>inib</i></del></q></latex><q><del><i>us Bonorum et Maloru</i></del><i>m&#34; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the R</i>enaissance. Th<sub>e first line of Lorem Ipsum, &#34;Lorem ipsum dolor sit amet..&#34;, comes from a line in section 1.10.32.</sub></q></t>
 						<t align=\\"left\\" indent=\\"0\\"></t>
 						<t align=\\"left\\" indent=\\"0\\">
-							<q>
-								<sub>The standard </sub>
-							</q>
-							<q>
-								<code>
-									<sub>chunk of Lorem Ips</sub>
-								</code>
-							</q>
-							<q>
-								<sub>um used since the 1500s is reproduced below</sub>
-							</q>
-							<q> for those interested.</q>
-							<q>
-								<b> Sections 1.10.32 and 1.10.33 from &#34;de Finibus Bonorum et Malorum&#34; by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</b>
-							</q>
+							<q><sub>The standard </sub><code><sub>chunk of Lorem Ips</sub></code><sub>um used since the 1500s is reproduced below</sub> for those interested.<b> Sections 1.10.32 and 1.10.33 from &#34;de Finibus Bonorum et Malorum&#34; by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</b></q>
 						</t>
 						<t align=\\"left\\" indent=\\"0\\"></t>
 						<t align=\\"left\\" indent=\\"0\\">
@@ -781,10 +707,7 @@ exports[`JSON to XML Parser Converts stress-test.json to xml 1`] = `
 							<q>
 								<b>s </b>
 							</q>
-							<b>which don&#39;t look even slightly believable. If you are going to use a passage o</b>
-							<b>
-								<del>f Lorem Ipsum, you need to be sure there isn&#39;t anything embarrassing hidden in</del>
-							</b>
+							<b>which don&#39;t look even slightly believable. If you are going to use a passage o<del>f Lorem Ipsum, you need to be sure there isn&#39;t anything embarrassing hidden in</del></b>
 							<del> the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</del>
 						</t>
 					</textGroup>
