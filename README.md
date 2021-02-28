@@ -11,6 +11,8 @@ View the [Obojobo Next Documentation](https://ucfopen.github.io/Obojobo-Docs/).
 
 [Join UCF Open Slack Discussions](https://ucf-open-slackin.herokuapp.com/) [![Join UCF Open Slack Discussions](https://ucf-open-slackin.herokuapp.com/badge.svg)](https://ucf-open-slackin.herokuapp.com/)
 
+The previous version of Obojobo, renamed to Obojobo Classic, is located here: https://github.com/ucfopen/Obojobo-Classic
+
 ## The Obojobo Mission
 
 To keep our collective efforts aimed in the same direction, we've outlined what we want Obojobo to be:
