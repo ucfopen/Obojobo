@@ -74,6 +74,7 @@ Object {
 
 exports[`NavStore generateNav builds a navItem 2`] = `
 Object {
+  "isInitialized": true,
   "itemsByFullPath": Object {
     "/view/66/visit/visitId/whatever/whatever2": Object {
       "children": Array [],
@@ -238,6 +239,7 @@ Object {
 
 exports[`NavStore gotoItem sends triggers events and updates history 1`] = `
 Object {
+  "isInitialized": true,
   "itemsById": Object {
     "mockId": Object {
       "showChildren": false,
@@ -252,6 +254,7 @@ Object {
 
 exports[`NavStore gotoItem sends updates history with no previous item 1`] = `
 Object {
+  "isInitialized": true,
   "itemsById": Object {
     "mockId": Object {
       "showChildren": false,
@@ -335,6 +338,7 @@ Array [
 exports[`NavStore nav:close event fires and updates state 3`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": "unchanged",
   "open": false,
 }
@@ -360,6 +364,7 @@ Array [
 exports[`NavStore nav:close event fires and updates state 6`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": "unchanged",
   "open": false,
 }
@@ -407,6 +412,7 @@ Array [
 
 exports[`NavStore nav:hideChildren event fires and updates state 2`] = `
 Object {
+  "isInitialized": true,
   "itemsById": Object {
     "mockID": Object {
       "showChildren": false,
@@ -429,6 +435,7 @@ Array [
 exports[`NavStore nav:lock event fires and updates state 2`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": true,
   "open": "unchanged",
 }
@@ -471,6 +478,7 @@ Array [
 exports[`NavStore nav:open event fires and updates state 3`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": "unchanged",
   "open": true,
 }
@@ -501,6 +509,7 @@ exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
 
 exports[`NavStore nav:setFlag event updates state and calls trigger 1`] = `
 Object {
+  "isInitialized": true,
   "itemsById": Object {
     "fake": Object {
       "flags": Object {
@@ -521,6 +530,7 @@ Array [
 
 exports[`NavStore nav:showChildren event fires and updates state 2`] = `
 Object {
+  "isInitialized": true,
   "itemsById": Object {
     "mockID": Object {
       "showChildren": true,
@@ -549,6 +559,7 @@ Array [
 exports[`NavStore nav:toggle event fires and updates state 3`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": "unchanged",
   "open": true,
 }
@@ -574,6 +585,7 @@ Array [
 exports[`NavStore nav:unlock event fires and updates state 3`] = `
 Object {
   "draftId": "mockDraftId",
+  "isInitialized": true,
   "locked": false,
   "open": "unchanged",
 }

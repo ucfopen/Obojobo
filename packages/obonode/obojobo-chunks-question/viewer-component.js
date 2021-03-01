@@ -479,49 +479,47 @@ export default class Question extends OboQuestionComponent {
 				  ' of ' +
 				  this.props.numQuestionsInBank
 
-		return React.forwardRef((props, ref) => {
-			return (
-				<QuestionComponent
-					updateExplanationRef={component => {
-						this.explanationRef = component
-					}}
-					questionModel={questionModel}
-					questionAssessmentModel={questionAssessmentModel}
-					moduleData={moduleData}
-					resultsRef={this.resultsRef}
-					assessmentComponentRef={this.assessmentComponentRef}
-					type={type}
-					mode={mode}
-					viewState={this.getViewState()}
-					response={this.getResponse()}
-					score={score}
-					startQuestionAriaLabel={startQuestionAriaLabel}
-					isFlipping={this.state.isFlipping}
-					shouldShowRevealAnswerButton={this.getShouldShowRevealAnswerButton()}
-					isAnswerRevealed={this.isAnswerRevealed()}
-					isShowingExplanation={this.isShowingExplanation()}
-					isShowingExplanationButton={this.isShowingExplanationButton()}
-					instructions={this.getInstructions()}
-					scoreClass={this.getScoreClass(score)}
-					feedbackText={this.getFeedbackText()}
-					detailedText={this.getDetailedText()}
-					responseSendState={this.getResponseSendState()}
-					onFormChange={this.onFormChange}
-					onFormSubmit={this.onFormSubmit}
-					onClickReset={this.onClickReset}
-					onClickReveal={this.onClickReveal}
-					onClickShowExplanation={this.onClickShowExplanation}
-					onClickHideExplanation={this.onClickHideExplanation}
-					onClickBlocker={this.onClickBlocker}
-				/>
-			)
-		})
+		return (
+			<QuestionComponent
+				updateExplanationRef={component => {
+					this.explanationRef = component
+				}}
+				questionModel={questionModel}
+				questionAssessmentModel={questionAssessmentModel}
+				moduleData={moduleData}
+				resultsRef={this.resultsRef}
+				assessmentComponentRef={this.assessmentComponentRef}
+				type={type}
+				mode={mode}
+				viewState={this.getViewState()}
+				response={this.getResponse()}
+				score={score}
+				startQuestionAriaLabel={startQuestionAriaLabel}
+				isFlipping={this.state.isFlipping}
+				shouldShowRevealAnswerButton={this.getShouldShowRevealAnswerButton()}
+				isAnswerRevealed={this.isAnswerRevealed()}
+				isShowingExplanation={this.isShowingExplanation()}
+				isShowingExplanationButton={this.isShowingExplanationButton()}
+				instructions={this.getInstructions()}
+				scoreClass={this.getScoreClass(score)}
+				feedbackText={this.getFeedbackText()}
+				detailedText={this.getDetailedText()}
+				responseSendState={this.getResponseSendState()}
+				onFormChange={this.onFormChange}
+				onFormSubmit={this.onFormSubmit}
+				onClickReset={this.onClickReset}
+				onClickReveal={this.onClickReveal}
+				onClickShowExplanation={this.onClickShowExplanation}
+				onClickHideExplanation={this.onClickHideExplanation}
+				onClickBlocker={this.onClickBlocker}
+			/>
+		)
 	}
 
 	renderContentOnly() {
 		const score = this.getScore()
-		const scoreClass = QuestionUtil.getScoreClass(score)
-		const hasResponse = QuestionUtil.hasResponse(
+		const scoreClass = this.getScoreClass(score)
+		const response = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
@@ -535,7 +533,7 @@ export default class Question extends OboQuestionComponent {
 			' is-active' +
 			` is-mode-${mode}` +
 			` is-type-${type}` +
-			isOrNot(hasResponse, 'answered')
+			isOrNot(response, 'answered')
 
 		return (
 			<OboComponent

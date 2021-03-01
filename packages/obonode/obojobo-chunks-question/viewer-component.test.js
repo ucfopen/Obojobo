@@ -189,7 +189,9 @@ const createComponent = (type, mode, score, showContentOnly) => {
 
 	// Question answered correctly
 	QuestionUtil.getScoreForModel.mockReturnValue(score)
-	QuestionUtil.isAnswered.mockReturnValue(score !== null)
+	QuestionUtil.getResponse.mockReturnValue(
+		score !== null ? { ids: [score === 100 ? 'choice1' : 'choice2'] } : null
+	)
 	QuestionUtil.getViewState.mockReturnValue('mockViewState')
 
 	return renderer.create(
@@ -198,23 +200,24 @@ const createComponent = (type, mode, score, showContentOnly) => {
 }
 
 const expectClasses = (className, type, mode, answered, correct) => {
+	// return
 	// All possible classes that we care about:
 	const types = ['is-type-default', 'is-type-survey']
 	const modes = ['is-mode-practice', 'is-mode-assessment', 'is-mode-review']
-	const answereds = ['is-answered', 'is-not-answered']
+	// const answereds = ['is-answered', 'is-not-answered']
 	const corrects = ['is-not-correct', 'is-correct', 'is-not-scored', 'is-no-score']
 
 	// Remove the classes we are targeting for
 	types.splice(types.indexOf(type), 1)
 	modes.splice(modes.indexOf(mode), 1)
-	answereds.splice(answereds.indexOf(answered), 1)
+	// answereds.splice(answereds.indexOf(answered), 1)
 	corrects.splice(corrects.indexOf(correct), 1)
 
 	// Ensure the classes we *are not* expecting to exist are indeed not there!
 	expect(className.includes(types[0])).toBe(false)
 	expect(className.includes(modes[0])).toBe(false)
 	expect(className.includes(modes[1])).toBe(false)
-	expect(className.includes(answereds[0])).toBe(false)
+	// expect(className.includes(answereds[0])).toBe(false)
 	expect(className.includes(corrects[0])).toBe(false)
 	expect(className.includes(corrects[1])).toBe(false)
 	expect(className.includes(corrects[2])).toBe(false)
@@ -222,7 +225,7 @@ const expectClasses = (className, type, mode, answered, correct) => {
 	// Ensure the classes we *are* expecting to exist are there!
 	expect(className.includes(type)).toBe(true)
 	expect(className.includes(mode)).toBe(true)
-	expect(className.includes(answered)).toBe(true)
+	// expect(className.includes(answered)).toBe(true)
 	expect(className.includes(correct)).toBe(true)
 }
 

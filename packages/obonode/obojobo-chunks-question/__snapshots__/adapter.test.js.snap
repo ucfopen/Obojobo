@@ -2,10 +2,27 @@
 
 exports[`Question adapter construct builds with attributes 1`] = `
 Object {
-  "solution": OboModel {
-    "_isMocked": true,
+  "correctLabels": Array [
+    "a",
+    "b",
+    "c",
+  ],
+  "dirty": false,
+  "editing": false,
+  "incorrectLabels": Array [
+    "x",
+    "y",
+    "z",
+  ],
+  "needsUpdate": false,
+  "revealAnswer": "when-incorrect",
+  "solution": Object {
+    "children": null,
     "content": Object {},
-    "modelState": Object {},
+    "id": "solution",
+    "index": 0,
+    "metadata": Object {},
+    "type": "ObojoboDraft.Pages.Page",
   },
   "type": "default",
 }
@@ -13,6 +30,12 @@ Object {
 
 exports[`Question adapter construct builds without attributes 1`] = `
 Object {
+  "correctLabels": null,
+  "dirty": false,
+  "editing": false,
+  "incorrectLabels": null,
+  "needsUpdate": false,
+  "revealAnswer": "default",
   "solution": null,
   "type": "default",
 }
@@ -21,18 +44,10 @@ Object {
 exports[`Question adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "revealAnswer": "default",
     "solution": null,
-    "type": "default",
-  },
-}
-`;
-
-exports[`Question adapter toJSON builds a JSON representation with solution 1`] = `
-Object {
-  "content": Object {
-    "solution": Object {
-      "mockedToJSON": true,
-    },
     "type": "default",
   },
 }

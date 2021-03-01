@@ -32,14 +32,16 @@ exports[`Question Question in assessment answered correctly (content only) 1`] =
 `;
 
 exports[`Question Question in assessment answered correctly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-assessment is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-assessment is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -52,69 +54,64 @@ exports[`Question Question in assessment answered correctly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-answered is-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result correct"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            mock-correct-labels - You received a 100% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-responded-to is-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result correct"
-                >
-                  mock-correct-labels - You received a 100% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -129,13 +126,68 @@ exports[`Question Question in assessment answered correctly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+  <div
+    className="response-status-container"
+  >
+    <span
+      className="is-response-state-not-sent"
+    >
+       
+    </span>
+    <span
+      className="is-response-state-sending"
+    >
+      <div
+        aria-label="Loading content"
+        className="obojobo-draft--components--throbber"
+      >
+        <div
+          aria-hidden={true}
+          className="throbber"
+        >
+          <svg
+            preserveAspectRatio="xMidYMid"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              r="35"
+              stroke="black"
+              strokeDasharray="60 110"
+              strokeWidth="10"
+              transform="rotate(0.82332 50 50)"
+            />
+          </svg>
+        </div>
+      </div>
+    </span>
+    <span
+      className="is-response-state-recorded"
+    >
+      Answer Saved
+    </span>
+    <span
+      className="is-response-state-error"
+    >
+      ✖ Error sending response
+    </span>
+    <span
+      className="is-response-state-other"
+    >
+       
+    </span>
+  </div>
+</form>
 `;
 
 exports[`Question Question in assessment answered incorrectly (content only) 1`] = `
@@ -170,14 +222,16 @@ exports[`Question Question in assessment answered incorrectly (content only) 1`]
 `;
 
 exports[`Question Question in assessment answered incorrectly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-assessment is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-assessment is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -190,69 +244,64 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result incorrect"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            Incorrect - You received a 0% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-responded-to is-not-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a 0% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -267,13 +316,68 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+  <div
+    className="response-status-container"
+  >
+    <span
+      className="is-response-state-not-sent"
+    >
+       
+    </span>
+    <span
+      className="is-response-state-sending"
+    >
+      <div
+        aria-label="Loading content"
+        className="obojobo-draft--components--throbber"
+      >
+        <div
+          aria-hidden={true}
+          className="throbber"
+        >
+          <svg
+            preserveAspectRatio="xMidYMid"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              r="35"
+              stroke="black"
+              strokeDasharray="60 110"
+              strokeWidth="10"
+              transform="rotate(0.82332 50 50)"
+            />
+          </svg>
+        </div>
+      </div>
+    </span>
+    <span
+      className="is-response-state-recorded"
+    >
+      Answer Saved
+    </span>
+    <span
+      className="is-response-state-error"
+    >
+      ✖ Error sending response
+    </span>
+    <span
+      className="is-response-state-other"
+    >
+       
+    </span>
+  </div>
+</form>
 `;
 
 exports[`Question Question in assessment not answered (content only) 1`] = `
@@ -308,14 +412,16 @@ exports[`Question Question in assessment not answered (content only) 1`] = `
 `;
 
 exports[`Question Question in assessment not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-assessment is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-assessment is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -328,41 +434,31 @@ exports[`Question Question in assessment not answered 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -377,13 +473,68 @@ exports[`Question Question in assessment not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+  <div
+    className="response-status-container"
+  >
+    <span
+      className="is-response-state-not-sent"
+    >
+       
+    </span>
+    <span
+      className="is-response-state-sending"
+    >
+      <div
+        aria-label="Loading content"
+        className="obojobo-draft--components--throbber"
+      >
+        <div
+          aria-hidden={true}
+          className="throbber"
+        >
+          <svg
+            preserveAspectRatio="xMidYMid"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              r="35"
+              stroke="black"
+              strokeDasharray="60 110"
+              strokeWidth="10"
+              transform="rotate(0.82332 50 50)"
+            />
+          </svg>
+        </div>
+      </div>
+    </span>
+    <span
+      className="is-response-state-recorded"
+    >
+      Answer Saved
+    </span>
+    <span
+      className="is-response-state-error"
+    >
+      ✖ Error sending response
+    </span>
+    <span
+      className="is-response-state-other"
+    >
+       
+    </span>
+  </div>
+</form>
 `;
 
 exports[`Question Question in practice answered correctly (content only) 1`] = `
@@ -418,14 +569,16 @@ exports[`Question Question in practice answered correctly (content only) 1`] = `
 `;
 
 exports[`Question Question in practice answered correctly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-practice is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-practice is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -438,100 +591,96 @@ exports[`Question Question in practice answered correctly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-answered is-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result correct"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            mock-correct-labels - You received a 100% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-responded-to is-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result correct"
-                >
-                  mock-correct-labels - You received a 100% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="submit-and-result-container"
-          >
-            <div
-              className="submit"
-            >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-                contentEditable={false}
-              >
-                <button
-                  aria-label="Try Question Again"
-                  className="button"
-                  contentEditable={false}
-                  onClick={[Function]}
-                >
-                  Try Again
-                </button>
-              </div>
-            </div>
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result correct"
-              >
-                mock-correct-labels
-              </p>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          className="submit"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              aria-label="Try Question Again"
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          className="result-container"
+        >
+          <p
+            className="result correct"
+          >
+            mock-correct-labels
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -546,13 +695,14 @@ exports[`Question Question in practice answered correctly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Try Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Question in practice answered incorrectly (content only) 1`] = `
@@ -587,14 +737,16 @@ exports[`Question Question in practice answered incorrectly (content only) 1`] =
 `;
 
 exports[`Question Question in practice answered incorrectly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-practice is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-practice is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -607,100 +759,96 @@ exports[`Question Question in practice answered incorrectly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result incorrect"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            Incorrect - You received a 0% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-responded-to is-not-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a 0% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="submit-and-result-container"
-          >
-            <div
-              className="submit"
-            >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-                contentEditable={false}
-              >
-                <button
-                  aria-label="Try Question Again"
-                  className="button"
-                  contentEditable={false}
-                  onClick={[Function]}
-                >
-                  Try Again
-                </button>
-              </div>
-            </div>
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result incorrect"
-              >
-                Incorrect
-              </p>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          className="submit"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
+          >
+            <button
+              aria-label="Try Question Again"
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          className="result-container"
+        >
+          <p
+            className="result incorrect"
+          >
+            Incorrect
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -715,13 +863,14 @@ exports[`Question Question in practice answered incorrectly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Try Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Question in practice not answered (content only) 1`] = `
@@ -756,14 +905,16 @@ exports[`Question Question in practice not answered (content only) 1`] = `
 `;
 
 exports[`Question Question in practice not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-practice is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-practice is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -776,61 +927,52 @@ exports[`Question Question in practice not answered 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          className="submit"
+        >
           <div
-            className="submit-and-result-container"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
-            <div
-              className="submit"
+            <button
+              className="button"
+              contentEditable={false}
+              disabled={true}
+              type="submit"
             >
-              <div
-                className="obojobo-draft--components--button is-not-dangerous align-center"
-                contentEditable={false}
-              >
-                <button
-                  className="button"
-                  contentEditable={false}
-                  disabled={true}
-                >
-                  Check Your Answer
-                </button>
-              </div>
-            </div>
+              Check Your Answer
+            </button>
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </div>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -845,13 +987,14 @@ exports[`Question Question in practice not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Try Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Question in review answered correctly (content only) 1`] = `
@@ -886,14 +1029,16 @@ exports[`Question Question in review answered correctly (content only) 1`] = `
 `;
 
 exports[`Question Question in review answered correctly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-active is-type-default is-mode-review is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-active is-type-default is-mode-review is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -906,83 +1051,78 @@ exports[`Question Question in review answered correctly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-answered is-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={null}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result correct"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            Correct - You received a 100% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-responded-to is-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result correct"
-                >
-                  mock-correct-labels - You received a 100% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="submit-and-result-container"
-          >
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result correct"
-              >
-                mock-correct-labels
-              </p>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          aria-hidden="true"
+          className="result-container"
+        >
+          <p
+            className="result correct"
+          >
+            Correct
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -997,13 +1137,14 @@ exports[`Question Question in review answered correctly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Question in review answered incorrectly (content only) 1`] = `
@@ -1038,14 +1179,16 @@ exports[`Question Question in review answered incorrectly (content only) 1`] = `
 `;
 
 exports[`Question Question in review answered incorrectly 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-type-default is-mode-review is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-active is-type-default is-mode-review is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1058,83 +1201,78 @@ exports[`Question Question in review answered incorrectly 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={null}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          className="result-container"
+        >
+          <p
+            className="result incorrect"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+            Incorrect - You received a 0% on this question.
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-responded-to is-not-correct is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a 0% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="submit-and-result-container"
-          >
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result incorrect"
-              >
-                Incorrect
-              </p>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-              contentEditable={false}
-            >
-              <button
-                className="button"
-                contentEditable={false}
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
+              role="radiogroup"
             />
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          aria-hidden="true"
+          className="result-container"
+        >
+          <p
+            className="result incorrect"
+          >
+            Incorrect
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -1149,13 +1287,14 @@ exports[`Question Question in review answered incorrectly 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Question in review not answered (content only) 1`] = `
@@ -1190,14 +1329,16 @@ exports[`Question Question in review not answered (content only) 1`] = `
 `;
 
 exports[`Question Question in review not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-default is-mode-review is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-default is-mode-review is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1210,44 +1351,34 @@ exports[`Question Question in review not answered 1`] = `
       <div
         className="obojobo-draft--chunks--question--content"
       />
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={null}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Pick the correct answer
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
-          <div
-            className="submit-and-result-container"
-          />
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      />
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -1262,13 +1393,14 @@ exports[`Question Question in review not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Survey question in assessment answered (content only) 1`] = `
@@ -1314,14 +1446,16 @@ exports[`Question Survey question in assessment answered (content only) 1`] = `
 `;
 
 exports[`Question Survey question in assessment answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-assessment is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-assessment is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1345,51 +1479,65 @@ exports[`Question Survey question in assessment answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          aria-hidden={false}
+          className="result-container"
+        >
+          <p
+            className="result survey"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+            mock-correct-labels
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-responded-to is-no-score is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result survey"
-                >
-                  mock-correct-labels
-                </p>
-              </div>
-            </div>
+              role="radiogroup"
+            />
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -1404,13 +1552,68 @@ exports[`Question Survey question in assessment answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+  <div
+    className="response-status-container"
+  >
+    <span
+      className="is-response-state-not-sent"
+    >
+       
+    </span>
+    <span
+      className="is-response-state-sending"
+    >
+      <div
+        aria-label="Loading content"
+        className="obojobo-draft--components--throbber"
+      >
+        <div
+          aria-hidden={true}
+          className="throbber"
+        >
+          <svg
+            preserveAspectRatio="xMidYMid"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              r="35"
+              stroke="black"
+              strokeDasharray="60 110"
+              strokeWidth="10"
+              transform="rotate(0.82332 50 50)"
+            />
+          </svg>
+        </div>
+      </div>
+    </span>
+    <span
+      className="is-response-state-recorded"
+    >
+      Answer Saved
+    </span>
+    <span
+      className="is-response-state-error"
+    >
+      ✖ Error sending response
+    </span>
+    <span
+      className="is-response-state-other"
+    >
+       
+    </span>
+  </div>
+</form>
 `;
 
 exports[`Question Survey question in assessment not answered (content only) 1`] = `
@@ -1456,14 +1659,16 @@ exports[`Question Survey question in assessment not answered (content only) 1`] 
 `;
 
 exports[`Question Survey question in assessment not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-assessment is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-assessment is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1487,41 +1692,31 @@ exports[`Question Survey question in assessment not answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -1536,13 +1731,68 @@ exports[`Question Survey question in assessment not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+  <div
+    className="response-status-container"
+  >
+    <span
+      className="is-response-state-not-sent"
+    >
+       
+    </span>
+    <span
+      className="is-response-state-sending"
+    >
+      <div
+        aria-label="Loading content"
+        className="obojobo-draft--components--throbber"
+      >
+        <div
+          aria-hidden={true}
+          className="throbber"
+        >
+          <svg
+            preserveAspectRatio="xMidYMid"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              r="35"
+              stroke="black"
+              strokeDasharray="60 110"
+              strokeWidth="10"
+              transform="rotate(0.82332 50 50)"
+            />
+          </svg>
+        </div>
+      </div>
+    </span>
+    <span
+      className="is-response-state-recorded"
+    >
+      Answer Saved
+    </span>
+    <span
+      className="is-response-state-error"
+    >
+      ✖ Error sending response
+    </span>
+    <span
+      className="is-response-state-other"
+    >
+       
+    </span>
+  </div>
+</form>
 `;
 
 exports[`Question Survey question in practice answered (content only) 1`] = `
@@ -1588,14 +1838,16 @@ exports[`Question Survey question in practice answered (content only) 1`] = `
 `;
 
 exports[`Question Survey question in practice answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-practice is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-practice is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1619,81 +1871,97 @@ exports[`Question Survey question in practice answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          aria-hidden={false}
+          className="result-container"
+        >
+          <p
+            className="result survey"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+            mock-correct-labels
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-responded-to is-no-score is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result survey"
-                >
-                  mock-correct-labels
-                </p>
-              </div>
-            </div>
+              role="radiogroup"
+            />
           </div>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          className="submit"
+        >
           <div
-            className="submit-and-result-container"
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
-            <div
-              className="submit"
+            <button
+              aria-label="Change Response"
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              type="button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-                contentEditable={false}
-              >
-                <button
-                  aria-label="Change Response"
-                  className="button"
-                  contentEditable={false}
-                  onClick={[Function]}
-                >
-                  Change Response
-                </button>
-              </div>
-            </div>
-            <div
-              className="result-container"
-            >
-              <p
-                className="result survey"
-              >
-                mock-correct-labels
-              </p>
-            </div>
+              Change Response
+            </button>
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+        <div
+          aria-hidden={true}
+          className="result-container"
+        >
+          <p
+            className="result survey"
+          >
+            mock-correct-labels
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -1708,13 +1976,14 @@ exports[`Question Survey question in practice answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Try Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Survey question in practice not answered (content only) 1`] = `
@@ -1760,14 +2029,16 @@ exports[`Question Survey question in practice not answered (content only) 1`] = 
 `;
 
 exports[`Question Survey question in practice not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-practice is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-practice is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1791,61 +2062,52 @@ exports[`Question Survey question in practice not answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={[Function]}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          className="submit"
+        >
           <div
-            className="submit-and-result-container"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
-            <div
-              className="submit"
+            <button
+              className="button"
+              contentEditable={false}
+              disabled={true}
+              type="submit"
             >
-              <div
-                className="obojobo-draft--components--button is-not-dangerous align-center"
-                contentEditable={false}
-              >
-                <button
-                  className="button"
-                  contentEditable={false}
-                  disabled={true}
-                >
-                  Submit Response
-                </button>
-              </div>
-            </div>
+              Submit Response
+            </button>
           </div>
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </div>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -1860,13 +2122,14 @@ exports[`Question Survey question in practice not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Try Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Survey question in review answered (content only) 1`] = `
@@ -1912,14 +2175,16 @@ exports[`Question Survey question in review answered (content only) 1`] = `
 `;
 
 exports[`Question Survey question in review answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-active is-type-survey is-mode-review is-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-active is-type-survey is-mode-review is-not-form-disabled is-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -1943,64 +2208,79 @@ exports[`Question Survey question in review answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={null}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <div
+        className="for-screen-reader-only"
+        tabIndex="-1"
       >
-        <fieldset>
-          <legend
-            className="instructions"
+        <div
+          aria-hidden={false}
+          className="result-container"
+        >
+          <p
+            className="result survey"
           >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+            Correct
+          </p>
+        </div>
+      </div>
+      <fieldset
+        disabled={false}
+      >
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-responded-to is-no-score is-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result survey"
-                >
-                  mock-correct-labels
-                </p>
-              </div>
-            </div>
+              role="radiogroup"
+            />
           </div>
-          <div
-            className="submit-and-result-container"
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      >
+        <div
+          aria-hidden={true}
+          className="result-container"
+        >
+          <p
+            className="result survey"
           >
-            <div
-              className="result-container"
-            >
-              <p
-                className="result survey"
-              >
-                mock-correct-labels
-              </p>
-            </div>
-          </div>
-          <span />
-        </fieldset>
-      </form>
+            Correct
+          </p>
+        </div>
+      </div>
+      <div
+        className="solution"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Read an explanation of the answer
+          </button>
+        </div>
+        <div
+          className="solution-container-animation-placeholder"
+        />
+      </div>
     </div>
     <div
       className="blocker-front"
@@ -2015,13 +2295,14 @@ exports[`Question Survey question in review answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;
 
 exports[`Question Survey question in review not answered (content only) 1`] = `
@@ -2067,14 +2348,16 @@ exports[`Question Survey question in review not answered (content only) 1`] = `
 `;
 
 exports[`Question Survey question in review not answered 1`] = `
-<div
+<form
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-survey is-mode-review is-not-answered is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-survey is-mode-review is-not-form-disabled is-not-responded-to is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  onChange={[Function]}
+  onSubmit={[Function]}
   role="region"
   tabIndex={-1}
 >
@@ -2098,44 +2381,34 @@ exports[`Question Survey question in review not answered 1`] = `
           />
         </svg>
       </div>
-      <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
-        data-focussed={false}
-        data-id="mc-assessment-id"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment"
-        id="obo-mc-assessment-id"
-        onChange={null}
-        onSubmit={[Function]}
-        tabIndex={-1}
+      <fieldset
+        disabled={false}
       >
-        <fieldset>
-          <legend
-            className="instructions"
-          >
-            <span
-              className="for-screen-reader-only"
-            >
-              Multiple choice form with 0 choices. 
-            </span>
-            <span>
-              Choose one
-            </span>
-          </legend>
+        <legend
+          className="instructions"
+        />
+        <div
+          className="assessment-component"
+        >
           <div
-            role="radiogroup"
+            className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-not-responded-to is-not-scored is-not-scored"
+            data-focussed={false}
+            data-id="mc-assessment-id"
+            data-obo-component={true}
+            data-type="ObojoboDraft.Chunks.MCAssessment"
+            id="obo-mc-assessment-id"
+            tabIndex={-1}
           >
             <div
-              className="for-screen-reader-only"
-              tabIndex="-1"
+              role="radiogroup"
             />
           </div>
-          <div
-            className="submit-and-result-container"
-          />
-          <span />
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
+      <div
+        className="submit-and-result-container"
+      />
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -2150,11 +2423,12 @@ exports[`Question Survey question in review not answered 1`] = `
           className="button"
           contentEditable={false}
           disabled={true}
+          type="button"
         >
           Start Question
         </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 `;

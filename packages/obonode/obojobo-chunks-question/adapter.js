@@ -13,22 +13,27 @@ const Adapter = {
 			'when-incorrect'
 		])
 
-		model.setStateProp('correctLabels', null, p => p.split('|'))
-		model.setStateProp('incorrectLabels', null, p => p.split('|'))
-
 		// Older versions of the document put correctLabels and incorrectLabels
 		// on MCAssessment. For compatibility we'll use those if they exist
 		// and this node doesn't define them.
 		// @deprecated
-		const child = model.children.at(model.children.models.length - 1)
-		if (child && child.get('type') === 'ObojoboDraft.Chunks.MCAssessment') {
-			if (!model.modelState.correctLabels && child.get('correctLabels')) {
-				model.modelState.correctLabels = child.get('correctLabels')
-			}
-			if (!model.modelState.incorrectLabels && child.get('incorrectLabels')) {
-				model.modelState.incorrectLabels = child.get('incorrectLabels')
-			}
+		const content = model.get('content')
+		const children = model.get('children') // Need to pull the original children data
+		const mcAssessmentContent =
+			children &&
+			children.length > 0 &&
+			children[children.length - 1].type === 'ObojoboDraft.Chunks.MCAssessment'
+				? children[children.length - 1].content
+				: {}
+		if (!content.correctLabels && mcAssessmentContent.correctLabels) {
+			content.correctLabels = mcAssessmentContent.correctLabels
 		}
+		if (!content.incorrectLabels && mcAssessmentContent.incorrectLabels) {
+			content.incorrectLabels = mcAssessmentContent.incorrectLabels
+		}
+
+		model.setStateProp('correctLabels', null, p => p.split('|'))
+		model.setStateProp('incorrectLabels', null, p => p.split('|'))
 	},
 
 	clone(model, clone) {
@@ -40,6 +45,7 @@ const Adapter = {
 			? model.modelState.incorrectLabels.slice(0)
 			: null
 		clone.modelState.solution = null
+		clone.modelState.revealAnswer = model.modelState.revealAnswer
 
 		if (model.modelState.solution) {
 			clone.modelState.solution = Object.assign({}, model.modelState.solution)
@@ -55,6 +61,7 @@ const Adapter = {
 			? model.modelState.incorrectLabels.join('|')
 			: null
 		json.content.solution = null
+		json.content.revealAnswer = model.modelState.revealAnswer
 
 		if (model.modelState.solution) {
 			json.content.solution = model.modelState.solution.toJSON()

@@ -68,7 +68,7 @@ class NavStore extends Store {
 					if (!this.state.isInitialized) {
 						this.pendingTarget = {
 							type: 'path',
-							target: payload.value.id
+							target: payload.value.path
 						}
 
 						return

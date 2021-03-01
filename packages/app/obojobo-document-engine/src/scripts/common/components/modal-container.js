@@ -20,10 +20,12 @@ class ModalContainer extends React.Component {
 	}
 
 	onMutation() {
-		const el = ReactDOM.findDOMNode(document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID))
+		const elPortalContainer = ReactDOM.findDOMNode(
+			document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)
+		)
 
 		this.setState({
-			numPortalElements: el.children.length
+			numPortalElements: elPortalContainer.children.length
 		})
 	}
 
@@ -34,12 +36,15 @@ class ModalContainer extends React.Component {
 
 		this.observer.disconnect()
 
-		this.observer.observe(
-			ReactDOM.findDOMNode(document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)),
-			{
-				childList: true
-			}
+		const elPortalContainer = ReactDOM.findDOMNode(
+			document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)
 		)
+
+		if (elPortalContainer) {
+			this.observer.observe(elPortalContainer, {
+				childList: true
+			})
+		}
 	}
 
 	componentDidMount() {
