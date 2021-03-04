@@ -4,8 +4,6 @@ import React from 'react'
 import { useEditor, ReactEditor } from 'slate-react'
 import FileToolbarViewer from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar-viewer'
 import FileToolbar from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar'
-import FormatMenu from '../../../../src/scripts/oboeditor/components/toolbars/format-menu'
-import DropDownMenu from '../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu'
 
 jest.mock('slate-react')
 jest.mock('slate')
@@ -47,12 +45,11 @@ describe('FileToolbarViewer', () => {
 		useEditor.mockReturnValue(editor)
 	})
 
-	test('FileToolbarViewer passes expectd props to FileToolbar', () => {
+	test('FileToolbarViewer passes expected props to FileToolbar', () => {
 		editor.selection = null
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: []
 		}
 
@@ -64,15 +61,9 @@ describe('FileToolbarViewer', () => {
 			mode: props.mode,
 			saved: props.saved,
 			editor: editor,
-			isDeletable: props.isDeletable,
+			hasSelection: null,
 			selectAll: expect.any(Function),
-			selectionKey: 0,
-			formatMenu: <FormatMenu hasSelection={null} />,
-			insertMenu: (
-				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu menu={[]} name="Insert" />
-				</div>
-			)
+			insertMenu: []
 		})
 	})
 
@@ -80,7 +71,6 @@ describe('FileToolbarViewer', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: []
 		}
 
@@ -95,15 +85,9 @@ describe('FileToolbarViewer', () => {
 			mode: props.mode,
 			saved: props.saved,
 			editor: editor,
-			isDeletable: true, // <- should be true becase there is a selection
+			hasSelection: true, // <- should be true because there is a selection
 			selectAll: expect.any(Function),
-			selectionKey: '0,1-5,9',
-			formatMenu: <FormatMenu hasSelection={true} />, // <- should be true becase there is a selection
-			insertMenu: (
-				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu menu={[]} name="Insert" />
-				</div>
-			)
+			insertMenu: []
 		})
 	})
 
@@ -111,7 +95,6 @@ describe('FileToolbarViewer', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'mock-1',
@@ -129,27 +112,19 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: false, // <- important bit
-							name: 'mock-1'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: false, // <- important bit
+				name: 'mock-1'
+			}
+		])
 	})
 
 	test('FileToolbarViewer insert menu item disabled when theres no selection', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'mock-2',
@@ -169,27 +144,19 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: true, // <- important bit
-							name: 'mock-2'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: true, // <- important bit
+				name: 'mock-2'
+			}
+		])
 	})
 
 	test('FileToolbarViewer disables insert when table is selected', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'mock-table',
@@ -207,20 +174,13 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: true, // <- important bit
-							name: 'mock-table'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: true, // <- important bit
+				name: 'mock-table'
+			}
+		])
 	})
 
 	test('FileToolbarViewer enables insert when whatever inside a question is selected', () => {
@@ -245,27 +205,19 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: false, // <- important bit
-							name: 'whatever'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: false, // <- important bit
+				name: 'whatever'
+			}
+		])
 	})
 
-	test('FileToolbarViewer pdisables insert when question is selected', () => {
+	test('FileToolbarViewer disables insert when question is selected', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'Question', // is black listed to prevent inserting
@@ -283,27 +235,19 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: true, // <- important bit
-							name: 'Question'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: true, // <- important bit
+				name: 'Question'
+			}
+		])
 	})
 
 	test('FileToolbarViewer disables insert when question bank is selected', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'Question Bank', // is black listed to prevent inserting
@@ -321,27 +265,19 @@ describe('FileToolbarViewer', () => {
 
 		const toolBarProps = component.find(FileToolbar).props()
 
-		expect(toolBarProps.insertMenu).toEqual(
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu
-					name="Insert"
-					menu={[
-						{
-							action: expect.any(Function),
-							disabled: true, // <- important bit
-							name: 'Question Bank'
-						}
-					]}
-				/>
-			</div>
-		)
+		expect(toolBarProps.insertMenu).toEqual([
+			{
+				action: expect.any(Function),
+				disabled: true, // <- important bit
+				name: 'Question Bank'
+			}
+		])
 	})
 
 	test('FileToolbarViewer searches for slate nodes correctly', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: []
 		}
 
@@ -381,7 +317,6 @@ describe('FileToolbarViewer', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'mock-1',
@@ -397,16 +332,14 @@ describe('FileToolbarViewer', () => {
 
 		const component = shallow(<FileToolbarViewer {...props} />)
 
-		const insertMenuProps = component.find(FileToolbar).props().insertMenu.props.children.props
-		expect(insertMenuProps).toHaveProperty('name', 'Insert')
-		expect(insertMenuProps).toHaveProperty('menu', expect.any(Array))
-		expect(insertMenuProps.menu[0]).toEqual({
+		const insertMenuProps = component.find(FileToolbar).props().insertMenu
+		expect(insertMenuProps[0]).toEqual({
 			name: 'mock-1',
 			action: expect.any(Function),
 			disabled: false
 		})
 
-		insertMenuProps.menu[0].action()
+		insertMenuProps[0].action()
 		expect(Transforms.insertNodes).toHaveBeenCalledWith(editor, 'clone')
 		expect(ReactEditor.focus).toHaveBeenCalledWith(editor)
 	})
@@ -415,7 +348,6 @@ describe('FileToolbarViewer', () => {
 		const props = {
 			mode: 'visual',
 			saved: 'true',
-			isDeletable: null,
 			insertableItems: [
 				{
 					name: 'mock-1',

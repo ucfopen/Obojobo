@@ -46,16 +46,18 @@
 		}
 
 		// Reveals the dropdown menu the expected way for mouse users
-		&:hover {
-			> .menu-items {
-				display: block;
-				margin-right: 1em;
-			}
+		// .is-sub-menu {
+		// 	&:active {
+		// 		> .menu-items {
+		// 			display: block;
+		// 			margin-right: 1em;
+		// 		}
 
-			> .menu-title {
-				background: lighten($color-action, 48%);
-			}
-		}
+		// 		> .menu-title {
+		// 			background: lighten($color-action, 48%);
+		// 		}
+		// 	}
+		// }
 
 		.dropdown {
 			display: block;

@@ -173,7 +173,14 @@ class FileMenu extends React.PureComponent {
 
 		return (
 			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="File" menu={menu} />
+				<DropDownMenu
+					name="File"
+					menu={menu}
+					toggleOpen={this.props.toggleOpen}
+					close={this.props.close}
+					onMouseEnter={this.props.onMouseEnter}
+					isOpen={this.props.isOpen}
+				/>
 			</div>
 		)
 	}

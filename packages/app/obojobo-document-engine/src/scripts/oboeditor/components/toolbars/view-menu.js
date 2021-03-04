@@ -59,7 +59,13 @@ class ViewMenu extends React.PureComponent {
 
 		return (
 			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="View" menu={menu} />
+				<DropDownMenu
+					name="View"
+					menu={menu}
+					toggleOpen={this.props.toggleOpen}
+					onMouseEnter={this.props.onMouseEnter}
+					isOpen={this.props.isOpen}
+				/>
 			</div>
 		)
 	}

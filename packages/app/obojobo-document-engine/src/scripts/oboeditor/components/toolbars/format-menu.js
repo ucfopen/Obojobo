@@ -187,7 +187,14 @@ const FormatMenu = props => {
 
 	return (
 		<div className="visual-editor--drop-down-menu">
-			<DropDownMenu name="Format" menu={menu} />
+			<DropDownMenu
+				name="Format"
+				menu={menu}
+				isOpen={props.isOpen}
+				close={props.close}
+				toggleOpen={props.toggleOpen}
+				onMouseEnter={props.onMouseEnter}
+			/>
 		</div>
 	)
 }

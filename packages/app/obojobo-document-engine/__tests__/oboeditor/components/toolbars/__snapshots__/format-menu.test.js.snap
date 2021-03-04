@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FormatMenu component snapshot 1`] = `
-"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold<span>
+"<div class=\\"visual-editor--drop-down-menu\\"><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Format</button><div class=\\"menu-items\\"><div class=\\"dropdown  is-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">Text</button><div class=\\"menu-items\\"><button>Bold<span>
 Ctrl+B</span></button><button>Italic<span>
 Ctrl+I</span></button><button>Strikethrough<span>
 Ctrl+D</span></button><button>Quote<span>

@@ -46,29 +46,29 @@ describe('Drop Down Menu', () => {
 			{ name: 'Undo', type: 'action', action: jest.fn() },
 			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
+		let component = mount(<DropDownMenu name="MockMenu" menu={menu} isOpen={true} />)
 		expect(component.html()).toMatchSnapshot()
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
+		component = mount(<DropDownMenu name="MockMenu" menu={menu} isOpen={false} />)
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('DropDownMenu component opens and closes menu with keys', () => {
+		const close = jest.fn()
+		const toggleOpen = jest.fn()
 		const menu = [
 			{ name: 'Undo', type: 'action', action: jest.fn() },
 			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
+		const component = mount(
+			<DropDownMenu
+				name="MockMenu"
+				menu={menu}
+				isOpen={true}
+				close={close}
+				toggleOpen={toggleOpen}
+			/>
+		)
 
 		component
 			.find('div')
@@ -78,7 +78,19 @@ describe('Drop Down Menu', () => {
 				stopPropagation: jest.fn()
 			})
 
-		expect(component.html()).toMatchSnapshot()
+		expect(toggleOpen).not.toHaveBeenCalled()
+
+		component.setProps({ isOpen: false })
+
+		component
+			.find('div')
+			.at(0)
+			.simulate('keyDown', {
+				key: 'ArrowRight',
+				stopPropagation: jest.fn()
+			})
+
+		expect(toggleOpen).toHaveBeenCalled()
 
 		component
 			.find('div')
@@ -88,7 +100,7 @@ describe('Drop Down Menu', () => {
 				stopPropagation: jest.fn()
 			})
 
-		expect(component.html()).toMatchSnapshot()
+		expect(close).toHaveBeenCalled()
 	})
 
 	test('DropDownMenu component moves up and down with keys', () => {
@@ -96,7 +108,7 @@ describe('Drop Down Menu', () => {
 			{ name: 'Undo', type: 'action', action: jest.fn() },
 			{ name: 'Redo', type: 'action', action: jest.fn() }
 		]
-		const component = mount(<DropDownMenu name="MockMenu" menu={menu} />)
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} isOpen={true} />)
 
 		component
 			.find('div')
@@ -117,6 +129,38 @@ describe('Drop Down Menu', () => {
 			})
 
 		expect(component.state()).toMatchSnapshot()
+	})
+
+	test('DropDownMenu component handles mouse enter', () => {
+		const menu = [
+			{ name: 'mock-action', type: 'action', action: jest.fn() },
+			{ name: 'mock-toggle', type: 'toggle-action', action: jest.fn() },
+			{ name: 'mock-menu', type: 'sub-menu', action: jest.fn(), menu: [{}] }
+		]
+		const component = mount(<DropDownMenu name="MockMenu" menu={menu} isOpen={true} />)
+
+		expect(component.instance().state.currentFocus).toBe(0)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('mouseenter')
+
+		expect(component.instance().state.currentFocus).toBe(1)
+
+		component
+			.find('button')
+			.at(3)
+			.simulate('mouseenter')
+
+		expect(component.instance().state.currentFocus).toBe(2)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('mouseenter')
+
+		expect(component.instance().state.currentFocus).toBe(0)
 	})
 
 	test('DropDownMenu component closes menu when unfocused', () => {

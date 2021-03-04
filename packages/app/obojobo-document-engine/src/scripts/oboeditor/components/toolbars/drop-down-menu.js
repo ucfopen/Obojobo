@@ -8,8 +8,6 @@ class DropDownMenu extends React.PureComponent {
 		super(props)
 
 		this.state = {
-			isOpen: false,
-			isFocused: false,
 			currentFocus: 0
 		}
 
@@ -18,13 +16,13 @@ class DropDownMenu extends React.PureComponent {
 		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
-		this.toggleOpen = this.toggleOpen.bind(this)
+		this.handleMouseEnter = this.handleMouseEnter.bind(this)
 		this.menuButton = React.createRef()
 	}
 
 	componentDidUpdate() {
 		// When the menu is open, focus on the current dropdown item
-		if (this.state.isOpen) {
+		if (this.props.isOpen) {
 			this.menu = this.menu.filter(Boolean)
 			this.menu[this.state.currentFocus].focus()
 		}
@@ -32,18 +30,20 @@ class DropDownMenu extends React.PureComponent {
 
 	onKeyDown(event) {
 		this.menu = this.menu.filter(Boolean)
-		if (this.state.isOpen) event.stopPropagation()
+		if (this.props.isOpen) event.stopPropagation()
 
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
-				this.setState({ isOpen: true, currentFocus: 0 })
+				if (!this.props.isOpen) this.props.toggleOpen(event)
+
+				this.setState({ currentFocus: 0 })
 				event.stopPropagation()
 				break
 
 			// Close the menu and return focus to the link item
 			case 'ArrowLeft':
-				this.setState({ isOpen: false })
+				this.props.close()
 				this.menuButton.current.focus()
 				break
 
@@ -77,8 +77,8 @@ class DropDownMenu extends React.PureComponent {
 		clearTimeout(this.timeOutId)
 	}
 
-	toggleOpen() {
-		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
+	handleMouseEnter(e, index) {
+		this.setState({ currentFocus: index })
 	}
 
 	renderAction(index, item) {
@@ -97,6 +97,7 @@ class DropDownMenu extends React.PureComponent {
 			<button
 				key={index}
 				onClick={item.action}
+				onMouseEnter={e => this.handleMouseEnter(e, index)}
 				disabled={this.props.disabled || item.disabled}
 				ref={item => {
 					this.menu.push(item)
@@ -112,7 +113,7 @@ class DropDownMenu extends React.PureComponent {
 		this.menu = []
 		return (
 			<div
-				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
+				className={'dropdown ' + isOrNot(this.props.isOpen, 'open')}
 				key={this.props.name}
 				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
@@ -120,7 +121,12 @@ class DropDownMenu extends React.PureComponent {
 				ref={this.props.onRef}
 				tabIndex={-1}
 			>
-				<button className="menu-title" onClick={this.toggleOpen} ref={this.menuButton}>
+				<button
+					className="menu-title"
+					onClick={this.props.toggleOpen}
+					ref={this.menuButton}
+					onMouseEnter={this.props.onMouseEnter}
+				>
 					{this.props.name}
 				</button>
 				<div className="menu-items">
@@ -136,6 +142,8 @@ class DropDownMenu extends React.PureComponent {
 											this.menu.push(item)
 										}}
 										disabled={this.props.disabled}
+										onMouseEnter={e => this.handleMouseEnter(e, index)}
+										isOpen={this.state.currentFocus === index}
 									/>
 								)
 							case 'toggle-action':
@@ -147,6 +155,7 @@ class DropDownMenu extends React.PureComponent {
 										ref={item => {
 											this.menu.push(item)
 										}}
+										onMouseEnter={e => this.handleMouseEnter(e, index)}
 									>
 										{item.name}
 										{item.value ? <span>✔</span> : null}
