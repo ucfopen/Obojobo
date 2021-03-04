@@ -14,7 +14,15 @@ const Excerpt = props => {
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<TextChunk
-				className={`obojobo-draft--chunks--excerpt pad is-body-style-type-${modelState.bodyStyle} is-top-edge-type-${modelState.topEdge} is-bottom-edge-type-${modelState.bottomEdge} is-width-${modelState.width} is-font-${modelState.font} is-font-style-${modelState.fontStyle} is-line-height-type-${modelState.lineHeight} is-font-size-${modelState.fontSize}`}
+				className={`obojobo-draft--chunks--excerpt pad is-body-style-type-${
+					modelState.bodyStyle
+				} is-top-edge-type-${modelState.topEdge} is-bottom-edge-type-${
+					modelState.bottomEdge
+				} is-width-${modelState.width} is-font-${modelState.font} is-font-style-${
+					modelState.fontStyle
+				} is-line-height-type-${modelState.lineHeight} is-font-size-${modelState.fontSize} ${
+					modelState.effect ? 'is-showing-effect' : 'is-not-showing-effect'
+				}`}
 			>
 				<blockquote cite="test">
 					<div className="excerpt-content">

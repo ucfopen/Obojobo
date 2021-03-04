@@ -42,7 +42,7 @@ const CITE_LINE_NODE = 'ObojoboDraft.Chunks.Excerpt.CitationLine'
 const Excerpt = {
 	name: EXCERPT_NODE,
 	icon: Icon,
-	menuLabel: 'Excerpt',
+	menuLabel: 'Box / Excerpt',
 	isInsertable: true,
 	isContent: true,
 	helpers: Converter,
@@ -111,6 +111,21 @@ const Excerpt = {
 
 		// 	return placeholders
 		// },
+		decorate([node, path], editor) {
+			if (Element.isElement(node) && Node.string(node) === '' && node.subtype === CITE_TEXT_NODE) {
+				const point = Editor.start(editor, path)
+
+				return [
+					{
+						placeholder: 'Type a caption or citation here',
+						anchor: point,
+						focus: point
+					}
+				]
+			}
+
+			return []
+		},
 		onKeyDown(entry, editor, event) {
 			switch (event.key) {
 				case 'Backspace':
@@ -154,6 +169,42 @@ const Excerpt = {
 		// 			return <EditorComponent {...props} {...props.attributes} />
 		// 	}
 		// }
+		normalizeNode([node, path], editor, next) {
+			console.log(
+				'nn',
+				node,
+				path,
+				Element.isElement(node),
+				node.type === EXCERPT_NODE,
+				!node.subtype
+			)
+			if (
+				Element.isElement(node) &&
+				node.type === EXCERPT_NODE &&
+				node.subtype === EXCERPT_CONTENT
+			) {
+				console.log('EMPTY?', node.children)
+				if (node.children.length === 0) {
+					console.log('EMPTY SON', path)
+					Transforms.insertNodes(
+						editor,
+						{
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {},
+							children: [
+								{
+									type: 'ObojoboDraft.Chunks.Text',
+									subtype: 'ObojoboDraft.Chunks.Text.TextLine',
+									content: { indent: 0 },
+									children: [{ text: '' }]
+								}
+							]
+						},
+						{ at: path.concat(0) }
+					)
+				}
+			}
+		},
 		renderNode(props) {
 			switch (props.element.subtype) {
 				case CITE_LINE_NODE:

@@ -1,7 +1,14 @@
 {
 	"type": "ObojoboDraft.Chunks.Excerpt",
 	"content": {
-		"preset": "simple-filled"
+		"bodyStyle": "filled-box",
+		"width": "medium",
+		"font": "sans",
+		"lineHeight": "moderate",
+		"fontSize": "smaller",
+		"topEdge": "normal",
+		"bottomEdge": "normal",
+		"effect": false
 	},
 	"children": [
 		{

@@ -2,37 +2,41 @@ import React from 'react'
 
 const Icon = () => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-			<g opacity="0.12">
-				<rect className="fill" x="4.94" y="5.23" width="22.12" height="21.58" rx="1.09" ry="1.09" />
+		<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+			<g>
+				<path
+					fill="none"
+					stroke="#000000"
+					strokeLinejoin="round"
+					strokeMiterlimit="10"
+					d="M24,9.4H11.3v4.4H6.9v7.3
+		c0,0.5,0.4,0.9,0.9,0.9H24c0.5,0,0.9-0.4,0.9-0.9V10.4C24.9,9.9,24.5,9.4,24,9.4z"
+				/>
+				<line
+					fill="none"
+					stroke="#000000"
+					strokeLinejoin="round"
+					strokeMiterlimit="10"
+					x1="6.9"
+					y1="13.8"
+					x2="11.3"
+					y2="9.4"
+				/>
 			</g>
-			<line
-				className="stroke"
-				x1="13.37"
-				y1="16.76"
-				x2="18.37"
-				y2="16.76"
-				strokeLinecap="round"
-				strokeMiterlimit="10"
-			/>
-			<line
-				className="stroke"
-				x1="8.11"
-				y1="15.76"
-				x2="11.64"
-				y2="12.23"
-				strokeLinecap="round"
-				strokeMiterlimit="10"
-			/>
-			<line
-				className="stroke"
-				x1="8.11"
-				y1="8.69"
-				x2="11.64"
-				y2="12.23"
-				strokeLinecap="round"
-				strokeMiterlimit="10"
-			/>
+			<g opacity="0.3">
+				<g>
+					<rect x="2.7" y="1.9" width="26.5" height="1.6" />
+					<g>
+						<rect x="2.7" y="4.9" width="26.5" height="1.6" />
+					</g>
+				</g>
+				<g>
+					<rect x="2.7" y="24.9" width="26.5" height="1.6" />
+					<g>
+						<rect x="2.7" y="27.9" width="26.5" height="1.6" />
+					</g>
+				</g>
+			</g>
 		</svg>
 	)
 }

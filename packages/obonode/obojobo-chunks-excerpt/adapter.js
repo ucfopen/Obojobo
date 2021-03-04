@@ -59,7 +59,8 @@ const adapter = {
 			'card',
 			'white-paper',
 			'modern-paper',
-			'yellow-paper',
+			'light-yellow-paper',
+			'dark-yellow-paper',
 			'aged-paper',
 			'modern-book-page',
 			'old-book-page',
@@ -92,14 +93,12 @@ const adapter = {
 			'large',
 			'medium',
 			'small',
-			'extra-small'
+			'tiny'
 		])
 
-		model.setStateProp('fontStyle', 'regular', p => p.toLowerCase(), ['regular', 'small-caps'])
-
-		model.setStateProp('lineHeight', 'regular', p => p.toLowerCase(), [
+		model.setStateProp('lineHeight', 'moderate', p => p.toLowerCase(), [
 			'compact',
-			'regular',
+			'moderate',
 			'generous'
 		])
 
@@ -108,6 +107,8 @@ const adapter = {
 			'regular',
 			'larger'
 		])
+
+		model.setStateProp('effect', false, Boolean)
 	},
 
 	clone(model, clone) {

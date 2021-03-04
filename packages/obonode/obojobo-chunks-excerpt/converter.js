@@ -67,9 +67,9 @@ const slateToObo = node => {
 			bottomEdge: node.content.bottomEdge,
 			width: node.content.width,
 			font: node.content.font,
-			fontStyle: node.content.fontStyle,
 			lineHeight: node.content.lineHeight,
-			fontSize: node.content.fontSize
+			fontSize: node.content.fontSize,
+			effect: node.content.effect
 		})
 	})
 
@@ -87,9 +87,9 @@ const slateToObo = node => {
 			bottomEdge: node.content.bottomEdge,
 			width: node.content.width,
 			font: node.content.font,
-			fontStyle: node.content.fontStyle,
 			lineHeight: node.content.lineHeight,
-			fontSize: node.content.fontSize
+			fontSize: node.content.fontSize,
+			effect: node.content.effect
 		})
 	}
 }
