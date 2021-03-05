@@ -651,6 +651,8 @@ class Excerpt extends React.Component {
 				<div
 					ref={this.ref}
 					className={`text-chunk obojobo-draft--chunks--excerpt pad ${
+						this.props.selected ? 'is-selected' : 'is-not-selected'
+					} ${
 						this.state.isShowingMoreOptions
 							? 'is-showing-more-options'
 							: 'is-not-showing-more-options'
@@ -716,24 +718,28 @@ class Excerpt extends React.Component {
 													<span>Style</span>
 												</label>
 												<select value={content.bodyStyle} onChange={this.onChangeBodyStyle}>
-													<option value="none">None</option>
-													<option value="filled-box">Filled Box</option>
-													<option value="bordered-box">Bordered Box</option>
-													<option value="card">Card</option>
-
-													<option value="white-paper">White Paper</option>
-													<option value="modern-paper">Gray Paper</option>
-													<option value="light-yellow-paper">Light Yellow Paper</option>
-													<option value="dark-yellow-paper">Dark Yellow Paper</option>
-													<option value="aged-paper">Aged Paper</option>
-
-													<option value="retro-text-file">Retro Text File</option>
-													<option value="modern-text-file">Browser</option>
-													<option value="command-line">Command Line</option>
-													<option value="term-white">CRT Terminal (White)</option>
-													<option value="term-green">CRT Terminal (Green)</option>
-													<option value="term-orange">CRT Terminal (Orange)</option>
-													<option value="term-c64">Commodore 64 Screen</option>
+													<optgroup label="Simple">
+														<option value="none">None</option>
+														<option value="filled-box">Filled Box</option>
+														<option value="bordered-box">Bordered Box</option>
+														<option value="card">Card</option>
+													</optgroup>
+													<optgroup label="Paper">
+														<option value="white-paper">White Paper</option>
+														<option value="modern-paper">Gray Paper</option>
+														<option value="light-yellow-paper">Light Yellow Paper</option>
+														<option value="dark-yellow-paper">Dark Yellow Paper</option>
+														<option value="aged-paper">Aged Paper</option>
+													</optgroup>
+													<optgroup label="Computer">
+														<option value="modern-text-file">Browser</option>
+														<option value="retro-text-file">Retro Text File</option>
+														<option value="command-line">Command Line</option>
+														<option value="term-white">CRT Terminal (White)</option>
+														<option value="term-green">CRT Terminal (Green)</option>
+														<option value="term-orange">CRT Terminal (Orange)</option>
+														<option value="term-c64">Commodore 64 Screen</option>
+													</optgroup>
 												</select>
 											</div>
 

@@ -1,9 +1,10 @@
 import { Editor, Node, Element, Transforms } from 'slate'
-
+import { ReactEditor } from 'slate-react'
 import Converter from './converter'
 import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import Line from './components/line/editor-component'
+import ExcerptContent from './components/excerpt-content/editor-component'
 import Text from './components/text/editor-component'
 import Citation from './components/citation/editor-component'
 import EditorComponent from './editor-component'
@@ -214,12 +215,7 @@ const Excerpt = {
 					return <Citation {...props} {...props.attributes} />
 
 				case EXCERPT_CONTENT:
-					return (
-						<div className="excerpt-content">
-							<div className="wrapper">{props.children}</div>
-							<div className="overlay" />
-						</div>
-					)
+					return <ExcerptContent {...props} {...props.attributes} />
 
 				default:
 					return <EditorComponent {...props} {...props.attributes} />

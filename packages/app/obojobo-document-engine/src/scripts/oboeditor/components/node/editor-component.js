@@ -224,7 +224,14 @@ class Node extends React.Component {
 		const className = `oboeditor-component component ${this.props.className || ''}`
 
 		return (
-			<div className={className} data-obo-component="true">
+			<div
+				className={className}
+				data-obo-component="true"
+				onClick={() => {
+					const thisPath = getSlatePath(this.props)
+					console.log('ctt-->', thisPath, this.props.element)
+				}}
+			>
 				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu

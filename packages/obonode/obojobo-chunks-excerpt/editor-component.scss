@@ -132,7 +132,7 @@
 		// width: 100%;
 		align-items: center;
 		height: 1em;
-		opacity: 0;
+		// opacity: 0;
 		// filter: grayscale(100%);
 		// background: blue;
 		// transition: opacity 1s;
@@ -421,6 +421,26 @@
 
 			button {
 				padding: 0.5em 1em;
+			}
+		}
+	}
+
+	.obojobo-draft--chunks--excerpt--edge-controls {
+		opacity: 0;
+
+		.edges {
+			opacity: 0;
+		}
+	}
+
+	&.is-selected {
+		.obojobo-draft--chunks--excerpt--edge-controls {
+			opacity: 1;
+
+			&:hover {
+				.edges {
+					opacity: 1;
+				}
 			}
 		}
 	}
