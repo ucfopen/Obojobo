@@ -47,6 +47,8 @@ class MoreInfoBox extends React.Component {
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 
+		this.renderInfoBox = this.renderInfoBox.bind(this)
+
 		this.domRef = React.createRef()
 		this.idInput = React.createRef()
 	}
@@ -106,7 +108,6 @@ class MoreInfoBox extends React.Component {
 
 	handleIdChange(event) {
 		const currentId = event.target.value
-
 		return this.setState({ currentId, needsUpdate: true })
 	}
 
@@ -168,6 +169,7 @@ class MoreInfoBox extends React.Component {
 		if (this.state.isOpen === true) {
 			if (this.props.onBlur) this.props.onBlur('info')
 			this.setState({ isOpen: false })
+			// this.props.unmountMoreInfoBox()
 		}
 	}
 
@@ -189,6 +191,8 @@ class MoreInfoBox extends React.Component {
 			needsUpdate: true,
 			modalOpen: false
 		}))
+
+		this.props.unmountMoreInfoBox()
 	}
 
 	renderItem(item) {
@@ -315,7 +319,7 @@ class MoreInfoBox extends React.Component {
 										<Button
 											disabled={this.props.isFirst}
 											altAction
-											onClick={() => this.props.moveNode(this.props.index - 1)}
+											onClick={() => this.props.moveNode(this.props.index - 1, 'move-up')}
 										>
 											Move Up
 										</Button>
@@ -324,7 +328,7 @@ class MoreInfoBox extends React.Component {
 										<Button
 											disabled={this.props.isLast}
 											altAction
-											onClick={() => this.props.moveNode(this.props.index + 1)}
+											onClick={() => this.props.moveNode(this.props.index + 1, 'move-down')}
 										>
 											Move Down
 										</Button>
@@ -350,6 +354,7 @@ class MoreInfoBox extends React.Component {
 				ref={this.domRef}
 				className={'visual-editor--more-info ' + (this.props.className || '')}
 				onKeyDown={this.onKeyDown}
+				style={{ top: `${this.props.heightFromTop}px` }}
 			>
 				<button
 					className={'more-info-button ' + (this.state.isOpen ? 'is-open' : '')}
