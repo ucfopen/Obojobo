@@ -40,5 +40,7 @@ module.exports = numericChoices => {
 					score
 				}
 		}
+
+		return null
 	})
 }

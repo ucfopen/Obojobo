@@ -1,4 +1,3 @@
-import Common from 'obojobo-document-engine/src/scripts/common'
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
 // @TODO - Copied from MCChoice

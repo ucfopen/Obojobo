@@ -5,9 +5,6 @@ import { NUMERIC_CHOICE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_ASSESSMENT_UNITS 
 import { CHOICE_NODE } from 'obojobo-chunks-abstract-assessment/constants'
 import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-util'
 
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
-
 const slateToObo = node => {
 	const unitsNode = node.children[0]
 	const choiceNodes = node.children.slice(1)
@@ -41,13 +38,6 @@ const oboToSlate = node => {
 	const oboModel = OboModel.models[node.id]
 	const questionModel = oboModel.parent
 	const questionType = questionModel.attributes.content.type
-
-	console.log('so', {
-		type: NUMERIC_ASSESSMENT_NODE,
-		subtype: NUMERIC_ASSESSMENT_UNITS,
-		content: {},
-		children: [{ text: TextUtil.parseMarkings(node.content.units[0]) }]
-	})
 
 	slateNode.children = [
 		{

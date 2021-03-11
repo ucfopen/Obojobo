@@ -1,13 +1,11 @@
-import MCAssessmentExplanation from './mc-assessment-explanation'
+import QuestionExplanation from './question-explanation'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import React from 'react'
 import { mount } from 'enzyme'
 
 require('./viewer') // used to register this oboModel
-require('./MCChoice/viewer') // // dependency on Obojobo.Chunks.MCAssessment
-require('./MCAnswer/viewer') // // dependency on Obojobo.Chunks.MCAssessment.MCAnswer
-require('./MCFeedback/viewer') // // dependency on Obojobo.Chunks.MCAssessment.MCFeedback
 require('obojobo-chunks-question/viewer') // dependency on Obojobo.Chunks.Question
+require('obojobo-chunks-multiple-choice-assessment/viewer') // dependency on Obojobo.Chunks.Question
 require('obojobo-pages-page/viewer') // dependency on Obojobo.Pages.Page
 require('obojobo-chunks-text/viewer') // // dependency on Obojobo.Chunks.Text
 
@@ -147,10 +145,10 @@ describe('MCAssessment', () => {
 	})
 
 	test('css transition animation lifecycle events are called with props', () => {
-		jest.useFakeTimers()
-
 		const parent = OboModel.create(questionJSON)
 		const model = parent.children.models[0]
+
+		// expect(JSON.stringify(parent, null, 2)).toBe(1)
 
 		const moduleData = {
 			questionState: 'mockQuestionState',
@@ -158,30 +156,19 @@ describe('MCAssessment', () => {
 			focusState: {}
 		}
 
-		let animationOnEnteredCalled = false
-		let animationOnExitCalled = false
-		let animationOnExitingCalled = false
-
 		const onClickShowExplanation = jest.fn()
 		const onClickHideExplanation = jest.fn()
-
-		const animationOnEntered = jest.fn(() => (animationOnEnteredCalled = true))
-		const animationOnExit = jest.fn(() => (animationOnExitCalled = true))
-		const animationOnExiting = jest.fn(() => (animationOnExitingCalled = true))
 
 		const isShowingExplanationValue = false
 
 		const component = mount(
-			<MCAssessmentExplanation
+			<QuestionExplanation
 				model={model}
 				moduleData={moduleData}
 				mode="assessment"
 				isShowingExplanation={isShowingExplanationValue}
 				solutionModel={model.parent.modelState.solution}
 				animationTransitionTime={0}
-				animationOnEntered={animationOnEntered}
-				animationOnExit={animationOnExit}
-				animationOnExiting={animationOnExiting}
 				onClickShowExplanation={onClickShowExplanation}
 				onClickHideExplanation={onClickHideExplanation}
 			/>
@@ -190,10 +177,5 @@ describe('MCAssessment', () => {
 		component.setProps({ isShowingExplanation: true })
 		component.setProps({ isShowingExplanation: false })
 		component.setProps({ isShowingExplanation: true })
-
-		jest.runAllTimers()
-		expect(animationOnEnteredCalled).toBe(true)
-		expect(animationOnExitCalled).toBe(true)
-		expect(animationOnExitingCalled).toBe(true)
 	})
 })

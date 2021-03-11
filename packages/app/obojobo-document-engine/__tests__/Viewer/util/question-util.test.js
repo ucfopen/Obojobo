@@ -519,15 +519,6 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	test('getScoreClass returns expected values', () => {
-		expect(QuestionUtil.getScoreClass(null)).toBe('is-not-scored')
-		expect(QuestionUtil.getScoreClass('no-score')).toBe('is-no-score')
-		expect(QuestionUtil.getScoreClass(100)).toBe('is-correct')
-		expect(QuestionUtil.getScoreClass(99)).toBe('is-not-correct')
-		expect(QuestionUtil.getScoreClass(0)).toBe('is-not-correct')
-		expect(QuestionUtil.getScoreClass('invalid-value')).toBe('is-not-correct')
-	})
-
 	test('getScoreDataForModel returns null if no state for context', () => {
 		expect(
 			QuestionUtil.getScoreDataForModel(

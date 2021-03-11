@@ -27,24 +27,6 @@ Object {
 }
 `;
 
-exports[`MCAssessment adapter construct builds with correctLabels 1`] = `
-Object {
-  "modelState": Object {
-    "responseType": "pick-one",
-    "shuffle": true,
-  },
-}
-`;
-
-exports[`MCAssessment adapter construct builds with incorrectLabels 1`] = `
-Object {
-  "modelState": Object {
-    "responseType": "pick-one",
-    "shuffle": true,
-  },
-}
-`;
-
 exports[`MCAssessment adapter construct builds with responseType 1`] = `
 Object {
   "modelState": Object {

@@ -1,25 +1,19 @@
-import { mount, shallow } from 'enzyme'
-
 import Assessment from './viewer-component'
 import AssessmentUtil from 'obojobo-document-engine/src/scripts/viewer/util/assessment-util'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
-import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
-import Dialog from 'obojobo-document-engine/src/scripts/common/components/modal/dialog'
 import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
 import React from 'react'
 import renderer from 'react-test-renderer'
 const {
 	NOT_IN_ATTEMPT,
-	IN_ATTEMPT,
-	SEND_RESPONSES_SUCCESSFUL,
-	SEND_RESPONSES_FAILED,
-	END_ATTEMPT_FAILED,
+	// IN_ATTEMPT,
+	// SEND_RESPONSES_SUCCESSFUL,
+	// SEND_RESPONSES_FAILED,
+	// END_ATTEMPT_FAILED,
 	STARTING_ATTEMPT,
-	RESUMING_ATTEMPT,
-	SENDING_RESPONSES,
-	ENDING_ATTEMPT
+	RESUMING_ATTEMPT
+	// SENDING_RESPONSES,
+	// ENDING_ATTEMPT
 } = AssessmentNetworkStates
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')

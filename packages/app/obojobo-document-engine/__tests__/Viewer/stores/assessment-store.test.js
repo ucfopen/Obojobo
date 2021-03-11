@@ -3,7 +3,6 @@ import React from 'react'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import OboModel from '../../../src/scripts/common/models/obo-model'
 import AssessmentStateMachine from '../../../src/scripts/viewer/stores/assessment-state-machine'
@@ -12,18 +11,6 @@ import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
 
 jest.mock('../../../src/scripts/common/models/obo-model')
-// , () => {
-// 	return {
-// 		getRoot: () => {
-// 			return {
-// 				get: () => 'mockDraftId'
-// 			}
-// 		},
-// 		models: {
-// 			mockId: { mockOboModel: true }
-// 		}
-// 	}
-// })
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
 	return {
 		getState: () => {
@@ -34,7 +21,6 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
 	}
 })
 jest.mock('../../../src/scripts/viewer/stores/assessment-state-machine')
-// jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 jest.mock('../../../src/scripts/common/util/error-util')
@@ -43,8 +29,6 @@ jest.mock('../../../src/scripts/viewer/util/assessment-api')
 jest.mock('../../../src/scripts/common/util/uuid', () => {
 	return () => 'mockUuid'
 })
-
-// const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 
 describe('AssessmentStore', () => {
 	let AssessmentStoreClass

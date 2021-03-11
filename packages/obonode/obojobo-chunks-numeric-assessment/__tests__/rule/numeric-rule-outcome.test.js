@@ -3,7 +3,6 @@
 import NumericRuleOutcome from '../../rule/numeric-rule-outcome'
 import NumericRule from '../../rule/numeric-rule'
 
-import Big from 'big.js'
 import NumericEntry from '../../entry/numeric-entry'
 import BigValueRange from '../../range/big-value-range'
 

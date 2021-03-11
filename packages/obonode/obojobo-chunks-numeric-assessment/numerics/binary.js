@@ -3,7 +3,7 @@ const { INPUT_TYPE_BINARY } = require('./types/input-types')
 const { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } = require('../entry/match-types')
 const Numeric = require('./numeric')
 const Decimal = require('./decimal')
-const Big = require('../big')
+const big = require('../big')
 
 const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+$/
 const binaryInferred = /^[0-1]+$|^[0-1]+$/
@@ -118,8 +118,8 @@ module.exports = class Binary extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Binary.getString(Big(2)) //"0b10"
-	 * Binary.getString(Big(15)) //"0b1111"
+	 * Binary.getString(big(2)) //"0b10"
+	 * Binary.getString(big(15)) //"0b1111"
 	 */
 	static getString(bigValue) {
 		return `0b${Number(bigValue).toString(2)}`
@@ -130,11 +130,11 @@ module.exports = class Binary extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Binary.getBigValueFromString('0b10') //Big(2)
-	 * Binary.getBigValueFromString('1111') //Big(15)
+	 * Binary.getBigValueFromString('0b10') //big(2)
+	 * Binary.getBigValueFromString('1111') //big(15)
 	 */
 	static getBigValueFromString(valueString) {
-		return Big(Binary.getNumberFromString(valueString))
+		return big(Binary.getNumberFromString(valueString))
 	}
 
 	/**

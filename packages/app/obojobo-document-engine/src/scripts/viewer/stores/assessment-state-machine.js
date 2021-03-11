@@ -1,31 +1,14 @@
 import { Machine, interpret, assign } from 'xstate'
 
-import ViewerAPI from '../util/viewer-api'
 import Common from 'Common'
-import NavStore from '../stores/nav-store'
 import AssessmentNetworkStates from './assessment-store/assessment-network-states'
 import AssessmentStateActions from './assessment-store/assessment-state-actions'
 import NavUtil from '../util/nav-util'
 
 import AssessmentStateHelpers from './assessment-state-helpers'
-import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
-import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
 import AssessmentUtil from '../util/assessment-util'
-import CurrentAssessmentStates from '../util/current-assessment-states'
-import FocusUtil from '../util/focus-util'
-import LTINetworkStates from './assessment-store/lti-network-states'
-import LTIResyncStates from './assessment-store/lti-resync-states'
-import QuestionStore from './question-store'
-import QuestionUtil from '../util/question-util'
-import React from 'react'
-import { getOverlappingDaysInIntervals } from 'date-fns'
-
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const { OboModel } = Common.models
-const { ErrorUtil, ModalUtil } = Common.util
-const { Dispatcher } = Common.flux
-const { SimpleDialog, Dialog } = Common.components.modal
 
 const {
 	INIT,
@@ -47,7 +30,7 @@ const {
 	PROMPTING_FOR_IMPORT,
 	IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
-	IMPORT_ATTEMPT_SUCCESSFUL,
+	// IMPORT_ATTEMPT_SUCCESSFUL,
 	FETCHING_ATTEMPT_HISTORY,
 	FETCH_HISTORY_FAILED
 } = AssessmentNetworkStates
@@ -55,12 +38,12 @@ const {
 const {
 	FETCH_ATTEMPT_HISTORY,
 	START_ATTEMPT,
-	PROMPT_FOR_IMPORT,
-	PROMPT_FOR_RESUME,
+	// PROMPT_FOR_IMPORT,
+	// PROMPT_FOR_RESUME,
 	IMPORT_ATTEMPT,
 	ABANDON_IMPORT,
 	RESUME_ATTEMPT,
-	TRY_TO_SUBMIT,
+	// TRY_TO_SUBMIT,
 	SEND_RESPONSES,
 	ACKNOWLEDGE,
 	END_ATTEMPT,
@@ -129,7 +112,7 @@ const updateContextWithCurrentAttemptError = assign({
 })
 
 const logError = (context, event) => {
-	console.error(event.data)
+	console.error(event.data) // eslint-disable-line no-console
 }
 
 const getAssessmentContext = context => {
@@ -363,7 +346,7 @@ class AssessmentStateMachine {
 			},
 			{
 				guards: {
-					isImportAvailable: (context, event) => {
+					isImportAvailable: context => {
 						const model = OboModel.models[context.assessmentId]
 						return (
 							AssessmentUtil.getImportableScoreForModel(context.assessmentStoreState, model) !==
@@ -377,15 +360,15 @@ class AssessmentStateMachine {
 							null
 						)
 					},
-					isNotResuming: (context, event) => {
+					isNotResuming: context => {
 						const model = OboModel.models[context.assessmentId]
 						return !AssessmentUtil.hasUnfinishedAttempt(context.assessmentStoreState, model)
 					},
-					isAttemptNeedingToBeResumed: (context, event) => {
+					isAttemptNeedingToBeResumed: context => {
 						const model = OboModel.models[context.assessmentId]
 						return AssessmentUtil.hasUnfinishedAttempt(context.assessmentStoreState, model)
 					},
-					isAttemptHistoryNotLoaded: (context, event) => {
+					isAttemptHistoryNotLoaded: context => {
 						const assessmentContext = getAssessmentContext(context)
 						return assessmentContext.attemptHistoryNetworkState === 'none'
 					}

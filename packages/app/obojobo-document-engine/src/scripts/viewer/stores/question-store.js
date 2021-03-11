@@ -152,7 +152,6 @@ class QuestionStore extends Store {
 	}
 
 	onPostResponseError(contextState, id) {
-		console.log('onPostResponseError', contextState, id)
 		delete contextState.sendingResponsePromises[id]
 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.ERROR
 
@@ -199,7 +198,7 @@ class QuestionStore extends Store {
 				return true
 			})
 			.catch(e => {
-				console.error('Unable to send all responses', e)
+				console.error('Unable to send all responses', e) //eslint-disable-line no-console
 				Dispatcher.trigger('question:forceSentAllResponses', {
 					value: { context, success: false, error: e.message }
 				})
@@ -215,14 +214,12 @@ class QuestionStore extends Store {
 		const responseMetadata = contextState.responseMetadata[id]
 		if (!responseMetadata) return false
 
-		console.log('send response', id, context)
-
 		const postResponsePromise = this.getPostResponsePromise(id, context)
 
 		contextState.sendingResponsePromises[id] = postResponsePromise
 
 		return timeoutPromise(SEND_RESPONSE_TIMEOUT_MS, postResponsePromise).catch(e => {
-			console.error(e)
+			console.error(e) //eslint-disable-line no-console
 			return this.onPostResponseError(contextState, id)
 		})
 		// .catch(e => {

@@ -5,7 +5,7 @@ import React from 'react'
 const { Button } = Common.components
 const { focus } = Common.page
 
-export default class MCAssessmentExplanation extends React.Component {
+export default class QuestionExplanation extends React.Component {
 	constructor(props) {
 		super(props)
 		this.solutionLabelRef = React.createRef()

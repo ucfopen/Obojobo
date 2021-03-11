@@ -79,7 +79,7 @@ describe('Component Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test.only('Node builds the expected component when not selected null contentDescription', () => {
+	test('Node builds the expected component when not selected null contentDescription', () => {
 		// mock parts needed to display MoreInfoBox
 		const mockParentNode = { children: [1] }
 		Editor.parent.mockReturnValue([mockParentNode])
@@ -89,7 +89,6 @@ describe('Component Editor Node', () => {
 		const component = rtr.create(<Node {...testProps} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
-		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('Node builds the expected component when selected', () => {
@@ -106,7 +105,6 @@ describe('Component Editor Node', () => {
 		// verify
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
-		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
 	test('Node builds the expected component when selected when parent is a question node', () => {

@@ -3,8 +3,7 @@
 import React from 'react'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-const { SimpleDialog, ModalPortal } = Common.components.modal
-const { ModalUtil } = Common.util
+const { SimpleDialog } = Common.components.modal
 
 export default class Dialog extends React.Component {
 	constructor(props) {
@@ -26,8 +25,8 @@ export default class Dialog extends React.Component {
 		// 	originalOnTransition(prevStep, nextStep)
 		// }
 
-		console.log('machine', props.machine)
-		console.log('service', props.machine.service)
+		// console.log('machine', props.machine)
+		// console.log('service', props.machine.service)
 
 		// setTimeout(() => {
 		props.machine.service.onTransition(this.onTransition.bind(this))
@@ -36,7 +35,7 @@ export default class Dialog extends React.Component {
 	}
 
 	onTransition(newState, old) {
-		console.log('State Transition:', old.type + '->' + newState.value)
+		// console.log('State Transition:', old.type + '->' + newState.value)
 		this.setState({ log: old.type + '->' + newState.value + '\n' + this.state.log })
 	}
 

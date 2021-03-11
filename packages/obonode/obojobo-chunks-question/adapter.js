@@ -17,13 +17,13 @@ const Adapter = {
 		// on MCAssessment. For compatibility we'll use those if they exist
 		// and this node doesn't define them.
 		// @deprecated
-		const content = model.get('content')
+		const content = model.get('content') || {}
 		const children = model.get('children') // Need to pull the original children data
 		const mcAssessmentContent =
 			children &&
 			children.length > 0 &&
 			children[children.length - 1].type === 'ObojoboDraft.Chunks.MCAssessment'
-				? children[children.length - 1].content
+				? children[children.length - 1].content || {}
 				: {}
 		if (!content.correctLabels && mcAssessmentContent.correctLabels) {
 			content.correctLabels = mcAssessmentContent.correctLabels

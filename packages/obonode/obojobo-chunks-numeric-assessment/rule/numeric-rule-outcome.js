@@ -1,4 +1,4 @@
-const Big = require('../big')
+const big = require('../big')
 const { ROUND_TYPE_ROUND_DECIMAL_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } = require('./round-types')
 const { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } = require('../numerics/types/input-types')
 const { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } = require('./rule-error-types')
@@ -187,7 +187,7 @@ module.exports = class NumericRuleOutcome {
 				return true
 
 			default:
-				return rule.sigFigs.isValueInRange(Big(numericInstance.numSigFigs))
+				return rule.sigFigs.isValueInRange(big(numericInstance.numSigFigs))
 		}
 	}
 

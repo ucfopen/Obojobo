@@ -3,7 +3,6 @@ import Converter from './converter'
 import React from 'react'
 import NumericAssessmentComponent from './editor-component'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
-import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import emptyNode from './empty-node.json'
 import { ReactEditor } from 'slate-react'
 

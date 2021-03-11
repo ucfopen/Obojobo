@@ -56,7 +56,8 @@ describe('attempt-end', () => {
 			draftId: 'mockDraftId',
 			draftContentId: 'mockContentId',
 			assessmentId: 'mockAssessmentId',
-			state: 'mockAttemptState'
+			state: 'mockAttemptState',
+			completedAt: null
 		}
 
 		const mockCalculatedScore = {
@@ -208,7 +209,8 @@ describe('attempt-end', () => {
 			draftId: 'mockDraftId',
 			draftContentId: 'mockContentId',
 			assessmentId: 'mockAssessmentId',
-			state: 'mockAttemptState'
+			state: 'mockAttemptState',
+			completedAt: null
 		}
 
 		const mockCalculatedScore = {

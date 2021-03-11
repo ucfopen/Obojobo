@@ -1,6 +1,6 @@
-const Big = require('big.js')
+const big = require('big.js')
 
 module.exports = s => {
 	s = typeof s === 'string' ? s.replace(/^\+/, '') : s
-	return Big(s)
+	return big(s)
 }

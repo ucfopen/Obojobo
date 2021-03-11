@@ -461,6 +461,12 @@ export default class Question extends OboQuestionComponent {
 		}
 	}
 
+	getStartQuestionAriaLabel() {
+		return this.getMode() === 'practice'
+			? 'Try Question'
+			: 'Start Question ' + (this.props.questionIndex + 1) + ' of ' + this.props.numQuestionsInBank
+	}
+
 	render() {
 		if (this.props.showContentOnly) {
 			return this.renderContentOnly()
@@ -471,13 +477,7 @@ export default class Question extends OboQuestionComponent {
 		const type = questionModel.modelState.type
 		const score = this.getScore()
 		const mode = this.getMode()
-		const startQuestionAriaLabel =
-			mode === 'practice'
-				? 'Try Question'
-				: 'Start Question ' +
-				  (this.props.questionIndex + 1) +
-				  ' of ' +
-				  this.props.numQuestionsInBank
+		const startQuestionAriaLabel = this.getStartQuestionAriaLabel()
 
 		return (
 			<QuestionComponent

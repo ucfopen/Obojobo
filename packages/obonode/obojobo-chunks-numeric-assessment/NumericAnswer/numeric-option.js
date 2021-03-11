@@ -162,13 +162,8 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="answer"
 							value={answer || ''}
+							onClick={onHandleClick}
 							onChange={onHandleInputChange}
-							// onClick={event => {
-							// 	console.log('onclick', event)
-							// 	console.log(event.target.selectionStart, event.target.selectionEnd)
-							// 	// event.stopPropagation()
-							// 	// event.preventDefault()
-							// }}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
 							contentEditable={false}

@@ -184,7 +184,7 @@ const assessmentJSON = {
 
 describe('FullReview', () => {
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
 	})
 
 	test('FullReview component', () => {
@@ -200,7 +200,7 @@ describe('FullReview', () => {
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ id: 'mockAttempt' })
 		// mock attempts taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
+		// AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(
@@ -267,8 +267,9 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: [],
-						responses: []
+						scores: {},
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},
@@ -322,8 +323,9 @@ describe('FullReview', () => {
 			questionState: {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
-						scores: [],
-						responses: []
+						scores: {},
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},
@@ -566,7 +568,8 @@ describe('FullReview', () => {
 				contexts: {
 					'assessmentReview:mockAttemptId': {
 						scores: {},
-						responses: {}
+						responses: {},
+						revealedQuestions: {}
 					}
 				}
 			},

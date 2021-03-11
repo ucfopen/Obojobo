@@ -9,7 +9,6 @@ import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatch
 import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import Header from 'obojobo-document-engine/src/scripts/viewer/components/header'
-import ModalContainer from 'obojobo-document-engine/src/scripts/common/components/modal-container'
 import MediaStore from 'obojobo-document-engine/src/scripts/viewer/stores/media-store'
 import ModalStore from 'obojobo-document-engine/src/scripts/common/stores/modal-store'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'

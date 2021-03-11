@@ -37,6 +37,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -151,7 +152,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             className="attempt-info-content"
           >
             <div>
-              Submitted
+              Submitted 
               <time
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
@@ -161,19 +162,19 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
               <span
                 className="for-screen-reader-only"
               >
-                June 156th 2018 at 4:28p.m.
+                June 5th 2018 at 4:28p.m.
               </span>
             </div>
             <div>
               6
-               out of
-              7
+               out of 
+              1
                question
-              s
+              
                correct
             </div>
             <div>
-              Attempt Score:
+              Attempt Score: 
               <strong>
                 80% → 80%
               </strong>
@@ -185,6 +186,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
                   onClick={[Function]}
                   onMouseOut={[Function]}
                   onMouseOver={[Function]}
+                  type="button"
                 >
                   ?
                 </button>
@@ -260,6 +262,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             3
           </button>
@@ -374,7 +377,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
             className="attempt-info-content"
           >
             <div>
-              Imported
+              Imported 
               <time
                 aria-hidden="true"
                 dateTime="2018-06-05T16:28:11.228-04:00"
@@ -384,19 +387,19 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
               <span
                 className="for-screen-reader-only"
               >
-                June 156th 2018 at 4:28p.m.
+                June 5th 2018 at 4:28p.m.
               </span>
             </div>
             <div>
               6
-               out of
+               out of 
               7
                question
               s
                correct
             </div>
             <div>
-              Attempt Score:
+              Attempt Score: 
               <strong>
                 50%
               </strong>
@@ -408,6 +411,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
                   onClick={[Function]}
                   onMouseOut={[Function]}
                   onMouseOver={[Function]}
+                  type="button"
                 >
                   ?
                 </button>

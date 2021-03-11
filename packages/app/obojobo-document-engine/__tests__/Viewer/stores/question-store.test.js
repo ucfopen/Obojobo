@@ -2,6 +2,7 @@ import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
+import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return {
@@ -24,14 +25,12 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
 		}
 	}
 })
-jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/util/viewer-api')
 jest.mock('../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 jest.mock('../../../src/scripts/common/util/uuid', () => {
 	return () => 'mockUuid'
 })
-
-const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 
 describe('QuestionStore', () => {
 	let QuestionStoreClass
@@ -616,7 +615,7 @@ describe('QuestionStore', () => {
 			.spyOn(QuestionStoreClass.prototype, 'onPostResponseSuccess')
 			.mockImplementation(jest.fn())
 
-		APIUtil.postEvent.mockResolvedValueOnce({
+		ViewerAPI.postEvent.mockResolvedValueOnce({
 			response: {
 				status: 'ok'
 			}
@@ -636,7 +635,7 @@ describe('QuestionStore', () => {
 		}
 
 		await questionStore.postResponse('mockId', 'mockContext')
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:setResponse',
 			eventVersion: '2.2.0',
@@ -672,7 +671,7 @@ describe('QuestionStore', () => {
 			.spyOn(QuestionStoreClass.prototype, 'onPostResponseError')
 			.mockImplementation(jest.fn())
 
-		APIUtil.postEvent.mockRejectedValueOnce(Error('mock-error'))
+		ViewerAPI.postEvent.mockRejectedValueOnce(Error('mock-error'))
 
 		questionStore.state = {
 			contexts: {
@@ -937,7 +936,7 @@ describe('QuestionStore', () => {
 			context: 'mockContext'
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:showExplanation',
 			eventVersion: '1.1.0',
@@ -965,7 +964,7 @@ describe('QuestionStore', () => {
 			actor: 'mockActor'
 		})
 
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:hideExplanation',
 			eventVersion: '1.2.0',
@@ -1036,7 +1035,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.hide({ context: 'mockContext2', id: 'mockId' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {}
@@ -1062,7 +1061,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.hide({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:hide',
 			eventVersion: '1.1.0',
@@ -1091,7 +1090,7 @@ describe('QuestionStore', () => {
 		}
 
 		questionStore.view({ context: 'mockContext', id: 'mockId' })
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:view',
 			eventVersion: '1.1.0',
@@ -1117,7 +1116,7 @@ describe('QuestionStore', () => {
 		})
 
 		questionStore.view({ context: 'mockContext', id: 'mockId2' })
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:view',
 			eventVersion: '1.1.0',
@@ -1153,7 +1152,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.checkAnswer({ context: 'mockContext2', id: 'mockId' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {}
@@ -1181,7 +1180,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.checkAnswer({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:checkAnswer',
 			eventVersion: '1.1.0',
@@ -1221,7 +1220,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.submitResponse({ context: 'mockContext2', id: 'mockId' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {}
@@ -1243,7 +1242,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.submitResponse({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:submitResponse',
 			eventVersion: '1.0.0',
@@ -1278,7 +1277,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.retry({ context: 'mockContext2', id: 'mockId' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(QuestionUtil.isShowingExplanation).not.toHaveBeenCalled()
 		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
 		expect(QuestionUtil.clearScore).not.toHaveBeenCalled()
@@ -1316,7 +1315,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.retry({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:retry',
 			eventVersion: '1.1.0',
@@ -1371,7 +1370,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.retry({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:retry',
 			eventVersion: '1.1.0',
@@ -1416,7 +1415,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.revealAnswer({ context: 'mockContext2', id: 'mockId' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {}
@@ -1436,7 +1435,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.revealAnswer({ context: 'mockContext', id: 'mockId' })).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:revealAnswer',
 			eventVersion: '1.0.0',
@@ -1467,7 +1466,7 @@ describe('QuestionStore', () => {
 		}
 
 		expect(questionStore.scoreSet({ context: 'mockContext2' })).toBe(false)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
@@ -1497,7 +1496,7 @@ describe('QuestionStore', () => {
 				detailedText: 'mockDetailedText'
 			})
 		).toBe(true)
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
@@ -1517,7 +1516,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test('scoreSet for "100" updates state, clears fade effect, fires an event and returns true', () => {
+	test.only('scoreSet for "100" updates state, clears fade effect, fires an event and returns true', () => {
 		const questionStore = new QuestionStoreClass()
 
 		questionStore.state = {
@@ -1538,7 +1537,7 @@ describe('QuestionStore', () => {
 				detailedText: 'mockDetailedText'
 			})
 		).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:scoreSet',
 			eventVersion: '1.1.0',
@@ -1591,7 +1590,7 @@ describe('QuestionStore', () => {
 				detailedText: 'mockDetailedText'
 			})
 		).toBe(true)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:scoreSet',
 			eventVersion: '1.1.0',
@@ -1637,7 +1636,7 @@ describe('QuestionStore', () => {
 
 		expect(questionStore.scoreClear({ context: 'mockContext2' })).toBe(false)
 		expect(triggerSpy).not.toHaveBeenCalled()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {}
@@ -1668,7 +1667,7 @@ describe('QuestionStore', () => {
 
 		expect(questionStore.scoreClear({ context: 'mockContext', itemId: 'mockId' })).toBe(true)
 		expect(triggerSpy).toHaveBeenCalled()
-		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:scoreClear',
 			eventVersion: '1.0.0',
@@ -1710,7 +1709,7 @@ describe('QuestionStore', () => {
 
 		expect(questionStore.scoreClear({ context: 'mockContext', itemId: 'mockId' })).toBe(true)
 		expect(triggerSpy).toHaveBeenCalled()
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
 		expect(questionStore.state).toEqual({
 			contexts: {
 				mockContext: {

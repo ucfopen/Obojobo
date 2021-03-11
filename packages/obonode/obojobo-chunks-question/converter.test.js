@@ -29,7 +29,7 @@ const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('Question editor', () => {
-	test('slateToObo converts a Slate node to an OboNode with content', () => {
+	test('slateToObo converts a Slate node to an OboNode with content, MCAssessment', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
@@ -45,6 +45,44 @@ describe('Question editor', () => {
 				},
 				{
 					type: MCASSESSMENT_NODE
+				},
+				{
+					type: QUESTION_NODE,
+					subtype: SOLUTION_NODE,
+					children: [
+						{
+							type: 'oboeditor.component',
+							children: [
+								{
+									type: 'mockNode'
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
+	test('slateToObo converts a Slate node to an OboNode with content, Numeric Assessment', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			content: {},
+			children: [
+				{
+					type: 'oboeditor.component',
+					children: [
+						{
+							type: 'mockNode'
+						}
+					]
+				},
+				{
+					type: NUMERIC_ASSESSMENT_NODE
 				},
 				{
 					type: QUESTION_NODE,
@@ -103,44 +141,5 @@ describe('Question editor', () => {
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
-	})
-
-	test('slateToObo converts a Slate node to an OboNode for NumericAssessment', () => {
-		const slateNode = {
-			key: 'mockKey',
-			type: 'mockType',
-			data: {
-				get: () => null
-			},
-			nodes: [
-				{
-					type: 'oboeditor.component',
-					nodes: [
-						{
-							type: 'mockNode'
-						}
-					]
-				},
-				{
-					type: NUMERIC_ASSESSMENT_NODE
-				},
-				{
-					type: SOLUTION_NODE,
-					nodes: {
-						get: () => ({
-							type: 'oboeditor.component',
-							nodes: [
-								{
-									type: 'mockNode'
-								}
-							]
-						})
-					}
-				}
-			]
-		}
-		const oboNode = Converter.slateToObo(slateNode)
-
-		expect(oboNode).toMatchSnapshot()
 	})
 })

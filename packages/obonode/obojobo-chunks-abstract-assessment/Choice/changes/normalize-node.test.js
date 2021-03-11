@@ -2,10 +2,21 @@ import { Transforms } from 'slate'
 import NormalizeUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/normalize-util'
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/normalize-util')
 
+jest.mock('slate', () => ({
+	...jest.requireActual('slate'),
+	Transforms: {
+		insertNodes: jest.fn(),
+		removeNodes: jest.fn(),
+		wrapNodes: jest.fn()
+	}
+}))
 import normalizeNode from './normalize-node'
 
-import { MC_ASSESSMENT_NODE, MC_ANSWER_NODE } from 'obojobo-chunks-multiple-choice-assessment/constants'
-import { CHOICE_NODE, FEEDBACK_NODE, } from '../../constants'
+import {
+	MC_ASSESSMENT_NODE,
+	MC_ANSWER_NODE
+} from 'obojobo-chunks-multiple-choice-assessment/constants'
+import { CHOICE_NODE, FEEDBACK_NODE } from '../../constants'
 
 describe('Choice normalization', () => {
 	test('normalizeNode calls next if the node is not a Choice node', () => {
@@ -78,34 +89,7 @@ describe('Choice normalization', () => {
 		}
 		normalizeNode([editor.children[0].children[0], [0, 0]], editor, next)
 
-		expect(Transforms.wrapNodes).toHaveBeenCalled()
-	})
-
-	test('normalizeNode on Choice calls Transforms on invalid Element children with no assessment parent', () => {
-		jest.spyOn(Transforms, 'wrapNodes').mockReturnValueOnce(true)
-
-		const next = jest.fn()
-		const editor= {
-			children: [
-				{
-					id: 'mockKey',
-					type: CHOICE_NODE,
-					content: {},
-					children: [
-						{
-							type: 'improperNode',
-							content: { indent: 1 },
-							children: [{ text: 'mockCode', b: true }]
-						}
-					]
-				}
-			],
-			isInline: () => false,
-			isVoid: () => false
-		}
-		normalizeNode([editor.children[0], [0]], editor, next)
-
-		expect(Transforms.wrapNodes).toHaveBeenCalled()
+		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
 
 	test('normalizeNode on Choice calls Transforms on invalid Feedback children', () => {
@@ -146,7 +130,7 @@ describe('Choice normalization', () => {
 		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
 
 		const next = jest.fn()
-		const editor= {
+		const editor = {
 			children: [
 				{
 					id: 'mockKey',

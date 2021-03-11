@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
@@ -10,7 +9,6 @@ import PreAttemptImportScoreDialog from './dialogs/pre-attempt-import-score-dial
 const { AssessmentScoreReportView, AssessmentScoreReporter } = Viewer.assessment
 
 const { Throbber } = Common.components
-const { ModalContainer } = Common.components
 const { SimpleDialog, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { CurrentAssessmentStates, AssessmentUtil, NavUtil, FocusUtil } = Viewer.util
@@ -19,22 +17,22 @@ const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
 
 const {
 	PROMPTING_FOR_RESUME,
-	STARTING_ATTEMPT,
-	RESUMING_ATTEMPT,
-	IN_ATTEMPT,
+	// STARTING_ATTEMPT,
+	// RESUMING_ATTEMPT,
+	// IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
 	RESUME_ATTEMPT_FAILED,
 	SENDING_RESPONSES,
 	SEND_RESPONSES_SUCCESSFUL,
 	SEND_RESPONSES_FAILED,
-	NOT_IN_ATTEMPT,
+	// NOT_IN_ATTEMPT,
 	ENDING_ATTEMPT,
 	END_ATTEMPT_FAILED,
 	END_ATTEMPT_SUCCESSFUL,
 	PROMPTING_FOR_IMPORT,
-	IMPORTING_ATTEMPT,
+	// IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
-	IMPORT_ATTEMPT_SUCCESSFUL,
+	// IMPORT_ATTEMPT_SUCCESSFUL,
 	FETCH_HISTORY_FAILED
 } = AssessmentNetworkStates
 
@@ -89,7 +87,6 @@ const onImportChoice = (shouldImport, assessmentModel) => {
 const getDialog = (
 	currentAttemptStatus,
 	assessmentMachineState,
-	// onCancel,
 	endAttemptFn,
 	assessmentModel,
 	assessment,
@@ -131,53 +128,16 @@ const getDialog = (
 				</SimpleDialog>
 			)
 
-		// case STARTING_ATTEMPT:
-		// case RESUMING_ATTEMPT:
-		// 	console.log('sracd', STARTING_ATTEMPT)
-		// 	return (
-		// 		<Dialog
-		// 			// buttons={[
-		// 			// 	{
-		// 			// 		value: 'Cancel',
-		// 			// 		altAction: true,
-		// 			// 		onClick: onCancel
-		// 			// 	}
-		// 			// ]}
-		// 			title="Loading Assessment"
-		// 		>
-		// 			<Throbber />
-		// 		</Dialog>
-		// 	)
-
 		case ENDING_ATTEMPT:
 			return (
-				<Dialog
-					// buttons={[
-					// 	{
-					// 		value: 'Cancel',
-					// 		altAction: true,
-					// 		onClick: onCancel
-					// 	}
-					// ]}
-					title="Submitting your attempt"
-				>
+				<Dialog title="Submitting your attempt">
 					<Throbber />
 				</Dialog>
 			)
 
 		case SENDING_RESPONSES: {
 			return (
-				<Dialog
-					// buttons={[
-					// 	{
-					// 		value: 'Cancel',
-					// 		altAction: true,
-					// 		onClick: onCancel
-					// 	}
-					// ]}
-					title="Submitting your responses"
-					// onCancel={onCancel}
-				>
+				<Dialog title="Submitting your responses">
 					<Throbber />
 				</Dialog>
 			)
@@ -308,17 +268,6 @@ const getDialog = (
 
 		case FETCH_HISTORY_FAILED: {
 			return (
-				// <SimpleDialog
-				// 	onConfirm={() => acknowledgeFetchHistoryFailed(assessmentModel)}
-				// 	ok
-				// 	title="Error"
-				// >
-				// 	<p>
-				// 		Sorry, something went wrong fetching your assessment history. Close this window and
-				// 		revisit this module.
-				// 	</p>
-				// </SimpleDialog>
-
 				<Dialog
 					centered
 					buttons={[
@@ -356,42 +305,9 @@ const getDialog = (
 						</SimpleDialog>
 					)
 
-				// case CurrentAssessmentStates.HAS_RESPONSES_WITH_ERROR_SEND_STATES:
-				// case CurrentAssessmentStates.HAS_RESPONSES_SENDING:
-				// 	return (
-				// 		<Dialog
-				// 			buttons={[
-				// 				{
-				// 					value: 'Cancel',
-				// 					altAction: true,
-				// 					onClick: onCancel
-				// 				}
-				// 			]}
-				// 			title="Saving your answers"
-				// 			onCancel={onCancel}
-				// 		>
-				// 			<Throbber />
-				// 		</Dialog>
-				// 	)
-
 				case CurrentAssessmentStates.HAS_QUESTIONS_UNANSWERED:
 				case CurrentAssessmentStates.HAS_QUESTIONS_EMPTY:
 				case CurrentAssessmentStates.HAS_RESPONSES_UNSENT:
-					// return (
-					// 	<Dialog
-					// 		buttons={[
-					// 			{
-					// 				value: 'Cancel',
-					// 				altAction: true,
-					// 				onClick: onCancel
-					// 			}
-					// 		]}
-					// 		title="Saving your answers"
-					// 		onCancel={onCancel}
-					// 	>
-					// 		<Throbber />
-					// 	</Dialog>
-					// )
 					return (
 						<AttemptIncompleteDialog
 							onCancel={() => continueAttempt(assessmentModel)}
@@ -440,22 +356,11 @@ const getDialog = (
 	return null
 }
 
-// const AssessmentDialog = props => {
-// 	return ReactDOM.createPortal(
-// 		<div>{getDialog(props.currentAttemptStatus, props.endAttempt)}</div>,
-// 		document.getElementById(ModalContainer.DOM_ID)
-// 	)
-// }
-
 const AssessmentDialog = props => {
-	console.log('ASSESSMENT DIALOG', props.currentAttemptStatus, props.assessmentMachineState)
-
 	return getDialog(
 		props.currentAttemptStatus,
 		props.assessmentMachineState,
-		// props.onCancel,
 		props.endAttempt,
-		// props.onResponse,
 		props.assessmentModel,
 		props.assessment,
 		props.importableScore,

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericFeedback NumericFeedback component for a correct item 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment--numeric-feedback"
+  data-focussed={false}
+  data-id="feedback"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.NumericAssessment.NumericFeedback"
+  id="obo-feedback"
+  tabIndex={-1}
+>
+  <span
+    className="for-screen-reader-only"
+  >
+    . Feedback for this answer:
+  </span>
+</div>
+`;
+
+exports[`NumericFeedback NumericFeedback component for an incorrect item 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment--numeric-feedback"
+  data-focussed={false}
+  data-id="feedback"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.NumericAssessment.NumericFeedback"
+  id="obo-feedback"
+  tabIndex={-1}
+>
+  <span
+    className="for-screen-reader-only"
+  >
+    . Feedback for this answer:
+  </span>
+</div>
+`;

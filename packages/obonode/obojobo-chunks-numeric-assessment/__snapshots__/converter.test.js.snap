@@ -6,165 +6,29 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": Array [
-            Object {
-              "text": "",
-            },
-          ],
-          "content": Object {
-            "answer": "3",
-            "feedback": Object {
-              "children": Array [
-                Object {
-                  "children": Array [],
-                  "content": Object {
-                    "textGroup": Array [
-                      Object {
-                        "data": Object {
-                          "indent": 0,
-                        },
-                        "text": Object {
-                          "styleList": Array [],
-                          "value": "3222",
-                        },
-                      },
-                    ],
-                  },
-                  "id": "text_id",
-                  "type": "ObojoboDraft.Chunks.Text",
-                },
-              ],
-              "content": Object {},
-              "id": "feedback_id",
-              "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
-            },
-            "margin": "3",
-            "requirement": "margin",
-            "score": 100,
-            "type": "percent",
-          },
-          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
-        },
-        undefined,
-      ],
-      "content": Object {
-        "score": 100,
-      },
-      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
-    },
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "text": "",
-            },
-          ],
-          "content": Object {
-            "answer": "3",
-            "margin": "3",
-            "requirement": "margin",
-            "score": 100,
-            "type": "absolute",
-          },
-          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericAnswer",
+          "text": "grams",
         },
       ],
-      "content": Object {
-        "score": 100,
-      },
-      "type": "ObojoboDraft.Chunks.AbstractAssessment.Choice",
+      "content": Object {},
+      "subtype": "ObojoboDraft.Chunks.NumericAssessment.Units",
+      "type": "ObojoboDraft.Chunks.NumericAssessment",
     },
+    undefined,
+    undefined,
   ],
   "content": Object {
-    "numericChoices": Array [
+    "units": Array [
       Object {
-        "answer": "3",
-        "feedback": Object {
-          "children": Array [
-            Object {
-              "children": Array [],
-              "content": Object {
-                "textGroup": Array [
-                  Object {
-                    "data": Object {
-                      "indent": 0,
-                    },
-                    "text": Object {
-                      "styleList": Array [],
-                      "value": "3222",
-                    },
-                  },
-                ],
-              },
-              "id": "text_id",
-              "type": "ObojoboDraft.Chunks.Text",
-            },
-          ],
-          "content": Object {},
-          "id": "feedback_id",
-          "type": "ObojoboDraft.Chunks.NumericAssessment.NumericFeedback",
+        "data": Object {},
+        "text": Object {
+          "styleList": Array [],
+          "value": "grams",
         },
-        "margin": "3",
-        "requirement": "margin",
-        "score": 100,
-        "type": "percent",
-      },
-      Object {
-        "answer": "3",
-        "margin": "3",
-        "requirement": "margin",
-        "score": 100,
-        "type": "absolute",
       },
     ],
   },
-  "type": "mock_type",
-}
-`;
-
-exports[`NumericAssessment Converter oboToSlate converts an OboNode to a Slate node with no content 1`] = `
-Object {
-  "children": Array [],
-  "content": undefined,
-  "type": "mock_type",
-}
-`;
-
-exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode 1`] = `
-Object {
-  "children": Array [],
-  "content": Object {
-    "numericChoices": Array [
-      Object {
-        "feedback": undefined,
-        "requirement": "exact",
-      },
-    ],
-  },
-  "id": "mock_key",
-  "type": "mock_type",
-}
-`;
-
-exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
-Object {
-  "children": Array [],
-  "content": Object {
-    "numericChoices": Array [],
-  },
-  "id": "mock_key",
-  "type": "mock_type",
-}
-`;
-
-exports[`NumericAssessment Converter slateToObo converts a Slate node to an OboNode with two correct 1`] = `
-Object {
-  "children": Array [],
-  "content": Object {
-    "numericChoices": Array [],
-  },
-  "id": "mock_key",
-  "type": "mock_type",
+  "id": "mockId",
+  "questionType": "mockQuestionType",
+  "type": "ObojoboDraft.Chunks.NumericAssessment",
 }
 `;

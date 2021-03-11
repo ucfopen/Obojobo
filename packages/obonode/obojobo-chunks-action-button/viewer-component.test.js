@@ -60,8 +60,8 @@ describe('ActionButton', () => {
 			})
 		}
 
-		ActionButton.focusOnContent(model)
+		ActionButton.focusOnContent(model, { scroll: 'mockScroll' })
 
-		expect(focus).toHaveBeenCalledWith(mockButtonEl)
+		expect(focus).toHaveBeenCalledWith(mockButtonEl, 'mockScroll')
 	})
 })

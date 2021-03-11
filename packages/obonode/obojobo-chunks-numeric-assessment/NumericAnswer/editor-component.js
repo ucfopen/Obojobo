@@ -49,30 +49,31 @@ class NumericAnswer extends React.Component {
 				{ at: path }
 			)
 
-			// Since the Transforms.setNodes call will rerender this element
-			// the selection/focus will be wiped out. We simply restore it.
-			// It's a nasty hack but I've spent a week on this problem and can't
-			// find another solution :[
-			setTimeout(() => {
-				if (!activeElement || !activeElement.select) return
+			this.restoreSelection(activeElement, selStart, selEnd)
 
-				activeElement.focus()
-				activeElement.setSelectionRange(selStart, selEnd)
-			})
+			return true
 		} catch (e) {
-			return
+			return false
 		}
 	}
 
-	// onHandleInputFocus(event) {
-	// 	const el = event.target
+	restoreSelection(el, selStart, selEnd) {
+		// Since the Transforms.setNodes call will rerender this element
+		// the selection/focus will be wiped out. We simply restore it.
+		// It's a nasty hack but I've spent a week on this problem and can't
+		// find another solution :[
 
-	// 	event.stopPropagation()
+		if (!el || !el.select) {
+			return false
+		}
 
-	// 	setTimeout(() => {
-	// 		el.focus()
-	// 	})
-	// }
+		setTimeout(() => {
+			el.focus()
+			el.setSelectionRange(selStart, selEnd)
+		})
+
+		return true
+	}
 
 	onHandleInputChange(event) {
 		event.preventDefault()
@@ -89,11 +90,11 @@ class NumericAnswer extends React.Component {
 	}
 
 	getAnswerFromState(state) {
-		if (typeof state.answer !== 'undefined') {
+		if (typeof state.answer !== 'undefined' && state.answer !== null) {
 			return state.answer
 		}
 
-		if (typeof state.start !== 'undefined') {
+		if (typeof state.start !== 'undefined' && state.start !== null) {
 			return state.start
 		}
 
@@ -157,7 +158,6 @@ class NumericAnswer extends React.Component {
 		return (
 			<div className="numeric-input-container" contentEditable={false}>
 				<NumericOption
-					// onHandleInputFocus={this.onHandleInputFocus}
 					numericChoice={this.state}
 					onHandleInputChange={this.onHandleInputChange}
 					onHandleSelectChange={this.onHandleSelectChange}

@@ -4,12 +4,25 @@ import renderer from 'react-test-renderer'
 import Question from './editor-component'
 
 import { Transforms } from 'slate'
-jest.mock('slate')
+jest.mock('slate', () => ({
+	Editor: {
+		levels: () => [[{ type: 'ObojoboDraft.Sections.Assessment' }]],
+		withoutNormalizing: (editor, fn) => fn()
+	},
+	Transforms: {
+		setNodes: jest.fn(),
+		removeNodes: jest.fn(),
+		insertNodes: jest.fn()
+	}
+}))
 import { ReactEditor } from 'slate-react'
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	Registry: {
 		getItemForType: type => ({
+			cloneBlankNode: () => ({
+				clonedNode: true
+			}),
 			slateToObo: () => ({
 				slateToOboReturnFor: type
 			}),
@@ -210,5 +223,29 @@ describe('Question Editor Node', () => {
 			{ questionType: 'default' },
 			{ at: pathOfMCAssessment }
 		)
+	})
+
+	test('Changing question type updates the assessment node', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [
+					{ type: BREAK_NODE },
+					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE },
+					{ subtype: SOLUTION_NODE }
+				]
+			}
+		}
+		ReactEditor.findPath.mockReturnValue([])
+
+		const component = mount(<Question {...props} />)
+		component
+			.find('select')
+			.at(0)
+			.simulate('change', { target: { value: 'ObojoboDraft.Chunks.NumericAssessment' } })
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 })

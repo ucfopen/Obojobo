@@ -9,7 +9,6 @@ import React from 'react'
 import Test from './components/test'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import StateMachineComponent from 'obojobo-document-engine/src/scripts/common/util/state-machine-component'
 import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
 
 const { OboComponent } = Viewer.components

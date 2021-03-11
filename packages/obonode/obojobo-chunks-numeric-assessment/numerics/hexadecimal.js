@@ -9,7 +9,7 @@ const { INPUT_TYPE_HEXADECIMAL } = require('./types/input-types')
 const { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } = require('../entry/match-types')
 const Numeric = require('./numeric')
 const Decimal = require('./decimal')
-const Big = require('../big')
+const big = require('../big')
 
 const hexZeroX = /^0x[0-9a-fA-F]+$|^0x[0-9a-fA-F]+$/
 const hexOctothorpe = /^#[0-9a-fA-F]+$|^#[0-9a-fA-F]+$/
@@ -145,8 +145,8 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getString(Big(2)) //"0x2"
-	 * Hexadecimal.getString(Big(255)) //"0xFF"
+	 * Hexadecimal.getString(big(2)) //"0x2"
+	 * Hexadecimal.getString(big(255)) //"0xFF"
 	 */
 	static getString(bigValue) {
 		return `0x${Number(bigValue)
@@ -159,11 +159,11 @@ module.exports = class Hexadecimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getBigValueFromString('0x2') //Big(2)
-	 * Hexadecimal.getBigValueFromString('0xFF') //Big(255)
+	 * Hexadecimal.getBigValueFromString('0x2') //big(2)
+	 * Hexadecimal.getBigValueFromString('0xFF') //big(255)
 	 */
 	static getBigValueFromString(valueString) {
-		return Big(Hexadecimal.getNumberFromString(valueString))
+		return big(Hexadecimal.getNumberFromString(valueString))
 	}
 
 	/**

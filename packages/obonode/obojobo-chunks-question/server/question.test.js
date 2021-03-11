@@ -23,7 +23,8 @@ describe('Question', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
 		expect(question.registerEvents).toHaveBeenCalledWith({
-			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd
+			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd,
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': question.onSendToAssessment
 		})
 	})
 

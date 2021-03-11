@@ -1,4 +1,4 @@
-const Big = require('../big')
+const big = require('../big')
 const { INPUT_TYPE_INVALID } = require('./types/input-types')
 const { MATCH_NONE } = require('../entry/match-types')
 
@@ -105,8 +105,8 @@ module.exports = class Numeric {
 	 * @return {Big}
 	 */
 	static getRoundedBigValue(bigValue, toDigits = null) {
-		if (!toDigits) return Big(bigValue)
-		return Big(bigValue.toPrecision(toDigits))
+		if (!toDigits) return big(bigValue)
+		return big(bigValue.toPrecision(toDigits))
 	}
 
 	/**

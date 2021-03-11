@@ -2,7 +2,6 @@ import './modal-container.scss'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { useEffect } from 'react'
 
 import isOrNot from '../util/isornot'
 
@@ -20,6 +19,7 @@ class ModalContainer extends React.Component {
 	}
 
 	onMutation() {
+		// eslint-disable-next-line react/no-find-dom-node
 		const elPortalContainer = ReactDOM.findDOMNode(
 			document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)
 		)
@@ -36,6 +36,7 @@ class ModalContainer extends React.Component {
 
 		this.observer.disconnect()
 
+		// eslint-disable-next-line react/no-find-dom-node
 		const elPortalContainer = ReactDOM.findDOMNode(
 			document.getElementById(ModalContainer.PORTAL_CONTAINER_DOM_ID)
 		)

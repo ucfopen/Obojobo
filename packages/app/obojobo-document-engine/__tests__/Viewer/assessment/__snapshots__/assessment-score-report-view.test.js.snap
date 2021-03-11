@@ -131,7 +131,7 @@ exports[`AssessmentScoreReportView AssessmentScoreReportView component with text
         <span
           className="great-job-you-rock"
         >
-          ✨
+          😎
         </span>
       </div>
     </div>

@@ -12,7 +12,6 @@ const { PERCENT_ERROR, ABSOLUTE_ERROR } = require('./rule/rule-error-types')
 const {
 	FAILED,
 	PASSED,
-	FAILED_VALIDATION,
 	INPUT_INVALID,
 	INPUT_NOT_SAFE,
 	INPUT_MATCHES_MULTIPLE_TYPES,
@@ -429,7 +428,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		} catch (e) {
 			results = null
 		}
-		console.log('results', results)
 		const matchingCorrectRule =
 			results && results.details && results.details.matchingOutcome
 				? results.details.matchingOutcome.rule

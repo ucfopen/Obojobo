@@ -1,7 +1,6 @@
 import Common from 'Common'
 import QuestionOutcome from './question-outcome'
 import React from 'react'
-import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
 
 const { Button } = Common.components
 

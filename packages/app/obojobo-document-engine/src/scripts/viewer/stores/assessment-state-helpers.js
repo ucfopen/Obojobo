@@ -1,65 +1,63 @@
-import { Machine, interpret, assign } from 'xstate'
-
 import AssessmentAPI from '../util/assessment-api'
 import Common from 'Common'
 import NavStore from '../stores/nav-store'
-import AssessmentNetworkStates from './assessment-store/assessment-network-states'
-import AssessmentStateActions from './assessment-store/assessment-state-actions'
+// import AssessmentNetworkStates from './assessment-store/assessment-network-states'
+// import AssessmentStateActions from './assessment-store/assessment-state-actions'
 import NavUtil from '../util/nav-util'
 
-import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
-import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
-import AssessmentUtil from '../util/assessment-util'
-import CurrentAssessmentStates from '../util/current-assessment-states'
-import FocusUtil from '../util/focus-util'
+// import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
+// import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
+// import AssessmentUtil from '../util/assessment-util'
+// import CurrentAssessmentStates from '../util/current-assessment-states'
+// import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
 import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
-import React from 'react'
+// import React from 'react'
 import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
 
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+// const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const { OboModel } = Common.models
-const { ErrorUtil, ModalUtil } = Common.util
+// const { ErrorUtil, ModalUtil } = Common.util
 const { Dispatcher } = Common.flux
-const { SimpleDialog, Dialog } = Common.components.modal
+// const { SimpleDialog, Dialog } = Common.components.modal
 
-const {
-	PROMPTING_FOR_RESUME,
-	STARTING_ATTEMPT,
-	RESUMING_ATTEMPT,
-	IN_ATTEMPT,
-	START_ATTEMPT_FAILED,
-	RESUME_ATTEMPT_FAILED,
-	// TRYING_TO_SUBMIT,
-	SENDING_RESPONSES,
-	SEND_RESPONSES_SUCCESSFUL,
-	SEND_RESPONSES_FAILED,
-	NOT_IN_ATTEMPT,
-	ENDING_ATTEMPT,
-	END_ATTEMPT_FAILED,
-	END_ATTEMPT_SUCCESSFUL,
-	PROMPTING_FOR_IMPORT,
-	IMPORTING_ATTEMPT,
-	IMPORT_ATTEMPT_FAILED,
-	IMPORT_ATTEMPT_SUCCESSFUL
-} = AssessmentNetworkStates
+// const {
+// 	PROMPTING_FOR_RESUME,
+// 	STARTING_ATTEMPT,
+// 	RESUMING_ATTEMPT,
+// 	IN_ATTEMPT,
+// 	START_ATTEMPT_FAILED,
+// 	RESUME_ATTEMPT_FAILED,
+// 	// TRYING_TO_SUBMIT,
+// 	SENDING_RESPONSES,
+// 	SEND_RESPONSES_SUCCESSFUL,
+// 	SEND_RESPONSES_FAILED,
+// 	NOT_IN_ATTEMPT,
+// 	ENDING_ATTEMPT,
+// 	END_ATTEMPT_FAILED,
+// 	END_ATTEMPT_SUCCESSFUL,
+// 	PROMPTING_FOR_IMPORT,
+// 	IMPORTING_ATTEMPT,
+// 	IMPORT_ATTEMPT_FAILED,
+// 	IMPORT_ATTEMPT_SUCCESSFUL
+// } = AssessmentNetworkStates
 
-const {
-	START_ATTEMPT,
-	PROMPT_FOR_IMPORT,
-	PROMPT_FOR_RESUME,
-	IMPORT_ATTEMPT,
-	RESUME_ATTEMPT,
-	TRY_TO_SUBMIT,
-	SEND_RESPONSES,
-	ACKNOWLEDGE,
-	END_ATTEMPT,
-	CONTINUE_ATTEMPT
-	// RETRY
-} = AssessmentStateActions
+// const {
+// 	START_ATTEMPT,
+// 	PROMPT_FOR_IMPORT,
+// 	PROMPT_FOR_RESUME,
+// 	IMPORT_ATTEMPT,
+// 	RESUME_ATTEMPT,
+// 	TRY_TO_SUBMIT,
+// 	SEND_RESPONSES,
+// 	ACKNOWLEDGE,
+// 	END_ATTEMPT,
+// 	CONTINUE_ATTEMPT
+// 	// RETRY
+// } = AssessmentStateActions
 
 const getErrorFromResponse = res => {
 	return Error(res ? res.value.message : 'Request Failed')

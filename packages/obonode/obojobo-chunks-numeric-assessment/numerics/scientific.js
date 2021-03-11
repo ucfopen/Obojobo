@@ -9,7 +9,7 @@ const Numeric = require('./numeric')
 const Decimal = require('./decimal')
 const { INPUT_TYPE_SCIENTIFIC } = require('./types/input-types')
 const { MATCH_EXACT } = require('../entry/match-types')
-const Big = require('../big')
+const big = require('../big')
 
 const xScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?x10\^[-+]?[0-9]+$/
 const asteriskScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?\*10\^[-+]?[0-9]+$/
@@ -154,7 +154,7 @@ module.exports = class Scientific extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Scientific.getString(Big(700)) //7e2
+	 * Scientific.getString(big(700)) //7e2
 	 */
 	static getString(bigValue) {
 		if (bigValue.c.length === 1) {
@@ -176,7 +176,7 @@ module.exports = class Scientific extends Numeric {
 	 * @param {string} valueString
 	 * @return {ScientificTermsObject}
 	 * @example
-	 * Scientific.getTerms('3.14e2') //{ bigDigit:Big(3.14), bigExponential:Big(2), bigValue:Big(314) }
+	 * Scientific.getTerms('3.14e2') //{ bigDigit:big(3.14), bigExponential:big(2), bigValue:big(314) }
 	 */
 	static getTerms(valueString) {
 		let tokens
@@ -207,9 +207,9 @@ module.exports = class Scientific extends Numeric {
 		const exponential = tokens[1]
 
 		return {
-			bigDigit: Big(digit),
-			bigExponential: Big(exponential),
-			bigValue: Big(`${digit}e${exponential}`)
+			bigDigit: big(digit),
+			bigExponential: big(exponential),
+			bigValue: big(`${digit}e${exponential}`)
 		}
 	}
 

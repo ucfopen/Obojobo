@@ -350,7 +350,7 @@ class AssessmentStore extends Store {
 	acknowledgeStartAttemptFailed(id) {
 		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
 
-		console.log('@TODO - this should happen in the state machine')
+		console.log('@TODO - this should happen in the state machine') //eslint-disable-line
 		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
 		assessment.current = null
 	}
@@ -358,7 +358,7 @@ class AssessmentStore extends Store {
 	acknowledgeEndAttemptFailed(id) {
 		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
 
-		console.log('@TODO - this should happen in the state machine')
+		console.log('@TODO - this should happen in the state machine') //eslint-disable-line
 		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
 		delete assessment.current.error
 	}

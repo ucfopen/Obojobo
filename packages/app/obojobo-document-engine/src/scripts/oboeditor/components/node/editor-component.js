@@ -218,7 +218,6 @@ class Node extends React.Component {
 
 	render() {
 		const selected = this.props.selected
-		const editor = this.props.editor
 
 		const className = `oboeditor-component component ${isOrNot(selected, 'selected')} ${this.props
 			.className || ''}`

@@ -1,7 +1,7 @@
 const { INPUT_TYPE_DECIMAL } = require('./types/input-types')
 const { MATCH_EXACT } = require('../entry/match-types')
 const Numeric = require('./numeric')
-const Big = require('../big')
+const big = require('../big')
 
 //0
 //+0
@@ -123,7 +123,7 @@ class Decimal extends Numeric {
 		// Handle special case where number ends in a dot (e.g. "100.")
 		valueString = valueString.replace(removeTrailingDotRegex, '')
 
-		return Big(valueString)
+		return big(valueString)
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Decimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Decimal.getStringFromBigValue(Big(2)) //"2"
+	 * Decimal.getStringFromBigValue(big(2)) //"2"
 	 */
 	static getStringFromBigValue(bigValue) {
 		let leftSide
@@ -168,8 +168,8 @@ class Decimal extends Numeric {
 
 		const [leftString, rightString] = valueString.split('.').concat(null)
 
-		const bigLeft = Big(leftString !== '' ? leftString : '0').abs()
-		const bigRight = rightString ? Big(rightString) : null
+		const bigLeft = big(leftString !== '' ? leftString : '0').abs()
+		const bigRight = rightString ? big(rightString) : null
 
 		if (rightString === null) {
 			return Decimal.getStringFromBigValue(bigLeft).replace(/0+$/, '').length
@@ -192,7 +192,7 @@ class Decimal extends Numeric {
 	 * Decimal.getIsInteger('5.1') //false
 	 */
 	static getIsInteger(valueString) {
-		const bigValue = Big(valueString)
+		const bigValue = big(valueString)
 		return bigValue.minus(bigValue.mod(1)).eq(bigValue)
 	}
 
