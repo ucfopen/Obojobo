@@ -162,8 +162,6 @@ const gatherClientScriptsFromModules = () => {
 		})
 	})
 
-	// eslint-disable-next-line no-console
-	console.log(scripts)
 	return scripts
 }
 

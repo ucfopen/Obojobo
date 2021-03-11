@@ -157,6 +157,7 @@ class MateriaSettingsDialog extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
+				<div className="row center">Note: Materia scores do not sync to Obojobo (coming soon).</div>
 				<SettingsDialogRow className="highlight">
 					{this.state.icon ? (
 						<div className="widget-icon">
