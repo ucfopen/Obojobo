@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 
+import Switch from '../../../../src/scripts/common/components/switch'
 import TriggerListModal from '../../../../src/scripts/oboeditor/components/triggers/trigger-list-modal'
 
 describe('TriggerListModal', () => {
@@ -313,6 +314,28 @@ describe('TriggerListModal', () => {
 			})
 		expect(component.state().triggers[0].actions[0].value).toHaveProperty('animateScroll', false)
 		expect(component.state().triggers[0].actions[0].value).toHaveProperty('preventScroll', false)
+	})
+
+	test('updateActionValue using a switch/checkbox', () => {
+		const content = {
+			triggers: [
+				{
+					type: 'onMount',
+					actions: [{ type: 'focus:component', value: { fade: false } }]
+				},
+				{
+					type: 'onUnmount',
+					actions: []
+				}
+			]
+		}
+		const component = mount(<TriggerListModal content={content} />)
+		const input = component.find(Switch).find('input')
+		input.simulate('change', { target: { type: 'checkbox', checked: true } })
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', true)
+
+		input.simulate('change', { target: { type: 'checkbox', checked: false } })
+		expect(component.state().triggers[0].actions[0].value).toHaveProperty('fade', false)
 	})
 
 	test('getScrollType returns correct value', () => {
