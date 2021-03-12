@@ -11,6 +11,7 @@ const nameMap = new Map()
 	.set('HTML', 'ObojoboDraft.Chunks.HTML')
 	.set('IFrame', 'ObojoboDraft.Chunks.IFrame')
 	.set('List', 'ObojoboDraft.Chunks.List')
+	.set('Materia', 'ObojoboDraft.Chunks.Materia')
 	.set('MathEquation', 'ObojoboDraft.Chunks.MathEquation')
 	.set('MCAnswer', 'ObojoboDraft.Chunks.MCAssessment.MCAnswer')
 	.set('MCAssessment', 'ObojoboDraft.Chunks.MCAssessment')
@@ -41,6 +42,5 @@ const nameTransform = node => {
 		nameTransform(node.elements[i])
 	}
 }
-
 
 module.exports = nameTransform
