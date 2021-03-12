@@ -21,14 +21,8 @@ const onBlur = function() {
 	return Dispatcher.trigger('window:blur')
 }
 
-const ie = false
-if (ie) {
-	document.onfocusin = onFocus
-	document.onfocusout = onBlur
-} else {
-	window.onfocus = onFocus
-	window.onblur = onBlur
-}
+window.onfocus = onFocus
+window.onblur = onBlur
 
 window.__oboViewerRender = () => {
 	ReactDOM.render(
