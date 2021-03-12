@@ -8,6 +8,10 @@ const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
 
+		console.log('adapter', attrs)
+
+		model.modelState.spacing = 'test123'
+
 		if (attrs && attrs.content && attrs.content.listStyles) {
 			model.modelState.listStyles = ListStyles.fromDescriptor(attrs.content.listStyles)
 		} else {
