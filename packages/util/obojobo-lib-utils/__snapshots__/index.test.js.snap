@@ -8,3 +8,10 @@ Array [
   "obojobo-sections-content",
 ]
 `;
+
+exports[`obojobo lib utils searchNodeModulesForOboNodes omits modules defined in OBO_DISABLE_NODES 1`] = `
+Array [
+  "obojobo-chunks-action-button",
+  "obojobo-sections-content",
+]
+`;

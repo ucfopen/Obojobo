@@ -11,12 +11,18 @@ const flattenArray = array => {
 	return result
 }
 
+// Searches through all installed yarn packages looking for
+// modules that start with `obojobo-`
+// when found, it'll attempt to load index.js, which is expected
+// to be an obojobo node manifest.  If it doesn't look like an
+// obojobo manifest it'll be ignored
 const searchNodeModulesForOboNodesCache = new Set()
 const searchNodeModulesForOboNodes = (forceReload = false) => {
 	if (searchNodeModulesForOboNodesCache.size > 0 && !forceReload) {
 		return Array.from(searchNodeModulesForOboNodesCache)
 	}
 	searchNodeModulesForOboNodesCache.clear()
+	const disableNodes = process.env['OBO_DISABLE_NODES'] || ''
 	// use yarn to get a list of obojobo-* node_modules
 	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
 	const pattern = /obojobo-[^@]+/gi
@@ -24,6 +30,9 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 	packages.forEach(pkg => {
 		try {
 			pkg = pkg.trim()
+			// skip items from the disableNodes
+			if (disableNodes.includes(pkg)) return
+
 			const manifest = require(pkg)
 			if (manifest.obojobo) searchNodeModulesForOboNodesCache.add(pkg)
 		} catch (error) {

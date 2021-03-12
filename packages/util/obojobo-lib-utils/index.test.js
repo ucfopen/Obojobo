@@ -29,6 +29,7 @@ describe('obojobo lib utils', () => {
 	})
 
 	afterEach(() => {
+		delete process.env['OBO_DISABLE_NODES']
 		restoreConsole()
 	})
 
@@ -36,6 +37,14 @@ describe('obojobo lib utils', () => {
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
 		const results = searchNodeModulesForOboNodes()
 		expect(results).toHaveLength(4)
+		expect(results).toMatchSnapshot()
+	})
+
+	test('searchNodeModulesForOboNodes omits modules defined in OBO_DISABLE_NODES', () => {
+		process.env['OBO_DISABLE_NODES'] = 'obojobo-pages-page,obojobo-modules-module'
+		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
+		const results = searchNodeModulesForOboNodes()
+		expect(results).toHaveLength(2)
 		expect(results).toMatchSnapshot()
 	})
 
