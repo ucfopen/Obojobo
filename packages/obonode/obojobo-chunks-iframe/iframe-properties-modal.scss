@@ -21,8 +21,11 @@
 		vertical-align: top;
 		font-size: 0.8em;
 		margin-top: 0.2em;
-		height: 1.8em;
-		width: 5.8em;
+		height: 2.5em;
+		width: 6.75em;
+		padding: 0.2em;
+		border-radius: 0.2em;
+		border: 1px solid $color-shadow;
 	}
 
 	#obojobo-draft--chunks--iframe--properties-modal--title,
@@ -92,5 +95,21 @@
 
 	.obojobo-draft--components--switch > span:first-child {
 		width: 7em;
+	}
+
+	.sizing-option-container {
+		margin-bottom: 0.9em;
+	}
+
+	.source-option-container {
+		margin-top: 0.3em;
+	}
+
+	.border-option-container {
+		margin: 0.5em 0;
+	}
+
+	.zoom-option-container {
+		margin: 0.9em 0 0.2em 0;
 	}
 }

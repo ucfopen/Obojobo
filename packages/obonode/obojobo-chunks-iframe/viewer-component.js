@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import { getRenderSettings } from './render-settings'
 
-const DEFAULT_WIDTH = 710
+const DEFAULT_WIDTH = 1000
 const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
 const MAX_SCALE = 10
@@ -172,7 +172,8 @@ export default class IFrame extends React.Component {
 						isOrNot(isShowing, 'showing') +
 						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
 						isOrNot(ms.src === null, 'missing-src') +
-						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
+						isOrNot(scaleDimensions.scale > 1, 'scaled-up') +
+						isOrNot(ms.sizing, `sizing-${ms.sizing}`)
 					}
 					ref="main"
 				>
