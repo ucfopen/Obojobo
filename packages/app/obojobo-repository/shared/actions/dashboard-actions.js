@@ -177,6 +177,17 @@ const apiCreateNewModule = (useTutorial, moduleContent, collectionId = null) => 
 	return fetch(url, options).then(res => res.json())
 }
 
+const apiGetModuleLock = async draftId => {
+	const res = await fetch(`/api/locks/${draftId}`, defaultOptions())
+	const data = await res.json()
+
+	if (data.status !== 'ok') {
+		throw Error(`Failed to check lock for module with id ${draftId}.`)
+	}
+
+	return data.value
+}
+
 // ================== ACTIONS ===================
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
@@ -200,6 +211,12 @@ const restoreVersion = (draftId, versionId) => ({
 		versionId
 	},
 	promise: apiRestoreVersion(draftId, versionId)
+})
+
+const CHECK_MODULE_LOCK = 'CHECK_MODULE_LOCK'
+const checkModuleLock = draftId => ({
+	type: CHECK_MODULE_LOCK,
+	promise: apiGetModuleLock(draftId)
 })
 
 const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -521,6 +538,7 @@ module.exports = {
 	SHOW_VERSION_HISTORY,
 	RESTORE_VERSION,
 	IMPORT_MODULE_FILE,
+	CHECK_MODULE_LOCK,
 	filterModules,
 	filterCollections,
 	deleteModule,
@@ -549,5 +567,6 @@ module.exports = {
 	deleteCollection,
 	showVersionHistory,
 	restoreVersion,
-	importModuleFile
+	importModuleFile,
+	checkModuleLock
 }

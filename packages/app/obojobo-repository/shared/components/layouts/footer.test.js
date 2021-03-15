@@ -1,6 +1,10 @@
 import React from 'react'
-import Footer from './footer'
 import renderer from 'react-test-renderer'
+
+mockStaticDate()
+
+// require used to make sure it's loaded after mock date
+const Footer = require('./footer')
 
 describe('Footer', () => {
 	test('renders', () => {

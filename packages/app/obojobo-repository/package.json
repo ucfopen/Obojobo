@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-repository",
 	"license": "AGPL-3.0-only",
-	"version": "11.0.0",
+	"version": "11.3.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
@@ -35,14 +35,16 @@
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
-		"obojobo-express": "^11.0.0",
-		"obojobo-lib-utils": "^11.0.0",
 		"react-modal": "^3.11.2",
 		"react-redux": "^7.2.1",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
 		"sass-mq": "^5.0.1",
 		"short-uuid": "^3.1.1"
+	},
+	"peerDependencies": {
+		"obojobo-express": "^11.2.0-alpha.0",
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [
