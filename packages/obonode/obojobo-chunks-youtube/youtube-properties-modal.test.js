@@ -38,7 +38,7 @@ describe('YouTubeProperties modal', () => {
 		// click confirm
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(onConfirm).toHaveBeenCalled()
@@ -60,7 +60,7 @@ describe('YouTubeProperties modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
@@ -83,7 +83,7 @@ describe('YouTubeProperties modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(component.html()).toMatchSnapshot()
@@ -106,7 +106,7 @@ describe('YouTubeProperties modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(onConfirm).not.toHaveBeenCalled()
@@ -130,7 +130,7 @@ describe('YouTubeProperties modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(onConfirm).not.toHaveBeenCalled()
@@ -162,7 +162,7 @@ describe('YouTubeProperties modal', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(2)
 			.simulate('click')
 
 		expect(onConfirm).not.toHaveBeenCalled()
