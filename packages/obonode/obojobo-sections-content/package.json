@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-sections-content",
-	"version": "9.1.0-alpha1",
+	"version": "11.3.0",
 	"license": "AGPL-3.0-only",
 	"description": "Content section chunk for Obojobo",
 	"scripts": {
@@ -26,11 +26,8 @@
 		"useTabs": true,
 		"singleQuote": true
 	},
-	"dependencies": {
-		"obojobo-lib-utils": "^9.1.0-alpha1"
-	},
-	"devDependencies": {
-		"lint-staged": "^10.2.6"
+	"peerDependencies": {
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [

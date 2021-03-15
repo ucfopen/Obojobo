@@ -488,7 +488,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -501,17 +501,24 @@ exports[`VisualEditor VisualEditor component 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -537,6 +544,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
       <button
         aria-label="Bold
 Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold
 Ctrl+B"
@@ -554,6 +562,7 @@ Ctrl+B"
       <button
         aria-label="Italic
 Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic
 Ctrl+I"
@@ -571,6 +580,7 @@ Ctrl+I"
       <button
         aria-label="Strikethrough
 Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough
 Ctrl+D"
@@ -600,6 +610,7 @@ Ctrl+D"
       <button
         aria-label="Quote
 Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote
 Ctrl+\\""
@@ -623,6 +634,7 @@ Ctrl+\\""
       <button
         aria-label="Monospace
 Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace
 Ctrl+M"
@@ -649,6 +661,7 @@ Ctrl+M"
       <button
         aria-label="Equation
 Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation
 Ctrl+/"
@@ -678,6 +691,7 @@ Ctrl+/"
       <button
         aria-label="Link
 Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link
 Ctrl+K"
@@ -699,6 +713,7 @@ Ctrl+K"
       <button
         aria-label="Superscript
 Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript
 Ctrl+."
@@ -720,6 +735,7 @@ Ctrl+."
       <button
         aria-label="Subscript
 Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript
 Ctrl+,"
@@ -740,10 +756,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -757,10 +774,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -774,10 +792,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -792,6 +811,7 @@ Ctrl+E"
       <button
         aria-label="Indent
 Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent
 Ctrl+Alt+Tab"
@@ -813,6 +833,7 @@ Ctrl+Alt+Tab"
       <button
         aria-label="Unindent
 Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent
 Ctrl+Shift+Tab"
@@ -834,6 +855,7 @@ Ctrl+Shift+Tab"
       <button
         aria-label="Hanging Indent
 Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent
 Ctrl+H"
@@ -1068,7 +1090,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor VisualEditor component changes pages 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1081,17 +1103,24 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1117,6 +1146,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       <button
         aria-label="Bold
 Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold
 Ctrl+B"
@@ -1134,6 +1164,7 @@ Ctrl+B"
       <button
         aria-label="Italic
 Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic
 Ctrl+I"
@@ -1151,6 +1182,7 @@ Ctrl+I"
       <button
         aria-label="Strikethrough
 Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough
 Ctrl+D"
@@ -1180,6 +1212,7 @@ Ctrl+D"
       <button
         aria-label="Quote
 Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote
 Ctrl+\\""
@@ -1203,6 +1236,7 @@ Ctrl+\\""
       <button
         aria-label="Monospace
 Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace
 Ctrl+M"
@@ -1229,6 +1263,7 @@ Ctrl+M"
       <button
         aria-label="Equation
 Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation
 Ctrl+/"
@@ -1258,6 +1293,7 @@ Ctrl+/"
       <button
         aria-label="Link
 Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link
 Ctrl+K"
@@ -1279,6 +1315,7 @@ Ctrl+K"
       <button
         aria-label="Superscript
 Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript
 Ctrl+."
@@ -1300,6 +1337,7 @@ Ctrl+."
       <button
         aria-label="Subscript
 Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript
 Ctrl+,"
@@ -1320,10 +1358,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1337,10 +1376,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1354,10 +1394,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1372,6 +1413,7 @@ Ctrl+E"
       <button
         aria-label="Indent
 Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent
 Ctrl+Alt+Tab"
@@ -1393,6 +1435,7 @@ Ctrl+Alt+Tab"
       <button
         aria-label="Unindent
 Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent
 Ctrl+Shift+Tab"
@@ -1414,6 +1457,7 @@ Ctrl+Shift+Tab"
       <button
         aria-label="Hanging Indent
 Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent
 Ctrl+H"
@@ -1648,7 +1692,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor VisualEditor component changes pages 2`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -1661,17 +1705,24 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -1697,6 +1748,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       <button
         aria-label="Bold
 Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold
 Ctrl+B"
@@ -1714,6 +1766,7 @@ Ctrl+B"
       <button
         aria-label="Italic
 Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic
 Ctrl+I"
@@ -1731,6 +1784,7 @@ Ctrl+I"
       <button
         aria-label="Strikethrough
 Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough
 Ctrl+D"
@@ -1760,6 +1814,7 @@ Ctrl+D"
       <button
         aria-label="Quote
 Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote
 Ctrl+\\""
@@ -1783,6 +1838,7 @@ Ctrl+\\""
       <button
         aria-label="Monospace
 Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace
 Ctrl+M"
@@ -1809,6 +1865,7 @@ Ctrl+M"
       <button
         aria-label="Equation
 Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation
 Ctrl+/"
@@ -1838,6 +1895,7 @@ Ctrl+/"
       <button
         aria-label="Link
 Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link
 Ctrl+K"
@@ -1859,6 +1917,7 @@ Ctrl+K"
       <button
         aria-label="Superscript
 Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript
 Ctrl+."
@@ -1880,6 +1939,7 @@ Ctrl+."
       <button
         aria-label="Subscript
 Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript
 Ctrl+,"
@@ -1900,10 +1960,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1917,10 +1978,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1934,10 +1996,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -1952,6 +2015,7 @@ Ctrl+E"
       <button
         aria-label="Indent
 Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent
 Ctrl+Alt+Tab"
@@ -1973,6 +2037,7 @@ Ctrl+Alt+Tab"
       <button
         aria-label="Unindent
 Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent
 Ctrl+Shift+Tab"
@@ -1994,6 +2059,7 @@ Ctrl+Shift+Tab"
       <button
         aria-label="Hanging Indent
 Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent
 Ctrl+H"
@@ -2274,7 +2340,7 @@ Array [
 
 exports[`VisualEditor VisualEditor component with no page 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2287,17 +2353,24 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -2323,6 +2396,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       <button
         aria-label="Bold
 Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold
 Ctrl+B"
@@ -2340,6 +2414,7 @@ Ctrl+B"
       <button
         aria-label="Italic
 Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic
 Ctrl+I"
@@ -2357,6 +2432,7 @@ Ctrl+I"
       <button
         aria-label="Strikethrough
 Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough
 Ctrl+D"
@@ -2386,6 +2462,7 @@ Ctrl+D"
       <button
         aria-label="Quote
 Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote
 Ctrl+\\""
@@ -2409,6 +2486,7 @@ Ctrl+\\""
       <button
         aria-label="Monospace
 Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace
 Ctrl+M"
@@ -2435,6 +2513,7 @@ Ctrl+M"
       <button
         aria-label="Equation
 Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation
 Ctrl+/"
@@ -2464,6 +2543,7 @@ Ctrl+/"
       <button
         aria-label="Link
 Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link
 Ctrl+K"
@@ -2485,6 +2565,7 @@ Ctrl+K"
       <button
         aria-label="Superscript
 Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript
 Ctrl+."
@@ -2506,6 +2587,7 @@ Ctrl+."
       <button
         aria-label="Subscript
 Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript
 Ctrl+,"
@@ -2526,10 +2608,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2543,10 +2626,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2560,10 +2644,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -2578,6 +2663,7 @@ Ctrl+E"
       <button
         aria-label="Indent
 Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent
 Ctrl+Alt+Tab"
@@ -2599,6 +2685,7 @@ Ctrl+Alt+Tab"
       <button
         aria-label="Unindent
 Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent
 Ctrl+Shift+Tab"
@@ -2620,6 +2707,7 @@ Ctrl+Shift+Tab"
       <button
         aria-label="Hanging Indent
 Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent
 Ctrl+H"
@@ -2850,7 +2938,7 @@ Ctrl+Shift+L"
 
 exports[`VisualEditor reload disables event listener and calls location.reload 1`] = `
 <div
-  className="editor--page-editor  is-show-placeholders"
+  className="editor--page-editor  is-show-placeholders is-not-read-only"
 >
   <div
     className="mockHoveringPreview"
@@ -2863,17 +2951,24 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
   <div
     className="draft-toolbars"
   >
-    <input
-      aria-label="Rename Module"
-      className="editor--components--editor-title-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="(Untitled Module)"
-      value="Mock Title"
-    />
+    <div
+      className="editor--components--editor-title-input-parent"
+    >
+      <input
+        aria-invalid={false}
+        aria-label="Rename Module "
+        className="editor--components--editor-title-input"
+        maxLength="300"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Module Title"
+        value="Mock Title"
+      />
+    </div>
     <div
       className="obojobo-draft--components--button is-not-dangerous align-center skip-nav"
+      contentEditable={false}
     >
       <button
         className="button"
@@ -2899,6 +2994,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       <button
         aria-label="Bold
 Ctrl+B"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Bold
 Ctrl+B"
@@ -2916,6 +3012,7 @@ Ctrl+B"
       <button
         aria-label="Italic
 Ctrl+I"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Italic
 Ctrl+I"
@@ -2933,6 +3030,7 @@ Ctrl+I"
       <button
         aria-label="Strikethrough
 Ctrl+D"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Strikethrough
 Ctrl+D"
@@ -2962,6 +3060,7 @@ Ctrl+D"
       <button
         aria-label="Quote
 Ctrl+\\""
+        className=" is-not-selected"
         onClick={[Function]}
         title="Quote
 Ctrl+\\""
@@ -2985,6 +3084,7 @@ Ctrl+\\""
       <button
         aria-label="Monospace
 Ctrl+M"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Monospace
 Ctrl+M"
@@ -3011,6 +3111,7 @@ Ctrl+M"
       <button
         aria-label="Equation
 Ctrl+/"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Equation
 Ctrl+/"
@@ -3040,6 +3141,7 @@ Ctrl+/"
       <button
         aria-label="Link
 Ctrl+K"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Link
 Ctrl+K"
@@ -3061,6 +3163,7 @@ Ctrl+K"
       <button
         aria-label="Superscript
 Ctrl+."
+        className=" is-not-selected"
         onClick={[Function]}
         title="Superscript
 Ctrl+."
@@ -3082,6 +3185,7 @@ Ctrl+."
       <button
         aria-label="Subscript
 Ctrl+,"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Subscript
 Ctrl+,"
@@ -3102,10 +3206,11 @@ Ctrl+,"
       </button>
       <button
         aria-label="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Left Align
-Ctrl+L"
+Ctrl+Shift+L"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3119,10 +3224,11 @@ Ctrl+L"
       </button>
       <button
         aria-label="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Center Align
-Ctrl+R"
+Ctrl+Shift+E"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3136,10 +3242,11 @@ Ctrl+R"
       </button>
       <button
         aria-label="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Right Align
-Ctrl+E"
+Ctrl+Shift+R"
       >
         <svg
           viewBox="0 0 32 32"
@@ -3154,6 +3261,7 @@ Ctrl+E"
       <button
         aria-label="Indent
 Ctrl+Alt+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Indent
 Ctrl+Alt+Tab"
@@ -3175,6 +3283,7 @@ Ctrl+Alt+Tab"
       <button
         aria-label="Unindent
 Ctrl+Shift+Tab"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Unindent
 Ctrl+Shift+Tab"
@@ -3196,6 +3305,7 @@ Ctrl+Shift+Tab"
       <button
         aria-label="Hanging Indent
 Ctrl+H"
+        className=" is-not-selected"
         onClick={[Function]}
         title="Hanging Indent
 Ctrl+H"

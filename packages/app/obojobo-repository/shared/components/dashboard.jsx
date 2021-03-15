@@ -8,6 +8,7 @@ const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const ModuleOptionsDialog = require('./module-options-dialog')
+const VersionHistoryDialog = require('./version-history-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -20,6 +21,7 @@ const renderOptionsDialog = props => (
 		showModulePermissions={props.showModulePermissions}
 		deleteModule={props.deleteModule}
 		onClose={props.closeModal}
+		showVersionHistory={props.showVersionHistory}
 	/>
 )
 
@@ -37,6 +39,20 @@ const renderPermissionsDialog = props => (
 	/>
 )
 
+const renderVersionHistoryDialog = props => (
+	<VersionHistoryDialog
+		{...props.selectedModule}
+		title={`${props.selectedModule.title} - Version History`}
+		onClose={props.closeModal}
+		isHistoryLoading={props.versionHistory.isFetching}
+		hasHistoryLoaded={props.versionHistory.hasFetched}
+		versionHistory={props.versionHistory.items}
+		restoreVersion={props.restoreVersion}
+		checkModuleLock={props.checkModuleLock}
+		currentUserId={props.currentUser.id}
+	/>
+)
+
 const renderModalDialog = props => {
 	let dialog
 	let title
@@ -49,6 +65,11 @@ const renderModalDialog = props => {
 		case 'module-permissions':
 			title = 'Module Access'
 			dialog = renderPermissionsDialog(props)
+			break
+
+		case 'module-version-history':
+			title = 'Module Version History'
+			dialog = renderVersionHistoryDialog(props)
 			break
 
 		default:
@@ -89,15 +110,29 @@ const getSortMethod = sortOrder => {
 	return sortFn
 }
 
-const renderModules = (modules, sortOrder) => {
+const renderModules = (modules, sortOrder, newModuleId) => {
 	const sortFn = getSortMethod(sortOrder)
-	return modules.sort(sortFn).map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} />)
+	return modules
+		.sort(sortFn)
+		.map(draft => (
+			<Module isNew={draft.draftId === newModuleId} key={draft.draftId} hasMenu={true} {...draft} />
+		))
 }
 
 const Dashboard = props => {
 	const [sortOrder, setSortOrder] = useState(props.sortOrder)
+	const [newModuleId, setNewModuleId] = useState(null)
+
+	const handleCreateNewModule = useTutorial => {
+		props.createNewModule(useTutorial).then(data => {
+			data.payload.value.sort(getSortMethod('newest'))
+			setNewModuleId(data.payload.value[0].draftId)
+		})
+	}
 
 	// Set a cookie when sortOrder changes on the client
+	// can't undefine document to test this 'else' case without breaking everything - maybe later
+	/* istanbul ignore else */
 	if (typeof document !== 'undefined') {
 		useEffect(() => {
 			const expires = new Date()
@@ -119,8 +154,8 @@ const Dashboard = props => {
 				<section className="repository--main-content">
 					<div className="repository--main-content--control-bar">
 						<MultiButton title="New Module">
-							<Button onClick={() => props.createNewModule(false)}>New Module</Button>
-							<Button onClick={() => props.createNewModule(true)}>New Tutorial</Button>
+							<Button onClick={() => handleCreateNewModule(false)}>New Module</Button>
+							<Button onClick={() => handleCreateNewModule(true)}>New Tutorial</Button>
 							<Button onClick={props.importModuleFile}>Upload...</Button>
 						</MultiButton>
 						<Search
@@ -146,7 +181,8 @@ const Dashboard = props => {
 								<div className="repository--item-list--collection--item--multi-wrapper">
 									{renderModules(
 										props.filteredModules ? props.filteredModules : props.myModules,
-										sortOrder
+										sortOrder,
+										newModuleId
 									)}
 								</div>
 							</div>

@@ -4,10 +4,12 @@ import FullReview from '../full-review'
 import LTIStatus from './lti-status'
 import React from 'react'
 import Viewer from 'Viewer'
+import AssessmentApi from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
+import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
-const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
+const { AssessmentUtil, NavUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 
 class AssessmentPostTest extends React.Component {
@@ -49,17 +51,22 @@ class AssessmentPostTest extends React.Component {
 		)
 
 		attempts.forEach(attempt => {
-			attemptIds.push(attempt.attemptId)
+			attemptIds.push(attempt.id)
 		})
 
-		return APIUtil.reviewAttempt(attemptIds).then(result => {
+		return AssessmentApi.reviewAttempt(attemptIds).then(result => {
 			attempts.forEach(attempt => {
-				attempt.state.questionModels = result[attempt.attemptId]
+				attempt.state.questionModels = result[attempt.id]
 			})
 
-			this.setState({
-				attempts,
-				isFetching: false
+			// Some of the questions may contain latex. Need to
+			// make sure window.katex is defined before trying
+			// to render those questions
+			injectKatexIfNeeded({ value: attempts }).finally(() => {
+				this.setState({
+					attempts,
+					isFetching: false
+				})
 			})
 		})
 	}
@@ -124,7 +131,11 @@ class AssessmentPostTest extends React.Component {
 					{Math.round(assessmentScore)}
 					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
 				</span>
-				<span className="from-attempt">{`From attempt ${highestAttempts[0].assessmentScoreDetails.attemptNumber}`}</span>
+				{props.moduleData.assessmentState.importHasBeenUsed ? (
+					<span className="from-attempt">Imported Score</span>
+				) : (
+					<span className="from-attempt">{`From attempt ${highestAttempts[0].scoreDetails.attemptNumber}`}</span>
+				)}
 			</div>
 		)
 	}

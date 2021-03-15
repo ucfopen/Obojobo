@@ -178,7 +178,24 @@ describe('user model', () => {
 		})
 	})
 
-	test('fetches one from the database', () => {
+	test('saves errors predictably', () => {
+		expect.hasAssertions()
+
+		db.one.mockRejectedValueOnce('mock-error')
+
+		const u = new User({
+			id: 10,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
+
+		return expect(u.saveOrCreate()).rejects.toThrowError('Error saving user.')
+	})
+
+	test('fetchById fetches one from the database', () => {
 		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce({
@@ -199,6 +216,14 @@ describe('user model', () => {
 		})
 	})
 
+	test('fetchById fails predictably', () => {
+		expect.hasAssertions()
+
+		db.one.mockRejectedValueOnce('mock-error')
+
+		return expect(User.fetchById(5)).rejects.toThrowError('Error finding user.')
+	})
+
 	test('clearSessionsForUserById deletes sessions from the db', () => {
 		db.none.mockResolvedValueOnce('')
 
@@ -209,23 +234,104 @@ describe('user model', () => {
 		})
 	})
 
+	test('clearSessionsForUserById errors predictably', () => {
+		db.none.mockRejectedValueOnce('mock-error')
+
+		return expect(User.clearSessionsForUserById(66)).rejects.toThrowError('Error clearing session.')
+	})
+
+	test('searchForUsers returns users', async () => {
+		const mockUserResult = {
+			first_name: 'Roger',
+			last_name: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername'
+		}
+		db.manyOrNone.mockResolvedValueOnce([mockUserResult, mockUserResult])
+
+		const users = await User.searchForUsers('some-input')
+		expect(users).toHaveLength(2)
+		expect(users).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
+		    "firstName": "Roger",
+		    "id": null,
+		    "lastName": "Wilco",
+		    "roles": Array [],
+		    "username": "someusername",
+		  },
+		  Object {
+		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
+		    "firstName": "Roger",
+		    "id": null,
+		    "lastName": "Wilco",
+		    "roles": Array [],
+		    "username": "someusername",
+		  },
+		]
+	`)
+	})
+
+	test('searchForUsers returns users', async () => {
+		const mockUserResult = {
+			first_name: 'Roger',
+			last_name: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername'
+		}
+		db.none.mockResolvedValueOnce()
+		db.manyOrNone.mockResolvedValueOnce([mockUserResult, mockUserResult])
+
+		const users = await User.searchForUsers('some-input')
+		expect(users).toHaveLength(2)
+		expect(users).toMatchInlineSnapshot(`
+		Array [
+		  Object {
+		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
+		    "firstName": "Roger",
+		    "id": null,
+		    "lastName": "Wilco",
+		    "roles": Array [],
+		    "username": "someusername",
+		  },
+		  Object {
+		    "avatarUrl": "https://secure.gravatar.com/avatar/19c0a7d712a610200eb3b9686aa0de4a?s=120&d=retro",
+		    "firstName": "Roger",
+		    "id": null,
+		    "lastName": "Wilco",
+		    "roles": Array [],
+		    "username": "someusername",
+		  },
+		]
+	`)
+	})
+
+	test('searchForUsers errors predictably', () => {
+		db.manyOrNone.mockRejectedValueOnce('mock-error')
+
+		return expect(User.searchForUsers('some-input')).rejects.toThrowError(
+			'Error searching for users.'
+		)
+	})
+
 	test('throws error when not given enough arguments', () => {
 		expect(() => {
 			new User()
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing last name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name',
 				lastName: 'last-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing email for new user')
 
 		expect(() => {
 			new User({
@@ -233,27 +339,27 @@ describe('user model', () => {
 				lastName: 'last-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing username for new user')
 
 		expect(() => {
 			new User({
 				lastName: 'last-name'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				lastName: 'last-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing first name for new user')
 
 		expect(() => {
 			new User({
 				firstName: 'first-name',
 				email: 'email'
 			})
-		}).toThrow('Missing arguments for new user')
+		}).toThrow('Missing last name for new user')
 
 		expect(() => {
 			new User({

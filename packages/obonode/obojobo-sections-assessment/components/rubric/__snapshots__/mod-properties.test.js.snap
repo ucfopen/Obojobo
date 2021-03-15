@@ -70,6 +70,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -189,6 +190,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -308,6 +310,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -427,6 +430,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -543,6 +547,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
               </div>
               <div
                 className="obojobo-draft--components--button is-not-dangerous align-center"
+                contentEditable={false}
               >
                 <button
                   className="button"
@@ -560,6 +565,7 @@ exports[`ModProperties Modal ModProperties renders 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -647,6 +653,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -766,6 +773,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -885,6 +893,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1004,6 +1013,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1123,6 +1133,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1242,6 +1253,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1361,6 +1373,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1480,6 +1493,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1599,6 +1613,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1718,6 +1733,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1837,6 +1853,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -1956,6 +1973,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2075,6 +2093,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2194,6 +2213,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2313,6 +2333,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2432,6 +2453,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2551,6 +2573,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2670,6 +2693,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2789,6 +2813,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -2908,6 +2933,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
               >
                 <div
                   className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+                  contentEditable={false}
                 >
                   <button
                     className="button"
@@ -3030,6 +3056,7 @@ exports[`ModProperties Modal ModProperties renders with 20 mods and unlimited at
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"

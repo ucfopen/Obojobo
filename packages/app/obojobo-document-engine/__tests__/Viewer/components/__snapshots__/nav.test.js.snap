@@ -9,6 +9,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -135,6 +136,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -273,6 +275,271 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 </nav>
 `;
 
+exports[`Nav renders assessment information with score 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  >
+    <li
+      className="link is-not-selected is-not-complete is-not-correct is-assessment is-first-in-list is-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={false}
+        aria-label="Go to label"
+      >
+        label
+      </button>
+      <span
+        className="assessment-info"
+      >
+        60% - 2 attempts remaining
+      </span>
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders assessment information with singular attempt 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  >
+    <li
+      className="link is-not-selected is-not-complete is-not-correct is-assessment is-first-in-list is-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={false}
+        aria-label="Go to label"
+      >
+        label
+      </button>
+      <span
+        className="assessment-info"
+      >
+        1 attempt remaining
+      </span>
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders assessment information with unlimited attempts 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  >
+    <li
+      className="link is-not-selected is-not-complete is-not-correct is-assessment is-first-in-list is-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={false}
+        aria-label="Go to label"
+      >
+        label
+      </button>
+      <span
+        className="assessment-info"
+      >
+        Unlimited attempts
+      </span>
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders assessment information without score 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  >
+    <li
+      className="link is-not-selected is-not-complete is-not-correct is-assessment is-first-in-list is-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={false}
+        aria-label="Go to label"
+      >
+        label
+      </button>
+      <span
+        className="assessment-info"
+      >
+        2 attempts remaining
+      </span>
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders blank title 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  >
+    <li
+      className="heading is-not-selected"
+    >
+       
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
 exports[`Nav renders closed 1`] = `
 <nav
   aria-label="Navigation"
@@ -282,6 +549,7 @@ exports[`Nav renders closed 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -319,6 +587,7 @@ exports[`Nav renders opened 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"
@@ -357,6 +626,7 @@ exports[`Nav renders unlocked 1`] = `
 >
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+    contentEditable={false}
   >
     <button
       className="button"

@@ -177,12 +177,52 @@ describe('MoreInfoBox', () => {
 						name: 'mockAbstractToggle',
 						value: () => false,
 						onChange: () => true
+					},
+					{
+						type: 'button',
+						description: 'Mock Button',
+						name: 'Mock Name',
+						action: jest.fn()
 					}
 				]}
 			/>
 		)
 
 		component.find('.more-info-button').simulate('click')
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box input with explicit and default placeholders', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{
+					mockInput1: 'mockInputValue1',
+					mockInput2: 'mockInputValue2'
+				}}
+				contentDescription={[
+					{
+						type: 'input',
+						description: 'Mock Input 1',
+						name: 'mockInput1'
+					},
+					{
+						type: 'input',
+						description: 'Mock Input 2',
+						name: 'mockInput2',
+						placeholder: 'mockPlaceholderValue'
+					}
+				]}
+			/>
+		)
+
+		component.find('.more-info-button').simulate('click')
+
+		expect(component.find({ value: 'mockInputValue1' }).props().placeholder).toBe('')
+		expect(component.find({ value: 'mockInputValue2' }).props().placeholder).toBe(
+			'mockPlaceholderValue'
+		)
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -573,11 +613,11 @@ describe('MoreInfoBox', () => {
 		expect(saveContent).toHaveBeenCalled()
 	})
 
-	test('More Info Box closes the TriggersModal', () => {
+	test('More Info Box closes the TriggersModal with updates', () => {
 		const component = mount(
 			<MoreInfoBox
 				id="mock-id"
-				content={{}}
+				content={{ triggers: ['initial-trigger'] }}
 				saveId={jest.fn()}
 				saveContent={jest.fn()}
 				markUnsaved={jest.fn()}
@@ -585,9 +625,42 @@ describe('MoreInfoBox', () => {
 			/>
 		)
 
-		component.instance().closeModal({ triggers: [] })
+		const cmp = component.instance()
+		cmp.closeModal({ triggers: ['mock-trigger'] })
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "mock-trigger",
+		  ],
+		}
+	`)
+	})
+
+	test('More Info Box closes the TriggersModal without updating', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{ triggers: ['initial-trigger'] }}
+				saveId={jest.fn()}
+				saveContent={jest.fn()}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+			/>
+		)
+
+		const cmp = component.instance()
+		cmp.closeModal()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(cmp.state.content).toMatchInlineSnapshot(`
+		Object {
+		  "triggers": Array [
+		    "initial-trigger",
+		  ],
+		}
+	`)
 	})
 
 	test('More Info Box mousedown listener behaviors', () => {
@@ -667,5 +740,32 @@ describe('MoreInfoBox', () => {
 			state: {}
 		})(mockProps)
 		expect(mockSetState).toHaveBeenCalledWith({ content: 'newMockValue' })
+	})
+
+	test('onSave sets and clears state.error', () => {
+		const component = mount(
+			<MoreInfoBox
+				id="mock-id"
+				content={{}}
+				saveId={jest
+					.fn()
+					.mockReturnValueOnce('error!')
+					.mockReturnValueOnce(null)}
+				saveContent={jest.fn().mockReturnValue(null)}
+				markUnsaved={jest.fn()}
+				contentDescription={[]}
+				isAssessment
+			/>
+		)
+
+		// saveId() will return an error, make sure its on state
+		component.instance().onSave()
+		const aftState = component.state()
+		expect(aftState).toHaveProperty('error', 'error!')
+
+		// saveId() returns null this time, make sure state gets updated
+		component.instance().onSave()
+		const aftState2 = component.state()
+		expect(aftState2).toHaveProperty('error', null)
 	})
 })

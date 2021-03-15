@@ -13,7 +13,7 @@ describe('MathEquation editor', () => {
 		const node = { type: MATHEQUATION_NODE }
 		expect(MathEquation.plugins.isVoid(node, {}, jest.fn())).toEqual(true)
 	})
-	
+
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },

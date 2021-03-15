@@ -69,6 +69,21 @@ describe('Question', () => {
 		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 0)
 	})
 
+	test('chandles an undefined responseHistory', () => {
+		const mockAssessment = { contains: () => true }
+		const responseHistory = undefined
+
+		const res = {
+			app: {}
+		}
+
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).not.toHaveBeenCalled()
+		question.onAttemptEnd(res, {}, mockAssessment, responseHistory, currentAttempt)
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 0)
+	})
+
 	test('emits calculate score event when necessary', () => {
 		question.node.content = { mode: 'assessment' }
 		const mockAssessment = { contains: () => true }

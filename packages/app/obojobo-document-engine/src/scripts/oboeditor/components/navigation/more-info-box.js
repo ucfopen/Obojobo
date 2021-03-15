@@ -116,7 +116,7 @@ class MoreInfoBox extends React.Component {
 		newContent[key] = event.target.value
 
 		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent),
+			content: Object.assign({}, prevState.content, newContent),
 			needsUpdate: true
 		}))
 	}
@@ -140,7 +140,7 @@ class MoreInfoBox extends React.Component {
 			this.props.saveContent(this.props.content, this.state.content) ||
 			this.props.saveId(this.props.id, this.state.currentId)
 		if (!error) {
-			// Wrapping these methods in a Timeout prevents a race condition with editor updates
+			this.setState({ error })
 			this.props.markUnsaved()
 			this.close()
 			return
@@ -177,40 +177,49 @@ class MoreInfoBox extends React.Component {
 		this.setState({ modalOpen: true })
 	}
 
+	// TriggerListModal.onClose is called w/ no arguments when canceled
+	// TriggerListModal.onClose is called w/ triggers when save+closed
 	closeModal(modalState) {
+		ModalUtil.hide()
+
+		if (!modalState) return // do not save changes
+
 		this.setState(prevState => ({
 			content: { ...prevState.content, triggers: modalState.triggers },
 			needsUpdate: true,
 			modalOpen: false
 		}))
-		ModalUtil.hide()
 	}
 
-	renderItem(description) {
-		switch (description.type) {
+	renderItem(item) {
+		switch (item.type) {
 			case 'input':
 				return (
-					<div key={description.description}>
-						<label>{description.description}</label>
+					<div className="properties--row" key={item.description}>
+						<label htmlFor={item.description}>{item.description}</label>
 						<input
+							id={item.description}
 							type="text"
-							value={this.state.content[description.name]}
-							onChange={this.handleContentChange.bind(this, description.name)}
+							value={this.state.content[item.name]}
+							onChange={this.handleContentChange.bind(this, item.name)}
+							placeholder={item.placeholder || ''}
 							onClick={stopPropagation}
+							maxLength="300"
 						/>
 					</div>
 				)
 			case 'select':
 				return (
-					<div key={description.description}>
-						<label>{description.description}</label>
+					<div className="properties--row" key={item.description}>
+						<label htmlFor={item.description}>{item.description}</label>
 						<select
+							id={item.description}
 							className="select-item"
-							value={this.state.content[description.name]}
-							onChange={this.handleContentChange.bind(this, description.name)}
+							value={this.state.content[item.name]}
+							onChange={this.handleContentChange.bind(this, item.name)}
 							onClick={stopPropagation}
 						>
-							{description.values.map(option => (
+							{item.values.map(option => (
 								<option value={option.value} key={option.value}>
 									{option.description}
 								</option>
@@ -221,21 +230,30 @@ class MoreInfoBox extends React.Component {
 			case 'toggle':
 				return (
 					<Switch
-						key={description.description}
-						title={description.description}
-						initialChecked={this.state.content[description.name]}
-						handleCheckChange={this.handleSwitchChange.bind(this, description.name)}
+						key={item.description}
+						title={item.description}
+						initialChecked={this.state.content[item.name]}
+						handleCheckChange={this.handleSwitchChange.bind(this, item.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
 			case 'abstract-toggle':
 				return (
 					<Switch
-						key={description.description}
-						title={description.description}
-						initialChecked={description.value(this.state.content)}
-						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}
+						key={item.description}
+						title={item.description}
+						initialChecked={item.value(this.state.content)}
+						handleCheckChange={this.handleAbstractToggleChange.bind(this, item.onChange)}
 					/>
+				)
+			case 'button':
+				return (
+					<div key={item.description}>
+						<label>{item.description}</label>
+						<Button altAction onClick={item.action}>
+							{item.name}
+						</Button>
+					</div>
 				)
 		}
 	}
@@ -250,7 +268,7 @@ class MoreInfoBox extends React.Component {
 						<div className="properties">
 							<div>{this.props.type}</div>
 							<div>
-								<div>
+								<div className="properties--row">
 									<label htmlFor="oboeditor--components--more-info-box--id-input">Id</label>
 									<input
 										autoFocus
@@ -262,10 +280,7 @@ class MoreInfoBox extends React.Component {
 										onClick={stopPropagation}
 										ref={this.idInput}
 									/>
-									<Button
-										className="input-aligned-button"
-										onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}
-									>
+									<Button onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
 										Copy Id
 									</Button>
 								</div>

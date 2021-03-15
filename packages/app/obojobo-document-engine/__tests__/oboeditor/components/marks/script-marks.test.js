@@ -40,20 +40,12 @@ describe('ScriptMarks', () => {
 		}
 		const mockEvent = {
 			ctrlKey: true,
-			key: '-',
+			key: ',',
 			preventDefault: jest.fn()
 		}
 
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
 		expect(editor.toggleScript).toHaveBeenCalledWith(-1)
-
-		mockEvent.key = ','
-		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.toggleScript).toHaveBeenCalledWith(-1)
-
-		mockEvent.key = '='
-		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())
-		expect(editor.toggleScript).toHaveBeenCalledWith(1)
 
 		mockEvent.key = '.'
 		ScriptMarks.plugins.onKeyDown(mockEvent, editor, jest.fn())

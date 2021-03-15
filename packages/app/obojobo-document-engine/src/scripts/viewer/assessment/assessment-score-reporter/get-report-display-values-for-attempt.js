@@ -1,6 +1,6 @@
 import getDisplayFriendlyScore from './get-display-friendly-score'
 
-const getReportDetailsForAttempt = (scoreInfo, totalNumberOfAttemptsAllowed) => {
+const getReportDisplayValuesForAttempt = (scoreInfo, totalNumberOfAttemptsAllowed) => {
 	return {
 		attemptNum: '' + scoreInfo.attemptNumber,
 		attemptScore: getDisplayFriendlyScore(scoreInfo.attemptScore),
@@ -12,4 +12,4 @@ const getReportDetailsForAttempt = (scoreInfo, totalNumberOfAttemptsAllowed) => 
 	}
 }
 
-export default getReportDetailsForAttempt
+export default getReportDisplayValuesForAttempt

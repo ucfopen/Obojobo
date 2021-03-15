@@ -71,7 +71,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -92,12 +94,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -130,7 +163,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -201,7 +236,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -299,6 +336,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -310,6 +348,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -400,7 +439,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -421,12 +462,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -459,7 +531,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -530,7 +604,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -628,6 +704,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -639,6 +716,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -729,7 +807,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -750,12 +830,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -788,7 +899,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -859,7 +972,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -957,6 +1072,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -968,6 +1084,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1058,7 +1175,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -1079,12 +1198,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -1117,7 +1267,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -1188,7 +1340,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -1286,6 +1440,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1297,6 +1452,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1387,7 +1543,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -1408,12 +1566,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -1446,7 +1635,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -1517,7 +1708,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -1615,6 +1808,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1626,6 +1820,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1716,7 +1911,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -1737,12 +1934,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -1775,7 +2003,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -1846,7 +2076,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -1944,6 +2176,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -1955,6 +2188,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2045,7 +2279,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -2066,12 +2302,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -2104,7 +2371,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -2175,7 +2444,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -2273,6 +2544,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2284,6 +2556,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2374,7 +2647,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -2395,12 +2670,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -2433,7 +2739,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -2504,7 +2812,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -2602,6 +2912,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2613,6 +2924,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2703,7 +3015,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -2724,12 +3038,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -2762,7 +3107,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -2833,7 +3180,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -2931,6 +3280,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -2942,6 +3292,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -3032,7 +3383,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                   value=""
                 />
               </div>
-              <div>
+              <div
+                className="source-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--src"
                 >
@@ -3053,12 +3406,43 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
               <h2>
                 Options:
               </h2>
+              <div
+                className="sizing-option-container"
+              >
+                <label
+                  htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing"
+                >
+                  Sizing:
+                </label>
+                <select
+                  id="obojobo-draft--chunks--iframe--properties-model--sizing"
+                  onChange={[Function]}
+                  value="fixed"
+                >
+                  <option
+                    value="fixed"
+                  >
+                    Fixed
+                  </option>
+                  <option
+                    value="text-width"
+                  >
+                    Text Width
+                  </option>
+                  <option
+                    value="max-width"
+                  >
+                    Max Width
+                  </option>
+                </select>
+              </div>
               <div>
                 <label>
                   Dimensions:
                 </label>
                 <input
                   aria-label="Width"
+                  disabled={false}
                   id="obojobo-draft--chunks--iframe--properties-modal--custom-width"
                   max="20000"
                   min="1"
@@ -3091,7 +3475,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                   px
                 </span>
               </div>
-              <div>
+              <div
+                className="border-option-container"
+              >
                 <div
                   className="obojobo-draft--components--switch"
                 >
@@ -3162,7 +3548,9 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                   </option>
                 </select>
               </div>
-              <div>
+              <div
+                className="zoom-option-container"
+              >
                 <label
                   htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom"
                 >
@@ -3260,6 +3648,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -3271,6 +3660,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"

@@ -5,8 +5,10 @@ import { Transforms } from 'slate'
 import renderer from 'react-test-renderer'
 
 import ActionButton from './editor-component'
+import ActionButtonEditorAction from './action-button-editor-action'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor')
 jest.mock('slate')
 jest.mock('slate-react')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
@@ -23,6 +25,7 @@ describe('ActionButton Editor Node', () => {
 	let nodeData
 
 	beforeEach(() => {
+		jest.clearAllMocks()
 		nodeData = {
 			content: {
 				actions: [
@@ -69,7 +72,7 @@ describe('ActionButton Editor Node', () => {
 
 		expect(tree).toMatchSnapshot()
 
-		// make sure node recieves props since we're mocking it
+		// make sure node receives props since we're mocking it
 		expect(component.root.find(Node).props).toMatchSnapshot()
 	})
 
@@ -113,7 +116,7 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('closes modal', () => {
+	test('closes modal and saves', () => {
 		const editor = {
 			children: [nodeData]
 		}
@@ -157,4 +160,47 @@ describe('ActionButton Editor Node', () => {
 			{ at: undefined }
 		)
 	})
+
+	test('closes modal without saving', () => {
+		const editor = {
+			children: [nodeData]
+		}
+		const component = mount(<ActionButton element={nodeData} selected={true} editor={editor} />)
+
+		component.instance().closeModal()
+
+		expect(Transforms.setNodes).not.toHaveBeenCalled()
+	})
+})
+
+test('Action Button Editor displays id for nav:goto trigger', () => {
+	const type = 'nav:goto'
+	const value = { id: 'mockId' }
+
+	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	expect(component.find('span').html()).toEqual('<span>Go to mockId</span>')
+})
+
+test('Action Button Editor displays empty id for nav:goto trigger', () => {
+	const type = 'nav:goto'
+	const value = { id: '' }
+
+	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	expect(component.find('span').html()).toEqual('<span>Go to ""</span>')
+})
+
+test('Action Button Editor displays id for nav:openExternalLink trigger', () => {
+	const type = 'nav:openExternalLink'
+	const value = { url: 'mockURL' }
+
+	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	expect(component.find('span').html()).toEqual('<span>Open mockURL</span>')
+})
+
+test('Action Button Editor displays empty id for nav:openExternalLink trigger', () => {
+	const type = 'nav:openExternalLink'
+	const value = { url: '' }
+
+	const component = mount(<ActionButtonEditorAction type={type} value={value} />)
+	expect(component.find('span').html()).toEqual('<span>Open ""</span>')
 })

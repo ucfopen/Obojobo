@@ -16,6 +16,10 @@ class TriggerListModal extends React.Component {
 		this.createTrigger = this.createTrigger.bind(this)
 	}
 
+	componentWillUnmount() {
+		if (this.props.onClose) this.props.onClose()
+	}
+
 	updateTriggerType(index, event) {
 		const type = event.target.value
 
@@ -81,7 +85,8 @@ class TriggerListModal extends React.Component {
 				return {
 					id: '',
 					fade: false,
-					animateScroll: true
+					animateScroll: true,
+					preventScroll: false
 				}
 
 			default:
@@ -164,6 +169,49 @@ class TriggerListModal extends React.Component {
 								type: 'nav:goto',
 								value: {}
 							})
+					  })
+					: trigger
+			)
+		}))
+	}
+
+	getScrollType(action) {
+		const { value } = action
+
+		if (value.animateScroll === true || value.animateScroll === 'true') {
+			return 'animateScroll'
+		} else if (value.preventScroll === true || value.preventScroll === 'true') {
+			return 'preventScroll'
+		} else {
+			return 'jumpScroll'
+		}
+	}
+
+	updateScrollType(triggerIndex, actionIndex, event) {
+		const scrollType = event.target.value
+		const value = {
+			animateScroll: false,
+			preventScroll: false
+		}
+
+		if (scrollType !== 'jumpScroll') {
+			value[scrollType] = true
+		}
+
+		// Update triggers[triggerIndex].actions[actionIndex].value.key
+		// The nested loops insure that React's immutable state is updated properly
+		return this.setState(prevState => ({
+			/* eslint-disable no-mixed-spaces-and-tabs */
+			triggers: prevState.triggers.map((trigger, tIndex) =>
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
+							actions: trigger.actions.map((action, aIndex) =>
+								actionIndex === aIndex
+									? Object.assign(action, {
+											value: Object.assign({}, action.value, value)
+									  })
+									: action
+							)
 					  })
 					: trigger
 			)
@@ -269,16 +317,16 @@ class TriggerListModal extends React.Component {
 								'fade'
 							)}
 						/>
-						<Switch
-							title="Animate Scroll"
-							initialChecked={action.value.animateScroll || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'animateScroll'
-							)}
-						/>
+						<label>If item not visible on screen</label>
+						<select
+							className="select-item"
+							value={this.getScrollType(action)}
+							onChange={this.updateScrollType.bind(this, triggerIndex, actionIndex)}
+						>
+							<option value="animateScroll">Smoothly scroll page to the focussed item</option>
+							<option value="jumpScroll">Quickly jump page to the focussed item</option>
+							<option value="preventScroll">Keep the page where it is</option>
+						</select>
 					</div>
 				)
 		}

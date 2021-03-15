@@ -4,6 +4,7 @@
 	width: auto;
 	max-width: 32em;
 	border: 3px solid transparentize($color-action, 0.7);
+	border-radius: $dimension-rounded-radius * 1.65;
 
 	.editor--hidden-text {
 		cursor: default;
@@ -73,6 +74,7 @@
 		width: 100%;
 		height: 100%;
 		text-align: center;
+		font-family: $font-default;
 
 		div {
 			display: inline;
@@ -81,6 +83,7 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
+			width: 80%;
 		}
 
 		.edit-button {

@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../util/editor-util'
+import isValidId from 'obojobo-document-engine/src/scripts/oboeditor/util/is-valid-id'
 import React from 'react'
 import MoreInfoBox from './more-info-box'
 
@@ -21,7 +22,7 @@ class Header extends React.Component {
 			newTitle = ''
 		}
 
-		if (newTitle !== oldTitle) {
+		if (newTitle !== oldTitle && newTitle !== '') {
 			EditorUtil.renamePage(pageId, newTitle)
 		}
 
@@ -29,19 +30,25 @@ class Header extends React.Component {
 	}
 
 	renderLabel(label) {
-		return <span>{label}</span>
+		return <span>{label || '\u00A0'}</span>
 	}
 
 	saveId(oldId, newId) {
+		if (oldId === newId) return
+
 		const model = OboModel.models[oldId]
 
 		if (!newId) {
-			return 'Please enter an id'
+			return 'Please enter an id.'
+		}
+
+		if (!isValidId(newId)) {
+			return 'Invalid characters in id. Only letters, numbers, and special characters (-, _, :, .) are permitted.'
 		}
 
 		// prettier-ignore
 		if (!model.setId(newId)) {
-			return 'The id "' + newId + '" already exists. Please choose a unique id'
+			return 'The id "' + newId + '" already exists. Please choose a unique id.'
 		}
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
@@ -52,6 +59,7 @@ class Header extends React.Component {
 		const model = OboModel.models[item.id]
 
 		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
+		if (newContent.title === '') return 'Module title must not be empty!'
 		model.triggers = newContent.triggers || []
 
 		model.set({ content: newContent }) // may cause store update?
@@ -67,7 +75,9 @@ class Header extends React.Component {
 			{
 				name: 'title',
 				description: 'Title',
-				type: 'input'
+				placeholder: 'Module Title',
+				type: 'input',
+				required: true
 			},
 			{
 				name: 'start',

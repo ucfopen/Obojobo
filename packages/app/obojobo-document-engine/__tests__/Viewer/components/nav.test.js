@@ -1,5 +1,6 @@
 import { mount, shallow } from 'enzyme'
 
+import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import React from 'react'
@@ -44,6 +45,12 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	page: {
 		focus: mockFocus
 	}
+}))
+
+// AssessmentUtil
+jest.mock('../../../src/scripts/viewer/util/assessment-util', () => ({
+	getAssessmentScoreForModel: jest.fn(),
+	getAttemptsRemaining: jest.fn()
 }))
 
 // NavUtil
@@ -183,6 +190,136 @@ describe('Nav', () => {
 				navTargetId: 56 // select this item
 			}
 		}
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders blank title', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([{ id: 4, type: 'heading', label: '' }])
+		const props = {
+			navState: {
+				open: false,
+				locked: false,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders assessment information with score', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false,
+					assessment: true
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(60)
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(2)
+
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders assessment information without score', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false,
+					assessment: true
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(2)
+
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders assessment information with singular attempt', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false,
+					assessment: true
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(1)
+
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders assessment information with unlimited attempts', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 4,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false,
+					assessment: true
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: true,
+				locked: false
+			}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce(Infinity)
+
 		const component = renderer.create(<Nav {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()

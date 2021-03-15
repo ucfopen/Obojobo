@@ -46,6 +46,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -57,6 +58,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -124,6 +126,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
         >
           <div
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -135,6 +138,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
           </div>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -202,6 +206,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -218,6 +223,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
           </span>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -285,6 +291,7 @@ exports[`SimpleDialog SimpleDialog ok 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -352,6 +359,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
         >
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
@@ -368,6 +376,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
           </span>
           <div
             className="obojobo-draft--components--button is-not-dangerous align-center"
+            contentEditable={false}
           >
             <button
               className="button"
