@@ -68,32 +68,40 @@ describe('Materia adapter', () => {
 		expect(model.modelState.src).toBe('mocked-src')
 	})
 
-	test('adapter sets modelState.width to a number if specified and null otherwise', () => {
+	test('adapter sets modelState.width to the default width is invalid, otherwise to the given value', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)
-		expect(model.modelState.width).toBe(null)
+		expect(model.modelState.width).toBe(800)
 
 		model = new MockOboModel({ width: 'invalid' })
 		MateriaAdapter.construct(model)
-		expect(model.modelState.width).toBe(null)
+		expect(model.modelState.width).toBe(800)
 
 		model = new MockOboModel({ width: 123 })
 		MateriaAdapter.construct(model)
 		expect(model.modelState.width).toBe(123)
+
+		model = new MockOboModel({ width: 99 })
+		MateriaAdapter.construct(model)
+		expect(model.modelState.width).toBe(800)
 	})
 
-	test('adapter sets modelState.height to a number if specified and null otherwise', () => {
+	test('adapter sets modelState.height to the default width is invalid, otherwise to the given value', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)
-		expect(model.modelState.height).toBe(null)
+		expect(model.modelState.height).toBe(600)
 
 		model = new MockOboModel({ height: 'invalid' })
 		MateriaAdapter.construct(model)
-		expect(model.modelState.height).toBe(null)
+		expect(model.modelState.height).toBe(600)
 
 		model = new MockOboModel({ height: 123 })
 		MateriaAdapter.construct(model)
 		expect(model.modelState.height).toBe(123)
+
+		model = new MockOboModel({ height: 99 })
+		MateriaAdapter.construct(model)
+		expect(model.modelState.height).toBe(600)
 	})
 
 	test('adapter sets modelState.textGroup to a number if specified and null otherwise', () => {

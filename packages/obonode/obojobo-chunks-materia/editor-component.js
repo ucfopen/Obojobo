@@ -77,6 +77,18 @@ class MateriaEditor extends React.Component {
 	}
 
 	changeProperties(content) {
+		content = { ...this.props.element.content, ...content }
+
+		content.width = parseInt(content.width, 10)
+		content.height = parseInt(content.height, 10)
+
+		if (!Number.isFinite(content.width) || content.width < 100) {
+			content.width = 800
+		}
+		if (!Number.isFinite(content.height) || content.height < 100) {
+			content.height = 600
+		}
+
 		// copy title/caption to the slate text
 		// using slate text so you can click on the caption to edit it
 		this.setChildText(content.caption)
@@ -85,11 +97,7 @@ class MateriaEditor extends React.Component {
 		delete content.caption
 
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor,
-			{ content: { ...this.props.element.content, ...content } },
-			{ at: path }
-		)
+		Transforms.setNodes(this.props.editor, { content }, { at: path })
 		this.onCloseMateriaSettingsDialog()
 	}
 
@@ -128,21 +136,13 @@ class MateriaEditor extends React.Component {
 				<div className={className}>
 					<RevealableContainer
 						className={`editor-container ${isOrNot(selected, 'selected')}`}
-						style={{
-							maxWidth: `${content.width}px`,
-							maxHeight: `${content.height}px`
-						}}
 						onClick={this.focusMe}
-						contentEditable={false}
+						onDeleteButtonClick={this.deleteNode}
+						onDeleteButtonKeyDown={this.returnFocusOnShiftTab}
+						maxWidth={content.width}
+						maxHeight={content.height}
+						isSelected={selected}
 					>
-						<Button
-							className="delete-button"
-							onClick={this.deleteNode}
-							onKeyDown={this.returnFocusOnShiftTab}
-							tabIndex={selected ? 0 : -1}
-						>
-							×
-						</Button>
 						<div>
 							{content.icon ? (
 								<div className="widget-icon" contentEditable={false}>

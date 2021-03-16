@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RevealableContainer RevealableContainer renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--revealable-container-wrapper  is-selected"
+  contentEditable={false}
+  style={
+    Object {
+      "maxHeight": "100px",
+      "maxWidth": "100px",
+    }
+  }
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[MockFunction]}
+      onKeyDown={[MockFunction]}
+      tabIndex={0}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--revealable-container class-name"
+    onClick={[MockFunction]}
+  />
+</div>
+`;
+
+exports[`RevealableContainer RevealableContainer renders correctly without className 1`] = `
+<div
+  className="obojobo-draft--components--revealable-container-wrapper  is-not-selected"
+  contentEditable={false}
+  style={
+    Object {
+      "maxHeight": "100px",
+      "maxWidth": "100px",
+    }
+  }
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    contentEditable={false}
+  >
+    <button
+      className="button"
+      contentEditable={false}
+      onClick={[MockFunction]}
+      onKeyDown={[MockFunction]}
+      tabIndex={-1}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--revealable-container"
+    onClick={[MockFunction]}
+  />
+</div>
+`;
