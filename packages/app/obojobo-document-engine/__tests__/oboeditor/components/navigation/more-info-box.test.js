@@ -328,7 +328,7 @@ describe('MoreInfoBox', () => {
 		expect(component.state()).toHaveProperty('content.mockSelect', 'mockSelectValue1')
 		expect(component.html()).toMatchSnapshot()
 
-		// Change mockToggle
+		// Change mockToggle (a Switch)
 		expect(component.state()).toHaveProperty('content.mockToggle', false)
 		const mockToggle = component.find({ title: 'Mock Toggle' })
 		mockToggle.find('input').simulate('change', {

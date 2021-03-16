@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Materia adapter construct builds without attributes 1`] = `
+Object {
+  "height": null,
+  "icon": null,
+  "src": null,
+  "textGroup": TextGroup {
+    "dataTemplate": Object {},
+    "items": Array [
+      TextGroupItem {
+        "data": Object {},
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": 1,
+  },
+  "widgetEngine": null,
+  "width": null,
+}
+`;
+
+exports[`Materia adapter toJSON builds a JSON representation 1`] = `
+Object {
+  "content": Object {
+    "height": null,
+    "icon": null,
+    "src": "mockSrc",
+    "textGroup": Array [
+      Object {
+        "data": Object {},
+        "text": Object {
+          "styleList": null,
+          "value": "",
+        },
+      },
+    ],
+    "widgetEngine": null,
+    "width": null,
+  },
+}
+`;

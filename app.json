@@ -61,6 +61,10 @@
 		"OBO_EDITLOCK_DB_LOCK_DURATION":{
 			"description": "Editor lock: period of time a lock lasts unless it is renewed.",
 			"value": "5"
+		},
+		"OBO_DISABLE_NODES":{
+			"description": "Comma separated list of nodes to not disable",
+			"value": "obojobo-chunks-materia"
 		}
 	},
 	"formation": {

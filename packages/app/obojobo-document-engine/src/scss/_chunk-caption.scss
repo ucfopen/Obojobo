@@ -1,0 +1,16 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunk-caption {
+	margin: 0 auto;
+	font-family: $font-default;
+	font-size: 0.8em;
+	color: $color-text-minor;
+	max-width: calc(100% - 10em); //stylelint-disable-line unit-blacklist
+
+	span[data-placeholder] {
+		&::before {
+			width: 100%;
+			transform: translate(-50%, 0);
+		}
+	}
+}
