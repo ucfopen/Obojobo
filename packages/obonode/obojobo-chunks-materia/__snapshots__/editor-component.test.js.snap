@@ -6,10 +6,11 @@ exports[`Materia Editor Node component renders 1`] = `
     className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
   >
     <div
-      className="obojobo-draft--revealable-container-wrapper"
+      className="obojobo-draft--components--revealable-container-wrapper"
     >
       <div
-        className="obojobo-draft--revealable-container editor-container  is-not-selected"
+        className="obojobo-draft--components--revealable-container editor-container  is-not-selected"
+        contentEditable={false}
         onClick={[Function]}
         style={
           Object {
@@ -71,10 +72,11 @@ exports[`Materia Editor Node renders correctly when selected 1`] = `
     className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
   >
     <div
-      className="obojobo-draft--revealable-container-wrapper"
+      className="obojobo-draft--components--revealable-container-wrapper"
     >
       <div
-        className="obojobo-draft--revealable-container editor-container  is-selected"
+        className="obojobo-draft--components--revealable-container editor-container  is-selected"
+        contentEditable={false}
         onClick={[Function]}
         style={
           Object {
@@ -128,10 +130,11 @@ exports[`Materia Editor Node renders with no icon correctly 1`] = `
     className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
   >
     <div
-      className="obojobo-draft--revealable-container-wrapper"
+      className="obojobo-draft--components--revealable-container-wrapper"
     >
       <div
-        className="obojobo-draft--revealable-container editor-container  is-not-selected"
+        className="obojobo-draft--components--revealable-container editor-container  is-not-selected"
+        contentEditable={false}
         onClick={[Function]}
         style={
           Object {

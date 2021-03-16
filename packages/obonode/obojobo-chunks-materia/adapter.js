@@ -1,9 +1,8 @@
 import cloneProps from 'obojobo-document-engine/src/scripts/common/util/clone-props'
 import TextGroupAdapter from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter'
 import TextGroup from 'obojobo-document-engine/src/scripts/common/text-group/text-group'
-import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
 
-const propsList = ['controls', 'height', 'icon', 'src', 'widgetEngine', 'width']
+const propsList = ['height', 'icon', 'src', 'widgetEngine', 'width']
 
 export default {
 	construct(model, attrs) {
@@ -19,8 +18,6 @@ export default {
 		model.setStateProp('height', null, p => parseInt(p, 10) || null)
 		model.setStateProp('widgetEngine', null)
 		model.setStateProp('icon', null)
-		// iframe controls
-		model.setStateProp('controls', [IFrameControlTypes.RELOAD])
 	},
 
 	clone(model, clone) {

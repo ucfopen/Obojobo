@@ -30,8 +30,6 @@ global.oboJestMockConfig = () => {
 	fs.__setMockFileContents(`${configPath}/db.json`, JSON.stringify(dbJson))
 }
 
-// global.oboJestMockConfig()
-
 // mockVirtual is used when you don't want jest to
 // acknowledge any existing mock in the system
 // and force whatever you're mocking to just return jest.fn()

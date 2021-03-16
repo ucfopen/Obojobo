@@ -58,14 +58,6 @@ describe('Materia adapter', () => {
 		expect(model.modelState.icon).toBe('')
 	})
 
-	test('adapter sets modelState.controls to "reload" by default, "zoom,reload,new-window" if not specified (and type="webpage"), "reload" if not specified (and type="media") and lower-cases and trims values if specified', () => {
-		model = new MockOboModel({})
-		MateriaAdapter.construct(model)
-		expect(model.modelState.controls).toEqual(['reload'])
-
-		model = new MockOboModel({ controls: 'media' })
-	})
-
 	test('adapter sets modelState.src to content.src (or null if not specified)', () => {
 		model = new MockOboModel({})
 		MateriaAdapter.construct(model)

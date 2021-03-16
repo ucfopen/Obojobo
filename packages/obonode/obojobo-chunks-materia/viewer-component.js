@@ -4,6 +4,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-el'
 
 import './viewer-component.scss'
+import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
 
 export default class Materia extends React.Component {
 	constructor(props) {
@@ -12,10 +13,14 @@ export default class Materia extends React.Component {
 
 		// manipulate iframe settings
 		const model = props.model.clone()
-		model.modelState.src = this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id)
-		model.modelState.border = true
-		model.modelState.fit = 'scale'
-		model.modelState.initialZoom = 1
+		model.modelState = {
+			...model.modelState,
+			src: this.srcToLTILaunchUrl(props.moduleData.navState.visitId, props.model.id),
+			border: true,
+			fit: 'scale',
+			initialZoom: 1,
+			controls: [IFrameControlTypes.RELOAD]
+		}
 
 		// state setup
 		this.state = {

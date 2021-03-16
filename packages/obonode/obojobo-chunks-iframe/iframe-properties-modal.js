@@ -3,6 +3,7 @@ import Common from 'Common'
 
 const { SimpleDialog } = Common.components.modal
 const { Switch } = Common.components
+import IFrameSizingTypes from './iframe-sizing-types'
 
 import './iframe-properties-modal.scss'
 
@@ -18,7 +19,8 @@ class IFrameProperties extends React.Component {
 			src: '',
 			title: '',
 			width: 640,
-			controls: ''
+			controls: '',
+			sizing: IFrameSizingTypes.FIXED
 		}
 		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
@@ -32,6 +34,7 @@ class IFrameProperties extends React.Component {
 		this.handleAutoloadChange = this.handleAutoloadChange.bind(this)
 		this.handleFitChange = this.handleFitChange.bind(this)
 		this.handleZoomChange = this.handleZoomChange.bind(this)
+		this.handleSizingChange = this.handleSizingChange.bind(this)
 	}
 
 	componentDidMount() {
@@ -79,6 +82,12 @@ class IFrameProperties extends React.Component {
 		this.setState({ initialZoom })
 	}
 
+	handleSizingChange(event) {
+		const sizing = event.target.value
+
+		this.setState({ sizing })
+	}
+
 	handleAutoloadChange(event) {
 		this.setState({ autoload: event.target.checked })
 	}
@@ -104,6 +113,10 @@ class IFrameProperties extends React.Component {
 	render() {
 		const controlList = this.state.controls ? this.state.controls.split(',') : []
 
+		const isSizingSetToTextOrMaxWidth =
+			this.state.sizing === IFrameSizingTypes.TEXT_WIDTH ||
+			this.state.sizing === IFrameSizingTypes.MAX_WIDTH
+
 		return (
 			<SimpleDialog
 				cancelOk
@@ -126,7 +139,7 @@ class IFrameProperties extends React.Component {
 							/>
 						</div>
 
-						<div>
+						<div className="source-option-container">
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--src">Source:</label>
 							<input
 								type="text"
@@ -140,6 +153,20 @@ class IFrameProperties extends React.Component {
 
 					<div className="options">
 						<h2>Options:</h2>
+						<div className="sizing-option-container">
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-model--sizing">
+								Sizing:
+							</label>
+							<select
+								id="obojobo-draft--chunks--iframe--properties-model--sizing"
+								value={this.state.sizing}
+								onChange={this.handleSizingChange}
+							>
+								<option value="fixed">Fixed</option>
+								<option value="text-width">Text Width</option>
+								<option value="max-width">Max Width</option>
+							</select>
+						</div>
 						<div>
 							<label>Dimensions:</label>
 							<input
@@ -149,10 +176,11 @@ class IFrameProperties extends React.Component {
 								max="20000"
 								step="1"
 								type="number"
-								placeholder="Width"
+								placeholder={isSizingSetToTextOrMaxWidth ? '--' : 'Width'}
 								aria-label="Width"
-								value={this.state.width}
+								value={isSizingSetToTextOrMaxWidth ? '' : this.state.width}
 								onChange={this.handleWidthChange}
+								disabled={isSizingSetToTextOrMaxWidth}
 							/>
 							<span className="px-label">px ×</span>
 							<input
@@ -168,7 +196,7 @@ class IFrameProperties extends React.Component {
 							/>
 							<span className="px-label">px</span>
 						</div>
-						<div>
+						<div className="border-option-container">
 							<Switch
 								title="Border"
 								checked={this.state.border}
@@ -193,7 +221,7 @@ class IFrameProperties extends React.Component {
 								<option value="scroll">Scroll</option>
 							</select>
 						</div>
-						<div>
+						<div className="zoom-option-container">
 							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom">
 								Initial Zoom:
 							</label>

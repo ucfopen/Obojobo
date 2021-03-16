@@ -286,7 +286,7 @@ class TriggerListModal extends React.Component {
 					<div className="action-options">
 						<Switch
 							title="Animate Scroll"
-							initialChecked={action.value.animateScroll}
+							checked={action.value.animateScroll}
 							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
@@ -309,7 +309,7 @@ class TriggerListModal extends React.Component {
 						</div>
 						<Switch
 							title="Fade Out Other Items"
-							initialChecked={action.value.fade || false}
+							checked={action.value.fade || false}
 							onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}
 						/>
 						<label>If item not visible on screen</label>

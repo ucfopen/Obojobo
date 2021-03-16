@@ -1,5 +1,4 @@
 @import '~styles/includes';
-@import '~styles/revealable-container';
 @import '~styles/chunk-caption';
 
 .obojobo-draft--chunks--materia {
@@ -11,13 +10,49 @@
 		position: relative;
 	}
 
-	.obojobo-draft--revealable-container::after {
-		content: ' ';
-		position: absolute;
-		background: url('./materia-logo.svg') no-repeat bottom right;
-		background-size: contain;
-		width: 4em;
-		bottom: 0.5em;
-		right: 0.5em;
+	.obojobo-draft--components--revealable-container {
+		.delete-button {
+			position: absolute;
+			right: 0;
+			top: 0;
+			transform: translate(45%, -45%); // not 50 to pull in to boundry slightly
+			z-index: 3;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.2s linear 0.2s;
+
+			button {
+				font-size: 1.2em;
+				padding: 0;
+				min-width: 1.3em;
+				border-radius: 50%;
+			}
+		}
+
+		&.is-selected {
+			border: 3px solid $color-action;
+
+			.delete-button {
+				visibility: visible;
+				transition: opacity 0s;
+				opacity: 1;
+			}
+		}
+
+		&:hover .delete-button {
+			visibility: visible;
+			transition: opacity 0s;
+			opacity: 1;
+		}
+
+		&::after {
+			content: ' ';
+			position: absolute;
+			background: url('./materia-logo.svg') no-repeat bottom right;
+			background-size: contain;
+			width: 4em;
+			bottom: 0.5em;
+			right: 0.5em;
+		}
 	}
 }

@@ -13,11 +13,11 @@ const getCurrentVisitFromRequest = async req => {
 	let visitId = null
 	if (req.params && req.params.visitId) {
 		visitId = req.params.visitId
-	} else if(req.query && req.query.visitId ){
+	} else if (req.query && req.query.visitId) {
 		visitId = req.query.visitId
 	} else {
 		// In certain cases, events are sent via `navigator.sendBeacon`.
-		// Request's headers cannot be set. Therefore, `req.body` is still in JSON fotmat
+		// Request's headers cannot be set. Therefore, `req.body` is still in JSON format
 		try {
 			req.body = JSON.parse(req.body)
 		} catch (e) {} // eslint-disable-line no-empty
@@ -44,7 +44,7 @@ const getCurrentVisitFromRequest = async req => {
 	const visit = await VisitModel.fetchById(visitId)
 
 	// verify the visit owner is the current user
-	if(req.currentUser.id !== visit.user_id){
+	if (req.currentUser.id !== visit.user_id) {
 		const msg = `Visit ${visitId} doesn't belong to current user ${req.currentUser.id}`
 		logger.warn(msg)
 		throw Error(msg)

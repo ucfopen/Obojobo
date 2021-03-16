@@ -2,9 +2,6 @@
 
 exports[`Materia adapter construct builds without attributes 1`] = `
 Object {
-  "controls": Array [
-    "reload",
-  ],
   "height": null,
   "icon": null,
   "src": null,
@@ -32,9 +29,6 @@ Object {
 exports[`Materia adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "controls": Array [
-      "reload",
-    ],
     "height": null,
     "icon": null,
     "src": "mockSrc",

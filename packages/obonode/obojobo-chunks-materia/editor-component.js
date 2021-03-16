@@ -16,6 +16,7 @@ import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-mode
 
 import './viewer-component.scss'
 import './editor-component.scss'
+import RevealableContainer from 'obojobo-document-engine/src/scripts/common/components/revealable-container'
 
 class MateriaEditor extends React.Component {
 	constructor(props) {
@@ -67,12 +68,12 @@ class MateriaEditor extends React.Component {
 	// set text held in the slate text node
 	// used wen returning from the settings dialog to set the title/caption
 	// using slate text so you can click on the caption to edit it
-	setChildText(text){
+	setChildText(text) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element.children[0])
 		// clear out text contents
-		Transforms.delete(this.props.editor, { at: path, unit: 'line'})
+		Transforms.delete(this.props.editor, { at: path, unit: 'line' })
 		// set text into slate children text
-		Transforms.insertText(this.props.editor, text, {at: path})
+		Transforms.insertText(this.props.editor, text, { at: path })
 	}
 
 	changeProperties(content) {
@@ -125,42 +126,41 @@ class MateriaEditor extends React.Component {
 		return (
 			<Node {...this.props}>
 				<div className={className}>
-					<div className="obojobo-draft--revealable-container-wrapper">
-						<div
-							className={`obojobo-draft--revealable-container editor-container ${isOrNot(selected, 'selected')}`}
-							style={{
-								maxWidth: `${content.width}px`,
-								maxHeight: `${content.height}px`
-							}}
-							onClick={this.focusMe}
+					<RevealableContainer
+						className={`editor-container ${isOrNot(selected, 'selected')}`}
+						style={{
+							maxWidth: `${content.width}px`,
+							maxHeight: `${content.height}px`
+						}}
+						onClick={this.focusMe}
+						contentEditable={false}
+					>
+						<Button
+							className="delete-button"
+							onClick={this.deleteNode}
+							onKeyDown={this.returnFocusOnShiftTab}
+							tabIndex={selected ? 0 : -1}
 						>
+							×
+						</Button>
+						<div>
+							{content.icon ? (
+								<div className="widget-icon" contentEditable={false}>
+									<img src={content.icon} alt={content.widgetEngine} />
+								</div>
+							) : null}
 							<Button
-								className="delete-button"
-								onClick={this.deleteNode}
-								onKeyDown={this.returnFocusOnShiftTab}
+								className="properties-button"
+								onClick={this.showMateriaSettingsDialog}
+								onKeyDown={this.returnFocusOnTab}
 								tabIndex={selected ? 0 : -1}
 							>
-								×
+								Widget Settings...
 							</Button>
-							<div>
-								{content.icon
-									? <div className="widget-icon" contentEditable={false}><img src={content.icon} alt={content.widgetEngine} /></div>
-									: null
-								}
-								<Button
-									className="properties-button"
-									onClick={this.showMateriaSettingsDialog}
-									onKeyDown={this.returnFocusOnTab}
-									tabIndex={selected ? 0 : -1}
-								>
-									Widget Settings...
-								</Button>
-							</div>
 						</div>
-					</div>
+					</RevealableContainer>
 
 					<div className="obojobo-draft--chunk-caption">{this.props.children}</div>
-
 				</div>
 			</Node>
 		)
