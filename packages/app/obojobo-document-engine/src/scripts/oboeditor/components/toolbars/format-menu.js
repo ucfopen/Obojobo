@@ -185,16 +185,15 @@ const FormatMenu = props => {
 	// @TODO: Bullets menu removed until lists are complete
 	const menu = [textMenu, paragraphMenu, alignMenu /*bulletsMenu*/]
 
-	const { isOpen, close, toggleOpen, onMouseEnter } = props
 	return (
 		<div className="visual-editor--drop-down-menu">
 			<DropDownMenu
 				name="Format"
 				menu={menu}
-				isOpen={isOpen}
-				close={close}
-				toggleOpen={toggleOpen}
-				onMouseEnter={onMouseEnter}
+				isOpen={props.isOpen}
+				close={props.close}
+				toggleOpen={props.toggleOpen}
+				onMouseEnter={props.onMouseEnter}
 			/>
 		</div>
 	)

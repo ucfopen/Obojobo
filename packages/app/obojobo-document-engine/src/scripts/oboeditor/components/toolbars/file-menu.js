@@ -171,16 +171,15 @@ class FileMenu extends React.PureComponent {
 			}
 		]
 
-		const { isOpen, close, toggleOpen, onMouseEnter } = this.props
 		return (
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu
 					name="File"
 					menu={menu}
-					isOpen={isOpen}
-					close={close}
-					toggleOpen={toggleOpen}
-					onMouseEnter={onMouseEnter}
+					toggleOpen={this.props.toggleOpen}
+					close={this.props.close}
+					onMouseEnter={this.props.onMouseEnter}
+					isOpen={this.props.isOpen}
 				/>
 			</div>
 		)

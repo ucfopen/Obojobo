@@ -8,15 +8,15 @@ class DropDownMenu extends React.PureComponent {
 		super(props)
 
 		this.state = {
-			isOpen: false,
-			isFocused: false,
 			currentFocus: 0
 		}
 
 		this.menu = []
 		this.timeOutId = null
+		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+		this.handleMouseEnter = this.handleMouseEnter.bind(this)
 		this.menuButton = React.createRef()
 	}
 
@@ -35,7 +35,9 @@ class DropDownMenu extends React.PureComponent {
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
-				this.setState({ isOpen: true, currentFocus: 0 })
+				if (!this.props.isOpen) this.props.toggleOpen(event)
+
+				this.setState({ currentFocus: 0 })
 				event.stopPropagation()
 				break
 
@@ -61,9 +63,22 @@ class DropDownMenu extends React.PureComponent {
 		}
 	}
 
+	// The timeout gives the blur time to check for child focus
+	onBlurHandler() {
+		this.timeOutId = setTimeout(() => {
+			this.setState({
+				isOpen: false
+			})
+		})
+	}
+
 	// If we focused on a child, don't close the sub-menu
 	onFocusHandler() {
 		clearTimeout(this.timeOutId)
+	}
+
+	handleMouseEnter(e, index) {
+		this.setState({ currentFocus: index })
 	}
 
 	renderAction(index, item) {
@@ -82,6 +97,7 @@ class DropDownMenu extends React.PureComponent {
 			<button
 				key={index}
 				onClick={item.action}
+				onMouseEnter={e => this.handleMouseEnter(e, index)}
 				disabled={this.props.disabled || item.disabled}
 				ref={item => {
 					this.menu.push(item)
@@ -99,6 +115,7 @@ class DropDownMenu extends React.PureComponent {
 			<div
 				className={'dropdown ' + isOrNot(this.props.isOpen, 'open')}
 				key={this.props.name}
+				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
 				onKeyDown={this.onKeyDown}
 				ref={this.props.onRef}
@@ -125,6 +142,8 @@ class DropDownMenu extends React.PureComponent {
 											this.menu.push(item)
 										}}
 										disabled={this.props.disabled}
+										onMouseEnter={e => this.handleMouseEnter(e, index)}
+										isOpen={this.state.currentFocus === index}
 									/>
 								)
 							case 'toggle-action':
@@ -136,6 +155,7 @@ class DropDownMenu extends React.PureComponent {
 										ref={item => {
 											this.menu.push(item)
 										}}
+										onMouseEnter={e => this.handleMouseEnter(e, index)}
 									>
 										{item.name}
 										{item.value ? <span>✔</span> : null}

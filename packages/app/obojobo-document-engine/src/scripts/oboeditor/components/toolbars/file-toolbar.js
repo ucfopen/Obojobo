@@ -1,6 +1,4 @@
 import React, { memo } from 'react'
-import { Range, Editor, Transforms, Element } from 'slate'
-import { ReactEditor } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
@@ -43,7 +41,7 @@ class FileToolbar extends React.Component {
 	}
 
 	close() {
-		this.setState({ isOpen: false, curItem: null })
+		this.setState({ isOpen: false })
 	}
 
 	toggleOpen(e) {
@@ -55,40 +53,13 @@ class FileToolbar extends React.Component {
 	}
 
 	render() {
-		// insert actions on menu items
-		// note that `editor.current` needs to be evaluated at execution time of the action!
 		const props = this.props
+		const { isOpen, curItem } = this.state
+
+		const saved = props.saved ? 'saved' : ''
+
 		const editor = props.editor
 		const selectAll = props.selectAll || editor.selectAll
-
-		const insertDisabled = (name, editor) => {
-			if (!editor.selection) return true
-			// If the selected area spans across multiple blocks, the selection is deleted before
-			// inserting, collapsing it down to the type of the first block
-			// Any node in the tree
-			const list = Array.from(
-				Editor.nodes(editor, {
-					at: Editor.path(editor, editor.selection, { edge: 'start' }),
-					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-				})
-			)
-			if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Table')) return true
-			if (list.some(([node]) => node.type === 'ObojoboDraft.Chunks.Question')) {
-				if (name === 'Question' || name === 'Question Bank') return true
-				return false
-			}
-			return false
-		}
-
-		const insertMenu = props.insertableItems.map(item => ({
-			name: item.name,
-			action: () => {
-				Transforms.insertNodes(editor, item.cloneBlankNode())
-				ReactEditor.focus(editor)
-			},
-			disabled: insertDisabled(item.name, editor, props.value)
-		}))
-
 		const editMenu = [
 			{ name: 'Undo', type: 'action', action: () => editor.undo() },
 			{ name: 'Redo', type: 'action', action: () => editor.redo() },
@@ -96,17 +67,13 @@ class FileToolbar extends React.Component {
 				name: 'Delete',
 				type: 'action',
 				action: () => editor.deleteFragment(),
-				disabled:
-					props.mode !== 'visual' || !editor.selection || Range.isCollapsed(editor.selection)
+				disabled: props.hasSelection === null ? true : props.hasSelection
 			},
 			{ name: 'Select all', type: 'action', action: () => selectAll(editor) }
 		]
 
-		const { isOpen, curItem } = this.state
-
-		const saved = props.saved ? 'saved' : ''
 		return (
-			<div className={`visual-editor--file-toolbar`} ref={this.node}>
+			<div className={'visual-editor--file-toolbar'} ref={this.node}>
 				<FileMenu
 					title={props.title}
 					draftId={props.draftId}
@@ -131,19 +98,18 @@ class FileToolbar extends React.Component {
 				<ViewMenu
 					draftId={props.draftId}
 					switchMode={props.switchMode}
-					onSave={props.onSave}
 					mode={props.mode}
+					onSave={props.onSave}
 					isOpen={isOpen && curItem === 'View'}
 					close={this.close}
 					toggleOpen={this.toggleOpen}
 					onMouseEnter={this.onMouseEnter}
 				/>
-
 				{props.mode === 'visual' ? (
 					<div className="visual-editor--drop-down-menu">
 						<DropDownMenu
 							name="Insert"
-							menu={insertMenu}
+							menu={props.insertMenu}
 							isOpen={isOpen && curItem === 'Insert'}
 							close={this.close}
 							toggleOpen={this.toggleOpen}
@@ -153,8 +119,7 @@ class FileToolbar extends React.Component {
 				) : null}
 				{props.mode === 'visual' ? (
 					<FormatMenu
-						editor={editor}
-						value={props.value}
+						hasSelection={props.hasSelection}
 						isOpen={isOpen && curItem === 'Format'}
 						close={this.close}
 						toggleOpen={this.toggleOpen}

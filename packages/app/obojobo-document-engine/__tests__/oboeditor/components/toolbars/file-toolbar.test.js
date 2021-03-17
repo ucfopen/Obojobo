@@ -2,6 +2,7 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import FileToolbar from '../../../../src/scripts/oboeditor/components/toolbars/file-toolbar'
 import DropDownMenu from '../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu'
+jest.mock('slate-react')
 jest.mock('../../../../src/scripts/oboeditor/components/toolbars/file-menu')
 jest.mock('../../../../src/scripts/oboeditor/components/toolbars/view-menu')
 jest.mock('../../../../src/scripts/oboeditor/components/toolbars/drop-down-menu')
@@ -44,7 +45,7 @@ describe('File Toolbar', () => {
 		const props = {
 			saved: true,
 			editor,
-			isDeletable: false
+			hasSelection: false
 		}
 
 		const component = shallow(<FileToolbar {...props} />)
@@ -58,7 +59,10 @@ describe('File Toolbar', () => {
 			}
 		]
 
-		const editMenuProps = component.find(DropDownMenu).props()
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
 		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
 	})
 
@@ -66,7 +70,7 @@ describe('File Toolbar', () => {
 		const props = {
 			saved: true,
 			editor,
-			isDeletable: true
+			hasSelection: true
 		}
 
 		const component = shallow(<FileToolbar {...props} />)
@@ -80,7 +84,10 @@ describe('File Toolbar', () => {
 			}
 		]
 
-		const editMenuProps = component.find(DropDownMenu).props()
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
 		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
 	})
 
@@ -88,7 +95,7 @@ describe('File Toolbar', () => {
 		const props = {
 			saved: true,
 			editor,
-			isDeletable: null
+			hasSelection: null
 		}
 
 		const component = shallow(<FileToolbar {...props} />)
@@ -102,7 +109,10 @@ describe('File Toolbar', () => {
 			}
 		]
 
-		const editMenuProps = component.find(DropDownMenu).props()
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
 		expect(editMenuProps.menu).toEqual(expect.arrayContaining(expected))
 	})
 
@@ -110,13 +120,16 @@ describe('File Toolbar', () => {
 		const props = {
 			saved: true,
 			editor,
-			isDeletable: null,
+			hasSelection: null,
 			selectAll: jest.fn()
 		}
 
 		const component = shallow(<FileToolbar {...props} />)
 
-		const editMenuProps = component.find(DropDownMenu).props()
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
 		const selectItem = editMenuProps.menu.find(i => i.name === 'Select all')
 
 		expect(props.selectAll).toHaveBeenCalledTimes(0)
@@ -128,17 +141,50 @@ describe('File Toolbar', () => {
 		const props = {
 			saved: true,
 			editor,
-			isDeletable: null
+			hasSelection: null
 		}
 
 		const component = shallow(<FileToolbar {...props} />)
 
-		const editMenuProps = component.find(DropDownMenu).props()
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
 		const selectItem = editMenuProps.menu.find(i => i.name === 'Select all')
 
 		expect(editor.selectAll).toHaveBeenCalledTimes(0)
 		selectItem.action()
 		expect(editor.selectAll).toHaveBeenCalledTimes(1)
+	})
+
+	test('FileToolbar executes editor actions on child editMenu', () => {
+		const props = {
+			saved: true,
+			editor,
+			hasSelection: null
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+
+		const editMenuProps = component
+			.find(DropDownMenu)
+			.at(0)
+			.props()
+		const undoAction = editMenuProps.menu.find(i => i.name === 'Undo')
+		const redoAction = editMenuProps.menu.find(i => i.name === 'Redo')
+		const deleteSelection = editMenuProps.menu.find(i => i.name === 'Delete')
+
+		expect(editor.undo).toHaveBeenCalledTimes(0)
+		undoAction.action()
+		expect(editor.undo).toHaveBeenCalledTimes(1)
+
+		expect(editor.redo).toHaveBeenCalledTimes(0)
+		redoAction.action()
+		expect(editor.redo).toHaveBeenCalledTimes(1)
+
+		expect(editor.deleteFragment).toHaveBeenCalledTimes(0)
+		deleteSelection.action()
+		expect(editor.deleteFragment).toHaveBeenCalledTimes(1)
 	})
 
 	test('FileToolbar node in visual editor', () => {

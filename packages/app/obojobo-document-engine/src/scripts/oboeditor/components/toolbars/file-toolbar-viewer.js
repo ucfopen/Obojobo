@@ -2,8 +2,6 @@ import React, { useMemo } from 'react'
 import { ReactEditor, useEditor } from 'slate-react'
 import { Range, Editor, Transforms, Element } from 'slate'
 import FileToolbar from './file-toolbar'
-import DropDownMenu from './drop-down-menu'
-import FormatMenu from './format-menu'
 
 const isInsertDisabledForItem = (selectedNodes, name, selection) => {
 	if (!selection) return true
@@ -55,22 +53,16 @@ const FileToolbarViewer = props => {
 			disabled: isInsertDisabledForItem(selectedNodes, item.name, sel)
 		}))
 
-		return (
-			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Insert" menu={insertMenuItems} />
-			</div>
-		)
+		return insertMenuItems
 	}, [selectionKey])
 
 	return (
 		<FileToolbar
 			{...filteredProps}
 			editor={editor}
-			selectionKey={selectionKey}
 			insertMenu={insertMenu}
-			formatMenu={<FormatMenu hasSelection={hasSelection} />}
+			hasSelection={hasSelection}
 			selectAll={selectAll}
-			isDeletable={hasSelection}
 		/>
 	)
 }
