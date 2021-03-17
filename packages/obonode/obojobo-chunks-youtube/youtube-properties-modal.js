@@ -6,7 +6,6 @@ import { parseYouTubeURL, getStandardizedURLFromVideoId } from './parse-youtube-
 import Button from 'obojobo-document-engine/src/scripts/common/components/button'
 
 const { SimpleDialog } = Common.components.modal
-const { MoreInfoButton } = Common.components
 
 class YouTubeProperties extends React.Component {
 	constructor(props) {
@@ -187,20 +186,6 @@ class YouTubeProperties extends React.Component {
 				>
 					<div className="youtube-video-properties-input-wrapper">
 						<label>YouTube video url or embed code:</label>
-						<div>
-							<MoreInfoButton ariaLabel="Click to explain youtube video options">
-								<div className="text-items">
-									<p>Specify your video by pasting in one of the following:</p>
-									<ul>
-										<li>The video url, from your browser&apos;s address bar</li>
-										<li>Embed code, provided by Youtube</li>
-										<li>
-											The video&apos;s id (e.g. <code>dQw4w9WgXcQ</code>)
-										</li>
-									</ul>
-								</div>
-							</MoreInfoButton>
-						</div>
 					</div>
 					<input
 						id="obojobo-draft--chunks--youtube--video-url"
