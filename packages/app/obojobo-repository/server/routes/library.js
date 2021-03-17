@@ -41,7 +41,25 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 	}
 
 	// array of ColorBrewer sequences
-	const colors = ['Blues','Greens','Oranges','Purples','Reds','BuGn','BuPu','GnBu','OrRd','PuBuGn','PuBu','PuRd','RdPu','YlGnBu','YlGn','YlOrBr','YlOrRd']
+	const colors = [
+		'Blues',
+		'Greens',
+		'Oranges',
+		'Purples',
+		'Reds',
+		'BuGn',
+		'BuPu',
+		'GnBu',
+		'OrRd',
+		'PuBuGn',
+		'PuBu',
+		'PuRd',
+		'RdPu',
+		'YlGnBu',
+		'YlGn',
+		'YlOrBr',
+		'YlOrRd'
+	]
 	// deterministically choose a 'random' number to select a color scheme
 	const deterministicRandom = seedrandom(req.params.moduleId)()
 	const color = colors[Math.floor(deterministicRandom * colors.length)]
@@ -49,10 +67,10 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 	const pattern = Trianglify({
 		width: 200,
 		height: 200,
-		cell_size: 65,
-		variance: .8,
-		x_colors: color,
-		stroke_width: .5,
+		cellSize: 65,
+		variance: 0.8,
+		xColors: color,
+		strokeWidth: 0.5,
 		seed: req.params.moduleId
 	})
 
