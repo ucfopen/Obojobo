@@ -40,4 +40,11 @@
 			}
 		}
 	}
+
+	.obojobo-draft--components--modal--modal.assessment-reset-modal {
+		> .obojobo-draft--components--delete-button {
+			position: absolute !important;
+			right: -1.5em !important;
+		}
+	}
 }

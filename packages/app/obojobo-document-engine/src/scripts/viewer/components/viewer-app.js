@@ -530,7 +530,7 @@ export default class ViewerApp extends React.Component {
 			QuestionStore.triggerChange()
 
 			return ModalUtil.show(
-				<SimpleDialog ok width="19em">
+				<SimpleDialog ok width="19em" modalClassName="assessment-reset-modal">
 					Assessment attempts and all question responses have been reset.
 				</SimpleDialog>
 			)
