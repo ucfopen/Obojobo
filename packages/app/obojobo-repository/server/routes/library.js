@@ -4,7 +4,7 @@ const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/server/models/user')
 const { webpackAssetPath } = require('obojobo-express/server/asset_resolver')
 const DraftPermissions = require('../models/draft_permissions')
-const Trianglify = require('trianglify')
+const trianglify = require('trianglify')
 const seedrandom = require('seedrandom')
 const {
 	checkValidationRules,
@@ -64,7 +64,7 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 	const deterministicRandom = seedrandom(req.params.moduleId)()
 	const color = colors[Math.floor(deterministicRandom * colors.length)]
 
-	const pattern = Trianglify({
+	const pattern = trianglify({
 		width: 200,
 		height: 200,
 		cellSize: 65,
