@@ -488,6 +488,30 @@ Object {
 }
 `;
 
+exports[`XML to Draft Object Tranformation Converts materia xml to materia node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "height": 601,
+    "icon": "https://localhost:8008/widget/5-labeling/img/icon-92@2x.png",
+    "src": "https://localhost/embed/LuALo/test",
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "test",
+        },
+      },
+    ],
+    "widgetEngine": "Labeling",
+    "width": 800,
+  },
+  "id": "bfefc8ad-8114-47d6-9068-83ab28cc53b1",
+  "type": "ObojoboDraft.Chunks.Materia",
+}
+`;
+
 exports[`XML to Draft Object Tranformation Converts mathequation xml to mathequation node 1`] = `
 Object {
   "children": Array [],

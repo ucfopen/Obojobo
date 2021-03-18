@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Materia Editor Node component renders 1`] = `
+<div>
+  <div
+    className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
+  >
+    <div
+      className="obojobo-draft--components--revealable-container-wrapper"
+    >
+      <div
+        className="obojobo-draft--components--revealable-container editor-container  is-not-selected"
+        contentEditable={false}
+        onClick={[Function]}
+        style={
+          Object {
+            "maxHeight": "200px",
+            "maxWidth": "100px",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <div
+            className="widget-icon"
+            contentEditable={false}
+          >
+            <img
+              src="mock-icon"
+            />
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={-1}
+            >
+              Widget Settings...
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
+  </div>
+</div>
+`;
+
+exports[`Materia Editor Node renders correctly when selected 1`] = `
+<div>
+  <div
+    className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
+  >
+    <div
+      className="obojobo-draft--components--revealable-container-wrapper"
+    >
+      <div
+        className="obojobo-draft--components--revealable-container editor-container  is-selected"
+        contentEditable={false}
+        onClick={[Function]}
+        style={
+          Object {
+            "maxHeight": "undefinedpx",
+            "maxWidth": "undefinedpx",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={0}
+            >
+              Widget Settings...
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
+  </div>
+</div>
+`;
+
+exports[`Materia Editor Node renders with no icon correctly 1`] = `
+<div>
+  <div
+    className="obojobo-draft--chunks--materia viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-missing-src is-not-scaled-up"
+  >
+    <div
+      className="obojobo-draft--components--revealable-container-wrapper"
+    >
+      <div
+        className="obojobo-draft--components--revealable-container editor-container  is-not-selected"
+        contentEditable={false}
+        onClick={[Function]}
+        style={
+          Object {
+            "maxHeight": "undefinedpx",
+            "maxWidth": "undefinedpx",
+          }
+        }
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+          contentEditable={false}
+        >
+          <button
+            className="button"
+            contentEditable={false}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={-1}
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+            contentEditable={false}
+          >
+            <button
+              className="button"
+              contentEditable={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={-1}
+            >
+              Widget Settings...
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--chunk-caption"
+    />
+  </div>
+</div>
+`;

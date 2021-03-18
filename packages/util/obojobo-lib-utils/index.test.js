@@ -29,6 +29,7 @@ describe('obojobo lib utils', () => {
 	})
 
 	afterEach(() => {
+		delete process.env['OBO_DISABLE_NODES']
 		restoreConsole()
 	})
 
@@ -36,6 +37,14 @@ describe('obojobo lib utils', () => {
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
 		const results = searchNodeModulesForOboNodes()
 		expect(results).toHaveLength(4)
+		expect(results).toMatchSnapshot()
+	})
+
+	test('searchNodeModulesForOboNodes omits modules defined in OBO_DISABLE_NODES', () => {
+		process.env['OBO_DISABLE_NODES'] = 'obojobo-pages-page,obojobo-modules-module'
+		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
+		const results = searchNodeModulesForOboNodes()
+		expect(results).toHaveLength(2)
 		expect(results).toMatchSnapshot()
 	})
 
@@ -229,6 +238,38 @@ describe('obojobo lib utils', () => {
 		expect(result).toBe('__mocks__/mock-migrations')
 	})
 
+	test('getOboNodeScriptPathsFromPackage loads parsers scripts', () => {
+		// this test is a little weird to work around a require.resolve in the implementation
+		// first lets add this current npm module to the list being loaded
+		require('child_process').execSync = jest.fn().mockReturnValue('├─ obojobo-lib-utils')
+
+		// trick the script were testing into resolving a mock file
+		mockVirtual('obojobo-lib-utils').obojobo = {
+			parsers: '__mocks__/mock-parsers'
+		}
+
+		const { getOboNodeScriptPathsFromPackage } = require('obojobo-lib-utils')
+		const result = getOboNodeScriptPathsFromPackage('obojobo-lib-utils', 'parsers')
+
+		expect(result).toBe('__mocks__/mock-parsers')
+	})
+
+	test('getOboNodeScriptPathsFromPackage loads config scripts', () => {
+		// this test is a little weird to work around a require.resolve in the implementation
+		// first lets add this current npm module to the list being loaded
+		require('child_process').execSync = jest.fn().mockReturnValue('├─ obojobo-lib-utils')
+
+		// trick the script were testing into resolving a mock file
+		mockVirtual('obojobo-lib-utils').obojobo = {
+			config: '__mocks__/mock-config'
+		}
+
+		const { getOboNodeScriptPathsFromPackage } = require('obojobo-lib-utils')
+		const result = getOboNodeScriptPathsFromPackage('obojobo-lib-utils', 'config')
+
+		expect(result).toBe('__mocks__/mock-config')
+	})
+
 	test('getAllOboNodeScriptPathsByType to return a list of files', () => {
 		// this test is a little weird to work around a require.resolve in the implementation
 		// first lets add this current npm module to the list being loaded
@@ -258,33 +299,7 @@ describe('obojobo lib utils', () => {
 		expect(result).toEqual([1, 2, 3])
 	})
 
-	test('gatherAllMigrations does', () => {
-		const { gatherAllMigrations } = require('obojobo-lib-utils')
-		const migrations = gatherAllMigrations()
-		expect(migrations).toHaveLength(1)
-		expect(migrations[0]).toContain('path-to-obojobo-sections-content-migrations')
-	})
-
-	test('migrateUp calls db-migrate with configured migration paths', () => {
-		const mockExecSync = jest.fn()
-		mockExecSync.mockReturnValueOnce('├─ obojobo-lib-utils')
-		require('child_process').execSync = mockExecSync
-
-		// trick the script were testing into resolving a mock file
-		mockVirtual('obojobo-lib-utils').obojobo = {
-			migrations: '__mocks__/mock-migrations'
-		}
-
-		const { migrateUp } = jest.requireActual('obojobo-lib-utils')
-		migrateUp()
-
-		expect(mockExecSync).toHaveBeenCalledTimes(2)
-		expect(mockExecSync.mock.calls[1][0]).toContain('db-migrate/bin/db-migrate up')
-		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-express/server/config/db.json')
-		expect(mockExecSync.mock.calls[1][0]).toContain('obojobo-lib-utils/__mocks__/mock-migrations')
-	})
-
-	test('gatherClientScriptsFromModules combines clientScripts as expectd', () => {
+	test('gatherClientScriptsFromModules combines clientScripts as expected', () => {
 		const list = `yarn list v1.13.0
 			├─ obojobo-mock-lib@
 			├─ obojobo-mock-lib2@`
@@ -330,6 +345,39 @@ describe('obojobo lib utils', () => {
 		    "obojobo-mock-lib2/lib2-repo.js",
 		  ],
 		}
+	`)
+	})
+
+	test('getAllOboNodeRegistryDirsByType combines clientScripts as expected', () => {
+		const list = `yarn list v1.13.0
+			├─ obojobo-mock-lib@
+			├─ obojobo-mock-lib1@
+			├─ obojobo-mock-lib2@`
+		const mockExecSync = jest.fn()
+		mockExecSync.mockReturnValueOnce(list)
+		require('child_process').execSync = mockExecSync
+
+		// trick the script were testing into resolving a mock file
+		mockVirtual('obojobo-mock-lib').obojobo = {
+			config: 'server/config'
+		}
+		// lib1 has no config
+		mockVirtual('obojobo-mock-lib1').obojobo = {}
+		mockVirtual('obojobo-mock-lib2').obojobo = {
+			config: 'server2/config/whatever'
+		}
+
+		const { getAllOboNodeRegistryDirsByType, setResolver } = require('obojobo-lib-utils')
+
+		// mock require.resolve inside obojobo-lib-utils
+		const mockResolver = jest.fn().mockImplementation(script => script)
+		setResolver(mockResolver)
+
+		expect(getAllOboNodeRegistryDirsByType('config')).toMatchInlineSnapshot(`
+		Array [
+		  "./server/config",
+		  "./server2/config/whatever",
+		]
 	`)
 	})
 })

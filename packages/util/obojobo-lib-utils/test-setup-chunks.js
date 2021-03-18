@@ -29,12 +29,6 @@ global.flushPromises = () => {
 	return new Promise(resolve => setImmediate(resolve))
 }
 
-const buildMockReactComponent = name => {
-	const MockComponent = () => name
-	MockComponent.displayName = name
-	return MockComponent
-}
-
 class XMLSerializer {
 	serializeToString() {
 		return '<mockSerializedToString/>'
@@ -44,9 +38,26 @@ class XMLSerializer {
 global.XMLSerializer = XMLSerializer
 
 // helper to quickly create a standin mock react component with a name
-// : jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
+// ex usage: jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
+const buildMockReactComponent = name => {
+	const MockComponent = () => name
+	MockComponent.displayName = name
+	return MockComponent
+}
+
 global.mockReactComponent = (target, name) => {
 	return buildMockReactComponent.call(target, name)
+}
+
+// helper to mock functional components using forwardRef
+global.mockForwardRefComponent = (target, name) => {
+	// some extra magic to deal with mocking a react method that uses forwardRef
+	const React = require('react')
+	// eslint-disable-next-line react/display-name
+	return React.forwardRef((props, ref) => {
+		const MockComp = global.mockReactComponent(target, name)
+		return <MockComp {...props} theRef={ref}></MockComp>
+	})
 }
 
 global.window.open = jest.fn()

@@ -11,12 +11,18 @@ const flattenArray = array => {
 	return result
 }
 
+// Searches through all installed yarn packages looking for
+// modules that start with `obojobo-`
+// when found, it'll attempt to load index.js, which is expected
+// to be an obojobo node manifest.  If it doesn't look like an
+// obojobo manifest it'll be ignored
 const searchNodeModulesForOboNodesCache = new Set()
 const searchNodeModulesForOboNodes = (forceReload = false) => {
 	if (searchNodeModulesForOboNodesCache.size > 0 && !forceReload) {
 		return Array.from(searchNodeModulesForOboNodesCache)
 	}
 	searchNodeModulesForOboNodesCache.clear()
+	const disableNodes = process.env['OBO_DISABLE_NODES'] || ''
 	// use yarn to get a list of obojobo-* node_modules
 	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
 	const pattern = /obojobo-[^@]+/gi
@@ -24,6 +30,9 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 	packages.forEach(pkg => {
 		try {
 			pkg = pkg.trim()
+			// skip items from the disableNodes
+			if (disableNodes.includes(pkg)) return
+
 			const manifest = require(pkg)
 			if (manifest.obojobo) searchNodeModulesForOboNodesCache.add(pkg)
 		} catch (error) {
@@ -45,6 +54,8 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	if (type === 'obonodes') type = 'server'
 	if (type === 'middleware') scripts = manifest.obojobo.expressMiddleware
 	if (type === 'migrations') scripts = manifest.obojobo.migrations
+	if (type === 'parsers') scripts = manifest.obojobo.parsers
+	if (type === 'config') scripts = manifest.obojobo.config
 	else if (manifest.obojobo[`${type}Scripts`]) {
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
@@ -78,30 +89,19 @@ const getAllOboNodeScriptPathsByType = type => {
 	return flat.filter(a => a !== null)
 }
 
-const gatherAllMigrations = () => {
+// returns an array of resolved directories for any
+// obo node index registry that supplies relative directories
+// like 'migrations' and 'config'
+const getAllOboNodeRegistryDirsByType = type => {
 	const modules = searchNodeModulesForOboNodes()
-	const allDirs = []
-	modules.forEach(module => {
-		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
+	const allDirs = new Set()
+	modules.forEach(oboNodePackage => {
+		const dir = getOboNodeScriptPathsFromPackage(oboNodePackage, type)
 		if (!dir) return
-		const basedir = path.dirname(resolver(module))
-		allDirs.push(`${basedir}/${dir}`)
+		const basedir = path.dirname(resolver(oboNodePackage))
+		allDirs.add(`${basedir}/${dir}`)
 	})
-	return allDirs
-}
-
-// locates migrations, config, and runs db-migrate up
-const migrateUp = () => {
-	const { execSync } = require('child_process')
-	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
-	const configPath = resolver('obojobo-express/server/config/db.json')
-	const migrationDirs = gatherAllMigrations()
-
-	migrationDirs.forEach(dir => {
-		// eslint-disable-next-line no-console
-		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-		execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-	})
+	return Array.from(allDirs)
 }
 
 const gatherClientScriptsFromModules = () => {
@@ -171,8 +171,6 @@ const gatherClientScriptsFromModules = () => {
 		})
 	})
 
-	// eslint-disable-next-line no-console
-	console.log(scripts)
 	return scripts
 }
 
@@ -186,8 +184,7 @@ module.exports = {
 	searchNodeModulesForOboNodes,
 	getAllOboNodeScriptPathsByType,
 	flattenArray,
-	gatherAllMigrations,
-	migrateUp,
+	getAllOboNodeRegistryDirsByType,
 	gatherClientScriptsFromModules,
 	setResolver
 }

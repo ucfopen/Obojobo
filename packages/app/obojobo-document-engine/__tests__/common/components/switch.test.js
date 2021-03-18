@@ -1,38 +1,52 @@
 import React from 'react'
 import Switch from '../../../src/scripts/common/components/switch'
-import renderer from 'react-test-renderer'
+import TestRenderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
 describe('Switch', () => {
-	test('Switch renders correctly with no options set', () => {
-		const component = renderer.create(<Switch />)
-		const tree = component.toJSON()
 
+	test('Switch renders correctly with no options set', () => {
+		const testRenderer = TestRenderer.create(<Switch />)
+		const tree = testRenderer.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('Switch renders correctly with all options set', () => {
+		const testRenderer = TestRenderer.create(<Switch title="mocktitle" onChange={() => {}} checked={true} />)
+		const tree = testRenderer.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
 
 	test('Switch renders correctly with a title', () => {
-		const component = renderer.create(<Switch title="mocktitle" />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+		const testRenderer = TestRenderer.create(<Switch title="mocktitle" />)
+		const testInstance = testRenderer.root;
+		const checkbox = testInstance.findByType('span')
+		expect(checkbox.children).toEqual(['mocktitle'])
 	})
 
-	test('Switch renders correctly when initialized on', () => {
-		const component = renderer.create(<Switch initialChecked={true} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Switch renders when unchecked', () => {
+		const testRenderer = TestRenderer.create(<Switch checked={false} />)
+		const testInstance = testRenderer.root;
+		const checkbox = testInstance.findByType('input')
+		expect(checkbox.props).toHaveProperty('checked', false)
 	})
 
-	test('Switch calls handleCheckChange', () => {
+	test('Switch renders when checked', () => {
+		const testRenderer = TestRenderer.create(<Switch checked={true} />)
+		const testInstance = testRenderer.root;
+		const checkbox = testInstance.findByType('input')
+		expect(checkbox.props).toHaveProperty('checked', true)
+	})
+
+	test('Switch calls onChange', () => {
 		const onChecked = jest.fn()
-		const component = mount(<Switch handleCheckChange={onChecked} />)
-
+		const component = mount(<Switch onChange={onChecked} />)
 		const checkbox = component.find('input')
 		expect(onChecked).not.toHaveBeenCalled()
 		checkbox.simulate('change', { target: { checked: true } })
 		expect(onChecked).toHaveBeenCalledTimes(1)
-		expect(onChecked).toHaveBeenCalledWith(true)
+		expect(onChecked).toHaveBeenCalledWith(expect.objectContaining({target: {checked: true}}))
 	})
+
 })

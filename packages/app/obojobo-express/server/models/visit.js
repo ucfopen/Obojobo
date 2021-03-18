@@ -1,6 +1,7 @@
 const db = require('../db')
 const logger = require('../logger')
 const oboEvents = require('../obo_events')
+const DraftDocument = require('./draft')
 
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
@@ -104,11 +105,21 @@ class Visit {
 		}
 	}
 
+	get draftDocument() {
+		if (this._memoizedDraftDocument) return Promise.resolve(this._memoizedDraftDocument)
+		return DraftDocument.fetchDraftByVersion(this.draft_id, this.draft_content_id).then(
+			draftDocument => {
+				this._memoizedDraftDocument = draftDocument
+				return draftDocument
+			}
+		)
+	}
+
 	static fetchById(visitId, requireIsActive = true) {
 		return db
 			.one(
 				`
-			SELECT id, is_active, is_preview, draft_content_id, resource_link_id, score_importable
+			SELECT id, user_id, is_active, is_preview, draft_id, draft_content_id, resource_link_id, score_importable
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}

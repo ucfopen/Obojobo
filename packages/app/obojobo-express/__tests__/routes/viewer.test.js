@@ -289,7 +289,8 @@ describe('viewer route', () => {
 
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce()
+			getTitle: () => 'mock title',
+			yell: jest.fn().mockResolvedValueOnce(),
 		}
 
 		return request(app)
@@ -306,6 +307,7 @@ describe('viewer route', () => {
 		expect.assertions(3)
 		mockCurrentDocument = {
 			draftId: validUUID(),
+			getTitle: () => 'mock title',
 			yell: jest.fn().mockResolvedValueOnce(),
 			root: {
 				node: {

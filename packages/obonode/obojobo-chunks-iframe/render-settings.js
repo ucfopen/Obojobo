@@ -1,7 +1,10 @@
 import IFrameControlTypes from './iframe-control-types'
 import IFrameFitTypes from './iframe-fit-types'
+import IFrameSizingTypes from './iframe-sizing-types'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 const MediaUtil = Viewer.util.MediaUtil
+
+const MAX_OR_TEXT_WIDTH = '835'
 
 const getIsShowing = (mediaState, model) => {
 	return (
@@ -46,7 +49,10 @@ const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
 	h: modelState.height || defaultHeight
 })
 
-const getScaleAmount = (actualWidth, padding, setWidth) => {
+const getScaleAmount = (actualWidth, padding, setWidth, sizing) => {
+	if (sizing === IFrameSizingTypes.MAX_WIDTH || sizing === IFrameSizingTypes.TEXT_WIDTH) {
+		setWidth = MAX_OR_TEXT_WIDTH
+	}
 	return Math.min(1, (actualWidth - padding) / setWidth)
 }
 
@@ -114,7 +120,7 @@ const getRenderSettings = (
 	const ms = model.modelState
 	const zoomValues = getZoomValues(mediaState, model)
 	const setDimensions = getSetDimensions(ms, defaultWidth, defaultHeight)
-	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
+	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w, ms.sizing)
 	const displayedTitle = getDisplayedTitle(ms)
 	const ariaRegionLabel = getAriaRegionLabel(ms, displayedTitle)
 	const scaleDimensions = getScaleDimensions(
