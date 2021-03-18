@@ -39,6 +39,10 @@ class OboModel extends Backbone.Model {
 		switch (typeof typeOrNameOrObject) {
 			// create models for chunks from an object
 			case 'object': {
+				if (typeOrNameOrObject === null) {
+					return null
+				}
+
 				const oboModel = OboModel.create(typeOrNameOrObject.type, typeOrNameOrObject)
 
 				if (oboModel) {
