@@ -87,7 +87,7 @@ router.route('/library/module-icon/:moduleId').get((req, res) => {
 		</mask>
 
 		<g mask="url(#hexagon-mask)">
-			${pattern.svg().innerHTML}
+			${pattern.toSVG()}
 		</g>
 	</svg>`
 
