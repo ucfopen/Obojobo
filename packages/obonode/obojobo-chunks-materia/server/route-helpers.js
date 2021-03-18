@@ -39,7 +39,7 @@ const ltiToolConsumer = baseUrl => ({
 	tool_consumer_instance_url: baseUrl
 })
 
-const widgetLaunchParams = (document, visit, user, materiaChunkId, baseUrl) => {
+const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) => {
 	const params = {
 		lti_message_type: 'basic-lti-launch-request',
 		lti_version: 'LTI-1p0',
