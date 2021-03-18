@@ -41,10 +41,17 @@
 		}
 	}
 
-	.obojobo-draft--components--modal--modal.assessment-reset-modal {
+	.obojobo-draft--components--modal--modal.assessment-reset-simple-dialog {
 		> .obojobo-draft--components--delete-button {
-			position: absolute !important;
-			right: -1.5em !important;
+			position: absolute;
+			right: -1.5em;
+		}
+	}
+
+	.obojobo-draft--components--modal--modal.iframe-properties-simple-dialog {
+		> .obojobo-draft--components--delete-button {
+			position: absolute;
+			right: 1.5em;
 		}
 	}
 }
