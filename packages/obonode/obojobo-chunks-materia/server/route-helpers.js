@@ -46,7 +46,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 		// materia will send scores here
 		lis_outcome_service_url: `${baseUrl}/materia-lti-score-passback`,
 		// represents the container for the user's score this widget can set/update
-		lis_result_sourcedid: `${visit.id}__${materiaChunkId}`,
+		lis_result_sourcedid: `${visit.id}__${materiaOboNodeId}`,
 		// unique placement of this widget (take into account the module's unique placement in a course + the widget's place in the module)
 		// we are intentionally not including user id (not part of the placement) or draft_content_id (to allow updates to a module)
 		resource_link_id: `${visit.resource_link_id}__${visit.draft_id}__${materiaChunkId}`,
