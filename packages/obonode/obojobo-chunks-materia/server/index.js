@@ -131,7 +131,7 @@ router
 			return
 		}
 
-		const materiaChunkId = materiaNode.node.id
+		const materiaOboNodeId = materiaNode.node.id
 		const endpoint = materiaNode.node.content.src
 
 		// verify the endpoint is the configured materia server
@@ -148,7 +148,7 @@ router
 			currentDocument,
 			req.currentVisit,
 			req.currentUser,
-			materiaChunkId,
+			materiaOboNodeId,
 			baseUrl(req)
 		)
 

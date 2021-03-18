@@ -49,7 +49,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 		lis_result_sourcedid: `${visit.id}__${materiaOboNodeId}`,
 		// unique placement of this widget (take into account the module's unique placement in a course + the widget's place in the module)
 		// we are intentionally not including user id (not part of the placement) or draft_content_id (to allow updates to a module)
-		resource_link_id: `${visit.resource_link_id}__${visit.draft_id}__${materiaChunkId}`,
+		resource_link_id: `${visit.resource_link_id}__${visit.draft_id}__${materiaOboNodeId}`,
 		custom_obo_node_id: materiaOboNodeId,
 		custom_visit_id: visit.id,
 		custom_draft_id: visit.draft_id,
@@ -75,7 +75,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 	}
 }
 
-const contentSelectionParams = (document, materiaChunkId, user, clientBaseUrl, serverBaseUrl) => {
+const contentSelectionParams = (document, materiaOboNodeId, user, clientBaseUrl, serverBaseUrl) => {
 	const params = {
 		lti_message_type: 'ContentItemSelectionRequest',
 		lti_version: 'LTI-1p0',
@@ -86,7 +86,7 @@ const contentSelectionParams = (document, materiaChunkId, user, clientBaseUrl, s
 		accept_copy_advice: false,
 		auto_create: false,
 		content_item_return_url: `${clientBaseUrl}/materia-lti-picker-return`,
-		data: `draftId=${document.draftId}&contentId=${document.contentId}&nodeId=${materiaChunkId}`
+		data: `draftId=${document.draftId}&contentId=${document.contentId}&nodeId=${materiaOboNodeId}`
 	}
 
 	return {
