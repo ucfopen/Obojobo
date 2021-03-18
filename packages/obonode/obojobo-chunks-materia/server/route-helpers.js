@@ -23,9 +23,8 @@ const ltiContextFromDocument = draft => ({
 })
 
 // create compound ids for materia
-const createLisResultSourcedId = (visitId, nodeId) => `${visitId}_${nodeId}`
 const expandLisResultSourcedId = lisResultSourcedId => {
-	const [visitId, nodeId] = lisResultSourcedId.split('_')
+	const [visitId, nodeId] = lisResultSourcedId.split('__')
 	return { visitId, nodeId }
 }
 
@@ -40,16 +39,40 @@ const ltiToolConsumer = baseUrl => ({
 	tool_consumer_instance_url: baseUrl
 })
 
-const widgetLaunchParams = (document, materiaChunkId, user, visitId, isPreview, baseUrl) => {
+const widgetLaunchParams = (document, visit, user, materiaChunkId, baseUrl) => {
 	const params = {
-		lis_outcome_service_url: `${baseUrl}/materia-lti-score-passback`,
 		lti_message_type: 'basic-lti-launch-request',
-		lis_result_sourcedid: createLisResultSourcedId(visitId, materiaChunkId),
 		lti_version: 'LTI-1p0',
-		resource_link_id: materiaChunkId
+		// materia will send scores here
+		lis_outcome_service_url: `${baseUrl}/materia-lti-score-passback`,
+		// represents the container for the user's score this widget can set/update
+		lis_result_sourcedid: `${visit.id}__${materiaChunkId}`,
+		// unique placement of this widget (take into account the module's unique placement in a course + the widget's place in the module)
+		// we are intentionally not including user id (not part of the placement) or draft_content_id (to allow updates to a module)
+		resource_link_id: `${visit.resource_link_id}__${visit.draft_id}__${materiaChunkId}`,
+		custom_chunk_id: materiaChunkId,
+		custom_visit_id: visit.id,
+		custom_draft_id: visit.draft_id,
+		custom_draft_content_id: visit.draft_content_id,
+		custom_passthrough_resource_link_id: visit.resource_link_id
 	}
-	const ltiUser = isPreview ? buildLTIInstructor(user) : buildLTIStudent(user)
-	return { ...ltiUser, ...params, ...ltiToolConsumer(baseUrl), ...ltiContextFromDocument(document) }
+
+	// materia currently uses context_id to group scores and attempts
+	// obojobo doesn't support materia as scoreable questions yet, so the key in use here is intended to:
+	// * support materia in content pages
+	// * re lti launch will reset scores/attempts
+	// * browser reload of the window will resume an attempt/score window
+	// a visit id is a representation of: user_id + lti launch + draft_id + draft_content_id
+	const overrideKeys = { context_id: params.resource_link_id }
+
+	const ltiUser = visit.is_preview ? buildLTIInstructor(user) : buildLTIStudent(user)
+	return {
+		...ltiUser,
+		...params,
+		...ltiToolConsumer(baseUrl),
+		...ltiContextFromDocument(document),
+		...overrideKeys
+	}
 }
 
 const contentSelectionParams = (document, materiaChunkId, user, clientBaseUrl, serverBaseUrl) => {
@@ -100,7 +123,7 @@ const getValuesFromPassbackXML = async body => {
 
 // extract request headers into an object we can use
 const extractAuthHeaders = headers => {
-	if (!headers || !headers.authorization){
+	if (!headers || !headers.authorization) {
 		throw Error('Authorization header missing from score passback request')
 	}
 	return headers.authorization
