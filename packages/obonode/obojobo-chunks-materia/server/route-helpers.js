@@ -63,7 +63,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 	// * re lti launch will reset scores/attempts
 	// * browser reload of the window will resume an attempt/score window
 	// a visit id is a representation of: user_id + lti launch + draft_id + draft_content_id
-	const overrideKeys = { context_id: params.resource_link_id }
+	const overrideKeys = { context_id: params.lis_result_sourcedid }
 
 	const ltiUser = visit.is_preview ? buildLTIInstructor(user) : buildLTIStudent(user)
 	return {
