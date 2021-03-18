@@ -50,7 +50,7 @@ const widgetLaunchParams = (document, visit, user, materiaOboNodeId, baseUrl) =>
 		// unique placement of this widget (take into account the module's unique placement in a course + the widget's place in the module)
 		// we are intentionally not including user id (not part of the placement) or draft_content_id (to allow updates to a module)
 		resource_link_id: `${visit.resource_link_id}__${visit.draft_id}__${materiaChunkId}`,
-		custom_chunk_id: materiaChunkId,
+		custom_obo_node_id: materiaOboNodeId,
 		custom_visit_id: visit.id,
 		custom_draft_id: visit.draft_id,
 		custom_draft_content_id: visit.draft_content_id,
