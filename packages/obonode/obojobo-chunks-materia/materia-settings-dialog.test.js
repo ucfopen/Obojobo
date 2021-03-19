@@ -224,6 +224,84 @@ describe('MateriaSettingsDialog', () => {
 		expect(component.state()).toHaveProperty('widgetEngine', '')
 	})
 
+	test('SettingsDialogForm updates validity properties in onSettingChange', () => {
+		expect.hasAssertions()
+
+		const props = {
+			content: {
+				src: 'mock-src',
+				caption: 'mock-caption',
+				widgetEngine: 'mock-engine'
+			}
+		}
+
+		const component = mount(<MateriaSettingsDialog {...props} />)
+
+		const getWidthSettings = () => component.state().settingsItems[1]
+		const getHeightSettings = () => component.state().settingsItems[2]
+
+		expect(getWidthSettings().validity).toBe('')
+		expect(getHeightSettings().validity).toBe('')
+
+		const onSettingChange = component.instance().onSettingChange
+
+		onSettingChange({ prop: 'width' }, { target: { value: '' } })
+		expect(getWidthSettings().validity).toBe('')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: '100' } })
+		expect(getWidthSettings().validity).toBe('')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: '99' } })
+		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: null } })
+		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: false } })
+		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: 'invalid-value' } })
+		expect(getWidthSettings().validity).toBe('Width must be at least 100px or higher')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'width' }, { target: { value: '100' } })
+		expect(getWidthSettings().validity).toBe('')
+		expect(getHeightSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: '' } })
+		expect(getHeightSettings().validity).toBe('')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: '100' } })
+		expect(getHeightSettings().validity).toBe('')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: '99' } })
+		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: null } })
+		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: false } })
+		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: 'invalid-value' } })
+		expect(getHeightSettings().validity).toBe('Height must be at least 100px or higher')
+		expect(getWidthSettings().validity).toBe('')
+
+		onSettingChange({ prop: 'height' }, { target: { value: '100' } })
+		expect(getHeightSettings().validity).toBe('')
+		expect(getWidthSettings().validity).toBe('')
+	})
+
 	test('passes expected vars to SettingsDialog', () => {
 		expect.hasAssertions()
 		const props = {
@@ -369,6 +447,30 @@ describe('MateriaSettingsDialog', () => {
 		  "height": 505,
 		  "icon": "mock-icon",
 		  "pickerOpen": false,
+		  "settingsItems": Array [
+		    Object {
+		      "label": "URL",
+		      "prop": "src",
+		    },
+		    Object {
+		      "label": "Width",
+		      "min": 100,
+		      "placeholder": "800",
+		      "prop": "width",
+		      "type": "number",
+		      "units": "px",
+		      "validity": "",
+		    },
+		    Object {
+		      "label": "Height",
+		      "min": 100,
+		      "placeholder": "600",
+		      "prop": "height",
+		      "type": "number",
+		      "units": "px",
+		      "validity": "",
+		    },
+		  ],
 		  "showCustomize": false,
 		  "src": "mock-embed-url",
 		  "widgetEngine": "widget-name",
@@ -437,5 +539,52 @@ describe('MateriaSettingsDialog', () => {
 			widgetEngine: 'mock-engine',
 			width: 0
 		})
+	})
+
+	test('onConfirm does not call props.onConfirm if form is not valid', () => {
+		expect.hasAssertions()
+		const props = {
+			onConfirm: jest.fn(),
+			content: {
+				src: 'mock-src',
+				caption: 'mock-caption',
+				widgetEngine: 'mock-engine'
+			}
+		}
+
+		const component = mount(<MateriaSettingsDialog {...props} />)
+
+		const inst = component.instance()
+
+		// replace formRef with a mock
+		inst.formRef = { current: { reportValidity: () => false } }
+		inst.onConfirm()
+		expect(props.onConfirm).not.toHaveBeenCalled()
+
+		inst.formRef = { current: { reportValidity: () => true } }
+		inst.onConfirm()
+		expect(props.onConfirm).toHaveBeenCalled()
+	})
+
+	test('Submitting the settings form calls preventDefault', () => {
+		expect.hasAssertions()
+		const props = {
+			onConfirm: jest.fn(),
+			content: {
+				src: 'mock-src',
+				caption: 'mock-caption',
+				widgetEngine: 'mock-engine'
+			}
+		}
+
+		const component = mount(<MateriaSettingsDialog {...props} />)
+
+		const form = component.find('form').at(0)
+		const onSubmit = form.props().onSubmit
+		const event = { preventDefault: jest.fn() }
+
+		onSubmit(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
 	})
 })

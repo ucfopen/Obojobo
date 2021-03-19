@@ -22,14 +22,36 @@ class MateriaSettingsDialog extends React.Component {
 			pickerOpen: false,
 			// start open if theres no icon and src is set (custom link)
 			// start closed if there's no src (empty node)
-			showCustomize: !props.content.icon && props.content.src
+			showCustomize: !props.content.icon && props.content.src,
+			settingsItems: [
+				{
+					label: 'URL',
+					prop: 'src'
+				},
+				{
+					label: 'Width',
+					prop: 'width',
+					units: 'px',
+					type: 'number',
+					placeholder: '800',
+					min: 100,
+					validity: ''
+				},
+				{
+					label: 'Height',
+					prop: 'height',
+					units: 'px',
+					type: 'number',
+					placeholder: '600',
+					min: 100,
+					validity: ''
+				}
+			]
 		}
 		this.state = { ...defaultState, ...props.content }
 
 		this.inputRef = React.createRef()
 		this.formRef = React.createRef()
-		this.widthRef = React.createRef()
-		this.heightRef = React.createRef()
 		this.pickerIframeRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.openPicker = this.openPicker.bind(this)
@@ -37,41 +59,58 @@ class MateriaSettingsDialog extends React.Component {
 		this.toggleEditLock = this.toggleEditLock.bind(this)
 		this.onConfirm = this.onConfirm.bind(this)
 		this.onSettingChange = this.onSettingChange.bind(this)
-
-		this.settingsItems = [
-			{
-				label: 'URL',
-				prop: 'src'
-			},
-			{
-				label: 'Width',
-				prop: 'width',
-				units: 'px',
-				type: 'number',
-				placeholder: 'auto',
-				validity: ''
-			},
-			{
-				label: 'Height',
-				prop: 'height',
-				units: 'px',
-				type: 'number',
-				placeholder: 'auto',
-				validity: ''
-			}
-		]
 	}
 
 	onSettingChange(setting, event) {
 		const value = event.target.value
 		const stateChanges = { [setting.prop]: value }
 
-		// if src is cleared, clear icon & engine too
-		// because we only know what they are when using
-		// the lti launched content picker
-		if (setting.prop === 'src' && !value) {
-			stateChanges.icon = ''
-			stateChanges.widgetEngine = ''
+		switch (setting.prop) {
+			case 'src': {
+				// if src is cleared, clear icon & engine too
+				// because we only know what they are when using
+				// the lti launched content picker
+				if (!value) {
+					stateChanges.icon = ''
+					stateChanges.widgetEngine = ''
+				}
+
+				break
+			}
+
+			case 'width': {
+				const px = parseInt(value, 10)
+				const [srcConfig, widthConfig, heightConfig] = this.state.settingsItems
+
+				if (value !== '' && (!Number.isFinite(px) || px < 100)) {
+					stateChanges.settingsItems = [
+						srcConfig,
+						{ ...widthConfig, validity: 'Width must be at least 100px or higher' },
+						heightConfig
+					]
+				} else {
+					stateChanges.settingsItems = [srcConfig, { ...widthConfig, validity: '' }, heightConfig]
+				}
+
+				break
+			}
+
+			case 'height': {
+				const px = parseInt(value, 10)
+				const [srcConfig, widthConfig, heightConfig] = this.state.settingsItems
+
+				if (value !== '' && (!Number.isFinite(px) || px < 100)) {
+					stateChanges.settingsItems = [
+						srcConfig,
+						widthConfig,
+						{ ...heightConfig, validity: 'Height must be at least 100px or higher' }
+					]
+				} else {
+					stateChanges.settingsItems = [srcConfig, widthConfig, { ...heightConfig, validity: '' }]
+				}
+
+				break
+			}
 		}
 
 		this.setState(stateChanges)
@@ -133,32 +172,14 @@ class MateriaSettingsDialog extends React.Component {
 		this.setState({ pickerOpen: true })
 	}
 
-	updateValidation() {
-		console.log('uv', this.state)
-		if (this.state.width < 100) {
-			this.widthRef.current.setCustomValidity('The width must be at least 100 px')
-		} else {
-			this.widthRef.current.setCustomValidity('')
-		}
-
-		if (this.state.height < 100) {
-			this.heightRef.current.setCustomValidity('The height must be at least 100 px')
-		} else {
-			this.widthRef.current.setCustomValidity('')
-		}
-	}
-
 	onConfirm() {
-		// this.updateValidation()
-
-		const formIsValid = this.formRef.current.reportValidity()
-		console.log('fiv', formIsValid)
-		if (formIsValid) {
+		if (!this.formRef.current.reportValidity()) {
 			return
-			// extract the properties out of state we want to save
-			const { caption, height, width, src, widgetEngine, icon } = this.state
-			this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
 		}
+
+		// extract the properties out of state we want to save
+		const { caption, height, width, src, widgetEngine, icon } = this.state
+		this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
 	}
 
 	render() {
@@ -216,7 +237,7 @@ class MateriaSettingsDialog extends React.Component {
 						{this.state.showCustomize ? (
 							<SettingsDialogForm
 								settings={this.state}
-								config={this.settingsItems}
+								config={this.state.settingsItems}
 								onChange={this.onSettingChange}
 							/>
 						) : null}

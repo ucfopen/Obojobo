@@ -2,6 +2,10 @@ import cloneProps from 'obojobo-document-engine/src/scripts/common/util/clone-pr
 import TextGroupAdapter from 'obojobo-document-engine/src/scripts/common/chunk/text-chunk/text-group-adapter'
 import TextGroup from 'obojobo-document-engine/src/scripts/common/text-group/text-group'
 
+const MIN_DIMENSION = 100
+const DEFAULT_WIDTH = 800
+const DEFAULT_HEIGHT = 600
+
 const propsList = ['height', 'icon', 'src', 'widgetEngine', 'width']
 
 export default {
@@ -14,8 +18,12 @@ export default {
 		}
 
 		model.setStateProp('src', null)
-		model.setStateProp('width', null, p => parseInt(p, 10) || null)
-		model.setStateProp('height', null, p => parseInt(p, 10) || null)
+		model.setStateProp('width', DEFAULT_WIDTH, p =>
+			Number.isFinite(p) && p >= MIN_DIMENSION ? p : null
+		)
+		model.setStateProp('height', DEFAULT_HEIGHT, p =>
+			Number.isFinite(p) && p >= MIN_DIMENSION ? p : null
+		)
 		model.setStateProp('widgetEngine', null)
 		model.setStateProp('icon', null)
 	},

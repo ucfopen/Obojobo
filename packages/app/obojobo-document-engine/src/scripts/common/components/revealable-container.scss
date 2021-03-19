@@ -1,6 +1,42 @@
 @import '~styles/includes';
 
-// TODO move to reusable thing obojobo-doc include
+.obojobo-draft--components--revealable-container-wrapper {
+	position: relative;
+	margin: 0 auto;
+
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(45%, -45%); // not 50 to pull in to boundry slightly
+		z-index: 3;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s linear 0.2s;
+
+		button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.3em;
+			border-radius: 50%;
+		}
+	}
+
+	&.is-selected {
+		.delete-button {
+			visibility: visible;
+			transition: opacity 0s;
+			opacity: 1;
+		}
+	}
+
+	&:hover .delete-button {
+		visibility: visible;
+		transition: opacity 0s;
+		opacity: 1;
+	}
+}
+
 .obojobo-draft--components--revealable-container {
 	$bg-color: #fdfdfd;
 	$hover-bg-color: #f9f4ff;
@@ -18,26 +54,15 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	background-image: url('./revealable-container-bg.svg');
+	background-size: 38.16px 38.16px; /* stylelint-disable-line unit-blacklist */
+	position: relative;
 
 	&:hover {
 		border-color: $color-action;
 	}
 
-	&::before {
-		content: ' ';
-		display: block;
-		background-image: url('./revealable-container-bg.svg');
-		background-size: 38.16px 38.16px; /* stylelint-disable-line unit-blacklist */
-		position: absolute;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		transition: transform $duration-animation-default, opacity $duration-animation-default;
-		user-select: none;
+	&.is-selected {
+		border: 3px solid $color-action;
 	}
-}
-
-.obojobo-draft--components--revealable-container-wrapper {
-	position: relative;
 }
