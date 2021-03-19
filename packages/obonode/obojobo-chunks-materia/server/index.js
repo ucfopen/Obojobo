@@ -1,4 +1,3 @@
-
 const router = require('express').Router() //eslint-disable-line new-cap
 const logger = require('obojobo-express/server/logger')
 const uuid = require('uuid').v4
@@ -132,7 +131,7 @@ router
 			return
 		}
 
-		const materiaChunkId = materiaNode.node.id
+		const materiaOboNodeId = materiaNode.node.id
 		const endpoint = materiaNode.node.content.src
 
 		// verify the endpoint is the configured materia server
@@ -147,10 +146,9 @@ router
 
 		const launchParams = widgetLaunchParams(
 			currentDocument,
-			materiaChunkId,
+			req.currentVisit,
 			req.currentUser,
-			req.currentVisit.id,
-			req.currentVisit.is_preview,
+			materiaOboNodeId,
 			baseUrl(req)
 		)
 
