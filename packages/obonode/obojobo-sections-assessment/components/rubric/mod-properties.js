@@ -90,6 +90,7 @@ class ModProperties extends React.Component {
 				title="Extra Credit & Penalties"
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement}
+				modalClassName="assessment-mod-properties-dialog"
 			>
 				<div className="obojobo-draft--sections--assessment--mod-properties">
 					<p className="info" ref={this.inputRef} tabIndex={-1}>
