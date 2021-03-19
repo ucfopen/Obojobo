@@ -6,7 +6,6 @@ exports[`RevealableContainer RevealableContainer renders correctly 1`] = `
   contentEditable={false}
   style={
     Object {
-      "maxHeight": "100px",
       "maxWidth": "100px",
     }
   }
@@ -38,7 +37,6 @@ exports[`RevealableContainer RevealableContainer renders correctly without class
   contentEditable={false}
   style={
     Object {
-      "maxHeight": "100px",
       "maxWidth": "100px",
     }
   }

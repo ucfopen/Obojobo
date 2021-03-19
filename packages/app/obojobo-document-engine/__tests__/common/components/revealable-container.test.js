@@ -11,7 +11,6 @@ describe('RevealableContainer', () => {
 				onDeleteButtonClick={jest.fn()}
 				onDeleteButtonKeyDown={jest.fn()}
 				maxWidth={100}
-				maxHeight={100}
 				isSelected={true}
 			/>
 		)
@@ -26,7 +25,6 @@ describe('RevealableContainer', () => {
 				onDeleteButtonClick={jest.fn()}
 				onDeleteButtonKeyDown={jest.fn()}
 				maxWidth={100}
-				maxHeight={100}
 				isSelected={false}
 			/>
 		)
@@ -46,7 +44,6 @@ describe('RevealableContainer', () => {
 				onDeleteButtonClick={onDeleteButtonClick}
 				onDeleteButtonKeyDown={onDeleteButtonKeyDown}
 				maxWidth={100}
-				maxHeight={100}
 				isSelected={true}
 			/>
 		)

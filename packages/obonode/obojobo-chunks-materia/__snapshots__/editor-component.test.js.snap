@@ -10,7 +10,6 @@ exports[`Materia Editor Node component renders 1`] = `
       contentEditable={false}
       style={
         Object {
-          "maxHeight": "200px",
           "maxWidth": "100px",
         }
       }
@@ -76,7 +75,6 @@ exports[`Materia Editor Node renders correctly when selected 1`] = `
       contentEditable={false}
       style={
         Object {
-          "maxHeight": "undefinedpx",
           "maxWidth": "undefinedpx",
         }
       }
@@ -134,7 +132,6 @@ exports[`Materia Editor Node renders with no icon correctly 1`] = `
       contentEditable={false}
       style={
         Object {
-          "maxHeight": "undefinedpx",
           "maxWidth": "undefinedpx",
         }
       }

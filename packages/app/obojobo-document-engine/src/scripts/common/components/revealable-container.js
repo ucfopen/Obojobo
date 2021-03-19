@@ -9,7 +9,6 @@ const RevealableContainer = ({
 	className,
 	children,
 	maxWidth,
-	maxHeight,
 	onClick,
 	onDeleteButtonClick,
 	onDeleteButtonKeyDown,
@@ -21,8 +20,7 @@ const RevealableContainer = ({
 			'selected'
 		)}`}
 		style={{
-			maxWidth: `${maxWidth}px`,
-			maxHeight: `${maxHeight}px`
+			maxWidth: `${maxWidth}px`
 		}}
 		contentEditable={false}
 	>

@@ -140,7 +140,6 @@ class MateriaEditor extends React.Component {
 						onDeleteButtonClick={this.deleteNode}
 						onDeleteButtonKeyDown={this.returnFocusOnShiftTab}
 						maxWidth={content.width}
-						maxHeight={content.height}
 						isSelected={selected}
 					>
 						<div>
