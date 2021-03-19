@@ -73,9 +73,7 @@ describe('repository library route', () => {
 		}
 		trianglify = require('trianglify')
 		trianglify.mockReturnValue({
-			svg: jest.fn().mockReturnValue({
-				innerHTML: 'mockTrianglifySVGInnerHTML'
-			})
+			toSVG: jest.fn().mockReturnValue('mockTrianglifySVGInnerHTML')
 		})
 
 		Collection = require('../models/collection')
@@ -116,7 +114,7 @@ describe('repository library route', () => {
 					strokeWidth: expect.any(Number),
 					seed: expect.anything()
 				})
-				expect(trianglify().svg).toHaveBeenCalledTimes(1)
+				expect(trianglify().toSVG).toHaveBeenCalledTimes(1)
 				expect(response.statusCode).toBe(200)
 				expect(response.headers).toHaveProperty('etag', 'mockDraftId')
 				expect(response.headers).toHaveProperty('content-type')
