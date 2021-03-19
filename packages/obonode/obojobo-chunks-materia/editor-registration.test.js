@@ -1,8 +1,12 @@
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'MockMateria'))
 jest.mock('slate')
 jest.mock('./converter')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+
 import Materia from './editor-registration'
-import { Element, Node } from 'slate'
+import { Element, Node, Transforms } from 'slate'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 const MATERIA_NODE = 'ObojoboDraft.Chunks.Materia'
 
@@ -32,6 +36,7 @@ describe('Materia editorRegistration', () => {
 		  "name": "ObojoboDraft.Chunks.Materia",
 		  "plugins": Object {
 		    "decorate": [Function],
+		    "onKeyDown": [Function],
 		    "renderNode": [Function],
 		  },
 		}
@@ -72,5 +77,28 @@ describe('Materia editorRegistration', () => {
 		Element.isElement.mockReturnValueOnce(true)
 		Node.string.mockReturnValueOnce('mock-value')
 		expect(Materia.plugins.decorate([null, null], {})).toMatchInlineSnapshot(`Array []`)
+	})
+
+	test('plugins.onKeyDown deals with no special key', () => {
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		Materia.plugins.onKeyDown([{}, [0]], {}, event)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		jest.spyOn(Transforms, 'insertText').mockReturnValueOnce(true)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Materia.plugins.onKeyDown([{}, [0]], {}, event)
+		expect(KeyDownUtil.breakToText).toHaveBeenCalled()
 	})
 })
