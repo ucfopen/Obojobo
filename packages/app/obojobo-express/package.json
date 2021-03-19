@@ -8,7 +8,7 @@
 	"scripts": {
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production --optimize-minimize",
-		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+		"db:initdocker": "docker run --name db_postgres -e POSTGRES_PASSWORD=mysecretpassword -d --restart=unless-stopped -p 5432:5432 postgres:9.6.21-alpine",
 		"db:reset": "obojobo-migrate reset",
 		"db:migrateup": "obojobo-migrate up",
 		"db:migratedown": "obojobo-migrate down",
