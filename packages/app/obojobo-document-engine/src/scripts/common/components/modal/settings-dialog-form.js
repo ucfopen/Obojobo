@@ -1,5 +1,5 @@
 import './settings-dialog-form.scss'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import Switch from '../switch'
 import 'obojobo-document-engine/src/scripts/common/components/switch.scss'
 
@@ -62,11 +62,39 @@ const SettingsFormCore = ({ config, settings, onChange, forwardedRef }) => {
 		})
 	}, [config, onChange])
 
+	let refs = []
+
+	console.log('sfc', config, settings)
+
+	// const memoizedRefs = useMemo(() => {
+	// 	config.forEach(input => {
+	// 		refs.push(useRef(null))
+	// 	})
+	// }, [config])
+
+	config.forEach(input => {
+		refs.push(useRef(null))
+	})
+
+	console.log('sfc2', refs)
+
+	useEffect(() => {
+		config.forEach((configItem, index) => {
+			const ref = refs[index]
+			const el = ref.current
+
+			console.log('el be all', el, configItem.validity)
+			if (typeof configItem.validity !== 'undefined' && el && el.setCustomValidity) {
+				el.setCustomValidity(configItem.validity)
+			}
+		})
+	}, [settings])
+
 	return (
 		<div className="obojobo-draft--settings--form">
 			{config.map((item, index) => {
 				// lazily assign fowardedRef only to the first input
-				const ref = index === 0 ? forwardedRef : null
+				const ref = refs[index] //index === 0 ? forwardedRef : null
 				return item.type === 'heading' ? (
 					<h2 key={index}>{item.text}</h2>
 				) : (

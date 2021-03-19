@@ -27,6 +27,9 @@ class MateriaSettingsDialog extends React.Component {
 		this.state = { ...defaultState, ...props.content }
 
 		this.inputRef = React.createRef()
+		this.formRef = React.createRef()
+		this.widthRef = React.createRef()
+		this.heightRef = React.createRef()
 		this.pickerIframeRef = React.createRef()
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.openPicker = this.openPicker.bind(this)
@@ -45,14 +48,16 @@ class MateriaSettingsDialog extends React.Component {
 				prop: 'width',
 				units: 'px',
 				type: 'number',
-				placeholder: 'auto'
+				placeholder: 'auto',
+				validity: ''
 			},
 			{
 				label: 'Height',
 				prop: 'height',
 				units: 'px',
 				type: 'number',
-				placeholder: 'auto'
+				placeholder: 'auto',
+				validity: ''
 			}
 		]
 	}
@@ -128,10 +133,32 @@ class MateriaSettingsDialog extends React.Component {
 		this.setState({ pickerOpen: true })
 	}
 
+	updateValidation() {
+		console.log('uv', this.state)
+		if (this.state.width < 100) {
+			this.widthRef.current.setCustomValidity('The width must be at least 100 px')
+		} else {
+			this.widthRef.current.setCustomValidity('')
+		}
+
+		if (this.state.height < 100) {
+			this.heightRef.current.setCustomValidity('The height must be at least 100 px')
+		} else {
+			this.widthRef.current.setCustomValidity('')
+		}
+	}
+
 	onConfirm() {
-		// extract the properties out of state we want to save
-		const { caption, height, width, src, widgetEngine, icon } = this.state
-		this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
+		// this.updateValidation()
+
+		const formIsValid = this.formRef.current.reportValidity()
+		console.log('fiv', formIsValid)
+		if (formIsValid) {
+			return
+			// extract the properties out of state we want to save
+			const { caption, height, width, src, widgetEngine, icon } = this.state
+			this.props.onConfirm({ caption, height, width, src, widgetEngine, icon })
+		}
 	}
 
 	render() {
@@ -157,40 +184,44 @@ class MateriaSettingsDialog extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<div className="row center">Note: Materia scores do not sync to Obojobo (coming soon).</div>
-				<SettingsDialogRow className="highlight">
-					{this.state.icon ? (
-						<div className="widget-icon">
-							<img src={this.state.icon} alt={this.state.widgetEngine} />
-						</div>
-					) : null}
-					{this.state.caption ? <div className="widget-name">{this.state.caption}</div> : null}
-					<Button
-						id="obojobo-draft--chunks--materia--properties-modal--src"
-						className="correct-button"
-						onClick={this.openPicker}
-						ref={this.inputRef}
-					>
-						{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
-					</Button>
-				</SettingsDialogRow>
+				<form ref={this.formRef} onSubmit={event => event.preventDefault()}>
+					<div className="row center">
+						Note: Materia scores do not sync to Obojobo (coming soon).
+					</div>
+					<SettingsDialogRow className="highlight">
+						{this.state.icon ? (
+							<div className="widget-icon">
+								<img src={this.state.icon} alt={this.state.widgetEngine} />
+							</div>
+						) : null}
+						{this.state.caption ? <div className="widget-name">{this.state.caption}</div> : null}
+						<Button
+							id="obojobo-draft--chunks--materia--properties-modal--src"
+							className="correct-button"
+							onClick={this.openPicker}
+							ref={this.inputRef}
+						>
+							{this.state.src ? 'Change Widget...' : 'Select a Widget...'}
+						</Button>
+					</SettingsDialogRow>
 
-				<SettingsDialogRow className="center">
-					<Button
-						altAction
-						className={`toggle-view-button ${isOrNot(this.state.showCustomize, 'open')}`}
-						onClick={this.toggleEditLock}
-					>
-						{this.state.showCustomize ? 'Hide Customize' : 'Customize'}
-					</Button>
-					{this.state.showCustomize ? (
-						<SettingsDialogForm
-							settings={this.state}
-							config={this.settingsItems}
-							onChange={this.onSettingChange}
-						/>
-					) : null}
-				</SettingsDialogRow>
+					<SettingsDialogRow className="center">
+						<Button
+							altAction
+							className={`toggle-view-button ${isOrNot(this.state.showCustomize, 'open')}`}
+							onClick={this.toggleEditLock}
+						>
+							{this.state.showCustomize ? 'Hide Customize' : 'Customize'}
+						</Button>
+						{this.state.showCustomize ? (
+							<SettingsDialogForm
+								settings={this.state}
+								config={this.settingsItems}
+								onChange={this.onSettingChange}
+							/>
+						) : null}
+					</SettingsDialogRow>
+				</form>
 			</SettingsDialog>
 		)
 	}
