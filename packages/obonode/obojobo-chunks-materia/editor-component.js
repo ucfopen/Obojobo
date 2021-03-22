@@ -82,6 +82,7 @@ class MateriaEditor extends React.Component {
 		content.width = parseInt(content.width, 10)
 		content.height = parseInt(content.height, 10)
 
+		// content.width is less than adapter.MIN_DIMENSION ?
 		if (!Number.isFinite(content.width) || content.width < 100) {
 			// adapter.DEFAULT_WIDTH
 			content.width = 800
