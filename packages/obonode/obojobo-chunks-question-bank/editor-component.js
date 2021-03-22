@@ -102,17 +102,15 @@ class QuestionBank extends React.Component {
 	}
 
 	freezeEditor() {
-		const el = document.activeElement
-		setTimeout(() => {
-			el.focus()
-		})
+		clearTimeout(window.restoreEditorFocusId)
+		this.props.editor.toggleEditable(false)
 	}
 
 	unfreezeEditor() {
-		// window.restoreEditorFocusId = setTimeout(() => {
-		// 	this.updateNodeFromState()
-		// 	this.props.editor.toggleEditable(true)
-		// })
+		window.restoreEditorFocusId = setTimeout(() => {
+			this.updateNodeFromState()
+			this.props.editor.toggleEditable(true)
+		})
 	}
 
 	displaySettings(editor, element) {
