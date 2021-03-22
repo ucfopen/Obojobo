@@ -3,7 +3,7 @@ import {
 	getControlsOptions,
 	getDisplayedTitle,
 	getAriaRegionLabel,
-	getSetDimensions,
+	getDesiredDimensions,
 	getScaleAmount,
 	getScaleDimensions,
 	getIFrameStyle,
@@ -278,8 +278,8 @@ describe('render-settings', () => {
 		expect(t({ src: 'mock-src' }, 'displayed-title')).toBe('External content from mock-src.')
 	})
 
-	test('getSetDimensions', () => {
-		const d = getSetDimensions
+	test('getDesiredDimensions', () => {
+		const d = getDesiredDimensions
 
 		expect(d({ width: 'w', height: 'h' })).toEqual({ w: 'w', h: 'h' })
 		expect(d({ height: 'h' })).toEqual({ w: 640, h: 'h' })

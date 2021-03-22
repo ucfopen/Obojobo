@@ -46,7 +46,7 @@ const getAriaRegionLabel = (modelState, displayedTitle) => {
 	}
 }
 
-const getSetDimensions = modelState => {
+const getDesiredDimensions = modelState => {
 	switch (modelState.sizing) {
 		case IFrameSizingTypes.MAX_WIDTH:
 			return {
@@ -72,20 +72,20 @@ const getScaleAmount = (actualWidth, padding, setWidth) => {
 	return Math.min(1, (actualWidth - padding) / setWidth)
 }
 
-const getScaleDimensions = (modelState, zoom, scaleAmount, minScale, setDimensions) => {
+const getScaleDimensions = (modelState, zoom, scaleAmount, minScale, desiredDimensions) => {
 	let scale
 	let containerStyle = {}
 
 	if (modelState.fit === IFrameFitTypes.SCROLL) {
 		scale = zoom
 		containerStyle = {
-			width: setDimensions.w,
-			height: setDimensions.h
+			width: desiredDimensions.w,
+			height: desiredDimensions.h
 		}
 	} else {
 		scale = scaleAmount * zoom
 		containerStyle = {
-			width: setDimensions.w
+			width: desiredDimensions.w
 		}
 	}
 
@@ -126,8 +126,8 @@ const getZoomValues = (mediaState, model) => {
 const getRenderSettings = (model, actualWidth, padding, minScale, maxScale, mediaState) => {
 	const ms = model.modelState
 	const zoomValues = getZoomValues(mediaState, model)
-	const setDimensions = getSetDimensions(ms)
-	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
+	const desiredDimensions = getDesiredDimensions(ms)
+	const scaleAmount = getScaleAmount(actualWidth, padding, desiredDimensions.w)
 	const displayedTitle = getDisplayedTitle(ms)
 	const ariaRegionLabel = getAriaRegionLabel(ms, displayedTitle)
 	const scaleDimensions = getScaleDimensions(
@@ -135,13 +135,13 @@ const getRenderSettings = (model, actualWidth, padding, minScale, maxScale, medi
 		zoomValues.currentZoom,
 		scaleAmount,
 		minScale,
-		setDimensions
+		desiredDimensions
 	)
 	const controlsOpts = getControlsOptions(ms)
 	const isAtMinScale = scaleDimensions.scale <= minScale
 	const isAtMaxScale = scaleDimensions.scale >= maxScale
 	const iframeStyle = getIFrameStyle(scaleDimensions.scale)
-	const afterStyle = getAfterStyle(setDimensions.w, setDimensions.h, ms.fit)
+	const afterStyle = getAfterStyle(desiredDimensions.w, desiredDimensions.h, ms.fit)
 	const isShowing = getIsShowing(mediaState, model)
 
 	return {
@@ -163,7 +163,7 @@ export {
 	getControlsOptions,
 	getDisplayedTitle,
 	getAriaRegionLabel,
-	getSetDimensions,
+	getDesiredDimensions,
 	getScaleAmount,
 	getScaleDimensions,
 	getIFrameStyle,
