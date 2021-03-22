@@ -1,5 +1,5 @@
 import './settings-dialog-form.scss'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import Switch from '../switch'
 import 'obojobo-document-engine/src/scripts/common/components/switch.scss'
 
@@ -51,7 +51,7 @@ const renderInput = (item, value, onChange, ref) => {
 	}
 }
 
-const SettingsFormCore = ({ config, settings, onChange, forwardedRef }) => {
+const SettingsForm = ({ config, settings, onChange }) => {
 	// memoize onChange callback functions
 	// a parallel array to config (index will match config index)
 	const memoizedOnChanges = useMemo(() => {
@@ -62,31 +62,53 @@ const SettingsFormCore = ({ config, settings, onChange, forwardedRef }) => {
 		})
 	}, [config, onChange])
 
+	const refs = config.map(() => useRef(null))
+
+	useEffect(() => {
+		config.forEach((configItem, index) => {
+			const ref = refs[index]
+
+			// If this configItem has a validity property defined and
+			// the element has setCustomValidity available then set it:
+			if (
+				typeof configItem.validity !== 'undefined' &&
+				ref.current &&
+				ref.current.setCustomValidity
+			) {
+				ref.current.setCustomValidity(configItem.validity)
+			}
+		})
+	}, [settings])
+
 	return (
 		<div className="obojobo-draft--settings--form">
 			{config.map((item, index) => {
-				// lazily assign fowardedRef only to the first input
-				const ref = index === 0 ? forwardedRef : null
-				return item.type === 'heading' ? (
-					<h2 key={index}>{item.text}</h2>
-				) : (
-					<React.Fragment key={index}>
-						<label htmlFor={`obojobo-draft--settings--item-${item.prop}`}>{item.label}:</label>
-						<div>
-							{renderInput(item, settings[item.prop], memoizedOnChanges[index], ref)}
-							{item.units ? (
-								<span className="obojobo-draft--settings--units">{item.units}</span>
-							) : null}
-						</div>
-					</React.Fragment>
-				)
+				const ref = refs[index]
+
+				switch (item.type) {
+					case 'heading':
+						return (
+							<h2 key={index} ref={ref}>
+								{item.text}
+							</h2>
+						)
+
+					default:
+						return (
+							<React.Fragment key={index}>
+								<label htmlFor={`obojobo-draft--settings--item-${item.prop}`}>{item.label}:</label>
+								<div>
+									{renderInput(item, settings[item.prop], memoizedOnChanges[index], ref)}
+									{item.units ? (
+										<span className="obojobo-draft--settings--units">{item.units}</span>
+									) : null}
+								</div>
+							</React.Fragment>
+						)
+				}
 			})}
 		</div>
 	)
 }
 
-// Add ability to forward refs for the purpose of focusing inputs
-const SettingsForm = React.forwardRef((props, ref) => (
-	<SettingsFormCore {...props} forwardedRef={ref} />
-))
 export default SettingsForm
