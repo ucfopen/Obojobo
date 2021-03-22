@@ -5,7 +5,6 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import IFrameDefaultSizes from './iframe-default-sizes'
 const MediaUtil = Viewer.util.MediaUtil
 
-// const MAX_OR_TEXT_WIDTH = '835' //722
 const DEFAULT_WIDTH = 640
 const DEFAULT_HEIGHT = 480
 
