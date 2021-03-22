@@ -45,14 +45,16 @@ class MateriaSettingsDialog extends React.Component {
 				prop: 'width',
 				units: 'px',
 				type: 'number',
-				placeholder: 'auto'
+				placeholder: '800',
+				min: 100
 			},
 			{
 				label: 'Height',
 				prop: 'height',
 				units: 'px',
 				type: 'number',
-				placeholder: 'auto'
+				placeholder: '600',
+				min: 100
 			}
 		]
 	}

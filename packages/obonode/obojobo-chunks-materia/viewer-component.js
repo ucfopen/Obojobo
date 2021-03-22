@@ -5,6 +5,7 @@ import TextGroupEl from 'obojobo-document-engine/src/scripts/common/chunk/text-c
 
 import './viewer-component.scss'
 import IFrameControlTypes from 'obojobo-chunks-iframe/iframe-control-types'
+import IFrameSizingTypes from 'obojobo-chunks-iframe/iframe-sizing-types'
 
 export default class Materia extends React.Component {
 	constructor(props) {
@@ -19,7 +20,8 @@ export default class Materia extends React.Component {
 			border: true,
 			fit: 'scale',
 			initialZoom: 1,
-			controls: [IFrameControlTypes.RELOAD]
+			controls: [IFrameControlTypes.RELOAD],
+			sizing: IFrameSizingTypes.FIXED
 		}
 
 		// state setup

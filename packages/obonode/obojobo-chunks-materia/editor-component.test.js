@@ -207,7 +207,125 @@ describe('Materia Editor Node', () => {
 		// expect update to the node
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
 			props.editor,
-			{ content: { icon: 'new icon', src: 'new src', widgetEngine: 'new engine' } },
+			{
+				content: {
+					icon: 'new icon',
+					src: 'new src',
+					widgetEngine: 'new engine',
+					width: 800,
+					height: 600
+				}
+			},
+			{ at: undefined }
+		) //eslint-disable-line no-undefined
+
+		// expect dialog hidden
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('changeProperties sets the width and height to defaults if < 100', () => {
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
+		}
+
+		const component = mount(<Materia {...props} />)
+
+		component.instance().changeProperties({
+			icon: 'new icon',
+			src: 'new src',
+			widgetEngine: 'new engine',
+			caption: 'new caption',
+			width: 99,
+			height: 99
+		})
+
+		// expect update to the node
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{
+				content: {
+					icon: 'new icon',
+					src: 'new src',
+					widgetEngine: 'new engine',
+					width: 800,
+					height: 600
+				}
+			},
+			{ at: undefined }
+		) //eslint-disable-line no-undefined
+
+		// expect dialog hidden
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('changeProperties sets the width and height to given value if valid', () => {
+		const props = {
+			// mock slate element
+			element: {
+				content: {},
+				children: [{ text: 'mock caption' }]
+			},
+			// mock oboNode
+			node: {
+				data: {
+					get: () => ({
+						icon: 'mock-icon',
+						src: 'mock-src',
+						content: {},
+						caption: 'mock-caption',
+						widgetEngine: 'mock-engine'
+					})
+				}
+			},
+			// mock slate editor
+			editor: {
+				toggleEditable: jest.fn()
+			}
+		}
+
+		const component = mount(<Materia {...props} />)
+
+		component.instance().changeProperties({
+			icon: 'new icon',
+			src: 'new src',
+			widgetEngine: 'new engine',
+			caption: 'new caption',
+			width: 200,
+			height: 300
+		})
+
+		// expect update to the node
+		expect(Transforms.setNodes).toHaveBeenCalledWith(
+			props.editor,
+			{
+				content: {
+					icon: 'new icon',
+					src: 'new src',
+					widgetEngine: 'new engine',
+					width: 200,
+					height: 300
+				}
+			},
 			{ at: undefined }
 		) //eslint-disable-line no-undefined
 

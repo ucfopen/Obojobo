@@ -2,7 +2,7 @@
 
 exports[`Materia adapter construct builds without attributes 1`] = `
 Object {
-  "height": null,
+  "height": 600,
   "icon": null,
   "src": null,
   "textGroup": TextGroup {
@@ -22,14 +22,14 @@ Object {
     "maxItems": 1,
   },
   "widgetEngine": null,
-  "width": null,
+  "width": 800,
 }
 `;
 
 exports[`Materia adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "height": null,
+    "height": 600,
     "icon": null,
     "src": "mockSrc",
     "textGroup": Array [
@@ -42,7 +42,7 @@ Object {
       },
     ],
     "widgetEngine": null,
-    "width": null,
+    "width": 800,
   },
 }
 `;
