@@ -3,7 +3,7 @@
 exports[`render-settings getRenderSettings 1`] = `
 Object {
   "afterStyle": Object {
-    "height": 456,
+    "height": 480,
   },
   "ariaRegionLabel": "External content from src.",
   "controlsOpts": Object {
@@ -14,18 +14,18 @@ Object {
   },
   "displayedTitle": "src",
   "iframeStyle": Object {
-    "height": "100%",
-    "transform": "scale(1)",
-    "width": "100%",
+    "height": "130.6122448979592%",
+    "transform": "scale(0.765625)",
+    "width": "130.6122448979592%",
   },
   "isAtMaxScale": false,
   "isAtMinScale": false,
   "isShowing": false,
   "scaleDimensions": Object {
     "containerStyle": Object {
-      "width": 123,
+      "width": 640,
     },
-    "scale": 1,
+    "scale": 0.765625,
   },
   "zoomValues": Object {
     "currentZoom": 1,
