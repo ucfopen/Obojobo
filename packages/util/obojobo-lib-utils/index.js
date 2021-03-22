@@ -22,19 +22,22 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 		return Array.from(searchNodeModulesForOboNodesCache)
 	}
 	searchNodeModulesForOboNodesCache.clear()
-	const disableNodes = process.env['OBO_DISABLE_NODES'] || ''
-	// use yarn to get a list of obojobo-* node_modules
+	// add the npm module name of an optional node to enable it
+	const enabledOptionalNodes = process.env['OBO_OPTIONAL_NODES'] || ''
 	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
 	const pattern = /obojobo-[^@]+/gi
 	const packages = packageSearchOut.toString().match(pattern)
 	packages.forEach(pkg => {
 		try {
 			pkg = pkg.trim()
-			// skip items from the disableNodes
-			if (disableNodes.includes(pkg)) return
-
 			const manifest = require(pkg)
-			if (manifest.obojobo) searchNodeModulesForOboNodesCache.add(pkg)
+			if (manifest.obojobo) {
+				// skip optional nodes that are disabled
+				const isOptional = manifest.obojobo.isOptional === true
+				if (isOptional && !enabledOptionalNodes.includes(pkg)) return
+
+				searchNodeModulesForOboNodesCache.add(pkg)
+			}
 		} catch (error) {
 			/* istanbul ignore next */
 			if (!error.message.includes('Cannot find module')) {

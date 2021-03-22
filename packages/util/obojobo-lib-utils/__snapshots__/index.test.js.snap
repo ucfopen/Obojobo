@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`obojobo lib utils searchNodeModulesForOboNodes attempts to load all yarn packages 1`] = `
+exports[`obojobo lib utils searchNodeModulesForOboNodes attempts to load all non-optional yarn packages 1`] = `
 Array [
   "obojobo-chunks-action-button",
   "obojobo-modules-module",
@@ -9,9 +9,13 @@ Array [
 ]
 `;
 
-exports[`obojobo lib utils searchNodeModulesForOboNodes omits modules defined in OBO_DISABLE_NODES 1`] = `
+exports[`obojobo lib utils searchNodeModulesForOboNodes includes optional modules defined in OBO_OPTIONAL_NODES 1`] = `
 Array [
   "obojobo-chunks-action-button",
+  "obojobo-modules-module",
+  "obojobo-pages-page",
+  "obojobo-optional-node",
+  "obojobo-optional-other-node",
   "obojobo-sections-content",
 ]
 `;

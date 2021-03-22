@@ -8,6 +8,8 @@ const yarnList = `yarn list v1.13.0
 ├─ obojobo-chunks-action-button@1.3.0
 ├─ obojobo-modules-module@9.9.9
 ├─ obojobo-pages-page@2.4.5
+├─ obojobo-optional-node@9
+├─ obojobo-optional-other-node@1
 └─ obojobo-sections-content@33.33.33
 ✨  Done in 698.89s.`
 
@@ -22,29 +24,35 @@ describe('obojobo lib utils', () => {
 		mockVirtual('obojobo-chunks-action-button').obojobo = {}
 		mockVirtual('obojobo-modules-module').obojobo = {}
 		mockVirtual('obojobo-pages-page').obojobo = {}
-		mockVirtual('obojobo-sections-content').obojobo = {
+		;(mockVirtual('obojobo-sections-content').obojobo = {
 			migrations: 'path-to-obojobo-sections-content-migrations'
-		}
+		}),
+			(mockVirtual('obojobo-optional-node').obojobo = {
+				isOptional: true
+			}),
+			(mockVirtual('obojobo-optional-other-node').obojobo = {
+				isOptional: true
+			})
 		restoreConsole = mockConsole()
 	})
 
 	afterEach(() => {
-		delete process.env['OBO_DISABLE_NODES']
+		delete process.env['OBO_OPTIONAL_NODES']
 		restoreConsole()
 	})
 
-	test('searchNodeModulesForOboNodes attempts to load all yarn packages', () => {
+	test('searchNodeModulesForOboNodes attempts to load all non-optional yarn packages', () => {
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
 		const results = searchNodeModulesForOboNodes()
 		expect(results).toHaveLength(4)
 		expect(results).toMatchSnapshot()
 	})
 
-	test('searchNodeModulesForOboNodes omits modules defined in OBO_DISABLE_NODES', () => {
-		process.env['OBO_DISABLE_NODES'] = 'obojobo-pages-page,obojobo-modules-module'
+	test('searchNodeModulesForOboNodes includes optional modules defined in OBO_OPTIONAL_NODES', () => {
+		process.env['OBO_OPTIONAL_NODES'] = 'obojobo-optional-node,obojobo-optional-other-node'
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
 		const results = searchNodeModulesForOboNodes()
-		expect(results).toHaveLength(2)
+		expect(results).toHaveLength(6)
 		expect(results).toMatchSnapshot()
 	})
 
