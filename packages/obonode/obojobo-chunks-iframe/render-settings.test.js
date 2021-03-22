@@ -13,7 +13,6 @@ import {
 } from './render-settings'
 
 import MediaUtil from 'obojobo-document-engine/src/scripts/viewer/util/media-util'
-import IFrameSizingTypes from './iframe-sizing-types'
 
 describe('render-settings', () => {
 	test('getIsShowing', () => {
@@ -282,27 +281,29 @@ describe('render-settings', () => {
 	test('getSetDimensions', () => {
 		const d = getSetDimensions
 
-		expect(d({ width: 'w', height: 'h' }, 'dw', 'dh')).toEqual({ w: 'w', h: 'h' })
-		expect(d({ height: 'h' }, 'dw', 'dh')).toEqual({ w: 'dw', h: 'h' })
-		expect(d({ width: 'w' }, 'dw', 'dh')).toEqual({ w: 'w', h: 'dh' })
-		expect(d({}, 'dw', 'dh')).toEqual({ w: 'dw', h: 'dh' })
+		expect(d({ width: 'w', height: 'h' })).toEqual({ w: 'w', h: 'h' })
+		expect(d({ height: 'h' })).toEqual({ w: 640, h: 'h' })
+		expect(d({ width: 'w' })).toEqual({ w: 'w', h: 480 })
+		expect(d({})).toEqual({ w: 640, h: 480 })
+
+		expect(d({ width: 'w', height: 'h', sizing: 'text-width' })).toEqual({ w: 722, h: 'h' })
+		expect(d({ height: 'h', sizing: 'text-width' })).toEqual({ w: 722, h: 'h' })
+		expect(d({ width: 'w', sizing: 'text-width' })).toEqual({ w: 722, h: 480 })
+		expect(d({ sizing: 'text-width' })).toEqual({ w: 722, h: 480 })
+
+		expect(d({ width: 'w', height: 'h', sizing: 'max-width' })).toEqual({ w: 835, h: 'h' })
+		expect(d({ height: 'h', sizing: 'max-width' })).toEqual({ w: 835, h: 'h' })
+		expect(d({ width: 'w', sizing: 'max-width' })).toEqual({ w: 835, h: 480 })
+		expect(d({ sizing: 'max-width' })).toEqual({ w: 835, h: 480 })
 	})
 
 	test('getScaleAmount', () => {
 		const s = getScaleAmount
 
-		expect(s(1, 2, 3, IFrameSizingTypes.FIXED)).toBe(-1 / 3)
-		expect(s(3, 2, 1, IFrameSizingTypes.FIXED)).toBe(1)
-		expect(s(100, 0, 1, IFrameSizingTypes.FIXED)).toBe(1)
-		expect(s(200, 20, 400, IFrameSizingTypes.FIXED)).toBe(180 / 400)
-
-		expect(s(835, 0, 640, IFrameSizingTypes.MAX_WIDTH)).toBe(1)
-		expect(s(700, 20, 1, IFrameSizingTypes.MAX_WIDTH)).toBe(136 / 167)
-		expect(s(835, 20, 1000, IFrameSizingTypes.MAX_WIDTH)).toBe(163 / 167)
-
-		expect(s(835, 0, 640, IFrameSizingTypes.TEXT_WIDTH)).toBe(1)
-		expect(s(700, 20, 1, IFrameSizingTypes.TEXT_WIDTH)).toBe(136 / 167)
-		expect(s(835, 20, 1000, IFrameSizingTypes.TEXT_WIDTH)).toBe(163 / 167)
+		expect(s(1, 2, 3)).toBe(-1 / 3)
+		expect(s(3, 2, 1)).toBe(1)
+		expect(s(100, 0, 1)).toBe(1)
+		expect(s(200, 20, 400)).toBe(180 / 400)
 	})
 
 	test('getScaleDimensions (fit="scale")', () => {
@@ -405,6 +406,6 @@ describe('render-settings', () => {
 				controls: ''
 			}
 		}
-		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, 20, mediaState)).toMatchSnapshot()
+		expect(getRenderSettings(model, 500, 10, 0.1, 20, mediaState)).toMatchSnapshot()
 	})
 })

@@ -2,9 +2,12 @@ import IFrameControlTypes from './iframe-control-types'
 import IFrameFitTypes from './iframe-fit-types'
 import IFrameSizingTypes from './iframe-sizing-types'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import IFrameDefaultSizes from './iframe-default-sizes'
 const MediaUtil = Viewer.util.MediaUtil
 
-const MAX_OR_TEXT_WIDTH = '835'
+// const MAX_OR_TEXT_WIDTH = '835' //722
+const DEFAULT_WIDTH = 640
+const DEFAULT_HEIGHT = 480
 
 const getIsShowing = (mediaState, model) => {
 	return (
@@ -44,15 +47,29 @@ const getAriaRegionLabel = (modelState, displayedTitle) => {
 	}
 }
 
-const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
-	w: modelState.width || defaultWidth,
-	h: modelState.height || defaultHeight
-})
+const getSetDimensions = modelState => {
+	switch (modelState.sizing) {
+		case IFrameSizingTypes.MAX_WIDTH:
+			return {
+				w: IFrameDefaultSizes.MAX_WIDTH,
+				h: modelState.height || DEFAULT_HEIGHT
+			}
 
-const getScaleAmount = (actualWidth, padding, setWidth, sizing) => {
-	if (sizing === IFrameSizingTypes.MAX_WIDTH || sizing === IFrameSizingTypes.TEXT_WIDTH) {
-		setWidth = MAX_OR_TEXT_WIDTH
+		case IFrameSizingTypes.TEXT_WIDTH:
+			return {
+				w: IFrameDefaultSizes.TEXT_WIDTH,
+				h: modelState.height || DEFAULT_HEIGHT
+			}
+
+		default:
+			return {
+				w: modelState.width || DEFAULT_WIDTH,
+				h: modelState.height || DEFAULT_HEIGHT
+			}
 	}
+}
+
+const getScaleAmount = (actualWidth, padding, setWidth) => {
 	return Math.min(1, (actualWidth - padding) / setWidth)
 }
 
@@ -107,20 +124,11 @@ const getZoomValues = (mediaState, model) => {
 	}
 }
 
-const getRenderSettings = (
-	model,
-	actualWidth,
-	padding,
-	defaultWidth,
-	defaultHeight,
-	minScale,
-	maxScale,
-	mediaState
-) => {
+const getRenderSettings = (model, actualWidth, padding, minScale, maxScale, mediaState) => {
 	const ms = model.modelState
 	const zoomValues = getZoomValues(mediaState, model)
-	const setDimensions = getSetDimensions(ms, defaultWidth, defaultHeight)
-	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w, ms.sizing)
+	const setDimensions = getSetDimensions(ms)
+	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
 	const displayedTitle = getDisplayedTitle(ms)
 	const ariaRegionLabel = getAriaRegionLabel(ms, displayedTitle)
 	const scaleDimensions = getScaleDimensions(
