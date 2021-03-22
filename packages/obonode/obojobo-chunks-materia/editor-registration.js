@@ -5,6 +5,7 @@ import Icon from './editor-icon.svg' // uses webpack SVGR to create react from s
 import EditorComponent from './editor-component'
 import Converter from './converter'
 import { Element, Editor, Node } from 'slate'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 const MATERIA_NODE = 'ObojoboDraft.Chunks.Materia'
 
@@ -34,6 +35,12 @@ const Materia = {
 			}
 
 			return []
+		},
+		onKeyDown(entry, editor, event) {
+			switch (event.key) {
+				case 'Enter':
+					return KeyDownUtil.breakToText(event, editor, entry)
+			}
 		},
 		// Editable Plugins - These are used by the PageEditor component to augment React functions
 		// They affect individual nodes independently of one another
