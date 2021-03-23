@@ -67,8 +67,13 @@ class OboModel extends Backbone.Model {
 				if (!item) {
 					// @TODO: make this more visible to the user
 					// Maybe we should make a node for use when a node is missing?
-					console.error(`The node type ${typeOrNameOrObject} was not loaded by the Registry`) // eslint-disable-line no-console
-					return null
+					/* istanbul ignore else */
+					if (typeof process === 'object' && process.env['NODE_ENV'] === 'test') {
+						return null
+					} else {
+						console.error(`The node type ${typeOrNameOrObject} was not loaded by the Registry`) // eslint-disable-line no-console
+						return null
+					}
 				}
 
 				attrs.type = typeOrNameOrObject

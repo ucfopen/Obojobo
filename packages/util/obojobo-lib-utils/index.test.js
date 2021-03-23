@@ -56,6 +56,14 @@ describe('obojobo lib utils', () => {
 		expect(results).toMatchSnapshot()
 	})
 
+	test('searchNodeModulesForOboNodes includes optional modules when OBO_OPTIONAL_NODES = *', () => {
+		process.env['OBO_OPTIONAL_NODES'] = '*'
+		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
+		const results = searchNodeModulesForOboNodes()
+		expect(results).toHaveLength(6)
+		expect(results).toMatchSnapshot()
+	})
+
 	test('searchNodeModulesForOboNodes omits modules with no obojobo export', () => {
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')
 		delete require('obojobo-chunks-action-button').obojobo

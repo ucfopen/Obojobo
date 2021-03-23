@@ -19,3 +19,14 @@ Array [
   "obojobo-sections-content",
 ]
 `;
+
+exports[`obojobo lib utils searchNodeModulesForOboNodes includes optional modules when OBO_OPTIONAL_NODES = * 1`] = `
+Array [
+  "obojobo-chunks-action-button",
+  "obojobo-modules-module",
+  "obojobo-pages-page",
+  "obojobo-optional-node",
+  "obojobo-optional-other-node",
+  "obojobo-sections-content",
+]
+`;
