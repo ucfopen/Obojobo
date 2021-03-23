@@ -27,14 +27,16 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-chunks-iframe": "^11.4.0-alpha.0",
-		"obojobo-document-engine": "^11.4.0-alpha.0",
-		"obojobo-lib-utils": "^11.4.0-alpha.0",
 		"uuid": "^8.1.0",
 		"xml2js": "0.4.23"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.6"
+	},
+	"peerDependencies": {
+		"obojobo-chunks-iframe": "^11.4.0-alpha.0",
+		"obojobo-document-engine": "^11.4.0-alpha.0",
+		"obojobo-lib-utils": "^11.4.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
