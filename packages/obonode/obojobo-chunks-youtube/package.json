@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-youtube",
-	"version": "11.4.0-alpha.2",
+	"version": "11.4.0-alpha.3",
 	"license": "AGPL-3.0-only",
 	"description": "Youtube content chunk for Obojobo",
 	"scripts": {

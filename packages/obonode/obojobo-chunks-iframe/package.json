@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-iframe",
-	"version": "11.4.0-alpha.2",
+	"version": "11.4.0-alpha.3",
 	"license": "AGPL-3.0-only",
 	"description": "IFrame content chunk for Obojobo",
 	"scripts": {

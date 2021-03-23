@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-modules-module",
-	"version": "11.4.0-alpha.2",
+	"version": "11.4.0-alpha.3",
 	"license": "AGPL-3.0-only",
 	"description": "Default Module node for Obojobo",
 	"scripts": {

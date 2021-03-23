@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-list",
-	"version": "11.4.0-alpha.2",
+	"version": "11.4.0-alpha.3",
 	"license": "AGPL-3.0-only",
 	"description": "List content chunk for Obojobo",
 	"scripts": {
