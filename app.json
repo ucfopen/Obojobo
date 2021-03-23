@@ -65,6 +65,10 @@
 		"OBO_OPTIONAL_NODES":{
 			"description": "Comma separated list of optional nodes to enable",
 			"value": ""
+		},
+		"OBO_LTI_GUID":{
+			"description": "A GUID unique to this install of Obojobo. Google LTI launch param tool_consumer_instance_guid for more details.",
+			"value": "my.unique.heroku-obojobo-guid"
 		}
 	},
 	"formation": {
