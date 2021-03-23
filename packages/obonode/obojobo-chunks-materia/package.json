@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-materia",
-	"version": "5.0.1",
+	"version": "11.4.0-alpha.0",
 	"license": "AGPL-3.0-only",
 	"description": "Materia content chunk for Obojobo",
 	"scripts": {
@@ -27,11 +27,11 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^11.0.0",
-		"obojobo-chunks-iframe": "^11.0.0",
-		"obojobo-document-engine": "^11.0.0",
-		"xml2js": "0.4.23",
-		"uuid": "^8.1.0"
+		"obojobo-chunks-iframe": "^11.4.0-alpha.0",
+		"obojobo-document-engine": "^11.4.0-alpha.0",
+		"obojobo-lib-utils": "^11.4.0-alpha.0",
+		"uuid": "^8.1.0",
+		"xml2js": "0.4.23"
 	},
 	"devDependencies": {
 		"lint-staged": "^10.2.6"
