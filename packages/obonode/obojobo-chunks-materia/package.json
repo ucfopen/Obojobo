@@ -27,6 +27,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
+		"oauth-signature": "^1.5.0",
 		"uuid": "^8.1.0",
 		"xml2js": "0.4.23"
 	},
