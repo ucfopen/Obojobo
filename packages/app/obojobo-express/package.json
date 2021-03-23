@@ -66,7 +66,7 @@
 		"react-transition-group": "^4.4.1",
 		"responsive-loader": "^1.2.0",
 		"serve-favicon": "~2.5.0",
-		"sharp": "0.26.1",
+		"sharp": "0.27.2",
 		"uuid": "^8.3.0"
 	},
 	"peerDependencies": {
