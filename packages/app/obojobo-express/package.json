@@ -76,7 +76,7 @@
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",
-		"babel-loader": "^8.1.0",
+		"babel-loader": "^8.2.2",
 		"babel-polyfill": "^6.26.0",
 		"bluebird": "^3.7.2",
 		"css-loader": "^3.6.0",
