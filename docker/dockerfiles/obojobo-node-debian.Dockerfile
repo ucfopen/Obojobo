@@ -27,6 +27,8 @@ COPY --chown=node:node / /tmp/monorepo-src/
 COPY --chown=node:node docker/obojobo-pm2-server-src /home/node/obojobo/
 
 #========= INSTALL & BUILD ASSETS
+# set this env so that all optional nodes are built
+ENV OBO_OPTIONAL_NODES=*
 WORKDIR /tmp/monorepo-src/
 RUN yarn install
 RUN yarn build
