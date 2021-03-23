@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-materia",
-	"version": "11.4.0-alpha.3",
+	"version": "11.4.0-alpha.4",
 	"license": "AGPL-3.0-only",
 	"description": "Materia content chunk for Obojobo",
 	"scripts": {
