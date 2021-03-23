@@ -1169,22 +1169,16 @@ describe('OboModel', () => {
 		})
 	})
 
-	test('Obomodel.create builds nothing if the type does not exist in the registry, outputs console.error message', () => {
+	test('Obomodel.create builds nothing if the type does not exist in the registry', () => {
 		const model = OboModel.create('mockChunk')
 
 		expect(model).toEqual(null)
-		expect(console.error).toHaveBeenCalledWith(
-			'The node type mockChunk was not loaded by the Registry'
-		)
 	})
 
-	test('Obomodel.create builds nothing from object if the type does not exist in the registry, outputs console.error message', () => {
+	test('Obomodel.create builds nothing from object if the type does not exist in the registry', () => {
 		const model = OboModel.create({ type: 'mockChunk' })
 
 		expect(model).toEqual(null)
-		expect(console.error).toHaveBeenCalledWith(
-			'The node type mockChunk was not loaded by the Registry'
-		)
 	})
 
 	test('Obomodel.create returns null if given a non-string or non-object param, does not output a console.error message', () => {
