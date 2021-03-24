@@ -34,7 +34,7 @@
 		"uuid": "^8.1.0"
 	},
 	"devDependencies": {
-		"lint-staged": "^10.2.6"
+		"lint-staged": "^10.5.4"
 	},
 	"jest": {
 		"testMatch": [
