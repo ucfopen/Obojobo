@@ -60,7 +60,7 @@
 		"slate-schema-violations": "0.1.39",
 		"smoothscroll-polyfill": "^0.4.4",
 		"sysend": "^1.3.4",
-		"underscore": "1.11.0",
+		"underscore": "1.12.1",
 		"url-parse": "^1.5.1"
 	},
 	"jest": {
