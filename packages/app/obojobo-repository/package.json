@@ -35,7 +35,7 @@
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
-		"react-modal": "^3.11.2",
+		"react-modal": "^3.12.1",
 		"react-redux": "^7.2.3",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
