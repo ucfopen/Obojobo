@@ -147,7 +147,7 @@ class ImageProperties extends React.Component {
 						<label htmlFor="obojobo-draft--chunks--figure--caption-width">Caption Width:</label>
 						<select
 							id="obojobo-draft--chunks--figure--caption-width"
-							value={this.state.captionWidth || 'image-width'}
+							value={this.state.captionWidth}
 							onChange={this.handleCaptionWidthChange}
 						>
 							<option value="image-width">Restrict caption to the same width as the image</option>

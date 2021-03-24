@@ -43,7 +43,9 @@ exports[`Figure Figure component 1`] = `
           }
           unselectable="on"
         />
-        <figcaption>
+        <figcaption
+          className="is-image-width"
+        >
           <span
             className="obo-text"
             data-group-index="0"
@@ -104,7 +106,9 @@ exports[`Figure Figure component costom size with no height 1`] = `
           }
           unselectable="on"
         />
-        <figcaption>
+        <figcaption
+          className="is-image-width"
+        >
           <span
             className="obo-text"
             data-group-index="0"
@@ -165,7 +169,9 @@ exports[`Figure Figure component costom size with no width 1`] = `
           }
           unselectable="on"
         />
-        <figcaption>
+        <figcaption
+          className="is-image-width"
+        >
           <span
             className="obo-text"
             data-group-index="0"
@@ -217,7 +223,9 @@ exports[`Figure Figure component size small 1`] = `
           style={Object {}}
           unselectable="on"
         />
-        <figcaption>
+        <figcaption
+          className="is-image-width"
+        >
           <span
             className="obo-text"
             data-group-index="0"
