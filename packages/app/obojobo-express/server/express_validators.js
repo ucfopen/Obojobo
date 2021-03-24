@@ -1,4 +1,4 @@
-const { check, param, validationResult } = require('express-validator/check')
+const { check, param, validationResult } = require('express-validator')
 const logger = oboRequire('server/logger')
 
 const semVerRegex = /\d+\.\d+\.\d+/
