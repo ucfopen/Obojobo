@@ -3456,10 +3456,10 @@ asn1@~0.2.0, asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
-assert-options@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/assert-options/-/assert-options-0.6.2.tgz#cf0b27097b61aa1987d63628cbbaea11353f999a"
-  integrity sha512-KP9S549XptFAPGYmLRnIjQBL4/Ry8Jx5YNLQZ/l+eejqbTidBMnw4uZSAsUrzBq/lgyqDYqxcTF7cOxZb9gyEw==
+assert-options@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/assert-options/-/assert-options-0.7.0.tgz#82c27618d9c0baa5e9da8ef607ee261a44ed6e5e"
+  integrity sha512-7q9uNH/Dh8gFgpIIb9ja8PJEWA5AQy3xnBC8jtKs8K/gNVCr1K6kIvlm59HUyYgvM7oEDoLzGgPcGd9FqhtXEQ==
 
 assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
@@ -12142,30 +12142,40 @@ pg-connection-string@^2.3.0:
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.3.0.tgz#c13fcb84c298d0bfa9ba12b40dd6c23d946f55d6"
   integrity sha512-ukMTJXLI7/hZIwTW7hGMZJ0Lj0S2XQBCJ4Shv4y1zgQ/vqVea+FLhzywvPj0ujSuofu+yA4MYHGZPTsgjBgJ+w==
 
+pg-connection-string@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.4.0.tgz#c979922eb47832999a204da5dbe1ebf2341b6a10"
+  integrity sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
+
 pg-int8@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
-pg-minify@1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/pg-minify/-/pg-minify-1.6.1.tgz#d2c735cdaab171f9ab82bb73aded99ace2d88b8c"
-  integrity sha512-ujanxJJB9CSDUvlAOshtjdKAywOPR2vY0a7D+vvgk5rbrYcthZA7TjpN+Z+UwZsz/G/bUexYDT6huE33vYVN0g==
+pg-minify@1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/pg-minify/-/pg-minify-1.6.2.tgz#055acfe862cfca3ca0a529020846b0f308d68e70"
+  integrity sha512-1KdmFGGTP6jplJoI8MfvRlfvMiyBivMRP7/ffh4a11RUFJ7kC2J0ZHlipoKiH/1hz+DVgceon9U2qbaHpPeyPg==
 
 pg-pool@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.2.1.tgz#5f4afc0f58063659aeefa952d36af49fa28b30e0"
   integrity sha512-BQDPWUeKenVrMMDN9opfns/kZo4lxmSWhIqo+cSAF7+lfi9ZclQbr9vfnlNaPr8wYF3UYjm5X0yPAhbcgqNOdA==
 
-pg-promise@^10.6.2:
-  version "10.6.2"
-  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-10.6.2.tgz#6f8ecd9d5c4a083a725174d55ba743e7f7da85c0"
-  integrity sha512-MrS7JatbX3cBsL5hjojkdcUggV+514Owkx+LJfrKS2STAt1MAQAGmBLDQVglrKmFA5Yus8ZKPKsQaXEJcU5MdA==
+pg-pool@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.2.2.tgz#a560e433443ed4ad946b84d774b3f22452694dff"
+  integrity sha512-ORJoFxAlmmros8igi608iVEbQNNZlp89diFVx6yV5v+ehmpMY9sK6QgpmgoXbmkNaBAx8cOOZh9g80kJv1ooyA==
+
+pg-promise@^10.9.5:
+  version "10.9.5"
+  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-10.9.5.tgz#1ad7a2bb7fcbb3cea328caaf1e54eaa07ced4147"
+  integrity sha512-llJfdNQVTixjpsTuKTGStybkTWN5PYHWCTb0iqA9GFsvf1khJaH2dexljkMuyeQ41FG8ZkuqkmxrtRVauuS+0A==
   dependencies:
-    assert-options "0.6.2"
-    pg "8.3.3"
-    pg-minify "1.6.1"
-    spex "3.0.2"
+    assert-options "0.7.0"
+    pg "8.5.1"
+    pg-minify "1.6.2"
+    spex "3.2.0"
 
 pg-protocol@^1.2.4:
   version "1.2.4"
@@ -12176,6 +12186,11 @@ pg-protocol@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.2.5.tgz#28a1492cde11646ff2d2d06bdee42a3ba05f126c"
   integrity sha512-1uYCckkuTfzz/FCefvavRywkowa6M5FohNMF5OjKrqo9PSR8gYc8poVmwwYQaBxhmQdBjhtP514eXy9/Us2xKg==
+
+pg-protocol@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.4.0.tgz#43a71a92f6fe3ac559952555aa3335c8cb4908be"
+  integrity sha512-El+aXWcwG/8wuFICMQjM5ZSAm6OWiJicFdNYo+VY3QP+8vI4SvLIWVe51PppTzMhikUJR+PsyIFKqfdXPz/yxA==
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -12188,19 +12203,18 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@8.3.3, pg@^8.2.1:
-  version "8.3.3"
-  resolved "https://registry.yarnpkg.com/pg/-/pg-8.3.3.tgz#0338631ca3c39b4fb425b699d494cab17f5bb7eb"
-  integrity sha512-wmUyoQM/Xzmo62wgOdQAn5tl7u+IA1ZYK7qbuppi+3E+Gj4hlUxVHjInulieWrd0SfHi/ADriTb5ILJ/lsJrSg==
+pg@8.5.1:
+  version "8.5.1"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-8.5.1.tgz#34dcb15f6db4a29c702bf5031ef2e1e25a06a120"
+  integrity sha512-9wm3yX9lCfjvA98ybCyw2pADUivyNWT/yIP4ZcDVpMN0og70BUWYEGXPCTAQdGTAqnytfRADb7NERrY1qxhIqw==
   dependencies:
     buffer-writer "2.0.0"
     packet-reader "1.0.0"
-    pg-connection-string "^2.3.0"
-    pg-pool "^3.2.1"
-    pg-protocol "^1.2.5"
+    pg-connection-string "^2.4.0"
+    pg-pool "^3.2.2"
+    pg-protocol "^1.4.0"
     pg-types "^2.1.0"
     pgpass "1.x"
-    semver "4.3.2"
 
 pg@^8.0.3:
   version "8.2.1"
@@ -12212,6 +12226,20 @@ pg@^8.0.3:
     pg-connection-string "^2.2.3"
     pg-pool "^3.2.1"
     pg-protocol "^1.2.4"
+    pg-types "^2.1.0"
+    pgpass "1.x"
+    semver "4.3.2"
+
+pg@^8.2.1:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-8.3.3.tgz#0338631ca3c39b4fb425b699d494cab17f5bb7eb"
+  integrity sha512-wmUyoQM/Xzmo62wgOdQAn5tl7u+IA1ZYK7qbuppi+3E+Gj4hlUxVHjInulieWrd0SfHi/ADriTb5ILJ/lsJrSg==
+  dependencies:
+    buffer-writer "2.0.0"
+    packet-reader "1.0.0"
+    pg-connection-string "^2.3.0"
+    pg-pool "^3.2.1"
+    pg-protocol "^1.2.5"
     pg-types "^2.1.0"
     pgpass "1.x"
     semver "4.3.2"
@@ -14507,10 +14535,10 @@ specificity@^0.4.1:
   resolved "https://registry.yarnpkg.com/specificity/-/specificity-0.4.1.tgz#aab5e645012db08ba182e151165738d00887b019"
   integrity sha512-1klA3Gi5PD1Wv9Q0wUoOQN1IWAuPu0D1U03ThXTr0cJ20+/iq2tHSDnK7Kk/0LXJ1ztUB2/1Os0wKmfyNgUQfg==
 
-spex@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/spex/-/spex-3.0.2.tgz#7d0df635d92210847d5d92ce8abf45dfba3a8549"
-  integrity sha512-ZNCrOso+oNv5P01HCO4wuxV9Og5rS6ms7gGAqugfBPjx1QwfNXJI3T02ldfaap1O0dlT1sB0Rk+mhDqxt3Z27w==
+spex@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/spex/-/spex-3.2.0.tgz#fa4a21922407e112624977b445a6d634578a1127"
+  integrity sha512-9srjJM7NaymrpwMHvSmpDeIK5GoRMX/Tq0E8aOlDPS54dDnDUIp30DrP9SphMPEETDLzEM9+4qo+KipmbtPecg==
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
