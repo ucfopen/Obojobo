@@ -21,6 +21,7 @@
 		"jest": true,
 		"node": true
 	},
+	"ignorePatterns": ["**/migrations/*.js"],
 	"rules": {
 		"array-callback-return": "error",
 		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],

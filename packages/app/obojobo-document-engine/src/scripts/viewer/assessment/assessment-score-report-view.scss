@@ -35,7 +35,7 @@
 			}
 
 			&.divider {
-				height: 1px; /* stylelint-disable-line unit-blacklist */
+				height: 1px; /* stylelint-disable-line unit-disallowed-list */
 				border: none;
 				background: $color-hr;
 			}

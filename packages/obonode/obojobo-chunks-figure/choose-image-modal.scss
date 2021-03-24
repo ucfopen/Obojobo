@@ -31,8 +31,8 @@
 		}
 
 		#fileupload {
-			width: 0.1px; /* stylelint-disable-line unit-blacklist */
-			height: 0.1px; /* stylelint-disable-line unit-blacklist */
+			width: 0.1px; /* stylelint-disable-line unit-disallowed-list */
+			height: 0.1px; /* stylelint-disable-line unit-disallowed-list */
 			opacity: 0;
 			overflow: hidden;
 			position: absolute;
@@ -63,7 +63,7 @@
 	}
 
 	.choose-image--divider {
-		/* stylelint-disable-next-line unit-blacklist */
+		/* stylelint-disable-next-line unit-disallowed-list */
 		height: 1px;
 		/* stylelint-disable-next-line sh-waqar/declaration-use-variable */
 		background-color: darken($color-bg2, 30%);
