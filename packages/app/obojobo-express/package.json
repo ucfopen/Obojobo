@@ -57,7 +57,7 @@
 		"express-validator": "^5.2.0",
 		"file-type": "^12.4.2",
 		"glob": "^7.1.6",
-		"is-svg": "^4.2.1",
+		"is-svg": "^4.3.1",
 		"json-inflector": "^1.1.0",
 		"moment": "^2.29.1",
 		"morgan": "~1.10.0",
