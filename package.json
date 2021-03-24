@@ -22,21 +22,17 @@
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
-		"test:ci:each": "lerna run test:ci"
+		"test:ci:each": "lerna run test:ci",
+		"postinstall": "husky install"
 	},
 	"devDependencies": {
-		"husky": "^4.3.0",
+		"husky": "^5.2.0",
 		"jest-runner-eslint": "^0.10.0",
 		"lerna": "^3.22.1",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
 		"node-gyp": "^6.1.0"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "yarn precommit"
-		}
 	},
 	"jest": {
 		"projects": [
