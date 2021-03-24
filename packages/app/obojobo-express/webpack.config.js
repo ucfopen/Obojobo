@@ -48,9 +48,7 @@ module.exports =
 					// Create React SVG Components when imported from js/jsx files
 					{
 						test: /\.svg$/,
-						issuer: {
-							test: /\.js$/
-						},
+						issuer: /\.js$/,
 						use: [
 							{
 								loader: '@svgr/webpack',
@@ -71,9 +69,7 @@ module.exports =
 					// Load SVGs into strings when imported elsewhere
 					{
 						test: /\.svg$/,
-						issuer: {
-							test: /\.scss$/
-						},
+						issuer: /\.scss$/,
 						use: {
 							loader: 'svg-url-loader',
 							options: {
@@ -96,19 +92,20 @@ module.exports =
 						test: /\.s?css$/,
 						use: [
 							MiniCssExtractPlugin.loader,
-							'css-loader',
+							'css-loader?url=false',
 							{
 								loader: 'postcss-loader',
 								options: {
-									ident: 'postcss',
-									plugins: [require('autoprefixer')]
+									postcssOptions: {
+										plugins: [require('autoprefixer')]
+									}
 								}
 							},
 							{
 								loader: 'sass-loader',
 								options: {
 									// expose SASS variable for build environment
-									prependData: `$is_production: '${is_production}';`
+									additionalData: `$is_production: '${is_production}';`
 								}
 							}
 						]
@@ -139,13 +136,16 @@ module.exports =
 				'slate-react': 'SlateReact'
 			},
 			plugins: [
-				new WatchIgnorePlugin([
-					path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')
-				]),
+				new WatchIgnorePlugin({
+					paths: [path.join(__dirname, 'server', 'public', 'compiled', 'manifest.json')]
+				}),
 				new MiniCssExtractPlugin({ filename: `${filename}.css` }),
 				new WebpackManifestPlugin({ publicPath: '/static/' }),
 				// Ignore all locale files of moment.js
-				new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+				new webpack.IgnorePlugin({
+					resourceRegExp: /^\.\/locale$/,
+					contextRegExp: /moment$/
+				})
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],
