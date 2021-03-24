@@ -32,7 +32,7 @@
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
-		"node-gyp": "^6.1.0"
+		"node-gyp": "^7.1.2"
 	},
 	"jest": {
 		"projects": [
