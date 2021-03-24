@@ -61,7 +61,8 @@
 		  "files": ["*.test.js"],
 		  "rules": {
 			"no-undefined": 0,
-			"no-console": 0
+			"no-console": 0,
+			"react/display-name": 0
 		  }
 		}
 	  ]
