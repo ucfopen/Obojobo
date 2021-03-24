@@ -57,11 +57,17 @@
 		@include pad();
 
 		.container {
-			max-width: 18em;
-
+			.figure-box,
 			img {
+				max-width: 18em;
+				margin: auto;
 				width: 100%;
 				box-sizing: border-box;
+			}
+
+			figcaption.is-image-width {
+				max-width: 22em;
+				margin: auto;
 			}
 		}
 	}
@@ -78,6 +84,7 @@
 		}
 
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				box-sizing: border-box;
@@ -87,6 +94,7 @@
 
 	&.large {
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				border: none;

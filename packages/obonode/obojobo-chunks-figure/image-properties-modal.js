@@ -4,6 +4,7 @@ import React from 'react'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import ChooseImageModal from './choose-image-modal'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 import Image from './image'
 import { isUUID } from './utils'
 
@@ -20,6 +21,7 @@ class ImageProperties extends React.Component {
 			size: 100,
 			height: 100,
 			width: 100,
+			captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 			isChoosingImage: !this.props.content.url && this.props.content.url !== '',
 			urlInputText: isUUID(props.content.url) ? null : props.content.url,
 			...props.content
@@ -31,6 +33,7 @@ class ImageProperties extends React.Component {
 		this.handleWidthTextChange = this.handleWidthTextChange.bind(this)
 		this.focusOnFirstElement = this.focusOnFirstElement.bind(this)
 		this.handleAltTextChange = this.handleAltTextChange.bind(this)
+		this.handleCaptionWidthChange = this.handleCaptionWidthChange.bind(this)
 		this.onOpenChoosingImageModal = this.onOpenChoosingImageModal.bind(this)
 	}
 
@@ -38,6 +41,12 @@ class ImageProperties extends React.Component {
 		const alt = event.target.value
 
 		this.setState({ alt })
+	}
+
+	handleCaptionWidthChange(event) {
+		const captionWidth = event.target.value
+
+		this.setState({ captionWidth })
 	}
 
 	handleWidthTextChange(event) {
@@ -134,6 +143,16 @@ class ImageProperties extends React.Component {
 							size="50"
 							placeholder="Describe the Image"
 						/>
+
+						<label htmlFor="obojobo-draft--chunks--figure--caption-width">Caption Width:</label>
+						<select
+							id="obojobo-draft--chunks--figure--caption-width"
+							value={this.state.captionWidth || 'image-width'}
+							onChange={this.handleCaptionWidthChange}
+						>
+							<option value="image-width">Restrict caption to the same width as the image</option>
+							<option value="max-width">Allow caption to extend past the image width</option>
+						</select>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
 						<div

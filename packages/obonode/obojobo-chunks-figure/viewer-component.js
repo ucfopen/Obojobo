@@ -33,7 +33,7 @@ const Figure = props => {
 					<figure unselectable="on" style={customStyle}>
 						<Image chunk={props.model} />
 						{props.model.modelState.textGroup.first.text.length > 0 ? (
-							<figcaption>
+							<figcaption className={'is-image-width'}>
 								<TextGroupEl
 									parentModel={props.model}
 									textItem={props.model.modelState.textGroup.first}
