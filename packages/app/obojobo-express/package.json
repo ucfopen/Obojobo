@@ -67,7 +67,7 @@
 		"responsive-loader": "^1.2.0",
 		"serve-favicon": "~2.5.0",
 		"sharp": "0.27.2",
-		"uuid": "^8.3.0"
+		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {
 		"obojobo-document-engine": "^11.2.0-alpha.0",
