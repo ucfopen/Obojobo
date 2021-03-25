@@ -6,6 +6,7 @@ import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-mode
 require('./viewer') // used to register this oboModel
 require('../NumericChoice/viewer') // used to register the MCChoice chunk as a dep
 require('../NumericFeedback/viewer') // // dependency on Obojobo.Chunks.MCAssessment.NumericFeedback
+require('obojobo-chunks-text/viewer')
 
 describe('NumericFeedback', () => {
 	test('NumericFeedback component for a correct item', () => {

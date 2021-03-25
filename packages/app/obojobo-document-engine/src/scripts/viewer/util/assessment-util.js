@@ -161,20 +161,11 @@ const AssessmentUtil = {
 	isAttemptHistoryLoadedForModel(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
-			return null
+			return false
 		}
 
 		return assessment.attemptHistoryNetworkState === 'loaded'
 	},
-
-	// getAssessmentStep(state, model) {
-	// 	const machine = AssessmentUtil.getAssessmentMachineForModel(state, model)
-	// 	if (!machine) {
-	// 		return null
-	// 	}
-
-	// 	return machine.step
-	// },
 
 	isLTIScoreNeedingToBeResynced(state, model) {
 		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -192,17 +183,6 @@ const AssessmentUtil = {
 			default:
 				return true
 		}
-	},
-
-	getRecordedResponseCount(questionModels, questionState, context) {
-		const count = (acc, questionModel) => {
-			if (QuestionUtil.isResponseRecorded(questionState, questionModel, context)) {
-				return acc + 1
-			}
-			return acc
-		}
-
-		return questionModels.reduce(count, 0)
 	},
 
 	getCurrentAttemptQuestionsStatus(assessmentState, questionState, model, context) {
@@ -309,31 +289,6 @@ const AssessmentUtil = {
 
 		return CurrentAssessmentStates.UNKNOWN
 	},
-
-	// isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-	// 	const questionStatuses = AssessmentUtil.getCurrentAttemptQuestionsStatus(
-	// 		assessmentState,
-	// 		questionState,
-	// 		model,
-	// 		context
-	// 	)
-
-	// 	return questionStatuses && questionStatuses.recorded.length === questionStatuses.all.length
-	// },
-
-	// isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-	// 	// exit if there is no current attempt
-	// 	if (!AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)) {
-	// 		return null
-	// 	}
-
-	// 	const models = model.children.at(1).children.models
-	// 	const responseCount = this.getRecordedResponseCount(models, questionState, context)
-
-	// 	// is complete if the number of answered questions is
-	// 	// equal to the total number of questions
-	// 	return responseCount === models.length
-	// },
 
 	isInAssessment(state) {
 		if (!state) return false

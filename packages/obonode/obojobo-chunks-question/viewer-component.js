@@ -142,7 +142,7 @@ export default class Question extends OboQuestionComponent {
 
 		const feedbackText = getLabel(
 			modelState.correctLabels,
-			modelState.incorrectLabel,
+			modelState.incorrectLabels,
 			calculatedScoreResponse.score,
 			this.props.mode === 'review',
 			isSurvey,
@@ -309,41 +309,44 @@ export default class Question extends OboQuestionComponent {
 
 	getShouldShowRevealAnswerButton() {
 		const mode = this.getMode()
-		const type = this.props.model.modelState.type
+		const questionType = this.props.model.modelState.type
 		const questionAssessmentModel = this.constructor.getQuestionAssessmentModel(this.props.model)
 		const score = this.getScore()
-
-		let revealAnswerMode = this.props.model.modelState.revealAnswer
+		const questionRevealAnswer = this.props.model.modelState.revealAnswer
 
 		// If we don't have a reference yet to the assessment component then abort
-		if (!this.assessmentComponentRef || !this.assessmentComponentRef.current) return false
-
 		// Should never show the Reveal Answer button on survey questions or outside of practice
-		if (mode !== 'practice' || type !== 'default') {
-			return false
-		}
-
-		// If the mode is 'default' then we ask the assessment component what to do:
-		if (revealAnswerMode === 'default') {
-			revealAnswerMode = this.assessmentComponentRef.current.getRevealAnswerDefault(
+		if (
+			this.assessmentComponentRef &&
+			this.assessmentComponentRef.current &&
+			mode === 'practice' &&
+			questionType === 'default'
+		) {
+			const assessmentRevealAnswerDefault = this.assessmentComponentRef.current.getRevealAnswerDefault(
 				this.props.model,
 				questionAssessmentModel
 			)
+
+			// If questionRevealAnswer is 'default' then we defer to the assessment component
+			const revealAnswerMode =
+				questionRevealAnswer === 'default' ? assessmentRevealAnswerDefault : questionRevealAnswer
+
+			switch (revealAnswerMode) {
+				case 'always':
+					// Show when the question is unanswered or incorrect:
+					return score !== 100
+
+				case 'when-incorrect':
+					// Show when the question has been answered incorrectly:
+					return score !== null && score < 100
+
+				case 'never':
+				default:
+					return false
+			}
 		}
 
-		switch (revealAnswerMode) {
-			case 'always':
-				// Show when the question is unanswered or incorrect:
-				return score !== 100
-
-			case 'when-incorrect':
-				// Show when the question has been answered incorrectly:
-				return score !== null && score < 100
-
-			case 'never':
-			default:
-				return false
-		}
+		return false
 	}
 
 	renderResponseSendState(responseSendState) {

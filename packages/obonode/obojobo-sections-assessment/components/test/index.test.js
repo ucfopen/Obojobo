@@ -26,6 +26,38 @@ describe('Test', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Test component (isAttemptSubmitting)', () => {
+		const model = {
+			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
+		}
+		const moduleData = {
+			focusState: {}
+		}
+
+		const component = renderer.create(
+			<Test model={model} moduleData={moduleData} isAttemptSubmitting={true} />
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Test component (isAttemptReadyToSubmit)', () => {
+		const model = {
+			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
+		}
+		const moduleData = {
+			focusState: {}
+		}
+
+		const component = renderer.create(
+			<Test model={model} moduleData={moduleData} isAttemptReadyToSubmit={true} />
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('Test component with completeAttempt', () => {
 		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')

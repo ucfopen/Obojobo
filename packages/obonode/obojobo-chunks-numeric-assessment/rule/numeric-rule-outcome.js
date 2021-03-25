@@ -125,57 +125,6 @@ module.exports = class NumericRuleOutcome {
 	}
 
 	/**
-	 * Returns a new NumericEntry with the value rounded based on the rounding setting
-	 * in the given rule. This rounded NumericEntry will be used in calculating the
-	 * correctness of a student's answer.
-	 * @param {NumericEntry} numericEntry
-	 * @param {NumericRule} rule
-	 * @return {NumericEntry}
-	 */
-	static getRoundedCorrectAnswerBigValueRange(studentNumericEntry, rule) {
-		const studentRoundedNumericInstance = studentNumericEntry.clone().numericInstance
-		const roundedCorrectAnswerValueRange = rule.value.clone()
-
-		switch (rule.round) {
-			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
-				const numStudentDecimalDigits = studentRoundedNumericInstance.numDecimalDigits
-				roundedCorrectAnswerValueRange.min.numericInstance.round(numStudentDecimalDigits)
-				roundedCorrectAnswerValueRange.max.numericInstance.round(numStudentDecimalDigits)
-
-				break
-			}
-
-			case ROUND_TYPE_ROUND_SIG_FIGS: {
-				const minNumSigFigs = parseInt(rule.sigFigs.min, 10)
-				roundedCorrectAnswerValueRange.min.numericInstance.round(minNumSigFigs)
-				roundedCorrectAnswerValueRange.max.numericInstance.round(minNumSigFigs)
-
-				break
-			}
-		}
-
-		return roundedCorrectAnswerValueRange.toBigValueRange()
-	}
-
-	static getRoundedStudentBigValue(studentNumericEntry, rule) {
-		const roundedStudentNumericInstance = studentNumericEntry.clone().numericInstance
-
-		switch (rule.round) {
-			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
-				roundedStudentNumericInstance.round(parseInt(rule.value.min.numericInstance.decimals, 10))
-				break
-			}
-
-			case ROUND_TYPE_ROUND_SIG_FIGS: {
-				roundedStudentNumericInstance.round(parseInt(rule.sigFigs.min, 10))
-				break
-			}
-		}
-
-		return roundedStudentNumericInstance.bigValue
-	}
-
-	/**
 	 * @param {Numeric} numericInstance
 	 * @param {NumericRule} rule
 	 * @return {boolean}

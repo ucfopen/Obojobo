@@ -3,6 +3,7 @@ import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import ViewerAPI from '../../../src/scripts/viewer/util/viewer-api'
+import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return {
@@ -34,16 +35,19 @@ jest.mock('../../../src/scripts/common/util/uuid', () => {
 
 describe('QuestionStore', () => {
 	let QuestionStoreClass
+	let restoreConsole
 
 	beforeEach(() => {
 		// Remove any added dispatcher events and create a brand new QuestionStore instance
 		// since the imported QuestionStore is actually a class instance!
 		Dispatcher.off()
 		QuestionStoreClass = QuestionStore.constructor
+		restoreConsole = mockConsole('error')
 	})
 
 	afterEach(() => {
 		jest.resetAllMocks()
+		restoreConsole()
 	})
 
 	test('constructor adds event listeners for the question events', () => {
@@ -359,7 +363,7 @@ describe('QuestionStore', () => {
 		const questionStore = new QuestionStoreClass()
 
 		const postResponseSpy = jest
-			.spyOn(QuestionStoreClass.prototype, 'postResponse')
+			.spyOn(QuestionStoreClass.prototype, 'getPostResponsePromise')
 			.mockImplementation(id => new Promise(res => res(id)))
 
 		const sendingQuestion2Promise = new Promise(res => res('mockQuestionId2'))
@@ -506,9 +510,29 @@ describe('QuestionStore', () => {
 				error: 'mock-error'
 			}
 		})
+		//eslint-disable-next-line no-console
+		expect(console.error).toHaveBeenCalledWith('Unable to send all responses', Error('mock-error'))
 
 		getPostResponsePromisesSpy.mockRestore()
 		dispatcherSpy.mockRestore()
+	})
+
+	test('question:sendResponse calls sendResponse', () => {
+		const questionStore = new QuestionStoreClass()
+		questionStore.state = {
+			contexts: {
+				mockContext: {}
+			}
+		}
+
+		const spy = jest.spyOn(QuestionStoreClass.prototype, 'sendResponse').mockResolvedValueOnce({})
+		expect(spy).not.toHaveBeenCalled()
+
+		Dispatcher.trigger('question:sendResponse', { value: {} })
+
+		expect(spy).toHaveBeenCalled()
+
+		spy.mockRestore()
 	})
 
 	test('sendResponse returns false if context not found', () => {
@@ -543,7 +567,7 @@ describe('QuestionStore', () => {
 		const questionStore = new QuestionStoreClass()
 		const mockPromise = new Promise(res => res('mock-success'))
 		const postResponseSpy = jest
-			.spyOn(QuestionStoreClass.prototype, 'postResponse')
+			.spyOn(QuestionStoreClass.prototype, 'getPostResponsePromise')
 			.mockImplementation(() => mockPromise)
 
 		questionStore.state = {
@@ -582,7 +606,7 @@ describe('QuestionStore', () => {
 			throw new Error('mock-error')
 		})
 		const postResponseSpy = jest
-			.spyOn(QuestionStoreClass.prototype, 'postResponse')
+			.spyOn(QuestionStoreClass.prototype, 'getPostResponsePromise')
 			.mockImplementation(() => mockPromise)
 		const onPostResponseErrorSpy = jest
 			.spyOn(QuestionStoreClass.prototype, 'onPostResponseError')
@@ -609,17 +633,13 @@ describe('QuestionStore', () => {
 		consoleSpy.mockRestore()
 	})
 
-	test('postResponse updates state, fires an event and calls onPostReponseSuccess if the request succeeds', async () => {
+	test('getPostResponsePromise updates state, fires an event and calls onPostReponseSuccess if the request succeeds', async () => {
 		const questionStore = new QuestionStoreClass()
 		const onPostResponseSuccessSpy = jest
 			.spyOn(QuestionStoreClass.prototype, 'onPostResponseSuccess')
 			.mockImplementation(jest.fn())
 
-		ViewerAPI.postEvent.mockResolvedValueOnce({
-			response: {
-				status: 'ok'
-			}
-		})
+		ViewerAPI.postEvent.mockResolvedValueOnce({ status: 'ok' })
 
 		questionStore.state = {
 			contexts: {
@@ -634,7 +654,7 @@ describe('QuestionStore', () => {
 			}
 		}
 
-		await questionStore.postResponse('mockId', 'mockContext')
+		await questionStore.getPostResponsePromise('mockId', 'mockContext')
 		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
 			draftId: 'mockDraftId',
 			action: 'question:setResponse',
@@ -665,7 +685,7 @@ describe('QuestionStore', () => {
 		onPostResponseSuccessSpy.mockRestore()
 	})
 
-	test('postResponse calls onPostReponseError if the request fails', async () => {
+	test('getPostResponsePromise calls onPostReponseError if the request fails', async () => {
 		const questionStore = new QuestionStoreClass()
 		const onPostResponseErrorSpy = jest
 			.spyOn(QuestionStoreClass.prototype, 'onPostResponseError')
@@ -686,7 +706,7 @@ describe('QuestionStore', () => {
 			}
 		}
 
-		await questionStore.postResponse('mockId', 'mockContext')
+		await questionStore.getPostResponsePromise('mockId', 'mockContext')
 
 		expect(onPostResponseErrorSpy).toHaveBeenCalledWith(
 			Error('mock-error'),
@@ -763,7 +783,7 @@ describe('QuestionStore', () => {
 							time: { mockDate: true },
 							sendState: 'notSent',
 							details: {
-								id: 'mockId',
+								questionId: 'mockId',
 								response: 'mockResponse',
 								targetId: 'mockTargetId',
 								context: 'mockContext',
@@ -830,7 +850,7 @@ describe('QuestionStore', () => {
 							time: { mockDate: true },
 							sendState: 'notSent',
 							details: {
-								id: 'mockId',
+								questionId: 'mockId',
 								response: 'mockResponse',
 								targetId: 'mockTargetId',
 								context: 'mockContext',
@@ -1075,6 +1095,45 @@ describe('QuestionStore', () => {
 			contexts: {
 				mockContext: {
 					viewing: null,
+					viewedQuestions: {},
+					revealedQuestions: {}
+				}
+			}
+		})
+	})
+
+	test('hide updates state, fires an event and returns true (even when not viewing that question)', () => {
+		const questionStore = new QuestionStoreClass()
+
+		questionStore.state = {
+			contexts: {
+				mockContext: {
+					viewing: 'someOtherId',
+					viewedQuestions: {
+						mockId: true
+					},
+					revealedQuestions: {
+						mockId: true
+					}
+				}
+			}
+		}
+
+		expect(questionStore.hide({ context: 'mockContext', id: 'mockId' })).toBe(true)
+		expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			draftId: 'mockDraftId',
+			action: 'question:hide',
+			eventVersion: '1.1.0',
+			visitId: 'mockVisitId',
+			payload: {
+				questionId: 'mockId',
+				context: 'mockContext'
+			}
+		})
+		expect(questionStore.state).toEqual({
+			contexts: {
+				mockContext: {
+					viewing: 'someOtherId',
 					viewedQuestions: {},
 					revealedQuestions: {}
 				}
@@ -1516,7 +1575,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test.only('scoreSet for "100" updates state, clears fade effect, fires an event and returns true', () => {
+	test('scoreSet for "100" updates state, clears fade effect, fires an event and returns true', () => {
 		const questionStore = new QuestionStoreClass()
 
 		questionStore.state = {

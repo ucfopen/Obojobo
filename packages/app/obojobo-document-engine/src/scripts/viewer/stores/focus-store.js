@@ -109,7 +109,7 @@ class FocusStore extends Store {
 
 	_clear() {
 		// console.log('@TODO - This causes infinite loops!')
-		// return
+		return
 		const visualFocusTarget = this.state.visualFocusTarget
 
 		this.init()

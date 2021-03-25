@@ -254,7 +254,7 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
           <p
             className="result incorrect"
           >
-            Incorrect - You received a 0% on this question.
+            mock-incorrect-labels - You received a 0% on this question.
           </p>
         </div>
       </div>
@@ -769,7 +769,7 @@ exports[`Question Question in practice answered incorrectly 1`] = `
           <p
             className="result incorrect"
           >
-            Incorrect - You received a 0% on this question.
+            mock-incorrect-labels - You received a 0% on this question.
           </p>
         </div>
       </div>
@@ -825,7 +825,7 @@ exports[`Question Question in practice answered incorrectly 1`] = `
           <p
             className="result incorrect"
           >
-            Incorrect
+            mock-incorrect-labels
           </p>
         </div>
       </div>
@@ -2431,4 +2431,44 @@ exports[`Question Survey question in review not answered 1`] = `
     </div>
   </div>
 </form>
+`;
+
+exports[`Question renderResponseSendState renders as expected 1`] = `
+<span
+  className="is-response-state-not-sent"
+>
+   
+</span>
+`;
+
+exports[`Question renderResponseSendState renders as expected 2`] = `
+<span
+  className="is-response-state-sending"
+>
+  <Throbber />
+</span>
+`;
+
+exports[`Question renderResponseSendState renders as expected 3`] = `
+<span
+  className="is-response-state-recorded"
+>
+  Answer Saved
+</span>
+`;
+
+exports[`Question renderResponseSendState renders as expected 4`] = `
+<span
+  className="is-response-state-error"
+>
+  ✖ Error sending response, try again
+</span>
+`;
+
+exports[`Question renderResponseSendState renders as expected 5`] = `
+<span
+  className="is-response-state-other"
+>
+   
+</span>
 `;

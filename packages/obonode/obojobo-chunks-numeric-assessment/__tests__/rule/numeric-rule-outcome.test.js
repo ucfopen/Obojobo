@@ -304,6 +304,38 @@ describe('NumericRuleOutcome', () => {
 		}
 	)
 
+	test.each`
+		ruleType        | isValueInRange | result
+		${'decimal'}    | ${true}        | ${true}
+		${'scientific'} | ${true}        | ${true}
+		${'hex'}        | ${true}        | ${true}
+		${'octal'}      | ${true}        | ${true}
+		${'binary'}     | ${true}        | ${true}
+		${'fractional'} | ${true}        | ${true}
+		${'decimal'}    | ${false}       | ${false}
+		${'scientific'} | ${false}       | ${false}
+		${'hex'}        | ${false}       | ${false}
+		${'octal'}      | ${false}       | ${false}
+		${'binary'}     | ${false}       | ${false}
+		${'fractional'} | ${false}       | ${true}
+	`(
+		`getIsExpectedNumSigFigs ruleType=$ruleType, isValueInRange=$isValueInRange = $result`,
+		({ ruleType, isValueInRange, result }) => {
+			expect(
+				NumericRuleOutcome.getIsExpectedNumSigFigs(
+					{
+						type: ruleType
+					},
+					{
+						sigFigs: {
+							isValueInRange: () => isValueInRange
+						}
+					}
+				)
+			).toBe(result)
+		}
+	)
+
 	test('constructor sets properties as expected', () => {
 		const o = new NumericRuleOutcome(new NumericEntry('42'), new NumericRule({ value: '42' }))
 

@@ -15,6 +15,33 @@ exports[`NumericFeedback NumericFeedback component for a correct item 1`] = `
   >
     . Feedback for this answer:
   </span>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="choice1-feedback-text"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Text"
+    id="obo-choice1-feedback-text"
+    tabIndex={-1}
+  >
+    <div
+      className="text-chunk obojobo-draft--chunks--single-text pad"
+    >
+      <span
+        className="obo-text align-left"
+        data-group-index={0}
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text 2
+            </span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
 
@@ -33,5 +60,32 @@ exports[`NumericFeedback NumericFeedback component for an incorrect item 1`] = `
   >
     . Feedback for this answer:
   </span>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="choice1-feedback-text"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Text"
+    id="obo-choice1-feedback-text"
+    tabIndex={-1}
+  >
+    <div
+      className="text-chunk obojobo-draft--chunks--single-text pad"
+    >
+      <span
+        className="obo-text align-left"
+        data-group-index={0}
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text 2
+            </span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;

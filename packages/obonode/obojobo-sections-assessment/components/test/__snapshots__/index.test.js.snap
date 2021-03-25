@@ -1,5 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Test Test component (isAttemptReadyToSubmit) 1`] = `
+<div
+  className="test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "MockComponent",
+            },
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+  <div
+    className="submit-button"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
+    >
+      <button
+        aria-label="Submit"
+        className="button"
+        contentEditable={false}
+        type="button"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test Test component (isAttemptSubmitting) 1`] = `
+<div
+  className="test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "MockComponent",
+            },
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+  <div
+    className="submit-button"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
+    >
+      <button
+        aria-label="Loading ..."
+        className="button"
+        contentEditable={false}
+        disabled={true}
+        type="button"
+      >
+        Loading ...
+      </button>
+    </div>
+    <span
+      aria-hidden={true}
+      className="incomplete-notice"
+    >
+      (Not all questions have been saved)
+    </span>
+  </div>
+</div>
+`;
+
 exports[`Test Test component 1`] = `
 <div
   className="test"

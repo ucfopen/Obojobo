@@ -1,8 +1,8 @@
 {
 	"name": "obojobo-chunks-numeric-assessment",
-	"version": "6.0.1",
+	"version": "11.1.1",
 	"license": "AGPL-3.0-only",
-	"description": "MCAssessment chunk for Obojobo",
+	"description": "NumericAssessment chunk for Obojobo",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
@@ -13,15 +13,11 @@
 		"precommit": "lint-staged"
 	},
 	"lint-staged": {
-		"**/*.js": [
-			"eslint"
-		],
 		"**/*.scss": [
 			"stylelint"
 		],
 		"**/*.{js,scss}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"prettier": {
@@ -31,12 +27,9 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-chunks-question": "^6.0.1",
-		"obojobo-chunks-text": "^6.0.1",
-		"obojobo-lib-utils": "^6.0.1"
-	},
-	"devDependencies": {
-		"lint-staged": "^9.4.1"
+		"obojobo-chunks-question": "^11.1.1",
+		"obojobo-chunks-text": "^11.1.1",
+		"obojobo-lib-utils": "^11.1.1"
 	},
 	"jest": {
 		"testMatch": [

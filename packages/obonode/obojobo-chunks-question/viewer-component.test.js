@@ -51,7 +51,8 @@ const questionJSON = {
 			id: 'mc-assessment-id',
 			type: 'ObojoboDraft.Chunks.MCAssessment',
 			content: {
-				correctLabels: 'mock-correct-labels'
+				correctLabels: 'mock-correct-labels',
+				incorrectLabels: 'mock-incorrect-labels'
 			},
 			children: [
 				{
@@ -784,5 +785,811 @@ describe('Question', () => {
 
 		expect(didFocus).toBe(false)
 		expect(focus).not.toHaveBeenCalled()
+	})
+
+	test('onFormChange does nothing if in review mode', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		const spy = jest.spyOn(QuestionUtil, 'setResponse')
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={true} />
+		)
+
+		component.getInstance().assessmentComponentRef = {
+			current: {
+				handleFormChange: jest.fn()
+			}
+		}
+
+		const event = jest.fn()
+		component.getInstance().onFormChange(event)
+
+		expect(
+			component.getInstance().assessmentComponentRef.current.handleFormChange
+		).not.toHaveBeenCalled()
+		expect(spy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		spy.mockRestore()
+	})
+
+	test('onFormChange sets the response, calls assessment components handleFormChange method and updates nextFocus if not in review mode', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext:subContext1:subContext2'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		const spy = jest.spyOn(QuestionUtil, 'setResponse')
+		const getRespSpy = jest.spyOn(QuestionUtil, 'getResponse').mockReturnValue('mock-response')
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={false} />
+		)
+
+		component.getInstance().assessmentComponentRef = {
+			current: {
+				handleFormChange: jest.fn().mockReturnValue({
+					state: 'mock-state',
+					targetId: 'mock-target-id',
+					sendResponseImmediately: 'mock-immediate'
+				})
+			}
+		}
+
+		const event = jest.fn()
+		component.getInstance().onFormChange(event)
+
+		expect(
+			component.getInstance().assessmentComponentRef.current.handleFormChange
+		).toHaveBeenCalledWith(event, 'mock-response')
+		expect(spy).toHaveBeenCalledWith(
+			'id',
+			'mock-state',
+			'mock-target-id',
+			'mockContext:subContext1:subContext2',
+			'subContext1',
+			'subContext2',
+			'mock-immediate'
+		)
+		expect(component.getInstance().nextFocus).toBe('results')
+
+		spy.mockRestore()
+		getRespSpy.mockRestore()
+	})
+
+	test('onFormSubmit prevents event default, does nothing else if mode is not practice', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext:subContext1:subContext2'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const getModeSpy = jest.spyOn(Question.prototype, 'getMode').mockReturnValue('not-practice')
+		const submitRespSpy = jest.spyOn(Question.prototype, 'submitResponse')
+
+		const event = { preventDefault: jest.fn(), target: { reset: jest.fn() } }
+		component.getInstance().onFormSubmit(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.target.reset).not.toHaveBeenCalled()
+		expect(submitRespSpy).not.toHaveBeenCalled()
+
+		getModeSpy.mockRestore()
+		submitRespSpy.mockRestore()
+	})
+
+	test('onFormSubmit prevents event default, submits the response and resets the form if mode is practice', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext:subContext1:subContext2'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const getModeSpy = jest.spyOn(Question.prototype, 'getMode').mockReturnValue('practice')
+		const submitRespSpy = jest.spyOn(Question.prototype, 'submitResponse')
+
+		const event = { preventDefault: jest.fn(), target: { reset: jest.fn() } }
+		component.getInstance().onFormSubmit(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.target.reset).toHaveBeenCalled()
+		expect(submitRespSpy).toHaveBeenCalled()
+
+		getModeSpy.mockRestore()
+		submitRespSpy.mockRestore()
+	})
+
+	test('submitResponse calls scoreResponse, QuestionUtil.submitResponse if is a survey question', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'survey'
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const checkAnsSpy = jest.spyOn(QuestionUtil, 'checkAnswer')
+		const submitRespSpy = jest.spyOn(QuestionUtil, 'submitResponse')
+
+		component.getInstance().submitResponse()
+
+		expect(submitRespSpy).toHaveBeenCalledWith('id', 'mockContext')
+		expect(checkAnsSpy).not.toHaveBeenCalled()
+
+		checkAnsSpy.mockRestore()
+		submitRespSpy.mockRestore()
+	})
+
+	test('submitResponse calls scoreResponse, QuestionUtil.checkAnswer if NOT survey question', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'default'
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const checkAnsSpy = jest.spyOn(QuestionUtil, 'checkAnswer')
+		const submitRespSpy = jest.spyOn(QuestionUtil, 'submitResponse')
+
+		component.getInstance().submitResponse()
+
+		expect(checkAnsSpy).toHaveBeenCalledWith('id', 'mockContext')
+		expect(submitRespSpy).not.toHaveBeenCalled()
+
+		checkAnsSpy.mockRestore()
+		submitRespSpy.mockRestore()
+	})
+
+	test('scoreResponse does nothing if in review mode', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'default'
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={true} />
+		)
+		const spy = jest.spyOn(QuestionUtil, 'setScore')
+
+		component.getInstance().scoreResponse()
+
+		expect(spy).not.toHaveBeenCalled()
+
+		spy.mockRestore()
+	})
+
+	test('scoreResponse calls QuestionUtil.setScore when assessment has no details to return', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'default'
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={false} />
+		)
+		const spy = jest.spyOn(QuestionUtil, 'setScore')
+		component.getInstance().assessmentComponentRef = {
+			current: {
+				calculateScore: () => ({ score: 0, details: 'mock-details' }),
+				getDetails: () => null
+			}
+		}
+
+		component.getInstance().scoreResponse()
+
+		expect(spy).toHaveBeenCalledWith(
+			'id',
+			0,
+			'mock-details',
+			'mock-incorrect-labels',
+			null,
+			'mockContext'
+		)
+
+		spy.mockRestore()
+	})
+
+	test('scoreResponse calls QuestionUtil.setScore when assessment has details to return', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'default'
+
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} isReview={false} />
+		)
+		const spy = jest.spyOn(QuestionUtil, 'setScore')
+		component.getInstance().assessmentComponentRef = {
+			current: {
+				calculateScore: () => ({ score: 100, details: 'mock-details' }),
+				getDetails: () => 'mock-assessment-details'
+			}
+		}
+
+		component.getInstance().scoreResponse()
+
+		expect(spy).toHaveBeenCalledWith(
+			'id',
+			100,
+			'mock-details',
+			'mock-correct-labels',
+			'mock-assessment-details',
+			'mockContext'
+		)
+
+		spy.mockRestore()
+	})
+
+	test('onClickReset prevents event default, updates nextFocus and calls retry', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const spy = jest.spyOn(Question.prototype, 'retry')
+
+		const event = { preventDefault: jest.fn() }
+		component.getInstance().onClickReset(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(spy).toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).toBe('question')
+
+		spy.mockRestore()
+	})
+
+	test('onClickReveal prevents default, does not score response if not needed, calls reveal and updates nextFocus', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const revealSpy = jest.spyOn(Question.prototype, 'reveal')
+		const scoreRespSpy = jest.spyOn(Question.prototype, 'scoreResponse')
+		const hasUnscoredSpy = jest.spyOn(QuestionUtil, 'hasUnscoredResponse').mockReturnValue(false)
+
+		const event = { preventDefault: jest.fn() }
+		component.getInstance().onClickReveal(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(revealSpy).toHaveBeenCalled()
+		expect(scoreRespSpy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).toBe('answers')
+
+		revealSpy.mockRestore()
+		scoreRespSpy.mockRestore()
+		hasUnscoredSpy.mockRestore()
+	})
+
+	test('onClickReveal prevents default, scores response if needed, calls reveal and updates nextFocus', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const revealSpy = jest.spyOn(Question.prototype, 'reveal')
+		const scoreRespSpy = jest.spyOn(Question.prototype, 'scoreResponse')
+		const hasUnscoredSpy = jest.spyOn(QuestionUtil, 'hasUnscoredResponse').mockReturnValue(true)
+
+		const event = { preventDefault: jest.fn() }
+		component.getInstance().onClickReveal(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(revealSpy).toHaveBeenCalled()
+		expect(scoreRespSpy).toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).toBe('answers')
+
+		revealSpy.mockRestore()
+		scoreRespSpy.mockRestore()
+		hasUnscoredSpy.mockRestore()
+	})
+
+	test('retry calls QuestionUtil.retryQuestion with expected params', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(QuestionUtil, 'retryQuestion')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		component.getInstance().retry()
+
+		expect(spy).toHaveBeenCalledWith('id', 'mockContext')
+
+		spy.mockRestore()
+	})
+
+	test('reveal calls QuestionUtil.revealAnswer with expected params', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(QuestionUtil, 'revealAnswer')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		component.getInstance().reveal()
+
+		expect(spy).toHaveBeenCalledWith('id', 'mockContext')
+
+		spy.mockRestore()
+	})
+
+	test.each`
+		isAnswerRevealed | context               | mode
+		${false}         | ${'practice'}         | ${'practice'}
+		${false}         | ${'assessment'}       | ${'assessment'}
+		${false}         | ${'assessmentReview'} | ${'review'}
+		${true}          | ${'practice'}         | ${'review'}
+		${true}          | ${'assessment'}       | ${'review'}
+		${true}          | ${'assessmentReview'} | ${'review'}
+	`(
+		'getMode() with isAnswerRevealed="$isAnswerRevealed", context="$context" results in "$mode"',
+		({ isAnswerRevealed, context, mode }) => {
+			const moduleData = {
+				questionState: 'mockQuestionState',
+				navState: {
+					context
+				},
+				focusState: 'mockFocus'
+			}
+			const model = OboModel.create(questionJSON)
+
+			const spy = jest.spyOn(QuestionUtil, 'isAnswerRevealed').mockReturnValue(isAnswerRevealed)
+			const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+			expect(component.getInstance().getMode()).toBe(mode)
+
+			spy.mockRestore()
+		}
+	)
+
+	test('onClickShowExplanation prevents event default, updates nextFocus and calls QuestionUtil.showExplanation', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(QuestionUtil, 'showExplanation')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		const event = { preventDefault: jest.fn() }
+		component.getInstance().onClickShowExplanation(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).toBe('explanation')
+		expect(spy).toHaveBeenCalledWith('id', 'mockContext')
+
+		spy.mockRestore()
+	})
+
+	test('hideExplanation calls QuestionUtil.hideExplanation', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(QuestionUtil, 'hideExplanation')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		component.getInstance().hideExplanation()
+
+		expect(spy).toHaveBeenCalledWith('id', 'mockContext', 'user')
+
+		spy.mockRestore()
+	})
+
+	test('onClickHideExplanation prevents event default, calls hideExplanation', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(Question.prototype, 'hideExplanation')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		const event = { preventDefault: jest.fn() }
+		component.getInstance().onClickHideExplanation(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(spy).toHaveBeenCalled()
+
+		spy.mockRestore()
+	})
+
+	test('getFeedbackText returns QuestionUtil.getFeedbackTextForModel if it returns text', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest
+			.spyOn(QuestionUtil, 'getFeedbackTextForModel')
+			.mockReturnValue('mock-feedback-text')
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		expect(component.getInstance().getFeedbackText()).toBe('mock-feedback-text')
+
+		spy.mockRestore()
+	})
+
+	test('getFeedbackText returns getLabel if QuestionUtil.getFeedbackTextForModel does not return text', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const spy = jest.spyOn(QuestionUtil, 'getFeedbackTextForModel').mockReturnValue(null)
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+
+		expect(component.getInstance().getFeedbackText()).toBe('mock-incorrect-labels')
+
+		spy.mockRestore()
+	})
+
+	test.each`
+		assessmentComponentRef                                         | instructions
+		${null}                                                        | ${null}
+		${{ current: null }}                                           | ${null}
+		${{ current: { getInstructions: () => 'mock-instructions' } }} | ${'mock-instructions'}
+	`(
+		'getInstructions() with assessmentComponentRef="$assessmentComponentRef" = "$instructions"',
+		({ assessmentComponentRef, instructions }) => {
+			const moduleData = {
+				questionState: 'mockQuestionState',
+				navState: {
+					context: 'mockContext'
+				},
+				focusState: 'mockFocus'
+			}
+			const model = OboModel.create(questionJSON)
+
+			const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+			component.getInstance().assessmentComponentRef = assessmentComponentRef
+
+			expect(component.getInstance().getInstructions()).toBe(instructions)
+		}
+	)
+
+	test.each`
+		mode            | type         | revealAnswerMode    | score   | getRevealAnswerDefault | result
+		${'practice'}   | ${'default'} | ${'always'}         | ${0}    | ${null}                | ${true}
+		${'assessment'} | ${'default'} | ${'always'}         | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'always'}         | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'when-incorrect'} | ${0}    | ${null}                | ${true}
+		${'assessment'} | ${'default'} | ${'when-incorrect'} | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'when-incorrect'} | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'always'}         | ${null} | ${null}                | ${true}
+		${'assessment'} | ${'default'} | ${'always'}         | ${null} | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'always'}         | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'never'}          | ${null} | ${null}                | ${false}
+		${'assessment'} | ${'default'} | ${'never'}          | ${null} | ${null}                | ${false}
+		${'review'}     | ${'default'} | ${'never'}          | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'always'}         | ${0}    | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'always'}         | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'always'}         | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'always'}         | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'when-incorrect'} | ${0}    | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'when-incorrect'} | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'when-incorrect'} | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'when-incorrect'} | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'never'}          | ${0}    | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'never'}          | ${100}  | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'always'}         | ${null} | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'always'}         | ${null} | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'always'}         | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'when-incorrect'} | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
+		${'assessment'} | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
+		${'review'}     | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
+	`(
+		'getShouldShowRevealAnswerButton() mode="$mode", type="$type", revealAnswer="$revealAnswerMode", score="$score", getRevealAnswerDefault="$getRevealAnswerDefault" -> $result',
+		({ mode, type, revealAnswerMode, score, getRevealAnswerDefault, result }) => {
+			const moduleData = {
+				questionState: 'mockQuestionState',
+				navState: {
+					context: 'mockContext'
+				},
+				focusState: 'mockFocus'
+			}
+			const model = OboModel.create(questionJSON)
+			model.modelState.type = type
+			model.modelState.revealAnswer = revealAnswerMode
+			const modeSpy = jest.spyOn(Question.prototype, 'getMode').mockReturnValue(mode)
+			const scoreSpy = jest.spyOn(Question.prototype, 'getScore').mockReturnValue(score)
+
+			const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+			if (getRevealAnswerDefault !== null) {
+				component.getInstance().assessmentComponentRef = {
+					current: {
+						getRevealAnswerDefault: () => getRevealAnswerDefault
+					}
+				}
+			}
+
+			expect(component.getInstance().getShouldShowRevealAnswerButton()).toBe(result)
+
+			modeSpy.mockRestore()
+			scoreSpy.mockRestore()
+		}
+	)
+
+	test('renderResponseSendState renders as expected', () => {
+		expect(Question.prototype.renderResponseSendState('notSent')).toMatchSnapshot()
+		expect(Question.prototype.renderResponseSendState('sending')).toMatchSnapshot()
+		expect(Question.prototype.renderResponseSendState('recorded')).toMatchSnapshot()
+		expect(Question.prototype.renderResponseSendState('error')).toMatchSnapshot()
+		expect(Question.prototype.renderResponseSendState(null)).toMatchSnapshot()
+	})
+
+	test('componentDidUpdate calls focusOnExplanation if nextFocus is "explanation"', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const focusUtilSpy = jest.spyOn(FocusUtil, 'focusComponent')
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		component.getInstance().explanationRef = {
+			focusOnExplanation: jest.fn()
+		}
+		component.getInstance().resultsRef = {
+			current: jest.fn()
+		}
+		component.getInstance().nextFocus = 'explanation'
+
+		component.getInstance().componentDidUpdate()
+
+		expect(component.getInstance().explanationRef.focusOnExplanation).toHaveBeenCalled()
+		expect(focus).not.toHaveBeenCalled()
+		expect(focusUtilSpy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		focusUtilSpy.mockRestore()
+	})
+
+	test('componentDidUpdate calls focus if nextFocus is "results" and score is non-null', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const scoreSpy = jest.spyOn(Question.prototype, 'getScore').mockReturnValue(0)
+		const focusUtilSpy = jest.spyOn(FocusUtil, 'focusComponent')
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		component.getInstance().explanationRef = {
+			focusOnExplanation: jest.fn()
+		}
+		component.getInstance().resultsRef = {
+			current: jest.fn()
+		}
+		component.getInstance().nextFocus = 'results'
+
+		component.getInstance().componentDidUpdate()
+
+		expect(component.getInstance().explanationRef.focusOnExplanation).not.toHaveBeenCalled()
+		expect(focus).toHaveBeenCalled()
+		expect(focusUtilSpy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		focusUtilSpy.mockRestore()
+		scoreSpy.mockRestore()
+	})
+
+	test('componentDidUpdate does nothing if nextFocus is "results" and score is null', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const scoreSpy = jest.spyOn(Question.prototype, 'getScore').mockReturnValue(null)
+		const focusUtilSpy = jest.spyOn(FocusUtil, 'focusComponent')
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		component.getInstance().explanationRef = {
+			focusOnExplanation: jest.fn()
+		}
+		component.getInstance().resultsRef = {
+			current: jest.fn()
+		}
+		component.getInstance().nextFocus = 'results'
+
+		component.getInstance().componentDidUpdate()
+
+		expect(component.getInstance().explanationRef.focusOnExplanation).not.toHaveBeenCalled()
+		expect(focus).not.toHaveBeenCalled()
+		expect(focusUtilSpy).not.toHaveBeenCalled()
+		expect(component.getInstance().nextFocus).toBe('results')
+
+		focusUtilSpy.mockRestore()
+		scoreSpy.mockRestore()
+	})
+
+	test('componentDidUpdate calls FocusUtil.focusComponent if nextFocus is "question"', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const focusUtilSpy = jest.spyOn(FocusUtil, 'focusComponent')
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		component.getInstance().explanationRef = {
+			focusOnExplanation: jest.fn()
+		}
+		component.getInstance().resultsRef = {
+			current: jest.fn()
+		}
+		component.getInstance().nextFocus = 'question'
+
+		component.getInstance().componentDidUpdate()
+
+		expect(component.getInstance().explanationRef.focusOnExplanation).not.toHaveBeenCalled()
+		expect(focus).not.toHaveBeenCalled()
+		expect(focusUtilSpy).toHaveBeenCalledWith('id', { preventScroll: true })
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		focusUtilSpy.mockRestore()
+	})
+
+	test('componentDidUpdate calls FocusUtil.focusComponent if nextFocus is "answers"', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const focusUtilSpy = jest.spyOn(FocusUtil, 'focusComponent')
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		component.getInstance().explanationRef = {
+			focusOnExplanation: jest.fn()
+		}
+		component.getInstance().resultsRef = {
+			current: jest.fn()
+		}
+		component.getInstance().nextFocus = 'answers'
+
+		component.getInstance().componentDidUpdate()
+
+		expect(component.getInstance().explanationRef.focusOnExplanation).not.toHaveBeenCalled()
+		expect(focus).not.toHaveBeenCalled()
+		expect(focusUtilSpy).toHaveBeenCalledWith('mc-assessment-id', {
+			preventScroll: true,
+			region: 'answers'
+		})
+		expect(component.getInstance().nextFocus).not.toBeDefined()
+
+		focusUtilSpy.mockRestore()
 	})
 })

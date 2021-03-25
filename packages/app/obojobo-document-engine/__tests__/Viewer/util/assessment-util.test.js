@@ -1,5 +1,4 @@
 jest.mock('../../../src/scripts/common/flux/dispatcher')
-jest.mock('../../../src/scripts/viewer/util/question-util')
 
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
@@ -665,5 +664,461 @@ describe('AssessmentUtil', () => {
 
 		const result = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
 		expect(result).toBe(0)
+	})
+
+	test('getAssessmentMachineForModel returns null if no assessment found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue(null)
+
+		const state = {
+			machines: {}
+		}
+		expect(AssessmentUtil.getAssessmentMachineForModel(state, jest.fn())).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getAssessmentMachineForModel returns null if no machine found', () => {
+		const spy = jest
+			.spyOn(AssessmentUtil, 'getAssessmentForModel')
+			.mockReturnValue({ id: 'mockAssessment' })
+
+		const state = {
+			machines: {}
+		}
+		expect(AssessmentUtil.getAssessmentMachineForModel(state, jest.fn())).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getAssessmentMachineForModel returns any found machines', () => {
+		const spy = jest
+			.spyOn(AssessmentUtil, 'getAssessmentForModel')
+			.mockReturnValue({ id: 'mockAssessment' })
+
+		const state = {
+			machines: {
+				mockAssessment: jest.fn()
+			}
+		}
+		expect(AssessmentUtil.getAssessmentMachineForModel(state, jest.fn())).toBe(
+			state.machines.mockAssessment
+		)
+
+		spy.mockRestore()
+	})
+
+	test('getAssessmentMachineStateForModel returns null if no machine found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentMachineForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.getAssessmentMachineStateForModel()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getAssessmentMachineStateForModel returns machine state if machine found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentMachineForModel').mockReturnValue({
+			getCurrentState: () => 'mock-state'
+		})
+
+		expect(AssessmentUtil.getAssessmentMachineStateForModel()).toBe('mock-state')
+
+		spy.mockRestore()
+	})
+
+	test('getImportableScoreForModel returns null if no importableScore found', () => {
+		const state = {
+			importableScores: {}
+		}
+		const model = {
+			get: () => 'mockAssessmentId'
+		}
+		expect(AssessmentUtil.getImportableScoreForModel(state, model)).toBe(null)
+	})
+
+	test('getImportableScoreForModel returns score if importableScore found', () => {
+		const state = {
+			importableScores: {
+				mockAssessmentId: { highestScore: 100 }
+			}
+		}
+		const model = {
+			get: () => 'mockAssessmentId'
+		}
+		expect(AssessmentUtil.getImportableScoreForModel(state, model)).toBe(100)
+	})
+
+	test('isScoreImported returns null if no assessment found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.isScoreImported()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('isAttemptHistoryLoadedForModel returns false if no assessment found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.isAttemptHistoryLoadedForModel()).toBe(false)
+
+		spy.mockRestore()
+	})
+
+	test('isAttemptHistoryLoadedForModel returns false if attemptHistoryNetworkState !== loaded', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue({
+			attemptHistoryNetworkState: 'loading'
+		})
+
+		expect(AssessmentUtil.isAttemptHistoryLoadedForModel()).toBe(false)
+
+		spy.mockRestore()
+	})
+
+	test('isAttemptHistoryLoadedForModel returns true if attemptHistoryNetworkState === loaded', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue({
+			attemptHistoryNetworkState: 'loaded'
+		})
+
+		expect(AssessmentUtil.isAttemptHistoryLoadedForModel()).toBe(true)
+
+		spy.mockRestore()
+	})
+
+	test('getCurrentAttemptQuestionsStatus returns null if no attempt found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getCurrentAttemptForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.getCurrentAttemptQuestionsStatus()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getCurrentAttemptQuestionsStatus returns expected values', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getCurrentAttemptForModel').mockReturnValue({})
+
+		const model = {
+			children: {
+				at: () => ({
+					children: {
+						models: [
+							{
+								// No response
+								get: () => 'q1',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							},
+							{
+								// Empty response
+								get: () => 'q2',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => true
+										})
+									})
+								}
+							},
+							{
+								// Recorded response
+								get: () => 'q3',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							},
+							{
+								// Sending response
+								get: () => 'q4',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							},
+							{
+								// Not sent response
+								get: () => 'q5',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							},
+							{
+								// Error response
+								get: () => 'q6',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							},
+							{
+								// Send state unknown response
+								get: () => 'q7',
+								children: {
+									at: () => ({
+										getComponentClass: () => ({
+											isResponseEmpty: () => false
+										})
+									})
+								}
+							}
+						]
+					}
+				})
+			}
+		}
+		const questionState = {
+			contexts: {
+				mockContext: {
+					responses: {
+						q2: {},
+						q3: {},
+						q4: {},
+						q5: {},
+						q6: {},
+						q7: {}
+					},
+					responseMetadata: {
+						q3: { sendState: 'recorded' },
+						q4: { sendState: 'sending' },
+						q5: { sendState: 'notSent' },
+						q6: { sendState: 'error' },
+						q7: { sendState: null }
+					}
+				}
+			}
+		}
+
+		const statuses = AssessmentUtil.getCurrentAttemptQuestionsStatus(
+			{},
+			questionState,
+			model,
+			'mockContext'
+		)
+
+		const getId = o => o.get('id')
+		expect(statuses.all.map(getId)).toEqual(['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'])
+		expect(statuses.unanswered.map(getId)).toEqual(['q1'])
+		expect(statuses.empty.map(getId)).toEqual(['q2'])
+		expect(statuses.notSent.map(getId)).toEqual(['q5'])
+		expect(statuses.recorded.map(getId)).toEqual(['q3'])
+		expect(statuses.error.map(getId)).toEqual(['q6'])
+		expect(statuses.sending.map(getId)).toEqual(['q4'])
+		expect(statuses.unknown.map(getId)).toEqual(['q7'])
+
+		spy.mockRestore()
+	})
+
+	test('getCurrentAttemptStatus returns expected values', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getCurrentAttemptQuestionsStatus')
+
+		spy.mockReturnValue(null)
+		expect(AssessmentUtil.getCurrentAttemptStatus()).toBe('noAttempt')
+
+		spy.mockRestore()
+	})
+
+	test.each`
+		all  | unknown | unanswered | empty | notSent | error | sending | recorded | status
+		${0} | ${0}    | ${0}       | ${0}  | ${0}    | ${0}  | ${0}    | ${0}     | ${'noQuestions'}
+		${1} | ${1}    | ${0}       | ${0}  | ${0}    | ${0}  | ${0}    | ${0}     | ${'hasResponsesWithUnknownSendStates'}
+		${1} | ${0}    | ${1}       | ${0}  | ${0}    | ${0}  | ${0}    | ${0}     | ${'hasQuestionsUnanswered'}
+		${1} | ${0}    | ${0}       | ${1}  | ${0}    | ${0}  | ${0}    | ${0}     | ${'hasQuestionsEmpty'}
+		${1} | ${0}    | ${0}       | ${0}  | ${1}    | ${0}  | ${0}    | ${0}     | ${'hasResponsesUnsent'}
+		${1} | ${0}    | ${0}       | ${0}  | ${0}    | ${1}  | ${0}    | ${0}     | ${'hasResponsesWithErrorSendStates'}
+		${1} | ${0}    | ${0}       | ${0}  | ${0}    | ${0}  | ${1}    | ${0}     | ${'hasResponsesSending'}
+		${1} | ${0}    | ${0}       | ${0}  | ${0}    | ${0}  | ${0}    | ${1}     | ${'readyToSubmit'}
+		${1} | ${0}    | ${0}       | ${0}  | ${0}    | ${0}  | ${0}    | ${0}     | ${'unknown'}
+		${7} | ${1}    | ${1}       | ${1}  | ${1}    | ${1}  | ${1}    | ${1}     | ${'hasResponsesWithUnknownSendStates'}
+		${6} | ${0}    | ${1}       | ${1}  | ${1}    | ${1}  | ${1}    | ${1}     | ${'hasQuestionsUnanswered'}
+		${5} | ${0}    | ${0}       | ${1}  | ${1}    | ${1}  | ${1}    | ${1}     | ${'hasQuestionsEmpty'}
+		${4} | ${0}    | ${0}       | ${0}  | ${1}    | ${1}  | ${1}    | ${1}     | ${'hasResponsesUnsent'}
+		${3} | ${0}    | ${0}       | ${0}  | ${0}    | ${1}  | ${1}    | ${1}     | ${'hasResponsesWithErrorSendStates'}
+		${2} | ${0}    | ${0}       | ${0}  | ${0}    | ${0}  | ${1}    | ${1}     | ${'hasResponsesSending'}
+	`(
+		'getCurrentAttemptStatus() with {all.length=$all,unknown.length=$unknown,unanswered.length=$unanswered,empty.length=$empty,notSent.length=$notSent,error.length=$error,sending.length=$sending,recorded.length=$recorded} = "$status" ',
+		({ all, unknown, unanswered, empty, notSent, error, sending, recorded, status }) => {
+			const spy = jest.spyOn(AssessmentUtil, 'getCurrentAttemptQuestionsStatus').mockReturnValue({
+				all: { length: all },
+				unknown: { length: unknown },
+				unanswered: { length: unanswered },
+				empty: { length: empty },
+				notSent: { length: notSent },
+				error: { length: error },
+				sending: { length: sending },
+				recorded: { length: recorded }
+			})
+
+			expect(AssessmentUtil.getCurrentAttemptStatus()).toBe(status)
+
+			spy.mockRestore()
+		}
+	)
+
+	test.each`
+		method
+		${'continueAttempt'}
+		${'resumeAttempt'}
+		${'importAttempt'}
+		${'abandonImport'}
+		${'acknowledgeStartAttemptFailed'}
+		${'acknowledgeResumeAttemptFailed'}
+		${'acknowledgeEndAttemptSuccessful'}
+		${'acknowledgeEndAttemptFailed'}
+		${'acknowledgeImportAttemptFailed'}
+	`('AssessmentUtil.$method() fires "assessment:$method"', ({ method }) => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil[method]({ get: () => 'mock-id' })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:' + method, {
+			value: { id: 'mock-id' }
+		})
+	})
+
+	test('forceSendResponsesForCurrentAttempt fires assessment:forceSendResponses', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil.forceSendResponsesForCurrentAttempt({ get: () => 'mock-id' }, 'mock-context')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:forceSendResponses', {
+			value: { id: 'mock-id', context: 'mock-context' }
+		})
+	})
+
+	test('acknowledgeFetchHistoryFailed fires assessment:acknowledgeFetchHistoryFailed (default retry = false)', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
+			value: { id: 'mock-id', retry: false }
+		})
+	})
+
+	test('acknowledgeFetchHistoryFailed fires assessment:acknowledgeFetchHistoryFailed (retry = false)', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' }, false)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
+			value: { id: 'mock-id', retry: false }
+		})
+	})
+
+	test('acknowledgeFetchHistoryFailed fires assessment:acknowledgeFetchHistoryFailed (retry = false)', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		AssessmentUtil.acknowledgeFetchHistoryFailed({ get: () => 'mock-id' }, true)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:acknowledgeFetchHistoryFailed', {
+			value: { id: 'mock-id', retry: true }
+		})
+	})
+
+	test('isFullReviewAvailableForModel returns null if no assessment found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.isFullReviewAvailableForModel()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test.each`
+		review                     | hasAttemptsRemaining | result
+		${'always'}                | ${false}             | ${true}
+		${'always'}                | ${true}              | ${true}
+		${'never'}                 | ${false}             | ${false}
+		${'never'}                 | ${true}              | ${false}
+		${'no-attempts-remaining'} | ${false}             | ${true}
+		${'no-attempts-remaining'} | ${true}              | ${false}
+	`(
+		'isFullReviewAvailableForModel with review="$review", hasAttemptsRemaining="$hasAttemptsRemaining" -> $result',
+		({ review, hasAttemptsRemaining, result }) => {
+			const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue({})
+
+			expect(
+				AssessmentUtil.isFullReviewAvailableForModel(
+					{
+						assessments: {
+							testId: {
+								id: 'testId',
+								isScoreImported: false
+							}
+						},
+						assessmentSummaries: {
+							testId: {}
+						}
+					},
+					{ get: () => 'testId', modelState: { review, attempts: hasAttemptsRemaining ? 3 : 0 } }
+				)
+			).toBe(result)
+
+			spy.mockRestore()
+		}
+	)
+
+	test('getAssessmentSummaryForModel returns null if no assessment found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.getAssessmentSummaryForModel()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getUnfinishedAttemptId returns null if no assessment summary found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentSummaryForModel').mockReturnValue(null)
+
+		expect(AssessmentUtil.getUnfinishedAttemptId()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getUnfinishedAttemptId returns null if id is not found in summary', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getAssessmentSummaryForModel').mockReturnValue({})
+
+		expect(AssessmentUtil.getUnfinishedAttemptId()).toBe(null)
+
+		spy.mockRestore()
+	})
+
+	test('getUnfinishedAttemptId returns the unfinishedAttemptId from the summary', () => {
+		const spy = jest
+			.spyOn(AssessmentUtil, 'getAssessmentSummaryForModel')
+			.mockReturnValue({ unfinishedAttemptId: 'mock-id' })
+
+		expect(AssessmentUtil.getUnfinishedAttemptId()).toBe('mock-id')
+
+		spy.mockRestore()
+	})
+
+	test('hasUnfinishedAttempt returns false if no unfinished attempt found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getUnfinishedAttemptId').mockReturnValue(null)
+
+		expect(AssessmentUtil.hasUnfinishedAttempt()).toBe(false)
+
+		spy.mockRestore()
+	})
+
+	test('hasUnfinishedAttempt returns true if unfinished attempt found', () => {
+		const spy = jest.spyOn(AssessmentUtil, 'getUnfinishedAttemptId').mockReturnValue('mock-id')
+
+		expect(AssessmentUtil.hasUnfinishedAttempt()).toBe(true)
+
+		spy.mockRestore()
 	})
 })
