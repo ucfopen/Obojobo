@@ -106,7 +106,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "First is the most important thing; how and when to save your changes. While editing your module, your changes are only temporarily saved in this browser tab. To be clear, if you close this tab without saving, those changes will be lost. ",
+											"value": "First is the most important thing; how and when to save your changes. While editing your module, your changes are only temporarily saved in this browser tab. To be clear, if you close this tab without saving, those changes will be lost.",
 											"styleList": []
 										}
 									}
@@ -392,7 +392,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "When changing any item's id, make sure to use a unique value.  Duplicate ids are not allowed in a module, and the menu will not close if the id you are trying to use already exists elsewhere in the module. ",
+											"value": "When changing any item's id, make sure to use a unique value.  Duplicate ids are not allowed in a module, and the menu will not close if the id you are trying to use already exists elsewhere in the module.",
 											"styleList": []
 										}
 									}
@@ -2702,7 +2702,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Figure nodes allow you to display images within the Obojobo Module. ",
+											"value": "Figure nodes allow you to display images within the Obojobo Module.",
 											"styleList": []
 										}
 									}
@@ -2976,7 +2976,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The second property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom. ",
+											"value": "The second property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom.",
 											"styleList": [
 												{
 													"end": 129,
@@ -3308,7 +3308,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Math Equations allow for the display of complex math equation on their own line.",
+											"value": "Math Equations allow for the display of complex math equations on their own line.",
 											"styleList": []
 										}
 									}
@@ -3709,7 +3709,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "You can also alter the size of your Math Equations by changing the value in the Size field.  The size value is a multiplier, so a value of 1.5 makes the equation 1.5x as large as usual. ",
+											"value": "You can also alter the size of your Math Equations by changing the value in the Size field.  The size value is a multiplier, so a value of 1.5 makes the equation 1.5x as large as usual.",
 											"styleList": []
 										}
 									}
@@ -3821,7 +3821,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The Action Button node executes a series of predefined actions when clicked. This is useful for guiding student navigation. ",
+											"value": "The Action Button node executes a series of predefined actions when clicked. This is useful for guiding student navigation.",
 											"styleList": []
 										}
 									}
@@ -4254,7 +4254,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Code nodes function similarly to text nodes. A single Code node can contain multiple lines, including empty lines. Code nodes can contain as many empty lines as needed. Unlike Text nodes, two consecutive blank lines within a single Code node will not be turned into a new Code node.  Code nodes can also be converted into text or headings by selecting the node and using the drop-down menu it the toolbar.",
+											"value": "Code nodes function similarly to text nodes. A single Code node can contain multiple lines, including empty lines. Code nodes can contain as many empty lines as needed. Unlike Text nodes, two consecutive blank lines within a single Code node will not be turned into a new Code node.  Code nodes can also be converted into text or headings by selecting the node and using the drop-down menu in the toolbar.",
 											"styleList": []
 										}
 									}
@@ -4320,7 +4320,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "To change the source of the video, find the YouTube id of the video that you wish to embed, and then click the Edit button in the upper right-hand corner of the video. A dialog will open; paste the YouTube id into the input in the dialog. ",
+											"value": "To change the source of the video, find the URL or YouTube id of the video that you wish to embed, and then click the Edit button in the upper right-hand corner of the video. A dialog will open; paste the URL or YouTube id (which will be automatically converted into a URL) into the input in the dialog.",
 											"styleList": []
 										}
 									}
@@ -4438,7 +4438,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "If you only want your students to watch a specific section of the video, you can enter a start time (in seconds) and an end time (in seconds) in the dialog.  When students press play, the video will begin at the specified start time, and play until the specified end time, ensuring that the student see only the relevant content.",
+											"value": "If you only want your students to watch a specific section of the video, you can click the \"Set Start & End Time...\" button and enter a start time (in seconds or MM:SS format) and an end time (in seconds or MM:SS format) in the dialog.  When students press play, the video will begin at the specified start time, and play until the specified end time, ensuring that the students see only the relevant content.",
 											"styleList": []
 										}
 									}
@@ -4765,7 +4765,54 @@
 											"hangingIndent": false
 										},
 										"text": {
-											"value": "Dimensions: Set the width and height that the IFrame will be displayed at. ",
+											"value": "Sizing: How the IFrame will be scaled within the window.",
+											"styleList": [
+												{
+													"end": 6,
+													"data": {},
+													"type": "b",
+													"start": 0
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Fixed: Size will remain constant for any window size.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Text Width: IFrame will scale to be the same width as text.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 1,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Max Width: IFrame will scale to fill the full width of the document.",
+											"styleList": []
+										}
+									},
+									{
+										"data": {
+											"indent": 0,
+											"hangingIndent": false
+										},
+										"text": {
+											"value": "Dimensions: Set the width and height that the IFrame will be displayed at.",
 											"styleList": [
 												{
 													"end": 10,
@@ -4782,7 +4829,7 @@
 											"hangingIndent": false
 										},
 										"text": {
-											"value": "Border: Toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document",
+											"value": "Border: Toggles a border around the edges of the IFrame. This helps to distinguish the IFrame content from the rest of the Obojobo document.",
 											"styleList": [
 												{
 													"end": 6,
@@ -4816,7 +4863,7 @@
 											"hangingIndent": false
 										},
 										"text": {
-											"value": "Fit: How content will be scaled within the IFrame",
+											"value": "Fit: How content will be scaled within the IFrame.",
 											"styleList": [
 												{
 													"end": 3,
@@ -4833,7 +4880,7 @@
 											"hangingIndent": false
 										},
 										"text": {
-											"value": "Scale: Size of content inside the iframe will scale up and down to fit (much like scaling an image)",
+											"value": "Scale: Size of content inside the IFrame will scale up and down to fit (much like scaling an image).",
 											"styleList": []
 										}
 									},
@@ -4874,7 +4921,7 @@
 										},
 										"1": {
 											"type": "ordered",
-											"bulletStyle": "upper-alpha"
+											"bulletStyle": "lower-alpha"
 										}
 									}
 								}
@@ -4984,7 +5031,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The zoom control allows student to zoom in and out on the content of the IFrame.",
+											"value": "The zoom control allows students to zoom in and out on the content of the IFrame.",
 											"styleList": []
 										}
 									}
@@ -5631,7 +5678,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Choices can also have feedback, which provides more information to the student if they select that choice. The feedback be displayed below the choice once the student hits submit (or during a review if the question is in the assessment), so it is a good place to let the student know where they went wrong, or to provide elaboration on a correct answer. ",
+											"value": "Choices can also have feedback, which provides more information to the student if they select that choice. The feedback be displayed below the choice once the student hits submit (or during a review if the question is in the assessment), so it is a good place to let the student know where they went wrong, or to provide elaboration on a correct answer.",
 											"styleList": []
 										}
 									}
@@ -5876,7 +5923,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Multiple-Choice questions can have one of two response types: pick one correct answer or pick all correct answers. To change the response type, use the dropdown above the answer choices",
+											"value": "Multiple-Choice questions can have one of two response types: pick one correct answer or pick all correct answers. To change the response type, use the dropdown above the answer choices.",
 											"styleList": []
 										}
 									}
@@ -5892,7 +5939,7 @@
 									{
 										"data": {},
 										"text": {
-											"value": "Pick one correct answer questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question. ",
+											"value": "Pick one correct answer questions allow the student to pick a single choice as their answer. If there is more than one correct choice, the student can select any of the correct choices to get the points for that question.",
 											"styleList": []
 										}
 									}
@@ -7104,7 +7151,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "A Question Bank also has a How should questions be selected? property, which determines how it picks children to display. ",
+											"value": "A Question Bank also has a How should questions be selected? property, which determines how it picks children to display.",
 											"styleList": [
 												{
 													"end": 60,
@@ -8204,7 +8251,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "When processing the student's score, the assessment first determines their raw score by dividing the number of questions correct by the total number of questions and then multiplying by 100. ",
+											"value": "When processing the student's score, the assessment first determines their raw score by dividing the number of questions correct by the total number of questions and then multiplying by 100.",
 											"styleList": [
 												{
 													"end": 84,
