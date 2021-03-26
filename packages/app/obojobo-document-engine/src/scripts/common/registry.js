@@ -168,16 +168,6 @@ class _Registry {
 		}
 		return memoContent
 	}
-
-	get modals() {
-		if (!memoModals) {
-			memoModals = Array.from(items.values())
-				.filter(item => item.modalClass)
-				.map(item => ({ type: item.type, modalClass: item.modalClass }))
-		}
-
-		return memoModals
-	}
 }
 
 const Registry = new _Registry()
