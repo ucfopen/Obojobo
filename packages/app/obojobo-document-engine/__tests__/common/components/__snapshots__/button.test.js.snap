@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button 1`] = `
+exports[`Button Renders 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center testClassName"
   contentEditable={false}
@@ -76,6 +76,36 @@ exports[`Button disabled 1`] = `
 </div>
 `;
 
+exports[`Button isSubmittable 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="submit"
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button isSubmittable 2`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="submit"
+  >
+    Label
+  </button>
+</div>
+`;
+
 exports[`Button shouldPreventTab 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center"
@@ -89,6 +119,51 @@ exports[`Button shouldPreventTab 1`] = `
     type="button"
   >
     Label
+  </button>
+</div>
+`;
+
+exports[`Button with empty string value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    
+  </button>
+</div>
+`;
+
+exports[`Button with null value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button with value 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+  contentEditable={false}
+>
+  <button
+    className="button"
+    contentEditable={false}
+    type="button"
+  >
+    child value
   </button>
 </div>
 `;
