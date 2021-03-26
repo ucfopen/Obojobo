@@ -5,7 +5,14 @@ import renderer from 'react-test-renderer'
 
 describe('Dialog', () => {
 	test('Dialog component', () => {
-		const component = renderer.create(<Dialog buttons={[]}>Content</Dialog>)
+		const component = renderer.create(<Dialog>Content</Dialog>)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Dialog component with no buttons', () => {
+		const component = renderer.create(<Dialog buttons={false} >Content</Dialog>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -13,7 +20,7 @@ describe('Dialog', () => {
 
 	test('Dialog component with props', () => {
 		const component = renderer.create(
-			<Dialog title="Title" buttons={[]} centered={false} width={5}>
+			<Dialog title="Title" buttons={['test']}>
 				Content
 			</Dialog>
 		)

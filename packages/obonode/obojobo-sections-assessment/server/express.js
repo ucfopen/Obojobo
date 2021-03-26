@@ -108,19 +108,14 @@ router
 		return endAttempt(req, res)
 			.then(res.success)
 			.catch(error => {
-				switch (error.message) {
-					case 'Cannot end an attempt for a different module':
-					case 'Cannot end an attempt that has already ended':
-						return logAndRespondToUnexpected(error.message, res, req, error)
+				const defaultMsg = 'Unexpected error completing your attempt'
+				const allowList = [
+					'Cannot end an attempt for a different module',
+					'Cannot end an attempt that has already ended'
+				]
 
-					default:
-						return logAndRespondToUnexpected(
-							'Unexpected error completing your attempt',
-							res,
-							req,
-							error
-						)
-				}
+				const msg = allowList.includes(error.message) ? error.message : defaultMsg
+				return logAndRespondToUnexpected(msg, res, req, error)
 			})
 	})
 
