@@ -5,10 +5,6 @@ const logger = require('obojobo-express/server/logger')
 const lti = require('obojobo-express/server/lti')
 
 const endAttempt = async (req, res) => {
-	// if (Math.random() > 0.5) {
-	// 	throw 'Random error'
-	// }
-
 	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
 	logger.info(
@@ -129,12 +125,6 @@ const endAttempt = async (req, res) => {
 	)
 	logSuccess('insertAttemptScoredEvents')
 
-	// return {
-	// 	assessmentId: attempt.assessmentId,
-	// 	attemptId: req.params.attemptId,
-	// 	assessmentScoreId,
-	// 	...calculatedScores.assessmentScoreDetails
-	// }
 	return calculatedScores.assessmentScoreDetails
 }
 

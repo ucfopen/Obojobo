@@ -289,4 +289,20 @@ describe('attempt-end', () => {
 			Error('Cannot end an attempt for a different module')
 		)
 	})
+
+	test('endAttempt rejects if attempt is already complete', async () => {
+		const endAttempt = require('./attempt-end')
+		const mockFetchAttemptByID = {
+			userId: 'mockAttemptUserId',
+			draftId: 'mockDraftId',
+			draftContentId: 'mockContentId',
+			assessmentId: 'mockAssessmentId',
+			state: 'mockAttemptState',
+			completedAt: 'today'
+		}
+		AssessmentModel.fetchAttemptById.mockResolvedValueOnce(mockFetchAttemptByID)
+		await expect(endAttempt(mockReq, mockRes)).rejects.toThrow(
+			Error('Cannot end an attempt that has already ended')
+		)
+	})
 })

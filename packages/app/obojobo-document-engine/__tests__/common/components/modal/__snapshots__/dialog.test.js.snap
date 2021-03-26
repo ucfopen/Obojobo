@@ -45,6 +45,51 @@ exports[`Dialog Dialog component 1`] = `
 </div>
 `;
 
+exports[`Dialog Dialog component with no buttons 1`] = `
+<div
+  className="obojobo-draft--components--modal--dialog "
+  style={null}
+>
+  <div
+    aria-labelledby="obojobo-draft--components--modal--modal--content"
+    className="obojobo-draft--components--modal--modal"
+    role="dialog"
+    tabIndex="-1"
+  >
+    <input
+      aria-label="Start of dialog"
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+    <div
+      className="content"
+      id="obojobo-draft--components--modal--modal--content"
+    >
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        Content
+      </div>
+      <div
+        className="controls"
+      />
+    </div>
+    <input
+      aria-label="End of dialog"
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
 exports[`Dialog Dialog component with props 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "

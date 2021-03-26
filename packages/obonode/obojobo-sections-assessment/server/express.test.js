@@ -250,23 +250,32 @@ describe('server/express', () => {
 		})
 	})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end fails', async () => {
+	test('POST /api/assessments/attempt/mock-attempt-id/end fails with default error', async () => {
 		expect.hasAssertions()
-		const mockReturnValue = {}
-		endAttempt.mockRejectedValueOnce(mockReturnValue)
+		const message = 'Not an allowed msg'
+		endAttempt.mockRejectedValueOnce({message})
 
 		const response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(500)
-		expect(response.body).toEqual({
-			status: 'error',
-			value: {
-				message: expect.any(String),
-				type: 'unexpected'
-			}
-		})
+		expect(response.body).toHaveProperty('value.message')
+		// make sure the non-allowed error doesn't come through
+		expect(response.body).not.toHaveProperty('value.message', message)
+	})
+
+	test('POST /api/assessments/attempt/mock-attempt-id/end passes error through', async () => {
+		expect.hasAssertions()
+		const message = 'Cannot end an attempt for a different module'
+		endAttempt.mockRejectedValueOnce({message})
+
+		const response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toHaveProperty('value.message', message)
 	})
 
 	test('POST /api/assessments/attempt/mock-attempt-id/end', async () => {
