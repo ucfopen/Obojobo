@@ -18,6 +18,7 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 		expect(register[0]).toBe('ObojoboDraft.Pages.Page')
 		expect(register[1]).toHaveProperty('type', 'page')
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
+		expect(register[1]).toHaveProperty('getTextForVariable')
 	})
 
 	test('getNavItem returns link with no title', () => {
@@ -80,5 +81,20 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 			path: ['1'],
 			showChildren: false
 		})
+	})
+
+	test('getTextForVariable returns ', () => {
+		jest.spyOn(Math, 'random').mockReturnValue(0.5)
+		const register = Common.Registry.registerModel.mock.calls[0]
+		const getTextForVariable = register[1].getTextForVariable
+		const Variables = {getOrSetValue: jest.fn(() => 'mock-result')}
+		const model = {get: jest.fn(() => 'model-get')}
+		const result = getTextForVariable(model, 'varname', Variables)
+
+		expect(result).toBe('mock-result')
+		expect(Variables.getOrSetValue).toHaveBeenCalledWith('model-get', 'varname', expect.any(Function))
+		const varCallBack = Variables.getOrSetValue.mock.calls[0][2]
+		expect(varCallBack({min: 1, max: 10})).toBe(6)
+
 	})
 })
