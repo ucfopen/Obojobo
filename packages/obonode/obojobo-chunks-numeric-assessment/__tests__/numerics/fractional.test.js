@@ -192,6 +192,11 @@ describe('Fractional', () => {
 		})
 	})
 
+	test('getBigValueFractionTerms allows custom error values', () => {
+		expect(Fractional.getNumSigFigs()).toBeNull()
+	})
+
+
 	test('getFractionStringPercentError returns a percent error for the fractional version of a Big value', () => {
 		const getBigValueReducedTermsSpy = jest
 			.spyOn(Fractional, 'getBigValueReducedTerms')
