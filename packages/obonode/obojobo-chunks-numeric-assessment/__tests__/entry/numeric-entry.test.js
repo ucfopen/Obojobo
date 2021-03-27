@@ -12,7 +12,7 @@ jest.mock('../../numerics/numeric-classes', () => {
 			return true
 		}
 
-		toString(){
+		toString() {
 			return 'mock-exact-to-string'
 		}
 	}
@@ -200,16 +200,25 @@ describe('NumericEntry', () => {
 	test('clone', () => {
 		const entry = new NumericEntry('6.02e23 mols', ['typeExact'])
 		const clone = entry.clone()
-
 		expect(entry).not.toBe(clone)
 		expect(clone.inputString).toEqual('6.02e23 mols')
 		expect(clone.types).toEqual(entry.types)
 		expect(clone.types).not.toBe(entry.types)
+
+		const entry2 = new NumericEntry('6.02e23 mols')
+		const clone2 = entry2.clone()
+		expect(entry2).not.toBe(clone2)
+		expect(clone2.inputString).toEqual('6.02e23 mols')
+		expect(clone2.types).toBeNull()
 	})
 
 	test('toString', () => {
 		const entry = new NumericEntry('6.02e23 mols', ['typeExact'])
 		expect(entry.toString()).toBe('mock-exact-to-string')
+
+		const entry2 = new NumericEntry('6.02e23 mols')
+		entry2.numericInstance = null
+		expect(entry2.toString()).toBe('')
 	})
 
 	test('toJSON', () => {
