@@ -83,6 +83,7 @@ describe('Decimal', () => {
 
 	test.each`
 		input           | expected
+		${''}           | ${''}
 		${'0'}          | ${''}
 		${'-0'}         | ${''}
 		${'5'}          | ${''}
