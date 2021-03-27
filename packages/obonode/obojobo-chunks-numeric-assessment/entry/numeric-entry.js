@@ -206,7 +206,8 @@ module.exports = class NumericEntry {
 	 * @return {NumericEntry}
 	 */
 	clone() {
-		return new NumericEntry(this.inputString, this.types)
+		const cloneTypes = Array.isArray(this.types) ? [...this.types] : this.types
+		return new NumericEntry(this.inputString, cloneTypes)
 	}
 
 	toString() {
