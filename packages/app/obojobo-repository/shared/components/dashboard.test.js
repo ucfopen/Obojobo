@@ -291,7 +291,7 @@ describe('Dashboard', () => {
 		expect(moduleComponents[1].props.draftId).toBe('mockDraftId3')
 	})
 
-	test('"New Module" and "Upload..." buttons call functions appropriately', () => {
+	test('"New Module" and "Upload..." buttons call functions appropriately', async () => {
 		const newModule = {
 			payload: {
 				value: [
@@ -320,7 +320,10 @@ describe('Dashboard', () => {
 		// 'New Module' button should call createNewModule with false
 		expect(multiButton.children[0].children[0].children[0]).toBe('New Module')
 		dashboardProps.createNewModule.mockResolvedValue(newModule)
-		multiButton.children[0].props.onClick()
+		await act(async () => {
+			multiButton.children[0].props.onClick()
+		})
+
 		expect(dashboardProps.createNewModule).toHaveBeenCalledTimes(1)
 		expect(setNewModuleId).toBeTruthy()
 		dashboardProps.createNewModule.mockReset()
@@ -328,14 +331,18 @@ describe('Dashboard', () => {
 		// 'New Tutorial' button should call createNewModule with true
 		expect(multiButton.children[1].children[0].children[0]).toBe('New Tutorial')
 		dashboardProps.createNewModule.mockResolvedValue(newModule)
-		multiButton.children[1].props.onClick()
+		await act(async () => {
+			multiButton.children[1].props.onClick()
+		})
 		expect(dashboardProps.createNewModule).toHaveBeenCalledTimes(1)
 		expect(setNewModuleId).toBeTruthy()
 		dashboardProps.createNewModule.mockReset()
 
 		// 'Upload...' button should call importModuleFile with no arguments
 		expect(multiButton.children[2].children[0].children[0]).toBe('Upload...')
-		multiButton.children[2].props.onClick()
+		await act(async () => {
+			multiButton.children[2].props.onClick()
+		})
 		expect(dashboardProps.importModuleFile).toHaveBeenCalledTimes(1)
 		dashboardProps.importModuleFile.mockReset()
 	})
