@@ -1,7 +1,7 @@
 # =====================================================================================================
 # Base stage used for  build and final stages
 # =====================================================================================================
-FROM node:12.11.1-alpine AS base_stage
+FROM node:14.16.0-alpine AS base_stage
 
 # ======== PUT NEW NODE BIN DIR IN PATH
 RUN npm config set prefix '/home/node/.npm-global'
