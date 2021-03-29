@@ -1,7 +1,7 @@
 # =====================================================================================================
 # Base stage used for  build and final stages
 # =====================================================================================================
-FROM node:12.11.1-alpine AS base_stage
+FROM node:14.16.0-alpine AS base_stage
 
 # ======== PUT NEW NODE BIN DIR IN PATH
 RUN npm config set prefix '/home/node/.npm-global'
@@ -12,7 +12,7 @@ ENV PATH=/home/node/.npm-global/bin:${PATH}
 # =====================================================================================================
 FROM base_stage as build_stage
 
-RUN apk add --no-cache git
+RUN apk add --no-cache build-base git python3
 
 # ======== INSTALL PM2 Globally
 RUN npm install --global pm2@^4.5.1
