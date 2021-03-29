@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "xml-formatter": "^2.0.1"
+    "xml-formatter": "^2.4.0"
   },
   "peerDependencies": {
     "obojobo-document-engine": "^11.2.0-alpha.0",

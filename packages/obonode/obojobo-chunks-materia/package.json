@@ -27,12 +27,15 @@
 		"singleQuote": true
 	},
 	"dependencies": {
+		"obojobo-lib-utils": "^11.0.0",
+		"obojobo-chunks-iframe": "^11.0.0",
+		"obojobo-document-engine": "^11.0.0",
 		"oauth-signature": "^1.5.0",
-		"uuid": "^8.1.0",
+		"uuid": "^8.3.2",
 		"xml2js": "0.4.23"
 	},
 	"devDependencies": {
-		"lint-staged": "^10.2.6"
+		"lint-staged": "^10.5.4"
 	},
 	"peerDependencies": {
 		"obojobo-chunks-iframe": "^11.4.0-alpha.0",

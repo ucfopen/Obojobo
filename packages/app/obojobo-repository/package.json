@@ -26,17 +26,17 @@
 		]
 	},
 	"dependencies": {
-		"dayjs": "^1.9.1",
+		"dayjs": "^1.10.4",
 		"debounce-promise": "^3.1.2",
 		"express": "~4.17.1",
 		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
-		"express-validator": "^5.2.0",
+		"express-validator": "^6.10.0",
 		"geopattern": "^1.2.3",
 		"ignore-styles": "^5.0.1",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
-		"react-modal": "^3.11.2",
-		"react-redux": "^7.2.1",
+		"react-modal": "^3.12.1",
+		"react-redux": "^7.2.3",
 		"redux": "^4.0.5",
 		"redux-pack": "^0.1.5",
 		"sass-mq": "^5.0.1"

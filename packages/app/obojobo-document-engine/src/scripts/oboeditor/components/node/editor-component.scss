@@ -12,7 +12,7 @@
 		width: 0.1em;
 		user-select: none;
 		background: $color-bg;
-		outline: 2px solid $color-bg; //stylelint-disable unit-blacklist
+		outline: 2px solid $color-bg; //stylelint-disable unit-disallowed-list
 
 		.top {
 			top: 0;
