@@ -12,7 +12,7 @@ ENV PATH=/home/node/.npm-global/bin:${PATH}
 # =====================================================================================================
 FROM base_stage as build_stage
 
-RUN apk add --no-cache git
+RUN apk add --no-cache build-base git python3
 
 # ======== INSTALL PM2 Globally
 RUN npm install --global pm2@^4.5.1
