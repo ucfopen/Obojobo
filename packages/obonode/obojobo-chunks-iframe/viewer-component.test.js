@@ -216,7 +216,8 @@ describe('IFrame', () => {
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding'
+			padding: 'mock-padding',
+			initialZoom: 1
 		})
 	})
 
@@ -377,14 +378,16 @@ describe('IFrame', () => {
 		component.instance().getMeasuredDimensions = jest.fn()
 		component.instance().getMeasuredDimensions.mockReturnValueOnce({
 			width: 'mock-width',
-			padding: 'mock-padding'
+			padding: 'mock-padding',
+			initialZoom: 1
 		})
 
 		component.instance().componentDidMount()
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding'
+			padding: 'mock-padding',
+			initialZoom: 1
 		})
 		expect(fakeConstructor).toHaveBeenCalledTimes(1)
 		expect(fakeConstructor).toHaveBeenCalledWith(
@@ -407,14 +410,16 @@ describe('IFrame', () => {
 		component.instance().getMeasuredDimensions = jest.fn()
 		component.instance().getMeasuredDimensions.mockReturnValueOnce({
 			width: 'mock-width',
-			padding: 'mock-padding'
+			padding: 'mock-padding',
+			initialZoom: 1
 		})
 
 		component.instance().componentDidMount()
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding'
+			padding: 'mock-padding',
+			initialZoom: 1
 		})
 		expect(component.instance().resizeObserver).toBe(undefined) //eslint-disable-line
 		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
@@ -612,5 +617,38 @@ describe('IFrame', () => {
 		component = mount(<IFrame model={model} moduleData={moduleData} />)
 		iframeRef = component.ref('iframe')
 		expect(iframeRef.src).toEqual('http://www.example.com/')
+	})
+
+	test('ComponentDidUpdate correctly updates IFrame zoom if necessary', () => {
+		MediaUtil.setDefaultZoom = jest.fn()
+
+		const component = shallow(
+			<IFrame
+				model={OboModel.create({
+					id: 'mock-obo-id',
+					type: 'ObojoboDraft.Chunks.IFrame',
+					content: {
+						src: 'http://www.example.com/',
+						autoload: false,
+						initialZoom: 2
+					}
+				})}
+				moduleData={moduleData}
+			/>
+		)
+
+		component.setProps(
+			OboModel.create({
+				id: 'mock-obo-id',
+				type: 'ObojoboDraft.Chunks.IFrame',
+				content: {
+					src: 'http://www.example.com/',
+					autoload: false,
+					initialZoom: 1
+				}
+			})
+		)
+
+		expect(MediaUtil.setDefaultZoom).toHaveBeenCalled()
 	})
 })
