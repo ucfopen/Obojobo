@@ -1,150 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dialog Dialog component 1`] = `
+exports[`Dialog basic render 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={null}
 >
   <div
-    aria-labelledby="obojobo-draft--components--modal--modal--content"
-    className="obojobo-draft--components--modal--modal"
-    role="dialog"
-    tabIndex="-1"
+    focusOnFirstElement={[Function]}
   >
-    <input
-      aria-label="Start of dialog"
-      className="first-tab"
-      onFocus={[Function]}
-      type="text"
-    />
     <div
-      className="content"
-      id="obojobo-draft--components--modal--modal--content"
-    >
-      <div
-        className="dialog-content"
-        style={
-          Object {
-            "textAlign": "center",
-          }
+      className="dialog-content"
+      style={
+        Object {
+          "textAlign": "center",
         }
-      >
-        Content
-      </div>
-      <div
-        className="controls"
-      />
+      }
+    >
+      Content
     </div>
-    <input
-      aria-label="End of dialog"
-      className="last-tab"
-      onFocus={[Function]}
-      type="text"
+    <div
+      className="controls"
     />
   </div>
 </div>
 `;
 
-exports[`Dialog Dialog component with no buttons 1`] = `
+exports[`Dialog render with no buttons 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={null}
 >
   <div
-    aria-labelledby="obojobo-draft--components--modal--modal--content"
-    className="obojobo-draft--components--modal--modal"
-    role="dialog"
-    tabIndex="-1"
+    focusOnFirstElement={[Function]}
   >
-    <input
-      aria-label="Start of dialog"
-      className="first-tab"
-      onFocus={[Function]}
-      type="text"
-    />
     <div
-      className="content"
-      id="obojobo-draft--components--modal--modal--content"
-    >
-      <div
-        className="dialog-content"
-        style={
-          Object {
-            "textAlign": "center",
-          }
+      className="dialog-content"
+      style={
+        Object {
+          "textAlign": "center",
         }
-      >
-        Content
-      </div>
-      <div
-        className="controls"
-      />
+      }
+    >
+      Content
     </div>
-    <input
-      aria-label="End of dialog"
-      className="last-tab"
-      onFocus={[Function]}
-      type="text"
+    <div
+      className="controls"
     />
   </div>
 </div>
 `;
 
-exports[`Dialog Dialog component with props 1`] = `
+exports[`Dialog render with props 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog "
   style={
     Object {
-      "width": 5,
+      "width": "200 px",
     }
   }
 >
   <div
-    aria-labelledby="obojobo-draft--components--modal--modal--content"
-    className="obojobo-draft--components--modal--modal"
-    role="dialog"
-    tabIndex="-1"
+    focusOnFirstElement={[Function]}
   >
-    <input
-      aria-label="Start of dialog"
-      className="first-tab"
-      onFocus={[Function]}
-      type="text"
-    />
-    <div
-      className="content"
-      id="obojobo-draft--components--modal--modal--content"
+    <h1
+      className="heading"
+      style={
+        Object {
+          "textAlign": null,
+        }
+      }
     >
-      <h1
-        className="heading"
-        style={
-          Object {
-            "textAlign": null,
-          }
+      Title
+    </h1>
+    <div
+      className="dialog-content"
+      style={
+        Object {
+          "textAlign": null,
         }
-      >
-        Title
-      </h1>
-      <div
-        className="dialog-content"
-        style={
-          Object {
-            "textAlign": null,
-          }
-        }
-      >
-        Content
-      </div>
-      <div
-        className="controls"
-      />
+      }
+    >
+      Content
     </div>
-    <input
-      aria-label="End of dialog"
-      className="last-tab"
-      onFocus={[Function]}
-      type="text"
-    />
+    <div
+      className="controls"
+    >
+      <span
+        className="text"
+      >
+        test
+      </span>
+    </div>
   </div>
 </div>
 `;

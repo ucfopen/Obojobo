@@ -11,6 +11,10 @@ jest.mock('../../numerics/numeric-classes', () => {
 		get isSafe() {
 			return true
 		}
+
+		toString() {
+			return 'mock-exact-to-string'
+		}
 	}
 
 	class MockInferred {
@@ -191,5 +195,37 @@ describe('NumericEntry', () => {
 		expect(() => {
 			new NumericEntry(true) // eslint-disable-line no-new
 		}).toThrow('inputString must be of type string!')
+	})
+
+	test('clone', () => {
+		const entry = new NumericEntry('6.02e23 mols', ['typeExact'])
+		const clone = entry.clone()
+		expect(entry).not.toBe(clone)
+		expect(clone.inputString).toEqual('6.02e23 mols')
+		expect(clone.types).toEqual(entry.types)
+		expect(clone.types).not.toBe(entry.types)
+
+		const entry2 = new NumericEntry('6.02e23 mols')
+		const clone2 = entry2.clone()
+		expect(entry2).not.toBe(clone2)
+		expect(clone2.inputString).toEqual('6.02e23 mols')
+		expect(clone2.types).toBeNull()
+	})
+
+	test('toString', () => {
+		const entry = new NumericEntry('6.02e23 mols', ['typeExact'])
+		expect(entry.toString()).toBe('mock-exact-to-string')
+
+		const entry2 = new NumericEntry('6.02e23 mols')
+		entry2.numericInstance = null
+		expect(entry2.toString()).toBe('')
+	})
+
+	test('toJSON', () => {
+		const entry = new NumericEntry('6.02e23 mols  ', ['typeExact'])
+		expect(entry.toJSON()).toEqual({
+			inputString: '6.02e23 mols  ',
+			processedInputString: '6.02e23 mols'
+		})
 	})
 })

@@ -61,9 +61,6 @@ class Decimal extends Numeric {
 		}
 
 		const tokens = str.split('.')
-		if (!tokens[1]) {
-			return ''
-		}
 
 		const matches = trailingZeroesRegex.exec(tokens[1])
 		if (!matches || !matches.length) {

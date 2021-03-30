@@ -130,4 +130,10 @@ describe('Question', () => {
 			})
 		)
 	})
+
+	test('onSendToAssessment returns itself as an object', () => {
+		question.node.content.solution = 'solution'
+		question.onSendToAssessment()
+		expect(question.node.content.solution).toBeNull()
+	})
 })

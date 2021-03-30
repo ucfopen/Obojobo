@@ -6,7 +6,6 @@ import ModalContainer from './modal-container'
 class ModalPortal extends React.Component {
 	constructor(props) {
 		super(props)
-
 		this.state = { isDOMElementReady: false }
 	}
 
