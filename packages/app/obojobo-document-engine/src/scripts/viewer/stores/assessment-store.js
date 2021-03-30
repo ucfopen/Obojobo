@@ -307,22 +307,6 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	displayResultsModal(label, attemptNumber, scoreReport) {
-		ModalUtil.show(
-			<ResultsDialog
-				label={label}
-				attemptNumber={attemptNumber}
-				scoreReport={scoreReport}
-				onShowClick={this.onCloseResultsDialog.bind(this)}
-			/>
-		)
-	}
-
-	// displayUnfinishedAttemptNotice(attemptId) {
-	// 	const onConfirm = this.resumeAttemptWithAPICall.bind(this, attemptId)
-	// 	ModalUtil.show(<UnfinishedAttemptDialog onConfirm={onConfirm} />, true)
-	// }
-
 	startAttempt(id) {
 		this.doMachineAction(id, AssessmentStateActions.START_ATTEMPT)
 	}
@@ -388,5 +372,4 @@ class AssessmentStore extends Store {
 }
 
 const assessmentStore = new AssessmentStore()
-window.__as = assessmentStore
 export default assessmentStore

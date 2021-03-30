@@ -9,6 +9,7 @@ import AssessmentStateMachine from '../../../src/scripts/viewer/stores/assessmen
 import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 
 jest.mock('../../../src/scripts/common/models/obo-model')
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
@@ -91,6 +92,113 @@ describe('AssessmentStore', () => {
 		expect(eventSpy).toHaveBeenCalledWith('mock-id')
 
 		eventSpy.mockRestore()
+	})
+
+	test('assessment:acknowledgeFetchHistoryFailed calls acknowledgeFetchHistoryFailed', () => {
+		//eslint-disable-next-line no-unused-vars
+		const assessmentStore = new AssessmentStoreClass()
+
+		const spy = jest
+			.spyOn(AssessmentStoreClass.prototype, 'acknowledgeFetchHistoryFailed')
+			.mockReturnValue(true)
+
+		expect(spy).not.toHaveBeenCalled()
+		Dispatcher.trigger('assessment:acknowledgeFetchHistoryFailed', {
+			value: { id: 'mock-id', retry: 'mock-retry' }
+		})
+		expect(spy).toHaveBeenCalledWith('mock-id', 'mock-retry')
+
+		spy.mockRestore()
+	})
+
+	test('nav:targetChanged does nothing if no assessment is found', () => {
+		//eslint-disable-next-line no-unused-vars
+		const assessmentStore = new AssessmentStoreClass()
+		assessmentStore.init([
+			{
+				name: 'ObojoboDraft.Sections.Assessment',
+				assessmentSummary: [{ assessmentId: 'mockAssessmentId' }],
+				importableScore: { assessmentId: 'mockAssessmentId' }
+			}
+		])
+		OboModel.models['someMockId'] = { get: () => null, getParentOfType: () => null }
+
+		const machine = assessmentStore.getState().machines.mockAssessmentId
+		machine.getCurrentState = jest.fn().mockReturnValue('inAttempt')
+		machine.send = jest.fn()
+
+		Dispatcher.trigger('nav:targetChanged ', {
+			value: { to: 'someMockId' }
+		})
+		expect(machine.getCurrentState).not.toHaveBeenCalled()
+		expect(machine.send).not.toHaveBeenCalled()
+	})
+
+	test('nav:targetChanged does nothing attempt history is loaded', () => {
+		//eslint-disable-next-line no-unused-vars
+		const assessmentStore = new AssessmentStoreClass()
+		assessmentStore.init([
+			{
+				name: 'ObojoboDraft.Sections.Assessment',
+				assessmentSummary: [{ assessmentId: 'mockAssessmentId' }],
+				importableScore: { assessmentId: 'mockAssessmentId' }
+			}
+		])
+		assessmentStore.state.assessments.mockAssessmentId.attemptHistoryNetworkState = 'loaded'
+
+		const machine = assessmentStore.getState().machines.mockAssessmentId
+		machine.getCurrentState = jest.fn().mockReturnValue('inAttempt')
+		machine.send = jest.fn()
+
+		Dispatcher.trigger('nav:targetChanged ', {
+			value: { to: 'mockAssessmentId' }
+		})
+		expect(machine.getCurrentState).not.toHaveBeenCalled()
+		expect(machine.send).not.toHaveBeenCalled()
+	})
+
+	test('nav:targetChanged does nothing if machine is not in the NOT_IN_ATTEMPT state', () => {
+		//eslint-disable-next-line no-unused-vars
+		const assessmentStore = new AssessmentStoreClass()
+		assessmentStore.init([
+			{
+				name: 'ObojoboDraft.Sections.Assessment',
+				assessmentSummary: [{ assessmentId: 'mockAssessmentId' }],
+				importableScore: { assessmentId: 'mockAssessmentId' }
+			}
+		])
+
+		const machine = assessmentStore.getState().machines.mockAssessmentId
+		machine.getCurrentState = jest.fn().mockReturnValue('inAttempt')
+		machine.send = jest.fn()
+
+		Dispatcher.trigger('nav:targetChanged ', {
+			value: { to: 'mockAssessmentId' }
+		})
+		expect(machine.getCurrentState).toHaveBeenCalled()
+		expect(machine.send).not.toHaveBeenCalled()
+	})
+
+	test('nav:targetChanged transitions machine state if not in an attempt to fetch attempt history', () => {
+		//eslint-disable-next-line no-unused-vars
+		const assessmentStore = new AssessmentStoreClass()
+		assessmentStore.init([
+			{
+				name: 'ObojoboDraft.Sections.Assessment',
+				assessmentSummary: [{ assessmentId: 'mockAssessmentId' }],
+				importableScore: { assessmentId: 'mockAssessmentId' }
+			}
+		])
+
+		const machine = assessmentStore.getState().machines.mockAssessmentId
+		machine.getCurrentState = jest.fn().mockReturnValue('notInAttempt')
+		machine.send = jest.fn()
+
+		Dispatcher.trigger('nav:targetChanged ', {
+			value: { to: 'mockAssessmentId' }
+		})
+		expect(machine.getCurrentState).toHaveBeenCalled()
+		expect(machine.send).toHaveBeenCalledWith('fetchAttemptHistory')
 	})
 
 	test('window:closeAttempt calls given method if currently in assessment', () => {
@@ -483,11 +591,14 @@ describe('AssessmentStore', () => {
 		spy.mockRestore()
 	})
 
-	test('displayPreAttemptImportScoreNotice calls ModalUtil.show', () => {
+	test('displayPreAttemptImportScoreNotice calls ModalUtil.show', done => {
 		const assessmentStore = new AssessmentStoreClass()
 		assessmentStore.init()
 
-		assessmentStore.displayPreAttemptImportScoreNotice('mock-highest-score')
+		assessmentStore.displayPreAttemptImportScoreNotice('mock-highest-score').then(result => {
+			expect(result).toBe('mock-choice')
+			done()
+		})
 
 		expect(ModalUtil.show).toHaveBeenCalledWith(
 			<PreAttemptImportScoreDialog
@@ -495,6 +606,10 @@ describe('AssessmentStore', () => {
 				onChoice={expect.any(Function)}
 			/>
 		)
+
+		const Dialog = ModalUtil.show.mock.calls[0][0]
+
+		Dialog.props.onChoice('mock-choice')
 	})
 
 	test.each`

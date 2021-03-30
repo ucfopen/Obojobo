@@ -82,13 +82,12 @@ const updateContextWithAttemptHistoryResponse = assign({
 				newAssessmentState
 			)
 
+			console.log('here', newAssessmentState)
+
 			state.assessments[assessmentId] = newAssessmentState
 			state.assessmentSummaries[assessmentId] = newAssessmentSummary
 
-			// can no longer import now that we have a score
-			// if (newAssessmentSummary.scores.length === 0) {
 			delete state.importableScores[assessmentId]
-			// }
 
 			AssessmentStateHelpers.updateQuestionStore(assessmentItem)
 		})
@@ -140,18 +139,6 @@ class AssessmentStateMachine {
 							{ target: PROMPTING_FOR_RESUME, cond: 'isAttemptNeedingToBeResumed' },
 							{ target: NOT_IN_ATTEMPT, cond: 'isNotResuming' }
 						]
-						// on: {
-						// 	[ACKNOWLEDGE]: {
-						// 		target: NOT_IN_ATTEMPT,
-						// 		cond: () => {
-						// 			//@TODO - Only if no prompt for resume, or dont need to notify of import
-						// 			console.log('@TODO - Code out this cond function!')
-						// 			return true
-						// 		}
-						// 	},
-						// 	[NOTIFY_OF_IMPORT]: NOTIFYING_OF_IMPORT,
-						// 	[PROMPT_FOR_RESUME]: PROMPTING_FOR_RESUME
-						// }
 					},
 					[NOT_IN_ATTEMPT]: {
 						on: {
@@ -310,7 +297,7 @@ class AssessmentStateMachine {
 					},
 					[SEND_RESPONSES_FAILED]: {
 						on: {
-							retry: SENDING_RESPONSES,
+							// retry: SENDING_RESPONSES,
 							[CONTINUE_ATTEMPT]: IN_ATTEMPT
 						}
 					},

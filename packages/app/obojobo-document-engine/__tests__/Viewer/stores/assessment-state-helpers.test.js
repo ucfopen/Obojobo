@@ -97,7 +97,7 @@ describe('AssessmentStateHelpers', () => {
 		expect(spy).not.toHaveBeenCalled()
 
 		try {
-			await AssessmentStateHelpers.startAttempt('mockAssessmentId', 'mockAttemptId')
+			await AssessmentStateHelpers.resumeAttempt('mockAssessmentId', 'mockAttemptId')
 		} catch (e) {
 			expect(e).toEqual(Error('mockErrorMessage'))
 		}
@@ -477,5 +477,19 @@ describe('AssessmentStateHelpers', () => {
 
 		processTriggerSpy.mockRestore()
 		dispatchTriggerSpy.mockRestore()
+	})
+
+	test('static onError throws expected values', () => {
+		expect(() => {
+			AssessmentStateHelpers.onError()
+		}).toThrow('Request Failed')
+
+		expect(() => {
+			AssessmentStateHelpers.onError({
+				value: {
+					message: 'mock-error-message'
+				}
+			})
+		}).toThrow('mock-error-message')
 	})
 })

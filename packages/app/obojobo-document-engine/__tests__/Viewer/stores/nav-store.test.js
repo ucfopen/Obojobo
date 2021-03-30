@@ -836,4 +836,99 @@ describe('NavStore', () => {
 
 		spy.mockRestore()
 	})
+
+	test('gotoStartingTarget calls NavUtil.gotoPath for a pending path', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.pendingTarget = {
+			type: 'path',
+			target: 'mockPendingTarget'
+		}
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPendingTarget')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledTimes(0)
+		expect(NavStore.pendingTarget).toBe(null)
+	})
+
+	test('gotoStartingTarget calls NavUtil.goto for a pending goto', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.pendingTarget = {
+			type: 'goto',
+			target: 'mockPendingTarget'
+		}
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockPendingTarget')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(0)
+		expect(NavStore.pendingTarget).toBe(null)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, does nothing else if no startingId and no first target exists', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => null
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget(null, 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledTimes(0)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, then calls goto if given a starting id', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => null
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget('mockId', 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockId')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+	})
+
+	test('gotoStartingTarget calls gotoPath for the starting path, then calls goto if no starting id BUT a first target exists', () => {
+		NavStore.setState({
+			isInitialized: true,
+			itemsById: {}
+		})
+		NavUtil.getFirst = () => ({ id: 'mockFirstTargetId' })
+
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(NavUtil.goto).not.toHaveBeenCalled()
+
+		NavStore.gotoStartingTarget(null, 'mockPath')
+
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockPath')
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstTargetId')
+		expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+	})
 })

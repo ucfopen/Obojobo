@@ -375,5 +375,4 @@ class NavStore extends Store {
 }
 
 const navStore = new NavStore()
-window.__ns = navStore
 export default navStore

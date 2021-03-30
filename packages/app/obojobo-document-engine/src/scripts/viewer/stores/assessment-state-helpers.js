@@ -116,7 +116,7 @@ class AssessmentAPIHelpers {
 }
 
 class AssessmentStateHelpers {
-	static async onError(res = null) {
+	static onError(res = null) {
 		throw Error(res ? res.value.message : 'Request Failed')
 	}
 
