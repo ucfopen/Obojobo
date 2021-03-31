@@ -38,8 +38,7 @@ export default class IFrame extends React.Component {
 
 		this.state = {
 			actualWidth: 0,
-			padding: 0,
-			initialZoom: 1
+			padding: 0
 		}
 	}
 
@@ -116,14 +115,9 @@ export default class IFrame extends React.Component {
 		)
 	}
 
-	componentDidUpdate(prevProps) {
-		if (
-			typeof prevProps.model.attributes.content.initialZoom !== 'undefined' &&
-			parseFloat(prevProps.model.attributes.content.initialZoom) !== this.state.initialZoom
-		) {
-			// console.log('MediaUtil.setDefaultZoom')
+	componentDidUpdate() {
+		if (!MediaUtil.isZoomDefaultSet(this.props.moduleData.mediaState, this.props.model)) {
 			MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
-			this.setState({ initialZoom: this.props.model.modelState.initialZoom })
 		}
 	}
 

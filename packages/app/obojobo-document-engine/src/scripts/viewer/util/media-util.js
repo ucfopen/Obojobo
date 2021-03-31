@@ -66,6 +66,10 @@ const MediaUtil = {
 
 	isShowingMedia(state, model) {
 		return state.shown[model.get('id')] === true
+	},
+
+	isZoomDefaultSet(state, model) {
+		return !!state.defaultZoomById[model.get('id')]
 	}
 }
 

@@ -216,8 +216,7 @@ describe('IFrame', () => {
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding',
-			initialZoom: 1
+			padding: 'mock-padding'
 		})
 	})
 
@@ -378,16 +377,14 @@ describe('IFrame', () => {
 		component.instance().getMeasuredDimensions = jest.fn()
 		component.instance().getMeasuredDimensions.mockReturnValueOnce({
 			width: 'mock-width',
-			padding: 'mock-padding',
-			initialZoom: 1
+			padding: 'mock-padding'
 		})
 
 		component.instance().componentDidMount()
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding',
-			initialZoom: 1
+			padding: 'mock-padding'
 		})
 		expect(fakeConstructor).toHaveBeenCalledTimes(1)
 		expect(fakeConstructor).toHaveBeenCalledWith(
@@ -410,16 +407,14 @@ describe('IFrame', () => {
 		component.instance().getMeasuredDimensions = jest.fn()
 		component.instance().getMeasuredDimensions.mockReturnValueOnce({
 			width: 'mock-width',
-			padding: 'mock-padding',
-			initialZoom: 1
+			padding: 'mock-padding'
 		})
 
 		component.instance().componentDidMount()
 
 		expect(component.instance().state).toEqual({
 			actualWidth: 'mock-width',
-			padding: 'mock-padding',
-			initialZoom: 1
+			padding: 'mock-padding'
 		})
 		expect(component.instance().resizeObserver).toBe(undefined) //eslint-disable-line
 		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
