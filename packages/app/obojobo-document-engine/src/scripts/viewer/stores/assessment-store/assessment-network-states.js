@@ -18,7 +18,7 @@ export default {
 	END_ATTEMPT_FAILED: 'endAttemptFailed',
 
 	// WILL_RESUME_ATTEMPT:'',
-	PRE_STARTING_ATTEMPT: 'preStartingAttempt',
+	// PRE_STARTING_ATTEMPT: 'preStartingAttempt',
 	STARTING_ATTEMPT: 'startingAttempt',
 	RESUMING_ATTEMPT: 'resumingAttempt',
 	// IN_ATTEMPT:'',

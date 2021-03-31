@@ -13,7 +13,7 @@ const { OboModel } = Common.models
 const {
 	INIT,
 	PROMPTING_FOR_RESUME,
-	PRE_STARTING_ATTEMPT,
+	// PRE_STARTING_ATTEMPT,
 	STARTING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	IN_ATTEMPT,
@@ -82,8 +82,6 @@ const updateContextWithAttemptHistoryResponse = assign({
 				newAssessmentState
 			)
 
-			console.log('here', newAssessmentState)
-
 			state.assessments[assessmentId] = newAssessmentState
 			state.assessmentSummaries[assessmentId] = newAssessmentSummary
 
@@ -146,7 +144,16 @@ class AssessmentStateMachine {
 								target: FETCHING_ATTEMPT_HISTORY,
 								cond: 'isAttemptHistoryNotLoaded'
 							},
-							[START_ATTEMPT]: PRE_STARTING_ATTEMPT
+							[START_ATTEMPT]: [
+								{
+									target: STARTING_ATTEMPT,
+									cond: 'isNoImportAvailable'
+								},
+								{
+									target: PROMPTING_FOR_IMPORT,
+									cond: 'isImportAvailable'
+								}
+							]
 						}
 					},
 					[FETCHING_ATTEMPT_HISTORY]: {
@@ -173,12 +180,12 @@ class AssessmentStateMachine {
 							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
 						}
 					},
-					[PRE_STARTING_ATTEMPT]: {
-						always: [
-							{ target: STARTING_ATTEMPT, cond: 'isNoImportAvailable' },
-							{ target: PROMPTING_FOR_IMPORT, cond: 'isImportAvailable' }
-						]
-					},
+					// [PRE_STARTING_ATTEMPT]: {
+					// 	always: [
+					// 		{ target: STARTING_ATTEMPT, cond: 'isNoImportAvailable' },
+					// 		{ target: PROMPTING_FOR_IMPORT, cond: 'isImportAvailable' }
+					// 	]
+					// },
 					[STARTING_ATTEMPT]: {
 						invoke: {
 							id: 'startAttempt',
@@ -394,10 +401,6 @@ class AssessmentStateMachine {
 	stop() {
 		this.service.stop()
 	}
-
-	// startAttempt() {
-	// 	this.service.send('startAttempt')
-	// }
 }
 
 export default AssessmentStateMachine
