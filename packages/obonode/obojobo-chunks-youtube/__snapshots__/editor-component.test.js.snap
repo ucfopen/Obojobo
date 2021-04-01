@@ -15,6 +15,7 @@ exports[`YouTube Editor Node YouTube component 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         ×
       </button>
@@ -57,6 +58,7 @@ exports[`YouTube Editor Node YouTube renders with no id correctly 1`] = `
         className="button"
         contentEditable={false}
         onClick={[Function]}
+        type="button"
       >
         ×
       </button>

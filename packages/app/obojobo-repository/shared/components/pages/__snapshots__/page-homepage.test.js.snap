@@ -180,7 +180,7 @@ exports[`PageHomepage renders when given props 1`] = `
               </p>
               <p>
                 The power to create new types of learning modules combined with standardized
-
+                 
                 <a
                   href="http://www.imsglobal.org/activity/caliper"
                 >
@@ -281,13 +281,13 @@ exports[`PageHomepage renders when given props 1`] = `
             <span
               className="copy"
             >
-              ©
+              © 
               <span
                 id="copyright-date"
               >
                 2016
               </span>
-
+               
               <a
                 href="https://ucf.edu"
               >

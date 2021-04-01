@@ -133,15 +133,3 @@ exports[`Assessment Test page (Submitting) 1`] = `
   tabIndex={-1}
 />
 `;
-
-exports[`Assessment Test page 1`] = `
-<div
-  className="component obojobo-draft--sections--assessment"
-  data-focussed={false}
-  data-id="assessment"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Sections.Assessment"
-  id="obo-assessment"
-  tabIndex={-1}
-/>
-`;

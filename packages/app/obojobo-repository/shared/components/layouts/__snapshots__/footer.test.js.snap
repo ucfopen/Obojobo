@@ -49,13 +49,13 @@ exports[`Footer renders 1`] = `
     <span
       className="copy"
     >
-      ©
+      © 
       <span
         id="copyright-date"
       >
         2016
       </span>
-
+       
       <a
         href="https://ucf.edu"
       >

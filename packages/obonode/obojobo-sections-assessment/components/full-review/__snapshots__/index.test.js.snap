@@ -521,6 +521,7 @@ exports[`FullReview FullReview component with five attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             1
           </button>
@@ -539,6 +540,7 @@ exports[`FullReview FullReview component with five attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             1
           </button>
@@ -557,6 +559,7 @@ exports[`FullReview FullReview component with five attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             1
           </button>
@@ -575,6 +578,7 @@ exports[`FullReview FullReview component with five attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             1
           </button>
@@ -593,6 +597,7 @@ exports[`FullReview FullReview component with five attempts 1`] = `
             className="button"
             contentEditable={false}
             onClick={[Function]}
+            type="button"
           >
             1
           </button>
