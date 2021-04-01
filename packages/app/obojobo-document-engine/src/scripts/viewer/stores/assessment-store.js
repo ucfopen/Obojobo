@@ -20,6 +20,12 @@ import AssessmentStateActions from './assessment-store/assessment-state-actions'
 // import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
 import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
+import UpdatedModuleDialog from 'obojobo-sections-assessment/components/dialogs/updated-module-dialog'
+import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from 'obojobo-sections-assessment/server/error-constants.js'
 
 // const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
@@ -222,6 +228,7 @@ class AssessmentStore extends Store {
 		const machine = AssessmentUtil.getAssessmentMachineForModel(this.state, assessmentModel)
 
 		if (!machine) {
+			ErrorUtil.show('Assessment ID not found', `Couldn't find an assessment with ID "${id}".`)
 			throw 'No machine exists for this assessment - Unable to run ' + command
 		}
 
@@ -333,18 +340,10 @@ class AssessmentStore extends Store {
 
 	acknowledgeStartAttemptFailed(id) {
 		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
-
-		console.log('@TODO - this should happen in the state machine') //eslint-disable-line
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
-		assessment.current = null
 	}
 
 	acknowledgeEndAttemptFailed(id) {
 		this.doMachineAction(id, AssessmentStateActions.ACKNOWLEDGE)
-
-		console.log('@TODO - this should happen in the state machine') //eslint-disable-line
-		const assessment = AssessmentUtil.getAssessmentForModel(this.state, OboModel.models[id])
-		delete assessment.current.error
 	}
 
 	acknowledgeResumeAttemptFailed(id) {

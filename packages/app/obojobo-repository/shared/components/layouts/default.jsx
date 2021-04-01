@@ -35,13 +35,13 @@ const LayoutDefault = props => (
 			{props.appScriptUrl ? (
 				<React.Fragment>
 					<script
-						crossOrigin={props.isDev ? 'true' : false}
+						crossOrigin="anonymous"
 						src={`//unpkg.com/react@${reactVersion}/umd/react.${
 							props.isDev ? 'development' : 'production.min'
 						}.js`}
 					></script>
 					<script
-						crossOrigin={props.isDev ? 'true' : false}
+						crossOrigin="anonymous"
 						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
 							props.isDev ? 'development' : 'production.min'
 						}.js`}

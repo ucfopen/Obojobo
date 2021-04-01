@@ -1,10 +1,10 @@
 import './trigger-list-modal.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
-const { SimpleDialog } = Common.components.modal
-const { Button, Switch } = Common.components
+import SimpleDialog from '../../../common/components/modal/simple-dialog'
+import Button from '../../../common/components/button'
+import Switch from '../../../common/components/switch'
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
@@ -85,7 +85,8 @@ class TriggerListModal extends React.Component {
 				return {
 					id: '',
 					fade: false,
-					animateScroll: true
+					animateScroll: true,
+					preventScroll: false
 				}
 
 			default:
@@ -119,9 +120,9 @@ class TriggerListModal extends React.Component {
 
 	updateActionValue(triggerIndex, actionIndex, key, event) {
 		const value = {}
-		// If there is a target, event is actually an event
-		// If there is no target, event is a boolean produced by the Switch
-		value[key] = event.target ? event.target.value : event
+		// pull changes off the event
+		// checkbox handles events from <Switch> being a checkbox
+		value[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
 
 		// Update triggers[triggerIndex].actions[actionIndex].value.key
 		// The nested loops insure that React's immutable state is updated properly
@@ -168,6 +169,49 @@ class TriggerListModal extends React.Component {
 								type: 'nav:goto',
 								value: {}
 							})
+					  })
+					: trigger
+			)
+		}))
+	}
+
+	getScrollType(action) {
+		const { value } = action
+
+		if (value.animateScroll === true || value.animateScroll === 'true') {
+			return 'animateScroll'
+		} else if (value.preventScroll === true || value.preventScroll === 'true') {
+			return 'preventScroll'
+		} else {
+			return 'jumpScroll'
+		}
+	}
+
+	updateScrollType(triggerIndex, actionIndex, event) {
+		const scrollType = event.target.value
+		const value = {
+			animateScroll: false,
+			preventScroll: false
+		}
+
+		if (scrollType !== 'jumpScroll') {
+			value[scrollType] = true
+		}
+
+		// Update triggers[triggerIndex].actions[actionIndex].value.key
+		// The nested loops insure that React's immutable state is updated properly
+		return this.setState(prevState => ({
+			/* eslint-disable no-mixed-spaces-and-tabs */
+			triggers: prevState.triggers.map((trigger, tIndex) =>
+				triggerIndex === tIndex
+					? Object.assign(trigger, {
+							actions: trigger.actions.map((action, aIndex) =>
+								actionIndex === aIndex
+									? Object.assign(action, {
+											value: Object.assign({}, action.value, value)
+									  })
+									: action
+							)
 					  })
 					: trigger
 			)
@@ -242,8 +286,8 @@ class TriggerListModal extends React.Component {
 					<div className="action-options">
 						<Switch
 							title="Animate Scroll"
-							initialChecked={action.value.animateScroll}
-							handleCheckChange={this.updateActionValue.bind(
+							checked={action.value.animateScroll}
+							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
 								actionIndex,
@@ -265,24 +309,19 @@ class TriggerListModal extends React.Component {
 						</div>
 						<Switch
 							title="Fade Out Other Items"
-							initialChecked={action.value.fade || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'fade'
-							)}
+							checked={action.value.fade || false}
+							onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}
 						/>
-						<Switch
-							title="Animate Scroll"
-							initialChecked={action.value.animateScroll || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'animateScroll'
-							)}
-						/>
+						<label>If item not visible on screen</label>
+						<select
+							className="select-item"
+							value={this.getScrollType(action)}
+							onChange={this.updateScrollType.bind(this, triggerIndex, actionIndex)}
+						>
+							<option value="animateScroll">Smoothly scroll page to the focussed item</option>
+							<option value="jumpScroll">Quickly jump page to the focussed item</option>
+							<option value="preventScroll">Keep the page where it is</option>
+						</select>
 					</div>
 				)
 		}

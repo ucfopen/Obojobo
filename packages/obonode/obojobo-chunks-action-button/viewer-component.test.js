@@ -59,9 +59,12 @@ describe('ActionButton', () => {
 				querySelector: () => mockButtonEl
 			})
 		}
+		const opts = {
+			preventScroll: jest.fn()
+		}
 
-		ActionButton.focusOnContent(model, { scroll: 'mockScroll' })
+		ActionButton.focusOnContent(model, opts)
 
-		expect(focus).toHaveBeenCalledWith(mockButtonEl, 'mockScroll')
+		expect(focus).toHaveBeenCalledWith(mockButtonEl, opts.preventScroll)
 	})
 })

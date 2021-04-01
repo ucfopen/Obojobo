@@ -5,6 +5,11 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
 import PreAttemptImportScoreDialog from './dialogs/pre-attempt-import-score-dialog'
+import {
+	ERROR_INVALID_ATTEMPT_END,
+	ERROR_INVALID_ATTEMPT_RESUME
+} from '../server/error-constants.js'
+import UpdatedModuleDialog from './dialogs/updated-module-dialog'
 
 const { AssessmentScoreReportView, AssessmentScoreReporter } = Viewer.assessment
 
@@ -50,6 +55,10 @@ const onCloseResultsDialog = assessmentModel => {
 	ModalUtil.hide()
 	FocusUtil.focusOnNavTarget()
 	AssessmentUtil.acknowledgeEndAttemptSuccessful(assessmentModel)
+}
+
+const startAttempt = assessmentModel => {
+	AssessmentUtil.startAttempt(assessmentModel)
 }
 
 const continueAttempt = assessmentModel => {
@@ -229,22 +238,33 @@ const getDialog = (
 		}
 
 		case END_ATTEMPT_FAILED: {
-			return (
-				<Dialog
-					centered
-					buttons={[
-						{
-							value: `Close`,
-							onClick: () => acknowledgeEndAttemptFailed(assessmentModel),
-							default: true
-						}
-					]}
-					title="Error"
-					width="35rem"
-				>
-					<p>{`Something went wrong ending your attempt: ${assessment.current.error}. Please try again.`}</p>
-				</Dialog>
-			)
+			switch (assessment.current.error) {
+				case ERROR_INVALID_ATTEMPT_END:
+					return (
+						<UpdatedModuleDialog
+							onClose={() => acknowledgeEndAttemptFailed(assessmentModel)}
+							onRestart={() => startAttempt(assessmentModel)}
+						/>
+					)
+
+				default:
+					return (
+						<Dialog
+							centered
+							buttons={[
+								{
+									value: `Close`,
+									onClick: () => acknowledgeEndAttemptFailed(assessmentModel),
+									default: true
+								}
+							]}
+							title="Error"
+							width="35rem"
+						>
+							<p>{`Something went wrong ending your attempt: ${assessment.current.error}. Please try again.`}</p>
+						</Dialog>
+					)
+			}
 		}
 
 		case IMPORT_ATTEMPT_FAILED: {

@@ -108,6 +108,16 @@ const updateContextWithCurrentAttemptError = assign({
 	}
 })
 
+const clearError = assign({
+	assessmentStoreState: context => {
+		const assessmentContext = getAssessmentContext(context)
+
+		delete assessmentContext.current.error
+
+		return context.assessmentStoreState
+	}
+})
+
 const logError = (context, event) => {
 	console.error(event.data) // eslint-disable-line no-console
 }
@@ -180,12 +190,6 @@ class AssessmentStateMachine {
 							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
 						}
 					},
-					// [PRE_STARTING_ATTEMPT]: {
-					// 	always: [
-					// 		{ target: STARTING_ATTEMPT, cond: 'isNoImportAvailable' },
-					// 		{ target: PROMPTING_FOR_IMPORT, cond: 'isImportAvailable' }
-					// 	]
-					// },
 					[STARTING_ATTEMPT]: {
 						invoke: {
 							id: 'startAttempt',
@@ -220,7 +224,6 @@ class AssessmentStateMachine {
 							},
 							onDone: {
 								target: END_ATTEMPT_SUCCESSFUL,
-								// actions: [updateContextRemoveImportableScore]
 								actions: [updateContextWithAttemptHistoryResponse]
 							},
 							onError: {
@@ -269,17 +272,44 @@ class AssessmentStateMachine {
 					},
 					[START_ATTEMPT_FAILED]: {
 						on: {
-							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
+							[ACKNOWLEDGE]: {
+								target: NOT_IN_ATTEMPT,
+								actions: clearError
+							}
 						}
 					},
 					[IMPORT_ATTEMPT_FAILED]: {
 						on: {
-							[ACKNOWLEDGE]: NOT_IN_ATTEMPT
+							[ACKNOWLEDGE]: {
+								target: NOT_IN_ATTEMPT,
+								actions: clearError
+							}
 						}
 					},
 					[RESUME_ATTEMPT_FAILED]: {
+						// Special case - If resume attempt failed because the module was updated since
+						// the resume was last attempted, we simply start a new attempt and don't alert
+						// the user. This invoke path accomplishes this - If the src method throws
+						// an error, it will call onError, and hence, transition to STARTING_ATTEMPT:
+						invoke: {
+							id: 'startNewAttemptIfResumeFailedDueToModuleUpdatedDuringAttempt',
+							src: async context => {
+								const currentError = getAssessmentContext(context).current.error
+
+								if (currentError === 'Cannot resume an attempt for a different module') {
+									throw currentError
+								}
+							},
+							onError: {
+								target: STARTING_ATTEMPT,
+								actions: clearError
+							}
+						},
 						on: {
-							[ACKNOWLEDGE]: PROMPTING_FOR_RESUME
+							[ACKNOWLEDGE]: {
+								target: PROMPTING_FOR_RESUME,
+								actions: clearError
+							}
 						}
 					},
 					[SENDING_RESPONSES]: {
@@ -304,8 +334,10 @@ class AssessmentStateMachine {
 					},
 					[SEND_RESPONSES_FAILED]: {
 						on: {
-							// retry: SENDING_RESPONSES,
-							[CONTINUE_ATTEMPT]: IN_ATTEMPT
+							[CONTINUE_ATTEMPT]: {
+								target: IN_ATTEMPT,
+								actions: clearError
+							}
 						}
 					},
 					[ENDING_ATTEMPT]: {
@@ -333,7 +365,17 @@ class AssessmentStateMachine {
 					},
 					[END_ATTEMPT_FAILED]: {
 						on: {
-							[ACKNOWLEDGE]: IN_ATTEMPT
+							[ACKNOWLEDGE]: {
+								target: IN_ATTEMPT,
+								actions: clearError
+							},
+							[START_ATTEMPT]: [
+								{
+									target: STARTING_ATTEMPT,
+									cond: 'isEndAttemptFailedDueToModuleUpdatedDuringAttempt',
+									actions: clearError
+								}
+							]
 						}
 					}
 				}
@@ -365,6 +407,12 @@ class AssessmentStateMachine {
 					isAttemptHistoryNotLoaded: context => {
 						const assessmentContext = getAssessmentContext(context)
 						return assessmentContext.attemptHistoryNetworkState === 'none'
+					},
+					isEndAttemptFailedDueToModuleUpdatedDuringAttempt: context => {
+						const assessmentContext = getAssessmentContext(context)
+						return (
+							assessmentContext.current.error === 'Cannot end an attempt for a different module'
+						)
 					}
 				}
 			}

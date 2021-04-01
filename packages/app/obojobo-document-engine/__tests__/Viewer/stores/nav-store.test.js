@@ -299,15 +299,17 @@ describe('NavStore', () => {
 		})
 
 		// simulate a valid gotoItem Call
-		const spy = jest.spyOn(NavStore, 'gotoItem')
+		const gotoItemSpy = jest.spyOn(NavStore, 'gotoItem')
+		const gotoFirstSpy = jest.spyOn(NavStore, 'gotoFirst')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 
-		// go
-		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
-		expect(ViewerAPI.postEvent).not.toHaveBeenCalled()
-		expect(ViewerAPI.postEvent.mock.calls[0]).toMatchSnapshot()
+		// make sure the nav defaults to the first page if an ID isn't found
+		eventCallbacks['nav:goto']({ value: { id: 'does-not-exist' } })
+		expect(gotoFirstSpy).toHaveBeenCalled()
+		expect(gotoItemSpy).toHaveBeenCalledTimes(1)
 
-		spy.mockRestore()
+		gotoItemSpy.mockRestore()
+		gotoFirstSpy.mockRestore()
 	})
 
 	test('nav:lock event fires and updates state', () => {

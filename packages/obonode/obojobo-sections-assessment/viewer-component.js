@@ -202,6 +202,7 @@ class Assessment extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
+				{/* <h1>{assessment.current ? assessment.current.error : ''}</h1> */}
 				{/* <h1>{this.state.curStep}</h1>
 				<h1>
 					{AssessmentUtil.getCurrentAttemptStatus(

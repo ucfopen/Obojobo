@@ -135,7 +135,7 @@ exports[`PageLogin renders when given props 1`] = `
             className="repository--main-content"
           >
             <p>
-              To log in, you must access ObojoboNext from 
+              To log in, you must access ObojoboNext from
               <b>
                 within your course
               </b>
@@ -195,13 +195,13 @@ exports[`PageLogin renders when given props 1`] = `
             <span
               className="copy"
             >
-              © 
+              ©
               <span
                 id="copyright-date"
               >
-                2021
+                2016
               </span>
-               
+
               <a
                 href="https://ucf.edu"
               >

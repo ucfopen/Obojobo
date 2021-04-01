@@ -14,7 +14,7 @@ Obojobo XML is an XML document with an implied schema that can be used to genera
 *  **OboXML parser**: Code which parses OboXML to produce an Obojobo Draft Document.
 *  **Component element**: An XML element in an OboXML document representing an Obojobo component. Uppercase.
 *  **OboXML element**: An XML element in an OboXML document representing a content attribute of an Obojobo component. Lowercased. Additional parsers or extensions can parse these elements to construct a conformant content attribute for the resulting Obojobo draft document.
-*  **HTML shorthand element**: An XML element which is convience shorthand representing a component element or a StyleRange in a TextGroup. 
+*  **HTML shorthand element**: An XML element which is convience shorthand representing a component element or a StyleRange in a TextGroup.
 
 ## OboXML Format
 
@@ -22,7 +22,7 @@ OboXML documents should have a singular `<ObojoboDraftDoc>` element containing m
 
 ## Obojobo compoment element format
 
-Obojobo component elements are uppercased and should be named after thier component identifier (or, optionally, the component name as shorthand).
+Obojobo component elements are uppercased and should be named after their component identifier (or, optionally, the component name as shorthand).
 
 If only the component name is used then the element's tag name will be resolved to the full component identifier by searching the installed Obojobo components on the system. If no matching Obojobo component is found an error will be produced.
 

@@ -1,8 +1,8 @@
 import './button.scss'
 
 import React from 'react'
-import isOrNot from '../util/isornot'
 import focus from '../page/focus'
+import isOrNot from '../util/isornot'
 
 export default class Button extends React.Component {
 	constructor(props) {

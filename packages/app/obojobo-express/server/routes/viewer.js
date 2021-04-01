@@ -119,18 +119,10 @@ router
 				})
 			})
 			.then(() => {
-				const draft = req.currentDocument
 				res.render('viewer', {
 					assetForEnv,
 					webpackAssetPath,
-					draftTitle:
-						draft &&
-						draft.root &&
-						draft.root.node &&
-						draft.root.node.content &&
-						draft.root.node.content.title
-							? draft.root.node.content.title
-							: ''
+					draftTitle: req.currentDocument.getTitle()
 				})
 			})
 			.catch(res.unexpected)

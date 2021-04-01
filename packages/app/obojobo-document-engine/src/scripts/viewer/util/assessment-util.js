@@ -8,6 +8,10 @@ import CurrentAssessmentStates from './current-assessment-states'
 
 const AssessmentUtil = {
 	getAssessmentForModel(state, model) {
+		if (!model) {
+			return null
+		}
+
 		let assessmentModel
 		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
 			assessmentModel = model

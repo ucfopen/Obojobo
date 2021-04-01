@@ -1,6 +1,5 @@
 import './viewer-component.scss'
 
-// import { CSSTransition } from 'react-transition-group'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import MCAssessmentAnswerChoices from './mc-assessment-answer-choices'
 import React from 'react'

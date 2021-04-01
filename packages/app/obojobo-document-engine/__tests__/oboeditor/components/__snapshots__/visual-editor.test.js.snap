@@ -535,7 +535,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -1138,7 +1138,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -1741,7 +1741,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -2390,7 +2390,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -2989,7 +2989,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />

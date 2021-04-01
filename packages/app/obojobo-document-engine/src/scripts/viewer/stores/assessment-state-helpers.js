@@ -16,6 +16,7 @@ import QuestionStore from './question-store'
 import QuestionUtil from '../util/question-util'
 // import React from 'react'
 import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
+import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 // const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
@@ -127,6 +128,10 @@ class AssessmentStateHelpers {
 			throw getErrorFromResponse(res)
 		}
 
+		console.log('gotham', res)
+
+		await injectKatexIfNeeded({ value: res.value.questions })
+
 		return this.onAttemptStarted(res)
 	}
 
@@ -136,6 +141,8 @@ class AssessmentStateHelpers {
 		if (res.status !== 'ok') {
 			throw getErrorFromResponse(res)
 		}
+
+		await injectKatexIfNeeded({ value: res.value.questions })
 
 		return this.onAttemptStarted(res)
 	}
@@ -185,8 +192,12 @@ class AssessmentStateHelpers {
 		const assessment = historyResponse.value.find(
 			assessment => assessment.assessmentId === assessmentId
 		)
+
 		if (assessment) {
 			await this.updateAttemptHistoryWithReviewData(assessment)
+
+			const questions = assessment.attempts.map(attempt => attempt.state.questionModels)
+			await injectKatexIfNeeded({ value: questions })
 		}
 
 		return historyResponse

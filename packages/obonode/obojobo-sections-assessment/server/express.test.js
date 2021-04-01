@@ -37,6 +37,7 @@ const {
 const assessmentExpress = require('./express')
 const express_response_decorator = require('obojobo-express/server/express_response_decorator')
 const express = require('express')
+const { ERROR_INVALID_ATTEMPT_END, ERROR_INVALID_ATTEMPT_RESUME } = require('./error-constants')
 let app
 
 describe('server/express', () => {
@@ -193,9 +194,11 @@ describe('server/express', () => {
 	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', async () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
-		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
 
-		const response = await request(app)
+		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
+		resumeAttempt.mockRejectedValueOnce(new Error(ERROR_INVALID_ATTEMPT_RESUME))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/resume')
 			.type('application/json')
 
@@ -204,6 +207,20 @@ describe('server/express', () => {
 			status: 'error',
 			value: {
 				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
+
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+
+		expect(response.statusCode).toBe(500)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_RESUME,
 				type: 'unexpected'
 			}
 		})
@@ -252,30 +269,37 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/attempt/mock-attempt-id/end fails with default error', async () => {
 		expect.hasAssertions()
-		const message = 'Not an allowed msg'
-		endAttempt.mockRejectedValueOnce({message})
+		const mockReturnValue = {}
 
-		const response = await request(app)
+		endAttempt.mockRejectedValueOnce(mockReturnValue)
+		endAttempt.mockRejectedValueOnce(new Error(ERROR_INVALID_ATTEMPT_END))
+
+		let response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(500)
-		expect(response.body).toHaveProperty('value.message')
-		// make sure the non-allowed error doesn't come through
-		expect(response.body).not.toHaveProperty('value.message', message)
-	})
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: expect.any(String),
+				type: 'unexpected'
+			}
+		})
 
-	test('POST /api/assessments/attempt/mock-attempt-id/end passes error through', async () => {
-		expect.hasAssertions()
-		const message = 'Cannot end an attempt for a different module'
-		endAttempt.mockRejectedValueOnce({message})
-
-		const response = await request(app)
+		// Call the route again to make sure a custom error message gets returned
+		response = await request(app)
 			.post('/api/assessments/attempt/mock-attempt-id/end')
 			.type('application/json')
 
 		expect(response.statusCode).toBe(500)
-		expect(response.body).toHaveProperty('value.message', message)
+		expect(response.body).toEqual({
+			status: 'error',
+			value: {
+				message: ERROR_INVALID_ATTEMPT_END,
+				type: 'unexpected'
+			}
+		})
 	})
 
 	test('POST /api/assessments/attempt/mock-attempt-id/end', async () => {
