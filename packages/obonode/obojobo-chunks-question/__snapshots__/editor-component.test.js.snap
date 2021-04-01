@@ -1,5 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Question Editor Node Question builds the expected component (not in assessment) 1`] = `
+<div>
+  <div
+    className="component obojobo-draft--chunks--question is-viewed pad is-type-default"
+  >
+    <div
+      className="flipper question-editor"
+    >
+      <div
+        className="content-back"
+      >
+        <div
+          className="question-settings"
+          contentEditable={false}
+        >
+          <label>
+            Question Type
+          </label>
+          <select
+            contentEditable={false}
+            onChange={[Function]}
+          >
+            <option
+              value="ObojoboDraft.Chunks.MCAssessment"
+            >
+              Multiple choice
+            </option>
+            <option
+              value="ObojoboDraft.Chunks.NumericAssessment"
+            >
+              Input a number
+            </option>
+          </select>
+          <label
+            className="question-type"
+            contentEditable={false}
+          >
+            <input
+              checked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Survey Only
+          </label>
+        </div>
+      </div>
+    </div>
+    <button
+      className="delete-button"
+      contentEditable={false}
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Question Editor Node Question builds the expected component 1`] = `
 <div>
   <div

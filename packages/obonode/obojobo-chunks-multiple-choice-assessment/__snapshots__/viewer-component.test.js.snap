@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MCAssessmentViewerComponent Component renders (shuffle enabled) 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-null is-mode-mock-mode is-type-default is-responded-to mock-score-class is-not-scored"
+  data-focussed={false}
+  data-id="mock-id"
+  data-obo-component={true}
+  data-type="mock-id"
+  id="mock-id"
+  tabIndex={-1}
+>
+  <div
+    role="radiogroup"
+  />
+</div>
+`;
+
 exports[`MCAssessmentViewerComponent Component renders 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment is-response-type-null is-mode-mock-mode is-type-default is-responded-to mock-score-class is-not-scored"

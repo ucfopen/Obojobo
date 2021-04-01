@@ -1,31 +1,11 @@
 const debounce = (time, fn) => {
-	let timeout = null
-	let functionCall = null
+	let timeout
 
-	const debouncedFn = function() {
-		functionCall = () => fn.apply(this, arguments)
-
-		debouncedFn.cancel()
-
+	return function() {
+		const functionCall = () => fn.apply(this, arguments)
+		clearTimeout(timeout)
 		timeout = setTimeout(functionCall, time)
 	}
-
-	debouncedFn.cancel = function() {
-		clearTimeout(timeout)
-		timeout = null
-	}
-
-	// Additional method causing the debounced function
-	// to execute right away
-	debouncedFn.now = function() {
-		if (!timeout) return
-
-		debouncedFn.cancel()
-
-		return functionCall()
-	}
-
-	return debouncedFn
 }
 
 module.exports = debounce

@@ -27,14 +27,15 @@ const {
 	STARTING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	SENDING_RESPONSES,
-	ENDING_ATTEMPT
+	ENDING_ATTEMPT,
+	IMPORTING_ATTEMPT
 } = AssessmentNetworkStates
 
 class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			currentStep: Assessment.getStep(props)
+			curStep: Assessment.getStep(props)
 		}
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
@@ -68,7 +69,8 @@ class Assessment extends React.Component {
 			}
 
 			case STARTING_ATTEMPT:
-			case RESUMING_ATTEMPT: {
+			case RESUMING_ATTEMPT:
+			case IMPORTING_ATTEMPT: {
 				return 'loading'
 			}
 
@@ -93,13 +95,6 @@ class Assessment extends React.Component {
 
 	isAttemptReadyToSubmit() {
 		return this.getCurrentAttemptStatus() === CurrentAssessmentStates.READY_TO_SUBMIT
-	}
-
-	isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
 	}
 
 	isAttemptSubmitting() {

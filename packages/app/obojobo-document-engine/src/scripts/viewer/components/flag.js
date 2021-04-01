@@ -23,12 +23,12 @@ const getFlagText = type => {
 	return ''
 }
 
-const Flag = props => {
-	if (props.type === Flag.UNCHOSEN_CORRECTLY) return null
+const Flag = ({ type }) => {
+	if (type === Flag.UNCHOSEN_CORRECTLY) return null
 
 	return (
-		<div className={`obojobo-draft--components--flag is-type-${props.type}`}>
-			<p>{getFlagText(props.type)}</p>
+		<div className={`obojobo-draft--components--flag is-type-${type}`}>
+			<p>{getFlagText(type)}</p>
 		</div>
 	)
 }
@@ -55,7 +55,5 @@ Flag.SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 Flag.COULD_HAVE_CHOSEN = 'could-have-chosen'
 Flag.SHOULD_HAVE_CHOSEN = 'should-have-chosen'
 Flag.UNCHOSEN_CORRECTLY = 'unchosen-correctly'
-
-// Flag.defaultProps = { indent: 0 }
 
 export default Flag

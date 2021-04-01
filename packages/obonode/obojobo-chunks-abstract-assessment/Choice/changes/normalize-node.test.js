@@ -165,6 +165,45 @@ describe('Choice normalization', () => {
 		expect(Transforms.insertNodes).toHaveBeenCalled()
 	})
 
+	test('normalizeNode on Choice calls Transforms on invalid Feedback children with invalid sibling', () => {
+		jest.spyOn(Transforms, 'insertNodes').mockReturnValueOnce(true)
+
+		const next = jest.fn()
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: CHOICE_NODE,
+					content: {},
+					children: [
+						{
+							type: FEEDBACK_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				},
+				{
+					id: 'mockKey',
+					type: CHOICE_NODE,
+					content: {},
+					children: [
+						{
+							type: 'SomeOtherNodeType',
+							content: { indent: 1 },
+							children: [{ text: 'mockCode', b: true }]
+						}
+					]
+				}
+			],
+			isInline: () => false,
+			isVoid: () => false
+		}
+		normalizeNode([editor.children[0], [0]], editor, next)
+
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
 	test('normalizeNode on Choice calls Transforms on invalid second children', () => {
 		jest.spyOn(Transforms, 'removeNodes').mockReturnValueOnce(true)
 

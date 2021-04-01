@@ -1,15 +1,15 @@
-// jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model', () => {
-// 	return require('obojobo-document-engine/__mocks__/obo-model-adapter-mock').default
-// })
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 
 import QuestionAdapter from './adapter'
 
+require('./viewer') // used to register this oboModel
+require('obojobo-pages-page/viewer') // used to register the Page chunk as a dep
+require('obojobo-chunks-text/viewer') // used to register the Text chunk as a dep
+
 describe('Question adapter', () => {
 	test('construct builds without attributes', () => {
 		const model = new OboModel({})
-		// expect(model).toBe(1)
 		QuestionAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
 	})
@@ -59,7 +59,8 @@ describe('Question adapter', () => {
 	test('clone creates a copy', () => {
 		const attrs = {
 			content: {
-				practice: false
+				correctLabels: 'a|b|c',
+				incorrectLabels: 'd|e|f'
 			}
 		}
 		const a = new OboModel(attrs)
@@ -71,13 +72,36 @@ describe('Question adapter', () => {
 		expect(a).not.toBe(b)
 		expect(a.modelState).not.toBe(b.modelState)
 		expect(a.modelState).toEqual(b.modelState)
+		expect(a.modelState.correctLabels).toBeDefined()
+		expect(a.modelState.incorrectLabels).toBeDefined()
 	})
 
 	test('clone creates a copy with solution', () => {
 		const attrs = {
 			content: {
-				practice: false,
-				solution: 'mocked-solution'
+				solution: {
+					id: 'solution',
+					type: 'ObojoboDraft.Pages.Page',
+					content: {},
+					children: [
+						{
+							id: '7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {
+								textGroup: [
+									{
+										text: {
+											value: 'this is some example solution text',
+											styleList: []
+										},
+										data: null
+									}
+								]
+							},
+							children: []
+						}
+					]
+				}
 			}
 		}
 		const a = new OboModel(attrs)
@@ -89,13 +113,38 @@ describe('Question adapter', () => {
 		expect(a).not.toBe(b)
 		expect(a.modelState).not.toBe(b.modelState)
 		expect(a.modelState).toEqual(b.modelState)
+		expect(a.modelState.solution).toBeDefined()
 	})
 
 	test('toJSON builds a JSON representation', () => {
 		const json = { content: {} }
 		const attrs = {
 			content: {
-				practice: false
+				correctLabels: 'a|b|c',
+				incorrectLabels: 'd|e|f',
+				solution: {
+					id: 'solution',
+					type: 'ObojoboDraft.Pages.Page',
+					content: {},
+					children: [
+						{
+							id: '7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {
+								textGroup: [
+									{
+										text: {
+											value: 'this is some example solution text',
+											styleList: []
+										},
+										data: null
+									}
+								]
+							},
+							children: []
+						}
+					]
+				}
 			}
 		}
 		const model = new OboModel(attrs)

@@ -33,6 +33,7 @@ const getAnswer = (path, editor) => {
 	// (ergo, this branch will only be run on the first Choice node
 	// in a series)
 	const sibling = Editor.next(editor, { at: path })
+
 	if (
 		sibling &&
 		sibling[0].type === CHOICE_NODE &&

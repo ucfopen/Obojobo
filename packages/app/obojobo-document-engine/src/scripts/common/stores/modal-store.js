@@ -19,10 +19,6 @@ class ModalStore extends Store {
 		})
 	}
 
-	_getCurrentModal() {
-		return this.state.modals.length > 0 ? this.state.modal[0] : null
-	}
-
 	_show(modalItem) {
 		this.lastActiveElement = document.activeElement
 		this.state.modals.push(modalItem)

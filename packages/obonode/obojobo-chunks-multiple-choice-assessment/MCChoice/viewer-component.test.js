@@ -45,6 +45,21 @@ const getDefaultProps = ({ choiceScore, questionSubmitted, mode, responseType, q
 					function C() {
 						return <div>MCFeedback</div>
 					}
+			},
+			{
+				get: key => {
+					switch (key) {
+						case 'id':
+							return 'mock-some-other-id'
+
+						case 'type':
+							return 'SomeOtherType'
+					}
+				},
+				getComponentClass: () =>
+					function C() {
+						return <div>Some other type</div>
+					}
 			}
 		]
 	},
@@ -231,4 +246,19 @@ describe('MCChoice viewer-component', () => {
 			)
 		}
 	)
+
+	test('Component where question score throws an error still works', () => {
+		QuestionUtil.getScoreForModel.mockImplementation(() => {
+			throw 'Some error'
+		})
+
+		const component = renderer.create(
+			<MCChoice
+				questionModel={{ modelState: { type: 'default ' } }}
+				model={jest.fn()}
+				moduleData={{ navState: {} }}
+			/>
+		)
+		expect(component.toJSON()).toEqual(renderer.create(<div />).toJSON())
+	})
 })

@@ -118,6 +118,40 @@ describe('AssessmentStateMachine', () => {
 		restoreConsole()
 	})
 
+	test('State machine does not start if already started', () => {
+		const assessmentStoreState = {
+			importableScores: {},
+			assessments: {},
+			assessmentSummaries: {}
+		}
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		const spy = jest.spyOn(m.service, 'start')
+
+		expect(spy).not.toHaveBeenCalled()
+		m.start(jest.fn())
+		expect(spy).toHaveBeenCalledTimes(1)
+		m.start(jest.fn())
+		expect(spy).toHaveBeenCalledTimes(1)
+
+		spy.mockRestore()
+	})
+
+	test('Stop calls service.stop', () => {
+		const assessmentStoreState = {
+			importableScores: {},
+			assessments: {},
+			assessmentSummaries: {}
+		}
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		const spy = jest.spyOn(m.service, 'stop')
+
+		expect(spy).not.toHaveBeenCalled()
+		m.stop(jest.fn())
+		expect(spy).toHaveBeenCalled()
+
+		spy.mockRestore()
+	})
+
 	test('State machine defaults to NOT_IN_ATTEMPT when there is no attempt data', done => {
 		const assessmentStoreState = {
 			importableScores: {},

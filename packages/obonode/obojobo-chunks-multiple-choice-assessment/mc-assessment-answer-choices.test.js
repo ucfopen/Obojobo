@@ -14,6 +14,9 @@ import MCAssessmentAnswerChoices from './mc-assessment-answer-choices'
 let defaultProps
 
 describe('MCAssessment Answer Choices', () => {
+	const ComponentClass = function C() {
+		return <div></div>
+	}
 	beforeEach(() => {
 		defaultProps = {
 			responseType: '',
@@ -21,7 +24,12 @@ describe('MCAssessment Answer Choices', () => {
 			correctLabel: '',
 			incorrectLabel: '',
 			pickAllIncorrectMessage: '',
-			models: [],
+			models: [
+				{
+					getComponentClass: () => ComponentClass,
+					get: () => 'mockId'
+				}
+			],
 			moduleData: '',
 			mode: ''
 		}

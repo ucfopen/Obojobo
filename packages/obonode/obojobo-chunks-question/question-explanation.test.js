@@ -1,7 +1,10 @@
 import QuestionExplanation from './question-explanation'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import React from 'react'
-import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
+import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
+
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 require('./viewer') // used to register this oboModel
 require('obojobo-chunks-question/viewer') // dependency on Obojobo.Chunks.Question
@@ -138,7 +141,7 @@ const questionJSON = {
 	]
 }
 
-describe('MCAssessment', () => {
+describe('QuestionExplanation', () => {
 	beforeAll(() => {})
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -159,23 +162,74 @@ describe('MCAssessment', () => {
 		const onClickShowExplanation = jest.fn()
 		const onClickHideExplanation = jest.fn()
 
-		const isShowingExplanationValue = false
-
-		const component = mount(
+		const component = renderer.create(
 			<QuestionExplanation
 				model={model}
 				moduleData={moduleData}
 				mode="assessment"
-				isShowingExplanation={isShowingExplanationValue}
+				isShowingExplanation={false}
 				solutionModel={model.parent.modelState.solution}
 				animationTransitionTime={0}
 				onClickShowExplanation={onClickShowExplanation}
 				onClickHideExplanation={onClickHideExplanation}
 			/>
 		)
+		expect(component.toJSON()).toMatchSnapshot()
 
-		component.setProps({ isShowingExplanation: true })
-		component.setProps({ isShowingExplanation: false })
-		component.setProps({ isShowingExplanation: true })
+		const component2 = renderer.create(
+			<QuestionExplanation
+				model={model}
+				moduleData={moduleData}
+				mode="assessment"
+				isShowingExplanation={true}
+				solutionModel={model.parent.modelState.solution}
+				animationTransitionTime={0}
+				onClickShowExplanation={onClickShowExplanation}
+				onClickHideExplanation={onClickHideExplanation}
+			/>
+		)
+		expect(component2.toJSON()).toMatchSnapshot()
+	})
+
+	test('focusOnExplanation attempts to call focusOnContent for the solution component', () => {
+		const mockFocusOnContent = jest.fn()
+		const thisValue = {
+			solutionLabelRef: {
+				current: jest.fn()
+			},
+			props: {
+				solutionModel: {
+					getComponentClass: () => ({
+						focusOnContent: mockFocusOnContent
+					})
+				}
+			}
+		}
+
+		QuestionExplanation.prototype.focusOnExplanation.bind(thisValue)()
+
+		expect(mockFocusOnContent).toHaveBeenCalledWith(thisValue.props.solutionModel)
+		expect(focus).not.toHaveBeenCalled()
+	})
+
+	test('focusOnExplanation calls focus if unable to call focusOnContent on solution component', () => {
+		const thisValue = {
+			solutionLabelRef: {
+				current: jest.fn()
+			},
+			props: {
+				solutionModel: {
+					getComponentClass: () => ({
+						focusOnContent: () => {
+							throw 'Some error'
+						}
+					})
+				}
+			}
+		}
+
+		QuestionExplanation.prototype.focusOnExplanation.bind(thisValue)()
+
+		expect(focus).toHaveBeenCalledWith(thisValue.solutionLabelRef.current)
 	})
 })

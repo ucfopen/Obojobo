@@ -7,7 +7,7 @@ import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-mode
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
-jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', a => a)
+jest.mock('obojobo-document-engine/src/scripts/common/util/shuffle', () => a => a)
 
 const getDefaultProps = () => ({
 	model: {
@@ -48,10 +48,18 @@ describe('MCAssessmentViewerComponent', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('static focusOnContent returns false when no dom element', () => {
-		expect(MCAssessment.focusOnContent({ getDomEl: () => null }, { scroll: 'mock-scroll' })).toBe(
-			false
-		)
+	test('Component renders (shuffle enabled)', () => {
+		const props = getDefaultProps()
+		props.model.modelState.shuffle = true
+		const component = renderer.create(<MCAssessment {...props} />)
+
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('static focusOnContent returns expected values', () => {
+		expect(MCAssessment.focusOnContent({ getDomEl: () => null })).toBe(false)
 		expect(focus).not.toHaveBeenCalled()
 
 		expect(

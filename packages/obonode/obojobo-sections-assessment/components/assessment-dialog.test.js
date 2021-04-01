@@ -90,6 +90,7 @@ describe('AssessmentDialog renders as expected', () => {
 		${SEND_RESPONSES_SUCCESSFUL} | ${null}                                 | ${HAS_RESPONSES_UNSENT}                   | ${null}
 		${SEND_RESPONSES_SUCCESSFUL} | ${null}                                 | ${READY_TO_SUBMIT}                        | ${1}
 		${SEND_RESPONSES_SUCCESSFUL} | ${null}                                 | ${READY_TO_SUBMIT}                        | ${10}
+		${'someInvalidState'}        | ${null}                                 | ${null}                                   | ${null}
 	`(
 		'AssessmentDialog(assessmentMachineState="$assessmentMachineState",assessmentError="$assessmentError",currentAttemptStatus="$currentAttemptStatus",numAttemptsRemaining="$numAttemptsRemaining") renders as expected',
 		({ assessmentMachineState, assessmentError, currentAttemptStatus, numAttemptsRemaining }) => {

@@ -73,6 +73,22 @@ describe('Question Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Question builds the expected component (not in assessment)', () => {
+		const props = {
+			element: {
+				content: { type: 'default' },
+				children: [{}, { subtype: SOLUTION_NODE }]
+			}
+		}
+		const spy = jest.spyOn(Question.prototype, 'getIsInAssessment').mockReturnValue(false)
+		const component = renderer.create(<Question {...props} />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+
+		spy.mockRestore()
+	})
+
 	test('Survey Question builds the expected component', () => {
 		const props = {
 			element: {
@@ -235,6 +251,26 @@ describe('Question Editor Node', () => {
 					{ id: 'mock-mca-id', type: MCASSESSMENT_NODE },
 					{ subtype: SOLUTION_NODE }
 				]
+			}
+		}
+		ReactEditor.findPath.mockReturnValue([])
+
+		const component = mount(<Question {...props} />)
+		component
+			.find('select')
+			.at(0)
+			.simulate('change', { target: { value: 'ObojoboDraft.Chunks.NumericAssessment' } })
+
+		expect(Transforms.removeNodes).toHaveBeenCalled()
+		expect(Transforms.insertNodes).toHaveBeenCalled()
+	})
+
+	test('Changing question type updates the assessment node (without a solution)', () => {
+		const props = {
+			editor: {},
+			element: {
+				content: { type: 'default' },
+				children: [{ type: BREAK_NODE }, { id: 'mock-mca-id', type: MCASSESSMENT_NODE }]
 			}
 		}
 		ReactEditor.findPath.mockReturnValue([])
