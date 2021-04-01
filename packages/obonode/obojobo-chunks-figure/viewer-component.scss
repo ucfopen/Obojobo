@@ -39,6 +39,11 @@
 
 	&.custom {
 		.container {
+			.figure-box {
+				margin: auto;
+				height: auto;
+			}
+
 			img {
 				margin: 0 auto;
 				height: auto;
@@ -49,6 +54,10 @@
 
 			figure {
 				margin: 0 auto;
+			}
+
+			figcaption {
+				margin: auto;
 			}
 		}
 	}

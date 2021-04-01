@@ -7,12 +7,12 @@ exports[`Figure Editor Node Figure component 1`] = `
   >
     <figure
       className="container"
-      style={Object {}}
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
         onClick={[Function]}
+        style={Object {}}
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -59,6 +59,7 @@ exports[`Figure Editor Node Figure component 1`] = `
       </div>
       <figcaption
         className="align-center is-undefined"
+        style={Object {}}
       />
     </figure>
   </div>
@@ -74,18 +75,17 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
   >
     <figure
       className="container"
-      style={
-        Object {
-          "height": "customHeightpx",
-          "maxWidth": "100%",
-          "width": "customWidthpx",
-        }
-      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
         onClick={[Function]}
+        style={
+          Object {
+            "maxWidth": "100%",
+            "width": "customWidthpx",
+          }
+        }
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -136,7 +136,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
         />
       </div>
       <figcaption
-        className="align-center is-undefined"
+        className="align-center is-max-width"
+        style={Object {}}
       />
     </figure>
   </div>
@@ -150,17 +151,16 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
   >
     <figure
       className="container"
-      style={
-        Object {
-          "height": "customHeightpx",
-          "maxWidth": "100%",
-        }
-      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
         onClick={[Function]}
+        style={
+          Object {
+            "maxWidth": "100%",
+          }
+        }
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -210,7 +210,8 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
         />
       </div>
       <figcaption
-        className="align-center is-undefined"
+        className="align-center is-image-width"
+        style={Object {}}
       />
     </figure>
   </div>
@@ -224,17 +225,17 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
   >
     <figure
       className="container"
-      style={
-        Object {
-          "maxWidth": "100%",
-          "width": "customWidthpx",
-        }
-      }
     >
       <div
         className="figure-box   is-not-selected"
         contentEditable={false}
         onClick={[Function]}
+        style={
+          Object {
+            "maxWidth": "100%",
+            "width": "customWidthpx",
+          }
+        }
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -284,7 +285,12 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
         />
       </div>
       <figcaption
-        className="align-center is-undefined"
+        className="align-center is-image-width"
+        style={
+          Object {
+            "width": "customWidthpx",
+          }
+        }
       />
     </figure>
   </div>

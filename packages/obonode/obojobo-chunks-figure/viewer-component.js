@@ -12,9 +12,14 @@ const { OboComponent } = Viewer.components
 const Figure = props => {
 	const content = props.model.modelState
 	const customStyle = {}
+	const captionStyle = {}
 	if (content.size === 'custom') {
 		if (content.width) {
 			customStyle.width = content.width + 'px'
+
+			if (content.captionWidth === 'image-width') {
+				captionStyle.width = content.width + 'px'
+			}
 		}
 
 		if (content.height) {
@@ -24,16 +29,18 @@ const Figure = props => {
 		customStyle['maxWidth'] = '100%'
 	}
 
+	const captionWidth = content.captionWidth
+
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<NonEditableChunk
 				className={`obojobo-draft--chunks--figure viewer ${props.model.modelState.size}`}
 			>
 				<div className="container">
-					<figure unselectable="on" style={customStyle}>
-						<Image chunk={props.model} />
+					<figure unselectable="on">
+						<Image chunk={props.model} style={customStyle} />
 						{props.model.modelState.textGroup.first.text.length > 0 ? (
-							<figcaption className={'is-image-width'}>
+							<figcaption className={`is-${captionWidth}`} style={captionStyle}>
 								<TextGroupEl
 									parentModel={props.model}
 									textItem={props.model.modelState.textGroup.first}

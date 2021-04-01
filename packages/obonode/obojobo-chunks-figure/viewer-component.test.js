@@ -20,6 +20,7 @@ describe('Figure', () => {
 				size: 'custom',
 				width: '500',
 				height: '400',
+				captionWidth: 'image-width',
 				textGroup: [
 					{
 						text: {
@@ -48,7 +49,8 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
-				height: '400'
+				height: '400',
+				captionWidth: 'image-width'
 			}
 		})
 		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
@@ -68,6 +70,7 @@ describe('Figure', () => {
 				alt: 'Alt Text',
 				url: 'www.example.com/img.jpg',
 				size: 'small',
+				captionWidth: 'image-width',
 				textGroup: [
 					{
 						text: {
@@ -82,7 +85,7 @@ describe('Figure', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('Figure component costom size with no width', () => {
+	test('Figure component custom size with no width', () => {
 		const moduleData = {
 			focusState: {}
 		}
@@ -94,6 +97,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				height: '400',
+				captionWidth: 'image-width',
 				textGroup: [
 					{
 						text: {
@@ -110,7 +114,7 @@ describe('Figure', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Figure component costom size with no height', () => {
+	test('Figure component custom size with no height', () => {
 		const moduleData = {
 			focusState: {}
 		}
@@ -122,6 +126,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
+				captionWidth: 'max-width',
 				textGroup: [
 					{
 						text: {

@@ -63,7 +63,8 @@ describe('Figure Editor Node', () => {
 						url: 'mockUrl',
 						alt: 'mockAlt',
 						width: 'customWidth',
-						height: 'customHeight'
+						height: 'customHeight',
+						captionWidth: 'max-width'
 					}
 				}}
 				parent={{
@@ -85,7 +86,8 @@ describe('Figure Editor Node', () => {
 						size: 'custom',
 						url: 'mockUrl',
 						alt: 'mockAlt',
-						height: 'customHeight'
+						height: 'customHeight',
+						captionWidth: 'image-width'
 					}
 				}}
 				parent={{
@@ -107,7 +109,8 @@ describe('Figure Editor Node', () => {
 						size: 'custom',
 						url: 'mockUrl',
 						alt: 'mockAlt',
-						width: 'customWidth'
+						width: 'customWidth',
+						captionWidth: 'image-width'
 					}
 				}}
 				parent={{

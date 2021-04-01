@@ -103,13 +103,14 @@ class Figure extends React.Component {
 		const isSelected = isOrNot(selected, 'selected')
 
 		const customStyle = {}
+		const captionStyle = {}
 		if (content.size === 'custom') {
 			if (content.width) {
 				customStyle.width = content.width + 'px'
-			}
 
-			if (content.height) {
-				customStyle.height = content.height + 'px'
+				if (content.captionWidth === 'image-width') {
+					captionStyle.width = content.width + 'px'
+				}
 			}
 
 			customStyle['maxWidth'] = '100%'
@@ -126,9 +127,10 @@ class Figure extends React.Component {
 							Accessibility Warning: No Alt Text!
 						</div>
 					)}
-					<figure className="container" style={customStyle}>
+					<figure className="container">
 						<div
 							className={`figure-box  ${isSelected}`}
+							style={customStyle}
 							contentEditable={false}
 							onClick={this.focusFigure}
 						>
@@ -151,12 +153,13 @@ class Figure extends React.Component {
 								</Button>
 							</div>
 							<Image
+								style={customStyle}
 								key={content.url + content.width + content.height + content.size}
 								chunk={{ modelState: content }}
 								lazyLoad={false}
 							/>
 						</div>
-						<figcaption className={`align-center is-${content.captionWidth}`}>
+						<figcaption className={`align-center is-${content.captionWidth}`} style={captionStyle}>
 							{this.props.children}
 						</figcaption>
 					</figure>
