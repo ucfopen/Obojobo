@@ -1391,6 +1391,60 @@ describe('Question', () => {
 		${'practice'}   | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
 		${'assessment'} | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
 		${'review'}     | ${'survey'}  | ${'never'}          | ${null} | ${null}                | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'practice'}   | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${true}
+		${'assessment'} | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'default'} | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${0}    | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${100}  | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'practice'}   | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'assessment'} | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
+		${'review'}     | ${'survey'}  | ${'default'}        | ${null} | ${'always'}            | ${false}
 	`(
 		'getShouldShowRevealAnswerButton() mode="$mode", type="$type", revealAnswer="$revealAnswerMode", score="$score", getRevealAnswerDefault="$getRevealAnswerDefault" -> $result',
 		({ mode, type, revealAnswerMode, score, getRevealAnswerDefault, result }) => {

@@ -2,7 +2,6 @@ import React from 'react'
 import Common from 'Common'
 
 const { Dialog } = Common.components.modal
-const { ModalUtil } = Common.util
 
 const UpdatedModuleDialog = ({ onClose, onRestart }) => (
 	<Dialog

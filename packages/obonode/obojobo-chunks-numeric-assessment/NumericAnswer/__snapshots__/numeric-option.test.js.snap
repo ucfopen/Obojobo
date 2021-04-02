@@ -11,6 +11,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       onClick={[Function]}
     >
       <option>
@@ -33,6 +34,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       className="input-item"
       contentEditable={false}
       name="answer"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}
@@ -53,6 +55,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       onClick={[Function]}
       value="Exact answer"
     >
@@ -76,6 +79,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       className="input-item"
       contentEditable={false}
       name="answer"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}
@@ -96,6 +100,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       onClick={[Function]}
       value="Margin of error"
     >
@@ -119,6 +124,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="answer"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}
@@ -132,6 +138,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
     <select
       className="select-item"
       name="margin-type"
+      onChange={[Function]}
       onClick={[Function]}
     >
       <option>
@@ -151,6 +158,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="input-item"
       contentEditable={false}
       name="margin"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}
@@ -171,6 +179,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
     <select
       className="select-item"
       name="requirement"
+      onChange={[Function]}
       onClick={[Function]}
       value="Within a range"
     >
@@ -194,6 +203,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="start"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}
@@ -209,6 +219,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="input-item"
       contentEditable={false}
       name="end"
+      onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}

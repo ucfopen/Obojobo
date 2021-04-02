@@ -714,9 +714,7 @@ describe('ViewerApp', () => {
 			}
 		}
 
-		const spy = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce({
-			getDomEl: jest.fn()
-		})
+		const spy = jest.spyOn(FocusUtil, 'getVisuallyFocussedModel').mockReturnValueOnce(null)
 
 		ViewerApp.prototype.startObservingForIntersectionChanges.bind(thisValue)()
 

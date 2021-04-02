@@ -1239,3 +1239,36 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
   </div>
 </div>
 `;
+
+exports[`PostTest PostTest shows throbber if history is not yet loaded 1`] = `
+<div
+  className="score unlock"
+>
+  <div
+    aria-label="Loading content"
+    className="obojobo-draft--components--throbber"
+  >
+    <div
+      aria-hidden={true}
+      className="throbber"
+    >
+      <svg
+        preserveAspectRatio="xMidYMid"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="none"
+          r="35"
+          stroke="black"
+          strokeDasharray="60 110"
+          strokeWidth="10"
+          transform="rotate(0.82332 50 50)"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;

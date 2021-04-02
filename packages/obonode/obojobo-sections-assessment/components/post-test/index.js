@@ -38,7 +38,10 @@ class AssessmentPostTest extends React.Component {
 		// the default location we move focus to the top of this component page.
 		if (document.activeElement === document.body) {
 			focus(this.h1Ref)
+			return true
 		}
+
+		return false
 	}
 
 	onClickResendScore() {

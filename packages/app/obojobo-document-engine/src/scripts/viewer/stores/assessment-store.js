@@ -1,63 +1,24 @@
 import AssessmentAPI from '../util/assessment-api'
-// import ViewerAPI from '../util/viewer-api'
-// import AssessmentScoreReportView from '../assessment/assessment-score-report-view'
-// import AssessmentScoreReporter from '../assessment/assessment-score-reporter'
 import AssessmentUtil from '../util/assessment-util'
-// import CurrentAssessmentStates from '../util/current-assessment-states'
 import Common from 'Common'
-// import FocusUtil from '../util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
 import AssessmentNetworkStates from './assessment-store/assessment-network-states'
 import NavStore from '../stores/nav-store'
-// import NavUtil from '../util/nav-util'
-// import QuestionStore from './question-store'
-// import QuestionUtil from '../util/question-util'
 import React from 'react'
 import AssessmentStateMachine from './assessment-state-machine'
 import AssessmentStateActions from './assessment-store/assessment-state-actions'
-// import findItemsWithMaxPropValue from '../../common/util/find-items-with-max-prop-value'
-// import UnfinishedAttemptDialog from 'obojobo-sections-assessment/components/dialogs/unfinished-attempt-dialog'
-import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
-import UpdatedModuleDialog from 'obojobo-sections-assessment/components/dialogs/updated-module-dialog'
-import injectKatexIfNeeded from 'obojobo-document-engine/src/scripts/common/util/inject-katex-if-needed'
-import {
-	ERROR_INVALID_ATTEMPT_END,
-	ERROR_INVALID_ATTEMPT_RESUME
-} from 'obojobo-sections-assessment/server/error-constants.js'
 
-// const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ASSESSMENT_NODE_TYPE = 'ObojoboDraft.Sections.Assessment'
 
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
-// const { SimpleDialog, Dialog } = Common.components.modal
 
-const {
-	// PROMPTING_FOR_RESUME,
-	// STARTING_ATTEMPT,
-	// RESUMING_ATTEMPT,
-	// IN_ATTEMPT,
-	// START_ATTEMPT_FAILED,
-	// RESUME_ATTEMPT_FAILED,
-	// SENDING_RESPONSES,
-	// SEND_RESPONSES_SUCCESSFUL,
-	// SEND_RESPONSES_FAILED,
-	NOT_IN_ATTEMPT
-	// ENDING_ATTEMPT,
-	// END_ATTEMPT_FAILED,
-	// END_ATTEMPT_SUCCESSFUL,
-	// PROMPTING_FOR_IMPORT,
-	// IMPORTING_ATTEMPT,
-	// IMPORT_ATTEMPT_FAILED,
-	// IMPORT_ATTEMPT_SUCCESSFUL
-} = AssessmentNetworkStates
+const { NOT_IN_ATTEMPT } = AssessmentNetworkStates
 
 const ATTEMPT_HISTORY_NOT_LOADED = 'none'
-// const ATTEMPT_HISTORY_LOADING = 'loading'
-// const ATTEMPT_HISTORY_LOADED = 'loaded'
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,

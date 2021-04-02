@@ -181,4 +181,94 @@ describe('NumericOption', () => {
 		expect(event.stopPropagation).toHaveBeenCalled()
 		expect(event.target.focus).toHaveBeenCalledTimes(2)
 	})
+
+	test('NumericOption select and input changes call the given prop methods', () => {
+		const onSelectChange = jest.fn()
+		const onInputChange = jest.fn()
+		const component = mount(
+			<NumericOption
+				numericChoice={{ requirement: 'exact' }}
+				onHandleSelectChange={onSelectChange}
+				onHandleInputChange={onInputChange}
+			/>
+		)
+
+		const event = jest.fn()
+
+		component
+			.find('.input-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(1)
+		expect(onSelectChange).toHaveBeenCalledTimes(0)
+
+		component
+			.find('.select-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(1)
+		expect(onSelectChange).toHaveBeenCalledTimes(1)
+
+		component.setProps({ numericChoice: { requirement: 'range' } })
+
+		component
+			.find('.input-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(2)
+		expect(onSelectChange).toHaveBeenCalledTimes(1)
+
+		component
+			.find('.input-item')
+			.at(1)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(3)
+		expect(onSelectChange).toHaveBeenCalledTimes(1)
+
+		component
+			.find('.select-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(3)
+		expect(onSelectChange).toHaveBeenCalledTimes(2)
+
+		component.setProps({ numericChoice: { requirement: 'margin' } })
+
+		component
+			.find('.input-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(4)
+		expect(onSelectChange).toHaveBeenCalledTimes(2)
+
+		component
+			.find('.input-item')
+			.at(1)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(5)
+		expect(onSelectChange).toHaveBeenCalledTimes(2)
+
+		component
+			.find('.select-item')
+			.at(0)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(5)
+		expect(onSelectChange).toHaveBeenCalledTimes(3)
+
+		component
+			.find('.select-item')
+			.at(1)
+			.simulate('change', event)
+
+		expect(onInputChange).toHaveBeenCalledTimes(5)
+		expect(onSelectChange).toHaveBeenCalledTimes(4)
+	})
 })

@@ -23,8 +23,6 @@ const getDefaultProps = ({
 	isShowingExplanationButton, // bool
 	score // null (not answered), 'no-score' (survey question), 0, or 100
 }) => {
-	// const json = getQuestionJSON(questionType)
-	// const questionModel = OboModel.create(json)
 	const questionModel = {
 		getDomId: () => 'mock-dom-id',
 		processTrigger: jest.fn(),
@@ -170,25 +168,26 @@ describe('Question', () => {
 
 			expect(tree).toMatchSnapshot()
 		}
+	})
 
-		// const props = getDefaultProps({
-		// 	questionType,
-		// 	mode,
-		// 	isFlipping,
-		// 	viewState,
-		// 	response,
-		// 	shouldShowRevealAnswerButton,
-		// 	isAnswerRevealed,
-		// 	isShowingExplanation,
-		// 	isShowingExplanationButton,
-		// 	score,
-		// 	responseSendState
-		// })
+	test('Component renders when responses are sending', () => {
+		const props = getDefaultProps({
+			questionType: 'default',
+			mode: 'assessment',
+			viewState: 'active',
+			response: null,
+			shouldShowRevealAnswerButton: false,
+			isAnswerRevealed: false,
+			isShowingExplanation: false,
+			isShowingExplanationButton: false,
+			score: null
+		})
+		props.responseSendState = 'sending'
 
-		// const component = renderer.create(<QuestionComponent {...props} />)
+		const component = renderer.create(<QuestionComponent {...props} />)
 
-		// const tree = component.toJSON()
+		const tree = component.toJSON()
 
-		// expect(tree).toMatchSnapshot()
+		expect(tree).toMatchSnapshot()
 	})
 })

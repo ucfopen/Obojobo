@@ -3,6 +3,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-api')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
 jest.mock('../../../src/scripts/viewer/util/question-util')
+jest.mock('../../../src/scripts/common/util/inject-katex-if-needed')
 
 import Common from 'Common'
 import AssessmentStateHelpers from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-state-helpers'
@@ -11,6 +12,7 @@ import QuestionStore from 'obojobo-document-engine/src/scripts/viewer/stores/que
 import AssessmentAPI from 'obojobo-document-engine/src/scripts/viewer/util/assessment-api'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
+import injectKatexIfNeeded from '../../../src/scripts/common/util/inject-katex-if-needed'
 
 const { OboModel } = Common.models
 // const { ErrorUtil, ModalUtil } = Common.util
@@ -19,6 +21,8 @@ const { Dispatcher } = Common.flux
 describe('AssessmentStateHelpers', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
+
+		injectKatexIfNeeded.mockResolvedValue(true)
 
 		const add = jest.fn()
 		const reset = jest.fn()
@@ -45,12 +49,14 @@ describe('AssessmentStateHelpers', () => {
 	})
 
 	test('startAttempt calls AssessmentStateHelpers.onAttemptStarted when good response returned', async () => {
-		AssessmentAPI.startAttempt.mockResolvedValue({ status: 'ok' })
+		AssessmentAPI.startAttempt.mockResolvedValue({ status: 'ok', value: { questions: [] } })
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
 		expect(spy).not.toHaveBeenCalled()
+		expect(injectKatexIfNeeded).not.toHaveBeenCalled()
 		await AssessmentStateHelpers.startAttempt('mockAssessmentId')
 		expect(spy).toHaveBeenCalled()
+		expect(injectKatexIfNeeded).toHaveBeenCalled()
 
 		spy.mockRestore()
 	})
@@ -77,12 +83,14 @@ describe('AssessmentStateHelpers', () => {
 	})
 
 	test('resumeAttempt calls AssessmentStateHelpers.onAttemptStarted when good response returned', async () => {
-		AssessmentAPI.resumeAttempt.mockResolvedValue({ status: 'ok' })
+		AssessmentAPI.resumeAttempt.mockResolvedValue({ status: 'ok', value: { questions: [] } })
 		const spy = jest.spyOn(AssessmentStateHelpers, 'onAttemptStarted').mockReturnValue(true)
 
 		expect(spy).not.toHaveBeenCalled()
+		expect(injectKatexIfNeeded).not.toHaveBeenCalled()
 		await AssessmentStateHelpers.resumeAttempt('mockAssessmentId', 'mockAttemptId')
 		expect(spy).toHaveBeenCalled()
+		expect(injectKatexIfNeeded).toHaveBeenCalled()
 
 		spy.mockRestore()
 	})
@@ -229,6 +237,7 @@ describe('AssessmentStateHelpers', () => {
 			attempt2Id: { attempt2Review: true }
 		})
 
+		expect(injectKatexIfNeeded).not.toHaveBeenCalled()
 		expect(
 			await AssessmentStateHelpers.getAttemptHistoryWithReviewData('mockAssessmentId')
 		).toEqual({
@@ -248,6 +257,7 @@ describe('AssessmentStateHelpers', () => {
 				}
 			]
 		})
+		expect(injectKatexIfNeeded).toHaveBeenCalled()
 	})
 
 	test('getAttemptHistoryWithReviewData throws error with bad response', async () => {
@@ -260,6 +270,21 @@ describe('AssessmentStateHelpers', () => {
 			await AssessmentStateHelpers.getAttemptHistoryWithReviewData('mockAssessmentId')
 		} catch (e) {
 			expect(e).toEqual(Error('mockErrorMessage'))
+		}
+
+		expect.assertions(1)
+	})
+
+	test('Errors have a default message if none is returned from the server', async () => {
+		AssessmentAPI.getAttemptHistory.mockResolvedValue({
+			status: 'error',
+			value: {}
+		})
+
+		try {
+			await AssessmentStateHelpers.getAttemptHistoryWithReviewData('mockAssessmentId')
+		} catch (e) {
+			expect(e).toEqual(Error('Request Failed'))
 		}
 
 		expect.assertions(1)
@@ -381,6 +406,69 @@ describe('AssessmentStateHelpers', () => {
 			highestAttemptScoreAttempts: [
 				{
 					isFinished: false,
+					isImported: false,
+					assessmentScore: 0,
+					result: { attemptScore: 100 }
+				}
+			],
+			isScoreImported: true
+		})
+	})
+
+	test('getUpdatedAssessmentData returns the expected object (with no unfinished attempts)', () => {
+		expect(
+			AssessmentStateHelpers.getUpdatedAssessmentData({
+				assessmentId: 'mockAssessmentId',
+				ltiState: 'mockLTIState',
+				attempts: [
+					{
+						isFinished: true,
+						isImported: true,
+						assessmentScore: 100,
+						result: {
+							attemptScore: 0
+						}
+					},
+					{
+						isFinished: true,
+						isImported: false,
+						assessmentScore: 0,
+						result: { attemptScore: 100 }
+					}
+				]
+			})
+		).toEqual({
+			id: 'mockAssessmentId',
+			attempts: [
+				{
+					isFinished: true,
+					isImported: true,
+					assessmentScore: 100,
+					result: {
+						attemptScore: 0
+					}
+				},
+				{ isFinished: true, isImported: false, assessmentScore: 0, result: { attemptScore: 100 } }
+			],
+			current: null,
+			unfinishedAttempt: null,
+			lti: 'mockLTIState',
+			ltiNetworkState: 'idle',
+			ltiResyncState: 'noResyncAttempted',
+			attemptHistoryNetworkState: 'loaded',
+			highestAssessmentScoreAttempts: [
+				{
+					isFinished: true,
+					isImported: true,
+					assessmentScore: 100,
+					result: {
+						attemptScore: 0
+					}
+				}
+			],
+			highestAttemptScoreAttempts: [
+				{
+					isFinished: true,
 					isImported: false,
 					assessmentScore: 0,
 					result: { attemptScore: 100 }

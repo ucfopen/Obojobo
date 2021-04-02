@@ -86,6 +86,18 @@ exports[`Assessment Assessment component is starting at attempt 1`] = `
 </div>
 `;
 
+exports[`Assessment Post-test page 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+  tabIndex={-1}
+/>
+`;
+
 exports[`Assessment Pre-test page 1`] = `
 <div
   className="component obojobo-draft--sections--assessment"

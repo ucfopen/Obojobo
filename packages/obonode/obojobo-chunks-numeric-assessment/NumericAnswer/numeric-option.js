@@ -39,7 +39,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={event => onHandleSelectChange(event)}
 							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
@@ -53,7 +53,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="start"
 							value={start || ''}
-							onChange={onHandleInputChange}
+							onChange={event => onHandleInputChange(event)}
 							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
@@ -67,7 +67,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="end"
 							value={end || ''}
-							onChange={onHandleInputChange}
+							onChange={event => onHandleInputChange(event)}
 							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
@@ -86,7 +86,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={event => onHandleSelectChange(event)}
 							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
@@ -100,7 +100,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="answer"
 							value={answer || ''}
-							onChange={onHandleInputChange}
+							onChange={event => onHandleInputChange(event)}
 							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
@@ -114,7 +114,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="margin-type"
 							value={simplifedToFullText[type]}
-							onChange={onHandleSelectChange}
+							onChange={event => onHandleSelectChange(event)}
 							onClick={onHandleClick}
 						>
 							{marginDropdown.map(type => (
@@ -128,7 +128,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="margin"
 							value={margin || ''}
-							onChange={onHandleInputChange}
+							onChange={event => onHandleInputChange(event)}
 							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
@@ -148,7 +148,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={onHandleSelectChange}
+							onChange={event => onHandleSelectChange(event)}
 							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
@@ -163,7 +163,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="answer"
 							value={answer || ''}
 							onClick={onHandleClick}
-							onChange={onHandleInputChange}
+							onChange={event => onHandleInputChange(event)}
 							onFocus={onHandleInputFocus}
 							onMouseDown={onHandleInputFocus}
 							contentEditable={false}

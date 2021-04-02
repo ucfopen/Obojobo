@@ -306,10 +306,24 @@ describe('NavStore', () => {
 		// make sure the nav defaults to the first page if an ID isn't found
 		eventCallbacks['nav:goto']({ value: { id: 'does-not-exist' } })
 		expect(gotoFirstSpy).toHaveBeenCalled()
-		expect(gotoItemSpy).toHaveBeenCalledTimes(1)
+		expect(gotoItemSpy).not.toHaveBeenCalled()
 
 		gotoItemSpy.mockRestore()
 		gotoFirstSpy.mockRestore()
+	})
+
+	test('nav:goto does nothing if gotoItem returns false', () => {
+		NavStore.setState({
+			isInitialized: true,
+			navTargetId: 'mockId',
+			itemsById: {
+				mockId: { id: 'mockId', flags: {} }
+			}
+		})
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+		eventCallbacks['nav:goto']({ value: { id: 'mockId' } })
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('nav:lock event fires and updates state', () => {
@@ -679,7 +693,7 @@ describe('NavStore', () => {
 			isInitialized: true,
 			navTargetId: 'mockId'
 		})
-		expect(NavStore.gotoItem({ id: 'mockId' })).toBe()
+		expect(NavStore.gotoItem({ id: 'mockId' })).toBe(false)
 	})
 
 	test('gotoItem sends triggers events and updates history', () => {

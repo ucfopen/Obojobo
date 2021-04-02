@@ -69,12 +69,14 @@ Pathways to test:
 [x] START_ATTEMPT_FAILED(ACKNOWLEDGE) -> NOT_IN_ATTEMPT
 [x] IMPORT_ATTEMPT_FAILED(ACKNOWLEDGE) -> NOT_IN_ATTEMPT
 [x] RESUME_ATTEMPT_FAILED(ACKNOWLEDGE) -> PROMPTING_FOR_RESUME
+[x] RESUME_ATTEMPT_FAILED -> error="Cannot resume an attempt for a different module" -> STARTING_ATTEMPT -> IN_ATTEMPT
 [x] SEND_RESPONSES_SUCCESSFUL(END_ATTEMPT) -> ENDING_ATTEMPT -> onDone -> END_ATTEMPT_SUCCESSFUL
 [x] SEND_RESPONSES_SUCCESSFUL(END_ATTEMPT) -> ENDING_ATTEMPT -> onError -> END_ATTEMPT_FAILED
 [x] SEND_RESPONSES_SUCCESSFUL(CONTINUE_ATTEMPT) -> IN_ATTEMPT
 [x] SEND_RESPONSES_FAILED(CONTINUE_ATTEMPT) -> IN_ATTEMPT
 [x] END_ATTEMPT_SUCCESSFUL(ACKNOWLEDGE) -> NOT_IN_ATTEMPT
 [x] END_ATTEMPT_FAILED(ACKNOWLEDGE) -> IN_ATTEMPT
+[x] END_ATTEMPT_FAILED(START_ATTEMPT) -> STARTING_ATTEMPT
 */
 
 describe('AssessmentStateMachine', () => {
@@ -936,10 +938,18 @@ describe('AssessmentStateMachine', () => {
 
 		setTimeout(() => {
 			expect(m.getCurrentState()).toBe(START_ATTEMPT_FAILED)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+			).toBe('mockErrorMessage')
+
 			m.send(ACKNOWLEDGE)
 
 			setTimeout(() => {
 				expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+				expect(
+					m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+				).not.toBeDefined()
+
 				done()
 			})
 		})
@@ -976,10 +986,16 @@ describe('AssessmentStateMachine', () => {
 
 		setTimeout(() => {
 			expect(m.getCurrentState()).toBe(IMPORT_ATTEMPT_FAILED)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+			).toBe('mockErrorMessage')
 
 			setTimeout(() => {
 				m.send(ACKNOWLEDGE)
 				expect(m.getCurrentState()).toBe(NOT_IN_ATTEMPT)
+				expect(
+					m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+				).not.toBeDefined()
 
 				done()
 			})
@@ -1013,8 +1029,76 @@ describe('AssessmentStateMachine', () => {
 
 		setTimeout(() => {
 			expect(m.getCurrentState()).toBe(RESUME_ATTEMPT_FAILED)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+			).toBe('mockErrorMessage')
+
 			m.send(ACKNOWLEDGE)
+
 			expect(m.getCurrentState()).toBe(PROMPTING_FOR_RESUME)
+			expect(
+				m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+			).not.toBeDefined()
+
+			done()
+		})
+	})
+
+	test('RESUME_ATTEMPT_FAILED -> error="Cannot resume an attempt for a different module" -> STARTING_ATTEMPT -> IN_ATTEMPT', done => {
+		const assessmentStoreState = {
+			importableScores: {},
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {
+					unfinishedAttemptId: 'mockAttemptId'
+				}
+			}
+		}
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		AssessmentAPI.resumeAttempt.mockResolvedValue({
+			status: 'error',
+			value: {
+				message: 'Cannot resume an attempt for a different module'
+			}
+		})
+		AssessmentAPI.startAttempt.mockResolvedValue({
+			status: 'ok',
+			value: {
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				endTime: null,
+				questions: [
+					{
+						id: 'question1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'mcAssessment',
+								type: 'ObojoboDraft.Chunks.MCAssessment',
+								children: []
+							}
+						]
+					}
+				],
+				result: null,
+				startTime: 'mock-start-time',
+				state: {
+					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
+				}
+			}
+		})
+
+		m.start(jest.fn())
+
+		m.send(RESUME_ATTEMPT)
+		expect(m.getCurrentState()).toBe(RESUMING_ATTEMPT)
+
+		setTimeout(() => {
+			expect(m.getCurrentState()).toBe(IN_ATTEMPT)
 
 			done()
 		})
@@ -1417,7 +1501,10 @@ describe('AssessmentStateMachine', () => {
 			}
 		})
 		AssessmentAPI.endAttempt.mockResolvedValue({
-			status: 'error'
+			status: 'error',
+			value: {
+				message: 'mockErrorMessage'
+			}
 		})
 		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockResolvedValue(true)
 
@@ -1431,8 +1518,87 @@ describe('AssessmentStateMachine', () => {
 
 				setTimeout(() => {
 					expect(m.getCurrentState()).toBe(END_ATTEMPT_FAILED)
+					expect(
+						m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+					).toBe('mockErrorMessage')
+
 					m.send(ACKNOWLEDGE)
+
 					expect(m.getCurrentState()).toBe(IN_ATTEMPT)
+					expect(
+						m.machine.context.assessmentStoreState.assessments.mockAssessmentId.current.error
+					).not.toBeDefined()
+
+					spy.mockRestore()
+					done()
+				})
+			})
+		})
+	})
+
+	test('END_ATTEMPT_FAILED(START_ATTEMPT) -> STARTING_ATTEMPT', done => {
+		const assessmentStoreState = {
+			assessments: {
+				mockAssessmentId: {
+					id: 'mockAssessmentId',
+					attemptHistoryNetworkState: 'none'
+				}
+			},
+			assessmentSummaries: {
+				mockAssessmentId: {}
+			},
+			importableScores: {}
+		}
+
+		const m = new AssessmentStateMachine('mockAssessmentId', assessmentStoreState)
+		m.start(jest.fn())
+
+		AssessmentAPI.startAttempt.mockResolvedValue({
+			status: 'ok',
+			value: {
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				endTime: null,
+				questions: [
+					{
+						id: 'question1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'mcAssessment',
+								type: 'ObojoboDraft.Chunks.MCAssessment',
+								children: []
+							}
+						]
+					}
+				],
+				result: null,
+				startTime: 'mock-start-time',
+				state: {
+					chosen: [{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' }]
+				}
+			}
+		})
+		AssessmentAPI.endAttempt.mockResolvedValue({
+			status: 'error',
+			value: {
+				message: 'Cannot end an attempt for a different module'
+			}
+		})
+		const spy = jest.spyOn(AssessmentStateHelpers, 'sendResponses').mockResolvedValue(true)
+
+		m.send(START_ATTEMPT)
+
+		setTimeout(() => {
+			m.send(SEND_RESPONSES)
+
+			setTimeout(() => {
+				m.send(END_ATTEMPT)
+
+				setTimeout(() => {
+					expect(m.getCurrentState()).toBe(END_ATTEMPT_FAILED)
+					m.send(START_ATTEMPT)
+					expect(m.getCurrentState()).toBe(STARTING_ATTEMPT)
 
 					spy.mockRestore()
 					done()

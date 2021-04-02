@@ -6,10 +6,22 @@ import QuestionAdapter from './adapter'
 require('./viewer') // used to register this oboModel
 require('obojobo-pages-page/viewer') // used to register the Page chunk as a dep
 require('obojobo-chunks-text/viewer') // used to register the Text chunk as a dep
+require('obojobo-chunks-multiple-choice-assessment/viewer') // used to register the MCAssessment chunk as a dep
 
 describe('Question adapter', () => {
 	test('construct builds without attributes', () => {
 		const model = new OboModel({})
+		QuestionAdapter.construct(model)
+		expect(model.modelState).toMatchSnapshot()
+	})
+
+	test('construct builds with bad solution property', () => {
+		const model = new OboModel({
+			id: 'question',
+			content: {
+				solution: null
+			}
+		})
 		QuestionAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
 	})
@@ -155,6 +167,19 @@ describe('Question adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
+	test('toJSON builds a JSON representation with correct/incorrect labels or a solution', () => {
+		const json = { content: {} }
+		const attrs = {
+			content: {}
+		}
+		const model = new OboModel(attrs)
+
+		QuestionAdapter.construct(model, attrs)
+		QuestionAdapter.toJSON(model, json)
+
+		expect(json).toMatchSnapshot()
+	})
+
 	test('Adapter grabs correctLabels and incorrectLabels from child components', () => {
 		const attrs = {
 			id: 'question',
@@ -179,7 +204,8 @@ describe('Question adapter', () => {
 			adapter: QuestionAdapter
 		})
 
-		const model = OboModel.create(attrs)
+		const model = new OboModel(attrs)
+		QuestionAdapter.construct(model, attrs)
 
 		expect(model.modelState.correctLabels).toEqual(['a', 'b', 'c'])
 		expect(model.modelState.incorrectLabels).toEqual(['x', 'y', 'z'])

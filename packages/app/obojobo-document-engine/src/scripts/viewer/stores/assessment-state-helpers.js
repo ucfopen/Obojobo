@@ -61,7 +61,7 @@ const { Dispatcher } = Common.flux
 // } = AssessmentStateActions
 
 const getErrorFromResponse = res => {
-	return Error(res ? res.value.message : 'Request Failed')
+	return Error(res && res.value && res.value.message ? res.value.message : 'Request Failed')
 }
 
 class AssessmentAPIHelpers {
@@ -127,8 +127,6 @@ class AssessmentStateHelpers {
 		if (res.status !== 'ok') {
 			throw getErrorFromResponse(res)
 		}
-
-		console.log('gotham', res)
 
 		await injectKatexIfNeeded({ value: res.value.questions })
 

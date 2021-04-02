@@ -44,4 +44,31 @@ describe('Flag', () => {
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
+
+	test.each`
+		isUserCorrect | isACorrectChoice | isSelected | isASurveyQuestion | expected
+		${false}      | ${false}         | ${false}   | ${false}          | ${'unchosen-correctly'}
+		${false}      | ${false}         | ${false}   | ${true}           | ${'unchosen-correctly'}
+		${false}      | ${false}         | ${true}    | ${false}          | ${'should-not-have-chosen'}
+		${false}      | ${false}         | ${true}    | ${true}           | ${'chosen-survey'}
+		${false}      | ${true}          | ${false}   | ${false}          | ${'should-have-chosen'}
+		${false}      | ${true}          | ${false}   | ${true}           | ${'unchosen-correctly'}
+		${false}      | ${true}          | ${true}    | ${false}          | ${'chosen-correctly'}
+		${false}      | ${true}          | ${true}    | ${true}           | ${'chosen-survey'}
+		${true}       | ${false}         | ${false}   | ${false}          | ${'unchosen-correctly'}
+		${true}       | ${false}         | ${false}   | ${true}           | ${'unchosen-correctly'}
+		${true}       | ${false}         | ${true}    | ${false}          | ${'should-not-have-chosen'}
+		${true}       | ${false}         | ${true}    | ${true}           | ${'chosen-survey'}
+		${true}       | ${true}          | ${false}   | ${false}          | ${'could-have-chosen'}
+		${true}       | ${true}          | ${false}   | ${true}           | ${'unchosen-correctly'}
+		${true}       | ${true}          | ${true}    | ${false}          | ${'chosen-correctly'}
+		${true}       | ${true}          | ${true}    | ${true}           | ${'chosen-survey'}
+	`(
+		'Flag.getType($isUserCorrect, $isACorrectChoice, $isSelected, $isASurveyQuestion) = "$expected"',
+		({ isUserCorrect, isACorrectChoice, isSelected, isASurveyQuestion, expected }) => {
+			expect(Flag.getType(isUserCorrect, isACorrectChoice, isSelected, isASurveyQuestion)).toBe(
+				expected
+			)
+		}
+	)
 })

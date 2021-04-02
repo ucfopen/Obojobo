@@ -44,9 +44,6 @@ router
 			.then(result => {
 				insertObject.createdAt = result.created_at
 				oboEvents.emit(`client:${event.action}`, insertObject, req)
-				if (event.action === 'question:setResponse') {
-					// throw 'bugger!'
-				}
 				res.success(caliperEvent)
 			})
 			.catch(res.unexpected)

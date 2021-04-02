@@ -51,6 +51,19 @@ Object {
 }
 `;
 
+exports[`Question adapter construct builds with bad solution property 1`] = `
+Object {
+  "correctLabels": null,
+  "dirty": false,
+  "editing": false,
+  "incorrectLabels": null,
+  "needsUpdate": false,
+  "revealAnswer": "default",
+  "solution": null,
+  "type": "default",
+}
+`;
+
 exports[`Question adapter construct builds without attributes 1`] = `
 Object {
   "correctLabels": null,
@@ -101,6 +114,18 @@ Object {
       "metadata": Object {},
       "type": "ObojoboDraft.Pages.Page",
     },
+    "type": "default",
+  },
+}
+`;
+
+exports[`Question adapter toJSON builds a JSON representation with correct/incorrect labels or a solution 1`] = `
+Object {
+  "content": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "revealAnswer": "default",
+    "solution": null,
     "type": "default",
   },
 }

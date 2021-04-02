@@ -108,6 +108,37 @@ describe('Assessment', () => {
 
 	test('Pre-test page', () => {
 		AssessmentUtil.getAssessmentMachineStateForModel.mockReturnValue(NOT_IN_ATTEMPT)
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel.mockReturnValue(0)
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: {
+				assessments: {
+					assessment: {
+						id: 'assessment'
+					}
+				},
+				assessmentSummaries: {
+					assessment: {
+						scores: []
+					}
+				}
+			},
+			focusState: {},
+			navState: {
+				contexts: {}
+			}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
+
+		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Post-test page', () => {
+		AssessmentUtil.getAssessmentMachineStateForModel.mockReturnValue(NOT_IN_ATTEMPT)
+		AssessmentUtil.getNumberOfAttemptsCompletedForModel.mockReturnValue(1)
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: {
@@ -136,6 +167,10 @@ describe('Assessment', () => {
 	})
 
 	test('Test page (Not ready to submit)', () => {
+		AssessmentUtil.getCurrentAttemptForModel.mockReturnValue({
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId'
+		})
 		AssessmentUtil.getAssessmentMachineStateForModel.mockReturnValue(IN_ATTEMPT)
 		AssessmentUtil.getCurrentAttemptStatus.mockReturnValue('hasQuestionsUnanswered')
 		const model = OboModel.create(assessmentJSON)
@@ -163,6 +198,7 @@ describe('Assessment', () => {
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+		expect(NavUtil.setContext).toHaveBeenCalledWith('assessment:mockAssessmentId:mockAttemptId')
 	})
 
 	test('Test page (Ready to submit)', () => {

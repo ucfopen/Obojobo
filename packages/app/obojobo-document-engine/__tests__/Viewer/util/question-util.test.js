@@ -41,6 +41,30 @@ describe('QuestionUtil', () => {
 		})
 	})
 
+	test('setResponse triggers question:setResponse (with sendResponseImmediately default to true)', () => {
+		QuestionUtil.setResponse(
+			'testId',
+			{ response: 'A Response' },
+			'mockTargetId',
+			'mockContext',
+			'mockAssessmentId',
+			'mockAttemptId'
+		)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setResponse', {
+			value: {
+				id: 'testId',
+				response: { response: 'A Response' },
+				targetId: 'mockTargetId',
+				context: 'mockContext',
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				sendResponseImmediately: true
+			}
+		})
+	})
+
 	test('sendResponse triggers question:sendResponse', () => {
 		QuestionUtil.sendResponse('testId', 'mockContext')
 

@@ -281,7 +281,7 @@ class NavStore extends Store {
 
 		if (this.state.navTargetId !== null && typeof this.state.navTargetId !== 'undefined') {
 			if (this.state.navTargetId === navItem.id) {
-				return
+				return false
 			}
 
 			const navTargetModel = NavUtil.getNavTargetModel(this.state)

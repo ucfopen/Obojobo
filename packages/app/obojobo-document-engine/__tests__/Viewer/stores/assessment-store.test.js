@@ -1,9 +1,4 @@
 import React from 'react'
-import {
-	ERROR_INVALID_ATTEMPT_END,
-	ERROR_INVALID_ATTEMPT_RESUME
-} from 'obojobo-sections-assessment/server/error-constants.js'
-
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
@@ -13,8 +8,6 @@ import AssessmentStateMachine from '../../../src/scripts/viewer/stores/assessmen
 import AssessmentAPI from '../../../src/scripts/viewer/util/assessment-api'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import PreAttemptImportScoreDialog from 'obojobo-sections-assessment/components/dialogs/pre-attempt-import-score-dialog'
-import ResultsDialog from 'obojobo-sections-assessment/components/dialogs/results-dialog'
-import NavStore from '../../../src/scripts/viewer/stores/nav-store'
 
 jest.mock('../../../src/scripts/common/models/obo-model')
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => {
@@ -629,6 +622,8 @@ describe('AssessmentStore', () => {
 		${'acknowledgeImportAttemptFailed'}  | ${'acknowledge'}
 		${'resumeAttempt'}                   | ${'resumeAttempt'}
 		${'continueAttempt'}                 | ${'continueAttempt'}
+		${'acknowledgeStartAttemptFailed'}   | ${'acknowledge'}
+		${'acknowledgeEndAttemptFailed'}     | ${'acknowledge'}
 	`('Calling $method calls doMachineAction(id, $action)', ({ method, action }) => {
 		const assessmentStore = new AssessmentStoreClass()
 		assessmentStore.init()
@@ -638,36 +633,6 @@ describe('AssessmentStore', () => {
 		assessmentStore[method]('mock-id')
 
 		expect(spy).toHaveBeenCalledWith('mock-id', action)
-
-		spy.mockRestore()
-	})
-
-	test('acknowledgeStartAttemptFailed updates state and runs a machine action', () => {
-		const assessmentStore = new AssessmentStoreClass()
-		assessmentStore.init()
-
-		const spy = jest.spyOn(assessmentStore, 'doMachineAction').mockImplementation(jest.fn())
-
-		assessmentStore.state.assessments.mockAssessmentId.current = 'not-null'
-		assessmentStore.acknowledgeStartAttemptFailed('mockAssessmentId')
-
-		expect(spy).toHaveBeenCalledWith('mockAssessmentId', 'acknowledge')
-		expect(assessmentStore.state.assessments.mockAssessmentId.current).toBe(null)
-
-		spy.mockRestore()
-	})
-
-	test('acknowledgeEndAttemptFailed updates state and runs a machine action', () => {
-		const assessmentStore = new AssessmentStoreClass()
-		assessmentStore.init()
-
-		const spy = jest.spyOn(assessmentStore, 'doMachineAction').mockImplementation(jest.fn())
-
-		assessmentStore.state.assessments.mockAssessmentId.current = { error: 'mock-error' }
-		assessmentStore.acknowledgeEndAttemptFailed('mockAssessmentId')
-
-		expect(spy).toHaveBeenCalledWith('mockAssessmentId', 'acknowledge')
-		expect(assessmentStore.state.assessments.mockAssessmentId.current.error).not.toBeDefined()
 
 		spy.mockRestore()
 	})
@@ -721,106 +686,5 @@ describe('AssessmentStore', () => {
 		const mockState = {}
 		AssessmentStore.setState(mockState)
 		expect(AssessmentStore.state).toBe(mockState)
-	})
-
-	test('resuming an attempt for a different module restarts an attempt', async () => {
-		NavStore.getState.mockReturnValue({
-			draftId: 'mockDraftId',
-			visitId: 'mockVisitId'
-		})
-
-		const mockResumeAttemptResponse = {
-			status: 'error',
-			value: {
-				message: ERROR_INVALID_ATTEMPT_RESUME
-			}
-		}
-
-		AssessmentStore.state = {
-			assessmentSummary: [
-				{
-					assessmentId: 'mockAssessmentId',
-					unfinishedAttemptId: 'mockUnfinishedId'
-				}
-			]
-		}
-
-		AssessmentAPI.resumeAttempt.mockResolvedValueOnce(mockResumeAttemptResponse)
-
-		jest.spyOn(AssessmentStore, 'updateStateAfterStartAttempt')
-		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
-		jest.spyOn(AssessmentStore, 'findUnfinishedAttemptInAssessmentSummary')
-
-		AssessmentStore.updateStateAfterStartAttempt.mockReturnValueOnce()
-
-		await AssessmentStore.resumeAttemptWithAPICall('resume-attempt-id')
-
-		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.updateStateAfterStartAttempt).not.toHaveBeenCalled()
-		expect(AssessmentStore.updateStateAfterStartAttempt).not.toHaveBeenCalledWith()
-		expect(AssessmentStore.triggerChange).not.toHaveBeenCalled()
-
-		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.findUnfinishedAttemptInAssessmentSummary).toHaveBeenCalledTimes(1)
-
-		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledWith(
-			'mockAssessmentId'
-		)
-
-		AssessmentStore.updateStateAfterStartAttempt.mockRestore()
-	})
-
-	test('endAttemptWithAPICall starts a new attempt if module is different', async () => {
-		AssessmentStore.setState({
-			assessments: {
-				['mock-assessment-id']: {
-					current: {
-						attemptId: 'mock-attempt-id',
-						state: {
-							chosen: []
-						}
-					}
-				}
-			}
-		})
-
-		NavStore.getState.mockReturnValueOnce({
-			draftId: 'mockDraftId',
-			visitId: 'mockVisitId'
-		})
-
-		AssessmentAPI.endAttempt.mockResolvedValueOnce({
-			status: 'error',
-			value: {
-				message: ERROR_INVALID_ATTEMPT_END
-			}
-		})
-
-		jest.spyOn(AssessmentStore, 'updateStateAfterEndAttempt')
-		jest.spyOn(AssessmentStore, 'triggerChange')
-		jest.spyOn(Dispatcher, 'trigger')
-
-		await expect(
-			AssessmentStore.endAttemptWithAPICall('mock-assessment-id', 'mock-context')
-		).resolves.toBe()
-
-		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
-		expect(ModalUtil.show).toHaveBeenCalledWith(
-			<UpdatedModuleDialog onConfirm={expect.any(Function)} />,
-			false
-		)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:attemptEnded', 'mock-assessment-id')
-		expect(AssessmentStore.updateStateAfterEndAttempt).not.toHaveBeenCalled()
-		expect(AssessmentStore.triggerChange).not.toHaveBeenCalled()
-	})
-
-	test('onCloseUpdatedModuleDialog restarts attempt with same id', () => {
-		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
-
-		AssessmentStore.onCloseUpdatedModuleDialog('mock-id')
-
-		expect(ModalUtil.hide).toHaveBeenCalled()
-		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttemptWithImportScoreOption).toHaveBeenCalledWith('mock-id')
 	})
 })

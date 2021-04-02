@@ -267,7 +267,7 @@ describe('PostTest', () => {
 			}
 		])
 
-		AssessmentUtil.isAttemptHistoryLoadedForModel.mockReturnValueOnce(true)
+		AssessmentUtil.isAttemptHistoryLoadedForModel.mockReturnValue(true)
 
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
@@ -305,6 +305,23 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
+		const render = component.toJSON()
+		expect(render).toMatchSnapshot()
+
+		component.unmount()
+	})
+
+	test('PostTest shows throbber if history is not yet loaded', () => {
+		AssessmentUtil.isAttemptHistoryLoadedForModel.mockReturnValue(false)
+		scoreAction = {
+			page: null,
+			message: 'mockMessage'
+		}
+
+		const component = renderer.create(
+			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
+		)
+
 		const render = component.toJSON()
 		expect(render).toMatchSnapshot()
 
@@ -485,5 +502,33 @@ describe('PostTest', () => {
 		postTest.focusOnContent()
 
 		expect(focus).toHaveBeenCalledWith('mockH1Ref')
+	})
+
+	test('focusOnContent calls focus on the h1', () => {
+		const postTest = new PostTest()
+		postTest.h1Ref = 'mockH1Ref'
+
+		expect(postTest.focusOnContent()).toBe(true)
+		expect(focus).toHaveBeenCalledWith('mockH1Ref')
+	})
+
+	test('focusOnContent returns false if activeElement cannot be found', () => {
+		const postTest = new PostTest()
+		postTest.h1Ref = 'mockH1Ref'
+
+		const origActiveElement = document.activeElement
+		const mockEl = jest.fn()
+		Object.defineProperty(document, 'activeElement', {
+			value: mockEl,
+			enumerable: true,
+			configurable: true
+		})
+
+		expect(postTest.focusOnContent()).toBe(false)
+		expect(focus).not.toHaveBeenCalled()
+
+		Object.defineProperty(document, 'activeElement', {
+			value: origActiveElement
+		})
 	})
 })

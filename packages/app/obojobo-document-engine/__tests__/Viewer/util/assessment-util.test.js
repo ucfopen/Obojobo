@@ -13,6 +13,10 @@ describe('AssessmentUtil', () => {
 		jest.resetAllMocks()
 	})
 
+	test('getAssessmentForModel returns null if given null model', () => {
+		expect(AssessmentUtil.getAssessmentForModel()).toBe(null)
+	})
+
 	test('getAssessmentForModel returns assesment', () => {
 		const model = {
 			get: jest

@@ -136,6 +136,16 @@ describe('FocusStore', () => {
 			preventScroll: true,
 			region: 'mock-region'
 		})
+
+		focusStore._updateFocusTarget('mock-type')
+		expect(focusStore.getState()).toEqual({
+			target: null,
+			type: 'mock-type',
+			visualFocusTarget: null,
+			animateScroll: false,
+			preventScroll: false,
+			region: null
+		})
 	})
 
 	test('_focusComponent(fade = true) updates visualFocusTarget', () => {
@@ -263,11 +273,25 @@ describe('FocusStore', () => {
 		expect(focusStore.state).toEqual({
 			target: null,
 			type: null,
-			// scroll: true,
 			animateScroll: false,
 			visualFocusTarget: 'mock-focus-target',
 			preventScroll: false
 		})
+
+		triggerChangeSpy.mockRestore()
+	})
+
+	test('_clear does nothing if there is nothing to clear', () => {
+		const triggerChangeSpy = jest
+			.spyOn(FocusStoreClass.prototype, 'triggerChange')
+			.mockImplementation(jest.fn())
+
+		const focusStore = new FocusStoreClass()
+		focusStore.state = { type: null }
+
+		focusStore._clear()
+
+		expect(triggerChangeSpy).toHaveBeenCalledTimes(0)
 
 		triggerChangeSpy.mockRestore()
 	})

@@ -17,7 +17,7 @@ const Adapter = {
 		// on MCAssessment. For compatibility we'll use those if they exist
 		// and this node doesn't define them.
 		// @deprecated
-		const content = model.get('content') || {}
+		const content = model.get('content')
 		const children = model.get('children') // Need to pull the original children data
 		const mcAssessmentContent =
 			children &&

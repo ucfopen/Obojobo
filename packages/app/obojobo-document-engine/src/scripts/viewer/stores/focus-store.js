@@ -107,9 +107,13 @@ class FocusStore extends Store {
 		this.triggerChange()
 	}
 
+	// Clear does nothing if focus util is already "cleared".
+	// It also maintains the visual focus target.
 	_clear() {
-		// console.log('@TODO - This causes infinite loops!')
-		return
+		if (this.state.type === null) {
+			return
+		}
+
 		const visualFocusTarget = this.state.visualFocusTarget
 
 		this.init()

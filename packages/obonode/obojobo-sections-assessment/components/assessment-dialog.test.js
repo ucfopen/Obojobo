@@ -5,6 +5,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import AssessmentDialog from './assessment-dialog'
+import { ERROR_INVALID_ATTEMPT_END } from '../server/error-constants'
 
 const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
 const { CurrentAssessmentStates, AssessmentUtil, FocusUtil } = Viewer.util
@@ -79,6 +80,7 @@ describe('AssessmentDialog renders as expected', () => {
 		${RESUME_ATTEMPT_FAILED}     | ${null}                                 | ${null}                                   | ${null}
 		${END_ATTEMPT_SUCCESSFUL}    | ${null}                                 | ${null}                                   | ${null}
 		${END_ATTEMPT_FAILED}        | ${null}                                 | ${null}                                   | ${null}
+		${END_ATTEMPT_FAILED}        | ${ERROR_INVALID_ATTEMPT_END}            | ${null}                                   | ${null}
 		${IMPORT_ATTEMPT_FAILED}     | ${null}                                 | ${null}                                   | ${null}
 		${FETCH_HISTORY_FAILED}      | ${null}                                 | ${null}                                   | ${null}
 		${SEND_RESPONSES_SUCCESSFUL} | ${null}                                 | ${NO_ATTEMPT}                             | ${null}
@@ -268,6 +270,50 @@ describe('AssessmentDialog renders as expected', () => {
 		expect(AssessmentUtil.acknowledgeResumeAttemptFailed).toHaveBeenCalledWith(
 			props.assessmentModel
 		)
+
+		spy.mockRestore()
+	})
+
+	test('END_ATTEMPT_FAILED with ERROR_INVALID_ATTEMPT_END error, clicking onClose acknowledges', () => {
+		const props = {
+			assessmentMachineState: END_ATTEMPT_FAILED,
+			assessment: {
+				current: {
+					error: ERROR_INVALID_ATTEMPT_END
+				}
+			}
+		}
+		const spy = jest.spyOn(AssessmentUtil, 'acknowledgeEndAttemptFailed').mockReturnValue({})
+
+		expect(AssessmentUtil.acknowledgeEndAttemptFailed).not.toHaveBeenCalled()
+
+		const component = renderer.create(<AssessmentDialog {...props} />)
+		const button = component.root.findAllByType('button')[0]
+		button.props.onClick()
+
+		expect(AssessmentUtil.acknowledgeEndAttemptFailed).toHaveBeenCalledWith(props.assessmentModel)
+
+		spy.mockRestore()
+	})
+
+	test('END_ATTEMPT_FAILED with ERROR_INVALID_ATTEMPT_END error, clicking onRestart starts new attempt', () => {
+		const props = {
+			assessmentMachineState: END_ATTEMPT_FAILED,
+			assessment: {
+				current: {
+					error: ERROR_INVALID_ATTEMPT_END
+				}
+			}
+		}
+		const spy = jest.spyOn(AssessmentUtil, 'startAttempt').mockReturnValue({})
+
+		expect(AssessmentUtil.startAttempt).not.toHaveBeenCalled()
+
+		const component = renderer.create(<AssessmentDialog {...props} />)
+		const button = component.root.findAllByType('button')[1]
+		button.props.onClick()
+
+		expect(AssessmentUtil.startAttempt).toHaveBeenCalledWith(props.assessmentModel)
 
 		spy.mockRestore()
 	})
