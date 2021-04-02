@@ -25,6 +25,9 @@ describe('Media Store', () => {
 				get: () => 'mocked-id'
 			}
 		}
+		OboModel.getRoot = () => ({
+			get: () => 'root-id'
+		})
 	})
 
 	test('init will init state', () => {

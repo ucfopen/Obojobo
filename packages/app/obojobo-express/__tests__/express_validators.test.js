@@ -181,9 +181,10 @@ describe('current user middleware', () => {
 		mockReq.body.draftId = 'not-a-valid-UUID'
 
 		return Validators.requireDraftId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]).toHaveProperty('_errors')
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'draftId',
@@ -210,19 +211,19 @@ describe('current user middleware', () => {
 
 	test('requireMultipleAttemptIds rejects when filled with non-uuids', () => {
 		mockReq.body.attemptIds = ['Callie', 'Dega', validUUID()]
-
 		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(2)
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(2)
+			expect(mockReq['express-validator#contexts'][0]).toHaveProperty('_errors')
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'attemptIds[0]',
 				value: 'Callie'
 			})
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'attemptIds[1]',
@@ -236,9 +237,10 @@ describe('current user middleware', () => {
 		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(2)
+			expect(mockReq['express-validator#contexts'][1]).toHaveProperty('_errors')
+			expect(mockReq['express-validator#contexts'][1]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be an array of UUIDs',
 				param: 'attemptIds',
@@ -252,9 +254,9 @@ describe('current user middleware', () => {
 		const allChecks = Validators.requireMultipleAttemptIds.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(37)
-			expect(mockReq._validationErrors[0]).toEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(2)
+			expect(mockReq['express-validator#contexts'][1]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be an array of UUIDs',
 				param: 'attemptIds',
@@ -298,9 +300,9 @@ describe('current user middleware', () => {
 		mockReq.body.visitId = 'not-a-valid-UUID'
 
 		return Validators.requireVisitId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid UUID',
 				param: 'visitId',
@@ -335,7 +337,7 @@ describe('current user middleware', () => {
 	})
 
 	test('requireEvent doesnt set _validationErrors with valid event', () => {
-		expect.assertions(2)
+		expect.assertions(6)
 
 		const d = new Date()
 		mockReq.body.event = {
@@ -348,13 +350,16 @@ describe('current user middleware', () => {
 		const allChecks = Validators.requireEvent.map(f => f(mockReq, mockRes, mockNext))
 
 		return Promise.all(allChecks).then(() => {
+			expect(mockReq['express-validator#contexts']).toHaveLength(4)
+			mockReq['express-validator#contexts'].forEach(context => {
+				expect(context._errors).toHaveLength(0)
+			})
 			expect(mockNext).toHaveBeenCalledTimes(4)
-			expect(mockReq._validationErrors).toHaveLength(0)
 		})
 	})
 
 	test('requireEvent does set _validationErrors with invalid event', () => {
-		expect.assertions(7)
+		expect.assertions(6)
 
 		mockReq.body.event = {
 			actor_time: '12/21/2002',
@@ -366,20 +371,19 @@ describe('current user middleware', () => {
 
 		return Promise.all(allChecks).then(() => {
 			expect(mockNext).toHaveBeenCalledTimes(4)
-			expect(mockReq._validationErrors).toHaveLength(5)
-			expect(mockReq._validationErrors).toContainEqual(
+			expect(mockReq['express-validator#contexts']).toHaveLength(4)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual(
 				expect.objectContaining({ param: 'event.actor_time' })
 			)
-			expect(mockReq._validationErrors).toContainEqual(
+			expect(mockReq['express-validator#contexts'][1]._errors).toContainEqual(
 				expect.objectContaining({ param: 'event.draft_id' })
 			)
-			expect(mockReq._validationErrors).toContainEqual(
+			expect(mockReq['express-validator#contexts'][2]._errors).toContainEqual(
 				expect.objectContaining({ param: 'event.event_version' })
 			)
-			expect(mockReq._validationErrors).toContainEqual(
+			expect(mockReq['express-validator#contexts'][3]._errors).toContainEqual(
 				expect.objectContaining({ param: 'event.action' })
 			)
-			expect(mockReq._validationErrors).toMatchSnapshot()
 		})
 	})
 
@@ -479,26 +483,20 @@ describe('current user middleware', () => {
 		expect(mockRes.badInput).toHaveBeenCalledTimes(0)
 	})
 
-	test('checkValidationRules calls bad input', () => {
-		mockReq._validationErrors = [
-			{
-				msg: 'mock-msg-1',
-				param: 'mock-param-1',
-				value: 'mock-value-1'
-			},
-			{
-				msg: 'mock-msg-2',
-				param: 'mock-param-2',
-				value: 'mock-value-2'
-			}
-		]
+	test('checkValidationRules calls bad input', async () => {
+		// force a failure
+		mockReq.body.contentId = ['Maisie']
+		await Validators.requireContentId(mockReq, mockRes, mockNext)
 
+		// expect badInput to not have been called automatically
+		expect(mockRes.badInput).toHaveBeenCalledTimes(0)
+
+		// execute checkValidationRules
 		Validators.checkValidationRules(mockReq, mockRes, mockNext)
-		expect(mockNext).toHaveBeenCalledTimes(0)
+
+		// expect badInput to have been called
 		expect(mockRes.badInput).toHaveBeenCalledTimes(1)
-		expect(mockRes.badInput).toHaveBeenCalledWith(
-			'mock-param-1 mock-msg-1, got mock-value-1, mock-param-2 mock-msg-2, got mock-value-2'
-		)
+		expect(mockRes.badInput).toHaveBeenCalledWith('contentId must be a valid UUID, got Maisie')
 	})
 
 	test('validImportedAssessmentScoreId resolves', () => {
@@ -511,9 +509,9 @@ describe('current user middleware', () => {
 		mockReq.body.importedAssessmentScoreId = 'not-a-valid-INT'
 
 		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(1)
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
@@ -526,8 +524,8 @@ describe('current user middleware', () => {
 		mockReq.body.importedAssessmentScoreId = '50'
 
 		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toHaveLength(0)
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts'][0]._errors).toHaveLength(0)
 		})
 	})
 
@@ -535,8 +533,9 @@ describe('current user middleware', () => {
 		mockReq.body.importedAssessmentScoreId = '-10'
 
 		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
@@ -549,8 +548,9 @@ describe('current user middleware', () => {
 		mockReq.body.importedAssessmentScoreId = '0'
 
 		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',
@@ -561,8 +561,9 @@ describe('current user middleware', () => {
 
 	test('validImportedAssessmentScoreId registers errors when undefined', () => {
 		return Validators.validImportedAssessmentScoreId(mockReq, mockRes, mockNext).then(() => {
-			expect(mockReq).toHaveProperty('_validationErrors')
-			expect(mockReq._validationErrors).toContainEqual({
+			expect(mockReq).toHaveProperty('express-validator#contexts')
+			expect(mockReq['express-validator#contexts']).toHaveLength(1)
+			expect(mockReq['express-validator#contexts'][0]._errors).toContainEqual({
 				location: 'body',
 				msg: 'must be a valid score id',
 				param: 'importedAssessmentScoreId',

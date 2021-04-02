@@ -14,7 +14,7 @@ class SimpleDialog extends React.Component {
 
 	focusOnFirstElement() {
 		if (this.props.focusOnFirstElement) {
-			return this.props.focusOnFirstElement()
+			this.props.focusOnFirstElement()
 		}
 	}
 

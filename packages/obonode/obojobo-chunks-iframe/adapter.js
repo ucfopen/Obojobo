@@ -3,7 +3,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import IFrameMediaTypes from './iframe-media-types'
 import IFrameFitTypes from './iframe-fit-types'
 import IFrameControlTypes from './iframe-control-types'
-import IFrameSizingTypes from "./iframe-sizing-types"
+import IFrameSizingTypes from './iframe-sizing-types'
 
 const cloneProps = Common.util.cloneProps
 const propsList = [

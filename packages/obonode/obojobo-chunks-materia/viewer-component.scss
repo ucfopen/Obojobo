@@ -1,0 +1,54 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--materia {
+	display: block;
+	font-size: 1em;
+	margin: 0 auto;
+	text-align: center;
+
+	.materia-score {
+		display: block;
+		text-align: center;
+		margin: 0 auto;
+		margin-bottom: 2em;
+		font-size: 0.7em;
+		opacity: 0.5;
+		margin-top: -3.5em;
+		z-index: 2;
+	}
+
+	.label {
+		margin: 0 auto;
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: $color-text-minor;
+		max-width: calc(100% - 14em); //stylelint-disable-line unit-disallowed-list
+		margin-top: -1em;
+	}
+
+	&.is-open .label {
+		margin-top: -3em;
+	}
+
+	> .component {
+		z-index: 5;
+
+		.obojobo-draft--chunks--iframe {
+			.blocker::after {
+				content: ' ';
+				background: url('./materia-logo.svg') no-repeat bottom right;
+				width: 4.5em;
+				position: absolute;
+				bottom: 1em;
+				right: 1em;
+				background-size: contain;
+				opacity: 0.5;
+				transition: opacity 0.4s;
+			}
+
+			&:hover .blocker::after {
+				opacity: 1;
+			}
+		}
+	}
+}
