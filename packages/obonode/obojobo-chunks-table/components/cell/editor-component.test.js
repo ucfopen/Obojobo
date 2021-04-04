@@ -574,4 +574,99 @@ describe('Cell Editor Node', () => {
 
 		expect(Transforms.removeNodes).toHaveBeenCalled()
 	})
+
+	test('showDropDownMenu does nothing if Cell is not selected', () => {
+		const thisValue = {
+			setState: jest.fn(),
+			props: {
+				selected: false
+			}
+		}
+
+		Cell.prototype.showDropDownMenu.bind(thisValue)()
+
+		expect(thisValue.setState).not.toHaveBeenCalled()
+	})
+
+	test('showDropDownMenu updates state when Cell is selected', () => {
+		const thisValue = {
+			setState: jest.fn(),
+			props: {
+				selected: true
+			}
+		}
+
+		Cell.prototype.showDropDownMenu.bind(thisValue)()
+
+		expect(thisValue.setState).toHaveBeenCalledWith({ isShowingDropDownMenu: true })
+	})
+
+	test('componentDidMount does nothing when Cell is not selected', () => {
+		const thisValue = {
+			props: {
+				selected: false
+			},
+			showDropDownMenu: jest.fn()
+		}
+
+		Cell.prototype.componentDidMount.bind(thisValue)()
+
+		expect(thisValue.showDropDownMenu).not.toHaveBeenCalled()
+	})
+
+	test('componentDidMount calls showDropDownMenu when Cell is selected', () => {
+		const thisValue = {
+			props: {
+				selected: true
+			},
+			showDropDownMenu: jest.fn()
+		}
+
+		Cell.prototype.componentDidMount.bind(thisValue)()
+
+		expect(thisValue.showDropDownMenu).toHaveBeenCalled()
+	})
+
+	test.each`
+		selectedBefore | selectedAfter | action
+		${false}       | ${false}      | ${'does nothing'}
+		${false}       | ${true}       | ${'calls showDropDownMenu'}
+		${true}        | ${false}      | ${'calls setState'}
+		${true}        | ${true}       | ${'does nothing'}
+	`(
+		'Changing props.selected from $selectedBefore to $selectedAfter $action',
+		({ selectedBefore, selectedAfter, action }) => {
+			const thisValue = {
+				props: {
+					selected: selectedAfter
+				},
+				setState: jest.fn(),
+				showDropDownMenu: jest.fn()
+			}
+
+			jest.useFakeTimers()
+			Cell.prototype.componentDidUpdate.bind(thisValue)({ selected: selectedBefore })
+			jest.runAllTimers()
+
+			switch (action) {
+				case 'does nothing':
+					expect(thisValue.setState).not.toHaveBeenCalled()
+					expect(thisValue.showDropDownMenu).not.toHaveBeenCalled()
+					break
+
+				case 'calls showDropDownMenu':
+					expect(thisValue.setState).not.toHaveBeenCalled()
+					expect(thisValue.showDropDownMenu).toHaveBeenCalled()
+					break
+
+				case 'calls setState':
+					expect(thisValue.setState).toHaveBeenCalledWith({
+						isOpen: false,
+						isShowingDropDownMenu: false
+					})
+					expect(thisValue.showDropDownMenu).not.toHaveBeenCalled()
+					break
+			}
+		}
+	)
 })

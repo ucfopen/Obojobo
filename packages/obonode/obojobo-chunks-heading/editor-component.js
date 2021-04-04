@@ -13,7 +13,7 @@ const Heading = props => {
 		<Node {...props}>
 			<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 				<HTag>
-					<span className={`text align-${content.align}`}>{props.children}</span>
+					<span className={`obo-text align-${content.align}`}>{props.children}</span>
 				</HTag>
 			</div>
 		</Node>

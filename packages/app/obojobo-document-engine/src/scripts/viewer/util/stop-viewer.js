@@ -1,6 +1,6 @@
 import React from 'react'
 import Common from 'Common'
-import APIUtil from '../../viewer/util/api-util'
+import ViewerAPI from '../../viewer/util/viewer-api'
 import NoButtonModal from '../../common/components/modal/no-button-modal'
 import sysend from 'sysend'
 const { ModalUtil } = Common.util
@@ -31,7 +31,7 @@ export const stopHeartBeat = () => {
 }
 
 const executeHeartBeat = draftId => {
-	APIUtil.getVisitSessionStatus(draftId).then(result => {
+	ViewerAPI.getVisitSessionStatus(draftId).then(result => {
 		if (result.status !== 'ok') {
 			stopViewer()
 		}

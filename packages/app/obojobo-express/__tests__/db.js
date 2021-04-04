@@ -28,7 +28,7 @@ describe('db', () => {
 		require('../server/db')
 		const pgPromise = require('pg-promise')
 		expect(pgPromise).toHaveBeenCalledTimes(1)
-		expect(pgPromise).toHaveBeenCalledWith({})
+		expect(pgPromise).toHaveBeenCalledWith({ noWarnings: true })
 		expect(mockBlueBirdConfig).not.toHaveBeenCalled()
 	})
 
@@ -38,7 +38,7 @@ describe('db', () => {
 		const bluebird = require('bluebird')
 		const pgPromise = require('pg-promise')
 		expect(pgPromise).toHaveBeenCalledTimes(1)
-		expect(pgPromise).toHaveBeenCalledWith({ promiseLib: bluebird })
+		expect(pgPromise).toHaveBeenCalledWith({ noWarnings: true, promiseLib: bluebird })
 		expect(mockPgPromiseInstance).toHaveBeenCalledTimes(1)
 		expect(mockBlueBirdConfig).toHaveBeenCalledWith({ longStackTraces: true })
 	})

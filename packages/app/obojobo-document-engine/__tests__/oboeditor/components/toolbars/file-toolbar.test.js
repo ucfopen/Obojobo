@@ -31,7 +31,18 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar node', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
+			editor
+		}
+
+		const component = shallow(<FileToolbar {...props} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('FileToolbar in saving state', () => {
+		const props = {
+			saveState: 'saving',
 			editor
 		}
 
@@ -42,7 +53,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar with disables deletion', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor,
 			isDeletable: false
 		}
@@ -64,7 +75,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar with enables deletion', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor,
 			isDeletable: true
 		}
@@ -86,7 +97,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar with enables deletion by default', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor,
 			isDeletable: null
 		}
@@ -108,7 +119,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar passes and executes props.selectAll on child editMenu', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor,
 			isDeletable: null,
 			selectAll: jest.fn()
@@ -126,7 +137,7 @@ describe('File Toolbar', () => {
 
 	test('FileToolbar passes and executes editor.selectAll on child editMenu', () => {
 		const props = {
-			saved: true,
+			saveState: 'saveSuccessful',
 			editor,
 			isDeletable: null
 		}

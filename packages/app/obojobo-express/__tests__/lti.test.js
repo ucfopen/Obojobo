@@ -74,39 +74,21 @@ const mockSendAssessScoreDBCalls = (
 	insertLTIAssessmentScoreSucceeds = true,
 	previewMode = false
 ) => {
-	// mock get assessment_score
 	if (assessmentScore === 'missing') {
-		db.oneOrNone.mockResolvedValueOnce(null)
-	} else if (previewMode === true) {
-		db.oneOrNone.mockResolvedValueOnce({
-			id: 'assessment-score-id',
-			user_id: 'user-id',
-			draft_id: 'draft-id',
-			draft_content_id: 'content-id',
-			assessment_id: 'assessment-id',
-			attempt_id: 'attempt-id',
-			score: assessmentScore,
-			score_details: {
-				status: 'passed',
-				rewardTotal: 0,
-				attemptScore: assessmentScore,
-				rewardedMods: [],
-				attemptNumber: 1,
-				assessmentScore: assessmentScore,
-				assessmentModdedScore: assessmentScore
-			},
-			is_preview: true
-		})
+		// mock getLatestHighestAssessmentScoreRecord
+		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		db.one.mockRejectedValueOnce(noDataError)
 	} else {
-		db.oneOrNone.mockResolvedValueOnce({
+		// mock getLatestHighestAssessmentScoreRecord
+		db.one.mockResolvedValueOnce({
 			id: 'assessment-score-id',
-			user_id: 'user-id',
-			draft_id: 'draft-id',
-			draft_content_id: 'content-id',
-			assessment_id: 'assessment-id',
-			attempt_id: 'attempt-id',
+			userId: 'user-id',
+			draftId: 'draft-id',
+			contentId: 'content-id',
+			assessmentId: 'assessment-id',
+			attemptId: 'attempt-id',
 			score: assessmentScore,
-			score_details: {
+			scoreDetails: {
 				status: 'passed',
 				rewardTotal: 0,
 				attemptScore: assessmentScore,
@@ -115,11 +97,9 @@ const mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			is_preview: false
+			isPreview: previewMode === true
 		})
-	}
 
-	if (assessmentScore !== 'missing') {
 		// mock getLatestSuccessfulLTIAssessmentScoreRecord
 		if (ltiPrevRecordScoreSent === null) {
 			db.oneOrNone.mockResolvedValueOnce(null)
@@ -138,7 +118,7 @@ const mockSendAssessScoreDBCalls = (
 			})
 		}
 
-		// mock tryRetrieveLtiLaunch:
+		// mock retrieveLtiLaunch:
 		if (ltiHasOutcome === 'missing') {
 			db.oneOrNone.mockResolvedValueOnce(false)
 		} else if (ltiHasOutcome === 'error') {
@@ -165,11 +145,8 @@ const mockSendAssessScoreDBCalls = (
 	if (insertLTIAssessmentScoreSucceeds) {
 		db.one.mockResolvedValueOnce({ id: 'new-lti-assessment-score-id' })
 	} else {
-		db.one.mockReturnValueOnce(
-			new Promise(() => {
-				throw new Error('insertLTIAssessmentScore failed')
-			})
-		)
+		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		db.one.mockRejectedValueOnce(noDataError)
 	}
 
 	// mock insertEvent
@@ -320,7 +297,7 @@ describe('lti', () => {
 	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', () => {
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
-		db.oneOrNone.mockResolvedValueOnce({
+		const mockQueryResults = {
 			id: 'id',
 			user_id: 'user_id',
 			draft_id: 'draft_id',
@@ -330,7 +307,9 @@ describe('lti', () => {
 			score: 'score',
 			is_preview: 'preview',
 			score_details: 'details'
-		})
+		}
+
+		db.one.mockResolvedValueOnce(mockQueryResults)
 
 		return getLatestHighestAssessmentScoreRecord(
 			'user_id',
@@ -338,42 +317,49 @@ describe('lti', () => {
 			'assessment_id',
 			false
 		).then(result => {
-			expect(result).toEqual({
-				id: 'id',
-				userId: 'user_id',
-				draftId: 'draft_id',
-				contentId: 'content_id',
-				assessmentId: 'assessment_id',
-				attemptId: 'attempt_id',
-				score: 'score',
-				isPreview: 'preview',
-				error: null,
-				scoreDetails: 'details'
-			})
+			expect(result).toEqual(mockQueryResults)
 		})
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', () => {
+		expect.hasAssertions()
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const noDataError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
 
-		db.oneOrNone.mockResolvedValueOnce(null)
-		return getLatestHighestAssessmentScoreRecord(
-			'user_id',
-			'draft_id',
-			'assessment_id',
-			false
-		).then(result => {
-			expect(result.error.message).toBe('No assessment score found')
-		})
+		// simulate pg-promies.one throwing no results error
+		db.one.mockRejectedValueOnce(noDataError)
+
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toThrow('No assessment score found')
+	})
+
+	test('getLatestHighestAssessmentScoreRecord returns error toomany rows returned', () => {
+		expect.hasAssertions()
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const multipleResultError = new db.errors.QueryResultError(
+			db.errors.queryResultErrorCode.multiple
+		)
+
+		// simulate pg-promies.one throwing multiple results error
+		db.one.mockRejectedValueOnce(multipleResultError)
+
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toBe(multipleResultError) // cant use expect().throws, so match the expected mock error
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns error if an error occurs', () => {
+		expect.hasAssertions()
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const otherError = new Error('some other error')
 
-		db.oneOrNone.mockRejectedValueOnce('an error occured')
-		return getLatestHighestAssessmentScoreRecord().then(result => {
-			expect(result.error).toBe('an error occured')
-		})
+		// simulate some other error
+		db.one.mockRejectedValueOnce(otherError)
+
+		return expect(
+			getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
+		).rejects.toBe(otherError)
 	})
 
 	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
@@ -1123,25 +1109,6 @@ describe('lti', () => {
 		}
 
 		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			)
-
-			expect(logger.error).toHaveBeenCalledWith(
-				'LTI no assessment score found, unable to proceed!',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI gradebook status is "error_state_unknown"',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith(
-				'LTI store "error_no_assessment_score_found" success - id:"new-lti-assessment-score-id"',
-				logId
-			)
-			expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
-
 			expect(insertEvent).lastCalledWith({
 				action: 'lti:replaceResult',
 				actorTime: 'MOCKED-ISO-DATE-STRING',
@@ -1182,6 +1149,26 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
+
+			// throw in some tests for the logger output
+			expect(logger.info).toHaveBeenCalledWith(
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+				logId
+			)
+
+			expect(logger.error).toHaveBeenCalledWith(
+				'LTI no assessment score found, unable to proceed!',
+				logId
+			)
+			expect(logger.info).toHaveBeenCalledWith(
+				'LTI gradebook status is "error_state_unknown"',
+				logId
+			)
+			expect(logger.info).toHaveBeenCalledWith(
+				'LTI store "error_no_assessment_score_found" success - id:"new-lti-assessment-score-id"',
+				logId
+			)
+			expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
 		})
 	})
 
@@ -2349,13 +2336,13 @@ describe('lti', () => {
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns expected values', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
-				assessment_id: 'assessmentid',
-				assessment_score_id: 'assessment-score-id',
-				score_sent: 'score-sent',
-				lti_sent_date: 'lti-sent-date',
+				assessmentId: 'assessmentid',
+				assessmentScoreId: 'assessment-score-id',
+				scoreSent: 'score-sent',
+				sentDate: 'lti-sent-date',
 				status: 'status',
-				gradebook_status: 'gradebook-status',
-				status_details: 'status-details'
+				gradebookStatus: 'gradebook-status',
+				statusDetails: 'status-details'
 			}
 		])
 
@@ -2379,13 +2366,13 @@ describe('lti', () => {
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId searches on assessment', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
-				assessment_id: 'assessment-id',
-				assessment_score_id: 'assessment-score-id',
-				score_sent: 'score-sent',
-				lti_sent_date: 'lti-sent-date',
+				assessmentId: 'assessment-id',
+				assessmentScoreId: 'assessment-score-id',
+				scoreSent: 'score-sent',
+				sentDate: 'lti-sent-date',
 				status: 'status',
-				gradebook_status: 'gradebook-status',
-				status_details: 'status-details'
+				gradebookStatus: 'gradebook-status',
+				statusDetails: 'status-details'
 			}
 		])
 
@@ -2507,33 +2494,6 @@ describe('lti', () => {
 		}
 
 		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
-				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
-				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI launch with id:"launch-id" retrieved!',
-				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
-				logId
-			])
-			expect(logger.info.mock.calls[4]).toEqual([
-				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
-			])
-			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
-			expect(logger.info.mock.calls[6]).toEqual([
-				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
-				logId
-			])
-			expect(logger.error.mock.calls[0][0]).toBe('LTI bad error attempting to update database! :(')
-			expect(logger.info.mock.calls[7]).toEqual(['LTI complete', logId])
-
 			expect(insertEvent).lastCalledWith({
 				action: 'lti:replaceResult',
 				actorTime: 'MOCKED-ISO-DATE-STRING',

@@ -69,9 +69,15 @@ module.exports = app => {
 		res.missing()
 	})
 
-	// unknown error handler
+	// uncaught error handler
+	// you'll want to keep an eye out for 'Query read timeout' in your logs, it may indicate the db has gone away
 	app.use((err, req, res, next) => {
-		logger.error('Unknown error', err)
-		res.unexpected(err)
+		const timecode = new Date().getTime()
+		logger.error(`Uncaught error (timecode shown on user error page: ${timecode})`, err)
+		// res.unexpected is not always available here
+		if (res.unexpected) return res.unexpected(err)
+
+		res.status(500)
+		res.send(`500 - Internal Server Error: ${timecode}`)
 	})
 }

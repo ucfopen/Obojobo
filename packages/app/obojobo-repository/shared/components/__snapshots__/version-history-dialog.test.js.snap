@@ -1,0 +1,310 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VersionHistoryDialog renders with default props 1`] = `
+<div
+  className="version-history-dialog"
+>
+  <div
+    className="version-history-dialog--header"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <svg
+        version="1.1"
+        viewBox="0 0 130 150"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<image xlink:href=\\"/library/module-icon/mockDraftId\\" width=\\"150\\" height=\\"150\\" />",
+              }
+            }
+            height="150"
+            id="module-img-id-mockDraftId"
+            patternUnits="userSpaceOnUse"
+            width="150"
+          />
+        </defs>
+        <path
+          d="M56.29165124598851 4.999999999999999Q64.9519052838329 0 73.61215932167728 4.999999999999999L121.24355652982142 32.5Q129.9038105676658 37.5 129.9038105676658 47.5L129.9038105676658 102.5Q129.9038105676658 112.5 121.24355652982142 117.5L73.61215932167728 145Q64.9519052838329 150 56.29165124598851 145L8.660254037844387 117.5Q0 112.5 0 102.5L0 47.5Q0 37.5 8.660254037844387 32.5Z"
+          fill="url(#module-img-id-mockDraftId)"
+        />
+      </svg>
+    </div>
+    <div
+      className="title"
+    >
+      mockVersionHistoryDialogTitle
+    </div>
+    <button
+      aria-label="Close dialog"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="version-history-dialog--body"
+  >
+    <mock-CSSTransition
+      in={true}
+      timeout={250}
+    >
+      <div
+        className="version-history-list"
+      >
+        <div
+          className="menu-expanded"
+        >
+          <div
+            className="version-history-list--title"
+          >
+            <div>
+              Version History
+            </div>
+            <div
+              className="desc"
+            >
+              newest first
+            </div>
+            <button
+              className="toggle-button"
+              onClick={[Function]}
+            >
+              Toggle Navigation Menu
+            </button>
+          </div>
+        </div>
+        <div
+          className="menu-collapsed"
+        >
+          <button
+            className="toggle-button"
+            onClick={[Function]}
+          >
+            Toggle Navigation Menu
+          </button>
+        </div>
+      </div>
+    </mock-CSSTransition>
+    <div
+      className="editor-preview"
+    >
+      <div
+        className="editor-preview--header"
+      >
+        <button
+          className="repository--button restore-button"
+          disabled={true}
+          onClick={[Function]}
+        >
+          Restore this version
+        </button>
+        <span>
+          Viewing: 
+          Latest Version
+        </span>
+        <small>
+          Note: Changes made in preview window will not be saved.
+        </small>
+      </div>
+      <iframe
+        frameBorder="0"
+        loading="lazy"
+        src={null}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`VersionHistoryDialog renders with history items 1`] = `
+<div
+  className="version-history-dialog"
+>
+  <div
+    className="version-history-dialog--header"
+  >
+    <div
+      className="repository--module-icon--image"
+    >
+      <svg
+        version="1.1"
+        viewBox="0 0 130 150"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<image xlink:href=\\"/library/module-icon/mockDraftId\\" width=\\"150\\" height=\\"150\\" />",
+              }
+            }
+            height="150"
+            id="module-img-id-mockDraftId"
+            patternUnits="userSpaceOnUse"
+            width="150"
+          />
+        </defs>
+        <path
+          d="M56.29165124598851 4.999999999999999Q64.9519052838329 0 73.61215932167728 4.999999999999999L121.24355652982142 32.5Q129.9038105676658 37.5 129.9038105676658 47.5L129.9038105676658 102.5Q129.9038105676658 112.5 121.24355652982142 117.5L73.61215932167728 145Q64.9519052838329 150 56.29165124598851 145L8.660254037844387 117.5Q0 112.5 0 102.5L0 47.5Q0 37.5 8.660254037844387 32.5Z"
+          fill="url(#module-img-id-mockDraftId)"
+        />
+      </svg>
+    </div>
+    <div
+      className="title"
+    >
+      mockVersionHistoryDialogTitle
+    </div>
+    <button
+      aria-label="Close dialog"
+      className="repository--button close-button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    className="version-history-dialog--body"
+  >
+    <mock-CSSTransition
+      in={true}
+      timeout={250}
+    >
+      <div
+        className="version-history-list"
+      >
+        <div
+          className="menu-expanded"
+        >
+          <div
+            className="version-history-list--title"
+          >
+            <div>
+              Version History
+            </div>
+            <div
+              className="desc"
+            >
+              newest first
+            </div>
+            <button
+              className="toggle-button"
+              onClick={[Function]}
+            >
+              Toggle Navigation Menu
+            </button>
+          </div>
+          <div
+            className="version-history-list--item is-selected"
+            onClick={[Function]}
+          >
+            <span
+              className="date"
+            >
+              mockCreatedAtDisplay1
+            </span>
+            <span
+              className="username"
+            >
+              by 
+              mockRevisionUsername
+            </span>
+            <span
+              className="version latest"
+            >
+              Latest Version
+            </span>
+          </div>
+          <div
+            className="version-history-list--item"
+            onClick={[Function]}
+          >
+            <span
+              className="date"
+            >
+              mockCreatedAtDisplay2
+            </span>
+            <span
+              className="username"
+            >
+              by 
+              mockRevisionUsername
+            </span>
+            <span
+              className="version"
+            >
+              Version 
+              2
+            </span>
+          </div>
+          <div
+            className="version-history-list--item"
+            onClick={[Function]}
+          >
+            <span
+              className="date"
+            >
+              mockCreatedAtDisplay3
+            </span>
+            <span
+              className="username"
+            >
+              by 
+              mockRevisionUsername
+            </span>
+            <span
+              className="version"
+            >
+              Version 
+              1
+            </span>
+          </div>
+        </div>
+        <div
+          className="menu-collapsed"
+        >
+          <button
+            className="toggle-button"
+            onClick={[Function]}
+          >
+            Toggle Navigation Menu
+          </button>
+        </div>
+      </div>
+    </mock-CSSTransition>
+    <div
+      className="editor-preview"
+    >
+      <div
+        className="editor-preview--header"
+      >
+        <button
+          className="repository--button restore-button"
+          disabled={true}
+          onClick={[Function]}
+        >
+          Restore this version
+        </button>
+        <span>
+          Viewing: 
+          Latest Version
+        </span>
+        <small>
+          Note: Changes made in preview window will not be saved.
+        </small>
+      </div>
+      <iframe
+        frameBorder="0"
+        loading="lazy"
+        src="/editor/undefined/mockDraftId?read_only=1&revision_id=mockRevisionId1"
+      />
+    </div>
+  </div>
+</div>
+`;

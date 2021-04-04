@@ -1,7 +1,8 @@
 import './button.scss'
 
-import Common from '../index'
 import React from 'react'
+import focus from '../page/focus'
+import isOrNot from '../util/isornot'
 
 export default class Button extends React.Component {
 	constructor(props) {
@@ -18,7 +19,7 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		Common.page.focus(this.buttonRef)
+		focus(this.buttonRef)
 	}
 
 	render() {
@@ -36,12 +37,12 @@ export default class Button extends React.Component {
 		const className =
 			'obojobo-draft--components--button' +
 			(this.props.altAction ? ' alt-action' : '') +
-			Common.util.isOrNot(this.props.isDangerous, 'dangerous') +
+			isOrNot(this.props.isDangerous, 'dangerous') +
 			` align-${this.props.align}` +
 			(this.props.className ? ` ${this.props.className}` : '')
 
 		return (
-			<div className={className}>
+			<div className={className} contentEditable={false}>
 				<button
 					ref={this.buttonRef}
 					className={'button'}

@@ -9,6 +9,7 @@ $color-text-minor: lighten($color-text, 40%);
 $color-text-subheading: #a20e83;
 $color-bg: #ffffff;
 $color-shadow: rgba(0, 0, 0, 0.3);
+$color-shadow-light: rgba(0, 0, 0, 0.1);
 $color-highlight: #93c6ff;
 $color-bg2: #f4f4f4;
 $color-bg3: #131313;
@@ -58,7 +59,7 @@ $dimension-header-padding: 1rem;
 $dimension-preview-banner: 3rem;
 $dimension-review-answer-flag-padding: 0.2em;
 
-$breakpoint-nav-small: 1000px; /* stylelint-disable-line unit-blacklist */
+$breakpoint-nav-small: 1000px; /* stylelint-disable-line unit-disallowed-list */
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;

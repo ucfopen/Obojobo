@@ -27,7 +27,7 @@ Array [
 ]
 `;
 
-exports[`user model fetches one from the database 1`] = `
+exports[`user model fetchById fetches one from the database 1`] = `
 Object {
   "avatarUrl": "https://secure.gravatar.com/avatar/7cd5405dd878f2f032418e1bd8dfba0c?s=120&d=retro",
   "firstName": "Guest",
@@ -38,14 +38,16 @@ Object {
 }
 `;
 
-exports[`user model fetches one from the database 2`] = `
+exports[`user model fetchById fetches one from the database 2`] = `
 Array [
   "
-			SELECT *
-			FROM users
-			WHERE id = $1
-		",
-  5,
+				SELECT *
+				FROM users
+				WHERE id =  $[userId]
+				",
+  Object {
+    "userId": 5,
+  },
 ]
 `;
 

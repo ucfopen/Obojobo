@@ -4,9 +4,9 @@ import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/wi
 /**
  * Generates an Obojobo HTML node from a Slate node.
  * Copies the id, type, triggers, and converts text children (including marks)
- * into the html attribute. 
+ * into the html attribute.
  * @param {Object} node A Slate Node
- * @returns {Object} An Obojobo HTML node 
+ * @returns {Object} An Obojobo HTML node
  */
 const slateToObo = node => ({
 	id: node.id,
@@ -21,7 +21,7 @@ const slateToObo = node => ({
 /**
  * Generates a Slate node from an Obojobo HTML node.
  * Copies all attributes, and converts the HTML attribute into Slate Text children
- * @param {Object} node An Obojobo HTML node 
+ * @param {Object} node An Obojobo HTML node
  * @returns {Object} A Slate node
  */
 const oboToSlate = node => {

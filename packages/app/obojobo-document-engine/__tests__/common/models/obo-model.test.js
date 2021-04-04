@@ -3,6 +3,7 @@ import React from 'react'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import { Registry } from '../../../src/scripts/common/registry'
+import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return require('../../../__mocks__/obo-model-mock').default
@@ -18,9 +19,17 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 })
 
 describe('OboModel', () => {
+	let restoreConsole
+
 	beforeEach(() => {
 		// Keep tests from interfering with each other
 		OboModel.models = []
+
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('should construct a new instance with defaults', () => {
@@ -1048,6 +1057,24 @@ describe('OboModel', () => {
 		expect(root).not.toBe(replaceModel)
 	})
 
+	test('getDirectChildrenOfType returns filtered children', () => {
+		const root = new OboModel({})
+		const childA = new OboModel({ type: 'typeA' })
+		const childB = new OboModel({ type: 'typeB' })
+		const childC = new OboModel({ type: 'typeA' })
+
+		root.children.add(childA)
+		root.children.add(childB)
+		root.children.add(childC)
+
+		const children = root.getDirectChildrenOfType('typeA')
+
+		expect(children).toHaveLength(2)
+		expect(children).not.toContain(childB)
+		expect(children).toContain(childA)
+		expect(children).toContain(childC)
+	})
+
 	test('contains will report if a model contains a given child', () => {
 		const grandparent = new OboModel({})
 		const parent = new OboModel({})
@@ -1142,15 +1169,35 @@ describe('OboModel', () => {
 		})
 	})
 
-	test('Obomodel.create builds nothing', () => {
+	test('Obomodel.create builds nothing if the type does not exist in the registry', () => {
 		const model = OboModel.create('mockChunk')
 
 		expect(model).toEqual(null)
 	})
 
-	test('Obomodel.create builds nothing from object', () => {
+	test('Obomodel.create builds nothing from object if the type does not exist in the registry', () => {
 		const model = OboModel.create({ type: 'mockChunk' })
 
 		expect(model).toEqual(null)
+	})
+
+	test('Obomodel.create returns null if given a non-string or non-object param, does not output a console.error message', () => {
+		expect(OboModel.create(undefined)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(false)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(true)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(1)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(null)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create()).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
 	})
 })
