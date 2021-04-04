@@ -403,7 +403,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls ViewerAPI when leaving', done => {
+	test('onVisibilityChange calls ViewerAPI when switching from viewing to hiding', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -430,7 +430,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onVisibilityChange calls ViewerAPI when returning', done => {
+	test('onVisibilityChange calls ViewerAPI when switching from hiding to viewing', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -440,7 +440,7 @@ describe('ViewerApp', () => {
 			component.instance().leaveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
-			component.instance().leftEpoch = 999
+			component.instance().viewerHideDate = 999
 			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
@@ -455,6 +455,95 @@ describe('ViewerApp', () => {
 					leftTime: 999,
 					duration: 1
 				},
+				visitId: undefined
+			})
+
+			dateSpy.mockRestore()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls ViewerAPI when switching from hiding to viewing with a slow leave event', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			// component.instance().leaveEvent = {
+			// 	extensions: { internalEventId: 'mock-id' }
+			// }
+			component.instance().viewerHideDate = 999
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:return',
+				draftId: undefined,
+				eventVersion: '2.0.0',
+				payload: {
+					relatedEventId: 'not availible',
+					leftTime: 999,
+					duration: 1
+				},
+				visitId: undefined
+			})
+
+			dateSpy.mockRestore()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			component.instance().leaveEvent = {
+				extensions: { internalEventId: 'mock-id' }
+			}
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:initialView',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				visitId: undefined
+			})
+
+			dateSpy.mockRestore()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			component.instance().leaveEvent = {
+				extensions: { internalEventId: 'mock-id' }
+			}
+			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:initialView',
+				eventVersion: '1.0.0',
 				visitId: undefined
 			})
 

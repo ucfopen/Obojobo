@@ -335,7 +335,7 @@ export default class ViewerApp extends React.Component {
 	onVisibilityChange() {
 		// From Viewing to Hiding
 		if (document.hidden) {
-			this.leftEpoch = new Date()
+			this.viewerHideDate = new Date()
 
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
@@ -350,9 +350,9 @@ export default class ViewerApp extends React.Component {
 		}
 
 		// From Hiding to Viewing
-		if (this.leftEpoch) {
+		if (this.viewerHideDate) {
 			// leaveEvent may not exist if postEvent for 'viewer:leave' didn't complete
-			const relatedEventId = this.leaveEvent ? this.leaveEvent.extensions.internalEventId : 'not availible'
+			const relatedEventId = this.leaveEvent?.extensions?.internalEventId ?? 'not availible'
 
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
@@ -361,13 +361,13 @@ export default class ViewerApp extends React.Component {
 				visitId: this.state.navState.visitId,
 				payload: {
 					relatedEventId,
-					leftTime: this.leftEpoch,
-					duration: Date.now() - this.leftEpoch
+					leftTime: this.viewerHideDate,
+					duration: Date.now() - this.viewerHideDate
 				}
 			})
 
 			delete this.leaveEvent
-			delete this.leftEpoch
+			delete this.viewerHideDate
 			return
 		}
 
