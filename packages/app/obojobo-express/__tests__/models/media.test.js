@@ -183,9 +183,6 @@ describe('media model', () => {
 		db.one.mockResolvedValueOnce({ id: 'NEW_MEDIA_ID' })
 		db.one.mockResolvedValueOnce({ media_id: 'NEW_MEDIA_ID' })
 
-		fs.readFileSync = jest.fn()
-		fs.readFileSync.mockReturnValueOnce(mockFileBinaryData)
-
 		const mockArgs = {
 			binary: 'mockBinary',
 			filename: 'mockFilename',
@@ -234,9 +231,6 @@ describe('media model', () => {
 		db.one.mockResolvedValueOnce({ id: 'NEW_BINARY_ID' })
 		// mock insert media query
 		db.one.mockResolvedValueOnce({ media_id: 'mockMediaId' })
-
-		fs.readFileSync = jest.fn()
-		fs.readFileSync.mockReturnValueOnce(mockFileBinaryData)
 
 		const mockArgs = {
 			binary: 'mockBinary',
@@ -289,8 +283,9 @@ describe('media model', () => {
 		MediaModel.isValidFileType = jest.fn()
 		MediaModel.isValidFileType.mockReturnValueOnce(true)
 
-		fs.readFileSync = jest.fn()
-		fs.readFileSync.mockReturnValue(mockFileBinaryData)
+		fs.promises.readFile = jest.fn()
+		fs.promises.readFile.mockResolvedValueOnce(mockFileBinaryData)
+		fs.promises.unlink = jest.fn().mockResolvedValueOnce()
 
 		return MediaModel.createAndSave(mockUserId, mockFileInfo).then(mediaId => {
 			expect(MediaModel.storeImageInDb).toBeCalledTimes(1)
@@ -316,15 +311,13 @@ describe('media model', () => {
 		})
 	})
 
-	test('createAndSave correctly relays errors from readFileSync', () => {
+	test('createAndSave correctly relays errors from readFile', () => {
 		expect.hasAssertions()
 
-		fs.readFileSync = jest.fn().mockImplementationOnce(() => {
-			throw Error('Mock error from readFileSync')
-		})
+		fs.promises.readFile = jest.fn().mockRejectedValueOnce(new Error('Mock error from readFile'))
 
 		return expect(MediaModel.createAndSave(mockUserId, mockFileInfo)).rejects.toThrow(
-			'Mock error from readFileSync'
+			'Mock error from readFile'
 		)
 	})
 
@@ -338,7 +331,7 @@ describe('media model', () => {
 			message: 'File upload only supports the following filetypes: jpeg, jpg, png, gif, svg'
 		})
 
-		expect(fs.unlinkSync).toHaveBeenCalled()
+		expect(fs.promises.unlink).toHaveBeenCalled()
 	})
 
 	test('createAndSave correctly catches errors from storeImageInDb', async () => {
@@ -349,8 +342,6 @@ describe('media model', () => {
 
 		MediaModel.storeImageInDb = jest.fn()
 		MediaModel.storeImageInDb.mockRejectedValueOnce(new Error('Mock error from storeImageInDb'))
-
-		fs.readFileSync = jest.fn()
 
 		await expect(MediaModel.createAndSave(mockUserId, mockFileInfo)).rejects.toMatchObject({
 			message: 'Mock error from storeImageInDb'
@@ -772,49 +763,37 @@ describe('media model', () => {
 		expect(mockSharpResize).toBeCalledWith(expectedDimensions)
 	})
 
-	test('isValidFileType returns false if file-type library returns null', () => {
-		fileType.mockReturnValueOnce(null)
+	test('isValidFileType returns false if file-type library returns null', async () => {
+		fileType.fromBuffer.mockResolvedValueOnce(null)
 
-		const isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
+		const isValidFile = await MediaModel.isValidFileType(Buffer.from('TestImage'))
 
 		expect(isValidFile).toBeFalsy()
 	})
 
-	test('isValidFileType recognizes jpg and jpeg', () => {
+	test('isValidFileType recognizes jpg and jpeg', async () => {
 		let isValidFile
 
-		fileType.mockImplementationOnce(() => {
-			return {
-				ext: 'jpg'
-			}
-		})
+		fileType.fromBuffer.mockResolvedValueOnce({ ext: 'jpg' })
 
-		isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
+		isValidFile = await MediaModel.isValidFileType(Buffer.from('TestImage'))
 		expect(isValidFile).toBeTruthy()
 
-		fileType.mockImplementationOnce(() => {
-			return {
-				ext: 'jpeg'
-			}
-		})
+		fileType.fromBuffer.mockResolvedValueOnce({ ext: 'jpeg' })
 
-		isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
+		isValidFile = await MediaModel.isValidFileType(Buffer.from('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
 	test('isValidFileType recognizes png', () => {
-		fileType.mockImplementationOnce(() => {
-			return {
-				ext: 'png'
-			}
-		})
+		fileType.fromBuffer.mockResolvedValueOnce({ ext: 'png' })
 
 		const isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
 	test('isValidFileType recognizes gif', () => {
-		fileType.mockImplementationOnce(() => {
+		fileType.fromBuffer.mockImplementationOnce(() => {
 			return {
 				ext: 'gif'
 			}
@@ -824,16 +803,14 @@ describe('media model', () => {
 		expect(isValidFile).toBeTruthy()
 	})
 
-	test('isValidFileType recognizes svg', () => {
-		fileType.mockImplementationOnce(() => {
-			return null
-		})
+	test('isValidFileType recognizes svg', async () => {
+		fileType.fromBuffer.mockResolvedValueOnce(null)
 
 		isSvg.mockImplementationOnce(() => {
 			return true
 		})
 
-		const isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
+		const isValidFile = await MediaModel.isValidFileType(Buffer.from('TestImage'))
 		expect(isSvg).toHaveBeenCalledWith(Buffer.from('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})

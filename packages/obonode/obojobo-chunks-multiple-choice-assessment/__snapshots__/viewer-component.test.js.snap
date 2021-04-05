@@ -169,6 +169,7 @@ exports[`MCAssessment Component not shuffled (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -354,6 +355,7 @@ exports[`MCAssessment Component not shuffled 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1225,6 +1227,7 @@ exports[`MCAssessment Component pick-all (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -1414,6 +1417,7 @@ exports[`MCAssessment Component pick-all 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -2293,6 +2297,7 @@ exports[`MCAssessment Component pick-one-multiple-correct (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -2478,6 +2483,7 @@ exports[`MCAssessment Component pick-one-multiple-correct 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -3409,6 +3415,7 @@ exports[`MCAssessment Component submitted (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Change Response"
@@ -3940,6 +3947,7 @@ exports[`MCAssessment Component submitted, pick-all (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Change Response"
@@ -4774,6 +4782,7 @@ exports[`MCAssessment Component submitted, pick-one-multiple-correct (survey) 1`
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Change Response"
@@ -5761,6 +5770,7 @@ exports[`MCAssessment Component with correct score 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -5788,6 +5798,7 @@ exports[`MCAssessment Component with correct score 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -6034,6 +6045,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -6061,6 +6073,7 @@ exports[`MCAssessment Component with correct score and showing explanation 1`] =
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -6351,6 +6364,7 @@ exports[`MCAssessment Component with correct score and showing explanation, asse
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -6663,6 +6677,7 @@ exports[`MCAssessment Component with correct score and showing explanation, revi
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -6953,6 +6968,7 @@ exports[`MCAssessment Component with correct score, assessment 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -7203,6 +7219,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -7230,6 +7247,7 @@ exports[`MCAssessment Component with correct score, pick-all 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -7477,6 +7495,7 @@ exports[`MCAssessment Component with correct score, pick-all, assessment 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -7746,6 +7765,7 @@ exports[`MCAssessment Component with correct score, pick-all, review 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -7992,6 +8012,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -8019,6 +8040,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct 1`
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -8262,6 +8284,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, a
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -8527,6 +8550,7 @@ exports[`MCAssessment Component with correct score, pick-one-multiple-correct, r
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -8792,6 +8816,7 @@ exports[`MCAssessment Component with correct score, review 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -9038,6 +9063,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -9065,6 +9091,7 @@ exports[`MCAssessment Component with incorrect score 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -9311,6 +9338,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -9338,6 +9366,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation 1`]
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -9628,6 +9657,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, as
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -9946,6 +9976,7 @@ exports[`MCAssessment Component with incorrect score and showing explanation, re
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -10236,6 +10267,7 @@ exports[`MCAssessment Component with incorrect score, assessment 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -10541,6 +10573,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -10573,6 +10606,7 @@ exports[`MCAssessment Component with incorrect score, pick-all 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -10875,6 +10909,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, assessment 1`] =
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -11210,6 +11245,7 @@ exports[`MCAssessment Component with incorrect score, pick-all, review 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -11456,6 +11492,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -11483,6 +11520,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct 
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -11726,6 +11764,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -11997,6 +12036,7 @@ exports[`MCAssessment Component with incorrect score, pick-one-multiple-correct,
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -12268,6 +12308,7 @@ exports[`MCAssessment Component with incorrect score, review 1`] = `
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -12454,6 +12495,7 @@ exports[`MCAssessment Component with sortedIds (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -12639,6 +12681,7 @@ exports[`MCAssessment Component with sortedIds 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -13510,6 +13553,7 @@ exports[`MCAssessment MCAssessment component (survey) 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -13695,6 +13739,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
       >
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             className="button"
@@ -13940,6 +13985,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
       >
         <div
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          contentEditable={false}
         >
           <button
             aria-label="Try Question Again"
@@ -13967,6 +14013,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -14210,6 +14257,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, ass
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"
@@ -14475,6 +14523,7 @@ exports[`MCAssessment MCAssessment component question with no solution page, rev
     >
       <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+        contentEditable={false}
       >
         <button
           className="button"

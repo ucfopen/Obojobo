@@ -1,0 +1,21 @@
+{
+	"default":
+	{
+		"oauthKey": "materia-lti-key",
+		"oauthSecret": "materia-lti-secret",
+		"oboFamilyCode": "obojobo-next",
+		"oboName": "Obojobo Next",
+		"oboGuid": "obojobo.next.default.guid"
+	},
+	"development": {
+		"clientMateriaHost": "https://localhost",
+		"optionalOboServerHost": "https://host.docker.internal:8080",
+		"oboGuid": "obojobo.next.local.dev"
+	},
+	"production": {
+		"oauthKey": {"ENV": "MATERIA_OAUTH_KEY"},
+		"oauthSecret": {"ENV": "MATERIA_OAUTH_SECRET"},
+		"clientMateriaHost": {"ENV": "MATERIA_HOST"},
+		"oboGuid": {"ENV": "OBO_LTI_GUID"}
+	}
+}

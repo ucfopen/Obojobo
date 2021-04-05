@@ -22,11 +22,12 @@ import injectKatexIfNeeded from '../../common/util/inject-katex-if-needed'
 
 const NAV_CLOSE_DURATION_MS = 400
 const IDLE_TIMEOUT_DURATION_MS = 60000 * 30 // 30 minutes in milliseconds
-const { DOMUtil, focus } = Common.page
+
+const { focus } = Common.page
+const { OboModel } = Common.models
+const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
 const { ModalUtil, isOrNot } = Common.util
-const OboModel = Common.models.OboModel
-const Dispatcher = Common.flux.Dispatcher
 const SimpleDialog = Common.components.modal.SimpleDialog
 const ModalStore = Common.stores.ModalStore
 
@@ -76,11 +77,14 @@ export default class ViewerApp extends React.Component {
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onFocus = this.onFocus.bind(this)
-		this.onScroll = this.onScroll.bind(this)
+		this.startObservingForIntersectionChanges = this.startObservingForIntersectionChanges.bind(this)
+		this.stopObservingForIntersectionChanges = this.stopObservingForIntersectionChanges.bind(this)
+		this.onIntersectionChange = this.onIntersectionChange.bind(this)
 		this.onResize = this.onResize.bind(this)
 		this.unlockNavigation = this.unlockNavigation.bind(this)
 		this.clearPreviewScores = this.clearPreviewScores.bind(this)
 		this.onDelayResize = this.onDelayResize.bind(this)
+		this.clearSelectionIfNavTargetChanging = this.clearSelectionIfNavTargetChanging.bind(this)
 	}
 
 	componentDidMount() {
@@ -167,6 +171,9 @@ export default class ViewerApp extends React.Component {
 	componentWillUnmount() {
 		this.unRegisterStores()
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
+
+		// Removing the intersection observer.
+		this.stopObservingForIntersectionChanges()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -208,6 +215,20 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
+	clearSelectionIfNavTargetChanging(prevState) {
+		if (!this.isNavTargetChanging(prevState)) {
+			return
+		}
+
+		const selection = window.getSelection()
+
+		if (selection.removeAllRanges) {
+			selection.removeAllRanges()
+		} else if (selection.empty) {
+			selection.empty()
+		}
+	}
+
 	focusOnContentIfNavTargetChanging(prevState) {
 		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
 
@@ -235,9 +256,11 @@ export default class ViewerApp extends React.Component {
 
 		this.focusOnContentIfNavTargetChanging(prevState)
 		this.scrollToTopIfNavTargetChanging(prevState)
+		this.clearSelectionIfNavTargetChanging(prevState)
 
 		// use Focus Store values to update DOM Focus
 		this.updateDOMFocus()
+		this.startObservingForIntersectionChanges()
 	}
 
 	updateDOMFocus() {
@@ -379,9 +402,14 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onScroll() {
+	startObservingForIntersectionChanges() {
+		this.stopObservingForIntersectionChanges()
 		const focusState = this.state.focusState
 
+		// Only creates an Intersection Observer object when the 'visualFocusTarget'
+		// property of 'focusState' is set - this is when all of the elements of the
+		// page are faded except for the visualFocusTarget (for example, when answering
+		// a practice question)
 		if (!focusState.visualFocusTarget) {
 			return
 		}
@@ -395,9 +423,37 @@ export default class ViewerApp extends React.Component {
 		if (!el) {
 			return
 		}
-		if (!DOMUtil.isElementVisible(el)) {
-			return FocusUtil.clearFadeEffect()
+
+		// If an intersection observer is created below, we're 100% sure that
+		// 'focusState.visualFocusTarget' is set.
+		this.observer = new IntersectionObserver(this.onIntersectionChange, {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0
+		})
+
+		this.observer.observe(el)
+	}
+
+	stopObservingForIntersectionChanges() {
+		if (!this.observer) return false
+
+		this.observer.disconnect()
+		delete this.observer
+
+		return true
+	}
+
+	onIntersectionChange(changes) {
+		const change = changes[0]
+
+		if (change.intersectionRatio > 0) {
+			return false
 		}
+
+		FocusUtil.clearFadeEffect()
+		this.stopObservingForIntersectionChanges()
+		return true
 	}
 
 	onResize() {
@@ -591,7 +647,6 @@ export default class ViewerApp extends React.Component {
 				ref={this.containerRef}
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
-				onScroll={this.onScroll}
 				className={'viewer--viewer-app' + this.getViewerClassNames()}
 			>
 				<ObojoboIdleTimer timeout={IDLE_TIMEOUT_DURATION_MS} />

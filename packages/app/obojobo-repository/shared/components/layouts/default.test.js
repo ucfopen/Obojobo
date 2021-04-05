@@ -54,8 +54,8 @@ describe('LayoutDefault', () => {
 		// if 'appScriptUrl' is not in props, standard script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(3)
-		expect(scripts.at(0).prop('crossOrigin')).toBe(false)
-		expect(scripts.at(1).prop('crossOrigin')).toBe(false)
+		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
+		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(1).prop('src')).toBe(
 			'//unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js'
 		)
@@ -73,8 +73,8 @@ describe('LayoutDefault', () => {
 		// if 'appScriptUrl' is not in props, standard script tags should render
 		const scripts = component.find('script')
 		expect(scripts).toHaveLength(3)
-		expect(scripts.at(0).prop('crossOrigin')).toBe('true')
-		expect(scripts.at(1).prop('crossOrigin')).toBe('true')
+		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
+		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(1).prop('src')).toBe(
 			'//unpkg.com/react-dom@16.13.1/umd/react-dom.development.js'
 		)
