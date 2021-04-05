@@ -4,6 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Image from './image'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 
 const { NonEditableChunk } = Common.chunk
 const { TextGroupEl } = Common.chunk.textChunk
@@ -17,7 +18,7 @@ const Figure = props => {
 		if (content.width) {
 			customStyle.width = content.width + 'px'
 
-			if (content.captionWidth === 'image-width') {
+			if (content.captionWidth === ImageCaptionWidthTypes.IMAGE_WIDTH) {
 				captionStyle.width = content.width + 'px'
 			}
 		}

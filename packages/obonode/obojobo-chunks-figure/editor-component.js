@@ -16,6 +16,7 @@ import {
 	freezeEditor,
 	unfreezeEditor
 } from 'obojobo-document-engine/src/scripts/oboeditor/util/freeze-unfreeze-editor'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -108,7 +109,7 @@ class Figure extends React.Component {
 			if (content.width) {
 				customStyle.width = content.width + 'px'
 
-				if (content.captionWidth === 'image-width') {
+				if (content.captionWidth === ImageCaptionWidthTypes.IMAGE_WIDTH) {
 					captionStyle.width = content.width + 'px'
 				}
 			}

@@ -150,8 +150,12 @@ class ImageProperties extends React.Component {
 							value={this.state.captionWidth}
 							onChange={this.handleCaptionWidthChange}
 						>
-							<option value="image-width">Restrict caption to the same width as the image</option>
-							<option value="max-width">Allow caption to extend past the image width</option>
+							<option value={ImageCaptionWidthTypes.IMAGE_WIDTH}>
+								Restrict caption to the same width as the image
+							</option>
+							<option value={ImageCaptionWidthTypes.MAX_WIDTH}>
+								Allow caption to extend past the image width
+							</option>
 						</select>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
