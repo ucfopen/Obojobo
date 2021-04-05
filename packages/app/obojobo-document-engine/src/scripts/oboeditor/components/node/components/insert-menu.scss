@@ -74,8 +74,8 @@
 
 			svg {
 				vertical-align: top;
-				width: 32px; //stylelint-disable-line unit-blacklist
-				height: 32px; //stylelint-disable-line unit-blacklist
+				width: 32px; //stylelint-disable-line unit-disallowed-list
+				height: 32px; //stylelint-disable-line unit-disallowed-list
 				opacity: 0.7;
 
 				.fill {
