@@ -613,37 +613,4 @@ describe('IFrame', () => {
 		iframeRef = component.ref('iframe')
 		expect(iframeRef.src).toEqual('http://www.example.com/')
 	})
-
-	test('ComponentDidUpdate correctly updates IFrame zoom if necessary', () => {
-		MediaUtil.setDefaultZoom = jest.fn()
-
-		const component = shallow(
-			<IFrame
-				model={OboModel.create({
-					id: 'mock-obo-id',
-					type: 'ObojoboDraft.Chunks.IFrame',
-					content: {
-						src: 'http://www.example.com/',
-						autoload: false,
-						initialZoom: 2
-					}
-				})}
-				moduleData={moduleData}
-			/>
-		)
-
-		component.setProps(
-			OboModel.create({
-				id: 'mock-obo-id',
-				type: 'ObojoboDraft.Chunks.IFrame',
-				content: {
-					src: 'http://www.example.com/',
-					autoload: false,
-					initialZoom: 1
-				}
-			})
-		)
-
-		expect(MediaUtil.setDefaultZoom).toHaveBeenCalled()
-	})
 })

@@ -128,11 +128,4 @@ describe('MediaUtil', () => {
 		expect(MediaUtil.isShowingMedia({ shown: {} }, testModel)).toBe(false)
 		expect(MediaUtil.isShowingMedia({ shown: { 'mocked-id': true } }, testModel)).toBe(true)
 	})
-
-	test('isZoomDefaultSet', () => {
-		expect(MediaUtil.isZoomDefaultSet({ defaultZoomById: [] }, testModel)).toBe(false)
-		expect(MediaUtil.isZoomDefaultSet({ defaultZoomById: { 'mocked-id': true } }, testModel)).toBe(
-			true
-		)
-	})
 })
