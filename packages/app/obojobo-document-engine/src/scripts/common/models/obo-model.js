@@ -35,34 +35,56 @@ class OboModel extends Backbone.Model {
 	// WARNING - it is not possible to have 2 different documents/modules
 	// loaded via OboModel at once. If you need to clear a previous
 	// OboModel Tree, call OboModel.clearAll()
-	static create(typeOrNameOrJson, attrs = {}) {
-		if (typeof typeOrNameOrJson === 'object') {
-			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
+	static create(typeOrNameOrObject, attrs = {}) {
+		switch (typeof typeOrNameOrObject) {
+			// create models for chunks from an object
+			case 'object': {
+				if (typeOrNameOrObject === null) {
+					return null
+				}
 
-			if (oboModel) {
-				const { children } = typeOrNameOrJson
-				if (children) {
-					for (const child of Array.from(children)) {
-						oboModel.children.add(OboModel.create(child))
+				const oboModel = OboModel.create(typeOrNameOrObject.type, typeOrNameOrObject)
+
+				if (oboModel) {
+					const { children } = typeOrNameOrObject
+					if (children) {
+						for (const child of Array.from(children)) {
+							oboModel.children.add(OboModel.create(child))
+						}
 					}
 				}
+
+				return oboModel
 			}
 
-			return oboModel
+			// for creating chunks by name/type
+			case 'string': {
+				let item = Registry.getDefaultItemForModelType(typeOrNameOrObject)
+				if (!item) {
+					item = Registry.getItemForType(typeOrNameOrObject)
+				}
+
+				if (!item) {
+					// @TODO: make this more visible to the user
+					// Maybe we should make a node for use when a node is missing?
+					/* istanbul ignore else */
+					if (typeof process === 'object' && process.env['NODE_ENV'] === 'test') {
+						return null
+					} else {
+						console.error(`The node type ${typeOrNameOrObject} was not loaded by the Registry`) // eslint-disable-line no-console
+						return null
+					}
+				}
+
+				attrs.type = typeOrNameOrObject
+
+				return new OboModel(attrs, item.adapter)
+			}
+
+			// ex: typeOrNameOrObject = undefined
+			default:
+				return null
 		}
-
-		let item = Registry.getDefaultItemForModelType(typeOrNameOrJson)
-		if (!item) {
-			item = Registry.getItemForType(typeOrNameOrJson)
-		}
-
-		if (!item) {
-			return null
-		}
-
-		attrs.type = typeOrNameOrJson
-
-		return new OboModel(attrs, item.adapter)
 	}
 
 	static clearAll() {

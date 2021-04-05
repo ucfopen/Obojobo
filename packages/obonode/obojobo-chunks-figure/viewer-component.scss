@@ -34,7 +34,7 @@
 		font-family: $font-default;
 		font-size: 0.8em;
 		color: $color-text-minor;
-		max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
+		max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
 	}
 
 	&.custom {
@@ -49,7 +49,7 @@
 				height: auto;
 				width: auto;
 				max-height: 100%;
-				max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
+				max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
 			}
 
 			figure {

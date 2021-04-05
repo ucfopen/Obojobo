@@ -2,9 +2,11 @@
 
 .obojobo-draft--components--switch {
 	position: relative;
+	height: 1.3em;
 
 	> span {
 		padding-right: 0.5em;
+		vertical-align: middle;
 	}
 
 	.switch {

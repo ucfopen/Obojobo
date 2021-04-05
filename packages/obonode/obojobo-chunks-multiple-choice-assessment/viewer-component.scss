@@ -259,7 +259,7 @@
 		border-bottom-left-radius: 0.3em;
 		border-bottom-right-radius: 0.3em;
 		border-top: 1px solid $color-shadow;
-		padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+		padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
 
 		@include mq($until: tablet) {
 			text-align: center;

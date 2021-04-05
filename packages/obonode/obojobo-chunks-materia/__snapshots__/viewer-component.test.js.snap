@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Materia viewer component renders 1`] = `
+<div
+  className="obojobo-draft--chunks--materia  is-not-open"
+>
+  <div>
+    MockClassComponent Props: 
+    {
+  "model": {
+    "id": "mock-uuid",
+    "content": {
+      "src": "http://www.example.com"
+    },
+    "metadata": {},
+    "index": 0,
+    "type": "ObojoboDraft.Chunks.Materia",
+    "children": null
+  },
+  "moduleData": {
+    "model": {
+      "title": "mocked-module-title"
+    },
+    "navState": {
+      "visitId": "mock-visit-id"
+    }
+  },
+  "title": "Materia Widget"
+}
+  </div>
+  <div
+    className="label"
+  >
+    <div>
+      MockClassComponent Props: 
+      {
+  "parentModel": {
+    "id": "mock-uuid",
+    "content": {
+      "src": "http://www.example.com"
+    },
+    "metadata": {},
+    "index": 0,
+    "type": "ObojoboDraft.Chunks.Materia",
+    "children": null
+  },
+  "textItem": {
+    "text": {
+      "styleList": {
+        "styles": []
+      },
+      "value": ""
+    },
+    "data": {},
+    "parent": {
+      "maxItems": 1,
+      "items": [
+        null
+      ],
+      "dataTemplate": {}
+    }
+  },
+  "groupIndex": "0"
+}
+    </div>
+  </div>
+</div>
+`;

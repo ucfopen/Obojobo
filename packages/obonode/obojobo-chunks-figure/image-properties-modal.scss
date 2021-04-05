@@ -84,9 +84,9 @@
 		font-size: 0.8em;
 
 		&.image-preview-placeholder {
-			height: 100px; /* stylelint-disable-line unit-blacklist */
-			width: 150px; /* stylelint-disable-line unit-blacklist */
-			line-height: 100px; /* stylelint-disable-line unit-blacklist */
+			height: 100px; /* stylelint-disable-line unit-disallowed-list */
+			width: 150px; /* stylelint-disable-line unit-disallowed-list */
+			line-height: 100px; /* stylelint-disable-line unit-disallowed-list */
 			text-align: center;
 			box-sizing: border-box;
 			background: darken($color-bg2, 10%);

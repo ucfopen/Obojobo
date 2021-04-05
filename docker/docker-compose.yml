@@ -41,6 +41,10 @@ services:
       OBO_EDITLOCK_TIME_UNTIL_RELEASE_MINUTES: 45
       OBO_EDITLOCK_TIME_UNTIL_WARN_MINUTES: 40
       OBO_EDITLOCK_DB_LOCK_DURATION: 5
+      MATERIA_OAUTH_KEY: materia-lti-key
+      MATERIA_OAUTH_SECRET: materia-lti-secret
+      MATERIA_HOST: https://localhost
+      OBO_OPTIONAL_NODES: "*"
       PM2_APP_INSTANCES: 1
       PM2_APP_MAX_MEMORY: 175M
     networks:
