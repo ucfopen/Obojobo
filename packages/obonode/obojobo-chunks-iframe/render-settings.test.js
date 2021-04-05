@@ -3,7 +3,7 @@ import {
 	getControlsOptions,
 	getDisplayedTitle,
 	getAriaRegionLabel,
-	getSetDimensions,
+	getDesiredDimensions,
 	getScaleAmount,
 	getScaleDimensions,
 	getIFrameStyle,
@@ -278,13 +278,23 @@ describe('render-settings', () => {
 		expect(t({ src: 'mock-src' }, 'displayed-title')).toBe('External content from mock-src.')
 	})
 
-	test('getSetDimensions', () => {
-		const d = getSetDimensions
+	test('getDesiredDimensions', () => {
+		const d = getDesiredDimensions
 
-		expect(d({ width: 'w', height: 'h' }, 'dw', 'dh')).toEqual({ w: 'w', h: 'h' })
-		expect(d({ height: 'h' }, 'dw', 'dh')).toEqual({ w: 'dw', h: 'h' })
-		expect(d({ width: 'w' }, 'dw', 'dh')).toEqual({ w: 'w', h: 'dh' })
-		expect(d({}, 'dw', 'dh')).toEqual({ w: 'dw', h: 'dh' })
+		expect(d({ width: 'w', height: 'h' })).toEqual({ w: 'w', h: 'h' })
+		expect(d({ height: 'h' })).toEqual({ w: 640, h: 'h' })
+		expect(d({ width: 'w' })).toEqual({ w: 'w', h: 480 })
+		expect(d({})).toEqual({ w: 640, h: 480 })
+
+		expect(d({ width: 'w', height: 'h', sizing: 'text-width' })).toEqual({ w: 722, h: 'h' })
+		expect(d({ height: 'h', sizing: 'text-width' })).toEqual({ w: 722, h: 'h' })
+		expect(d({ width: 'w', sizing: 'text-width' })).toEqual({ w: 722, h: 480 })
+		expect(d({ sizing: 'text-width' })).toEqual({ w: 722, h: 480 })
+
+		expect(d({ width: 'w', height: 'h', sizing: 'max-width' })).toEqual({ w: 835, h: 'h' })
+		expect(d({ height: 'h', sizing: 'max-width' })).toEqual({ w: 835, h: 'h' })
+		expect(d({ width: 'w', sizing: 'max-width' })).toEqual({ w: 835, h: 480 })
+		expect(d({ sizing: 'max-width' })).toEqual({ w: 835, h: 480 })
 	})
 
 	test('getScaleAmount', () => {
@@ -396,6 +406,6 @@ describe('render-settings', () => {
 				controls: ''
 			}
 		}
-		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, 20, mediaState)).toMatchSnapshot()
+		expect(getRenderSettings(model, 500, 10, 0.1, 20, mediaState)).toMatchSnapshot()
 	})
 })

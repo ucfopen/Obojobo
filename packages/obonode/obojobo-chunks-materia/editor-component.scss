@@ -1,0 +1,39 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--materia {
+	position: relative;
+	user-select: none;
+
+	.widget-icon img {
+		height: 92px; //stylelint-disable-line unit-blacklist
+		position: relative;
+	}
+
+	.obojobo-draft--components--revealable-container {
+		&::after {
+			content: ' ';
+			position: absolute;
+			background: url('./materia-logo.svg') no-repeat bottom right;
+			background-size: contain;
+			width: 4em;
+			bottom: 0.5em;
+			right: 0.5em;
+		}
+	}
+
+	// This could be moved to a shared style if it is ever able to be reused
+	.obojobo-draft--chunk-caption {
+		margin: 0 auto;
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: $color-text-minor;
+		max-width: calc(100% - 10em); //stylelint-disable-line unit-blacklist
+
+		span[data-placeholder] {
+			&::before {
+				width: 100%;
+				transform: translate(-50%, 0);
+			}
+		}
+	}
+}

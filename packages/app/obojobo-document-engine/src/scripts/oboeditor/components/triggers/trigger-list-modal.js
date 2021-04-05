@@ -1,10 +1,10 @@
 import './trigger-list-modal.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
-const { SimpleDialog } = Common.components.modal
-const { Button, Switch } = Common.components
+import SimpleDialog from '../../../common/components/modal/simple-dialog'
+import Button from '../../../common/components/button'
+import Switch from '../../../common/components/switch'
 
 class TriggerListModal extends React.Component {
 	constructor(props) {
@@ -120,9 +120,9 @@ class TriggerListModal extends React.Component {
 
 	updateActionValue(triggerIndex, actionIndex, key, event) {
 		const value = {}
-		// If there is a target, event is actually an event
-		// If there is no target, event is a boolean produced by the Switch
-		value[key] = event.target ? event.target.value : event
+		// pull changes off the event
+		// checkbox handles events from <Switch> being a checkbox
+		value[key] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
 
 		// Update triggers[triggerIndex].actions[actionIndex].value.key
 		// The nested loops insure that React's immutable state is updated properly
@@ -286,8 +286,8 @@ class TriggerListModal extends React.Component {
 					<div className="action-options">
 						<Switch
 							title="Animate Scroll"
-							initialChecked={action.value.animateScroll}
-							handleCheckChange={this.updateActionValue.bind(
+							checked={action.value.animateScroll}
+							onChange={this.updateActionValue.bind(
 								this,
 								triggerIndex,
 								actionIndex,
@@ -309,13 +309,8 @@ class TriggerListModal extends React.Component {
 						</div>
 						<Switch
 							title="Fade Out Other Items"
-							initialChecked={action.value.fade || false}
-							handleCheckChange={this.updateActionValue.bind(
-								this,
-								triggerIndex,
-								actionIndex,
-								'fade'
-							)}
+							checked={action.value.fade || false}
+							onChange={this.updateActionValue.bind(this, triggerIndex, actionIndex, 'fade')}
 						/>
 						<label>If item not visible on screen</label>
 						<select

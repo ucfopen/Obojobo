@@ -3,6 +3,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import IFrameMediaTypes from './iframe-media-types'
 import IFrameFitTypes from './iframe-fit-types'
 import IFrameControlTypes from './iframe-control-types'
+import IFrameSizingTypes from './iframe-sizing-types'
 
 const cloneProps = Common.util.cloneProps
 const propsList = [
@@ -15,7 +16,8 @@ const propsList = [
 	'autoload',
 	'fit',
 	'title',
-	'controls'
+	'controls',
+	'sizing'
 ]
 
 export default {
@@ -62,6 +64,7 @@ export default {
 		model.setStateProp('controls', defaultControls, p =>
 			p.split(',').map(c => c.toLowerCase().replace(/ /g, ''))
 		)
+		model.setStateProp('sizing', IFrameSizingTypes.FIXED)
 	},
 
 	clone(model, clone) {

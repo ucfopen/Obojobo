@@ -1,14 +1,14 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "11.3.0",
+	"version": "11.4.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
 	"scripts": {
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production --optimize-minimize",
-		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+		"db:initdocker": "docker run --name db_postgres -e POSTGRES_PASSWORD=mysecretpassword -d --restart=unless-stopped -p 5432:5432 postgres:9.6.21-alpine",
 		"db:reset": "obojobo-migrate reset",
 		"db:migrateup": "obojobo-migrate up",
 		"db:migratedown": "obojobo-migrate down",
@@ -41,6 +41,7 @@
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
+		"camelcase": "^6.0.0",
 		"camelcase-keys": "^6.1.0",
 		"compression": "^1.7.4",
 		"connect-pg-simple": "^6.2.1",
@@ -74,6 +75,7 @@
 		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"devDependencies": {
+		"@svgr/webpack": "^5.4.0",
 		"babel-loader": "^8.1.0",
 		"babel-polyfill": "^6.26.0",
 		"bluebird": "^3.7.2",

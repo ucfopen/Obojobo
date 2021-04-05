@@ -23,6 +23,7 @@ module.exports =
 			devServer: {
 				https: true,
 				host: '127.0.0.1',
+				disableHostCheck: true,
 				before: app => {
 					// add utilities for dev env (visit /dev)
 					require('./server/obo_express_dev')(app)
@@ -44,8 +45,33 @@ module.exports =
 			},
 			module: {
 				rules: [
+					// Create React SVG Components when imported from js/jsx files
 					{
-						test: /\.svg/,
+						test: /\.svg$/,
+						issuer: {
+							test: /\.js$/
+						},
+						use: [{
+							loader:'@svgr/webpack',
+							options: {
+								svgoConfig:{
+									plugins: [
+										{
+											prefixIds: {
+												prefixClassNames: false // don't prefix class names in svgs
+											}
+										}
+									]
+								}
+							}
+						}],
+					},
+					// Load SVGs into strings when imported elsewhere
+					{
+						test: /\.svg$/,
+						issuer: {
+							test: /\.scss$/
+						},
 						use: {
 							loader: 'svg-url-loader',
 							options: {

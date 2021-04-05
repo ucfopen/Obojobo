@@ -1,7 +1,5 @@
 import '../../../scss/main.scss'
-// uses viewer css for styling
 import '../../viewer/components/viewer-app.scss'
-import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
 import EditorAPI from '../../viewer/util/editor-api'

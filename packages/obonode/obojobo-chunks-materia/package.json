@@ -1,0 +1,71 @@
+{
+	"name": "obojobo-chunks-materia",
+	"version": "11.4.0",
+	"license": "AGPL-3.0-only",
+	"description": "Materia content chunk for Obojobo",
+	"scripts": {
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "stylelint **/*.scss",
+		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"precommit": "lint-staged"
+	},
+	"lint-staged": {
+		"**/*.scss": [
+			"stylelint"
+		],
+		"**/*.{js,scss}": [
+			"prettier --write"
+		]
+	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"dependencies": {
+		"oauth-signature": "^1.5.0",
+		"uuid": "^8.1.0",
+		"xml2js": "0.4.23"
+	},
+	"devDependencies": {
+		"lint-staged": "^10.2.6"
+	},
+	"peerDependencies": {
+		"obojobo-chunks-iframe": "^11.4.0-alpha.0",
+		"obojobo-document-engine": "^11.4.0-alpha.0",
+		"obojobo-lib-utils": "^11.4.0-alpha.0"
+	},
+	"jest": {
+		"testMatch": [
+			"**/*.test.js"
+		],
+		"setupFilesAfterEnv": [
+			"obojobo-lib-utils/test-setup-chunks.js"
+		],
+		"verbose": false,
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coveragePathIgnorePatterns": [
+			"node_modules"
+		],
+		"moduleNameMapper": {
+			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",
+			"^Viewer(.*)$": "obojobo-document-engine/src/scripts/viewer$1",
+			"\\.(svg|scss)$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
+		},
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	}
+}

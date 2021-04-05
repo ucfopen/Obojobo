@@ -83,6 +83,7 @@
 		"packages/obonode/obojobo-chunks-html",
 		"packages/obonode/obojobo-chunks-iframe",
 		"packages/obonode/obojobo-chunks-list",
+		"packages/obonode/obojobo-chunks-materia",
 		"packages/obonode/obojobo-chunks-math-equation",
 		"packages/obonode/obojobo-chunks-multiple-choice-assessment",
 		"packages/obonode/obojobo-chunks-question",
@@ -102,5 +103,5 @@
 		"yarn": "^1.15.2",
 		"node": "^12.11.1"
 	},
-	"version": "11.3.0"
+	"version": "11.4.0"
 }

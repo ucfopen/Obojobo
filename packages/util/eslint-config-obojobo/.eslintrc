@@ -54,5 +54,14 @@
 		"radix": "error",
 		"react/prop-types": 0,
 		"yoda": "error"
-	}
+	},
+	"overrides": [
+		{
+		  "files": ["*.test.js"],
+		  "rules": {
+			"no-undefined": 0,
+			"no-console": 0
+		  }
+		}
+	  ]
 }
