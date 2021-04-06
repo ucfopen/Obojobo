@@ -201,7 +201,23 @@ describe('Image Properties Modal', () => {
 		expect(component.instance().state.alt).toBe('changed alt')
 	})
 
-	test('ImageProperties component changes size ', () => {
+	test('ImageProperties component changes caption width', () => {
+		const component = mount(
+			<ImageProperties
+				content={{ url: 'mock_url', captionWidth: 'image-width' }}
+				onConfirm={jest.fn}
+			/>
+		)
+
+		// Simulate changing "Caption Width"
+		component
+			.find('#obojobo-draft--chunks--figure--caption-width')
+			.simulate('change', { target: { value: 'max-width' } })
+
+		expect(component.instance().state.captionWidth).toBe('max-width')
+	})
+
+	test('ImageProperties component changes size', () => {
 		const component = mount(
 			<ImageProperties content={{ size: 'custom', url: 'mock_url' }} onConfirm={jest.fn} />
 		)

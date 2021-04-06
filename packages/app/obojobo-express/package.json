@@ -15,7 +15,7 @@
 		"db:createmigration": "obojobo-migrate create",
 		"db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
 		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
-		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack serve",
+		"dev": "OBO_OPTIONAL_NODES=* DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack serve",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
 		"test": "TZ='America/New_York' jest",
@@ -67,6 +67,7 @@
 		"responsive-loader": "^2.3.0",
 		"serve-favicon": "~2.5.0",
 		"sharp": "^0.28.0",
+		"trianglify": "^4.1.1",
 		"uuid": "^8.3.2"
 	},
 	"peerDependencies": {

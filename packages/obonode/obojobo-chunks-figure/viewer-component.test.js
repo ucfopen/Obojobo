@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer'
 
 import Figure from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 
 require('./viewer') // used to register this oboModel
 
@@ -20,6 +21,7 @@ describe('Figure', () => {
 				size: 'custom',
 				width: '500',
 				height: '400',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -48,7 +50,8 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
-				height: '400'
+				height: '400',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
 			}
 		})
 		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
@@ -68,6 +71,7 @@ describe('Figure', () => {
 				alt: 'Alt Text',
 				url: 'www.example.com/img.jpg',
 				size: 'small',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -82,7 +86,7 @@ describe('Figure', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('Figure component costom size with no width', () => {
+	test('Figure component custom size with no width', () => {
 		const moduleData = {
 			focusState: {}
 		}
@@ -94,6 +98,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				height: '400',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -110,7 +115,7 @@ describe('Figure', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Figure component costom size with no height', () => {
+	test('Figure component custom size with no height', () => {
 		const moduleData = {
 			focusState: {}
 		}
@@ -122,6 +127,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
+				captionWidth: ImageCaptionWidthTypes.MAX_WIDTH,
 				textGroup: [
 					{
 						text: {
