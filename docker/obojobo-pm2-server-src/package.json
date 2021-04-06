@@ -1,0 +1,21 @@
+{
+  "name": "obojobo-pm2-server-app",
+  "version": "11.4.0",
+  "description": "Reference project for deploying and customizing an Obojobo Next server",
+  "main": "./index.js",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "start": "pm2 startOrGracefulReload pm2.yaml --update-env",
+    "status": "pm2 status obojobo",
+    "stop": "pm2 stop obojobo",
+    "delete": "pm2 delete obojobo",
+    "logs": "pm2 logs",
+    "obojobo-migrate": "yarn run withenv ./node_modules/.bin/obojobo-migrate",
+    "withenv": "node -r ./preload-env.js"
+  },
+  "dependencies": {
+    "aws-secrets-environment": "^1.0.0",
+    "deasync": "^0.1.15"
+  }
+}

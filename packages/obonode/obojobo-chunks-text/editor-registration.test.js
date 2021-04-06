@@ -7,6 +7,7 @@ jest.mock('./changes/indent-or-tab')
 jest.mock('./changes/decrease-indent')
 jest.mock('./changes/split-parent')
 jest.mock('./changes/toggle-hanging-indent')
+jest.mock('./changes/convert-if-list')
 
 import { Editor, Transforms, Element, Node } from 'slate'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -14,6 +15,7 @@ import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
 import indentOrTab from './changes/indent-or-tab'
 import splitParent from './changes/split-parent'
+import convertIfList from './changes/convert-if-list'
 
 import toggleHangingIndent from './changes/toggle-hanging-indent'
 import Text from './editor-registration'
@@ -158,6 +160,39 @@ describe('Text editor', () => {
 		Text.plugins.onKeyDown([{}, [0]], editor, event)
 
 		expect(indentOrTab).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Space]', () => {
+		const event = {
+			key: ' ',
+			preventDefault: jest.fn()
+		}
+
+		const editor = {
+			children: [
+				{
+					id: 'mockKey',
+					type: TEXT_NODE,
+					content: {},
+					children: [
+						{
+							type: TEXT_NODE,
+							subtype: TEXT_LINE_NODE,
+							content: { indent: 1 },
+							children: [{ text: 'mockText', b: true }]
+						}
+					]
+				}
+			],
+			selection: {
+				anchor: { path: [0, 0, 0], offset: 0 },
+				focus: { path: [0, 0, 0], offset: 8 }
+			}
+		}
+
+		Text.plugins.onKeyDown([editor.children[0], [0]], editor, event)
+
+		expect(convertIfList).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown ignores [h]', () => {

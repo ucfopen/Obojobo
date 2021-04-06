@@ -38,7 +38,9 @@ const importQuestionModal = props => {
 			<div className="import-model--question-content">
 				{questionList.map((question, index) => {
 					const questionContent = question.children.filter(
-						child => child.type !== 'ObojoboDraft.Chunks.MCAssessment'
+						child =>
+							child.type !== 'ObojoboDraft.Chunks.MCAssessment' &&
+							child.type !== 'ObojoboDraft.Chunks.Question'
 					)
 					const className =
 						'import-model--question-content--single' + isOrNot(selectStates[index], 'selected')

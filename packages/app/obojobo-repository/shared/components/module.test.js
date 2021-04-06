@@ -18,7 +18,8 @@ describe('Module', () => {
 		defaultProps = {
 			draftId: 'mockDraftId',
 			title: 'Mock Module Title',
-			hasMenu: true
+			hasMenu: true,
+			isNew: false
 		}
 	})
 
@@ -27,7 +28,9 @@ describe('Module', () => {
 
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
 
-		expect(component.root.children[0].props.className).toBe('repository--module-icon is-not-open')
+		expect(component.root.children[0].props.className).toBe(
+			'repository--module-icon is-not-open is-not-new'
+		)
 
 		const mainChildComponent = component.root.children[0].children[0]
 		expect(mainChildComponent.type).toBe('button')
@@ -41,11 +44,29 @@ describe('Module', () => {
 
 		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
 
-		expect(component.root.children[0].props.className).toBe('repository--module-icon is-not-open')
+		expect(component.root.children[0].props.className).toBe(
+			'repository--module-icon is-not-open is-not-new'
+		)
 
 		const mainChildComponent = component.root.children[0].children[0]
 		expect(mainChildComponent.type).toBe('a')
 		expect(mainChildComponent.props.href).toBe('/library/mockDraftId')
+
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('renders with expected standard props but isNew=true', () => {
+		defaultProps.isNew = true
+		const component = create(<Module {...defaultProps} />)
+
+		expect(component.root.findAllByType(ModuleMenu).length).toBe(0)
+
+		expect(component.root.children[0].props.className).toBe(
+			'repository--module-icon is-not-open is-new'
+		)
+
+		const mainChildComponent = component.root.children[0].children[0]
+		expect(mainChildComponent.type).toBe('button')
 
 		expect(component.toJSON()).toMatchSnapshot()
 	})

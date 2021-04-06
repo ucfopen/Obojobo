@@ -11,13 +11,16 @@ jobs:
     - name: NPM - Test, Build, Deploy
       uses: actions/setup-node@v1
       with:
-        node-version: 12.11.1
+        node-version: 14
         registry-url: https://registry.npmjs.org/
 
     - name: Cache Yarn Deps
       uses: c-hive/gha-yarn-cache@v1
 
+    # frozen lockfile should make the cache more effective
+    # and our tests more predictable
     - run: yarn install --frozen-lockfile
+
     - run: yarn test:ci
     - run: yarn build
     - run: yarn release:publish --yes

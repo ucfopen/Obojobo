@@ -52,6 +52,7 @@ class AssessmentModel {
 					AND completed_at IS NOT NULL
 					AND is_preview = $[isPreview]
 					AND resource_link_id = $[resourceLinkId]
+					AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 				ORDER BY completed_at`,
 			{ userId, draftId, assessmentId, isPreview, resourceLinkId }
 		)
@@ -134,6 +135,7 @@ class AssessmentModel {
 					AND ATT.resource_link_id = $[resourceLinkId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
 					AND ATT.is_preview = $[isPreview]
+					AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
@@ -156,13 +158,15 @@ class AssessmentModel {
 				PARTITION by assessment_id
 				ORDER BY completed_at, created_at
 			) AS "attempt_number",
-			id
+			id,
+			state
 			FROM attempts
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
 			AND resource_link_id = $[resourceLinkId]
 			AND is_preview = $[isPreview]
+			AND (state -> 'invalid' is null OR state -> 'invalid' = 'false')
 			ORDER BY completed_at
 			`,
 			{ userId, draftId, isPreview, resourceLinkId }
@@ -456,6 +460,36 @@ class AssessmentModel {
 			// when they return combine and batch execute in transaction
 			return Promise.all(queries).then(([p1, p2]) => transaction.batch(p1.concat(p2)))
 		})
+	}
+
+	static invalidateAttempt(attemptId) {
+		// Set attempt state.invalid key to "true"
+		// NOTE: db.oneOrNone resolves null if state.invalid is already true
+		// this is useful to determine if the state changed after it resolves
+		return db
+			.oneOrNone(
+				`
+				UPDATE attempts
+				SET state = jsonb_set(state, '{invalid}', 'true')
+				WHERE id = $[attemptId]
+					AND (NOT(state ? 'invalid')
+					OR state ->> 'invalid' != 'true')
+				RETURNING *
+				`,
+				{ attemptId }
+			)
+			.then(result => {
+				// attempt not found OR was already invalid
+				if (!result) {
+					return null
+				}
+
+				return new AssessmentModel(result)
+			})
+			.catch(error => {
+				logger.error('Assessment invalidateAttempt Error', error.message)
+				return Promise.reject(error)
+			})
 	}
 
 	clone() {

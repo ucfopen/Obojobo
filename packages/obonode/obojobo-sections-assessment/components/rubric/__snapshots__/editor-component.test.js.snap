@@ -62,11 +62,13 @@ exports[`Rubric editor Rubric renders 1`] = `
         <input
           max="100"
           min="0"
+          name="passingAttemptScore"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value={100}
         />
         %
       </label>
@@ -101,11 +103,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="passedResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value={100}
         />
         %
       </label>
@@ -145,11 +149,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="failedResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value={0}
         />
         %
       </label>
@@ -194,11 +200,13 @@ exports[`Rubric editor Rubric renders 1`] = `
           disabled={true}
           max="100"
           min="0"
+          name="unableToPassResult"
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
           type="number"
+          value={0}
         />
         %
       </label>
@@ -300,6 +308,246 @@ exports[`Rubric editor Rubric renders 1`] = `
         </span>
       </li>
     </ul>
+  </div>
+  <span
+    className="invisibleText"
+  />
+</div>
+`;
+
+exports[`Rubric editor Rubric renders with given values 1`] = `
+<div
+  className="rubric pad is-type-undefined"
+  contentEditable={false}
+>
+  <h2
+    contentEditable={false}
+  >
+    Assessment Scoring
+  </h2>
+  <p>
+    The recorded score for this module is the highest assessment score, and will be sent to any connected gradebook.
+     
+  </p>
+  <fieldset
+    className="assessment-score"
+  >
+    <legend>
+      How do you want to determine the recorded score?
+    </legend>
+    <label>
+      <input
+        checked={false}
+        name="score-type"
+        onChange={[Function]}
+        onClick={[Function]}
+        type="radio"
+        value="highest"
+      />
+      Use the highest attempt score.
+    </label>
+    <label>
+      <input
+        checked={false}
+        name="score-type"
+        onChange={[Function]}
+        onClick={[Function]}
+        type="radio"
+        value="pass-fail"
+      />
+      Calculate based on a threshold (pass/fail)...
+    </label>
+  </fieldset>
+  <fieldset
+    className="pass-fail"
+  >
+    <legend>
+      Pass & Fail Rules
+    </legend>
+    <p>
+      In this mode, students must achieve a certain threshold on an attempt to pass. The assessment score for each attempt will be set based on whether the student passes or fails, and the highest of these assessment scores will be used as the recorded score.
+    </p>
+    <div>
+      <label>
+        To 
+        <b>
+          pass
+        </b>
+        , students must achieve an attempt score of at least
+        <input
+          max="100"
+          min="0"
+          name="passingAttemptScore"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value={100}
+        />
+        %
+      </label>
+    </div>
+    <div>
+      <label>
+        When 
+        <b>
+          passing
+        </b>
+        , set the assessment score to
+        <select
+          onChange={[Function]}
+          onClick={[Function]}
+        >
+          <option
+            value="$attempt_score"
+          >
+            The attempt score
+          </option>
+          <option
+            value="set-value"
+          >
+            Specified value
+          </option>
+        </select>
+      </label>
+      <label
+        className=" is-not-enabled"
+      >
+        <input
+          disabled={true}
+          max="100"
+          min="0"
+          name="passedResult"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value="$attempt_score"
+        />
+        %
+      </label>
+    </div>
+    <div>
+      <label>
+        When 
+        <b>
+          failing
+        </b>
+        ,
+        <select
+          onChange={[Function]}
+          onClick={[Function]}
+        >
+          <option
+            value="$attempt_score"
+          >
+            Set the assessment score to the attempt score
+          </option>
+          <option
+            value="no-score"
+          >
+            Don't set the score (no score will be sent to the gradebook)
+          </option>
+          <option
+            value="set-value"
+          >
+            Set the assessment score to specified value
+          </option>
+        </select>
+      </label>
+      <label
+        className=" is-not-enabled"
+      >
+        <input
+          disabled={true}
+          max="100"
+          min="0"
+          name="failedResult"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value={0}
+        />
+        %
+      </label>
+    </div>
+    <div>
+      <label>
+        And if the student is 
+        <b>
+          out of attempts and still did not pass
+        </b>
+        ,
+        <select
+          onChange={[Function]}
+          onClick={[Function]}
+        >
+          <option
+            value="no-value"
+          >
+            Don't do anything, the failing rule will still apply
+          </option>
+          <option
+            value="$highest_attempt_score"
+          >
+            Set the assessment score to the highest attempt score
+          </option>
+          <option
+            value="no-score"
+          >
+            Don't set assessment the score (no score will be sent to the gradebook)
+          </option>
+          <option
+            value="set-value"
+          >
+            Set the assessment score to specified value
+          </option>
+        </select>
+      </label>
+      <label
+        className=" is-not-enabled"
+      >
+        <input
+          disabled={true}
+          max="100"
+          min="0"
+          name="unableToPassResult"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value={0}
+        />
+        %
+      </label>
+    </div>
+  </fieldset>
+  <div
+    className="mods"
+  >
+    <div
+      className="title"
+    >
+      Extra Credit & Penalties
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+      contentEditable={false}
+    >
+      <button
+        className="button"
+        contentEditable={false}
+        onClick={[Function]}
+      >
+        Edit...
+      </button>
+    </div>
+    <ul />
   </div>
   <span
     className="invisibleText"
