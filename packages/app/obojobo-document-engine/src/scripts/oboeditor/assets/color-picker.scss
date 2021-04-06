@@ -84,16 +84,10 @@
 			border: solid 1px $color-shadow;
 			position: relative;
 			cursor: pointer;
-
-			img {
-				height: 0.8em;
-				width: 0.8em;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				pointer-events: none;
-			}
+			background: url('./eye-dropper.svg');
+			background-size: 80%;
+			background-repeat: no-repeat;
+			background-position: center center;
 
 			&:hover {
 				border: solid 2px $color-shadow;
