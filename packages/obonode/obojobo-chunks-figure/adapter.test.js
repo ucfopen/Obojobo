@@ -52,6 +52,7 @@ describe('Figure adapter', () => {
 		const expected = {
 			content: {
 				alt: 'An image',
+				captionWidth: 'image-width',
 				height: null,
 				size: 'small',
 				textGroup: [
