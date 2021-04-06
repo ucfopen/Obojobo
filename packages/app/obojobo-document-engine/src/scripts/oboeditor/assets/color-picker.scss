@@ -43,8 +43,8 @@
 		&.is-selected {
 			border: solid 2px $color-shadow;
 			transform: translate(-1px, -1px);
-			margin-bottom: -2px; //stylelint-disable-line unit-blacklist
-			margin-right: -2px; //stylelint-disable-line unit-blacklist
+			margin-bottom: -2px; //stylelint-disable-line unit-disallowed-list
+			margin-right: -2px; //stylelint-disable-line unit-disallowed-list
 		}
 	}
 
@@ -98,8 +98,8 @@
 			&:hover {
 				border: solid 2px $color-shadow;
 				transform: translate(-1px, -1px);
-				margin-bottom: -2px; //stylelint-disable-line unit-blacklist
-				margin-right: -2px; //stylelint-disable-line unit-blacklist
+				margin-bottom: -2px; //stylelint-disable-line unit-disallowed-list
+				margin-right: -2px; //stylelint-disable-line unit-disallowed-list
 			}
 		}
 
