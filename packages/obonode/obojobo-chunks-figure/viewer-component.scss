@@ -39,6 +39,11 @@
 
 	&.custom {
 		.container {
+			.figure-box {
+				margin: auto;
+				height: auto;
+			}
+
 			img {
 				margin: 0 auto;
 				height: auto;
@@ -50,6 +55,10 @@
 			figure {
 				margin: 0 auto;
 			}
+
+			figcaption {
+				margin: auto;
+			}
 		}
 	}
 
@@ -57,11 +66,21 @@
 		@include pad();
 
 		.container {
-			max-width: 18em;
-
+			.figure-box,
 			img {
+				max-width: 18em;
+				margin: auto;
 				width: 100%;
 				box-sizing: border-box;
+			}
+
+			figcaption {
+				max-width: 22em;
+				margin: auto;
+
+				&.is-caption-width-max-width {
+					max-width: 100%;
+				}
 			}
 		}
 	}
@@ -78,6 +97,7 @@
 		}
 
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				box-sizing: border-box;
@@ -87,6 +107,7 @@
 
 	&.large {
 		.container {
+			.figure-box,
 			img {
 				width: 100%;
 				border: none;

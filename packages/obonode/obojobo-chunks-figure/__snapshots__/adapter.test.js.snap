@@ -3,6 +3,7 @@
 exports[`Figure adapter construct builds with attributes 1`] = `
 Object {
   "alt": "An image",
+  "captionWidth": "image-width",
   "height": 100,
   "size": "custom",
   "textGroup": TextGroup {
@@ -29,6 +30,7 @@ Object {
 exports[`Figure adapter construct builds without attributes 1`] = `
 Object {
   "alt": null,
+  "captionWidth": "image-width",
   "height": null,
   "size": "small",
   "textGroup": TextGroup {
