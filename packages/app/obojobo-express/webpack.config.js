@@ -48,7 +48,7 @@ module.exports =
 					// Create React SVG Components when imported from js/jsx files
 					{
 						test: /\.svg$/,
-						issuer: /\.js$/,
+						issuer: /\.jsx?$/,
 						use: [
 							{
 								loader: '@svgr/webpack',
@@ -100,6 +100,7 @@ module.exports =
 					},
 					{
 						test: /\.(svg|png|jpe?g|gif)$/i,
+						issuer: /\.s?css$/,
 						type: 'asset/resource'
 					}
 				]
