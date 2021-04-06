@@ -594,7 +594,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": false,
-		  "saved": true,
+		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -624,7 +624,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": true,
-		  "saved": false,
+		  "saveState": "",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -1003,11 +1003,73 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
-		component.setState({ saved: false })
+		component.setState({ saveState: '' })
 
 		expect(eventMap.beforeunload({})).toEqual(true)
 
 		component.unmount()
+	})
+
+	test('saveDraft() updates state after API called successfully ', () => {
+		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component.instance().markUnsaved = jest.fn()
+
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(component.instance().state.saveState).toBe('saveSuccessful')
+			})
+	})
+
+	test('saveDraft() updates state after API called failed ', () => {
+		const props = {
+			saveDraft: jest.fn().mockResolvedValue(false),
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component.instance().markUnsaved = jest.fn()
+
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(component.instance().state.saveState).toBe('saveFailed')
+			})
 	})
 
 	test('onKeyDown() calls editor functions', () => {
@@ -1387,6 +1449,6 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
 		expect(spy).not.toHaveBeenCalled()
-		expect(instance.state.saved).toBe(false)
+		expect(instance.state.saveState).toBe('')
 	})
 })

@@ -45,7 +45,7 @@ class VisualEditor extends React.Component {
 
 		this.state = {
 			value: json,
-			saved: true,
+			saveState: 'saveSuccessful',
 			editable: json && json.length >= 1 && !json[0].text,
 			showPlaceholders: true,
 			contentRect: null
@@ -81,7 +81,7 @@ class VisualEditor extends React.Component {
 	}
 
 	markUnsaved() {
-		return this.setState({ saved: false })
+		return this.setState({ saveState: '' })
 	}
 
 	// All plugins are passed the following parameters:
@@ -193,7 +193,7 @@ class VisualEditor extends React.Component {
 			//eslint-disable-next-line
 			return undefined // Returning undefined will allow browser to close normally
 		}
-		if (!this.state.saved) {
+		if (this.state.saveState !== 'saveSuccessful') {
 			event.returnValue = true
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
@@ -298,7 +298,8 @@ class VisualEditor extends React.Component {
 		// This mostly happens with MoreInfoBoxes and void nodes
 		if (this.editor.selection) this.editor.prevSelection = this.editor.selection
 
-		this.setState({ value, saved: false })
+		this.setState({ value })
+		this.markUnsaved()
 
 		if (!ReactEditor.isFocused(this.editor)) this.setEditorFocus()
 	}
@@ -391,9 +392,16 @@ class VisualEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
+		this.setState({ saveState: 'saving' })
 
 		return this.props.saveDraft(draftId, JSON.stringify(json)).then(isSaved => {
-			this.setState({ saved: isSaved })
+			if (isSaved) {
+				if (this.state.saveState === 'saving') {
+					this.setState({ saveState: 'saveSuccessful' })
+				}
+			} else {
+				this.setState({ saveState: 'saveFailed' })
+			}
 		})
 	}
 
@@ -555,7 +563,7 @@ class VisualEditor extends React.Component {
 								onSave={this.saveModule}
 								reload={this.reload}
 								switchMode={this.props.switchMode}
-								saved={this.state.saved}
+								saveState={this.state.saveState}
 								mode={'visual'}
 								insertableItems={this.props.insertableItems}
 								togglePlaceholders={this.togglePlaceholders}

@@ -67,6 +67,8 @@ describe('LayoutDefault', () => {
 		expect(scripts).toHaveLength(3)
 
 		// test that we're using production, minified scripts
+		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
+		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(0).prop('src')).toContain('.production.min.js')
 		expect(scripts.at(1).prop('src')).toContain('.production.min.js')
 		expect(scripts.at(2).prop('src')).toBe(props.appScriptUrl)
@@ -89,6 +91,8 @@ describe('LayoutDefault', () => {
 		expect(scripts).toHaveLength(3)
 
 		// test that we're using development scripts
+		expect(scripts.at(0).prop('crossOrigin')).toBe('anonymous')
+		expect(scripts.at(1).prop('crossOrigin')).toBe('anonymous')
 		expect(scripts.at(0).prop('src')).toContain('.development.js')
 		expect(scripts.at(1).prop('src')).toContain('.development.js')
 		expect(scripts.at(2).prop('src')).toBe(props.appScriptUrl)

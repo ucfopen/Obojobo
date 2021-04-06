@@ -121,17 +121,18 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
-	handleSwitchChange(key, booleanValue) {
+	handleSwitchChange(key, event) {
 		const newContent = {}
-		newContent[key] = booleanValue
+		newContent[key] = event.target.checked
 
 		this.setState(prevState => ({
 			content: Object.assign(prevState.content, newContent)
 		}))
 	}
 
-	handleAbstractToggleChange(changeFn, booleanValue) {
-		this.setState(prevState => ({ content: changeFn(prevState.content, booleanValue) }))
+	handleAbstractToggleChange(changeFn, event) {
+		const enabled = event.target.checked // must be stored because target becomes null before setState callback is called
+		this.setState(prevState => ({ content: changeFn(prevState.content, enabled) }))
 	}
 
 	onSave() {
@@ -232,8 +233,8 @@ class MoreInfoBox extends React.Component {
 					<Switch
 						key={item.description}
 						title={item.description}
-						initialChecked={this.state.content[item.name]}
-						handleCheckChange={this.handleSwitchChange.bind(this, item.name)}
+						checked={this.state.content[item.name]}
+						onChange={this.handleSwitchChange.bind(this, item.name)}
 					/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
@@ -242,8 +243,8 @@ class MoreInfoBox extends React.Component {
 					<Switch
 						key={item.description}
 						title={item.description}
-						initialChecked={item.value(this.state.content)}
-						handleCheckChange={this.handleAbstractToggleChange.bind(this, item.onChange)}
+						checked={item.value(this.state.content)}
+						onChange={this.handleAbstractToggleChange.bind(this, item.onChange)}
 					/>
 				)
 			case 'button':

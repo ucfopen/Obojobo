@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const oboEvents = require('../obo_events')
 const { general: generalConfig, media: mediaConfig } = oboRequire('server/config')
 const { isTrueParam } = oboRequire('server/util/is_true_param')
 const {
@@ -29,11 +30,18 @@ router
 		checkValidationRules
 	])
 	.get((req, res) => {
+		// allow modules to provide editor settings
+		// Example:
+		// oboEvents.on('EDITOR_SETTINGS', event => { event.moduleSettings.obojoboChunksSample = {var: value}})
+		const moduleSettings = {}
+		oboEvents.emit('EDITOR_SETTINGS', { moduleSettings })
+
 		const options = {
 			settings: {
 				allowedUploadTypes,
 				readOnly: isTrueParam(req.query.read_only),
 				revisionId: req.query.revision_id || '',
+				moduleSettings,
 				editLocks: {
 					idleTimeUntilReleaseLockMinutes: parseFloat(idleTimeUntilReleaseLockMinutes),
 					idleTimeUntilWarningMinutes: parseFloat(idleTimeUntilWarningMinutes),

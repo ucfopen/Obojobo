@@ -20,34 +20,34 @@ describe('UnfinishedAttemptDialog', () => {
 	test('UnfinishedAttemptDialog component', () => {
 		const onConfirm = jest.fn()
 		const component = renderer.create(<UpdatedModuleDialog onConfirm={onConfirm} />)
-    const tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
-  })
+	})
 
-  test('UnfinishedAttemptDialog component cancels', () => {
-    const onConfirm = jest.fn()
-    const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
+	test('UnfinishedAttemptDialog component cancels', () => {
+		const onConfirm = jest.fn()
+		const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
 
-    component
-      .find('button')
-      .at(0)
-      .simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
-    expect(ModalUtil.hide).toHaveBeenCalled()
-    expect(onConfirm).not.toHaveBeenCalled()
-  })
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(onConfirm).not.toHaveBeenCalled()
+	})
 
-  test('UnfinishedAttemptDialog component confirms', () => {
-    const onConfirm = jest.fn()
-    const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
+	test('UnfinishedAttemptDialog component confirms', () => {
+		const onConfirm = jest.fn()
+		const component = mount(<UpdatedModuleDialog onConfirm={onConfirm} />)
 
-    component
-      .find('button')
-      .at(1)
-      .simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
-    expect(ModalUtil.hide).not.toHaveBeenCalled()
-    expect(onConfirm).toHaveBeenCalled()
-  })
+		expect(ModalUtil.hide).not.toHaveBeenCalled()
+		expect(onConfirm).toHaveBeenCalled()
+	})
 })
