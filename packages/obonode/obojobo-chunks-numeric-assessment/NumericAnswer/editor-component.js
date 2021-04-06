@@ -158,6 +158,7 @@ class NumericAnswer extends React.Component {
 		return (
 			<div className="numeric-input-container" contentEditable={false}>
 				<NumericOption
+					editor={this.props.editor}
 					numericChoice={this.state}
 					onHandleInputChange={this.onHandleInputChange}
 					onHandleSelectChange={this.onHandleSelectChange}

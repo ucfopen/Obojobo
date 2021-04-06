@@ -24,8 +24,8 @@ const FOCUS_TARGET_QUESTION = 'question'
 const FOCUS_TARGET_ANSWERS = 'answers'
 
 export default class Question extends OboQuestionComponent {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 
 		this.state = {
 			isFlipping: false
@@ -44,6 +44,12 @@ export default class Question extends OboQuestionComponent {
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		this.getInstructions = this.getInstructions.bind(this)
+	}
+
+	componentDidMount() {
+		// This is necessary to cause a question assessment to re-run its calculateScore
+		// method, which may do additional things like generate feedback or display errors
+		this.assessmentComponentRef.current.calculateScore()
 	}
 
 	static getQuestionAssessmentModel(questionModel) {

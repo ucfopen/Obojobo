@@ -71,12 +71,12 @@
 		}
 	}
 
-	> .flipper > .content-back > .add-solution {
-		left: 50%;
-		transform: translate(-50%, 0);
-		position: relative;
-		margin: $dimension-padding / 3 0;
-		user-select: none;
+	> .flipper > .content-back > .add-solution-container {
+		padding: 1rem;
+
+		> .obojobo-draft--components--button {
+			display: block;
+		}
 	}
 
 	> .delete-button {

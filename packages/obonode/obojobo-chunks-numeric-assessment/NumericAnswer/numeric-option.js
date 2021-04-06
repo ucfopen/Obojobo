@@ -9,24 +9,28 @@ import {
 	simplifedToFullText
 } from '../constants'
 
+// @HACK - This is necessary because Slate (or something) steals the focus
+// away, and the page will jump wildly away from what you were editing.
+// This brute force hack seems to work
 const onHandleInputFocus = event => {
+	event.preventDefault()
+	event.stopPropagation()
+
 	const el = event.target
 
-	event.stopPropagation()
+	let i = 0
+	const id = setInterval(() => {
+		el.focus()
+		el.select()
 
-	// Hack to get the focus to stay when clicking in on inputs.
-	// The first timeout is needed for Chrome not to blink the focus outline
-	// The second timeout is required for FF
-	setTimeout(() => el.focus())
-	setTimeout(() => el.focus(), 1)
+		i++
+		if (i > 50) {
+			clearInterval(id)
+		}
+	}, 1)
 }
 
-const onHandleClick = event => {
-	event.stopPropagation()
-	event.preventDefault()
-}
-
-const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
+const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange, editor }) => {
 	const { requirement, answer, start, end, margin, type } = numericChoice
 
 	switch (simplifedToFullText[requirement]) {
@@ -40,7 +44,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="requirement"
 							value={simplifedToFullText[requirement]}
 							onChange={event => onHandleSelectChange(event)}
-							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -54,9 +57,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="start"
 							value={start || ''}
 							onChange={event => onHandleInputChange(event)}
-							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
-							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -68,9 +69,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="end"
 							value={end || ''}
 							onChange={event => onHandleInputChange(event)}
-							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
-							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -87,7 +86,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="requirement"
 							value={simplifedToFullText[requirement]}
 							onChange={event => onHandleSelectChange(event)}
-							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -101,9 +99,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="answer"
 							value={answer || ''}
 							onChange={event => onHandleInputChange(event)}
-							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
-							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -115,7 +111,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="margin-type"
 							value={simplifedToFullText[type]}
 							onChange={event => onHandleSelectChange(event)}
-							onClick={onHandleClick}
 						>
 							{marginDropdown.map(type => (
 								<option key={type}>{type}</option>
@@ -129,9 +124,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="margin"
 							value={margin || ''}
 							onChange={event => onHandleInputChange(event)}
-							onClick={onHandleClick}
 							onFocus={onHandleInputFocus}
-							onMouseDown={onHandleInputFocus}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -149,7 +142,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="requirement"
 							value={simplifedToFullText[requirement]}
 							onChange={event => onHandleSelectChange(event)}
-							onClick={onHandleClick}
 						>
 							{requirementDropdown.map(requirement => (
 								<option key={requirement}>{requirement}</option>
@@ -162,10 +154,9 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							className="input-item"
 							name="answer"
 							value={answer || ''}
-							onClick={onHandleClick}
 							onChange={event => onHandleInputChange(event)}
 							onFocus={onHandleInputFocus}
-							onMouseDown={onHandleInputFocus}
+							// onMouseDown={onMouseDown}
 							contentEditable={false}
 							autoComplete="off"
 						/>

@@ -1,6 +1,7 @@
 import './more-info-button.scss'
 
 import React from 'react'
+import uuid from '../util/uuid'
 
 const DEFAULT_LABEL = '?'
 
@@ -20,7 +21,8 @@ class MoreInfoButton extends React.Component {
 		this.hide = this.hide.bind(this)
 
 		this.state = {
-			mode: 'hidden'
+			mode: 'clicked',
+			id: uuid() // Used to create a unique DOM ID for aria-labelledby
 		}
 
 		this.dialogRef = React.createRef()
@@ -81,9 +83,12 @@ class MoreInfoButton extends React.Component {
 						tabIndex="-1"
 						onBlur={this.hide}
 						ref={this.dialogRef}
-						aria-labelledby="obojobo-draft--components--more-info-button--container"
+						aria-labelledby={`obojobo-draft--components--more-info-button--container--${this.state.id}`}
 					>
-						<div id="obojobo-draft--components--more-info-button--container" className="container">
+						<div
+							id={`obojobo-draft--components--more-info-button--container--${this.state.id}`}
+							className="container"
+						>
 							{this.props.children}
 						</div>
 					</div>

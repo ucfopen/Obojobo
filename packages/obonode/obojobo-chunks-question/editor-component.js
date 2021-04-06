@@ -203,9 +203,9 @@ class Question extends React.Component {
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (
-								<div contentEditable={false}>
+								<div className="add-solution-container" contentEditable={false}>
 									<Button className="add-solution" onClick={this.addSolution}>
-										Add Solution
+										Add Explanation
 									</Button>
 								</div>
 							)}

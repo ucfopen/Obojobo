@@ -9,6 +9,16 @@
 		}
 	}
 
+	&.is-mode-assessment {
+		.obojobo-draft--components--more-info-button > .info {
+			top: -140%;
+
+			&::before {
+				top: 71%;
+			}
+		}
+	}
+
 	.units {
 		display: inline-block;
 		white-space: pre;

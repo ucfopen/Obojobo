@@ -30,7 +30,7 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 	}
 
 	calculateScore() {
-		return 0
+		return null
 	}
 
 	getResponse(/*response*/) {

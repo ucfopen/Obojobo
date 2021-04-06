@@ -83,14 +83,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		)
 	}
 
-	clearFeedback() {
-		QuestionUtil.clearData(
-			this.props.model.get('id'),
-			NavUtil.getContext(this.props.moduleData.navState),
-			KEY_FEEDBACK
-		)
-	}
-
 	getFeedback() {
 		return QuestionUtil.getData(
 			this.props.moduleData.questionState,
@@ -101,6 +93,10 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	}
 
 	calculateScore() {
+		if (!this.props.response) {
+			return null
+		}
+
 		const questionResponse = this.props.response.value
 		const results = this.evaluator.evaluate(questionResponse)
 
@@ -151,7 +147,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			default:
 				ErrorUtil.show(
 					'Error',
-					'Something went wrong evaulating your answer. Double check your input and try again.'
+					'Something went wrong evaluating your answer. Double check your input and try again.'
 				)
 				return null
 		}
