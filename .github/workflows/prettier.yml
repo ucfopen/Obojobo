@@ -41,7 +41,7 @@ jobs:
     - name: NPM - Test, Build, Deploy
       uses: actions/setup-node@v1
       with:
-        node-version: 12.11.1
+        node-version: 14
 
     - name: Cache Yarn Deps
       uses: c-hive/gha-yarn-cache@v1
