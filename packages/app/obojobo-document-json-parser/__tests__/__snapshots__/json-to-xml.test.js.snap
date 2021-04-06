@@ -151,7 +151,7 @@ exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 			</Text>
 			<Text id=\\"367a23f3-a67f-425a-87f2-a9eae6a7b6f0\\">
 				<textGroup>
-					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l</b><b><code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student&#39;s score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l<code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
 				</textGroup>
 			</Text>
 			<Text id=\\"c39ac706-f041-42e0-b0b4-6414fb69aed0\\">

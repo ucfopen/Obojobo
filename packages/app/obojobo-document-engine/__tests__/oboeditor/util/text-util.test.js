@@ -167,6 +167,11 @@ describe('TextUtil', () => {
 					type: 'a',
 					href: 'mockotherURL',
 					children: [{ text: 'atted' }]
+				},
+				{
+					text: 'abc',
+					_latex: true,
+					monospace: true
 				}
 			]
 		}
