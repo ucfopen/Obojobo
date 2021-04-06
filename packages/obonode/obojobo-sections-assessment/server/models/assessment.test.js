@@ -944,6 +944,14 @@ describe('AssessmentModel', () => {
 		expect(invalidAttempt.state.invalid).toBe(true)
 	})
 
+	test('invalidateAttempt returns null if attempt is not updated', async () => {
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		const invalidAttempt = await AssessmentModel.invalidateAttempt('mock-id')
+
+		expect(invalidAttempt).toBe(null)
+	})
+
 	test('invalidateAttempt errors', () => {
 		db.oneOrNone.mockRejectedValueOnce('mock-error')
 		return expect(AssessmentModel.invalidateAttempt('mock-id')).rejects.toBe('mock-error')

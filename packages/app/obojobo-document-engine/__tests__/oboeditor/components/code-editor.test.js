@@ -134,7 +134,7 @@ describe('CodeEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
-		component.setState({ saved: false })
+		component.setState({ saveState: '' })
 
 		expect(eventMap.beforeunload({})).toEqual(true)
 
@@ -168,7 +168,7 @@ describe('CodeEditor', () => {
 		    "tabSize": 4,
 		    "theme": "monokai",
 		  },
-		  "saved": false,
+		  "saveState": "",
 		  "title": "Mock Title",
 		}
 	`)
@@ -260,7 +260,7 @@ describe('CodeEditor', () => {
 			.sendSave()
 			.then(() => {
 				expect(props.saveDraft).toHaveBeenCalledTimes(1)
-				expect(component.state()).toHaveProperty('saved', false)
+				expect(component.state()).toHaveProperty('saveState', 'saveFailed')
 			})
 	})
 
@@ -361,7 +361,7 @@ describe('CodeEditor', () => {
 		    "tabSize": 4,
 		    "theme": "monokai",
 		  },
-		  "saved": true,
+		  "saveState": "saveSuccessful",
 		  "title": "Mock Title",
 		}
 	`)

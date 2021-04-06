@@ -1,6 +1,6 @@
 const AssessmentModel = require('../models/assessment')
 const getCalculatedScores = require('./get-calculated-scores')
-const insertEvents = require('./insert-events')
+const insertEvents = require('../insert-events')
 const logger = require('obojobo-express/server/logger')
 const lti = require('obojobo-express/server/lti')
 const ERROR_INVALID_ATTEMPT_END = 'Cannot end an attempt for a different module'
@@ -22,7 +22,18 @@ const endAttempt = async (req, res) => {
 	) {
 		// Discard this attempt if the module was updated while the
 		// user was taking the assessment
-		await AssessmentModel.invalidateAttempt(attempt.id)
+		const invalidatedAttempt = await AssessmentModel.invalidateAttempt(attempt.id)
+		if (invalidatedAttempt) {
+			await insertEvents.insertAttemptInvalidatedEvent(
+				attempt.id,
+				req.currentUser.id,
+				req.currentVisit.id,
+				req.currentDocument.draftId,
+				req.currentDocument.contentId,
+				req.connection.remoteAddress,
+				req.currentVisit.is_preview
+			)
+		}
 		throw Error(ERROR_INVALID_ATTEMPT_END)
 	}
 

@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-break",
-	"version": "11.1.1",
+	"version": "11.4.0",
 	"license": "AGPL-3.0-only",
 	"description": "Break content chunk for Obojobo",
 	"scripts": {
@@ -20,8 +20,8 @@
 			"prettier --write"
 		]
 	},
-	"dependencies": {
-		"obojobo-lib-utils": "^11.1.1"
+	"peerDependencies": {
+		"obojobo-lib-utils": "^11.2.0-alpha.0"
 	},
 	"jest": {
 		"testMatch": [
