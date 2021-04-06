@@ -1,6 +1,6 @@
 const NonceStore = require('ims-lti').Stores.NonceStore
 const logger = oboRequire('server/logger')
-const EXPIRE_IN_SEC = 5 * 60
+const EXPIRE_IN_SEC = 15 * 60 // 15 minutes
 const MAX_NONCE_COUNT = 500000
 
 class DevNonceStore extends NonceStore {
@@ -22,7 +22,6 @@ class DevNonceStore extends NonceStore {
 
 		this._clearExpiredNonces()
 
-		// eslint-disable-next-line no-undefined
 		const firstTimeSeen = !this.used.has(nonce)
 
 		if (!firstTimeSeen) {
@@ -65,6 +64,7 @@ class DevNonceStore extends NonceStore {
 
 		// store number of items to cull
 		let reduceCount = this.used.size - MAX_NONCE_COUNT
+		let cleared = 0
 
 		// iterate over noncemap
 		const iterator1 = this.used[Symbol.iterator]()
@@ -73,13 +73,15 @@ class DevNonceStore extends NonceStore {
 				// above max count, remove (FIFO)
 				this.used.delete(nonce)
 				reduceCount--
+				cleared++
 			} else if (timestamp <= now) {
 				// expired
 				this.used.delete(nonce)
+				cleared++
 			}
 		}
 
-		logger.info(`${this.used.size} lti nonce keys stored`)
+		if (cleared) logger.info(`${this.used.size} lti nonce keys stored after cleaning ${cleared}.`)
 	}
 }
 
