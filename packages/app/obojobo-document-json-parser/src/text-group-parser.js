@@ -33,6 +33,8 @@ const createChild = el => {
 
 		if (el.attrs && el.attrs.class && el.attrs.class === 'latex') {
 			return `<latex>${innerXML}</latex>`
+		} else if (el.attrs && el.attrs.style && el.attrs.style.color) {
+			return `<color text="${el.attrs.style.color}">${innerXML}</color>`
 		} else {
 			return innerXML
 		}

@@ -92,12 +92,16 @@ const TextUtil = {
 
 				// Otherwise, add the type and the data to the mark
 				leaf[style.type] = true
-				if (style.type === 'a') {
-					leaf.href = style.data.href
-				}
-				if (style.type === 'sup') {
-					if (!leaf.num) leaf.num = 0
-					leaf.num += style.data
+				switch (style.type) {
+					case 'a':
+						leaf.href = style.data.href
+						break
+					case 'sup':
+						if (!leaf.num) leaf.num = 0
+						leaf.num += style.data
+						break
+					case 'color':
+						leaf.color = style.data.text
 				}
 			})
 
@@ -158,6 +162,10 @@ const TextUtil = {
 				const to = s.length
 
 				switch (styleType) {
+					case StyleType.COLOR:
+						s.styleText(styleType, from, to, { text: styleData })
+						return
+
 					case StyleType.SUPERSCRIPT:
 						s.styleText(styleType, from, to, textRange.num)
 						return
