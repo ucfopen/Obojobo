@@ -45,7 +45,7 @@
 		"codemirror": "^5.60.0",
 		"date-fns": "^2.19.0",
 		"downloadjs": "^1.4.7",
-		"katex": "^0.13.0",
+		"katex": "^0.13.1",
 		"prop-types": "15.7.2",
 		"react": "^16.13.1",
 		"react-codemirror2": "^7.2.1",
