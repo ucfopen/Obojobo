@@ -66,18 +66,6 @@ module.exports =
 							}
 						]
 					},
-					// Load SVGs into strings when imported elsewhere
-					{
-						test: /\.svg$/,
-						issuer: /\.scss$/,
-						use: {
-							loader: 'svg-url-loader',
-							options: {
-								stripdeclarations: true,
-								iesafe: true
-							}
-						}
-					},
 					{
 						test: /\.(js|jsx)$/,
 						exclude: /node_modules/,
@@ -92,7 +80,7 @@ module.exports =
 						test: /\.s?css$/,
 						use: [
 							MiniCssExtractPlugin.loader,
-							'css-loader?url=false',
+							'css-loader',
 							{
 								loader: 'postcss-loader',
 								options: {
@@ -111,16 +99,8 @@ module.exports =
 						]
 					},
 					{
-						test: /\.(jpe?g|png)$/i,
-						use: [
-							{
-								// @TODO: remove this if it's not used
-								loader: 'responsive-loader',
-								options: {
-									adapter: require('responsive-loader/sharp')
-								}
-							}
-						]
+						test: /\.(svg|png|jpe?g|gif)$/i,
+						type: 'asset/resource'
 					}
 				]
 			},
