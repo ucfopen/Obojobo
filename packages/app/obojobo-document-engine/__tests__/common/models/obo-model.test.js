@@ -3,6 +3,7 @@ import React from 'react'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import { Registry } from '../../../src/scripts/common/registry'
+import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return require('../../../__mocks__/obo-model-mock').default
@@ -18,9 +19,17 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 })
 
 describe('OboModel', () => {
+	let restoreConsole
+
 	beforeEach(() => {
 		// Keep tests from interfering with each other
 		OboModel.models = []
+
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('should construct a new instance with defaults', () => {
@@ -1160,15 +1169,35 @@ describe('OboModel', () => {
 		})
 	})
 
-	test('Obomodel.create builds nothing', () => {
+	test('Obomodel.create builds nothing if the type does not exist in the registry', () => {
 		const model = OboModel.create('mockChunk')
 
 		expect(model).toEqual(null)
 	})
 
-	test('Obomodel.create builds nothing from object', () => {
+	test('Obomodel.create builds nothing from object if the type does not exist in the registry', () => {
 		const model = OboModel.create({ type: 'mockChunk' })
 
 		expect(model).toEqual(null)
+	})
+
+	test('Obomodel.create returns null if given a non-string or non-object param, does not output a console.error message', () => {
+		expect(OboModel.create(undefined)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(false)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(true)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(1)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create(null)).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
+
+		expect(OboModel.create()).toEqual(null)
+		expect(console.error).not.toHaveBeenCalled()
 	})
 })

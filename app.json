@@ -14,6 +14,10 @@
 			"description": "PG-Promise SSL Configuration. https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax",
 			"value": "{\"rejectUnauthorized\":false}"
 		},
+		"DB_TIMEOUT": {
+			"description": "DB Query timeout in milliseconds https://github.com/brianc/node-postgres/pull/1760",
+			"value": "29000"
+		},
 		"OBO_LTI_KEYS_JSON": {
 			"description": "Edit the secret value. JSON string for LTI key:secret values.",
 			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
@@ -57,6 +61,14 @@
 		"OBO_EDITLOCK_DB_LOCK_DURATION":{
 			"description": "Editor lock: period of time a lock lasts unless it is renewed.",
 			"value": "5"
+		},
+		"OBO_OPTIONAL_NODES":{
+			"description": "Comma separated list of optional nodes to enable",
+			"value": ""
+		},
+		"OBO_LTI_GUID":{
+			"description": "A GUID unique to this install of Obojobo. Google LTI launch param tool_consumer_instance_guid for more details.",
+			"value": "my.unique.heroku-obojobo-guid"
 		}
 	},
 	"formation": {

@@ -54,6 +54,10 @@ Array [
     "renderLeaf": [Function],
   },
   Object {
+    "onKeyDown": [Function],
+    "renderLeaf": [Function],
+  },
+  Object {
     "isVoid": [MockFunction] {
       "calls": Array [
         Array [
@@ -508,6 +512,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -533,7 +538,7 @@ exports[`VisualEditor VisualEditor component 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -686,6 +691,29 @@ Ctrl+/"
             />
           </g>
         </svg>
+      </button>
+      <button
+        aria-label="Color
+Ctrl+Shift+P"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Color
+Ctrl+Shift+P"
+      >
+        <div>
+          <svg
+            viewBox="-512 -700 3072 3072"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2048,1721.67V2048H0V1721.67Z"
+              fill="#000000"
+            />
+            <path
+              d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+            />
+          </svg>
+        </div>
       </button>
       <button
         aria-label="Link
@@ -1109,6 +1137,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -1134,7 +1163,7 @@ exports[`VisualEditor VisualEditor component changes pages 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -1287,6 +1316,29 @@ Ctrl+/"
             />
           </g>
         </svg>
+      </button>
+      <button
+        aria-label="Color
+Ctrl+Shift+P"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Color
+Ctrl+Shift+P"
+      >
+        <div>
+          <svg
+            viewBox="-512 -700 3072 3072"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2048,1721.67V2048H0V1721.67Z"
+              fill="#000000"
+            />
+            <path
+              d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+            />
+          </svg>
+        </div>
       </button>
       <button
         aria-label="Link
@@ -1710,6 +1762,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -1735,7 +1788,7 @@ exports[`VisualEditor VisualEditor component changes pages 2`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -1888,6 +1941,29 @@ Ctrl+/"
             />
           </g>
         </svg>
+      </button>
+      <button
+        aria-label="Color
+Ctrl+Shift+P"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Color
+Ctrl+Shift+P"
+      >
+        <div>
+          <svg
+            viewBox="-512 -700 3072 3072"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2048,1721.67V2048H0V1721.67Z"
+              fill="#000000"
+            />
+            <path
+              d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+            />
+          </svg>
+        </div>
       </button>
       <button
         aria-label="Link
@@ -2357,6 +2433,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -2382,7 +2459,7 @@ exports[`VisualEditor VisualEditor component with no page 1`] = `
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -2535,6 +2612,29 @@ Ctrl+/"
             />
           </g>
         </svg>
+      </button>
+      <button
+        aria-label="Color
+Ctrl+Shift+P"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Color
+Ctrl+Shift+P"
+      >
+        <div>
+          <svg
+            viewBox="-512 -700 3072 3072"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2048,1721.67V2048H0V1721.67Z"
+              fill="#000000"
+            />
+            <path
+              d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+            />
+          </svg>
+        </div>
       </button>
       <button
         aria-label="Link
@@ -2954,6 +3054,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
         aria-invalid={false}
         aria-label="Rename Module "
         className="editor--components--editor-title-input"
+        maxLength="300"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyDown={[Function]}
@@ -2979,7 +3080,7 @@ exports[`VisualEditor reload disables event listener and calls location.reload 1
       mode="visual"
       onSave={[Function]}
       reload={[Function]}
-      saved={true}
+      saveState="saveSuccessful"
       showPlaceholders={true}
       title="Mock Title"
     />
@@ -3132,6 +3233,29 @@ Ctrl+/"
             />
           </g>
         </svg>
+      </button>
+      <button
+        aria-label="Color
+Ctrl+Shift+P"
+        className=" is-not-selected"
+        onClick={[Function]}
+        title="Color
+Ctrl+Shift+P"
+      >
+        <div>
+          <svg
+            viewBox="-512 -700 3072 3072"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2048,1721.67V2048H0V1721.67Z"
+              fill="#000000"
+            />
+            <path
+              d="M1459,1434l-147-410H741L598,1434H461L968,102h124l504,1332M1027,265h-4L783,923h487Z"
+            />
+          </svg>
+        </div>
       </button>
       <button
         aria-label="Link

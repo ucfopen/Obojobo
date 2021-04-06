@@ -269,14 +269,17 @@ describe('middleware', () => {
 	test('an error handler is registered last', () => {
 		const middleware = require('../server/middleware.default')
 		middleware(mockApp)
+		// Express's last handler will be the uncaught error handler
 		const lastCallIndex = mockApp.use.mock.calls.length - 1
-		const shouldBeErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
 
-		// is a function?
-		expect(shouldBeErrorHandler).toBeInstanceOf(Function)
+		// grab a reference to the function
+		const expressUncaughtErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
 
-		// function has 4 args
-		expect(shouldBeErrorHandler.length).toBe(4)
+		// test that it is a function?
+		expect(expressUncaughtErrorHandler).toBeInstanceOf(Function)
+
+		// test that it has the require 4 args
+		expect(expressUncaughtErrorHandler.length).toBe(4)
 	})
 
 	test('an error handler is registered last', () => {
@@ -285,12 +288,37 @@ describe('middleware', () => {
 		const mockNext = jest.fn()
 		middleware(mockApp)
 		const lastCallIndex = mockApp.use.mock.calls.length - 1
-		const shouldBeErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
+		const expressUncaughtErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
 
-		// is a function?
-		shouldBeErrorHandler('mock-error', mockReq, mockRes, mockNext)
+		// execute handler
+		expressUncaughtErrorHandler('mock-error', mockReq, mockRes, mockNext)
 
 		expect(mockRes.unexpected).toHaveBeenCalled()
 		expect(logger.error).toHaveBeenCalled()
+	})
+
+	test('an error handler falls back when res.unexpected is undefined', () => {
+		mockStaticDate()
+		const logger = require('../server/logger')
+		const middleware = require('../server/middleware.default')
+		const mockNext = jest.fn()
+		middleware(mockApp)
+		const lastCallIndex = mockApp.use.mock.calls.length - 1
+		const expressUncaughtErrorHandler = mockApp.use.mock.calls[lastCallIndex][0]
+
+		// simulate unexpected not being defined
+		mockRes.unexpected = null
+		// execute handler
+		expressUncaughtErrorHandler('mock-error', mockReq, mockRes, mockNext)
+
+		// make sure 500 set
+		expect(mockRes.status).toHaveBeenLastCalledWith(500)
+		// make sure the user is shown an error message
+		expect(mockRes.send).toHaveBeenLastCalledWith('500 - Internal Server Error: 1474563434500')
+		// make sure the matching error code is logged
+		expect(logger.error).toHaveBeenLastCalledWith(
+			'Uncaught error (timecode shown on user error page: 1474563434500)',
+			'mock-error'
+		)
 	})
 })

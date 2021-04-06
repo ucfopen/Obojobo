@@ -1,38 +1,46 @@
+const getAllOboNodeScriptPathsByType = require('obojobo-lib-utils').getAllOboNodeScriptPathsByType
+
+const nameMap = new Map()
+	.set('ActionButton', 'ObojoboDraft.Chunks.ActionButton')
+	.set('Assessment', 'ObojoboDraft.Sections.Assessment')
+	.set('Break', 'ObojoboDraft.Chunks.Break')
+	.set('Code', 'ObojoboDraft.Chunks.Code')
+	.set('Content', 'ObojoboDraft.Sections.Content')
+	.set('Figure', 'ObojoboDraft.Chunks.Figure')
+	.set('Heading', 'ObojoboDraft.Chunks.Heading')
+	.set('HTML', 'ObojoboDraft.Chunks.HTML')
+	.set('IFrame', 'ObojoboDraft.Chunks.IFrame')
+	.set('List', 'ObojoboDraft.Chunks.List')
+	.set('Materia', 'ObojoboDraft.Chunks.Materia')
+	.set('MathEquation', 'ObojoboDraft.Chunks.MathEquation')
+	.set('MCAnswer', 'ObojoboDraft.Chunks.MCAssessment.MCAnswer')
+	.set('MCAssessment', 'ObojoboDraft.Chunks.MCAssessment')
+	.set('MCChoice', 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
+	.set('MCFeedback', 'ObojoboDraft.Chunks.MCAssessment.MCFeedback')
+	.set('Module', 'ObojoboDraft.Modules.Module')
+	.set('Page', 'ObojoboDraft.Pages.Page')
+	.set('Question', 'ObojoboDraft.Chunks.Question')
+	.set('QuestionBank', 'ObojoboDraft.Chunks.QuestionBank')
+	.set('Table', 'ObojoboDraft.Chunks.Table')
+	.set('Text', 'ObojoboDraft.Chunks.Text')
+	.set('YouTube', 'ObojoboDraft.Chunks.YouTube')
+
+// load name maps dynamically registered
+getAllOboNodeScriptPathsByType('parsers').forEach(file => {
+	const { name, xmlTag } = require(file)
+	nameMap.set(name, xmlTag)
+})
+
 const nameTransform = node => {
 	if (node.type === 'element') {
-		if (nameTable[node.name]) {
-			node.name = nameTable[node.name]
+		if (nameMap.has(node.name)) {
+			node.name = nameMap.get(node.name)
 		}
 	}
 
 	for (const i in node.elements) {
 		nameTransform(node.elements[i])
 	}
-}
-
-const nameTable = {
-	Code: 'ObojoboDraft.Chunks.Code',
-	Module: 'ObojoboDraft.Modules.Module',
-	Content: 'ObojoboDraft.Sections.Content',
-	Assessment: 'ObojoboDraft.Sections.Assessment',
-	Page: 'ObojoboDraft.Pages.Page',
-	Text: 'ObojoboDraft.Chunks.Text',
-	Heading: 'ObojoboDraft.Chunks.Heading',
-	List: 'ObojoboDraft.Chunks.List',
-	Figure: 'ObojoboDraft.Chunks.Figure',
-	MathEquation: 'ObojoboDraft.Chunks.MathEquation',
-	YouTube: 'ObojoboDraft.Chunks.YouTube',
-	QuestionBank: 'ObojoboDraft.Chunks.QuestionBank',
-	Question: 'ObojoboDraft.Chunks.Question',
-	MCAssessment: 'ObojoboDraft.Chunks.MCAssessment',
-	MCChoice: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-	MCAnswer: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-	MCFeedback: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-	ActionButton: 'ObojoboDraft.Chunks.ActionButton',
-	Table: 'ObojoboDraft.Chunks.Table',
-	Break: 'ObojoboDraft.Chunks.Break',
-	HTML: 'ObojoboDraft.Chunks.HTML',
-	IFrame: 'ObojoboDraft.Chunks.IFrame'
 }
 
 module.exports = nameTransform

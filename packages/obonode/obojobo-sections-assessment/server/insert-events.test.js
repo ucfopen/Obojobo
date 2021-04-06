@@ -1,4 +1,8 @@
-const { insertAttemptEndEvents, insertAttemptScoredEvents } = require('./insert-events')
+const {
+	insertAttemptEndEvents,
+	insertAttemptScoredEvents,
+	insertAttemptInvalidatedEvent
+} = require('./insert-events')
 const mockInsertEvent = require('obojobo-express/server/insert_event')
 
 const mockCreateAssessmentAttemptSubmittedEvent = jest
@@ -11,6 +15,7 @@ const mockCreateAssessmentAttemptImportedEvent = jest
 const mockGetLatestHighestAssessmentScoreRecord = jest
 	.fn()
 	.mockResolvedValue({ score: 'mockHighestAssessmentScore' })
+const insert_event = require('obojobo-express/server/insert_event')
 
 const mockUser = { id: 'mockUserId' }
 const mockDraftDocument = {
@@ -329,5 +334,33 @@ describe('attempt-end/insert events', () => {
 		  "visitId": "mockVisitId",
 		}
 	`)
+	})
+
+	test('attemptInvalidated event calls insertEvent with expected data', async () => {
+		await insertAttemptInvalidatedEvent(
+			'mockAttemptId',
+			'mockUserId',
+			'mockVisitId',
+			'mockDraftId',
+			'mockContentId',
+			'mockRemoteAddress',
+			'mockIsPreview'
+		)
+		expect(insert_event).toHaveBeenCalledWith({
+			action: 'assessment:attemptInvalidated',
+			actorTime: '2016-09-22T16:57:14.500Z',
+			payload: {
+				attemptId: 'mockAttemptId'
+			},
+			userId: 'mockUserId',
+			ip: 'mockRemoteAddress',
+			visitId: 'mockVisitId',
+			metadata: {},
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			eventVersion: '1.0.0',
+			isPreview: 'mockIsPreview',
+			caliperPayload: {}
+		})
 	})
 })

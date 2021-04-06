@@ -22,7 +22,7 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const plugins = {
-	// Editor Plugins - These get attached to the editor object and override it's default functions
+	// Editor Plugins - These get attached to the editor object and override its default functions
 	// They may affect multiple nodes simultaneously
 	insertData(data, editor, next) {
 		// Insert Slate fragments normally
