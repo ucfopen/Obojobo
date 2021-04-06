@@ -159,7 +159,7 @@ export default class ViewerApp extends React.Component {
 					},
 					() => {
 						Dispatcher.trigger('viewer:loaded', true)
-						if (!document.hidden) this.sendViewStart()
+						if (!document.hidden) this.sendInitialViewEvent()
 					}
 				)
 			})
@@ -352,12 +352,12 @@ export default class ViewerApp extends React.Component {
 		// From Hiding to Viewing
 		if (this.viewerHideDate) {
 			// leaveEvent may not exist if postEvent for 'viewer:leave' didn't complete
-			const relatedEventId = this.leaveEvent?.extensions?.internalEventId ?? 'not availible'
+			const relatedEventId = this.leaveEvent?.extensions?.internalEventId ?? 'not available'
 
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
-				eventVersion: '2.0.0',
+				eventVersion: '3.0.0',
 				visitId: this.state.navState.visitId,
 				payload: {
 					relatedEventId,
@@ -372,11 +372,15 @@ export default class ViewerApp extends React.Component {
 		}
 
 		// Opened in Background and Viewed for the first time
-		this.sendViewStart()
+		// When this happens, document.hidden is true when the page loads, so onVisibilityChange
+		// isn't called. When the user views the tab document.hidden will become false, but
+		// this.viewerHideDate will not be set so we get to this point - in which case we fire
+		// the initialView event:
+		this.sendInitialViewEvent()
 	}
 
 	// first view Event
-	sendViewStart() {
+	sendInitialViewEvent() {
 		ViewerAPI.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:initialView',

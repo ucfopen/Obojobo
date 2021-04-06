@@ -435,8 +435,13 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		const originalHidden = document.hidden
+		document.hidden = true
+
 		setTimeout(() => {
-			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			jest.useFakeTimers('modern')
+			jest.setSystemTime(new Date(2020, 0, 1))
+
 			component.instance().leaveEvent = {
 				extensions: { internalEventId: 'mock-id' }
 			}
@@ -446,20 +451,24 @@ describe('ViewerApp', () => {
 
 			component.instance().onVisibilityChange()
 
-			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			document.hidden = false
+			component.instance().onVisibilityChange()
+
+			expect(ViewerAPI.postEvent).toHaveBeenLastCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
-				eventVersion: '2.0.0',
+				eventVersion: '3.0.0',
 				payload: {
 					relatedEventId: 'mock-id',
-					leftTime: 999,
-					duration: 1
+					leftTime: new Date(2020, 0, 1),
+					duration: 0
 				},
 				visitId: undefined
 			})
 
-			dateSpy.mockRestore()
+			jest.useRealTimers()
 			component.unmount()
+			document.hidden = originalHidden
 			done()
 		})
 	})
@@ -469,31 +478,37 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		const originalHidden = document.hidden
+		document.hidden = true
+
 		setTimeout(() => {
-			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
-			// component.instance().leaveEvent = {
-			// 	extensions: { internalEventId: 'mock-id' }
-			// }
+			jest.useFakeTimers('modern')
+			jest.setSystemTime(new Date(2020, 0, 1))
+
 			component.instance().viewerHideDate = 999
 			ViewerAPI.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
 			component.instance().onVisibilityChange()
 
-			expect(ViewerAPI.postEvent).toHaveBeenCalledWith({
+			document.hidden = false
+			component.instance().onVisibilityChange()
+
+			expect(ViewerAPI.postEvent).toHaveBeenLastCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
-				eventVersion: '2.0.0',
+				eventVersion: '3.0.0',
 				payload: {
-					relatedEventId: 'not availible',
-					leftTime: 999,
-					duration: 1
+					relatedEventId: 'not available',
+					leftTime: new Date(2020, 0, 1),
+					duration: 0
 				},
 				visitId: undefined
 			})
 
-			dateSpy.mockRestore()
+			jest.useRealTimers()
 			component.unmount()
+			document.hidden = originalHidden
 			done()
 		})
 	})
