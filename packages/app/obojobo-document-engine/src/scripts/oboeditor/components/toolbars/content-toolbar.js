@@ -7,12 +7,14 @@ import LinkMark from '../marks/link-mark'
 import ScriptMarks from '../marks/script-marks'
 import AlignMarks from '../marks/align-marks'
 import IndentMarks from '../marks/indent-marks'
+import ColorMark from '../marks/color-marks'
 import ParagraphStyles from './paragraph-styles'
 import ListDropper from './list-dropper'
 import './content-toolbar.scss'
 
 const contentMarks = [
 	...BasicMarks.marks,
+	...ColorMark.marks,
 	...LinkMark.marks,
 	...ScriptMarks.marks,
 	...AlignMarks.marks,
@@ -34,7 +36,7 @@ const orderedList = [
 ]
 
 const getIsSelected = (marks, mark) => {
-	if (!mark || !marks || !marks[mark.type]) {
+	if (!mark || !marks || mark.type === 'color' || !marks[mark.type]) {
 		return false
 	}
 
@@ -63,7 +65,7 @@ const ContentToolbar = props => {
 				// to do that is probably tech-savvy enough to know whether they use CTRL or ⌘
 				// for keyboard shortcuts
 				const hotKey = isMac ? '⌘+' : 'Ctrl+'
-				const shortcut = '\n' + hotKey + mark.shortcut
+				const shortcut = mark.shortcut ? '\n' + hotKey + mark.shortcut : ''
 				const isSelected = getIsSelected(marks, mark)
 				const Icon = mark.icon
 
@@ -75,7 +77,7 @@ const ContentToolbar = props => {
 						title={mark.name + shortcut}
 						aria-label={mark.name + shortcut}
 					>
-						<Icon />
+						<Icon editor={props.editor} />
 					</button>
 				)
 			})}

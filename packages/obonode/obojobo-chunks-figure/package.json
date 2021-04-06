@@ -42,7 +42,8 @@
 			"lcov"
 		],
 		"coveragePathIgnorePatterns": [
-			"node_modules"
+			"node_modules",
+			"image-caption-width-types.js"
 		],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",

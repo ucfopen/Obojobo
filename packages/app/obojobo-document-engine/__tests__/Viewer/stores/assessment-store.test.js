@@ -1504,7 +1504,7 @@ describe('AssessmentStore', () => {
 		AssessmentAPI.resumeAttempt.mockResolvedValueOnce(mockResumeAttemptResponse)
 
 		jest.spyOn(AssessmentStore, 'updateStateAfterStartAttempt')
-		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
+		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption').mockImplementation(jest.fn())
 		jest.spyOn(AssessmentStore, 'findUnfinishedAttemptInAssessmentSummary')
 
 		AssessmentStore.updateStateAfterStartAttempt.mockReturnValueOnce()
@@ -1571,7 +1571,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('onCloseUpdatedModuleDialog restarts attempt with same id', () => {
-		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption')
+		jest.spyOn(AssessmentStore, 'startAttemptWithImportScoreOption').mockImplementation(jest.fn())
 
 		AssessmentStore.onCloseUpdatedModuleDialog('mock-id')
 

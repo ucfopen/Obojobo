@@ -26,13 +26,13 @@
 		"postinstall": "husky install"
 	},
 	"devDependencies": {
-		"husky": "^5.2.0",
+		"husky": "^6.0.0",
 		"jest-runner-eslint": "^0.10.0",
 		"lerna": "^4.0.0",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
-		"node-gyp": "^7.1.2"
+		"node-gyp": "^8.0.0"
 	},
 	"jest": {
 		"projects": [
