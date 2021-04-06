@@ -4,7 +4,6 @@ import React, { useState, useRef } from 'react'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import Common from '../../common'
-import EyeDropper from './eye-dropper.svg'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { Button } = Common.components
@@ -150,7 +149,6 @@ const ColorPicker = props => {
 							value={safeColorString}
 							onChange={onChangeColorValue}
 						/>
-						<img src={EyeDropper} alt="Eye Dropping Icon" />
 					</span>
 					<input
 						className="color-string-input"
