@@ -18,7 +18,7 @@ const IFrame = {
 		emptyNode
 	},
 	plugins: {
-		// Editor Plugins - These get attached to the editor object an override it's default functions
+		// Editor Plugins - These get attached to the editor object an override its default functions
 		// They may affect multiple nodes simultaneously
 		isVoid(element, editor, next) {
 			if (element.type === IFRAME_NODE) return true
