@@ -37,7 +37,7 @@ exports[`Figure Figure component 1`] = `
           unselectable="on"
         />
         <figcaption
-          className="is-image-width"
+          className="is-caption-width-image-width"
           style={
             Object {
               "width": "500px",
@@ -99,7 +99,7 @@ exports[`Figure Figure component custom size with no height 1`] = `
           unselectable="on"
         />
         <figcaption
-          className="is-max-width"
+          className="is-caption-width-max-width"
           style={Object {}}
         >
           <span
@@ -157,7 +157,7 @@ exports[`Figure Figure component custom size with no width 1`] = `
           unselectable="on"
         />
         <figcaption
-          className="is-image-width"
+          className="is-caption-width-image-width"
           style={Object {}}
         >
           <span
@@ -211,7 +211,7 @@ exports[`Figure Figure component size small 1`] = `
           unselectable="on"
         />
         <figcaption
-          className="is-image-width"
+          className="is-caption-width-image-width"
           style={Object {}}
         >
           <span

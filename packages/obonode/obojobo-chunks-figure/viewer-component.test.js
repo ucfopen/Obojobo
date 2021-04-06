@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer'
 
 import Figure from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import ImageCaptionWidthTypes from './image-caption-width-types'
 
 require('./viewer') // used to register this oboModel
 
@@ -20,7 +21,7 @@ describe('Figure', () => {
 				size: 'custom',
 				width: '500',
 				height: '400',
-				captionWidth: 'image-width',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -50,7 +51,7 @@ describe('Figure', () => {
 				size: 'custom',
 				width: '500',
 				height: '400',
-				captionWidth: 'image-width'
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH
 			}
 		})
 		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
@@ -70,7 +71,7 @@ describe('Figure', () => {
 				alt: 'Alt Text',
 				url: 'www.example.com/img.jpg',
 				size: 'small',
-				captionWidth: 'image-width',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -97,7 +98,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				height: '400',
-				captionWidth: 'image-width',
+				captionWidth: ImageCaptionWidthTypes.IMAGE_WIDTH,
 				textGroup: [
 					{
 						text: {
@@ -126,7 +127,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
-				captionWidth: 'max-width',
+				captionWidth: ImageCaptionWidthTypes.MAX_WIDTH,
 				textGroup: [
 					{
 						text: {

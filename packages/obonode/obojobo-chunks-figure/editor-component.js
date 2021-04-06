@@ -102,6 +102,7 @@ class Figure extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 		const selected = this.props.selected
 		const isSelected = isOrNot(selected, 'selected')
+		const captionWidth = content.captionWidth || ImageCaptionWidthTypes.IMAGE_WIDTH
 
 		const customStyle = {}
 		const captionStyle = {}
@@ -109,13 +110,14 @@ class Figure extends React.Component {
 			if (content.width) {
 				customStyle.width = content.width + 'px'
 
-				if (content.captionWidth === ImageCaptionWidthTypes.IMAGE_WIDTH) {
+				if (captionWidth === ImageCaptionWidthTypes.IMAGE_WIDTH) {
 					captionStyle.width = content.width + 'px'
 				}
 			}
 
 			customStyle['maxWidth'] = '100%'
 		}
+
 		return (
 			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size} ${isSelected}`}>
@@ -160,7 +162,10 @@ class Figure extends React.Component {
 								lazyLoad={false}
 							/>
 						</div>
-						<figcaption className={`align-center is-${content.captionWidth}`} style={captionStyle}>
+						<figcaption
+							className={`align-center is-caption-width-${captionWidth}`}
+							style={captionStyle}
+						>
 							{this.props.children}
 						</figcaption>
 					</figure>

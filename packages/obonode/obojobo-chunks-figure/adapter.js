@@ -23,7 +23,10 @@ const Adapter = {
 		model.setStateProp('width', null, p => parseInt(p, 10))
 		model.setStateProp('height', null, p => parseInt(p, 10))
 		model.setStateProp('alt', null)
-		model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH)
+		model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH, p => p.toLowerCase(), [
+			ImageCaptionWidthTypes.IMAGE_WIDTH,
+			ImageCaptionWidthTypes.MAX_WIDTH
+		])
 	},
 
 	clone(model, clone) {
