@@ -76,7 +76,7 @@ Object {
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [],
+          "styleList": null,
           "value": "Widget Caption",
         },
       },
