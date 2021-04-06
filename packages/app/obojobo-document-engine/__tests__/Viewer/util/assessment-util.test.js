@@ -172,30 +172,43 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('getAssessmentScoreForModel returns null when no attempts', () => {
-		const model = {
-			get: jest
-				.fn()
-				.mockReturnValueOnce(TYPE_ASSESSMENT)
-				.mockReturnValueOnce('testId')
-		}
 		const state = {
-			assessments: {}
+			assessmentSummary: []
 		}
 
-		const score = AssessmentUtil.getAssessmentScoreForModel(state, model)
+		const score = AssessmentUtil.getAssessmentScoreForModel(state)
 
 		expect(score).toEqual(null)
 	})
 
 	test('getAssessmentScoreForModel returns highest score', () => {
-		jest.spyOn(AssessmentUtil, 'getHighestAttemptsForModelByAssessmentScore')
-		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
-			{ assessmentScore: 'mockScore' }
-		])
+		const state = {
+			assessmentSummary: [{ scores: [null, 99, 88] }]
+		}
 
-		const score = AssessmentUtil.getAssessmentScoreForModel()
+		const score = AssessmentUtil.getAssessmentScoreForModel(state)
 
-		expect(score).toEqual('mockScore')
+		expect(score).toEqual(99)
+	})
+
+	test('getAssessmentScoreForModel returns null if the highest score is null', () => {
+		const state = {
+			assessmentSummary: [{ scores: [null, null, null] }]
+		}
+
+		const score = AssessmentUtil.getAssessmentScoreForModel(state)
+
+		expect(score).toEqual(null)
+	})
+
+	test('getAssessmentScoreForModel returns null if no scores exist', () => {
+		const state = {
+			assessmentSummary: [{ scores: [] }]
+		}
+
+		const score = AssessmentUtil.getAssessmentScoreForModel(state)
+
+		expect(score).toEqual(null)
 	})
 
 	test('getLastAttemptScoresForModel returns null with no assessment', () => {

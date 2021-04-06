@@ -120,7 +120,7 @@ class IFrame extends React.Component {
 
 		return (
 			<Node {...this.props}>
-				<div className={className}>
+				<div className={className} contentEditable={false}>
 					<div
 						className={`editor-container  ${isSelected}`}
 						style={previewStyle}

@@ -10,8 +10,9 @@ import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import OboModel from 'src/scripts/common/models/obo-model'
 
-import { Editor } from 'slate'
+import { Editor, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
+// jest.mock('slate')
 jest.mock('src/scripts/viewer/util/editor-api')
 jest.mock('src/scripts/common/util/modal-util')
 jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
@@ -77,6 +78,43 @@ describe('VisualEditor', () => {
 		}
 		const component = renderer.create(<VisualEditor {...props} />)
 		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('VisualEditor component handles triple click', () => {
+		const spy = jest.spyOn(Transforms, 'move').mockReturnValueOnce(true)
+		const props = {
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [{ type: 'mockNode' }] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mockNode' }] })
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = mount(<VisualEditor {...props} />)
+
+		// Double click
+		component
+			.find('.obojobo-draft--pages--page')
+			.at(0)
+			.simulate('click', { detail: 2 })
+		expect(spy).not.toHaveBeenCalled()
+
+		// Selection does not end at the beginning
+		component.instance().editor.selection.focus.offset = 1
+		component
+			.find('.obojobo-draft--pages--page')
+			.at(0)
+			.simulate('click', { detail: 3 })
+		expect(spy).not.toHaveBeenCalled()
+
+		// Selection ends at the beginning
+		component.instance().editor.selection.focus.offset = 0
+		component
+			.find('.obojobo-draft--pages--page')
+			.at(0)
+			.simulate('click', { detail: 3 })
+		expect(spy).toHaveBeenCalled()
 	})
 
 	test('VisualEditor component - editor is disable when modal is opened', () => {
@@ -556,7 +594,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": false,
-		  "saved": true,
+		  "saveState": "saveSuccessful",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -586,7 +624,7 @@ describe('VisualEditor', () => {
 		Object {
 		  "contentRect": null,
 		  "editable": true,
-		  "saved": false,
+		  "saveState": "",
 		  "showPlaceholders": true,
 		  "value": Array [
 		    Object {
@@ -965,11 +1003,73 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
-		component.setState({ saved: false })
+		component.setState({ saveState: '' })
 
 		expect(eventMap.beforeunload({})).toEqual(true)
 
 		component.unmount()
+	})
+
+	test('saveDraft() updates state after API called successfully ', () => {
+		const props = {
+			saveDraft: jest.fn().mockResolvedValue(true),
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component.instance().markUnsaved = jest.fn()
+
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(component.instance().state.saveState).toBe('saveSuccessful')
+			})
+	})
+
+	test('saveDraft() updates state after API called failed ', () => {
+		const props = {
+			saveDraft: jest.fn().mockResolvedValue(false),
+			insertableItems: 'mock-insertable-items',
+			page: {
+				attributes: { children: [] },
+				get: jest.fn(),
+				toJSON: () => ({ children: [{ type: 'mock node' }] }),
+				set: jest.fn(),
+				children: {
+					reset: jest.fn()
+				}
+			},
+			model: {
+				title: 'Mock Title',
+				flatJSON: () => ({ content: {} }),
+				children: []
+			}
+		}
+
+		const component = mount(<VisualEditor {...props} />)
+		component.instance().markUnsaved = jest.fn()
+
+		component
+			.instance()
+			.saveModule()
+			.then(() => {
+				expect(component.instance().state.saveState).toBe('saveFailed')
+			})
 	})
 
 	test('onKeyDown() calls editor functions', () => {
@@ -1349,6 +1449,6 @@ describe('VisualEditor', () => {
 		// eslint-disable-next-line no-undefined
 		expect(instance.checkIfSaved(mockFn)).toBe(undefined)
 		expect(spy).not.toHaveBeenCalled()
-		expect(instance.state.saved).toBe(false)
+		expect(instance.state.saveState).toBe('')
 	})
 })

@@ -17,7 +17,11 @@ class Level extends React.Component {
 		if (this.props.element.content.type === 'unordered') {
 			return <ul style={this.getListStyle()}>{this.props.children}</ul>
 		} else {
-			return <ol style={this.getListStyle()}>{this.props.children}</ol>
+			return (
+				<ol style={this.getListStyle()} start={this.props.element.content.start}>
+					{this.props.children}
+				</ol>
+			)
 		}
 	}
 

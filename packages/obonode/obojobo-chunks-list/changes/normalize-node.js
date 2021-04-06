@@ -165,13 +165,18 @@ const normalizeNode = (entry, editor, next) => {
 
 		// create styles for this LIST_LEVEL_NODE
 		const stylesToSet = {}
-		if (node.content.type !== desired.type) stylesToSet.type = desired.type
+		if (node.content.type !== desired.type) {
+			stylesToSet.type = desired.type
+		}
 		if (node.content.bulletStyle !== desired.bulletStyle) {
 			stylesToSet.bulletStyle = desired.bulletStyle
 		}
+		if (desired.start > 1 && node.content.start !== desired.start) {
+			stylesToSet.start = desired.start
+		}
 
 		// only update if needed
-		if (stylesToSet.type || stylesToSet.bulletStyle) {
+		if (stylesToSet.type || stylesToSet.bulletStyle || stylesToSet.start) {
 			Transforms.setNodes(editor, { content: { ...node.content, ...stylesToSet } }, { at: path })
 			return
 		}

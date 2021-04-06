@@ -2,6 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import TestRenderer from 'react-test-renderer'
 import IFrameProperties from './iframe-properties-modal'
+import IFrameSizingTypes from './iframe-sizing-types'
 
 // mock ref.current.focus and ref.current.select on inputs
 const testRendererOptions = {
@@ -130,8 +131,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const borderSwitch = testInstance.findByProps({ title: 'Border' })
 
-		// execute that switch's handleCheckChange
-		borderSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		borderSwitch.props.onChange({ target: { checked: true } })
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -154,7 +155,7 @@ describe('IFrame Properties Modal', () => {
 		)
 
 		component
-			.find('select')
+			.find('#obojobo-draft--chunks--iframe--properties-modal--fit')
 			.at(0)
 			.simulate('change', { target: { value: 'changed' } })
 
@@ -179,6 +180,28 @@ describe('IFrame Properties Modal', () => {
 		widthInput.simulate('change', { target: { value: 600 } })
 		expect(component.state().width).toBe(600)
 		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('IFrameProperties component changes width according to sizing option', () => {
+		const component = mount(
+			<IFrameProperties
+				content={{
+					controls: '',
+					border: false,
+					initialZoom: 1,
+					sizing: IFrameSizingTypes.TEXT_WIDTH
+				}}
+			/>
+		)
+
+		const widthInput = component.find('input').at(3)
+		expect(widthInput.prop('placeholder')).toBe('--')
+		expect(widthInput.prop('value')).toBe('')
+
+		const select = component.find('select').at(0)
+		select.simulate('change', { target: { value: IFrameSizingTypes.FIXED } })
+		expect(component.state().width).toBe(640)
+		// expect(widthInput.prop('placeholder')).toBe('Width')
 	})
 
 	test('IFrameProperties component changes height', () => {
@@ -238,8 +261,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Autoload' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({ target: { checked: true } })
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -269,8 +292,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Reload' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({ target: { checked: true } })
 		expect(testInstance.instance.state.controls).toBe(',reload')
 
 		// capture the changes
@@ -282,7 +305,7 @@ describe('IFrame Properties Modal', () => {
 		expect(startState).not.toEqual(endState)
 
 		// turn it back off
-		autoloadSwitch.props.handleCheckChange(false)
+		autoloadSwitch.props.onChange({ target: { checked: false } })
 		expect(testInstance.instance.state.controls).toBe('')
 	})
 
@@ -305,8 +328,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'New Window' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({ target: { checked: true } })
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -336,8 +359,8 @@ describe('IFrame Properties Modal', () => {
 		const testInstance = testRenderer.root
 		const autoloadSwitch = testInstance.findByProps({ title: 'Zoom' })
 
-		// execute that switch's handleCheckChange
-		autoloadSwitch.props.handleCheckChange(true)
+		// execute that switch's onChange
+		autoloadSwitch.props.onChange({ target: { checked: true } })
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -346,5 +369,24 @@ describe('IFrame Properties Modal', () => {
 		expect(endState).toMatchSnapshot()
 
 		expect(startState).not.toEqual(endState)
+	})
+
+	test('IFrameProperties component changes sizing', () => {
+		const component = mount(
+			<IFrameProperties
+				content={{
+					controls: '',
+					border: false,
+					initialZoom: 1
+				}}
+			/>
+		)
+
+		component
+			.find('#obojobo-draft--chunks--iframe--properties-model--sizing')
+			.at(0)
+			.simulate('change', { target: { value: 'changed' } })
+
+		expect(component.html()).toMatchSnapshot()
 	})
 })
