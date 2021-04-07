@@ -25,7 +25,7 @@ const Adapter = {
 		model.setStateProp('alt', null)
 		model.setStateProp('captionWidth', ImageCaptionWidthTypes.IMAGE_WIDTH, p => p.toLowerCase(), [
 			ImageCaptionWidthTypes.IMAGE_WIDTH,
-			ImageCaptionWidthTypes.MAX_WIDTH
+			ImageCaptionWidthTypes.TEXT_WIDTH
 		])
 	},
 

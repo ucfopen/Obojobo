@@ -153,7 +153,7 @@ class ImageProperties extends React.Component {
 							<option value={ImageCaptionWidthTypes.IMAGE_WIDTH}>
 								Restrict caption to the same width as the image
 							</option>
-							<option value={ImageCaptionWidthTypes.MAX_WIDTH}>
+							<option value={ImageCaptionWidthTypes.TEXT_WIDTH}>
 								Allow caption to extend past the image width
 							</option>
 						</select>

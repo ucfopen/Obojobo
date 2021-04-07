@@ -35,6 +35,10 @@
 		font-size: 0.8em;
 		color: $color-text-minor;
 		max-width: calc(100% - 10px); //stylelint-disable-line unit-disallowed-list
+
+		&.is-caption-width-text-width {
+			max-width: 100% !important;
+		}
 	}
 
 	&.custom {
@@ -77,10 +81,6 @@
 			figcaption {
 				max-width: 22em;
 				margin: auto;
-
-				&.is-caption-width-max-width {
-					max-width: 100%;
-				}
 			}
 		}
 	}
