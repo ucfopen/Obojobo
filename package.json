@@ -13,7 +13,8 @@
 		"lint": "lerna run lint",
 		"lint:css": "lerna run lint:css",
 		"lint:js": "lerna run  lint:js",
-		"precommit": "lerna run precommit --concurrency 1 && yarn test:ci --bail",
+		"precommit": "lerna run precommit --concurrency 1 &&  yarn test:ci --bail",
+		"prettier:run": "lerna run prettier:run",
 		"release:publish": "lerna publish from-package",
 		"release:tag": "lerna version --no-push --sign-git-commit --sign-git-tag --no-commit-hooks --force-publish",
 		"version": "yarn update-project-version && yarn update-docker-app-version",
@@ -26,13 +27,13 @@
 		"postinstall": "husky install"
 	},
 	"devDependencies": {
-		"husky": "^5.2.0",
+		"husky": "^6.0.0",
 		"jest-runner-eslint": "^0.10.0",
 		"lerna": "^4.0.0",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
-		"node-gyp": "^7.1.2"
+		"node-gyp": "^8.0.0"
 	},
 	"jest": {
 		"projects": [
