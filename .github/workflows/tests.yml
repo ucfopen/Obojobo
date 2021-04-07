@@ -29,7 +29,7 @@ jobs:
 
     # run prettier against all the code
     - name: Run Prettier
-    - run: yarn prettier:run
+      run: yarn prettier:run
 
     # verify that running prettier didn't cause any changes
     # will fail the PRs that need prettier run on them
