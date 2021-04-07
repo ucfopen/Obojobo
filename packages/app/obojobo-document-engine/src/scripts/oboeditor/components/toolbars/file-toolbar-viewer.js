@@ -4,34 +4,7 @@ import { Range, Editor, Transforms, Element } from 'slate'
 import FileToolbar from './file-toolbar'
 import DropDownMenu from './drop-down-menu'
 import FormatMenu from './format-menu'
-
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-
-const isInsertDisabledForItem = (selectedNodes, name, selection) => {
-	if (!selection) return true
-
-	for (const [node] of selectedNodes) {
-		switch (node.type) {
-			case 'ObojoboDraft.Chunks.Table':
-				return true
-
-			case 'ObojoboDraft.Chunks.Question':
-				return name === 'Question' || name === 'Question Bank'
-		}
-	}
-
-	return false
-}
-
-const containsFigureNode = selectedNodes => {
-	for (const [node] of selectedNodes) {
-		if (node.type === 'ObojoboDraft.Chunks.Figure') {
-			return true
-		}
-	}
-
-	return false
-}
+import { Registry } from '../../../common/registry'
 
 const selectAll = editor => {
 	const edges = Editor.edges(editor, [])
@@ -48,54 +21,35 @@ const FileToolbarViewer = props => {
 	const insertMenu = useMemo(() => {
 		// If the selected area spans across multiple blocks, the selection is deleted before
 		// inserting, colapsing it down to the type of the first block
-		const selectedNodes = (() => {
-			if (!editor.selection) return []
-			return Array.from(
-				Editor.nodes(editor, {
-					at: Editor.path(editor, editor.selection, { edge: 'start' }),
-					match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
-				})
-			)
+		const selectedNode = (() => {
+			if (!hasSelection) return null
+
+			return Editor.nodes(editor, {
+				at: Editor.path(editor, sel, { edge: 'start' }),
+				mode: 'lowest',
+				match: node => Element.isElement(node) && !editor.isInline(node) && !node.subtype
+			}).next().value?.[0]
 		})()
 
-		const insertMenuItems = insertableItems.map(item => {
-			return {
-				name: item.name,
-				action: () => {
-					const path = Editor.path(editor, editor.selection, { edge: 'start' })
-					const prevChildrenCount = editor.children.length
+		const registryItem = Registry.getItemForType(selectedNode?.type)
 
+		const insertMenuItems = insertableItems.map(item => ({
+			name: item.name,
+			disabled: !registryItem?.acceptsInserts || false,
+			action: () => {
+				if (!hasSelection || !selectedNode) return
+
+				if (registryItem?.plugins?.insertItemInto) {
+					// custom chunk action
+					registryItem.plugins.insertItemInto(editor, item)
+				} else {
+					// default action
 					Transforms.insertNodes(editor, item.cloneBlankNode())
+				}
 
-					// Since inserting a node inside a figure caption can sometimes
-					// cause figure to be duplicated after the caption is split, we
-					// need to convert the duplicated figure below to a text node.
-					if (
-						containsFigureNode(selectedNodes) &&
-						editor.children.length !== prevChildrenCount + 1
-					) {
-						// Because we want the figure two lines below,
-						// we need to ignore the last value in the path since
-						// it refers to the figure's caption.
-						const newPath = [...path.slice(0, path.length - 1)]
-						newPath[newPath.length - 1] += 2
-
-						Transforms.setNodes(
-							editor,
-							{
-								type: TEXT_NODE,
-								content: {}
-							},
-							{
-								at: [...newPath]
-							}
-						)
-					}
-					ReactEditor.focus(editor)
-				},
-				disabled: isInsertDisabledForItem(selectedNodes, item.name, sel)
+				ReactEditor.focus(editor)
 			}
-		})
+		}))
 
 		return (
 			<div className="visual-editor--drop-down-menu">
