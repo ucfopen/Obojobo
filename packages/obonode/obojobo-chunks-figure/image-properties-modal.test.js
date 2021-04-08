@@ -212,9 +212,9 @@ describe('Image Properties Modal', () => {
 		// Simulate changing "Caption Width"
 		component
 			.find('#obojobo-draft--chunks--figure--caption-width')
-			.simulate('change', { target: { value: 'max-width' } })
+			.simulate('change', { target: { value: 'text-width' } })
 
-		expect(component.instance().state.captionWidth).toBe('max-width')
+		expect(component.instance().state.captionWidth).toBe('text-width')
 	})
 
 	test('ImageProperties component changes size', () => {

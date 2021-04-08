@@ -27,6 +27,10 @@ const Adapter = {
 			ImageCaptionWidthTypes.IMAGE_WIDTH,
 			ImageCaptionWidthTypes.TEXT_WIDTH
 		])
+
+		if (model.modelState.size === 'large' || model.modelState.size === 'medium') {
+			model.modelState.captionWidth = ImageCaptionWidthTypes.IMAGE_WIDTH
+		}
 	},
 
 	clone(model, clone) {

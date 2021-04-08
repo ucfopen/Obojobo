@@ -64,7 +64,12 @@ class ImageProperties extends React.Component {
 	onCheckSize(event) {
 		const size = event.target.value
 
-		this.setState({ size, width: null, height: null })
+		this.setState({
+			size,
+			width: null,
+			height: null,
+			captionWidth: size === 'small' || size === 'custom' ? this.state.captionWidth : null
+		})
 	}
 
 	focusOnFirstElement() {
@@ -103,6 +108,9 @@ class ImageProperties extends React.Component {
 		}
 
 		const size = this.state.size
+		const isCaptionWidthOptionAvailable =
+			this.state.size === 'small' || this.state.size === 'custom'
+
 		return (
 			<SimpleDialog
 				cancelOk
@@ -110,7 +118,7 @@ class ImageProperties extends React.Component {
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement}
 			>
-				<div className="image-properties">
+				<div className={`image-properties is-size-${size}`}>
 					<div>
 						<div className="flex-container image-container">
 							<Image
@@ -144,18 +152,30 @@ class ImageProperties extends React.Component {
 							placeholder="Describe the Image"
 						/>
 
-						<label htmlFor="obojobo-draft--chunks--figure--caption-width">Caption Width:</label>
+						<label
+							className="caption-width-label"
+							htmlFor="obojobo-draft--chunks--figure--caption-width"
+						>
+							Caption Width:
+						</label>
 						<select
 							id="obojobo-draft--chunks--figure--caption-width"
-							value={this.state.captionWidth}
+							value={this.state.captionWidth || ''}
 							onChange={this.handleCaptionWidthChange}
+							disabled={!isCaptionWidthOptionAvailable}
 						>
-							<option value={ImageCaptionWidthTypes.IMAGE_WIDTH}>
-								Restrict caption to the same width as the image
-							</option>
-							<option value={ImageCaptionWidthTypes.TEXT_WIDTH}>
-								Allow caption to extend past the image width
-							</option>
+							{isCaptionWidthOptionAvailable ? (
+								<React.Fragment>
+									<option value={ImageCaptionWidthTypes.IMAGE_WIDTH}>
+										Restrict caption to the same width as the image
+									</option>
+									<option value={ImageCaptionWidthTypes.TEXT_WIDTH}>
+										Allow caption to extend past the image width
+									</option>
+								</React.Fragment>
+							) : (
+								<option>--</option>
+							)}
 						</select>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
