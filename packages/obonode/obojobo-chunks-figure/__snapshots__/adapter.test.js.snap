@@ -3,7 +3,7 @@
 exports[`Figure adapter construct builds with attributes 1`] = `
 Object {
   "alt": "An image",
-  "captionWidth": "image-width",
+  "captionWidth": "text-width",
   "height": 100,
   "size": "custom",
   "textGroup": TextGroup {

@@ -136,7 +136,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
         />
       </div>
       <figcaption
-        className="align-center is-caption-width-max-width"
+        className="align-center is-caption-width-text-width"
         style={Object {}}
       />
     </figure>

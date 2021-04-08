@@ -127,7 +127,7 @@ describe('Figure', () => {
 				url: 'www.example.com/img.jpg',
 				size: 'custom',
 				width: '500',
-				captionWidth: ImageCaptionWidthTypes.MAX_WIDTH,
+				captionWidth: ImageCaptionWidthTypes.TEXT_WIDTH,
 				textGroup: [
 					{
 						text: {
