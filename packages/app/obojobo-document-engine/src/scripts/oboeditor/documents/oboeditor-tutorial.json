@@ -2981,7 +2981,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The second property that can be set is the caption width. Captions can either be restricted to the same width as the image, or allowed to extend beyond the image's width. Restricting the width can provide some visual consistency to the page, however longer captions can sometimes have a negative impact on the page's structure if their width is restricted to a smaller image.",
+											"value": "The second property that can be set is the caption width. Captions can either be restricted to the same width as the image, or allowed to extend beyond the image's width. Restricting the width can provide some visual consistency to the page, however longer captions can sometimes have a negative impact on the page's structure if their width is restricted to a smaller image. Note that the caption width option only applies for small or custom sized figures. For medium and large sizes the image is already as wide as the page (or wider).",
 											"styleList": null
 										}
 									}
