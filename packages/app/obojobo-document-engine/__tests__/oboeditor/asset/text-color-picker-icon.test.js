@@ -65,16 +65,26 @@ describe('TextColorIcon', () => {
 		const nodeInstance = component.instance()
 
 		// Click when the dom is null
+		component.setState({ isOpen: true })
 		nodeInstance.domRef = { current: null }
 		nodeInstance.onWindowMouseDown({ target: true })
 		expect(props.editor.toggleEditable).not.toHaveBeenCalled()
 
 		// Click inside
+		component.setState({ isOpen: true })
 		nodeInstance.domRef = { current: { contains: () => true } }
 		nodeInstance.onWindowMouseDown({ target: true })
 		expect(props.editor.toggleEditable).not.toHaveBeenCalled()
 
-		// Click outside
+		// Click outside (not yet open)
+		component.setState({ isOpen: false })
+		nodeInstance.domRef = { current: { contains: () => false } }
+		nodeInstance.onWindowMouseDown({ target: true })
+		expect(component.html()).toMatchSnapshot()
+		expect(props.editor.toggleEditable).not.toHaveBeenCalled()
+
+		// Click outside (open)
+		component.setState({ isOpen: true })
 		nodeInstance.domRef = { current: { contains: () => false } }
 		nodeInstance.onWindowMouseDown({ target: true })
 		expect(component.html()).toMatchSnapshot()

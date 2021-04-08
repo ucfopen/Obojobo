@@ -19,6 +19,7 @@ class TextColorPickerIcon extends React.Component {
 	}
 
 	onWindowMouseDown(event) {
+		if (!this.state.isOpen) return
 		if (!this.domRef.current) return
 		if (this.domRef.current.contains(event.target)) return // clicked inside this element
 
