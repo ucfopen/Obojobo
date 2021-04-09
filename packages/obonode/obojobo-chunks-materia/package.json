@@ -28,9 +28,6 @@
 	},
 	"dependencies": {
 		"oauth-signature": "^1.5.0",
-		"obojobo-chunks-iframe": "^12.0.0-alpha.1",
-		"obojobo-document-engine": "^12.0.0-alpha.1",
-		"obojobo-lib-utils": "^12.0.0-alpha.1",
 		"uuid": "^8.3.2",
 		"xml2js": "0.4.23"
 	},
@@ -38,9 +35,9 @@
 		"lint-staged": "^10.5.4"
 	},
 	"peerDependencies": {
-		"obojobo-chunks-iframe": "^11.4.0-alpha.0",
-		"obojobo-document-engine": "^11.4.0-alpha.0",
-		"obojobo-lib-utils": "^11.4.0-alpha.0"
+		"obojobo-chunks-iframe": "^12.0.0-alpha.1",
+		"obojobo-document-engine": "^12.0.0-alpha.1",
+		"obojobo-lib-utils": "^12.0.0-alpha.1"
 	},
 	"jest": {
 		"testMatch": [
