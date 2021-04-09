@@ -12,7 +12,9 @@ ENV PATH=/home/node/.npm-global/bin:${PATH}
 # =====================================================================================================
 FROM base_stage as build_stage
 
-RUN apk add --no-cache build-base git python3
+# build-base needed for node building binaries
+# pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev needed for node-canvas module
+RUN apk add --no-cache build-base git pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev python3
 
 # ======== INSTALL PM2 Globally
 RUN npm install --global pm2@^4.5.1
