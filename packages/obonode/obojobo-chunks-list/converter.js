@@ -74,6 +74,7 @@ const slateToObo = node => {
 		type: node.type,
 		children: [],
 		content: withoutUndefined({
+			spacing: node.content.spacing,
 			triggers: node.content.triggers,
 			listStyles: {
 				type: node.content.listStyles.type,
@@ -130,6 +131,7 @@ const oboToSlate = node => {
 
 	// Make sure that indents exists
 	if (!slateNode.content.listStyles.indents) slateNode.content.listStyles.indents = {}
+	slateNode.content.spacing = node.content.spacing ? node.content.spacing : 'compact'
 
 	slateNode.children = node.content.textGroup.map(line => {
 		let indent = line.data && line.data.indent ? parseInt(line.data.indent, 10) : 0
@@ -137,12 +139,12 @@ const oboToSlate = node => {
 		let listLine = {
 			type: LIST_NODE,
 			subtype: LIST_LEVEL_NODE,
-			content: style,
+			content: style, 
 			children: [
 				{
 					type: LIST_NODE,
 					subtype: LIST_LINE_NODE,
-					content: {},
+					content: {}, 
 					children: TextUtil.parseMarkings(line)
 				}
 			]
@@ -159,7 +161,7 @@ const oboToSlate = node => {
 			listLine = {
 				type: LIST_NODE,
 				subtype: LIST_LEVEL_NODE,
-				content: style,
+				content: style, 
 				children: [listLine]
 			}
 		}

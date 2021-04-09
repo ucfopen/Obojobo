@@ -1,6 +1,19 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--list {
+	
+	.li-spacing-moderate {
+		li {
+			margin: 0.5em 0;
+		}
+	}
+	
+	.li-spacing-generous {
+		li {
+			margin: 1em 0;
+		}
+	}
+	
 	.obojobo-draft--components--button button {
 		min-width: 12em;
 	}

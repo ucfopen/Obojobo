@@ -54,10 +54,11 @@ const List = props => {
 			/>
 		)
 	}
+	console.log(props);
 
 	return (
 		<Node {...props}>
-			<div className={'text-chunk obojobo-draft--chunks--list pad'}>
+			<div className={`text-chunk obojobo-draft--chunks--list pad li-spacing-${props.element.content.spacing}`}>
 				{props.children}
 				{switchButton}
 			</div>

@@ -20,7 +20,7 @@ describe('Module', () => {
 		const model = OboModel.create(json)
 		const moduleData = {
 			focusState: {},
-			navState: {}
+			navState: {},
 		}
 		const renderer = TestRenderer.create(<Module model={model} moduleData={moduleData} />)
 		const tree = renderer.toJSON()
@@ -32,7 +32,7 @@ describe('Module', () => {
 		const model = OboModel.create(json)
 		const moduleData = {
 			focusState: {},
-			navState: {}
+			navState: {},
 		}
 		const mockGetComponentClass = jest.fn().mockReturnValueOnce('MockComponent')
 

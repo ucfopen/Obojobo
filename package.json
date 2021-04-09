@@ -100,5 +100,6 @@
 		"yarn": "^1.15.2",
 		"node": "^12.11.1"
 	},
-	"version": "12.11.1"
+	"version": "12.11.1",
+	"dependencies": {}
 }

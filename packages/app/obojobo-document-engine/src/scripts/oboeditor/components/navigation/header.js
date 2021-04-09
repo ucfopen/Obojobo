@@ -47,13 +47,13 @@ class Header extends React.Component {
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 	}
 
+
 	saveContent(oldContent, newContent) {
 		const item = this.props.list[this.props.index]
 		const model = OboModel.models[item.id]
 
 		newContent.title = this.renamePage(item.id, model.title, newContent.title) // causes store update
 		model.triggers = newContent.triggers || []
-		model.objectives = newContent.objectives || []
 
 		model.set({ content: newContent }) // may cause store update?
 		EditorUtil.setStartPage(newContent.start)

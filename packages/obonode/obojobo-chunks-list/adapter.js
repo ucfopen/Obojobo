@@ -8,6 +8,8 @@ const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
 
+		model.setStateProp('spacing', 'compact', p => p.toLowerCase(), ['compact', 'moderate', 'generous'])
+		
 		if (attrs && attrs.content && attrs.content.listStyles) {
 			model.modelState.listStyles = ListStyles.fromDescriptor(attrs.content.listStyles)
 		} else {
