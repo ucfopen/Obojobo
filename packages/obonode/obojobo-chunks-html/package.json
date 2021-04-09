@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-html",
-	"version": "12.0.0-alpha.1",
+	"version": "12.0.0-alpha.2",
 	"license": "AGPL-3.0-only",
 	"description": "HTML content chunk for Obojobo",
 	"scripts": {
