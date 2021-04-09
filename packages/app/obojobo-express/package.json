@@ -1,7 +1,7 @@
 {
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
-	"version": "12.0.0-alpha.0",
+	"version": "12.0.0-alpha.1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
