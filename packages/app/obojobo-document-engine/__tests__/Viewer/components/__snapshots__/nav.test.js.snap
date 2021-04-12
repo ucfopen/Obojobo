@@ -77,14 +77,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
         aria-disabled={true}
         aria-label="Go to mockMe"
       >
-        <div
-          className="mockStylableText"
-          text={
-            MockStylableText {
-              "value": "mockMe",
-            }
-          }
-        />
+        mockMe
       </button>
     </li>
     <li
@@ -214,14 +207,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
         aria-disabled={true}
         aria-label="Go to mockMe"
       >
-        <div
-          className="mockStylableText"
-          text={
-            MockStylableText {
-              "value": "mockMe",
-            }
-          }
-        />
+        mockMe
       </button>
       <div
         className="lock-icon"

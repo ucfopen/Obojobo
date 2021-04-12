@@ -8,6 +8,7 @@ import EditorComponent from './editor-component'
 import Converter from './converter'
 
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Figure = {
 	name: FIGURE_NODE,
@@ -56,13 +57,38 @@ const Figure = {
 			return []
 		},
 		onKeyDown(entry, editor, event) {
-			switch (event.key) {
-				case 'Enter':
-					return KeyDownUtil.breakToText(event, editor, entry)
-			}
+			if (event.key === 'Enter') return KeyDownUtil.breakToText(event, editor, entry)
 		},
 		renderNode(props) {
 			return <EditorComponent {...props} {...props.attributes} />
+		},
+		insertItemInto(editor, item) {
+			const path = Editor.path(editor, editor.selection, { edge: 'start' })
+			const prevChildrenCount = editor.children.length
+
+			Transforms.insertNodes(editor, item.cloneBlankNode())
+
+			// Since inserting a node inside a figure caption can sometimes
+			// cause figure to be duplicated after the caption is split, we
+			// need to convert the duplicated figure below to a text node.
+			if (editor.children.length !== prevChildrenCount + 1) {
+				// Because we want the figure two lines below,
+				// we need to ignore the last value in the path since
+				// it refers to the figure's caption.
+				const newPath = [...path.slice(0, path.length - 1)]
+				newPath[newPath.length - 1] += 2
+
+				Transforms.setNodes(
+					editor,
+					{
+						type: TEXT_NODE,
+						content: {}
+					},
+					{
+						at: [...newPath]
+					}
+				)
+			}
 		}
 	}
 }

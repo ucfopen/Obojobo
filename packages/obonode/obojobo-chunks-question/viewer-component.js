@@ -49,7 +49,9 @@ export default class Question extends OboQuestionComponent {
 	componentDidMount() {
 		// This is necessary to cause a question assessment to re-run its calculateScore
 		// method, which may do additional things like generate feedback or display errors
-		this.assessmentComponentRef.current.calculateScore()
+		if (this.assessmentComponentRef.current) {
+			this.assessmentComponentRef.current.calculateScore()
+		}
 	}
 
 	static getQuestionAssessmentModel(questionModel) {

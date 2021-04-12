@@ -24,7 +24,7 @@ const onHandleInputFocus = event => {
 		el.select()
 
 		i++
-		if (i > 50) {
+		if (i >= 50) {
 			clearInterval(id)
 		}
 	}, 1)

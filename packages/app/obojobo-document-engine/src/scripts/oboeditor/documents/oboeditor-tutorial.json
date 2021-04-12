@@ -2780,7 +2780,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -2852,7 +2853,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -2920,7 +2922,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -2941,6 +2944,114 @@
 													},
 													"type": "a",
 													"start": 47
+												}
+											]
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "e13324b7-5abf-4209-89a5-3a8fb768792d",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"textGroup": [
+									{
+										"data": {},
+										"text": {
+											"value": "Caption Width",
+											"styleList": null
+										}
+									}
+								],
+								"headingLevel": 3
+							},
+							"children": []
+						},
+						{
+							"id": "439a839e-f7ba-4dc6-b930-d8db499ccbe5",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "The second property that can be set is the caption width. Captions can either be restricted to the same width as the image, or allowed to extend beyond the image's width. Restricting the width can provide some visual consistency to the page, however longer captions can sometimes have a negative impact on the page's structure if their width is restricted to a smaller image. Note that the caption width option only applies for small or custom sized figures. For medium and large sizes the image is already as wide as the page (or wider).",
+											"styleList": null
+										}
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "ae73961b-f97d-48bd-95d5-f448e805a9c5",
+							"type": "ObojoboDraft.Chunks.Figure",
+							"content": {
+								"alt": null,
+								"url": "https://www.ucf.edu/files/2017/10/knightro_two_hands_point.png",
+								"size": "small",
+								"width": null,
+								"height": null,
+								"textGroup": [
+									{
+										"data": null,
+										"text": {
+											"value": "This caption is restricted to the width of the image, so it can only use the same amount of space on the page as the image does.",
+											"styleList": null
+										}
+									}
+								],
+								"captionWidth": "image-width"
+							},
+							"children": []
+						},
+						{
+							"id": "a2edf089-b56e-4792-9f50-4e01eedba8fd",
+							"type": "ObojoboDraft.Chunks.Figure",
+							"content": {
+								"alt": null,
+								"url": "https://www.ucf.edu/files/2017/10/knightro_two_hands_point.png",
+								"size": "small",
+								"width": null,
+								"height": null,
+								"textGroup": [
+									{
+										"data": null,
+										"text": {
+											"value": "This caption is allowed to extend beyond the width of the image, so it is able to fill the same amount of space on the page as a regular text node. It is quite long, and might harm the layout of the page if its width was restricted as it would take up a fair amount of vertical space. This may prevent other parts of the document, or even the image itself, from being viewed at the same time if it is too long and the image is not very wide.",
+											"styleList": null
+										}
+									}
+								],
+								"captionWidth": "text-width"
+							},
+							"children": []
+						},
+						{
+							"id": "085f0e0b-3755-44fe-b7f1-721f9761a2f2",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"triggers": [],
+								"textGroup": [
+									{
+										"data": {
+											"align": "left",
+											"indent": 0
+										},
+										"text": {
+											"value": "Try it! Use the Image Properties dialog to change the caption width for the above images to see how it changes the way they are displayed.",
+											"styleList": [
+												{
+													"end": 7,
+													"data": {},
+													"type": "b",
+													"start": 0
 												}
 											]
 										}
@@ -2976,7 +3087,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The second property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom.",
+											"value": "The third property in the Image Properties dialog is the image size. Figures can be displayed in several different sizes: small, medium, large, and custom.",
 											"styleList": [
 												{
 													"end": 129,
@@ -3026,7 +3137,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3045,7 +3157,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3066,7 +3179,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3142,7 +3256,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3163,7 +3278,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3184,7 +3300,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						},
@@ -3265,7 +3382,8 @@
 											"styleList": []
 										}
 									}
-								]
+								],
+								"captionWidth": "image-width"
 							},
 							"children": []
 						}

@@ -12,7 +12,9 @@ ENV PATH=/home/node/.npm-global/bin:${PATH}
 # =====================================================================================================
 FROM base_stage as build_stage
 
-RUN apk add --no-cache build-base git python3
+# build-base needed for node building binaries
+# pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev needed for npm trianglify
+RUN apk add --no-cache build-base git pkgconfig pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev python3
 
 # ======== INSTALL PM2 Globally
 RUN npm install --global pm2@^4.5.1
@@ -47,6 +49,9 @@ RUN yarn --production=true
 # final stage creates the final deployable image
 # =====================================================================================================
 FROM base_stage as final_stage
+
+# cairo pango jpeg giflib are needed for npm trianglify
+RUN apk add --no-cache cairo pango jpeg giflib
 
 # ======== COPY GLOBAL NODE STUFF
 COPY --chown=node:node --from=build_stage /home/node/.npm-global /home/node/.npm-global

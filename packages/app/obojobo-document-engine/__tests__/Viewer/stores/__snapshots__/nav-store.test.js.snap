@@ -385,8 +385,6 @@ Array [
 ]
 `;
 
-exports[`NavStore nav:goto does not go to a fake page 1`] = `undefined`;
-
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
   Object {

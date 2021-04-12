@@ -31,7 +31,7 @@ describe('NumericAssessment Converter', () => {
 					{
 						text: {
 							value: '',
-							styleList: []
+							styleList: null
 						},
 						data: {}
 					}

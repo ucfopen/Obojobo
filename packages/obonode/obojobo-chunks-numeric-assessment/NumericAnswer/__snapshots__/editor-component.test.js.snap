@@ -16,7 +16,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -40,9 +39,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0.5"
       />
     </label>
@@ -66,7 +63,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -90,9 +86,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0b1101"
       />
     </label>
@@ -116,7 +110,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -140,9 +133,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0o77"
       />
     </label>
@@ -166,7 +157,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -190,9 +180,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0xFF"
       />
     </label>
@@ -216,7 +204,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -240,9 +227,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1"
       />
     </label>
@@ -266,7 +251,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -290,9 +274,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1.23e14"
       />
     </label>
@@ -316,7 +298,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Exact answer"
       >
         <option>
@@ -340,9 +321,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="exact",type="null
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1/2"
       />
     </label>
@@ -366,7 +345,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -390,9 +368,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0.5"
       />
     </label>
@@ -404,7 +380,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -425,9 +400,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -451,7 +424,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -475,9 +447,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0b1101"
       />
     </label>
@@ -489,7 +459,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -510,9 +479,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -536,7 +503,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -560,9 +526,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0o77"
       />
     </label>
@@ -574,7 +538,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -595,9 +558,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -621,7 +582,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -645,9 +605,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0xFF"
       />
     </label>
@@ -659,7 +617,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -680,9 +637,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -706,7 +661,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -730,9 +684,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1"
       />
     </label>
@@ -744,7 +696,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -765,9 +716,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -791,7 +740,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -815,9 +763,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1.23e14"
       />
     </label>
@@ -829,7 +775,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -850,9 +795,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -876,7 +819,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -900,9 +842,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1/2"
       />
     </label>
@@ -914,7 +854,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Absolute"
       >
         <option>
@@ -935,9 +874,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="abs
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -961,7 +898,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -985,9 +921,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0.5"
       />
     </label>
@@ -999,7 +933,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1020,9 +953,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1046,7 +977,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1070,9 +1000,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0b1101"
       />
     </label>
@@ -1084,7 +1012,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1105,9 +1032,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1131,7 +1056,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1155,9 +1079,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0o77"
       />
     </label>
@@ -1169,7 +1091,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1190,9 +1111,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1216,7 +1135,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1240,9 +1158,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0xFF"
       />
     </label>
@@ -1254,7 +1170,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1275,9 +1190,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1301,7 +1214,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1325,9 +1237,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1"
       />
     </label>
@@ -1339,7 +1249,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1360,9 +1269,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1386,7 +1293,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1410,9 +1316,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1.23e14"
       />
     </label>
@@ -1424,7 +1328,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1445,9 +1348,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1471,7 +1372,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Margin of error"
       >
         <option>
@@ -1495,9 +1395,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="answer"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1/2"
       />
     </label>
@@ -1509,7 +1407,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         className="select-item"
         name="margin-type"
         onChange={[Function]}
-        onClick={[Function]}
         value="Percent"
       >
         <option>
@@ -1530,9 +1427,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="margin",type="per
         contentEditable={false}
         name="margin"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value={5}
       />
     </label>
@@ -1556,7 +1451,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1580,9 +1474,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="-0.5"
       />
     </label>
@@ -1596,9 +1488,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0.5"
       />
     </label>
@@ -1622,7 +1512,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1646,9 +1535,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="-1"
       />
     </label>
@@ -1662,9 +1549,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1"
       />
     </label>
@@ -1688,7 +1573,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1712,9 +1596,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="-1.23e14"
       />
     </label>
@@ -1728,9 +1610,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1.23e14"
       />
     </label>
@@ -1754,7 +1634,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1778,9 +1657,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="-1/2"
       />
     </label>
@@ -1794,9 +1671,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="1/2"
       />
     </label>
@@ -1820,7 +1695,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1844,9 +1718,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0b1"
       />
     </label>
@@ -1860,9 +1732,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0b1101"
       />
     </label>
@@ -1886,7 +1756,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1910,9 +1779,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0o1"
       />
     </label>
@@ -1926,9 +1793,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0o77"
       />
     </label>
@@ -1952,7 +1817,6 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         className="select-item"
         name="requirement"
         onChange={[Function]}
-        onClick={[Function]}
         value="Within a range"
       >
         <option>
@@ -1976,9 +1840,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="start"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0x1"
       />
     </label>
@@ -1992,9 +1854,7 @@ exports[`NumericAnswer Editor Node NumericAnswer (requirement="range",type="null
         contentEditable={false}
         name="end"
         onChange={[Function]}
-        onClick={[Function]}
         onFocus={[Function]}
-        onMouseDown={[Function]}
         value="0xFF"
       />
     </label>

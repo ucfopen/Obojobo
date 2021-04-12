@@ -12,7 +12,6 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      onClick={[Function]}
     >
       <option>
         Exact answer
@@ -35,9 +34,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -56,7 +53,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      onClick={[Function]}
       value="Exact answer"
     >
       <option>
@@ -80,9 +76,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -101,7 +95,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      onClick={[Function]}
       value="Margin of error"
     >
       <option>
@@ -125,9 +118,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -139,7 +130,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       className="select-item"
       name="margin-type"
       onChange={[Function]}
-      onClick={[Function]}
     >
       <option>
         Percent
@@ -159,9 +149,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       contentEditable={false}
       name="margin"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -180,7 +168,6 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       className="select-item"
       name="requirement"
       onChange={[Function]}
-      onClick={[Function]}
       value="Within a range"
     >
       <option>
@@ -204,9 +191,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       contentEditable={false}
       name="start"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>
@@ -220,9 +205,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       contentEditable={false}
       name="end"
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
-      onMouseDown={[Function]}
       value=""
     />
   </label>

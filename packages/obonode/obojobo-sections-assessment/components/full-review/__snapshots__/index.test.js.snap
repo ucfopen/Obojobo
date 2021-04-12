@@ -179,7 +179,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
                 80% → 80%
               </strong>
               <div
-                className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+                className="obojobo-draft--components--more-info-button is-default-label is-mode-clicked"
               >
                 <button
                   aria-label="Click to explain attempt score in detail"
@@ -190,6 +190,22 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
                 >
                   ?
                 </button>
+                <div
+                  aria-labelledby="obojobo-draft--components--more-info-button--container--mock-uuid"
+                  className="info"
+                  onBlur={[Function]}
+                  role="dialog"
+                  tabIndex="-1"
+                >
+                  <div
+                    className="container"
+                    id="obojobo-draft--components--more-info-button--container--mock-uuid"
+                  >
+                    <div>
+                      Mock assessment score report view
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -404,7 +420,7 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
                 50%
               </strong>
               <div
-                className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+                className="obojobo-draft--components--more-info-button is-default-label is-mode-clicked"
               >
                 <button
                   aria-label="Click to explain attempt score in detail"
@@ -415,6 +431,22 @@ exports[`FullReview FullReview component with assessment review context 2`] = `
                 >
                   ?
                 </button>
+                <div
+                  aria-labelledby="obojobo-draft--components--more-info-button--container--mock-uuid"
+                  className="info"
+                  onBlur={[Function]}
+                  role="dialog"
+                  tabIndex="-1"
+                >
+                  <div
+                    className="container"
+                    id="obojobo-draft--components--more-info-button--container--mock-uuid"
+                  >
+                    <div>
+                      Mock assessment score report view
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

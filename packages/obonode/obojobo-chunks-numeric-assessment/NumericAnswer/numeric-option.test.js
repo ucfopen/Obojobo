@@ -17,25 +17,29 @@ describe('NumericOption', () => {
 		const component = mount(<NumericOption numericChoice={{ requirement: 'exact' }} />)
 
 		const stopPropagation = jest.fn()
+		const preventDefault = jest.fn()
 
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
-		expect(stopPropagation).toBeCalledTimes(2)
+		expect(stopPropagation).toBeCalledTimes(1)
+		expect(preventDefault).toBeCalledTimes(1)
 	})
 
 	test('NumericOption renders as expected with requirement of `range`', () => {
@@ -49,31 +53,37 @@ describe('NumericOption', () => {
 		const component = mount(<NumericOption numericChoice={{ requirement: 'range' }} />)
 
 		const stopPropagation = jest.fn()
+		const preventDefault = jest.fn()
+
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
-		expect(stopPropagation).toBeCalledTimes(3)
+		expect(stopPropagation).toBeCalledTimes(2)
+		expect(preventDefault).toBeCalledTimes(2)
 	})
 
 	test('NumericOption renders as expected with requirement of `margin`', () => {
@@ -87,38 +97,44 @@ describe('NumericOption', () => {
 		const component = mount(<NumericOption numericChoice={{ requirement: 'margin' }} />)
 
 		const stopPropagation = jest.fn()
+		const preventDefault = jest.fn()
 
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.select-item')
 			.at(1)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
-		expect(stopPropagation).toBeCalledTimes(4)
+		expect(stopPropagation).toBeCalledTimes(2)
+		expect(preventDefault).toBeCalledTimes(2)
 	})
 
 	test('NumericOption with requirement of `margin`, percent error, event.stopPropagation() is called when click', () => {
@@ -127,38 +143,44 @@ describe('NumericOption', () => {
 		)
 
 		const stopPropagation = jest.fn()
+		const preventDefault = jest.fn()
 
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.select-item')
 			.at(1)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('click', {
-				stopPropagation
+			.simulate('focus', {
+				stopPropagation,
+				preventDefault
 			})
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
-		expect(stopPropagation).toBeCalledTimes(4)
+		expect(stopPropagation).toBeCalledTimes(2)
+		expect(preventDefault).toBeCalledTimes(2)
 	})
 
 	test('NumericOption renders as expected with default requirement', () => {
@@ -168,18 +190,24 @@ describe('NumericOption', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('NumericOption input calls focus on the element after a short delay', () => {
+	test('NumericOption input calls focus and select on the element after a short delay', () => {
 		jest.useFakeTimers()
 
 		const component = renderer.create(<NumericOption numericChoice={{ requirement: '' }} />)
 
-		const event = { target: { focus: jest.fn() }, stopPropagation: jest.fn() }
+		const event = {
+			target: { focus: jest.fn(), select: jest.fn() },
+			stopPropagation: jest.fn(),
+			preventDefault: jest.fn()
+		}
 		component.root.findAllByType('input')[0].props.onFocus(event)
 
 		jest.runAllTimers()
 
 		expect(event.stopPropagation).toHaveBeenCalled()
-		expect(event.target.focus).toHaveBeenCalledTimes(2)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(event.target.focus).toHaveBeenCalledTimes(50)
+		expect(event.target.select).toHaveBeenCalledTimes(50)
 	})
 
 	test('NumericOption select and input changes call the given prop methods', () => {

@@ -830,7 +830,7 @@ describe('Question', () => {
 		}
 		const model = OboModel.create(questionJSON)
 		const spy = jest.spyOn(QuestionUtil, 'setResponse')
-		const getRespSpy = jest.spyOn(QuestionUtil, 'getResponse').mockReturnValue('mock-response')
+		const getRespSpy = jest.spyOn(QuestionUtil, 'getResponse').mockReturnValue({ ids: [] })
 
 		const component = renderer.create(
 			<Question model={model} moduleData={moduleData} isReview={false} />
@@ -851,7 +851,7 @@ describe('Question', () => {
 
 		expect(
 			component.getInstance().assessmentComponentRef.current.handleFormChange
-		).toHaveBeenCalledWith(event, 'mock-response')
+		).toHaveBeenCalledWith(event, { ids: [] })
 		expect(spy).toHaveBeenCalledWith(
 			'id',
 			'mock-state',

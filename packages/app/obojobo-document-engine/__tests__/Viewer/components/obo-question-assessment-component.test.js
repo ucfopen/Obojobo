@@ -64,10 +64,10 @@ describe('OboQuestionAssessmentComponent', () => {
 		expect(OboQuestionAssessmentComponent.isResponseEmpty()).toBe(true)
 	})
 
-	test('calculateScore returns 0', () => {
+	test('calculateScore returns null', () => {
 		const component = renderer.create(<OboQuestionAssessmentComponent />)
 
-		expect(component.getInstance().calculateScore()).toBe(0)
+		expect(component.getInstance().calculateScore()).toBe(null)
 	})
 
 	test('getResponse returns expected object', () => {

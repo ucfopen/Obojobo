@@ -8,6 +8,8 @@ require('../NumericChoice/viewer') // used to register the MCChoice chunk as a d
 require('../NumericFeedback/viewer') // // dependency on Obojobo.Chunks.MCAssessment.NumericFeedback
 require('obojobo-chunks-text/viewer')
 
+// import Viewer from 'obojobo-chunks-text/viewer'
+
 describe('NumericFeedback', () => {
 	test('NumericFeedback component for a correct item', () => {
 		const moduleData = {
