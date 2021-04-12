@@ -17,7 +17,8 @@ const LayoutDefault = props => (
 			/>
 			{props.appCSSUrl ? <link rel="stylesheet" media="screen" href={props.appCSSUrl} /> : null}
 			<link
-				rel="stylesheet"
+				rel="preload"
+				as="style"
 				media="screen"
 				href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap"
 			/>
