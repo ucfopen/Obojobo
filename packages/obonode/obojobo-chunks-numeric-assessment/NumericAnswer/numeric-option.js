@@ -30,7 +30,7 @@ const onHandleInputFocus = event => {
 	}, 1)
 }
 
-const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange, editor }) => {
+const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
 	const { requirement, answer, start, end, margin, type } = numericChoice
 
 	switch (simplifedToFullText[requirement]) {

@@ -5,10 +5,7 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
 import PreAttemptImportScoreDialog from './dialogs/pre-attempt-import-score-dialog'
-import {
-	ERROR_INVALID_ATTEMPT_END,
-	ERROR_INVALID_ATTEMPT_RESUME
-} from '../server/error-constants.js'
+import { ERROR_INVALID_ATTEMPT_END } from '../server/error-constants.js'
 import UpdatedModuleDialog from './dialogs/updated-module-dialog'
 
 const { AssessmentScoreReportView, AssessmentScoreReporter } = Viewer.assessment

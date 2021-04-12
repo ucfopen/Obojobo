@@ -355,8 +355,11 @@ describe('AssessmentUtil', () => {
 		}
 		const state = {
 			assessments: {
+				testId: { id: 'testId' }
+			},
+			assessmentSummaries: {
 				testId: {
-					isScoreImported: true
+					importUsed: true
 				}
 			}
 		}
@@ -415,7 +418,12 @@ describe('AssessmentUtil', () => {
 		const state = {
 			assessments: {
 				testId: {
-					isScoreImported: true
+					id: 'testId'
+				}
+			},
+			assessmentSummaries: {
+				testId: {
+					importUsed: true
 				}
 			}
 		}

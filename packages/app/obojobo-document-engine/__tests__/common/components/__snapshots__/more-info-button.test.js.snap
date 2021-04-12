@@ -2,7 +2,7 @@
 
 exports[`MoreInfoButton Renders default props 1`] = `
 <div
-  className="obojobo-draft--components--more-info-button is-default-label is-mode-clicked"
+  className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
 >
   <button
     aria-label="More info"
@@ -13,24 +13,12 @@ exports[`MoreInfoButton Renders default props 1`] = `
   >
     ?
   </button>
-  <div
-    aria-labelledby="obojobo-draft--components--more-info-button--container--mock-uuid"
-    className="info"
-    onBlur={[Function]}
-    role="dialog"
-    tabIndex="-1"
-  >
-    <div
-      className="container"
-      id="obojobo-draft--components--more-info-button--container--mock-uuid"
-    />
-  </div>
 </div>
 `;
 
 exports[`MoreInfoButton Renders label 1`] = `
 <div
-  className="obojobo-draft--components--more-info-button is-not-default-label is-mode-clicked"
+  className="obojobo-draft--components--more-info-button is-not-default-label is-mode-hidden"
 >
   <button
     aria-label="More info"
@@ -41,17 +29,5 @@ exports[`MoreInfoButton Renders label 1`] = `
   >
     Testing 123
   </button>
-  <div
-    aria-labelledby="obojobo-draft--components--more-info-button--container--mock-uuid"
-    className="info"
-    onBlur={[Function]}
-    role="dialog"
-    tabIndex="-1"
-  >
-    <div
-      className="container"
-      id="obojobo-draft--components--more-info-button--container--mock-uuid"
-    />
-  </div>
 </div>
 `;

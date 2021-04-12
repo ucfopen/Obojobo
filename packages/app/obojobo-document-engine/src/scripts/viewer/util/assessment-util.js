@@ -141,12 +141,12 @@ const AssessmentUtil = {
 	},
 
 	isScoreImported(state, model) {
-		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment) {
+		const summary = AssessmentUtil.getAssessmentSummaryForModel(state, model)
+		if (!summary) {
 			return null
 		}
 
-		return assessment.isScoreImported
+		return summary.importUsed
 	},
 
 	getLTIStateForModel(state, model) {

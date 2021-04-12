@@ -7,7 +7,6 @@ let variableHandlers
 const noop = () => {}
 let memoInsertable
 let memoContent
-let memoModals
 
 class _Registry {
 	init() {

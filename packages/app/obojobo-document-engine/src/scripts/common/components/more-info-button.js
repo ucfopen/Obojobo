@@ -21,7 +21,7 @@ class MoreInfoButton extends React.Component {
 		this.hide = this.hide.bind(this)
 
 		this.state = {
-			mode: 'clicked',
+			mode: 'hidden',
 			id: uuid() // Used to create a unique DOM ID for aria-labelledby
 		}
 
