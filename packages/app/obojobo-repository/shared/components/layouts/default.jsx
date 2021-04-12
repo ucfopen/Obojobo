@@ -25,6 +25,27 @@ const LayoutDefault = props => (
 			{props.headerJs.map((url, index) => (
 				<script key={index} src={url}></script>
 			))}
+			{props.appScriptUrl ? (
+				<React.Fragment>
+					<script
+						referrerPolicy="no-referrer"
+						crossOrigin="anonymous"
+						defer
+						src={`//unpkg.com/react@${reactVersion}/umd/react.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
+					></script>
+					<script
+						referrerPolicy="no-referrer"
+						crossOrigin="anonymous"
+						defer
+						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
+							props.isDev ? 'development' : 'production.min'
+						}.js`}
+					></script>
+					<script defer src={props.appScriptUrl}></script>
+				</React.Fragment>
+			) : null}
 		</head>
 		<body className={props.className}>
 			<div className="layout--wrapper">
@@ -33,25 +54,6 @@ const LayoutDefault = props => (
 					<Footer />
 				</div>
 			</div>
-			{props.appScriptUrl ? (
-				<React.Fragment>
-					<script
-						referrerPolicy="no-referrer"
-						crossOrigin="anonymous"
-						src={`//unpkg.com/react@${reactVersion}/umd/react.${
-							props.isDev ? 'development' : 'production.min'
-						}.js`}
-					></script>
-					<script
-						referrerPolicy="no-referrer"
-						crossOrigin="anonymous"
-						src={`//unpkg.com/react-dom@${reactVersion}/umd/react-dom.${
-							props.isDev ? 'development' : 'production.min'
-						}.js`}
-					></script>
-					<script src={props.appScriptUrl}></script>
-				</React.Fragment>
-			) : null}
 		</body>
 	</html>
 )

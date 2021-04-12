@@ -18,30 +18,22 @@
 			const fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap']
 		%>
 		<%- include('./partials/head', {title, css, fonts, headerJs}) %>
+		<%
+		if (typeof footerJs !== 'undefined')
+		{
+			footerJs.forEach(function(href) { %>
+			<script defer src="<%= href %>"></script>
+			<% })
+		}
+	%>
 </head>
 
 <body>
 	<div id="viewer-app"></div>
-	<div id="viewer-app-loading">
-		<%- include('./partials/loading') %>
+	<div id="app-loading">
+		<%- include('./partials/loading', {loadingMessage: draftTitle}) %>
 	</div>
-	<%
-		if (typeof inlines !== 'undefined')
-		{
-			inlines.forEach(function(inline)
-			{ %>
-		<script><% - js %></script>
-		<% })
-		}
-
-		if (typeof footerJs !== 'undefined')
-		{
-			footerJs.forEach(function(href) { %>
-			<script src="<%= href %>"></script>
-			<% })
-		}
-	%>
-				<script>window.__oboViewerRender()</script>
+	<script>document.addEventListener('DOMContentLoaded', () => {window.__oboViewerRender()})</script>
 </body>
 
 </html>
