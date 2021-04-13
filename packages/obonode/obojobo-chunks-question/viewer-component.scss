@@ -4,6 +4,9 @@
 	perspective: 1000px;
 	margin: 0 auto;
 
+	$color-correct-text: darken($color-correct, 10%);
+	$color-border: transparentize($color-shadow, 0.25);
+
 	.submit {
 		margin-left: 0;
 		margin-right: 0;
@@ -367,9 +370,6 @@
 		opacity: 0.5;
 		pointer-events: none;
 	}
-
-	$color-correct-text: darken($color-correct, 10%);
-	$color-border: transparentize($color-shadow, 0.25);
 
 	@keyframes obojobo-draft--chunks--question--bounce {
 		0% {
