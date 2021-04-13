@@ -18,7 +18,6 @@ const Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.scoreRules = { ...model.modelState.scoreRules }
-		// clone.modelState.units = model.modelState.units
 		clone.modelState.units = model.modelState.units.clone()
 	},
 

@@ -1,7 +1,7 @@
 import Assessment from './viewer-component'
 import AssessmentUtil from 'obojobo-document-engine/src/scripts/viewer/util/assessment-util'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
-import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
+import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-machine-states'
 import React from 'react'
 import renderer from 'react-test-renderer'
 import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
@@ -13,7 +13,7 @@ const {
 	STARTING_ATTEMPT,
 	RESUMING_ATTEMPT,
 	ENDING_ATTEMPT
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('./components/pre-test')

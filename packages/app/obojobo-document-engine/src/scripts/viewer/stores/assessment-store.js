@@ -3,7 +3,7 @@ import AssessmentUtil from '../util/assessment-util'
 import Common from 'Common'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
-import AssessmentNetworkStates from './assessment-store/assessment-network-states'
+import AssessmentMachineStates from './assessment-store/assessment-machine-states'
 import NavStore from '../stores/nav-store'
 import React from 'react'
 import AssessmentStateMachine from './assessment-state-machine'
@@ -16,15 +16,13 @@ const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
 
-const { NOT_IN_ATTEMPT } = AssessmentNetworkStates
+const { NOT_IN_ATTEMPT } = AssessmentMachineStates
 
 const ATTEMPT_HISTORY_NOT_LOADED = 'none'
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
-	// state: AssessmentNetworkStates.NOT_IN_ATTEMPT, //@TODO - Is this used?
 	current: null,
-	// currentResponses: [],
 	attempts: [],
 	unfinishedAttempt: null,
 	highestAssessmentScoreAttempts: [],
@@ -58,13 +56,6 @@ class AssessmentStore extends Store {
 	constructor() {
 		super('assessmentstore')
 
-		// Dispatcher.on('nav:ready', () => {
-		// 	this.startMachines()
-		// })
-
-		// Dispatcher.on('assessment:startAttempt', payload => {
-		// 	this.startAttemptWithImportScoreOption(payload.value.id)
-		// })
 		Dispatcher.on('assessment:startAttempt', payload => {
 			this.startAttempt(payload.value.id)
 		})

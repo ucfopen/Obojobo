@@ -15,28 +15,22 @@ const { SimpleDialog, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { CurrentAssessmentStates, AssessmentUtil, NavUtil, FocusUtil } = Viewer.util
 const { NavStore } = Viewer.stores
-const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
+const { AssessmentMachineStates } = Viewer.stores.assessmentStore
 
 const {
 	PROMPTING_FOR_RESUME,
-	// STARTING_ATTEMPT,
-	// RESUMING_ATTEMPT,
-	// IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
 	RESUME_ATTEMPT_FAILED,
 	SENDING_RESPONSES,
 	SEND_RESPONSES_SUCCESSFUL,
 	SEND_RESPONSES_FAILED,
-	// NOT_IN_ATTEMPT,
 	ENDING_ATTEMPT,
 	END_ATTEMPT_FAILED,
 	END_ATTEMPT_SUCCESSFUL,
 	PROMPTING_FOR_IMPORT,
-	// IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
-	// IMPORT_ATTEMPT_SUCCESSFUL,
 	FETCH_HISTORY_FAILED
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 const getReportForAttempt = (assessmentModel, allAttempts, attemptNumber) => {
 	const reporter = new AssessmentScoreReporter({

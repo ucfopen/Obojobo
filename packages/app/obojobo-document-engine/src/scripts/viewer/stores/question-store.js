@@ -222,16 +222,6 @@ class QuestionStore extends Store {
 			console.error(e) //eslint-disable-line no-console
 			return this.onPostResponseError(contextState, id)
 		})
-		// .catch(e => {
-		// 	return this.onPostResponseError(contextState, id)
-		// })
-		//.catch(e => {
-		// 	// eslint-disable-next-line no-console
-		// 	console.error(e)
-
-		// 	return this.onPostResponseError(contextState, id)
-		// })
-		// return postResponsePromise
 	}
 
 	getPostResponsePromise(id, context) {

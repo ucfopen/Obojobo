@@ -1,7 +1,5 @@
 import withoutUndefined from 'obojobo-document-engine/src/scripts/common/util/without-undefined'
 
-// @TODO - Copied from MCChoice
-
 /**
  * Generates an Obojobo MCChoice Node from a Slate node.
  * Copies the id, type, and triggers. It also calls the appropriate
@@ -13,12 +11,6 @@ const slateToObo = node => {
 	const content = withoutUndefined({
 		triggers: node.content.triggers,
 		score: node.content.score
-		// answer: node.content.answer,
-		// requirement: node.content.requirement,
-		// type: node.content.type,
-		// margin: node.content.margin,
-		// start: node.content.start,
-		// end: node.content.end
 	})
 
 	switch (node.content.requirement) {

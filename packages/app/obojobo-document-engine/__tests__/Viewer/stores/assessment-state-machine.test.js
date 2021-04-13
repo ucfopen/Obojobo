@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import AssessmentStateMachine from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-state-machine'
-import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
+import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-machine-states'
 import AssessmentStateActions from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-state-actions'
 import OboModel from '../../../src/scripts/common/models/obo-model'
 import AssessmentStateHelpers from '../../../src/scripts/viewer/stores/assessment-state-helpers'
@@ -33,7 +33,7 @@ const {
 	IMPORT_ATTEMPT_FAILED,
 	FETCHING_ATTEMPT_HISTORY,
 	FETCH_HISTORY_FAILED
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 const {
 	FETCH_ATTEMPT_HISTORY,

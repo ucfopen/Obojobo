@@ -3,16 +3,6 @@ const db = oboRequire('server/db')
 module.exports = async insertObject => {
 	insertObject.visitId = insertObject.visitId || null
 
-	// if (insertObject.action === 'question:setResponse') {
-	// 	const r = Math.random()
-	// 	console.log('r', r)
-	// 	if (r < 0.333) {
-	// 		await new Promise(r => setTimeout(r, 16000))
-	// 	} else if (r > 0.666) {
-	// 		throw 'Failed to insert event'
-	// 	}
-	// }
-
 	return db.taskIf(async t => {
 		const insertEventResult = await t.one(
 			`INSERT INTO events

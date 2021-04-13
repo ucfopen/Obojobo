@@ -156,7 +156,6 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							value={answer || ''}
 							onChange={event => onHandleInputChange(event)}
 							onFocus={onHandleInputFocus}
-							// onMouseDown={onMouseDown}
 							contentEditable={false}
 							autoComplete="off"
 						/>

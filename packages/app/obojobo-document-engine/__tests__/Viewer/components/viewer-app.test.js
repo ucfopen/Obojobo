@@ -514,7 +514,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test.skip('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
+	test('onVisibilityChange calls ViewerAPI when viewed for the first time', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)

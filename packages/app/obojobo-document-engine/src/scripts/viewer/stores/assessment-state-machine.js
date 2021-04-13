@@ -1,7 +1,7 @@
 import { Machine, interpret, assign } from 'xstate'
 
 import Common from 'Common'
-import AssessmentNetworkStates from './assessment-store/assessment-network-states'
+import AssessmentMachineStates from './assessment-store/assessment-machine-states'
 import AssessmentStateActions from './assessment-store/assessment-state-actions'
 import NavUtil from '../util/nav-util'
 
@@ -33,7 +33,7 @@ const {
 	// IMPORT_ATTEMPT_SUCCESSFUL,
 	FETCHING_ATTEMPT_HISTORY,
 	FETCH_HISTORY_FAILED
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 const {
 	FETCH_ATTEMPT_HISTORY,

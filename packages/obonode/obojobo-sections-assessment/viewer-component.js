@@ -9,7 +9,7 @@ import React from 'react'
 import Test from './components/test'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import AssessmentNetworkStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-network-states'
+import AssessmentMachineStates from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store/assessment-machine-states'
 
 const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
@@ -29,7 +29,7 @@ const {
 	SENDING_RESPONSES,
 	ENDING_ATTEMPT,
 	IMPORTING_ATTEMPT
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -202,32 +202,10 @@ class Assessment extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--assessment"
 			>
-				{/* <h1>{assessment.current ? assessment.current.error : ''}</h1> */}
-				{/* <h1>{this.state.curStep}</h1>
-				<h1>
-					{AssessmentUtil.getCurrentAttemptStatus(
-						this.props.moduleData.assessmentState,
-						this.props.moduleData.questionState,
-						this.props.model,
-						this.props.moduleData.navState.context
-					)}
-				</h1>
-				<h1>
-					{AssessmentUtil.getAssessmentMachineStateForModel(
-						this.props.moduleData.assessmentState,
-						this.props.model
-					)}
-				</h1> */}
-				{/* <StateMachineComponent
-					assessmentState={this.props.moduleData.assessmentState}
-					machine={this.props.moduleData.assessmentState.machines[this.props.model.get('id')]}
-				></StateMachineComponent> */}
 				{this.getAssessmentComponent()}
 
 				<ModalPortal>
 					<AssessmentDialog
-						// onResponse={this.onDialogResponse.bind(this)}
-						// onCancel={this.closeDialog.bind(this)}
 						endAttempt={this.endAttempt}
 						assessmentMachineState={AssessmentUtil.getAssessmentMachineStateForModel(
 							this.props.moduleData.assessmentState,

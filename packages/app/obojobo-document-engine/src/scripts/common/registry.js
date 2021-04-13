@@ -85,7 +85,6 @@ class _Registry {
 				default: false,
 				insertItem: null,
 				componentClass: null,
-				modalClass: null,
 				commandHandler: null,
 				variables: {},
 				variableHandler: noop,

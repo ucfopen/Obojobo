@@ -100,9 +100,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const questionResponse = this.props.response.value
 		const results = this.evaluator.evaluate(questionResponse)
 
-		// @TODO: Handle FAILED_VALIDATION case (currently nothing is being passed to
-		// this.evaluator.validator)
-
 		switch (results.status) {
 			case INPUT_INVALID:
 				ErrorUtil.show('Invalid Input', 'Please enter a valid numeric value')
@@ -251,7 +248,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			}
 		}
 
-		//range.isUpperBounded:
 		// Values from -Infinity to some value:
 		return {
 			type: 'text-and-value',

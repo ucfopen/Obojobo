@@ -420,8 +420,6 @@ module.exports = class NumericRule {
 		 */
 		this.round = NumericRule.getRuleRound(config)
 
-		// this.explicitTypes = NumericRule.getExplicitRuleTypes(config, this.value)
-
 		/**
 		 * @type {string[]}
 		 */

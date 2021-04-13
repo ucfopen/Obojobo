@@ -390,9 +390,6 @@ class EditorApp extends React.Component {
 					warning={this.editLocks.idleTimeUntilWarningMs}
 				/>
 				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
-				{/* modalItem && modalItem.component ? (
-					<ModalContainer>{modalItem.component}</ModalContainer>
-				) : null */}
 				<ModalContainer modalItem={modalItem} />
 			</div>
 		)

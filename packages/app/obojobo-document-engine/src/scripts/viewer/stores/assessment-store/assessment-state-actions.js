@@ -11,5 +11,4 @@ export default {
 	ACKNOWLEDGE: 'acknowledge',
 	END_ATTEMPT: 'endAttempt',
 	CONTINUE_ATTEMPT: 'continueAttempt'
-	// RETRY: 'retry'
 }

@@ -7,30 +7,24 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import AssessmentDialog from './assessment-dialog'
 import { ERROR_INVALID_ATTEMPT_END } from '../server/error-constants'
 
-const { AssessmentNetworkStates } = Viewer.stores.assessmentStore
+const { AssessmentMachineStates } = Viewer.stores.assessmentStore
 const { CurrentAssessmentStates, AssessmentUtil, FocusUtil } = Viewer.util
 const { ModalUtil } = Common.util
 
 const {
 	PROMPTING_FOR_RESUME,
-	// STARTING_ATTEMPT,
-	// RESUMING_ATTEMPT,
-	// IN_ATTEMPT,
 	START_ATTEMPT_FAILED,
 	RESUME_ATTEMPT_FAILED,
 	SENDING_RESPONSES,
 	SEND_RESPONSES_SUCCESSFUL,
 	SEND_RESPONSES_FAILED,
-	// NOT_IN_ATTEMPT,
 	ENDING_ATTEMPT,
 	END_ATTEMPT_FAILED,
 	END_ATTEMPT_SUCCESSFUL,
 	PROMPTING_FOR_IMPORT,
-	// IMPORTING_ATTEMPT,
 	IMPORT_ATTEMPT_FAILED,
-	// IMPORT_ATTEMPT_SUCCESSFUL,
 	FETCH_HISTORY_FAILED
-} = AssessmentNetworkStates
+} = AssessmentMachineStates
 
 const {
 	NO_ATTEMPT,

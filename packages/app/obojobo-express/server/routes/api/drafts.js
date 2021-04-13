@@ -32,9 +32,6 @@ router
 	.route('/:draftId/full')
 	.get([requireDraftId, requireCanViewEditor, checkContentId, checkValidationRules])
 	.get(async (req, res) => {
-		// if (Math.random() > 0.5) {
-		// 	res.unexpected('oops')
-		// }
 		try {
 			// @TODO: checking permissions should probably be more dynamic, not hard-coded to the repository
 			const hasPerms = await DraftPermissions.userHasPermissionToDraft(

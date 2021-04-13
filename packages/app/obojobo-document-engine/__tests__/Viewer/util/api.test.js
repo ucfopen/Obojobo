@@ -102,7 +102,7 @@ describe('API', () => {
 		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
-			body: 'mock-body',
+			body: '"mock-body"',
 			credentials: 'include',
 			headers: {
 				Accept: 'application/json',

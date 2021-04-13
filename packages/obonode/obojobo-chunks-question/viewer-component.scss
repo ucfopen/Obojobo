@@ -4,364 +4,6 @@
 	perspective: 1000px;
 	margin: 0 auto;
 
-	&.is-form-disabled > .flipper {
-		opacity: 0.5;
-		pointer-events: none;
-	}
-
-	//@TODO - duplicated color also in MCAssessment
-	// $color-survey: #48b8b9;
-	$color-correct-text: darken($color-correct, 10%);
-	$color-border: transparentize($color-shadow, 0.25);
-
-	@keyframes obojobo-draft--chunks--question--bounce {
-		0% {
-			transform: scale(0);
-		}
-
-		50% {
-			transform: scale(1.1);
-		}
-
-		80% {
-			transform: scale(0.9);
-		}
-
-		100% {
-			transform: scale(1);
-		}
-	}
-
-	> .response-status-container {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 1em;
-		font-family: $font-default;
-		color: $color-text;
-		font-size: 0.7em;
-		height: 2em;
-
-		> span {
-			position: absolute;
-			display: inline-block;
-			left: 0;
-			top: 0;
-			opacity: 0;
-			transition: opacity $duration-animation-default, color $duration-animation-default;
-		}
-
-		> .response-status-exit {
-			transition: none;
-		}
-
-		> .response-status-enter {
-			opacity: 0.5;
-		}
-
-		> .response-status-enter-done {
-			opacity: 0.5;
-		}
-
-		> .response-status-recorded {
-			&.response-status-enter-done {
-				opacity: 0.3;
-			}
-		}
-
-		> .is-response-state-error {
-			color: $color-error;
-
-			&.response-status-enter,
-			&.response-status-enter-done {
-				opacity: 1;
-			}
-		}
-	}
-
-	// &:focus-within .flipper {
-	// 	box-shadow: 0 0 0 2px $color-shadow;
-	// }
-
-	// &.is-correct:focus-within .flipper {
-	// 	box-shadow: 0 0 0 2px $color-correct;
-	// }
-
-	// &.is-not-correct:focus-within .flipper {
-	// 	box-shadow: 0 0 0 2px $color-incorrect;
-	// }
-
-	.obojobo-draft--chunks--question--survey-question-icon {
-		width: 1.2em;
-		position: absolute;
-		left: 1em;
-		top: 0.45em;
-		opacity: 0.2;
-		pointer-events: none;
-	}
-
-	> .flipper {
-		$color-sep: rgba(0, 0, 0, 0.1);
-
-		position: relative;
-		border-radius: $dimension-rounded-radius;
-		padding: 0;
-		margin-bottom: 1em;
-		border: 1.25px solid transparentize($color-shadow, 0.2);
-		max-width: $dimension-column-width;
-		background: $color-bg;
-		transition: opacity $duration-animation-default;
-
-		@include mq($until: desktop) {
-			border-radius: 0;
-		}
-
-		> .blocker-front,
-		> .content-back {
-			width: 100%;
-
-			> fieldset {
-				padding: 0;
-				margin: 0;
-				border: none;
-				border-bottom: 1px solid $color-border;
-				// background: white;
-				border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
-
-				> legend {
-					$font-size: 1em;
-
-					@include pad();
-
-					@include mq($until: desktop) {
-						@include pad(0.75);
-					}
-
-					@include mq($until: tablet) {
-						@include pad(0.3);
-					}
-
-					content: 'Practice';
-					display: block;
-					font-family: $font-default;
-					color: $color-action;
-					font-size: $font-size;
-					font-weight: normal;
-					width: 100%;
-					box-sizing: border-box;
-					border: none;
-					border-bottom: 1px solid $color-border;
-					// position: absolute;
-					background: none;
-					// left: 0;
-					// top: -0.5em;
-				}
-
-				> .assessment-component {
-					background: $color-bg;
-				}
-			}
-
-			> .solution-editor {
-				background: $color-bg2;
-				border-top: 1px solid $color-shadow;
-				position: relative;
-				border-bottom-left-radius: 0.3em;
-				border-bottom-right-radius: 0.3em;
-				padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
-
-				.page-editor {
-					margin: $dimension-padding / 3;
-					background: $color-bg;
-					border: 1px solid $color-shadow;
-
-					&::before {
-						content: 'Full explanation:';
-						font-family: $font-default;
-						font-size: 1em;
-						font-weight: bold;
-						color: $color-text-minor;
-						margin-top: 1em;
-						margin-left: 2em;
-						margin-bottom: -1em;
-						display: block;
-						transform: scale(0.7);
-						transform-origin: top left;
-					}
-				}
-			}
-
-			> .add-solution {
-				left: 50%;
-				transform: translate(-50%, 0);
-				position: relative;
-				margin: $dimension-padding / 3;
-			}
-		}
-
-		> .blocker-front {
-			z-index: 2;
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: $color-bg;
-			cursor: pointer;
-			border-radius: $dimension-rounded-radius;
-
-			@include mq($until: desktop) {
-				border-radius: 0;
-			}
-
-			> .obojobo-draft--components--button {
-				transition: transform $duration-animation-default;
-				font-family: $font-default;
-				color: $color-action;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				pointer-events: none;
-			}
-
-			&:hover {
-				background: $color-action-bg;
-
-				.obojobo-draft--components--button {
-					transform: translate(-50%, -50%) scale(1.1, 1.1);
-				}
-			}
-
-			&.is-not-practice {
-				.submit {
-					display: none;
-				}
-			}
-		}
-
-		> .content-back {
-			visibility: hidden;
-
-			> .obojobo-draft--chunks--question--content {
-				padding-top: 1em;
-			}
-		}
-	}
-
-	&.is-hidden > .flipper {
-		border: 1px solid $color-action;
-		max-height: 15em;
-		overflow: hidden;
-	}
-
-	&.is-active,
-	&.is-viewed {
-		> .flipper {
-			> .blocker-front {
-				visibility: hidden;
-				pointer-events: none;
-			}
-
-			> .content-back {
-				visibility: visible;
-			}
-		}
-	}
-
-	&.is-flipping {
-		overflow: hidden;
-
-		> .flipper {
-			transition: 0.4s;
-			-ms-transition: none;
-			transform-style: preserve-3d;
-
-			> .blocker-front,
-			> .content-back {
-				backface-visibility: hidden;
-				-ms-backface-visibility: visible;
-			}
-
-			> .blocker-front {
-				transform: rotateY(0deg);
-			}
-
-			> .content-back {
-				transform: rotateY(180deg);
-			}
-		}
-	}
-
-	&.is-mode-practice {
-		> .flipper > .content-back::before {
-			color: $color-text-minor;
-			content: 'Practice';
-			display: block;
-			font-family: $font-default;
-			position: absolute;
-			left: 3.15em;
-			top: 0.5em;
-			transform: scale(0.7);
-			transform-origin: top left;
-		}
-
-		&.is-correct .flipper {
-			border: 1.25px solid $color-correct;
-		}
-
-		&.is-not-correct .flipper {
-			border: 1.25px solid $color-incorrect;
-		}
-
-		&.is-no-score .flipper {
-			border: 1.25px solid $color-survey;
-		}
-	}
-
-	&.is-type-survey {
-		> .flipper > .content-back {
-			background: transparentize($color: $color-bg2, $amount: 0.7);
-		}
-
-		> .flipper > .content-back::before {
-			color: $color-text-minor;
-			content: 'Survey Question';
-			display: block;
-			font-family: $font-default;
-			position: absolute;
-			left: 3.15em;
-			top: 0.5em;
-			transform: scale(0.7);
-			transform-origin: top left;
-		}
-	}
-
-	&.is-flipping.is-active,
-	&.is-flipping.is-viewed {
-		> .flipper {
-			transform: rotateY(-180deg);
-		}
-	}
-
-	//////////////
-
-	.submit-and-result-container {
-		@include pad();
-
-		@include mq($until: desktop) {
-			@include pad(0.75);
-		}
-
-		@include mq($until: tablet) {
-			@include pad(0.3);
-		}
-
-		min-height: 4em;
-		display: block;
-		position: relative;
-	}
-
 	.submit {
 		margin-left: 0;
 		margin-right: 0;
@@ -369,7 +11,6 @@
 		display: inline-block;
 
 		button {
-			// cursor: pointer;
 			font-size: 0.85em;
 			margin-bottom: 1em;
 			margin-top: 1em;
@@ -396,76 +37,13 @@
 		}
 	}
 
-	.pick-all-instructions {
-		display: block;
-		font-family: $font-default;
-		font-size: 0.8em;
-		font-weight: bold;
-		// max-width: 24em;
-		// display: inline-block;
-		line-height: 1.5em;
-		vertical-align: middle;
-		// margin-left: 1.25em;
-		margin-bottom: 1em;
-	}
-
-	&.is-correct .pick-all-instructions {
-		color: $color-correct-text;
-	}
-
-	&.is-not-correct .pick-all-instructions {
-		color: $color-incorrect;
-	}
-
-	.result-container {
-		display: inline-block;
-		position: relative;
-		vertical-align: middle;
-		padding-right: 1em;
-		padding-top: 1em;
-		padding-bottom: 1em;
-		line-height: 1em;
-
-		@include mq($until: mobile) {
-			display: block;
-		}
-
-		.result {
-			font-family: $font-default;
-			color: $color-bg;
-			font-weight: bold;
-			box-sizing: border-box;
-			margin: 0;
-			display: inline-block;
-			border-radius: 9999px;
-			padding: 0.5em 1.5em;
-			font-size: 0.8em;
-			transform: scale(0);
-			animation: obojobo-draft--chunks--question--bounce 0.4s;
-			// animation-delay: $duration-animation-default * 1.5;
-			animation-fill-mode: forwards;
-
-			&.correct {
-				background-color: $color-correct;
-			}
-
-			&.incorrect {
-				background-color: $color-incorrect;
-			}
-
-			&.survey {
-				background-color: $color-survey;
-			}
-		}
-	}
-
 	.solution {
 		background: $color-bg2;
 		position: relative;
 		border-bottom-left-radius: 0.3em;
 		border-bottom-right-radius: 0.3em;
 		border-top: 1px solid $color-shadow;
-		padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+		padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
 
 		> .obojobo-draft--components--button {
 			margin-top: 1em;
@@ -502,7 +80,6 @@
 			transition:
 				opacity $duration-animation-default * 2,
 				max-height $duration-animation-default * 2;
-			// transition-delay: $duration-animation-default * 2;
 		}
 
 		&.explanation-leave {
@@ -638,5 +215,403 @@
 
 	.submit .obojobo-draft--components--button:first-child {
 		margin-right: 1em;
+	}
+
+	> .flipper {
+		$color-sep: rgba(0, 0, 0, 0.1);
+
+		position: relative;
+		border-radius: $dimension-rounded-radius;
+		padding: 0;
+		margin-bottom: 1em;
+		border: 1.25px solid transparentize($color-shadow, 0.2);
+		max-width: $dimension-column-width;
+		background: $color-bg;
+		transition: opacity $duration-animation-default;
+
+		@include mq($until: desktop) {
+			border-radius: 0;
+		}
+
+		> .blocker-front,
+		> .content-back {
+			width: 100%;
+
+			> fieldset {
+				padding: 0;
+				margin: 0;
+				border: none;
+				border-bottom: 1px solid $color-border;
+				// background: white;
+				border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
+
+				> legend {
+					$font-size: 1em;
+
+					@include pad();
+
+					@include mq($until: desktop) {
+						@include pad(0.75);
+					}
+
+					@include mq($until: tablet) {
+						@include pad(0.3);
+					}
+
+					content: 'Practice';
+					display: block;
+					font-family: $font-default;
+					color: $color-action;
+					font-size: $font-size;
+					font-weight: normal;
+					width: 100%;
+					box-sizing: border-box;
+					border: none;
+					border-bottom: 1px solid $color-border;
+					background: none;
+				}
+
+				> .assessment-component {
+					background: $color-bg;
+				}
+			}
+
+			> .solution-editor {
+				background: $color-bg2;
+				border-top: 1px solid $color-shadow;
+				position: relative;
+				border-bottom-left-radius: 0.3em;
+				border-bottom-right-radius: 0.3em;
+				padding-bottom: 1px; /* stylelint-disable-line unit-disallowed-list */
+
+				.page-editor {
+					margin: $dimension-padding / 3;
+					background: $color-bg;
+					border: 1px solid $color-shadow;
+
+					&::before {
+						content: 'Full explanation:';
+						font-family: $font-default;
+						font-size: 1em;
+						font-weight: bold;
+						color: $color-text-minor;
+						margin-top: 1em;
+						margin-left: 2em;
+						margin-bottom: -1em;
+						display: block;
+						transform: scale(0.7);
+						transform-origin: top left;
+					}
+				}
+			}
+
+			> .add-solution {
+				left: 50%;
+				transform: translate(-50%, 0);
+				position: relative;
+				margin: $dimension-padding / 3;
+			}
+		}
+
+		> .blocker-front {
+			z-index: 2;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: $color-bg;
+			cursor: pointer;
+			border-radius: $dimension-rounded-radius;
+
+			@include mq($until: desktop) {
+				border-radius: 0;
+			}
+
+			> .obojobo-draft--components--button {
+				transition: transform $duration-animation-default;
+				font-family: $font-default;
+				color: $color-action;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				pointer-events: none;
+			}
+
+			&:hover {
+				background: $color-action-bg;
+
+				.obojobo-draft--components--button {
+					transform: translate(-50%, -50%) scale(1.1, 1.1);
+				}
+			}
+
+			&.is-not-practice {
+				.submit {
+					display: none;
+				}
+			}
+		}
+
+		> .content-back {
+			visibility: hidden;
+
+			> .obojobo-draft--chunks--question--content {
+				padding-top: 1em;
+			}
+		}
+	}
+
+	&.is-form-disabled > .flipper {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	$color-correct-text: darken($color-correct, 10%);
+	$color-border: transparentize($color-shadow, 0.25);
+
+	@keyframes obojobo-draft--chunks--question--bounce {
+		0% {
+			transform: scale(0);
+		}
+
+		50% {
+			transform: scale(1.1);
+		}
+
+		80% {
+			transform: scale(0.9);
+		}
+
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	> .response-status-container {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 1em;
+		font-family: $font-default;
+		color: $color-text;
+		font-size: 0.7em;
+		height: 2em;
+
+		> span {
+			position: absolute;
+			display: inline-block;
+			left: 0;
+			top: 0;
+			opacity: 0;
+			transition: opacity $duration-animation-default, color $duration-animation-default;
+		}
+
+		> .response-status-exit {
+			transition: none;
+		}
+
+		> .response-status-enter {
+			opacity: 0.5;
+		}
+
+		> .response-status-enter-done {
+			opacity: 0.5;
+		}
+
+		> .response-status-recorded {
+			&.response-status-enter-done {
+				opacity: 0.3;
+			}
+		}
+
+		> .is-response-state-error {
+			color: $color-error;
+
+			&.response-status-enter,
+			&.response-status-enter-done {
+				opacity: 1;
+			}
+		}
+	}
+
+	.obojobo-draft--chunks--question--survey-question-icon {
+		width: 1.2em;
+		position: absolute;
+		left: 1em;
+		top: 0.45em;
+		opacity: 0.2;
+		pointer-events: none;
+	}
+
+	&.is-hidden > .flipper {
+		border: 1px solid $color-action;
+		max-height: 15em;
+		overflow: hidden;
+	}
+
+	&.is-active,
+	&.is-viewed {
+		> .flipper {
+			> .blocker-front {
+				visibility: hidden;
+				pointer-events: none;
+			}
+
+			> .content-back {
+				visibility: visible;
+			}
+		}
+	}
+
+	&.is-flipping {
+		overflow: hidden;
+
+		> .flipper {
+			transition: 0.4s;
+			-ms-transition: none;
+			transform-style: preserve-3d;
+
+			> .blocker-front,
+			> .content-back {
+				backface-visibility: hidden;
+				-ms-backface-visibility: visible;
+			}
+
+			> .blocker-front {
+				transform: rotateY(0deg);
+			}
+
+			> .content-back {
+				transform: rotateY(180deg);
+			}
+		}
+	}
+
+	&.is-mode-practice {
+		> .flipper > .content-back::before {
+			color: $color-text-minor;
+			content: 'Practice';
+			display: block;
+			font-family: $font-default;
+			position: absolute;
+			left: 3.15em;
+			top: 0.5em;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+
+		&.is-correct .flipper {
+			border: 1.25px solid $color-correct;
+		}
+
+		&.is-not-correct .flipper {
+			border: 1.25px solid $color-incorrect;
+		}
+
+		&.is-no-score .flipper {
+			border: 1.25px solid $color-survey;
+		}
+	}
+
+	&.is-type-survey {
+		> .flipper > .content-back {
+			background: transparentize($color: $color-bg2, $amount: 0.7);
+		}
+
+		> .flipper > .content-back::before {
+			color: $color-text-minor;
+			content: 'Survey Question';
+			display: block;
+			font-family: $font-default;
+			position: absolute;
+			left: 3.15em;
+			top: 0.5em;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+	}
+
+	&.is-flipping.is-active,
+	&.is-flipping.is-viewed {
+		> .flipper {
+			transform: rotateY(-180deg);
+		}
+	}
+
+	.submit-and-result-container {
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
+
+		min-height: 4em;
+		display: block;
+		position: relative;
+	}
+
+	.pick-all-instructions {
+		display: block;
+		font-family: $font-default;
+		font-size: 0.8em;
+		font-weight: bold;
+		line-height: 1.5em;
+		vertical-align: middle;
+		margin-bottom: 1em;
+	}
+
+	&.is-correct .pick-all-instructions {
+		color: $color-correct-text;
+	}
+
+	&.is-not-correct .pick-all-instructions {
+		color: $color-incorrect;
+	}
+
+	.result-container {
+		display: inline-block;
+		position: relative;
+		vertical-align: middle;
+		padding-right: 1em;
+		padding-top: 1em;
+		padding-bottom: 1em;
+		line-height: 1em;
+
+		@include mq($until: mobile) {
+			display: block;
+		}
+
+		.result {
+			font-family: $font-default;
+			color: $color-bg;
+			font-weight: bold;
+			box-sizing: border-box;
+			margin: 0;
+			display: inline-block;
+			border-radius: 9999px;
+			padding: 0.5em 1.5em;
+			font-size: 0.8em;
+			transform: scale(0);
+			animation: obojobo-draft--chunks--question--bounce 0.4s;
+			animation-fill-mode: forwards;
+
+			&.correct {
+				background-color: $color-correct;
+			}
+
+			&.incorrect {
+				background-color: $color-incorrect;
+			}
+
+			&.survey {
+				background-color: $color-survey;
+			}
+		}
 	}
 }

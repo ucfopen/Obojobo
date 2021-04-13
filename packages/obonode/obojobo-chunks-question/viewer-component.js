@@ -49,9 +49,7 @@ export default class Question extends OboQuestionComponent {
 	componentDidMount() {
 		// This is necessary to cause a question assessment to re-run its calculateScore
 		// method, which may do additional things like generate feedback or display errors
-		if (this.assessmentComponentRef.current) {
-			this.assessmentComponentRef.current.calculateScore()
-		}
+		this.calculateScore()
 	}
 
 	static getQuestionAssessmentModel(questionModel) {
@@ -133,6 +131,18 @@ export default class Question extends OboQuestionComponent {
 		}
 	}
 
+	calculateScore() {
+		if (!this.assessmentComponentRef.current) {
+			return
+		}
+
+		if (this.props.model.modelState.type === 'survey') {
+			return { score: 'no-score', details: null }
+		}
+
+		return this.assessmentComponentRef.current.calculateScore()
+	}
+
 	scoreResponse() {
 		if (this.props.isReview) return
 
@@ -142,9 +152,7 @@ export default class Question extends OboQuestionComponent {
 		const context = this.props.moduleData.navState.context
 		const isSurvey = modelState.type === 'survey'
 
-		const calculatedScoreResponse = isSurvey
-			? { score: 'no-score', details: null }
-			: this.assessmentComponentRef.current.calculateScore()
+		const calculatedScoreResponse = this.calculateScore()
 		const detailedText =
 			this.assessmentComponentRef.current.getDetails(calculatedScoreResponse.score) || null
 

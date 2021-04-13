@@ -2,7 +2,7 @@ import ViewerAPI from './util/viewer-api'
 import AssessmentScoreReportView from './assessment/assessment-score-report-view'
 import AssessmentScoreReporter from './assessment/assessment-score-reporter'
 import AssessmentStore from './stores/assessment-store'
-import AssessmentNetworkStates from './stores/assessment-store/assessment-network-states'
+import AssessmentMachineStates from './stores/assessment-store/assessment-machine-states'
 import AssessmentUtil from './util/assessment-util'
 import CurrentAssessmentStates from './util/current-assessment-states'
 import FocusStore from './stores/focus-store'
@@ -37,7 +37,7 @@ export default {
 	stores: {
 		AssessmentStore,
 		assessmentStore: {
-			AssessmentNetworkStates
+			AssessmentMachineStates
 		},
 		NavStore,
 		MediaStore,

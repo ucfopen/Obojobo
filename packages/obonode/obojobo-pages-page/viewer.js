@@ -5,11 +5,6 @@ Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
 	componentClass: ViewerComponent,
 	default: true,
 	type: 'page',
-	getTextForVariable(model, varName, Variables) {
-		return Variables.getOrSetValue(model.get('id'), varName, varDef => {
-			return Math.floor(Math.random() * varDef.max) + varDef.min
-		})
-	},
 	getNavItem(model) {
 		let label
 

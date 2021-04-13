@@ -2,9 +2,7 @@ import Dispatcher from '../flux/dispatcher'
 
 const ModalUtil = {
 	show(component, hideViewer = false) {
-		Dispatcher.trigger('modal:show',
-			{ value: { component, hideViewer }
-		})
+		Dispatcher.trigger('modal:show', { value: { component, hideViewer } })
 	},
 
 	hide() {
@@ -12,7 +10,6 @@ const ModalUtil = {
 	},
 
 	getCurrentModal(state) {
-		// return state.modalsById[state.idOrder[state.idOrder.length - 1]] || null
 		if (state.modals.length === 0) return null
 		return state.modals[0]
 	}

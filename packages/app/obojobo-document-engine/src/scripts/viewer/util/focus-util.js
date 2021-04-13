@@ -12,7 +12,6 @@ const FocusUtil = {
 			value: {
 				id,
 				fade: opts.fade || false,
-				// scroll: typeof opts.scroll !== 'undefined' ? opts.scroll : true,
 				region: opts.region || null,
 				animateScroll: opts.animateScroll || false,
 				preventScroll: opts.preventScroll || false
@@ -38,7 +37,6 @@ const FocusUtil = {
 			target: state.target,
 			options: {
 				animateScroll: state.animateScroll,
-				// scroll: state.scroll,
 				fade: state.visualFocusTarget !== null && state.visualFocusTarget === state.target,
 				region: state.region,
 				preventScroll: state.preventScroll

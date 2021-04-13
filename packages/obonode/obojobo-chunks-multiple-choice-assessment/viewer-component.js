@@ -192,77 +192,9 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 		}
 	}
 
-	// getScore() {
-	// 	return QuestionUtil.getScoreForModel(
-	// 		this.props.moduleData.questionState,
-	// 		this.props.questionModel,
-	// 		this.props.moduleData.navState.context
-	// 	)
-	// }
-
 	componentDidUpdate() {
 		this.sortIds()
 	}
-
-	//@TODO - Begin dev/9 stuff that I don't know if I need!!!!
-	// getScore() {
-	// 	return QuestionUtil.getScoreForModel(
-	// 		this.props.moduleData.questionState,
-	// 		this.getQuestionModel(),
-	// 		this.props.moduleData.navState.context
-	// 	)
-	// }
-
-	// getScoreClass() {
-	// 	return QuestionUtil.getScoreClass(this.getScore())
-	// }
-
-	// gethasResponse() {
-	// 	return QuestionUtil.hasResponse(
-	// 		this.props.moduleData.questionState,
-	// 		this.getQuestionModel(),
-	// 		this.props.moduleData.navState.context
-	// 	)
-	// }
-
-	// componentDidUpdate() {
-	// 	this.sortIds()
-
-	// 	switch (this.nextFocus) {
-	// 		case FOCUS_TARGET_EXPLANATION:
-	// 			delete this.nextFocus
-	// 			this.refExplanation.focusOnExplanation()
-	// 			break
-
-	// 		case FOCUS_TARGET_RESULTS:
-	// 			if (this.getScore() !== null) {
-	// 				delete this.nextFocus
-	// 				this.answerChoicesRef.current.focusOnResults()
-	// 			}
-	// 			break
-
-	// 		case FOCUS_TARGET_QUESTION:
-	// 			delete this.nextFocus
-	// 			FocusUtil.focusComponent(this.getQuestionModel().get('id'))
-	// 			break
-	// 	}
-	// }
-
-	// getFeedbackLabels(isReview, isSurvey, hasResponse) {
-	// 	const { correctLabels, incorrectLabels } = this.props.model.modelState
-
-	// 	return {
-	// 		correct: this.getRandomItem(
-	// 			this.getCorrectLabels(correctLabels, isReview, isSurvey, hasResponse)
-	// 		),
-	// 		incorrect: this.getRandomItem(this.getIncorrectLabels(incorrectLabels, isReview))
-	// 	}
-	// }
-
-	// getRandomItem(arrayOfOptions) {
-	// 	return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
-	// }
-	//@TODO - END dev/9 stuff that I'm not sure I need!
 
 	sortIds() {
 		if (!this.getSortedIds()) {
