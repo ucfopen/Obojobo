@@ -29,7 +29,6 @@
 	},
 	"dependencies": {
 		"obojobo-chunks-question": "^8.0.2",
-		"obojobo-chunks-text": "^8.0.2",
 		"obojobo-lib-utils": "^8.0.2"
 	},
 	"devDependencies": {

@@ -28,7 +28,6 @@
 	},
 	"dependencies": {
 		"obojobo-chunks-question": "^11.1.1",
-		"obojobo-chunks-text": "^11.1.1",
 		"obojobo-lib-utils": "^11.1.1"
 	},
 	"jest": {

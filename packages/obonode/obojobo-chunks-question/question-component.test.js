@@ -23,6 +23,18 @@ const getDefaultProps = ({
 	isShowingExplanationButton, // bool
 	score // null (not answered), 'no-score' (survey question), 0, or 100
 }) => {
+	class MCAnswerClass extends React.Component {
+		render() {
+			return <div>MCAnswer</div>
+		}
+	}
+
+	class MCFeedbackClass extends React.Component {
+		render() {
+			return <div>MCFeedback</div>
+		}
+	}
+
 	const questionModel = {
 		getDomId: () => 'mock-dom-id',
 		processTrigger: jest.fn(),
@@ -30,10 +42,7 @@ const getDefaultProps = ({
 		modelState: {
 			type: questionType,
 			solution: {
-				getComponentClass: () =>
-					function C() {
-						return <div>MCAnswer</div>
-					}
+				getComponentClass: () => MCAnswerClass
 			}
 		},
 		children: {
@@ -48,10 +57,7 @@ const getDefaultProps = ({
 								return 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 						}
 					},
-					getComponentClass: () =>
-						function C() {
-							return <div>MCAnswer</div>
-						}
+					getComponentClass: () => MCAnswerClass
 				},
 				{
 					get: key => {
@@ -63,10 +69,7 @@ const getDefaultProps = ({
 								return 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 						}
 					},
-					getComponentClass: () =>
-						function C() {
-							return <div>MCFeedback</div>
-						}
+					getComponentClass: () => MCFeedbackClass
 				}
 			]
 		}
