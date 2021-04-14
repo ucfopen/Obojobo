@@ -22,7 +22,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -30,7 +30,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -58,7 +58,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -66,7 +66,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -74,7 +74,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -102,7 +102,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -110,7 +110,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(1)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -118,7 +118,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -126,7 +126,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -148,7 +148,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -156,7 +156,7 @@ describe('NumericOption', () => {
 		component
 			.find('.select-item')
 			.at(1)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -164,7 +164,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(0)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -172,7 +172,7 @@ describe('NumericOption', () => {
 		component
 			.find('.input-item')
 			.at(1)
-			.simulate('focus', {
+			.simulate('click', {
 				stopPropagation,
 				preventDefault
 			})
@@ -200,14 +200,14 @@ describe('NumericOption', () => {
 			stopPropagation: jest.fn(),
 			preventDefault: jest.fn()
 		}
-		component.root.findAllByType('input')[0].props.onFocus(event)
+		component.root.findAllByType('input')[0].props.onClick(event)
 
 		jest.runAllTimers()
 
 		expect(event.stopPropagation).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(event.target.focus).toHaveBeenCalledTimes(50)
-		expect(event.target.select).toHaveBeenCalledTimes(50)
+		expect(event.target.focus).toHaveBeenCalledTimes(1)
+		expect(event.target.select).toHaveBeenCalledTimes(2)
 	})
 
 	test('NumericOption select and input changes call the given prop methods', () => {

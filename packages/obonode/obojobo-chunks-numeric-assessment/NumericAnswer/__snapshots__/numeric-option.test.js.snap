@@ -34,7 +34,7 @@ exports[`NumericOption NumericOption renders as expected with default requiremen
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>
@@ -76,7 +76,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`e
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>
@@ -118,7 +118,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       contentEditable={false}
       name="answer"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>
@@ -149,7 +149,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`m
       contentEditable={false}
       name="margin"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>
@@ -191,7 +191,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       contentEditable={false}
       name="start"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>
@@ -205,7 +205,7 @@ exports[`NumericOption NumericOption renders as expected with requirement of \`r
       contentEditable={false}
       name="end"
       onChange={[Function]}
-      onFocus={[Function]}
+      onClick={[Function]}
       value=""
     />
   </label>

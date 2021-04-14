@@ -12,23 +12,18 @@ import {
 // @HACK - This is necessary because Slate (or something) steals the focus
 // away, and the page will jump wildly away from what you were editing.
 // This brute force hack seems to work
-const onHandleInputFocus = event => {
+const onHandleClick = event => {
 	event.preventDefault()
 	event.stopPropagation()
-	return
 
 	const el = event.target
 
-	let i = 0
-	const id = setInterval(() => {
+	el.select()
+
+	setTimeout(() => {
 		el.focus()
 		el.select()
-
-		i++
-		if (i >= 50) {
-			clearInterval(id)
-		}
-	}, 1)
+	}, 100)
 }
 
 const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChange }) => {
@@ -58,7 +53,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="start"
 							value={start || ''}
 							onChange={event => onHandleInputChange(event)}
-							onFocus={onHandleInputFocus}
+							onClick={onHandleClick}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -70,7 +65,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="end"
 							value={end || ''}
 							onChange={event => onHandleInputChange(event)}
-							onFocus={onHandleInputFocus}
+							onClick={onHandleClick}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -100,7 +95,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="answer"
 							value={answer || ''}
 							onChange={event => onHandleInputChange(event)}
-							onFocus={onHandleInputFocus}
+							onClick={onHandleClick}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -125,7 +120,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="margin"
 							value={margin || ''}
 							onChange={event => onHandleInputChange(event)}
-							onFocus={onHandleInputFocus}
+							onClick={onHandleClick}
 							contentEditable={false}
 							autoComplete="off"
 						/>
@@ -156,7 +151,7 @@ const NumericOption = ({ numericChoice, onHandleInputChange, onHandleSelectChang
 							name="answer"
 							value={answer || ''}
 							onChange={event => onHandleInputChange(event)}
-							onFocus={onHandleInputFocus}
+							onClick={onHandleClick}
 							contentEditable={false}
 							autoComplete="off"
 						/>
