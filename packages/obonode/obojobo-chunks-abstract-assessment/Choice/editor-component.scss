@@ -89,6 +89,11 @@
 			background: none;
 			font-weight: bold;
 			color: $color-shadow;
+
+			&:hover {
+				background-color: transparent;
+				color: $color-obojobo-blue;
+			}
 		}
 	}
 }
