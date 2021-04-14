@@ -1477,14 +1477,6 @@ describe('Question', () => {
 		}
 	)
 
-	test('renderResponseSendState renders as expected', () => {
-		expect(Question.prototype.renderResponseSendState('notSent')).toMatchSnapshot()
-		expect(Question.prototype.renderResponseSendState('sending')).toMatchSnapshot()
-		expect(Question.prototype.renderResponseSendState('recorded')).toMatchSnapshot()
-		expect(Question.prototype.renderResponseSendState('error')).toMatchSnapshot()
-		expect(Question.prototype.renderResponseSendState(null)).toMatchSnapshot()
-	})
-
 	test('componentDidUpdate calls focusOnExplanation if nextFocus is "explanation"', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',

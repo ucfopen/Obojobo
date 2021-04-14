@@ -241,7 +241,6 @@ export default class MCAssessment extends OboQuestionAssessmentComponent {
 			` is-type-${this.props.type}` +
 			isOrNot(hasResponse, 'responded-to') +
 			` ${scoreClass}` +
-			// isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
 
 		return (

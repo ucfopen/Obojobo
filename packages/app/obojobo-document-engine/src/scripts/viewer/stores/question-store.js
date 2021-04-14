@@ -41,6 +41,7 @@ class QuestionStore extends Store {
 				this.sendResponse(payload.value).then(() => {
 					this.triggerChange()
 				})
+				this.triggerChange()
 			},
 
 			'question:setResponse': payload => {
@@ -214,6 +215,7 @@ class QuestionStore extends Store {
 		const responseMetadata = contextState.responseMetadata[id]
 		if (!responseMetadata) return false
 
+		// responseMetadata.sendState = QuestionResponseSendStates.SENDING
 		const postResponsePromise = this.getPostResponsePromise(id, context)
 
 		contextState.sendingResponsePromises[id] = postResponsePromise
@@ -230,7 +232,6 @@ class QuestionStore extends Store {
 
 		contextState.responseMetadata[id].sendState = QuestionResponseSendStates.SENDING
 
-		// return () => {
 		return ViewerAPI.postEvent({
 			draftId: OboModel.getRoot().get('draftId'),
 			action: 'question:setResponse',
@@ -245,7 +246,6 @@ class QuestionStore extends Store {
 			.catch(e => {
 				return this.onPostResponseError(e, contextState, id)
 			})
-		// }
 	}
 
 	setResponse({

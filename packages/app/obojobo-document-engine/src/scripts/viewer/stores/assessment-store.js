@@ -146,14 +146,11 @@ class AssessmentStore extends Store {
 			: []
 		Object.assign(ext, ...filteredExtArrays) // merge matching extensions
 
-		const unfinishedAttempt = ext.assessmentSummary[0] || null //@TODO - Correct?
-
 		this.state = {
 			assessments: {}, // assessments found in attempt history
 			machines: {},
 			importableScores: arrayToObject([ext.importableScore], 'assessmentId'),
-			assessmentSummaries: arrayToObject(ext.assessmentSummary, 'assessmentId'),
-			isResumingAttempt: unfinishedAttempt !== null //eslint-disable-line no-undefined
+			assessmentSummaries: arrayToObject(ext.assessmentSummary, 'assessmentId')
 		}
 
 		// Find all the assessments:

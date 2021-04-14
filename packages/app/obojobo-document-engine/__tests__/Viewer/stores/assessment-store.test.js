@@ -260,8 +260,7 @@ describe('AssessmentStore', () => {
 					scores: [],
 					unfinishedAttemptId: null
 				}
-			},
-			isResumingAttempt: false
+			}
 		})
 
 		// Ensure a AssessmentStateMachine was created
@@ -310,8 +309,7 @@ describe('AssessmentStore', () => {
 					assessmentId: 'mockAssessmentId',
 					__assessmentSummary: true
 				}
-			},
-			isResumingAttempt: true
+			}
 		})
 
 		// Ensure the AssessmentStateMachine was created

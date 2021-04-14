@@ -446,7 +446,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			) +
 			isOrNot(hasResponse, 'responded-to') +
 			` ${scoreClass}` +
-			// isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
 
 		return (

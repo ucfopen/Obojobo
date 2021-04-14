@@ -15,6 +15,7 @@ import {
 const onHandleInputFocus = event => {
 	event.preventDefault()
 	event.stopPropagation()
+	return
 
 	const el = event.target
 

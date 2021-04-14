@@ -517,7 +517,7 @@ describe('QuestionStore', () => {
 		dispatcherSpy.mockRestore()
 	})
 
-	test('question:sendResponse calls sendResponse', () => {
+	test('question:sendResponse calls sendResponse', done => {
 		const questionStore = new QuestionStoreClass()
 		questionStore.state = {
 			contexts: {
@@ -526,13 +526,23 @@ describe('QuestionStore', () => {
 		}
 
 		const spy = jest.spyOn(QuestionStoreClass.prototype, 'sendResponse').mockResolvedValueOnce({})
+		const triggerSpy = jest
+			.spyOn(QuestionStoreClass.prototype, 'triggerChange')
+			.mockImplementation(jest.fn())
 		expect(spy).not.toHaveBeenCalled()
+		expect(triggerSpy).not.toHaveBeenCalled()
 
 		Dispatcher.trigger('question:sendResponse', { value: {} })
 
-		expect(spy).toHaveBeenCalled()
+		setTimeout(() => {
+			expect(spy).toHaveBeenCalled()
+			expect(triggerSpy).toHaveBeenCalledTimes(2)
 
-		spy.mockRestore()
+			spy.mockRestore()
+			triggerSpy.mockRestore()
+
+			done()
+		}, 1)
 	})
 
 	test('sendResponse returns false if context not found', () => {

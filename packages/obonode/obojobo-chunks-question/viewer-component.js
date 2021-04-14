@@ -11,9 +11,7 @@ import QuestionComponent from './question-component'
 
 const { OboComponent, OboQuestionComponent } = Viewer.components
 const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
-const { Throbber } = Common.components
 const { focus } = Common.page
-const { QuestionResponseSendStates } = Viewer.stores.questionStore
 
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
@@ -363,30 +361,6 @@ export default class Question extends OboQuestionComponent {
 		}
 
 		return false
-	}
-
-	renderResponseSendState(responseSendState) {
-		switch (responseSendState) {
-			case QuestionResponseSendStates.NOT_SENT:
-				return <span className="is-response-state-not-sent">&nbsp;</span>
-
-			case QuestionResponseSendStates.SENDING:
-				return (
-					<span className="is-response-state-sending">
-						<Throbber />
-					</span>
-				)
-
-			case QuestionResponseSendStates.RECORDED:
-				return <span className="is-response-state-recorded">Answer Saved</span>
-
-			case QuestionResponseSendStates.ERROR:
-				return <span className="is-response-state-error">✖ Error sending response, try again</span>
-
-			case null:
-			default:
-				return <span className="is-response-state-other">&nbsp;</span>
-		}
 	}
 
 	getScoreClass(score) {
