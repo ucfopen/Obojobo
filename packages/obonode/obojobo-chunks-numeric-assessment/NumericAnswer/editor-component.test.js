@@ -162,7 +162,8 @@ describe('NumericAnswer Editor Node', () => {
 		}
 		const thisValue = {
 			setState: jest.fn(),
-			getStateForRequirement: jest.fn().mockImplementation(value => ({ mockState: value }))
+			getStateForRequirement: jest.fn().mockImplementation(value => ({ mockState: value })),
+			updateNodeFromState: jest.fn()
 		}
 
 		event.target = {
@@ -174,6 +175,7 @@ describe('NumericAnswer Editor Node', () => {
 		expect(event.preventDefault).toBeCalled()
 		expect(event.stopPropagation).toBeCalled()
 		expect(thisValue.setState).toBeCalledWith({ mockState: 'mockValue' })
+		expect(thisValue.updateNodeFromState).toBeCalled()
 
 		event.target = {
 			name: 'margin-type',
@@ -184,6 +186,7 @@ describe('NumericAnswer Editor Node', () => {
 		expect(event.preventDefault).toBeCalled()
 		expect(event.stopPropagation).toBeCalled()
 		expect(thisValue.setState).toBeCalledWith({ type: 'range' })
+		expect(thisValue.updateNodeFromState).toBeCalled()
 	})
 
 	test('updateNodeFromState calls Transforms.setNodes and restores selection with document.activeElement, returns true if successful', () => {

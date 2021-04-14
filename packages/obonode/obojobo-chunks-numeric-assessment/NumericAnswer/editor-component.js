@@ -152,6 +152,8 @@ class NumericAnswer extends React.Component {
 				})
 				break
 		}
+
+		this.updateNodeFromState()
 	}
 
 	render() {
