@@ -26,6 +26,15 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 		return true
 	}
 
+	// Used to determine if the users' response is "valid" - this is called when submitting
+	// a response but before it is graded and the response saved in the QuestionStore.
+	// If false is returned execution is halted and the response is not graded. You can
+	// optionally perform other tasks here, such as displaying error messages or updating
+	// form input validity
+	checkIfResponseIsValid() {
+		return true
+	}
+
 	// Called when a non-survey question is submitted and the score needs to be calculated.
 	// Should output an object of the form { score, details }, where score is
 	// the 0-100 score of a students response, and details are any arbitrary additional

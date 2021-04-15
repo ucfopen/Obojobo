@@ -20,7 +20,6 @@ const {
 const { OboComponent, OboQuestionAssessmentComponent, Flag } = Viewer.components
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
-const { ErrorUtil } = Common.util
 const { focus } = Common.page
 const { TextGroupEl } = Common.chunk.textChunk
 
@@ -68,7 +67,9 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	constructor(props) {
 		super(props)
 
+		this.inputRef = React.createRef()
 		this.onInputBlur = this.onInputBlur.bind(this)
+		this.clearCustomValidity = this.clearCustomValidity.bind(this)
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
@@ -92,6 +93,47 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		)
 	}
 
+	clearCustomValidity(event) {
+		event.target.setCustomValidity('')
+	}
+
+	checkIfResponseIsValid() {
+		if (!this.props.response) {
+			return false
+		}
+
+		const questionResponse = this.props.response.value
+		const results = this.evaluator.evaluate(questionResponse)
+
+		switch (results.status) {
+			case PASSED:
+			case FAILED:
+				return true
+
+			case INPUT_INVALID:
+				this.inputRef.current.setCustomValidity('Please enter a valid numeric value')
+				return false
+
+			case INPUT_NOT_SAFE:
+				this.inputRef.current.setCustomValidity('Your answer was too large of a number')
+				return false
+
+			case INPUT_MATCHES_MULTIPLE_TYPES:
+				this.inputRef.current.setCustomValidity(
+					'Your answer matched multiple types - Make sure to explicitly input your answer'
+				)
+				return false
+
+			case INPUT_NOT_MATCHED:
+				this.inputRef.current.setCustomValidity(
+					"Your answer didn't match one of the accepted numeric types"
+				)
+				return false
+		}
+
+		return false
+	}
+
 	calculateScore() {
 		if (!this.props.response) {
 			return null
@@ -100,53 +142,18 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		const questionResponse = this.props.response.value
 		const results = this.evaluator.evaluate(questionResponse)
 
-		switch (results.status) {
-			case INPUT_INVALID:
-				ErrorUtil.show('Invalid Input', 'Please enter a valid numeric value')
-				return null
+		const feedback =
+			results.details.matchingOutcome &&
+			results.details.matchingOutcome.rule &&
+			results.details.matchingOutcome.rule.feedback
+				? results.details.matchingOutcome.rule.feedback
+				: null
 
-			case INPUT_NOT_SAFE:
-				ErrorUtil.show('Invalid Input', 'Your answer was too large of a number')
-				return null
+		this.setFeedback(feedback)
 
-			case INPUT_MATCHES_MULTIPLE_TYPES:
-				ErrorUtil.show(
-					'Invalid Input',
-					'Your answer matched multiple types - Make sure to explicitly input your answer'
-				)
-				return null
-
-			case INPUT_NOT_MATCHED:
-				ErrorUtil.show(
-					'Invalid Input',
-					"Your answer didn't match one of the accepted numeric types"
-				)
-				return null
-
-			case PASSED:
-			case FAILED: {
-				const feedback =
-					results.details.matchingOutcome &&
-					results.details.matchingOutcome.rule &&
-					results.details.matchingOutcome.rule.feedback
-						? results.details.matchingOutcome.rule.feedback
-						: null
-
-				this.setFeedback(feedback)
-
-				return {
-					score: results.details.score,
-					details: results.details
-				}
-			}
-
-			// Should never get here!
-			default:
-				ErrorUtil.show(
-					'Error',
-					'Something went wrong evaluating your answer. Double check your input and try again.'
-				)
-				return null
+		return {
+			score: results.details.score,
+			details: results.details
 		}
 	}
 
@@ -458,12 +465,14 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 					<div className="input-container">
 						{!isScored ? <NumericInputMoreInfoButton /> : null}
 						<input
+							ref={this.inputRef}
 							autoComplete="off"
 							className="numeric-assessment--input"
 							aria-labelledby={ariaInputLabelId}
 							placeholder={this.getPlaceholderText(isReview, isSurvey)}
 							value={responseValue}
 							disabled={isReview}
+							onChange={this.clearCustomValidity}
 							onBlur={this.onInputBlur}
 						/>
 						<div id={ariaInputLabelId} className="for-screen-reader-only">

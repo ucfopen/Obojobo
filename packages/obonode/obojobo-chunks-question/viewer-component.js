@@ -110,6 +110,8 @@ export default class Question extends OboQuestionComponent {
 
 		this.submitResponse()
 
+		event.target.reportValidity()
+
 		event.target.reset()
 	}
 
@@ -120,6 +122,10 @@ export default class Question extends OboQuestionComponent {
 		const context = this.props.moduleData.navState.context
 		const isSurvey = modelState.type === 'survey'
 
+		if (!this.checkIfResponseIsValid()) {
+			return
+		}
+
 		this.scoreResponse()
 
 		if (isSurvey) {
@@ -127,6 +133,14 @@ export default class Question extends OboQuestionComponent {
 		} else {
 			QuestionUtil.checkAnswer(id, context)
 		}
+	}
+
+	checkIfResponseIsValid() {
+		if (!this.assessmentComponentRef.current) {
+			return false
+		}
+
+		return this.assessmentComponentRef.current.checkIfResponseIsValid()
 	}
 
 	calculateScore() {

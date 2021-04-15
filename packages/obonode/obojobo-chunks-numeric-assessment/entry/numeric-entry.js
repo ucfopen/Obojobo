@@ -23,11 +23,11 @@ const {
  * Represents, processes and validates a numeric value in an accepted format. Used as
  * answer values in numeric questions.
  * @example
- * const entry = new NumericEntry('6.02e23 mols', ['decimal', 'scientific'])
+ * const entry = new NumericEntry('6.02e23', ['decimal', 'scientific'])
  * entry.status // 'ok'
  * entry.numericInstance.type // 'scientific'
  *
- * const badEntry = new NumericEntry('6.02e23 mols', ['decimal'])
+ * const badEntry = new NumericEntry('6.02e23', ['decimal'])
  * entry.status // 'inputNotMatched'
  * entry.numericInstance // null
  */

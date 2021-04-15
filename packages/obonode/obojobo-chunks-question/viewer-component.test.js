@@ -881,18 +881,22 @@ describe('Question', () => {
 		const getModeSpy = jest.spyOn(Question.prototype, 'getMode').mockReturnValue('not-practice')
 		const submitRespSpy = jest.spyOn(Question.prototype, 'submitResponse')
 
-		const event = { preventDefault: jest.fn(), target: { reset: jest.fn() } }
+		const event = {
+			preventDefault: jest.fn(),
+			target: { reset: jest.fn(), reportValidity: jest.fn() }
+		}
 		component.getInstance().onFormSubmit(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(event.target.reset).not.toHaveBeenCalled()
+		expect(event.target.reportValidity).not.toHaveBeenCalled()
 		expect(submitRespSpy).not.toHaveBeenCalled()
 
 		getModeSpy.mockRestore()
 		submitRespSpy.mockRestore()
 	})
 
-	test('onFormSubmit prevents event default, submits the response and resets the form if mode is practice', () => {
+	test('onFormSubmit prevents event default, submits the response, reports validity and resets the form if mode is practice', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -906,11 +910,15 @@ describe('Question', () => {
 		const getModeSpy = jest.spyOn(Question.prototype, 'getMode').mockReturnValue('practice')
 		const submitRespSpy = jest.spyOn(Question.prototype, 'submitResponse')
 
-		const event = { preventDefault: jest.fn(), target: { reset: jest.fn() } }
+		const event = {
+			preventDefault: jest.fn(),
+			target: { reset: jest.fn(), reportValidity: jest.fn() }
+		}
 		component.getInstance().onFormSubmit(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(event.target.reset).toHaveBeenCalled()
+		expect(event.target.reportValidity).toHaveBeenCalled()
 		expect(submitRespSpy).toHaveBeenCalled()
 
 		getModeSpy.mockRestore()
@@ -931,6 +939,9 @@ describe('Question', () => {
 		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
 		const checkAnsSpy = jest.spyOn(QuestionUtil, 'checkAnswer')
 		const submitRespSpy = jest.spyOn(QuestionUtil, 'submitResponse')
+		const checkIfRespValidSpy = jest
+			.spyOn(Question.prototype, 'checkIfResponseIsValid')
+			.mockReturnValue(true)
 
 		component.getInstance().submitResponse()
 
@@ -939,6 +950,7 @@ describe('Question', () => {
 
 		checkAnsSpy.mockRestore()
 		submitRespSpy.mockRestore()
+		checkIfRespValidSpy.mockRestore()
 	})
 
 	test('submitResponse calls scoreResponse, QuestionUtil.checkAnswer if NOT survey question', () => {
@@ -955,6 +967,9 @@ describe('Question', () => {
 		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
 		const checkAnsSpy = jest.spyOn(QuestionUtil, 'checkAnswer')
 		const submitRespSpy = jest.spyOn(QuestionUtil, 'submitResponse')
+		const checkIfRespValidSpy = jest
+			.spyOn(Question.prototype, 'checkIfResponseIsValid')
+			.mockReturnValue(true)
 
 		component.getInstance().submitResponse()
 
@@ -963,6 +978,57 @@ describe('Question', () => {
 
 		checkAnsSpy.mockRestore()
 		submitRespSpy.mockRestore()
+		checkIfRespValidSpy.mockRestore()
+	})
+
+	test('submitResponse does nothing if response is not valid', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+		model.modelState.type = 'default'
+
+		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const checkAnsSpy = jest.spyOn(QuestionUtil, 'checkAnswer')
+		const scoreRespSpy = jest.spyOn(Question.prototype, 'scoreResponse')
+		const submitRespSpy = jest.spyOn(QuestionUtil, 'submitResponse')
+		const checkIfRespValidSpy = jest
+			.spyOn(Question.prototype, 'checkIfResponseIsValid')
+			.mockReturnValue(false)
+
+		component.getInstance().submitResponse()
+
+		expect(checkAnsSpy).not.toHaveBeenCalledWith('id', 'mockContext')
+		expect(submitRespSpy).not.toHaveBeenCalled()
+		expect(scoreRespSpy).not.toHaveBeenCalled()
+
+		checkAnsSpy.mockRestore()
+		submitRespSpy.mockRestore()
+		checkIfRespValidSpy.mockRestore()
+		scoreRespSpy.mockRestore()
+	})
+
+	test('checkIfResponseIsValid does nothing if the assessment component ref has no element', () => {
+		expect(
+			Question.prototype.checkIfResponseIsValid.bind({
+				assessmentComponentRef: {}
+			})()
+		).toBe(false)
+	})
+
+	test('checkIfResponseIsValid calls assessment component method if it exists', () => {
+		const thisValue = {
+			assessmentComponentRef: {
+				current: {
+					checkIfResponseIsValid: jest.fn().mockReturnValue('mock-return-value')
+				}
+			}
+		}
+		expect(Question.prototype.checkIfResponseIsValid.bind(thisValue)()).toBe('mock-return-value')
 	})
 
 	test('scoreResponse does nothing if in review mode', () => {

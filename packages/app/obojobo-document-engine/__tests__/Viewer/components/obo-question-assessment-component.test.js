@@ -70,6 +70,12 @@ describe('OboQuestionAssessmentComponent', () => {
 		expect(component.getInstance().calculateScore()).toBe(null)
 	})
 
+	test('checkIfResponseIsValid returns true', () => {
+		const component = renderer.create(<OboQuestionAssessmentComponent />)
+
+		expect(component.getInstance().checkIfResponseIsValid()).toBe(true)
+	})
+
 	test('handleFormChange returns expected object', () => {
 		const component = renderer.create(<OboQuestionAssessmentComponent />)
 
