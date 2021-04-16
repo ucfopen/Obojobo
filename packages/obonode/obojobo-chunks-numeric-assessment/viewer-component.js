@@ -130,8 +130,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				)
 				return false
 		}
-
-		return false
 	}
 
 	calculateScore() {
@@ -160,7 +158,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 	retry() {
 		QuestionUtil.retryQuestion(
 			this.props.questionModel.get('id'),
-			this.props.moduleData.navState.context
+			NavUtil.getContext(this.props.moduleData.navState)
 		)
 	}
 
@@ -250,7 +248,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			// Values from some value to Infinity:
 			return {
 				type: 'text-and-value',
-				text: range.isMinInclusive ? 'At least' : 'Greater than',
+				text: range.isMinInclusive ? 'Greater than or equal to' : 'Greater than',
 				value: min
 			}
 		}
@@ -258,7 +256,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		// Values from -Infinity to some value:
 		return {
 			type: 'text-and-value',
-			text: range.isMaxInclusive ? 'At most' : 'Less than',
+			text: range.isMaxInclusive ? 'Less than or equal to' : 'Less than',
 			value: max
 		}
 	}
@@ -309,9 +307,9 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 				return summary.text + ' ' + summary.value
 
 			case 'range':
-				return `${summary.minPrefix ? summary.minPrefix : ''} ${summary.min} ${
+				return `${summary.minPrefix ? summary.minPrefix + ' ' : ''}${summary.min} ${
 					summary.conjunction
-				} ${summary.maxPrefix ? summary.maxPrefix : ''} ${summary.max}`
+				} ${summary.maxPrefix ? summary.maxPrefix + ' ' : ''}${summary.max}`
 		}
 	}
 
@@ -356,7 +354,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 			default:
 				return (
-					' (' + mods.slice(0, mods.length - 2).join(', ') + ' and ' + mods[mods.length - 1] + ')'
+					' (' + mods.slice(0, mods.length - 1).join(', ') + ', and ' + mods[mods.length - 1] + ')'
 				)
 		}
 	}
@@ -408,6 +406,48 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		return 'Your answer...'
 	}
 
+	renderCorrectAnswerList(correctRules) {
+		switch (correctRules.length) {
+			case 0:
+				return (
+					<React.Fragment>
+						<span className="no-correct-answers">
+							(There are no correct answers for this question)
+						</span>
+					</React.Fragment>
+				)
+
+			case 1:
+				return (
+					<React.Fragment>
+						<h2>Correct answer: </h2>
+						<div>
+							<span>{this.renderRangeSummary(this.getRangeSummary(correctRules[0].value))}</span>
+							<span>{this.renderRuleModSummaries(this.getRuleModSummaries(correctRules[0]))}</span>
+						</div>
+					</React.Fragment>
+				)
+
+			default:
+				return (
+					<React.Fragment>
+						<h2>Correct answers:</h2>
+
+						<ul>
+							{correctRules.map((rule, index) => {
+								return (
+									<li key={index}>
+										<span>{this.renderRangeSummary(this.getRangeSummary(rule.value))}</span>
+										<span>{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}</span>
+									</li>
+								)
+							})}
+						</ul>
+					</React.Fragment>
+				)
+		}
+	}
+
 	render() {
 		const score = this.props.score
 		const scoreClass = this.props.scoreClass
@@ -427,6 +467,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		} catch (e) {
 			results = null
 		}
+
 		const matchingCorrectRule =
 			results && results.details && results.details.matchingOutcome
 				? results.details.matchingOutcome.rule
@@ -436,7 +477,12 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 			this.props.response && this.props.response.value ? this.props.response.value : ''
 
 		const isExactlyCorrect =
-			isScored && score === 100 && results.details.matchingOutcome.scoreOutcome.isExactlyCorrect
+			isScored &&
+			score === 100 &&
+			results &&
+			results.details &&
+			results.details.matchingOutcome &&
+			results.details.matchingOutcome.scoreOutcome.isExactlyCorrect
 
 		const ariaInputLabelId = `obojobo-draft--chunks--numeric-assessment--answer-input--${this.props.model.get(
 			'id'
@@ -444,7 +490,6 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 
 		const className =
 			'obojobo-draft--chunks--numeric-assessment' +
-			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
 			` is-type-${this.props.type}` +
 			isOrNot(
@@ -490,7 +535,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 								parentModel={this.props.model}
 							/>
 						</div>
-						{score === 100 && !isExactlyCorrect ? (
+						{score === 100 && !isExactlyCorrect && matchingCorrectRule ? (
 							<span className="matching-correct-answer">
 								(Exact answer:{' '}
 								<span className="value">
@@ -507,45 +552,7 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 						<div className="review">
 							<Flag type={Flag.getType(score === 100, score === 100, true, isSurvey)} />
 							{score !== 'no-score' && score !== 100 ? (
-								<div className="correct-answers">
-									{correctRules.length === 1 ? (
-										<React.Fragment>
-											<h2>Correct answer: </h2>
-											<div>
-												<span>
-													{this.renderRangeSummary(this.getRangeSummary(correctRules[0].value))}
-												</span>
-												<span>
-													{this.renderRuleModSummaries(this.getRuleModSummaries(correctRules[0]))}
-												</span>
-											</div>
-										</React.Fragment>
-									) : (
-										<React.Fragment>
-											<h2>Correct answers:</h2>
-											{correctRules.length === 0 ? (
-												<span className="no-correct-answers">
-													(There are no correct answers for this question)
-												</span>
-											) : (
-												<ul>
-													{correctRules.map((rule, index) => {
-														return (
-															<li key={index}>
-																<span>
-																	{this.renderRangeSummary(this.getRangeSummary(rule.value))}
-																</span>
-																<span>
-																	{this.renderRuleModSummaries(this.getRuleModSummaries(rule))}
-																</span>
-															</li>
-														)
-													})}
-												</ul>
-											)}
-										</React.Fragment>
-									)}
-								</div>
+								<div className="correct-answers">{this.renderCorrectAnswerList(correctRules)}</div>
 							) : null}
 						</div>
 					) : null}
