@@ -63,7 +63,7 @@ describe('Button', () => {
 	})
 
 	test('with value', () => {
-		const component = renderer.create(<Button value='child value'>Label</Button>)
+		const component = renderer.create(<Button value="child value">Label</Button>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -90,5 +90,4 @@ describe('Button', () => {
 		component.getInstance().focus()
 		expect(focus).toHaveBeenCalled()
 	})
-
 })

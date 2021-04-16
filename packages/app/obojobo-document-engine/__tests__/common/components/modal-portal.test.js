@@ -17,7 +17,7 @@ describe('ModalPortal', () => {
 	})
 
 	test('ModalPortal component', async () => {
-		await act( async () => {
+		await act(async () => {
 			create(<ModalPortal>test</ModalPortal>)
 		})
 

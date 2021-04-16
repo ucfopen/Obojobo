@@ -3,7 +3,9 @@ import Modal from '../../../../src/scripts/common/components/modal/modal'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-jest.mock('../../../../src/scripts/common/components/modal/modal', () => props => <div {...props} />)
+jest.mock('../../../../src/scripts/common/components/modal/modal', () => props => (
+	<div {...props} />
+))
 
 describe('Dialog', () => {
 	test('basic render', () => {
@@ -13,7 +15,7 @@ describe('Dialog', () => {
 	})
 
 	test('render with no buttons', () => {
-		const component = renderer.create(<Dialog buttons={false} >Content</Dialog>)
+		const component = renderer.create(<Dialog buttons={false}>Content</Dialog>)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})

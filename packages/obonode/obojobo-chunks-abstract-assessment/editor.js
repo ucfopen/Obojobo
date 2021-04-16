@@ -9,5 +9,5 @@ Common.Registry.registerEditorModel(Choice)
 Common.Registry.registerEditorModel(Feedback)
 
 // Note: AbstractAssessment does not directly register a model
-// to the Common.Registry; inheriting components that implement 
-// specific behaviors are expected to register themselves. 
+// to the Common.Registry; inheriting components that implement
+// specific behaviors are expected to register themselves.
