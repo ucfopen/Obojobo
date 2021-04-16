@@ -3,6 +3,38 @@
 .obojobo-draft--chunks--numeric-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
 
+	.numeric-assessment--input {
+		@include text-input();
+
+		width: 11.3em;
+
+		&:disabled {
+			background: transparentize($color-bg, 0.3);
+			border: 1px solid $color-transparent;
+		}
+	}
+
+	.correct-answers {
+		margin-top: 2em;
+		font-size: 0.8em;
+		font-family: $font-default;
+
+		h2 {
+			color: $color-text;
+			font-size: 1em;
+			font-weight: bold;
+		}
+
+		ul {
+			list-style-position: inside;
+			padding: 0 1em;
+		}
+
+		.value {
+			font-family: $font-monospace;
+		}
+	}
+
 	&.is-long-response {
 		.numeric-assessment--input {
 			width: 100%;
@@ -29,17 +61,6 @@
 
 	.input-container {
 		display: flex;
-	}
-
-	.numeric-assessment--input {
-		@include text-input();
-
-		width: 11.3em;
-
-		&:disabled {
-			background: transparentize($color-bg, 0.3);
-			border: 1px solid $color-transparent;
-		}
 	}
 
 	.obojobo-draft--chunks--numeric-assessment--numeric-feedback {
@@ -116,27 +137,6 @@
 		line-height: 2.4em;
 
 		> .value {
-			font-family: $font-monospace;
-		}
-	}
-
-	.correct-answers {
-		margin-top: 2em;
-		font-size: 0.8em;
-		font-family: $font-default;
-
-		h2 {
-			color: black;
-			font-size: 1em;
-			font-weight: bold;
-		}
-
-		ul {
-			list-style-position: inside;
-			padding: 0 1em;
-		}
-
-		.value {
 			font-family: $font-monospace;
 		}
 	}

@@ -37,12 +37,13 @@ class NumericAssessment extends DraftNode {
 		const results = evaluator.evaluate(responseRecord.response.value)
 
 		switch (results.status) {
-			case 'inputInvalid':
-				setScore(0)
+			case 'passed':
+			case 'failed':
+				setScore(results.details.score)
 				break
 
 			default:
-				setScore(results.details.score)
+				setScore(0)
 				break
 		}
 	}

@@ -29,8 +29,10 @@ module.exports = numericChoices => {
 							feedback,
 							score
 						}
+
+					default:
+						return null
 				}
-				break
 
 			case 'exact':
 			default:
@@ -40,7 +42,5 @@ module.exports = numericChoices => {
 					score
 				}
 		}
-
-		return null
 	})
 }
