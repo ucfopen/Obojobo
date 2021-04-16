@@ -40,6 +40,7 @@ const importQuestionModal = props => {
 					const questionContent = question.children.filter(
 						child =>
 							child.type !== 'ObojoboDraft.Chunks.MCAssessment' &&
+							child.type !== 'ObojoboDraft.Chunks.NumericAssessment' &&
 							child.type !== 'ObojoboDraft.Chunks.Question'
 					)
 					const className =
