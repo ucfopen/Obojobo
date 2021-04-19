@@ -1,0 +1,170 @@
+@import '~styles/includes';
+
+.rubric-modal {
+	// @HACK: Enforce pixel perfect children.
+	// Used to make the "Click to load this content" element non-blurry in CHROME
+	transform-style: preserve-3d;
+
+	.title {
+		font-size: 1.5em;
+		font-weight: bold;
+	}
+
+	.assessment-score {
+		text-align: left;
+		border: none;
+		margin-top: 0.5em;
+
+		legend {
+			font-weight: bold;
+		}
+	}
+
+	.pass-fail {
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-shadow;
+		text-align: left;
+		margin: 0;
+
+		legend {
+			float: left;
+			width: 100%;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		.to-pass {
+			padding: 1em 0;
+			display: block;
+			display: flex;
+			align-items: center;
+
+			label {
+				width: 80%;
+				display: inline-block;
+			}
+
+			input {
+				width: 20%;
+			}
+		}
+
+		.when-passing {
+			padding-bottom: 1em;
+
+			div {
+				margin-top: 0.3em;
+			}
+
+			label {
+				display: inline-block;
+			}
+		}
+
+		.when-failing {
+			padding-bottom: 1em;
+
+			div {
+				margin-top: 0.3em;
+			}
+
+			label {
+				display: inline-block;
+			}
+		}
+
+		.out-of-attempts {
+			padding-bottom: 1em;
+
+			div {
+				margin-top: 0.3em;
+			}
+
+			label {
+				display: inline-block;
+			}
+		}
+	}
+
+	.mods {
+		border: 1px solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
+		margin-top: 1em;
+		position: relative;
+		min-height: 2.8em;
+		padding: 0 0.35em;
+
+		.title {
+			font-weight: bold;
+			padding-top: 0.5em;
+			display: block;
+			font-size: 1.2rem;
+		}
+
+		#open-mods-btn {
+			margin-top: 0.3em;
+		}
+
+		.obojobo-draft--components--button {
+			.button {
+				color: $color-action;
+				background-color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+				border-color: $color-action;
+				border-width: 2px;
+
+				&:hover {
+					color: $color-bg;
+					background-color: $color-action;
+				}
+			}
+		}
+
+		ul {
+			text-align: left;
+
+			.reward {
+				color: $color-correct;
+			}
+
+			.deduct {
+				color: $color-incorrect;
+			}
+		}
+	}
+
+	&.is-type-highest {
+		.pass-fail,
+		.mods {
+			display: none;
+		}
+	}
+
+	&.is-type-pass-fail {
+		.pass-fail,
+		.mods {
+			display: block;
+		}
+	}
+
+	.is-not-enabled {
+		display: none;
+	}
+
+	input[type='number'] {
+		@include text-input();
+
+		max-width: 3em;
+		margin-left: 0.5em;
+		margin-right: 0.2em;
+	}
+
+	select {
+		@include select-input();
+
+		margin-left: 0.5em;
+	}
+}
