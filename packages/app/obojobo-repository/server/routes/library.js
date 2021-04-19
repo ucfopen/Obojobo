@@ -28,6 +28,7 @@ router
 
 // Module Images
 router.route('/library/module-icon/:moduleId').get((req, res) => {
+	res.set('Cache-control', 'public, max-age=31536000')
 	// @TODO: when user's can change these images,
 	// we'll need to use a smarter etag
 
