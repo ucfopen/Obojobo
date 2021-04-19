@@ -1,6 +1,6 @@
 import './rubric-modal.scss'
 
-import React from 'react';
+import React from 'react'
 import { ReactEditor } from 'slate-react'
 import { Transforms, Editor } from 'slate'
 import ModProperties from './mod-properties'
@@ -11,9 +11,8 @@ const { SimpleDialog } = Common.components.modal
 const { Button } = Common.components
 
 class RubricModal extends React.Component {
-
 	constructor(props) {
-		super(props);
+		super(props)
 
 		const content = Object.assign({}, this.props.element.content)
 
@@ -21,7 +20,8 @@ class RubricModal extends React.Component {
 		// it back to parent component.
 		content['passingAttemptScore'] =
 			typeof content.passingAttemptScore !== 'undefined' ? content.passingAttemptScore : 100
-		content['passedResult'] = typeof content.passedResult !== 'undefined' ? content.passedResult : 100
+		content['passedResult'] =
+			typeof content.passedResult !== 'undefined' ? content.passedResult : 100
 		content['failedResult'] = typeof content.failedResult !== 'undefined' ? content.failedResult : 0
 		content['unableToPassResult'] =
 			typeof content.unableToPassResult !== 'undefined' ? content.unableToPassResult : null
@@ -43,7 +43,7 @@ class RubricModal extends React.Component {
 	}
 
 	onDocumentMouseDown(event) {
-		event.stopPropagation();
+		event.stopPropagation()
 		if (!this.selfRef.current.contains(event.target)) {
 			this.updateNodeFromState()
 		}
@@ -76,8 +76,8 @@ class RubricModal extends React.Component {
 	}
 
 	changeScoreType(typeName, event) {
-		const content = {};
-		content[typeName] = event.target.value;
+		const content = {}
+		content[typeName] = event.target.value
 
 		this.setState({ ...content })
 	}
@@ -99,7 +99,7 @@ class RubricModal extends React.Component {
 			<ModProperties
 				mods={this.state.mods}
 				attempts={parent.content.attempts}
-				updateModProperties={(mods) => this.setState({ mods })}
+				updateModProperties={mods => this.setState({ mods })}
 			/>
 		)
 	}
@@ -131,7 +131,7 @@ class RubricModal extends React.Component {
 				onCancel={this.props.onCancel}
 				focusOnFirstElement={null}
 			>
-				<div className='rubric-modal' ref={this.selfRef}>
+				<div className="rubric-modal" ref={this.selfRef}>
 					<p>
 						The recorded score for this module is the highest assessment score, and will be sent to
 						any connected gradebook.{' '}
@@ -162,16 +162,19 @@ class RubricModal extends React.Component {
 						</label>
 					</fieldset>
 					{this.state.type === 'pass-fail' && (
-						<div className='threshold-properties-section'>
+						<div className="threshold-properties-section">
 							<fieldset className="pass-fail">
 								<legend>Pass & Fail Rules</legend>
 								<p>
 									In this mode, students must achieve a certain threshold on an attempt to pass. The
-									assessment score for each attempt will be set based on whether the student passes or
-									fails, and the highest of these assessment scores will be used as the recorded score.
+									assessment score for each attempt will be set based on whether the student passes
+									or fails, and the highest of these assessment scores will be used as the recorded
+									score.
 								</p>
-								<div className='to-pass'>
-									<p>To <b>pass</b>, students must achieve an attempt score of at least</p>
+								<div className="to-pass">
+									<p>
+										To <b>pass</b>, students must achieve an attempt score of at least
+									</p>
 									<input
 										type="number"
 										min="0"
@@ -185,15 +188,17 @@ class RubricModal extends React.Component {
 									/>
 									<span>%</span>
 								</div>
-								<div className='when-passing'>
-									<p>When <b>passing</b>, set the assessment score to</p>
+								<div className="when-passing">
+									<p>
+										When <b>passing</b>, set the assessment score to
+									</p>
 
 									<div>
 										<input
 											type="radio"
 											id="attempt-score"
 											value="$attempt_score"
-											checked={this.state.passedType === "$attempt_score"}
+											checked={this.state.passedType === '$attempt_score'}
 											onChange={this.passedType}
 										/>
 										<label htmlFor="attempt-score">The attempt score</label>
@@ -204,7 +209,7 @@ class RubricModal extends React.Component {
 											type="radio"
 											id="specified-value"
 											value="set-value"
-											checked={this.state.passedType === "set-value"}
+											checked={this.state.passedType === 'set-value'}
 											onChange={this.passedType}
 										/>
 										<label htmlFor="specified-value">Specified value: </label>
@@ -216,7 +221,7 @@ class RubricModal extends React.Component {
 											value={this.state.passedResult}
 											onClick={stopPropagation}
 											onChange={this.onChangeState}
-											disabled={this.state.passedType !== "set-value"}
+											disabled={this.state.passedType !== 'set-value'}
 											onFocus={this.freezeEditor}
 											onBlur={this.unfreezeEditor}
 										/>
@@ -224,7 +229,9 @@ class RubricModal extends React.Component {
 									</div>
 								</div>
 								<div className="when-failing">
-									<p>When <b>failing</b>,</p>
+									<p>
+										When <b>failing</b>,
+									</p>
 									<div>
 										<input
 											type="radio"
@@ -277,15 +284,17 @@ class RubricModal extends React.Component {
 										<span>%</span>
 									</div>
 								</div>
-								<div className='out-of-attempts'>
-									<p>And if the student is <b>out of attempts and still did not pass</b>,</p>
+								<div className="out-of-attempts">
+									<p>
+										And if the student is <b>out of attempts and still did not pass</b>,
+									</p>
 
 									<div>
 										<input
 											type="radio"
 											id="out-of-attempts-no-value"
 											value="no-value"
-											checked={this.state.unableToPassType === "no-value"}
+											checked={this.state.unableToPassType === 'no-value'}
 											onChange={this.unableToPassType}
 										/>
 										<label htmlFor="out-of-attempts-no-value">
@@ -298,7 +307,7 @@ class RubricModal extends React.Component {
 											type="radio"
 											id="out-of-attempts-highest-attempt-score"
 											value="$highest_attempt_score"
-											checked={this.state.unableToPassType === "$highest_attempt_score"}
+											checked={this.state.unableToPassType === '$highest_attempt_score'}
 											onChange={this.unableToPassType}
 										/>
 										<label htmlFor="out-of-attempts-highest-attempt-score">
@@ -311,7 +320,7 @@ class RubricModal extends React.Component {
 											type="radio"
 											id="out-of-attempts-no-score"
 											value="no-score"
-											checked={this.state.unableToPassType === "no-score"}
+											checked={this.state.unableToPassType === 'no-score'}
 											onChange={this.unableToPassType}
 										/>
 										<label htmlFor="out-of-attempts-no-score">
@@ -324,7 +333,7 @@ class RubricModal extends React.Component {
 											type="radio"
 											id="out-of-attempts-set-value"
 											value="set-value"
-											checked={this.state.unableToPassType === "set-value"}
+											checked={this.state.unableToPassType === 'set-value'}
 											onChange={this.unableToPassType}
 										/>
 										<label htmlFor="out-of-attempts-set-value">
@@ -349,34 +358,31 @@ class RubricModal extends React.Component {
 							<div className="mods">
 								<div className="title">Extra Credit & Penalties</div>
 								<Button id="open-mods-btn" onClick={this.showModProperties}>
-									{this.state.showModProperties ? (
-										<span>Close</span>
-									): (
-										<span>Edit...</span>
-									)}
+									{this.state.showModProperties ? <span>Close</span> : <span>Edit...</span>}
 								</Button>
 
 								{this.state.showModProperties && this.renderModProperties()}
 
 								<ul>
-									{this.state.mods && this.state.mods.map((mod, index) => {
-										const range = getParsedRange(mod.attemptCondition + '')
+									{this.state.mods &&
+										this.state.mods.map((mod, index) => {
+											const range = getParsedRange(mod.attemptCondition + '')
 
-										return (
-											<li key={index}>
-												{mod.reward < 0 ? (
-													<b>
-														<span className="deduct">Deduct</span> {Math.abs(mod.reward)}%
-													</b>
-												) : (
-													<b>
-														<span className="reward">Add</span> {mod.reward}%
-													</b>
-												)}
-												{this.printRange(range)}
-											</li>
-										)
-									})}
+											return (
+												<li key={index}>
+													{mod.reward < 0 ? (
+														<b>
+															<span className="deduct">Deduct</span> {Math.abs(mod.reward)}%
+														</b>
+													) : (
+														<b>
+															<span className="reward">Add</span> {mod.reward}%
+														</b>
+													)}
+													{this.printRange(range)}
+												</li>
+											)
+										})}
 								</ul>
 							</div>
 						</div>
@@ -387,4 +393,4 @@ class RubricModal extends React.Component {
 	}
 }
 
-export default RubricModal;
+export default RubricModal

@@ -23,11 +23,7 @@ class Rubric extends React.Component {
 
 	changeRubricProperties(content) {
 		const path = ReactEditor.findPath(this.props.editor, this.props.element)
-		Transforms.setNodes(
-			this.props.editor,
-			{ content: { ...content } },
-			{ at: path }
-		)
+		Transforms.setNodes(this.props.editor, { content: { ...content } }, { at: path })
 		this.onCloseRubricModal()
 	}
 
@@ -49,7 +45,7 @@ class Rubric extends React.Component {
 		event.stopPropagation()
 
 		this.freezeEditor()
-		
+
 		ModalUtil.show(
 			<RubricModal
 				{...this.props}
@@ -65,9 +61,7 @@ class Rubric extends React.Component {
 
 		return (
 			<div className={className} contentEditable={false} ref={this.selfRef}>
-				<Button onClick={this.openAssessmentRubricModal}>
-					Edit Assessment Rubric
-				</Button>
+				<Button onClick={this.openAssessmentRubricModal}>Edit Assessment Rubric</Button>
 			</div>
 		)
 	}

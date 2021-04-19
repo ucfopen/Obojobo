@@ -30,68 +30,86 @@ class ModProperties extends React.Component {
 		const upperVal =
 			values[1] === parseInt(this.props.attempts, 10) + 1 ? '$last_attempt' : values[1]
 		const attemptCondition = '[' + lowerVal + ',' + upperVal + ']'
-		this.setState(prevState => ({
-			mods: prevState.mods.map((mod, listIndex) =>
-				index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
-			)
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: prevState.mods.map((mod, listIndex) =>
+					index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
+				)
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	onChangeReward(index, event) {
 		const reward = event.target.value
-		this.setState(prevState => ({
-			mods: prevState.mods.map((mod, listIndex) =>
-				index === listIndex ? Object.assign(mod, { reward }) : mod
-			)
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: prevState.mods.map((mod, listIndex) =>
+					index === listIndex ? Object.assign(mod, { reward }) : mod
+				)
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	onChangeLower(index, event) {
 		const lower = event.target.value
 		const range = getParsedRange(this.state.mods[index].attemptCondition)
 		const attemptCondition = '[' + lower + ',' + range.max + ']'
-		this.setState(prevState => ({
-			mods: prevState.mods.map((mod, listIndex) =>
-				index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
-			)
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: prevState.mods.map((mod, listIndex) =>
+					index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
+				)
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	onChangeUpper(index, event) {
 		const upper = event.target.value
 		const range = getParsedRange(this.state.mods[index].attemptCondition)
 		const attemptCondition = '[' + range.min + ',' + upper + ']'
-		this.setState(prevState => ({
-			mods: prevState.mods.map((mod, listIndex) =>
-				index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
-			)
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: prevState.mods.map((mod, listIndex) =>
+					index === listIndex ? Object.assign(mod, { attemptCondition }) : mod
+				)
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	onAddMod() {
-		this.setState(prevState => ({
-			mods: [...prevState.mods, { reward: 0, attemptCondition: '[1,$last_attempt]' }]
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: [...prevState.mods, { reward: 0, attemptCondition: '[1,$last_attempt]' }]
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	deleteMod(index) {
-		this.setState(prevState => ({
-			mods: prevState.mods
-				.map((mod, listIndex) => (index === listIndex ? null : mod))
-				.filter(Boolean)
-		}), () => {
-			this.props.updateModProperties(this.state.mods)
-		})
+		this.setState(
+			prevState => ({
+				mods: prevState.mods
+					.map((mod, listIndex) => (index === listIndex ? null : mod))
+					.filter(Boolean)
+			}),
+			() => {
+				this.props.updateModProperties(this.state.mods)
+			}
+		)
 	}
 
 	render() {
