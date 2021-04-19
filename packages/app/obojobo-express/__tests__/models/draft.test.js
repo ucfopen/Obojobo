@@ -5,30 +5,7 @@ describe('Draft Model', () => {
 	let db
 	let DraftModel
 	let DraftNode
-	const mockRawDraft = {
-		id: 'whatever',
-		version: 9,
-		draft_created_at: new Date().toISOString(),
-		content_created_at: new Date().toISOString(),
-		content: {
-			id: 666,
-			stuff: true,
-			type: 'DraftNode',
-			content: { nothing: true },
-			children: [
-				{
-					id: 999,
-					type: 'DraftNode',
-					content: { otherStuff: true }
-				},
-				{
-					id: 222,
-					type: 'Some.Node.Type',
-					content: { yes: 'no' }
-				}
-			]
-		}
-	}
+	let mockRawDraft
 
 	beforeEach(() => {
 		jest.resetModules()
@@ -36,6 +13,30 @@ describe('Draft Model', () => {
 		db = require('../../server/db')
 		DraftNode = require('../../server/models/draft_node')
 		DraftModel = require('../../server/models/draft')
+		mockRawDraft = {
+			id: 'whatever',
+			version: 9,
+			draft_created_at: new Date().toISOString(),
+			content_created_at: new Date().toISOString(),
+			content: {
+				id: 666,
+				stuff: true,
+				type: 'DraftNode',
+				content: { nothing: true },
+				children: [
+					{
+						id: 999,
+						type: 'DraftNode',
+						content: { otherStuff: true }
+					},
+					{
+						id: 222,
+						type: 'Some.Node.Type',
+						content: { yes: 'no' }
+					}
+				]
+			}
+		}
 	})
 	afterEach(() => {})
 
@@ -364,7 +365,7 @@ describe('Draft Model', () => {
 		return expect(DraftModel.fetchDraftByVersion(0)).rejects.toMatch('mock-error')
 	})
 
-	test('xmlDocument querries the database and returns xml content', () => {
+	test('xmlDocument queries the database and returns xml content', () => {
 		expect.hasAssertions()
 
 		const mockQueryResult = { xml: 'mock-xml-content' }
@@ -378,7 +379,7 @@ describe('Draft Model', () => {
 			})
 	})
 
-	test('xmlDocument querries the database and returns void with no results', () => {
+	test('xmlDocument queries the database and returns void with no results', () => {
 		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce(mockRawDraft)
@@ -399,5 +400,26 @@ describe('Draft Model', () => {
 
 		const draft = await DraftModel.fetchById('whatever')
 		return expect(draft.xmlDocument).rejects.toBe('mock-error')
+	})
+
+	test('getTitle gets content and returns empty string when title is missing', async () => {
+		expect.hasAssertions()
+
+		// no title in mockRawDraft yet
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		let draft = await DraftModel.fetchById('whatever')
+		expect(draft.getTitle()).toBe('')
+
+		// add a title
+		mockRawDraft.content.content.title = 'mock title'
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		draft = await DraftModel.fetchById('whatever')
+		expect(draft.getTitle()).toBe('mock title')
+
+		// delete the content just to make sure nested test works
+		delete mockRawDraft.content.content
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		draft = await DraftModel.fetchById('whatever')
+		expect(draft.getTitle()).toBe('')
 	})
 })

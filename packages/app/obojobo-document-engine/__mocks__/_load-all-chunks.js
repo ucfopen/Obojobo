@@ -1,19 +1,14 @@
-import 'obojobo-chunks-action-button/viewer'
-import 'obojobo-chunks-break/viewer'
-import 'obojobo-chunks-code/viewer'
-import 'obojobo-chunks-figure/viewer'
-import 'obojobo-chunks-heading/viewer'
-import 'obojobo-chunks-html/viewer'
-import 'obojobo-chunks-iframe/viewer'
-import 'obojobo-chunks-list/viewer'
-import 'obojobo-chunks-math-equation/viewer'
-import 'obojobo-chunks-multiple-choice-assessment/viewer'
-import 'obojobo-chunks-question/viewer'
-import 'obojobo-chunks-question-bank/viewer'
-import 'obojobo-chunks-table/viewer'
-import 'obojobo-chunks-text/viewer'
-import 'obojobo-chunks-youtube/viewer'
-import 'obojobo-pages-page/viewer'
-import 'obojobo-sections-content/viewer'
-import 'obojobo-sections-assessment/viewer'
-import 'obojobo-modules-module/viewer'
+// searching for the viewer scripts is expensive, this will cache them
+if (!global.__viewerScriptCache) {
+	const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
+	const entriesFromObojoboModules = gatherClientScriptsFromModules()
+	const chunkViewerScripts = entriesFromObojoboModules.viewer.filter(
+		item => !item.includes('obojobo-document-engine')
+	)
+	// skip viewer scripts from the doc-engine
+	global.__viewerScriptCache = chunkViewerScripts.filter(
+		script => !script.includes('obojobo-document-engine')
+	)
+}
+
+global.__viewerScriptCache.forEach(script => require(script))

@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.11.1, 12.x]
+        node-version: [14.x]
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -14,9 +14,28 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
+    # caches yarn dependencies in the yarn cache (not npm_modules)
+    # should help to speed up yarn install and be safe
+    # across changes to the repo and platforms
+    - name: Cache Yarn Deps
+      uses: c-hive/gha-yarn-cache@v1      
+
     - run: echo "github.ref = ${{ github.ref }}"
-    - run: npm install -g yarn
-    - run: yarn install
+      
+    # frozen lockfile should make the cache more effective
+    # and our tests more predictable
+    - run: yarn install --frozen-lockfile
+
+    # run prettier against all the code
+    - name: Run Prettier
+      run: yarn prettier:run
+
+    # verify that running prettier didn't cause any changes
+    # will fail the PRs that need prettier run on them
+    - name: Does Prettier Need to Be Run
+      run: git --no-pager diff --exit-code -- .
+    
     - run: yarn test:ci
 
   build_docker_images:
@@ -54,3 +73,28 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ github.sha }}
           docker push ghcr.io/${{ github.repository_owner }}/obojobo:nginx-${{ steps.tag_name.outputs.GIT_TAG }}
 
+  deploy_npm_packages:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: NPM - Test, Build, Deploy
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+        registry-url: https://registry.npmjs.org/
+
+    - name: Cache Yarn Deps
+      uses: c-hive/gha-yarn-cache@v1
+
+    # frozen lockfile should make the cache more effective
+    # and our tests more predictable
+    - run: yarn install --frozen-lockfile
+
+    - run: yarn build
+
+    - run: yarn release:publish --yes
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.TR_NPM_PASSWORD}}

@@ -472,14 +472,17 @@ describe('repository api route', () => {
 
 	test('get /drafts/:draftId/permission returns the expected response', () => {
 		expect.hasAssertions()
-
-		DraftPermissions.getDraftOwners.mockResolvedValueOnce([new UserModel()])
+		const userToJSON = jest.fn().mockReturnValue('filtered-user')
+		DraftPermissions.getDraftOwners.mockResolvedValueOnce([
+			{ toJSON: userToJSON },
+			{ toJSON: userToJSON }
+		])
 
 		return request(app)
 			.get('/drafts/mockDraftId/permission')
 			.then(response => {
 				expect(DraftPermissions.getDraftOwners).toHaveBeenCalledWith(mockCurrentDocument.draftId)
-				expect(response.body).toEqual([{ mockUser: true }])
+				expect(response.body).toEqual(['filtered-user', 'filtered-user'])
 				expect(response.statusCode).toBe(200)
 			})
 	})

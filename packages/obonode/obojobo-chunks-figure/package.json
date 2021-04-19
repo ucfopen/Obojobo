@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-figure",
-	"version": "11.2.0",
+	"version": "12.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Figure content chunk for Obojobo",
 	"scripts": {
@@ -42,7 +42,8 @@
 			"lcov"
 		],
 		"coveragePathIgnorePatterns": [
-			"node_modules"
+			"node_modules",
+			"image-caption-width-types.js"
 		],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",

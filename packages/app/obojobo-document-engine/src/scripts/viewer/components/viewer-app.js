@@ -157,7 +157,10 @@ export default class ViewerApp extends React.Component {
 						isPreviewing,
 						viewSessionId
 					},
-					() => Dispatcher.trigger('viewer:loaded', true)
+					() => {
+						Dispatcher.trigger('viewer:loaded', true)
+						if (!document.hidden) this.sendInitialViewEvent()
+					}
 				)
 			})
 			.catch(err => {
@@ -244,7 +247,7 @@ export default class ViewerApp extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		// remove loading element
 		if (prevState.loading && !this.state.loading) {
-			const loadingEl = document.getElementById('viewer-app-loading')
+			const loadingEl = document.getElementById('app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
@@ -330,8 +333,9 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onVisibilityChange() {
+		// From Viewing to Hiding
 		if (document.hidden) {
-			this.leftEpoch = new Date()
+			this.viewerHideDate = new Date()
 
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
@@ -341,22 +345,48 @@ export default class ViewerApp extends React.Component {
 			}).then(res => {
 				this.leaveEvent = res.value
 			})
-		} else {
+
+			return
+		}
+
+		// From Hiding to Viewing
+		if (this.viewerHideDate) {
+			// leaveEvent may not exist if postEvent for 'viewer:leave' didn't complete
+			const relatedEventId = this.leaveEvent?.extensions?.internalEventId ?? 'not available'
+
 			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
-				eventVersion: '2.0.0',
+				eventVersion: '3.0.0',
 				visitId: this.state.navState.visitId,
 				payload: {
-					relatedEventId: this.leaveEvent.extensions.internalEventId,
-					leftTime: this.leftEpoch,
-					duration: Date.now() - this.leftEpoch
+					relatedEventId,
+					leftTime: this.viewerHideDate,
+					duration: Date.now() - this.viewerHideDate
 				}
 			})
 
 			delete this.leaveEvent
-			delete this.leftEpoch
+			delete this.viewerHideDate
+			return
 		}
+
+		// Opened in Background and Viewed for the first time
+		// When this happens, document.hidden is true when the page loads, so onVisibilityChange
+		// isn't called. When the user views the tab document.hidden will become false, but
+		// this.viewerHideDate will not be set so we get to this point - in which case we fire
+		// the initialView event:
+		this.sendInitialViewEvent()
+	}
+
+	// first view Event
+	sendInitialViewEvent() {
+		ViewerAPI.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:initialView',
+			eventVersion: '1.0.0',
+			visitId: this.state.navState.visitId
+		})
 	}
 
 	getTextForVariable(event, variable, textModel) {

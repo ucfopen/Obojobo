@@ -5,7 +5,8 @@
 		"alt": null,
 		"url": null,
 		"height": null,
-		"width": null
+		"width": null,
+		"captionWidth": "image-width"
 	},
 	"children": [{ "text": "" }]
 }

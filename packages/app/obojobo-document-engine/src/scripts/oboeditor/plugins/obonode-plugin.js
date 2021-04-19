@@ -13,6 +13,7 @@ const resetNodeId = (node, deep) => {
 	node = JSON.parse(JSON.stringify(node))
 
 	// Create the obomodel to check if we need to set the key
+	// if node.type is undefined, model will be null
 	const model = OboModel.create(node.type)
 
 	// Only nodes with valid models need to be reset

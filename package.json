@@ -13,7 +13,8 @@
 		"lint": "lerna run lint",
 		"lint:css": "lerna run lint:css",
 		"lint:js": "lerna run  lint:js",
-		"precommit": "lerna run precommit --concurrency 1 && yarn test:ci --bail",
+		"precommit": "lerna run precommit --concurrency 1 &&  yarn test:ci --bail",
+		"prettier:run": "lerna run prettier:run",
 		"release:publish": "lerna publish from-package",
 		"release:tag": "lerna version --no-push --sign-git-commit --sign-git-tag --no-commit-hooks --force-publish",
 		"version": "yarn update-project-version && yarn update-docker-app-version",
@@ -22,21 +23,17 @@
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
-		"test:ci:each": "lerna run test:ci"
+		"test:ci:each": "lerna run test:ci",
+		"postinstall": "husky install"
 	},
 	"devDependencies": {
-		"husky": "^4.3.0",
+		"husky": "^6.0.0",
 		"jest-runner-eslint": "^0.10.0",
-		"lerna": "^3.22.1",
+		"lerna": "^4.0.0",
 		"nodemon": "^2.0.4"
 	},
 	"resolutions": {
-		"node-gyp": "^6.1.0"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "yarn precommit"
-		}
+		"node-gyp": "^8.0.0"
 	},
 	"jest": {
 		"projects": [
@@ -84,6 +81,7 @@
 		"packages/obonode/obojobo-chunks-html",
 		"packages/obonode/obojobo-chunks-iframe",
 		"packages/obonode/obojobo-chunks-list",
+		"packages/obonode/obojobo-chunks-materia",
 		"packages/obonode/obojobo-chunks-math-equation",
 		"packages/obonode/obojobo-chunks-multiple-choice-assessment",
 		"packages/obonode/obojobo-chunks-question",
@@ -101,7 +99,7 @@
 	],
 	"engines": {
 		"yarn": "^1.15.2",
-		"node": "^12.11.1"
+		"node": "^14.16.0"
 	},
-	"version": "11.2.0"
+	"version": "12.0.0"
 }
