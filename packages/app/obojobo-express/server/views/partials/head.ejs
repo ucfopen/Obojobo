@@ -13,7 +13,7 @@
 
 	if (typeof fonts !== 'undefined'){
 		fonts.forEach(function(font){ -%>
-		<link rel="stylesheet" media="screen" href="<%= font %>" />
+		<link rel="preload" as="style" media="screen" href="<%= font %>" />
 		<% })
 	}
 
