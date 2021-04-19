@@ -14,7 +14,6 @@ import ObojoboIdleTimer from '../../common/components/obojobo-idle-timer'
 import SimpleDialog from '../../common/components/modal/simple-dialog'
 
 const ModalContainer = Common.components.ModalContainer
-const Throbber = Common.components.Throbber
 const ModalUtil = Common.util.ModalUtil
 const ModalStore = Common.stores.ModalStore
 const OboModel = Common.models.OboModel
@@ -390,7 +389,7 @@ class EditorApp extends React.Component {
 			)
 		}
 
-		if (this.state.loading) return <Throbber />
+		if (this.state.loading) return null
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
