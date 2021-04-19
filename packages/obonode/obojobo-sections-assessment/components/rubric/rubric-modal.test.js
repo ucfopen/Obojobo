@@ -141,6 +141,7 @@ describe('Rubric editor modal', () => {
 			/>
 		)
 
+		// To-pass score
 		component
 			.find({ name: 'passingAttemptScore' })
 			.at(0)
@@ -181,14 +182,14 @@ describe('Rubric editor modal', () => {
 		input = component
 			.find({ name: 'score-type' })
 			.at(0)
-			.simulate('change', { target: { value: 'highest'} })
+			.simulate('change', { target: { value: 'highest' } })
 		expect(input.html().includes(`value="highest"`)).toBe(true)
 		expect(component.instance().state.type).toBe('highest')
 
 		input = component
 			.find({ name: 'score-type' })
 			.at(1)
-			.simulate('change', { target: { value: 'pass-fail'} })
+			.simulate('change', { target: { value: 'pass-fail' } })
 		expect(input.html().includes(`value="pass-fail"`)).toBe(true)
 		expect(component.instance().state.type).toBe('pass-fail')
 	})
@@ -318,7 +319,10 @@ describe('Rubric editor modal', () => {
 			{ reward: -3, attemptCondition: '[$last_attempt,5]' }
 		]
 
-		component.find(ModProperties).props().updateModProperties(newMods)
+		component
+			.find(ModProperties)
+			.props()
+			.updateModProperties(newMods)
 
 		expect(component.instance().state.mods).toBe(newMods)
 	})
