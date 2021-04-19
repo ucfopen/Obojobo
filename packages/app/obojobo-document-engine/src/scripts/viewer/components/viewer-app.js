@@ -247,7 +247,7 @@ export default class ViewerApp extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		// remove loading element
 		if (prevState.loading && !this.state.loading) {
-			const loadingEl = document.getElementById('viewer-app-loading')
+			const loadingEl = document.getElementById('app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)

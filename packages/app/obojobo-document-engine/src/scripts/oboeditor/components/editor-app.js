@@ -284,7 +284,10 @@ class EditorApp extends React.Component {
 		}
 
 		return this.reloadDraft(draftId, this.state.mode)
-			.then(() => this.startRenewEditLockInterval(draftId))
+			.then(() => {
+				this.removeLoadingNotice()
+				this.startRenewEditLockInterval(draftId)
+			})
 			.then(() => {
 				enableWindowCloseDispatcher()
 				Dispatcher.on('window:closeNow', this.onWindowClose)
@@ -295,6 +298,13 @@ class EditorApp extends React.Component {
 				Dispatcher.on('window:returnFromInactive', this.onWindowReturnFromInactive)
 			})
 			.catch(() => {})
+	}
+
+	removeLoadingNotice() {
+		const loadingEl = document.getElementById('app-loading')
+		if (loadingEl && loadingEl.parentElement) {
+			loadingEl.parentElement.removeChild(loadingEl)
+		}
 	}
 
 	onWindowClose() {
