@@ -189,7 +189,7 @@ describe('NumericAnswer Editor Node', () => {
 		expect(thisValue.updateNodeFromState).toBeCalled()
 	})
 
-	test('updateNodeFromState calls Transforms.setNodes and restores selection with document.activeElement, returns true if successful', () => {
+	test('updateNodeFromState calls Transforms.setNodes, returns true if successful', () => {
 		const props = {
 			editor: {},
 			element: {
@@ -197,21 +197,8 @@ describe('NumericAnswer Editor Node', () => {
 			}
 		}
 		const component = renderer.create(<NumericAnswer {...props} />)
-		const spy = jest.spyOn(NumericAnswer.prototype, 'restoreSelection')
-		// Mock document.activeElement:
-		const origActiveElement = document.activeElement
-		const mockEl = {
-			selectionStart: 'mockSelStart',
-			selectionEnd: 'mockSelEnd'
-		}
-		Object.defineProperty(document, 'activeElement', {
-			value: mockEl,
-			enumerable: true,
-			configurable: true
-		})
 
 		expect(Transforms.setNodes).not.toHaveBeenCalled()
-		expect(spy).not.toHaveBeenCalled()
 
 		expect(component.getInstance().updateNodeFromState()).toBe(true)
 		expect(Transforms.setNodes).toHaveBeenCalledWith(
@@ -219,48 +206,6 @@ describe('NumericAnswer Editor Node', () => {
 			{ content: {} },
 			{ at: 'mock-path' }
 		)
-		expect(spy).toHaveBeenCalledWith(mockEl, mockEl.selectionStart, mockEl.selectionEnd)
-
-		spy.mockRestore()
-		// Restore overrides:
-		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
-		})
-	})
-
-	test('updateNodeFromState calls Transforms.setNodes and restores selection without document.activeElement, returns true if successful', () => {
-		const props = {
-			editor: {},
-			element: {
-				content: {}
-			}
-		}
-		const component = renderer.create(<NumericAnswer {...props} />)
-		const spy = jest.spyOn(NumericAnswer.prototype, 'restoreSelection')
-		// Mock document.activeElement:
-		const origActiveElement = document.activeElement
-		Object.defineProperty(document, 'activeElement', {
-			value: null,
-			enumerable: true,
-			configurable: true
-		})
-
-		expect(Transforms.setNodes).not.toHaveBeenCalled()
-		expect(spy).not.toHaveBeenCalled()
-
-		expect(component.getInstance().updateNodeFromState()).toBe(true)
-		expect(Transforms.setNodes).toHaveBeenCalledWith(
-			props.editor,
-			{ content: {} },
-			{ at: 'mock-path' }
-		)
-		expect(spy).toHaveBeenCalledWith(null, null, null)
-
-		spy.mockRestore()
-		// Restore overrides:
-		Object.defineProperty(document, 'activeElement', {
-			value: origActiveElement
-		})
 	})
 
 	test('updateNodeFromState returns false if an error is thrown', () => {
@@ -271,31 +216,12 @@ describe('NumericAnswer Editor Node', () => {
 			}
 		}
 		const component = renderer.create(<NumericAnswer {...props} />)
-		const spy = jest.spyOn(NumericAnswer.prototype, 'restoreSelection').mockImplementation(() => {
+		const spy = jest.spyOn(Transforms, 'setNodes').mockImplementation(() => {
 			throw 'Error'
 		})
 
 		expect(component.getInstance().updateNodeFromState()).toBe(false)
 
 		spy.mockRestore()
-	})
-
-	test('restoreSelection returns false when element is falsy', () => {
-		expect(NumericAnswer.prototype.restoreSelection(null)).toBe(false)
-		expect(NumericAnswer.prototype.restoreSelection({})).toBe(false)
-	})
-
-	test('restoreSelection returns true and calls methods on element when given element', () => {
-		const el = {
-			select: jest.fn(),
-			focus: jest.fn(),
-			setSelectionRange: jest.fn()
-		}
-		expect(NumericAnswer.prototype.restoreSelection(el, 'mock-start', 'mock-end')).toBe(true)
-
-		jest.runAllTimers()
-
-		expect(el.focus).toHaveBeenCalled()
-		expect(el.setSelectionRange).toHaveBeenCalledWith('mock-start', 'mock-end')
 	})
 })
