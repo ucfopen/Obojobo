@@ -14,6 +14,8 @@ class _Registry {
 		items = new Map()
 		defaults = new Map()
 		variableHandlers = new Map()
+		memoInsertable = null
+		memoContent = null
 	}
 
 	loadDependency(url, onLoadCallback = () => {}) {
@@ -161,11 +163,17 @@ class _Registry {
 			insertMenu.forEach(className => {
 				if (className === '|') {
 					memoInsertable.push({ separator: true })
-				} else {
+					return
+				}
+
+				const item = items.get(className)
+
+				if (item) {
 					memoInsertable.push(items.get(className))
 				}
 			})
 		}
+
 		return memoInsertable
 	}
 
