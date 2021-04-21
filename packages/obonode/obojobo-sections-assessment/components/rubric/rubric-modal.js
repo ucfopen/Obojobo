@@ -123,6 +123,9 @@ class RubricModal extends React.Component {
 	render() {
 		const stopPropagation = event => event.stopPropagation()
 
+		let className = 'assessment-score '
+		className += this.state.type === 'pass-fail' ? 'add-padding-bottom' : ''
+
 		return (
 			<SimpleDialog
 				cancelOk
@@ -136,7 +139,7 @@ class RubricModal extends React.Component {
 						The recorded score for this module is the highest assessment score, and will be sent to
 						any connected gradebook.{' '}
 					</p>
-					<fieldset className="assessment-score">
+					<fieldset className={className}>
 						<legend>How do you want to determine the recorded score?</legend>
 						<label>
 							<input
@@ -158,7 +161,7 @@ class RubricModal extends React.Component {
 								onChange={this.changeRubricType}
 								onClick={stopPropagation}
 							/>
-							Calculate based on a threshold (pass/fail)...
+							Calculate based on a threshold (pass/fail)
 						</label>
 					</fieldset>
 					{this.state.type === 'pass-fail' && (
@@ -166,10 +169,8 @@ class RubricModal extends React.Component {
 							<fieldset className="pass-fail">
 								<legend>Pass & Fail Rules</legend>
 								<p>
-									In this mode, students must achieve a certain threshold on an attempt to pass. The
-									assessment score for each attempt will be set based on whether the student passes
-									or fails, and the highest of these assessment scores will be used as the recorded
-									score.
+									In this mode, you can customize passing and failing scores, what do do when
+									students are out of attempts, and set more complex penalty and extra credit rules.
 								</p>
 								<div className="to-pass">
 									<p>
@@ -194,25 +195,29 @@ class RubricModal extends React.Component {
 									</p>
 
 									<div>
-										<input
-											type="radio"
-											id="attempt-score"
-											value="$attempt_score"
-											checked={this.state.passedType === '$attempt_score'}
-											onChange={this.passedType}
-										/>
-										<label htmlFor="attempt-score">The attempt score</label>
+										<label htmlFor="attempt-score">
+											<input
+												type="radio"
+												id="attempt-score"
+												value="$attempt_score"
+												checked={this.state.passedType === '$attempt_score'}
+												onChange={this.passedType}
+											/>
+											The attempt score
+										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="specified-value"
-											value="set-value"
-											checked={this.state.passedType === 'set-value'}
-											onChange={this.passedType}
-										/>
-										<label htmlFor="specified-value">Specified value: </label>
+										<label htmlFor="specified-value">
+											<input
+												type="radio"
+												id="specified-value"
+												value="set-value"
+												checked={this.state.passedType === 'set-value'}
+												onChange={this.passedType}
+											/>
+											Specified value:
+										</label>
 										<input
 											type="number"
 											min="0"
@@ -233,40 +238,40 @@ class RubricModal extends React.Component {
 										When <b>failing</b>,
 									</p>
 									<div>
-										<input
-											type="radio"
-											id="set-score-to-attempt-score"
-											value="$attempt_score"
-											checked={this.state.failedType === '$attempt_score'}
-											onChange={this.failedType}
-										/>
 										<label htmlFor="set-score-to-attempt-score">
+											<input
+												type="radio"
+												id="set-score-to-attempt-score"
+												value="$attempt_score"
+												checked={this.state.failedType === '$attempt_score'}
+												onChange={this.failedType}
+											/>
 											Set the assessment score to the attempt score
 										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="dont-set-score"
-											value="no-score"
-											checked={this.state.failedType === 'no-score'}
-											onChange={this.failedType}
-										/>
 										<label htmlFor="dont-set-score">
+											<input
+												type="radio"
+												id="dont-set-score"
+												value="no-score"
+												checked={this.state.failedType === 'no-score'}
+												onChange={this.failedType}
+											/>
 											Don&apos;t set the score (no score will be sent to the gradebook)
 										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="set-score-to-specific-value"
-											value="set-value"
-											checked={this.state.failedType === 'set-value'}
-											onChange={this.failedType}
-										/>
 										<label htmlFor="set-score-to-specific-value">
+											<input
+												type="radio"
+												id="set-score-to-specific-value"
+												value="set-value"
+												checked={this.state.failedType === 'set-value'}
+												onChange={this.failedType}
+											/>
 											Set the assessment score to specified value
 										</label>
 										<input
@@ -290,53 +295,53 @@ class RubricModal extends React.Component {
 									</p>
 
 									<div>
-										<input
-											type="radio"
-											id="out-of-attempts-no-value"
-											value="no-value"
-											checked={this.state.unableToPassType === 'no-value'}
-											onChange={this.unableToPassType}
-										/>
 										<label htmlFor="out-of-attempts-no-value">
+											<input
+												type="radio"
+												id="out-of-attempts-no-value"
+												value="no-value"
+												checked={this.state.unableToPassType === 'no-value'}
+												onChange={this.unableToPassType}
+											/>
 											Don&apos;t do anything, the failing rule will still apply
 										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="out-of-attempts-highest-attempt-score"
-											value="$highest_attempt_score"
-											checked={this.state.unableToPassType === '$highest_attempt_score'}
-											onChange={this.unableToPassType}
-										/>
 										<label htmlFor="out-of-attempts-highest-attempt-score">
+											<input
+												type="radio"
+												id="out-of-attempts-highest-attempt-score"
+												value="$highest_attempt_score"
+												checked={this.state.unableToPassType === '$highest_attempt_score'}
+												onChange={this.unableToPassType}
+											/>
 											Set the assessment score to the highest attempt score
 										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="out-of-attempts-no-score"
-											value="no-score"
-											checked={this.state.unableToPassType === 'no-score'}
-											onChange={this.unableToPassType}
-										/>
 										<label htmlFor="out-of-attempts-no-score">
+											<input
+												type="radio"
+												id="out-of-attempts-no-score"
+												value="no-score"
+												checked={this.state.unableToPassType === 'no-score'}
+												onChange={this.unableToPassType}
+											/>
 											Don&apos;t set assessment the score (no score will be sent to the gradebook)
 										</label>
 									</div>
 
 									<div>
-										<input
-											type="radio"
-											id="out-of-attempts-set-value"
-											value="set-value"
-											checked={this.state.unableToPassType === 'set-value'}
-											onChange={this.unableToPassType}
-										/>
 										<label htmlFor="out-of-attempts-set-value">
+											<input
+												type="radio"
+												id="out-of-attempts-set-value"
+												value="set-value"
+												checked={this.state.unableToPassType === 'set-value'}
+												onChange={this.unableToPassType}
+											/>
 											Set the assessment score to specified value
 										</label>
 										<input
@@ -356,10 +361,12 @@ class RubricModal extends React.Component {
 								</div>
 							</fieldset>
 							<div className="mods">
-								<div className="title">Extra Credit & Penalties</div>
-								<Button id="open-mods-btn" onClick={this.showModProperties}>
-									{this.state.showModProperties ? <span>Close</span> : <span>Edit...</span>}
-								</Button>
+								<header>
+									<div className="title">Extra Credit & Penalties</div>
+									<Button id="open-mods-btn" onClick={this.showModProperties}>
+										{this.state.showModProperties ? <span>Close</span> : <span>Edit...</span>}
+									</Button>
+								</header>
 
 								{this.state.showModProperties && this.renderModProperties()}
 

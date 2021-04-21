@@ -1,6 +1,7 @@
 @import '~styles/includes';
 
 .rubric-modal {
+	$color-rubric-bg: transparentize($color-preview, 0.95);
 	// @HACK: Enforce pixel perfect children.
 	// Used to make the "Click to load this content" element non-blurry in CHROME
 	transform-style: preserve-3d;
@@ -18,11 +19,16 @@
 		legend {
 			font-weight: bold;
 		}
+
+		&.add-padding-bottom {
+			padding-bottom: 1em;
+		}
 	}
 
 	.pass-fail {
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-shadow;
+		border: none;
+		border-top: 1px solid $color-shadow;
+		padding-top: 1em;
 		text-align: left;
 		margin: 0;
 
@@ -38,10 +44,13 @@
 		}
 
 		.to-pass {
-			padding: 1em 0;
+			padding: 1em;
 			display: block;
 			display: flex;
 			align-items: center;
+			border-radius: $dimension-rounded-radius;
+			background-color: $color-rubric-bg;
+			margin: 1em 0;
 
 			label {
 				width: 80%;
@@ -53,32 +62,13 @@
 			}
 		}
 
-		.when-passing {
-			padding-bottom: 1em;
-
-			div {
-				margin-top: 0.3em;
-			}
-
-			label {
-				display: inline-block;
-			}
-		}
-
-		.when-failing {
-			padding-bottom: 1em;
-
-			div {
-				margin-top: 0.3em;
-			}
-
-			label {
-				display: inline-block;
-			}
-		}
-
+		.when-passing,
+		.when-failing,
 		.out-of-attempts {
-			padding-bottom: 1em;
+			padding: 1em;
+			border-radius: $dimension-rounded-radius;
+			background-color: $color-rubric-bg;
+			margin-bottom: 1em;
 
 			div {
 				margin-top: 0.3em;
@@ -91,18 +81,21 @@
 	}
 
 	.mods {
-		border: 1px solid $color-shadow;
 		border-radius: $dimension-rounded-radius;
-		margin-top: 1em;
 		position: relative;
-		min-height: 2.8em;
-		padding: 0 0.35em;
+		display: block;
+
+		header {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
 		.title {
 			font-weight: bold;
-			padding-top: 0.5em;
-			display: block;
+			display: inline-block;
 			font-size: 1.2rem;
+			margin-right: 1em;
 		}
 
 		#open-mods-btn {
