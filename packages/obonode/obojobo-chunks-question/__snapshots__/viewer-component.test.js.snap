@@ -146,11 +146,11 @@ exports[`Question Question in assessment answered correctly 1`] = `
     >
       <div
         aria-label="Loading content"
-        className="obojobo-draft--components--throbber"
+        className="obojobo-draft--components--spinner"
       >
         <div
           aria-hidden={true}
-          className="throbber"
+          className="spinner"
         >
           <svg
             preserveAspectRatio="xMidYMid"
@@ -336,11 +336,11 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
     >
       <div
         aria-label="Loading content"
-        className="obojobo-draft--components--throbber"
+        className="obojobo-draft--components--spinner"
       >
         <div
           aria-hidden={true}
-          className="throbber"
+          className="spinner"
         >
           <svg
             preserveAspectRatio="xMidYMid"
@@ -493,11 +493,11 @@ exports[`Question Question in assessment not answered 1`] = `
     >
       <div
         aria-label="Loading content"
-        className="obojobo-draft--components--throbber"
+        className="obojobo-draft--components--spinner"
       >
         <div
           aria-hidden={true}
-          className="throbber"
+          className="spinner"
         >
           <svg
             preserveAspectRatio="xMidYMid"
@@ -1572,11 +1572,11 @@ exports[`Question Survey question in assessment answered 1`] = `
     >
       <div
         aria-label="Loading content"
-        className="obojobo-draft--components--throbber"
+        className="obojobo-draft--components--spinner"
       >
         <div
           aria-hidden={true}
-          className="throbber"
+          className="spinner"
         >
           <svg
             preserveAspectRatio="xMidYMid"
@@ -1751,11 +1751,11 @@ exports[`Question Survey question in assessment not answered 1`] = `
     >
       <div
         aria-label="Loading content"
-        className="obojobo-draft--components--throbber"
+        className="obojobo-draft--components--spinner"
       >
         <div
           aria-hidden={true}
-          className="throbber"
+          className="spinner"
         >
           <svg
             preserveAspectRatio="xMidYMid"

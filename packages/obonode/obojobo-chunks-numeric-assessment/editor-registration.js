@@ -188,15 +188,11 @@ const NumericAssessment = {
 			switch (props.element.subtype) {
 				case UNITS_NODE:
 					return (
-						<div contentEditable={false} className="units-container">
-							<span className="label">Units Text:</span>
-							<span
-								className="text units-input"
-								contentEditable={true}
-								suppressContentEditableWarning
-							>
-								{props.children}
+						<div className="units-container">
+							<span contentEditable={false} className="label">
+								Units Text:
 							</span>
+							<span className="text units-input">{props.children}</span>
 						</div>
 					)
 				default:

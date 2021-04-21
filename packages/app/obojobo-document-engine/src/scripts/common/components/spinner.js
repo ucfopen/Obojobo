@@ -1,11 +1,11 @@
-import './throbber.scss'
+import './spinner.scss'
 
 import React from 'react'
 
-const Throbber = props => {
+const Spinner = ({ color = 'black' }) => {
 	return (
-		<div className="obojobo-draft--components--throbber" aria-label="Loading content">
-			<div className="throbber" aria-hidden={true}>
+		<div className="obojobo-draft--components--spinner" aria-label="Loading content">
+			<div className="spinner" aria-hidden={true}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 100 100"
@@ -15,7 +15,7 @@ const Throbber = props => {
 						cx="50"
 						cy="50"
 						fill="none"
-						stroke={props.color || 'black'}
+						stroke={color}
 						strokeWidth="10"
 						r="35"
 						strokeDasharray="60 110"
@@ -27,4 +27,4 @@ const Throbber = props => {
 	)
 }
 
-export default Throbber
+export default Spinner

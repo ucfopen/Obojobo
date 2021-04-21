@@ -1531,7 +1531,7 @@ describe('Question', () => {
 			if (getRevealAnswerDefault !== null) {
 				component.getInstance().assessmentComponentRef = {
 					current: {
-						getRevealAnswerDefault: () => getRevealAnswerDefault
+						revealAnswerDefault: getRevealAnswerDefault
 					}
 				}
 			}

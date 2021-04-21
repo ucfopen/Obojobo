@@ -1246,11 +1246,11 @@ exports[`PostTest PostTest shows throbber if history is not yet loaded 1`] = `
 >
   <div
     aria-label="Loading content"
-    className="obojobo-draft--components--throbber"
+    className="obojobo-draft--components--spinner"
   >
     <div
       aria-hidden={true}
-      className="throbber"
+      className="spinner"
     >
       <svg
         preserveAspectRatio="xMidYMid"

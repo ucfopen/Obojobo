@@ -1,11 +1,11 @@
-.obojobo-draft--components--throbber {
+.obojobo-draft--components--spinner {
 	position: relative;
 	width: 1em;
 	height: 1em;
 	display: inline-block;
 
-	> .throbber {
-		@keyframes obojobo-draft--components--throbber--rotate {
+	> .spinner {
+		@keyframes obojobo-draft--components--spinner--rotate {
 			from {
 				transform: translate(-50%, -50%) rotate(0deg);
 			}
@@ -21,7 +21,7 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		animation: obojobo-draft--components--throbber--rotate 1.5s linear infinite;
+		animation: obojobo-draft--components--spinner--rotate 1.5s linear infinite;
 
 		> svg {
 			width: 100%;

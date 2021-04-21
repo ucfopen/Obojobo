@@ -44,6 +44,8 @@ export default class Dialog extends React.Component {
 		// clear ref array
 		this.buttonRefs.slice(0)
 
+		const buttons = this.props.buttons || []
+
 		let styles = null
 		if (this.props.width) {
 			styles = { width: this.props.width }
@@ -71,7 +73,7 @@ export default class Dialog extends React.Component {
 						{this.props.children}
 					</div>
 					<div className="controls">
-						{(this.props.buttons || []).map((buttonPropsOrText, index) => {
+						{buttons.map((buttonPropsOrText, index) => {
 							if (typeof buttonPropsOrText === 'string') {
 								return (
 									<span key={index} className="text">

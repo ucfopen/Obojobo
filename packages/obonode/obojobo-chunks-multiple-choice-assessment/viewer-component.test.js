@@ -87,7 +87,7 @@ describe('MCAssessmentViewerComponent', () => {
 					responseType
 				}
 			}
-			const details = MCAssessment.getDetails(null, questionAssessmentModel, score)
+			const details = MCAssessment.prototype.getDetails(null, questionAssessmentModel, score)
 
 			expect(details).toBe(
 				returnsMessage
@@ -137,7 +137,9 @@ describe('MCAssessmentViewerComponent', () => {
 				}
 			}
 
-			expect(MCAssessment.getInstructions(questionModel, questionAssessmentModel)).toMatchSnapshot()
+			expect(
+				MCAssessment.prototype.getInstructions(questionModel, questionAssessmentModel)
+			).toMatchSnapshot()
 		}
 	)
 

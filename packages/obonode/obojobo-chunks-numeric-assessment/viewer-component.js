@@ -47,21 +47,12 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		return true
 	}
 
-	static getRevealAnswerDefault() {
-		return 'when-incorrect'
-	}
-
-	static getInstructions(questionModel) {
-		return (
-			<React.Fragment>
-				<span className="for-screen-reader-only">{`Form with one input. `}</span>
-				{questionModel.modelState.type === 'survey' ? 'Input your response' : 'Input your answer'}
-			</React.Fragment>
-		)
-	}
-
 	static isResponseEmpty(response) {
 		return response.value === ''
+	}
+
+	get revealAnswerDefault() {
+		return 'when-incorrect'
 	}
 
 	constructor(props) {
@@ -73,6 +64,15 @@ export default class NumericAssessment extends OboQuestionAssessmentComponent {
 		this.evaluator = new NumericAnswerEvaluator({
 			scoreRuleConfigs: props.model.modelState.scoreRules
 		})
+	}
+
+	getInstructions(questionModel) {
+		return (
+			<React.Fragment>
+				<span className="for-screen-reader-only">{`Form with one input. `}</span>
+				{questionModel.modelState.type === 'survey' ? 'Input your response' : 'Input your answer'}
+			</React.Fragment>
+		)
 	}
 
 	setFeedback(feedback) {

@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Throbber Throbber component 1`] = `
+exports[`Spinner Spinner component 1`] = `
 <div
   aria-label="Loading content"
-  className="obojobo-draft--components--throbber"
+  className="obojobo-draft--components--spinner"
 >
   <div
     aria-hidden={true}
-    className="throbber"
+    className="spinner"
   >
     <svg
       preserveAspectRatio="xMidYMid"

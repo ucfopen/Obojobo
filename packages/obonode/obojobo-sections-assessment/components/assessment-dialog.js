@@ -10,7 +10,7 @@ import UpdatedModuleDialog from './dialogs/updated-module-dialog'
 
 const { AssessmentScoreReportView, AssessmentScoreReporter } = Viewer.assessment
 
-const { Throbber } = Common.components
+const { Spinner } = Common.components
 const { SimpleDialog, Dialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { CurrentAssessmentStates, AssessmentUtil, NavUtil, FocusUtil } = Viewer.util
@@ -131,14 +131,14 @@ const getDialog = (
 		case ENDING_ATTEMPT:
 			return (
 				<Dialog title="Submitting your attempt">
-					<Throbber />
+					<Spinner />
 				</Dialog>
 			)
 
 		case SENDING_RESPONSES: {
 			return (
 				<Dialog title="Submitting your responses">
-					<Throbber />
+					<Spinner />
 				</Dialog>
 			)
 		}

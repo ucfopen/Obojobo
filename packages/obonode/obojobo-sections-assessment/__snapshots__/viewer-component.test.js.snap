@@ -15,11 +15,11 @@ exports[`Assessment Assessment component is resuming an attempt 1`] = `
   >
     <div
       aria-label="Loading content"
-      className="obojobo-draft--components--throbber"
+      className="obojobo-draft--components--spinner"
     >
       <div
         aria-hidden={true}
-        className="throbber"
+        className="spinner"
       >
         <svg
           preserveAspectRatio="xMidYMid"
@@ -58,11 +58,11 @@ exports[`Assessment Assessment component is starting at attempt 1`] = `
   >
     <div
       aria-label="Loading content"
-      className="obojobo-draft--components--throbber"
+      className="obojobo-draft--components--spinner"
     >
       <div
         aria-hidden={true}
-        className="throbber"
+        className="spinner"
       >
         <svg
           preserveAspectRatio="xMidYMid"

@@ -9,7 +9,7 @@ import { getLabel } from './feedback-labels'
 import QuestionContent from './Content/viewer-component'
 import QuestionComponent from './question-component'
 
-const { OboComponent, OboQuestionComponent } = Viewer.components
+const { OboComponent } = Viewer.components
 const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
 const { focus } = Common.page
 
@@ -21,7 +21,7 @@ const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
 const FOCUS_TARGET_ANSWERS = 'answers'
 
-export default class Question extends OboQuestionComponent {
+export default class Question extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -166,7 +166,11 @@ export default class Question extends OboQuestionComponent {
 
 		const calculatedScoreResponse = this.calculateScore()
 		const detailedText =
-			this.assessmentComponentRef.current.getDetails(calculatedScoreResponse.score) || null
+			this.assessmentComponentRef.current.getDetails(
+				this.props.model,
+				this.constructor.getQuestionAssessmentModel(this.props.model),
+				calculatedScoreResponse.score
+			) || null
 
 		const feedbackText = getLabel(
 			modelState.correctLabels,
@@ -332,13 +336,15 @@ export default class Question extends OboQuestionComponent {
 
 	getInstructions() {
 		if (!this.assessmentComponentRef || !this.assessmentComponentRef.current) return null
-		return this.assessmentComponentRef.current.getInstructions()
+		return this.assessmentComponentRef.current.getInstructions(
+			this.props.model,
+			this.constructor.getQuestionAssessmentModel(this.props.model)
+		)
 	}
 
 	getShouldShowRevealAnswerButton() {
 		const mode = this.getMode()
 		const questionType = this.props.model.modelState.type
-		const questionAssessmentModel = this.constructor.getQuestionAssessmentModel(this.props.model)
 		const score = this.getScore()
 		const questionRevealAnswer = this.props.model.modelState.revealAnswer
 
@@ -350,14 +356,11 @@ export default class Question extends OboQuestionComponent {
 			mode === 'practice' &&
 			questionType === 'default'
 		) {
-			const assessmentRevealAnswerDefault = this.assessmentComponentRef.current.getRevealAnswerDefault(
-				this.props.model,
-				questionAssessmentModel
-			)
-
 			// If questionRevealAnswer is 'default' then we defer to the assessment component
 			const revealAnswerMode =
-				questionRevealAnswer === 'default' ? assessmentRevealAnswerDefault : questionRevealAnswer
+				questionRevealAnswer === 'default'
+					? this.assessmentComponentRef.current.revealAnswerDefault
+					: questionRevealAnswer
 
 			switch (revealAnswerMode) {
 				case 'always':

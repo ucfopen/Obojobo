@@ -1,29 +1,29 @@
 import React from 'react'
 
 export default class OboQuestionAssessmentComponent extends React.Component {
+	// Used to determine what an empty response is from a user, which each question
+	// assessment can structure its responses in any format
+	static isResponseEmpty(/*response*/) {
+		return true
+	}
+
 	// Determines what the default option for this question assessment should be for
 	// revealAnswer, which should be one of 'never', 'always' or 'when-incorrect'.
-	static getRevealAnswerDefault(/*questionModel, questionAssessmentModel*/) {
+	get revealAnswerDefault(/*questionModel, questionAssessmentModel*/) {
 		return 'never'
 	}
 
 	// This text is displayed at the bottom of the question when submitted.
 	// This can be used to give the user more feedback as to why a question was scored
 	// the way it was.
-	static getDetails(/*questionModel, questionAssessmentModel, score*/) {
+	getDetails(/*questionModel, questionAssessmentModel, score*/) {
 		return null
 	}
 
 	// This text is displayed right above the question assessment, and is used
 	// to inform the user how to interact with this question
-	static getInstructions(/*questionModel, questionAssessmentModel*/) {
+	getInstructions(/*questionModel, questionAssessmentModel*/) {
 		return null
-	}
-
-	// Used to determine what an empty response is from a user, which each question
-	// assessment can structure its responses in any format
-	static isResponseEmpty(/*response*/) {
-		return true
 	}
 
 	// Used to determine if the users' response is "valid" - this is called when submitting
@@ -55,18 +55,6 @@ export default class OboQuestionAssessmentComponent extends React.Component {
 			targetId: null,
 			sendResponseImmediately: false
 		}
-	}
-
-	getRevealAnswerDefault() {
-		return this.constructor.getRevealAnswerDefault(this.props.questionModel, this.props.model)
-	}
-
-	getDetails(newScore) {
-		return this.constructor.getDetails(this.props.questionModel, this.props.model, newScore)
-	}
-
-	getInstructions() {
-		return this.constructor.getInstructions(this.props.questionModel, this.props.model)
 	}
 
 	render() {

@@ -43,7 +43,7 @@ import TextGroupEl from './chunk/text-chunk/text-group-el'
 import TextGroupItem from './text-group/text-group-item'
 import TextGroupUtil from './text-group/text-group-util'
 import TextMenu from './components/text-menu'
-import Throbber from './components/throbber'
+import Spinner from './components/spinner'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
 import isOrNot from './util/isornot'
@@ -74,7 +74,7 @@ export default {
 		ButtonBar,
 		MoreInfoButton,
 		Switch,
-		Throbber,
+		Spinner,
 		modal: {
 			bubble: {
 				Bubble,
