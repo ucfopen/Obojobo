@@ -337,7 +337,7 @@ export default class ViewerApp extends React.Component {
 		if (document.hidden) {
 			this.viewerHideDate = new Date()
 
-			return ViewerAPI.postEvent({
+			ViewerAPI.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
 				eventVersion: '1.0.0',
@@ -345,6 +345,8 @@ export default class ViewerApp extends React.Component {
 			}).then(res => {
 				this.leaveEvent = res.value
 			})
+
+			return
 		}
 
 		// From Hiding to Viewing
@@ -366,6 +368,7 @@ export default class ViewerApp extends React.Component {
 
 			delete this.leaveEvent
 			delete this.viewerHideDate
+
 			return
 		}
 
