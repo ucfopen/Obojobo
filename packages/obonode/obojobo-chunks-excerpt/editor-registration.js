@@ -5,7 +5,6 @@ import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import Line from './components/line/editor-component'
 import ExcerptContent from './components/excerpt-content/editor-component'
-import Text from './components/text/editor-component'
 import Citation from './components/citation/editor-component'
 import EditorComponent from './editor-component'
 import React from 'react'
@@ -170,9 +169,11 @@ const Excerpt = {
 		// 			return <EditorComponent {...props} {...props.attributes} />
 		// 	}
 		// }
-		normalizeNode([node, path], editor, next) {
+		normalizeNode(entry, editor, next) {
+			const [node, path] = entry
+
 			console.log(
-				'nn',
+				'ctt nn',
 				node,
 				path,
 				Element.isElement(node),
@@ -205,6 +206,8 @@ const Excerpt = {
 					)
 				}
 			}
+
+			next(entry, editor)
 		},
 		renderNode(props) {
 			switch (props.element.subtype) {

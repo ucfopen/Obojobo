@@ -5,7 +5,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 import withSlateWrapper from 'obojobo-document-engine/src/scripts/oboeditor/components/node/with-slate-wrapper'
-import { Transforms } from 'slate'
+import { Transforms, Range } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 import iconFontSizeSmall from './icon-font-size-small.svg'
@@ -638,6 +638,18 @@ class Excerpt extends React.Component {
 		const edgeOptions = this.getEdgeOptionsForBodyStyle(content.bodyStyle)
 		const isEffectAvailable = this.isEffectAvailable(content.bodyStyle)
 
+		console.log(
+			'ctt ed sel',
+			this.props.editor.selection,
+			this.props.editor.selection ? Range.isCollapsed(this.props.editor.selection) : null
+		)
+
+		// const thisPath = ReactEditor.findPath(this.props.editor, this.props.element)
+		const shouldShowEdgeControls =
+			this.props.selected && Range.isCollapsed(this.props.editor.selection)
+		// this.props.editor.selection.anchor.path.slice(0, thisPath.length).toString() ===
+		// 	this.props.editor.selection.focus.path.slice(0, thisPath.length).toString()
+
 		console.log('@TODO: Make sure these css class names wont bleed')
 		console.log('@TODO: when excerpt is the last item the menu obscures the (+) button')
 		console.log('@TODO: you can delete citations')
@@ -668,7 +680,7 @@ class Excerpt extends React.Component {
 				>
 					<blockquote ref={this.blockquoteRef}>
 						{this.props.children}
-						{this.props.selected ? (
+						{shouldShowEdgeControls ? (
 							<div
 								style={{ position: 'absolute', left: `${this.state.x}px` }}
 								contentEditable={false}
@@ -841,23 +853,27 @@ class Excerpt extends React.Component {
 								</Button>
 							</div>
 						) : null}
-						<EdgeControls
-							position="top"
-							y={0}
-							w={this.state.w}
-							edges={edgeOptions}
-							selectedEdge={content.topEdge}
-							onChangeEdge={this.onChangeTopEdge}
-						/>
+						{shouldShowEdgeControls ? (
+							<React.Fragment>
+								<EdgeControls
+									position="top"
+									y={0}
+									w={this.state.w}
+									edges={edgeOptions}
+									selectedEdge={content.topEdge}
+									onChangeEdge={this.onChangeTopEdge}
+								/>
 
-						<EdgeControls
-							position="bottom"
-							y={this.state.y}
-							w={this.state.w}
-							edges={edgeOptions}
-							selectedEdge={content.bottomEdge}
-							onChangeEdge={this.onChangeBottomEdge}
-						/>
+								<EdgeControls
+									position="bottom"
+									y={this.state.y}
+									w={this.state.w}
+									edges={edgeOptions}
+									selectedEdge={content.bottomEdge}
+									onChangeEdge={this.onChangeBottomEdge}
+								/>
+							</React.Fragment>
+						) : null}
 					</blockquote>
 				</div>
 			</Node>

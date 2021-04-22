@@ -109,11 +109,11 @@ const switchType = {
 			})
 		)
 
-		console.log('ctt', list)
+		console.log('ctt list', list)
 
 		Editor.withoutNormalizing(editor, () => {
 			list.forEach(([child, childPath]) => {
-				console.log('ctt', child, childPath)
+				console.log('ctt child', child, childPath)
 				Transforms.setNodes(
 					editor,
 					{ type: HEADING_NODE, content: { ...child.content, ...data }, subtype: null },

@@ -232,6 +232,9 @@ class Node extends React.Component {
 					console.log('ctt-->', thisPath, this.props.element)
 				}}
 			>
+				<h6 style={{ position: 'absolute', right: 0, top: 0, background: 'green', color: 'white' }}>
+					{getSlatePath(this.props).join(',')}
+				</h6>
 				{this.props.selected ? (
 					<div className={'component-toolbar'}>
 						<InsertMenu
