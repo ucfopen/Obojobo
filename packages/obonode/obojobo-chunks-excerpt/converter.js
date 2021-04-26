@@ -109,7 +109,9 @@ const oboToSlate = node => {
 		{
 			type: 'ObojoboDraft.Chunks.Excerpt',
 			subtype: 'ObojoboDraft.Chunks.Excerpt.ExcerptContent',
-			content: {},
+			content: {
+				...slateNode.content
+			},
 			children: slateNode.children.map(child =>
 				Common.Registry.getItemForType(child.type).oboToSlate(child)
 			)
