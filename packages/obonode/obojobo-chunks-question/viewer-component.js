@@ -281,7 +281,7 @@ export default class Question extends React.Component {
 	isShowingExplanationButton() {
 		const isAnswerScored = this.getScore() !== null
 		const hasSolution = this.props.model.modelState.solution !== null
-		const isSurvey = this.props.type === 'survey'
+		const isSurvey = this.props.model.modelState.type === 'survey'
 
 		return isAnswerScored && hasSolution && !isSurvey
 	}
