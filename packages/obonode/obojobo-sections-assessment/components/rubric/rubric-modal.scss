@@ -6,6 +6,11 @@
 	// Used to make the "Click to load this content" element non-blurry in CHROME
 	transform-style: preserve-3d;
 
+	label {
+		display: flex;
+		align-items: center;
+	}
+
 	.title {
 		font-size: 1.5em;
 		font-weight: bold;
@@ -15,6 +20,7 @@
 		text-align: left;
 		border: none;
 		margin-top: 0.5em;
+		padding: 1em 0;
 
 		legend {
 			font-weight: bold;
@@ -28,15 +34,17 @@
 	.pass-fail {
 		border: none;
 		border-top: 1px solid $color-shadow;
-		padding-top: 1em;
+		padding: 1em 0;
 		text-align: left;
 		margin: 0;
+		font-size: 0.9em;
 
 		legend {
 			float: left;
 			width: 100%;
 			font-weight: bold;
 			text-align: center;
+			margin-bottom: 1em;
 		}
 
 		p {
@@ -153,6 +161,11 @@
 		max-width: 3em;
 		margin-left: 0.5em;
 		margin-right: 0.2em;
+	}
+
+	input[type='radio'] {
+		margin-left: 0;
+		margin-right: 0.5em;
 	}
 
 	select {
