@@ -1518,26 +1518,7 @@ exports[`Question Survey question in assessment answered 1`] = `
           </div>
         </div>
       </fieldset>
-      <div
-        className="solution"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-          contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Read an explanation of the answer
-          </button>
-        </div>
-        <div
-          className="solution-container-animation-placeholder"
-        />
-      </div>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -1942,26 +1923,7 @@ exports[`Question Survey question in practice answered 1`] = `
           </p>
         </div>
       </div>
-      <div
-        className="solution"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-          contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Read an explanation of the answer
-          </button>
-        </div>
-        <div
-          className="solution-container-animation-placeholder"
-        />
-      </div>
+      <span />
     </div>
     <div
       className="blocker-front"
@@ -2261,26 +2223,7 @@ exports[`Question Survey question in review answered 1`] = `
           </p>
         </div>
       </div>
-      <div
-        className="solution"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-          contentEditable={false}
-        >
-          <button
-            className="button"
-            contentEditable={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Read an explanation of the answer
-          </button>
-        </div>
-        <div
-          className="solution-container-animation-placeholder"
-        />
-      </div>
+      <span />
     </div>
     <div
       className="blocker-front"
