@@ -1,3 +1,4 @@
+import insertMenu from 'obojobo-document-engine/config/insert_menu.json'
 import withoutUndefined from './util/without-undefined'
 
 let items
@@ -13,6 +14,8 @@ class _Registry {
 		items = new Map()
 		defaults = new Map()
 		variableHandlers = new Map()
+		memoInsertable = null
+		memoContent = null
 	}
 
 	loadDependency(url, onLoadCallback = () => {}) {
@@ -155,8 +158,22 @@ class _Registry {
 
 	get insertableItems() {
 		if (!memoInsertable) {
-			memoInsertable = Array.from(items.values()).filter(item => item.isInsertable)
+			memoInsertable = []
+
+			insertMenu.forEach(className => {
+				if (className === '|') {
+					memoInsertable.push({ separator: true })
+					return
+				}
+
+				const item = items.get(className)
+
+				if (item) {
+					memoInsertable.push(items.get(className))
+				}
+			})
 		}
+
 		return memoInsertable
 	}
 

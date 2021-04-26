@@ -33,23 +33,25 @@ const FileToolbarViewer = props => {
 
 		const registryItem = Registry.getItemForType(selectedNode?.type)
 
-		const insertMenuItems = insertableItems.map(item => ({
-			name: item.name,
-			disabled: !registryItem?.acceptsInserts || false,
-			action: () => {
-				if (!hasSelection || !selectedNode) return
+		const insertMenuItems = insertableItems
+			.filter(item => item && item.type)
+			.map(item => ({
+				name: item.name,
+				disabled: !registryItem?.acceptsInserts || false,
+				action: () => {
+					if (!hasSelection || !selectedNode) return
 
-				if (registryItem?.plugins?.insertItemInto) {
-					// custom chunk action
-					registryItem.plugins.insertItemInto(editor, item)
-				} else {
-					// default action
-					Transforms.insertNodes(editor, item.cloneBlankNode())
+					if (registryItem?.plugins?.insertItemInto) {
+						// custom chunk action
+						registryItem.plugins.insertItemInto(editor, item)
+					} else {
+						// default action
+						Transforms.insertNodes(editor, item.cloneBlankNode())
+					}
+
+					ReactEditor.focus(editor)
 				}
-
-				ReactEditor.focus(editor)
-			}
-		}))
+			}))
 
 		return (
 			<div className="visual-editor--drop-down-menu">
